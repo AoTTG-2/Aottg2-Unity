@@ -14,7 +14,7 @@ Contributing: join our discord server for more details on how to contribute. We 
 ### Downloading the project
 1. Open command prompt and [navigate](https://www.howtogeek.com/659411/how-to-change-directories-in-command-prompt-on-windows-10/) to your preferred installation folder
 2. Enter `git clone https://github.com/AoTTG-2/Aottg2-Unity.git`
-3. Open Unity Hub, click Project -> Add, and selet your git folder
+3. Open Unity Hub, click Project -> Add, and select your git folder
 
 ### Keeping project updated
 1. Navigate your command prompt to the project folder (Aottg2-Unity folder)
@@ -32,5 +32,5 @@ Contributing: join our discord server for more details on how to contribute. We 
 8. Enter `git push` to finally upload the changes
 
 ### Building and testing
-1. You can test the game by using Unity play mode
-2. You can build the game by clicking File -> Build Settings -> Build. Only build to the Aottg2-Unity4/Aottg2 folder
+1. You can test the game by opening Scenes/Startup and using Unity play mode
+2. You can build the game by clicking File -> Build Settings -> Build. Only build to the Aottg2-Unity/Aottg2 folder

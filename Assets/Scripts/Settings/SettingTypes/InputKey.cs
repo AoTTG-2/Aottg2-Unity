@@ -135,7 +135,7 @@ namespace Settings
             if (keyString.Length == 1 && AlphaDigits.Contains(keyString))
                 keyString = "Alpha" + keyString;
             KeyCode key = keyString.ToEnum<KeyCode>();
-            if (key != KeyCode.None)
+            if (key != KeyCode.None && key != KeyCode.WheelDown && key != KeyCode.WheelUp)
             {
                 _key = key;
                 _isSpecial = false;
