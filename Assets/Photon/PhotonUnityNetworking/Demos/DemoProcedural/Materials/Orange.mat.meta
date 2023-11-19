@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 09adc4af150569a4cb996354c367b8c8
+timeCreated: 1524052433
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonUnityNetworking/Demos/DemoProcedural/Materials/Orange.mat
+  uploadId: 609016

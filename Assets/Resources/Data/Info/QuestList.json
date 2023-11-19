@@ -1,0 +1,368 @@
+{
+	"DailyQuestItems": [
+	{
+		"Category": "KillTitan",
+		"Amount": 30,
+		"RewardType": "Exp",
+		"RewardValue": "450",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 25,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 15,
+		"RewardType": "Exp",
+		"RewardValue": "300",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 15,
+		"RewardType": "Exp",
+		"RewardValue": "300",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Shifter"],
+		"Amount": 10,
+		"RewardType": "Exp",
+		"RewardValue": "200",
+		"Icon": "Skull2"
+	},
+	{
+		"Category": "KillHuman",
+		"Amount": 30,
+		"RewardType": "Exp",
+		"RewardValue": "450",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "300",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 15,
+		"RewardType": "Exp",
+		"RewardValue": "250",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 15,
+		"RewardType": "Exp",
+		"RewardValue": "250",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Titan"],
+		"Amount": 15,
+		"RewardType": "Exp",
+		"RewardValue": "200",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Thunderspear"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "300",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000"],
+		"Amount": 10,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:Blade"],
+		"Amount": 10,
+		"RewardType": "Exp",
+		"RewardValue": "300",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:AHSS"],
+		"Amount": 10,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:APG"],
+		"Amount": 10,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Amount": 15000,
+		"RewardType": "Exp",
+		"RewardValue": "400",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 15000,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 12000,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 12000,
+		"RewardType": "Exp",
+		"RewardValue": "350",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "ReachSpeed",
+		"Conditions": ["Speed:200"],
+		"Amount": 1,
+		"RewardType": "Exp",
+		"RewardValue": "400",
+		"Icon": "Speed"
+	}
+],
+"WeeklyQuestItems": [
+	{
+		"Category": "KillTitan",
+		"Amount": 200,
+		"RewardType": "Exp",
+		"RewardValue": "3000",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 150,
+		"RewardType": "Exp",
+		"RewardValue": "2500",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 100,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 100,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Shifter"],
+		"Amount": 75,
+		"RewardType": "Exp",
+		"RewardValue": "1200",
+		"Icon": "Skull2"
+	},
+	{
+		"Category": "KillHuman",
+		"Amount": 200,
+		"RewardType": "Exp",
+		"RewardValue": "2800",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 150,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 120,
+		"RewardType": "Exp",
+		"RewardValue": "2000",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 120,
+		"RewardType": "Exp",
+		"RewardValue": "2000",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Titan"],
+		"Amount": 150,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Thunderspear"],
+		"Amount": 100,
+		"RewardType": "Exp",
+		"RewardValue": "1600",
+		"Icon": "Sword2"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000"],
+		"Amount": 50,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:Blade"],
+		"Amount": 50,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:AHSS"],
+		"Amount": 50,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:APG"],
+		"Amount": 50,
+		"RewardType": "Exp",
+		"RewardValue": "1500",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "2200",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:Blade"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "2200",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:AHSS"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "2200",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:APG"],
+		"Amount": 20,
+		"RewardType": "Exp",
+		"RewardValue": "2200",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2500"],
+		"Amount": 1,
+		"RewardType": "Exp",
+		"RewardValue": "2000",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:3000"],
+		"Amount": 1,
+		"RewardType": "Exp",
+		"RewardValue": "4000",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Amount": 80000,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 80000,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 80000,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 80000,
+		"RewardType": "Exp",
+		"RewardValue": "2400",
+		"Icon": "Sword1"
+	},
+	{
+		"Category": "ReachSpeed",
+		"Conditions": ["Speed:300"],
+		"Amount": 1,
+		"RewardType": "Exp",
+		"RewardValue": "2000",
+		"Icon": "Speed"
+	}
+	]
+}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d8040d310df77714a90a561261bfb2cb
+timeCreated: 1557919981
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonLibs/changes-library.txt
+  uploadId: 609016

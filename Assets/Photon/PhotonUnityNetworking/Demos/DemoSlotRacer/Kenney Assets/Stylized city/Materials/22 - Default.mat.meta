@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 86080a783905b5740ad2b81f63a2c650
+timeCreated: 1446052890
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonUnityNetworking/Demos/DemoSlotRacer/Kenney Assets/Stylized
+    city/Materials/22 - Default.mat
+  uploadId: 609016

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 192c18d73e55e466d89edd9bc2ab936d
+timeCreated: 1520344180
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonUnityNetworking/Demos/PunCockpit/Prefabs/Tab Toggle.prefab
+  uploadId: 609016

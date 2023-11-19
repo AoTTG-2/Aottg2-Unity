@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e1fad393017993c4893877b645062417
+timeCreated: 1521730297
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonUnityNetworking/Demos/DemoProcedural/Procedural-Scene.unity
+  uploadId: 609016

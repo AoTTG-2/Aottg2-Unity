@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a73b0cac1a73cc346aaeb5f8dd0b53f1
+timeCreated: 1513264275
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonRealtime/Demos/DemoLoadBalancing/DemoLoadBalancing-Scene.unity
+  uploadId: 609016

@@ -1,0 +1,148 @@
+{
+	"AchievementItems": [
+	{
+		"Category": "KillTitan",
+		"Amount": 1000,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Shifter"],
+		"Amount": 200,
+		"Icon": "Skull2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Amount": 1000,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Titan"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Thunderspear"],
+		"Amount": 500,
+		"Icon": "Sword2",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000"],
+		"Amount": 200,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2500"],
+		"Amount": 1,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:Blade"],
+		"Amount": 100,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:AHSS"],
+		"Amount": 100,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1000", "Weapon:APG"],
+		"Amount": 100,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "DealDamage",
+		"Amount": 500000,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 300000,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 300000,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 300000,
+		"Icon": "Sword1",
+		"Tier": "Bronze"
+	},
+	{
+		"Category": "ReachSpeed",
+		"Conditions": ["Speed:300"],
+		"Amount": 1,
+		"Icon": "Speed",
+		"Tier": "Bronze"
+	}
+	]
+}

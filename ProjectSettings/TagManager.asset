@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  tags:
+  - 
+  - FxTemporaire
+  - 
+  Builtin Layer 0: Default
+  Builtin Layer 1: TransparentFX
+  Builtin Layer 2: Ignore Raycast
+  Builtin Layer 3: 
+  Builtin Layer 4: Water
+  Builtin Layer 5: UI
+  Builtin Layer 6: 
+  Builtin Layer 7: 
+  User Layer 8: NoCollision
+  User Layer 9: Hitbox
+  User Layer 10: Human
+  User Layer 11: TitanMovebox
+  User Layer 12: TitanPushbox
+  User Layer 13: Hurtbox
+  User Layer 14: Projectile
+  User Layer 15: EntityDetection
+  User Layer 16: CharacterDetection
+  User Layer 17: NPC
+  User Layer 18: 
+  User Layer 19: 
+  User Layer 20: MapObjectMapObjects
+  User Layer 21: MapObjectProjectiles
+  User Layer 22: MapObjectCharacters
+  User Layer 23: MapObjectEntities
+  User Layer 24: MapObjectAll
+  User Layer 25: MapEditorObject
+  User Layer 26: MapEditorGizmo
+  User Layer 27: MinimapIcon
+  User Layer 28: 
+  User Layer 29: 
+  User Layer 30: 
+  User Layer 31: 
+  m_SortingLayers:
+  - name: Default
+    userID: 0
+    uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    userID: 1
+    uniqueID: 912108783
+    locked: 0

@@ -1,0 +1,205 @@
+{
+	"Costume": {
+		"Male": [
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_mb_2"
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_mb_2",
+				"Holster": true
+			},
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_mb_1"
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_mb_1",
+				"Holster": true
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_ma_2"
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_ma_2"
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_ma_3"
+			},
+			{
+				"Type": "CasualA",
+				"Texture": "aottg_hero_casual_ma_3"
+			},
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_mb_4"
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_mb_4",
+				"Holster": true
+			},
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_mb_3"
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_mb_3",
+				"Holster": true
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_mb_4",
+				"Holster": true
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_ma_1"
+			},
+			{
+				"Type": "CasualAHSS",
+				"Texture": "aottg_hero_casual_ma_1_ahss"
+			}
+		],
+		"Female": [
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_fb_1",
+				"Hoodie": true
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_fb_1",
+				"Hoodie": true,
+				"Holster": true
+			},
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_fb_2"
+			},
+			{
+				"Type": "UniformB",
+				"Texture": "aottg_hero_uniform_fb_2",
+				"Scarf": true
+			},
+			{
+				"Type": "CasualB",
+				"Texture": "aottg_hero_casual_fb_2",
+				"Scarf": true,
+				"Holster": true
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_fa_2"
+			},
+			{
+				"Type": "CasualA",
+				"Texture": "aottg_hero_casual_fa_2",
+				"Holster": true
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_fa_3"
+			},
+			{
+				"Type": "CasualA",
+				"Texture": "aottg_hero_casual_fa_3",
+				"Holster": true
+			},
+			{
+				"Type": "UniformA",
+				"Texture": "aottg_hero_uniform_fa_1"
+			},
+			{
+				"Type": "CasualA",
+				"Texture": "aottg_hero_casual_fa_1",
+				"Holster": true
+			},
+			{
+				"Type": "CasualAHSS",
+				"Texture": "aottg_hero_casual_fa_1_ahss"
+			}
+		]
+	},
+	"Hair": {
+		"Male": [
+			{
+				"Texture": "hair_boy1"
+			},
+			{
+				"Texture": "hair_boy2"
+			},
+			{
+				"Texture": "hair_boy3"
+			},
+			{
+				"Texture": "hair_boy4"
+			},
+			{
+				"Texture": "hair_eren"
+			},
+			{
+				"Texture": "hair_armin"
+			},
+			{
+				"Texture": "hair_jean"
+			},
+			{
+				"Texture": "hair_levi"
+			},
+			{
+				"Texture": "hair_marco"
+			},
+			{
+				"Texture": "hair_mike"
+			},
+			{
+				"Texture": ""
+			}
+		],
+		"Female": [
+			{
+				"Texture": "hair_girl1"
+			},
+			{
+				"Texture": "hair_girl2"
+			},
+			{
+				"Texture": "hair_girl3"
+			},
+			{
+				"Texture": "hair_girl4"
+			},
+			{
+				"Texture": "hair_girl5",
+				"Cloth": "hair_girl5_cloth_0"
+			},
+			{
+				"Texture": "hair_annie"
+			},
+			{
+				"Texture": "hair_hanji",
+				"Cloth": "hair_hanji_cloth_0"
+			},
+			{
+				"Texture": "hair_mikasa"
+			},
+			{
+				"Texture": "hair_petra"
+			},
+			{
+				"Texture": "hair_rico"
+			},
+			{
+				"Texture": "hair_sasha",
+				"Cloth": "hair_sasha_cloth_0"
+			}
+		]
+	}
+}

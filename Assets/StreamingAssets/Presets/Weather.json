@@ -1,0 +1,302 @@
+{
+    "WeatherSets" : {
+        "SelectedSetIndex" : 0,
+        "Sets" : [
+            {
+                "Skybox" : "Day",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    166,
+                    179,
+                    171,
+                    255
+                ],
+                "AmbientLight" : [
+                    157,
+                    142,
+                    154,
+                    255
+                ],
+                "Flashlight" : [
+                    128,
+                    128,
+                    128,
+                    0
+                ],
+                "FogDensity" : 0.04,
+                "FogColor" : [
+                    145,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : true,
+                "ScheduleLoop" : false,
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nGoto,RandomFromList,Day-2,Dawn,Dusk,Night,Cloudy,Storm;\r\nWait,RandomBetween,30,60;\r\nGoto,Constant,ClearEffects;\r\nWait,Constant,10;\r\nGoto,Constant,Start;\r\n\r\nLabel,Day;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,Daylight,Constant,255;\r\nSetTargetValue,AmbientLight,Constant,126-122-114-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Dawn;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,Daylight,Constant,186-164-117-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Dusk;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,Daylight,Constant,186-164-117-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Night;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Cloudy;\r\nSetTargetValue,Skybox,Constant,Cloudy;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Storm;\r\nSetTargetValue,Skybox,Constant,Storm;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,LightRain;\r\nSetTargetValue,Rain,RandomBetween,0.1,0.35;\r\nSetTargetTime,Rain,Constant,8;\r\nReturn;\r\n\r\nLabel,LightSnow;\r\nSetTargetValue,Snow,RandomBetween,0.1,0.35;\r\nSetTargetTime,Snow,Constant,8;\r\nReturn;\r\n\r\nLabel,NoEffect;\r\nReturn;\r\n\r\nLabel,ClearEffects;\r\nSetTargetValue,Rain,Constant,0;\r\nSetTargetValue,Thunder,Constant,0;\r\nSetTargetValue,Snow,Constant,0;\r\nSetTargetTime,Rain,Constant,8;\r\nSetTargetTime,Snow,Constant,8;\r\nSetTargetTime,Thunder,Constant,8;\r\nReturn;\r\n\r\nLabel,FinishLighting;\r\nSetTargetTime,Skybox,Constant,8;\r\nSetTargetTime,Daylight,Constant,8;\r\nSetTargetTime,AmbientLight,Constant,8;\r\nReturn;\r\n\r\nEndSchedule;",
+                "Name" : "ScenicLight*",
+                "Preset" : true
+            },
+            {
+                "Skybox" : "Day",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    182,
+                    172,
+                    177,
+                    255
+                ],
+                "AmbientLight" : [
+                    198,
+                    196,
+                    188,
+                    255
+                ],
+                "Flashlight" : [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "FogDensity" : 0.04,
+                "FogColor" : [
+                    145,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : true,
+                "ScheduleLoop" : false,
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nGoto,RandomFromList,Day-2,Dawn,Dusk,Night,Cloudy,Storm;\r\nWait,RandomBetween,30,60;\r\nGoto,Constant,ClearEffects;\r\nWait,Constant,10;\r\nGoto,Constant,Start;\r\n\r\nLabel,Day;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,Daylight,Constant,255;\r\nSetTargetValue,AmbientLight,Constant,126-122-114-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Dawn;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,Daylight,Constant,186-164-117-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Dusk;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,Daylight,Constant,186-164-117-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Night;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect;\r\nReturn;\r\n\r\nLabel,Cloudy;\r\nSetTargetValue,Skybox,Constant,Cloudy;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,LightRain,LightSnow,NoEffect,HeavyRain,HeavySnow,ThunderStorm;\r\nReturn;\r\n\r\nLabel,Storm;\r\nSetTargetValue,Skybox,Constant,Storm;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nGoto,Constant,FinishLighting;\r\nGoto,RandomFromList,HeavyRain,HeavySnow,ThunderStorm;\r\nReturn;\r\n\r\nLabel,LightRain;\r\nSetTargetValue,Rain,RandomBetween,0.1,0.35;\r\nSetTargetTime,Rain,Constant,8;\r\nReturn;\r\n\r\nLabel,LightSnow;\r\nSetTargetValue,Snow,RandomBetween,0.1,0.35;\r\nSetTargetTime,Snow,Constant,8;\r\nReturn;\r\n\r\nLabel,HeavyRain;\r\nSetTargetValue,Rain,RandomBetween,0.4,0.6;\r\nSetTargetTime,Rain,Constant,8;\r\nReturn;\r\n\r\nLabel,HeavySnow;\r\nSetTargetValue,Snow,RandomBetween,0.4,0.6;\r\nSetTargetTime,Snow,Constant,8;\r\nReturn;\r\n\r\nLabel,ThunderStorm;\r\nSetTargetValue,Rain,RandomBetween,0.4,0.7;\r\nSetTargetValue,Thunder,RandomBetween,0.1,0.3;\r\nSetTargetTime,Rain,Constant,8;\r\nSetTargetTime,Thunder,Constant,8;\r\nReturn;\r\n\r\nLabel,NoEffect;\r\nReturn;\r\n\r\nLabel,ClearEffects;\r\nSetTargetValue,Rain,Constant,0;\r\nSetTargetValue,Thunder,Constant,0;\r\nSetTargetValue,Snow,Constant,0;\r\nSetTargetTime,Rain,Constant,8;\r\nSetTargetTime,Snow,Constant,8;\r\nSetTargetTime,Thunder,Constant,8;\r\nReturn;\r\n\r\nLabel,FinishLighting;\r\nSetTargetTime,Skybox,Constant,8;\r\nSetTargetTime,Daylight,Constant,8;\r\nSetTargetTime,AmbientLight,Constant,8;\r\nReturn;\r\n\r\nEndSchedule;",
+                "Name" : "ScenicHeavy*"
+            },
+            {
+                "Skybox" : "Day",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    255,
+                    255,
+                    255,
+                    255
+                ],
+                "AmbientLight" : [
+                    126,
+                    122,
+                    114,
+                    255
+                ],
+                "Flashlight" : [
+                    255,
+                    255,
+                    255,
+                    0
+                ],
+                "FogDensity" : 0,
+                "FogColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : true,
+                "ScheduleLoop" : false,
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,115-115-115-255;\r\nSetTargetValue,Daylight,Constant,153-147-138-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nSetTargetTime,Skybox,Constant,1;\r\nSetTargetTime,SkyboxColor,Constant,1;\r\nSetTargetTime,Daylight,Constant,1;\r\nSetTargetTime,AmbientLight,Constant,1;\r\nSetTargetTime,Flashlight,Constant,1;\r\nWait,Constant,1;\r\nGoto,Constant,Start0;\r\n\r\nLabel,Start0;\r\nGoto,Constant,Day_;\r\nWait,Constant,230;\r\nGoto,Constant,Dusk_;\r\nWait,Constant,155;\r\nGoto,Constant,Night_;\r\nWait,Constant,180;\r\nGoto,Constant,Dawn_;\r\nWait,Constant,155;\r\n\r\nGoto,Constant,Start0;\r\n\r\nLabel,Dawn_;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,153-147-138-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,Constant,Change120;\r\nReturn;\r\n\r\nLabel,Day_;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,229-229-229-255;\r\nSetTargetValue,AmbientLight,Constant,126-122-114-255;\r\nGoto,Constant,Change120;\r\nReturn;\r\n\r\nLabel,Dusk_;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,115-109-99-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nGoto,Constant,Change120;\r\nReturn;\r\n\r\nLabel,Night_;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,32-32-32-255;\r\nSetTargetValue,AmbientLight,Constant,25-25-25-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-255;\r\nGoto,Constant,Change120;\r\nReturn;\r\n\r\nLabel,Change120;\r\nSetTargetTime,Skybox,Constant,119;\r\nSetTargetTime,SkyboxColor,Constant,119;\r\nSetTargetTime,Daylight,Constant,119;\r\nSetTargetTime,AmbientLight,Constant,119;\r\nSetTargetTime,Flashlight,Constant,119;\r\nReturn;\r",
+                "Name" : "DayNightCycle*"
+            },
+            {
+                "Skybox" : "Day",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    255,
+                    255,
+                    255,
+                    255
+                ],
+                "AmbientLight" : [
+                    126,
+                    122,
+                    114,
+                    255
+                ],
+                "Flashlight" : [
+                    255,
+                    255,
+                    255,
+                    0
+                ],
+                "FogDensity" : 0,
+                "FogColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : true,
+                "ScheduleLoop" : false,
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,115-115-115-255;\r\nSetTargetValue,Daylight,Constant,153-147-138-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nSetTargetValue,Thunder,Constant,0.00;\r\nSetTargetValue,Snow,Constant,0.00;  \r\nSetTargetValue,Wind,Constant,0.00;\r\nSetTargetValue,Rain,Constant,0.00; \r\nSetTargetValue,FogDensity,Constant,0.00; \r\nSetTargetValue,FogColor,Constant,128-128-128-255; \r\n\r\nSetTargetTime,Skybox,Constant,1;\r\nSetTargetTime,SkyboxColor,Constant,1;\r\nSetTargetTime,Daylight,Constant,1;\r\nSetTargetTime,AmbientLight,Constant,1;\r\nSetTargetTime,Flashlight,Constant,1;\r\nSetTargetTime,FogColor,Constant,1;\r\nSetTargetTime,FogDensity,Constant,1;\r\nSetTargetTime,Snow,Constant,1;\r\nSetTargetTime,Rain,Constant,1;\r\nSetTargetTime,Thunder,Constant,1;\r\nSetTargetTime,Wind,Constant,1;\r\nWait,Constant,1;\r\nGoto,Constant,Start0;\r\n\r\nLabel,Start0;\r\nGoto,RandomFromList,Dawn2,Dawn2,Dawn2,Dawn2,Dawn2,Dawn2,Dawn2,Cloudy,Storm;\r\nWait,Constant,60;\r\nGoto,RandomFromList,Dawn3,Dawn3,Dawn3,Dawn3,Dawn3,Dawn3,Dawn3,Cloudy,Storm;\r\nWait,Constant,60;\r\nGoto,RandomFromList,Day1,Day1,Day1,Day1,Day1,Day1,Day1,Cloudy,Storm;\r\nWait,Constant,60;\r\nGoto,RandomFromList,Day2,Day2,Day2,Day2,Day2,Day2,Day2,Cloudy,Storm;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Day3,Day3,Day3,Day3,Day3,Day3,Day3,Cloudy,Storm;\r\nWait,Constant,60;\r\nGoto,RandomFromList,Dusk1,Dusk1,Dusk1,Dusk1,Dusk1,Dusk1,Dusk1,Cloudy,Storm;\r\nWait,Constant,60;\r\nGoto,RandomFromList,Dusk2,Dusk2,Dusk2,Dusk2,Dusk2,Dusk2,Dusk2,Cloudy,Storm;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Dusk3,Dusk3,Dusk3,Dusk3,Dusk3,Dusk3,Dusk3,Cloudy,Storm;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Night1,Night1,Night1,Night1,Night1,Night1,Night1,StormNight;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Night2,Night2,Night2,Night2,Night2,Night2,Night2,StormNight;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Night3,Night3,Night3,Night3,Night3,Night3,Night3,StormNight;\r\nWait,Constant,40;\r\nGoto,RandomFromList,Dawn1,Dawn1,Dawn1,Dawn1,Dawn1,Dawn1,Dawn1,Cloudy,Storm;\r\nWait,Constant,60;\r\n\r\nGoto,Constant,Start0;\r\n\r\n\r\nLabel,Dawn1;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,102-102-102-255;\r\nSetTargetValue,Daylight,Constant,112-94-79-255;\r\nSetTargetValue,AmbientLight,Constant,74-67-60-255;\r\nSetTargetValue,Flashlight,Constant,64-64-64-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Dawn2;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,115-115-115-255;\r\nSetTargetValue,Daylight,Constant,153-147-138-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Dawn3;\r\nSetTargetValue,Skybox,Constant,Dawn;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,197-180-145-255;\r\nSetTargetValue,AmbientLight,Constant,97-89-80-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Day1;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,SkyboxColor,Constant,140-140-140-255;\r\nSetTargetValue,Daylight,Constant,211-205-196-255;\r\nSetTargetValue,AmbientLight,Constant,119-113-105-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Day2;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,SkyboxColor,Constant,153-153-153-255;\r\nSetTargetValue,Daylight,Constant,229-229-229-255;\r\nSetTargetValue,AmbientLight,Constant,126-122-114-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\nLabel,Day3;\r\nSetTargetValue,Skybox,Constant,Day;\r\nSetTargetValue,SkyboxColor,Constant,140-140-140-255;\r\nSetTargetValue,Daylight,Constant,203-197-186-255;\r\nSetTargetValue,AmbientLight,Constant,114-108-100-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Dusk1;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,158-144-113-255;\r\nSetTargetValue,AmbientLight,Constant,97-89-80-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change60;\r\nReturn;\r\n\r\nLabel,Dusk2;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,SkyboxColor,Constant,115-115-115-255;\r\nSetTargetValue,Daylight,Constant,115-109-99-255;\r\nSetTargetValue,AmbientLight,Constant,88-78-69-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\nLabel,Dusk3;\r\nSetTargetValue,Skybox,Constant,Dusk;\r\nSetTargetValue,SkyboxColor,Constant,77-77-77-255;\r\nSetTargetValue,Daylight,Constant,74-61-82-255;\r\nSetTargetValue,AmbientLight,Constant,64-56-50-255;\r\nSetTargetValue,Flashlight,Constant,64-64-64-0;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\nLabel,Night1;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,54-54-64-255;\r\nSetTargetValue,AmbientLight,Constant,34-31-29-255;\r\nSetTargetValue,Flashlight,Constant,191-191-191-255;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Rain;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\nLabel,Night2;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,32-32-32-255;\r\nSetTargetValue,AmbientLight,Constant,26-26-26-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-255;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Rain;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\nLabel,Night3;\r\nSetTargetValue,Skybox,Constant,Night;\r\nSetTargetValue,SkyboxColor,Constant,115-115-115-255;\r\nSetTargetValue,Daylight,Constant,59-59-69-255;\r\nSetTargetValue,AmbientLight,Constant,29-26-27-255;\r\nSetTargetValue,Flashlight,Constant,191-191-191-255;\r\nGoto,RandomFromList,Normal,Normal,Normal,Normal,Normal,Normal,Rain;\r\nGoto,Constant,Change40;\r\nReturn;\r\n\r\n\r\nLabel,Storm;\r\nSetTargetValue,Skybox,Constant,Storm;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,102-102-102-255;\r\nSetTargetValue,AmbientLight,Constant,51-51-51-255;\r\nSetTargetValue,Flashlight,Constant,0-0-0-255;\r\nGoto,RandomFromList,Rain,Rain,RainThunder,RainThunder,RainThunder;\r\nGoto,Constant,Change10;\r\nReturn;\r\n\r\nLabel,StormNight;\r\nSetTargetValue,Skybox,Constant,Storm;\r\nSetTargetValue,SkyboxColor,Constant,89-89-89-255;\r\nSetTargetValue,Daylight,Constant,77-77-77-255;\r\nSetTargetValue,AmbientLight,Constant,52-52-52-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-255;\r\nGoto,RandomFromList,RainThunder;\r\nGoto,Constant,Change10;\r\nReturn;\r\n\r\nLabel,Cloudy;\r\nSetTargetValue,Skybox,Constant,Cloudy;\r\nSetTargetValue,SkyboxColor,Constant,128-128-128-255;\r\nSetTargetValue,Daylight,Constant,89-89-89-255;\r\nSetTargetValue,AmbientLight,Constant,74-67-60-255;\r\nSetTargetValue,Flashlight,Constant,64-64-64-0;\r\nGoto,RandomFromList,Normal,Normal,Rain,Foggy,Foggy;\r\nGoto,Constant,Change20;\r\nReturn;\r\n\r\nLabel,Change60;\r\nSetTargetTime,Skybox,Constant,59;\r\nSetTargetTime,SkyboxColor,Constant,59;\r\nSetTargetTime,Daylight,Constant,59;\r\nSetTargetTime,AmbientLight,Constant,59;\r\nSetTargetTime,Flashlight,Constant,59;\r\nSetTargetTime,FogColor,Constant,39;\r\nSetTargetTime,FogDensity,Constant,10;\r\nSetTargetTime,Snow,Constant,39;\r\nSetTargetTime,Rain,Constant,29;\r\nSetTargetTime,Thunder,Constant,19;\r\nSetTargetTime,Wind,Constant,39;\r\nReturn;\r\n\r\nLabel,Change40;\r\nSetTargetTime,Skybox,Constant,39;\r\nSetTargetTime,SkyboxColor,Constant,39;\r\nSetTargetTime,Daylight,Constant,39;\r\nSetTargetTime,AmbientLight,Constant,39;\r\nSetTargetTime,Flashlight,Constant,39;\r\nSetTargetTime,FogColor,Constant,24;\r\nSetTargetTime,FogDensity,Constant,7;\r\nSetTargetTime,Snow,Constant,24;\r\nSetTargetTime,Rain,Constant,19;\r\nSetTargetTime,Thunder,Constant,16;\r\nSetTargetTime,Wind,Constant,24;\r\nReturn;\r\n\r\nLabel,Change20;\r\nSetTargetTime,Skybox,Constant,19;\r\nSetTargetTime,SkyboxColor,Constant,19;\r\nSetTargetTime,Daylight,Constant,19;\r\nSetTargetTime,AmbientLight,Constant,19;\r\nSetTargetTime,Flashlight,Constant,19;\r\nSetTargetTime,FogColor,Constant,4;\r\nSetTargetTime,FogDensity,Constant,6;\r\nSetTargetTime,Snow,Constant,14;\r\nSetTargetTime,Rain,Constant,10;\r\nSetTargetTime,Thunder,Constant,12;\r\nSetTargetTime,Wind,Constant,14;\r\nReturn;\r\n\r\nLabel,Change10;\r\nSetTargetTime,Skybox,Constant,9;\r\nSetTargetTime,SkyboxColor,Constant,9;\r\nSetTargetTime,Daylight,Constant,9;\r\nSetTargetTime,AmbientLight,Constant,9;\r\nSetTargetTime,Flashlight,Constant,9;\r\nSetTargetTime,FogColor,Constant,7;\r\nSetTargetTime,FogDensity,Constant,5;\r\nSetTargetTime,Snow,Constant,6;\r\nSetTargetTime,Rain,Constant,6;\r\nSetTargetTime,Thunder,Constant,6;\r\nSetTargetTime,Wind,Constant,6;\r\nReturn;\r\n\r\nLabel,RainThunder;\r\nSetTargetValue,Rain,RandomBetween,0.2,0.5;\r\nSetTargetValue,Thunder,RandomBetween,0.1,0.3;\r\nSetTargetValue,FogDensity,Constant,0.00;\r\nReturn;\r\n\r\nLabel,Rain;\r\nSetTargetValue,Rain,RandomBetween,0.1,0.3;\r\nSetTargetValue,Thunder,Constant,0.0;\r\nSetTargetValue,FogDensity,Constant,0.00;\r\nReturn;\r\n\r\nLabel,Normal;\r\nSetTargetValue,Rain,Constant,0.00;\r\nSetTargetValue,Thunder,Constant,0.0;\r\nSetTargetValue,FogDensity,Constant,0.00;\r\nReturn;\r\n\r\nLabel,Foggy;\r\nGoto,RandomFromList,Normal,Rain,Rain;\r\nSetTargetValue,Thunder,Constant,0.0;\r\nSetTargetValue,FogDensity,RandomBetween,0.02,0.04;\r\nReturn;",
+                "Name" : "CycleWeather*"
+            },
+            {
+                "Skybox" : "Day",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    255,
+                    255,
+                    255,
+                    255
+                ],
+                "AmbientLight" : [
+                    126,
+                    122,
+                    114,
+                    255
+                ],
+                "Flashlight" : [
+                    128,
+                    128,
+                    128,
+                    0
+                ],
+                "FogDensity" : 0,
+                "FogColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : false,
+                "ScheduleLoop" : false,
+                "Schedule" : "",
+                "Name" : "Always Day*"
+            },
+            {
+                "Skybox" : "Dusk",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    186,
+                    164,
+                    117,
+                    255
+                ],
+                "AmbientLight" : [
+                    88,
+                    78,
+                    69,
+                    255
+                ],
+                "Flashlight" : [
+                    128,
+                    128,
+                    128,
+                    0
+                ],
+                "FogDensity" : 0,
+                "FogColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : false,
+                "ScheduleLoop" : false,
+                "Schedule" : "",
+                "Name" : "Always Dusk*"
+            },
+            {
+                "Skybox" : "Night",
+                "SkyboxColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Daylight" : [
+                    25,
+                    25,
+                    25,
+                    255
+                ],
+                "AmbientLight" : [
+                    13,
+                    13,
+                    13,
+                    255
+                ],
+                "Flashlight" : [
+                    255,
+                    255,
+                    255,
+                    255
+                ],
+                "FogDensity" : 0,
+                "FogColor" : [
+                    128,
+                    128,
+                    128,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : false,
+                "ScheduleLoop" : false,
+                "Schedule" : "",
+                "Name" : "Always Night*"
+            }
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 87776a9b1f405644abcc38ecd70c37fb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonChat/Code/ChatAppSettings.cs
+  uploadId: 609016

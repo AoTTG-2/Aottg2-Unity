@@ -1,0 +1,115 @@
+class Main
+{   
+    Description = "Survive as long as possible under a time limit. Killing titans adds time. Created by p2.";
+    MaxTitans = 15;
+    TitanSpawnEvery = 3.0;
+    StartTimeLimit = 45.0;
+    TitanAddTime = 6.0;
+    _CrankedTimeDangerZone = 10.0;
+    _hasSpawned = false;
+    _spawnTimeLeft = 0.0;
+    _startTime = -1.0;
+    _endTime = -1.0;
+
+    function OnGameStart()
+    {
+        if (Network.IsMasterClient)
+        {
+            Game.SpawnTitans("Default", self.MaxTitans);
+        }
+    }
+
+    function OnCharacterDie(victim, killer, killerName)
+    {
+        if (victim.Type == "Titan" && killer.IsMainCharacter)
+        {
+            self.StartTimeLimit = self.StartTimeLimit + self.TitanAddTime;
+        }
+        if (victim.IsMainCharacter)
+        {
+            self._endTime = Time.GameTime;
+            self.StartTimeLimit = 0.0;
+        }
+    }
+
+    function OnPlayerSpawn(player, character)
+    {
+        if (player == Network.MyPlayer)
+        {
+            self._startTime = Time.GameTime;
+        }
+    }
+
+    function OutOfTime()
+    {
+        character = Network.MyPlayer.Character;
+        if (character != null && (character.Type == "Human" || character.Type == "Shifter"))
+        {
+            character.GetKilled("Out of time");
+            position = character.Position;
+            if (character.Type == "Shifter")
+            {
+                position = character.NapePosition;
+            }
+            Game.SpawnEffect("ThunderspearExplode", position, Vector3.Zero, 50.0, Color(255, 255, 255, 255));
+        }
+    }
+
+    function OnTick()
+    {
+        titans = Game.Titans.Count;
+        if (!Game.IsEnding && Network.IsMasterClient)
+        {
+            humans = Game.Humans.Count;
+            playerShifters = Game.PlayerShifters.Count;
+            if (humans > 0 || playerShifters > 0)
+            {
+                self._hasSpawned = true;
+            }
+            if (titans < self.MaxTitans)
+            {
+                self._spawnTimeLeft = self._spawnTimeLeft - Time.TickTime;
+                if (self._spawnTimeLeft <= 0.0)
+                {
+                    Game.SpawnTitans("Default", 1);
+                    self._spawnTimeLeft = self.TitanSpawnEvery;
+                }
+            }
+            else
+            {
+                self._spawnTimeLeft = self.TitanSpawnEvery;
+            }
+            if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+            {
+                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                Game.End(10.0);
+                return;
+            }
+        }
+        self.StartTimeLimit = self.StartTimeLimit - Time.TickTime;
+        if (Game.IsEnding)
+        {
+            self.StartTimeLimit = 0.0;
+        }
+        if (self.StartTimeLimit <= self._CrankedTimeDangerZone)
+        {
+            CrankedTimeDisplay = "Cranked Time: <color=#ff0000>" + String.FormatFloat(self.StartTimeLimit, 2) + "</color>"; 
+        }
+        else
+        {
+            CrankedTimeDisplay = "Cranked Time: " + Convert.ToString(Convert.ToInt(self.StartTimeLimit)); 
+        }
+        if (self.StartTimeLimit <= 0)
+        {
+            self.OutOfTime();
+            CrankedTimeDisplay = "Cranked Time: <color=#ff0000>0.00!</color>";
+            if (self._endTime != -1.0 && self._startTime != -1.0)
+            {
+                self._startTime = Math.Min(self._startTime, self._endTime);
+                surviveTime = self._endTime - self._startTime;
+                CrankedTimeDisplay = CrankedTimeDisplay + String.Newline + "You survived <color=#ffd700>" + String.FormatFloat(surviveTime, 2) + "</color> seconds";
+            }
+        }
+        UI.SetLabel("TopCenter", "Titans Left: " + Convert.ToString(titans) + String.Newline + CrankedTimeDisplay);
+    }
+}

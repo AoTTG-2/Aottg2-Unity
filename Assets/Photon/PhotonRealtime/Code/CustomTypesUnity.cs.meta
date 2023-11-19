@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c41ee868d8540674982e160cf16e0775
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonRealtime/Code/CustomTypesUnity.cs
+  uploadId: 609016

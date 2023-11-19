@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: d93148764d7961d4a8b8112bd166cf35
+timeCreated: 1494420905
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonRealtime/Code/PhotonPingClasses.cs
+  uploadId: 609016

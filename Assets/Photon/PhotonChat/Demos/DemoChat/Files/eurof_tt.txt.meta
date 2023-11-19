@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e96690bd3586cf643a223def4feaa4d4
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonChat/Demos/DemoChat/Files/eurof_tt.txt
+  uploadId: 609016

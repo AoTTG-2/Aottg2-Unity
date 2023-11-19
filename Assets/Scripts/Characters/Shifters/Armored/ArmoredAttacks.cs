@@ -1,0 +1,6 @@
+﻿namespace Characters
+{
+    class ArmoredAttacks
+    {
+    }
+}

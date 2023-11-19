@@ -1,0 +1,25 @@
+/// Options
+EditorVersion:1.0|Description:Crystal caves, created by Gun.
+/// Objects
+Scene,Arenas/Arena3,2,0,1,1,1,0,Arena3,0,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,None,1,0,1,1,1,0,Daylight,0,0,0,53.13011,126.8699,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
+Scene,None,3,0,1,1,1,0,Human SpawnPoint (blue),-3.632129,2,-95.67741,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,4,0,1,1,1,0,Human SpawnPoint (blue),42.53749,2,-95.67741,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,5,0,1,1,1,0,Human SpawnPoint (blue),67.51676,2,-79.61327,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,6,0,1,1,1,0,Human SpawnPoint (blue),-10.92058,2,-111.5219,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,7,0,1,1,1,0,Human SpawnPoint (red),-34.70326,2,94.33981,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,8,0,1,1,1,0,Human SpawnPoint (red),-64.17803,2,94.33981,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,9,0,1,1,1,0,Human SpawnPoint (red),-64.17803,2,52.64221,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,10,0,1,1,1,0,Human SpawnPoint (red),-21.03584,2,132.7502,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,11,0,1,1,1,0,Titan SpawnPoint,50.13237,5,81.12079,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,12,0,1,1,1,0,Titan SpawnPoint,12.53478,5,81.12079,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,13,0,1,1,1,0,Titan SpawnPoint,26.54116,5,116.187,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,14,0,1,1,1,0,Titan SpawnPoint,-53.05287,5,116.187,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,15,0,1,1,1,0,Titan SpawnPoint,-53.05287,5,48.23633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,16,0,1,1,1,0,Titan SpawnPoint,-96.37527,5,26.04809,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,17,0,1,1,1,0,Titan SpawnPoint,-96.37527,5,-62.80979,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,18,0,1,1,1,0,Titan SpawnPoint,-46.54653,5,-62.80979,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,19,0,1,1,1,0,Titan SpawnPoint,48.85521,5,-62.80979,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,20,0,1,1,1,0,Titan SpawnPoint,67.8847,5,29.05109,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,21,0,1,1,1,0,Titan SpawnPoint,121.946,5,43.56557,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+/// Logic

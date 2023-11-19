@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 294f02eac9561704ebe4baa5b1bc4163
+timeCreated: 1505302910
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonUnityNetworking/Demos/DemoAsteroids/Models/Materials/FlyerAsteroid1.mat
+  uploadId: 609016

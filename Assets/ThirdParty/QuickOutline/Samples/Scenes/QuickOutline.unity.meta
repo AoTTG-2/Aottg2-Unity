@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f23712c79adc910408e872b127e825cf
+timeCreated: 1522615825
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 115488
+  packageName: Quick Outline
+  packageVersion: 1.1
+  assetPath: Assets/QuickOutline/Samples/Scenes/QuickOutline.unity
+  uploadId: 485303

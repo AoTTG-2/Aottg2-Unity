@@ -1,0 +1,51 @@
+{
+	"MainBackgrounds": [
+		"MainBackground2Texture",
+		"MainBackground4Texture",
+		"MainBackground5Texture",
+		"MainBackground7Texture",
+		"MainBackground8Texture",
+		"MainBackground9Texture",
+		"MainBackground11Texture",
+		"MainBackground12Texture",
+		"MainBackground16Texture",
+		"MainBackground17Texture"
+	],
+	"LoadingBackgrounds": [
+		"MainBackground1Texture",
+		"MainBackground2Texture",
+		"MainBackground4Texture",
+		"MainBackground5Texture",
+		"MainBackground6Texture",
+		"MainBackground7Texture",
+		"MainBackground8Texture",
+		"MainBackground9Texture",
+		"MainBackground10Texture",
+		"MainBackground11Texture",
+		"MainBackground12Texture",
+		"MainBackground13Texture",
+		"MainBackground14Texture",
+		"MainBackground15Texture",
+		"MainBackground16Texture",
+		"MainBackground17Texture",
+		"MainBackground26Texture",
+		"MainBackground27Texture",
+		"MainBackground28Texture",
+		"MainBackground29Texture",
+		"MainBackground30Texture",
+		"MainBackground31Texture",
+		"MainBackground32Texture",
+		"MainBackground33Texture",
+		"MainBackground34Texture",
+		"MainBackground35Texture",
+		"MainBackground36Texture",
+		"MainBackground37Texture"
+	],
+	"AllBackgrounds": 37,
+	"Tips": [
+		"You can attack a titan's legs to cripple them.",
+		"You can blind a titan by attacking the eyes.",
+		"Use the N key to emote.",
+		"Use the F key to use items such as flares."
+	]
+}

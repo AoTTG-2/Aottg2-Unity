@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c90a2a73f3ce648409739c724d3e6cef
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonChat/Code/ChatOperationCode.cs
+  uploadId: 609016

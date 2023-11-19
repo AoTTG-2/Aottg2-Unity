@@ -1,0 +1,4 @@
+class Main
+{   
+    Description = "No game logic.";
+}

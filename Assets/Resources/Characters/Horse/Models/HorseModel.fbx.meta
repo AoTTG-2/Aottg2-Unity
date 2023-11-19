@@ -1,0 +1,1244 @@
+fileFormatVersion: 2
+guid: 3981388d924781a419ed3eca2e0a7450
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Amarture
+    100002: Bone
+    100004: Bone_001
+    100006: Bone_002
+    100008: chest
+    100010: Controller_asset_foot_IK_L_001
+    100012: Controller_asset_foot_IK_L_002
+    100014: Controller_asset_foot_IK_L_003
+    100016: Controller_asset_foot_IK_L_004
+    100018: Controller_asset_foot_IK_R_001
+    100020: Controller_asset_foot_IK_R_002
+    100022: Controller_asset_foot_IK_R_003
+    100024: Controller_asset_foot_IK_R_004
+    100026: Controller_Body
+    100028: Controller_foot_IK_L
+    100030: Controller_foot_IK_L_001
+    100032: Controller_foot_IK_R
+    100034: Controller_foot_IK_R_001
+    100036: Controller_Foot_L
+    100038: Controller_Foot_L_001
+    100040: Controller_Foot_R
+    100042: Controller_Foot_R_001
+    100044: Controller_Leg_L
+    100046: Controller_Leg_L_001
+    100048: Controller_Leg_R
+    100050: Controller_Leg_R_001
+    100052: Controller_Main
+    100054: dust
+    100056: foot_L
+    100058: foot_L_001
+    100060: foot_R
+    100062: foot_R_001
+    100064: head
+    100066: hip
+    100068: HORSE
+    100070: //RootNode
+    100072: kneel_L
+    100074: kneel_L_001
+    100076: kneel_R
+    100078: kneel_R_001
+    100080: neck
+    100082: shin_L
+    100084: shin_L_001
+    100086: shin_R
+    100088: shin_R_001
+    100090: spine
+    100092: thigh0_L
+    100094: thigh0_L_001
+    100096: thigh0_L_002
+    100098: thigh0_L_003
+    100100: thigh0_R
+    100102: thigh0_R_001
+    100104: thigh0_R_002
+    100106: thigh0_R_003
+    100108: thigh_L
+    100110: thigh_L_001
+    100112: thigh_R
+    100114: thigh_R_001
+    100116: toe_L
+    100118: toe_L_001
+    100120: toe_R
+    100122: toe_R_001
+    400000: Amarture
+    400002: Bone
+    400004: Bone_001
+    400006: Bone_002
+    400008: chest
+    400010: Controller_asset_foot_IK_L_001
+    400012: Controller_asset_foot_IK_L_002
+    400014: Controller_asset_foot_IK_L_003
+    400016: Controller_asset_foot_IK_L_004
+    400018: Controller_asset_foot_IK_R_001
+    400020: Controller_asset_foot_IK_R_002
+    400022: Controller_asset_foot_IK_R_003
+    400024: Controller_asset_foot_IK_R_004
+    400026: Controller_Body
+    400028: Controller_foot_IK_L
+    400030: Controller_foot_IK_L_001
+    400032: Controller_foot_IK_R
+    400034: Controller_foot_IK_R_001
+    400036: Controller_Foot_L
+    400038: Controller_Foot_L_001
+    400040: Controller_Foot_R
+    400042: Controller_Foot_R_001
+    400044: Controller_Leg_L
+    400046: Controller_Leg_L_001
+    400048: Controller_Leg_R
+    400050: Controller_Leg_R_001
+    400052: Controller_Main
+    400054: dust
+    400056: foot_L
+    400058: foot_L_001
+    400060: foot_R
+    400062: foot_R_001
+    400064: head
+    400066: hip
+    400068: HORSE
+    400070: //RootNode
+    400072: kneel_L
+    400074: kneel_L_001
+    400076: kneel_R
+    400078: kneel_R_001
+    400080: neck
+    400082: shin_L
+    400084: shin_L_001
+    400086: shin_R
+    400088: shin_R_001
+    400090: spine
+    400092: thigh0_L
+    400094: thigh0_L_001
+    400096: thigh0_L_002
+    400098: thigh0_L_003
+    400100: thigh0_R
+    400102: thigh0_R_001
+    400104: thigh0_R_002
+    400106: thigh0_R_003
+    400108: thigh_L
+    400110: thigh_L_001
+    400112: thigh_R
+    400114: thigh_R_001
+    400116: toe_L
+    400118: toe_L_001
+    400120: toe_R
+    400122: toe_R_001
+    4300000: HORSE
+    7400000: horse_crazy
+    7400002: horse_idle0
+    7400004: horse_idle1
+    7400006: horse_idle2
+    7400008: horse_idle3
+    7400010: horse_Run
+    7400012: horse_WALK
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: HORSE
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: horse_crazy
+      takeName: horse_crazy
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_idle0
+      takeName: horse_idle0
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_idle1
+      takeName: horse_idle1
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_idle2
+      takeName: horse_idle2
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_idle3
+      takeName: horse_idle3
+      firstFrame: 1
+      lastFrame: 61
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_Run
+      takeName: horse_Run
+      firstFrame: 1
+      lastFrame: 24.0000019
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: horse_WALK
+      takeName: horse_WALK
+      firstFrame: 1
+      lastFrame: 60.0000076
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture
+        weight: 1
+      - path: Amarture/Controller_Main
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/Bone/Bone_001/Bone_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_L_002/thigh0_L_003/thigh_L_001/shin_L_001/foot_L_001/toe_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/hip/thigh0_R_002/thigh0_R_003/thigh_R_001/shin_R_001/foot_R_001/toe_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/chest/neck/head
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_L/thigh0_L_001/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Body/spine/thigh0_R/thigh0_R_001/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_asset_foot_IK_L_002/Controller_asset_foot_IK_L_001/Controller_foot_IK_L/kneel_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L/Controller_Foot_L
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_asset_foot_IK_L_003/Controller_asset_foot_IK_L_004/Controller_foot_IK_L_001/kneel_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_L_001/Controller_Foot_L_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_asset_foot_IK_R_002/Controller_asset_foot_IK_R_001/Controller_foot_IK_R/kneel_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R/Controller_Foot_R
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_asset_foot_IK_R_003/Controller_asset_foot_IK_R_004/Controller_foot_IK_R_001/kneel_R_001
+        weight: 1
+      - path: Amarture/Controller_Main/Controller_Leg_R_001/Controller_Foot_R_001
+        weight: 1
+      - path: dust
+        weight: 1
+      - path: HORSE
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 

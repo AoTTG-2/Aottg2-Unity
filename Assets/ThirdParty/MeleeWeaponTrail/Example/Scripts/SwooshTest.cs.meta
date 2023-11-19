@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 690fe3e3cbf02f84bbb3f17cb80abc08
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 1728
+  packageName: Melee Weapon Trail
+  packageVersion: 1.0
+  assetPath: Assets/MeleeWeaponTrail/Example/Scripts/SwooshTest.cs
+  uploadId: 0

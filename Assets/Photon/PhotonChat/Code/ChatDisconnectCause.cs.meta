@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b90b85043f1857f43b94fd00edfc1ef1
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.43
+  assetPath: Assets/Photon/PhotonChat/Code/ChatDisconnectCause.cs
+  uploadId: 609016

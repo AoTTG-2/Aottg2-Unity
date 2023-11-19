@@ -1,0 +1,2100 @@
+fileFormatVersion: 2
+guid: 77b795d317290674885711ea09dae462
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: arm1_l
+    100002: arm1_r
+    100004: arm2_l
+    100006: arm2_r
+    100008: arm3_l
+    100010: arm3_r
+    100012: arm4_l
+    100014: arm4_l_end
+    100016: arm4_r
+    100018: arm4_r_end
+    100020: Armature
+    100022: Armature 1
+    100024: body
+    100026: chashao
+    100028: chest
+    100030: ear_l
+    100032: ear_l_end
+    100034: ear_r
+    100036: ear_r_end
+    100038: //RootNode
+    100040: head
+    100042: hip
+    100044: IK_arm_l
+    100046: ik_arm_r
+    100048: ik_kneel1_l
+    100050: ik_kneel1_l_end
+    100052: ik_kneel1_r
+    100054: ik_kneel1_r_end
+    100056: ik_kneel2_l
+    100058: ik_kneel2_l_end
+    100060: ik_kneel2_r
+    100062: ik_kneel2_r_end
+    100064: ik_leg_l
+    100066: ik_leg_r
+    100068: jaw
+    100070: jaw_end
+    100072: leg1_l
+    100074: leg1_r
+    100076: leg2_l
+    100078: leg2_r
+    100080: leg3_l
+    100082: leg3_r
+    100084: leg4_l
+    100086: leg4_l_end
+    100088: leg4_r
+    100090: leg4_r_end
+    100092: neck
+    100094: Root
+    100096: tail1
+    100098: tail2
+    100100: tail2_end
+    400000: arm1_l
+    400002: arm1_r
+    400004: arm2_l
+    400006: arm2_r
+    400008: arm3_l
+    400010: arm3_r
+    400012: arm4_l
+    400014: arm4_l_end
+    400016: arm4_r
+    400018: arm4_r_end
+    400020: Armature
+    400022: Armature 1
+    400024: body
+    400026: chashao
+    400028: chest
+    400030: ear_l
+    400032: ear_l_end
+    400034: ear_r
+    400036: ear_r_end
+    400038: //RootNode
+    400040: head
+    400042: hip
+    400044: IK_arm_l
+    400046: ik_arm_r
+    400048: ik_kneel1_l
+    400050: ik_kneel1_l_end
+    400052: ik_kneel1_r
+    400054: ik_kneel1_r_end
+    400056: ik_kneel2_l
+    400058: ik_kneel2_l_end
+    400060: ik_kneel2_r
+    400062: ik_kneel2_r_end
+    400064: ik_leg_l
+    400066: ik_leg_r
+    400068: jaw
+    400070: jaw_end
+    400072: leg1_l
+    400074: leg1_r
+    400076: leg2_l
+    400078: leg2_r
+    400080: leg3_l
+    400082: leg3_r
+    400084: leg4_l
+    400086: leg4_l_end
+    400088: leg4_r
+    400090: leg4_r_end
+    400092: neck
+    400094: Root
+    400096: tail1
+    400098: tail2
+    400100: tail2_end
+    4300000: chashao
+    7400000: Idle0
+    7400002: Armature|byby
+    7400004: Armature|Default Take
+    7400006: Itch
+    7400008: Stretch
+    7400010: Lie1
+    7400012: Lie2
+    7400014: Lie3
+    7400016: Run
+    7400018: Shake
+    7400020: Sit1
+    7400022: Sit2
+    7400024: Sleep
+    7400026: Stand
+    7400028: Walk
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: chashao
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle0
+      takeName: Armature|_idle
+      firstFrame: 0
+      lastFrame: 15
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Armature|byby
+      takeName: Armature|byby
+      firstFrame: 0
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Armature|Default Take
+      takeName: Armature|Default Take
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Itch
+      takeName: Armature|itch
+      firstFrame: 0
+      lastFrame: 44
+      wrapMode: 8
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Stretch
+      takeName: Armature|lanyao
+      firstFrame: 0
+      lastFrame: 149
+      wrapMode: 8
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Lie1
+      takeName: Armature|lie
+      firstFrame: 0
+      lastFrame: 15
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Lie2
+      takeName: Armature|lie2
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Lie3
+      takeName: Armature|lie3
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Run
+      takeName: Armature|RUN
+      firstFrame: 0
+      lastFrame: 16
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Shake
+      takeName: Armature|shake
+      firstFrame: 0
+      lastFrame: 104
+      wrapMode: 8
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sit1
+      takeName: Armature|sit
+      firstFrame: 0
+      lastFrame: 16
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sit2
+      takeName: Armature|sit2
+      firstFrame: 0
+      lastFrame: 31
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Sleep
+      takeName: Armature|sleep
+      firstFrame: 0
+      lastFrame: 31
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Stand
+      takeName: Armature|stand
+      firstFrame: 0
+      lastFrame: 15
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Walk
+      takeName: Armature|WALK
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Armature 1
+        weight: 1
+      - path: Armature/Armature 1/Root
+        weight: 1
+      - path: Armature/Armature 1/Root/body
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_l/arm2_l/arm3_l/arm4_l/arm4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/arm1_r/arm2_r/arm3_r/arm4_r/arm4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_l/ear_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/ear_r/ear_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw
+        weight: 1
+      - path: Armature/Armature 1/Root/body/chest/neck/head/jaw/jaw_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_l/leg2_l/leg3_l/leg4_l/leg4_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/leg1_r/leg2_r/leg3_r/leg4_r/leg4_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2
+        weight: 1
+      - path: Armature/Armature 1/Root/body/hip/tail1/tail2/tail2_end
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l
+        weight: 1
+      - path: Armature/Armature 1/Root/IK_arm_l/ik_kneel1_l/ik_kneel1_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_arm_r/ik_kneel1_r/ik_kneel1_r_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_l/ik_kneel2_l/ik_kneel2_l_end
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r
+        weight: 1
+      - path: Armature/Armature 1/Root/ik_leg_r/ik_kneel2_r/ik_kneel2_r_end
+        weight: 1
+      - path: chashao
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 

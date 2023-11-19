@@ -1,0 +1,23 @@
+/// Options
+EditorVersion:1.0|Description:House fight, created by Gun.
+/// Objects
+Scene,None,6,0,1,1,1,0,Human SpawnPoint (blue),37.24037,2,-31.3495,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,1,0,1,1,1,0,Daylight,0,0,0,53.13011,126.8699,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
+Scene,Arenas/Arena1,5,0,1,1,1,0,Arena1,0,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,None,7,0,1,1,1,0,Human SpawnPoint (blue),45.04088,2,-6.534268,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,8,0,1,1,1,0,Human SpawnPoint (blue),72.49763,2,-6.534268,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,9,0,1,1,1,0,Human SpawnPoint (blue),72.49763,2,-31.82119,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,None,11,0,1,1,1,0,Human SpawnPoint (red),-37.61411,2,3.805474,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,12,0,1,1,1,0,Human SpawnPoint (red),-37.61411,2,-18.65609,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,13,0,1,1,1,0,Human SpawnPoint (red),-67.83167,2,-18.65609,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,14,0,1,1,1,0,Human SpawnPoint (red),-67.83167,2,2.885135,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,None,15,0,1,1,1,0,Titan SpawnPoint,9.920761,5,58.02997,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,16,0,1,1,1,0,Titan SpawnPoint,-18.67043,5,58.02997,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,17,0,1,1,1,0,Titan SpawnPoint,-1.822042,5,39.96191,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,18,0,1,1,1,0,Titan SpawnPoint,-53.62453,5,13.01793,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,19,0,1,1,1,0,Titan SpawnPoint,-53.62453,5,-21.3548,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,20,0,1,1,1,0,Titan SpawnPoint,-25.27346,5,-45.33579,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,21,0,1,1,1,0,Titan SpawnPoint,13.45096,5,-45.33579,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,22,0,1,1,1,0,Titan SpawnPoint,52.78537,5,-23.45407,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,None,23,0,1,1,1,0,Titan SpawnPoint,52.78537,5,9.725352,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+/// Logic
