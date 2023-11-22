@@ -17,7 +17,7 @@ namespace UI
         protected override int VerticalPadding => 20;
         protected override float VerticalSpacing => 10f;
         private StringSetting _logic = new StringSetting(string.Empty);
-        private InputSettingElement _logicInput;
+        private GameObject _logicInput;
         private MapEditorGameManager _gameManager;
         private Text _error;
 
@@ -27,18 +27,19 @@ namespace UI
             ElementStyle style = new ElementStyle(titleWidth: 130f, fontSize: ButtonFontSize, themePanel: ThemePanel);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Save"), onClick: () => OnButtonClick("Save"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Cancel"), onClick: () => OnButtonClick("Cancel"));
-            _logicInput = ElementFactory.CreateInputSetting(SinglePanel, style, _logic, "", elementWidth: 450f, elementHeight: 400f, multiLine: true).
-                GetComponent<InputSettingElement>();
             _error = ElementFactory.CreateDefaultLabel(SinglePanel, style, "").GetComponent<Text>();
             _error.color = Color.red;
         }
 
         public override void Show()
         {
-            base.Show();
             _gameManager = (MapEditorGameManager)SceneLoader.CurrentGameManager;
+            if (_logicInput != null)
+                Destroy(_logicInput);
+            ElementStyle style = new ElementStyle(titleWidth: 130f, fontSize: ButtonFontSize, themePanel: ThemePanel);
+            base.Show();
             _logic.Value = _gameManager.MapScript.Logic;
-            _logicInput.SyncElement();
+            _logicInput = ElementFactory.CreateInputSetting(SinglePanel, style, _logic, "", elementWidth: 450f, elementHeight: 400f, multiLine: true);
             _error.text = "";
         }
 
@@ -58,6 +59,10 @@ namespace UI
                 if (error != string.Empty)
                 {
                     _error.text = error;
+                    if (_logicInput != null)
+                        Destroy(_logicInput);
+                    ElementStyle style = new ElementStyle(titleWidth: 130f, fontSize: ButtonFontSize, themePanel: ThemePanel);
+                    _logicInput = ElementFactory.CreateInputSetting(SinglePanel, style, _logic, "", elementWidth: 450f, elementHeight: 400f, multiLine: true);
                 }
                 else
                 {

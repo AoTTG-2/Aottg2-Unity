@@ -22,7 +22,6 @@ namespace UI
             base.Setup(parent);
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Done"), onClick: () => OnButtonClick("Done"));
-            
         }
 
         public void Show(string value)

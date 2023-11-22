@@ -239,23 +239,9 @@ namespace UI
                 if (IsModifier() && IsPaste())
                 {
                     input = GetClipboard();
-                    int insert = caretPosition;
-                    if (caretPosition != m_CaretSelectPosition && text.Length > 0)
-                    {
-                        int start = Math.Min(caretPosition, m_CaretSelectPosition);
-                        int end = Math.Max(caretPosition, m_CaretSelectPosition);
-                        if (end >= text.Length)
-                            text = text.Substring(0, start);
-                        else
-                            text = text.Substring(0, start) + text.Substring(end, text.Length - end);
-                        insert = start;
-                    }
-                    if (insert >= text.Length || text.Length == 0)
-                        text = text + input;
-                    else
-                        text = text.Substring(0, insert) + input + text.Substring(insert, text.Length - insert);
+                    text = input;
                     onValueChanged.Invoke(text);
-                    m_CaretSelectPosition = caretPosition = Math.Min(insert + input.Length, text.Length);
+                    m_CaretSelectPosition = caretPosition = text.Length;
                     return;
                 }
             }
