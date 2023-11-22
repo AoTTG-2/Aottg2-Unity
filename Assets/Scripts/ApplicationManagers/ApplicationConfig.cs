@@ -21,7 +21,7 @@ namespace ApplicationManagers
 
         public static void Init()
         {
-            if (File.Exists(DevelopmentConfigPath))
+            if (File.Exists(DevelopmentConfigPath) || Application.platform == RuntimePlatform.WindowsEditor)
             {
                 DevelopmentMode = true;
             }

@@ -28,6 +28,10 @@ namespace UI
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
             _inputField.onEndEdit.AddListener((string text) => OnEndEdit(text));
             _inputField.text = "";
+            if (SettingsManager.UISettings.ChatWidth.Value == 0f)
+            {
+                _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
+            }
             Sync();
         }
 

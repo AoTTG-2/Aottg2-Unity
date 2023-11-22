@@ -44,6 +44,9 @@ namespace Characters
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction));
             human.PlaySound(HumanSounds.GunExplodeSound);
+            var ahssInfo = CharacterData.HumanWeaponInfo["AHSS"];
+            var capsule = (CapsuleCollider)human.HumanCache.AHSSHit._collider;
+            capsule.radius = ahssInfo["Radius"].AsFloat;
             human.HumanCache.AHSSHit.transform.position = start;
             human.HumanCache.AHSSHit.transform.rotation = Quaternion.LookRotation(direction);
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);

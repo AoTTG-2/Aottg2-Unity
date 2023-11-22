@@ -32,8 +32,10 @@
         public static string AHSSHookForwardR = "Armature|AHSS_hook_R";
         public static string AHSSShootR = "Armature|AHSS_shoot_R";
         public static string AHSSShootL = "Armature|AHSS_shoot_L";
+        public static string AHSSShootBoth = "Armature|AHSS_shooth_both";
         public static string AHSSShootRAir = "Armature|AHSS_shoot_air_R";
         public static string AHSSShootLAir = "Armature|AHSS_shoot_air_L";
+        public static string AHSSShootBothAir = "Armature|AHSS_shooth_air_both";
         public static string AHSSGunReloadBoth = "Armature|AHSS_reload_both";
         public static string AHSSGunReloadBothAir = "Armature|AHSS_reload_air_both";
         public static string TSShootR = "Armature|TS_shoot_R";

@@ -9,6 +9,7 @@ namespace Characters
     {
         protected override float ActiveTime => 1f;
         protected float Range = 300f;
+        protected override bool GroundedOnly => false;
 
         public DistractSpecial(BaseCharacter owner ): base(owner)
         {

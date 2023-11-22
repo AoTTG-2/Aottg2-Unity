@@ -12,6 +12,7 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
+using GameProgress;
 
 namespace Characters
 {
@@ -298,7 +299,7 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage });
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
             }
         }
@@ -312,7 +313,7 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage });
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
             }
         }
@@ -323,7 +324,7 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             SetCurrentHealth(0);
-            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0 });
+            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
             Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
         }
 

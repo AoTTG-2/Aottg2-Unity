@@ -52,7 +52,7 @@ namespace UI
         {
             percentage = Mathf.Clamp(percentage, 0f, 1f);
             if (immediate)
-                _progessPanel.ShowImmediate();
+                _progessPanel.ShowImmediate(percentage);
             else
                 _progessPanel.Show(percentage);
             if (finished)

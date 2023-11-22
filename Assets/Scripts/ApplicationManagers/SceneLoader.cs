@@ -46,6 +46,11 @@ namespace ApplicationManagers
                 PhotonNetwork.LoadLevel(0);
             else
                 SceneManager.LoadScene(0);
+            var settings = SettingsManager.GraphicsSettings;
+            if (SceneName == SceneName.InGame || SceneName == SceneName.MapEditor)
+                Application.targetFrameRate = settings.FPSCap.Value > 0 ? settings.FPSCap.Value : -1;
+            else
+                Application.targetFrameRate = settings.MenuFPSCap.Value > 0 ? settings.MenuFPSCap.Value : -1;
             CharacterData.Init(); // remove this after testing is done
         }
 

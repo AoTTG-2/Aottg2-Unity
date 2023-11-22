@@ -161,7 +161,7 @@ namespace Characters
                 {
                     if (IsMainCharacter())
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                    victimChar.GetHit(this, damage, type, collider.name);
+                    victimChar.GetHit(this, damage, "Titan", collider.name);
                 }
             }
         }

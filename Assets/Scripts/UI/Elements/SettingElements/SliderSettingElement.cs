@@ -59,6 +59,11 @@ namespace UI
                     value = 1f;
                     _slider.value = value;
                 }
+                if (_slider.minValue < 0f && value >= -0.01f && value <= 0.01f)
+                {
+                    value = 0f;
+                    _slider.value = value;
+                }
                 ((FloatSetting)_setting).Value = value;
             }
             else if (_settingType == SettingType.Int)

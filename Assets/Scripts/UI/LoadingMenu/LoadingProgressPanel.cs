@@ -45,6 +45,13 @@ namespace UI
             _label.color = UIManager.GetThemeColor(ThemePanel, "DefaultLabel", "TextColor");
         }
 
+        public void ShowImmediate(float progress)
+        {
+            _label.text = Util.FormatFloat(progress * 100, 0).ToString() + "%";
+            _slider.value = progress;
+            base.ShowImmediate();
+        }
+
         public void Show(float progress)
         {
             _label.text = Util.FormatFloat(progress * 100, 0).ToString() + "%";

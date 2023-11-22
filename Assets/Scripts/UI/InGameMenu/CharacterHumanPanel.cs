@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Linq;
 using GameManagers;
 using Characters;
+using Utility;
 
 namespace UI
 {
@@ -34,24 +35,53 @@ namespace UI
                 loadouts.Add(HumanLoadout.Blades);
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
-            List<string> sets = new List<string>(SettingsManager.HumanCustomSettings.Costume1Sets.GetSetNames());
-            sets.AddRange(SettingsManager.HumanCustomSettings.CustomSets.GetSetNames());
             List<string> specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(charSettings.Special.Value))
                 charSettings.Special.Value = specials[0];
-            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
-                sets.ToArray(), elementWidth: 180f, optionsWidth: 180f);
+            string[] options = GetCharOptions();
+            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
+                options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(cat, sub, "Costume"),
                 new string[] {"Costume1", "Costume2", "Costume3"}, elementWidth: 180f, optionsWidth: 180f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Loadout"),
                 loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
-            ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
-                specials.ToArray(), elementWidth: 180f, optionsWidth: 180f);
+            options = specials.ToArray();
+            ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
+                options, GetSpecialIcons(charSettings.Loadout.Value, options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
                new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
             }
+        }
+
+        protected string[] GetCharOptions()
+        {
+            List<string> sets = new List<string>(SettingsManager.HumanCustomSettings.Costume1Sets.GetSetNames());
+            sets.AddRange(SettingsManager.HumanCustomSettings.CustomSets.GetSetNames());
+            return sets.ToArray();
+        }
+
+        protected string[] GetCharIcons(string[] options)
+        {
+            List<string> icons = new List<string>();
+            List<string> sets = new List<string>(SettingsManager.HumanCustomSettings.Costume1Sets.GetSetNames());
+            foreach (string option in options)
+            {
+                if (sets.Contains(option))
+                    icons.Add(ResourcePaths.Characters + "/Human/Previews/Preset" + option);
+                else
+                    icons.Add(ResourcePaths.Characters + "/Human/Previews/PresetNone");
+            }
+            return icons.ToArray();
+        }
+
+        protected string[] GetSpecialIcons(string loadout, string[] options)
+        {
+            List<string> icons = new List<string>();
+            foreach (string option in options)
+                icons.Add(ResourcePaths.UI + "/Icons/Specials/" + HumanSpecials.GetSpecialIcon(loadout, option));
+            return icons.ToArray();
         }
     }
 }

@@ -25,6 +25,7 @@
         public static string HookRetractLeft = "HookRetractLeft";
         public static string HookRetractRight = "HookRetractRight";
         public static string HookImpact = "HookImpact";
+        public static string HookImpactLoud = "HookImpactLoud";
         public static string GasStart = "GasStart";
         public static string GasLoop = "GasLoop";
         public static string GasEnd = "GasEnd";

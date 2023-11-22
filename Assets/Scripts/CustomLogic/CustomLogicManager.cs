@@ -178,17 +178,17 @@ namespace CustomLogic
         private void FixedUpdate()
         {
             if (Evaluator != null)
-            {
                 Evaluator.OnTick();
-                if (Cutscene || ManualCamera)
-                    CameraPosition += CameraVelocity * Time.fixedDeltaTime;
-            }
         }
 
         private void Update()
         {
             if (Evaluator != null)
+            {
                 Evaluator.OnFrame();
+                if (Cutscene || ManualCamera)
+                    CameraPosition += CameraVelocity * Time.deltaTime;
+            }
             if (SkipCutscene && !Cutscene)
                 SkipCutscene = false;
             if (Cutscene && (SettingsManager.GeneralSettings.SkipCutscenes.Value || 

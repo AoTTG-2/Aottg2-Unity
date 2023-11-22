@@ -199,12 +199,12 @@ namespace Controllers
             return;
             if (_humanInput.HookLeft.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 800);
+                _inGameMenu.ShowKillFeed("test", "test", 800, "");
                 _inGameMenu.ShowKillScore(800);
             }
             if (_humanInput.HookRight.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 3000);
+                _inGameMenu.ShowKillFeed("test", "test", 3000, "");
                 _inGameMenu.ShowKillScore(3000);
             }
         }

@@ -68,6 +68,8 @@ namespace UI
                         name = "Clear KDR on restart";
                     else if (name == "ThunderspearPVP")
                         name = "Thunderspear PVP";
+                    else if (name == "APGPVP")
+                        name = "APG PVP";
                     else if (name == "AllowAHSS")
                         name = "Allow ahss";
                     else if (name == "AllowAPG")

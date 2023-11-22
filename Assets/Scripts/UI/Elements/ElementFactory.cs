@@ -301,12 +301,13 @@ namespace UI
             return colorSetting;
         }
 
-        public static GameObject CreateButtonSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
-            string tooltip = "", float elementWidth = 0f, float elementHeight = 0f, UnityAction onClick = null)
+        public static GameObject CreateIconPickSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
+            string[] options, string[] icons, IconPickPopup popup, string tooltip = "", float elementWidth = 0f, float elementHeight = 0f, 
+            UnityAction onSelect = null)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/ButtonSetting");
-            ButtonSettingElement element = buttonSetting.AddComponent<ButtonSettingElement>();
-            element.Setup(setting, style, title, tooltip, elementWidth, elementHeight, onClick);
+            var element = buttonSetting.AddComponent<IconPickSettingElement>();
+            element.Setup(setting, style, title, options, icons, popup, tooltip, elementWidth, elementHeight, onSelect);
             return buttonSetting;
         }
 

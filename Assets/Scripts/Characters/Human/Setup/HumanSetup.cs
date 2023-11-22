@@ -65,11 +65,27 @@ namespace Characters
         public bool IsDeadBody;
         public bool Deleted = false;
 
+        // info
+        public static int EyeCount;
+        public static int FaceCount;
+        public static int GlassCount;
+        public static int CostumeMCount;
+        public static int CostumeFCount;
+        public static int HairMCount;
+        public static int HairFCount;
+
         public static void Init()
         {
             JSONNode costume = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.Info, "CostumeInfo"));
             CostumeInfo = costume["Costume"];
             HairInfo = costume["Hair"];
+            EyeCount = costume["EyeCount"].AsInt;
+            FaceCount = costume["FaceCount"].AsInt;
+            GlassCount = costume["GlassCount"].AsInt;
+            CostumeMCount = CostumeInfo["Male"].Count;
+            CostumeFCount = CostumeInfo["Female"].Count;
+            HairMCount = HairInfo["Male"].Count;
+            HairFCount = HairInfo["Female"].Count;
             HumanSetupMaterials.Init();
         }
 

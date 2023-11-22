@@ -9,6 +9,7 @@ namespace Characters
     {
         protected override float ActiveTime => 2f;
         protected float Range = 200f;
+        protected override bool GroundedOnly => false;
 
         public DanceSpecial(BaseCharacter owner): base(owner)
         {

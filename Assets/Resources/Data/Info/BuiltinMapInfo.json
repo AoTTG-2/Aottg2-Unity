@@ -38,7 +38,7 @@
 		},
 		{
 			"Name": "PVP",
-			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "AHSS PVP", "None"],
+			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
 			"Maps": [
 				{
 					"Category": "General",
@@ -227,6 +227,19 @@
 				"AllowPlayerTitans": false,
 				"AllowShifterSpecials": false,
 				"AllowStock": false
+			}
+		},
+		{
+			"Name": "APG PVP",
+			"MiscSettings": {
+				"PVP": 1,
+				"AllowThunderspears": false,
+				"AllowBlades": false,
+				"AllowAHSS": false,
+				"AllowPlayerTitans": false,
+				"AllowShifterSpecials": false,
+				"AllowStock": false,
+				"APGPVP": true
 			}
 		},
 		{

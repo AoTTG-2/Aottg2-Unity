@@ -15,6 +15,7 @@ namespace UI
         public ConfirmPopup ConfirmPopup;
         public ExternalLinkPopup ExternalLinkPopup;
         public ColorPickPopup ColorPickPopup;
+        public IconPickPopup IconPickPopup;
         public Vector3Popup Vector3Popup;
         public ExportPopup ExportPopup;
         public ImportPopup ImportPopup;
@@ -62,6 +63,7 @@ namespace UI
             KeybindPopup = ElementFactory.CreateDefaultPopup<KeybindPopup>(transform).GetComponent<KeybindPopup>();
             SetNamePopup = ElementFactory.CreateDefaultPopup<SetNamePopup>(transform).GetComponent<SetNamePopup>();
             SelectListPopup = ElementFactory.CreateDefaultPopup<SelectListPopup>(transform).GetComponent<SelectListPopup>();
+            IconPickPopup = ElementFactory.CreateDefaultPopup<IconPickPopup>(transform).GetComponent<IconPickPopup>();
             _popups.Add(TooltipPopup);
             _popups.Add(MessagePopup);
             _popups.Add(ConfirmPopup);
@@ -74,6 +76,7 @@ namespace UI
             _popups.Add(KeybindPopup);
             _popups.Add(SetNamePopup);
             _popups.Add(SelectListPopup);
+            _popups.Add(IconPickPopup);
         }
 
         protected virtual void HideAllPopups()

@@ -37,6 +37,11 @@ namespace Characters
             return _activeHook != null && _activeHook.State != HookState.Disabled;
         }
 
+        public HookState GetHookState()
+        {
+            return _activeHook.State;
+        }
+
         public Vector3 GetHookPosition()
         {
             if (_activeHook != null)

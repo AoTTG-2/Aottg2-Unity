@@ -50,10 +50,6 @@ namespace Characters
         {
         }
 
-        protected virtual void UpdateCustomClient()
-        {
-        }
-
         protected virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
@@ -82,11 +78,11 @@ namespace Characters
         {
             if (!Disabled && !_photonView.IsMine)
             {
+                _rigidbody.velocity = Vector3.zero;
                 _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                 _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
                 if (_syncVelocity)
-                    _rigidbody.velocity = _correctVelocity;
-                UpdateCustomClient();
+                    _correctPosition += _correctVelocity * Time.deltaTime;
             }
         }
 

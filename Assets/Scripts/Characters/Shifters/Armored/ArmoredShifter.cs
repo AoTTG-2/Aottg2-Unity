@@ -77,5 +77,10 @@ namespace Characters
             base.LateUpdate();
             transform.Find("Amarture_VER2").localScale = Vector3.one * 15f;
         }
+
+        public override Transform GetCameraAnchor()
+        {
+            return transform.Find("Anchor");
+        }
     }
 }

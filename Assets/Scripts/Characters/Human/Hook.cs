@@ -154,7 +154,12 @@ namespace Characters
             _currentLiveTime = 0f;
             _renderer.startWidth = _renderer.endWidth = 0.1f;
             if (SettingsManager.SoundSettings.HookImpactEffect.Value)
-                _owner.PlaySoundRPC(HumanSounds.HookImpact, Util.CreateLocalPhotonInfo());
+            {
+                if (HookCharacter != null && HookCharacter is Human)
+                    _owner.PlaySoundRPC(HumanSounds.HookImpactLoud, Util.CreateLocalPhotonInfo());
+                else
+                    _owner.PlaySoundRPC(HumanSounds.HookImpact, Util.CreateLocalPhotonInfo());
+            }
         }
 
         public void SetHookState(HookState state)
@@ -294,14 +299,20 @@ namespace Characters
                         }
                         else
                         {
-                            MapObject mapObject = MapLoader.GoToMapObject[obj.transform.root.gameObject];
-                            if (mapObject.ScriptObject.Static)
-                                SetHooked(finalHit.point);
+                            var root = obj.transform.root.gameObject;
+                            if (MapLoader.GoToMapObject.ContainsKey(root))
+                            {
+                                MapObject mapObject = MapLoader.GoToMapObject[obj.transform.root.gameObject];
+                                if (mapObject.ScriptObject.Static)
+                                    SetHooked(finalHit.point);
+                                else
+                                    SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
+                                var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
+                                if (collisionHandler != null)
+                                    collisionHandler.GetHooked(_owner, finalHit.point, _left);
+                            }
                             else
-                                SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
-                            var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
-                            if (collisionHandler != null)
-                                collisionHandler.GetHooked(_owner, finalHit.point, _left);
+                                SetHooked(finalHit.point);
                             return;
                         }
                     }

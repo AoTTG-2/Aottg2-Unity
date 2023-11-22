@@ -8,6 +8,7 @@ namespace Characters
     class BaseEmoteSpecial : ExtendedUseable
     {
         protected Human _human;
+        protected virtual bool GroundedOnly => true;
 
         public BaseEmoteSpecial(BaseCharacter owner): base(owner)
         {
@@ -16,7 +17,7 @@ namespace Characters
 
         public override bool CanUse()
         {
-            return base.CanUse() && _human.Grounded && _human.CanEmote();
+            return base.CanUse() && (!GroundedOnly || _human.Grounded) && _human.CanEmote();
         }
 
         protected bool InSpecial()

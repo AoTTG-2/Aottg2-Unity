@@ -82,6 +82,7 @@ namespace UI
             misc.AllowShifterSpecials.Value = true;
             misc.AllowShifters.Value = false;
             misc.Horses.Value = false;
+            misc.APGPVP.Value = false;
         }
     }
 }

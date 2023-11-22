@@ -131,14 +131,17 @@ namespace GameManagers
             if (!PhotonNetwork.IsMasterClient)
                 return;
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
-            RPCManager.PhotonView.RPC("PreRestartGameRPC", RpcTarget.All, new object[0]);
+            RPCManager.PhotonView.RPC("PreRestartGameRPC", RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
             Time.timeScale = 1f;
             manager.StartCoroutine(manager.FinishRestartGame());
         }
 
         private IEnumerator FinishRestartGame()
         {
-            yield return new WaitForSeconds(0.2f);
+            if (SettingsManager.UISettings.FadeLoadscreen.Value)
+                yield return new WaitForSeconds(0.2f);
+            else
+                yield return new WaitForEndOfFrame();
             PhotonNetwork.DestroyAll();
             RPCManager.PhotonView.RPC("RestartGameRPC", RpcTarget.All, new object[0]);
         }
@@ -153,13 +156,13 @@ namespace GameManagers
             SceneLoader.LoadScene(SceneName.InGame);
         }
 
-        public static void OnPreRestartGameRPC(PhotonMessageInfo info)
+        public static void OnPreRestartGameRPC(bool immediate, PhotonMessageInfo info)
         {
             if (!info.Sender.IsMasterClient)
                 return;
             ((InGameManager)SceneLoader.CurrentGameManager).Restarting = true;
             UIManager.CurrentMenu.gameObject.SetActive(false);
-            UIManager.LoadingMenu.Show();
+            UIManager.LoadingMenu.Show(immediate);
         }
 
         public static void LeaveRoom()

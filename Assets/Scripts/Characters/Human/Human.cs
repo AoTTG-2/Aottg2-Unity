@@ -9,6 +9,7 @@ using Map;
 using Photon.Pun;
 using Photon.Realtime;
 using Settings;
+using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,7 +76,6 @@ namespace Characters
         private bool _needLean;
         private bool _almostSingleHook;
         private bool _leanLeft;
-        private bool _interpolate;
         private bool _isTrigger;
         private Vector3 _lastPosition;
         private Vector3 _lastVelocity;
@@ -615,9 +615,9 @@ namespace Characters
         {
             _inGameManager.Humans.Add(this);
             base.Start();
+            SetInterpolation(true);
             if (IsMine())
             {
-                SetInterpolation(true);
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
@@ -635,7 +635,6 @@ namespace Characters
             base.OnPlayerEnteredRoom(player);
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetInterpolationRPC", player, new object[] { _interpolate });
                 Cache.PhotonView.RPC("SetTriggerColliderRPC", player, new object[] { _isTrigger });
                 if (MountState == HumanMountState.MapObject && _lastMountMessage != null)
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
@@ -738,8 +737,6 @@ namespace Characters
                                 PlaySound(HumanSounds.NapeHit);
                         }
                         _lastNapeHitTimes[titan] = Time.time;
-                        if (type == "APG" && damage < titan.CurrentHealth)
-                            ((APGWeapon)Weapon).SetBigShot(true);
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
                     {
@@ -1006,7 +1003,7 @@ namespace Characters
                                 _targetRotation = GetTargetRotation();
                                 HasDirection = true;
                                 ToggleSparks(true);
-                                if (!IsPlayingSound(HumanSounds.CrashLand))
+                                if (!IsPlayingSound(HumanSounds.CrashLand) && SettingsManager.SoundSettings.CrashLandEffect.Value)
                                     PlaySound(HumanSounds.CrashLand);
                             }
                         }
@@ -1066,12 +1063,12 @@ namespace Characters
                         float distance = Vector3.Distance(Horse.Cache.Transform.position, Cache.Transform.position);
                         force += (Horse.Cache.Transform.position - Cache.Transform.position).normalized * 0.6f * Gravity.magnitude * distance / 12f;
                     }
-                    if (!IsStock() || !pivot)
+                    if (!IsStock(pivot) && !pivot)
                     {
                         _currentVelocity += force;
                         Cache.Rigidbody.velocity = _currentVelocity;
-                        Cache.Rigidbody.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.Euler(0f, TargetAngle, 0f), Time.deltaTime * 10f);
                     }
+                    Cache.Rigidbody.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.Euler(0f, TargetAngle, 0f), Time.deltaTime * 10f);
                 }
                 else
                 {
@@ -1253,8 +1250,13 @@ namespace Characters
                 {
                     if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2))
                     {
-                        _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
-                        Cache.Rigidbody.velocity = _currentVelocity;
+                        bool stockPivot = pivotLeft || pivotRight;
+                        bool isStock = IsStock(stockPivot);
+                        if (isStock || !stockPivot)
+                        {
+                            _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
+                            Cache.Rigidbody.velocity = _currentVelocity;
+                        }
                         if (!SettingsManager.InGameCurrent.Misc.AllowStock.Value)
                         {
                             _currentVelocity = _currentVelocity.normalized * Mathf.Min(_currentVelocity.magnitude, 20f);
@@ -1287,22 +1289,24 @@ namespace Characters
                 }
                 else
                     _cancelGasDisable = false;
+                var windEmission = HumanCache.Wind.emission;
+                var windMain = HumanCache.Wind.main;
                 if (WindWeatherEffect.WindEnabled)
                 {
-                    if (!HumanCache.Wind.emission.enabled)
-                        HumanCache.Wind.enableEmission = true;
-                    HumanCache.Wind.startSpeed = 100f;
+                    if (!windEmission.enabled)
+                        windEmission.enabled = true;
+                    windMain.startSpeedMultiplier = 100f; 
                     HumanCache.WindTransform.LookAt(Cache.Transform.position + WindWeatherEffect.WindDirection);
                 }
                 else if (_currentVelocity.magnitude > 80f && SettingsManager.GraphicsSettings.WindEffectEnabled.Value)
                 {
-                    if (!HumanCache.Wind.enableEmission)
-                        HumanCache.Wind.enableEmission = true;
-                    HumanCache.Wind.startSpeed = _currentVelocity.magnitude;
+                    if (!windEmission.enabled)
+                        windEmission.enabled = true;
+                    windMain.startSpeedMultiplier = _currentVelocity.magnitude;
                     HumanCache.WindTransform.LookAt(Cache.Transform.position - _currentVelocity);
                 }
-                else if (HumanCache.Wind.enableEmission)
-                    HumanCache.Wind.enableEmission = false;
+                else if (windEmission.enabled)
+                    windEmission.enabled = false;
                 FixedUpdateSetHookedDirection();
                 FixedUpdateBodyLean();
                 FixedUpdateClippingCheck();
@@ -1396,7 +1400,10 @@ namespace Characters
 
         private void FixedUpdatePivot(Vector3 position)
         {
-            float newSpeed = _currentVelocity.magnitude + 0.1f;
+            float addSpeed = 0.1f;
+            if (Grounded)
+                addSpeed = -0.01f;
+            float newSpeed = _currentVelocity.magnitude + addSpeed;
             Vector3 v = position - Cache.Rigidbody.position;
             float reelAxis = GetReelAxis();
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
@@ -1409,9 +1416,9 @@ namespace Characters
             Cache.Rigidbody.velocity = _currentVelocity;
         }
 
-        private bool IsStock()
+        private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && 
+            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot && 
                 (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2));
         }
 
@@ -1796,7 +1803,11 @@ namespace Characters
             }
             else if (humanWeapon == (int)HumanWeapon.APG)
             {
-                var gunInfo = CharacterData.HumanWeaponInfo["APG"];
+                JSONNode gunInfo;
+                if (SettingsManager.InGameCurrent.Misc.APGPVP.Value)
+                    gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
+                else
+                    gunInfo = CharacterData.HumanWeaponInfo["APG"];
                 Weapon = new APGWeapon(this, gunInfo["AmmoTotal"].AsInt, gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
             }
             else if (humanWeapon == (int)HumanWeapon.Thunderspear)
@@ -1916,13 +1927,14 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            HumanCache.Smoke.enableEmission = active;
+            var emission = HumanCache.Smoke.emission;
+            emission.enabled = active;
         }
 
         protected void ToggleSparks(bool toggle)
         {
             ToggleSound(HumanSounds.Slide, toggle);
-            if (toggle != HumanCache.Sparks.enableEmission)
+            if (toggle != HumanCache.Sparks.emission.enabled)
                 Cache.PhotonView.RPC("ToggleSparksRPC", RpcTarget.All, new object[] { toggle });
         }
 
@@ -1931,7 +1943,8 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            HumanCache.Sparks.enableEmission = toggle;
+            var emission = HumanCache.Sparks.emission;
+            emission.enabled = toggle;
         }
 
         public void SetThunderspears(bool hasLeft, bool hasRight)
@@ -2092,34 +2105,12 @@ namespace Characters
             ((InGameCamera)SceneLoader.CurrentCamera).StartShake();
         }
 
-        private void SetInterpolation(bool interpolate)
+        public void SetInterpolation(bool interpolate)
         {
-            if (IsMine())
-            {
-                _interpolate = interpolate;
-                Cache.PhotonView.RPC("SetInterpolationRPC", RpcTarget.All, new object[] { interpolate });
-            }
-        }
-
-        [PunRPC]
-        public void SetInterpolationRPC(bool interpolate, PhotonMessageInfo info)
-        {
-            if (info.Sender != Cache.PhotonView.Owner)
-                return;
-            if (IsMine())
-            {
-                if (interpolate && SettingsManager.GraphicsSettings.InterpolationEnabled.Value)
-                    Cache.Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-                else
-                    Cache.Rigidbody.interpolation = RigidbodyInterpolation.None;
-            }
+            if (IsMine() && interpolate && SettingsManager.GraphicsSettings.InterpolationEnabled.Value)
+                Cache.Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
             else
-            {
-                if (interpolate)
-                    Cache.Rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
-                else
-                    Cache.Rigidbody.interpolation = RigidbodyInterpolation.None;
-            }
+                Cache.Rigidbody.interpolation = RigidbodyInterpolation.None;
         }
 
         private void SetTriggerCollider(bool trigger)
@@ -2473,12 +2464,13 @@ namespace Characters
             base.OnDestroy();
             if (HumanCache !=  null)
             {
-                if (HumanCache.AHSSHit != null)
+                if (HumanCache.AHSSHit != null && HumanCache.AHSSHit.gameObject != null)
                     Destroy(HumanCache.AHSSHit.gameObject);
-                if (HumanCache.APGHit != null)
+                if (HumanCache.APGHit != null && HumanCache.APGHit.gameObject != null)
                     Destroy(HumanCache.APGHit.gameObject);
             }
-            Setup.DeleteDie();
+            if (Setup != null)
+                Setup.DeleteDie();
         }
 
         protected override List<Renderer> GetFPSDisabledRenderers()
@@ -2495,6 +2487,8 @@ namespace Characters
                 AddRendererIfExists(renderers, Setup._part_belt);
                 AddRendererIfExists(renderers, Setup._part_gas_l);
                 AddRendererIfExists(renderers, Setup._part_gas_r);
+                AddRendererIfExists(renderers, Setup._part_chest_1);
+                AddRendererIfExists(renderers, Setup._part_chest_2);
             }
             return renderers;
         }
@@ -2504,9 +2498,6 @@ namespace Characters
             List<SkinnedMeshRenderer> renderers = new List<SkinnedMeshRenderer>();
             AddSkinnedRendererIfExists(renderers, Setup._part_upper_body);
             AddSkinnedRendererIfExists(renderers, Setup._part_chest);
-            AddSkinnedRendererIfExists(renderers, Setup._part_chest_1);
-            AddSkinnedRendererIfExists(renderers, Setup._part_chest_2);
-            AddSkinnedRendererIfExists(renderers, Setup._part_chest_3);
             AddSkinnedRendererIfExists(renderers, Setup._part_brand_1);
             AddSkinnedRendererIfExists(renderers, Setup._part_brand_2);
             AddSkinnedRendererIfExists(renderers, Setup._part_brand_3);
@@ -2522,6 +2513,7 @@ namespace Characters
             List<SkinnedMeshRenderer> renderers = new List<SkinnedMeshRenderer>();
             AddSkinnedRendererIfExists(renderers, Setup._part_hair_1);
             AddSkinnedRendererIfExists(renderers, Setup._part_cape);
+            AddSkinnedRendererIfExists(renderers, Setup._part_chest_3);
             return renderers;
         }
 

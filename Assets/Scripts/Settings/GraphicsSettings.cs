@@ -12,6 +12,7 @@ namespace Settings
         public IntSetting FullScreenMode = new IntSetting((int)FullScreenLevel.Borderless);
         public IntSetting ScreenResolution = new IntSetting(0);
         public IntSetting FPSCap = new IntSetting(144, minValue: 0);
+        public IntSetting MenuFPSCap = new IntSetting(60, minValue: 0);
         public BoolSetting VSync = new BoolSetting(false);
         public BoolSetting InterpolationEnabled = new BoolSetting(true);
         public BoolSetting ShowFPS = new BoolSetting(false);
@@ -27,7 +28,6 @@ namespace Settings
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
         public BoolSetting MipmapEnabled = new BoolSetting(true);
-        public BoolSetting TempWeatherBackground = new BoolSetting(true);
 
         public override void Apply()
         {
@@ -52,7 +52,10 @@ namespace Settings
                 QualitySettings.shadowCascades = 4;
             }
             QualitySettings.vSyncCount = Convert.ToInt32(VSync.Value);
-            Application.targetFrameRate = FPSCap.Value > 0 ? FPSCap.Value : -1;
+            if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
+                Application.targetFrameRate = FPSCap.Value > 0 ? FPSCap.Value : -1;
+            else
+                Application.targetFrameRate = MenuFPSCap.Value > 0 ? MenuFPSCap.Value : -1;
             QualitySettings.globalTextureMipmapLimit = 3 - TextureQuality.Value;
             QualitySettings.antiAliasing = AntiAliasing.Value == 0 ? 0 : (int)Mathf.Pow(2, AntiAliasing.Value);
             QualitySettings.anisotropicFiltering = (AnisotropicFiltering)AnisotropicFiltering.Value;

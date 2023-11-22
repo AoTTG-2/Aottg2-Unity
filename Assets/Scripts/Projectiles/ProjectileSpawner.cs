@@ -14,10 +14,7 @@ namespace Projectiles
         {
             GameObject go = PhotonNetwork.Instantiate(ResourcePaths.Projectiles + "/" + name, position, rotation, 0);
             BaseProjectile projectile;
-            if (name == ProjectilePrefabs.Thunderspear)
-                projectile = go.GetComponent<ThunderspearProjectile>();
-            else
-                projectile = go.GetComponent<BaseProjectile>();
+            projectile = go.GetComponent<BaseProjectile>();
             projectile.Setup(liveTime, velocity, gravity, charViewId, team, settings);
             return projectile;
         }

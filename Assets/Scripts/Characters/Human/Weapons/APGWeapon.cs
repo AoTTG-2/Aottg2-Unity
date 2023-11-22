@@ -1,5 +1,6 @@
 ﻿using Effects;
 using GameManagers;
+using Settings;
 using UI;
 using UnityEngine;
 using Utility;
@@ -9,27 +10,8 @@ namespace Characters
 {
     class APGWeapon : AmmoWeapon
     {
-        private bool _bigShot;
-        private float _bigShotTimeLeft = 0f;
-
         public APGWeapon(BaseCharacter owner, int ammo, int ammoPerRound, float cooldown) : base(owner, ammo, ammoPerRound, cooldown)
         {
-        }
-
-        public override void OnFixedUpdate()
-        {
-            _bigShotTimeLeft -= Time.fixedDeltaTime;
-            if (_bigShotTimeLeft <= 0f)
-                _bigShot = false;
-        }
-
-        public void SetBigShot(bool shot)
-        {
-            _bigShot = shot;
-            if (_bigShot)
-                _bigShotTimeLeft = CharacterData.HumanWeaponInfo["APG"]["Radius2Time"].AsFloat;
-            else
-                _bigShotTimeLeft = 0f;
         }
 
         protected override void Activate()
@@ -66,14 +48,24 @@ namespace Characters
             human.HumanCache.APGHit.transform.position = start;
             human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];
+            if (SettingsManager.InGameCurrent.Misc.APGPVP.Value)
+                gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
             var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
-            if (_bigShot)
-            {
-                capsule.radius = gunInfo["Radius2"].AsFloat;
-                SetBigShot(false);
-            }
+            capsule.radius = gunInfo["Radius"].AsFloat;
+            float range1Mult = gunInfo["Range1Multiplier"].AsFloat;
+            float range2Mult = gunInfo["Range2Multiplier"].AsFloat;
+            float range1Const = gunInfo["Range1Constant"].AsFloat;
+            float range2Const = gunInfo["Range2Constant"].AsFloat;
+            float minRange = gunInfo["MinRange"].AsFloat;
+            float maxRange = gunInfo["MaxRange"].AsFloat;
+            float speed = human.Cache.Rigidbody.velocity.magnitude;
+            float range;
+            if (speed <= gunInfo["Range2Speed"].AsFloat)
+                range = range1Const + range1Mult * speed;
             else
-                capsule.radius = gunInfo["Radius1"].AsFloat;
+                range = range2Const + range2Mult * speed;
+            capsule.height = Mathf.Clamp(range, minRange, maxRange);
+            capsule.center = new Vector3(0f, 0f, capsule.height * 0.5f + 0.5f);
             float height = capsule.height * 1.2f;
             float radius = capsule.radius * 4f;
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);

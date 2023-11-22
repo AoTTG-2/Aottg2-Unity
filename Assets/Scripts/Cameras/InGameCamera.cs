@@ -36,6 +36,7 @@ namespace Cameras
         private bool _shakeFlip;
         private float _shakeTimeLeft;
         private float _currentShakeDistance;
+        private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
 
         public void ApplyGraphicsSettings()
         {
@@ -151,7 +152,8 @@ namespace Cameras
                     }
                     else
                         UpdateSpectate();
-                    UpdateObstacles();
+                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human)
+                        UpdateObstacles();
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
                 }
@@ -248,16 +250,13 @@ namespace Cameras
                 float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
                 float sumY = inputY + angleY;
                 bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
-                bool rotateDown = inputY >=0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
+                bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
                 if (rotateUp && rotateDown)
                     Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
+            Cache.Transform.position += Cache.Transform.right * (SettingsManager.GeneralSettings.CameraSide.Value - 1f);
             UpdateShake();
-            if (_cameraDistance < 0.65f)
-            {
-                // Cache.Transform.position += Cache.Transform.right * Mathf.Max(2f * (0.6f - _cameraDistance), 0.65f);
-            }
         }
 
         private void UpdateSpectate()
@@ -301,7 +300,7 @@ namespace Cameras
             Vector3 start = _follow.GetCameraAnchor().position;
             Vector3 direction = (start - Cache.Transform.position).normalized;
             Vector3 end = start - direction * DistanceMultiplier * _anchorDistance;
-            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectMapObjects);
+            LayerMask mask = _clipMask;
             RaycastHit hit;
             if (Physics.Linecast(start, end, out hit, mask))
                 Cache.Transform.position = hit.point;

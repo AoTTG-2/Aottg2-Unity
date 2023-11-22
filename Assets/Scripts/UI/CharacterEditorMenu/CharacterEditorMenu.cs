@@ -23,16 +23,16 @@ namespace UI
         {
             base.Setup();
             Character = ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).Character;
-            RebuildPanels();
+            RebuildPanels(true);
             ResetCharacter();
         }
 
         public bool IsPopupActive()
         {
-            return SelectListPopup.IsActive;
+            return SelectListPopup.IsActive || IconPickPopup.IsActive;
         }
 
-        public void RebuildPanels()
+        public void RebuildPanels(bool costumePopup)
         {
             if (_costumePanel != null)
             {

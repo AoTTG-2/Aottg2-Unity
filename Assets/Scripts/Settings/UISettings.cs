@@ -35,7 +35,8 @@ namespace Settings
         public IntSetting ShowHealthbars = new IntSetting(0);
         public BoolSetting HighVisibilityNames = new BoolSetting(false);
         public BoolSetting FadeMainMenu = new BoolSetting(false);
-        public IntSetting ChatWidth = new IntSetting(320, minValue: 50, maxValue: 1000);
+        public BoolSetting FadeLoadscreen = new BoolSetting(true);
+        public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
 

@@ -7,6 +7,7 @@
         public FloatSetting EndlessRespawnTime = new FloatSetting(5f, minValue: 1f);
         public FloatSetting AllowSpawnTime = new FloatSetting(60f, minValue: 0f);
         public BoolSetting ThunderspearPVP = new BoolSetting(false);
+        public BoolSetting APGPVP = new BoolSetting(false);
         public BoolSetting AllowBlades = new BoolSetting(true);
         public BoolSetting AllowAHSS = new BoolSetting(true);
         public BoolSetting AllowAPG = new BoolSetting(true);

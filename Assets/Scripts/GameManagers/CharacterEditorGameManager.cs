@@ -44,8 +44,102 @@ namespace GameManagers
             if (!Directory.Exists(PreviewFolderPath))
                 Directory.CreateDirectory(PreviewFolderPath);
             platform.SetActive(false);
+            StartCoroutine(GeneratePreviewsCoroutine());
+        }
+
+        private IEnumerator GeneratePreviewsCoroutine()
+        {
             var set = new HumanCustomSet();
-            // File.WriteAllBytes(SnapshotPath + "/" + fileName, texture.EncodeToPNG());
+            set.Hair.Value = "HairM8";
+            set.Costume.Value = 3;
+            for (int i = 0; i < HumanSetup.EyeCount; i++)
+            {
+                set.Eye.Value = i;
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(870f, 500f, 172f, 172f, "Eye" + i.ToString());
+            }
+            set.Eye.Value = 0;
+            for (int i = -1; i < HumanSetup.FaceCount; i++)
+            {
+                if (i == -1)
+                    set.Face.Value = "FaceNone";
+                else
+                    set.Face.Value = "Face" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(870f, 470f, 172f, 172f, set.Face.Value);
+            }
+            set.Face.Value = "FaceNone";
+            for (int i = -1; i < HumanSetup.GlassCount; i++)
+            {
+                if (i == -1)
+                    set.Glass.Value = "GlassNone";
+                else
+                    set.Glass.Value = "Glass" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(870f, 500f, 172f, 172f, set.Glass.Value);
+            }
+            set.Glass.Value = "GlassNone";
+            for (int i = 0; i < HumanSetup.HairMCount; i++)
+            {
+                set.Hair.Value = "HairM" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(816f, 510f, 280f, 280f, set.Hair.Value);
+            }
+            for (int i = 0; i < HumanSetup.HairFCount; i++)
+            {
+                set.Hair.Value = "HairF" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                Screenshot(816f, 510f, 280f, 280f, set.Hair.Value);
+            }
+            set.Hair.Value = "HairM8";
+            for (int i = 0; i < HumanSetup.CostumeMCount; i++)
+            {
+                set.Costume.Value = i;
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(826f, 250f, 260f, 260f, "CostumeM" + i.ToString());
+            }
+            set.Sex.Value = 1;
+            set.Hair.Value = "HairF7";
+            for (int i = 0; i < HumanSetup.CostumeFCount; i++)
+            {
+                set.Costume.Value = i;
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(826f, 250f, 260f, 260f, "CostumeF" + i.ToString());
+            }
+            foreach (HumanCustomSet preset in SettingsManager.HumanCustomSettings.Costume1Sets.GetSets().GetItems())
+            {
+                Character.Setup.Load(preset, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.Name.Value);
+            }
+            Screenshot(450f, 360f, 128f, 128f, "PresetNone");
+        }
+
+        private void Screenshot(float x, float y, float w, float h, string file)
+        {
+            Texture2D texture = new Texture2D((int)w, (int)h, TextureFormat.RGB24, false);
+            try
+            {
+                texture.SetPixel(0, 0, Color.white);
+                texture.ReadPixels(new Rect(x, y, w, h), 0, 0);
+            }
+            catch
+            {
+                texture = new Texture2D(1, 1);
+                texture.SetPixel(0, 0, Color.white);
+            }
+            texture.Apply();
+            TextureScaler.ScaleBlocking(texture, 128, 128);
+            File.WriteAllBytes(PreviewFolderPath + "/" + file + ".png", texture.EncodeToPNG());
         }
     }
 }

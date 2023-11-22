@@ -56,7 +56,10 @@ namespace UI
             if (optionsHeight > maxScrollHeight)
                 optionsHeight = maxScrollHeight;
             else
+            {
+                _optionsPanel.GetComponent<ScrollRect>().verticalScrollbar = null;
                 _optionsPanel.transform.Find("Scrollbar").gameObject.SetActive(false);
+            }
             _scrollBar = _optionsPanel.transform.Find("Scrollbar").GetComponent<Scrollbar>();
             _scrollBar.colors = UIManager.GetThemeColorBlock(style.ThemePanel, "DefaultSetting", "DropdownScrollbar");
             _scrollBar.GetComponent<Image>().color = UIManager.GetThemeColor(style.ThemePanel, "DefaultSetting", "DropdownScrollbarBackgroundColor");

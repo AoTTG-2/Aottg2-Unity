@@ -18,10 +18,6 @@ namespace ApplicationManagers
         static FullscreenHandler _instance;
         static Resolution _resolution;
 
-        // windows minimize functions
-        [DllImport("user32.dll", EntryPoint = "GetActiveWindow")]
-        private static extern int GetActiveWindow();
-        [DllImport("user32.dll")]
         static extern bool ShowWindow(int hWnd, int nCmdShow);
 
         public static void Init()
@@ -100,20 +96,6 @@ namespace ApplicationManagers
         public void OnApplicationFocus(bool hasFocus)
         {
             CursorManager.RefreshCursorLock();
-            return;
-            if (!Supported())
-                return;
-            if (SettingsManager.GraphicsSettings.FullScreenMode.Value == (int)FullScreenMode.ExclusiveFullScreen)
-            {
-                if (hasFocus)
-                    SetFullscreen(FullScreenLevel.Exclusive);
-                else
-                {
-                    SetFullscreen(FullScreenLevel.Windowed);
-                    int handle = GetActiveWindow();
-                    ShowWindow(handle, 2);
-                }
-            }
         }
 
         static bool IsWindowed()

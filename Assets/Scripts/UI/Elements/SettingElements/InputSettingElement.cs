@@ -162,7 +162,9 @@ namespace UI
             else if (_settingType == SettingType.Int)
                 _inputField.text = ((IntSetting)_setting).Value.ToString();
             else if (_settingType == SettingType.String)
+            {
                 _inputField.text = ((StringSetting)_setting).Value;
+            }
             _inputField.transform.Find("Text").GetComponent<Text>().text = _inputField.text;
         }
 
@@ -225,7 +227,6 @@ namespace UI
             base.Append(input);
         }
 
-        /*
         protected override void Append(string input)
         {
             if (Application.platform == RuntimePlatform.OSXPlayer && IsModifier())
@@ -233,7 +234,7 @@ namespace UI
                 if (IsCopy() || IsCut())
                     return;
             }
-            if (multiLine)
+            if (lineType == LineType.MultiLineNewline || lineType == LineType.MultiLineSubmit)
             {
                 if (IsModifier() && IsPaste())
                 {
@@ -253,12 +254,12 @@ namespace UI
                         text = text + input;
                     else
                         text = text.Substring(0, insert) + input + text.Substring(insert, text.Length - insert);
-                    onValueChange.Invoke(text);
+                    onValueChanged.Invoke(text);
                     m_CaretSelectPosition = caretPosition = Math.Min(insert + input.Length, text.Length);
                     return;
                 }
             }
-            if (!multiLine && Application.platform == RuntimePlatform.OSXPlayer && IsModifier() && IsPaste())
+            else if (Application.platform == RuntimePlatform.OSXPlayer && IsModifier() && IsPaste())
             {
                 foreach (char c in GetClipboard())
                     base.Append(c);
@@ -269,11 +270,7 @@ namespace UI
 
         private string GetClipboard()
         {
-            TextEditor editor = new TextEditor();
-            editor.multiline = multiLine;
-            editor.Paste();
-            return editor.content.text;
+            return GUIUtility.systemCopyBuffer;
         }
-        */
     }
 }

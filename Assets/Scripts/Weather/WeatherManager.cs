@@ -172,11 +172,6 @@ namespace Weather
                 _currentSyncWait = SyncDelay;
                 _needSync = false;
             }
-            if (SceneLoader.SceneName == SceneName.InGame && SettingsManager.GraphicsSettings.TempWeatherBackground.Value)
-            {
-                ResourceManager.InstantiateAsset<GameObject>("Weather", "Prefabs/MountainBackground");
-                ResourceManager.InstantiateAsset<GameObject>("Weather", "Prefabs/TreeBackground");
-            }
             _currentLerpWait = LerpDelay;
             _finishedLoading = true;
         }

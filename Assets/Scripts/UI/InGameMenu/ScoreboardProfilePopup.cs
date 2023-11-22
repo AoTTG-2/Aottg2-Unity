@@ -38,7 +38,7 @@ namespace UI
             ElementStyle style = new ElementStyle(titleWidth: 120f, themePanel: ThemePanel, fontSize: 22);
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 25f, TextAnchor.MiddleCenter).transform;
             _items.Add(group.gameObject);
-            ElementFactory.CreateRawImage(group, style, UIManager.GetProfileIcon("Icons/Profile/" + _profile.ProfileIcon.Value), 256, 256);
+            ElementFactory.CreateRawImage(group, style, "Icons/Profile/" + UIManager.GetProfileIcon(_profile.ProfileIcon.Value), 256, 256);
             _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Name") + ": </b>" + _profile.Name.Value.HexColor(),
                 alignment: TextAnchor.MiddleLeft));
             _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Guild") + ": </b>" + _profile.Guild.Value.HexColor(),

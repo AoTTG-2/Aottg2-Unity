@@ -27,7 +27,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"),
                 elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ThunderspearPVP, UIManager.GetLocale(cat, sub, "ThunderspearPVP"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ThunderspearPVP, UIManager.GetLocale(cat, sub, "ThunderspearPVP"), UIManager.GetLocale(cat, sub, "ThunderspearPVPTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.APGPVP, UIManager.GetLocale(cat, sub, "APGPVP"), UIManager.GetLocale(cat, sub, "APGPVPTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.GunsAirReload, UIManager.GetLocale(cat, sub, "GunsAirReload"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowBlades, UIManager.GetLocale(cat, sub, "AllowBlades"));

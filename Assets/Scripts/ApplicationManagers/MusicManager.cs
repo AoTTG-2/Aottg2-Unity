@@ -29,6 +29,7 @@ namespace ApplicationManagers
             _instance = SingletonFactory.CreateSingleton(_instance);
             EventManager.OnLoadScene += OnLoadScene;
             _instance._audio = _instance.gameObject.AddComponent<AudioSource>();
+            _instance._audio.ignoreListenerVolume = true;
             _musicInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.Info, "MusicInfo"));
         }
 
@@ -216,7 +217,7 @@ namespace ApplicationManagers
 
         private static float GetMusicVolume()
         {
-            return SettingsManager.SoundSettings.Music.Value * 0.5f;
+            return SettingsManager.SoundSettings.Music.Value * 0.4f;
         }
 
         public static string GetCurrentSong()

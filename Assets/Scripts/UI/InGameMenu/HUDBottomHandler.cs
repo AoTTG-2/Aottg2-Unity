@@ -129,6 +129,7 @@ namespace UI
                 _bladeAmmoRight = new List<GameObject>();
                 _bladeAmmoGroupLeft = _hudBottom.transform.Find("BladeAmmoGroupLeft").gameObject;
                 _bladeAmmoGroupRight = _hudBottom.transform.Find("BladeAmmoGroupRight").gameObject;
+                _bladeOut.color = BackgroundVeryLowColor;
             }
             _hudBottom.AddComponent<HUDScaler>();
             ElementFactory.SetAnchor(_hudBottom, TextAnchor.LowerCenter, TextAnchor.LowerCenter, Vector3.up * 10f);

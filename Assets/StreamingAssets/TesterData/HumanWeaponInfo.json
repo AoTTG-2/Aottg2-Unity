@@ -33,15 +33,34 @@
 		"RestrictAngle": 100	
 	},
 	"APG": {
-		"Range": 50,
-		"Radius1": 0.1,
-		"Radius2": 3,
-		"Radius2Time": 1.0,
-		"CD": 0.12,
+		"Range1Multiplier": 0.15,
+		"Range1Constant": -5.0,
+		"Range2Multiplier": 0.5,
+		"Range2Constant": -75.0,
+		"Range2Speed": 200.0,
+		"MinRange": 10.0,
+		"MaxRange": 75.0,
+		"Radius": 0.1,
+		"CD": 0.5,
 		"AmmoRound": 6,
 		"AmmoTotal": 24,
 		"DamageMultiplier": 0.5,
-		"RestrictAngle": 80	
+		"RestrictAngle": 80
+	},
+	"APGPVP": {
+		"Range1Multiplier": 0.0,
+		"Range1Constant": 50.0,
+		"Range2Multiplier": 0.5,
+		"Range2Constant": 30.0,
+		"Range2Speed": 40.0,
+		"MinRange": 10.0,
+		"MaxRange": 150.0,
+		"Radius": 0.1,
+		"CD": 0.5,
+		"AmmoRound": 6,
+		"AmmoTotal": 24,
+		"DamageMultiplier": 0.5,
+		"RestrictAngle": 80
 	},
 	"Hook": {
 		"StunTime": 0.75,

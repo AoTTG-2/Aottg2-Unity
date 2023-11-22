@@ -5,9 +5,10 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract"};
-        public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "BladeThrow" };
-        public static string[] ShifterSpecials = new string[] { "ErenTransform", "AnnieTransform", "ArmoredTransform" };
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb"};
+        public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
+        public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
+        public static string[] ShifterSpecials = new string[] { "Eren", "Annie", "Armored" };
 
         public static List<string> GetSpecialNames(string loadout, bool includeShifters)
         {
@@ -19,15 +20,19 @@ namespace Characters
                 foreach (string special in BladeSpecials)
                     names.Add(special);
             }
-            if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.AHSS)
             {
-                names.Insert(0, "Stock");
+                foreach (string special in AHSSSpecials)
+                    names.Add(special);
             }
             if (includeShifters)
             {
                 foreach (string special in ShifterSpecials)
                     names.Add(special);
             }
+            if (loadout == HumanLoadout.Thunderspears)
+                names.Add("Stock");
+            names.Add("None");
             return names;
         }
 
@@ -47,23 +52,31 @@ namespace Characters
                 return new Spin1Special(owner);
             else if (special == "Spin2")
                 return new Spin2Special(owner);
+            else if (special == "Spin3")
+                return new Spin3Special(owner);
             else if (special == "BladeThrow")
                 return new BladeThrowSpecial(owner);
             else if (special == "Stock")
                 return new StockSpecial(owner);
-            else if (special == "ErenTransform")
+            else if (special == "None")
+                return new NoneSpecial(owner);
+            else if (special == "Supply")
+                return new SupplySpecial(owner);
+            else if (special == "SmokeBomb")
+                return new SmokeBombSpecial(owner);
+            else if (special == "AHSSTwinShot")
+                return new AHSSTwinShot(owner);
+            else if (special == "Eren")
                 return new ShifterTransformSpecial(owner, "Eren");
-            else if (special == "AnnieTransform")
+            else if (special == "Annie")
                 return new ShifterTransformSpecial(owner, "Annie");
-            else if (special == "ArmoredTransform")
+            else if (special == "Armored")
                 return new ShifterTransformSpecial(owner, "Armored");
             return null;
         }
 
         public static string GetSpecialIcon(string loadout, string special)
         {
-            if (special == "ArmoredTransform")
-                special = "ErenTransform";
             if (!GetSpecialNames(loadout, true).Contains(special))
                 return "";
             string icon = special.Replace(" ", "") + "SpecialIcon";

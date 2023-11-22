@@ -178,7 +178,7 @@ namespace UI
             return new Vector3(scale, scale, scale);
         }
 
-        private float GetAnimmationSpeed(float min, float max)
+        protected virtual float GetAnimmationSpeed(float min, float max)
         {
             return (max - min) / AnimationTime;
         }

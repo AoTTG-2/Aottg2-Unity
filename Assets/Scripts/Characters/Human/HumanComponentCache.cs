@@ -45,6 +45,8 @@ namespace Characters
             emission = Sparks.emission;
             emission.enabled = false;
             Wind = Transform.Find("speedFX").GetComponentInChildren<ParticleSystem>();
+            emission = Wind.emission;
+            emission.enabled = false;
             WindTransform = Transform.Find("speedFX");
             HookLeftAnchorDefault = chest.Find("hookRefL1");
             HookRightAnchorDefault = chest.Find("hookRefR1");
@@ -85,8 +87,8 @@ namespace Characters
             capsule.direction = 2;
             capsule.isTrigger = true;
             var ahssInfo = CharacterData.HumanWeaponInfo["APG"];
-            capsule.radius = ahssInfo["Radius1"].AsFloat;
-            capsule.height = ahssInfo["Range"].AsFloat;
+            capsule.radius = ahssInfo["Radius"].AsFloat;
+            capsule.height = 10f;
             capsule.center = new Vector3(0f, 0f, capsule.height * 0.5f + 0.5f);
             APGHit = BaseHitbox.Create(human, obj);
         }

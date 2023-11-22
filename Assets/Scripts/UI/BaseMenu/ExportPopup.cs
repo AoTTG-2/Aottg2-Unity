@@ -14,7 +14,7 @@ namespace UI
         protected override float Height => 590f;
         protected override int VerticalPadding => 20;
         protected override int HorizontalPadding => 20;
-        private InputSettingElement _element;
+        private GameObject _element;
         public StringSetting ExportSetting = new StringSetting(string.Empty);
 
         public override void Setup(BasePanel parent = null)
@@ -22,17 +22,19 @@ namespace UI
             base.Setup(parent);
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Done"), onClick: () => OnButtonClick("Done"));
-            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ExportSetting, string.Empty, elementWidth: 460f, elementHeight: 440f, multiLine: true).
-                GetComponent<InputSettingElement>();
+            
         }
 
         public void Show(string value)
         {
             if (gameObject.activeSelf)
                 return;
+            if (_element != null)
+                Destroy(_element);
             base.Show();
+            ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ExportSetting.Value = value;
-            _element.SyncElement();
+            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ExportSetting, string.Empty, elementWidth: 460f, elementHeight: 440f, multiLine: true);
         }
 
         private void OnButtonClick(string name)

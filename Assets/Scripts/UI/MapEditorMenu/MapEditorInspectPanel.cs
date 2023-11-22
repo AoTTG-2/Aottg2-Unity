@@ -101,9 +101,18 @@ namespace UI
             ElementFactory.CreateInputSetting(group, style, _scaleZ, "Z", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             CreateHorizontalDivider(SinglePanel);
             style = new ElementStyle(fontSize: 18, titleWidth: 160f, spacing: 20f, themePanel: ThemePanel);
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideMode, "Collide Mode",
+            if (_mapObject.ScriptObject.Asset.StartsWith("Geometry"))
+            {
+                ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideMode, "Collide Mode",
                 new string[] { MapObjectCollideMode.Physical, MapObjectCollideMode.Region, MapObjectCollideMode.None },
                 elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
+            }
+            else
+            {
+                ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideMode, "Collide Mode",
+                new string[] { MapObjectCollideMode.Physical, MapObjectCollideMode.None },
+                elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
+            }
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideWith, "Collide With",
                 new string[] { MapObjectCollideWith.Entities, MapObjectCollideWith.Characters, MapObjectCollideWith.Projectiles,
                     MapObjectCollideWith.MapObjects, MapObjectCollideWith.All}, elementHeight: 30f, onDropdownOptionSelect: () => OnChange());

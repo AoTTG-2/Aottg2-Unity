@@ -272,24 +272,24 @@ namespace UI
             _snapshotTimeLeft = 2f;
         }
 
-        public void ShowKillFeed(string killer, string victim, int score)
+        public void ShowKillFeed(string killer, string victim, int score, string weapon)
         {
             if (_killFeedBigPopup.TimeLeft > 0f)
             {
                 ShowKillFeedPushSmall(_killFeedBigPopup.Killer, _killFeedBigPopup.Victim, _killFeedBigPopup.Score, 
-                    _killFeedBigPopup.TimeLeft, 0);
+                    _killFeedBigPopup.Weapon, _killFeedBigPopup.TimeLeft, 0);
             }
-            _killFeedBigPopup.Show(killer, victim, score);
+            _killFeedBigPopup.Show(killer, victim, score, weapon);
         }
 
-        private void ShowKillFeedPushSmall(string killer, string victim, int score, float timeLeft, int index)
+        private void ShowKillFeedPushSmall(string killer, string victim, int score, string weapon, float timeLeft, int index)
         {
             if (index >= _killFeedSmallPopups.Count)
                 return;
             var popup = _killFeedSmallPopups[index];
             if (popup.TimeLeft > 0f)
-                ShowKillFeedPushSmall(popup.Killer, popup.Victim, popup.Score, popup.TimeLeft, index + 1);
-            popup.ShowImmediate(killer, victim, score, timeLeft);
+                ShowKillFeedPushSmall(popup.Killer, popup.Victim, popup.Score, popup.Weapon, popup.TimeLeft, index + 1);
+            popup.ShowImmediate(killer, victim, score, weapon, timeLeft);
         }
 
         public void ShowKillScore(int score)

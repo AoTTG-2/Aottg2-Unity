@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using GameProgress;
+using ApplicationManagers;
+using Utility;
 
 namespace UI
 {
@@ -20,6 +23,8 @@ namespace UI
         public string Killer;
         public string Victim;
         public int Score;
+        public string Weapon;
+        private RawImage _image;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -29,13 +34,16 @@ namespace UI
             _rightLabel = go.transform.Find("RightLabel").GetComponent<Text>();
             _scoreLabel = go.transform.Find("ScoreLabel").GetComponent<Text>();
             _backgroundLabel = go.transform.Find("ScoreLabel/BackgroundLabel").GetComponent<Text>();
+            _image = go.GetComponent<RawImage>();
         }
 
-        public void ShowImmediate(string killer, string victim, int score, float timeLeft)
+        public void ShowImmediate(string killer, string victim, int score, string weapon, float timeLeft)
         {
             Killer = killer;
             Victim = victim;
             Score = score;
+            Weapon = weapon;
+            _image.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, GetWeaponIcon(weapon), true);
             _leftLabel.text = killer;
             _rightLabel.text = victim;
             _scoreLabel.text = score.ToString();
@@ -47,6 +55,17 @@ namespace UI
             IsActive = false;
             TimeLeft = timeLeft;
             ShowImmediate();
+        }
+
+        private string GetWeaponIcon(string weapon)
+        {
+            if (weapon == "AHSS" || weapon == "APG")
+                return "Icons/Game/AHSSIcon";
+            else if (weapon == "Thunderspear")
+                return "Icons/Game/ThunderspearIcon";
+            else if (weapon == "Stun" || weapon == "Eat" || weapon == "Titan")
+                return "Icons/Quests/Skull2Icon";
+            return "Icons/Game/KillFeedIcon";
         }
     }
 }

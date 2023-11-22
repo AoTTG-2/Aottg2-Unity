@@ -14,12 +14,20 @@ namespace Characters
 
         protected override void Update()
         {
-            base.Update();
-            if (!Disabled && !_photonView.IsMine && _human.MountState == HumanMountState.MapObject && _human.MountedTransform != null)
+            if (!Disabled && !_photonView.IsMine)
             {
-                _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);
-                _transform.rotation = Quaternion.Euler(_human.MountedTransform.rotation.eulerAngles + _human.MountedRotationOffset);
                 _rigidbody.velocity = Vector3.zero;
+                if (_human.MountState == HumanMountState.MapObject && _human.MountedTransform != null)
+                {
+                    _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);
+                    _transform.rotation = Quaternion.Euler(_human.MountedTransform.rotation.eulerAngles + _human.MountedRotationOffset);
+                }
+                else
+                {
+                    _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
+                    _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
+                    _correctPosition += _correctVelocity * Time.deltaTime;
+                }
             }
         }
     }

@@ -1,5 +1,7 @@
 ﻿using Settings;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using Utility;
 
 namespace UI
 {
@@ -12,8 +14,10 @@ namespace UI
             ProfileSettings settings = SettingsManager.ProfileSettings;
             ElementStyle style = new ElementStyle(titleWidth: 100f, themePanel: ThemePanel);
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 60f, UnityEngine.TextAnchor.MiddleLeft).transform;
-            ElementFactory.CreateButtonSetting(group, style, settings.ProfileIcon, UIManager.GetLocaleCommon("Icon"),
-                elementWidth: 180f, elementHeight: 40f, onClick: () => OnButtonClick("Icon"));
+            string[] options = UIManager.AvailableProfileIcons.ToArray();
+            string[] icons = GetProfileIconPaths(options);
+            ElementFactory.CreateIconPickSetting(group, style, settings.ProfileIcon, UIManager.GetLocaleCommon("Icon"), options, icons,
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             ElementFactory.CreateRawImage(group, style, "Icons/Profile/" + UIManager.GetProfileIcon(settings.ProfileIcon.Value), 256, 256);
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateInputSetting(SinglePanel, style, settings.Name, UIManager.GetLocaleCommon("Name"), elementWidth: 260f);
@@ -23,12 +27,12 @@ namespace UI
                 multiLine: true);
         }
 
-        private void OnButtonClick(string name)
+        private string[] GetProfileIconPaths(string[] options)
         {
-            if (name == "Icon")
-            {
-                ((MainMenu)UIManager.CurrentMenu)._profileIconPickPopup.Show();
-            }
+            List<string> icons = new List<string>();
+            foreach (string option in options)
+                icons.Add(ResourcePaths.UI + "/Icons/Profile/" + option + "Icon");
+            return icons.ToArray();
         }
     }
 }

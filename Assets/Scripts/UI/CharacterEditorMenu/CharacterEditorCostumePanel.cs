@@ -9,6 +9,7 @@ using System.Collections;
 using ApplicationManagers;
 using GameManagers;
 using Characters;
+using Utility;
 
 namespace UI
 {
@@ -51,28 +52,32 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Sex, UIManager.GetLocale(cat, sub, "Sex"), new string[] { "Male", "Female" }, 
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnSexChanged());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Eye, UIManager.GetLocale(cat, sub, "Eye"), GetOptionNames("Eye", 28), 
+            string[] options = GetOptions("Eye", HumanSetup.EyeCount);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Eye, UIManager.GetLocale(cat, sub, "Eye"), options, GetIcons(options), 
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            options = GetOptions("Face", HumanSetup.FaceCount, true);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Face, UIManager.GetLocale(cat, sub, "Face"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            options = GetOptions("Glass", HumanSetup.GlassCount, true);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Glass, UIManager.GetLocale(cat, sub, "Glass"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            options = GetHairOptions();
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hair, UIManager.GetLocale(cat, sub, "Hair"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Skin, UIManager.GetLocale(cat, sub, "Skin"), GetOptions("Skin", 2), 
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Face, UIManager.GetLocale(cat, sub, "Face"), GetOptionNames("Face", 13, true), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Glass, UIManager.GetLocale(cat, sub, "Glass"), GetOptionNames("Glass", 9, true), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Hair, UIManager.GetLocale(cat, sub, "Hair"), GetHairOptionNames(11, 11), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Skin, UIManager.GetLocale(cat, sub, "Skin"), GetOptionNames("Skin", 2), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            int costumes = set.Sex.Value == (int)HumanSex.Male ? 15 : 12;
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Costume, UIManager.GetLocale(cat, sub, "Costume"), GetOptionNames("Costume", costumes), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+            options = GetCostumeOptions(set);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Costume, UIManager.GetLocale(cat, sub, "Costume"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Cape, UIManager.GetLocale(cat, sub, "Cape"), new string[] {"No cape", "Cape"}, 
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptionNames("Logo", 4),
+            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptions("Logo", 4),
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
         }
 
-        private string[] GetOptionNames(string prefix, int options, bool includeNone = false)
+        private string[] GetOptions(string prefix, int options, bool includeNone = false)
         {
             List<string> names = new List<string>();
             if (includeNone)
@@ -82,14 +87,39 @@ namespace UI
             return names.ToArray();
         }
 
-        private string[] GetHairOptionNames(int maleOptions, int femaleOptions)
+        private string[] GetHairOptions()
         {
             List<string> names = new List<string>();
-            for (int i = 0; i < maleOptions; i++)
+            for (int i = 0; i < HumanSetup.HairMCount; i++)
                 names.Add("HairM" + i.ToString());
-            for (int i = 0; i < femaleOptions; i++)
+            for (int i = 0; i < HumanSetup.HairFCount; i++)
                 names.Add("HairF" + i.ToString());
             return names.ToArray();
+        }
+
+        private string[] GetCostumeOptions(HumanCustomSet set)
+        {
+            bool male = set.Sex.Value == 0;
+            List<string> names = new List<string>();
+            if (male)
+            {
+                for (int i = 0; i < HumanSetup.CostumeMCount; i++)
+                    names.Add("CostumeM" + i.ToString());
+            }
+            else
+            {
+                for (int i = 0; i < HumanSetup.CostumeFCount; i++)
+                    names.Add("CostumeF" + i.ToString());
+            }
+            return names.ToArray();
+        }
+
+        private string[] GetIcons(string[] options)
+        {
+            List<string> icons = new List<string>();
+            foreach (string option in options)
+                icons.Add(ResourcePaths.Characters + "/Human/Previews/" + option);
+            return icons.ToArray();
         }
 
         private void OnSexChanged()
@@ -100,12 +130,13 @@ namespace UI
                 set.Hair.Value = "HairM0";
             else
                 set.Hair.Value = "HairF0";
+            set.Costume.Value = 0;
             OnCustomSetSelected();
         }
 
         private void OnCustomSetSelected()
         {
-            _menu.RebuildPanels();
+            _menu.RebuildPanels(true);
             _menu.ResetCharacter(true);
         }
 

@@ -45,6 +45,21 @@ public class TextureScaler
         tex.Apply();
     }
 
+    public static void ScaleBlocking(Texture2D tex, int newWidth, int newHeight)
+    {
+        Color[] texColors = tex.GetPixels();
+        Color[] newColors = new Color[newWidth * newHeight];
+        ThreadData threadData = new ThreadData(texColors, newColors, tex.width, tex.height, newWidth, newHeight);
+        ParameterizedThreadStart ts = new ParameterizedThreadStart(BilinearScale);
+        Thread thread = new Thread(ts);
+        thread.Start(threadData);
+        while (thread.IsAlive)
+            Thread.Sleep(1);
+        tex.Reinitialize(newWidth, newHeight);
+        tex.SetPixels(newColors);
+        tex.Apply();
+    }
+
     public static void BilinearScale(System.Object obj)
     {
         ThreadData threadData = (ThreadData)obj;

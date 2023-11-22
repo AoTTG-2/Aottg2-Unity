@@ -61,7 +61,8 @@ namespace CustomLogic
                 var particle = Value.GetComponent<ParticleSystem>();
                 if (!particle.isPlaying)
                     particle.Play();
-                particle.enableEmission = (bool)parameters[0];
+                var emission = particle.emission;
+                emission.enabled = (bool)parameters[0];
             }
             return base.CallMethod(methodName, parameters);
         }

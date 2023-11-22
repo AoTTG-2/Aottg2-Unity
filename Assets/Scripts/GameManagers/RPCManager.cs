@@ -8,6 +8,7 @@ using CustomLogic;
 using ApplicationManagers;
 using Characters;
 using Photon.Pun;
+using Spawnables;
 
 namespace GameManagers
 {
@@ -75,9 +76,9 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void PreRestartGameRPC(PhotonMessageInfo info)
+        public void PreRestartGameRPC(bool immediate, PhotonMessageInfo info)
         {
-            InGameManager.OnPreRestartGameRPC(info);
+            InGameManager.OnPreRestartGameRPC(immediate, info);
         }
 
         [PunRPC]
@@ -136,15 +137,21 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void SpawnSpawnableRPC(string name, Vector3 position, Quaternion rotation, float scale, object[] settings, PhotonMessageInfo info)
+        {
+            SpawnableSpawner.OnSpawnSpawnableRPC(name, position, rotation, scale, settings, info);
+        }
+
+        [PunRPC]
         public void SetLabelRPC(string label, string message, float time, PhotonMessageInfo info)
         {
             InGameManager.OnSetLabelRPC(label, message, time, info);
         }
 
         [PunRPC]
-        public void ShowKillFeedRPC(string killer, string victim, int score, PhotonMessageInfo info)
+        public void ShowKillFeedRPC(string killer, string victim, int score, string weapon, PhotonMessageInfo info)
         {
-            ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score);
+            ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score, weapon);
         }
 
         [PunRPC]

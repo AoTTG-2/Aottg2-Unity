@@ -32,8 +32,8 @@ namespace CustomSkins
             "1.bp.blogspot.com/",
             "tiebapic.baidu.com/",
             "s25.postimg.gg/",
-            "aotcorehome.files.wordpress.com/"
-
+            "aotcorehome.files.wordpress.com/",
+            "imgse.com/"
         };
         static readonly string[] ValidFileEndings = new string[]
         {
