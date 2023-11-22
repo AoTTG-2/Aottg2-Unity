@@ -872,7 +872,6 @@ namespace Characters
                         {
                             HumanCache.BladeHitLeft.Deactivate();
                             HumanCache.BladeHitRight.Deactivate();
-                            ToggleBladeTrails(false, 0.1f);
                         }
                         if (Cache.Animation[AttackAnimation].normalizedTime >= 1f)
                             Idle();
@@ -2191,7 +2190,10 @@ namespace Characters
                 ToggleBladeTrails(true);
             }
             if (!HumanCache.BladeHitRight.IsActive())
+            { 
                 HumanCache.BladeHitRight.Activate();
+                ToggleBladeTrails(true);
+            }
         }
 
         public void StartBladeSwing()
@@ -2308,7 +2310,7 @@ namespace Characters
             }
             else
             {
-                ToggleBladeTrails(false, 0.2f);
+                //ToggleBladeTrails(false, 0.2f);
                 HumanCache.BladeHitLeft.Deactivate();
                 HumanCache.BladeHitRight.Deactivate();
                 if (!_attackRelease)
@@ -2429,21 +2431,12 @@ namespace Characters
             {
                 if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
                 {
-                    //Setup.LeftTrail.enabled = true;
-                    //Setup.RightTrail.enabled = true;
-                    //Setup.LeftTrail.Emit = true;
-                    //Setup.RightTrail.Emit = true;
-                }
-            }
-            else
-            {
-                //Setup.LeftTrail.enabled = false;
-                //Setup.RightTrail.enabled = false;
-                if (fadeTime == 0f)
-                {
-                }
-                else
-                {
+                    Setup.LeftTrail.enabled = true;
+                    Setup.RightTrail.enabled = true;
+                    Setup.LeftTrail.Emit = true;
+                    Setup.RightTrail.Emit = true;
+                    Setup.LeftTrail._emitTime = 1f;
+                    Setup.RightTrail._emitTime = 1f;
                 }
             }
         }

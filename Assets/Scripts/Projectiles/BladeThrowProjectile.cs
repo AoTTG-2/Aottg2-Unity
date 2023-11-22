@@ -20,28 +20,24 @@ namespace Projectiles
         protected override float DestroyDelay => 1.5f;
         //protected XWeaponTrail _trail1;
         protected Transform _blade;
+        private MeleeWeaponTrail WeaponTrail;
         public Vector3 InitialPlayerVelocity;
 
         protected override void Awake()
         {
             base.Awake();
             _blade = transform.Find("Blade");
-            //_trail1 = CreateTrail();
-            //_trail1.PointStart = _blade.Find("PointStart");
-            //_trail1.PointEnd = _blade.Find("PointEnd");
-            //_trail1.Activate();
-        }
+            WeaponTrail = GetComponentInChildren<MeleeWeaponTrail>();
 
-        /*
-        protected XWeaponTrail CreateTrail()
-        {
-            var go = new GameObject();
-            go.transform.parent = transform;
-            var trail = go.AddComponent<XWeaponTrail>();
-            trail.MyMaterial = HumanSetup.WeaponTrailMaterial;
-            return trail;
+            if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
+            {
+                WeaponTrail.Emit = true;
+            }
+            else
+            {
+                WeaponTrail.Emit = false;
+            }
         }
-        */
         protected override void RegisterObjects()
         {
             _hideObjects.Add(_blade.gameObject);
@@ -55,6 +51,7 @@ namespace Projectiles
             if (info.Sender != photonView.Owner)
                 return;
             base.DisableRPC(info);
+
             //_trail1.Deactivate();
         }
 
@@ -181,8 +178,8 @@ namespace Projectiles
 
         protected void LateUpdate()
         {
-         //   if (!Disabled)
-          //      _trail1.lateUpdate();
+            //   if (!Disabled)
+            //      _trail1.lateUpdate();
         }
     }
 }
