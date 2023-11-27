@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [DisallowMultipleComponent]
 
@@ -21,7 +22,8 @@ public class Outline : MonoBehaviour {
     OutlineVisible,
     OutlineHidden,
     OutlineAndSilhouette,
-    SilhouetteOnly
+    SilhouetteOnly,
+    OutlineAndLightenColor
   }
 
   public Mode OutlineMode {
@@ -47,6 +49,15 @@ public class Outline : MonoBehaviour {
       needsUpdate = true;
     }
   }
+    public int RenderQueue
+    {
+        get { return renderQueue; }
+        set
+        {
+            renderQueue = value;
+            needsUpdate = true;
+        }
+    }
 
   [Serializable]
   private class ListVector3 {
@@ -61,6 +72,9 @@ public class Outline : MonoBehaviour {
 
   [SerializeField, Range(0f, 10f)]
   private float outlineWidth = 2f;
+
+  [SerializeField]
+  private int renderQueue = 0;
 
   [Header("Optional")]
 
@@ -91,6 +105,9 @@ public class Outline : MonoBehaviour {
 
     outlineMaskMaterial.name = "OutlineMask (Instance)";
     outlineFillMaterial.name = "OutlineFill (Instance)";
+
+    // Add a new property for Render Queue
+    outlineFillMaterial.SetInt("_RenderQueue", renderQueue);
 
     // Retrieve or generate smooth normals
     LoadSmoothNormals();
@@ -274,35 +291,51 @@ public class Outline : MonoBehaviour {
     // Apply properties according to mode
     outlineFillMaterial.SetColor("_OutlineColor", outlineColor);
 
+    // Add a new property for Render Queue
+    outlineFillMaterial.renderQueue = RenderQueue;
+    outlineMaskMaterial.renderQueue = RenderQueue;
+
     switch (outlineMode) {
       case Mode.OutlineAll:
         outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Never);
         outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
         break;
 
       case Mode.OutlineVisible:
         outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Never);
         outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
         break;
 
       case Mode.OutlineHidden:
         outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Greater);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Never);
         outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
         break;
 
       case Mode.OutlineAndSilhouette:
         outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Never);
         outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
         break;
 
       case Mode.SilhouetteOnly:
         outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
         outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Greater);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Never);
         outlineFillMaterial.SetFloat("_OutlineWidth", 0f);
+        break;
+
+      case Mode.OutlineAndLightenColor:
+        outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+        outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+        outlineFillMaterial.SetFloat("_ZTest2", (float)UnityEngine.Rendering.CompareFunction.Greater);
+        outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
         break;
     }
   }

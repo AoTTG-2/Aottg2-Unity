@@ -13,7 +13,7 @@ Shader "Custom/Outline Mask" {
 
   SubShader {
     Tags {
-      "Queue" = "Transparent+100"
+      "Queue" = "Transparent+1"
       "RenderType" = "Transparent"
     }
 
@@ -26,6 +26,7 @@ Shader "Custom/Outline Mask" {
 
       Stencil {
         Ref 1
+        Comp Always
         Pass Replace
       }
     }
