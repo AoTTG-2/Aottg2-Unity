@@ -12,7 +12,6 @@ namespace MapEditor
     class OutlineGizmo : BaseGizmo
     {
         private Dictionary<MapObject, List<Outline>> _meshOutlines = new Dictionary<MapObject, List<Outline>>();
-        private static int gizmoRenderQueue = 3000;
 
         public static OutlineGizmo Create()
         {
@@ -60,7 +59,6 @@ namespace MapEditor
                 outline.OutlineMode = Outline.Mode.OutlineAndLightenColor;
                 outline.OutlineColor = Color.green;
                 outline.OutlineWidth = 3f;
-                outline.RenderQueue = ++gizmoRenderQueue;
                 outlines.Add(outline);
             }
             _meshOutlines.Add(obj, outlines);
