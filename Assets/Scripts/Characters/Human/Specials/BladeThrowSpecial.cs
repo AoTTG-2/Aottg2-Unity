@@ -12,7 +12,7 @@ namespace Characters
         protected float Speed = 80f;
         protected float LiveTime = 2f;
 
-        public BladeThrowSpecial(BaseCharacter owner): base(owner)
+        public BladeThrowSpecial(BaseCharacter owner) : base(owner)
         {
             Cooldown = 1f;
         }
@@ -56,9 +56,9 @@ namespace Characters
                 position += _human.Cache.Transform.right * 0.5f;
             Vector3 direction = (target - position).normalized;
             float speed = Mathf.Max(Vector3.Dot(velocity, direction), 0f) + Speed;
-            var projectile = (BladeThrowProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.BladeThrow, position, 
+            var projectile = (BladeThrowProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.BladeThrow, position,
                 Quaternion.LookRotation(direction), direction * speed, Vector3.zero, LiveTime, _human.photonView.ViewID, "");
             projectile.InitialPlayerVelocity = _owner.Cache.Rigidbody.velocity;
-        } 
+        }
     }
 }
