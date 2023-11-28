@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leaf3Material
+  m_Name: Leaf4Material
   m_Shader: {fileID: 4800000, guid: 91b2752c47991cc42a5968a384e96f70, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 336eac2b2999dfd46ab69617e960c7d8, type: 3}
+        m_Texture: {fileID: 2800000, guid: a516e42ee53d75b4a8eeea0140bde64a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal0:
