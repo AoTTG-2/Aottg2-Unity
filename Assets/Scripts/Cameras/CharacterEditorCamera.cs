@@ -8,6 +8,7 @@ using GameProgress;
 using Map;
 using GameManagers;
 using Events;
+using UnityEngine.EventSystems;
 
 namespace Cameras
 {
@@ -26,6 +27,10 @@ namespace Cameras
 
         protected void Update()
         {
+            if(EventSystem.current.IsPointerOverGameObject()) {
+                return;
+            }
+
             float mouseX = Input.mousePosition.x;
             if (UIManager.CurrentMenu == null || UIManager.CurrentMenu.GetComponent<CharacterEditorMenu>() == null)
                 return;
