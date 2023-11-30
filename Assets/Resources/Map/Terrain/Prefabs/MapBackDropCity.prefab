@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1118374086700552120
 Transform:
@@ -4846,7 +4846,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3112584618384518862
 Transform:
@@ -9676,7 +9676,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4251580290435212665
 Transform:
@@ -14506,7 +14506,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1216496891560718782
 Transform:
@@ -19334,7 +19334,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8609098558524485924
 Transform:
@@ -19377,7 +19377,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1654969804287625672
 Transform:
@@ -19458,7 +19458,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2554235354322967394
 Transform:
@@ -19499,7 +19499,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &799160861693584092
 Transform:
@@ -24329,7 +24329,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7002230490851832386
 Transform:
@@ -29159,7 +29159,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7192569963959324884
 Transform:
@@ -33989,7 +33989,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2338077327138512893
 Transform:
@@ -38912,7 +38912,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1917367475174716085
 Transform:
@@ -43742,7 +43742,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7760805314286235901
 Transform:
@@ -48572,7 +48572,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6830381523929280491
 Transform:
@@ -53402,7 +53402,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2393426856316878551
 Transform:
@@ -58232,7 +58232,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6483110118627102132
 Transform:
@@ -63062,7 +63062,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4926039729328335897
 Transform:
@@ -67890,7 +67890,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1222157847479153679
 Transform:
@@ -67930,7 +67930,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2678674776683883089
 Transform:
@@ -72812,6 +72812,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -72892,6 +72896,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -72990,6 +72998,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bgmtnNEW1
       objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y
       value: 0.24
@@ -73080,6 +73092,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -73156,6 +73172,10 @@ PrefabInstance:
     - target: {fileID: 7754190281523717235, guid: c2ccb12e18721444e9938f255f775e0b, type: 3}
       propertyPath: m_Name
       value: TreeBG
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754190281523717235, guid: c2ccb12e18721444e9938f255f775e0b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73234,6 +73254,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73316,6 +73340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -73396,6 +73424,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73478,6 +73510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -73558,6 +73594,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73640,6 +73680,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -73720,6 +73764,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73802,6 +73850,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -73882,6 +73934,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73964,6 +74020,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -74044,6 +74104,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74126,6 +74190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindmillNoFan (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -74198,6 +74266,10 @@ PrefabInstance:
     - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Name
       value: Mountain BG
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74292,6 +74364,10 @@ PrefabInstance:
     - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Name
       value: bgmtnNEW1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y
@@ -74460,6 +74536,10 @@ PrefabInstance:
     - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Name
       value: bgmtnNEW1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y

@@ -109,7 +109,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7417715370657674401
 Transform:
@@ -192,7 +192,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7067767558152102811
 Transform:
@@ -5022,7 +5022,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7255329881092897146
 Transform:
@@ -9852,7 +9852,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8361271285107187553
 Transform:
@@ -14680,7 +14680,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &652012127569776270
 Transform:
@@ -14766,6 +14766,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_Facade
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 34954dd7b07e5f142ad2d622309aa8dd, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14844,6 +14848,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Birds Particles
       objectReference: {fileID: 0}
+    - target: {fileID: 3456022689196994486, guid: 5bd9cbea49c147043bc4bf719d121977, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14909,6 +14917,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14978,6 +14990,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15076,6 +15092,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bgmtnNEW1 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y
       value: 0.24
@@ -15158,6 +15178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mountain BG
       objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15235,6 +15259,10 @@ PrefabInstance:
     - target: {fileID: 3456022689196994486, guid: 5bd9cbea49c147043bc4bf719d121977, type: 3}
       propertyPath: m_Name
       value: Birds Particles (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456022689196994486, guid: 5bd9cbea49c147043bc4bf719d121977, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15330,6 +15358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bgmtnNEW1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y
       value: 0.24
@@ -15415,6 +15447,10 @@ PrefabInstance:
     - target: {fileID: 7754190281523717235, guid: c2ccb12e18721444e9938f255f775e0b, type: 3}
       propertyPath: m_Name
       value: TreeBG
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754190281523717235, guid: c2ccb12e18721444e9938f255f775e0b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15510,6 +15546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bgmtnNEW1
       objectReference: {fileID: 0}
+    - target: {fileID: 1767210309052757170, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1767210309052757171, guid: 4e81f0fdbfa69d242a0e51e8a00ff3b9, type: 3}
       propertyPath: m_Pivot.y
       value: 0.24
@@ -15587,6 +15627,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
       propertyPath: m_Name
       value: WindmillNoFan
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0e33b01bc0d77d849875b3dd32b55e7a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
