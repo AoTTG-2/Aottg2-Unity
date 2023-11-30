@@ -2,6 +2,7 @@
   "dependencies": {
     "com.unity.collab-proxy": "2.1.0",
     "com.unity.feature.development": "1.0.2",
+    "com.unity.postprocessing": "3.3.0",
     "com.unity.shadergraph": "15.0.7",
     "com.unity.terrain-tools": "5.1.1",
     "com.unity.textmeshpro": "3.0.6",
