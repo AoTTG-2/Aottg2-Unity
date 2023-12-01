@@ -5,13 +5,13 @@ using Utility;
 using CustomSkins;
 using ApplicationManagers;
 using Map;
+using UnityEngine.Rendering;
 
 namespace MapEditor
 {
     class OutlineGizmo : BaseGizmo
     {
         private Dictionary<MapObject, List<Outline>> _meshOutlines = new Dictionary<MapObject, List<Outline>>();
-
 
         public static OutlineGizmo Create()
         {
@@ -56,7 +56,7 @@ namespace MapEditor
             foreach (MeshFilter filter in obj.GameObject.GetComponentsInChildren<MeshFilter>())
             {
                 var outline = filter.gameObject.AddComponent<Outline>();
-                outline.OutlineMode = Outline.Mode.OutlineAll;
+                outline.OutlineMode = Outline.Mode.OutlineAndLightenColor;
                 outline.OutlineColor = Color.green;
                 outline.OutlineWidth = 3f;
                 outlines.Add(outline);

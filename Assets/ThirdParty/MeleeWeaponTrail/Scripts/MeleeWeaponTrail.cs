@@ -9,7 +9,8 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using ApplicationManagers;
+using Cameras;
 
 public class MeleeWeaponTrail : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class MeleeWeaponTrail : MonoBehaviour
 	public bool Use { set{_use = value;} }
 
 	[SerializeField]
-	float _emitTime = 0.0f;
+	public float _emitTime = 0.0f;
 
 	[SerializeField]
 	Material _material;
@@ -100,8 +101,32 @@ public class MeleeWeaponTrail : MonoBehaviour
 		Destroy(_trailObject);
 	}
 
-	void Update()
+    private void OnEnable()
+    {
+        _lastPosition = transform.position;
+        _trailObject = new GameObject("Trail");
+        _trailObject.transform.parent = null;
+        _trailObject.transform.position = Vector3.zero;
+        _trailObject.transform.rotation = Quaternion.identity;
+        _trailObject.transform.localScale = Vector3.one;
+        _trailObject.AddComponent(typeof(MeshFilter));
+        _trailObject.AddComponent(typeof(MeshRenderer));
+        _trailObject.GetComponent<Renderer>().material = _material;
+
+        _trailMesh = new Mesh();
+        _trailMesh.name = name + "TrailMesh";
+        _trailObject.GetComponent<MeshFilter>().mesh = _trailMesh;
+
+        _minVertexDistanceSqr = _minVertexDistance * _minVertexDistance;
+        _maxVertexDistanceSqr = _maxVertexDistance * _maxVertexDistance;
+    }
+
+    void Update()
 	{
+		if((InGameCamera)SceneLoader.CurrentCamera == null)
+		{
+			return;
+		}
 		if (!_use)
 		{
 			return;
@@ -120,8 +145,7 @@ public class MeleeWeaponTrail : MonoBehaviour
 			Destroy(gameObject);
 		}
 
-		// early out if there is no camera
-		if (!Camera.main) return;
+
 
 		// if we have moved enough, create a new vertex and make sure we rebuild the mesh
 		float theDistanceSqr = (_lastPosition - transform.position).sqrMagnitude;

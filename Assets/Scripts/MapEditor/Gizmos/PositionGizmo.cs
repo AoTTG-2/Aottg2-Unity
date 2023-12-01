@@ -158,7 +158,7 @@ namespace MapEditor
             foreach (Renderer renderer in line.GetComponentsInChildren<Renderer>())
             {
                 renderer.material.color = color;
-                renderer.material.renderQueue = 3001;
+                renderer.material.renderQueue = 3111;
             }
         }
     }

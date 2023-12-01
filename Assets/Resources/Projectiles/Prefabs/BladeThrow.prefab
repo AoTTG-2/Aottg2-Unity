@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411478}
+  - component: {fileID: 4940371307991630308}
   m_Layer: 14
   m_Name: Blade
   m_TagString: Untagged
@@ -34,6 +35,31 @@ Transform:
   - {fileID: 488346}
   m_Father: {fileID: 461060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4940371307991630308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5ceb339997c8304e9354d4ce5ddc9da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emit: 1
+  _emitTime: 1
+  _material: {fileID: 2100000, guid: 028420798998def4895eff21192d1ae3, type: 2}
+  _lifeTime: 0.2
+  _colors: []
+  _sizes: []
+  _minVertexDistance: 0
+  _maxVertexDistance: 0
+  _maxAngle: 0
+  _autoDestruct: 0
+  subdivisions: 20
+  _base: {fileID: 488348}
+  _tip: {fileID: 488346}
 --- !u!1 &123764
 GameObject:
   m_ObjectHideFlags: 0
