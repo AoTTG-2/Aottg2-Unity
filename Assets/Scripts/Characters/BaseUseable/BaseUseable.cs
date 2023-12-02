@@ -44,7 +44,7 @@ namespace Characters
 
         public float GetCooldownRatio()
         {
-            if (!HasUsesLeft())
+            if (!HasUsesLeft()/* && Cooldown == 0*/)
                 return 0f;
             if (Cooldown == 0f)
                 return 1f;

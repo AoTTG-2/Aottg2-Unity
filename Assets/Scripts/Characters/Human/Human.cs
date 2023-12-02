@@ -485,6 +485,7 @@ namespace Characters
             if (!Grounded || State != HumanState.Idle)
                 return false;
             State = HumanState.Refill;
+            Special.Reset();
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
             PlaySound(HumanSounds.Refill);
@@ -496,6 +497,10 @@ namespace Characters
         {
             if (CurrentGas < MaxGas)
                 return true;
+            if (Special is SupplySpecial && Special.UsesLeft == 0)
+            {
+                return true;
+            }
             if (Weapon is BladeWeapon)
             {
                 var weapon = (BladeWeapon)Weapon;
