@@ -205,7 +205,7 @@
 		"General.FPSFOVMaxTooltip": "Field of view when moving at high speeds and using 0 camera distance.",
 		"Sound.Volume": "Volume",
 		"Sound.Music": "Music",
-		"Sound.MuteMinimized": "Mute on Minimized",
+		"Sound.MuteMinimized": "Mute on minimize",
 		"Sound.TitanGrabMusic": "Titan grab music",
 		"Sound.TitanVocalEffect": "Titan vocals",
 		"Sound.GasEffect": "Gas",
