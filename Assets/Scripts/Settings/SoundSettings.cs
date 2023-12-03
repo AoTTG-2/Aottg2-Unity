@@ -10,6 +10,7 @@ namespace Settings
         protected override string FileName { get { return "Sound.json"; } }
         public FloatSetting Volume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
         public FloatSetting Music = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
+        public BoolSetting MuteMinimized = new BoolSetting(true);
         public BoolSetting TitanGrabMusic = new BoolSetting(true);
         public BoolSetting TitanVocalEffect = new BoolSetting(true);
         public BoolSetting GasEffect = new BoolSetting(true);
