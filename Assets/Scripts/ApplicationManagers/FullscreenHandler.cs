@@ -99,6 +99,25 @@ namespace ApplicationManagers
             {
                 AudioListener.pause = !hasFocus;
             }
+
+            if (hasFocus)
+            {
+                int FPSCap = SettingsManager.GraphicsSettings.FPSCap.Value;
+                int MenuFPSCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
+
+                if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
+                    Application.targetFrameRate = FPSCap > 0 ? FPSCap : -1;
+                else
+                    Application.targetFrameRate = MenuFPSCap > 0 ? MenuFPSCap : -1;
+            }
+            else
+            {
+                if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
+                    Application.targetFrameRate = Math.Min(SettingsManager.GraphicsSettings.FPSCap.Value, 60);
+                else
+                    Application.targetFrameRate = Math.Min(SettingsManager.GraphicsSettings.MenuFPSCap.Value, 60);
+            }
+
             CursorManager.RefreshCursorLock();
         }
 
