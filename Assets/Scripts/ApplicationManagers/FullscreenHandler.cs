@@ -95,6 +95,10 @@ namespace ApplicationManagers
 
         public void OnApplicationFocus(bool hasFocus)
         {
+            if (SettingsManager.SoundSettings.MuteMinimized.Value)
+            {
+                AudioListener.pause = !hasFocus;
+            }
             CursorManager.RefreshCursorLock();
         }
 
