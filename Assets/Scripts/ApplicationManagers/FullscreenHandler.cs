@@ -113,9 +113,9 @@ namespace ApplicationManagers
             else
             {
                 if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
-                    Application.targetFrameRate = Math.Min(SettingsManager.GraphicsSettings.FPSCap.Value, 60);
+                    Application.targetFrameRate = SettingsManager.GraphicsSettings.FPSCap.Value > 0 ? Math.Min(SettingsManager.GraphicsSettings.FPSCap.Value, 60) : 60;
                 else
-                    Application.targetFrameRate = Math.Min(SettingsManager.GraphicsSettings.MenuFPSCap.Value, 60);
+                    Application.targetFrameRate = SettingsManager.GraphicsSettings.MenuFPSCap.Value > 0 ? Math.Min(SettingsManager.GraphicsSettings.MenuFPSCap.Value, 60) : 60;
             }
 
             CursorManager.RefreshCursorLock();
