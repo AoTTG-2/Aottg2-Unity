@@ -485,6 +485,10 @@ namespace Characters
             if (!Grounded || State != HumanState.Idle)
                 return false;
             State = HumanState.Refill;
+            if(Special is SupplySpecial && Special.UsesLeft == 0 )
+            { 
+                Special.Reset();
+            }
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
             PlaySound(HumanSounds.Refill);
@@ -496,6 +500,10 @@ namespace Characters
         {
             if (CurrentGas < MaxGas)
                 return true;
+            if (Special is SupplySpecial && Special.UsesLeft == 0)
+            {
+                return true;
+            }
             if (Weapon is BladeWeapon)
             {
                 var weapon = (BladeWeapon)Weapon;
@@ -981,7 +989,7 @@ namespace Characters
                     Vector3 newVelocity = Vector3.zero;
                     if (JustGrounded)
                     {
-                        if (State != HumanState.Attack && State != HumanState.SpecialAttack && State != HumanState.SpecialAction 
+                        if (State != HumanState.Attack && State != HumanState.SpecialAttack && State != HumanState.SpecialAction
                             && State != HumanState.Stun && !HasDirection && !HasHook())
                         {
                             State = HumanState.Land;
@@ -993,7 +1001,7 @@ namespace Characters
                         {
                             _attackButtonRelease = true;
                             Vector3 v = _currentVelocity;
-                            if (State != HumanState.Attack && State != HumanState.SpecialAttack && State != HumanState.SpecialAction && State != HumanState.Stun && 
+                            if (State != HumanState.Attack && State != HumanState.SpecialAttack && State != HumanState.SpecialAction && State != HumanState.Stun &&
                                 State != HumanState.EmoteAction && (v.x * v.x + v.z * v.z > RunSpeed * RunSpeed * 1.5f) && State != HumanState.Refill)
                             {
                                 State = HumanState.Slide;
@@ -1294,7 +1302,7 @@ namespace Characters
                 {
                     if (!windEmission.enabled)
                         windEmission.enabled = true;
-                    windMain.startSpeedMultiplier = 100f; 
+                    windMain.startSpeedMultiplier = 100f;
                     HumanCache.WindTransform.LookAt(Cache.Transform.position + WindWeatherEffect.WindDirection);
                 }
                 else if (_currentVelocity.magnitude > 80f && SettingsManager.GraphicsSettings.WindEffectEnabled.Value)
@@ -1340,7 +1348,7 @@ namespace Characters
 
         private void UpdateBladeTrails()
         {
-            
+
         }
 
         private bool FixedUpdateLaunch(bool left)
@@ -1417,7 +1425,7 @@ namespace Characters
 
         private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot && 
+            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot &&
                 (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2));
         }
 
@@ -2181,7 +2189,7 @@ namespace Characters
                 ToggleBladeTrails(true);
             }
             if (!HumanCache.BladeHitRight.IsActive())
-            { 
+            {
                 HumanCache.BladeHitRight.Activate();
                 ToggleBladeTrails(true);
             }
@@ -2455,7 +2463,7 @@ namespace Characters
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (HumanCache !=  null)
+            if (HumanCache != null)
             {
                 if (HumanCache.AHSSHit != null && HumanCache.AHSSHit.gameObject != null)
                     Destroy(HumanCache.AHSSHit.gameObject);
