@@ -4,14 +4,14 @@ using Settings;
 
 namespace UI
 {
-    class KillScorePopup: BasePopup
+    class KillScorePopup : BasePopup
     {
         protected override string Title => string.Empty;
         protected override float Width => 0f;
         protected override float Height => 0f;
         protected override float TopBarHeight => 0f;
         protected override float BottomBarHeight => 0f;
-        protected override PopupAnimation PopupAnimationType => PopupAnimation.Tween;
+        protected override PopupAnimation PopupAnimationType => PopupAnimation.KillPopup;
         protected override float AnimationTime => 0.2f;
         private Text _scoreLabel;
         private Text _backgroundLabel;
