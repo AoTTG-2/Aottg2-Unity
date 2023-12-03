@@ -93,31 +93,41 @@ namespace ApplicationManagers
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
         }
 
-        public void OnApplicationFocus(bool hasFocus)
+        static bool isFocused;
+
+        public static void UpdateFPS()
         {
-            if (SettingsManager.SoundSettings.MuteMinimized.Value)
-            {
-                AudioListener.pause = !hasFocus;
-            }
+            int FPSCap = SettingsManager.GraphicsSettings.FPSCap.Value;
+            int MenuFPSCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
+            bool IsInGameOrEditor = SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor;
 
-            if (hasFocus)
+            if (isFocused)
             {
-                int FPSCap = SettingsManager.GraphicsSettings.FPSCap.Value;
-                int MenuFPSCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
-
-                if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
+                if (IsInGameOrEditor)
                     Application.targetFrameRate = FPSCap > 0 ? FPSCap : -1;
                 else
                     Application.targetFrameRate = MenuFPSCap > 0 ? MenuFPSCap : -1;
             }
             else
             {
-                if (SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor)
-                    Application.targetFrameRate = SettingsManager.GraphicsSettings.FPSCap.Value > 0 ? Math.Min(SettingsManager.GraphicsSettings.FPSCap.Value, 60) : 60;
+                if (IsInGameOrEditor)
+                    Application.targetFrameRate = FPSCap > 0 ? Math.Min(FPSCap, 60) : 60;
                 else
-                    Application.targetFrameRate = SettingsManager.GraphicsSettings.MenuFPSCap.Value > 0 ? Math.Min(SettingsManager.GraphicsSettings.MenuFPSCap.Value, 60) : 60;
+                    Application.targetFrameRate = MenuFPSCap > 0 ? Math.Min(MenuFPSCap, 60) : 60;
             }
 
+        }
+
+        public void OnApplicationFocus(bool hasFocus)
+        {
+            isFocused = hasFocus;
+
+            if (SettingsManager.SoundSettings.MuteMinimized.Value)
+            {
+                AudioListener.pause = !hasFocus;
+            }
+
+            UpdateFPS();
             CursorManager.RefreshCursorLock();
         }
 
