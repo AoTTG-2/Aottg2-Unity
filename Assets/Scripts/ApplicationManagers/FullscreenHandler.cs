@@ -93,8 +93,42 @@ namespace ApplicationManagers
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
         }
 
+        static bool isFocused = true;
+
+        public static void UpdateFPS()
+        {
+            int fpsCap = SettingsManager.GraphicsSettings.FPSCap.Value;
+            int menuFpsCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
+            bool isInGameOrEditor = SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor;
+
+            if (isFocused)
+            {
+                if (isInGameOrEditor)
+                    Application.targetFrameRate = fpsCap > 0 ? fpsCap : -1;
+                else
+                    Application.targetFrameRate = menuFpsCap > 0 ? menuFpsCap : -1;
+            }
+            else
+            {
+                if (isInGameOrEditor)
+                    Application.targetFrameRate = fpsCap > 0 ? Math.Min(fpsCap, 60) : 60;
+                else
+                    Application.targetFrameRate = menuFpsCap > 0 ? Math.Min(menuFpsCap, 60) : 60;
+            }
+        }
+
         public void OnApplicationFocus(bool hasFocus)
         {
+            isFocused = hasFocus;
+
+            if (SettingsManager.SoundSettings.MuteMinimized.Value)
+            {
+                AudioListener.volume = hasFocus ? SettingsManager.SoundSettings.Volume.Value : 0;
+                MusicManager._muted = !hasFocus;
+                MusicManager.ApplySoundSettings();
+            }
+
+            UpdateFPS();
             CursorManager.RefreshCursorLock();
         }
 
