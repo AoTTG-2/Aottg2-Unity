@@ -220,7 +220,7 @@ namespace Controllers
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
                     HideCursor = !HideCursor;
             }
-            var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
+            var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.Carry, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
@@ -265,7 +265,7 @@ namespace Controllers
             {
                 bool canSpecial = _human.MountState == HumanMountState.None && 
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab)
-                    && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
+                    && _human.State != HumanState.Carry && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
                 if (canSpecial)
                     _human.Special.ReadInput(specialInput);
                 else
@@ -294,6 +294,11 @@ namespace Controllers
                 {
                     if (_humanInput.Reload.GetKeyDown())
                         _human.Reload();
+                }
+                if(_human.State == HumanState.Carry)
+                {
+                    if (_humanInput.HorseMount.GetKeyDown())
+                        _human.Uncarry(true, false);
                 }
             }
             else if (_human.MountState == HumanMountState.Horse)
@@ -325,7 +330,7 @@ namespace Controllers
 
         void UpdateDashInput(bool inMenu)
         {
-            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab
+            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.State != HumanState.Carry
                 && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && _human.State != HumanState.SpecialAction
                 && !inMenu && !_human.Dead)
             {

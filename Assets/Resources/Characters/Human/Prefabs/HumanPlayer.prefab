@@ -16551,6 +16551,9 @@ MonoBehaviour:
   GasUsage: 0.2
   Grabber: {fileID: 0}
   GrabHand: {fileID: 0}
+  Carrier: {fileID: 0}
+  CarryBack: {fileID: 0}
+  BackHuman: {fileID: 0}
   MountedTransform: {fileID: 0}
   MountedPositionOffset: {x: 0, y: 0, z: 0}
   MountedRotationOffset: {x: 0, y: 0, z: 0}

@@ -111,6 +111,9 @@ MonoBehaviour:
   - UnpauseGameRPC
   - SyncRPC
   - SpawnSpawnableRPC
+  - CarryRPC
+  - Uncarry
+  - UncarryRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
