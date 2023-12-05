@@ -13,6 +13,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UI;
 using UnityEngine;
 using UnityEngine.XR;
@@ -394,10 +395,22 @@ namespace Characters
             Carry(Carrier, Carrier.Cache.Transform);
         }
 
+        [PunRPC]
+        public void CarryStateRPC(int viewId, PhotonMessageInfo info)
+        {
+            var view = PhotonView.Find(viewId);
+            if (view.Owner != info.Sender)
+                return;
+            State = HumanState.Carry;
+            Carrier = view.GetComponent<Human>();
+            Carrier.BackHuman = this;
+        }
+
         public void Uncarry(bool notifyHuman, bool idle)
         {
             if (notifyHuman && Carrier != null)
                 Carrier.Cache.PhotonView.RPC("UncarryRPC", Carrier.Cache.PhotonView.Owner, new object[0]);
+                Carrier.Cache.PhotonView.RPC("UncarryStateRPC", RpcTarget.All, new object[0]);
             Carrier = null;
             SetTriggerCollider(false);
             if (idle)
@@ -413,16 +426,24 @@ namespace Characters
             BackHuman = null;
         }
 
+        [PunRPC]
+        public virtual void UncarryStateRPC(PhotonMessageInfo info)
+        {
+            BackHuman.State = HumanState.Idle;
+            BackHuman.Carrier = null;
+            BackHuman = null;
+        }
         public void StartSpecialCarry()
         {
             Human human = FindNearestHuman();
-            if (human != null && human.State != HumanState.Carry && human != Carrier && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 5f)
+            if (human != null && human.State != HumanState.Carry && human.Carrier == null && human.BackHuman == null && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 5f)
             {
                 BackHuman = human;
                 BackHuman.SetTriggerCollider(true);
                 BackHuman.GetComponent<HumanMovementSync>().Disabled = true;
                 BackHuman.GetComponent<CapsuleCollider>().enabled = false;
                 human.Cache.PhotonView.RPC("CarryRPC", human.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
+                human.Cache.PhotonView.RPC("CarryStateRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
         }
 
@@ -709,6 +730,8 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTriggerColliderRPC", player, new object[] { _isTrigger });
                 if (MountState == HumanMountState.MapObject && _lastMountMessage != null)
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
+                if (BackHuman.State == HumanState.Carry)
+                    BackHuman.Cache.PhotonView.RPC("CarryStateRPC", player, new object[] { Cache.PhotonView.ViewID });
             }
         }
 
@@ -1016,6 +1039,13 @@ namespace Characters
                     Vector3 offset = -Cache.Transform.forward * 0.4f + Cache.Transform.up * 0.5f;
                     BackHuman.Cache.Transform.position = Cache.Transform.position + offset;
                     BackHuman.Cache.Transform.rotation = Cache.Transform.rotation;
+                }
+                else if( Carrier != null)
+                {
+                    if (Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 5f)
+                    {
+                        Uncarry(true, false);
+                    }
                 }
             }
         }
