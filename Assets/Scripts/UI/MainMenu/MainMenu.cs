@@ -13,7 +13,7 @@ using Utility;
 
 namespace UI
 {
-    class MainMenu: BaseMenu
+    class MainMenu : BaseMenu
     {
         public BasePopup _createGamePopup;
         public BasePopup _selectMapPopup;
@@ -102,20 +102,67 @@ namespace UI
             _popups.Add(_outdatedPopup);
         }
 
+        private RectTransform _introPanelRect;
+        private Vector2 _introPanelStartPosition;
+        private Vector2 _introPanelEndPosition;
+        private float _animationDuration = 1.5f;
+
+        private IEnumerator AnimateIntroPanel()
+        {
+            float elapsedTime = 0;
+            while (elapsedTime < _animationDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / _animationDuration;
+
+                // Apply easing
+                t = EaseOutCubic(t);
+
+                _introPanelRect.anchoredPosition = Vector2.Lerp(_introPanelStartPosition, _introPanelEndPosition, t);
+                yield return null;
+            }
+
+            // Ensure the panel ends exactly at the end position
+            _introPanelRect.anchoredPosition = _introPanelEndPosition;
+        }
+
+        // Easing function
+        private float EaseOutCubic(float t)
+        {
+            return 1 - Mathf.Pow(1 - t, 3);
+        }
         private void SetupIntroPanel()
         {
             GameObject introPanel = ElementFactory.InstantiateAndBind(transform, "Prefabs/MainMenu/IntroPanel");
             introPanel.AddComponent<IgnoreScaler>();
+            _introPanelRect = introPanel.GetComponent<RectTransform>();
+
+            // Set the anchor to the left
+            _introPanelRect.anchorMin = new Vector2(0, 0.5f);
+            _introPanelRect.anchorMax = new Vector2(0, 0.5f);
+            _introPanelRect.pivot = new Vector2(0, 0.5f);
+
+            // Calculate start and end positions
+            float panelWidth = _introPanelRect.rect.width;
+            _introPanelStartPosition = new Vector2(-panelWidth, 0);
+            _introPanelEndPosition = Vector2.zero;
+
+            // Set initial position
+            _introPanelRect.anchoredPosition = _introPanelStartPosition;
             ElementFactory.SetAnchor(introPanel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
-            foreach (Transform transform in introPanel.transform.Find("Buttons"))
+
+            Transform buttonsParent = introPanel.transform.Find("Buttons");
+            foreach (Transform buttonTransform in buttonsParent)
             {
-                IntroButton introButton = transform.gameObject.AddComponent<IntroButton>();
+                IntroButton introButton = buttonTransform.gameObject.AddComponent<IntroButton>();
                 introButton.onClick.AddListener(() => OnIntroButtonClick(introButton.name));
             }
-            foreach (Transform transform in introPanel.transform.Find("Icons"))
+
+            Transform iconsParent = introPanel.transform.Find("Icons");
+            foreach (Transform iconTransform in iconsParent)
             {
-                Button button = transform.gameObject.GetComponent<Button>();
-                button.onClick.AddListener(() => OnIntroButtonClick(transform.name));
+                Button button = iconTransform.gameObject.GetComponent<Button>();
+                button.onClick.AddListener(() => OnIntroButtonClick(iconTransform.name));
                 ColorBlock block = new ColorBlock
                 {
                     colorMultiplier = 1f,
@@ -127,9 +174,11 @@ namespace UI
                 };
                 button.colors = block;
             }
-            _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
-        }
 
+            _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
+
+            StartCoroutine(AnimateIntroPanel());
+        }
         private void SetupLabels()
         {
             _multiplayerStatusLabel = ElementFactory.CreateDefaultLabel(transform, ElementStyle.Default, string.Empty, alignment: TextAnchor.MiddleLeft).GetComponent<Text>();
