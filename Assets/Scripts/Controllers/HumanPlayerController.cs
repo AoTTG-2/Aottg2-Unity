@@ -9,6 +9,7 @@ using UI;
 using System.Collections.Generic;
 using Utility;
 using CustomLogic;
+using TMPro.EditorUtilities;
 
 namespace Controllers
 {
@@ -219,7 +220,13 @@ namespace Controllers
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
                     HideCursor = !HideCursor;
+                if (SettingsManager.InputSettings.General.HideObject.GetKeyDown())
+                {
+                    HideObject();
+                }
             }
+
+            
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
@@ -304,6 +311,16 @@ namespace Controllers
                     _human.Horse.Jump();
             }
         }
+        private void HideObject()
+        {
+            GameObject defaultMenu = GameObject.Find("DefaultMenu(Clone)");
+            if (defaultMenu != null)
+            {
+                defaultMenu.GetComponent<Canvas>().enabled = !defaultMenu.GetComponent<Canvas>().enabled;
+            }
+        }
+
+
 
         void UpdateReelInput(bool inMenu)
         {

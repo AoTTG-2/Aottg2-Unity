@@ -21,5 +21,7 @@ namespace Settings
         public KeybindSetting SpectateNextPlayer = new KeybindSetting(new string[] { "2", "None" });
         public KeybindSetting SkipCutscene = new KeybindSetting(new string[] { "Y", "None" });
         public BoolSetting TapScoreboard = new BoolSetting(true);
+        public KeybindSetting HideObject = new KeybindSetting(new string[] { "H", "None" });
+
     }
 }
