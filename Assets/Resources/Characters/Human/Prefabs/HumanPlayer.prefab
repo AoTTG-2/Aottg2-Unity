@@ -16543,6 +16543,7 @@ MonoBehaviour:
   TargetAngle: 0
   HasDirection: 0
   MountState: 0
+  CarryState: 0
   Horse: {fileID: 0}
   Setup: {fileID: 0}
   FinishSetup: 0
@@ -16554,6 +16555,7 @@ MonoBehaviour:
   Carrier: {fileID: 0}
   CarryBack: {fileID: 0}
   BackHuman: {fileID: 0}
+  CarryVelocity: {x: 0, y: 0, z: 0}
   MountedTransform: {fileID: 0}
   MountedPositionOffset: {x: 0, y: 0, z: 0}
   MountedRotationOffset: {x: 0, y: 0, z: 0}

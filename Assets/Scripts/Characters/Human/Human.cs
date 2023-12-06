@@ -31,6 +31,7 @@ namespace Characters
         public HookUseable HookLeft;
         public HookUseable HookRight;
         public HumanMountState MountState = HumanMountState.None;
+        public HumanCarryState CarryState = HumanCarryState.None;
         public Horse Horse;
         public HumanSetup Setup;
         public bool FinishSetup;
@@ -51,6 +52,7 @@ namespace Characters
         public Human Carrier;
         public Transform CarryBack;
         public Human BackHuman;
+        public Vector3 CarryVelocity;
         public MapObject MountedMapObject;
         public Transform MountedTransform;
         public Vector3 MountedPositionOffset;
@@ -153,7 +155,7 @@ namespace Characters
 
         public bool CanJump()
         {
-            return (Grounded && (State == HumanState.Idle || State == HumanState.Slide) &&
+            return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
                 !Cache.Animation.IsPlaying(HumanAnimations.Jump) && !Cache.Animation.IsPlaying(HumanAnimations.HorseMount));
         }
 
@@ -309,7 +311,7 @@ namespace Characters
         public void Dash(float targetAngle)
         {
             if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None &&
-                State != HumanState.Grab && State != HumanState.Carry && _dashCooldownLeft <= 0f)
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
             {
                 UseGas(Mathf.Min(MaxGas * 0.04f, 10));
                 TargetAngle = targetAngle;
@@ -376,11 +378,12 @@ namespace Characters
             HookRight.DisableAnyHook();
             UnhookHuman(true);
             UnhookHuman(false);
-            State = HumanState.Carry;
+            CarryState = HumanCarryState.Carry;
             SetTriggerCollider(true);
             FalseAttack();
             Carrier = carrier;
             CarryBack = back;
+            Carrier.GetComponent<CapsuleCollider>().enabled = false;
             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
             ToggleSparks(false);
         }
@@ -401,7 +404,7 @@ namespace Characters
             var view = PhotonView.Find(viewId);
             if (view.Owner != info.Sender)
                 return;
-            State = HumanState.Carry;
+            CarryState = HumanCarryState.Carry;
             Carrier = view.GetComponent<Human>();
             Carrier.BackHuman = this;
         }
@@ -409,9 +412,13 @@ namespace Characters
         public void Uncarry(bool notifyHuman, bool idle)
         {
             if (notifyHuman && Carrier != null)
+            {
+                Carrier.GetComponent<CapsuleCollider>().enabled = true;
                 Carrier.Cache.PhotonView.RPC("UncarryRPC", Carrier.Cache.PhotonView.Owner, new object[0]);
                 Carrier.Cache.PhotonView.RPC("UncarryStateRPC", RpcTarget.All, new object[0]);
+            }
             Carrier = null;
+            CarryState = HumanCarryState.None;
             SetTriggerCollider(false);
             if (idle)
                 Idle();
@@ -421,7 +428,6 @@ namespace Characters
         public virtual void UncarryRPC(PhotonMessageInfo info)
         {
             BackHuman.Uncarry(false, true);
-            BackHuman.GetComponent<HumanMovementSync>().Disabled = false;
             BackHuman.GetComponent<CapsuleCollider>().enabled = true;
             BackHuman = null;
         }
@@ -429,18 +435,21 @@ namespace Characters
         [PunRPC]
         public virtual void UncarryStateRPC(PhotonMessageInfo info)
         {
-            BackHuman.State = HumanState.Idle;
-            BackHuman.Carrier = null;
-            BackHuman = null;
+            if (BackHuman != null)
+            {
+                BackHuman.CarryState = HumanCarryState.None;
+                BackHuman.Carrier = null;
+                BackHuman = null;
+            }
         }
         public void StartSpecialCarry()
         {
             Human human = FindNearestHuman();
-            if (human != null && human.State != HumanState.Carry && human.Carrier == null && human.BackHuman == null && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 5f)
+            if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null && BackHuman == null
+                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 5f)
             {
                 BackHuman = human;
                 BackHuman.SetTriggerCollider(true);
-                BackHuman.GetComponent<HumanMovementSync>().Disabled = true;
                 BackHuman.GetComponent<CapsuleCollider>().enabled = false;
                 human.Cache.PhotonView.RPC("CarryRPC", human.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
                 human.Cache.PhotonView.RPC("CarryStateRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
@@ -650,7 +659,7 @@ namespace Characters
 
         public bool CanEmote()
         {
-            return !Dead && State != HumanState.Grab && State != HumanState.Carry && State != HumanState.AirDodge && State != HumanState.EmoteAction && State != HumanState.SpecialAttack && MountState == HumanMountState.None
+            return !Dead && State != HumanState.Grab && CarryState != HumanCarryState.Carry && State != HumanState.AirDodge && State != HumanState.EmoteAction && State != HumanState.SpecialAttack && MountState == HumanMountState.None
                 && State != HumanState.Stun;
         }
 
@@ -730,7 +739,7 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTriggerColliderRPC", player, new object[] { _isTrigger });
                 if (MountState == HumanMountState.MapObject && _lastMountMessage != null)
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
-                if (BackHuman.State == HumanState.Carry)
+                if (BackHuman.CarryState == HumanCarryState.Carry)
                     BackHuman.Cache.PhotonView.RPC("CarryStateRPC", player, new object[] { Cache.PhotonView.ViewID });
             }
         }
@@ -771,7 +780,9 @@ namespace Characters
                 else if (hitbox == HumanCache.APGHit)
                     type = "APG";
             }
-            int damage = Mathf.Max((int)(Cache.Rigidbody.velocity.magnitude * 10f), 10);
+            int damage = (CarryState == HumanCarryState.Carry && Carrier != null)
+                ? Mathf.Max((int)(Carrier.CarryVelocity.magnitude * 10f), 10)
+                : Mathf.Max((int)(Cache.Rigidbody.velocity.magnitude * 10f), 10);
             if (type == "Blade")
             {
                 EffectSpawner.Spawn(EffectPrefabs.Blood1, hitbox.transform.position, Quaternion.Euler(270f, 0f, 0f));
@@ -889,17 +900,6 @@ namespace Characters
                     {
                         Cache.Transform.position = GrabHand.transform.position;
                         Cache.Transform.rotation = GrabHand.transform.rotation;
-                    }
-                }
-                else if (State == HumanState.Carry)
-                {
-                    if (Carrier == null || Carrier.Dead)
-                        Uncarry(false, true);
-                    else
-                    {
-                        Vector3 offset = -CarryBack.transform.forward * 0.4f + CarryBack.transform.up * 0.5f;
-                        Cache.Transform.position = CarryBack.transform.position + offset;
-                        Cache.Transform.rotation = CarryBack.transform.rotation;
                     }
                 }
                 else if (MountState == HumanMountState.MapObject)
@@ -1034,14 +1034,21 @@ namespace Characters
                         Idle();
                 }
 
-                if (BackHuman != null)
+                if (CarryState == HumanCarryState.Carry)
                 {
-                    Vector3 offset = -Cache.Transform.forward * 0.4f + Cache.Transform.up * 0.5f;
-                    BackHuman.Cache.Transform.position = Cache.Transform.position + offset;
-                    BackHuman.Cache.Transform.rotation = Cache.Transform.rotation;
-                }
-                else if( Carrier != null)
-                {
+                    if (Carrier == null || Carrier.Dead)
+                        Uncarry(false, true);
+                    else if (MountState != HumanMountState.None || State == HumanState.Grab)
+                    { 
+                        Uncarry(true, false); 
+                    }
+                    else
+                    {
+                        Vector3 offset = CarryBack.transform.forward * -0.4f + CarryBack.transform.up * 0.5f;
+                        Cache.Transform.position = CarryBack.transform.position + offset;
+                        Cache.Transform.rotation = CarryBack.transform.rotation;
+                    }
+
                     if (Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 5f)
                     {
                         Uncarry(true, false);
@@ -1057,7 +1064,12 @@ namespace Characters
                 FixedUpdateLookTitan();
                 FixedUpdateUseables();
                 _isReelingOut = false;
-                if (State == HumanState.Grab || State == HumanState.Carry || Dead)
+                if (State == HumanState.Grab || Dead)
+                {
+                    Cache.Rigidbody.velocity = Vector3.zero;
+                    return;
+                }
+                if (CarryState == HumanCarryState.Carry)
                 {
                     Cache.Rigidbody.velocity = Vector3.zero;
                     return;
@@ -1434,7 +1446,7 @@ namespace Characters
 
         protected override void LateUpdate()
         {
-            if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab && State != HumanState.Carry)
+            if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab)
             {
                 LateUpdateTilt();
                 LateUpdateGun();
@@ -2098,7 +2110,7 @@ namespace Characters
                 return;
             if (MountState == HumanMountState.Horse)
                 Unmount(true);
-            if (State == HumanState.Carry)
+            if (CarryState == HumanCarryState.Carry)
                 Uncarry(true, false);
             if (State != HumanState.Attack && State != HumanState.SpecialAttack)
                 Idle();
@@ -2163,7 +2175,7 @@ namespace Characters
         {
             var human = Util.FindCharacterByViewId(viewId);
             if (IsMine() && human != null && !Dead && human.Cache.PhotonView.Owner == info.Sender &&
-                State != HumanState.Grab && State != HumanState.Carry && MountState == HumanMountState.None && human != this)
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && MountState == HumanMountState.None && human != this)
             {
                 Vector3 direction = human.Cache.Transform.position - Cache.Transform.position;
                 float loss = CharacterData.HumanWeaponInfo["Hook"]["InitialVelocityLoss"].AsFloat;
@@ -2190,7 +2202,7 @@ namespace Characters
         {
             var human = Util.FindCharacterByViewId(viewId);
             if (IsMine() && human != null && !Dead && human.Cache.PhotonView.Owner == info.Sender &&
-                State != HumanState.Grab && State != HumanState.Carry && MountState == HumanMountState.None && human != this)
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && MountState == HumanMountState.None && human != this)
             {
                 float loss = CharacterData.HumanWeaponInfo["Hook"]["ConstantVelocityLoss"].AsFloat;
                 Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * loss, ForceMode.VelocityChange);
@@ -2675,7 +2687,6 @@ namespace Characters
         Refill,
         Die,
         Grab,
-        Carry,
         EmoteAction,
         SpecialAttack,
         SpecialAction,
@@ -2691,6 +2702,12 @@ namespace Characters
         None,
         Horse,
         MapObject
+    }
+
+    public enum HumanCarryState
+    {
+        None,
+        Carry
     }
 
     public enum HumanWeapon
