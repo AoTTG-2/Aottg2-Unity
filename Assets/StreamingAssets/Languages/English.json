@@ -300,6 +300,7 @@
 		"Keybinds.General.Left": "Move left",
 		"Keybinds.General.Right": "Move right",
 		"Keybinds.General.Pause": "Pause",
+		"Keybinds.General.HideHud": "HideHud",
 		"Keybinds.General.RestartGame": "Restart game",
 		"Keybinds.General.ChangeCharacter": "Change character",
 		"Keybinds.General.Chat": "Chat",
