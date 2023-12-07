@@ -24,7 +24,7 @@ namespace Characters
                     _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);
                     _transform.rotation = Quaternion.Euler(_human.MountedTransform.rotation.eulerAngles + _human.MountedRotationOffset);
                 }
-                else if (_human.CarryState == HumanCarryState.Carry)
+                else if (_human.CarryState == HumanCarryState.Carry && _human.Carrier != null)
                 {
                     Vector3 offset = _human.Carrier.Cache.Transform.forward * -0.4f + _human.Carrier.Cache.Transform.up * 0.5f;
                     _transform.position = _human.Carrier.Cache.Transform.position + offset;

@@ -4,6 +4,7 @@ using Controllers;
 using CustomLogic;
 using CustomSkins;
 using Effects;
+using GameManagers;
 using GameProgress;
 using Map;
 using Photon.Pun;
@@ -16,6 +17,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UI;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.XR;
 using Utility;
 using Weather;
@@ -383,7 +385,7 @@ namespace Characters
             FalseAttack();
             Carrier = carrier;
             CarryBack = back;
-            Carrier.GetComponent<CapsuleCollider>().enabled = false;
+            Carrier.Cache.Colliders[0].isTrigger = true;
             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
             ToggleSparks(false);
         }
@@ -395,30 +397,20 @@ namespace Characters
             if (view.Owner != info.Sender)
                 return;
             Carrier = view.GetComponent<Human>();
-            Carry(Carrier, Carrier.Cache.Transform);
-        }
-
-        [PunRPC]
-        public void CarryStateRPC(int viewId, PhotonMessageInfo info)
-        {
-            var view = PhotonView.Find(viewId);
-            if (view.Owner != info.Sender)
-                return;
-            CarryState = HumanCarryState.Carry;
-            Carrier = view.GetComponent<Human>();
             Carrier.BackHuman = this;
+            CarryState = HumanCarryState.Carry;
+            if (Cache.PhotonView.IsMine)
+                Carry(Carrier, Carrier.Cache.Transform);
         }
 
         public void Uncarry(bool notifyHuman, bool idle)
         {
             if (notifyHuman && Carrier != null)
             {
-                Carrier.GetComponent<CapsuleCollider>().enabled = true;
-                Carrier.Cache.PhotonView.RPC("UncarryRPC", Carrier.Cache.PhotonView.Owner, new object[0]);
-                Carrier.Cache.PhotonView.RPC("UncarryStateRPC", RpcTarget.All, new object[0]);
+                Carrier.Cache.Colliders[0].isTrigger = false;
+                Carrier.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
             }
-            Carrier = null;
-            CarryState = HumanCarryState.None;
+            Cache.PhotonView.RPC("UncarryStateRPC", RpcTarget.All, new object[0]);
             SetTriggerCollider(false);
             if (idle)
                 Idle();
@@ -427,14 +419,6 @@ namespace Characters
         [PunRPC]
         public virtual void UncarryRPC(PhotonMessageInfo info)
         {
-            BackHuman.Uncarry(false, true);
-            BackHuman.GetComponent<CapsuleCollider>().enabled = true;
-            BackHuman = null;
-        }
-
-        [PunRPC]
-        public virtual void UncarryStateRPC(PhotonMessageInfo info)
-        {
             if (BackHuman != null)
             {
                 BackHuman.CarryState = HumanCarryState.None;
@@ -442,17 +426,23 @@ namespace Characters
                 BackHuman = null;
             }
         }
+
+        [PunRPC]
+        public virtual void UncarryStateRPC(PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            CarryState = HumanCarryState.None;
+            Carrier = null;
+        }
+
         public void StartSpecialCarry()
         {
             Human human = FindNearestHuman();
             if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null && BackHuman == null
-                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 5f)
+                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 7f)
             {
-                BackHuman = human;
-                BackHuman.SetTriggerCollider(true);
-                BackHuman.GetComponent<CapsuleCollider>().enabled = false;
-                human.Cache.PhotonView.RPC("CarryRPC", human.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
-                human.Cache.PhotonView.RPC("CarryStateRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                human.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
         }
 
@@ -739,8 +729,8 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTriggerColliderRPC", player, new object[] { _isTrigger });
                 if (MountState == HumanMountState.MapObject && _lastMountMessage != null)
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
-                if (BackHuman.CarryState == HumanCarryState.Carry)
-                    BackHuman.Cache.PhotonView.RPC("CarryStateRPC", player, new object[] { Cache.PhotonView.ViewID });
+                if (BackHuman != null && BackHuman.CarryState == HumanCarryState.Carry)
+                    BackHuman.Cache.PhotonView.RPC("CarryRPC", player, new object[] { Cache.PhotonView.ViewID });
             }
         }
 
@@ -1049,7 +1039,7 @@ namespace Characters
                         Cache.Transform.rotation = CarryBack.transform.rotation;
                     }
 
-                    if (Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 5f)
+                    if (Carrier != null && Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 7f)
                     {
                         Uncarry(true, false);
                     }
@@ -1072,6 +1062,7 @@ namespace Characters
                 if (CarryState == HumanCarryState.Carry)
                 {
                     Cache.Rigidbody.velocity = Vector3.zero;
+                    Grounded = false;
                     return;
                 }
                 if (MountState == HumanMountState.Horse)
@@ -2430,7 +2421,7 @@ namespace Characters
             Human nearestHuman = null;
             foreach (Human human in _inGameManager.Humans)
             {
-                if(human != this) 
+                if(human != this && TeamInfo.SameTeam(human, Team))
                 {
                     float distance = Vector3.Distance(Cache.Transform.position, human.Cache.Transform.position);
                     if (distance < nearestDistance)

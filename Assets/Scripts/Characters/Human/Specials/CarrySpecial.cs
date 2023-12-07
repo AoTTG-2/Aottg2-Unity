@@ -10,7 +10,7 @@ namespace Characters
         protected override float ActiveTime => 0.64f;
         public CarrySpecial(BaseCharacter owner) : base(owner)
         {
-            Cooldown = 5f;
+            Cooldown = 3f;
         }
 
         protected override void Activate()
