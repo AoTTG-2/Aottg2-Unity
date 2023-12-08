@@ -125,7 +125,10 @@ namespace Characters
             Setup.DeleteDie();
             GetComponent<CapsuleCollider>().enabled = false;
             if (IsMine())
+            {
                 FalseAttack();
+                SetCarrierTriggerCollider(false);
+            }
         }
 
         [PunRPC]
@@ -385,9 +388,11 @@ namespace Characters
             FalseAttack();
             Carrier = carrier;
             CarryBack = back;
-            Carrier.Cache.Colliders[0].isTrigger = true;
+            SetCarrierTriggerCollider(true);
             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
             ToggleSparks(false);
+            State = HumanState.Idle;
+            CrossFade(StandAnimation, 0.01f);
         }
 
         [PunRPC]
@@ -403,43 +408,45 @@ namespace Characters
                 Carry(Carrier, Carrier.Cache.Transform);
         }
 
-        public void Uncarry(bool notifyHuman, bool idle)
+        public void Uncarry()
         {
-            if (notifyHuman && Carrier != null)
-            {
-                Carrier.Cache.Colliders[0].isTrigger = false;
-                Carrier.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
-            }
-            Cache.PhotonView.RPC("UncarryStateRPC", RpcTarget.All, new object[0]);
+            SetCarrierTriggerCollider(false);
             SetTriggerCollider(false);
-            if (idle)
-                Idle();
+            SetVelocityFromCarrier();
+            Cache.Rigidbody.AddForce((((Vector3.up * 10f) - (Cache.Transform.forward * 2f)) - (Cache.Transform.right * 1f)), ForceMode.VelocityChange);
         }
 
         [PunRPC]
         public virtual void UncarryRPC(PhotonMessageInfo info)
         {
-            if (BackHuman != null)
-            {
-                BackHuman.CarryState = HumanCarryState.None;
-                BackHuman.Carrier = null;
-                BackHuman = null;
-            }
+            CarryState = HumanCarryState.None;
+            if (Cache.PhotonView.IsMine)
+                Uncarry();
+            if (Carrier != null)
+                Carrier.BackHuman = null;
+            Carrier = null;
         }
 
-        [PunRPC]
-        public virtual void UncarryStateRPC(PhotonMessageInfo info)
+        public void SetCarrierTriggerCollider(bool trigger)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
-                return;
-            CarryState = HumanCarryState.None;
-            Carrier = null;
+            if (Carrier != null)
+                Carrier.Cache.Colliders[0].isTrigger = trigger;
+        }
+
+        public void SetVelocityFromCarrier()
+        {
+            if (Carrier != null)
+                Cache.Rigidbody.velocity = Carrier.CarryVelocity;
         }
 
         public void StartSpecialCarry()
         {
             Human human = FindNearestHuman();
-            if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null && BackHuman == null
+            if (BackHuman != null)
+            {
+                BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+            }
+            else if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null
                 && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 7f)
             {
                 human.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
@@ -1027,11 +1034,9 @@ namespace Characters
                 if (CarryState == HumanCarryState.Carry)
                 {
                     if (Carrier == null || Carrier.Dead)
-                        Uncarry(false, true);
+                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                     else if (MountState != HumanMountState.None || State == HumanState.Grab)
-                    { 
-                        Uncarry(true, false); 
-                    }
+                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                     else
                     {
                         Vector3 offset = CarryBack.transform.forward * -0.4f + CarryBack.transform.up * 0.5f;
@@ -1040,9 +1045,7 @@ namespace Characters
                     }
 
                     if (Carrier != null && Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 7f)
-                    {
-                        Uncarry(true, false);
-                    }
+                        Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
         }
@@ -2102,7 +2105,7 @@ namespace Characters
             if (MountState == HumanMountState.Horse)
                 Unmount(true);
             if (CarryState == HumanCarryState.Carry)
-                Uncarry(true, false);
+                Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
             if (State != HumanState.Attack && State != HumanState.SpecialAttack)
                 Idle();
             Vector3 v = (position - Cache.Transform.position).normalized * 20f;
@@ -2141,7 +2144,7 @@ namespace Characters
         {
             if (State == HumanState.Grab || MountState == HumanMountState.MapObject || State == HumanState.Stun)
                 return;
-            if (!human.Dead && human != this && human != BackHuman)
+            if (!human.Dead && human != this)
             {
                 _hookHuman = human;
                 _hookHumanLeft = left;

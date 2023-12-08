@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Utility;
 using CustomLogic;
 using System.Threading;
+using Photon.Pun;
 
 namespace Controllers
 {
@@ -301,7 +302,7 @@ namespace Controllers
                 if(_human.CarryState == HumanCarryState.Carry)
                 {
                     if (_humanInput.HorseMount.GetKeyDown())
-                        _human.Uncarry(true, false);
+                        _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
             else if (_human.MountState == HumanMountState.Horse)
