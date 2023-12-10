@@ -19,7 +19,7 @@ namespace Characters
     class BaseShifter: BaseTitan
     {
         protected override int DefaultMaxHealth => 1000;
-        protected override float DefaultRunSpeed => 80f;
+        protected override float DefaultRunSpeed => 100f;
         protected override float DefaultWalkSpeed => 20f;
         protected override float DefaultRotateSpeed => 10f;
         protected override float DefaultJumpForce => 150f;
