@@ -350,6 +350,22 @@ component Dummy
     }
 }
 
+component Bell
+{
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "hit")
+        {
+            self.MapObject.GetTransform("BellHitSound").PlaySound();
+        }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        self.NetworkView.SendMessageAll("hit");
+    }
+}
+
 component Wagon
 {
     MoveForce = 20.0;
