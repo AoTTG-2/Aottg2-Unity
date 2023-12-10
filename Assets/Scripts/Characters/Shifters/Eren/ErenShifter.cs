@@ -20,6 +20,8 @@ namespace Characters
         public override List<string> EmoteActions => new List<string>() { "Nod", "Roar" };
         protected int _stepSoundPhase = 0;
 
+		protected override float DefaultRunSpeed => 90;
+
         protected override void CreateCache(BaseComponentCache cache)
         {
             ErenCache = new ErenComponentCache(gameObject);
