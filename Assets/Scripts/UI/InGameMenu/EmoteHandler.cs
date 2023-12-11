@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -167,6 +168,12 @@ namespace UI
                     }
                 }
             }
+            //Wait for long press weapon input check before closing the menu.
+            StartCoroutine(DelayCoroutine());
+        }
+        private IEnumerator DelayCoroutine()
+        {
+            yield return new WaitForSeconds(0.1f);
             _emoteWheelPopup.Hide();
             IsActive = false;
         }
@@ -235,7 +242,7 @@ namespace UI
             bool inMenu = InGameMenu.InMenu() || ((InGameManager)SceneLoader.CurrentGameManager).State == GameState.Loading;
             foreach (var popup in _emoteTextPopups)
                 UpdatePopup(popup, inMenu);
-            foreach(var popup in _emoteEmojiPopups)
+            foreach (var popup in _emoteEmojiPopups)
                 UpdatePopup(popup, inMenu);
         }
     }
