@@ -1534,6 +1534,10 @@ namespace Characters
                     z = GetLeanAngle(HookRight.GetHookPosition(), false);
 
                 }
+                if (Grounded)
+                {
+                    _needLean = false;
+                }
                 if (_needLean)
                 {
                     float a = 0f;
