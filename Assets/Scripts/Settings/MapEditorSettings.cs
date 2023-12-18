@@ -15,8 +15,8 @@ namespace Settings
         public FloatSetting CameraRotateSpeed = new FloatSetting(300f);
         public IntSetting RenderDistance = new IntSetting(1500, minValue: 10, maxValue: 1000000);
         public FloatSetting SnapMove = new FloatSetting(10f, minValue: 0f);
-        // public FloatSetting SnapRotate = new FloatSetting(15f, minValue: 0f);
-        // public FloatSetting SnapScale = new FloatSetting(0.1f, minValue: 0f);
+        public FloatSetting SnapRotate = new FloatSetting(15f, minValue: 0f);
+        public FloatSetting SnapScale = new FloatSetting(0.1f, minValue: 0f);
 
         public override void Apply()
         {
