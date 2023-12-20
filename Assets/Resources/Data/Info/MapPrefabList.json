@@ -105,7 +105,7 @@
 			{"Name": "Wall3"},
 			{"Name": "Wall4"},
 			{"Name": "Windmill1"},
-			{"Name": "Bell1"},
+			{"Name": "Bell1", "Components": ["Bell"]},
 			{"Name": "Ramp1"},
 			{"Name": "Stairs1"}
 		]
