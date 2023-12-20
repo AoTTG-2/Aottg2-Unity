@@ -1,3 +1,54 @@
+component Bell
+{
+    ResetDelay = 0.3;
+    LureTitans = false;
+    LureRadius = 100;
+    LureDuration = 5;
+    _currentResetTime = 0.0;
+    _soundTransform = null;
+
+    function Init()
+    {
+        self._soundTransform = self.MapObject.GetTransform("BellHitSound");
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "hit" && self._currentResetTime <= 0 && self._soundTransform != null)
+        {
+            self._soundTransform.StopSound();
+            self._soundTransform.PlaySound();
+            self._currentResetTime = self.ResetDelay;
+        }
+    }
+
+    function OnTick()
+    {
+        self._currentResetTime = self._currentResetTime - Time.TickTime;
+        if (self._currentResetTime < 0) {
+            self._currentResetTime = 0;
+        }
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (other.Velocity.Magnitude > 40)
+        {
+            if (self._currentResetTime <= 0 && other.IsCharacter && self.LureTitans)
+            {
+                for (titan in Game.Titans)
+                {
+                    difference = titan.Position - other.Position;
+                    if (difference.Magnitude < self.LureRadius) {
+                        titan.Target(other, self.LureDuration);
+                    }
+                }
+            }
+            self.NetworkView.SendMessageAll("hit");
+        }
+    }
+}
+
 component SupplyStation
 {
     UnlimitedRefills = true;
@@ -347,22 +398,6 @@ component Dummy
         {
             self.NetworkView.SendMessageAll("hit");
         }
-    }
-}
-
-component Bell
-{
-    function OnNetworkMessage(sender, message)
-    {
-        if (message == "hit")
-        {
-            self.MapObject.GetTransform("BellHitSound").PlaySound();
-        }
-    }
-
-    function OnGetHit(character, name, damage, type)
-    {
-        self.NetworkView.SendMessageAll("hit");
     }
 }
 
