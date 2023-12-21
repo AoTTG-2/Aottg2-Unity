@@ -525,8 +525,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_Animations.Array.size
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
+    - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: 'm_Animations.Array.data[15]'
+      value: 
+      objectReference: {fileID: -7513046101089214121, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+    - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: 'm_Animations.Array.data[20]'
+      value: 
+      objectReference: {fileID: -710881603130982832, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
     - target: {fileID: 13700000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_AABB.m_Center.x
       value: -0.006383181

@@ -2740,11 +2740,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ErenRig_VER2|et_rock_lift.001
-      takeName: ErenRig_VER2|et_rock_lift.001
+      name: ErenRig_VER2|et_die
+      takeName: ErenRig_VER2|et_die
       internalID: 0
       firstFrame: 0
-      lastFrame: 19
+      lastFrame: 119
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
