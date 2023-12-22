@@ -1,3 +1,9 @@
+component Water
+{
+
+}
+
+
 component Bell
 {
     ResetDelay = 0.3;
@@ -53,7 +59,6 @@ component Bell
                 }
             }
             self.NetworkView.SendMessageAll("hit");
-            Game.Print("On Get Hit");
         }
     }
 
