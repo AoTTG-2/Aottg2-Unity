@@ -241,5 +241,21 @@ namespace Utility
             b = new Vector3(b.x, 0f, b.z);
             return Vector3.Distance(a, b);
         }
+
+        public static List<TValue> PaginateDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict, int pageNumber, int elementsPerPage)
+        {
+            // Sort the dictionary by key
+            var sortedCommands = dict.OrderBy(c => c.Key).ToList();
+
+            var totalPages = (int)Math.Ceiling((double)sortedCommands.Count / elementsPerPage);
+
+            // Calculate the start index
+            var startIndex = (pageNumber - 1) * elementsPerPage;
+
+            // Get the paginated commands
+            var paginatedCommands = sortedCommands.Skip(startIndex).Take(elementsPerPage).Select(c => c.Value).ToList();
+
+            return paginatedCommands;
+        }
     }
 }
