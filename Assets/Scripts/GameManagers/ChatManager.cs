@@ -11,9 +11,38 @@ using Settings;
 using Anticheat;
 using Photon.Realtime;
 using Photon.Pun;
+using System;
+using System.Reflection;
+using System.Linq;
+
 
 namespace GameManagers
 {
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    class CommandAttribute : Attribute
+    {
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Alias { get; set; } = null;
+        public MethodInfo Command { get; set; } = null;
+        public bool IsAlias { get; set; } = false;
+
+        public CommandAttribute(CommandAttribute commandAttribute)
+        {
+            Name = commandAttribute.Name;
+            Description = commandAttribute.Description;
+            Alias = commandAttribute.Alias;
+            Command = commandAttribute.Command;
+            Alias = commandAttribute.Alias;
+        }
+
+        public CommandAttribute(string name, string description)
+        {
+            Name = name;
+            Description = description;
+        }
+    }
+
     class ChatManager : MonoBehaviour
     {
         private static ChatManager _instance;
@@ -21,10 +50,44 @@ namespace GameManagers
         public static List<string> FeedLines = new List<string>();
         private static readonly int MaxLines = 30;
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
+        private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
 
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
+
+            // Read all methods, filter out methods using CommandAttribute, create mapping from name/alias to CommandAttribute for later reference.
+            MethodInfo[] infos = typeof(ChatManager).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            Type cmdAttrType = typeof(CommandAttribute);
+
+            foreach (MethodInfo info in infos)
+            {
+                object[] attrs = info.GetCustomAttributes(cmdAttrType, false);
+                if (attrs == null) continue;
+
+                if (attrs.Length > 0)
+                {
+                    foreach (object attr in attrs)
+                    {
+                        if (attr is CommandAttribute cmdAttr)
+                        {
+                            cmdAttr.Command = info;
+                            
+                            CommandsCache.Add(cmdAttr.Name, cmdAttr);
+
+                            // Create second mapping from alias to cmd, has to be a separate object flagged as alias.
+                            // This lets us ignore alias's later on in the help function.
+                            if (cmdAttr.Alias != null)
+                            {
+                                CommandAttribute alias = new CommandAttribute(cmdAttr);
+                                alias.IsAlias = true;
+                                CommandsCache.Add(alias.Alias, alias);
+                            }                                   
+                        }
+                    }
+                }
+            }
+
         }
         
         public static void Reset()
@@ -147,113 +210,177 @@ namespace GameManagers
 
         private static void HandleCommand(string[] args)
         {
-            if (args[0] == "restart")
+            if (CommandsCache.TryGetValue(args[0], out CommandAttribute cmdAttr))
             {
-                if (CheckMC())
-                    InGameManager.RestartGame();
-            }
-            else if (args[0] == "clear")
-                Clear();
-            else if (args[0] == "reviveall")
-            {
-                if (CheckMC())
+                MethodInfo info = cmdAttr.Command;
+                if (info.IsStatic)
                 {
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { false });
-                    SendChatAll("All players have been revived by master client.", ChatTextColor.System);
+                    info.Invoke(null, new object[1] { args });
+                }
+
+                else
+                {
+                    info.Invoke(_instance, new object[1] { args });
                 }
             }
-            else if (args[0] == "revive")
+            else
             {
-                if (CheckMC())
-                {
-                    var player = GetPlayer(args);
-                    if (player != null)
-                    {
-                        RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { false });
-                        SendChat("You have been revived by master client.", player, ChatTextColor.System);
-                        AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
-                    }
-                }
+                AddLine($"Command {args[0]} not found, try /help to see a list of commands.", ChatTextColor.Error);
             }
-            else if (args[0] == "pm")
+        }
+
+        [CommandAttribute("restart", "/restart: Restarts the game.", Alias = "r")]
+        private static void Restart(string[] args)
+        {
+            if (CheckMC())
+                InGameManager.RestartGame();
+        }
+
+        [CommandAttribute("clear", "/clear: Clears the chat window.", Alias = "c")]
+        private static void Clear(string[] args)
+        {
+            Clear();
+        }
+
+        [CommandAttribute("reviveall", "/reviveall: Revive all players.", Alias = "rva")]
+        private static void ReviveAll(string[] args)
+        {
+            if (CheckMC())
             {
-                var player = GetPlayer(args);
-                if (args.Length > 2 && player != null)
-                {
-                    SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + args[2], player);
-                    AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + args[2]);
-                }
+                RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { false });
+                SendChatAll("All players have been revived by master client.", ChatTextColor.System);
             }
-            else if (args[0] == "kick")
-            {
-                if (CheckMC())
-                {
-                    var player = GetPlayer(args);
-                    if (player != null)
-                        KickPlayer(player);
-                }
-            }
-            else if (args[0] == "maxplayers")
-            {
-                if (CheckMC())
-                {
-                    int players;
-                    if (args.Length > 1 && int.TryParse(args[1], out players) && players >= 0)
-                    {
-                        PhotonNetwork.CurrentRoom.MaxPlayers = players;
-                        AddLine("Max players set to " + players.ToString() + ".", ChatTextColor.System);
-                    }
-                    else
-                        AddLine("Max players must be >= 0.", ChatTextColor.Error);
-                }
-            }
-            else if (args[0] == "mute")
+        }
+
+        [CommandAttribute("revive", "/revive [ID]: Revives the player with ID", Alias = "rv")]
+        private static void Revive(string[] args)
+        {
+            if (CheckMC())
             {
                 var player = GetPlayer(args);
                 if (player != null)
                 {
-                    MutePlayer(player, true);
-                    MutePlayer(player, false);
+                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { false });
+                    SendChat("You have been revived by master client.", player, ChatTextColor.System);
+                    AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
                 }
             }
-            else if (args[0] == "unmute")
+        }
+
+        [CommandAttribute("pm", "/pm [ID]: Private message player with ID")]
+        private static void PrivateMessage(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (args.Length > 2 && player != null)
+            {
+                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + args[2], player);
+                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + args[2]);
+            }
+        }
+
+        [CommandAttribute("kick", "/kick [ID]: Kick the player with ID")]
+        private static void Kick(string[] args)
+        {
+            if (CheckMC())
             {
                 var player = GetPlayer(args);
                 if (player != null)
+                    KickPlayer(player);
+            }
+        }
+
+        [CommandAttribute("maxplayers", "/maxplayers [num]: Sets room's max player count.")]
+        private static void MaxPlayers(string[] args)
+        {
+            if (CheckMC())
+            {
+                int players;
+                if (args.Length > 1 && int.TryParse(args[1], out players) && players >= 0)
                 {
-                    UnmutePlayer(player, true);
-                    UnmutePlayer(player, false);
+                    PhotonNetwork.CurrentRoom.MaxPlayers = players;
+                    AddLine("Max players set to " + players.ToString() + ".", ChatTextColor.System);
+                }
+                else
+                    AddLine("Max players must be >= 0.", ChatTextColor.Error);
+            }
+        }
+
+        [CommandAttribute("mute", "/mute [ID]: Mute player with ID.")]
+        private static void Mute(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player != null)
+            {
+                MutePlayer(player, true);
+                MutePlayer(player, false);
+            }
+        }
+
+        [CommandAttribute("unmute", "/unmute [ID]: Unmute player with ID.")]
+        private static void Unmute(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player != null)
+            {
+                UnmutePlayer(player, true);
+                UnmutePlayer(player, false);
+            }
+        }
+
+        [CommandAttribute("nextsong", "/nextsong: Play next song in playlist.")]
+        private static void NextSong(string[] args)
+        {
+            MusicManager.NextSong();
+        }
+
+        [CommandAttribute("pause", "/pause: Pause the multiplayer game.")]
+        private static void Pause(string[] args)
+        {
+            if (CheckMC())
+                ((InGameManager)SceneLoader.CurrentGameManager).PauseGame();
+        }
+
+        [CommandAttribute("unpause", "/unpause: Unpause the multiplayer game.")]
+        private static void Unpause(string[] args)
+        {
+            if (CheckMC())
+                ((InGameManager)SceneLoader.CurrentGameManager).StartUnpauseGame();
+        }
+
+        [CommandAttribute("help", "/help [page(optional)]: Displays command usage.")]
+        private static void Help(string[] args)
+        {
+            int displayPage = 1;
+            int elementsPerPage = 7;
+            if (args.Length >= 2)
+            {
+                int.TryParse(args[1], out displayPage);
+                if (displayPage == 0)
+                {
+                    displayPage = 1;
                 }
             }
-            else if (args[0] == "nextsong")
-                MusicManager.NextSong();
-            else if (args[0] == "pause")
+
+            int totalPages = (int)Math.Ceiling((double)CommandsCache.Count / elementsPerPage);
+            if (displayPage < 1 || displayPage > totalPages)
             {
-                if (CheckMC())
-                    ((InGameManager)SceneLoader.CurrentGameManager).PauseGame();
+                AddLine($"Page {displayPage} does not exist.", ChatTextColor.Error);
+                return;
             }
-            else if (args[0] == "unpause")
+
+            List<CommandAttribute> pageElements = Util.PaginateDictionary(CommandsCache, displayPage, elementsPerPage);
+            string help = "----Command list----" + "\n";
+            foreach (CommandAttribute element in pageElements)
             {
-                if (CheckMC())
-                    ((InGameManager)SceneLoader.CurrentGameManager).StartUnpauseGame();
+                if (element.IsAlias == false)
+                {
+                    help += element.Description + "\n";
+                }
             }
-            else if (args[0] == "help")
-            {
-                string help = "----Command list----" + "\n";
-                help += "/restart: Restart the game\n";
-                help += "/clear: Clear the chat\n";
-                help += "/revive [ID]: Revive the player with ID\n";
-                help += "/reviveall: Revive all players\n";
-                help += "/pm [ID]: Private message player with ID\n";
-                help += "/kick [ID]: Kick the player with ID\n";
-                help += "/mute [ID]: Mute player with ID\n";
-                help += "/unmute[ID]: Unmute player with ID\n";
-                help += "/maxplayers [num]: Sets max players\n";
-                help += "/nextsong: Play next song in playlist\n";
-                help += "/pause: Pause the multiplayer game\n";
-                help += "/unpause: Unpause the multiplayer game";
-                AddLine(help, ChatTextColor.System);
-            }
+
+            help += $"Page {displayPage} / {totalPages}";
+
+            AddLine(help, ChatTextColor.System);
         }
 
         public static void KickPlayer(Player player)
@@ -295,6 +422,18 @@ namespace GameManagers
                 InGameManager.MuteText.Remove(player.ActorNumber);
                 AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been unmuted (chat).", ChatTextColor.System);
             }
+        }
+
+        private static Player GetPlayer(string stringID)
+        {
+            int id = -1;
+            if (int.TryParse(stringID, out id) && PhotonNetwork.CurrentRoom.GetPlayer(id, true) != null)
+            {
+                var player = PhotonNetwork.CurrentRoom.GetPlayer(id, true);
+                return player;
+            }
+            AddLine("Invalid player ID.", ChatTextColor.Error);
+            return null;
         }
 
         private static Player GetPlayer(string[] args)
