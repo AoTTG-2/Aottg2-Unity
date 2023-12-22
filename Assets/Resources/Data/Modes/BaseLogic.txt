@@ -4,12 +4,14 @@ component Bell
     LureTitans = false;
     LureRadius = 100;
     LureDuration = 5;
+    VelocityHitThreshold = 30;
     _currentResetTime = 0.0;
     _soundTransform = null;
 
     function Init()
     {
         self._soundTransform = self.MapObject.GetTransform("BellHitSound");
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 0.4, 0), Vector3(5.3, 6, 5.3));
     }
 
     function OnNetworkMessage(sender, message)
@@ -30,22 +32,48 @@ component Bell
         }
     }
 
-    function OnCollisionEnter(other)
+    function HandleHit(character)
     {
-        if (other.Velocity.Magnitude > 40)
+        # Only apply this once in multiplayer, others will send you the networked event #
+        if (character.IsMine == false)
         {
-            if (self._currentResetTime <= 0 && other.IsCharacter && self.LureTitans)
+            return;
+        }
+
+        if (character.Velocity.Magnitude > self.VelocityHitThreshold)
+        {
+            if (self.LureTitans)
             {
                 for (titan in Game.Titans)
                 {
-                    difference = titan.Position - other.Position;
+                    difference = titan.Position - self.MapObject.Position;
                     if (difference.Magnitude < self.LureRadius) {
-                        titan.Target(other, self.LureDuration);
+                        titan.Target(character, self.LureDuration);
                     }
                 }
             }
             self.NetworkView.SendMessageAll("hit");
+            Game.Print("On Get Hit");
         }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        if (self._currentResetTime > 0 || character.IsMine == false)
+        {
+            return;
+        }
+        self.HandleHit(character);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self._currentResetTime > 0 || other.IsCharacter == false)
+        {
+            return;
+        }
+
+        self.HandleHit(other);
     }
 }
 
