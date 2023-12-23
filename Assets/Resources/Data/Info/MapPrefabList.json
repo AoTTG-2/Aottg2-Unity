@@ -108,7 +108,8 @@
 			{"Name": "Bell1", "Components": ["Bell"], "Networked": true},
 			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true},
 			{"Name": "Ramp1"},
-			{"Name": "Stairs1"}
+			{"Name": "Stairs1"},
+			{"Name": "StairsDamaged1"}
 		]
 	},
 	"Decor": {
