@@ -9,6 +9,8 @@ using UI;
 using System.Collections.Generic;
 using Utility;
 using CustomLogic;
+using System.Threading;
+using Photon.Pun;
 using TMPro.EditorUtilities;
 
 namespace Controllers
@@ -105,7 +107,9 @@ namespace Controllers
             string str = string.Empty;
             string distance = "???";
             float magnitude = 1000f;
-            float speed = _human.Cache.Rigidbody.velocity.magnitude;
+            float speed = (_human.CarryState == HumanCarryState.Carry && _human.Carrier != null)
+                ? _human.Carrier.CarryVelocity.magnitude
+                : _human.Cache.Rigidbody.velocity.magnitude;
             if (Physics.Raycast(ray, out hit, 1000f, HookMask.value))
             {
                 magnitude = (hit.point - _human.Cache.Transform.position).magnitude;
@@ -272,7 +276,7 @@ namespace Controllers
             {
                 bool canSpecial = _human.MountState == HumanMountState.None && 
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab)
-                    && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
+                    && _human.CarryState != HumanCarryState.Carry && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
                 if (canSpecial)
                     _human.Special.ReadInput(specialInput);
                 else
@@ -301,6 +305,11 @@ namespace Controllers
                 {
                     if (_humanInput.Reload.GetKeyDown())
                         _human.Reload();
+                }
+                if(_human.CarryState == HumanCarryState.Carry)
+                {
+                    if (_humanInput.HorseMount.GetKeyDown())
+                        _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
             else if (_human.MountState == HumanMountState.Horse)
@@ -342,7 +351,7 @@ namespace Controllers
 
         void UpdateDashInput(bool inMenu)
         {
-            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab
+            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
                 && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && _human.State != HumanState.SpecialAction
                 && !inMenu && !_human.Dead)
             {

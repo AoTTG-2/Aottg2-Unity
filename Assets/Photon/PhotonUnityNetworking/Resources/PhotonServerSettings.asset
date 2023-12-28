@@ -111,6 +111,11 @@ MonoBehaviour:
   - UnpauseGameRPC
   - SyncRPC
   - SpawnSpawnableRPC
+  - CarryRPC
+  - Uncarry
+  - UncarryRPC
+  - CarryStateRPC
+  - UncarryStateRPC
   - CrossFadeWithSpeedRPC
   - ClearRockRPC
   DisableAutoOpenWizard: 1

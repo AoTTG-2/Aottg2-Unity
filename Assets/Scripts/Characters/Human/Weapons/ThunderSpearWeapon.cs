@@ -2,6 +2,7 @@
 using Effects;
 using Projectiles;
 using Settings;
+using System.Threading;
 using UI;
 using UnityEngine;
 using Utility;
@@ -72,7 +73,7 @@ namespace Characters
             }
             Current = (ThunderspearProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.Thunderspear, spawnPosition, Quaternion.LookRotation(spawnDirection),
                 spawnDirection * Speed, Vector3.zero, TravelTime, human.Cache.PhotonView.ViewID, "", new object[] {Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor()});
-            Current.InitialPlayerVelocity = human.Cache.Rigidbody.velocity;
+            Current.InitialPlayerVelocity = (human.CarryState == HumanCarryState.Carry && human.Carrier != null) ? human.Carrier.CarryVelocity : human.Cache.Rigidbody.velocity;
             _delayTimeLeft = Delay;
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootTS();
         }
