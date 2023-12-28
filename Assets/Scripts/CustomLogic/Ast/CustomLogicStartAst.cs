@@ -9,13 +9,20 @@ namespace CustomLogic
 
         public CustomLogicStartAst(): base(CustomLogicAstType.Start, 0)
         {
-           AddClass("Main", new CustomLogicClassDefinitionAst(new CustomLogicToken(CustomLogicTokenType.Symbol, (int)CustomLogicSymbol.Class, 0), 0));
+        }
+
+        public void AddEmptyMain()
+        {
+            AddClass("Main", new CustomLogicClassDefinitionAst(new CustomLogicToken(CustomLogicTokenType.Symbol, (int)CustomLogicSymbol.Class, 0), 0));
         }
 
         public void AddClass(string className, CustomLogicClassDefinitionAst classAst)
         {
             if (Classes.ContainsKey(className))
-                Classes[className] = classAst;
+            {
+                if (className != "Main")
+                    Classes[className] = classAst;
+            }
             else
                 Classes.Add(className, classAst);
         }

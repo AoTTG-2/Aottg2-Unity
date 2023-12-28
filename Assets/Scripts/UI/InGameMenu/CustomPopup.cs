@@ -28,6 +28,13 @@ namespace UI
             ElementFactory.CreateTextButton(BottomBar, _style, UIManager.GetLocaleCommon("Back"), onClick: () => OnButtonClick("Back"));
         }
 
+        public void AddBottomButton(string name, string title)
+        {
+            var obj = ElementFactory.CreateTextButton(BottomBar, _style, title,
+                onClick: () => OnButtonClick(name));
+            obj.transform.SetAsFirstSibling();
+        }
+
         protected override float GetHeight()
         {
             return _height;
@@ -53,7 +60,7 @@ namespace UI
 
         public void AddButton(string name, string title)
         {
-            var obj = ElementFactory.CreateTextButton(SinglePanel, _style, title, 
+            var obj = ElementFactory.CreateDefaultButton(SinglePanel, _style, title, 
                 onClick: () => OnButtonClick(name));
         }
 

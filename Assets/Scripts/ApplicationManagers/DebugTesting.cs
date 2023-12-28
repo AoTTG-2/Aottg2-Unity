@@ -45,7 +45,7 @@ namespace ApplicationManagers
 
         private static void OnLoadScene(SceneName sceneName)
         {
-            if (sceneName != SceneName.Test)
+            if (sceneName != SceneName.DebugTest)
                 return;
         }
 

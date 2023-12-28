@@ -31,6 +31,7 @@ namespace UI
         public BasePopup _pausePopup;
         public BasePopup _characterPopup;
         public BasePopup _scoreboardPopup;
+        public CustomAssetUrlPopup _customAssetUrlPopup;
         public SnapshotPopup _snapshotPopup;
         public GlobalPauseGamePopup _globalPauseGamePopup;
         public CutsceneDialoguePanel _cutsceneDialoguePanel;
@@ -490,12 +491,15 @@ namespace UI
             _settingsPopup = ElementFactory.CreateHeadedPanel<SettingsPopup>(transform).GetComponent<BasePopup>();
             _pausePopup = ElementFactory.CreateHeadedPanel<PausePopup>(transform).GetComponent<PausePopup>();
             _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
+            _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
             _popups.Add(_settingsPopup);
             _popups.Add(_pausePopup);
             _popups.Add(_createGamePopup);
+            _popups.Add(_customAssetUrlPopup);
             _allPausePopups.Add(_settingsPopup);
             _allPausePopups.Add(_pausePopup);
             _allPausePopups.Add(_createGamePopup);
+            _allPausePopups.Add(_customAssetUrlPopup);
         }
     }
 }

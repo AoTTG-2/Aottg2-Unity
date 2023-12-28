@@ -9,5 +9,8 @@ namespace Map
         public override char Delimiter => '|';
         public string EditorVersion = "1.0";
         public string Description = string.Empty;
+        // public string Background = "None";
+        // public Vector3 BackgroundPosition = Vector3.zero;
+        // public Vector3 BackgroundRotation = Vector3.zero;
     }
 }

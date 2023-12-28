@@ -16,7 +16,7 @@ namespace UI
     class MapEditorHierarchyPanel: HeadedPanel
     {
         protected override float Width => 260f;
-        protected override float Height => 995f;
+        protected override float Height => 1005f;
         protected override float TopBarHeight => 0f;
         protected override float BottomBarHeight => 0f;
         protected override float VerticalSpacing => 10f;
@@ -38,7 +38,7 @@ namespace UI
         private StringSetting _searchSetting = new StringSetting(string.Empty);
         private Text _pageLabel;
         private int _currentPage;
-        private const int ObjectsPerPage = 29;
+        private const int ObjectsPerPage = 30;
         private Transform _topGroup;
 
         public override void Setup(BasePanel parent = null)

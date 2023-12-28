@@ -11,6 +11,7 @@ using Utility;
 using CustomLogic;
 using System.Threading;
 using Photon.Pun;
+using TMPro.EditorUtilities;
 
 namespace Controllers
 {
@@ -203,12 +204,12 @@ namespace Controllers
             return;
             if (_humanInput.HookLeft.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 800, "");
+                _inGameMenu.ShowKillFeed("test", "test", 800, "Thunderspear");
                 _inGameMenu.ShowKillScore(800);
             }
             if (_humanInput.HookRight.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 3000, "");
+                _inGameMenu.ShowKillFeed("test", "test", 3000, "Thunderspear");
                 _inGameMenu.ShowKillScore(3000);
             }
         }
@@ -223,7 +224,13 @@ namespace Controllers
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
                     HideCursor = !HideCursor;
+                if (SettingsManager.InputSettings.General.HideObject.GetKeyDown())
+                {
+                    HideObject();
+                }
             }
+
+            
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
@@ -257,7 +264,7 @@ namespace Controllers
                         }
                         else
                             _human.Weapon.SetInput(false);
-                        _human._gunArmAim = attackInput.GetKey();
+                        _human._gunArmAim = attackInput.GetKey() || _human.Weapon.IsActive;
                     }
                     else
                         _human.Weapon.ReadInput(attackInput);
@@ -313,6 +320,16 @@ namespace Controllers
                     _human.Horse.Jump();
             }
         }
+        private void HideObject()
+        {
+            GameObject defaultMenu = GameObject.Find("DefaultMenu(Clone)");
+            if (defaultMenu != null)
+            {
+                defaultMenu.GetComponent<Canvas>().enabled = !defaultMenu.GetComponent<Canvas>().enabled;
+            }
+        }
+
+
 
         void UpdateReelInput(bool inMenu)
         {

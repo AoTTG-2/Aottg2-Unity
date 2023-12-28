@@ -15,6 +15,11 @@ namespace Characters
         {
         }
 
+        protected virtual float GetActiveTime()
+        {
+            return ActiveTime;
+        }
+
         public override void ReadInput(KeybindSetting keybind)
         {
             SetInput(keybind.GetKeyDown());
@@ -25,7 +30,7 @@ namespace Characters
             if (key && CanUse() && !IsActive)
             {
                 IsActive = true;
-                _activeTimeLeft = ActiveTime;
+                _activeTimeLeft = GetActiveTime();
                 Activate();
                 OnUse();
             }

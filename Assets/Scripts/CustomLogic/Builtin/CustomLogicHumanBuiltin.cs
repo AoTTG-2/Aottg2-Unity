@@ -48,6 +48,8 @@ namespace CustomLogic
                 }
                 else if (methodName == "Unmount")
                     Human.Unmount(true);
+                else if (methodName == "SetSpecial")
+                    Human.SetSpecial((string)parameters[0]);
             }
             return base.CallMethod(methodName, parameters);
         }
@@ -62,6 +64,8 @@ namespace CustomLogic
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
             if (name == "Weapon")
                 return Human.Setup.Weapon.ToString();
+            else if (name == "CurrentSpecial")
+                return Human.CurrentSpecial;
             else if (name == "CurrentGas")
                 return Human.CurrentGas;
             else if (name == "MaxGas")
@@ -70,6 +74,8 @@ namespace CustomLogic
                 return Human.AccelerationStat;
             else if (name == "RunSpeed")
                 return Human.RunSpeedStat;
+            else if (name == "HorseSpeed")
+                return Human.HorseSpeed;
             else if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)
@@ -153,6 +159,8 @@ namespace CustomLogic
                 Human.SetAcceleration(value.UnboxToInt());
             else if (name == "RunSpeed")
                 Human.SetRunSpeed(value.UnboxToInt());
+            else if (name == "HorseSpeed")
+                Human.HorseSpeed = value.UnboxToFloat();
             else if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)

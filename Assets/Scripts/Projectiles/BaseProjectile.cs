@@ -54,10 +54,7 @@ namespace Projectiles
                 foreach (Collider c1 in _owner.Cache.Colliders)
                 {
                     foreach (Collider c2 in _colliders)
-                    {
-                        if (c1.enabled && c2.enabled)
-                            Physics.IgnoreCollision(c1, c2);
-                    }
+                        Physics.IgnoreCollision(c1, c2);
                 }
             }
         }

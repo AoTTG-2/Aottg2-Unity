@@ -13,7 +13,12 @@ namespace Characters
         {
         }
 
-        protected override void Activate()
+        protected override float GetActiveTime()
+        {
+            return CharacterData.HumanWeaponInfo["AHSS"]["FireDelay"].AsFloat;
+        }
+
+        protected override void Deactivate()
         {
             var human = (Human)_owner;
             Vector3 target = human.GetAimPoint();
@@ -43,14 +48,15 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction));
-            human.PlaySound(HumanSounds.GunExplodeSound);
+            human.PlaySound(HumanSounds.GunExplode);
             var ahssInfo = CharacterData.HumanWeaponInfo["AHSS"];
             var capsule = (CapsuleCollider)human.HumanCache.AHSSHit._collider;
             capsule.radius = ahssInfo["Radius"].AsFloat;
             human.HumanCache.AHSSHit.transform.position = start;
             human.HumanCache.AHSSHit.transform.rotation = Quaternion.LookRotation(direction);
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootGun();
+            human.Cache.Rigidbody.AddForce(-direction * ahssInfo["KnockbackForce"].AsFloat, ForceMode.VelocityChange);
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(RoundLeft == 1, RoundLeft == 0);
         }
     }
 }

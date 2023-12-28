@@ -112,7 +112,9 @@ namespace CustomSkins
                         AddRendererIfExists(renderers, human.Setup._part_chest_1);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.WeaponTrail:
-                    List<object> trails = new List<object>();
+                    List<MeleeWeaponTrail> trails = new List<MeleeWeaponTrail>();
+                    trails.Add(human.Setup.LeftTrail);
+                    trails.Add(human.Setup.RightTrail);
                     return new WeaponTrailCustomSkinPart(this, trails, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.ThunderspearL:
                     if (human.Setup._part_blade_l != null)

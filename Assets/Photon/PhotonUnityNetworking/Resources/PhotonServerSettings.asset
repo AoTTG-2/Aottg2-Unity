@@ -116,6 +116,8 @@ MonoBehaviour:
   - UncarryRPC
   - CarryStateRPC
   - UncarryStateRPC
+  - CrossFadeWithSpeedRPC
+  - ClearRockRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

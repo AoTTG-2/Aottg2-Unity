@@ -28,8 +28,8 @@
 			"ChaseAngleMinRange": 50,
 			"IsTurn": false,
 			"IsRun": true,
-			"WalkSpeed": 50,
-			"RunSpeed": 50,
+			"WalkSpeedBase": 50,
+			"RunSpeedBase": 50,
 			"JumpForce": 150,
 			"RotateSpeed": 3,
 			"Attacks": {
@@ -76,8 +76,8 @@
 			"ChaseAngleMinRange": 50,
 			"IsTurn": false,
 			"IsRun": true,
-			"WalkSpeed": 50,
-			"RunSpeed": 50,
+			"WalkSpeedBase": 50,
+			"RunSpeedBase": 50,
 			"JumpForce": 150,
 			"RotateSpeed": 3,
 			"Attacks": {

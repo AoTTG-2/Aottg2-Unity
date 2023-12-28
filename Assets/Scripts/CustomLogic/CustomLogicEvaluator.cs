@@ -59,35 +59,41 @@ namespace CustomLogic
 
         public Dictionary<string, BaseSetting> GetComponentSettings(string component, List<string> parameters)
         {
-            var instance = CreateClassInstance(component, new List<object>(), false);
-            RunAssignmentsClassInstance(instance);
             Dictionary<string, BaseSetting> settings = new Dictionary<string, BaseSetting>();
             Dictionary<string, string> parameterDict = new Dictionary<string, string>();
-            foreach (string str in parameters)
+            try
             {
-                string[] strArr = str.Split(':');
-                parameterDict.Add(strArr[0], strArr[1]);
-            }
-            foreach (string variableName in instance.Variables.Keys)
-            {
-                if (!variableName.StartsWith("_"))
+                var instance = CreateClassInstance(component, new List<object>(), false);
+                RunAssignmentsClassInstance(instance);
+                foreach (string str in parameters)
                 {
-                    object value = instance.Variables[variableName];
-                    if (parameterDict.ContainsKey(variableName))
-                        value = CustomLogicComponentInstance.DeserializeValue(value, parameterDict[variableName]);
-                    if (value is float)
-                        settings.Add(variableName, new FloatSetting((float)value));
-                    else if (value is string)
-                        settings.Add(variableName, new StringSetting((string)value));
-                    else if (value is int)
-                        settings.Add(variableName, new IntSetting((int)value));
-                    else if (value is bool)
-                        settings.Add(variableName, new BoolSetting((bool)value));
-                    else if (value is CustomLogicColorBuiltin)
-                        settings.Add(variableName, new ColorSetting(((CustomLogicColorBuiltin)value).Value));
-                    else if (value is CustomLogicVector3Builtin)
-                        settings.Add(variableName, new Vector3Setting(((CustomLogicVector3Builtin)value).Value));
+                    string[] strArr = str.Split(':');
+                    parameterDict.Add(strArr[0], strArr[1]);
                 }
+                foreach (string variableName in instance.Variables.Keys)
+                {
+                    if (!variableName.StartsWith("_"))
+                    {
+                        object value = instance.Variables[variableName];
+                        if (parameterDict.ContainsKey(variableName))
+                            value = CustomLogicComponentInstance.DeserializeValue(value, parameterDict[variableName]);
+                        if (value is float)
+                            settings.Add(variableName, new FloatSetting((float)value));
+                        else if (value is string)
+                            settings.Add(variableName, new StringSetting((string)value));
+                        else if (value is int)
+                            settings.Add(variableName, new IntSetting((int)value));
+                        else if (value is bool)
+                            settings.Add(variableName, new BoolSetting((bool)value));
+                        else if (value is CustomLogicColorBuiltin)
+                            settings.Add(variableName, new ColorSetting(((CustomLogicColorBuiltin)value).Value));
+                        else if (value is CustomLogicVector3Builtin)
+                            settings.Add(variableName, new Vector3Setting(((CustomLogicVector3Builtin)value).Value));
+                    }
+                }
+            }
+            catch
+            {
             }
             return settings;
         }

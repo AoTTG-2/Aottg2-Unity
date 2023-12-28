@@ -19,6 +19,7 @@
         public static string Boom4 = "Boom4Effect";
         public static string Boom5 = "Boom5Effect";
         public static string Boom6 = "Boom6Effect";
+        public static string Boom7 = "Boom7Effect";
         public static string TitanBite = "BiteEffect";
         public static string ShifterThunder = "ShifterThunderEffect";
         public static string BladeThrowHit = "BladeThrowHitEffect";

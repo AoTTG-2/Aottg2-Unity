@@ -55,7 +55,7 @@ namespace Characters
         {
             ResetAttackState(attack);
             if (_currentAttack == ShifterAttacks.AttackDefault)
-                StateAction(TitanState.Attack, ArmoredAnimations.Attack);
+                StateAttack(ArmoredAnimations.Attack);
         }
 
         protected override void UpdateAttack()
@@ -66,7 +66,7 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.06f)
                 {
                     _currentAttackStage = 1;
-                    ArmoredCache.HandLHitbox.Activate(0f, 0.35f);
+                    ArmoredCache.HandLHitbox.Activate(0f, 0.35f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }

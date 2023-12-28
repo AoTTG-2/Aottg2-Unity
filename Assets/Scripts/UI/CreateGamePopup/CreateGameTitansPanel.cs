@@ -27,6 +27,7 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.TitanSpawnAbnormal, UIManager.GetLocale(cat, sub, "Abnormal"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.TitanSpawnJumper, UIManager.GetLocale(cat, sub, "Jumper"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.TitanSpawnCrawler, UIManager.GetLocale(cat, sub, "Crawler"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.TitanSpawnThrower, UIManager.GetLocale(cat, sub, "Thrower"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.TitanSpawnPunk, UIManager.GetLocale(cat, sub, "Punk"), elementWidth: inputWidth);
             CreateHorizontalDivider(DoublePanelLeft);
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.TitanSizeEnabled, UIManager.GetLocale(cat, sub, "SizeEnabled"));

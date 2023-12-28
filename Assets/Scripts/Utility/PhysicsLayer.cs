@@ -24,6 +24,7 @@ namespace Utility
         public static int MapEditorObject = 25;
         public static int MapEditorGizmo = 26;
         public static int MinimapIcon = 27;
+        public static int Background = 28;
         private static Dictionary<int, LayerMask> _masks = new Dictionary<int, LayerMask>();
 
         public static void Init()
@@ -47,6 +48,8 @@ namespace Utility
                 MapObjectCharacters, MapObjectProjectiles, NPC});
             SetLayerCollisions(MapEditorObject, new int[0]);
             SetLayerCollisions(MapEditorGizmo, new int[0]);
+            SetLayerCollisions(MinimapIcon, new int[0]);
+            SetLayerCollisions(Background, new int[0]);
         }
 
         public static LayerMask GetMask(params int[] layers)
