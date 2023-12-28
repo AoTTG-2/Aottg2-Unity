@@ -3928,8 +3928,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0

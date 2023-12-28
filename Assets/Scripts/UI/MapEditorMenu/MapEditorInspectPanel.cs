@@ -20,7 +20,7 @@ namespace UI
     class MapEditorInspectPanel : HeadedPanel
     {
         protected override float Width => 400f;
-        protected override float Height => 1000f;
+        protected override float Height => 990f;
         protected override float TopBarHeight => 0f;
         protected override float BottomBarHeight => 0f;
         protected override float VerticalSpacing => 10f;
@@ -121,17 +121,20 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateToggleSetting(SinglePanel, style, _visible, "Visible", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _shader, "Shader",
-               new string[] { MapObjectShader.Default, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective },
+               new string[] { MapObjectShader.Default, MapObjectShader.DefaultNoTint, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective },
                elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
-            ElementFactory.CreateColorSetting(SinglePanel, style, _color, "Color", _menu.ColorPickPopup, onChangeColor: () => OnChange(),
-                elementHeight: 25f);
+            if (_shader.Value != MapObjectShader.DefaultNoTint)
+            {
+                ElementFactory.CreateColorSetting(SinglePanel, style, _color, "Color", _menu.ColorPickPopup, onChangeColor: () => OnChange(),
+               elementHeight: 25f);
+            }
             if (MapObjectShader.IsLegacyShader(_shader.Value))
             {
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingY, "Tiling Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             }
-            else if (_shader.Value != MapObjectShader.Default)
+            else if (_shader.Value != MapObjectShader.Default && _shader.Value != MapObjectShader.DefaultNoTint)
             {
                 if (_shader.Value == MapObjectShader.Reflective)
                 {
@@ -314,7 +317,7 @@ namespace UI
             script.PhysicsMaterial = _physicsMaterial.Value;
             if (_shader.Value != script.Material.Shader)
             {
-                if (_shader.Value == MapObjectShader.Default)
+                if (_shader.Value == MapObjectShader.Default || _shader.Value == MapObjectShader.DefaultNoTint)
                 {
                     script.Material = new MapScriptBaseMaterial();
                     _color.Value = new Color255();

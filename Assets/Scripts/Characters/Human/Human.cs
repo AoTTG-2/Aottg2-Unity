@@ -44,6 +44,8 @@ namespace Characters
         public float CurrentGas = -1f;
         public float MaxGas = -1f;
         public float GasUsage = 0.2f;
+        public float HorseSpeed = 50f;
+        public string CurrentSpecial;
         public BaseTitan Grabber;
         public Transform GrabHand;
         public MapObject MountedMapObject;
@@ -421,6 +423,12 @@ namespace Characters
                 {
                     Setup._part_blade_l.SetActive(false);
                     Setup._part_blade_r.SetActive(false);
+                    if (Weapon is AHSSWeapon)
+                    {
+                        CancelHookLeftKey = true;
+                        CancelHookRightKey = true;
+                        CancelHookBothKey = true;
+                    }
                 }
                 else if (Weapon is ThunderspearWeapon)
                 {
@@ -654,7 +662,7 @@ namespace Characters
         {
             if (Dead)
                 return;
-            if (type == "Eat")
+            if (type == "TitanEat")
             {
                 base.GetHitRPC(viewId, name, damage, type, collider);
                 if (!Dead)
@@ -877,6 +885,7 @@ namespace Characters
                         {
                             HumanCache.BladeHitLeft.Deactivate();
                             HumanCache.BladeHitRight.Deactivate();
+                            ToggleBladeTrails(false);
                         }
                         if (Cache.Animation[AttackAnimation].normalizedTime >= 1f)
                             Idle();
@@ -1050,7 +1059,7 @@ namespace Characters
                     }
                     else if (State == HumanState.Slide)
                     {
-                        newVelocity = Cache.Rigidbody.velocity * 0.99f;
+                        newVelocity = Cache.Rigidbody.velocity * 0.985f;
                         if (_currentVelocity.magnitude < RunSpeed * 1.2f)
                         {
                             Idle();
@@ -1515,24 +1524,27 @@ namespace Characters
             }
             else
             {
-                if (IsHookedLeft() && IsHookedRight())
+                if (!Grounded)
                 {
-                    if (_almostSingleHook)
+                    if (IsHookedLeft() && IsHookedRight())
+                    {
+                        if (_almostSingleHook)
+                        {
+                            _needLean = true;
+                            z = GetLeanAngle(HookRight.GetHookPosition(), true);
+                        }
+                    }
+                    else if (IsHookedLeft())
                     {
                         _needLean = true;
-                        z = GetLeanAngle(HookRight.GetHookPosition(), true);
+                        z = GetLeanAngle(HookLeft.GetHookPosition(), true);
                     }
-                }
-                else if (IsHookedLeft())
-                {
-                    _needLean = true;
-                    z = GetLeanAngle(HookLeft.GetHookPosition(), true);
-                }
-                else if (IsHookedRight())
-                {
-                    _needLean = true;
-                    z = GetLeanAngle(HookRight.GetHookPosition(), false);
+                    else if (IsHookedRight())
+                    {
+                        _needLean = true;
+                        z = GetLeanAngle(HookRight.GetHookPosition(), false);
 
+                    }
                 }
                 if (_needLean)
                 {
@@ -1778,7 +1790,7 @@ namespace Characters
             {
                 SetupWeapon(set, humanWeapon);
                 SetupItems();
-                SetupSpecial();
+                SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
             }
             FinishSetup = true;
             CustomAnimationSpeed();
@@ -1861,12 +1873,11 @@ namespace Characters
             Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), 10f));
         }
 
-        protected void SetupSpecial()
+        public void SetSpecial(string special)
         {
-            var special = SettingsManager.InGameCharacterSettings.Special.Value;
-            var loadout = SettingsManager.InGameCharacterSettings.Loadout.Value;
+            CurrentSpecial = special;
             Special = HumanSpecials.GetSpecialUseable(this, special);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(loadout, special));
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
 
         protected void LoadSkin()
@@ -2197,7 +2208,7 @@ namespace Characters
 
         public void StartBladeSwing()
         {
-            if (_needLean)
+            if (HookLeft.IsHooked() || HookRight.IsHooked())
             {
                 if (SettingsManager.InputSettings.General.Left.GetKey())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
@@ -2212,6 +2223,7 @@ namespace Characters
                 AttackAnimation = HumanAnimations.Attack2;
             else if (SettingsManager.InputSettings.General.Right.GetKey())
                 AttackAnimation = HumanAnimations.Attack1;
+            /*
             else if (HookLeft.IsHooked() && HookLeft.GetHookParent() != null)
             {
                 BaseCharacter character = HookLeft.GetHookCharacter();
@@ -2228,6 +2240,7 @@ namespace Characters
                 else
                     AttackAnimation = GetBladeAnimationMouse();
             }
+            */
             else
             {
                 BaseTitan titan = FindNearestTitan();
@@ -2309,7 +2322,7 @@ namespace Characters
             }
             else
             {
-                //ToggleBladeTrails(false, 0.2f);
+                ToggleBladeTrails(false);
                 HumanCache.BladeHitLeft.Deactivate();
                 HumanCache.BladeHitRight.Deactivate();
                 if (!_attackRelease)
@@ -2424,19 +2437,19 @@ namespace Characters
             CurrentGas = Mathf.Max(CurrentGas, 0f);
         }
 
-        private void ToggleBladeTrails(bool toggle, float fadeTime = 0f)
+        private void ToggleBladeTrails(bool toggle)
         {
-            if (toggle)
+            if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
             {
-                if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
-                {
-                    Setup.LeftTrail.enabled = true;
-                    Setup.RightTrail.enabled = true;
-                    Setup.LeftTrail.Emit = true;
-                    Setup.RightTrail.Emit = true;
-                    Setup.LeftTrail._emitTime = 1f;
-                    Setup.RightTrail._emitTime = 1f;
-                }
+                Setup.LeftTrail.Emit = true;
+                Setup.RightTrail.Emit = true;
+                Setup.LeftTrail._emitTime = 0f;
+                Setup.RightTrail._emitTime = 0f;
+            }
+            else
+            {
+                Setup.LeftTrail._emitTime = 0.1f;
+                Setup.RightTrail._emitTime = 0.1f;
             }
         }
 
@@ -2472,6 +2485,34 @@ namespace Characters
             }
             if (Setup != null)
                 Setup.DeleteDie();
+        }
+
+        protected override void CheckGround()
+        {
+
+            JustGrounded = false;
+            if (CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
+            {
+                if (!Grounded)
+                    Grounded = JustGrounded = true;
+            }
+            else if (_needLean && (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG))
+            {
+                if (CheckRaycastIgnoreTriggers(HumanCache.GroundLeft.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
+                {
+                    if (!Grounded)
+                        Grounded = JustGrounded = true;
+                }
+                else if (CheckRaycastIgnoreTriggers(HumanCache.GroundRight.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
+                {
+                    if (!Grounded)
+                        Grounded = JustGrounded = true;
+                }
+                else
+                    Grounded = false;
+            }
+            else
+                Grounded = false;
         }
 
         protected override List<Renderer> GetFPSDisabledRenderers()

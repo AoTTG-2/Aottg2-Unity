@@ -1,99 +1,137 @@
 fileFormatVersion: 2
-guid: c25ef15e275e761409cc3ed7ae0aa590
+guid: 118648752923d01488834fcc535b5438
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: door
-    100004: door.001
-    100006: Light
-    100008: utgard
-    100010: utgardbase
-    100012: utgardstairs
-    100014: utgardstalls.003
-    100016: Windows
-    400000: //RootNode
-    400002: door
-    400004: door.001
-    400006: Light
-    400008: utgard
-    400010: utgardbase
-    400012: utgardstairs
-    400014: utgardstalls.003
-    400016: Windows
-    2300000: door
-    2300002: door.001
-    2300004: utgard
-    2300006: utgardbase
-    2300008: utgardstairs
-    2300010: utgardstalls.003
-    2300012: Windows
-    3300000: door
-    3300002: door.001
-    3300004: utgard
-    3300006: utgardbase
-    3300008: utgardstairs
-    3300010: utgardstalls.003
-    3300012: Windows
-    4300000: utgard
-    4300002: utgardbase
-    4300004: utgardstairs
-    4300006: Windows
-    4300008: door
-    4300010: door.001
-    4300012: utgardstalls.003
-    9500000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleDoorsRoom_mat
+    second: {fileID: 2100000, guid: 72d040f18e270c84c84131d8a77de0cf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleRubble_mat
+    second: {fileID: 2100000, guid: b037e4c461820414db9d673cc311ff95, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleStables_mat
+    second: {fileID: 2100000, guid: a9ded8aa4e5a24c46a7c2c12a49c2416, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleTeeth_mat
+    second: {fileID: 2100000, guid: 7a43a6789f26b844ba221aedfda50666, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleTowers_mat
+    second: {fileID: 2100000, guid: 68be2883e3577f549884ced0dc53d174, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CastleWalls_mat
+    second: {fileID: 2100000, guid: d628f93f846e80c449e71b4e905e8144, type: 2}
   materials:
-    importMaterials: 0
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
     importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

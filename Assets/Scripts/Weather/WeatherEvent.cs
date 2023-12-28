@@ -229,11 +229,12 @@ namespace Weather
 
     public enum WeatherSkybox
     {
-        Day,
-        Dawn,
-        Dusk,
-        Night,
-        Cloudy,
-        Storm
+        Day1,
+        Dawn1,
+        Dusk1,
+        Night1,
+        Night2,
+        Cloudy1,
+        Storm1
     }
 }

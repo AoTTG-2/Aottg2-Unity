@@ -199,12 +199,12 @@ namespace Controllers
             return;
             if (_humanInput.HookLeft.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 800, "");
+                _inGameMenu.ShowKillFeed("test", "test", 800, "Thunderspear");
                 _inGameMenu.ShowKillScore(800);
             }
             if (_humanInput.HookRight.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 3000, "");
+                _inGameMenu.ShowKillFeed("test", "test", 3000, "Thunderspear");
                 _inGameMenu.ShowKillScore(3000);
             }
         }
@@ -253,7 +253,7 @@ namespace Controllers
                         }
                         else
                             _human.Weapon.SetInput(false);
-                        _human._gunArmAim = attackInput.GetKey();
+                        _human._gunArmAim = attackInput.GetKey() || _human.Weapon.IsActive;
                     }
                     else
                         _human.Weapon.ReadInput(attackInput);

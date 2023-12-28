@@ -41,12 +41,22 @@ namespace UI
             int count = 0;
             CreateHorizontalDivider(DoublePanelLeft);
             var tooltips = new Dictionary<string, string>();
+            var dropboxes = new Dictionary<string, string[]>();
             foreach (string key in settings.Keys)
             {
                 BaseSetting setting = settings[key];
                 if (key.EndsWith("Tooltip") && setting is StringSetting)
                 {
                     tooltips[key.Substring(0, key.Length - 7)] = ((StringSetting)setting).Value;
+                }
+                else if (key.EndsWith("Dropbox") && setting is StringSetting)
+                {
+                    List<string> options = new List<string>();
+                    foreach (string option in ((StringSetting)setting).Value.Split(','))
+                        options.Add(option.Trim());
+                    if (options.Count == 0)
+                        options.Add("None");
+                    dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
                 }
             }
             foreach (string key in settings.Keys)
@@ -57,12 +67,16 @@ namespace UI
                     continue;
                 if (key.EndsWith("Tooltip") && setting is StringSetting)
                     continue;
+                if (key.EndsWith("Dropbox") && setting is StringSetting)
+                    continue;
                 string title = Util.PascalToSentence(key);
                 string translated = UIManager.GetLocale(cat, sub, key, defaultValue: title);
                 string tooltip = "";
                 if (tooltips.ContainsKey(key))
                     tooltip = tooltips[key];
-                if (setting is BoolSetting)
+                if (dropboxes.ContainsKey(key) && setting is StringSetting)
+                    ElementFactory.CreateDropdownSetting(panel, style, setting, translated, dropboxes[key], tooltip, elementWidth: 180f);
+                else if (setting is BoolSetting)
                     ElementFactory.CreateToggleSetting(panel, style, setting, translated, tooltip);
                 else if (setting is StringSetting || setting is FloatSetting || setting is IntSetting)
                     ElementFactory.CreateInputSetting(panel, style, setting, translated, tooltip, elementWidth: 180f);

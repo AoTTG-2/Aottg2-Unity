@@ -25,6 +25,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(camera.Cache.Transform.rotation.eulerAngles);
             if (name == "Velocity")
                 return new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
+            if (name == "FOV")
+                return CustomLogicManager.CameraFOV;
             return null;
         }
 
@@ -61,6 +63,8 @@ namespace CustomLogic
                 camera.Cache.Transform.LookAt(vectorBuiltin.Value);
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
             }
+            else if (name == "SetFOV")
+                CustomLogicManager.CameraFOV = parameters[0].UnboxToFloat();
             return base.CallMethod(name, parameters);
         }
     }

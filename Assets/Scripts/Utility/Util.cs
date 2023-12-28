@@ -207,6 +207,25 @@ namespace Utility
             return list;
         }
 
+        public static List<List<T>> GroupBuckets<T>(List<T> items, int buckets)
+        {
+            var list = new List<List<T>>();
+            for (int i = 0; i < buckets; i++)
+                list.Add(new List<T>());
+            if (items.Count == 0 || buckets == 0)
+                return list;
+            int itemsPerBucket = items.Count / buckets;
+            int currentBucket = 0;
+            foreach (T item in items)
+            {
+                var bucket = list[currentBucket];
+                bucket.Add(item);
+                if (bucket.Count >= itemsPerBucket && currentBucket < buckets - 1)
+                    currentBucket++;
+            }
+            return list;
+        }
+
         public static object GetRandomFromWeightedList(List<object> values, List<float> weights)
         {
             float totalWeight = 0f;

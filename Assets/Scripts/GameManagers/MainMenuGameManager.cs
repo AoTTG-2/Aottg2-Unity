@@ -44,6 +44,16 @@ namespace GameManagers
             InGameManager.OnJoinRoom();
         }
 
+        public override void OnJoinRoomFailed(short returnCode, string message)
+        {
+            Debug.Log(message);
+        }
+
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            Debug.Log(message);
+        }
+
         private void UpdateCachedRoomList(List<RoomInfo> roomList)
         {
             for (int i = 0; i < roomList.Count; i++)

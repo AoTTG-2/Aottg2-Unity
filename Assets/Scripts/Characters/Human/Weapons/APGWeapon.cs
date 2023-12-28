@@ -44,7 +44,7 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction), 0.2f);
-            human.PlaySound(HumanSounds.GunExplodeSound);
+            human.PlaySound(HumanSounds.GunExplode);
             human.HumanCache.APGHit.transform.position = start;
             human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];
@@ -73,7 +73,7 @@ namespace Characters
             radius, radius, 0.25f};
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.identity, settings: settings);
             human.HumanCache.APGHit.Activate(0f, 0.1f);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootGun();
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace UI
     class MapEditorTopPanel: HeadedPanel
     {
         protected override float Width => 1960f;
-        protected override float Height => 57f;
+        protected override float Height => 60f;
 
         protected override float TopBarHeight => 0f;
         protected override float BottomBarHeight => 0f;
@@ -69,7 +69,7 @@ namespace UI
             // options dropdown
             dropdownWidth = 130f;
             options = new List<string>();
-            foreach (string option in new string[] { "Editor", "MapInfo", "CustomLogic" })
+            foreach (string option in new string[] { "Editor", "MapInfo", "CustomLogic", "CustomAssets" })
             {
                 options.Add(UIManager.GetLocale(cat, "Top", option));
             }
@@ -186,6 +186,8 @@ namespace UI
                 _menu.CustomLogicPopup.Show();
             else if (index == 0) // editor options
                 _menu.SettingsPopup.Show();
+            else if (index == 3) // custom assets
+                _menu.CustomAssetsPopup.Show();
         }
 
         protected void OnButtonClick(string name)
