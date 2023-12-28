@@ -17,5 +17,7 @@ namespace Utility
         public static string GameProgress = Documents + "/GameProgress";
         public static string CustomLogic = Documents + "/CustomLogic";
         public static string CustomMap = Documents + "/CustomMap";
+        public static string CustomAssetsLocal = Documents + "/CustomAssets";
+        public static string CustomAssetsWeb = Documents + "/CustomAssets/WebDownload";
     }
 }

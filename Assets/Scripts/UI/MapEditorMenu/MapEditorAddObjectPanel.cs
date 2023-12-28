@@ -43,7 +43,13 @@ namespace UI
         protected virtual List<string> GetItems(string category)
         {
             if (category == "All")
-                return BuiltinMapPrefabs.AllPrefabs.Keys.ToList();
+            {
+                var all = BuiltinMapPrefabs.AllPrefabs.Keys.ToList();
+                all.AddRange(AssetBundleManager.GetAssetList());
+                return all;
+            }
+            else if (category == "Custom")
+                return AssetBundleManager.GetAssetList();
             else
                 return BuiltinMapPrefabs.PrefabCategories[category].Select(x => x.Name).ToList();
         }

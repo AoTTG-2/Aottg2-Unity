@@ -12,10 +12,11 @@ namespace Characters
         Human _owner;
         HorseComponentCache HorseCache;
         public HorseState State;
-        private float RunSpeed = 50f;
         private float WalkSpeed = 15f;
         private float RunCloseSpeed = 20f;
         private float TeleportTime = 10f;
+        protected override Vector3 Gravity => Vector3.down * 30f;
+        private float JumpForce = 30f;
         private float _idleTimeLeft;
         private float _teleportTimeLeft;
         private float _jumpCooldownLeft;
@@ -24,7 +25,6 @@ namespace Characters
         {
             base.Init(true, human.Team);
             _owner = human;
-            RunSpeed = SettingsManager.InGameCurrent.Misc.HorseSpeed.Value;
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -37,7 +37,7 @@ namespace Characters
         {
             if (_jumpCooldownLeft > 0f || !Grounded)
                 return;
-            Cache.Rigidbody.AddForce(Vector3.up * 20f, ForceMode.VelocityChange);
+            Cache.Rigidbody.AddForce(Vector3.up * JumpForce, ForceMode.VelocityChange);
             _jumpCooldownLeft = 0f;
         }
 
@@ -181,22 +181,22 @@ namespace Characters
                             Cache.Rigidbody.velocity = Vector3.up * Cache.Rigidbody.velocity.y;
                         else
                         {
-                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(RunSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
+                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(_owner.HorseSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
                                 ForceMode.Acceleration);
                         }
                     }
                     else if (State == HorseState.WalkToPoint || State == HorseState.RunToPoint  || 
                         State == HorseState.ControlledWalk || State == HorseState.ControlledRun)
                     {
-                        float speed = RunSpeed;
+                        float speed = _owner.HorseSpeed;
                         if (State == HorseState.ControlledWalk)
                             speed = WalkSpeed;
                         else if (State == HorseState.WalkToPoint)
                             speed = RunCloseSpeed;
-                        Cache.Rigidbody.AddForce(Cache.Transform.forward * RunSpeed, ForceMode.Acceleration);
+                        Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.HorseSpeed, ForceMode.Acceleration);
                         if (Cache.Rigidbody.velocity.magnitude >= speed)
                         {
-                            if (speed == RunSpeed)
+                            if (speed == _owner.HorseSpeed)
                                 Cache.Rigidbody.AddForce((speed - Cache.Rigidbody.velocity.magnitude) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);
                             else
                                 Cache.Rigidbody.AddForce((Mathf.Max(speed - Cache.Rigidbody.velocity.magnitude, -1f)) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);

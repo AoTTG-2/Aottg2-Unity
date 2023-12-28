@@ -24,6 +24,11 @@ namespace Spawnables
                 spawnable = go.AddComponent<SupplySpawnable>();
                 spawnable.Setup(info.Sender, 30f, settings);
             }
+            else if (name == SpawnablePrefabs.Rock1)
+            {
+                spawnable = go.AddComponent<Rock1Spawnable>();
+                spawnable.Setup(info.Sender, 10f, settings);
+            }
             else
             {
                 spawnable = go.AddComponent<BaseSpawnable>();

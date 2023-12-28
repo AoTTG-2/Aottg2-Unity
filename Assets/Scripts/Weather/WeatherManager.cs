@@ -72,19 +72,11 @@ namespace Weather
         {
             _blendedShader = Shader.Find("Skybox/Blended");
             string[] skyboxNames = Util.EnumToStringArray<WeatherSkybox>();
-            string[] parts = Util.EnumToStringArray<SkyboxCustomSkinPartId>();
             foreach (string skyboxName in skyboxNames)
-                SkyboxMaterials.Add(skyboxName, ResourceManager.InstantiateAsset<Material>(ResourcePaths.Weather, 
-                    "Skyboxes/" + skyboxName.ToString()  + "/" + skyboxName.ToString() + "Skybox"));
+                SkyboxMaterials.Add(skyboxName, ResourceManager.InstantiateAsset<Material>(ResourcePaths.Weather,
+                    "Skyboxes/" + skyboxName.ToString() + "/" + skyboxName.ToString() + "Skybox"));
             foreach (string skybox1 in skyboxNames)
-            {
                 SkyboxBlendedMaterials.Add(skybox1, new Dictionary<string, Material>());
-                foreach (string skybox2 in skyboxNames)
-                {
-                    Material blend = CreateBlendedSkybox(_blendedShader, parts, skybox1, skybox2);
-                    SkyboxBlendedMaterials[skybox1].Add(skybox2, blend);
-                }
-            }
         }
 
         public static void TakeFlashlight(Transform parent)
@@ -102,6 +94,7 @@ namespace Weather
                 blend.SetTexture(texName, SkyboxMaterials[skybox1].GetTexture(texName));
                 blend.SetTexture(texName + "2", SkyboxMaterials[skybox2].GetTexture(texName));
             }
+            blend.SetColor("_Tint", new Color(0.5f, 0.5f, 0.5f));
             SetSkyboxBlend(blend, 0f);
             return blend;
         }
@@ -427,7 +420,7 @@ namespace Weather
             yield return new WaitForEndOfFrame();
             Material mat;
             if (!IsWeatherEnabled())
-                mat = GetBlendedSkybox("Day", "Day");
+                mat = GetBlendedSkybox("Day1", "Day1");
             else
                 mat = GetBlendedSkybox(_currentWeather.Skybox.Value, _targetWeather.Skybox.Value);
             var skybox = SceneLoader.CurrentCamera.Skybox;
@@ -435,16 +428,25 @@ namespace Weather
             {
                 mat.SetColor("_Tint", _currentWeather.SkyboxColor.Value.ToColor());
                 foreach (var camera in _skyboxCameras)
-                    camera.gameObject.GetComponent<Skybox>().material = mat;
+                    camera.gameObject.GetComponentInChildren<Skybox>().material = mat;
             }
         }
 
         private Material GetBlendedSkybox(string skybox1, string skybox2)
         {
+            if (!char.IsDigit(skybox1[skybox1.Length - 1]))
+                skybox1 += "1";
+            if (!char.IsDigit(skybox2[skybox2.Length - 1]))
+                skybox2 += "1";
             if (SkyboxBlendedMaterials.ContainsKey(skybox1))
             {
-                if (SkyboxBlendedMaterials[skybox1].ContainsKey(skybox2))
-                    return SkyboxBlendedMaterials[skybox1][skybox2];
+                if (!SkyboxBlendedMaterials[skybox1].ContainsKey(skybox2))
+                {
+                    string[] parts = Util.EnumToStringArray<SkyboxCustomSkinPartId>();
+                    Material blend = CreateBlendedSkybox(_blendedShader, parts, skybox1, skybox2);
+                    SkyboxBlendedMaterials[skybox1].Add(skybox2, blend);
+                }
+                return SkyboxBlendedMaterials[skybox1][skybox2];
             }
             return null;
         }

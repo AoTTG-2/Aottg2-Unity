@@ -9,6 +9,7 @@ namespace Map
         protected string HeaderPrefix = "/// ";
         protected char Delimiter = '\n';
         public MapScriptOptions Options  = new MapScriptOptions();
+        public MapScriptCustomAssets CustomAssets = new MapScriptCustomAssets();
         public MapScriptObjects Objects = new MapScriptObjects();
         public string Logic = string.Empty;
 
@@ -40,6 +41,8 @@ namespace Map
             List<string> items = new List<string>();
             items.Add(CreateHeader("Options"));
             items.Add(Options.Serialize());
+            items.Add(CreateHeader("CustomAssets"));
+            items.Add(CustomAssets.Serialize());
             items.Add(CreateHeader("Objects"));
             items.Add(Objects.Serialize());
             items.Add(CreateHeader("Logic"));
@@ -82,6 +85,8 @@ namespace Map
             string currentSectionCSV = string.Join(Delimiter.ToString(), currentSectionItems.ToArray());
             if (currentSection == "Options")
                 Options.Deserialize(currentSectionCSV);
+            else if (currentSection == "CustomAssets")
+                CustomAssets.Deserialize(currentSectionCSV);
             else if (currentSection == "Objects")
                 Objects.Deserialize(currentSectionCSV);
             else if (currentSection == "Logic")

@@ -217,6 +217,11 @@ namespace Characters
             Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
         }
 
+        public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
+        {
+            Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
+        }
+
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
         {
             if (!Cache.Animation.IsPlaying(animation))
@@ -228,6 +233,17 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
+            Cache.Animation.CrossFade(animation, fadeTime);
+            if (startTime > 0f)
+                Cache.Animation[animation].normalizedTime = startTime;
+        }
+
+        [PunRPC]
+        public void CrossFadeWithSpeedRPC(string animation, float speed, float fadeTime, float startTime, PhotonMessageInfo info)
+        {
+            if (info.Sender != Cache.PhotonView.Owner)
+                return;
+            Cache.Animation[animation].speed = speed;
             Cache.Animation.CrossFade(animation, fadeTime);
             if (startTime > 0f)
                 Cache.Animation[animation].normalizedTime = startTime;
@@ -456,10 +472,9 @@ namespace Characters
             return v.normalized;
         }
 
-        protected float GetAngleToTarget(Vector3 target)
+        protected float GetAngleToTarget(Vector3 targetDirection)
         {
-            Vector3 to = target - Cache.Transform.position;
-            float angleX = -Mathf.Atan2(to.z, to.x) * Mathf.Rad2Deg;
+            float angleX = -Mathf.Atan2(targetDirection.z, targetDirection.x) * Mathf.Rad2Deg;
             angleX = -Mathf.DeltaAngle(angleX, Cache.Transform.rotation.eulerAngles.y - 90f);
             return angleX;
         }

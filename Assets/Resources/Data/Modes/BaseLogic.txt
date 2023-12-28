@@ -270,6 +270,13 @@ component MovePingPong
             self.StartPosition = self.MapObject.Position + self.StartPosition;
             self.EndPosition = self.MapObject.Position + self.EndPosition;
         }
+
+        distance = Vector3.Distance(self.StartPosition, self.EndPosition);
+        self._step = 1.0;
+        if (distance > 0)
+        {
+            self._step = self.Speed / distance;
+        }
     }
 
     function OnTick()
@@ -281,7 +288,7 @@ component MovePingPong
         }
         if (self._backwards)
         {
-            self._currentProgress = self._currentProgress - Time.TickTime;
+            self._currentProgress = self._currentProgress - Time.TickTime * self._step;
             if (self._currentProgress <= 0.0)
             {
                 self._currentProgress = 0.0;
@@ -292,7 +299,7 @@ component MovePingPong
         }
         else
         {
-            self._currentProgress = self._currentProgress + Time.TickTime;
+            self._currentProgress = self._currentProgress + Time.TickTime * self._step;
             if (self._currentProgress >= 1.0)
             {
                 self._currentProgress = 1.0;
@@ -975,6 +982,50 @@ class Animal
         else
         {
             self._targetRotation = Vector3(Random.RandomFloat(-1.0, 1.0), 0, Random.RandomFloat(-1.0, 1.0)).Normalized;
+        }
+    }
+}
+
+component TitanBarrier
+{
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Titan")
+        {
+            Rotation = Vector3.GetRotationDirection(self.MapObject.Position, other.Position);
+            if (Math.Abs(Rotation.X) > Math.Abs(Rotation.Z) || Math.Abs(Rotation.X) > Math.Abs(Rotation.Y))
+            {
+                if (Rotation.X > 0)
+                {
+                    other.Position = Vector3(other.Position.X + (0.05 +0.02 * Math.Abs(other.Velocity.X)), other.Position.Y, other.Position.Z);
+                }
+                else
+                {
+                    other.Position = Vector3(other.Position.X - (0.05 + 0.02 * Math.Abs(other.Velocity.X)), other.Position.Y, other.Position.Z);
+                }
+            }
+            if (Math.Abs(Rotation.Y) > Math.Abs(Rotation.X) || Math.Abs(Rotation.Y) > Math.Abs(Rotation.Z))
+            {
+                if (Rotation.Y > 0)
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y + (0.05 + 0.02 * Math.Abs(other.Velocity.Y)), other.Position.Z);
+                }
+                else
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y - (0.05 + 0.02 * Math.Abs(other.Velocity.Y)), other.Position.Z);
+                }
+            }
+            if (Math.Abs(Rotation.Z) > Math.Abs(Rotation.X) || Math.Abs(Rotation.Z) > Math.Abs(Rotation.Y))
+            {
+                if (Rotation.Z > 0)
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y, other.Position.Z + (0.05 + 0.02 * Math.Abs(other.Velocity.Z)));
+                }
+                else
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y, other.Position.Z - (0.05 + 0.02 * Math.Abs(other.Velocity.Z)));
+                }
+            }
         }
     }
 }

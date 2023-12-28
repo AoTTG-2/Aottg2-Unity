@@ -147,6 +147,7 @@ namespace UI
             _currentCategoryPanelName.Value = name;
             _currentCategoryPanel = ElementFactory.CreateEmptyPanel(transform, t, enabled: true);
             _currentCategoryPanel.SetActive(false);
+            _currentCategoryPanel.transform.localPosition = Vector3.up * GetPanelVerticalOffset();
             if (MaskBackground != null)
                 MaskBackground.color = UIManager.GetThemeColor(ThemePanel, "MainBody", "BackgroundColor");
             StartCoroutine(WaitAndEnableCategoryPanel());
@@ -241,7 +242,7 @@ namespace UI
         protected virtual void BindPanel(GameObject panel, bool scrollBar)
         {
             panel.transform.SetParent(gameObject.transform, false);
-            panel.transform.localPosition = Vector3.zero;
+            panel.transform.localPosition = Vector3.up * GetPanelVerticalOffset();
             float height = GetPanelHeight();
             panel.GetComponent<RectTransform>().sizeDelta = new Vector2(GetPanelWidth(), height);
             panel.transform.Find("ScrollView").GetComponent<LayoutElement>().minHeight = height;
@@ -273,6 +274,11 @@ namespace UI
         public virtual float GetPanelHeight()
         {
             return GetHeight();
+        }
+
+        public virtual float GetPanelVerticalOffset()
+        {
+            return 0f;
         }
 
         protected virtual float GetWidth()

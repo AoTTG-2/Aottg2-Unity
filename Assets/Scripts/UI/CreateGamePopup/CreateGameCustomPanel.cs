@@ -76,7 +76,7 @@ namespace UI
                 GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelRight, 10f, TextAnchor.UpperLeft);
                 foreach (string button in new string[] { "New" })
                 {
-                    GameObject obj = ElementFactory.CreateTextButton(group.transform, style, UIManager.GetLocaleCommon(button),
+                    GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                         onClick: () => OnCustomButtonClick(button, false));
                 }
             }

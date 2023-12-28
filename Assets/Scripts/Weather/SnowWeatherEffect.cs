@@ -20,23 +20,17 @@ namespace Weather
         public override void SetLevel(float level)
         {
             base.SetLevel(level);
-            return;
             if (level <= 0f)
             {
                 return;
             }
-            if (level <= 0.5f)
-            {
-                float scale = level / 0.5f;
-                //SetActiveEmitter(0);
-                SetActiveAudio(0, 0.25f + 0.25f * scale);
-            }
-            else
-            {
-                float scale = (level - 0.5f) / 0.5f;
-                //SetActiveEmitter(1);
-                SetAudioVolume(1, 0.25f + 0.25f * scale);
-            }
+            float scale = level;
+            SetActiveParticleSystem(0);
+            var main = _particleSystems[0].main;
+            var emission = _particleSystems[0].emission;
+            emission.rateOverTime = ClampParticles(100f + scale * 200f);
+            main.startSize = 25f;
+            SetActiveAudio(0, 0.25f + 0.25f * scale);
         }
 
         public override void Setup(Transform parent)
