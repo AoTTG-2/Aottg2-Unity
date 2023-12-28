@@ -65,6 +65,7 @@
         public string AttackBrushChestR = "Amarture_VER2|attack.chest.R";
         public string AttackSlapBack = "Amarture_VER2|attack.slap.back";
         public string AttackSlapFace = "Amarture_VER2|attack.slap.face";
+        public string AttackRockThrow = "Amarture_VER2|attack.throw";
         public override string SitIdle => "Amarture_VER2|sit_idle";
         public override string SitDown => "Amarture_VER2|sit_down";
         public override string SitUp => "Amarture_VER2|sit_getup";

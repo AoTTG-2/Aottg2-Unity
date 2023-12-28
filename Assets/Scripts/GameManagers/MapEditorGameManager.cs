@@ -11,6 +11,7 @@ using MapEditor;
 using CustomLogic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace GameManagers
 {
@@ -46,7 +47,16 @@ namespace GameManagers
         public void AddObject(string name)
         {
             var mapScriptObjects = new MapScriptObjects();
-            var prefab = BuiltinMapPrefabs.AllPrefabs[name];
+            MapScriptSceneObject prefab;
+            if (name.StartsWith("Custom/"))
+            {
+                prefab = new MapScriptSceneObject();
+                prefab.Asset = name;
+                prefab.Name = name.Split('/')[2];
+                prefab.Material.Shader = MapObjectShader.DefaultNoTint;
+            }
+            else
+                prefab = (MapScriptSceneObject)BuiltinMapPrefabs.AllPrefabs[name];
             prefab.SetPosition(SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * 50f);
             mapScriptObjects.Objects.Add(prefab);
             NewCommand(new AddObjectCommand(mapScriptObjects.Objects));
@@ -218,6 +228,8 @@ namespace GameManagers
             _menu.ShowHierarchyPanel();
             LogicEvaluator = CustomLogicManager.GetEditorEvaluator(MapScript.Logic);
             CurrentGizmo = _positionGizmo;
+            if (MapLoader.Errors.Count > 0)
+                _menu.ErrorPopup.Show(string.Join("\n", MapLoader.Errors));
         }
 
         protected override void Awake()

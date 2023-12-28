@@ -125,16 +125,18 @@ namespace Cameras
 
         public void SyncCustomPosition()
         {
-            Camera.fieldOfView = 50f;
+            Camera.fieldOfView = CustomLogicManager.CameraFOV > 0f ? CustomLogicManager.CameraFOV : 50f;
             Cache.Transform.position = CustomLogicManager.CameraPosition;
             Cache.Transform.rotation = Quaternion.Euler(CustomLogicManager.CameraRotation);
         }
         
-        protected void LateUpdate()
+        protected override void LateUpdate()
         {
             if (CustomLogicManager.Cutscene || CustomLogicManager.ManualCamera)
             {
                 SyncCustomPosition();
+                base.LateUpdate();
+                return;
             }
             else
             {
@@ -152,7 +154,7 @@ namespace Cameras
                     }
                     else
                         UpdateSpectate();
-                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human)
+                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human && _cameraDistance > 0f)
                         UpdateObstacles();
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
@@ -160,6 +162,7 @@ namespace Cameras
             }
             UpdateFOV();
             UpdateNapeLockImage();
+            base.LateUpdate();
         }
 
         private void UpdateNapeLockImage()
@@ -327,6 +330,8 @@ namespace Cameras
             }
             else
                 Camera.fieldOfView = Mathf.Lerp(Camera.fieldOfView, SettingsManager.GeneralSettings.FOVMin.Value, 5f * Time.deltaTime);
+            if (CustomLogicManager.CameraFOV > 0f)
+                Camera.fieldOfView = CustomLogicManager.CameraFOV;
         }
 
         private void FindNextSpectate()

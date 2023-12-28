@@ -8,7 +8,7 @@ namespace CustomLogic
         public static Dictionary<string, int> Symbols = new Dictionary<string, int>();
         public static HashSet<string> SpecialSymbolNames = new HashSet<string>();
         public static HashSet<string> AlphaSymbolNames = new HashSet<string>();
-        public static HashSet<int> BinopSymbols = new HashSet<int>();
+        public static Dictionary<int, int> BinopSymbolPriorities = new Dictionary<int, int>();
         public static HashSet<int> ClassSymbols = new HashSet<int>();
         public static HashSet<int> ConditionalSymbols = new HashSet<int>();
 
@@ -69,12 +69,16 @@ namespace CustomLogic
                 if (!AlphaSymbolNames.Contains(symbolName))
                     SpecialSymbolNames.Add(symbolName);
             }
-            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Or, CustomLogicSymbol.And, CustomLogicSymbol.Plus,
-                CustomLogicSymbol.Minus, CustomLogicSymbol.Times, CustomLogicSymbol.Divide, CustomLogicSymbol.Equals, CustomLogicSymbol.NotEquals,
-                CustomLogicSymbol.LessThan, CustomLogicSymbol.GreaterThan, CustomLogicSymbol.LessThanOrEquals, CustomLogicSymbol.GreaterThanOrEquals})
-            {
-                BinopSymbols.Add((int)symbol);
-            }
+            BinopSymbolPriorities.Add((int)CustomLogicSymbol.SetEquals, 0);
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Or, CustomLogicSymbol.And })
+                BinopSymbolPriorities.Add((int)symbol, 1);
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Equals, CustomLogicSymbol.NotEquals,
+                CustomLogicSymbol.LessThan, CustomLogicSymbol.GreaterThan, CustomLogicSymbol.LessThanOrEquals, CustomLogicSymbol.GreaterThanOrEquals })
+                BinopSymbolPriorities.Add((int)symbol, 2);
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Plus, CustomLogicSymbol.Minus })
+                BinopSymbolPriorities.Add((int)symbol, 3);
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Times, CustomLogicSymbol.Divide })
+                BinopSymbolPriorities.Add((int)symbol, 4);
             foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Class, CustomLogicSymbol.Component, CustomLogicSymbol.Extension,
             CustomLogicSymbol.Cutscene})
                 ClassSymbols.Add((int)symbol);

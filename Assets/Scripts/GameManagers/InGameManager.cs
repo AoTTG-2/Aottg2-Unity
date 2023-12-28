@@ -556,7 +556,8 @@ namespace GameManagers
                     float abnormal = normal + settings.TitanSpawnAbnormal.Value / 100f;
                     float jumper = abnormal + settings.TitanSpawnJumper.Value / 100f;
                     float crawler = jumper + settings.TitanSpawnCrawler.Value / 100f;
-                    float punk = crawler + settings.TitanSpawnPunk.Value / 100f;
+                    float thrower = crawler + settings.TitanSpawnThrower.Value / 100f;
+                    float punk = thrower + settings.TitanSpawnPunk.Value / 100f;
                     if (roll < normal)
                         type = "Normal";
                     else if (roll < abnormal)
@@ -565,6 +566,8 @@ namespace GameManagers
                         type = "Jumper";
                     else if (roll < crawler)
                         type = "Crawler";
+                    else if (roll < thrower)
+                        type = "Thrower";
                     else if (roll < punk)
                         type = "Punk";
                 }
@@ -837,6 +840,8 @@ namespace GameManagers
             base.OnFinishLoading();
             if (CustomLogicManager.Logic == BuiltinLevels.UseMapLogic)
                 CustomLogicManager.Logic = MapManager.MapScript.Logic;
+            else
+                CustomLogicManager.Logic += MapManager.MapScript.Logic;
             if (_needSendPlayerInfo)
             {
                 RPCManager.PhotonView.RPC("PlayerInfoRPC", RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
@@ -897,7 +902,6 @@ namespace GameManagers
 
         protected void LoadSkin()
         {
-            /*
             if (PhotonNetwork.IsMasterClient)
             {
                 if (SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value)
@@ -907,6 +911,7 @@ namespace GameManagers
                                               set.Up.Value, set.Down.Value});
                     RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
                 }
+                /*
                 string indices = string.Empty;
                 string urls1 = string.Empty;
                 string urls2 = string.Empty;
@@ -951,8 +956,8 @@ namespace GameManagers
                 }
                 if (send)
                     RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
+                */
             }
-            */
         }
 
         private IEnumerator RespawnForever(float delay)

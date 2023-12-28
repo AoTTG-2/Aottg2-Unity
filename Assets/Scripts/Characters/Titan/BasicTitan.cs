@@ -14,6 +14,8 @@ using UI;
 using Settings;
 using CustomLogic;
 using Photon.Pun;
+using Projectiles;
+using Spawnables;
 
 namespace Characters
 {
@@ -31,6 +33,8 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
+        protected float RockThrow1Speed = 200f;
+        protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
         public int HeadPrefab;
@@ -101,6 +105,16 @@ namespace Characters
                 }
                 else
                     _originalCapsuleValue = capsule.radius;
+            }
+        }
+
+        [PunRPC]
+        public void ClearRockRPC(PhotonMessageInfo info)
+        {
+            if (info.Sender == Cache.PhotonView.Owner)
+            {
+                foreach (Rock1Spawnable rock in BasicCache.HandRHitbox.GetComponentsInChildren<Rock1Spawnable>())
+                    Destroy(rock.gameObject);
             }
         }
 
@@ -412,7 +426,7 @@ namespace Characters
                 if (damage < settings.TitanArmor.Value)
                     damage = 0;
             }
-            if (type == "Stun")
+            if (type == "TitanStun" || type == "ShifterStun")
             {
                 if (!IsCrawler)
                 {
@@ -454,47 +468,55 @@ namespace Characters
         {
             ResetAttackState(attack);
             if (_currentAttack == BasicTitanAttacks.AttackPunchCombo)
-                StateAction(TitanState.Attack, BasicAnimations.AttackPunchCombo);
+                StateAttack(BasicAnimations.AttackPunchCombo);
             else if (_currentAttack == BasicTitanAttacks.AttackPunch)
-                StateAction(TitanState.Attack, BasicAnimations.AttackPunch);
+                StateAttack(BasicAnimations.AttackPunch);
             else if (_currentAttack == BasicTitanAttacks.AttackSlam)
-                StateAction(TitanState.Attack, BasicAnimations.AttackSlam);
+                StateAttack(BasicAnimations.AttackSlam);
             else if (_currentAttack == BasicTitanAttacks.AttackBellyFlop)
                 StateActionWithTime(TitanState.Attack, BasicAnimations.AttackBellyFlop, BellyFlopTime, 0.1f);
             else if (_currentAttack == BasicTitanAttacks.AttackKick)
-                StateAction(TitanState.Attack, BasicAnimations.AttackKick);
+                StateAttack(BasicAnimations.AttackKick);
             else if (_currentAttack == BasicTitanAttacks.AttackStomp)
-                StateAction(TitanState.Attack, BasicAnimations.AttackStomp);
+                StateAttack(BasicAnimations.AttackStomp);
             else if (_currentAttack == BasicTitanAttacks.AttackBite)
             {
                 string animation = AttackBite();
-                StateAction(TitanState.Attack, animation);
+                StateAttack(animation);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackGrab)
             {
                 DeactivateAllHitboxes();
                 string animation = AttackGrab();
-                StateAction(TitanState.Attack, animation, deactivateHitboxes: false);
+                StateAttack(animation, deactivateHitboxes: false);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackSlap)
             {
                 string animation = AttackSlap();
-                StateAction(TitanState.Attack, animation);
+                StateAttack(animation);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackBrush)
             {
                 DeactivateAllHitboxes();
                 string animation = AttackBrush();
-                StateAction(TitanState.Attack, animation, deactivateHitboxes: false);
+                StateAttack(animation, deactivateHitboxes: false);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackSlapFace)
-                StateAction(TitanState.Attack, BasicAnimations.AttackSlapFace);
+                StateAttack(BasicAnimations.AttackSlapFace);
             else if (_currentAttack == BasicTitanAttacks.AttackSlapBack)
-                StateAction(TitanState.Attack, BasicAnimations.AttackSlapBack);
+                StateAttack(BasicAnimations.AttackSlapBack);
             else if (_currentAttack == BasicTitanAttacks.AttackSwing)
             {
                 string animation = AttackSwing();
-                StateAction(TitanState.Attack, animation);
+                StateAttack(animation);
+            }
+            else if (_currentAttack == BasicTitanAttacks.AttackRockThrow1)
+            {
+                if (TargetEnemy != null)
+                    _rockThrowTarget = TargetEnemy.Cache.Transform.position;
+                else
+                    _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
+                StateAttack(BasicAnimations.AttackRockThrow);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackJump)
             {
@@ -558,7 +580,7 @@ namespace Characters
             float distanceZ = 0f;
             if (TargetEnemy == null)
             {
-                BasicCache.HandRHitbox.Activate(0.96f, 0.13f);
+                BasicCache.HandRHitbox.Activate(0.96f / _currentAttackSpeed, 0.13f / _currentAttackSpeed);
                 return BasicAnimations.AttackGrabHeadBackL;
             }
             else
@@ -603,12 +625,12 @@ namespace Characters
             {
                 if (angleX > 0f)
                 {
-                    BasicCache.HandRHitbox.Activate(0.65f, 0.23f);
+                    BasicCache.HandRHitbox.Activate(0.65f / _currentAttackSpeed, 0.23f / _currentAttackSpeed);
                     return BasicAnimations.AttackGrabCoreR;
                 }
                 else
                 {
-                    BasicCache.HandLHitbox.Activate(0.65f, 0.23f);
+                    BasicCache.HandLHitbox.Activate(0.65f / _currentAttackSpeed, 0.23f / _currentAttackSpeed);
                     return BasicAnimations.AttackGrabCoreL;
                 }
             }
@@ -618,12 +640,12 @@ namespace Characters
                 {
                     if (angleX > 90f)
                     {
-                        BasicCache.HandRHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandRHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackR;
                     }
                     else
                     {
-                        BasicCache.HandRHitbox.Activate(0.71f, 0.36f);
+                        BasicCache.HandRHitbox.Activate(0.71f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabStomachR;
                     }
                 }
@@ -631,12 +653,12 @@ namespace Characters
                 {
                     if (angleX < -90f)
                     {
-                        BasicCache.HandLHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandLHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackL;
                     }
                     else
                     {
-                        BasicCache.HandLHitbox.Activate(0.71f, 0.36f);
+                        BasicCache.HandLHitbox.Activate(0.71f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabStomachL;
                     }
                 }
@@ -647,12 +669,12 @@ namespace Characters
                 {
                     if (angleX > 90f)
                     {
-                        BasicCache.HandLHitbox.Activate(0.96f, 0.13f);
+                        BasicCache.HandLHitbox.Activate(0.96f / _currentAttackSpeed, 0.13f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabHeadBackR;
                     }
                     else
                     {
-                        BasicCache.HandRHitbox.Activate(1.03f, 0.5f);
+                        BasicCache.HandRHitbox.Activate(1.03f / _currentAttackSpeed, 0.5f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabHeadFrontR;
                     }
                 }
@@ -660,12 +682,12 @@ namespace Characters
                 {
                     if (angleX < -90f)
                     {
-                        BasicCache.HandRHitbox.Activate(0.96f, 0.13f);
+                        BasicCache.HandRHitbox.Activate(0.96f / _currentAttackSpeed, 0.13f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabHeadBackL;
                     }
                     else
                     {
-                        BasicCache.HandLHitbox.Activate(1.03f, 0.5f);
+                        BasicCache.HandLHitbox.Activate(1.03f / _currentAttackSpeed, 0.5f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabHeadFrontL;
                     }
                 }
@@ -674,7 +696,7 @@ namespace Characters
             {
                 if (angleX > 0f)
                 {
-                    BasicCache.HandRHitbox.Activate(0.91f, 0.35f);
+                    BasicCache.HandRHitbox.Activate(0.91f / _currentAttackSpeed, 0.35f / _currentAttackSpeed);
                     if (angleX > 90f)
                         return BasicAnimations.AttackGrabGroundBackR;
                     else
@@ -682,7 +704,7 @@ namespace Characters
                 }
                 else
                 {
-                    BasicCache.HandLHitbox.Activate(0.91f, 0.35f);
+                    BasicCache.HandLHitbox.Activate(0.91f / _currentAttackSpeed, 0.35f / _currentAttackSpeed);
                     if (angleX < -90f)
                         return BasicAnimations.AttackGrabGroundBackL;
                     else
@@ -695,12 +717,12 @@ namespace Characters
                 {
                     if (angleX > 90f)
                     {
-                        BasicCache.HandRHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandRHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackR;
                     }
                     else
                     {
-                        BasicCache.HandRHitbox.Activate(0.4f, 0.3f);
+                        BasicCache.HandRHitbox.Activate(0.4f / _currentAttackSpeed, 0.3f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabAirR;
                     }
                 }
@@ -708,12 +730,12 @@ namespace Characters
                 {
                     if (angleX < -90f)
                     {
-                        BasicCache.HandLHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandLHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackL;
                     }
                     else
                     {
-                        BasicCache.HandLHitbox.Activate(0.4f, 0.3f);
+                        BasicCache.HandLHitbox.Activate(0.4f / _currentAttackSpeed, 0.3f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabAirL;
                     }
                 }
@@ -724,12 +746,12 @@ namespace Characters
                 {
                     if (angleX > 90f)
                     {
-                        BasicCache.HandRHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandRHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackR;
                     }
                     else
                     {
-                        BasicCache.HandRHitbox.Activate(0.76f, 0.27f);
+                        BasicCache.HandRHitbox.Activate(0.76f / _currentAttackSpeed, 0.27f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabAirFarR;
                     }
                 }
@@ -737,12 +759,12 @@ namespace Characters
                 {
                     if (angleX < -90f)
                     {
-                        BasicCache.HandLHitbox.Activate(0.88f, 0.36f);
+                        BasicCache.HandLHitbox.Activate(0.88f / _currentAttackSpeed, 0.36f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabBackL;
                     }
                     else
                     {
-                        BasicCache.HandLHitbox.Activate(0.76f, 0.27f);
+                        BasicCache.HandLHitbox.Activate(0.76f / _currentAttackSpeed, 0.27f / _currentAttackSpeed);
                         return BasicAnimations.AttackGrabAirFarL;
                     }
                 }
@@ -751,12 +773,12 @@ namespace Characters
             {
                 if (angleX > 0f)
                 {
-                    BasicCache.HandRHitbox.Activate(0.88f, 0.43f);
+                    BasicCache.HandRHitbox.Activate(0.88f / _currentAttackSpeed, 0.43f / _currentAttackSpeed);
                     return BasicAnimations.AttackGrabHighR;
                 }
                 else
                 {
-                    BasicCache.HandLHitbox.Activate(0.88f, 0.43f);
+                    BasicCache.HandLHitbox.Activate(0.88f / _currentAttackSpeed, 0.43f / _currentAttackSpeed);
                     return BasicAnimations.AttackGrabHighL;
                 }
             }
@@ -784,12 +806,12 @@ namespace Characters
             bool left = angleX > 0f;
             if (left)
             {
-                BasicCache.HandLHitbox.Activate(0.5f, 0.5f);
+                BasicCache.HandLHitbox.Activate(0.5f / _currentAttackSpeed, 0.5f / _currentAttackSpeed);
                 return BasicAnimations.AttackBrushChestL;
             }
             else
             {
-                BasicCache.HandRHitbox.Activate(0.5f, 0.5f);
+                BasicCache.HandRHitbox.Activate(0.5f / _currentAttackSpeed, 0.5f / _currentAttackSpeed);
                 return BasicAnimations.AttackBrushChestR;
             }
         }
@@ -803,20 +825,20 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.11f)
                 {
                     PlaySound(TitanSounds.Swing1);
-                    BasicCache.HandRHitbox.Activate(0f, 0.14f);
+                    BasicCache.HandRHitbox.Activate(0f, 0.14f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.26f)
                 {
                     PlaySound(TitanSounds.Swing2);
-                    BasicCache.HandLHitbox.Activate(0f, 0.14f);
+                    BasicCache.HandLHitbox.Activate(0f, 0.14f / _currentAttackSpeed);
                     _currentAttackStage = 2;
                 }
                 else if (_currentAttackStage == 2 && animationTime > 0.495f)
                 {
                     PlaySound(TitanSounds.Swing3);
-                    BasicCache.HandLHitbox.Activate(0f, 0.15f);
-                    BasicCache.HandRHitbox.Activate(0f, 0.15f);
+                    BasicCache.HandLHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
+                    BasicCache.HandRHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
                     _currentAttackStage = 3;
                 }
                 else if (_currentAttackStage == 3 && animationTime > 0.55f)
@@ -832,13 +854,13 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.28f)
                 {
                     PlaySound(TitanSounds.Swing1);
-                    BasicCache.HandRHitbox.Activate(0f, 0.14f);
+                    BasicCache.HandRHitbox.Activate(0f, 0.14f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.63f)
                 {
                     PlaySound(TitanSounds.Swing2);
-                    BasicCache.HandLHitbox.Activate(0f, 0.14f);
+                    BasicCache.HandLHitbox.Activate(0f, 0.14f / _currentAttackSpeed);
                     _currentAttackStage = 2;
                 }
             }
@@ -847,8 +869,8 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.42f)
                 {
                     PlaySound(TitanSounds.Swing3);
-                    BasicCache.HandLHitbox.Activate(0f, 0.15f);
-                    BasicCache.HandRHitbox.Activate(0f, 0.15f);
+                    BasicCache.HandLHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
+                    BasicCache.HandRHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.46f)
@@ -885,9 +907,9 @@ namespace Characters
                     PlaySound(TitanSounds.Swing1);
                     if (_currentStateAnimation == BasicAnimations.AttackSlapL || _currentStateAnimation == BasicAnimations.AttackSlapHighL ||
                         _currentStateAnimation == BasicAnimations.AttackSlapLowL)
-                        BasicCache.HandLHitbox.Activate(0f, 0.25f);
+                        BasicCache.HandLHitbox.Activate(0f, 0.25f / _currentAttackSpeed);
                     else
-                        BasicCache.HandRHitbox.Activate(0f, 0.25f);
+                        BasicCache.HandRHitbox.Activate(0f, 0.25f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
             }
@@ -895,7 +917,7 @@ namespace Characters
             {
                 if (_currentAttackStage == 0 && animationTime > 0.38f)
                 {
-                    BasicCache.FootLHitbox.Activate(0f, 0.25f);
+                    BasicCache.FootLHitbox.Activate(0f, 0.25f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.43f)
@@ -911,7 +933,7 @@ namespace Characters
             {
                 if (_currentAttackStage == 0 && animationTime > 0.385f)
                 {
-                    BasicCache.FootLHitbox.Activate(0f, 0.18f);
+                    BasicCache.FootLHitbox.Activate(0f, 0.18f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.43f)
@@ -929,9 +951,9 @@ namespace Characters
                 {
                     PlaySound(TitanSounds.Swing1);
                     if (_currentStateAnimation == BasicAnimations.AttackSwingL)
-                        BasicCache.HandLHitbox.Activate(0f, 0.13f);
+                        BasicCache.HandLHitbox.Activate(0f, 0.13f / _currentAttackSpeed);
                     else
-                        BasicCache.HandRHitbox.Activate(0f, 0.13f);
+                        BasicCache.HandRHitbox.Activate(0f, 0.13f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.46f)
@@ -963,7 +985,7 @@ namespace Characters
                 }
                 if (_currentAttackStage == 0 && animationTime > stage1Time)
                 {
-                    BasicCache.MouthHitbox.Activate(0f, 0.15f);
+                    BasicCache.MouthHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
                     _currentAttackStage = 1;
                 }
                 else if (_currentAttackStage == 1  && animationTime > stage2Time)
@@ -974,12 +996,29 @@ namespace Characters
                     _currentAttackStage = 2;
                 }
             }
+            else if (_currentAttack == BasicTitanAttacks.AttackRockThrow1)
+            {
+                Vector3 hand = BasicCache.HandRHitbox.transform.position;
+                if (_currentAttackStage == 0 && animationTime > 0.16f)
+                {
+                    _currentAttackStage = 1;
+                    SpawnableSpawner.Spawn(SpawnablePrefabs.Rock1, hand, Quaternion.identity, Size * 1.5f, new object[] { Cache.PhotonView.ViewID });
+                }
+                else if (_currentAttackStage == 1 && animationTime > 0.61f)
+                {
+                    _currentAttackStage = 2;
+                    Vector3 direction = (_rockThrowTarget - hand).normalized;
+                    Cache.PhotonView.RPC("ClearRockRPC", RpcTarget.All, new object[0]);
+                    ProjectileSpawner.Spawn(ProjectilePrefabs.Rock1, hand, Quaternion.LookRotation(direction), direction * RockThrow1Speed,
+                        Vector3.zero, 10f, Cache.PhotonView.ViewID, "", new object[] { Size * 1.5f });
+                }
+            }
             else if (_currentStateAnimation == BasicAnimations.AttackSlapBack)
             {
                 if (_currentAttackStage == 0 && animationTime > 0.65f)
                 {
                     _currentAttackStage = 1;
-                    BasicCache.HandRHitbox.Activate(0f, 0.1f);
+                    BasicCache.HandRHitbox.Activate(0f, 0.1f / _currentAttackSpeed);
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.68f)
                 {
@@ -992,7 +1031,7 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.64f)
                 {
                     _currentAttackStage = 1;
-                    BasicCache.HandRHitbox.Activate(0f, 0.3f);
+                    BasicCache.HandRHitbox.Activate(0f, 0.3f / _currentAttackSpeed);
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.68f)
                 {
@@ -1000,6 +1039,7 @@ namespace Characters
                     EffectSpawner.Spawn(EffectPrefabs.Boom3, BasicCache.HandRHitbox.transform.position, rotation, Size);
                 }
             }
+            
         }
 
         protected void SpawnShatter(Vector3 position)
@@ -1025,7 +1065,7 @@ namespace Characters
                     int damage = 100;
                     if (CustomDamageEnabled)
                         damage = CustomDamage;
-                    HoldHuman.GetHit(this, damage, "Eat", "");
+                    HoldHuman.GetHit(this, damage, "TitanEat", "");
                     HoldHuman = null;
                 }
             }
@@ -1064,7 +1104,7 @@ namespace Characters
                     {
                         if (IsMainCharacter())
                             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                        victimChar.GetHit(this, damage, "Stun", collider.name);
+                        victimChar.GetHit(this, damage, "TitanStun", collider.name);
                     }
                 }
             }

@@ -75,10 +75,8 @@ namespace Characters
             return null;
         }
 
-        public static string GetSpecialIcon(string loadout, string special)
+        public static string GetSpecialIcon(string special)
         {
-            if (!GetSpecialNames(loadout, true).Contains(special))
-                return "";
             string icon = special.Replace(" ", "") + "SpecialIcon";
             return icon;
         }

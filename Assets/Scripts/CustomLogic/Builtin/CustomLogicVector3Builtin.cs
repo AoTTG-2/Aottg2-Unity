@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -51,6 +52,18 @@ namespace CustomLogic
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 var b = (CustomLogicVector3Builtin)parameters[1];
                 return new CustomLogicVector3Builtin(Vector3.Project(a.Value, b.Value));
+            }
+            else if (methodName == "Multiply")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Util.MultiplyVectors(a.Value, b.Value));
+            }
+            else if (methodName == "Divide")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Util.DivideVectors(a.Value, b.Value));
             }
             return null;
         }
