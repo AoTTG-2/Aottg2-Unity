@@ -105,7 +105,7 @@
 			{"Name": "Wall3"},
 			{"Name": "Wall4"},
 			{"Name": "Windmill1"},
-			{"Name": "Bell1", "Components": ["Bell"], "Networked": true},
+			{"Name": "Bell1", "Static": true, "Networked": false},
 			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true},
 			{"Name": "Ramp1"},
 			{"Name": "Stairs1"},
