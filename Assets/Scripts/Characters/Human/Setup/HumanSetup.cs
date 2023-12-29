@@ -276,7 +276,7 @@ namespace Characters
                 if (_part_blade_l.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {
                     LeftTrail = _part_blade_l.GetComponentInChildren<MeleeWeaponTrail>();
-                    LeftTrail.enabled = false;
+                    LeftTrail.Emit = false;
                 }
 
             }
@@ -294,9 +294,8 @@ namespace Characters
                 if (_part_blade_r.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {
                     RightTrail = _part_blade_r.GetComponentInChildren<MeleeWeaponTrail>();
-                    RightTrail.enabled = false;
+                    RightTrail.Emit = false;
                 }
-
             }
         }
 

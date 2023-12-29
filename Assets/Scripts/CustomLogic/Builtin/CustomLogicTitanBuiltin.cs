@@ -51,7 +51,10 @@ namespace CustomLogic
                 else if (methodName == "Blind")
                     Titan.Blind();
                 else if (methodName == "Cripple")
-                    Titan.Cripple();
+                {
+                    var time = parameters[0].UnboxToFloat();
+                    Titan.Cripple(time);
+                }
                 else if (methodName == "Emote")
                     Titan.Emote((string)parameters[0]);
             }
@@ -88,7 +91,7 @@ namespace CustomLogic
             if (!Titan.IsMine())
                 return;
             if (name == "Size")
-                Titan.SetSize((float)value);
+                Titan.SetSize(value.UnboxToFloat());
             else if (name == "DetectRange")
             {
                 if (Titan.AI)

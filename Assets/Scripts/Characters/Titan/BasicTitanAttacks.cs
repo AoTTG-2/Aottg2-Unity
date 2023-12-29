@@ -17,5 +17,6 @@
         public static string AttackBrush = "AttackBrush";
         public static string AttackJump = "AttackJump";
         public static string AttackCrawlerJump = "AttackCrawlerJump";
+        public static string AttackRockThrow1 = "AttackRockThrow1";
     }
 }

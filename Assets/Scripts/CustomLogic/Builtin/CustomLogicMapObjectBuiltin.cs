@@ -44,6 +44,7 @@ namespace CustomLogic
                     light.intensity = parameters[2].UnboxToFloat();
                     light.range = parameters[3].UnboxToFloat();
                     light.shadows = LightShadows.None;
+                    light.renderMode = LightRenderMode.ForcePixel;
                 }
                 else if (name == "Tag")
                 {

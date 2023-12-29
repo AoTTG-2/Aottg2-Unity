@@ -97,6 +97,11 @@ namespace CustomLogic
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).AddButton((string)parameters[1], (string)parameters[2]);
             }
+            else if (name == "AddPopupBottomButton")
+            {
+                string popupName = (string)parameters[0];
+                menu.GetCustomPopup(popupName).AddBottomButton((string)parameters[1], (string)parameters[2]);
+            }
             else if (name == "AddPopupButtons")
             {
                 string popupName = (string)parameters[0];

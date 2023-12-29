@@ -17,8 +17,7 @@ namespace ApplicationManagers
     {
         static FullscreenHandler _instance;
         static Resolution _resolution;
-
-        static extern bool ShowWindow(int hWnd, int nCmdShow);
+        static bool _isFocused = true;
 
         public static void Init()
         {
@@ -93,7 +92,6 @@ namespace ApplicationManagers
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
         }
 
-        static bool isFocused = true;
 
         public static void UpdateFPS()
         {
@@ -101,7 +99,7 @@ namespace ApplicationManagers
             int menuFpsCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
             bool isInGameOrEditor = SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor;
 
-            if (isFocused)
+            if (_isFocused)
             {
                 if (isInGameOrEditor)
                     Application.targetFrameRate = fpsCap > 0 ? fpsCap : -1;
@@ -117,17 +115,26 @@ namespace ApplicationManagers
             }
         }
 
-        public void OnApplicationFocus(bool hasFocus)
+        public static void UpdateSound()
         {
-            isFocused = hasFocus;
-
             if (SettingsManager.SoundSettings.MuteMinimized.Value)
             {
-                AudioListener.volume = hasFocus ? SettingsManager.SoundSettings.Volume.Value : 0;
-                MusicManager._muted = !hasFocus;
+                AudioListener.volume = _isFocused ? SettingsManager.SoundSettings.Volume.Value : 0;
+                MusicManager._muted = !_isFocused;
                 MusicManager.ApplySoundSettings();
             }
+            else
+            {
+                AudioListener.volume = SettingsManager.SoundSettings.Volume.Value;
+                MusicManager._muted = false;
+                MusicManager.ApplySoundSettings();
+            }
+        }
 
+        public void OnApplicationFocus(bool hasFocus)
+        {
+            _isFocused = hasFocus;
+            UpdateSound();
             UpdateFPS();
             CursorManager.RefreshCursorLock();
         }

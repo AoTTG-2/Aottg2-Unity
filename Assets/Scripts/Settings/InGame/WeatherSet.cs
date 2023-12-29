@@ -9,7 +9,7 @@ namespace Settings
 {
     class WeatherSet : BaseSetSetting
     {
-        public StringSetting Skybox = new StringSetting("Day");
+        public StringSetting Skybox = new StringSetting("Day1");
         public ColorSetting SkyboxColor = new ColorSetting(new Color255(128, 128, 128, 255));
         public ColorSetting Daylight = new ColorSetting(new Color255(255, 255, 255, 255));
         public FloatSetting DaylightIntensity = new FloatSetting(1f, minValue: 0f, maxValue: 2f);

@@ -2,7 +2,7 @@
 
 namespace Characters
 {
-    class AmmoWeapon : SimpleUseable
+    class AmmoWeapon : ExtendedUseable
     {
         public int MaxAmmo;
         public int AmmoLeft;

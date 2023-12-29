@@ -47,7 +47,7 @@ namespace UI
                 loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
             options = specials.ToArray();
             ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
-                options, GetSpecialIcons(charSettings.Loadout.Value, options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
@@ -76,11 +76,11 @@ namespace UI
             return icons.ToArray();
         }
 
-        protected string[] GetSpecialIcons(string loadout, string[] options)
+        protected string[] GetSpecialIcons(string[] options)
         {
             List<string> icons = new List<string>();
             foreach (string option in options)
-                icons.Add(ResourcePaths.UI + "/Icons/Specials/" + HumanSpecials.GetSpecialIcon(loadout, option));
+                icons.Add(ResourcePaths.UI + "/Icons/Specials/" + HumanSpecials.GetSpecialIcon(option));
             return icons.ToArray();
         }
     }

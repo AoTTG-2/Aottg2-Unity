@@ -13,6 +13,9 @@ namespace UI
 {
     class MapEditorTexturePopup : MapEditorAddObjectPopup
     {
+        protected override float TopBarHeight => 65f;
+        protected override float Height => 800f;
+        protected override bool TwoRows => false;
         protected override string DefaultCategoryPanel => "All";
         protected override string[] GetCategories()
         {

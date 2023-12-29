@@ -24,11 +24,15 @@ namespace CustomLogic
                 return Time.deltaTime;
             else if (name == "GameTime")
                 return CustomLogicManager.Evaluator.CurrentTime;
+            else if (name == "TimeScale")
+                return Time.timeScale;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "TimeScale")
+                Time.timeScale = value.UnboxToFloat();
         }
     }
 }

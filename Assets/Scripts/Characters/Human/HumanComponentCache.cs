@@ -26,10 +26,14 @@ namespace Characters
         public BaseHitbox BladeHitRight;
         public BaseHitbox AHSSHit;
         public BaseHitbox APGHit;
+        public Transform GroundLeft;
+        public Transform GroundRight;
         
         public HumanComponentCache(GameObject owner): base(owner)
         {
             var chest = Transform.Find("Armature/Core/Controller_Body/hip/spine/chest");
+            GroundLeft = Transform.Find("GroundLeft");
+            GroundRight = Transform.Find("GroundRight");
             Neck = chest.Find("neck");
             Head = Neck.Find("head");
             UpperarmL = chest.Find("shoulder_L/upper_arm_L");

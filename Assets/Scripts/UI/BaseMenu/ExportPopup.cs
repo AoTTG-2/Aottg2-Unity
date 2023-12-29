@@ -11,7 +11,7 @@ namespace UI
     {
         protected override string Title => UIManager.GetLocaleCommon("Export");
         protected override float Width => 500f;
-        protected override float Height => 590f;
+        protected override float Height => 585f;
         protected override int VerticalPadding => 20;
         protected override int HorizontalPadding => 20;
         private GameObject _element;
@@ -33,7 +33,7 @@ namespace UI
             base.Show();
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ExportSetting.Value = value;
-            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ExportSetting, string.Empty, elementWidth: 460f, elementHeight: 440f, multiLine: true);
+            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ExportSetting, string.Empty, elementWidth: 460f, elementHeight: 435f, multiLine: true);
         }
 
         private void OnButtonClick(string name)

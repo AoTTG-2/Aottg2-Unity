@@ -34,6 +34,7 @@ namespace Cameras
 
         protected void CreateUICamera()
         {
+            /*
             _uiCamera = Util.CreateObj<Camera>();
             _uiCamera.clearFlags = CameraClearFlags.Depth;
             _uiCamera.cullingMask = PhysicsLayer.GetMask(PhysicsLayer.UI);
@@ -43,6 +44,7 @@ namespace Cameras
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = _uiCamera;
             canvas.planeDistance = 335.1518f;
+            */
         }
 
         protected void Update()

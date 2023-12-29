@@ -21,13 +21,16 @@ namespace CustomLogic
             try
             {
                 ParseAst(0, start);
+                start.AddEmptyMain();
                 return start;
             }
             catch (Exception e)
             {
                 Error = e.Message;
                 DebugConsole.Log("Custom logic parsing error: " + e.Message, true);
-                return new CustomLogicStartAst();
+                start = new CustomLogicStartAst();
+                start.AddEmptyMain();
+                return start;
             }
         }
 
@@ -308,12 +311,13 @@ namespace CustomLogic
                     parenCount--;
                 if (parenCount > 0)
                     continue;
-                if (IsSymbolIn(token, CustomLogicSymbols.BinopSymbols) || IsSymbolValue(token, (int)CustomLogicSymbol.SetEquals))
+                if (IsSymbolBinop(token))
                 {
-                    if ((int)token.Value < lowestBinopValue)
+                    int priority = CustomLogicSymbols.BinopSymbolPriorities[(int)token.Value];
+                    if (priority <= lowestBinopValue)
                     {
                         lowestBinopIndex = i;
-                        lowestBinopValue = (int)token.Value;
+                        lowestBinopValue = priority;
                     }
                 }
             }
@@ -371,6 +375,11 @@ namespace CustomLogic
         private bool IsSymbolIn(CustomLogicToken token, HashSet<int> symbols)
         {
             return token != null && token.Type == CustomLogicTokenType.Symbol && symbols.Contains((int)token.Value);
+        }
+
+        private bool IsSymbolBinop(CustomLogicToken token)
+        {
+            return token != null && token.Type == CustomLogicTokenType.Symbol && CustomLogicSymbols.BinopSymbolPriorities.ContainsKey((int)token.Value);
         }
 
         private bool IsSymbolValue(CustomLogicToken token, int symbolValue)

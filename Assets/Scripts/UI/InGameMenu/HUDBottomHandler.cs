@@ -52,11 +52,21 @@ namespace UI
         private Text _ammoLabelLeft;
         private Text _ammoLabelRight;
 
-        // guns
-        private Image _gunBackground;
-        private Image _gunReload;
-        private Image _gunShoot;
-        private Image _gunAmmoBackground;
+        // apg
+        private Image _apgBackground;
+        private Image _apgReload;
+        private Image _apgShoot;
+        private Image _apgAmmoBackground;
+
+        // ahss
+        private Image _ahssBackgroundLeft;
+        private Image _ahssBackgroundRight;
+        private Image _ahssEmptyLeft;
+        private Image _ahssEmptyRight;
+        private Image _ahssReloadLeft;
+        private Image _ahssReloadRight;
+        private Image _ahssShootLeft;
+        private Image _ahssShootRight;
 
         // thunderspear
         private Image _tsBackground;
@@ -75,18 +85,40 @@ namespace UI
                 Destroy(_hudBottom);
             if (_human == null)
                 return;
-            if (_human.Setup.Weapon == HumanWeapon.AHSS || _human.Setup.Weapon == HumanWeapon.APG)
+            if (_human.Setup.Weapon == HumanWeapon.APG)
             {
-                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomGun");
-                _gunBackground = _hudBottom.transform.Find("GunBackground").GetComponent<Image>();
+                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAPG");
+                _apgBackground = _hudBottom.transform.Find("GunBackground").GetComponent<Image>();
                 _ammoFillLeft = _hudBottom.transform.Find("GunAmmoFillLeft").GetComponent<Image>();
                 _ammoFillRight = _hudBottom.transform.Find("GunAmmoFillRight").GetComponent<Image>();
-                _gunReload = _hudBottom.transform.Find("GunReload").GetComponent<Image>();
-                _gunShoot = _hudBottom.transform.Find("GunShoot").GetComponent<Image>();
-                _gunAmmoBackground = _hudBottom.transform.Find("GunAmmoBackground").GetComponent<Image>();
+                _apgReload = _hudBottom.transform.Find("GunReload").GetComponent<Image>();
+                _apgShoot = _hudBottom.transform.Find("GunShoot").GetComponent<Image>();
+                _apgAmmoBackground = _hudBottom.transform.Find("GunAmmoBackground").GetComponent<Image>();
                 _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
                 _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
-                _gunReload.color = BackgroundVeryLowColor;
+                _apgReload.color = BackgroundVeryLowColor;
+            }
+            else if (_human.Setup.Weapon == HumanWeapon.AHSS)
+            {
+                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAHSS");
+                _ahssBackgroundLeft = _hudBottom.transform.Find("GunBackgroundLeft").GetComponent<Image>();
+                _ahssBackgroundRight = _hudBottom.transform.Find("GunBackgroundRight").GetComponent<Image>();
+                _ahssEmptyLeft = _hudBottom.transform.Find("GunEmptyLeft").GetComponent<Image>();
+                _ahssEmptyRight = _hudBottom.transform.Find("GunEmptyRight").GetComponent<Image>();
+                _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
+                _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
+                _ahssShootLeft = _hudBottom.transform.Find("GunShootLeft").GetComponent<Image>();
+                _ahssShootRight = _hudBottom.transform.Find("GunShootRight").GetComponent<Image>();
+                _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
+                _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
+                _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
+                _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
+                _ahssEmptyLeft.color = BackgroundVeryLowColor;
+                _ahssEmptyRight.color = BackgroundVeryLowColor;
+                _ahssReloadLeft.color = BackgroundVeryLowColor;
+                _ahssReloadRight.color = BackgroundVeryLowColor;
+                _ahssShootLeft.color = BackgroundLowColor;
+                _ahssShootRight.color = BackgroundLowColor;
             }
             else if (_human.Setup.Weapon == HumanWeapon.Thunderspear)
             {
@@ -172,14 +204,29 @@ namespace UI
                 _bladeReload.GetComponent<Animator>().Update(0f);
                 _reloadAnimationTimeLeft = 1f;
             }
-            else if (_gunBackground != null)
+            else if (_apgBackground != null)
             {
-                _gunShoot.gameObject.SetActive(false);
-                _gunAmmoBackground.gameObject.SetActive(false);
-                _gunBackground.gameObject.SetActive(false);
-                _gunReload.gameObject.SetActive(true);
-                _gunReload.GetComponent<Animator>().Update(0f);
+                _apgShoot.gameObject.SetActive(false);
+                _apgAmmoBackground.gameObject.SetActive(false);
+                _apgBackground.gameObject.SetActive(false);
+                _apgReload.gameObject.SetActive(true);
+                _apgReload.GetComponent<Animator>().Update(0f);
                 _reloadAnimationTimeLeft = 0.8f;
+                _shootAnimationTimeLeft = 0f;
+            }
+            else if (_ahssBackgroundLeft != null)
+            {
+                _ahssShootLeft.gameObject.SetActive(false);
+                _ahssShootRight.gameObject.SetActive(false);
+                _ahssEmptyLeft.gameObject.SetActive(false);
+                _ahssEmptyRight.gameObject.SetActive(false);
+                _ahssBackgroundLeft.gameObject.SetActive(false);
+                _ahssBackgroundRight.gameObject.SetActive(false);
+                _ahssReloadLeft.gameObject.SetActive(true);
+                _ahssReloadRight.gameObject.SetActive(true);
+                _ahssReloadLeft.GetComponent<Animator>().Update(0f);
+                _ahssReloadRight.GetComponent<Animator>().Update(0f);
+                _reloadAnimationTimeLeft = 1.333f;
                 _shootAnimationTimeLeft = 0f;
             }
             else if (_tsBackground != null && !SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
@@ -195,16 +242,40 @@ namespace UI
             }
         }
 
-        public void ShootGun()
+        public void ShootAPG()
         {
-            if (_human == null || _hudBottom == null || _gunBackground == null)
+            if (_human == null || _hudBottom == null || _apgBackground == null)
                 return;
-            _gunShoot.gameObject.SetActive(true);
-            _gunShoot.GetComponent<Animator>().Update(0f);
-            _gunAmmoBackground.gameObject.SetActive(true);
-            _gunBackground.gameObject.SetActive(false);
-            _gunReload.gameObject.SetActive(false);
+            _apgShoot.gameObject.SetActive(true);
+            _apgShoot.GetComponent<Animator>().Update(0f);
+            _apgAmmoBackground.gameObject.SetActive(true);
+            _apgBackground.gameObject.SetActive(false);
+            _apgReload.gameObject.SetActive(false);
             _shootAnimationTimeLeft = 0.5f;
+            _reloadAnimationTimeLeft = 0f;
+        }
+
+        public void ShootAHSS(bool left, bool right)
+        {
+            if (_human == null || _hudBottom == null || _ahssBackgroundLeft == null)
+                return;
+            if (left)
+            {
+                _ahssShootLeft.gameObject.SetActive(true);
+                _ahssShootLeft.GetComponent<Animator>().Update(0f);
+                _ahssBackgroundLeft.gameObject.SetActive(false);
+                _ahssEmptyLeft.gameObject.SetActive(false);
+                _ahssReloadLeft.gameObject.SetActive(false);
+            }
+            if (right)
+            {
+                _ahssShootRight.gameObject.SetActive(true);
+                _ahssShootRight.GetComponent<Animator>().Update(0f);
+                _ahssBackgroundRight.gameObject.SetActive(false);
+                _ahssEmptyRight.gameObject.SetActive(false);
+                _ahssReloadRight.gameObject.SetActive(false);
+            }
+            _shootAnimationTimeLeft = 0.667f;
             _reloadAnimationTimeLeft = 0f;
         }
 
@@ -233,8 +304,10 @@ namespace UI
             UpdateGas();
             if (_human.Weapon is BladeWeapon)
                 UpdateBlade();
-            else if (_human.Weapon is AHSSWeapon || _human.Weapon is APGWeapon)
-                UpdateGun();
+            else if (_human.Weapon is APGWeapon)
+                UpdateAPG();
+            else if (_human.Weapon is AHSSWeapon)
+                UpdateAHSS();
             else if (_human.Weapon is ThunderspearWeapon)
                 UpdateTS();
         }
@@ -274,7 +347,7 @@ namespace UI
                     if (_currentSpecialIcon != "")
                     {
                         var icon = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/" + _currentSpecialIcon, true);
-                        var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, 32f, 32f), new Vector2(0.5f, 0.5f));
+                        var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, icon.width, icon.height), new Vector2(0.5f, 0.5f));
                         _specialIconBackground.sprite = sprite;
                         _specialIconFill.sprite = sprite;
                     }
@@ -389,7 +462,7 @@ namespace UI
             }
         }
 
-        private void UpdateGun()
+        private void UpdateAPG()
         {
             var weapon = (AmmoWeapon)_human.Weapon;
             float ratio = 0f;
@@ -400,21 +473,21 @@ namespace UI
             _ammoFillLeft.fillAmount = _ammoFillRight.fillAmount = ratio;
             if (ratio <= 0f)
             {
-                _gunBackground.color = BackgroundVeryLowColor;
-                _gunAmmoBackground.color = BackgroundVeryLowColor;
-                _gunShoot.color = BackgroundVeryLowColor;
+                _apgBackground.color = BackgroundVeryLowColor;
+                _apgAmmoBackground.color = BackgroundVeryLowColor;
+                _apgShoot.color = BackgroundVeryLowColor;
             }
             else if (ratio <= 0.5f)
             {
-                _gunBackground.color = BackgroundLowColor;
-                _gunAmmoBackground.color = BackgroundLowColor;
-                _gunShoot.color = BackgroundLowColor;
+                _apgBackground.color = BackgroundLowColor;
+                _apgAmmoBackground.color = BackgroundLowColor;
+                _apgShoot.color = BackgroundLowColor;
             }
             else
             {
-                _gunBackground.color = BackgroundNormalColor;
-                _gunAmmoBackground.color = BackgroundNormalColor;
-                _gunShoot.color = BackgroundNormalColor;
+                _apgBackground.color = BackgroundNormalColor;
+                _apgAmmoBackground.color = BackgroundNormalColor;
+                _apgShoot.color = BackgroundNormalColor;
             }
             _ammoLabelLeft.text = _ammoLabelRight.text = weapon.AmmoLeft.ToString();
             if (weapon.AmmoLeft == 0)
@@ -427,14 +500,87 @@ namespace UI
                 _ammoLabelLeft.color = Color.green;
                 _ammoLabelRight.color = Color.green;
             }
-            if (!_gunBackground.gameObject.activeSelf)
+            if (!_apgBackground.gameObject.activeSelf)
             {
                 if (_reloadAnimationTimeLeft <= 0f && _shootAnimationTimeLeft <= 0f)
                 {
-                    _gunBackground.gameObject.SetActive(true);
-                    _gunAmmoBackground.gameObject.SetActive(false);
-                    _gunReload.gameObject.SetActive(false);
-                    _gunShoot.gameObject.SetActive(false);
+                    _apgBackground.gameObject.SetActive(true);
+                    _apgAmmoBackground.gameObject.SetActive(false);
+                    _apgReload.gameObject.SetActive(false);
+                    _apgShoot.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void UpdateAHSS()
+        {
+            var weapon = (AmmoWeapon)_human.Weapon;
+            _ammoLabelLeft.text = _ammoLabelRight.text = weapon.AmmoLeft.ToString();
+            if (weapon.AmmoLeft == 0)
+            {
+                _ammoLabelLeft.color = Color.red;
+                _ammoLabelRight.color = Color.red;
+            }
+            else
+            {
+                _ammoLabelLeft.color = Color.green;
+                _ammoLabelRight.color = Color.green;
+            }
+            if (weapon.RoundLeft == 0)
+            {
+                _ahssEmptyLeft.color = BackgroundVeryLowColor;
+                _ahssEmptyRight.color = BackgroundVeryLowColor;
+                _ahssShootLeft.color = BackgroundVeryLowColor;
+                _ahssShootRight.color = BackgroundVeryLowColor;
+            }
+            else if (weapon.RoundLeft == 1)
+            {
+                _ahssEmptyLeft.color = BackgroundLowColor;
+                _ahssEmptyRight.color = BackgroundLowColor;
+                _ahssBackgroundLeft.color = BackgroundLowColor;
+                _ahssBackgroundRight.color = BackgroundLowColor;
+                _ahssShootLeft.color = BackgroundLowColor;
+                _ahssShootRight.color = BackgroundLowColor;
+            }
+            else
+            {
+                _ahssBackgroundLeft.color = BackgroundNormalColor;
+                _ahssBackgroundRight.color = BackgroundNormalColor;
+            }
+            if (_ahssEmptyLeft.gameObject.activeSelf && weapon.RoundLeft >= 2)
+            {
+                _ahssEmptyLeft.gameObject.SetActive(false);
+                _ahssBackgroundLeft.gameObject.SetActive(true);
+            }
+            if (_ahssEmptyRight.gameObject.activeSelf && weapon.RoundLeft >= 1)
+            {
+                _ahssEmptyRight.gameObject.SetActive(false);
+                _ahssBackgroundRight.gameObject.SetActive(true);
+            }
+            if (_ahssShootLeft.gameObject.activeSelf)
+            {
+                if (_shootAnimationTimeLeft <= 0f)
+                {
+                    _ahssShootLeft.gameObject.SetActive(false);
+                    _ahssEmptyLeft.gameObject.SetActive(true);
+                }
+            }
+            if (_ahssShootRight.gameObject.activeSelf)
+            {
+                if (_shootAnimationTimeLeft <= 0f)
+                {
+                    _ahssShootRight.gameObject.SetActive(false);
+                    _ahssEmptyRight.gameObject.SetActive(true);
+                }
+            }
+            if (_ahssReloadLeft.gameObject.activeSelf || _ahssReloadRight.gameObject.activeSelf)
+            {
+                if (_reloadAnimationTimeLeft <= 0f)
+                {
+                    _ahssReloadLeft.gameObject.SetActive(false);
+                    _ahssReloadRight.gameObject.SetActive(false);
+                    _ahssBackgroundLeft.gameObject.SetActive(true);
+                    _ahssBackgroundRight.gameObject.SetActive(true);
                 }
             }
         }

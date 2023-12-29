@@ -69,6 +69,7 @@ namespace Map
             _mapTransferData = new List<byte[][]>();
             _mapTransferData.Add(new byte[][] { new byte[] { MsgMapStart }, 
                 StringCompression.Compress(MapManager.MapScript.Options.Serialize()),
+                StringCompression.Compress(MapManager.MapScript.CustomAssets.Serialize()),
                 StringCompression.Compress(_mapScriptSymbolTable.ToString())
             });
             int chunkSize = 10000;
@@ -101,9 +102,9 @@ namespace Map
             {
                 MapManager.MapScript = new MapScript();
                 MapManager.MapScript.Options.Deserialize(StringCompression.Decompress(byteArr[1]));
-                _mapScriptSymbolTable = JSON.Parse(StringCompression.Decompress(byteArr[2]));
+                MapManager.MapScript.CustomAssets.Deserialize(StringCompression.Decompress(byteArr[2]));
+                _mapScriptSymbolTable = JSON.Parse(StringCompression.Decompress(byteArr[3]));
                 _mapScriptCompressed = new List<byte>();
-
             }
             else if (msgType == MsgMapBody || msgType == MsgMapEnd)
             {

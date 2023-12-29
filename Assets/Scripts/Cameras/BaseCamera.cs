@@ -8,6 +8,7 @@ using GameProgress;
 using Map;
 using GameManagers;
 using Events;
+using ApplicationManagers;
 
 namespace Cameras
 {
@@ -16,15 +17,17 @@ namespace Cameras
         public Camera Camera;
         public BaseComponentCache Cache;
         public Skybox Skybox;
+        // public Camera BackgroundCamera;
 
         protected virtual void Awake()
         {
             Camera = gameObject.GetComponent<Camera>();
-            Skybox = gameObject.AddComponent<Skybox>();
+            // BackgroundCamera = gameObject.transform.Find("BackgroundCamera").GetComponent<Camera>();
+            // Skybox = BackgroundCamera.gameObject.GetComponent<Skybox>();
+            Skybox = gameObject.GetComponent<Skybox>();
             Cache = new BaseComponentCache(gameObject);
-            AudioListener.volume = SettingsManager.SoundSettings.Volume.Value;
+            FullscreenHandler.UpdateSound();
             Camera.fieldOfView = 50f;
-            Camera.cullingMask &= ~(1 << PhysicsLayer.MinimapIcon);
         }
 
         public virtual void OnFinishLoading()
@@ -34,6 +37,15 @@ namespace Cameras
 
         protected virtual void SetDefaultCameraPosition()
         {
+        }
+
+        protected virtual void LateUpdate()
+        {
+            /*
+            BackgroundCamera.fieldOfView = Camera.fieldOfView;
+            BackgroundCamera.transform.position = Vector3.up * Cache.Transform.position.y * 0.02f;
+            BackgroundCamera.transform.rotation = Cache.Transform.rotation;
+            */
         }
     }
 }

@@ -59,12 +59,16 @@ namespace UI
 
         private string GetWeaponIcon(string weapon)
         {
-            if (weapon == "AHSS" || weapon == "APG")
+            if(weapon == "AHSS")
                 return "Icons/Game/AHSSIcon";
+            else if (weapon == "APG")
+                return "Icons/Game/APGIcon";
             else if (weapon == "Thunderspear")
                 return "Icons/Game/ThunderspearIcon";
-            else if (weapon == "Stun" || weapon == "Eat" || weapon == "Titan")
-                return "Icons/Quests/Skull2Icon";
+            else if (weapon.StartsWith("Titan"))
+                return "Icons/Game/TitanIcon";
+            else if (weapon.StartsWith("Shifter"))
+                return "Icons/Game/ShifterIcon";
             return "Icons/Game/KillFeedIcon";
         }
     }

@@ -140,20 +140,22 @@ namespace UI
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutHuman");
                 if (loadout == HumanLoadout.Blades)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/BladeIcon", true);
-                else if (loadout == HumanLoadout.AHSS || loadout == HumanLoadout.APG)
+                else if (loadout == HumanLoadout.AHSS)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/AHSSIcon", true);
+                else if (loadout == HumanLoadout.APG)
+                    loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/APGIcon", true);
                 else if (loadout == HumanLoadout.Thunderspears)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ThunderspearIcon", true);
             }
             else if (character == PlayerCharacter.Titan)
             {
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutTitan");
-                loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Quests/Skull2Icon", true);
+                loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/TitanIcon", true);
             }
             else if (character == PlayerCharacter.Shifter)
             {
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutShifter");
-                loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Quests/Skull2Icon", true);
+                loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ShifterIcon", true);
             }
             if (status == PlayerStatus.Spectating)
                 loadoutImage.gameObject.SetActive(false);

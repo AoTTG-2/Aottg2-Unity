@@ -65,9 +65,9 @@ namespace Characters
         {
             ResetAttackState(attack);
             if (_currentAttack == ShifterAttacks.AttackDefault)
-                StateAction(TitanState.Attack, ErenAnimations.Attack);
+                StateAttack(ErenAnimations.Attack);
             else if (_currentAttack == ShifterAttacks.AttackKick)
-                StateAction(TitanState.Attack, ErenAnimations.Kick);
+                StateAttack(ErenAnimations.Kick);
         }
 
         protected override void UpdateAttack()
@@ -78,19 +78,19 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.15f)
                 {
                     _currentAttackStage = 1;
-                    ErenCache.HandRHitbox.Activate(0f, 0.045f);
+                    ErenCache.HandRHitbox.Activate(0f, 0.045f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.28f)
                 {
                     _currentAttackStage = 2;
-                    ErenCache.HandLHitbox.Activate(0f, 0.09f);
+                    ErenCache.HandLHitbox.Activate(0f, 0.09f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing2);
                 }
                 else if (_currentAttackStage == 2 && animationTime > 0.565f)
                 {
                     _currentAttackStage = 3;
-                    ErenCache.HandRHitbox.Activate(0f, 0.09f);
+                    ErenCache.HandRHitbox.Activate(0f, 0.09f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing3);
                 }
             }
@@ -99,7 +99,7 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.3f)
                 {
                     _currentAttackStage = 1;
-                    ErenCache.FootRHitbox.Activate(0f, 0.22f);
+                    ErenCache.FootRHitbox.Activate(0f, 0.22f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }
