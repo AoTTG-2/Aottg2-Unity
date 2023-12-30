@@ -35,6 +35,9 @@
 		"Prefabs": [
 			{"Name": "Arch1"},
 			{"Name": "Bridge1"},
+			{"Name": "Building1"},
+			{"Name": "Building2"},
+			{"Name": "Building3"},
 			{"Name": "Bridge2"},
 			{"Name": "Canal1"},
 			{"Name": "Canal2"},
