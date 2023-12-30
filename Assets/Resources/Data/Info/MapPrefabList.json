@@ -108,8 +108,6 @@
 			{"Name": "Wall3"},
 			{"Name": "Wall4"},
 			{"Name": "Windmill1"},
-			{"Name": "Bell1", "Static": true, "Networked": false},
-			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true},
 			{"Name": "Ramp1"},
 			{"Name": "Stairs1"},
 			{"Name": "StairsDamaged1"}
@@ -193,7 +191,9 @@
 			{"Name": "Tarp1"},
 			{"Name": "Tarp2"},
 			{"Name": "Teapot1"},
-			{"Name": "Wagon1"}
+			{"Name": "Wagon1"},
+			{"Name": "Bell1"},
+			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true}
 		]
 	},
 	"Nature": {
