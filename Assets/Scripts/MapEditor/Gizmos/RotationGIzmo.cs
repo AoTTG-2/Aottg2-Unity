@@ -20,6 +20,7 @@ namespace MapEditor
         private Color CircleZColor = Color.blue;
         private Transform _activeCircle;
         private Vector3 _previousMousePoint;
+        private float _currentAngle;
 
         public static RotationGizmo Create()
         {
@@ -73,6 +74,8 @@ namespace MapEditor
                     SetCircleColor(_activeCircle, SelectedColor);
                     _previousMousePoint = hit.point;
                 }
+
+                _currentAngle = 0f;
             }
             else
             {
@@ -87,6 +90,20 @@ namespace MapEditor
                     Vector3 origDirection = (_previousMousePoint - center).normalized;
                     Vector3 newDirection = (mousePoint - center).normalized;
                     angle = Util.SignedAngle(origDirection, newDirection, GetAxis());
+
+                    if (_gameManager.Snap)
+                    {
+                        var snap = SettingsManager.MapEditorSettings.SnapRotate.Value;
+                        _currentAngle += angle;
+                        angle = 0;
+
+                        if (Mathf.Abs(_currentAngle) > snap)
+                        {
+                            angle = Mathf.Round(_currentAngle / snap) * snap;
+                            _currentAngle %= snap;
+                        }
+                    }
+                    
                     RotateSelectedObjects(center, GetAxis(), angle);
                     ResetCenter();
                     _previousMousePoint = mousePoint;

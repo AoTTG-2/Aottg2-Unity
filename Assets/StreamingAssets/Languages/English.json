@@ -472,6 +472,8 @@
 		"General.CameraFastMoveSpeed": "Camera fast move speed",
 		"General.RenderDistance": "Render distance",
 		"General.SnapMove": "Snap move",
+		"General.SnapRotate": "Snap rotate",
+		"General.SnapScale": "Snap scale",
 		"Keybinds.Forward": "Forward",
 		"Keybinds.Back": "Back",
 		"Keybinds.Left": "Left",

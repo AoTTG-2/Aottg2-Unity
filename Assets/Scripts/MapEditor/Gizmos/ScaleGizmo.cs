@@ -20,6 +20,7 @@ namespace MapEditor
         private Color LineZColor = Color.blue;
         private Transform _activeLine;
         private Vector3 _previousMousePoint;
+        private Vector3 _currentScaleAmount;
 
         public static ScaleGizmo Create()
         {
@@ -73,6 +74,8 @@ namespace MapEditor
                     SetLineColor(_activeLine, SelectedColor);
                     _previousMousePoint = hit.point;
                 }
+
+                _currentScaleAmount = Vector3.zero;
             }
             else
             {
@@ -93,6 +96,32 @@ namespace MapEditor
                         direction = Vector3.forward;
                     drag = direction * Vector3.Dot(drag, _activeLine.right);
                     Vector3 frameDelta = drag * 0.1f;
+
+                    if (_gameManager.Snap)
+                    {
+                        var snap = SettingsManager.MapEditorSettings.SnapScale.Value;
+                        _currentScaleAmount += frameDelta;
+                        frameDelta = Vector3.zero;
+
+                        if (direction == Vector3.right && Mathf.Abs(_currentScaleAmount.x) > snap)
+                        {
+                            frameDelta.x = Mathf.Round(_currentScaleAmount.x / snap) * snap;
+                            _currentScaleAmount.x %= snap;
+                        }
+                        
+                        if (direction == Vector3.up && Mathf.Abs(_currentScaleAmount.y) > snap)
+                        {
+                            frameDelta.y = Mathf.Round(_currentScaleAmount.y / snap) * snap;
+                            _currentScaleAmount.y %= snap;
+                        }
+                        
+                        if (direction == Vector3.forward && Mathf.Abs(_currentScaleAmount.z) > snap)
+                        {
+                            frameDelta.z = Mathf.Round(_currentScaleAmount.z / snap) * snap;
+                            _currentScaleAmount.z %= snap;
+                        }
+                    }
+                    
                     ScaleSelectedObjects(frameDelta);
                     ResetCenter();
                     _previousMousePoint = mousePoint;
