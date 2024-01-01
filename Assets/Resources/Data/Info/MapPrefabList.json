@@ -27,6 +27,7 @@
 			{"Name": "Prism"},
 			{"Name": "Pyramid"},
 			{"Name": "Sphere"},
+			{"Name": "SquareTorus"},
 			{"Name": "Torus"},
 			{"Name": "Tube"}
 		]
@@ -85,6 +86,9 @@
 			{"Name": "House32"},
 			{"Name": "House33"},
 			{"Name": "House34"},
+			{"Name": "Ramp1"},
+			{"Name": "Stairs1"},
+			{"Name": "Stairs2"},
 			{"Name": "Tent1"},
 			{"Name": "Tent2"},
 			{"Name": "Tent3"},
@@ -118,6 +122,8 @@
 			{"Name": "Barrel2"},
 			{"Name": "Barrel3"},
 			{"Name": "Barrel4"},
+			{"Name": "Bell1"},
+			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true},
 			{"Name": "Blackboard1"},
 			{"Name": "Blackboard2"},
 			{"Name": "Bonfire1"},

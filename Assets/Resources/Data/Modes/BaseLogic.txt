@@ -1,3 +1,81 @@
+component Bell
+{
+    ResetDelay = 0.3;
+    LureTitans = false;
+    LureRadius = 100;
+    LureDuration = 5;
+    VelocityHitThreshold = 30;
+    _currentResetTime = 0.0;
+    _soundTransform = null;
+
+    function Init()
+    {
+        self._soundTransform = self.MapObject.GetTransform("BellHitSound");
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 0.4, 0), Vector3(5.3, 6, 5.3));
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "hit" && self._currentResetTime <= 0 && self._soundTransform != null)
+        {
+            self._soundTransform.StopSound();
+            self._soundTransform.PlaySound();
+            self._currentResetTime = self.ResetDelay;
+        }
+    }
+
+    function OnTick()
+    {
+        self._currentResetTime = self._currentResetTime - Time.TickTime;
+        if (self._currentResetTime < 0) {
+            self._currentResetTime = 0;
+        }
+    }
+
+    function HandleHit(character)
+    {
+        # Only apply this once in multiplayer, others will send you the networked event #
+        if (character.IsMine == false)
+        {
+            return;
+        }
+
+        if (character.Velocity.Magnitude > self.VelocityHitThreshold)
+        {
+            if (self.LureTitans)
+            {
+                for (titan in Game.Titans)
+                {
+                    difference = titan.Position - self.MapObject.Position;
+                    if (difference.Magnitude < self.LureRadius) {
+                        titan.Target(character, self.LureDuration);
+                    }
+                }
+            }
+            self.NetworkView.SendMessageAll("hit");
+        }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        if (self._currentResetTime > 0 || character.IsMine == false)
+        {
+            return;
+        }
+        self.HandleHit(character);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self._currentResetTime > 0 || other.IsCharacter == false)
+        {
+            return;
+        }
+
+        self.HandleHit(other);
+    }
+}
+
 component SupplyStation
 {
     UnlimitedRefills = true;
