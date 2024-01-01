@@ -27,8 +27,8 @@
 			{"Name": "Prism"},
 			{"Name": "Pyramid"},
 			{"Name": "Sphere"},
-			{"Name": "Torus"},
 			{"Name": "SquareTorus"},
+			{"Name": "Torus"},
 			{"Name": "Tube"}
 		]
 	},
