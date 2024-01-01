@@ -112,6 +112,8 @@ namespace UI
                     UIManager.CurrentMenu.MessagePopup.Show("Settings loaded from file.");
                     break;
                 case "Back":
+                    if (SceneLoader.SceneName == SceneName.InGame)
+                        ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
                     Hide();
                     break;
                 case "Default":

@@ -99,7 +99,10 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine && (self.UnlimitedRefills || self._refillsLeft > 0))
         {
             self._currentHuman = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+            if (!other.AutoRefillGas)
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+            }
         }
     }
 
@@ -107,7 +110,7 @@ component SupplyStation
     {
         if (self._currentHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact") && self._currentHuman.Refill(true))
+            if ((self._currentHuman.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHuman.Refill(true))
             {
                 self._currentHuman = null;
                 self._refillsLeft = self._refillsLeft - 1;

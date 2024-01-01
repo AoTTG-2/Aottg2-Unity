@@ -75,6 +75,7 @@ namespace UI
             }
             _itemWheelPopup.Hide();
             IsActive = false;
+            ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
         }
 
         private List<string> GetItemWheelOptions()

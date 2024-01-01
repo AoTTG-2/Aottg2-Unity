@@ -2327,7 +2327,7 @@ namespace Characters
 
         public void StartBladeSwing()
         {
-            if (HookLeft.IsHooked() || HookRight.IsHooked())
+            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked()))
             {
                 if (SettingsManager.InputSettings.General.Left.GetKey())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
@@ -2342,24 +2342,6 @@ namespace Characters
                 AttackAnimation = HumanAnimations.Attack2;
             else if (SettingsManager.InputSettings.General.Right.GetKey())
                 AttackAnimation = HumanAnimations.Attack1;
-            /*
-            else if (HookLeft.IsHooked() && HookLeft.GetHookParent() != null)
-            {
-                BaseCharacter character = HookLeft.GetHookCharacter();
-                if (character != null && character is BaseTitan)
-                    AttackAnimation = GetBladeAnimationTarget(((BaseTitan)character).BaseTitanCache.Neck);
-                else
-                    AttackAnimation = GetBladeAnimationMouse();
-            }
-            else if (HookRight.IsHooked() && HookRight.GetHookParent() != null)
-            {
-                BaseCharacter character = HookRight.GetHookCharacter();
-                if (character != null && character is BaseTitan)
-                    AttackAnimation = GetBladeAnimationTarget(((BaseTitan)character).BaseTitanCache.Neck);
-                else
-                    AttackAnimation = GetBladeAnimationMouse();
-            }
-            */
             else
             {
                 BaseTitan titan = FindNearestTitan();

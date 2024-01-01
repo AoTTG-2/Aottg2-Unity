@@ -169,6 +169,7 @@ namespace UI
             }
             _emoteWheelPopup.Hide();
             IsActive = false;
+            ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
         }
 
         private List<string> GetEmoteWheelOptions(EmoteWheelState state)

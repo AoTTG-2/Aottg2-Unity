@@ -24,8 +24,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.CameraRotateSpeed, UIManager.GetLocale(cat, sub, "CameraRotateSpeed"), elementWidth: 120f);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RenderDistance, UIManager.GetLocale(cat, sub, "RenderDistance"), elementWidth: 120f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapMove, UIManager.GetLocale(cat, sub, "SnapMove"), elementWidth: 120f);
-            // ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapRotate, UIManager.GetLocale(cat, sub, "SnapRotate"), elementWidth: 120f);
-            // ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapScale, UIManager.GetLocale(cat, sub, "SnapScale"), elementWidth: 120f);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapRotate, UIManager.GetLocale(cat, sub, "SnapRotate"), elementWidth: 120f);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapScale, UIManager.GetLocale(cat, sub, "SnapScale"), elementWidth: 120f);
 
         }
     }
