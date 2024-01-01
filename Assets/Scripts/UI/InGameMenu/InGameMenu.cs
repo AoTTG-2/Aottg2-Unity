@@ -234,6 +234,7 @@ namespace UI
             else if (!enabled)
             {
                 _scoreboardPopup.Hide();
+                SkipAHSSInput = true;
             }
         }
 
