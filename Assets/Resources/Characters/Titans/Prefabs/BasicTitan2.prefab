@@ -3009,6 +3009,7 @@ Transform:
   - {fileID: 464964}
   - {fileID: 464858}
   - {fileID: 464856}
+  - {fileID: 465006}
   m_Father: {fileID: 464972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &13665008
@@ -3524,7 +3525,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 465006}
-  - component: {fileID: 13765014}
+  - component: {fileID: 8271956217666393353}
+  - component: {fileID: 5691737203157609683}
   m_Layer: 0
   m_Name: Eyes
   m_TagString: Untagged
@@ -3540,15 +3542,23 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165006}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: -0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5269477, y: 3.5269477, z: 3.5269477}
+  m_LocalRotation: {x: -0.65486526, y: 0.00000016605104, z: 0.00000016307385, w: 0.7557456}
+  m_LocalPosition: {x: 0, y: -0.8478085, z: -0.12256465}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 465012}
+  m_Father: {fileID: 464966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &13765014
-SkinnedMeshRenderer:
+--- !u!33 &8271956217666393353
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165006}
+  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
+--- !u!23 &5691737203157609683
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3560,9 +3570,9 @@ SkinnedMeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
+  m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -3588,73 +3598,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
-  m_Bones:
-  - {fileID: 465002}
-  - {fileID: 464994}
-  - {fileID: 464886}
-  - {fileID: 464882}
-  - {fileID: 464880}
-  - {fileID: 464878}
-  - {fileID: 464884}
-  - {fileID: 464996}
-  - {fileID: 464900}
-  - {fileID: 464896}
-  - {fileID: 464894}
-  - {fileID: 464892}
-  - {fileID: 464898}
-  - {fileID: 464998}
-  - {fileID: 464982}
-  - {fileID: 464980}
-  - {fileID: 464974}
-  - {fileID: 464972}
-  - {fileID: 464966}
-  - {fileID: 464964}
-  - {fileID: 464970}
-  - {fileID: 464960}
-  - {fileID: 464958}
-  - {fileID: 464956}
-  - {fileID: 464954}
-  - {fileID: 464950}
-  - {fileID: 464948}
-  - {fileID: 464952}
-  - {fileID: 464944}
-  - {fileID: 464942}
-  - {fileID: 464968}
-  - {fileID: 464938}
-  - {fileID: 464936}
-  - {fileID: 464934}
-  - {fileID: 464932}
-  - {fileID: 464928}
-  - {fileID: 464926}
-  - {fileID: 464930}
-  - {fileID: 464922}
-  - {fileID: 464920}
-  - {fileID: 464978}
-  - {fileID: 464916}
-  - {fileID: 464914}
-  - {fileID: 464912}
-  - {fileID: 464976}
-  - {fileID: 464908}
-  - {fileID: 464906}
-  - {fileID: 464904}
-  - {fileID: 464988}
-  - {fileID: 464868}
-  - {fileID: 464986}
-  - {fileID: 464864}
-  - {fileID: 464992}
-  - {fileID: 464990}
-  - {fileID: 465000}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 465002}
-  m_AABB:
-    m_Center: {x: 0, y: 0.8, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1.6}
-  m_DirtyAABB: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &165008
 GameObject:
   m_ObjectHideFlags: 0
@@ -3864,7 +3808,6 @@ Transform:
   m_Children:
   - {fileID: 465010}
   - {fileID: 465008}
-  - {fileID: 465006}
   - {fileID: 465004}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

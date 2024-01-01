@@ -19,6 +19,8 @@ namespace Characters
         protected ArmoredAnimations ArmoredAnimations;
         public override List<string> EmoteActions => new List<string>();
 
+		protected override float DefaultRunSpeed => 110;
+
         protected override void CreateCache(BaseComponentCache cache)
         {
             ArmoredCache = new ArmoredComponentCache(gameObject);

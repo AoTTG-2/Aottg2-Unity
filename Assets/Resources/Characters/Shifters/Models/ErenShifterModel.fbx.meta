@@ -1,175 +1,483 @@
 fileFormatVersion: 2
 guid: 7df1b1380bf4c2347b2342585b58bc3a
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: Bone
-    100002: Bone_001
-    100004: Bone_001_end
-    100006: Bone_002
-    100008: Bone_002_end
-    100010: Bone_003
-    100012: Bone_003_end
-    100014: Bone_end
-    100016: chest
-    100018: Controller_Body
-    100020: Core
-    100022: ErenRig_VER2
-    100024: ErenTitan
-    100026: //RootNode
-    100028: ErenTitanHair
-    100030: foot_L
-    100032: foot_R
-    100034: forearm_L
-    100036: forearm_R
-    100038: hand_L
-    100040: hand_L_001
-    100042: hand_L_002
-    100044: hand_L_003
-    100046: hand_L_003_end
-    100048: hand_L_004
-    100050: hand_L_005
-    100052: hand_L_006
-    100054: hand_L_006_end
-    100056: hand_R
-    100058: hand_R_001
-    100060: hand_R_002
-    100062: hand_R_003
-    100064: hand_R_003_end
-    100066: hand_R_004
-    100068: hand_R_005
-    100070: hand_R_006
-    100072: hand_R_006_end
-    100074: head
-    100076: hip
-    100078: IK.L
-    100080: IK.R
-    100082: kneel.L
-    100084: kneel.L_end
-    100086: kneel.R
-    100088: kneel.R_end
-    100090: neck
-    100092: Rock
-    100094: Rock_end
-    100096: shin_L
-    100098: shin_R
-    100100: shoulder_L
-    100102: shoulder_R
-    100104: spine
-    100106: thigh_L
-    100108: thigh_R
-    100110: toe_L
-    100112: toe_L_end
-    100114: toe_R
-    100116: toe_R_end
-    100118: upper_arm_L
-    100120: upper_arm_R
-    400000: Bone
-    400002: Bone_001
-    400004: Bone_001_end
-    400006: Bone_002
-    400008: Bone_002_end
-    400010: Bone_003
-    400012: Bone_003_end
-    400014: Bone_end
-    400016: chest
-    400018: Controller_Body
-    400020: Core
-    400022: ErenRig_VER2
-    400024: ErenTitan
-    400026: //RootNode
-    400028: ErenTitanHair
-    400030: foot_L
-    400032: foot_R
-    400034: forearm_L
-    400036: forearm_R
-    400038: hand_L
-    400040: hand_L_001
-    400042: hand_L_002
-    400044: hand_L_003
-    400046: hand_L_003_end
-    400048: hand_L_004
-    400050: hand_L_005
-    400052: hand_L_006
-    400054: hand_L_006_end
-    400056: hand_R
-    400058: hand_R_001
-    400060: hand_R_002
-    400062: hand_R_003
-    400064: hand_R_003_end
-    400066: hand_R_004
-    400068: hand_R_005
-    400070: hand_R_006
-    400072: hand_R_006_end
-    400074: head
-    400076: hip
-    400078: IK.L
-    400080: IK.R
-    400082: kneel.L
-    400084: kneel.L_end
-    400086: kneel.R
-    400088: kneel.R_end
-    400090: neck
-    400092: Rock
-    400094: Rock_end
-    400096: shin_L
-    400098: shin_R
-    400100: shoulder_L
-    400102: shoulder_R
-    400104: spine
-    400106: thigh_L
-    400108: thigh_R
-    400110: toe_L
-    400112: toe_L_end
-    400114: toe_R
-    400116: toe_R_end
-    400118: upper_arm_L
-    400120: upper_arm_R
-    4300000: ErenTitanHair
-    4300002: ErenTitan
-    7400000: ErenRig_VER2|et_attack_combo_1
-    7400002: ErenRig_VER2|et_attack_combo_2
-    7400004: ErenRig_VER2|et_attack_combo_3
-    7400006: ErenRig_VER2|et_attack_combo_full
-    7400008: ErenRig_VER2|et_attack_kick
-    7400010: ErenRig_VER2|et_born
-    7400012: ErenRig_VER2|et_hit_annie_1
-    7400014: ErenRig_VER2|et_hit_annie_full
-    7400016: ErenRig_VER2|et_hit_titan
-    7400018: ErenRig_VER2|et_idle
-    7400020: ErenRig_VER2|et_jump_air
-    7400022: ErenRig_VER2|et_jump_land
-    7400024: ErenRig_VER2|et_jump_start
-    7400026: ErenRig_VER2|et_rock_fix_hole
-    7400028: ErenRig_VER2|et_rock_lift
-    7400030: ErenRig_VER2|et_rock_lift.001
-    7400032: ErenRig_VER2|et_rock_walk
-    7400034: ErenRig_VER2|et_run
-    7400036: ErenRig_VER2|et_T-pose
-    7400038: ErenRig_VER2|et_yes
-    9500000: //RootNode
-    11100000: //RootNode
-    13700000: ErenTitan
-    13700002: ErenTitanHair
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Bone
+  - first:
+      1: 100002
+    second: Bone_001
+  - first:
+      1: 100004
+    second: Bone_001_end
+  - first:
+      1: 100006
+    second: Bone_002
+  - first:
+      1: 100008
+    second: Bone_002_end
+  - first:
+      1: 100010
+    second: Bone_003
+  - first:
+      1: 100012
+    second: Bone_003_end
+  - first:
+      1: 100014
+    second: Bone_end
+  - first:
+      1: 100016
+    second: chest
+  - first:
+      1: 100018
+    second: Controller_Body
+  - first:
+      1: 100020
+    second: Core
+  - first:
+      1: 100022
+    second: ErenRig_VER2
+  - first:
+      1: 100024
+    second: ErenTitan
+  - first:
+      1: 100026
+    second: //RootNode
+  - first:
+      1: 100028
+    second: ErenTitanHair
+  - first:
+      1: 100030
+    second: foot_L
+  - first:
+      1: 100032
+    second: foot_R
+  - first:
+      1: 100034
+    second: forearm_L
+  - first:
+      1: 100036
+    second: forearm_R
+  - first:
+      1: 100038
+    second: hand_L
+  - first:
+      1: 100040
+    second: hand_L_001
+  - first:
+      1: 100042
+    second: hand_L_002
+  - first:
+      1: 100044
+    second: hand_L_003
+  - first:
+      1: 100046
+    second: hand_L_003_end
+  - first:
+      1: 100048
+    second: hand_L_004
+  - first:
+      1: 100050
+    second: hand_L_005
+  - first:
+      1: 100052
+    second: hand_L_006
+  - first:
+      1: 100054
+    second: hand_L_006_end
+  - first:
+      1: 100056
+    second: hand_R
+  - first:
+      1: 100058
+    second: hand_R_001
+  - first:
+      1: 100060
+    second: hand_R_002
+  - first:
+      1: 100062
+    second: hand_R_003
+  - first:
+      1: 100064
+    second: hand_R_003_end
+  - first:
+      1: 100066
+    second: hand_R_004
+  - first:
+      1: 100068
+    second: hand_R_005
+  - first:
+      1: 100070
+    second: hand_R_006
+  - first:
+      1: 100072
+    second: hand_R_006_end
+  - first:
+      1: 100074
+    second: head
+  - first:
+      1: 100076
+    second: hip
+  - first:
+      1: 100078
+    second: IK.L
+  - first:
+      1: 100080
+    second: IK.R
+  - first:
+      1: 100082
+    second: kneel.L
+  - first:
+      1: 100084
+    second: kneel.L_end
+  - first:
+      1: 100086
+    second: kneel.R
+  - first:
+      1: 100088
+    second: kneel.R_end
+  - first:
+      1: 100090
+    second: neck
+  - first:
+      1: 100092
+    second: Rock
+  - first:
+      1: 100094
+    second: Rock_end
+  - first:
+      1: 100096
+    second: shin_L
+  - first:
+      1: 100098
+    second: shin_R
+  - first:
+      1: 100100
+    second: shoulder_L
+  - first:
+      1: 100102
+    second: shoulder_R
+  - first:
+      1: 100104
+    second: spine
+  - first:
+      1: 100106
+    second: thigh_L
+  - first:
+      1: 100108
+    second: thigh_R
+  - first:
+      1: 100110
+    second: toe_L
+  - first:
+      1: 100112
+    second: toe_L_end
+  - first:
+      1: 100114
+    second: toe_R
+  - first:
+      1: 100116
+    second: toe_R_end
+  - first:
+      1: 100118
+    second: upper_arm_L
+  - first:
+      1: 100120
+    second: upper_arm_R
+  - first:
+      4: 400000
+    second: Bone
+  - first:
+      4: 400002
+    second: Bone_001
+  - first:
+      4: 400004
+    second: Bone_001_end
+  - first:
+      4: 400006
+    second: Bone_002
+  - first:
+      4: 400008
+    second: Bone_002_end
+  - first:
+      4: 400010
+    second: Bone_003
+  - first:
+      4: 400012
+    second: Bone_003_end
+  - first:
+      4: 400014
+    second: Bone_end
+  - first:
+      4: 400016
+    second: chest
+  - first:
+      4: 400018
+    second: Controller_Body
+  - first:
+      4: 400020
+    second: Core
+  - first:
+      4: 400022
+    second: ErenRig_VER2
+  - first:
+      4: 400024
+    second: ErenTitan
+  - first:
+      4: 400026
+    second: //RootNode
+  - first:
+      4: 400028
+    second: ErenTitanHair
+  - first:
+      4: 400030
+    second: foot_L
+  - first:
+      4: 400032
+    second: foot_R
+  - first:
+      4: 400034
+    second: forearm_L
+  - first:
+      4: 400036
+    second: forearm_R
+  - first:
+      4: 400038
+    second: hand_L
+  - first:
+      4: 400040
+    second: hand_L_001
+  - first:
+      4: 400042
+    second: hand_L_002
+  - first:
+      4: 400044
+    second: hand_L_003
+  - first:
+      4: 400046
+    second: hand_L_003_end
+  - first:
+      4: 400048
+    second: hand_L_004
+  - first:
+      4: 400050
+    second: hand_L_005
+  - first:
+      4: 400052
+    second: hand_L_006
+  - first:
+      4: 400054
+    second: hand_L_006_end
+  - first:
+      4: 400056
+    second: hand_R
+  - first:
+      4: 400058
+    second: hand_R_001
+  - first:
+      4: 400060
+    second: hand_R_002
+  - first:
+      4: 400062
+    second: hand_R_003
+  - first:
+      4: 400064
+    second: hand_R_003_end
+  - first:
+      4: 400066
+    second: hand_R_004
+  - first:
+      4: 400068
+    second: hand_R_005
+  - first:
+      4: 400070
+    second: hand_R_006
+  - first:
+      4: 400072
+    second: hand_R_006_end
+  - first:
+      4: 400074
+    second: head
+  - first:
+      4: 400076
+    second: hip
+  - first:
+      4: 400078
+    second: IK.L
+  - first:
+      4: 400080
+    second: IK.R
+  - first:
+      4: 400082
+    second: kneel.L
+  - first:
+      4: 400084
+    second: kneel.L_end
+  - first:
+      4: 400086
+    second: kneel.R
+  - first:
+      4: 400088
+    second: kneel.R_end
+  - first:
+      4: 400090
+    second: neck
+  - first:
+      4: 400092
+    second: Rock
+  - first:
+      4: 400094
+    second: Rock_end
+  - first:
+      4: 400096
+    second: shin_L
+  - first:
+      4: 400098
+    second: shin_R
+  - first:
+      4: 400100
+    second: shoulder_L
+  - first:
+      4: 400102
+    second: shoulder_R
+  - first:
+      4: 400104
+    second: spine
+  - first:
+      4: 400106
+    second: thigh_L
+  - first:
+      4: 400108
+    second: thigh_R
+  - first:
+      4: 400110
+    second: toe_L
+  - first:
+      4: 400112
+    second: toe_L_end
+  - first:
+      4: 400114
+    second: toe_R
+  - first:
+      4: 400116
+    second: toe_R_end
+  - first:
+      4: 400118
+    second: upper_arm_L
+  - first:
+      4: 400120
+    second: upper_arm_R
+  - first:
+      43: 4300000
+    second: ErenTitanHair
+  - first:
+      43: 4300002
+    second: ErenTitan
+  - first:
+      74: 7400000
+    second: ErenRig_VER2|et_attack_combo_1
+  - first:
+      74: 7400002
+    second: ErenRig_VER2|et_attack_combo_2
+  - first:
+      74: 7400004
+    second: ErenRig_VER2|et_attack_combo_3
+  - first:
+      74: 7400006
+    second: ErenRig_VER2|et_attack_combo_full
+  - first:
+      74: 7400008
+    second: ErenRig_VER2|et_attack_kick
+  - first:
+      74: 7400010
+    second: ErenRig_VER2|et_born
+  - first:
+      74: 7400012
+    second: ErenRig_VER2|et_hit_annie_1
+  - first:
+      74: 7400014
+    second: ErenRig_VER2|et_hit_annie_full
+  - first:
+      74: 7400016
+    second: ErenRig_VER2|et_hit_titan
+  - first:
+      74: 7400018
+    second: ErenRig_VER2|et_idle
+  - first:
+      74: 7400020
+    second: ErenRig_VER2|et_jump_air
+  - first:
+      74: 7400022
+    second: ErenRig_VER2|et_jump_land
+  - first:
+      74: 7400024
+    second: ErenRig_VER2|et_jump_start
+  - first:
+      74: 7400026
+    second: ErenRig_VER2|et_rock_fix_hole
+  - first:
+      74: 7400028
+    second: ErenRig_VER2|et_rock_lift
+  - first:
+      74: 7400030
+    second: ErenRig_VER2|et_rock_lift.001
+  - first:
+      74: 7400032
+    second: ErenRig_VER2|et_rock_walk
+  - first:
+      74: 7400034
+    second: ErenRig_VER2|et_run
+  - first:
+      74: 7400036
+    second: ErenRig_VER2|et_T-pose
+  - first:
+      74: 7400038
+    second: ErenRig_VER2|et_yes
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: ErenTitan
+  - first:
+      137: 13700002
+    second: ErenTitanHair
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: ErenRig_VER2|et_attack_combo_1
       takeName: ErenRig_VER2|et_attack_combo_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 54
       wrapMode: 0
@@ -177,6 +485,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -315,9 +624,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_attack_combo_2
       takeName: ErenRig_VER2|et_attack_combo_2
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 0
@@ -325,6 +636,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -463,9 +775,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_attack_combo_3
       takeName: ErenRig_VER2|et_attack_combo_3
+      internalID: 0
       firstFrame: 0
       lastFrame: 86
       wrapMode: 0
@@ -473,6 +787,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -611,9 +926,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_attack_combo_full
       takeName: ErenRig_VER2|et_attack_combo_full
+      internalID: 0
       firstFrame: 0
       lastFrame: 136
       wrapMode: 0
@@ -621,6 +938,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -759,9 +1077,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_attack_kick
       takeName: ErenRig_VER2|et_attack_kick
+      internalID: 0
       firstFrame: 0
       lastFrame: 136
       wrapMode: 0
@@ -769,6 +1089,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -907,9 +1228,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_born
       takeName: ErenRig_VER2|et_born
+      internalID: 0
       firstFrame: 0
       lastFrame: 151
       wrapMode: 0
@@ -917,6 +1240,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1055,9 +1379,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_hit_annie_1
       takeName: ErenRig_VER2|et_hit_annie_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -1065,6 +1391,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1203,9 +1530,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_hit_annie_full
       takeName: ErenRig_VER2|et_hit_annie_full
+      internalID: 0
       firstFrame: 0
       lastFrame: 104
       wrapMode: 0
@@ -1213,6 +1542,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1351,9 +1681,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_hit_titan
       takeName: ErenRig_VER2|et_hit_titan
+      internalID: 0
       firstFrame: 0
       lastFrame: 33
       wrapMode: 0
@@ -1361,6 +1693,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1499,9 +1832,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_idle
       takeName: ErenRig_VER2|et_idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 99
       wrapMode: 2
@@ -1509,6 +1844,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1647,9 +1983,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_jump_air
       takeName: ErenRig_VER2|et_jump_air
+      internalID: 0
       firstFrame: 0
       lastFrame: 62
       wrapMode: 0
@@ -1657,6 +1995,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1795,9 +2134,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_jump_land
       takeName: ErenRig_VER2|et_jump_land
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -1805,6 +2146,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1943,9 +2285,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_jump_start
       takeName: ErenRig_VER2|et_jump_start
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -1953,6 +2297,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2091,9 +2436,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_rock_fix_hole
       takeName: ErenRig_VER2|et_rock_fix_hole
+      internalID: 0
       firstFrame: 0
       lastFrame: 83
       wrapMode: 0
@@ -2101,6 +2448,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2239,9 +2587,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_rock_lift
       takeName: ErenRig_VER2|et_rock_lift
+      internalID: 0
       firstFrame: 0
       lastFrame: 246
       wrapMode: 0
@@ -2249,6 +2599,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2387,157 +2738,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ErenRig_VER2|et_rock_lift.001
-      takeName: ErenRig_VER2|et_rock_lift.001
-      firstFrame: 0
-      lastFrame: 19
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: ErenRig_VER2
-        weight: 1
-      - path: ErenRig_VER2/Core
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone/Bone_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001/Bone_001_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002/Bone_002_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003/Bone_003_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003/hand_L_003_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006/hand_L_006_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003/hand_R_003_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006/hand_R_006_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L/toe_L_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R
-        weight: 1
-      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R/toe_R_end
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.L
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.L/kneel.L
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.L/kneel.L/kneel.L_end
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.R
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.R/kneel.R
-        weight: 1
-      - path: ErenRig_VER2/Core/IK.R/kneel.R/kneel.R_end
-        weight: 1
-      - path: ErenRig_VER2/Core/Rock
-        weight: 1
-      - path: ErenRig_VER2/Core/Rock/Rock_end
-        weight: 1
-      - path: ErenTitan
-        weight: 1
-      - path: ErenTitanHair
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: ErenRig_VER2|et_rock_walk
-      takeName: ErenRig_VER2|et_rock_walk
+      name: ErenRig_VER2|et_die
+      takeName: ErenRig_VER2|et_die
+      internalID: 0
       firstFrame: 0
       lastFrame: 119
       wrapMode: 0
@@ -2545,6 +2750,158 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ErenRig_VER2
+        weight: 1
+      - path: ErenRig_VER2/Core
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001/Bone_001_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002/Bone_002_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003/Bone_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003/hand_L_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006/hand_L_006_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003/hand_R_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006/hand_R_006_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L/toe_L_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R/toe_R_end
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L/kneel.L
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R/kneel.R
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Rock
+        weight: 1
+      - path: ErenRig_VER2/Core/Rock/Rock_end
+        weight: 1
+      - path: ErenTitan
+        weight: 1
+      - path: ErenTitanHair
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ErenRig_VER2|et_rock_walk
+      takeName: ErenRig_VER2|et_rock_walk
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 119
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2683,9 +3040,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_run
       takeName: ErenRig_VER2|et_run
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 2
@@ -2693,6 +3052,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2831,9 +3191,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_T-pose
       takeName: ErenRig_VER2|et_T-pose
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -2841,6 +3203,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2979,9 +3342,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: ErenRig_VER2|et_yes
       takeName: ErenRig_VER2|et_yes
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2989,6 +3354,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3127,41 +3493,230 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ErenRig_VER2|et_walk
+      takeName: ErenRig_VER2|et_walk
+      internalID: -710881603130982832
+      firstFrame: 0
+      lastFrame: 119
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ErenRig_VER2
+        weight: 1
+      - path: ErenRig_VER2/Core
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_001/Bone_001_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_002/Bone_002_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/neck/head/Bone_003/Bone_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_001/hand_L_002/hand_L_003/hand_L_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L/hand_L_004/hand_L_005/hand_L_006/hand_L_006_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_001/hand_R_002/hand_R_003/hand_R_003_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R/hand_R_004/hand_R_005/hand_R_006/hand_R_006_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_L/shin_L/foot_L/toe_L/toe_L_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R
+        weight: 1
+      - path: ErenRig_VER2/Core/Controller_Body/hip/thigh_R/shin_R/foot_R/toe_R/toe_R_end
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L/kneel.L
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R/kneel.R
+        weight: 1
+      - path: ErenRig_VER2/Core/IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: ErenRig_VER2/Core/Rock
+        weight: 1
+      - path: ErenRig_VER2/Core/Rock/Rock_end
+        weight: 1
+      - path: ErenTitan
+        weight: 1
+      - path: ErenTitanHair
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .324999988
+    globalScale: 0.325
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.325
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
