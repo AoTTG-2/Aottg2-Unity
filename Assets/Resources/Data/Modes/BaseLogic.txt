@@ -1,9 +1,3 @@
-component Water
-{
-
-}
-
-
 component Bell
 {
     ResetDelay = 0.3;
