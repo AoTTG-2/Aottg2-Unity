@@ -1,17 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
 using Settings;
 using Characters;
 using UI;
 using System.Collections.Generic;
 using Utility;
-using CustomLogic;
-using System.Threading;
 using Photon.Pun;
-using TMPro.EditorUtilities;
 
 namespace Controllers
 {
@@ -200,8 +194,11 @@ namespace Controllers
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
                 _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
             }
+            // TestScore();
+        }
 
-            return;
+        private void TestScore()
+        {
             if (_humanInput.HookLeft.GetKeyDown())
             {
                 _inGameMenu.ShowKillFeed("test", "test", 800, "Thunderspear");
@@ -224,10 +221,6 @@ namespace Controllers
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
                     HideCursor = !HideCursor;
-                if (SettingsManager.InputSettings.General.HideObject.GetKeyDown())
-                {
-                    HideObject();
-                }
             }
 
             
@@ -320,7 +313,8 @@ namespace Controllers
                     _human.Horse.Jump();
             }
         }
-        private void HideObject()
+
+        private void ToggleUI()
         {
             GameObject defaultMenu = GameObject.Find("DefaultMenu(Clone)");
             if (defaultMenu != null)

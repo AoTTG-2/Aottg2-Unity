@@ -80,6 +80,16 @@ namespace UI
             HideAllMenus();
         }
 
+        public void ToggleUI(bool toggle)
+        {
+            GetComponent<Canvas>().enabled = toggle;
+        }
+
+        public bool IsActive()
+        {
+            return GetComponent<Canvas>().enabled;
+        }
+
         public void CreateCustomPopup(string name, string title, float width, float height)
         {
             var popup = ElementFactory.InstantiateAndSetupCustomPopup(transform, title, width, height).GetComponent<CustomPopup>();
@@ -205,11 +215,13 @@ namespace UI
                 HideAllMenus();
                 SkipAHSSInput = true;
             }
+            ToggleUI(true);
         }
 
         public void ToggleScoreboardMenu()
         {
             SetScoreboardMenu(!_scoreboardPopup.gameObject.activeSelf);
+            ToggleUI(true);
         }
 
         public void SetScoreboardMenu(bool enabled)
@@ -235,6 +247,7 @@ namespace UI
             }
             else if (!enabled)
                 _characterPopup.Hide();
+            ToggleUI(true);
         }
 
         public void ShowCutsceneMenu(string icon, string title, string content)

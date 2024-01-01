@@ -1,4 +1,5 @@
 ﻿using Characters;
+using Settings;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -137,6 +138,12 @@ namespace CustomLogic
                 if (Human.MountedTransform == null)
                     return null;
                 return new CustomLogicTransformBuiltin(Human.MountedTransform);
+            }
+            else if (name == "AutoRefillGas")
+            {
+                if (Human != null && Human.IsMine())
+                    return SettingsManager.InputSettings.Human.AutoRefillGas.Value;
+                return false;
             }
             return base.GetField(name);
         }
