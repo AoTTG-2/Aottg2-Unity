@@ -121,6 +121,8 @@
 			{"Name": "Barrel2"},
 			{"Name": "Barrel3"},
 			{"Name": "Barrel4"},
+			{"Name": "Bell1"},
+			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true},
 			{"Name": "Blackboard1"},
 			{"Name": "Blackboard2"},
 			{"Name": "Bonfire1"},
@@ -192,9 +194,7 @@
 			{"Name": "Tarp1"},
 			{"Name": "Tarp2"},
 			{"Name": "Teapot1"},
-			{"Name": "Wagon1"},
-			{"Name": "Bell1"},
-			{"Name": "Bell2", "Components": ["Bell"], "Static": false, "Networked": true}
+			{"Name": "Wagon1"}
 		]
 	},
 	"Nature": {
