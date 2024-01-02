@@ -90,6 +90,7 @@
 			{"Name": "Tent1"},
 			{"Name": "Tent2"},
 			{"Name": "Tent3"},
+			{"Name": "Tent4"},
 			{"Name": "Tower1"},
 			{"Name": "Tower2"},
 			{"Name": "Tower3"},
@@ -107,6 +108,12 @@
 			{"Name": "Wall2"},
 			{"Name": "Wall3"},
 			{"Name": "Wall4"},
+			{"Name": "WallNew1"},
+			{"Name": "WallNew2"},
+			{"Name": "WallGateNew1"},
+			{"Name": "WallGateNew2"},
+			{"Name": "WallGateDoor1"},
+			{"Name": "WallGateDoor2"},
 			{"Name": "Windmill1"},
 			{"Name": "Windmill2"}
 		]
@@ -283,6 +290,12 @@
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["DamageRegion|"]},
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]}
+			{"Name": "ExecutionerBase1", "Asset": "Interact/ExecutionerBase1"},
+			{"Name": "ExecutionerBase2", "Asset": "Interact/ExecutionerBase2"},
+			{"Name": "ExecutionerBase3", "Asset": "Interact/ExecutionerBase3"},
+			{"Name": "ExecutionerCounterweight1", "Asset": "Interact/ExecutionerCounterweight1"},
+			{"Name": "ExecutionerFromHell1", "Asset": "Interact/ExecutionerFromHell1"},
+			{"Name": "ExecutionerLog1", "Asset": "Interact/ExecutionerLog1"}
 		]
 	},
 	"Legacy": {
