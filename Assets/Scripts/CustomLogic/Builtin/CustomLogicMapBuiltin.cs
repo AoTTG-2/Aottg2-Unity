@@ -24,7 +24,7 @@ namespace CustomLogic
                 }
                 return null;
             }
-            else if (name == "FindMapObjectsByName")
+            if (name == "FindMapObjectsByName")
             {
                 CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
                 string objectName = (string)parameters[0];
@@ -35,14 +35,14 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
-            else if (name == "FindMapObjectByID")
+            if (name == "FindMapObjectByID")
             {
                 int id = (int)parameters[0];
                 if (MapLoader.IdToMapObject.ContainsKey(id))
                     return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[id]);
                 return null;
             }
-            else if (name == "FindMapObjectByTag")
+            if (name == "FindMapObjectByTag")
 
             {
                 string tag = (string)parameters[0];
@@ -53,7 +53,7 @@ namespace CustomLogic
                 }
                 return null;
             }
-            else if (name == "FindMapObjectsByTag")
+            if (name == "FindMapObjectsByTag")
             {
                 CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
                 string tag = (string)parameters[0];
@@ -66,7 +66,7 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
-            else if (name == "CreateMapObjectRaw")
+            if (name == "CreateMapObjectRaw")
             {
                 string prefab = (string)parameters[0];
                 prefab = string.Join("", prefab.Split('\n'));
@@ -78,13 +78,14 @@ namespace CustomLogic
                 MapLoader.SetParent(mapObject);
                 return new CustomLogicMapObjectBuiltin(mapObject);
             }
-            else if (name == "DestroyMapObject")
+            if (name == "DestroyMapObject")
             {
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
                 bool incldueChildren = (bool)parameters[1];
                 DestroyMapObject(mapObject.Value, incldueChildren);
+                return null;
             }
-            else if (name == "CopyMapObject")
+            if (name == "CopyMapObject")
             {
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
                 bool includeChildren = (bool)parameters[1];
@@ -140,6 +141,7 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            base.SetField(name, value);
         }
     }
 }

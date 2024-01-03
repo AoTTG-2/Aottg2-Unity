@@ -72,6 +72,9 @@ namespace Characters
         private void CreateAHSSHitbox(BaseCharacter human)
         {
             GameObject obj = new GameObject();
+            var rigidbody = obj.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
             obj.layer = PhysicsLayer.Hitbox;
             var capsule = obj.AddComponent<CapsuleCollider>();
             capsule.direction = 2;
@@ -86,6 +89,9 @@ namespace Characters
         private void CreateAPGHitbox(BaseCharacter human)
         {
             GameObject obj = new GameObject();
+            var rigidbody = obj.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
             obj.layer = PhysicsLayer.Hitbox;
             var capsule = obj.AddComponent<CapsuleCollider>();
             capsule.direction = 2;

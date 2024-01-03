@@ -537,15 +537,15 @@ PrefabInstance:
       objectReference: {fileID: -710881603130982832, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
     - target: {fileID: 13700000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_AABB.m_Center.x
-      value: -0.006383181
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 13700000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_AABB.m_Center.y
-      value: 1.671252
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 13700000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_AABB.m_Center.z
-      value: 0.1291019
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 13700000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_AABB.m_Extent.x
@@ -571,6 +571,30 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f276cc13d3e091f4dbeb18415fddd69d, type: 2}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 13700002, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -984,8 +1008,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0

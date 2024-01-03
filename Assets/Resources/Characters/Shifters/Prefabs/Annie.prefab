@@ -1068,8 +1068,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
@@ -1594,8 +1597,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4195183095372977597}
   m_AABB:
-    m_Center: {x: 0.1759243, y: 2.7910495, z: 0.8475661}
-    m_Extent: {x: 2.5819373, y: 2.467579, z: 2.7572048}
+    m_Center: {x: 0, y: 2, z: 0}
+    m_Extent: {x: 3, y: 2.5, z: 5}
   m_DirtyAABB: 0
 --- !u!1 &4195183095372679579
 GameObject:
@@ -1725,8 +1728,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 4195183095372977597}
   m_AABB:
-    m_Center: {x: -0.7627084, y: 0.59461045, z: -0.89468753}
-    m_Extent: {x: 2.8850482, y: 2.5376174, z: 3.0851593}
+    m_Center: {x: 0, y: 2, z: 0}
+    m_Extent: {x: 3, y: 2.5, z: 5}
   m_DirtyAABB: 0
 --- !u!1 &4195183095372679581
 GameObject:

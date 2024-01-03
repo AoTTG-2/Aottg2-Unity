@@ -529,7 +529,13 @@ namespace Characters
                     Vector3 coreDiff = Cache.Transform.position - BaseTitanCache.Core.position;
                     Vector3 v = coreDiff - _oldCoreDiff;
                     _oldCoreDiff = coreDiff;
-                    Cache.Transform.position += v;
+                    RaycastHit hit;
+                    if (Physics.Raycast(Cache.Transform.position, coreDiff.normalized, out hit, coreDiff.magnitude, GroundMask, QueryTriggerInteraction.Ignore))
+                    {
+                        Cache.Transform.position = hit.point;
+                    }
+                    else
+                        Cache.Transform.position += v;
                 }
                 Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
             }

@@ -19,19 +19,22 @@ namespace CustomLogic
                 string name = (string)parameters[0];
                 bool full = (bool)parameters[1];
                 CustomLogicManager._instance.StartCoroutine(StartCutscene(name, full));
+                return null;
             }
-            else if (methodName == "ShowDialogue")
+            if (methodName == "ShowDialogue")
             {
                 string icon = (string)parameters[0];
                 string title = (string)parameters[1];
                 string content = (string)parameters[2];
                 ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content);
+                return null;
             }
-            else if (methodName == "HideDialogue")
+            if (methodName == "HideDialogue")
             {
                 ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
+                return null;
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         private IEnumerator StartCutscene(string name, bool full)

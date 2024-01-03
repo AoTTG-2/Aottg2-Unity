@@ -25,8 +25,9 @@ namespace CustomLogic
                     return param.UnboxToFloat();
                 if (param is bool)
                     return ((bool)param) ? 1f : 0f;
+                return null;
             }
-            else if (name == "ToInt")
+            if (name == "ToInt")
             {
                 object param = parameters[0];
                 if (param is string)
@@ -37,8 +38,9 @@ namespace CustomLogic
                     return (int)param;
                 if (param is bool)
                     return ((bool)param) ? 1 : 0;
+                return null;
             }
-            else if (name == "ToBool")
+            if (name == "ToBool")
             {
                 object param = parameters[0];
                 if (param is string)
@@ -49,8 +51,9 @@ namespace CustomLogic
                     return (int)param != 0;
                 if (param is bool)
                     return (bool)param;
+                return null;
             }
-            else if (name == "ToString")
+            if (name == "ToString")
             {
                 object param = parameters[0];
                 if (param is string)

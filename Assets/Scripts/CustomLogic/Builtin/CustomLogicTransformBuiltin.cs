@@ -27,8 +27,9 @@ namespace CustomLogic
                 {
                     return new CustomLogicTransformBuiltin(transform);
                 }
+                return null;
             }
-            else if (methodName == "PlayAnimation")
+            if (methodName == "PlayAnimation")
             {
                 string anim = (string)parameters[0];
                 var animation = Value.GetComponent<Animation>();
@@ -37,32 +38,36 @@ namespace CustomLogic
                     fade = (float)parameters[1];
                 if (!animation.IsPlaying(anim))
                     animation.CrossFade(anim, fade);
+                return null;
             }
-            else if (methodName == "GetAnimationLength")
+            if (methodName == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
                 var animation = Value.GetComponent<Animation>();
                 return animation[anim].length;
             }
-            else if (methodName == "PlaySound")
+            if (methodName == "PlaySound")
             {
                 var sound = Value.GetComponent<AudioSource>();
                 if (!sound.isPlaying)
                     sound.Play();
+                return null;
             }
-            else if (methodName == "StopSound")
+            if (methodName == "StopSound")
             {
                 var sound = Value.GetComponent<AudioSource>();
                 if (sound.isPlaying)
                     sound.Stop();
+                return null;
             }
-            else if (methodName == "ToggleParticle")
+            if (methodName == "ToggleParticle")
             {
                 var particle = Value.GetComponent<ParticleSystem>();
                 if (!particle.isPlaying)
                     particle.Play();
                 var emission = particle.emission;
                 emission.enabled = (bool)parameters[0];
+                return null;
             }
             return base.CallMethod(methodName, parameters);
         }

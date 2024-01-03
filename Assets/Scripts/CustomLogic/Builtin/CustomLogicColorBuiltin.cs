@@ -30,11 +30,11 @@ namespace CustomLogic
         {
             if (name == "R")
                 return Value.R;
-            else if (name == "G")
+            if (name == "G")
                 return Value.G;
-            else if (name == "B")
+            if (name == "B")
                 return Value.B;
-            else if (name == "A")
+            if (name == "A")
                 return Value.A;
             return base.GetField(name);
         }

@@ -787,7 +787,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at line " + expression.Line.ToString(), true);
+                DebugConsole.Log("Custom logic runtime error at line " + expression.Line.ToString() + ": " + e.Message, true);
             }
             return null;
         }

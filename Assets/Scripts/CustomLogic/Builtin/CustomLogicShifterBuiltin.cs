@@ -25,36 +25,50 @@ namespace CustomLogic
                     var range = parameters[1].UnboxToFloat();
                     bool ignoreEnemies = (bool)parameters[2];
                     Shifter.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
+                    return null;
                 }
-                else if (methodName == "Target")
+                if (methodName == "Target")
                 {
                     if (!Shifter.AI)
                         return null;
                     var enemy = (CustomLogicCharacterBuiltin)parameters[0];
                     var focus = parameters[1].UnboxToFloat();
                     Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy.Character, focus);
+                    return null;
                 }
-                else if (methodName == "Idle")
+                if (methodName == "Idle")
                 {
                     if (!Shifter.AI)
                         return null;
                     var time = parameters[0].UnboxToFloat();
                     Shifter.GetComponent<BaseTitanAIController>().ForceIdle(time);
+                    return null;
                 }
-                else if (methodName == "Wander")
+                if (methodName == "Wander")
                 {
                     if (!Shifter.AI)
                         return null;
                     Shifter.GetComponent<BaseTitanAIController>().CancelOrder();
+                    return null;
                 }
-                else if (methodName == "Blind")
+                if (methodName == "Blind")
+                {
                     Shifter.Blind();
-                else if (methodName == "Cripple")
+                    return null;
+                }
+                if (methodName == "Cripple")
+                {
                     Shifter.Cripple();
-                else if (methodName == "Emote")
+                    return null;
+                }
+                if (methodName == "Emote")
+                {
                     Shifter.Emote((string)parameters[0]);
+                    return null;
+                }
+                return base.CallMethod(methodName, parameters);
             }
-            return base.CallMethod(methodName, parameters);
+            return null;
         }
 
         public override object GetField(string name)
@@ -65,11 +79,13 @@ namespace CustomLogic
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().DetectRange;
+                return null;
             }
             if (name == "FocusRange")
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().FocusRange;
+                return null;
             }
             if (name == "NapePosition")
             {

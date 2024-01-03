@@ -19,7 +19,7 @@ namespace Controllers
             _titan = GetComponent<BasicTitan>();
             _titanInput = SettingsManager.InputSettings.Titan;
             _titan.RotateSpeed = 5f;
-            _titan.RunSpeedBase = 20f;
+            _titan.RunSpeedBase = 30f;
             _titan.RunSpeedPerLevel = 10f;
             _titan.WalkSpeedBase = 5f;
             _titan.WalkSpeedPerLevel = 1f;

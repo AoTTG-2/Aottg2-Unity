@@ -62,8 +62,9 @@ namespace CustomLogic
                     rigidbody.useGravity = false;
                     rigidbody.freezeRotation = (bool)parameters[3];
                 }
+                return null;
             }
-            else if (methodName == "UpdateBuiltinComponent")
+            if (methodName == "UpdateBuiltinComponent")
             {
                 string name = (string)parameters[0];
                 string param = (string)parameters[1];
@@ -81,8 +82,9 @@ namespace CustomLogic
                         rigidbody.AddForce(force, ForceMode.Acceleration);
                     }
                 }
+                return null;
             }
-            else if (methodName == "ReadBuiltinComponent")
+            if (methodName == "ReadBuiltinComponent")
             {
                 string name = (string)parameters[0];
                 string param = (string)parameters[1];
@@ -94,8 +96,9 @@ namespace CustomLogic
                         return new CustomLogicVector3Builtin(rigidbody.velocity);
                     }
                 }
+                return null;
             }
-            else if (methodName == "AddSphereCollider")
+            if (methodName == "AddSphereCollider")
             {
                 string collideMode = (string)parameters[0];
                 string collideWith = (string)parameters[1];
@@ -119,8 +122,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
+                return null;
             }
-            else if (methodName == "AddBoxCollider")
+            if (methodName == "AddBoxCollider")
             {
                 string collideMode = (string)parameters[0];
                 string collideWith = (string)parameters[1];
@@ -144,13 +148,14 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
+                return null;
             }
-            else if (methodName == "GetComponent")
+            if (methodName == "GetComponent")
             {
                 string name = (string)parameters[0];
                 return Value.FindComponentInstance(name);
             }
-            else if (methodName == "GetChild")
+            if (methodName == "GetChild")
             {
                 string name = (string)parameters[0];
                 if (MapLoader.IdToChildren.ContainsKey(Value.ScriptObject.Id))
@@ -165,8 +170,9 @@ namespace CustomLogic
                         }
                     }
                 }
+                return null;
             }
-            else if (methodName == "GetTransform")
+            if (methodName == "GetTransform")
             {
                 string name = (string)parameters[0];
                 Transform transform = Value.GameObject.transform.Find(name);
@@ -226,11 +232,11 @@ namespace CustomLogic
                     return null;
                 return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[parentId]);
             }
-            else if (name == "Active")
+            if (name == "Active")
             {
                 return Value.GameObject.activeSelf;
             }
-            else if (name == "Transform")
+            if (name == "Transform")
             {
                 return new CustomLogicTransformBuiltin(Value.GameObject.transform);
             }
