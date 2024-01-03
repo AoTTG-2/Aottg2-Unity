@@ -64,7 +64,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Color_Variation_Scale: 16.9
+    - _Color_Variation_Scale: 0
     - _Moss_Level: 5
     - _Stain_Intensity: 1
     m_Colors:
