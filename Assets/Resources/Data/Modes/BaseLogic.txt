@@ -1,3 +1,16 @@
+component CaptureZone
+{
+    function Init()
+    {
+    
+    }
+
+    function OnCollisionEnter
+    {
+    
+    }
+}
+
 component Bell
 {
     ResetDelay = 0.3;
