@@ -79,6 +79,7 @@
 		{"Name": "None", "TilingX": 1, "TilingY": 1},
 		{"Name": "Crystal1", "TilingX": 5, "TilingY": 5},
 		{"Name": "Crystal2", "TilingX": 5, "TilingY": 5},
+		{"Name": "Crystal3", "TilingX": 1, "TilingY": 1},
 		{"Name": "Diamond1", "TilingX": 3, "TilingY": 3},
 		{"Name": "Honey1", "TilingX": 3, "TilingY": 3},
 		{"Name": "Ice1", "TilingX": 3, "TilingY": 3},
@@ -86,10 +87,13 @@
 		{"Name": "Lava1", "TilingX": 3, "TilingY": 3},
 		{"Name": "Lava2", "TilingX": 3, "TilingY": 3},
 		{"Name": "Lava3", "TilingX": 3, "TilingY": 3},
-		{"Name": "Rust1", "TilingX": 3, "TilingY": 3},
+		{"Name": "Rust1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Rumbling1", "TilingX": 1, "TilingY": 1},
 		{"Name": "Sand1", "TilingX": 3, "TilingY": 3},
 		{"Name": "Sand2", "TilingX": 3, "TilingY": 3},
-		{"Name": "Straw1", "TilingX": 3, "TilingY": 3}
+		{"Name": "Snow1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Straw1", "TilingX": 3, "TilingY": 3},
+		{"Name": "TechGlow1", "TilingX": 1, "TilingY": 1}
 	],
 	"Legacy": [
 		{"Name": "WallMat", "Texture": "Buildings/Textures/Wall1Tex1"},

@@ -11,12 +11,14 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: fc22d16b3990b1146b633361968e421f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _BUILTIN_ALPHATEST_ON
+  - _BUILTIN_AlphaClip
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2996
+  m_CustomRenderQueue: 2446
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses: []
