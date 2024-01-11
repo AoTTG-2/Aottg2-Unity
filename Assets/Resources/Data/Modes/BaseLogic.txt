@@ -1,15 +1,330 @@
 component CaptureZone
 {
+    Enabled = false;
+    AICanCapture = false;
+    HumanCanCapture = true;
+    ShifterCanCapture = true;
+    TitanCanCapture = true;
+    TeamsCanCapture = true;
+    CaptureTime = 10.0;
+    VisibilityRange = 80.0;
+
+    
+    # States: Captured, Capturing, Contested #
+    _state = "Captured";
+    _currentOwner = "null";
+    _currentCapturer = "null";
+    _captureProgress = 0.0;
+    _teamsInZone = Dict();
+
+    # Team Colors #
+    _humanColor = Color(0, 0, 255, 255);
+    _shifterColor = Color(255, 0, 0, 255);
+    _titanColor = Color(0, 255, 0, 255);
+    _neutralColor = Color(255, 255, 255, 255);
+    _teamBlueColor = Color(0, 0, 255, 255);
+    _teamRedColor = Color(255, 0, 0, 255);
+    _unknownTeamColor = Color(255, 255, 255, 255);
+
+
     function Init()
     {
-    
+        
     }
 
-    function OnCollisionEnter
+    # Modify local state #
+    function OnNetworkMessage(sender, message)
     {
-    
+        if (sender != Network.MasterClient)
+        {
+            return;
+        }
+
+        # Message will be state, owner, capturer, and progress #
+        parts = String.Split(message, ",");
+        if (parts.Count != 4)
+        {
+            return;
+        }
+        
+        self._state = parts.Get(0);
+        self._currentOwner = parts.Get(1);
+        self._currentCapturer = parts.Get(2);
+        self._captureProgress = Convert.ToFloat(parts.Get(3));
+    }
+
+    function NetworkSync(state, owner, capturer, progress)
+    {
+        message = state + "," + owner + "," + capturer + "," + Convert.ToString(progress);
+        Game.Print(message);
+        self.NetworkView.SendMessageOthers(message);
+    }
+
+    # Handle State Transition Logic #
+    # States: Captured (0), Capturing (1), Contested (2) #
+    #
+        Note: Neutral is a valid owner for the Captured state.
+        A - Set of teams in capture zone.
+        o - Owner of capture zone.
+        c - Current capturer of capture zone.
+        p - Capture progress.
+        T - Capture time required.
+        State Tree fully connected.
+        00: |A| = 0 v (|A| = 1 , o in A)
+        01: |A| = 1 , o !in A
+        02: |A| > 1
+
+        10: |A| = 1 , c in A , p > T
+        11: |A| < 2 , c in A v (c !in A, 0 < p)
+        12: |A| > 1
+
+        20: |A| < 2 , c = null
+        21: |A| < 2 , c != null
+        22: |A| > 2
+    #
+    function HandleStateTransition()
+    {
+        if (self._state == "Captured")
+        {
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentOwner) == false)
+            {
+                self._state = "Capturing";
+                self._currentCapturer = self._teamsInZone.Keys.Get(0);
+                self._captureProgress = 0.0;
+            }
+            elif (self._teamsInZone.Count > 1)
+            {
+                self._state = "Contested";
+                self._currentCapturer = "null";
+                self._captureProgress = 0.0;
+            }
+        }
+        elif (self._state == "Capturing")
+        {
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentCapturer))
+            {
+                self._captureProgress = self._captureProgress + 1.0;
+                if (self._captureProgress >= self.CaptureTime)
+                {
+                    self._state = "Captured";
+                    self._currentOwner = self._currentCapturer;
+                    self._currentCapturer = "null";
+                    self._captureProgress = 0.0;
+                }
+            }
+            elif (self._teamsInZone.Count > 1)
+            {
+                self._state = "Contested";
+            }
+            elif (self._teamsInZone.Contains(self._currentCapturer) == false)
+            {
+                self._captureProgress = self._captureProgress - 1.0;
+                if (self._captureProgress <= 0.0)
+                {
+                    self._state = "Captured";
+                    self._currentCapturer = "null";
+                    self._captureProgress = 0.0;
+                }
+            }
+        }
+        elif (self._state == "Contested")
+        {
+            if (self._teamsInZone.Count < 2 && self._currentCapturer == "null")
+            {
+                self._state = "Captured";
+            }
+            elif (self._teamsInZone.Count < 2 && self._currentCapturer != "null")
+            {
+                self._state = "Capturing";
+            }
+        }
+    }
+
+    function OnSecond()
+    {
+        if (self.Enabled == false)
+        {
+            return;
+        }
+        self.HandleStateTransition();
+
+        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress);
+    }
+
+    function OnTick()
+    {
+        if (self.Enabled == false)
+		{
+			return;
+		}
+
+        if (Network.MyPlayer.Character == null)
+		{
+            UI.SetLabelAll("TopLeft", "");
+			return;
+		}
+
+        difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
+        if (difference.Magnitude > self.VisibilityRange)
+        {
+            UI.SetLabelAll("TopLeft", "");
+            return;
+		}
+
+        owner = self._currentOwner;
+        if (owner == "null")
+        {
+            owner = "Neutral";
+        }
+
+        progress = Convert.ToInt((self._captureProgress / self.CaptureTime) * 100);
+        progressString = Convert.ToString(progress) + "%";
+
+        if (self._state == "Capturing")
+        {
+            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + self._currentCapturer + " is capturing point " + owner + " (" + progressString + ")" + "</size>");
+        }
+        elif (self._state == "Captured")
+        {
+            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + owner + " owns point" +  "</size>");
+        }
+        elif (self._state == "Contested" && self._currentCapturer == "null")
+		{
+			UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + "Point is contested" + "</size>");
+		}
+        elif (self._state == "Contested" && self._currentCapturer != "null")
+        {
+            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + self._currentCapturer + " is capturing point " + owner + " but is contested (" + progressString + ")" + "</size>");
+        }        
+    }
+
+    function ListContains(list, target)
+    {
+        for (item in list)
+		{
+			if (item == target)
+			{
+				return true;
+			}
+		}
+        return false;
+    }
+
+    function AddTeamPlayer(player)
+    {
+        Game.Print("Adding team player: " + player.Team);
+        if (self._teamsInZone.Contains(player.Team) == false)
+        {
+            self._teamsInZone.Set(player.Team, List());
+        }
+        value = self._teamsInZone.Get(player.Team);
+        if (self.ListContains(value, player) == false)
+		{
+            value.Add(player);
+            self._teamsInZone.Set(player.Team, value);
+        }
+    }
+
+    function RemoveTeamPlayer(player)
+    {
+        Game.Print("Removing team player: " + player.Team);
+        if (self._teamsInZone.Contains(player.Team) == false)
+        {
+            return;
+        }
+        value = self._teamsInZone.Get(player.Team);
+        if (self.ListContains(value, player))
+        {
+            value.Remove(player);
+        }
+        if (value.Count == 0)
+        {
+            self._teamsInZone.Remove(player.Team);
+		}
+		else
+		{
+			self._teamsInZone.Set(player.Team, value);
+        }
+    }
+
+    # Handle active player logic #
+    function OnCollisionEnter(other)
+    {
+        # Ignore non-characters and only let host handle collisions #
+        if (other.IsCharacter == false || Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human" && self.HumanCanCapture)
+        {
+            if (other.Team != "Human" && self.TeamsCanCapture)
+            {
+                self.AddTeamPlayer(other);
+            }
+            elif (other.Team == "Human")
+            {
+                self.AddTeamPlayer(other);
+            }
+        }
+        elif (other.Type == "Shifter" && self.ShifterCanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && self.AICanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        # Ignore non-characters and only let host handle collisions #
+        if (other.IsCharacter == false || Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human" && self.HumanCanCapture)
+        {
+            if (other.Team != "Human" && self.TeamsCanCapture)
+            {
+                self.RemoveTeamPlayer(other);
+            }
+            elif (other.Team == "Human")
+            {
+                self.RemoveTeamPlayer(other);
+            }
+        }
+        elif (other.Type == "Shifter" && self.ShifterCanCapture)
+        {
+            self.RemoveTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture) # Resolve bug here, main character is not the only pt anymore #
+        {
+            self.RemoveTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && self.AICanCapture)
+        {
+            self.RemoveTeamPlayer(other);
+        }
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        self.RemoveTeamPlayer(character);
+    }
+
+    function OnCharacterLeave(player)
+    {
+        self.RemoveTeamPlayer(player.Character);
     }
 }
+
 
 component Bell
 {
