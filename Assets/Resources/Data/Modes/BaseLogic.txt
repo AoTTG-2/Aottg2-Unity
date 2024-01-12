@@ -18,39 +18,51 @@ component CaptureZone
     _teamsInZone = Dict();
 
     # Team Colors #
-    _humanColor = Color(0, 0, 255, 80);
-    _shifterColor = Color(255, 0, 0, 80);
-    _titanColor = Color(0, 255, 0, 80);
+    _humanColor = Color(255, 255, 62, 80);
+    _shifterColor = Color(115, 222, 255, 80);
+    _titanColor = Color(70, 80, 125, 80);
     _neutralColor = Color(255, 255, 255, 80);
     _teamBlueColor = Color(0, 0, 255, 80);
     _teamRedColor = Color(255, 0, 0, 80);
     _unknownTeamColor = Color(0, 0, 0, 80);
     _teamToColor = Dict();
 
+    # State Colors #
+    _contestedColor = Color(255, 0, 0, 255);
+
 
     function Init()
     {
+        self._teamToColor = Dict();
         self._teamToColor.Set("Human", self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
         self._teamToColor.Set("Titan", self._titanColor);
         self._teamToColor.Set("Neutral", self._neutralColor);
+        self._teamToColor.Set("null", self._neutralColor);
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
-        self._teamToColor.Set("Unknown", self._unknownTeamColor;
+        self._teamToColor.Set("Unknown", self._unknownTeamColor);
+    }
+
+    function GetTeamColor(team)
+    {
+		if (self._teamToColor.Contains(team))
+		{
+			return self._teamToColor.Get(team);
+		}
+		return self._unknownTeamColor;
+	}
+
+    function GetTeamHex(team)
+    {
+        color = self.GetTeamColor(team);
+        teamColor = Color(color.R, color.G, color.B, 255);
+        return "#" + teamColor.ToHexString();
     }
 
     function ChangeColor()
     {
-        owner = self._currentOwner;
-        if (owner == "null")
-		{
-			owner = "Neutral";
-		}
-        if (self._teamToColor.Contains(owner) == false)
-		{
-			owner = "Unknown";
-		}
-        self.MapObject.GetComponent("Material").Color = self._teamToColor.Get(owner);
+        self.MapObject.Color = self.GetTeamColor(self._currentOwner);
 	}
 
     # Modify local state #
@@ -84,28 +96,6 @@ component CaptureZone
         self.NetworkView.SendMessageOthers(message);
     }
 
-    # Handle State Transition Logic #
-    # States: Captured (0), Capturing (1), Contested (2) #
-    #
-        Note: Neutral is a valid owner for the Captured state.
-        A - Set of teams in capture zone.
-        o - Owner of capture zone.
-        c - Current capturer of capture zone.
-        p - Capture progress.
-        T - Capture time required.
-        State Tree fully connected.
-        00: |A| = 0 v (|A| = 1 , o in A)
-        01: |A| = 1 , o !in A
-        02: |A| > 1
-
-        10: |A| = 1 , c in A , p > T
-        11: |A| < 2 , c in A v (c !in A, 0 < p)
-        12: |A| > 1
-
-        20: |A| < 2 , c = null
-        21: |A| < 2 , c != null
-        22: |A| > 2
-    #
     function HandleStateTransition()
     {
         if (self._state == "Captured")
@@ -184,14 +174,14 @@ component CaptureZone
 
         if (Network.MyPlayer.Character == null)
 		{
-            UI.SetLabelAll("TopLeft", "");
+            UI.SetLabelAll("TopCenter", "");
 			return;
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
         if (difference.Magnitude > self.VisibilityRange)
         {
-            UI.SetLabelAll("TopLeft", "");
+            UI.SetLabel("TopCenter", "");
             return;
 		}
 
@@ -200,26 +190,42 @@ component CaptureZone
         {
             owner = "Neutral";
         }
+        owner = UI.WrapStyleTag(owner, "color", self.GetTeamHex(owner));
 
         progress = Convert.ToInt((self._captureProgress / self.CaptureTime) * 100);
         progressString = Convert.ToString(progress) + "%";
 
+        message = "";
+
         if (self._state == "Capturing")
         {
-            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + self._currentCapturer + " is capturing point " + owner + " (" + progressString + ")" + "</size>");
+            capturer = UI.WrapStyleTag(self._currentCapturer, "color", self.GetTeamHex(self._currentCapturer));
+            message = capturer + " Capturing Point " + owner + " (" + progressString + ")";
+            message = UI.WrapStyleTag(message, "size", "30");
         }
         elif (self._state == "Captured")
         {
-            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + owner + " owns point" +  "</size>");
+            message = owner + "'s Point";
+            message = UI.WrapStyleTag(message, "size", "30");
         }
-        elif (self._state == "Contested" && self._currentCapturer == "null")
+        elif (self._state == "Contested")
 		{
-			UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + "Point is contested" + "</size>");
+            if (self._currentCapturer == "null")
+            {
+                message = owner + " Contested";
+			    message = UI.WrapStyleTag(message, "color", self._contestedColor.ToHexString());
+			    message = UI.WrapStyleTag(message, "size", "30");
+            }
+            else
+            {
+                capturer = UI.WrapStyleTag(self._currentCapturer, "color", self.GetTeamHex(self._currentCapturer));
+                message = owner + " Contested by " + capturer;
+                message = UI.WrapStyleTag(message, "color", self._contestedColor.ToHexString());
+                message = message + " (" + progressString + ")";
+                message = UI.WrapStyleTag(message, "size", "30");
+            }
 		}
-        elif (self._state == "Contested" && self._currentCapturer != "null")
-        {
-            UI.SetLabelAll("TopLeft", String.Newline + "<size=30>" + self._currentCapturer + " is capturing point " + owner + " but is contested (" + progressString + ")" + "</size>");
-        }        
+        UI.SetLabel("TopCenter", String.Newline + message);
     }
 
     function ListContains(list, target)

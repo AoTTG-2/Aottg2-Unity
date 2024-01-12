@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
@@ -23,6 +24,10 @@ namespace CustomLogic
 
         public override object CallMethod(string methodName, List<object> parameters)
         {
+            if (methodName == "ToHexString")
+            {
+                return Value.ToColor().ToHexString();
+            }
             return base.CallMethod(methodName, parameters);
         }
 
