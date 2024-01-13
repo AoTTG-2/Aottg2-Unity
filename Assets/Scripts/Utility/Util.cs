@@ -58,7 +58,7 @@ namespace Utility
 
         public static PhotonMessageInfo CreateLocalPhotonInfo()
         {
-            var info = new PhotonMessageInfo(PhotonNetwork.LocalPlayer, 0, null);
+            var info = new PhotonMessageInfo(null, 0, null);
             return info;
         }
 

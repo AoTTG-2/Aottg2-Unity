@@ -24,7 +24,10 @@ namespace CustomLogic
                 return Player.GetCustomProperty((string)parameters[0]);
             if (methodName == "SetCustomProperty")
             {
-                Player.SetCustomProperty((string)parameters[0], parameters[1]);
+                object param = parameters[1];
+                if (!(param is float || param is int || param is string || param is bool))
+                    throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
+                Player.SetCustomProperty((string)parameters[0], param);
                 return null;
             }
             if (methodName == "ClearKDR")

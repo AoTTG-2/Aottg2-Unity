@@ -369,7 +369,7 @@ component Bell
     function Init()
     {
         self._soundTransform = self.MapObject.GetTransform("BellHitSound");
-        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 0.4, 0), Vector3(5.3, 6, 5.3));
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 3.0, 0), Vector3(5.3, 6, 5.3));
     }
 
     function OnNetworkMessage(sender, message)
@@ -1021,7 +1021,6 @@ component Cannon
     UnlimitedAmmo = true;
     MaxAmmo = 0;
     Cooldown = 3.0;
-    IsGround = true;
     _rotateSpeed = 20;
     _ballSpeed = 300.0;
     _barrel = null;
@@ -1109,30 +1108,15 @@ component Cannon
             {
                 baseRotation.Y = baseRotation.Y + self._rotateSpeed * Time.FrameTime;
             }
-            if (self.IsGround)
+            if (Input.GetKeyHold("General/Forward"))
             {
-                if (Input.GetKeyHold("General/Forward"))
-                {
-                    barrelRotation.Z = barrelRotation.Z + self._rotateSpeed * Time.FrameTime;
-                }
-                elif (Input.GetKeyHold("General/Back"))
-                {
-                    barrelRotation.Z = barrelRotation.Z - self._rotateSpeed * Time.FrameTime;
-                }
-                barrelRotation.Z = Math.Clamp(barrelRotation.Z, 80.0, 110.0);
+                barrelRotation.X = barrelRotation.X - self._rotateSpeed * Time.FrameTime;
             }
-            else
+            elif (Input.GetKeyHold("General/Back"))
             {
-                if (Input.GetKeyHold("General/Forward"))
-                {
-                    barrelRotation.X = barrelRotation.X - self._rotateSpeed * Time.FrameTime;
-                }
-                elif (Input.GetKeyHold("General/Back"))
-                {
-                    barrelRotation.X = barrelRotation.X + self._rotateSpeed * Time.FrameTime;
-                }
-                barrelRotation.X = Math.Clamp(barrelRotation.X, 230.0, 300.0);
+                barrelRotation.X = barrelRotation.X + self._rotateSpeed * Time.FrameTime;
             }
+            barrelRotation.X = Math.Clamp(barrelRotation.X, -45.0, 45.0);
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
             if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
@@ -1178,14 +1162,7 @@ component Cannon
 
     function ResetBarrel()
     {
-        if (self.IsGround)
-        {
-            self._barrel.LocalRotation = Vector3(0, -90, 90);
-        }
-        else
-        {
-            self._barrel.LocalRotation = Vector3(270, 0, 0);
-        }
+        self._barrel.LocalRotation = Vector3(0, 0, 0);
     }
 
     function Fire()
@@ -1193,8 +1170,8 @@ component Cannon
         self._cooldownLeft = self.Cooldown;
         if (self._human != null)
         {
-            Game.SpawnEffect("Boom2", self._barrelEnd.Position, self._barrelEnd.Rotation, 0.5);
-            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Up.Normalized * -1.0 * self._ballSpeed, 
+            Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
+            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed, 
             Vector3(0, -20, 0), 2.0, self._human);
         }
     }
@@ -1260,21 +1237,23 @@ class Animal
             }
             else
             {
-                self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+                if (self._targetRotation != Vector3.Zero)
+                {
+                    self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+                }
                 self._rigidbody.SetVelocity(self.MapObject.Forward * self.WanderSpeed);
             }
         }
         elif (self._state == "Returning")
         {
-            self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+            if (self._targetRotation != Vector3.Zero)
+            {
+                self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+            }
             self._rigidbody.SetVelocity(self.MapObject.Forward * self.WanderSpeed);
         }
         else
         {
-            targetRotation = self.MapObject.Rotation;
-            targetRotation.x = 0.0;
-            targetRotation.z = 0.0;
-            self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, targetRotation, 5.0 * Time.FrameTime);
             self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.GetVelocity().Y);
         }
         if (self._stateTimeLeft <= 0.0)
@@ -1343,12 +1322,13 @@ class Animal
 
 component TitanBarrier
 {
+
     function OnCollisionStay(other)
     {
         if (other.Type == "Titan")
         {
-            Rotation = Vector3.GetRotationDirection(self.MapObject.Position, other.Position);
-            if (Math.Abs(Rotation.X) > Math.Abs(Rotation.Z) || Math.Abs(Rotation.X) > Math.Abs(Rotation.Y))
+            Rotation = Vector3.GetRotationDirection(Vector3(self.MapObject.Position.X, other.Position.Y, self.MapObject.Position.Z), other.Position);
+            if (Math.Abs(Rotation.X) > Math.Abs(Rotation.Z))
             {
                 if (Rotation.X > 0)
                 {
@@ -1359,18 +1339,8 @@ component TitanBarrier
                     other.Position = Vector3(other.Position.X - (0.05 + 0.02 * Math.Abs(other.Velocity.X)), other.Position.Y, other.Position.Z);
                 }
             }
-            if (Math.Abs(Rotation.Y) > Math.Abs(Rotation.X) || Math.Abs(Rotation.Y) > Math.Abs(Rotation.Z))
-            {
-                if (Rotation.Y > 0)
-                {
-                    other.Position = Vector3(other.Position.X, other.Position.Y + (0.05 + 0.02 * Math.Abs(other.Velocity.Y)), other.Position.Z);
-                }
-                else
-                {
-                    other.Position = Vector3(other.Position.X, other.Position.Y - (0.05 + 0.02 * Math.Abs(other.Velocity.Y)), other.Position.Z);
-                }
-            }
-            if (Math.Abs(Rotation.Z) > Math.Abs(Rotation.X) || Math.Abs(Rotation.Z) > Math.Abs(Rotation.Y))
+
+            if (Math.Abs(Rotation.Z) > Math.Abs(Rotation.X))
             {
                 if (Rotation.Z > 0)
                 {

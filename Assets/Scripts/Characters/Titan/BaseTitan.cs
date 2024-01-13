@@ -337,6 +337,7 @@ namespace Characters
         protected void StateAttack(string animation, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCoreDiff = true;
+            SetRendererUpdateMode(true);
             Ungrab();
             if (deactivateHitboxes)
                 DeactivateAllHitboxes();
@@ -349,6 +350,7 @@ namespace Characters
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCoreDiff = true;
+            SetRendererUpdateMode(state == TitanState.Jump);
             if (state != TitanState.Eat)
                 Ungrab();
             if (deactivateHitboxes)
@@ -358,6 +360,12 @@ namespace Characters
             State = state;
             _currentStateAnimation = animation;
             _stateTimeLeft = stateTime;
+        }
+
+        protected void SetRendererUpdateMode(bool offscreen)
+        {
+            foreach (var renderer in BaseTitanCache.SkinnedMeshRenderers)
+                renderer.updateWhenOffscreen = offscreen;
         }
 
         protected override void Awake()
@@ -371,6 +379,7 @@ namespace Characters
             WalkSpeedBase = DefaultWalkSpeed;
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
+            SetRendererUpdateMode(false);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -404,6 +413,21 @@ namespace Characters
         {
             _currentTurnTime += Time.deltaTime;
             Cache.Transform.rotation = Quaternion.Slerp(_turnStartRotation, _turnTargetRotation, Mathf.Clamp(_currentTurnTime / _maxTurnTime, 0f, 1f));
+        }
+
+        protected virtual string GetSitIdleAniamtion()
+        {
+            return BaseTitanAnimations.SitIdle;
+        }
+
+        protected virtual string GetSitFallAnimation()
+        {
+            return BaseTitanAnimations.SitFall;
+        }
+
+        protected virtual string GetSitUpAnimation()
+        {
+            return BaseTitanAnimations.SitUp;
         }
 
         protected virtual void Update()
@@ -443,16 +467,16 @@ namespace Characters
                         StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);
                 }
                 else if (State == TitanState.SitDown)
-                    StateActionWithTime(TitanState.SitIdle, BaseTitanAnimations.SitIdle, 0f, 0.1f);
+                    StateActionWithTime(TitanState.SitIdle, GetSitIdleAniamtion(), 0f, 0.1f);
                 else if (State == TitanState.SitIdle)
                 {
                     if (HasDirection || !IsSit)
-                        StateAction(TitanState.SitUp, BaseTitanAnimations.SitUp);
+                        StateAction(TitanState.SitUp, GetSitUpAnimation());
                 }
                 else if (State == TitanState.SitFall)
-                    StateActionWithTime(TitanState.SitCripple, BaseTitanAnimations.SitIdle, _currentCrippleTime, 0.1f);
+                    StateActionWithTime(TitanState.SitCripple, GetSitIdleAniamtion(), _currentCrippleTime, 0.1f);
                 else if (State == TitanState.SitCripple)
-                    StateAction(TitanState.SitUp, BaseTitanAnimations.SitUp);
+                    StateAction(TitanState.SitUp, GetSitUpAnimation());
                 else if (State == TitanState.Run)
                 {
                     if (!HasDirection)
@@ -737,6 +761,15 @@ namespace Characters
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             return _stepPhase;
+        }
+
+        protected virtual void SpawnShatter(Vector3 position)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(position + Vector3.up * 1f, Vector3.down, out hit, 2f, GroundMask.value))
+            {
+                EffectSpawner.Spawn(EffectPrefabs.GroundShatter, hit.point + Vector3.up * 0.1f, Quaternion.identity, Size * SizeMultiplier);
+            }
         }
     }
 

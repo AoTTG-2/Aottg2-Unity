@@ -27,6 +27,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
             if (name == "FOV")
                 return CustomLogicManager.CameraFOV;
+            if (name == "Forward")
+                return new CustomLogicVector3Builtin(camera.Cache.Transform.forward);
             return base.GetField(name);
         }
 
@@ -65,6 +67,13 @@ namespace CustomLogic
             {
                 var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
                 camera.Cache.Transform.LookAt(vectorBuiltin.Value);
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+                return null;
+            }
+            if (name == "Forward")
+            {
+                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
+                camera.Cache.Transform.forward = vectorBuiltin.Value;
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
                 return null;
             }

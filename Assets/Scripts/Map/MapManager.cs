@@ -160,7 +160,7 @@ namespace Map
 
         public static void OnLoadCachedMapRPC(PhotonMessageInfo info)
         {
-            if (!info.Sender.IsMasterClient)
+            if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
             LoadMap();
         }

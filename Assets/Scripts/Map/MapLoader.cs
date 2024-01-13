@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using Utility;
+using Weather;
 
 namespace Map
 {
@@ -49,6 +50,7 @@ namespace Map
 
         public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, bool editor = false)
         {
+            Debug.Log(objects.Count);
             Errors.Clear();
             _customMaterialCache.Clear();
             _defaultMaterialCache.Clear();
@@ -354,7 +356,8 @@ namespace Map
             if (!visible && editor)
             {
                 visible = true;
-                material = _invisibleMaterial;
+                if (!asset.Contains("Editor"))
+                    material = _invisibleMaterial;
             }
             foreach (var r in allRenderers)
             {
@@ -405,7 +408,7 @@ namespace Map
                     {
                         var legacy = (MapScriptLegacyMaterial)material;
                         mat = (Material)Instantiate(LoadAssetCached("Map/Legacy/Materials", legacy.Shader));
-                        mat.color = legacy.Color.ToColor();
+                        mat.SetColor("_TintColor", legacy.Color.ToColor());
                         mat.mainTextureScale = new Vector2(legacy.Tiling.x, legacy.Tiling.y);
                     }
                     else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(material.GetType()))
@@ -523,6 +526,8 @@ namespace Map
                     }
                     else
                         _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
+                    if (asset == "Arenas/CaveMap1")
+                        WeatherManager.EnableCaveMap();
                 }
                 return (GameObject)Instantiate(_assetCache[asset]);
             }

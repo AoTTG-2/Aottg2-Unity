@@ -22,9 +22,15 @@ namespace UI
             settings.WeatherSets.SelectedSetIndex.Value = SettingsManager.InGameUI.WeatherIndex.Value;
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, new ElementStyle(titleWidth: 140f, themePanel: ThemePanel), settings.WeatherSets.GetSelectedSetIndex(),
                 "Weather set", settings.WeatherSets.GetSetNames(), elementWidth: 205f, onDropdownOptionSelect: () => OnWeatherSetSelected(),
-                tooltip: "* = preset and cannot be modified or deleted. Create a new set to save custom settings.");
+                tooltip: "* = preset and cannot be modified or deleted. Create a new set to use custom settings.");
             GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelLeft, 10f, TextAnchor.UpperLeft);
             foreach (string button in new string[] { "Create", "Delete", "Rename", "Copy" })
+            {
+                GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
+                                                                    onClick: () => OnWeatherPanelButtonClick(button));
+            }
+            group = ElementFactory.CreateHorizontalGroup(DoublePanelLeft, 10f, TextAnchor.UpperLeft);
+            foreach (string button in new string[] { "Import", "Export" })
             {
                 GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                     onClick: () => OnWeatherPanelButtonClick(button));
@@ -39,8 +45,11 @@ namespace UI
             foreach (string button in new string[] { "Import", "Export" })
             {
                 GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
-                                                                    onClick: () => OnWeatherPanelButtonClick(button));
+                                                                    onClick: () => OnWeatherPanelButtonClick(button + "Schedule"));
             }
+            if (set.Preset.Value)
+                ElementFactory.CreateDefaultLabel(DoublePanelRight, style, "*Weather presets cannot be modified. Create a new set to use custom settings.",
+                    FontStyle.Normal, TextAnchor.MiddleCenter);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, set.Skybox, "Skybox", Util.EnumToStringArray<WeatherSkybox>());
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.SkyboxColor, "Skybox color", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.Daylight, "Daylight", colorPickPopup);
@@ -85,13 +94,21 @@ namespace UI
                 case "Copy":
                     setNamePopup.Show("New set", () => OnWeatherSetOperationFinish(name), UIManager.GetLocaleCommon("Copy"));
                     break;
-                case "Edit schedule":
-                    // settingsPopup.EditWeatherSchedulePopup.Show(((WeatherSet)settings.WeatherSets.GetSelectedSet()).Schedule);
-                    break;
                 case "Import":
-                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnWeatherSetOperationFinish(name));
+                    if (settings.WeatherSets.CanEditSelectedSet())
+                        UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnWeatherSetOperationFinish(name));
                     break;
                 case "Export":
+                    var set = (WeatherSet)settings.WeatherSets.GetSelectedSet();
+                    var json = set.SerializeToJsonObject();
+                    if (json.HasKey("Preset"))
+                        json["Preset"] = false;
+                    UIManager.CurrentMenu.ExportPopup.Show(json.ToString(aIndent: 4));
+                    break;
+                case "ImportSchedule":
+                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnWeatherSetOperationFinish(name));
+                    break;
+                case "ExportSchedule":
                     UIManager.CurrentMenu.ExportPopup.Show(((WeatherSet)settings.WeatherSets.GetSelectedSet()).Schedule.Value);
                     break;
             }
@@ -101,6 +118,7 @@ namespace UI
         {
             SetNamePopup setNamePopup = UIManager.CurrentMenu.SetNamePopup;
             SetSettingsContainer<WeatherSet> settings = SettingsManager.WeatherSettings.WeatherSets;
+            ImportPopup importPopup = UIManager.CurrentMenu.ImportPopup;
             switch (name)
             {
                 case "Create":
@@ -119,7 +137,20 @@ namespace UI
                     settings.GetSelectedSetIndex().Value = settings.GetSets().GetCount() - 1;
                     break;
                 case "Import":
-                    ImportPopup importPopup = UIManager.CurrentMenu.ImportPopup;
+                    try
+                    {
+                        var setName = settings.GetSelectedSet().Name.Value;
+                        settings.GetSelectedSet().DeserializeFromJsonString(importPopup.ImportSetting.Value);
+                        settings.GetSelectedSet().Preset.Value = false;
+                        settings.GetSelectedSet().Name.Value = setName;
+                        importPopup.Hide();
+                    }
+                    catch
+                    {
+                        importPopup.ShowError("Invalid weather preset.");
+                    }
+                    break;
+                case "ImportSchedule":
                     string error = (new WeatherSchedule()).DeserializeFromCSV(importPopup.ImportSetting.Value);
                     if (error != string.Empty)
                         importPopup.ShowError(error);
