@@ -28,6 +28,25 @@ namespace CustomLogic
             {
                 return Value.ToColor().ToHexString();
             }
+            if (methodName == "Gradient")
+            {
+                // Expects two colors and a float
+                var a = (CustomLogicColorBuiltin)parameters[0];
+                var b = (CustomLogicColorBuiltin)parameters[1];
+                var ac = a.Value.ToColor();
+                var bc = b.Value.ToColor();
+                var t = (float)parameters[2];
+
+                var colors = new GradientColorKey[2];
+                colors[0] = new GradientColorKey(ac, 0f);
+                colors[1] = new GradientColorKey(bc, 1f);
+
+                var alphas = new GradientAlphaKey[2];
+                alphas[0] = new GradientAlphaKey(ac.a, ac.a);
+                alphas[1] = new GradientAlphaKey(bc.a, bc.a);
+
+                return new CustomLogicColorBuiltin(Color255.Gradient(colors, alphas, GradientMode.Blend, t));
+            }
             return base.CallMethod(methodName, parameters);
         }
 

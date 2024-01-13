@@ -56,7 +56,20 @@ component CaptureZone
 
     function ChangeColor()
     {
-        self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+        if (self._state == "Captured")
+		{
+			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+		}
+		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
+		{
+			captureColor = self.GetTeamColor(self._currentCapturer);
+            ownerColor = self.GetTeamColor(self._currentOwner);
+            self.MapObject.Color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
+		}
+		else
+		{
+			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+		}
 	}
 
     # Modify local state #
