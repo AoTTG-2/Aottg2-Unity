@@ -29,6 +29,14 @@ namespace CustomLogic
         public static Vector3 CameraPosition;
         public static Vector3 CameraRotation;
         public static Vector3 CameraVelocity;
+        public static Dictionary<string, object> RoomData = new Dictionary<string, object>();
+        public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
+
+        public override void OnJoinedRoom()
+        {
+            RoomData.Clear();
+            PersistentData.Clear();
+        }
 
         public static void Init()
         {
@@ -105,7 +113,7 @@ namespace CustomLogic
 
         public static void OnLoadCachedLogicRPC(PhotonMessageInfo info)
         {
-            if (!info.Sender.IsMasterClient)
+            if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
             FinishLoadLogic();
         }

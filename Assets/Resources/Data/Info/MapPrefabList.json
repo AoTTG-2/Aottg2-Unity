@@ -5,13 +5,13 @@
 			{"Name": "Empty Object"},
 			{"Name": "Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideWith": "Characters"},
 			{"Name": "Titan Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideMode": "Region", "CollideWith": "Characters", "Components": ["TitanBarrier|"]},
-			{"Name": "Daylight", "Components": ["Daylight|"]},
-			{"Name": "PointLight", "Components": ["PointLight|"]},
-			{"Name": "Camera SpawnPoint", "Components": ["Tag|Name:CameraSpawnPoint"]},
-			{"Name": "Human SpawnPoint", "Components": ["Tag|Name:HumanSpawnPoint"]},
-			{"Name": "Human SpawnPoint (blue)", "Components": ["Tag|Name:HumanSpawnPointBlue"]},
-			{"Name": "Human SpawnPoint (red)", "Components": ["Tag|Name:HumanSpawnPointRed"]},
-			{"Name": "Titan SpawnPoint", "Components": ["Tag|Name:TitanSpawnPoint"]}
+			{"Name": "Daylight", "Asset": "General/EditorDaylight", "Visible": false, "CollideMode": "None", "Components": ["Daylight|"], "Preview": "EditorDaylight", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "PointLight", "Asset": "General/EditorPointLight", "Visible": false, "CollideMode": "None", "Components": ["PointLight|"], "Preview": "EditorPointLight", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Camera SpawnPoint", "Asset": "General/EditorCameraSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:CameraSpawnPoint"], "Preview": "EditorCameraSpawnPoint"},
+			{"Name": "Human SpawnPoint", "Asset": "General/EditorHumanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPoint"], "Preview": "EditorHumanSpawnPoint"},
+			{"Name": "Human SpawnPoint (blue)", "Asset": "General/EditorHumanSpawnPointBlue", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointBlue"], "Preview": "EditorHumanSpawnPointBlue", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Human SpawnPoint (red)", "Asset": "General/EditorHumanSpawnPointRed", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointRed"], "Preview": "EditorHumanSpawnPointRed", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Titan SpawnPoint", "Asset": "General/EditorTitanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:TitanSpawnPoint"], "Preview": "EditorTitanSpawnPoint"}
 		]
 	},
 	"Geometry": {
@@ -265,9 +265,14 @@
 			{"Name": "Arena2"},
 			{"Name": "Arena3"},
 			{"Name": "Arena4"},
-			{"Name": "Utgard1"},
+			{"Name": "CaveMap1"},
 			{"Name": "HQ1"},
-			{"Name": "HQ2"}
+			{"Name": "HQ2"},
+			{"Name": "HQ3"},
+			{"Name": "HQ4"},
+			{"Name": "HQ5"},
+			{"Name": "HQ6"},
+			{"Name": "Utgard1"}
 		]
 	},
 	"Interact": {
@@ -275,8 +280,10 @@
 		"Prefabs": [
 			{"Name": "Supply1", "Asset": "Interact/Supply1", "Components": ["SupplyStation|"]},
 			{"Name": "Supply2", "Asset": "Interact/Supply2", "Components": ["SupplyStation|"]},
-			{"Name": "Cannon2", "Asset": "Interact/Cannon2", "Static": false, "Networked": true, "Components": ["Cannon|IsGround:true"]},
-			{"Name": "Cannon3", "Asset": "Interact/Cannon3", "Static": false, "Networked": true, "Components": ["Cannon|IsGround:false"]},
+			{"Name": "Cannon2", "Asset": "Interact/Cannon2", "Static": false, "Networked": true, "Components": ["Cannon|"]},
+			{"Name": "Cannon3", "Asset": "Interact/Cannon3", "Static": false, "Networked": true, "Components": ["Cannon|"]},
+			{"Name": "Cannon4", "Asset": "Interact/Cannon4", "Static": false, "Networked": true, "Components": ["Cannon|"]},
+			{"Name": "Cannon5", "Asset": "Interact/Cannon5", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dummy2", "Asset": "Interact/Dummy2", "Static": false, "Networked": true, "Components": ["Dummy|"]},
 			{"Name": "Racing Start Barrier", "Asset": "Geometry/Cuboid", "Static": false, "Material": "Transparent|0/97/255/122|Misc/None|1/1|0/0|", 

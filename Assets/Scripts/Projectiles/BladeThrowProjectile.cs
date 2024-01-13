@@ -34,6 +34,13 @@ namespace Projectiles
             else
                 WeaponTrail.Emit = false;
         }
+
+        protected void Start()
+        {
+            if (_owner != null && _owner is Human && _owner.IsMine())
+                WeaponTrail.SetMaterial(((Human)_owner).Setup.LeftTrail._material);
+        }
+
         protected override void RegisterObjects()
         {
             _hideObjects.Add(_model);
@@ -108,15 +115,12 @@ namespace Projectiles
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
                     {
-                        if (collider == titan.BaseTitanCache.NapeHurtbox || !(titan is BasicTitan) || !((BasicTitan)titan).IsCrawler)
+                        EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
+                        if (_owner == null || !(_owner is Human))
+                            titan.GetHit("Blade", 100, "BladeThrow", collider.name);
+                        else
                         {
-                            EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
-                            if (_owner == null || !(_owner is Human))
-                                titan.GetHit("Blade", 100, "BladeThrow", collider.name);
-                            else
-                            {
-                                titan.GetHit(_owner, damage, "BladeThrow", collider.name);
-                            }
+                            titan.GetHit(_owner, damage, "BladeThrow", collider.name);
                         }
                     }
                 }

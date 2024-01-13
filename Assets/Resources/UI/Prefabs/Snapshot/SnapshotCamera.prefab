@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 497600}
   - component: {fileID: 2097600}
   - component: {fileID: -5910546608602081884}
+  - component: {fileID: -4452854894358054884}
   m_Layer: 0
   m_Name: SnapshotCamera
   m_TagString: Untagged
@@ -72,7 +73,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4160749567
+    m_Bits: 3892314111
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: edd969b4d39f03548b50d2b0fe95df95, type: 2}
   m_TargetDisplay: 0
@@ -92,3 +93,12 @@ Behaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197600}
   m_Enabled: 1
+--- !u!45 &-4452854894358054884
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197600}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}

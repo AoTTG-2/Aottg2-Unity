@@ -447,14 +447,24 @@ namespace Characters
                 }
                 base.GetHitRPC(viewId, name, damage, type, collider);
             }
-            else if (BaseTitanCache.EyesHurtbox != null && collider == BaseTitanCache.EyesHurtbox.name && !IsCrawler)
+            else if (BaseTitanCache.EyesHurtbox != null && collider == BaseTitanCache.EyesHurtbox.name)
                 Blind();
-            else if (BaseTitanCache.LegLHurtbox != null && !IsCrawler && (collider == BaseTitanCache.LegLHurtbox.name || collider == BaseTitanCache.LegRHurtbox.name))
+            else if (BaseTitanCache.LegLHurtbox != null && (collider == BaseTitanCache.LegLHurtbox.name || collider == BaseTitanCache.LegRHurtbox.name))
                 Cripple();
-            else if (collider == BasicCache.ForearmLHurtbox.name && !IsCrawler)
-                DisableArm(true);
-            else if (collider == BasicCache.ForearmRHurtbox.name && !IsCrawler)
-                DisableArm(false);
+            else if (collider == BasicCache.ForearmLHurtbox.name)
+            {
+                if (IsCrawler)
+                    Cripple();
+                else
+                    DisableArm(true);
+            }
+            else if (collider == BasicCache.ForearmRHurtbox.name)
+            {
+                if (IsCrawler)
+                    Cripple();
+                else
+                    DisableArm(false);
+            }
             else if (collider == BaseTitanCache.NapeHurtbox.name)
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
@@ -1042,15 +1052,6 @@ namespace Characters
             
         }
 
-        protected void SpawnShatter(Vector3 position)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(position + Vector3.up * 1f, Vector3.down, out hit, 2f, GroundMask.value))
-            {
-                EffectSpawner.Spawn(EffectPrefabs.GroundShatter, hit.point + Vector3.up * 0.1f, Quaternion.identity, Size);
-            }
-        }
-
         protected override void UpdateEat()
         {
             if (HoldHuman == null  && _stateTimeLeft > 4.72f)
@@ -1069,6 +1070,56 @@ namespace Characters
                     HoldHuman = null;
                 }
             }
+        }
+
+        public override void Blind()
+        {
+            if (IsCrawler)
+            {
+                if (State != TitanState.Blind && AI)
+                {
+                    StateAction(TitanState.Blind, BasicAnimations.BlindCrawler);
+                    DamagedGrunt();
+                }
+            }
+            else
+                base.Blind();
+        }
+
+        protected override string GetSitIdleAniamtion()
+        {
+            if (IsCrawler)
+                return BasicAnimations.SitIdleCrawler;
+            return BaseTitanAnimations.SitIdle;
+        }
+
+        protected override string GetSitFallAnimation()
+        {
+            if (IsCrawler)
+                return BasicAnimations.SitFallCrawler;
+            return BaseTitanAnimations.SitFall;
+        }
+
+        protected override string GetSitUpAnimation()
+        {
+            if (IsCrawler)
+                return BasicAnimations.SitUpCrawler;
+            return BaseTitanAnimations.SitUp;
+        }
+
+        public override void Cripple(float time = 0f)
+        {
+            if (IsCrawler)
+            {
+                if (State != TitanState.SitCripple && AI)
+                {
+                    _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
+                    StateAction(TitanState.SitFall, BasicAnimations.SitFallCrawler);
+                    DamagedGrunt();
+                }
+            }
+            else
+                base.Cripple(time);
         }
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)

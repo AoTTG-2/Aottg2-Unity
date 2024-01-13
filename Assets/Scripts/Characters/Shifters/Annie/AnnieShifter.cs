@@ -73,6 +73,10 @@ namespace Characters
                 StateAttack(AnnieAnimations.Kick);
             else if (_currentAttack == AnnieAttacks.AttackSwing)
                 StateAttack(AnnieAnimations.AttackSwing);
+            else if (_currentAttack == AnnieAttacks.AttackStomp)
+                StateAttack(AnnieAnimations.AttackStomp);
+            else if (_currentAttack == AnnieAttacks.AttackHead)
+                StateAttack(AnnieAnimations.AttackHead);
             else if (_currentAttack == AnnieAttacks.AttackBrush)
             {
                 DeactivateAllHitboxes();
@@ -173,6 +177,28 @@ namespace Characters
                 {
                     _currentAttackStage = 1;
                     AnnieCache.HandRHitbox.Activate(0f, 0.12f / _currentAttackSpeed);
+                    PlaySound(TitanSounds.Swing1);
+                }
+            }
+            else if (_currentStateAnimation == AnnieAnimations.AttackStomp)
+            {
+                if (_currentAttackStage == 0 && animationTime > 0.35f)
+                {
+                    _currentAttackStage = 1;
+                    AnnieCache.FootLHitbox.Activate(0f, 0.1f / _currentAttackSpeed);
+                    var position = BaseTitanCache.FootLHitbox.transform.position;
+                    position.y = BaseTitanCache.Transform.position.y;
+                    EffectSpawner.Spawn(EffectPrefabs.Boom5, position, BaseTitanCache.Transform.rotation, Size * SizeMultiplier);
+                    SpawnShatter(position);
+                }
+            }
+            else if (_currentStateAnimation == AnnieAnimations.AttackHead)
+            {
+                if (_currentAttackStage == 0 && animationTime > 0.25f)
+                {
+                    _currentAttackStage = 1;
+                    AnnieCache.HandLHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
+                    AnnieCache.HandRHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }

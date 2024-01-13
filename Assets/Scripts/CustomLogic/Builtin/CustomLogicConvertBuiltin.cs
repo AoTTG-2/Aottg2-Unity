@@ -56,11 +56,38 @@ namespace CustomLogic
             if (name == "ToString")
             {
                 object param = parameters[0];
+                if (param == null)
+                    return "null";
                 if (param is string)
                     return (string)param;
                 if (param is bool)
                     return ((bool)param) ? "true" : "false";
                 return param.ToString();
+            }
+            if (name == "IsFloat")
+            {
+                object param = parameters[0];
+                return param != null && param is float;
+            }
+            if (name == "IsInt")
+            {
+                object param = parameters[0];
+                return param != null && param is int;
+            }
+            if (name == "IsBool")
+            {
+                object param = parameters[0];
+                return param != null && param is bool;
+            }
+            if (name == "IsString")
+            {
+                object param = parameters[0];
+                return param != null && param is string;
+            }
+            if (name == "IsObject")
+            {
+                object param = parameters[0];
+                return param != null && param is CustomLogicBaseBuiltin;
             }
             return base.CallMethod(name, parameters);
         }

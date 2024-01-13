@@ -115,6 +115,8 @@ namespace CustomLogic
                 return Character.CustomDamage;
             if (name == "CurrentAnimation")
                 return Character.GetCurrentAnimation();
+            if (name == "IsAI")
+                return Character.AI;
             return base.GetField(name);
         }
 

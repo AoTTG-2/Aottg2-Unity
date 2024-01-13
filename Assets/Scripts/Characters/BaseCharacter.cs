@@ -268,7 +268,7 @@ namespace Characters
         [PunRPC]
         public void PlaySoundRPC(string sound, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
                 Cache.AudioSources[sound].Play();
@@ -282,7 +282,7 @@ namespace Characters
         [PunRPC]
         public void StopSoundRPC(string sound, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
                 Cache.AudioSources[sound].Stop();

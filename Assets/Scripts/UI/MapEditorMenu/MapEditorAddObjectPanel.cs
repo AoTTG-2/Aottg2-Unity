@@ -88,6 +88,8 @@ namespace UI
 
         protected virtual string GetPreviewName(string item)
         {
+            if (BuiltinMapPrefabs.PrefabPreviews.ContainsKey(item))
+                return BuiltinMapPrefabs.PrefabPreviews[item] + "Preview";
             return item + "Preview";
         }
 
