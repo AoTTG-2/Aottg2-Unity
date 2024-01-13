@@ -44,6 +44,7 @@ component CaptureZone
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
     }
 
+    # GameObject Helpers #
     function GetTeamColor(team)
     {
 		if (self._teamToColor.Contains(team))
@@ -52,13 +53,6 @@ component CaptureZone
 		}
 		return self._unknownTeamColor;
 	}
-
-    function GetTeamHex(team)
-    {
-        color = self.GetTeamColor(team);
-        teamColor = Color(color.R, color.G, color.B, 255);
-        return "#" + teamColor.ToHexString();
-    }
 
     function ChangeColor()
     {
@@ -74,26 +68,27 @@ component CaptureZone
         }
 
         # Message will be state, owner, capturer, and progress #
-        parts = String.Split(message, ",");
-        if (parts.Count != 4)
-        {
-            return;
-        }
-        
-        self._state = parts.Get(0);
-        self._currentOwner = parts.Get(1);
-        self._currentCapturer = parts.Get(2);
-        self._captureProgress = Convert.ToFloat(parts.Get(3));
+        data = Json.LoadFromString(message);
+
+        self._state = data.Get("state");
+        self._currentOwner = data.Get("owner");
+        self._currentCapturer = data.Get("capturer");
+        self._captureProgress = data.Get("progress");
+        self.Enabled = data.Get("enabled");
 
         self.ChangeColor();
     }
 
-    function NetworkSync(state, owner, capturer, progress)
+    function NetworkSync(state, owner, capturer, progress, Enabled)
     {
-        message = state + "," + owner + "," + capturer + "," + Convert.ToString(progress);
-        Game.Print(message);
+        message = Dict();
+        message.Set("state", state);
+        message.Set("owner", owner);
+        message.Set("capturer", capturer);
+        message.Set("progress", progress);
+        message.Set("enabled", Enabled);
         self.ChangeColor();
-        self.NetworkView.SendMessageOthers(message);
+        self.NetworkView.SendMessageOthers(Json.SaveToString(message));
     }
 
     function HandleStateTransition()
@@ -160,9 +155,23 @@ component CaptureZone
         {
             return;
         }
+
+        if (Network.IsMasterClient == false)
+		{
+			return;
+		}
+
         self.HandleStateTransition();
 
-        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress);
+        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
+    }
+
+    # UI Helpers #
+    function GetTeamHex(team)
+    {
+        color = self.GetTeamColor(team);
+        teamColor = Color(color.R, color.G, color.B, 255);
+        return "#" + teamColor.ToHexString();
     }
 
     function OnTick()
@@ -174,7 +183,7 @@ component CaptureZone
 
         if (Network.MyPlayer.Character == null)
 		{
-            UI.SetLabelAll("TopCenter", "");
+            UI.SetLabel("TopCenter", "");
 			return;
 		}
 
@@ -242,7 +251,6 @@ component CaptureZone
 
     function AddTeamPlayer(player)
     {
-        Game.Print("Adding team player: " + player.Team);
         if (self._teamsInZone.Contains(player.Team) == false)
         {
             self._teamsInZone.Set(player.Team, List());
@@ -257,7 +265,6 @@ component CaptureZone
 
     function RemoveTeamPlayer(player)
     {
-        Game.Print("Removing team player: " + player.Team);
         if (self._teamsInZone.Contains(player.Team) == false)
         {
             return;
