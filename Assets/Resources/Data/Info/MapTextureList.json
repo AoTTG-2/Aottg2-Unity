@@ -30,7 +30,8 @@
 		{"Name": "Metal3", "TilingX": 6, "TilingY": 6},
 		{"Name": "Metal4", "TilingX": 20, "TilingY": 20},
 		{"Name": "Metal5", "TilingX": 5, "TilingY": 5},
-		{"Name": "Metal6", "TilingX": 5, "TilingY": 5}
+		{"Name": "Metal6", "TilingX": 5, "TilingY": 5},
+		{"Name": "Metal7", "TilingX": 5, "TilingY": 5}
 	],
 	"Wood": [
 		{"Name": "Wood1", "TilingX": 5, "TilingY": 5},
