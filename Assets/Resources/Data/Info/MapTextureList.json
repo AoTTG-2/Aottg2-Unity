@@ -74,7 +74,8 @@
 		{"Name": "Stone18", "TilingX": 3, "TilingY": 3},
 		{"Name": "Stone19", "TilingX": 3, "TilingY": 3},
 		{"Name": "Stone20", "TilingX": 3, "TilingY": 3},
-		{"Name": "Stone21", "TilingX": 3, "TilingY": 3}
+		{"Name": "Stone21", "TilingX": 3, "TilingY": 3},
+		{"Name": "Stone22", "TilingX": 3, "TilingY": 3}
 	],
 	"Misc": [
 		{"Name": "None", "TilingX": 1, "TilingY": 1},
@@ -94,7 +95,8 @@
 		{"Name": "Sand2", "TilingX": 3, "TilingY": 3},
 		{"Name": "Snow1", "TilingX": 1, "TilingY": 1},
 		{"Name": "Straw1", "TilingX": 3, "TilingY": 3},
-		{"Name": "TechGlow1", "TilingX": 1, "TilingY": 1}
+		{"Name": "TechGlow1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Water1", "TilingX": 1, "TilingY": 1}
 	],
 	"Legacy": [
 		{"Name": "WallMat", "Texture": "Buildings/Textures/Wall1Tex1"},

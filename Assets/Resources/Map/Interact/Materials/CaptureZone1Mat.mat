@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TESTCaptureZoneMat
+  m_Name: CaptureZone1Mat
   m_Shader: {fileID: -6465566751694194690, guid: e98958caf8cf7084ab0a79bc40dc69de, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
