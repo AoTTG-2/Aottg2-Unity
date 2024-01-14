@@ -29,6 +29,16 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "GetTransforms")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                foreach (Transform transform in Value)
+                {
+                    listBuiltin.List.Add(new CustomLogicTransformBuiltin(transform));
+                }
+                return listBuiltin;
+            }
+            
             if (methodName == "PlayAnimation")
             {
                 string anim = (string)parameters[0];

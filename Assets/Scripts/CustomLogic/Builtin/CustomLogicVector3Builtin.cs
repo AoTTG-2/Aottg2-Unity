@@ -29,6 +29,13 @@ namespace CustomLogic
                 float t = parameters[2].UnboxToFloat();
                 return new CustomLogicVector3Builtin(Vector3.Lerp(a.Value, b.Value, t));
             }
+            if (methodName == "Lerp")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.LerpUnclamped(a.Value, b.Value, t));
+            }
             if (methodName == "Scale")
             {
                 float scale = parameters[0].UnboxToFloat();

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Map;
 using Utility;
+using System.ComponentModel;
 
 namespace CustomLogic
 {
@@ -172,6 +173,22 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "GetChildren")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                if (MapLoader.IdToChildren.ContainsKey(Value.ScriptObject.Id))
+                {
+                    foreach (int childId in MapLoader.IdToChildren[Value.ScriptObject.Id])
+                    {
+                        if (MapLoader.IdToMapObject.ContainsKey(childId))
+                        {
+                            var go = MapLoader.IdToMapObject[childId];
+                            listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(go));
+                        }
+                    }
+                }
+                return listBuiltin;
+            }
             if (methodName == "GetTransform")
             {
                 string name = (string)parameters[0];
@@ -240,6 +257,11 @@ namespace CustomLogic
             {
                 return new CustomLogicTransformBuiltin(Value.GameObject.transform);
             }
+            if (name == "Color")
+            {
+                var color = Value.GameObject.GetComponent<Renderer>().material.color;
+                return new CustomLogicColorBuiltin(new Color255(color));
+            }
             return base.GetField(name);
         }
 
@@ -290,8 +312,20 @@ namespace CustomLogic
             {
                 Value.GameObject.SetActive((bool)value);
             }
+            else if (name == "Color")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+                var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
+                // Set my renderer's color
+                Value.GameObject.GetComponent<Renderer>().material.color = color;
+            }
             else
+            {
                 base.SetField(name, value);
+            }
         }
 
         public override bool Equals(object obj)
