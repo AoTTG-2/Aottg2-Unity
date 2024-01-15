@@ -2234,7 +2234,7 @@ namespace Characters
             Cache.Transform.rotation = quaternion;
             _targetRotation = quaternion;
             TargetAngle = facingDirection;
-            UseGas(MaxGas * CharacterData.HumanWeaponInfo["Thunderspear"]["StunGasPenalty"].AsFloat);
+            UseGas(Mathf.Min(MaxGas * CharacterData.HumanWeaponInfo["Thunderspear"]["StunGasPenalty"].AsFloat, 100));
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
             PlaySound(HumanSounds.GasBurst);

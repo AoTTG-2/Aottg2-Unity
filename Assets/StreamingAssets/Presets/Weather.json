@@ -5,22 +5,22 @@
             {
                 "Skybox" : "Dawn1",
                 "SkyboxColor" : [
-                    3,
-                    122,
+                    0,
+                    164,
                     255,
                     255
                 ],
                 "Daylight" : [
-                    244,
-                    230,
-                    205,
+                    255,
+                    250,
+                    250,
                     255
                 ],
-                "DaylightIntensity" : 2,
+                "DaylightIntensity" : 1.68259847164154,
                 "AmbientLight" : [
+                    115,
+                    123,
                     157,
-                    157,
-                    153,
                     255
                 ],
                 "Flashlight" : [
@@ -29,11 +29,11 @@
                     255,
                     0
                 ],
-                "FogDensity" : 0.0177778117358685,
+                "FogDensity" : 0.00806512497365475,
                 "FogColor" : [
-                    99,
-                    125,
-                    154,
+                    157,
+                    178,
+                    200,
                     255
                 ],
                 "Rain" : 0,
@@ -48,22 +48,22 @@
             {
                 "Skybox" : "Dawn1",
                 "SkyboxColor" : [
-                    137,
-                    160,
-                    164,
-                    191
-                ],
-                "Daylight" : [
-                    237,
-                    200,
-                    149,
+                    255,
+                    155,
+                    117,
                     255
                 ],
-                "DaylightIntensity" : 0.939999997615814,
+                "Daylight" : [
+                    234,
+                    168,
+                    128,
+                    255
+                ],
+                "DaylightIntensity" : 1,
                 "AmbientLight" : [
-                    167,
-                    126,
-                    90,
+                    166,
+                    117,
+                    117,
                     255
                 ],
                 "Flashlight" : [
@@ -72,12 +72,12 @@
                     255,
                     0
                 ],
-                "FogDensity" : 0.00999999977648258,
+                "FogDensity" : 0.0120651246979833,
                 "FogColor" : [
-                    233,
-                    217,
-                    221,
-                    130
+                    161,
+                    142,
+                    119,
+                    255
                 ],
                 "Rain" : 0,
                 "Thunder" : 0,
@@ -91,22 +91,22 @@
             {
                 "Skybox" : "Dawn1",
                 "SkyboxColor" : [
-                    255,
-                    124,
-                    62,
+                    172,
+                    164,
+                    139,
                     255
                 ],
                 "Daylight" : [
-                    255,
+                    232,
                     151,
                     115,
                     255
                 ],
-                "DaylightIntensity" : 2,
+                "DaylightIntensity" : 1,
                 "AmbientLight" : [
-                    65,
-                    37,
-                    34,
+                    124,
+                    114,
+                    113,
                     255
                 ],
                 "Flashlight" : [
@@ -117,8 +117,8 @@
                 ],
                 "FogDensity" : 0.00888885464519262,
                 "FogColor" : [
-                    237,
-                    176,
+                    238,
+                    155,
                     126,
                     255
                 ],
@@ -140,29 +140,29 @@
                     255
                 ],
                 "Daylight" : [
-                    41,
-                    88,
-                    119,
+                    40,
+                    59,
+                    108,
                     255
                 ],
-                "DaylightIntensity" : 0.03,
+                "DaylightIntensity" : 1,
                 "AmbientLight" : [
-                    52,
-                    74,
-                    98,
+                    34,
+                    42,
+                    93,
                     217
                 ],
                 "Flashlight" : [
                     152,
-                    177,
+                    153,
                     159,
                     255
                 ],
-                "FogDensity" : 0.05,
+                "FogDensity" : 0.00823669414967299,
                 "FogColor" : [
-                    0,
-                    52,
-                    84,
+                    55,
+                    96,
+                    136,
                     255
                 ],
                 "Rain" : 0,

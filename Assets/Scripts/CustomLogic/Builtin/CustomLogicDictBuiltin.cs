@@ -20,7 +20,11 @@ namespace CustomLogic
             }
             if (methodName == "Get")
             {
-                return Dict[parameters[0]];
+                if (Dict.ContainsKey(parameters[0]))
+                    return Dict[parameters[0]];
+                if (parameters.Count > 1)
+                    return parameters[1];
+                throw new System.Exception("No dict key found: " + parameters[0]);
             }
             if (methodName == "Set")
             {

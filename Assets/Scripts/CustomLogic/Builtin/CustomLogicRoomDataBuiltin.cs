@@ -17,8 +17,8 @@ namespace CustomLogic
             {
                 string property = (string)parameters[0];
                 object value = parameters[1];
-                if (!(value is float || value is int || value is string || value is bool))
-                    throw new System.Exception("RoomData.SetProperty only supports float, int, string, or bool values.");
+                if (!(value == null || value is float || value is int || value is string || value is bool))
+                    throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
                 CustomLogicManager.RoomData[property] = value;
                 return null;
             }

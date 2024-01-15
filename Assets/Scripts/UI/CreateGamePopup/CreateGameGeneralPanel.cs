@@ -44,14 +44,13 @@ namespace UI
             }
             settings.General.PrevGameMode.Value = settings.General.GameMode.Value;
             ((CreateGamePopup)Parent).SyncModeSettings(script);
-            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, settings.General.MapCategory, UIManager.GetLocale(cat, sub, "MapCategory"),
-                BuiltinLevels.GetMapCategories(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
-            if (mapNames.Length > 0)
-            {
-                ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, settings.General.MapName, UIManager.GetLocale(cat, sub, "MapName"),
-               mapNames, elementWidth: 180f, optionsWidth: 300f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
-                ElementFactory.CreateDefaultLabel(DoublePanelLeft, dropdownStyle, script.Options.Description, alignment: TextAnchor.MiddleLeft);
-            }
+            BasePopup selectPopup;
+            if (SceneLoader.SceneName == SceneName.InGame)
+                selectPopup = ((InGameMenu)UIManager.CurrentMenu)._selectMapPopup;
+            else
+                selectPopup = ((MainMenu)UIManager.CurrentMenu)._selectMapPopup;
+            ElementFactory.CreateButtonPopupSetting(DoublePanelLeft, dropdownStyle, settings.General.MapName, UIManager.GetLocale(cat, sub, "MapName"), selectPopup, elementWidth: 180f);
+            ElementFactory.CreateDefaultLabel(DoublePanelLeft, dropdownStyle, script.Options.Description, alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.General.GameMode, UIManager.GetLocale(cat, sub, "GameMode"),
                 BuiltinLevels.GetGameModes(settings.General.MapCategory.Value, settings.General.MapName.Value, hasMapLogic), elementWidth: 180f, optionsWidth: 240f,
                 onDropdownOptionSelect: () => parent.RebuildCategoryPanel());

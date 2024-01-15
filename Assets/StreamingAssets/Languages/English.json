@@ -301,6 +301,8 @@
 		"Keybinds.General.Back": "Move back",
 		"Keybinds.General.Left": "Move left",
 		"Keybinds.General.Right": "Move right",
+		"Keybinds.General.Up": "Move up",
+		"Keybinds.General.Down": "Move down",
 		"Keybinds.General.Pause": "Pause",
 		"Keybinds.General.HideUI": "Hide UI",
 		"Keybinds.General.RestartGame": "Restart game",

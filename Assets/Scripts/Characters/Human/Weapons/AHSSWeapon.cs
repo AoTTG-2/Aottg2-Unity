@@ -9,6 +9,8 @@ namespace Characters
 {
     class AHSSWeapon : AmmoWeapon
     {
+        protected Vector3 _target;
+
         public AHSSWeapon(BaseCharacter owner, int ammo, int ammoPerRound, float cooldown) : base(owner, ammo, ammoPerRound, cooldown)
         {
         }
@@ -18,10 +20,16 @@ namespace Characters
             return CharacterData.HumanWeaponInfo["AHSS"]["FireDelay"].AsFloat;
         }
 
+        protected override void Activate()
+        {
+            var human = (Human)_owner;
+            _target = human.GetAimPoint();
+        }
+
         protected override void Deactivate()
         {
             var human = (Human)_owner;
-            Vector3 target = human.GetAimPoint();
+            Vector3 target = _target;
             Vector3 direction = (target - human.Cache.Transform.position).normalized;
             float cross = Vector3.Cross(human.Cache.Transform.forward, direction).y;
             string anim;

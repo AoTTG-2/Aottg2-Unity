@@ -21,8 +21,8 @@ namespace CustomLogic
             {
                 string property = (string)parameters[0];
                 object value = parameters[1];
-                if (!(value is float || value is int || value is string || value is bool))
-                    throw new System.Exception("PersistentData.SetProperty only supports float, int, string, or bool values.");
+                if (!(value == null || value is float || value is int || value is string || value is bool))
+                    throw new System.Exception("PersistentData.SetProperty only supports null, float, int, string, or bool values.");
                 CustomLogicManager.PersistentData[property] = value;
                 return null;
             }
@@ -73,6 +73,8 @@ namespace CustomLogic
                 foreach (string key in CustomLogicManager.PersistentData.Keys)
                 {
                     object value = CustomLogicManager.PersistentData[key];
+                    if (value == null)
+                        continue;
                     if (value is float)
                         node.Add(key, new JSONString("float:" + value.ToString()));
                     else if (value is int)

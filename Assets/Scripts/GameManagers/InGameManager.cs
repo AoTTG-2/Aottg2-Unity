@@ -17,6 +17,7 @@ using Cameras;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using System.IO;
 
 namespace GameManagers
 {
@@ -891,6 +892,33 @@ namespace GameManagers
                 else
                     _inGameMenu.SetScoreboardMenu(false);
             }
+            if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
+            {
+                _inGameMenu.ToggleUI(!_inGameMenu.IsActive());
+            }
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                // TakePreviewScreenshot();
+            }
+        }
+
+        private void TakePreviewScreenshot()
+        {
+            Texture2D texture = new Texture2D((int)1024, (int)1024, TextureFormat.RGB24, false);
+            try
+            {
+                texture.SetPixel(0, 0, Color.white);
+                texture.ReadPixels(new Rect(448, 28, 1024, 1024), 0, 0);
+            }
+            catch
+            {
+                texture = new Texture2D(1, 1);
+                texture.SetPixel(0, 0, Color.white);
+            }
+            texture.Apply();
+            TextureScaler.ScaleBlocking(texture, 256, 256);
+            Directory.CreateDirectory(FolderPaths.Documents + "/MapPreviews");
+            File.WriteAllBytes(FolderPaths.Documents + "/MapPreviews" + "/" + SettingsManager.InGameCurrent.General.MapName.Value + "Preview.png", texture.EncodeToPNG());
         }
 
         private void UpdateCleanCharacters()

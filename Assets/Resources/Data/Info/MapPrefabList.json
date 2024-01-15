@@ -272,7 +272,8 @@
 			{"Name": "HQ4"},
 			{"Name": "HQ5"},
 			{"Name": "HQ6"},
-			{"Name": "Utgard1"}
+			{"Name": "Utgard1"},
+			{"Name": "Utgard2"}
 		]
 	},
 	"Interact": {

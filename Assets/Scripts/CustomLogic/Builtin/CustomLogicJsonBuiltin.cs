@@ -15,10 +15,17 @@ namespace CustomLogic
         {
             if (methodName == "LoadFromString")
             {
-                var json = JSON.Parse((string)parameters[0]);
-                if (json.IsArray || json.IsObject)
-                    return LoadJSON(json);
-                throw new System.Exception("Loading invalid json string.");
+                string str = ((string)parameters[0]).Trim();
+                JSONNode json;
+                try
+                {
+                    json = JSON.Parse((string)parameters[0]);
+                }
+                catch
+                {
+                    json = new JSONString(str);
+                }
+                return LoadJSON(json);
             }
             if (methodName == "SaveToString")
             {
@@ -59,13 +66,32 @@ namespace CustomLogic
                     return value.Substring(7);
                 else if (type == "bool")
                     return value.Substring(5) == "1";
+                else if (type == "null")
+                    return null;
+                else if (type == "vector3")
+                {
+                    string[] raw = value.Substring(8).Split(',');
+                    return new CustomLogicVector3Builtin(new Vector3(float.Parse(raw[0]), float.Parse(raw[1]), float.Parse(raw[2])));
+                }
+                else if (type == "quaternion")
+                {
+                    string[] raw = value.Substring(11).Split(',');
+                    return new CustomLogicQuaternionBuiltin(new Quaternion(float.Parse(raw[0]), float.Parse(raw[1]), float.Parse(raw[2]), float.Parse(raw[3])));
+                }
+                else if (type == "color")
+                {
+                    string[] raw = value.Substring(6).Split(',');
+                    return new CustomLogicColorBuiltin(new Color255(int.Parse(raw[0]), int.Parse(raw[1]), int.Parse(raw[2]), int.Parse(raw[3])));
+                }
             }
             throw new System.Exception("Loading invalid json format.");
         }
 
         protected JSONNode SaveJSON(object obj)
         {
-            if (obj is CustomLogicDictBuiltin)
+            if (obj == null)
+                return new JSONString("null:null");
+            else if (obj is CustomLogicDictBuiltin)
             {
                 var node = new JSONObject();
                 var dict = (CustomLogicDictBuiltin)obj;
@@ -93,8 +119,23 @@ namespace CustomLogic
                 return new JSONString("int:" + ((int)obj).ToString());
             else if (obj is bool)
                 return new JSONString("bool:" + (((bool)(obj)) == true ? "1" : "0"));
+            else if (obj is CustomLogicVector3Builtin)
+            {
+                var vector = ((CustomLogicVector3Builtin)obj).Value;
+                return new JSONString("vector3:" + vector.x.ToString() + "," + vector.y.ToString() + "," + vector.z.ToString());
+            }
+            else if (obj is CustomLogicColorBuiltin)
+            {
+                var color = ((CustomLogicColorBuiltin)obj).Value;
+                return new JSONString("color:" + color.R.ToString() + "," + color.G.ToString() + "," + color.B.ToString() + "," + color.A.ToString());
+            }
+            else if (obj is CustomLogicQuaternionBuiltin)
+            {
+                var quat = ((CustomLogicQuaternionBuiltin)obj).Value;
+                return new JSONString("quaternion:" + quat.x.ToString() + "," + quat.y.ToString() + "," + quat.z.ToString() + "," + quat.w.ToString());
+            }
             else
-                throw new System.Exception("Saving invalid json type: only list, dict, and primitives allowed.");
+                throw new System.Exception("Saving invalid json type: only list, dict, structs, and primitives allowed, got " + obj.GetType().ToString());
         }
     }
 }

@@ -3,7 +3,7 @@ EditorVersion:1.0|Description:Castle Utgard.
 /// Objects
 Scene,Geometry/Cuboid,0,0,1,1,1,0,Unnamed,6.330092E-06,-25,0,0,0,0,2000,5,2000,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|500/500|0/0,;
 Scene,None,1,0,1,1,1,0,Daylight,0,0,0,53.13011,126.8699,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
-Scene,Arenas/Utgard1,2,0,1,1,1,0,Utgard1,6.822503,0,41.90918,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Arenas/Utgard2,2,0,1,1,1,0,Utgard2,6.822503,0,41.90918,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Interact/Supply1,3,0,1,1,1,0,Supply1,51.93851,-0.01415277,-4.668113,0,2,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Interact/Supply1,5,0,1,1,1,0,Supply1,-53.19624,-0.03237347,53.40306,0,272,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Interact/Supply1,6,0,1,1,1,0,Supply1,90.07314,155.7857,-82.20604,0,8.000001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;

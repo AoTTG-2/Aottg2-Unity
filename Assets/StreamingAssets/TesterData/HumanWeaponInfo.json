@@ -27,7 +27,7 @@
 		"Range": 25,
 		"Radius": 3,
 		"CD": 0.5,
-		"FireDelay": 0.1,
+		"FireDelay": 0.125,
 		"AmmoRound": 2,
 		"AmmoTotal": 18,
 		"DamageMultiplier": 0.7,

@@ -14,6 +14,9 @@ using MapEditor;
 using Utility;
 using UnityEngine.EventSystems;
 using System.Globalization;
+using CustomLogic;
+using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -151,20 +154,53 @@ namespace UI
                 ElementFactory.CreateInputSetting(SinglePanel, style, _offsetY, "Offset Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             }
             CreateHorizontalDivider(SinglePanel);
+
             for (int i = 0; i < _components.Count; i++)
             {
                 ElementFactory.CreateDefaultLabel(SinglePanel, style, _componentNames[i]);
-                foreach (string key in _components[i].Keys)
+                var settings = _components[i];
+                string description = CustomLogicManager.GetModeDescription(settings);
+                if (description != "")
+                    ElementFactory.CreateDefaultLabel(SinglePanel, style, description, alignment: TextAnchor.MiddleLeft);
+                var tooltips = new Dictionary<string, string>();
+                var dropboxes = new Dictionary<string, string[]>();
+                foreach (string key in settings.Keys)
                 {
-                    var setting = _components[i][key];
-                    if (setting is BoolSetting)
-                        ElementFactory.CreateToggleSetting(SinglePanel, style, setting, key, onValueChanged: () => OnChange());
+                    BaseSetting setting = settings[key];
+                    if (key.EndsWith("Tooltip") && setting is StringSetting)
+                        tooltips[key.Substring(0, key.Length - 7)] = ((StringSetting)setting).Value;
+                    else if (key.EndsWith("Dropbox") && setting is StringSetting)
+                    {
+                        List<string> options = new List<string>();
+                        foreach (string option in ((StringSetting)setting).Value.Split(','))
+                            options.Add(option.Trim());
+                        if (options.Count == 0)
+                            options.Add("None");
+                        dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
+                    }
+                }
+                foreach (string key in settings.Keys)
+                {
+                    var setting = settings[key];
+                    if (key == "Description")
+                        continue;
+                    if (key.EndsWith("Tooltip") && setting is StringSetting)
+                        continue;
+                    if (key.EndsWith("Dropbox") && setting is StringSetting)
+                        continue;
+                    string tooltip = "";
+                    if (tooltips.ContainsKey(key))
+                        tooltip = tooltips[key];
+                    if (dropboxes.ContainsKey(key) && setting is StringSetting)
+                        ElementFactory.CreateDropdownSetting(SinglePanel, style, setting, key, dropboxes[key], tooltip, elementWidth: 140f, elementHeight: 35f, onDropdownOptionSelect: () => OnChange());
+                    else if (setting is BoolSetting)
+                        ElementFactory.CreateToggleSetting(SinglePanel, style, setting, key, tooltip, onValueChanged: () => OnChange());
+                    else if (setting is StringSetting || setting is FloatSetting || setting is IntSetting)
+                        ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, tooltip, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                     else if (setting is ColorSetting)
                         ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, onChangeColor: () => OnChange());
                     else if (setting is Vector3Setting)
                         ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, onChangeVector: () => OnChange());
-                    else
-                        ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                 }
                 string name = "DeleteComponent" + i.ToString();
                 ElementFactory.CreateDefaultButton(SinglePanel, style, "Delete", onClick: () => OnButtonClick(name));
@@ -361,8 +397,14 @@ namespace UI
                 HashSet<string> parsedParameters = new HashSet<string>();
                 foreach (string key in settings.Keys)
                 {
-                    newParameters.Add(key + ":" + SerializeSetting(settings[key]));
                     parsedParameters.Add(key);
+                    if (key == "Description")
+                        continue;
+                    if (key.EndsWith("Tooltip") && settings[key] is StringSetting)
+                        continue;
+                    if (key.EndsWith("Dropbox") && settings[key] is StringSetting)
+                        continue;
+                    newParameters.Add(key + ":" + SerializeSetting(settings[key]));
                 }
                 if (oldComponentDict.ContainsKey(_componentNames[i]))
                 {

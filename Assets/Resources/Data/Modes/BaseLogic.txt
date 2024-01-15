@@ -1197,7 +1197,7 @@ component Cannon
     }
 }
 
-class Animal
+component Animal
 {
     Wanders = true;
     WanderRadius = 50.0;
