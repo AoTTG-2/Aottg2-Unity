@@ -1,3 +1,264 @@
+component DestructibleTrigger
+{
+    # Reference object #
+    FindTargetBy = "Name";
+    TargetValue = "0";
+
+    FindReplacementBy = "Name";
+    ReplacementValue = "0";
+
+    # Object has animation/effect/sound #
+    HasEffect = false;
+    Effect = "";
+    EffectScale = 1.0;
+
+    HasAnimation = false;
+    Animation = "";
+    AnimationDuration = 0.0;
+    AnimationFade = 0.0;
+
+    HasSound = false;
+    Sound = "";
+
+
+    # Modifiers #
+    Health = 100;
+    HasDamageCap = false;
+    DamageCap = 20;
+    RecoverAfterTime = false;
+    RecoverTime = 10.0;
+    RecoverTimeTooltip = "The amount of time it takes for this object to recover after being destroyed.";
+    
+    # Who can destroy this object #
+    AttacksThatCanDestroy = "";
+    AttacksThatCanDestroyTooltip = "Slash (/) separated list of attack names leave empty to support all attacks.";
+    TeamsThatCanDestroy = "";
+    TeamsThatCanDestroyTooltip = "Slash (/) separated list of team names leave empty to support all teams.";
+
+    # Private state #
+    _targets = List();
+    _replacements = List();
+    _attacksThatCanDestroy = List();
+    _teamsThatCanDestroy = List();
+
+    # Synced State #
+    _isDestroyed = false;
+    _isHostDestroyed = false;
+    _recoverTimeLeft = 0.0;
+    # Includes Health #
+
+
+    # Create generic framework for these types of objects #
+
+
+    function Init()
+    {
+        # Cache targets and replacements, enable targets, disable replacements#
+        self._targets = self.PopulateMapObjectList(self.TargetValue, self.FindTargetBy);
+        self._replacements = self.PopulateMapObjectList(self.ReplacementValue, self.FindReplacementBy);
+
+        # Setup state only if this trigger is active #
+        if (self.MapObject.Active)
+        {
+            self.SetState(self._targets, true);
+            self.SetState(self._replacements, false);
+        }
+        
+
+        # Parse out attacks into list, parse out teams into list #
+        if (self.AttacksThatCanDestroy != "")
+        {
+            self._attacksThatCanDestroy = String.Split(self.AttacksThatCanDestroy, "/");
+        }
+        if (self.TeamsThatCanDestroy != "")
+        {
+            self._teamsThatCanDestroy = String.Split(self.TeamsThatCanDestroy, "/");
+        }
+        
+    }
+
+    function PopulateMapObjectList(strList, method)
+    {
+        results = List();
+        target = null;
+        ssl = String.Split(strList, "/");
+        for (value in ssl)
+        {
+            if (method == "ID")
+            {
+                target = Map.FindMapObjectByID(Convert.ToInt(value));
+            }
+            elif (method == "Tag")
+            {
+                target = Map.FindMapObjectByTag(value);
+            }
+            elif (method == "Name")
+            {
+                target = Map.FindMapObjectByName(value);
+            }
+            else
+            {
+                target = null;
+            }
+
+            if (target != null)
+            {
+                results.Add(target);
+            }
+        }
+        return results;
+    }
+
+    function SetState(objectList, state)
+    {
+        for (obj in objectList)
+        {
+            obj.Active = state;
+        }
+    }
+
+    function NetworkSync(target)
+    {
+        # Send network message to all clients #
+        message = Dict();
+        message.Set("isDestroyed", self._isHostDestroyed);
+        message.Set("recoverTimeLeft", self._recoverTimeLeft);
+        message.Set("health", self.Health);
+        if (target == null)
+        {
+            self.NetworkView.SendMessageAll(Json.SaveToString(message));
+        }
+        else
+        {
+            self.NetworkView.SendMessage(target, Json.SaveToString(message));
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (sender != Network.MasterClient)
+        {
+            return;
+        }
+
+        # Receive network message from host #
+        data = Json.LoadFromString(message);
+        hostDestroyed = data.Get("isDestroyed");
+        self._recoverTimeLeft = data.Get("recoverTimeLeft");
+        self.Health = data.Get("health");
+
+        if (self._isDestroyed == false && hostDestroyed == true)
+        {
+            self.Destroy();
+        }
+        elif (self._isDestroyed == true && hostDestroyed == false)
+        {
+            self.Recover();
+        }
+    }
+
+    function OnPlayerJoin()
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+        # Send network message to new player #
+        self.NetworkSync(Network.MyPlayer);
+    }
+
+    coroutine AnimationDestroy()
+    {
+        wait self.AnimationDuration;
+        self.MapObject.Active = false;
+        self.SetState(self._targets, false);
+        self.SetState(self._replacements, true);
+        self._isDestroyed = true;
+    }
+
+    function Destroy()
+    {
+        Game.Print("Destroyed.");
+        # Spawn effect if exists #
+        if (self.HasEffect)
+        {
+            Game.SpawnEffect(self.Effect, self.MapObject.Position, self.MapObject.Rotation, self.EffectScale);
+        }
+
+        # Play sound if exists #
+        if (self.HasSound)
+        {
+            self.MapObject.Transform.PlaySound(self.Sound);
+        }
+
+        # Play animation if exists #
+        if (self.HasAnimation)
+        {
+            self.MapObject.Transform.PlayAnimation(self.Animation);
+            self.AnimationDestroy();
+            return;
+        }
+
+        # Disable target & self, enable replacement #
+
+        self.MapObject.Active = false;
+        self.SetState(self._targets, false);
+        self.SetState(self._replacements, true);
+        self._isDestroyed = true;
+    }
+
+    function Recover()
+    {
+        self.MapObject.Active = true;
+        self.SetState(self._targets, true);
+        self.SetState(self._replacements, false);
+        self._isDestroyed = false;
+    }
+
+
+    coroutine WaitTilRecovery()
+    {
+        wait self.RecoverTime;
+        self.Recover();
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(character.Team) == false)
+        {
+            Game.Print(self._teamsThatCanDestroy.Count);
+            return;
+        }
+        if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(name) == false)
+        {
+            Game.Print(self._attacksThatCanDestroy.Count);
+            return;
+        }
+
+        if (self.HasDamageCap)
+        {
+            damage = Math.Clamp(damage, 0, self.DamageCap);
+        }
+        self.Health = self.Health - Math.Clamp(damage, 0, self.DamageCap);
+
+        if (self.Health <= 0)
+        {
+            self._isHostDestroyed = true;
+            self._recoverTimeLeft = self.RecoverTime;
+            self.NetworkSync(null);
+            if (self.RecoverAfterTime == true)
+            {
+                self.WaitTilRecovery();
+            }
+        }
+    }
+}
+
 component CaptureZone
 {
     Enabled = false;

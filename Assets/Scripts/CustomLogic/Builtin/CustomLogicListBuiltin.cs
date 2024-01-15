@@ -54,6 +54,10 @@ namespace CustomLogic
                 List.Remove(parameters[0]);
                 return null;
             }
+            if (methodName == "Contains")
+            {
+                return List.Contains(parameters[0]);
+            }
             return base.CallMethod(methodName, parameters);
         }
 

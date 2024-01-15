@@ -117,7 +117,7 @@ namespace UI
                 elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             }
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideWith, "Collide With",
-                new string[] { MapObjectCollideWith.Entities, MapObjectCollideWith.Characters, MapObjectCollideWith.Projectiles,
+                new string[] { MapObjectCollideWith.Entities, MapObjectCollideWith.Characters, MapObjectCollideWith.Projectiles, MapObjectCollideWith.Hitboxes,
                     MapObjectCollideWith.MapObjects, MapObjectCollideWith.All}, elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _physicsMaterial, "Physics Material",
                             new string[] { MapObjectPhysicsMaterial.Default, MapObjectPhysicsMaterial.Ice }, elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
