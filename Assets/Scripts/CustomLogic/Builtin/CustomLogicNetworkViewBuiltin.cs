@@ -99,31 +99,35 @@ namespace CustomLogic
                         PhotonNetwork.Destroy(Sync.gameObject);
                     }
                 }
+                return null;
             }
-            else if (methodName == "SendMessage")
+            if (methodName == "SendMessage")
             {
                 var target = (CustomLogicPlayerBuiltin)parameters[0];
                 string msg = (string)parameters[1];
                 Sync.SendMessage(target.Player, msg);
-
+                return null;
             }
-            else if (methodName == "SendMessageAll")
+            if (methodName == "SendMessageAll")
             {
                 string msg = (string)parameters[0];
                 Sync.SendMessageAll(msg);
+                return null;
             }
-            else if (methodName == "SendMessageOthers")
+            if (methodName == "SendMessageOthers")
             {
                 string msg = (string)parameters[0];
                 Sync.SendMessageOthers(msg);
+                return null;
             }
-            else if (methodName == "SendStream")
+            if (methodName == "SendStream")
             {
                 var obj = parameters[0];
                 obj = SerializeStreamObj(obj);
                 _streamObjs.Add(obj);
+                return null;
             }
-            else if (methodName == "ReceiveStream")
+            if (methodName == "ReceiveStream")
             {
                 var obj = _streamObjs[0];
                 obj = DeserializeStreamObj(obj);

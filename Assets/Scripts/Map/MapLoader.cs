@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using Utility;
+using Weather;
 
 namespace Map
 {
@@ -22,6 +23,8 @@ namespace Map
         private static MapLoader _instance;
         public static int HighestObjectId;
         private static MapScriptBasicMaterial _invisibleMaterial;
+        public static List<string> Errors = new List<string>();
+        private static GameObject _background;
 
         public static void Init()
         {
@@ -45,8 +48,10 @@ namespace Map
             return HighestObjectId;
         }
 
-        public static void StartLoadObjects(List<MapScriptBaseObject> objects, bool editor = false)
+        public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, bool editor = false)
         {
+            Debug.Log(objects.Count);
+            Errors.Clear();
             _customMaterialCache.Clear();
             _defaultMaterialCache.Clear();
             _assetMaterialCache.Clear();
@@ -57,8 +62,33 @@ namespace Map
             _assetCache.Clear();
             Tags.Clear();
             HighestObjectId = 1;
-            _instance.StartCoroutine(_instance.LoadObjectsCoroutine(objects, editor));
+            /*
+            if (options != null)
+                LoadBackground(options.Background, options.BackgroundPosition, options.BackgroundRotation);
+            */
+            _instance.StartCoroutine(_instance.LoadObjectsCoroutine(customAssets, objects, editor));
         }
+
+        /*
+        public static void LoadBackground(string background, Vector3 position, Vector3 rotation)
+        {
+            if (_background != null)
+                Destroy(_background);
+            try
+            {
+                if (background == "None")
+                    return;
+                _background = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Map, "Background/Prefabs/" + background);
+                var center = _background.transform.Find("Center").localPosition;
+                _background.transform.position = position - center;
+                _background.transform.rotation = Quaternion.Euler(rotation);
+            }
+            catch
+            {
+                Debug.Log("Error loading map background: " + background);
+            }
+        }
+        */
 
         public static MapObject FindObjectFromCollider(Collider collider)
         {
@@ -149,8 +179,24 @@ namespace Map
             Destroy(mapObject.GameObject);
         }
 
-        private IEnumerator LoadObjectsCoroutine(List<MapScriptBaseObject> objects, bool editor)
+        private IEnumerator LoadObjectsCoroutine(List<string> customAssets, List<MapScriptBaseObject> objects, bool editor)
         {
+            foreach (string customAsset in customAssets)
+            {
+                string[] arr = customAsset.Split(',');
+                if (arr.Length == 0)
+                    continue;
+                string bundle = arr[0].Trim();
+                string url = string.Empty;
+                if (arr.Length > 1)
+                    url = arr[1].Trim();
+                yield return _instance.StartCoroutine(AssetBundleManager.LoadBundle(bundle, url, editor));
+                if (!AssetBundleManager.LoadedBundle(bundle))
+                {
+                    DebugConsole.Log("Failed to load bundle: " + customAsset, true);
+                    Errors.Add("Failed to load bundle: " + customAsset);
+                }
+            }
             int count = 0;
             foreach (MapScriptBaseObject obj in objects)
             {
@@ -193,12 +239,13 @@ namespace Map
                 string positionHash = ((int)(position.x / 1000f)).ToString() + "-" + ((int)(position.y / 1000f)).ToString() + "-" + ((int)(position.z / 1000f)).ToString();
                 foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
                 {
-                    if (filter.GetComponent<Renderer>().sharedMaterials.Length > 1)
+                    var renderer = filter.GetComponent<Renderer>();
+                    if (renderer == null || renderer.sharedMaterials.Length > 1)
                         continue;
                     string hash = filter.sharedMesh.GetHashCode().ToString();
                     hash += positionHash;
-                    if (filter.GetComponent<Renderer>().enabled)
-                        hash += filter.GetComponent<Renderer>().sharedMaterial.GetHashCode().ToString();
+                    if (renderer.enabled)
+                        hash += renderer.sharedMaterial.GetHashCode().ToString();
                     else
                         hash += "disabled";
                     if (!hashCounts.ContainsKey(hash))
@@ -261,11 +308,9 @@ namespace Map
         {
             GameObject go;
             if (obj.Asset == "None")
-            {
                 go = new GameObject();
-            }
             else
-                go = (GameObject)Instantiate(LoadPrefabCached(obj.Asset));
+                go = LoadPrefabCached(obj.Asset);
             if (editor)
                 SetPhysics(go, MapObjectCollideMode.Physical, MapObjectCollideWith.MapEditor, obj.PhysicsMaterial);
             else
@@ -311,7 +356,8 @@ namespace Map
             if (!visible && editor)
             {
                 visible = true;
-                material = _invisibleMaterial;
+                if (!asset.Contains("Editor"))
+                    material = _invisibleMaterial;
             }
             foreach (var r in allRenderers)
             {
@@ -323,12 +369,11 @@ namespace Map
                 var assetMats = new List<Material>();
                 foreach (Renderer renderer in renderers)
                 {
-                    renderer.material.color = Color.white;
                     assetMats.Add(renderer.material);
                 }
                 _assetMaterialCache.Add(asset, assetMats);
             }
-            if (material.Shader == MapObjectShader.Default.ToString())
+            if (material.Shader == MapObjectShader.Default || material.Shader == MapObjectShader.DefaultNoTint)
             {
                 string materialHash = asset + material.Serialize();
                 if (!_defaultMaterialCache.ContainsKey(materialHash))
@@ -338,7 +383,8 @@ namespace Map
                     foreach (var assetMat in assetMats)
                     {
                         var mat = new Material(assetMat);
-                        mat.color = material.Color.ToColor();
+                        if (material.Shader != MapObjectShader.DefaultNoTint)
+                            mat.color = material.Color.ToColor();
                         defaultMats.Add(mat);
                     }
                     _defaultMaterialCache.Add(materialHash, defaultMats);
@@ -362,7 +408,7 @@ namespace Map
                     {
                         var legacy = (MapScriptLegacyMaterial)material;
                         mat = (Material)Instantiate(LoadAssetCached("Map/Legacy/Materials", legacy.Shader));
-                        mat.color = legacy.Color.ToColor();
+                        mat.SetColor("_TintColor", legacy.Color.ToColor());
                         mat.mainTextureScale = new Vector2(legacy.Tiling.x, legacy.Tiling.y);
                     }
                     else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(material.GetType()))
@@ -464,22 +510,41 @@ namespace Map
             return _assetCache[name];
         }
 
-        private static Object LoadPrefabCached(string asset)
+        private static GameObject LoadPrefabCached(string asset)
         {
-            if (!_assetCache.ContainsKey(asset))
+            try
             {
-                string[] strArr = asset.Split("/");
-                _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
+                if (!_assetCache.ContainsKey(asset))
+                {
+                    string[] strArr = asset.Split("/");
+                    if (strArr[0] == "Custom")
+                    {
+                        string bundleName = strArr[1];
+                        int length = bundleName.Length + 8;
+                        string name = asset.Substring(length);
+                        _assetCache.Add(asset, AssetBundleManager.LoadAsset(bundleName, name));
+                    }
+                    else
+                        _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
+                    if (asset == "Arenas/CaveMap1")
+                        WeatherManager.EnableCaveMap();
+                }
+                return (GameObject)Instantiate(_assetCache[asset]);
             }
-            return _assetCache[asset];
+            catch (System.Exception e)
+            {
+                DebugConsole.Log("Failed to load asset: " + asset + ", " + e.Message, true);
+                Errors.Add("Failed to load asset: " + asset + ", " + e.Message);
+                return new GameObject();
+            }
         }
-
-
     }
 
     static class MapObjectShader
     {
         public static string Default = "Default";
+        public static string DefaultNoTint = "DefaultNoTint";
+        // public static string Background = "Background";
         public static string Basic = "Basic";
         public static string Transparent = "Transparent";
         public static string Reflective = "Reflective";

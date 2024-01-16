@@ -129,6 +129,7 @@ namespace UI
                 case "Back":
                     if (SceneLoader.SceneName == SceneName.InGame)
                     {
+                        ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
                         HideNoDisconnect();
                     }
                     else if (IsMultiplayer)

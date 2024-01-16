@@ -18,8 +18,8 @@ namespace Projectiles
     class BladeThrowProjectile : BaseProjectile
     {
         protected override float DestroyDelay => 1.5f;
-        //protected XWeaponTrail _trail1;
         protected Transform _blade;
+        protected GameObject _model;
         private MeleeWeaponTrail WeaponTrail;
         public Vector3 InitialPlayerVelocity;
 
@@ -27,20 +27,23 @@ namespace Projectiles
         {
             base.Awake();
             _blade = transform.Find("Blade");
+            _model = _blade.Find("Model").gameObject;
             WeaponTrail = GetComponentInChildren<MeleeWeaponTrail>();
-
             if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
-            {
                 WeaponTrail.Emit = true;
-            }
             else
-            {
                 WeaponTrail.Emit = false;
-            }
         }
+
+        protected void Start()
+        {
+            if (_owner != null && _owner is Human && _owner.IsMine())
+                WeaponTrail.SetMaterial(((Human)_owner).Setup.LeftTrail._material);
+        }
+
         protected override void RegisterObjects()
         {
-            _hideObjects.Add(_blade.gameObject);
+            _hideObjects.Add(_model);
         }
 
         [PunRPC]
@@ -51,8 +54,6 @@ namespace Projectiles
             if (info.Sender != photonView.Owner)
                 return;
             base.DisableRPC(info);
-
-            //_trail1.Deactivate();
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -114,15 +115,12 @@ namespace Projectiles
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
                     {
-                        if (collider == titan.BaseTitanCache.NapeHurtbox || !(titan is BasicTitan) || !((BasicTitan)titan).IsCrawler)
+                        EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
+                        if (_owner == null || !(_owner is Human))
+                            titan.GetHit("Blade", 100, "BladeThrow", collider.name);
+                        else
                         {
-                            EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
-                            if (_owner == null || !(_owner is Human))
-                                titan.GetHit("Blade", 100, "BladeThrow", collider.name);
-                            else
-                            {
-                                titan.GetHit(_owner, damage, "BladeThrow", collider.name);
-                            }
+                            titan.GetHit(_owner, damage, "BladeThrow", collider.name);
                         }
                     }
                 }
@@ -159,27 +157,15 @@ namespace Projectiles
             return Vector3.Angle(-nape.forward, direction) < CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat;
         }
 
-        void OnDestroy()
-        {
-            //_trail1.Deactivate();
-        }
-
         protected override void Update()
         {
             base.Update();
             if (!Disabled)
             {
-                //_trail1.update();
                 float speed = Mathf.Max(GetComponent<Rigidbody>().velocity.magnitude, 80f);
                 float rotateSpeed = 1600f * speed;
                 _blade.RotateAround(_blade.position, _blade.right, Time.deltaTime * rotateSpeed);
             }
-        }
-
-        protected void LateUpdate()
-        {
-            //   if (!Disabled)
-            //      _trail1.lateUpdate();
         }
     }
 }

@@ -23,6 +23,7 @@ namespace ApplicationManagers
         public float _deathSongTimeLeft;
         private List<string> _customPlaylist = new List<string>();
         private string _currentSongName;
+        public static bool _muted = false;
 
         public static void Init()
         {
@@ -104,7 +105,7 @@ namespace ApplicationManagers
                     volume = songInfo["Volume"];
                     _instance._currentSongName = songInfo["Name"];
                 }
-               else
+                else
                 {
                     var playlist = _musicInfo[(string)songInfo["Playlist"]];
                     songInfo = playlist[Random.Range(0, playlist.Count)];
@@ -217,7 +218,7 @@ namespace ApplicationManagers
 
         private static float GetMusicVolume()
         {
-            return SettingsManager.SoundSettings.Music.Value * 0.4f;
+            return !_muted ? SettingsManager.SoundSettings.Music.Value * 0.4f : 0;
         }
 
         public static string GetCurrentSong()

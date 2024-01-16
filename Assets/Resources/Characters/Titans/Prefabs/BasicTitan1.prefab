@@ -1067,7 +1067,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 461760}
-  - component: {fileID: 13761906}
+  - component: {fileID: 600333617594413967}
+  - component: {fileID: 4597603700353871269}
   m_Layer: 0
   m_Name: Eyes
   m_TagString: Untagged
@@ -1083,15 +1084,23 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161760}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: -0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5269477, y: 3.5269477, z: 3.5269477}
+  m_LocalRotation: {x: -0.65486526, y: 0.00000016605104, z: 0.00000016307385, w: 0.7557456}
+  m_LocalPosition: {x: 0, y: -0.8478085, z: -0.12256465}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 461892}
+  m_Father: {fileID: 461844}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &13761906
-SkinnedMeshRenderer:
+--- !u!33 &600333617594413967
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161760}
+  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
+--- !u!23 &4597603700353871269
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1103,9 +1112,9 @@ SkinnedMeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
+  m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -1131,73 +1140,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
-  m_Bones:
-  - {fileID: 461876}
-  - {fileID: 461902}
-  - {fileID: 461742}
-  - {fileID: 461862}
-  - {fileID: 461796}
-  - {fileID: 461752}
-  - {fileID: 461764}
-  - {fileID: 461854}
-  - {fileID: 461750}
-  - {fileID: 461896}
-  - {fileID: 461770}
-  - {fileID: 461852}
-  - {fileID: 461792}
-  - {fileID: 461908}
-  - {fileID: 461730}
-  - {fileID: 461794}
-  - {fileID: 461724}
-  - {fileID: 461734}
-  - {fileID: 461844}
-  - {fileID: 461758}
-  - {fileID: 461870}
-  - {fileID: 461728}
-  - {fileID: 461788}
-  - {fileID: 461906}
-  - {fileID: 461802}
-  - {fileID: 461850}
-  - {fileID: 461720}
-  - {fileID: 461838}
-  - {fileID: 461732}
-  - {fileID: 461846}
-  - {fileID: 461718}
-  - {fileID: 461888}
-  - {fileID: 461772}
-  - {fileID: 461836}
-  - {fileID: 461812}
-  - {fileID: 461858}
-  - {fileID: 461784}
-  - {fileID: 461856}
-  - {fileID: 461834}
-  - {fileID: 461878}
-  - {fileID: 461882}
-  - {fileID: 461744}
-  - {fileID: 461806}
-  - {fileID: 461898}
-  - {fileID: 461824}
-  - {fileID: 461832}
-  - {fileID: 461726}
-  - {fileID: 461814}
-  - {fileID: 461808}
-  - {fileID: 461886}
-  - {fileID: 461830}
-  - {fileID: 461800}
-  - {fileID: 461798}
-  - {fileID: 461738}
-  - {fileID: 461780}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 461876}
-  m_AABB:
-    m_Center: {x: 0, y: 0.8, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1.6}
-  m_DirtyAABB: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &161762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2788,6 +2731,7 @@ Transform:
   - {fileID: 461758}
   - {fileID: 461756}
   - {fileID: 461762}
+  - {fileID: 461760}
   m_Father: {fileID: 461734}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &13661894
@@ -3702,7 +3646,6 @@ Transform:
   m_Children:
   - {fileID: 461786}
   - {fileID: 461840}
-  - {fileID: 461760}
   - {fileID: 461722}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3766,8 +3709,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
@@ -3884,6 +3830,10 @@ Animation:
   - {fileID: 7400076, guid: 056cd774712b3754681273ce67486508, type: 3}
   - {fileID: 7400106, guid: 056cd774712b3754681273ce67486508, type: 3}
   - {fileID: 7400108, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: -3687195750689487829, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: 4891686405347437855, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: -1549092288650665466, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: 3374593250629531405, guid: 056cd774712b3754681273ce67486508, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

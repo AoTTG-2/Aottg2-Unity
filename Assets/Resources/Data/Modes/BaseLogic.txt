@@ -1,3 +1,459 @@
+component CaptureZone
+{
+    Enabled = false;
+    AICanCapture = false;
+    HumanCanCapture = true;
+    ShifterCanCapture = true;
+    TitanCanCapture = true;
+    TeamsCanCapture = true;
+    CaptureTime = 10.0;
+    VisibilityRange = 80.0;
+
+    
+    # States: Captured, Capturing, Contested #
+    _state = "Captured";
+    _currentOwner = "null";
+    _currentCapturer = "null";
+    _captureProgress = 0.0;
+    _teamsInZone = Dict();
+
+    # Team Colors #
+    _humanColor = Color(255, 255, 62, 80);
+    _shifterColor = Color(115, 222, 255, 80);
+    _titanColor = Color(70, 80, 125, 80);
+    _neutralColor = Color(255, 255, 255, 80);
+    _teamBlueColor = Color(0, 0, 255, 80);
+    _teamRedColor = Color(255, 0, 0, 80);
+    _unknownTeamColor = Color(0, 0, 0, 80);
+    _teamToColor = Dict();
+
+    # State Colors #
+    _contestedColor = Color(255, 0, 0, 255);
+
+
+    function Init()
+    {
+        self._teamToColor = Dict();
+        self._teamToColor.Set("Human", self._humanColor);
+        self._teamToColor.Set("Shifter", self._shifterColor);
+        self._teamToColor.Set("Titan", self._titanColor);
+        self._teamToColor.Set("Neutral", self._neutralColor);
+        self._teamToColor.Set("null", self._neutralColor);
+        self._teamToColor.Set("Blue", self._teamBlueColor);
+        self._teamToColor.Set("Red", self._teamRedColor);
+        self._teamToColor.Set("Unknown", self._unknownTeamColor);
+    }
+
+    # GameObject Helpers #
+    function GetTeamColor(team)
+    {
+		if (self._teamToColor.Contains(team))
+		{
+			return self._teamToColor.Get(team);
+		}
+		return self._unknownTeamColor;
+	}
+
+    function ChangeColor()
+    {
+        if (self._state == "Captured")
+		{
+			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+		}
+		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
+		{
+			captureColor = self.GetTeamColor(self._currentCapturer);
+            ownerColor = self.GetTeamColor(self._currentOwner);
+            self.MapObject.Color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
+		}
+		else
+		{
+			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+		}
+	}
+
+    # Modify local state #
+    function OnNetworkMessage(sender, message)
+    {
+        if (sender != Network.MasterClient)
+        {
+            return;
+        }
+
+        # Message will be state, owner, capturer, and progress #
+        data = Json.LoadFromString(message);
+
+        self._state = data.Get("state");
+        self._currentOwner = data.Get("owner");
+        self._currentCapturer = data.Get("capturer");
+        self._captureProgress = data.Get("progress");
+        self.Enabled = data.Get("enabled");
+
+        self.ChangeColor();
+    }
+
+    function NetworkSync(state, owner, capturer, progress, Enabled)
+    {
+        message = Dict();
+        message.Set("state", state);
+        message.Set("owner", owner);
+        message.Set("capturer", capturer);
+        message.Set("progress", progress);
+        message.Set("enabled", Enabled);
+        self.ChangeColor();
+        self.NetworkView.SendMessageOthers(Json.SaveToString(message));
+    }
+
+    function HandleStateTransition()
+    {
+        if (self._state == "Captured")
+        {
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentOwner) == false)
+            {
+                self._state = "Capturing";
+                self._currentCapturer = self._teamsInZone.Keys.Get(0);
+                self._captureProgress = 0.0;
+            }
+            elif (self._teamsInZone.Count > 1)
+            {
+                self._state = "Contested";
+                self._currentCapturer = "null";
+                self._captureProgress = 0.0;
+            }
+        }
+        elif (self._state == "Capturing")
+        {
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentCapturer))
+            {
+                self._captureProgress = self._captureProgress + 1.0;
+                if (self._captureProgress >= self.CaptureTime)
+                {
+                    self._state = "Captured";
+                    self._currentOwner = self._currentCapturer;
+                    self._currentCapturer = "null";
+                    self._captureProgress = 0.0;
+                }
+            }
+            elif (self._teamsInZone.Count > 1)
+            {
+                self._state = "Contested";
+            }
+            elif (self._teamsInZone.Contains(self._currentCapturer) == false)
+            {
+                self._captureProgress = self._captureProgress - 1.0;
+                if (self._captureProgress <= 0.0)
+                {
+                    self._state = "Captured";
+                    self._currentCapturer = "null";
+                    self._captureProgress = 0.0;
+                }
+            }
+        }
+        elif (self._state == "Contested")
+        {
+            if (self._teamsInZone.Count < 2 && self._currentCapturer == "null")
+            {
+                self._state = "Captured";
+            }
+            elif (self._teamsInZone.Count < 2 && self._currentCapturer != "null")
+            {
+                self._state = "Capturing";
+            }
+        }
+    }
+
+    function OnSecond()
+    {
+        if (self.Enabled == false)
+        {
+            return;
+        }
+
+        if (Network.IsMasterClient == false)
+		{
+			return;
+		}
+
+        self.HandleStateTransition();
+
+        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
+    }
+
+    # UI Helpers #
+    function GetTeamHex(team)
+    {
+        color = self.GetTeamColor(team);
+        teamColor = Color(color.R, color.G, color.B, 255);
+        return "#" + teamColor.ToHexString();
+    }
+
+    function OnTick()
+    {
+        if (self.Enabled == false)
+		{
+			return;
+		}
+
+        if (Network.MyPlayer.Character == null)
+		{
+            UI.SetLabel("TopCenter", "");
+			return;
+		}
+
+        difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
+        if (difference.Magnitude > self.VisibilityRange)
+        {
+            UI.SetLabel("TopCenter", "");
+            return;
+		}
+
+        owner = self._currentOwner;
+        if (owner == "null")
+        {
+            owner = "Neutral";
+        }
+        owner = UI.WrapStyleTag(owner, "color", self.GetTeamHex(owner));
+
+        progress = Convert.ToInt((self._captureProgress / self.CaptureTime) * 100);
+        progressString = Convert.ToString(progress) + "%";
+
+        message = "";
+
+        if (self._state == "Capturing")
+        {
+            capturer = UI.WrapStyleTag(self._currentCapturer, "color", self.GetTeamHex(self._currentCapturer));
+            message = capturer + " Capturing Point " + owner + " (" + progressString + ")";
+            message = UI.WrapStyleTag(message, "size", "30");
+        }
+        elif (self._state == "Captured")
+        {
+            message = owner + "'s Point";
+            message = UI.WrapStyleTag(message, "size", "30");
+        }
+        elif (self._state == "Contested")
+		{
+            if (self._currentCapturer == "null")
+            {
+                message = owner + " Contested";
+			    message = UI.WrapStyleTag(message, "color", self._contestedColor.ToHexString());
+			    message = UI.WrapStyleTag(message, "size", "30");
+            }
+            else
+            {
+                capturer = UI.WrapStyleTag(self._currentCapturer, "color", self.GetTeamHex(self._currentCapturer));
+                message = owner + " Contested by " + capturer;
+                message = UI.WrapStyleTag(message, "color", self._contestedColor.ToHexString());
+                message = message + " (" + progressString + ")";
+                message = UI.WrapStyleTag(message, "size", "30");
+            }
+		}
+        UI.SetLabel("TopCenter", String.Newline + message);
+    }
+
+    function ListContains(list, target)
+    {
+        for (item in list)
+		{
+			if (item == target)
+			{
+				return true;
+			}
+		}
+        return false;
+    }
+
+    function AddTeamPlayer(player)
+    {
+        if (self._teamsInZone.Contains(player.Team) == false)
+        {
+            self._teamsInZone.Set(player.Team, List());
+        }
+        value = self._teamsInZone.Get(player.Team);
+        if (self.ListContains(value, player) == false)
+		{
+            value.Add(player);
+            self._teamsInZone.Set(player.Team, value);
+        }
+    }
+
+    function RemoveTeamPlayer(player)
+    {
+        if (self._teamsInZone.Contains(player.Team) == false)
+        {
+            return;
+        }
+        value = self._teamsInZone.Get(player.Team);
+        if (self.ListContains(value, player))
+        {
+            value.Remove(player);
+        }
+        if (value.Count == 0)
+        {
+            self._teamsInZone.Remove(player.Team);
+		}
+		else
+		{
+			self._teamsInZone.Set(player.Team, value);
+        }
+    }
+
+    # Handle active player logic #
+    function OnCollisionEnter(other)
+    {
+        # Ignore non-characters and only let host handle collisions #
+        if (other.IsCharacter == false || Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human" && self.HumanCanCapture)
+        {
+            if (other.Team != "Human" && self.TeamsCanCapture)
+            {
+                self.AddTeamPlayer(other);
+            }
+            elif (other.Team == "Human")
+            {
+                self.AddTeamPlayer(other);
+            }
+        }
+        elif (other.Type == "Shifter" && self.ShifterCanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && self.AICanCapture)
+        {
+            self.AddTeamPlayer(other);
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        # Ignore non-characters and only let host handle collisions #
+        if (other.IsCharacter == false || Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human" && self.HumanCanCapture)
+        {
+            if (other.Team != "Human" && self.TeamsCanCapture)
+            {
+                self.RemoveTeamPlayer(other);
+            }
+            elif (other.Team == "Human")
+            {
+                self.RemoveTeamPlayer(other);
+            }
+        }
+        elif (other.Type == "Shifter" && self.ShifterCanCapture)
+        {
+            self.RemoveTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture) # Resolve bug here, main character is not the only pt anymore #
+        {
+            self.RemoveTeamPlayer(other);
+        }
+        elif (other.Type == "Titan" && self.AICanCapture)
+        {
+            self.RemoveTeamPlayer(other);
+        }
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        self.RemoveTeamPlayer(character);
+    }
+
+    function OnCharacterLeave(player)
+    {
+        self.RemoveTeamPlayer(player.Character);
+    }
+}
+
+
+component Bell
+{
+    ResetDelay = 0.3;
+    LureTitans = false;
+    LureRadius = 100;
+    LureDuration = 5;
+    VelocityHitThreshold = 30;
+    _currentResetTime = 0.0;
+    _soundTransform = null;
+
+    function Init()
+    {
+        self._soundTransform = self.MapObject.GetTransform("BellHitSound");
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 3.0, 0), Vector3(5.3, 6, 5.3));
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "hit" && self._currentResetTime <= 0 && self._soundTransform != null)
+        {
+            self._soundTransform.StopSound();
+            self._soundTransform.PlaySound();
+            self._currentResetTime = self.ResetDelay;
+        }
+    }
+
+    function OnTick()
+    {
+        self._currentResetTime = self._currentResetTime - Time.TickTime;
+        if (self._currentResetTime < 0) {
+            self._currentResetTime = 0;
+        }
+    }
+
+    function HandleHit(character)
+    {
+        # Only apply this once in multiplayer, others will send you the networked event #
+        if (character.IsMine == false)
+        {
+            return;
+        }
+
+        if (character.Velocity.Magnitude > self.VelocityHitThreshold)
+        {
+            if (self.LureTitans)
+            {
+                for (titan in Game.Titans)
+                {
+                    difference = titan.Position - self.MapObject.Position;
+                    if (difference.Magnitude < self.LureRadius) {
+                        titan.Target(character, self.LureDuration);
+                    }
+                }
+            }
+            self.NetworkView.SendMessageAll("hit");
+        }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        if (self._currentResetTime > 0 || character.IsMine == false)
+        {
+            return;
+        }
+        self.HandleHit(character);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self._currentResetTime > 0 || other.IsCharacter == false)
+        {
+            return;
+        }
+
+        self.HandleHit(other);
+    }
+}
+
 component SupplyStation
 {
     UnlimitedRefills = true;
@@ -15,7 +471,10 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine && (self.UnlimitedRefills || self._refillsLeft > 0))
         {
             self._currentHuman = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+            if (!other.AutoRefillGas)
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+            }
         }
     }
 
@@ -23,7 +482,7 @@ component SupplyStation
     {
         if (self._currentHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact") && self._currentHuman.Refill(true))
+            if ((self._currentHuman.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHuman.Refill(true))
             {
                 self._currentHuman = null;
                 self._refillsLeft = self._refillsLeft - 1;
@@ -186,6 +645,13 @@ component MovePingPong
             self.StartPosition = self.MapObject.Position + self.StartPosition;
             self.EndPosition = self.MapObject.Position + self.EndPosition;
         }
+
+        distance = Vector3.Distance(self.StartPosition, self.EndPosition);
+        self._step = 1.0;
+        if (distance > 0)
+        {
+            self._step = self.Speed / distance;
+        }
     }
 
     function OnTick()
@@ -197,7 +663,7 @@ component MovePingPong
         }
         if (self._backwards)
         {
-            self._currentProgress = self._currentProgress - Time.TickTime;
+            self._currentProgress = self._currentProgress - Time.TickTime * self._step;
             if (self._currentProgress <= 0.0)
             {
                 self._currentProgress = 0.0;
@@ -208,7 +674,7 @@ component MovePingPong
         }
         else
         {
-            self._currentProgress = self._currentProgress + Time.TickTime;
+            self._currentProgress = self._currentProgress + Time.TickTime * self._step;
             if (self._currentProgress >= 1.0)
             {
                 self._currentProgress = 1.0;
@@ -575,7 +1041,6 @@ component Cannon
     UnlimitedAmmo = true;
     MaxAmmo = 0;
     Cooldown = 3.0;
-    IsGround = true;
     _rotateSpeed = 20;
     _ballSpeed = 300.0;
     _barrel = null;
@@ -663,30 +1128,15 @@ component Cannon
             {
                 baseRotation.Y = baseRotation.Y + self._rotateSpeed * Time.FrameTime;
             }
-            if (self.IsGround)
+            if (Input.GetKeyHold("General/Forward"))
             {
-                if (Input.GetKeyHold("General/Forward"))
-                {
-                    barrelRotation.Z = barrelRotation.Z + self._rotateSpeed * Time.FrameTime;
-                }
-                elif (Input.GetKeyHold("General/Back"))
-                {
-                    barrelRotation.Z = barrelRotation.Z - self._rotateSpeed * Time.FrameTime;
-                }
-                barrelRotation.Z = Math.Clamp(barrelRotation.Z, 80.0, 110.0);
+                barrelRotation.X = barrelRotation.X - self._rotateSpeed * Time.FrameTime;
             }
-            else
+            elif (Input.GetKeyHold("General/Back"))
             {
-                if (Input.GetKeyHold("General/Forward"))
-                {
-                    barrelRotation.X = barrelRotation.X - self._rotateSpeed * Time.FrameTime;
-                }
-                elif (Input.GetKeyHold("General/Back"))
-                {
-                    barrelRotation.X = barrelRotation.X + self._rotateSpeed * Time.FrameTime;
-                }
-                barrelRotation.X = Math.Clamp(barrelRotation.X, 230.0, 300.0);
+                barrelRotation.X = barrelRotation.X + self._rotateSpeed * Time.FrameTime;
             }
+            barrelRotation.X = Math.Clamp(barrelRotation.X, -45.0, 45.0);
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
             if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
@@ -732,14 +1182,7 @@ component Cannon
 
     function ResetBarrel()
     {
-        if (self.IsGround)
-        {
-            self._barrel.LocalRotation = Vector3(0, -90, 90);
-        }
-        else
-        {
-            self._barrel.LocalRotation = Vector3(270, 0, 0);
-        }
+        self._barrel.LocalRotation = Vector3(0, 0, 0);
     }
 
     function Fire()
@@ -747,14 +1190,14 @@ component Cannon
         self._cooldownLeft = self.Cooldown;
         if (self._human != null)
         {
-            Game.SpawnEffect("Boom2", self._barrelEnd.Position, self._barrelEnd.Rotation, 0.5);
-            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Up.Normalized * -1.0 * self._ballSpeed, 
+            Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
+            Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed, 
             Vector3(0, -20, 0), 2.0, self._human);
         }
     }
 }
 
-class Animal
+component Animal
 {
     Wanders = true;
     WanderRadius = 50.0;
@@ -814,21 +1257,23 @@ class Animal
             }
             else
             {
-                self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+                if (self._targetRotation != Vector3.Zero)
+                {
+                    self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+                }
                 self._rigidbody.SetVelocity(self.MapObject.Forward * self.WanderSpeed);
             }
         }
         elif (self._state == "Returning")
         {
-            self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+            if (self._targetRotation != Vector3.Zero)
+            {
+                self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._targetRotation, 5.0 * Time.FrameTime);
+            }
             self._rigidbody.SetVelocity(self.MapObject.Forward * self.WanderSpeed);
         }
         else
         {
-            targetRotation = self.MapObject.Rotation;
-            targetRotation.x = 0.0;
-            targetRotation.z = 0.0;
-            self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, targetRotation, 5.0 * Time.FrameTime);
             self._rigidbody.SetVelocity(Vector3.Up * self._rigidbody.GetVelocity().Y);
         }
         if (self._stateTimeLeft <= 0.0)
@@ -891,6 +1336,41 @@ class Animal
         else
         {
             self._targetRotation = Vector3(Random.RandomFloat(-1.0, 1.0), 0, Random.RandomFloat(-1.0, 1.0)).Normalized;
+        }
+    }
+}
+
+component TitanBarrier
+{
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Titan")
+        {
+            Rotation = Vector3.GetRotationDirection(Vector3(self.MapObject.Position.X, other.Position.Y, self.MapObject.Position.Z), other.Position);
+            if (Math.Abs(Rotation.X) > Math.Abs(Rotation.Z))
+            {
+                if (Rotation.X > 0)
+                {
+                    other.Position = Vector3(other.Position.X + (0.05 +0.02 * Math.Abs(other.Velocity.X)), other.Position.Y, other.Position.Z);
+                }
+                else
+                {
+                    other.Position = Vector3(other.Position.X - (0.05 + 0.02 * Math.Abs(other.Velocity.X)), other.Position.Y, other.Position.Z);
+                }
+            }
+
+            if (Math.Abs(Rotation.Z) > Math.Abs(Rotation.X))
+            {
+                if (Rotation.Z > 0)
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y, other.Position.Z + (0.05 + 0.02 * Math.Abs(other.Velocity.Z)));
+                }
+                else
+                {
+                    other.Position = Vector3(other.Position.X, other.Position.Y, other.Position.Z - (0.05 + 0.02 * Math.Abs(other.Velocity.Z)));
+                }
+            }
         }
     }
 }

@@ -143,7 +143,6 @@ Transform:
   m_Children:
   - {fileID: 401012}
   - {fileID: 401014}
-  - {fileID: 401016}
   - {fileID: 401018}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -207,8 +206,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
@@ -325,6 +327,10 @@ Animation:
   - {fileID: 7400076, guid: 056cd774712b3754681273ce67486508, type: 3}
   - {fileID: 7400106, guid: 056cd774712b3754681273ce67486508, type: 3}
   - {fileID: 7400108, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: -3687195750689487829, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: 4891686405347437855, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: -1549092288650665466, guid: 056cd774712b3754681273ce67486508, type: 3}
+  - {fileID: 3374593250629531405, guid: 056cd774712b3754681273ce67486508, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -575,7 +581,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 401016}
-  - component: {fileID: 13701008}
+  - component: {fileID: 3438143926194717424}
+  - component: {fileID: 7881999612703960045}
   m_Layer: 0
   m_Name: Eyes
   m_TagString: Untagged
@@ -591,15 +598,23 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101016}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: -0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5269477, y: 3.5269477, z: 3.5269477}
+  m_LocalRotation: {x: -0.6667179, y: -0.00000009076996, z: -0.000000081144066, w: 0.7453102}
+  m_LocalPosition: {x: 0, y: -0.85176235, z: -0.091835536}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 401010}
+  m_Father: {fileID: 401056}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &13701008
-SkinnedMeshRenderer:
+--- !u!33 &3438143926194717424
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101016}
+  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
+--- !u!23 &7881999612703960045
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -611,9 +626,9 @@ SkinnedMeshRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 3
+  m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -639,73 +654,7 @@ SkinnedMeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  serializedVersion: 2
-  m_Quality: 0
-  m_UpdateWhenOffscreen: 0
-  m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 056cd774712b3754681273ce67486508, type: 3}
-  m_Bones:
-  - {fileID: 401020}
-  - {fileID: 401028}
-  - {fileID: 401136}
-  - {fileID: 401140}
-  - {fileID: 401142}
-  - {fileID: 401144}
-  - {fileID: 401138}
-  - {fileID: 401026}
-  - {fileID: 401122}
-  - {fileID: 401126}
-  - {fileID: 401128}
-  - {fileID: 401130}
-  - {fileID: 401124}
-  - {fileID: 401024}
-  - {fileID: 401040}
-  - {fileID: 401042}
-  - {fileID: 401048}
-  - {fileID: 401050}
-  - {fileID: 401056}
-  - {fileID: 401058}
-  - {fileID: 401052}
-  - {fileID: 401062}
-  - {fileID: 401064}
-  - {fileID: 401066}
-  - {fileID: 401068}
-  - {fileID: 401072}
-  - {fileID: 401074}
-  - {fileID: 401070}
-  - {fileID: 401078}
-  - {fileID: 401080}
-  - {fileID: 401054}
-  - {fileID: 401084}
-  - {fileID: 401086}
-  - {fileID: 401088}
-  - {fileID: 401090}
-  - {fileID: 401094}
-  - {fileID: 401096}
-  - {fileID: 401092}
-  - {fileID: 401100}
-  - {fileID: 401102}
-  - {fileID: 401044}
-  - {fileID: 401106}
-  - {fileID: 401108}
-  - {fileID: 401110}
-  - {fileID: 401046}
-  - {fileID: 401114}
-  - {fileID: 401116}
-  - {fileID: 401118}
-  - {fileID: 401034}
-  - {fileID: 401154}
-  - {fileID: 401036}
-  - {fileID: 401158}
-  - {fileID: 401030}
-  - {fileID: 401032}
-  - {fileID: 401022}
-  m_BlendShapeWeights: []
-  m_RootBone: {fileID: 401020}
-  m_AABB:
-    m_Center: {x: 0, y: 0.8, z: 0}
-    m_Extent: {x: 1, y: 1, z: 1.6}
-  m_DirtyAABB: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &101018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,7 +1104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101034}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08150256, y: -0.0000003676031, z: 0.0000000066557138, w: 0.99667317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0000000010102652, y: 0.3273632, z: 0.00411616}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1212,7 +1161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101036}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.023003606, y: -2.017941e-12, z: -0.000000005601476, w: 0.9997354}
   m_LocalPosition: {x: -0.0000004269274, y: 0.024097446, z: -0.0000007528157}
   m_LocalScale: {x: 1, y: 1, z: 0.99999994}
   m_ConstrainProportionsScale: 0
@@ -1220,8 +1169,9 @@ Transform:
   - {fileID: 401058}
   - {fileID: 401164}
   - {fileID: 401166}
+  - {fileID: 401016}
   m_Father: {fileID: 401050}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -2.636, y: 0, z: 0}
 --- !u!136 &13601014
 CapsuleCollider:
   m_ObjectHideFlags: 0

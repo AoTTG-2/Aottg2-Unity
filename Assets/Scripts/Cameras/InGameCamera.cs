@@ -37,6 +37,7 @@ namespace Cameras
         private float _shakeTimeLeft;
         private float _currentShakeDistance;
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
+        private bool _freeCam = false;
 
         public void ApplyGraphicsSettings()
         {
@@ -125,22 +126,28 @@ namespace Cameras
 
         public void SyncCustomPosition()
         {
-            Camera.fieldOfView = 50f;
+            Camera.fieldOfView = CustomLogicManager.CameraFOV > 0f ? CustomLogicManager.CameraFOV : 50f;
             Cache.Transform.position = CustomLogicManager.CameraPosition;
             Cache.Transform.rotation = Quaternion.Euler(CustomLogicManager.CameraRotation);
         }
         
-        protected void LateUpdate()
+        protected override void LateUpdate()
         {
             if (CustomLogicManager.Cutscene || CustomLogicManager.ManualCamera)
             {
                 SyncCustomPosition();
+                base.LateUpdate();
+                return;
             }
             else
             {
                 if (_follow != _inGameManager.CurrentCharacter && _inGameManager.CurrentCharacter != null)
                     SetFollow(_inGameManager.CurrentCharacter);
-                if (_follow == null)
+                if (_input.ChangeCamera.GetKeyDown())
+                    _freeCam = !_freeCam;
+                if (_freeCam)
+                    _follow = null;
+                else if (_follow == null)
                     FindNextSpectate();
                 if (_follow != null)
                 {
@@ -152,14 +159,17 @@ namespace Cameras
                     }
                     else
                         UpdateSpectate();
-                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human)
+                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human && _cameraDistance > 0f)
                         UpdateObstacles();
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
                 }
+                else if (_freeCam)
+                    UpdateFreeCam();
             }
             UpdateFOV();
             UpdateNapeLockImage();
+            base.LateUpdate();
         }
 
         private void UpdateNapeLockImage()
@@ -288,6 +298,36 @@ namespace Cameras
             }
         }
 
+        private void UpdateFreeCam()
+        {
+            if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
+            {
+                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKey())
+                {
+                    _freeCam = false;
+                    return;
+                }
+                Vector3 direction = Vector3.zero;
+                if (_input.Forward.GetKey())
+                    direction += Cache.Transform.forward;
+                else if (_input.Back.GetKey())
+                    direction -= Cache.Transform.forward;
+                if (_input.Right.GetKey())
+                    direction += Cache.Transform.right;
+                else if (_input.Left.GetKey())
+                    direction -= Cache.Transform.right;
+                if (_input.Up.GetKey())
+                    direction += Cache.Transform.up;
+                else if (_input.Down.GetKey())
+                    direction -= Cache.Transform.up;
+                Cache.Transform.position += direction * Time.deltaTime * 200f;
+                float inputX = Input.GetAxis("Mouse X");
+                float inputY = Input.GetAxis("Mouse Y");
+                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * Time.deltaTime * 200f);
+                Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, -inputY * Time.deltaTime * 200f);
+            }
+        }
+
         private float GetHeightDistance()
         {
             if (_cameraDistance == 0f && _follow != null && _follow is Human)
@@ -327,6 +367,8 @@ namespace Cameras
             }
             else
                 Camera.fieldOfView = Mathf.Lerp(Camera.fieldOfView, SettingsManager.GeneralSettings.FOVMin.Value, 5f * Time.deltaTime);
+            if (CustomLogicManager.CameraFOV > 0f)
+                Camera.fieldOfView = CustomLogicManager.CameraFOV;
         }
 
         private void FindNextSpectate()

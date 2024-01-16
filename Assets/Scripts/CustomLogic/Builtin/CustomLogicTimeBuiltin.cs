@@ -13,22 +13,28 @@ namespace CustomLogic
 
         public override object CallMethod(string name, List<object> parameters)
         {
-            return null;
+            return base.CallMethod(name, parameters);
         }
 
         public override object GetField(string name)
         {
             if (name == "TickTime")
                 return Time.fixedDeltaTime;
-            else if (name == "FrameTime")
+            if (name == "FrameTime")
                 return Time.deltaTime;
-            else if (name == "GameTime")
+            if (name == "GameTime")
                 return CustomLogicManager.Evaluator.CurrentTime;
+            if (name == "TimeScale")
+                return Time.timeScale;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "TimeScale")
+                Time.timeScale = value.UnboxToFloat();
+            else
+                base.SetField(name, value);
         }
     }
 }

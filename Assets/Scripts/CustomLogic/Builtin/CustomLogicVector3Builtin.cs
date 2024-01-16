@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -28,58 +29,124 @@ namespace CustomLogic
                 float t = parameters[2].UnboxToFloat();
                 return new CustomLogicVector3Builtin(Vector3.Lerp(a.Value, b.Value, t));
             }
-            else if (methodName == "Scale")
+            if (methodName == "LerpUnclamped")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.LerpUnclamped(a.Value, b.Value, t));
+            }
+            if (methodName == "Slerp")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.Slerp(a.Value, b.Value, t));
+            }
+            if (methodName == "SlerpUnclamped")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.SlerpUnclamped(a.Value, b.Value, t));
+            }
+            if (methodName == "Scale")
             {
                 float scale = parameters[0].UnboxToFloat();
                 return new CustomLogicVector3Builtin(Value * scale);
             }
-            else if (methodName == "GetRotationDirection")
+            if (methodName == "GetRotationDirection")
             {
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 var b = (CustomLogicVector3Builtin)parameters[1];
                 Vector3 direction = Quaternion.Euler(a.Value) * b.Value;
                 return new CustomLogicVector3Builtin(direction);
             }
-            else if (methodName == "Distance")
+            if (methodName == "Distance")
             {
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 var b = (CustomLogicVector3Builtin)parameters[1];
                 return Vector3.Distance(a.Value, b.Value);
             }
-            else if (methodName == "Project")
+            if (methodName == "Project")
             {
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 var b = (CustomLogicVector3Builtin)parameters[1];
                 return new CustomLogicVector3Builtin(Vector3.Project(a.Value, b.Value));
             }
-            return null;
+            if (methodName == "Multiply")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Util.MultiplyVectors(a.Value, b.Value));
+            }
+            if (methodName == "Divide")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Util.DivideVectors(a.Value, b.Value));
+            }
+            if (methodName == "Angle")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return Vector3.Angle(a.Value, b.Value);
+            }
+            if (methodName == "SignedAngle")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                var c = (CustomLogicVector3Builtin)parameters[2];
+                return Vector3.SignedAngle(a.Value, b.Value, c.Value);
+            }
+            if (methodName == "Cross")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Vector3.Cross(a.Value, b.Value));
+            }
+            if (methodName == "Dot")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return Vector3.Dot(a.Value, b.Value);
+            }
+            if (methodName == "RotateTowards")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float angle = Mathf.Deg2Rad * parameters[2].UnboxToFloat();
+                float mag = parameters[3].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.RotateTowards(a.Value, b.Value, angle, mag));
+            }
+            return base.CallMethod(methodName, parameters);
         }
       
         public override object GetField(string name)
         {
             if (name == "X")
                 return Value.x;
-            else if (name == "Y")
+            if (name == "Y")
                 return Value.y;
-            else if (name == "Z")
+            if (name == "Z")
                 return Value.z;
-            else if (name == "Normalized")
+            if (name == "Normalized")
                 return new CustomLogicVector3Builtin(Value.normalized);
-            else if (name == "Magnitude")
+            if (name == "Magnitude")
                 return Value.magnitude;
-            else if (name == "Up")
+            if (name == "Up")
                 return new CustomLogicVector3Builtin(Vector3.up);
-            else if (name == "Down")
+            if (name == "Down")
                 return new CustomLogicVector3Builtin(Vector3.down);
-            else if (name == "Left")
+            if (name == "Left")
                 return new CustomLogicVector3Builtin(Vector3.left);
-            else if (name == "Right")
+            if (name == "Right")
                 return new CustomLogicVector3Builtin(Vector3.right);
-            else if (name == "Forward")
+            if (name == "Forward")
                 return new CustomLogicVector3Builtin(Vector3.forward);
-            else if (name == "Back")
+            if (name == "Back")
                 return new CustomLogicVector3Builtin(Vector3.back);
-            else if (name == "Zero")
+            if (name == "Zero")
                 return new CustomLogicVector3Builtin(Vector3.zero);
             return base.GetField(name);
         }
@@ -92,6 +159,8 @@ namespace CustomLogic
                 Value.y = value.UnboxToFloat();
             else if (name == "Z")
                 Value.z = value.UnboxToFloat();
+            else
+                base.SetField(name, value);
         }
 
         public override CustomLogicStructBuiltin Copy()

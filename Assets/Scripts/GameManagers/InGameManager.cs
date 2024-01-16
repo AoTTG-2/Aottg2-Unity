@@ -17,6 +17,7 @@ using Cameras;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using System.IO;
 
 namespace GameManagers
 {
@@ -556,7 +557,8 @@ namespace GameManagers
                     float abnormal = normal + settings.TitanSpawnAbnormal.Value / 100f;
                     float jumper = abnormal + settings.TitanSpawnJumper.Value / 100f;
                     float crawler = jumper + settings.TitanSpawnCrawler.Value / 100f;
-                    float punk = crawler + settings.TitanSpawnPunk.Value / 100f;
+                    float thrower = crawler + settings.TitanSpawnThrower.Value / 100f;
+                    float punk = thrower + settings.TitanSpawnPunk.Value / 100f;
                     if (roll < normal)
                         type = "Normal";
                     else if (roll < abnormal)
@@ -565,6 +567,8 @@ namespace GameManagers
                         type = "Jumper";
                     else if (roll < crawler)
                         type = "Crawler";
+                    else if (roll < thrower)
+                        type = "Thrower";
                     else if (roll < punk)
                         type = "Punk";
                 }
@@ -837,6 +841,8 @@ namespace GameManagers
             base.OnFinishLoading();
             if (CustomLogicManager.Logic == BuiltinLevels.UseMapLogic)
                 CustomLogicManager.Logic = MapManager.MapScript.Logic;
+            else
+                CustomLogicManager.Logic += MapManager.MapScript.Logic;
             if (_needSendPlayerInfo)
             {
                 RPCManager.PhotonView.RPC("PlayerInfoRPC", RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
@@ -886,6 +892,33 @@ namespace GameManagers
                 else
                     _inGameMenu.SetScoreboardMenu(false);
             }
+            if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
+            {
+                _inGameMenu.ToggleUI(!_inGameMenu.IsActive());
+            }
+            if (Input.GetKeyDown(KeyCode.F4))
+            {
+                // TakePreviewScreenshot();
+            }
+        }
+
+        private void TakePreviewScreenshot()
+        {
+            Texture2D texture = new Texture2D((int)1024, (int)1024, TextureFormat.RGB24, false);
+            try
+            {
+                texture.SetPixel(0, 0, Color.white);
+                texture.ReadPixels(new Rect(448, 28, 1024, 1024), 0, 0);
+            }
+            catch
+            {
+                texture = new Texture2D(1, 1);
+                texture.SetPixel(0, 0, Color.white);
+            }
+            texture.Apply();
+            TextureScaler.ScaleBlocking(texture, 256, 256);
+            Directory.CreateDirectory(FolderPaths.Documents + "/MapPreviews");
+            File.WriteAllBytes(FolderPaths.Documents + "/MapPreviews" + "/" + SettingsManager.InGameCurrent.General.MapName.Value + "Preview.png", texture.EncodeToPNG());
         }
 
         private void UpdateCleanCharacters()
@@ -897,7 +930,6 @@ namespace GameManagers
 
         protected void LoadSkin()
         {
-            /*
             if (PhotonNetwork.IsMasterClient)
             {
                 if (SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value)
@@ -907,6 +939,7 @@ namespace GameManagers
                                               set.Up.Value, set.Down.Value});
                     RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
                 }
+                /*
                 string indices = string.Empty;
                 string urls1 = string.Empty;
                 string urls2 = string.Empty;
@@ -951,8 +984,8 @@ namespace GameManagers
                 }
                 if (send)
                     RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
+                */
             }
-            */
         }
 
         private IEnumerator RespawnForever(float delay)

@@ -1,4 +1,5 @@
 ﻿using Characters;
+using Settings;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,33 +24,54 @@ namespace CustomLogic
                         return Human.Refill();
                     return false;
                 }
-                else if (methodName == "RefillImmediate")
+                if (methodName == "RefillImmediate")
+                {
                     Human.FinishRefill();
-                else if (methodName == "ClearHooks")
+                    return null;
+                }
+                if (methodName == "ClearHooks")
                 {
                     Human.HookLeft.DisableAnyHook();
                     Human.HookRight.DisableAnyHook();
+                    return null;
                 }
-                else if (methodName == "ClearLeftHook")
+                if (methodName == "ClearLeftHook")
+                {
                     Human.HookLeft.DisableAnyHook();
-                else if (methodName == "ClearRightHook")
+                    return null;
+                }
+                if (methodName == "ClearRightHook")
+                {
                     Human.HookRight.DisableAnyHook();
-                else if (methodName == "MountMapObject")
+                    return null;
+                }
+                if (methodName == "MountMapObject")
                 {
                     Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
                     Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
                     Human.Mount(((CustomLogicMapObjectBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
+                    return null;
                 }
-                else if (methodName == "MountTransform")
+                if (methodName == "MountTransform")
                 {
                     Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
                     Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
                     Human.Mount(((CustomLogicTransformBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
+                    return null;
                 }
-                else if (methodName == "Unmount")
+                if (methodName == "Unmount")
+                {
                     Human.Unmount(true);
+                    return null;
+                }
+                if (methodName == "SetSpecial")
+                {
+                    Human.SetSpecial((string)parameters[0]);
+                    return null;
+                }
+                return base.CallMethod(methodName, parameters);
             }
-            return base.CallMethod(methodName, parameters);
+            return null;
         }
 
         public override object GetField(string name)
@@ -62,75 +84,85 @@ namespace CustomLogic
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
             if (name == "Weapon")
                 return Human.Setup.Weapon.ToString();
-            else if (name == "CurrentGas")
+            if (name == "CurrentSpecial")
+                return Human.CurrentSpecial;
+            if (name == "CurrentGas")
                 return Human.CurrentGas;
-            else if (name == "MaxGas")
+            if (name == "MaxGas")
                 return Human.MaxGas;
-            else if (name == "Acceleration")
+            if (name == "Acceleration")
                 return Human.AccelerationStat;
-            else if (name == "RunSpeed")
+            if (name == "RunSpeed")
                 return Human.RunSpeedStat;
-            else if (name == "CurrentBladeDurability")
+            if (name == "HorseSpeed")
+                return Human.HorseSpeed;
+            if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)
                     return bladeWeapon.CurrentDurability;
                 return 0f;
             }
-            else if (name == "MaxBladeDurability")
+            if (name == "MaxBladeDurability")
             {
                 if (bladeWeapon != null)
                     return bladeWeapon.MaxDurability;
                 return 0f;
             }
-            else if (name == "CurrentBlade")
+            if (name == "CurrentBlade")
             {
                 if (bladeWeapon != null)
                     return bladeWeapon.BladesLeft;
                 return 0;
             }
-            else if (name == "MaxBlade")
+            if (name == "MaxBlade")
             {
                 if (bladeWeapon != null)
                     return bladeWeapon.MaxBlades;
                 return 0;
             }
-            else if (name == "CurrentAmmoRound")
+            if (name == "CurrentAmmoRound")
             {
                 if (ammoWeapon != null)
                     return ammoWeapon.RoundLeft;
                 return 0;
             }
-            else if (name == "MaxAmmoRound")
+            if (name == "MaxAmmoRound")
             {
                 if (ammoWeapon != null)
                     return ammoWeapon.MaxRound;
                 return 0;
             }
-            else if (name == "CurrentAmmoLeft")
+            if (name == "CurrentAmmoLeft")
             {
                 if (ammoWeapon != null)
                     return ammoWeapon.AmmoLeft;
                 return 0;
             }
-            else if (name == "MaxAmmoTotal")
+            if (name == "MaxAmmoTotal")
             {
                 if (ammoWeapon != null)
                     return ammoWeapon.MaxAmmo;
                 return 0;
             }
-            else if (name == "IsMounted")
+            if (name == "IsMounted")
                 return Human.MountState == HumanMountState.MapObject;
-            else if (name == "MountedMapObject")
+            if (name == "MountedMapObject")
             {
                 if (Human.MountedMapObject == null)
                     return null;
                 return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
             }
-            else if (name == "MountedTransform")
+            if (name == "MountedTransform")
             {
                 if (Human.MountedTransform == null)
                     return null;
                 return new CustomLogicTransformBuiltin(Human.MountedTransform);
+            }
+            if (name == "AutoRefillGas")
+            {
+                if (Human != null && Human.IsMine())
+                    return SettingsManager.InputSettings.Human.AutoRefillGas.Value;
+                return false;
             }
             return base.GetField(name);
         }
@@ -153,6 +185,8 @@ namespace CustomLogic
                 Human.SetAcceleration(value.UnboxToInt());
             else if (name == "RunSpeed")
                 Human.SetRunSpeed(value.UnboxToInt());
+            else if (name == "HorseSpeed")
+                Human.HorseSpeed = value.UnboxToFloat();
             else if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)

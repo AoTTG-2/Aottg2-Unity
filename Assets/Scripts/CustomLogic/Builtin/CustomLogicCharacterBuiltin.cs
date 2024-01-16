@@ -20,20 +20,21 @@ namespace CustomLogic
                 Character.GetKilled(killer);
                 return null;
             }
-            else if (name == "GetDamaged")
+            if (name == "GetDamaged")
             {
                 string killer = (string)parameters[0];
                 int damage = parameters[1].UnboxToInt();
                 Character.GetDamaged(killer, damage);
                 return null;
             }
-            else if (name == "Emote")
+            if (name == "Emote")
             {
                 string emote = (string)parameters[0];
                 if (Character.IsMine() && !Character.Dead)
                     Character.Emote(emote);
+                return null;
             }
-            else if (name == "PlayAnimation")
+            if (name == "PlayAnimation")
             {
                 string anim = (string)parameters[0];
                 float fade = 0.1f;
@@ -41,29 +42,33 @@ namespace CustomLogic
                     fade = (float)parameters[1];
                 if (Character.IsMine() && !Character.Dead)
                     Character.CrossFadeIfNotPlaying(anim, fade);
+                return null;
             }
-            else if (name == "GetAnimationLength")
+            if (name == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
                 return Character.Cache.Animation[anim].length;
             }
-            else if (name == "PlaySound")
+            if (name == "PlaySound")
             {
                 string sound = (string)parameters[0];
                 if (Character.IsMine() && !Character.Dead && !Character.IsPlayingSound(sound))
                     Character.PlaySound(sound);
+                return null;
             }
-            else if (name == "StopSound")
+            if (name == "StopSound")
             {
                 string sound = (string)parameters[0];
                 if (Character.IsMine() && !Character.Dead && Character.IsPlayingSound(sound))
                     Character.StopSound(sound);
+                return null;
             }
-            else if (name == "LookAt")
+            if (name == "LookAt")
             {
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[0]).Value;
                 if (Character.IsMine() && !Character.Dead)
                     Character.Cache.Transform.LookAt(position);
+                return null;
             }
             return base.CallMethod(name, parameters);
         }
@@ -72,44 +77,46 @@ namespace CustomLogic
         {
             if (name == "Player")
                 return new CustomLogicPlayerBuiltin(Character.Cache.PhotonView.Owner);
-            else if (name == "ViewID")
+            if (name == "ViewID")
                 return Character.Cache.PhotonView.ViewID;
-            else if (name == "IsMine")
+            if (name == "IsMine")
                 return Character.IsMine();
-            else if (name == "Name")
+            if (name == "Name")
                 return Character.Name;
-            else if (name == "IsMainCharacter")
+            if (name == "IsMainCharacter")
                 return Character.IsMainCharacter();
-            else if (name == "Position")
+            if (name == "Position")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.position);
-            else if (name == "Rotation")
+            if (name == "Rotation")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.rotation.eulerAngles);
-            else if (name == "Velocity")
+            if (name == "Velocity")
                 return new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
-            else if (name == "Forward")
+            if (name == "Forward")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.forward);
-            else if (name == "Right")
+            if (name == "Right")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.right);
-            else if (name == "Up")
+            if (name == "Up")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.up);
-            else if (name == "HasTargetDirection")
+            if (name == "HasTargetDirection")
                 return Character.HasDirection;
-            else if (name == "TargetDirection")
+            if (name == "TargetDirection")
                 return new CustomLogicVector3Builtin(Character.GetTargetDirection());
-            else if (name == "Team")
+            if (name == "Team")
                 return Character.Team;
-            else if (name == "IsCharacter")
+            if (name == "IsCharacter")
                 return true;
-            else if (name == "Health")
+            if (name == "Health")
                 return Character.CurrentHealth;
-            else if (name == "MaxHealth")
+            if (name == "MaxHealth")
                 return Character.MaxHealth;
-            else if (name == "CustomDamageEnabled")
+            if (name == "CustomDamageEnabled")
                 return Character.CustomDamageEnabled;
-            else if (name == "CustomDamage")
+            if (name == "CustomDamage")
                 return Character.CustomDamage;
-            else if (name == "CurrentAnimation")
+            if (name == "CurrentAnimation")
                 return Character.GetCurrentAnimation();
+            if (name == "IsAI")
+                return Character.AI;
             return base.GetField(name);
         }
 

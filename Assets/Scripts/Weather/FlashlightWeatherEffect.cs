@@ -38,8 +38,8 @@ namespace Weather
             {
                 if (!_light.gameObject.activeSelf)
                     _light.gameObject.SetActive(true);
-                _transform.rotation = _parent.rotation * Quaternion.Euler(353f, 0f, 0f);
-                _transform.position = _parent.position;
+                _transform.rotation = _parent.rotation;
+                _transform.position = _parent.position - _parent.forward * 0.1f;
             }
             else if (_light.gameObject.activeSelf)
                 _light.gameObject.SetActive(false);

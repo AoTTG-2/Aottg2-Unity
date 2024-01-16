@@ -45,6 +45,7 @@
         public static string Death4 = "Death4";
         public static string Death5 = "Death5";
         public static string Checkpoint = "Checkpoint";
-        public static string GunExplodeSound = "GunExplodeSound";
+        public static string GunExplode = "GunExplode";
+        public static string GunExplodeLoud = "GunExplodeLoud";
     }
 }

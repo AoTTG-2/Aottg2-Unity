@@ -59,35 +59,41 @@ namespace CustomLogic
 
         public Dictionary<string, BaseSetting> GetComponentSettings(string component, List<string> parameters)
         {
-            var instance = CreateClassInstance(component, new List<object>(), false);
-            RunAssignmentsClassInstance(instance);
             Dictionary<string, BaseSetting> settings = new Dictionary<string, BaseSetting>();
             Dictionary<string, string> parameterDict = new Dictionary<string, string>();
-            foreach (string str in parameters)
+            try
             {
-                string[] strArr = str.Split(':');
-                parameterDict.Add(strArr[0], strArr[1]);
-            }
-            foreach (string variableName in instance.Variables.Keys)
-            {
-                if (!variableName.StartsWith("_"))
+                var instance = CreateClassInstance(component, new List<object>(), false);
+                RunAssignmentsClassInstance(instance);
+                foreach (string str in parameters)
                 {
-                    object value = instance.Variables[variableName];
-                    if (parameterDict.ContainsKey(variableName))
-                        value = CustomLogicComponentInstance.DeserializeValue(value, parameterDict[variableName]);
-                    if (value is float)
-                        settings.Add(variableName, new FloatSetting((float)value));
-                    else if (value is string)
-                        settings.Add(variableName, new StringSetting((string)value));
-                    else if (value is int)
-                        settings.Add(variableName, new IntSetting((int)value));
-                    else if (value is bool)
-                        settings.Add(variableName, new BoolSetting((bool)value));
-                    else if (value is CustomLogicColorBuiltin)
-                        settings.Add(variableName, new ColorSetting(((CustomLogicColorBuiltin)value).Value));
-                    else if (value is CustomLogicVector3Builtin)
-                        settings.Add(variableName, new Vector3Setting(((CustomLogicVector3Builtin)value).Value));
+                    string[] strArr = str.Split(':');
+                    parameterDict.Add(strArr[0], strArr[1]);
                 }
+                foreach (string variableName in instance.Variables.Keys)
+                {
+                    if (!variableName.StartsWith("_"))
+                    {
+                        object value = instance.Variables[variableName];
+                        if (parameterDict.ContainsKey(variableName))
+                            value = CustomLogicComponentInstance.DeserializeValue(value, parameterDict[variableName]);
+                        if (value is float)
+                            settings.Add(variableName, new FloatSetting((float)value));
+                        else if (value is string)
+                            settings.Add(variableName, new StringSetting((string)value));
+                        else if (value is int)
+                            settings.Add(variableName, new IntSetting((int)value));
+                        else if (value is bool)
+                            settings.Add(variableName, new BoolSetting((bool)value));
+                        else if (value is CustomLogicColorBuiltin)
+                            settings.Add(variableName, new ColorSetting(((CustomLogicColorBuiltin)value).Value));
+                        else if (value is CustomLogicVector3Builtin)
+                            settings.Add(variableName, new Vector3Setting(((CustomLogicVector3Builtin)value).Value));
+                    }
+                }
+            }
+            catch
+            {
             }
             return settings;
         }
@@ -257,8 +263,8 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (string name in new string[] {"Game", "Vector3", "Color", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            "Random", "String", "Camera"})
+            foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
+            "Random", "String", "Camera", "RoomData", "PersistentData", "Json"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
@@ -328,6 +334,8 @@ namespace CustomLogic
                     instance = new CustomLogicMathBuiltin();
                 else if (className == "Vector3")
                     instance = new CustomLogicVector3Builtin(new List<object>());
+                else if (className == "Quaternion")
+                    instance = new CustomLogicQuaternionBuiltin(new List<object>());
                 else if (className == "Map")
                     instance = new CustomLogicMapBuiltin();
                 else if (className == "String")
@@ -336,6 +344,12 @@ namespace CustomLogic
                     instance = new CustomLogicRandomBuiltin();
                 else if (className == "Camera")
                     instance = new CustomLogicCameraBuiltin();
+                else if (className == "RoomData")
+                    instance = new CustomLogicRoomDataBuiltin();
+                else if (className == "PersistentData")
+                    instance = new CustomLogicPersistentDataBuiltin();
+                else if (className == "Json")
+                    instance = new CustomLogicJsonBuiltin();
                 else
                     instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);
@@ -396,6 +410,8 @@ namespace CustomLogic
                 classInstance = new CustomLogicVector3Builtin(parameterValues);
             else if (className == "Color")
                 classInstance = new CustomLogicColorBuiltin(parameterValues);
+            else if (className == "Quaternion")
+                classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
             else if (className == "Range")
                 classInstance = new CustomLogicRangeBuiltin(parameterValues);
             else
@@ -781,7 +797,7 @@ namespace CustomLogic
             }
             catch (Exception e)
             {
-                DebugConsole.Log("Custom logic runtime error at line " + expression.Line.ToString(), true);
+                DebugConsole.Log("Custom logic runtime error at line " + expression.Line.ToString() + ": " + e.Message, true);
             }
             return null;
         }
@@ -816,6 +832,8 @@ namespace CustomLogic
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
                 else if (right is CustomLogicVector3Builtin)
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+                else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
+                    return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
                 else
                     return left.UnboxToFloat() * right.UnboxToFloat();
             }

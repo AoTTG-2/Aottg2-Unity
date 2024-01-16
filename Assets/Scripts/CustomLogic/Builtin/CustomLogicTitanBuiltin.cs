@@ -26,36 +26,51 @@ namespace CustomLogic
                     var range = parameters[1].UnboxToFloat();
                     bool ignoreEnemies = (bool)parameters[2];
                     Titan.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
+                    return null;
                 }
-                else if (methodName == "Target")
+                if (methodName == "Target")
                 {
                     if (!Titan.AI)
                         return null;
                     var enemy = (CustomLogicCharacterBuiltin)parameters[0];
                     var focus = parameters[1].UnboxToFloat();
                     Titan.GetComponent<BaseTitanAIController>().SetEnemy(enemy.Character, focus);
+                    return null;
                 }
-                else if (methodName == "Idle")
+                if (methodName == "Idle")
                 {
                     if (!Titan.AI)
                         return null;
                     var time = parameters[0].UnboxToFloat();
                     Titan.GetComponent<BaseTitanAIController>().ForceIdle(time);
+                    return null;
                 }
-                else if (methodName == "Wander")
+                if (methodName == "Wander")
                 {
                     if (!Titan.AI)
                         return null;
                     Titan.GetComponent<BaseTitanAIController>().CancelOrder();
+                    return null;
                 }
-                else if (methodName == "Blind")
+                if (methodName == "Blind")
+                {
                     Titan.Blind();
-                else if (methodName == "Cripple")
-                    Titan.Cripple();
-                else if (methodName == "Emote")
+                    return null;
+                }
+                if (methodName == "Cripple")
+                {
+                    var time = parameters[0].UnboxToFloat();
+                    Titan.Cripple(time);
+                    return null;
+                }
+                if (methodName == "Emote")
+                {
                     Titan.Emote((string)parameters[0]);
+                    return null;
+                }
+                return base.CallMethod(methodName, parameters);
             }
-            return base.CallMethod(methodName, parameters);
+            return null;
         }
 
         public override object GetField(string name)
@@ -66,11 +81,13 @@ namespace CustomLogic
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().DetectRange;
+                return null;
             }
             if (name == "FocusRange")
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().FocusRange;
+                return null;
             }
             if (name == "NapePosition")
             {
@@ -88,7 +105,7 @@ namespace CustomLogic
             if (!Titan.IsMine())
                 return;
             if (name == "Size")
-                Titan.SetSize((float)value);
+                Titan.SetSize(value.UnboxToFloat());
             else if (name == "DetectRange")
             {
                 if (Titan.AI)

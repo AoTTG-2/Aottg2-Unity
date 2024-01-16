@@ -10,11 +10,10 @@ public class GeneratePreviews
     {
         string rootPath = "Assets/Resources/Map";
         string previewPath = rootPath + "/Previews";
-        if (Directory.Exists(previewPath))
+        if (!Directory.Exists(previewPath))
         {
-            Directory.Delete(previewPath, true);
+            Directory.CreateDirectory(previewPath);
         }
-        Directory.CreateDirectory(previewPath);
         foreach (string categoryPath in Directory.GetDirectories(rootPath))
         {
             if (categoryPath.EndsWith("Textures"))
@@ -39,6 +38,9 @@ public class GeneratePreviews
         foreach (string prefab in prefabs)
         {
             var asset = AssetDatabase.LoadAssetAtPath(prefab, typeof(GameObject));
+            string filePath = previewPath + "/" + asset.name + "Preview.png";
+            if (File.Exists(filePath))
+                continue;
             Texture2D tex = AssetPreview.GetAssetPreview(asset);
             int maxTries = 30;
             while (tex == null)
@@ -50,7 +52,7 @@ public class GeneratePreviews
                     break;
             }
             if (tex != null)
-                File.WriteAllBytes(previewPath + "/" + asset.name + "Preview.png", tex.EncodeToPNG());
+                File.WriteAllBytes(filePath, tex.EncodeToPNG());
         }
     }
 
@@ -61,6 +63,9 @@ public class GeneratePreviews
         foreach (string texture in textures)
         {
             var asset = AssetDatabase.LoadAssetAtPath(texture, typeof(Texture2D));
+            string filePath = previewPath + "/" + asset.name + "Preview.png";
+            if (File.Exists(filePath))
+                continue;
             Texture2D tex = AssetPreview.GetAssetPreview(asset);
             int maxTries = 30;
             while (tex == null)

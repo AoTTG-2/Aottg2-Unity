@@ -58,7 +58,7 @@ namespace Utility
 
         public static PhotonMessageInfo CreateLocalPhotonInfo()
         {
-            var info = new PhotonMessageInfo(PhotonNetwork.LocalPlayer, 0, null);
+            var info = new PhotonMessageInfo(null, 0, null);
             return info;
         }
 
@@ -207,6 +207,25 @@ namespace Utility
             return list;
         }
 
+        public static List<List<T>> GroupBuckets<T>(List<T> items, int buckets)
+        {
+            var list = new List<List<T>>();
+            for (int i = 0; i < buckets; i++)
+                list.Add(new List<T>());
+            if (items.Count == 0 || buckets == 0)
+                return list;
+            int itemsPerBucket = items.Count / buckets;
+            int currentBucket = 0;
+            foreach (T item in items)
+            {
+                var bucket = list[currentBucket];
+                bucket.Add(item);
+                if (bucket.Count >= itemsPerBucket && currentBucket < buckets - 1)
+                    currentBucket++;
+            }
+            return list;
+        }
+
         public static object GetRandomFromWeightedList(List<object> values, List<float> weights)
         {
             float totalWeight = 0f;
@@ -240,6 +259,22 @@ namespace Utility
             a = new Vector3(a.x, 0f, a.z);
             b = new Vector3(b.x, 0f, b.z);
             return Vector3.Distance(a, b);
+        }
+
+        public static List<TValue> PaginateDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict, int pageNumber, int elementsPerPage)
+        {
+            // Sort the dictionary by key
+            var sortedCommands = dict.OrderBy(c => c.Key).ToList();
+
+            var totalPages = (int)Math.Ceiling((double)sortedCommands.Count / elementsPerPage);
+
+            // Calculate the start index
+            var startIndex = (pageNumber - 1) * elementsPerPage;
+
+            // Get the paginated commands
+            var paginatedCommands = sortedCommands.Skip(startIndex).Take(elementsPerPage).Select(c => c.Value).ToList();
+
+            return paginatedCommands;
         }
     }
 }

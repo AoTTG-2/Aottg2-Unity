@@ -48,15 +48,15 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction), 2f);
-            human.PlaySound(HumanSounds.GunExplodeSound);
+            human.PlaySound(HumanSounds.GunExplodeLoud);
             var ahssInfo = CharacterData.HumanWeaponInfo["AHSS"];
             var capsule = (CapsuleCollider)human.HumanCache.AHSSHit._collider;
             capsule.radius = ahssInfo["Radius"].AsFloat * 2f;
             human.HumanCache.AHSSHit.transform.position = start;
             human.HumanCache.AHSSHit.transform.rotation = Quaternion.LookRotation(direction);
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);
-            human.Cache.Rigidbody.AddForce(-direction * 50f, ForceMode.VelocityChange);
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootGun();
+            human.Cache.Rigidbody.AddForce(-direction * ahssInfo["KnockbackForce"].AsFloat * 2f, ForceMode.VelocityChange);
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(true, true);
             ((AmmoWeapon)human.Weapon).RoundLeft -= 2;
         }
     }

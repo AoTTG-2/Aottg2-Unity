@@ -297,8 +297,16 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Center.y
-      value: 2.5
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Extent.x
@@ -306,11 +314,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Extent.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Extent.z
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -5502685384861215873, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -333,6 +341,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Extent.x
       value: 3
       objectReference: {fileID: 0}
@@ -342,7 +362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: m_AABB.m_Extent.z
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -4773596183189748044, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -880,8 +900,11 @@ MonoBehaviour:
   AttackPause: 0.2
   TurnPause: 0.2
   TargetEnemy: {fileID: 0}
-  RunSpeed: 0
-  WalkSpeed: 0
+  AttackSpeedMultiplier: 1
+  RunSpeedBase: 0
+  WalkSpeedBase: 0
+  RunSpeedPerLevel: 0
+  WalkSpeedPerLevel: 0
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0

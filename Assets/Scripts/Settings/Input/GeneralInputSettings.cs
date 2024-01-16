@@ -9,6 +9,8 @@ namespace Settings
         public KeybindSetting Back = new KeybindSetting(new string[] { "S", "None" });
         public KeybindSetting Left = new KeybindSetting(new string[] { "A", "None" });
         public KeybindSetting Right = new KeybindSetting(new string[] { "D", "None" });
+        public KeybindSetting Up = new KeybindSetting(new string[] { "E", "None" });
+        public KeybindSetting Down = new KeybindSetting(new string[] { "Q", "None" });
         public KeybindSetting Pause = new KeybindSetting(new string[] { "P", "None" });
         public KeybindSetting ChangeCharacter = new KeybindSetting(new string[] { "T", "None" });
         public KeybindSetting RestartGame = new KeybindSetting(new string[] { "F5", "None" });
@@ -21,5 +23,7 @@ namespace Settings
         public KeybindSetting SpectateNextPlayer = new KeybindSetting(new string[] { "2", "None" });
         public KeybindSetting SkipCutscene = new KeybindSetting(new string[] { "Y", "None" });
         public BoolSetting TapScoreboard = new BoolSetting(true);
+        public KeybindSetting HideUI = new KeybindSetting(new string[] { "F6", "None" });
+
     }
 }

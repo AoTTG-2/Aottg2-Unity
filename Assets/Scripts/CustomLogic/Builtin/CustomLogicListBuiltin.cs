@@ -20,35 +20,41 @@ namespace CustomLogic
             if (methodName == "Clear")
             {
                 List.Clear();
+                return null;
             }
-            else if (methodName == "Get")
+            if (methodName == "Get")
             {
                 int index = (int)parameters[0];
                 return List[index];
             }
-            else if (methodName == "Set")
+            if (methodName == "Set")
             {
                 int index = (int)parameters[0];
                 List[index] = parameters[1];
+                return null;
             }
-            else if (methodName == "Add")
+            if (methodName == "Add")
             {
                 List.Add(parameters[0]);
+                return null;
             }
-            else if (methodName == "InsertAt")
+            if (methodName == "InsertAt")
             {
                 int index = (int)parameters[0];
                 List.Insert(index, parameters[1]);
+                return null;
             }
-            else if (methodName == "RemoveAt")
+            if (methodName == "RemoveAt")
             {
                 List.RemoveAt((int)parameters[0]);
+                return null;
             }
-            else if (methodName == "Remove")
+            if (methodName == "Remove")
             {
                 List.Remove(parameters[0]);
+                return null;
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)

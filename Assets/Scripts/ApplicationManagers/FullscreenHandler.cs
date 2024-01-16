@@ -17,8 +17,7 @@ namespace ApplicationManagers
     {
         static FullscreenHandler _instance;
         static Resolution _resolution;
-
-        static extern bool ShowWindow(int hWnd, int nCmdShow);
+        static bool _isFocused = true;
 
         public static void Init()
         {
@@ -93,8 +92,50 @@ namespace ApplicationManagers
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
         }
 
+
+        public static void UpdateFPS()
+        {
+            int fpsCap = SettingsManager.GraphicsSettings.FPSCap.Value;
+            int menuFpsCap = SettingsManager.GraphicsSettings.MenuFPSCap.Value;
+            bool isInGameOrEditor = SceneLoader.SceneName == SceneName.InGame || SceneLoader.SceneName == SceneName.MapEditor;
+
+            if (_isFocused)
+            {
+                if (isInGameOrEditor)
+                    Application.targetFrameRate = fpsCap > 0 ? fpsCap : -1;
+                else
+                    Application.targetFrameRate = menuFpsCap > 0 ? menuFpsCap : -1;
+            }
+            else
+            {
+                if (isInGameOrEditor)
+                    Application.targetFrameRate = fpsCap > 0 ? Math.Min(fpsCap, 60) : 60;
+                else
+                    Application.targetFrameRate = menuFpsCap > 0 ? Math.Min(menuFpsCap, 60) : 60;
+            }
+        }
+
+        public static void UpdateSound()
+        {
+            if (SettingsManager.SoundSettings.MuteMinimized.Value)
+            {
+                AudioListener.volume = _isFocused ? SettingsManager.SoundSettings.Volume.Value : 0;
+                MusicManager._muted = !_isFocused;
+                MusicManager.ApplySoundSettings();
+            }
+            else
+            {
+                AudioListener.volume = SettingsManager.SoundSettings.Volume.Value;
+                MusicManager._muted = false;
+                MusicManager.ApplySoundSettings();
+            }
+        }
+
         public void OnApplicationFocus(bool hasFocus)
         {
+            _isFocused = hasFocus;
+            UpdateSound();
+            UpdateFPS();
             CursorManager.RefreshCursorLock();
         }
 

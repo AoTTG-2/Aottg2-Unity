@@ -25,6 +25,7 @@ namespace UI
                 elementWidth: 135f);
             ElementFactory.CreateSliderSetting(DoublePanelLeft, style, settings.Music, UIManager.GetLocale(cat, sub, "Music"),
                 elementWidth: 135f);
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.MuteMinimized, UIManager.GetLocale(cat, sub, "MuteMinimized"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.TitanGrabMusic, UIManager.GetLocale(cat, sub, "TitanGrabMusic"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.TitanVocalEffect, UIManager.GetLocale(cat, sub, "TitanVocalEffect"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.GasEffect, UIManager.GetLocale(cat, sub, "GasEffect"));

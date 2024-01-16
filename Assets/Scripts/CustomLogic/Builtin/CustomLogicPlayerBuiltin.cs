@@ -22,9 +22,15 @@ namespace CustomLogic
                 return null;
             if (methodName == "GetCustomProperty")
                 return Player.GetCustomProperty((string)parameters[0]);
-            else if (methodName == "SetCustomProperty")
-                Player.SetCustomProperty((string)parameters[0], parameters[1]);
-            else if (methodName == "ClearKDR")
+            if (methodName == "SetCustomProperty")
+            {
+                object param = parameters[1];
+                if (!(param is float || param is int || param is string || param is bool))
+                    throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
+                Player.SetCustomProperty((string)parameters[0], param);
+                return null;
+            }
+            if (methodName == "ClearKDR")
             {
                 var properties = new Dictionary<string, object>
                     {
@@ -34,8 +40,9 @@ namespace CustomLogic
                         { PlayerProperty.TotalDamage, 0 }
                     };
                 Player.SetCustomProperties(properties);
+                return null;
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)
@@ -56,31 +63,31 @@ namespace CustomLogic
                 }
                 return null;
             }
-            else if (name == "Connected")
+            if (name == "Connected")
                 return Player != null;
-            else if (name == "ID")
+            if (name == "ID")
                 return Player.ActorNumber;
-            else if (name == "Name")
+            if (name == "Name")
                 return Player.GetStringProperty(PlayerProperty.Name);
-            else if (name == "Guild")
+            if (name == "Guild")
                 return Player.GetStringProperty(PlayerProperty.Guild);
-            else if (name == "Team")
+            if (name == "Team")
                 return Player.GetStringProperty(PlayerProperty.Team);
-            else if (name == "Status")
+            if (name == "Status")
                 return Player.GetStringProperty(PlayerProperty.Status);
-            else if (name == "CharacterType")
+            if (name == "CharacterType")
                 return Player.GetStringProperty(PlayerProperty.Character);
-            else if (name == "Loadout")
+            if (name == "Loadout")
                 return Player.GetStringProperty(PlayerProperty.Loadout);
-            else if (name == "Kills")
+            if (name == "Kills")
                 return Player.GetIntProperty(PlayerProperty.Kills);
-            else if (name == "Deaths")
+            if (name == "Deaths")
                 return Player.GetIntProperty(PlayerProperty.Deaths);
-            else if (name == "HighestDamage")
+            if (name == "HighestDamage")
                 return Player.GetIntProperty(PlayerProperty.HighestDamage);
-            else if (name == "TotalDamage")
+            if (name == "TotalDamage")
                 return Player.GetIntProperty(PlayerProperty.TotalDamage);
-            else if (name == "SpawnPoint")
+            if (name == "SpawnPoint")
             {
                 if (Player.HasSpawnPoint())
                     return new CustomLogicVector3Builtin(Player.GetSpawnPoint());
@@ -112,7 +119,8 @@ namespace CustomLogic
                     Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
                 }
             }
-            base.SetField(name, value);
+            else
+                base.SetField(name, value);
         }
 
         public override bool Equals(object obj)

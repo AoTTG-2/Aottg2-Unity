@@ -33,15 +33,17 @@ namespace CustomLogic
                 string label = (string)parameters[0];
                 string message = (string)parameters[1];
                 InGameManager.SetLabel(label, message, 0);
+                return null;
             }
-            else if (name == "SetLabelForTime")
+            if (name == "SetLabelForTime")
             {
                 string label = (string)parameters[0];
                 string message = (string)parameters[1];
                 float time = parameters[2].UnboxToFloat();
                 InGameManager.SetLabel(label, message, time);
+                return null;
             }
-            else if (name == "SetLabelAll")
+            if (name == "SetLabelAll")
             {
                 string label = (string)parameters[0];
                 string message = (string)parameters[1];
@@ -51,8 +53,9 @@ namespace CustomLogic
                         RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, 0f });
                     _lastSetLabels[label] = message;
                 }
+                return null;
             }
-            else if (name == "SetLabelForTimeAll")
+            if (name == "SetLabelForTimeAll")
             {
                 string label = (string)parameters[0];
                 string message = (string)parameters[1];
@@ -63,46 +66,71 @@ namespace CustomLogic
                         RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
                     _lastSetLabels[label] = message;
                 }
+                return null;
             }
-            else if (name == "CreatePopup")
+            if (name == "CreatePopup")
             {
                 string popupName = (string)parameters[0];
                 string title = (string)parameters[1];
                 int width = parameters[2].UnboxToInt();
                 int height = parameters[3].UnboxToInt();
                 menu.CreateCustomPopup(popupName, title, width, height);
+                return null;
             }
-            else if (name == "ShowPopup")
+            if (name == "ShowPopup")
             {
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).Show();
+                return null;
             }
-            else if (name == "HidePopup")
+            if (name == "HidePopup")
             {
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).Hide();
+                return null;
             }
-            else if (name == "ClearPopup")
+            if (name == "ClearPopup")
             {
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).Clear();
+                return null;
             }
-            else if (name == "AddPopupLabel")
+            if (name == "AddPopupLabel")
             {
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).AddLabel((string)parameters[1]);
+                return null;
             }
-            else if (name == "AddPopupButton")
+            if (name == "AddPopupButton")
             {
                 string popupName = (string)parameters[0];
                 menu.GetCustomPopup(popupName).AddButton((string)parameters[1], (string)parameters[2]);
+                return null;
             }
-            else if (name == "AddPopupButtons")
+            if (name == "AddPopupBottomButton")
+            {
+                string popupName = (string)parameters[0];
+                menu.GetCustomPopup(popupName).AddBottomButton((string)parameters[1], (string)parameters[2]);
+                return null;
+            }
+            if (name == "AddPopupButtons")
             {
                 string popupName = (string)parameters[0];
                 CustomLogicListBuiltin names = (CustomLogicListBuiltin)parameters[1];
                 CustomLogicListBuiltin titles = (CustomLogicListBuiltin)parameters[2];
                 menu.GetCustomPopup(popupName).AddButtons(names.List, titles.List);
+                return null;
+            }
+            if (name == "WrapStyleTag")
+            {
+                string text = (string)parameters[0];
+                string style = (string)parameters[1];
+                string args = (string)parameters[2];
+                if (args == null)
+                {
+                    return "<" + style + ">" + text + "</" + style + ">";
+                }
+                return "<" + style + "=" + args + ">" + text + "</" + style + ">";
             }
             return base.CallMethod(name, parameters);
         }

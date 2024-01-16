@@ -42,15 +42,12 @@ namespace ApplicationManagers
             ClothFactory.DisposeAllObjects();
             ClothFactory.ClearClothCache();
             ResourceManager.ClearCache();
+            AssetBundleManager.Clear();
             if (sceneName == SceneName.InGame)
                 PhotonNetwork.LoadLevel(0);
             else
                 SceneManager.LoadScene(0);
-            var settings = SettingsManager.GraphicsSettings;
-            if (SceneName == SceneName.InGame || SceneName == SceneName.MapEditor)
-                Application.targetFrameRate = settings.FPSCap.Value > 0 ? settings.FPSCap.Value : -1;
-            else
-                Application.targetFrameRate = settings.MenuFPSCap.Value > 0 ? settings.MenuFPSCap.Value : -1;
+            FullscreenHandler.UpdateFPS();
             CharacterData.Init(); // remove this after testing is done
         }
 
@@ -83,7 +80,7 @@ namespace ApplicationManagers
                 CurrentCamera = go.AddComponent<MapEditorCamera>();
             else if (SceneName == SceneName.CharacterEditor)
                 CurrentCamera = go.AddComponent<CharacterEditorCamera>();
-            else if (SceneName == SceneName.Test)
+            else if (SceneName == SceneName.DebugTest)
                 CurrentCamera = go.AddComponent<TestCamera>();
             else
             {
@@ -113,6 +110,6 @@ namespace ApplicationManagers
         CharacterEditor,
         SnapshotViewer,
         Gallery,
-        Test
+        DebugTest
     }
 }

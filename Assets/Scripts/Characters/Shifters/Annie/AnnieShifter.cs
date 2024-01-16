@@ -68,16 +68,20 @@ namespace Characters
         {
             ResetAttackState(attack);
             if (_currentAttack == ShifterAttacks.AttackDefault)
-                StateAction(TitanState.Attack, AnnieAnimations.Attack);
+                StateAttack(AnnieAnimations.Attack);
             else if (_currentAttack == ShifterAttacks.AttackKick)
-                StateAction(TitanState.Attack, AnnieAnimations.Kick);
+                StateAttack(AnnieAnimations.Kick);
             else if (_currentAttack == AnnieAttacks.AttackSwing)
-                StateAction(TitanState.Attack, AnnieAnimations.AttackSwing);
+                StateAttack(AnnieAnimations.AttackSwing);
+            else if (_currentAttack == AnnieAttacks.AttackStomp)
+                StateAttack(AnnieAnimations.AttackStomp);
+            else if (_currentAttack == AnnieAttacks.AttackHead)
+                StateAttack(AnnieAnimations.AttackHead);
             else if (_currentAttack == AnnieAttacks.AttackBrush)
             {
                 DeactivateAllHitboxes();
                 string animation = AttackBrush();
-                StateAction(TitanState.Attack, animation, deactivateHitboxes: false);
+                StateAttack(animation, deactivateHitboxes: false);
             }
         }
 
@@ -89,7 +93,7 @@ namespace Characters
             float distanceZ;
             if (TargetEnemy == null)
             {
-                BaseTitanCache.HandRHitbox.Activate(0.96f, 0.13f);
+                BaseTitanCache.HandRHitbox.Activate(0.96f / _currentAttackSpeed, 0.13f / _currentAttackSpeed);
                 return AnnieAnimations.AttackBrushBack;
             }
             else
@@ -102,19 +106,19 @@ namespace Characters
             {
                 if (distanceY < 35f * Size)
                 {
-                    BaseTitanCache.HandRHitbox.Activate(0.2f, 0.34f);
+                    BaseTitanCache.HandRHitbox.Activate(0.2f / _currentAttackSpeed, 0.34f / _currentAttackSpeed);
                     return AnnieAnimations.AttackBrushBack;
                 }
                 else
                 {
                     if (angleX < 0f)
                     {
-                        BaseTitanCache.HandLHitbox.Activate(0.35f, 0.237f);
+                        BaseTitanCache.HandLHitbox.Activate(0.35f / _currentAttackSpeed, 0.237f / _currentAttackSpeed);
                         return AnnieAnimations.AttackBrushHeadL;
                     }
                     else
                     {
-                        BaseTitanCache.HandRHitbox.Activate(0.35f, 0.237f);
+                        BaseTitanCache.HandRHitbox.Activate(0.35f / _currentAttackSpeed, 0.237f / _currentAttackSpeed);
                         return AnnieAnimations.AttackBrushHeadR;
                     }
                 }
@@ -123,12 +127,12 @@ namespace Characters
             {
                 if (angleX < 0f)
                 {
-                    BaseTitanCache.HandRHitbox.Activate(0.288f, 0.373f);
+                    BaseTitanCache.HandRHitbox.Activate(0.288f / _currentAttackSpeed, 0.373f / _currentAttackSpeed);
                     return AnnieAnimations.AttackBrushFrontL;
                 }
                 else
                 {
-                    BaseTitanCache.HandLHitbox.Activate(0.288f, 0.373f);
+                    BaseTitanCache.HandLHitbox.Activate(0.288f / _currentAttackSpeed, 0.373f / _currentAttackSpeed);
                     return AnnieAnimations.AttackBrushFrontR;
                 }
             }
@@ -142,19 +146,19 @@ namespace Characters
                 if(_currentAttackStage == 0 && animationTime > 0.16f)
                 {
                     _currentAttackStage = 1;
-                    AnnieCache.FootRHitbox.Activate(0f, 0.05f);
+                    AnnieCache.FootRHitbox.Activate(0f, 0.05f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
                 else if (_currentAttackStage ==  1 && animationTime > 0.31f)
                 {
                     _currentAttackStage = 2;
-                    AnnieCache.FootLHitbox.Activate(0f, 0.11f);
+                    AnnieCache.FootLHitbox.Activate(0f, 0.11f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing2);
                 }
                 else if (_currentAttackStage == 2 && animationTime > 0.59f)
                 {
                     _currentAttackStage = 3;
-                    AnnieCache.FootRHitbox.Activate(0f, 0.13f);
+                    AnnieCache.FootRHitbox.Activate(0f, 0.13f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing3);
                 }
             }
@@ -163,7 +167,7 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.38f)
                 {
                     _currentAttackStage = 1;
-                    AnnieCache.FootRHitbox.Activate(0f, 0.13f);
+                    AnnieCache.FootRHitbox.Activate(0f, 0.13f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }
@@ -172,7 +176,29 @@ namespace Characters
                 if (_currentAttackStage == 0 && animationTime > 0.45f)
                 {
                     _currentAttackStage = 1;
-                    AnnieCache.HandRHitbox.Activate(0f, 0.12f);
+                    AnnieCache.HandRHitbox.Activate(0f, 0.12f / _currentAttackSpeed);
+                    PlaySound(TitanSounds.Swing1);
+                }
+            }
+            else if (_currentStateAnimation == AnnieAnimations.AttackStomp)
+            {
+                if (_currentAttackStage == 0 && animationTime > 0.35f)
+                {
+                    _currentAttackStage = 1;
+                    AnnieCache.FootLHitbox.Activate(0f, 0.1f / _currentAttackSpeed);
+                    var position = BaseTitanCache.FootLHitbox.transform.position;
+                    position.y = BaseTitanCache.Transform.position.y;
+                    EffectSpawner.Spawn(EffectPrefabs.Boom5, position, BaseTitanCache.Transform.rotation, Size * SizeMultiplier);
+                    SpawnShatter(position);
+                }
+            }
+            else if (_currentStateAnimation == AnnieAnimations.AttackHead)
+            {
+                if (_currentAttackStage == 0 && animationTime > 0.25f)
+                {
+                    _currentAttackStage = 1;
+                    AnnieCache.HandLHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
+                    AnnieCache.HandRHitbox.Activate(0f, 0.15f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }

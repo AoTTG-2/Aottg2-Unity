@@ -19,12 +19,12 @@ namespace Characters
     class BaseShifter: BaseTitan
     {
         protected override int DefaultMaxHealth => 1000;
-        protected override float DefaultRunSpeed => 80f;
+        protected override float DefaultRunSpeed => 100f;
         protected override float DefaultWalkSpeed => 20f;
         protected override float DefaultRotateSpeed => 10f;
         protected override float DefaultJumpForce => 150f;
         protected override float SizeMultiplier => 3f;
-        public override float CrippleTime => 3.5f;
+        public override float DefaultCrippleTime => 3.5f;
         protected bool _needRoar = true;
         public bool TransformingToHuman;
         public float PreviousHumanGas;
@@ -110,7 +110,7 @@ namespace Characters
                 if (damage < settings.TitanArmor.Value)
                     damage = 0;
             }
-            if (type == "Stun")
+            if (type == "TitanStun" || type == "ShifterStun")
             {
                 Stun();
                 var killer = Util.FindCharacterByViewId(viewId);
@@ -151,7 +151,7 @@ namespace Characters
                     {
                         if (IsMainCharacter())
                             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                        victimChar.GetHit(this, damage, "Stun", collider.name);
+                        victimChar.GetHit(this, damage, "ShifterStun", collider.name);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace Characters
                 {
                     if (IsMainCharacter())
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                    victimChar.GetHit(this, damage, "Titan", collider.name);
+                    victimChar.GetHit(this, damage, "Shifter", collider.name);
                 }
             }
         }

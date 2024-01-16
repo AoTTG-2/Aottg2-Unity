@@ -24,6 +24,7 @@ namespace CustomLogic
             if (name == "Debug")
             {
                 DebugConsole.Log((string)parameters[0], true);
+                return null;
             }
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (name == "Print")
@@ -34,8 +35,9 @@ namespace CustomLogic
                 else
                     message = parameters[0].ToString();
                 ChatManager.AddLine(message, ChatTextColor.System);
+                return null;
             }
-            else if (name == "PrintAll")
+            if (name == "PrintAll")
             {
                 string message;
                 if (parameters[0] == null)
@@ -43,13 +45,15 @@ namespace CustomLogic
                 else
                     message = parameters[0].ToString();
                 ChatManager.SendChatAll(message, ChatTextColor.System);
+                return null;
             }
-            else if (name == "End")
+            if (name == "End")
             {
                 if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("EndGameRPC", RpcTarget.All, new object[] { parameters[0].UnboxToFloat() });
+                return null;
             }
-            else if (name == "FindCharacterByViewID")
+            if (name == "FindCharacterByViewID")
             {
                 int viewID = (int)parameters[0];
                 var character = Util.FindCharacterByViewId(viewID);
@@ -57,7 +61,7 @@ namespace CustomLogic
                     return null;
                 return CustomLogicEvaluator.GetCharacterBuiltin(character);
             }
-            else if (name == "SpawnTitan")
+            if (name == "SpawnTitan")
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
@@ -65,8 +69,9 @@ namespace CustomLogic
                     var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitan(type));
                     return titan;
                 }
+                return null;
             }
-            else if (name == "SpawnTitanAt")
+            if (name == "SpawnTitanAt")
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
@@ -75,8 +80,9 @@ namespace CustomLogic
                     var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position));
                     return titan;
                 }
+                return null;
             }
-            else if (name == "SpawnTitans")
+            if (name == "SpawnTitans")
             {
                 string type = (string)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
@@ -86,14 +92,16 @@ namespace CustomLogic
                         list.List.Add(new CustomLogicTitanBuiltin(titan));
                     return list;
                 }
+                return null;
             }
-            else if (name == "SpawnTitansAsync")
+            if (name == "SpawnTitansAsync")
             {
                 string type = (string)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
                     gameManager.SpawnAITitansAsync(type, (int)parameters[1]);
+                return null;
             }
-            else if (name == "SpawnTitansAt")
+            if (name == "SpawnTitansAt")
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
@@ -107,15 +115,17 @@ namespace CustomLogic
                     }
                     return list;
                 }
+                return null;
             }
-            else if (name == "SpawnTitansAtAsync")
+            if (name == "SpawnTitansAtAsync")
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
                 if (PhotonNetwork.IsMasterClient)
                     gameManager.SpawnAITitansAtAsync(type, (int)parameters[1], position);
+                return null;
             }
-            else if (name == "SpawnShifter")
+            if (name == "SpawnShifter")
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
@@ -123,8 +133,9 @@ namespace CustomLogic
                     var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifter(type));
                     return shifter;
                 }
+                return null;
             }
-            else if (name == "SpawnShifterAt")
+            if (name == "SpawnShifterAt")
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
@@ -133,8 +144,9 @@ namespace CustomLogic
                     var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position));
                     return shifter;
                 }
+                return null;
             }
-            else if (name == "SpawnProjectile")
+            if (name == "SpawnProjectile")
             {
                 string projectileName = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
@@ -156,8 +168,9 @@ namespace CustomLogic
                     settings = new object[] { color };
                 }
                 ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
+                return null;
             }
-            else if (name == "SpawnProjectileWithOwner")
+            if (name == "SpawnProjectileWithOwner")
             {
                 string projectileName = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
@@ -180,8 +193,9 @@ namespace CustomLogic
                 }
                 ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID, 
                     character.Team, settings);
+                return null;
             }
-            else if (name == "SpawnEffect")
+            if (name == "SpawnEffect")
             {
                 string effectName = (string)parameters[0];
                 var field = typeof(EffectPrefabs).GetField(effectName);
@@ -201,8 +215,9 @@ namespace CustomLogic
                     settings = new object[] { color, kill };
                 }
                 EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
+                return null;
             }
-            else if (name == "SpawnPlayer")
+            if (name == "SpawnPlayer")
             {
                 var player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
                 bool force = (bool)parameters[1];
@@ -210,14 +225,16 @@ namespace CustomLogic
                     gameManager.SpawnPlayer(force);
                 else if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerRPC", player, new object[] { force });
+                return null;
             }
-            else if (name == "SpawnPlayerAll")
+            if (name == "SpawnPlayerAll")
             {
                 bool force = (bool)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { force });
+                return null;
             }
-            else if (name == "SpawnPlayerAt")
+            if (name == "SpawnPlayerAt")
             {
                 var player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
                 bool force = (bool)parameters[1];
@@ -226,27 +243,31 @@ namespace CustomLogic
                     gameManager.SpawnPlayerAt(force, position);
                 else if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player, new object[] { force, position });
+                return null;
             }
-            else if (name == "SpawnPlayerAtAll")
+            if (name == "SpawnPlayerAtAll")
             {
                 bool force = (bool)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
                 if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, new object[] { force, position });
+                return null;
             }
-            else if (name == "SetPlaylist")
+            if (name == "SetPlaylist")
             {
                 string playlist = (string)parameters[0];
                 if (playlist == "Default")
                     playlist = "Default.Ordered";
                 MusicManager.SetPlaylist(playlist);
                 CustomLogicManager.Evaluator.HasSetMusic = true;
+                return null;
             }
-            else if (name == "SetSong")
+            if (name == "SetSong")
             {
                 string song = (string)parameters[0];
                 MusicManager.SetSong(song);
                 CustomLogicManager.Evaluator.HasSetMusic = true;
+                return null;
             }
             return base.CallMethod(name, parameters);
         }
@@ -256,11 +277,11 @@ namespace CustomLogic
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (name == "IsEnding")
                 return gameManager.IsEnding;
-            else if (name == "PVP")
+            if (name == "PVP")
                 return SettingsManager.InGameCurrent.Misc.PVP.Value;
-            else if (name == "EndTimeLeft")
+            if (name == "EndTimeLeft")
                 return gameManager.EndTimeLeft;
-            else if (name == "Titans")
+            if (name == "Titans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var titan in gameManager.Titans)
@@ -270,7 +291,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "AITitans")
+            if (name == "AITitans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var titan in gameManager.Titans)
@@ -280,7 +301,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "PlayerTitans")
+            if (name == "PlayerTitans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var titan in gameManager.Titans)
@@ -290,7 +311,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "Shifters")
+            if (name == "Shifters")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var shifter in gameManager.Shifters)
@@ -300,7 +321,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "AIShifters")
+            if (name == "AIShifters")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var shifter in gameManager.Shifters)
@@ -310,7 +331,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "PlayerShifters")
+            if (name == "PlayerShifters")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var shifter in gameManager.Shifters)
@@ -320,7 +341,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "Humans")
+            if (name == "Humans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var human in gameManager.Humans)
@@ -330,7 +351,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "AIHumans")
+            if (name == "AIHumans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var human in gameManager.Humans)
@@ -340,7 +361,7 @@ namespace CustomLogic
                 }
                 return list;
             }
-            else if (name == "PlayerHumans")
+            if (name == "PlayerHumans")
             {
                 var list = new CustomLogicListBuiltin();
                 foreach (var human in gameManager.Humans)
@@ -355,6 +376,7 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            base.SetField(name, value);
         }
     }
 }

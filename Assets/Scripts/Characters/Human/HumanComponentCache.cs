@@ -26,10 +26,14 @@ namespace Characters
         public BaseHitbox BladeHitRight;
         public BaseHitbox AHSSHit;
         public BaseHitbox APGHit;
+        public Transform GroundLeft;
+        public Transform GroundRight;
         
         public HumanComponentCache(GameObject owner): base(owner)
         {
             var chest = Transform.Find("Armature/Core/Controller_Body/hip/spine/chest");
+            GroundLeft = Transform.Find("GroundLeft");
+            GroundRight = Transform.Find("GroundRight");
             Neck = chest.Find("neck");
             Head = Neck.Find("head");
             UpperarmL = chest.Find("shoulder_L/upper_arm_L");
@@ -68,6 +72,9 @@ namespace Characters
         private void CreateAHSSHitbox(BaseCharacter human)
         {
             GameObject obj = new GameObject();
+            var rigidbody = obj.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
             obj.layer = PhysicsLayer.Hitbox;
             var capsule = obj.AddComponent<CapsuleCollider>();
             capsule.direction = 2;
@@ -82,6 +89,9 @@ namespace Characters
         private void CreateAPGHitbox(BaseCharacter human)
         {
             GameObject obj = new GameObject();
+            var rigidbody = obj.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
             obj.layer = PhysicsLayer.Hitbox;
             var capsule = obj.AddComponent<CapsuleCollider>();
             capsule.direction = 2;

@@ -45,7 +45,7 @@ namespace ApplicationManagers
 
         private static void OnLoadScene(SceneName sceneName)
         {
-            if (sceneName != SceneName.Test)
+            if (sceneName != SceneName.DebugTest)
                 return;
         }
 
@@ -76,7 +76,7 @@ namespace ApplicationManagers
                     DebugPhase = !DebugPhase;
                     Debug.Log("Debug phase enabled: " + DebugPhase.ToString());
                     break;
-                case "previews":
+                case "generate_char_previews":
                     ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).GeneratePreviews();
                     break;
                 default:

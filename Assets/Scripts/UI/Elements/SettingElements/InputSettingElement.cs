@@ -39,10 +39,8 @@ namespace UI
                 _inputField.textComponent = _inputField.transform.Find("Text").GetComponent<Text>();
                 _inputField.transition = Selectable.Transition.ColorTint;
                 _inputField.targetGraphic = _inputField.GetComponent<Image>();
-                // for some reason we need to give it a fake initial input otherwise the graphic won't update
-                _inputField.text = "Default";
-                _inputField.text = string.Empty;
             }
+            _inputField.text = string.Empty;
             _inputField.colors = UIManager.GetThemeColorBlock(style.ThemePanel, "DefaultSetting", "Input");
             _inputField.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "DefaultSetting", "InputTextColor");
             _inputField.selectionColor = UIManager.GetThemeColor(style.ThemePanel, "DefaultSetting", "InputSelectionColor");
@@ -73,50 +71,8 @@ namespace UI
             }
             _inputField.onValueChanged.AddListener((string value) => OnValueChanged(value));
             _inputField.onEndEdit.AddListener((string value) => OnInputFinishEditing(value));
-
-            // multiline has a bug when syncing during initialization, so it has to be delayed
-            if (multiLine)
-            {
-                _setupParams = new object[] { setting, style, title, tooltip };
-                StartCoroutine(WaitAndFinishSetup());
-            }
-            else
-            {
-                base.Setup(setting, style, title, tooltip);
-                // Input field needs to be re-activated to show the first set value
-                StartCoroutine(WaitAndFixInputField());
-                _finishedSetup = true;
-            }
-        }
-
-        private void OnEnable()
-        {
-            if (_inputField != null && !_finishedSetup)
-            {
-                StartCoroutine(WaitAndFinishSetup());
-            }
-            else if (_inputField != null)
-            {
-                StartCoroutine(WaitAndFixInputField());
-            }
-        }
-
-        private IEnumerator WaitAndFinishSetup()
-        {
-            yield return new WaitForEndOfFrame();
-            base.Setup((BaseSetting)_setupParams[0], (ElementStyle)_setupParams[1], (string)_setupParams[2], (string)_setupParams[3]);
-            StartCoroutine(WaitAndFixInputField());
             _finishedSetup = true;
-        }
-
-        private IEnumerator WaitAndFixInputField()
-        {
-            yield return new WaitForEndOfFrame();
-            _inputField.gameObject.SetActive(false);
-            _inputField.gameObject.SetActive(true);
-            yield return new WaitForEndOfFrame();
-            SyncElement();
-            yield break;
+            base.Setup(setting, style, title, tooltip);
         }
 
         protected void OnValueChanged(string value)
@@ -165,21 +121,10 @@ namespace UI
             {
                 _inputField.text = ((StringSetting)_setting).Value;
             }
-            _inputField.transform.Find("Text").GetComponent<Text>().text = _inputField.text;
         }
 
         private void Update()
         {
-            if (!_caret && _inputField != null)
-            {
-                _caret = _inputField.transform.Find(_inputField.transform.name + " Input Caret");
-                if (_caret)
-                {
-                    var graphic = _caret.GetComponent<Graphic>();
-                    if (!graphic)
-                        _caret.gameObject.AddComponent<Image>();
-                }
-            }
             if (_inputField.isFocused)
             {
                 if ((_inputField.contentType == InputField.ContentType.DecimalNumber || _inputField.contentType == InputField.ContentType.IntegerNumber) &&

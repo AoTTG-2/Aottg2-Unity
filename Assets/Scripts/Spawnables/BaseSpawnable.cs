@@ -15,6 +15,11 @@ namespace Spawnables
             _owner = owner;
             _timeLeft = liveTime;
             _expires = _timeLeft > 0f;
+            SetupSettings(settings);
+        }
+
+        protected virtual void SetupSettings(object[] settings)
+        {
         }
 
         protected virtual void Update()

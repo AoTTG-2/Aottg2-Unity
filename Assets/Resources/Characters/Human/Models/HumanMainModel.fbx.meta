@@ -1,203 +1,567 @@
 fileFormatVersion: 2
 guid: 4d19e38326d7f8744990bb335d06e891
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: Armature
-    100002: char_chest
-    100004: char_head
-    100006: character_leg_0
-    100008: chest
-    100010: Controller_Body
-    100012: Core
-    100014: foot_L
-    100016: foot_R
-    100018: forearm_L
-    100020: forearm_R
-    100022: hand_L
-    100024: hand_R
-    100026: head
-    100028: hip
-    100030: //RootNode
-    100032: IK_L
-    100034: IK_R
-    100036: knee.L
-    100038: knee.R
-    100040: neck
-    100042: player_casual_arm_AH_L
-    100044: player_casual_arm_AH_R
-    100046: player_casual_FA
-    100048: player_emptyhand_L
-    100050: player_emptyhand_R
-    100052: shin_L
-    100054: shin_R
-    100056: shoulder_L
-    100058: shoulder_R
-    100060: spine
-    100062: thigh_L
-    100064: thigh_R
-    100066: upper_arm_L
-    100068: upper_arm_R
-    400000: Armature
-    400002: char_chest
-    400004: char_head
-    400006: character_leg_0
-    400008: chest
-    400010: Controller_Body
-    400012: Core
-    400014: foot_L
-    400016: foot_R
-    400018: forearm_L
-    400020: forearm_R
-    400022: hand_L
-    400024: hand_R
-    400026: head
-    400028: hip
-    400030: //RootNode
-    400032: IK_L
-    400034: IK_R
-    400036: knee.L
-    400038: knee.R
-    400040: neck
-    400042: player_casual_arm_AH_L
-    400044: player_casual_arm_AH_R
-    400046: player_casual_FA
-    400048: player_emptyhand_L
-    400050: player_emptyhand_R
-    400052: shin_L
-    400054: shin_R
-    400056: shoulder_L
-    400058: shoulder_R
-    400060: spine
-    400062: thigh_L
-    400064: thigh_R
-    400066: upper_arm_L
-    400068: upper_arm_R
-    2300000: char_head
-    3300000: char_head
-    4300000: player_casual_arm_AH_L
-    4300002: player_casual_arm_AH_R
-    4300004: player_casual_FA
-    4300006: character_leg_0
-    4300008: char_chest
-    4300010: player_emptyhand_R
-    4300012: player_emptyhand_L
-    4300014: char_head
-    7400000: T-pose
-    7400002: Armature|AHSS_hook_both
-    7400004: Armature|AHSS_hook_L
-    7400006: Armature|AHSS_hook_R
-    7400008: Armature|AHSS_reload_both
-    7400010: Armature|AHSS_reload_L
-    7400012: Armature|AHSS_reload_R
-    7400014: Armature|AHSS_shoot_L
-    7400016: Armature|AHSS_shoot_R
-    7400018: Armature|AHSS_shooth_both
-    7400020: Armature|air2
-    7400022: Armature|air2_backward
-    7400024: Armature|air2_left
-    7400026: Armature|air2_right
-    7400028: Armature|air_circle
-    7400030: Armature|air_fall
-    7400032: Armature|air_hook
-    7400034: Armature|air_hook_l
-    7400036: Armature|air_hook_l_just
-    7400038: Armature|air_hook_r
-    7400040: Armature|air_hook_r_just
-    7400042: Armature|air_release
-    7400044: Armature|air_rise
-    7400046: Armature|attack1
-    7400048: Armature|attack1_hook_l1
-    7400050: Armature|attack1_hook_l2
-    7400052: Armature|attack1_hook_r1
-    7400054: Armature|attack1_hook_r2
-    7400056: Armature|attack2
-    7400058: Armature|attack4
-    7400060: Armature|attack_3_1
-    7400062: Armature|attack_3_2
-    7400064: Armature|changeBlade
-    7400066: Armature|changeBlade_air
-    7400068: Armature|dash
-    7400070: Armature|dash_land
-    7400072: Armature|dodge
-    7400074: Armature|emote_no
-    7400076: Armature|emote_salute
-    7400078: Armature|emote_wave
-    7400080: Armature|emote_yes
-    7400082: Armature|grabbed
-    7400084: Armature|grabbed_jean
-    7400086: Armature|horse_getoff
-    7400088: Armature|horse_geton
-    7400090: Armature|horse_idle
-    7400092: Armature|horse_run
-    7400094: Armature|idle_action_1
-    7400096: Armature|idle_action_2
-    7400098: Armature|idle_AHSS_F
-    7400100: Armature|idle_AHSS_M
-    7400102: Armature|idle_F
-    7400104: Armature|idle_M
-    7400106: Armature|idle_TS_F
-    7400108: Armature|idle_TS_M
-    7400110: Armature|jump
-    7400112: Armature|onWall
-    7400114: Armature|promotionl_poses
-    7400116: Armature|resupply
-    7400118: Armature|run
-    7400120: Armature|run_sasha
-    7400122: Armature|run_TS
-    7400124: Armature|slide
-    7400126: Armature|special_armin
-    7400128: Armature|special_levi
-    7400130: Armature|special_marco_0
-    7400132: Armature|special_marco_1
-    7400134: Armature|special_mike
-    7400136: Armature|special_petra
-    7400138: Armature|special_sasha
-    7400140: Armature|special_shift_0
-    7400142: Armature|special_shift_1
-    7400144: Armature|T-pose
-    7400146: Armature|toRoof
-    7400148: Armature|wallrun
-    7400150: Armature|AHSS_reload_air_both
-    7400152: Armature|AHSS_shoot_air_L
-    7400154: Armature|AHSS_shoot_air_R
-    7400156: Armature|AHSS_shooth_air_both
-    7400158: Armature|TS_shoot_air_L
-    7400160: Armature|TS_shoot_air_R
-    7400162: Armature|TS_shoot_L
-    7400164: Armature|TS_shoot_R
-    7400166: Armature|run_casual
-    7400168: T-pose4
-    7400170: Armature|idle_casual_F
-    7400172: Armature|idle_casual_M
-    9500000: //RootNode
-    11100000: //RootNode
-    13700000: char_chest
-    13700002: character_leg_0
-    13700004: player_casual_arm_AH_L
-    13700006: player_casual_arm_AH_R
-    13700008: player_casual_FA
-    13700010: player_emptyhand_L
-    13700012: player_emptyhand_R
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Armature
+  - first:
+      1: 100002
+    second: char_chest
+  - first:
+      1: 100004
+    second: char_head
+  - first:
+      1: 100006
+    second: character_leg_0
+  - first:
+      1: 100008
+    second: chest
+  - first:
+      1: 100010
+    second: Controller_Body
+  - first:
+      1: 100012
+    second: Core
+  - first:
+      1: 100014
+    second: foot_L
+  - first:
+      1: 100016
+    second: foot_R
+  - first:
+      1: 100018
+    second: forearm_L
+  - first:
+      1: 100020
+    second: forearm_R
+  - first:
+      1: 100022
+    second: hand_L
+  - first:
+      1: 100024
+    second: hand_R
+  - first:
+      1: 100026
+    second: head
+  - first:
+      1: 100028
+    second: hip
+  - first:
+      1: 100030
+    second: //RootNode
+  - first:
+      1: 100032
+    second: IK_L
+  - first:
+      1: 100034
+    second: IK_R
+  - first:
+      1: 100036
+    second: knee.L
+  - first:
+      1: 100038
+    second: knee.R
+  - first:
+      1: 100040
+    second: neck
+  - first:
+      1: 100042
+    second: player_casual_arm_AH_L
+  - first:
+      1: 100044
+    second: player_casual_arm_AH_R
+  - first:
+      1: 100046
+    second: player_casual_FA
+  - first:
+      1: 100048
+    second: player_emptyhand_L
+  - first:
+      1: 100050
+    second: player_emptyhand_R
+  - first:
+      1: 100052
+    second: shin_L
+  - first:
+      1: 100054
+    second: shin_R
+  - first:
+      1: 100056
+    second: shoulder_L
+  - first:
+      1: 100058
+    second: shoulder_R
+  - first:
+      1: 100060
+    second: spine
+  - first:
+      1: 100062
+    second: thigh_L
+  - first:
+      1: 100064
+    second: thigh_R
+  - first:
+      1: 100066
+    second: upper_arm_L
+  - first:
+      1: 100068
+    second: upper_arm_R
+  - first:
+      4: 400000
+    second: Armature
+  - first:
+      4: 400002
+    second: char_chest
+  - first:
+      4: 400004
+    second: char_head
+  - first:
+      4: 400006
+    second: character_leg_0
+  - first:
+      4: 400008
+    second: chest
+  - first:
+      4: 400010
+    second: Controller_Body
+  - first:
+      4: 400012
+    second: Core
+  - first:
+      4: 400014
+    second: foot_L
+  - first:
+      4: 400016
+    second: foot_R
+  - first:
+      4: 400018
+    second: forearm_L
+  - first:
+      4: 400020
+    second: forearm_R
+  - first:
+      4: 400022
+    second: hand_L
+  - first:
+      4: 400024
+    second: hand_R
+  - first:
+      4: 400026
+    second: head
+  - first:
+      4: 400028
+    second: hip
+  - first:
+      4: 400030
+    second: //RootNode
+  - first:
+      4: 400032
+    second: IK_L
+  - first:
+      4: 400034
+    second: IK_R
+  - first:
+      4: 400036
+    second: knee.L
+  - first:
+      4: 400038
+    second: knee.R
+  - first:
+      4: 400040
+    second: neck
+  - first:
+      4: 400042
+    second: player_casual_arm_AH_L
+  - first:
+      4: 400044
+    second: player_casual_arm_AH_R
+  - first:
+      4: 400046
+    second: player_casual_FA
+  - first:
+      4: 400048
+    second: player_emptyhand_L
+  - first:
+      4: 400050
+    second: player_emptyhand_R
+  - first:
+      4: 400052
+    second: shin_L
+  - first:
+      4: 400054
+    second: shin_R
+  - first:
+      4: 400056
+    second: shoulder_L
+  - first:
+      4: 400058
+    second: shoulder_R
+  - first:
+      4: 400060
+    second: spine
+  - first:
+      4: 400062
+    second: thigh_L
+  - first:
+      4: 400064
+    second: thigh_R
+  - first:
+      4: 400066
+    second: upper_arm_L
+  - first:
+      4: 400068
+    second: upper_arm_R
+  - first:
+      23: 2300000
+    second: char_head
+  - first:
+      33: 3300000
+    second: char_head
+  - first:
+      43: 4300000
+    second: player_casual_arm_AH_L
+  - first:
+      43: 4300002
+    second: player_casual_arm_AH_R
+  - first:
+      43: 4300004
+    second: player_casual_FA
+  - first:
+      43: 4300006
+    second: character_leg_0
+  - first:
+      43: 4300008
+    second: char_chest
+  - first:
+      43: 4300010
+    second: player_emptyhand_R
+  - first:
+      43: 4300012
+    second: player_emptyhand_L
+  - first:
+      43: 4300014
+    second: char_head
+  - first:
+      74: 7400000
+    second: T-pose
+  - first:
+      74: 7400002
+    second: Armature|AHSS_hook_both
+  - first:
+      74: 7400004
+    second: Armature|AHSS_hook_L
+  - first:
+      74: 7400006
+    second: Armature|AHSS_hook_R
+  - first:
+      74: 7400008
+    second: Armature|AHSS_reload_both
+  - first:
+      74: 7400010
+    second: Armature|AHSS_reload_L
+  - first:
+      74: 7400012
+    second: Armature|AHSS_reload_R
+  - first:
+      74: 7400014
+    second: Armature|AHSS_shoot_L
+  - first:
+      74: 7400016
+    second: Armature|AHSS_shoot_R
+  - first:
+      74: 7400018
+    second: Armature|AHSS_shooth_both
+  - first:
+      74: 7400020
+    second: Armature|air2
+  - first:
+      74: 7400022
+    second: Armature|air2_backward
+  - first:
+      74: 7400024
+    second: Armature|air2_left
+  - first:
+      74: 7400026
+    second: Armature|air2_right
+  - first:
+      74: 7400028
+    second: Armature|air_circle
+  - first:
+      74: 7400030
+    second: Armature|air_fall
+  - first:
+      74: 7400032
+    second: Armature|air_hook
+  - first:
+      74: 7400034
+    second: Armature|air_hook_l
+  - first:
+      74: 7400036
+    second: Armature|air_hook_l_just
+  - first:
+      74: 7400038
+    second: Armature|air_hook_r
+  - first:
+      74: 7400040
+    second: Armature|air_hook_r_just
+  - first:
+      74: 7400042
+    second: Armature|air_release
+  - first:
+      74: 7400044
+    second: Armature|air_rise
+  - first:
+      74: 7400046
+    second: Armature|attack1
+  - first:
+      74: 7400048
+    second: Armature|attack1_hook_l1
+  - first:
+      74: 7400050
+    second: Armature|attack1_hook_l2
+  - first:
+      74: 7400052
+    second: Armature|attack1_hook_r1
+  - first:
+      74: 7400054
+    second: Armature|attack1_hook_r2
+  - first:
+      74: 7400056
+    second: Armature|attack2
+  - first:
+      74: 7400058
+    second: Armature|attack4
+  - first:
+      74: 7400060
+    second: Armature|attack_3_1
+  - first:
+      74: 7400062
+    second: Armature|attack_3_2
+  - first:
+      74: 7400064
+    second: Armature|changeBlade
+  - first:
+      74: 7400066
+    second: Armature|changeBlade_air
+  - first:
+      74: 7400068
+    second: Armature|dash
+  - first:
+      74: 7400070
+    second: Armature|dash_land
+  - first:
+      74: 7400072
+    second: Armature|dodge
+  - first:
+      74: 7400074
+    second: Armature|emote_no
+  - first:
+      74: 7400076
+    second: Armature|emote_salute
+  - first:
+      74: 7400078
+    second: Armature|emote_wave
+  - first:
+      74: 7400080
+    second: Armature|emote_yes
+  - first:
+      74: 7400082
+    second: Armature|grabbed
+  - first:
+      74: 7400084
+    second: Armature|grabbed_jean
+  - first:
+      74: 7400086
+    second: Armature|horse_getoff
+  - first:
+      74: 7400088
+    second: Armature|horse_geton
+  - first:
+      74: 7400090
+    second: Armature|horse_idle
+  - first:
+      74: 7400092
+    second: Armature|horse_run
+  - first:
+      74: 7400094
+    second: Armature|idle_action_1
+  - first:
+      74: 7400096
+    second: Armature|idle_action_2
+  - first:
+      74: 7400098
+    second: Armature|idle_AHSS_F
+  - first:
+      74: 7400100
+    second: Armature|idle_AHSS_M
+  - first:
+      74: 7400102
+    second: Armature|idle_F
+  - first:
+      74: 7400104
+    second: Armature|idle_M
+  - first:
+      74: 7400106
+    second: Armature|idle_TS_F
+  - first:
+      74: 7400108
+    second: Armature|idle_TS_M
+  - first:
+      74: 7400110
+    second: Armature|jump
+  - first:
+      74: 7400112
+    second: Armature|onWall
+  - first:
+      74: 7400114
+    second: Armature|promotionl_poses
+  - first:
+      74: 7400116
+    second: Armature|resupply
+  - first:
+      74: 7400118
+    second: Armature|run
+  - first:
+      74: 7400120
+    second: Armature|run_sasha
+  - first:
+      74: 7400122
+    second: Armature|run_TS
+  - first:
+      74: 7400124
+    second: Armature|slide
+  - first:
+      74: 7400126
+    second: Armature|special_armin
+  - first:
+      74: 7400128
+    second: Armature|special_levi
+  - first:
+      74: 7400130
+    second: Armature|special_marco_0
+  - first:
+      74: 7400132
+    second: Armature|special_marco_1
+  - first:
+      74: 7400134
+    second: Armature|special_mike
+  - first:
+      74: 7400136
+    second: Armature|special_petra
+  - first:
+      74: 7400138
+    second: Armature|special_sasha
+  - first:
+      74: 7400140
+    second: Armature|special_shift_0
+  - first:
+      74: 7400142
+    second: Armature|special_shift_1
+  - first:
+      74: 7400144
+    second: Armature|T-pose
+  - first:
+      74: 7400146
+    second: Armature|toRoof
+  - first:
+      74: 7400148
+    second: Armature|wallrun
+  - first:
+      74: 7400150
+    second: Armature|AHSS_reload_air_both
+  - first:
+      74: 7400152
+    second: Armature|AHSS_shoot_air_L
+  - first:
+      74: 7400154
+    second: Armature|AHSS_shoot_air_R
+  - first:
+      74: 7400156
+    second: Armature|AHSS_shooth_air_both
+  - first:
+      74: 7400158
+    second: Armature|TS_shoot_air_L
+  - first:
+      74: 7400160
+    second: Armature|TS_shoot_air_R
+  - first:
+      74: 7400162
+    second: Armature|TS_shoot_L
+  - first:
+      74: 7400164
+    second: Armature|TS_shoot_R
+  - first:
+      74: 7400166
+    second: Armature|run_casual
+  - first:
+      74: 7400168
+    second: T-pose4
+  - first:
+      74: 7400170
+    second: Armature|idle_casual_F
+  - first:
+      74: 7400172
+    second: Armature|idle_casual_M
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: char_chest
+  - first:
+      137: 13700002
+    second: character_leg_0
+  - first:
+      137: 13700004
+    second: player_casual_arm_AH_L
+  - first:
+      137: 13700006
+    second: player_casual_arm_AH_R
+  - first:
+      137: 13700008
+    second: player_casual_FA
+  - first:
+      137: 13700010
+    second: player_emptyhand_L
+  - first:
+      137: 13700012
+    second: player_emptyhand_R
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: T-pose
       takeName: T-pose
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -205,6 +569,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -291,9 +656,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_hook_both
       takeName: Armature|AHSS_hook_both
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 2
@@ -301,6 +668,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -387,9 +755,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_hook_L
       takeName: Armature|AHSS_hook_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 2
@@ -397,6 +767,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -483,9 +854,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_hook_R
       takeName: Armature|AHSS_hook_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 2
@@ -493,6 +866,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -579,9 +953,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_reload_both
       takeName: Armature|AHSS_reload_both
+      internalID: 0
       firstFrame: 0
       lastFrame: 44
       wrapMode: 8
@@ -589,6 +965,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -675,9 +1052,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_reload_L
       takeName: Armature|AHSS_reload_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 44
       wrapMode: 8
@@ -685,6 +1064,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -771,9 +1151,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_reload_R
       takeName: Armature|AHSS_reload_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 44
       wrapMode: 8
@@ -781,6 +1163,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -867,9 +1250,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shoot_L
       takeName: Armature|AHSS_shoot_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -877,6 +1262,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -963,9 +1349,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shoot_R
       takeName: Armature|AHSS_shoot_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -973,6 +1361,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1059,9 +1448,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shooth_both
       takeName: Armature|AHSS_shooth_both
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 8
@@ -1069,6 +1460,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1155,9 +1547,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air2
       takeName: Armature|air2
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 8
@@ -1165,6 +1559,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1251,9 +1646,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air2_backward
       takeName: Armature|air2_backward
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1261,6 +1658,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1347,9 +1745,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air2_left
       takeName: Armature|air2_left
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1357,6 +1757,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1443,9 +1844,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air2_right
       takeName: Armature|air2_right
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1453,6 +1856,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1539,9 +1943,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_circle
       takeName: Armature|air_circle
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1549,6 +1955,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1635,9 +2042,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_fall
       takeName: Armature|air_fall
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1645,6 +2054,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1731,9 +2141,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_hook
       takeName: Armature|air_hook
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1741,6 +2153,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1827,9 +2240,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_hook_l
       takeName: Armature|air_hook_l
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -1837,6 +2252,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1923,9 +2339,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_hook_l_just
       takeName: Armature|air_hook_l_just
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -1933,6 +2351,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2019,9 +2438,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_hook_r
       takeName: Armature|air_hook_r
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -2029,6 +2450,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2115,9 +2537,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_hook_r_just
       takeName: Armature|air_hook_r_just
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -2125,6 +2549,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2211,9 +2636,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_release
       takeName: Armature|air_release
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2221,6 +2648,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2307,9 +2735,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|air_rise
       takeName: Armature|air_rise
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -2317,6 +2747,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2403,9 +2834,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack1
       takeName: Armature|attack1
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2413,6 +2846,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2499,9 +2933,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack1_hook_l1
       takeName: Armature|attack1_hook_l1
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2509,6 +2945,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2595,9 +3032,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack1_hook_l2
       takeName: Armature|attack1_hook_l2
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2605,6 +3044,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2691,9 +3131,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack1_hook_r1
       takeName: Armature|attack1_hook_r1
+      internalID: 0
       firstFrame: 0
       lastFrame: 28
       wrapMode: 8
@@ -2701,6 +3143,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2787,9 +3230,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack1_hook_r2
       takeName: Armature|attack1_hook_r2
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2797,6 +3242,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2883,9 +3329,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack2
       takeName: Armature|attack2
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -2893,6 +3341,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2979,9 +3428,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack4
       takeName: Armature|attack4
+      internalID: 0
       firstFrame: 0
       lastFrame: 26
       wrapMode: 8
@@ -2989,6 +3440,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3075,9 +3527,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack_3_1
       takeName: Armature|attack_3_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 26
       wrapMode: 8
@@ -3085,6 +3539,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3171,9 +3626,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|attack_3_2
       takeName: Armature|attack_3_2
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -3181,6 +3638,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3267,9 +3725,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|changeBlade
       takeName: Armature|changeBlade
+      internalID: 0
       firstFrame: 0
       lastFrame: 104
       wrapMode: 8
@@ -3277,6 +3737,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3363,9 +3824,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|changeBlade_air
       takeName: Armature|changeBlade_air
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -3373,6 +3836,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3459,9 +3923,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|dash
       takeName: Armature|dash
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -3469,6 +3935,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3555,9 +4022,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|dash_land
       takeName: Armature|dash_land
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 8
@@ -3565,6 +4034,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3651,9 +4121,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|dodge
       takeName: Armature|dodge
+      internalID: 0
       firstFrame: 0
       lastFrame: 65
       wrapMode: 8
@@ -3661,6 +4133,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3747,9 +4220,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|emote_no
       takeName: Armature|emote_no
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -3757,6 +4232,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3843,9 +4319,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|emote_salute
       takeName: Armature|emote_salute
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 8
@@ -3853,6 +4331,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3939,9 +4418,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|emote_wave
       takeName: Armature|emote_wave
+      internalID: 0
       firstFrame: 0
       lastFrame: 44
       wrapMode: 8
@@ -3949,6 +4430,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4035,9 +4517,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|emote_yes
       takeName: Armature|emote_yes
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 8
@@ -4045,6 +4529,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4131,9 +4616,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|grabbed
       takeName: Armature|grabbed
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 2
@@ -4141,6 +4628,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4227,9 +4715,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|grabbed_jean
       takeName: Armature|grabbed_jean
+      internalID: 0
       firstFrame: 0
       lastFrame: 64
       wrapMode: 8
@@ -4237,6 +4727,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4323,9 +4814,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|horse_getoff
       takeName: Armature|horse_getoff
+      internalID: 0
       firstFrame: 0
       lastFrame: 25
       wrapMode: 8
@@ -4333,6 +4826,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4419,9 +4913,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|horse_geton
       takeName: Armature|horse_geton
+      internalID: 0
       firstFrame: 0
       lastFrame: 35
       wrapMode: 8
@@ -4429,6 +4925,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4515,9 +5012,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|horse_idle
       takeName: Armature|horse_idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 2
@@ -4525,6 +5024,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4611,9 +5111,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|horse_run
       takeName: Armature|horse_run
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 2
@@ -4621,6 +5123,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4707,9 +5210,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_action_1
       takeName: Armature|idle_action_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 155
       wrapMode: 2
@@ -4717,6 +5222,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4803,9 +5309,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_action_2
       takeName: Armature|idle_action_2
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 8
@@ -4813,6 +5321,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4899,9 +5408,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_AHSS_F
       takeName: Armature|idle_AHSS_F
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -4909,6 +5420,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4995,9 +5507,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_AHSS_M
       takeName: Armature|idle_AHSS_M
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -5005,6 +5519,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5091,9 +5606,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_F
       takeName: Armature|idle_F
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -5101,6 +5618,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5187,9 +5705,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_M
       takeName: Armature|idle_M
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -5197,6 +5717,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5283,9 +5804,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_TS_F
       takeName: Armature|idle_TS_F
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -5293,6 +5816,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5379,9 +5903,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_TS_M
       takeName: Armature|idle_TS_M
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -5389,6 +5915,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5475,9 +6002,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|jump
       takeName: Armature|jump
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 8
@@ -5485,6 +6014,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5571,9 +6101,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|onWall
       takeName: Armature|onWall
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 8
@@ -5581,6 +6113,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5667,9 +6200,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|promotionl_poses
       takeName: Armature|promotionl_poses
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -5677,6 +6212,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5763,9 +6299,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|resupply
       takeName: Armature|resupply
+      internalID: 0
       firstFrame: 0
       lastFrame: 119
       wrapMode: 8
@@ -5773,6 +6311,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5859,9 +6398,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|run
       takeName: Armature|run
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 2
@@ -5869,6 +6410,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5955,9 +6497,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|run_sasha
       takeName: Armature|run_sasha
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 2
@@ -5965,6 +6509,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6051,9 +6596,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|run_TS
       takeName: Armature|run_TS
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 2
@@ -6061,6 +6608,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6147,9 +6695,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|slide
       takeName: Armature|slide
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 2
@@ -6157,6 +6707,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6243,9 +6794,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_armin
       takeName: Armature|special_armin
+      internalID: 0
       firstFrame: 0
       lastFrame: 169
       wrapMode: 8
@@ -6253,6 +6806,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6339,9 +6893,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_levi
       takeName: Armature|special_levi
+      internalID: 0
       firstFrame: 0
       lastFrame: 90
       wrapMode: 8
@@ -6349,6 +6905,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6435,9 +6992,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_marco_0
       takeName: Armature|special_marco_0
+      internalID: 0
       firstFrame: 0
       lastFrame: 79
       wrapMode: 8
@@ -6445,6 +7004,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6531,9 +7091,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_marco_1
       takeName: Armature|special_marco_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 79
       wrapMode: 8
@@ -6541,6 +7103,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6627,9 +7190,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_mike
       takeName: Armature|special_mike
+      internalID: 0
       firstFrame: 0
       lastFrame: 61
       wrapMode: 8
@@ -6637,6 +7202,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6723,9 +7289,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_petra
       takeName: Armature|special_petra
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 8
@@ -6733,6 +7301,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6819,9 +7388,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_sasha
       takeName: Armature|special_sasha
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 8
@@ -6829,6 +7400,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6915,9 +7487,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_shift_0
       takeName: Armature|special_shift_0
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 8
@@ -6925,6 +7499,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7011,9 +7586,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|special_shift_1
       takeName: Armature|special_shift_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 66
       wrapMode: 8
@@ -7021,6 +7598,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7107,9 +7685,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|T-pose
       takeName: Armature|T-pose
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -7117,6 +7697,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7203,9 +7784,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|toRoof
       takeName: Armature|toRoof
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 2
@@ -7213,6 +7796,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7299,9 +7883,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|wallrun
       takeName: Armature|wallrun
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 2
@@ -7309,6 +7895,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7395,9 +7982,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_reload_air_both
       takeName: Armature|AHSS_reload_air_both
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -7405,6 +7994,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7491,9 +8081,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shoot_air_L
       takeName: Armature|AHSS_shoot_air_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -7501,6 +8093,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7587,9 +8180,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shoot_air_R
       takeName: Armature|AHSS_shoot_air_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 8
@@ -7597,6 +8192,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7683,9 +8279,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|AHSS_shooth_air_both
       takeName: Armature|AHSS_shooth_air_both
+      internalID: 0
       firstFrame: 0
       lastFrame: 49
       wrapMode: 8
@@ -7693,6 +8291,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7779,9 +8378,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|TS_shoot_air_L
       takeName: Armature|TS_shoot_air_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -7789,6 +8390,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7875,9 +8477,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|TS_shoot_air_R
       takeName: Armature|TS_shoot_air_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -7885,6 +8489,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7971,9 +8576,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|TS_shoot_L
       takeName: Armature|TS_shoot_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -7981,6 +8588,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8067,9 +8675,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|TS_shoot_R
       takeName: Armature|TS_shoot_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 46
       wrapMode: 8
@@ -8077,6 +8687,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8163,9 +8774,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|run_casual
       takeName: Armature|run_casual
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 2
@@ -8173,6 +8786,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8259,9 +8873,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_casual_F
       takeName: Armature|idle_casual_F
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -8269,6 +8885,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8355,9 +8972,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|idle_casual_M
       takeName: Armature|idle_casual_M
+      internalID: 0
       firstFrame: 0
       lastFrame: 58
       wrapMode: 2
@@ -8365,6 +8984,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8451,41 +9071,970 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_air_both
+      takeName: Armature|APG_reload_air_both
+      internalID: 545241237105388871
+      firstFrame: 0
+      lastFrame: 89
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_air_L
+      takeName: Armature|APG_reload_air_L
+      internalID: 5305618569402306783
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_air_R
+      takeName: Armature|APG_reload_air_R
+      internalID: -3111896317406296736
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_both
+      takeName: Armature|APG_reload_both
+      internalID: -7028203431752917215
+      firstFrame: 0
+      lastFrame: 89
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_R
+      takeName: Armature|APG_reload_R
+      internalID: -2142665335710761160
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_reload_L
+      takeName: Armature|APG_reload_L
+      internalID: 2963844331505107392
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_shoot_L
+      takeName: Armature|APG_shoot_L
+      internalID: -2695343215310376549
+      firstFrame: 0
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_shoot_R
+      takeName: Armature|APG_shoot_R
+      internalID: 6683653126514501681
+      firstFrame: 0
+      lastFrame: 39
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|APG_shooth_both
+      takeName: Armature|APG_shooth_both
+      internalID: 6226004752024410849
+      firstFrame: 0
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Core
+        weight: 1
+      - path: Armature/Core/Controller_Body
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_L/upper_arm_L/forearm_L/hand_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/spine/chest/shoulder_R/upper_arm_R/forearm_R/hand_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_L/shin_L/foot_L
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R
+        weight: 1
+      - path: Armature/Core/Controller_Body/hip/thigh_R/shin_R/foot_R
+        weight: 1
+      - path: Armature/Core/IK_L
+        weight: 1
+      - path: Armature/Core/IK_L/knee.L
+        weight: 1
+      - path: Armature/Core/IK_R
+        weight: 1
+      - path: Armature/Core/IK_R/knee.R
+        weight: 1
+      - path: char_chest
+        weight: 1
+      - path: character_leg_0
+        weight: 1
+      - path: player_casual_arm_AH_L
+        weight: 1
+      - path: player_casual_arm_AH_R
+        weight: 1
+      - path: player_casual_FA
+        weight: 1
+      - path: player_emptyhand_L
+        weight: 1
+      - path: player_emptyhand_R
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.01
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

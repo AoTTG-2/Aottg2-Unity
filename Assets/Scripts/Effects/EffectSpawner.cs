@@ -29,6 +29,11 @@ namespace Effects
                 effect = go.AddComponent<LineRendererEffect>();
                 effect.Setup(info.Sender, 10f, settings);
             }
+            else if (name == EffectPrefabs.GasBurst)
+            {
+                effect = go.AddComponent<GasBurstEffect>();
+                effect.Setup(info.Sender, 10f, settings);
+            }
             else
             {
                 effect = go.AddComponent<BaseEffect>();

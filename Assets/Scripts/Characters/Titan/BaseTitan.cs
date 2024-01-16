@@ -25,7 +25,7 @@ namespace Characters
         public Human HoldHuman = null;
         public bool HoldHumanLeft;
         public float Size = 1f;
-        public virtual float CrippleTime => 8f;
+        public virtual float DefaultCrippleTime => 8f;
         public float StunTime = 0.3f;
         public float ActionPause = 0.2f;
         public float AttackPause = 0.2f;
@@ -33,13 +33,17 @@ namespace Characters
         public BaseCharacter TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
         protected override float GroundDistance => 1f;
-        protected virtual float DefaultRunSpeed => 12f;
-        protected virtual float DefaultWalkSpeed => 6f;
+        protected virtual float DefaultRunSpeed => 15f;
+        protected virtual float DefaultWalkSpeed => 5f;
         protected virtual float DefaultJumpForce => 150f;
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
-        public float RunSpeed;
-        public float WalkSpeed;
+        public float AttackSpeedMultiplier = 1f;
+        public Dictionary<string, float> AttackSpeeds = new Dictionary<string, float>();
+        public float RunSpeedBase;
+        public float WalkSpeedBase;
+        public float RunSpeedPerLevel;
+        public float WalkSpeedPerLevel;
         public float JumpForce;
         public float RotateSpeed;
         public float TurnSpeed;
@@ -51,11 +55,13 @@ namespace Characters
         protected float _maxTurnTime;
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
+        protected float _currentCrippleTime;
 
         // attacks
         public float _stateTimeLeft;
         protected string _currentAttack;
         protected string _currentStateAnimation;
+        protected float _currentAttackSpeed;
         protected int _currentAttackStage;
         protected bool _needFreshCoreDiff;
         protected Vector3 _oldCoreDiff;
@@ -66,10 +72,14 @@ namespace Characters
             base.Init(ai, team);
             if (data != null)
             {
-                if (data.HasKey("RunSpeed"))
-                    RunSpeed = data["RunSpeed"].AsFloat;
-                if (data.HasKey("WalkSpeed"))
-                    WalkSpeed = data["WalkSpeed"].AsFloat;
+                if (data.HasKey("RunSpeedBase"))
+                    RunSpeedBase = data["RunSpeedBase"].AsFloat;
+                if (data.HasKey("RunSpeedPerLevel"))
+                    RunSpeedPerLevel = data["RunSpeedPerLevel"].AsFloat;
+                if (data.HasKey("WalkSpeedBase"))
+                    WalkSpeedBase = data["WalkSpeedBase"].AsFloat;
+                if (data.HasKey("WalkSpeedPerLevel"))
+                    WalkSpeedPerLevel = data["WalkSpeedPerLevel"].AsFloat;
                 if (data.HasKey("JumpForce"))
                     JumpForce = data["JumpForce"].AsFloat;
                 if (data.HasKey("RotateSpeed"))
@@ -82,6 +92,13 @@ namespace Characters
                     AttackPause = data["AttackPause"].AsFloat;
                 if (data.HasKey("Health"))
                     SetHealth(data["Health"].AsInt);
+                if (data.HasKey("AttackSpeedMultiplier"))
+                    AttackSpeedMultiplier = data["AttackSpeedMultiplier"].AsFloat;
+                if (data.HasKey("AttackSpeeds"))
+                {
+                    foreach (string attack in data["AttackSpeeds"].Keys)
+                        AttackSpeeds.Add(attack, data["AttackSpeeds"][attack].AsFloat);
+                }
                 if (data.HasKey("HandHitboxRadius"))
                 {
                     BaseTitanCache.HandLHitbox.UpdateSphereCollider(data["HandHitboxRadius"].AsFloat);
@@ -146,6 +163,12 @@ namespace Characters
         {
             Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
+            _currentAttackSpeed = 1f;
+            if (AttackSpeeds.ContainsKey(attack))
+                _currentAttackSpeed = AttackSpeeds[attack];
+            _currentAttackSpeed *= AttackSpeedMultiplier;
+            if (_currentAttackSpeed <= 0f)
+                _currentAttackSpeed = 1f;
             _currentAttackStage = 0;
         }
 
@@ -246,10 +269,11 @@ namespace Characters
             }
         }
 
-        public virtual void Cripple()
+        public virtual void Cripple(float time = 0f)
         {
             if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI)
             {
+                _currentCrippleTime = time > 0f? time: DefaultCrippleTime;
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
             }
@@ -310,9 +334,23 @@ namespace Characters
             StateActionWithTime(state, animation, Cache.Animation[animation].length, fade, deactivateHitboxes);
         }
 
+        protected void StateAttack(string animation, float fade = 0.1f, bool deactivateHitboxes = true)
+        {
+            _needFreshCoreDiff = true;
+            SetRendererUpdateMode(true);
+            Ungrab();
+            if (deactivateHitboxes)
+                DeactivateAllHitboxes();
+            CrossFadeWithSpeed(animation, _currentAttackSpeed, fade);
+            State = TitanState.Attack;
+            _currentStateAnimation = animation;
+            _stateTimeLeft = Cache.Animation[animation].length / _currentAttackSpeed;
+        }
+
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCoreDiff = true;
+            SetRendererUpdateMode(state == TitanState.Jump);
             if (state != TitanState.Eat)
                 Ungrab();
             if (deactivateHitboxes)
@@ -324,6 +362,12 @@ namespace Characters
             _stateTimeLeft = stateTime;
         }
 
+        protected void SetRendererUpdateMode(bool offscreen)
+        {
+            foreach (var renderer in BaseTitanCache.SkinnedMeshRenderers)
+                renderer.updateWhenOffscreen = offscreen;
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -331,10 +375,11 @@ namespace Characters
             Cache.Rigidbody.freezeRotation = true;
             Cache.Rigidbody.useGravity = false;
             TitanColliderToggler = TitanColliderToggler.Create(this);
-            RunSpeed = DefaultRunSpeed;
-            WalkSpeed = DefaultWalkSpeed;
+            RunSpeedBase = DefaultRunSpeed;
+            WalkSpeedBase = DefaultWalkSpeed;
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
+            SetRendererUpdateMode(false);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -368,6 +413,21 @@ namespace Characters
         {
             _currentTurnTime += Time.deltaTime;
             Cache.Transform.rotation = Quaternion.Slerp(_turnStartRotation, _turnTargetRotation, Mathf.Clamp(_currentTurnTime / _maxTurnTime, 0f, 1f));
+        }
+
+        protected virtual string GetSitIdleAniamtion()
+        {
+            return BaseTitanAnimations.SitIdle;
+        }
+
+        protected virtual string GetSitFallAnimation()
+        {
+            return BaseTitanAnimations.SitFall;
+        }
+
+        protected virtual string GetSitUpAnimation()
+        {
+            return BaseTitanAnimations.SitUp;
         }
 
         protected virtual void Update()
@@ -407,27 +467,27 @@ namespace Characters
                         StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);
                 }
                 else if (State == TitanState.SitDown)
-                    StateActionWithTime(TitanState.SitIdle, BaseTitanAnimations.SitIdle, 0f, 0.1f);
+                    StateActionWithTime(TitanState.SitIdle, GetSitIdleAniamtion(), 0f, 0.1f);
                 else if (State == TitanState.SitIdle)
                 {
                     if (HasDirection || !IsSit)
-                        StateAction(TitanState.SitUp, BaseTitanAnimations.SitUp);
+                        StateAction(TitanState.SitUp, GetSitUpAnimation());
                 }
                 else if (State == TitanState.SitFall)
-                    StateActionWithTime(TitanState.SitCripple, BaseTitanAnimations.SitIdle, CrippleTime, 0.1f);
+                    StateActionWithTime(TitanState.SitCripple, GetSitIdleAniamtion(), _currentCrippleTime, 0.1f);
                 else if (State == TitanState.SitCripple)
-                    StateAction(TitanState.SitUp, BaseTitanAnimations.SitUp);
+                    StateAction(TitanState.SitUp, GetSitUpAnimation());
                 else if (State == TitanState.Run)
                 {
                     if (!HasDirection)
-                        Idle(0.5f);
+                        Idle(0.2f);
                     else if (IsWalk)
                         Walk();
                 }
                 else if (State == TitanState.Walk)
                 {
                     if (!HasDirection)
-                        Idle(0.5f);
+                        Idle(0.2f);
                     else if (!IsWalk)
                         Run();
                 }
@@ -477,9 +537,9 @@ namespace Characters
                     {
                         LastTargetDirection = GetTargetDirection();
                         if (State == TitanState.Run)
-                            Cache.Rigidbody.velocity += Cache.Transform.forward * RunSpeed * Size;
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size);
                         else if (State == TitanState.Walk)
-                            Cache.Rigidbody.velocity += Cache.Transform.forward * WalkSpeed * Size;
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (WalkSpeedBase + WalkSpeedPerLevel * Size);
                     }
                 }
                 if (_needFreshCoreDiff)
@@ -493,7 +553,13 @@ namespace Characters
                     Vector3 coreDiff = Cache.Transform.position - BaseTitanCache.Core.position;
                     Vector3 v = coreDiff - _oldCoreDiff;
                     _oldCoreDiff = coreDiff;
-                    Cache.Transform.position += v;
+                    RaycastHit hit;
+                    if (Physics.Raycast(Cache.Transform.position, coreDiff.normalized, out hit, coreDiff.magnitude, GroundMask, QueryTriggerInteraction.Ignore))
+                    {
+                        Cache.Transform.position = hit.point;
+                    }
+                    else
+                        Cache.Transform.position += v;
                 }
                 Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
             }
@@ -695,6 +761,15 @@ namespace Characters
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             return _stepPhase;
+        }
+
+        protected virtual void SpawnShatter(Vector3 position)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(position + Vector3.up * 1f, Vector3.down, out hit, 2f, GroundMask.value))
+            {
+                EffectSpawner.Spawn(EffectPrefabs.GroundShatter, hit.point + Vector3.up * 0.1f, Quaternion.identity, Size * SizeMultiplier);
+            }
         }
     }
 

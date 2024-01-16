@@ -15,7 +15,7 @@ namespace CustomLogic
         {
             if (name == "FormatFloat")
                 return Util.FormatFloat(parameters[0].UnboxToFloat(), (int)parameters[1]);
-            else if (name == "Split")
+            if (name == "Split")
             {
                 string toSplit = (string)parameters[0];
                 string splitStr = (string)parameters[1];
@@ -25,7 +25,7 @@ namespace CustomLogic
                     list.List.Add(str);
                 return list;
             }
-            else if (name == "Join")
+            if (name == "Join")
             {
                 var list = (CustomLogicListBuiltin)parameters[0];
                 string separator = (string)parameters[1];
@@ -36,44 +36,44 @@ namespace CustomLogic
                 }
                 return string.Join(separator, strList.ToArray());
             }
-            else if (name == "Substring")
+            if (name == "Substring")
             {
                 string str = (string)parameters[0];
                 int startIndex = (int)parameters[1];
                 return str.Substring(startIndex);
             }
-            else if (name == "SubstringWithLength")
+            if (name == "SubstringWithLength")
             {
                 string str = (string)parameters[0];
                 int startIndex = (int)parameters[1];
                 int length = (int)parameters[2];
                 return str.Substring(startIndex, length);
             }
-            else if (name == "Length")
+            if (name == "Length")
             {
                 string str = (string)parameters[0];
                 return str.Length;
             }
-            else if (name == "Replace")
+            if (name == "Replace")
             {
                 string str = (string)parameters[0];
                 string replace = (string)parameters[1];
                 string with = (string)parameters[2];
                 return str.Replace(replace, with);
             }
-            else if (name == "Contains")
+            if (name == "Contains")
             {
                 string str = (string)parameters[0];
                 string contains = (string)parameters[1];
                 return str.Contains(contains);
             }
-            else if (name == "StartsWith")
+            if (name == "StartsWith")
                 return ((string)parameters[0]).StartsWith((string)parameters[1]);
-            else if (name == "EndsWith")
+            if (name == "EndsWith")
                 return ((string)parameters[0]).EndsWith((string)parameters[1]);
-            else if (name == "Trim")
+            if (name == "Trim")
                 return ((string)parameters[0]).Trim();
-            else if (name == "Insert")
+            if (name == "Insert")
                 return ((string)parameters[0]).Insert((int)parameters[2], (string)parameters[1]);
             return base.CallMethod(name, parameters);
         }
@@ -82,7 +82,7 @@ namespace CustomLogic
         {
             if (name == "Newline")
                 return "\n";
-            return null;
+            return base.GetField(name);
         }
     }
 }

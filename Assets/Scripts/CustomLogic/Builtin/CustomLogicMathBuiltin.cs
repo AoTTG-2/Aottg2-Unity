@@ -22,7 +22,7 @@ namespace CustomLogic
                 float max = parameters[2].UnboxToFloat();
                 return Mathf.Clamp(value, min, max);
             }
-            else if (name == "Max")
+            if (name == "Max")
             {
                 if (parameters[0] is int && parameters[1] is int)
                     return Mathf.Max((int)parameters[0], (int)parameters[1]);
@@ -30,7 +30,7 @@ namespace CustomLogic
                 float b = parameters[1].UnboxToFloat();
                 return Mathf.Max(a, b);
             }
-            else if (name == "Min")
+            if (name == "Min")
             {
                 if (parameters[0] is int && parameters[1] is int)
                     return Mathf.Min((int)parameters[0], (int)parameters[1]);
@@ -38,71 +38,71 @@ namespace CustomLogic
                 float b = parameters[1].UnboxToFloat();
                 return Mathf.Min(a, b);
             }
-            else if (name == "Pow")
+            if (name == "Pow")
             {
                 float a = parameters[0].UnboxToFloat();
                 float b = parameters[1].UnboxToFloat();
                 return Mathf.Pow(a, b);
             }
-            else if (name == "Abs")
+            if (name == "Abs")
             {
                 if (parameters[0] is int)
                     return Mathf.Abs((int)parameters[0]);
                 float a = (float)parameters[0];
                 return Mathf.Abs(a);
             }
-            else if (name == "Sqrt")
+            if (name == "Sqrt")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.Sqrt(a);
             }
-            else if (name == "Mod")
+            if (name == "Mod")
             {
                 int a = parameters[0].UnboxToInt();
                 int b = parameters[1].UnboxToInt();
                 return a % b;
             }
-            else if (name == "Sin")
+            if (name == "Sin")
             {
                 float a = parameters[0].UnboxToFloat() * Mathf.Deg2Rad;
                 return Mathf.Sin(a);
             }
-            else if (name == "Cos")
+            if (name == "Cos")
             {
                 float a = parameters[0].UnboxToFloat() * Mathf.Deg2Rad;
                 return Mathf.Cos(a);
             }
-            else if (name == "Tan")
+            if (name == "Tan")
             {
                 float a = parameters[0].UnboxToFloat() * Mathf.Deg2Rad;
                 return Mathf.Tan(a);
             }
-            else if (name == "Asin")
+            if (name == "Asin")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.Asin(a) * Mathf.Rad2Deg;
             }
-            else if (name == "Acos")
+            if (name == "Acos")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.Acos(a) * Mathf.Rad2Deg;
             }
-            else if (name == "Atan")
+            if (name == "Atan")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.Atan(a) * Mathf.Rad2Deg;
             }
-            else if (name == "Ceil")
+            if (name == "Ceil")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.CeilToInt(a);
             }
-            else if (name == "Floor")
+            if (name == "Floor")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.FloorToInt(a);
             }
-            else if (name == "Round")
+            if (name == "Round")
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.RoundToInt(a);

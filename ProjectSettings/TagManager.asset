@@ -34,8 +34,8 @@ TagManager:
   - MapEditorObject
   - MapEditorGizmo
   - MinimapIcon
+  - Background
   - PostProcessing
-  - 
   - 
   - 
   m_SortingLayers:

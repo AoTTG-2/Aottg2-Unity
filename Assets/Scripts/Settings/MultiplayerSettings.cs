@@ -42,22 +42,36 @@ namespace Settings
             string address;
             if (AppIdMode.Value == (int)AppIdModeType.Public)
             {
-                //address = PublicAddresses[region];
-                //CurrentMultiplayerServerType = MultiplayerServerType.Public;
-                //PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
-                //PhotonNetwork.GameVersion = GetCurrentLobby();
-                address = CloudAddresses[region];
-                CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
-                PhotonNetwork.NetworkingClient.AppId = PublicAppId;
-                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby();
-                PhotonNetwork.ConnectToRegion(address);
+                // temporary until live servers have config patch
+                if (region == MultiplayerRegion.CN)
+                {
+                    address = PublicAddresses[region];
+                    CurrentMultiplayerServerType = MultiplayerServerType.Public;
+                    PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
+                    PhotonNetwork.GameVersion = GetCurrentLobby();
+                }
+                else
+                {
+                    address = CloudAddresses[region];
+                    CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
+                    PhotonNetwork.NetworkingClient.AppId = PublicAppId;
+                    PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby();
+                    PhotonNetwork.ConnectToRegion(address);
+                }
+                /*
+                address = PublicAddresses[region];
+                CurrentMultiplayerServerType = MultiplayerServerType.Public;
+                PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
+                PhotonNetwork.GameVersion = GetCurrentLobby();
+                */
             }
             else
             {
                 address = CloudAddresses[region];
                 CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
-                PhotonNetwork.ConnectToMaster(address, DefaultPort, CustomAppId.Value);
-                PhotonNetwork.GameVersion = GetCurrentLobby();
+                PhotonNetwork.NetworkingClient.AppId = CustomAppId.Value;
+                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby();
+                PhotonNetwork.ConnectToRegion(address);
             }
         }
 

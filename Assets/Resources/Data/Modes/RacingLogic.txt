@@ -5,7 +5,7 @@ class Main
     EndAfterWin = true;
     InfiniteLives = true;
     Lives = 0;
-    RespawnDelay = 5.0;
+    RespawnDelay = 1.5;
     _started = false;
     _startBarriers = null;
     _dieTimeLeft = 0.0;

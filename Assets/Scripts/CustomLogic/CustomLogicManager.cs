@@ -24,10 +24,19 @@ namespace CustomLogic
         public static string BaseLogic;
         public static bool Cutscene;
         public static bool ManualCamera;
+        public static float CameraFOV;
         public static bool SkipCutscene;
         public static Vector3 CameraPosition;
         public static Vector3 CameraRotation;
         public static Vector3 CameraVelocity;
+        public static Dictionary<string, object> RoomData = new Dictionary<string, object>();
+        public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
+
+        public override void OnJoinedRoom()
+        {
+            RoomData.Clear();
+            PersistentData.Clear();
+        }
 
         public static void Init()
         {
@@ -50,6 +59,7 @@ namespace CustomLogic
             CameraPosition = Vector3.zero;
             CameraRotation = Vector3.zero;
             CameraVelocity = Vector3.zero;
+            CameraFOV = 0f;
         }
 
         public static void ToggleCutscene(bool cutscene)
@@ -103,7 +113,7 @@ namespace CustomLogic
 
         public static void OnLoadCachedLogicRPC(PhotonMessageInfo info)
         {
-            if (!info.Sender.IsMasterClient)
+            if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
             FinishLoadLogic();
         }

@@ -282,6 +282,10 @@ namespace Characters
                         }
                         if (hit.collider.gameObject == _owner.gameObject)
                             continue;
+                        if (_owner.BackHuman != null && hit.collider.gameObject == _owner.BackHuman.gameObject)
+                            continue;
+                        if (_owner.CarryState == HumanCarryState.Carry && _owner.Carrier != null && hit.collider.gameObject == _owner.Carrier.gameObject)
+                            continue;
                         finalHit = hit;
                         foundHit = true;
                         break;

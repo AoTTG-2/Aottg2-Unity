@@ -176,7 +176,7 @@ namespace Controllers
                     {
                         if (AIState == TitanAIState.Idle)
                         {
-                            if (!IsCrawler() && RandomGen.Roll(0.3f))
+                            if (!IsCrawler() && !IsShifter() && RandomGen.Roll(0.3f))
                                 Sit();
                             else
                                 Wander();
@@ -300,6 +300,11 @@ namespace Controllers
         protected bool IsCrawler()
         {
             return _titan is BasicTitan && ((BasicTitan)_titan).IsCrawler;
+        }
+
+        protected bool IsShifter()
+        {
+            return _titan is BaseShifter;
         }
 
         protected void Idle()

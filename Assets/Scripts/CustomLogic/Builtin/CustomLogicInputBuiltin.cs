@@ -26,15 +26,16 @@ namespace CustomLogic
                     return keybind.GetKeyUp();
                 if (name == "GetKeyHold")
                     return keybind.GetKey();
+                return null;
             }
-            else if (name == "GetKeyName")
+            if (name == "GetKeyName")
             {
                 string key = (string)parameters[0];
                 string[] strArr = key.Split('/');
                 KeybindSetting keybind = (KeybindSetting)((SaveableSettingsContainer)SettingsManager.InputSettings.Settings[strArr[0]]).Settings[strArr[1]];
                 return keybind.ToString();
             }
-            else if (name == "GetMouseAim")
+            if (name == "GetMouseAim")
             {
                 RaycastHit hit;
                 Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);

@@ -1,291 +1,831 @@
 fileFormatVersion: 2
 guid: 056cd774712b3754681273ce67486508
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: Amarture_VER2
-    100002: body_0
-    100004: Bone
-    100006: Bone_end
-    100008: BridgeHand.L
-    100010: BridgeHand.L_end
-    100012: BridgeHand.R
-    100014: BridgeHand.R_end
-    100016: chest
-    100018: Configure
-    100020: Configure_end
-    100022: Controller.asset.foot.IK.L.001
-    100024: Controller.asset.foot.IK.L.002
-    100026: Controller.asset.foot.IK.R.001
-    100028: Controller.asset.foot.IK.R.002
-    100030: Controller.Body
-    100032: Controller.foot.IK.L
-    100034: Controller.foot.IK.R
-    100036: Controller.Foot.L
-    100038: Controller.Foot.L_end
-    100040: Controller.Foot.R
-    100042: Controller.Foot.R_end
-    100044: Controller.Leg.L
-    100046: Controller.Leg.R
-    100048: Core
-    100050: eyes_0
-    100052: foot.L
-    100054: foot.R
-    100056: forearm.L
-    100058: forearm.R
-    100060: hand.L
-    100062: hand.L.001
-    100064: hand.L.002
-    100066: hand.L.003
-    100068: hand.L.003_end
-    100070: hand.L.004
-    100072: hand.L.005
-    100074: hand.L.006
-    100076: hand.L.006_end
-    100078: hand.R
-    100080: hand.R.001
-    100082: hand.R.002
-    100084: hand.R.003
-    100086: hand.R.003_end
-    100088: hand.R.004
-    100090: hand.R.005
-    100092: hand.R.006
-    100094: hand.R.006_end
-    100096: head
-    100098: head_0
-    100100: hip
-    100102: IK_ElbowController.L
-    100104: IK_ElbowController.L_end
-    100106: IK_ElbowController.R
-    100108: IK_ElbowController.R_end
-    100110: IK_HandController.L
-    100112: IK_HandController.R
-    100114: kneel.L
-    100116: kneel.L_end
-    100118: kneel.R
-    100120: kneel.R_end
-    100122: neck
-    100124: shin.L
-    100126: shin.R
-    100128: shoulder.L
-    100130: shoulder.R
-    100132: spine
-    100134: thigh.L
-    100136: thigh.R
-    100138: //RootNode
-    100140: toe.L
-    100142: toe.L_end
-    100144: toe.R
-    100146: toe.R_end
-    100148: upper_arm.L
-    100150: upper_arm.R
-    400000: Amarture_VER2
-    400002: body_0
-    400004: Bone
-    400006: Bone_end
-    400008: BridgeHand.L
-    400010: BridgeHand.L_end
-    400012: BridgeHand.R
-    400014: BridgeHand.R_end
-    400016: chest
-    400018: Configure
-    400020: Configure_end
-    400022: Controller.asset.foot.IK.L.001
-    400024: Controller.asset.foot.IK.L.002
-    400026: Controller.asset.foot.IK.R.001
-    400028: Controller.asset.foot.IK.R.002
-    400030: Controller.Body
-    400032: Controller.foot.IK.L
-    400034: Controller.foot.IK.R
-    400036: Controller.Foot.L
-    400038: Controller.Foot.L_end
-    400040: Controller.Foot.R
-    400042: Controller.Foot.R_end
-    400044: Controller.Leg.L
-    400046: Controller.Leg.R
-    400048: Core
-    400050: eyes_0
-    400052: foot.L
-    400054: foot.R
-    400056: forearm.L
-    400058: forearm.R
-    400060: hand.L
-    400062: hand.L.001
-    400064: hand.L.002
-    400066: hand.L.003
-    400068: hand.L.003_end
-    400070: hand.L.004
-    400072: hand.L.005
-    400074: hand.L.006
-    400076: hand.L.006_end
-    400078: hand.R
-    400080: hand.R.001
-    400082: hand.R.002
-    400084: hand.R.003
-    400086: hand.R.003_end
-    400088: hand.R.004
-    400090: hand.R.005
-    400092: hand.R.006
-    400094: hand.R.006_end
-    400096: head
-    400098: head_0
-    400100: hip
-    400102: IK_ElbowController.L
-    400104: IK_ElbowController.L_end
-    400106: IK_ElbowController.R
-    400108: IK_ElbowController.R_end
-    400110: IK_HandController.L
-    400112: IK_HandController.R
-    400114: kneel.L
-    400116: kneel.L_end
-    400118: kneel.R
-    400120: kneel.R_end
-    400122: neck
-    400124: shin.L
-    400126: shin.R
-    400128: shoulder.L
-    400130: shoulder.R
-    400132: spine
-    400134: thigh.L
-    400136: thigh.R
-    400138: //RootNode
-    400140: toe.L
-    400142: toe.L_end
-    400144: toe.R
-    400146: toe.R_end
-    400148: upper_arm.L
-    400150: upper_arm.R
-    4300000: eyes_0
-    4300002: body_0
-    4300004: head_0
-    7400000: Amarture_VER2|attack.abnormal.getup
-    7400002: Amarture_VER2|attack.abnormal.jump
-    7400004: Amarture_VER2|attack.anti.AE.high.l
-    7400006: Amarture_VER2|attack.anti.AE.high.r
-    7400008: Amarture_VER2|attack.anti.AE.l
-    7400010: Amarture_VER2|attack.anti.AE.low.l
-    7400012: Amarture_VER2|attack.anti.AE.low.r
-    7400014: Amarture_VER2|attack.anti.AE.r
-    7400016: Amarture_VER2|attack.chest.L
-    7400018: Amarture_VER2|attack.chest.R
-    7400020: Amarture_VER2|attack.combo
-    7400022: Amarture_VER2|attack.comboPunch
-    7400024: Amarture_VER2|attack.comboSlam
-    7400026: Amarture_VER2|attack.crawler.jump.0
-    7400028: Amarture_VER2|attack.crawler.jump.1
-    7400030: Amarture_VER2|attack.crawler.jump.2
-    7400032: Amarture_VER2|attack.crush
-    7400034: Amarture_VER2|attack.front.ground
-    7400036: Amarture_VER2|attack.jumper.0
-    7400038: Amarture_VER2|attack.jumper.1
-    7400040: Amarture_VER2|attack.jumper.2
-    7400042: Amarture_VER2|attack.kick
-    7400044: Amarture_VER2|attack.scream
-    7400046: Amarture_VER2|attack.slap.back
-    7400048: Amarture_VER2|attack.slap.face
-    7400050: Amarture_VER2|attack.stomp
-    7400052: Amarture_VER2|attack.swing.l
-    7400054: Amarture_VER2|attack.swing.r
-    7400056: Amarture_VER2|attack.throw
-    7400058: Amarture_VER2|attack_quick_turn_l
-    7400060: Amarture_VER2|attack_quick_turn_r
-    7400062: Amarture_VER2|bite
-    7400064: Amarture_VER2|bite.l
-    7400066: Amarture_VER2|bite.r
-    7400068: Amarture_VER2|crawler.die
-    7400070: Amarture_VER2|crawler.idle
-    7400072: Amarture_VER2|crawler.run
-    7400074: Amarture_VER2|crawler.turnaround.L
-    7400076: Amarture_VER2|crawler.turnaround.R
-    7400078: Amarture_VER2|die.back
-    7400080: Amarture_VER2|die.blow
-    7400082: Amarture_VER2|die.front
-    7400084: Amarture_VER2|die.ground
-    7400086: Amarture_VER2|die.headOff
-    7400088: Amarture_VER2|ears
-    7400090: Amarture_VER2|eat.crush.l
-    7400092: Amarture_VER2|eat.crush.r
-    7400094: Amarture_VER2|eat.fast.L
-    7400096: Amarture_VER2|eat.fast.R
-    7400098: Amarture_VER2|eat.l
-    7400100: Amarture_VER2|eat.r
-    7400102: Amarture_VER2|eat.slow.L
-    7400104: Amarture_VER2|eat.slow.R
-    7400106: Amarture_VER2|emote_titan_no
-    7400108: Amarture_VER2|emote_titan_yes
-    7400110: Amarture_VER2|grab.air.far.l
-    7400112: Amarture_VER2|grab.air.far.r
-    7400114: Amarture_VER2|grab.air.short.l
-    7400116: Amarture_VER2|grab.air.short.r
-    7400118: Amarture_VER2|grab.back.l
-    7400120: Amarture_VER2|grab.back.r
-    7400122: Amarture_VER2|grab.core.L
-    7400124: Amarture_VER2|grab.core.R
-    7400126: Amarture_VER2|grab.ground.back.l
-    7400128: Amarture_VER2|grab.ground.back.r
-    7400130: Amarture_VER2|grab.ground.front.l
-    7400132: Amarture_VER2|grab.ground.front.r
-    7400134: Amarture_VER2|grab.head.back.l
-    7400136: Amarture_VER2|grab.head.back.r
-    7400138: Amarture_VER2|grab.head.front.1
-    7400140: Amarture_VER2|grab.head.front.r
-    7400142: Amarture_VER2|grab.high.l
-    7400144: Amarture_VER2|grab.high.r
-    7400146: Amarture_VER2|grab.stomach.l
-    7400148: Amarture_VER2|grab.stomach.r
-    7400150: Amarture_VER2|handhurt.l
-    7400152: Amarture_VER2|handhurt.r
-    7400154: Amarture_VER2|Hardening
-    7400156: Amarture_VER2|hit.eren.L
-    7400158: Amarture_VER2|hit.eren.R
-    7400160: Amarture_VER2|hit.eye
-    7400162: Amarture_VER2|idle
-    7400164: Amarture_VER2|idle.defense
-    7400166: Amarture_VER2|idle.recovery
-    7400168: Amarture_VER2|laugh
-    7400170: Amarture_VER2|PoseLib
-    7400172: Amarture_VER2|run.abnormal
-    7400174: Amarture_VER2|run.abnormal.1
-    7400176: Amarture_VER2|run.abnormal.2
-    7400178: Amarture_VER2|run.walk
-    7400180: Amarture_VER2|sit_die
-    7400182: Amarture_VER2|sit_down
-    7400184: Amarture_VER2|sit_getup
-    7400186: Amarture_VER2|sit_hit_eye
-    7400188: Amarture_VER2|sit_hunt_down
-    7400190: Amarture_VER2|sit_idle
-    7400192: Amarture_VER2|T-pose
-    7400194: Amarture_VER2|tired
-    7400196: Amarture_VER2|TitanFalling
-    7400198: Amarture_VER2|Titanjumping
-    7400200: Amarture_VER2|transform.abnormal
-    7400202: Amarture_VER2|transform.crawler
-    7400204: Amarture_VER2|turnaround.L
-    7400206: Amarture_VER2|turnaround.R
-    9500000: //RootNode
-    11100000: //RootNode
-    13700000: body_0
-    13700002: eyes_0
-    13700004: head_0
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Amarture_VER2
+  - first:
+      1: 100002
+    second: body_0
+  - first:
+      1: 100004
+    second: Bone
+  - first:
+      1: 100006
+    second: Bone_end
+  - first:
+      1: 100008
+    second: BridgeHand.L
+  - first:
+      1: 100010
+    second: BridgeHand.L_end
+  - first:
+      1: 100012
+    second: BridgeHand.R
+  - first:
+      1: 100014
+    second: BridgeHand.R_end
+  - first:
+      1: 100016
+    second: chest
+  - first:
+      1: 100018
+    second: Configure
+  - first:
+      1: 100020
+    second: Configure_end
+  - first:
+      1: 100022
+    second: Controller.asset.foot.IK.L.001
+  - first:
+      1: 100024
+    second: Controller.asset.foot.IK.L.002
+  - first:
+      1: 100026
+    second: Controller.asset.foot.IK.R.001
+  - first:
+      1: 100028
+    second: Controller.asset.foot.IK.R.002
+  - first:
+      1: 100030
+    second: Controller.Body
+  - first:
+      1: 100032
+    second: Controller.foot.IK.L
+  - first:
+      1: 100034
+    second: Controller.foot.IK.R
+  - first:
+      1: 100036
+    second: Controller.Foot.L
+  - first:
+      1: 100038
+    second: Controller.Foot.L_end
+  - first:
+      1: 100040
+    second: Controller.Foot.R
+  - first:
+      1: 100042
+    second: Controller.Foot.R_end
+  - first:
+      1: 100044
+    second: Controller.Leg.L
+  - first:
+      1: 100046
+    second: Controller.Leg.R
+  - first:
+      1: 100048
+    second: Core
+  - first:
+      1: 100050
+    second: eyes_0
+  - first:
+      1: 100052
+    second: foot.L
+  - first:
+      1: 100054
+    second: foot.R
+  - first:
+      1: 100056
+    second: forearm.L
+  - first:
+      1: 100058
+    second: forearm.R
+  - first:
+      1: 100060
+    second: hand.L
+  - first:
+      1: 100062
+    second: hand.L.001
+  - first:
+      1: 100064
+    second: hand.L.002
+  - first:
+      1: 100066
+    second: hand.L.003
+  - first:
+      1: 100068
+    second: hand.L.003_end
+  - first:
+      1: 100070
+    second: hand.L.004
+  - first:
+      1: 100072
+    second: hand.L.005
+  - first:
+      1: 100074
+    second: hand.L.006
+  - first:
+      1: 100076
+    second: hand.L.006_end
+  - first:
+      1: 100078
+    second: hand.R
+  - first:
+      1: 100080
+    second: hand.R.001
+  - first:
+      1: 100082
+    second: hand.R.002
+  - first:
+      1: 100084
+    second: hand.R.003
+  - first:
+      1: 100086
+    second: hand.R.003_end
+  - first:
+      1: 100088
+    second: hand.R.004
+  - first:
+      1: 100090
+    second: hand.R.005
+  - first:
+      1: 100092
+    second: hand.R.006
+  - first:
+      1: 100094
+    second: hand.R.006_end
+  - first:
+      1: 100096
+    second: head
+  - first:
+      1: 100098
+    second: head_0
+  - first:
+      1: 100100
+    second: hip
+  - first:
+      1: 100102
+    second: IK_ElbowController.L
+  - first:
+      1: 100104
+    second: IK_ElbowController.L_end
+  - first:
+      1: 100106
+    second: IK_ElbowController.R
+  - first:
+      1: 100108
+    second: IK_ElbowController.R_end
+  - first:
+      1: 100110
+    second: IK_HandController.L
+  - first:
+      1: 100112
+    second: IK_HandController.R
+  - first:
+      1: 100114
+    second: kneel.L
+  - first:
+      1: 100116
+    second: kneel.L_end
+  - first:
+      1: 100118
+    second: kneel.R
+  - first:
+      1: 100120
+    second: kneel.R_end
+  - first:
+      1: 100122
+    second: neck
+  - first:
+      1: 100124
+    second: shin.L
+  - first:
+      1: 100126
+    second: shin.R
+  - first:
+      1: 100128
+    second: shoulder.L
+  - first:
+      1: 100130
+    second: shoulder.R
+  - first:
+      1: 100132
+    second: spine
+  - first:
+      1: 100134
+    second: thigh.L
+  - first:
+      1: 100136
+    second: thigh.R
+  - first:
+      1: 100138
+    second: //RootNode
+  - first:
+      1: 100140
+    second: toe.L
+  - first:
+      1: 100142
+    second: toe.L_end
+  - first:
+      1: 100144
+    second: toe.R
+  - first:
+      1: 100146
+    second: toe.R_end
+  - first:
+      1: 100148
+    second: upper_arm.L
+  - first:
+      1: 100150
+    second: upper_arm.R
+  - first:
+      4: 400000
+    second: Amarture_VER2
+  - first:
+      4: 400002
+    second: body_0
+  - first:
+      4: 400004
+    second: Bone
+  - first:
+      4: 400006
+    second: Bone_end
+  - first:
+      4: 400008
+    second: BridgeHand.L
+  - first:
+      4: 400010
+    second: BridgeHand.L_end
+  - first:
+      4: 400012
+    second: BridgeHand.R
+  - first:
+      4: 400014
+    second: BridgeHand.R_end
+  - first:
+      4: 400016
+    second: chest
+  - first:
+      4: 400018
+    second: Configure
+  - first:
+      4: 400020
+    second: Configure_end
+  - first:
+      4: 400022
+    second: Controller.asset.foot.IK.L.001
+  - first:
+      4: 400024
+    second: Controller.asset.foot.IK.L.002
+  - first:
+      4: 400026
+    second: Controller.asset.foot.IK.R.001
+  - first:
+      4: 400028
+    second: Controller.asset.foot.IK.R.002
+  - first:
+      4: 400030
+    second: Controller.Body
+  - first:
+      4: 400032
+    second: Controller.foot.IK.L
+  - first:
+      4: 400034
+    second: Controller.foot.IK.R
+  - first:
+      4: 400036
+    second: Controller.Foot.L
+  - first:
+      4: 400038
+    second: Controller.Foot.L_end
+  - first:
+      4: 400040
+    second: Controller.Foot.R
+  - first:
+      4: 400042
+    second: Controller.Foot.R_end
+  - first:
+      4: 400044
+    second: Controller.Leg.L
+  - first:
+      4: 400046
+    second: Controller.Leg.R
+  - first:
+      4: 400048
+    second: Core
+  - first:
+      4: 400050
+    second: eyes_0
+  - first:
+      4: 400052
+    second: foot.L
+  - first:
+      4: 400054
+    second: foot.R
+  - first:
+      4: 400056
+    second: forearm.L
+  - first:
+      4: 400058
+    second: forearm.R
+  - first:
+      4: 400060
+    second: hand.L
+  - first:
+      4: 400062
+    second: hand.L.001
+  - first:
+      4: 400064
+    second: hand.L.002
+  - first:
+      4: 400066
+    second: hand.L.003
+  - first:
+      4: 400068
+    second: hand.L.003_end
+  - first:
+      4: 400070
+    second: hand.L.004
+  - first:
+      4: 400072
+    second: hand.L.005
+  - first:
+      4: 400074
+    second: hand.L.006
+  - first:
+      4: 400076
+    second: hand.L.006_end
+  - first:
+      4: 400078
+    second: hand.R
+  - first:
+      4: 400080
+    second: hand.R.001
+  - first:
+      4: 400082
+    second: hand.R.002
+  - first:
+      4: 400084
+    second: hand.R.003
+  - first:
+      4: 400086
+    second: hand.R.003_end
+  - first:
+      4: 400088
+    second: hand.R.004
+  - first:
+      4: 400090
+    second: hand.R.005
+  - first:
+      4: 400092
+    second: hand.R.006
+  - first:
+      4: 400094
+    second: hand.R.006_end
+  - first:
+      4: 400096
+    second: head
+  - first:
+      4: 400098
+    second: head_0
+  - first:
+      4: 400100
+    second: hip
+  - first:
+      4: 400102
+    second: IK_ElbowController.L
+  - first:
+      4: 400104
+    second: IK_ElbowController.L_end
+  - first:
+      4: 400106
+    second: IK_ElbowController.R
+  - first:
+      4: 400108
+    second: IK_ElbowController.R_end
+  - first:
+      4: 400110
+    second: IK_HandController.L
+  - first:
+      4: 400112
+    second: IK_HandController.R
+  - first:
+      4: 400114
+    second: kneel.L
+  - first:
+      4: 400116
+    second: kneel.L_end
+  - first:
+      4: 400118
+    second: kneel.R
+  - first:
+      4: 400120
+    second: kneel.R_end
+  - first:
+      4: 400122
+    second: neck
+  - first:
+      4: 400124
+    second: shin.L
+  - first:
+      4: 400126
+    second: shin.R
+  - first:
+      4: 400128
+    second: shoulder.L
+  - first:
+      4: 400130
+    second: shoulder.R
+  - first:
+      4: 400132
+    second: spine
+  - first:
+      4: 400134
+    second: thigh.L
+  - first:
+      4: 400136
+    second: thigh.R
+  - first:
+      4: 400138
+    second: //RootNode
+  - first:
+      4: 400140
+    second: toe.L
+  - first:
+      4: 400142
+    second: toe.L_end
+  - first:
+      4: 400144
+    second: toe.R
+  - first:
+      4: 400146
+    second: toe.R_end
+  - first:
+      4: 400148
+    second: upper_arm.L
+  - first:
+      4: 400150
+    second: upper_arm.R
+  - first:
+      43: 4300000
+    second: eyes_0
+  - first:
+      43: 4300002
+    second: body_0
+  - first:
+      43: 4300004
+    second: head_0
+  - first:
+      74: 7400000
+    second: Amarture_VER2|attack.abnormal.getup
+  - first:
+      74: 7400002
+    second: Amarture_VER2|attack.abnormal.jump
+  - first:
+      74: 7400004
+    second: Amarture_VER2|attack.anti.AE.high.l
+  - first:
+      74: 7400006
+    second: Amarture_VER2|attack.anti.AE.high.r
+  - first:
+      74: 7400008
+    second: Amarture_VER2|attack.anti.AE.l
+  - first:
+      74: 7400010
+    second: Amarture_VER2|attack.anti.AE.low.l
+  - first:
+      74: 7400012
+    second: Amarture_VER2|attack.anti.AE.low.r
+  - first:
+      74: 7400014
+    second: Amarture_VER2|attack.anti.AE.r
+  - first:
+      74: 7400016
+    second: Amarture_VER2|attack.chest.L
+  - first:
+      74: 7400018
+    second: Amarture_VER2|attack.chest.R
+  - first:
+      74: 7400020
+    second: Amarture_VER2|attack.combo
+  - first:
+      74: 7400022
+    second: Amarture_VER2|attack.comboPunch
+  - first:
+      74: 7400024
+    second: Amarture_VER2|attack.comboSlam
+  - first:
+      74: 7400026
+    second: Amarture_VER2|attack.crawler.jump.0
+  - first:
+      74: 7400028
+    second: Amarture_VER2|attack.crawler.jump.1
+  - first:
+      74: 7400030
+    second: Amarture_VER2|attack.crawler.jump.2
+  - first:
+      74: 7400032
+    second: Amarture_VER2|attack.crush
+  - first:
+      74: 7400034
+    second: Amarture_VER2|attack.front.ground
+  - first:
+      74: 7400036
+    second: Amarture_VER2|attack.jumper.0
+  - first:
+      74: 7400038
+    second: Amarture_VER2|attack.jumper.1
+  - first:
+      74: 7400040
+    second: Amarture_VER2|attack.jumper.2
+  - first:
+      74: 7400042
+    second: Amarture_VER2|attack.kick
+  - first:
+      74: 7400044
+    second: Amarture_VER2|attack.scream
+  - first:
+      74: 7400046
+    second: Amarture_VER2|attack.slap.back
+  - first:
+      74: 7400048
+    second: Amarture_VER2|attack.slap.face
+  - first:
+      74: 7400050
+    second: Amarture_VER2|attack.stomp
+  - first:
+      74: 7400052
+    second: Amarture_VER2|attack.swing.l
+  - first:
+      74: 7400054
+    second: Amarture_VER2|attack.swing.r
+  - first:
+      74: 7400056
+    second: Amarture_VER2|attack.throw
+  - first:
+      74: 7400058
+    second: Amarture_VER2|attack_quick_turn_l
+  - first:
+      74: 7400060
+    second: Amarture_VER2|attack_quick_turn_r
+  - first:
+      74: 7400062
+    second: Amarture_VER2|bite
+  - first:
+      74: 7400064
+    second: Amarture_VER2|bite.l
+  - first:
+      74: 7400066
+    second: Amarture_VER2|bite.r
+  - first:
+      74: 7400068
+    second: Amarture_VER2|crawler.die
+  - first:
+      74: 7400070
+    second: Amarture_VER2|crawler.idle
+  - first:
+      74: 7400072
+    second: Amarture_VER2|crawler.run
+  - first:
+      74: 7400074
+    second: Amarture_VER2|crawler.turnaround.L
+  - first:
+      74: 7400076
+    second: Amarture_VER2|crawler.turnaround.R
+  - first:
+      74: 7400078
+    second: Amarture_VER2|die.back
+  - first:
+      74: 7400080
+    second: Amarture_VER2|die.blow
+  - first:
+      74: 7400082
+    second: Amarture_VER2|die.front
+  - first:
+      74: 7400084
+    second: Amarture_VER2|die.ground
+  - first:
+      74: 7400086
+    second: Amarture_VER2|die.headOff
+  - first:
+      74: 7400088
+    second: Amarture_VER2|ears
+  - first:
+      74: 7400090
+    second: Amarture_VER2|eat.crush.l
+  - first:
+      74: 7400092
+    second: Amarture_VER2|eat.crush.r
+  - first:
+      74: 7400094
+    second: Amarture_VER2|eat.fast.L
+  - first:
+      74: 7400096
+    second: Amarture_VER2|eat.fast.R
+  - first:
+      74: 7400098
+    second: Amarture_VER2|eat.l
+  - first:
+      74: 7400100
+    second: Amarture_VER2|eat.r
+  - first:
+      74: 7400102
+    second: Amarture_VER2|eat.slow.L
+  - first:
+      74: 7400104
+    second: Amarture_VER2|eat.slow.R
+  - first:
+      74: 7400106
+    second: Amarture_VER2|emote_titan_no
+  - first:
+      74: 7400108
+    second: Amarture_VER2|emote_titan_yes
+  - first:
+      74: 7400110
+    second: Amarture_VER2|grab.air.far.l
+  - first:
+      74: 7400112
+    second: Amarture_VER2|grab.air.far.r
+  - first:
+      74: 7400114
+    second: Amarture_VER2|grab.air.short.l
+  - first:
+      74: 7400116
+    second: Amarture_VER2|grab.air.short.r
+  - first:
+      74: 7400118
+    second: Amarture_VER2|grab.back.l
+  - first:
+      74: 7400120
+    second: Amarture_VER2|grab.back.r
+  - first:
+      74: 7400122
+    second: Amarture_VER2|grab.core.L
+  - first:
+      74: 7400124
+    second: Amarture_VER2|grab.core.R
+  - first:
+      74: 7400126
+    second: Amarture_VER2|grab.ground.back.l
+  - first:
+      74: 7400128
+    second: Amarture_VER2|grab.ground.back.r
+  - first:
+      74: 7400130
+    second: Amarture_VER2|grab.ground.front.l
+  - first:
+      74: 7400132
+    second: Amarture_VER2|grab.ground.front.r
+  - first:
+      74: 7400134
+    second: Amarture_VER2|grab.head.back.l
+  - first:
+      74: 7400136
+    second: Amarture_VER2|grab.head.back.r
+  - first:
+      74: 7400138
+    second: Amarture_VER2|grab.head.front.1
+  - first:
+      74: 7400140
+    second: Amarture_VER2|grab.head.front.r
+  - first:
+      74: 7400142
+    second: Amarture_VER2|grab.high.l
+  - first:
+      74: 7400144
+    second: Amarture_VER2|grab.high.r
+  - first:
+      74: 7400146
+    second: Amarture_VER2|grab.stomach.l
+  - first:
+      74: 7400148
+    second: Amarture_VER2|grab.stomach.r
+  - first:
+      74: 7400150
+    second: Amarture_VER2|handhurt.l
+  - first:
+      74: 7400152
+    second: Amarture_VER2|handhurt.r
+  - first:
+      74: 7400154
+    second: Amarture_VER2|Hardening
+  - first:
+      74: 7400156
+    second: Amarture_VER2|hit.eren.L
+  - first:
+      74: 7400158
+    second: Amarture_VER2|hit.eren.R
+  - first:
+      74: 7400160
+    second: Amarture_VER2|hit.eye
+  - first:
+      74: 7400162
+    second: Amarture_VER2|idle
+  - first:
+      74: 7400164
+    second: Amarture_VER2|idle.defense
+  - first:
+      74: 7400166
+    second: Amarture_VER2|idle.recovery
+  - first:
+      74: 7400168
+    second: Amarture_VER2|laugh
+  - first:
+      74: 7400170
+    second: Amarture_VER2|PoseLib
+  - first:
+      74: 7400172
+    second: Amarture_VER2|run.abnormal
+  - first:
+      74: 7400174
+    second: Amarture_VER2|run.abnormal.1
+  - first:
+      74: 7400176
+    second: Amarture_VER2|run.abnormal.2
+  - first:
+      74: 7400178
+    second: Amarture_VER2|run.walk
+  - first:
+      74: 7400180
+    second: Amarture_VER2|sit_die
+  - first:
+      74: 7400182
+    second: Amarture_VER2|sit_down
+  - first:
+      74: 7400184
+    second: Amarture_VER2|sit_getup
+  - first:
+      74: 7400186
+    second: Amarture_VER2|sit_hit_eye
+  - first:
+      74: 7400188
+    second: Amarture_VER2|sit_hunt_down
+  - first:
+      74: 7400190
+    second: Amarture_VER2|sit_idle
+  - first:
+      74: 7400192
+    second: Amarture_VER2|T-pose
+  - first:
+      74: 7400194
+    second: Amarture_VER2|tired
+  - first:
+      74: 7400196
+    second: Amarture_VER2|TitanFalling
+  - first:
+      74: 7400198
+    second: Amarture_VER2|Titanjumping
+  - first:
+      74: 7400200
+    second: Amarture_VER2|transform.abnormal
+  - first:
+      74: 7400202
+    second: Amarture_VER2|transform.crawler
+  - first:
+      74: 7400204
+    second: Amarture_VER2|turnaround.L
+  - first:
+      74: 7400206
+    second: Amarture_VER2|turnaround.R
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: body_0
+  - first:
+      137: 13700002
+    second: eyes_0
+  - first:
+      137: 13700004
+    second: head_0
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Amarture_VER2|attack.abnormal.getup
       takeName: Amarture_VER2|attack.abnormal.getup
+      internalID: 0
       firstFrame: 0
       lastFrame: 68
       wrapMode: 0
@@ -293,6 +833,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -461,9 +1002,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.abnormal.jump
       takeName: Amarture_VER2|attack.abnormal.jump
+      internalID: 0
       firstFrame: 0
       lastFrame: 99
       wrapMode: 0
@@ -471,6 +1014,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -639,9 +1183,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.high.l
       takeName: Amarture_VER2|attack.anti.AE.high.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -649,6 +1195,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -817,9 +1364,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.high.r
       takeName: Amarture_VER2|attack.anti.AE.high.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -827,6 +1376,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -995,9 +1545,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.l
       takeName: Amarture_VER2|attack.anti.AE.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -1005,6 +1557,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1173,9 +1726,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.low.l
       takeName: Amarture_VER2|attack.anti.AE.low.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -1183,6 +1738,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1351,9 +1907,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.low.r
       takeName: Amarture_VER2|attack.anti.AE.low.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -1361,6 +1919,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1529,9 +2088,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.anti.AE.r
       takeName: Amarture_VER2|attack.anti.AE.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -1539,6 +2100,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1707,9 +2269,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.chest.L
       takeName: Amarture_VER2|attack.chest.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 97
       wrapMode: 0
@@ -1717,6 +2281,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1885,9 +2450,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.chest.R
       takeName: Amarture_VER2|attack.chest.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 97
       wrapMode: 0
@@ -1895,6 +2462,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2063,9 +2631,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.combo
       takeName: Amarture_VER2|attack.combo
+      internalID: 0
       firstFrame: 0
       lastFrame: 208
       wrapMode: 0
@@ -2073,6 +2643,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2241,16 +2812,19 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.comboPunch
       takeName: Amarture_VER2|attack.comboPunch
+      internalID: 0
       firstFrame: 0
-      lastFrame: 84
+      lastFrame: 110
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2419,9 +2993,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.comboSlam
       takeName: Amarture_VER2|attack.comboSlam
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 0
@@ -2429,6 +3005,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2597,9 +3174,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.crawler.jump.0
       takeName: Amarture_VER2|attack.crawler.jump.0
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -2607,6 +3186,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2775,9 +3355,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.crawler.jump.1
       takeName: Amarture_VER2|attack.crawler.jump.1
+      internalID: 0
       firstFrame: 0
       lastFrame: 26
       wrapMode: 0
@@ -2785,6 +3367,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2953,9 +3536,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.crawler.jump.2
       takeName: Amarture_VER2|attack.crawler.jump.2
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -2963,6 +3548,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3131,9 +3717,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.crush
       takeName: Amarture_VER2|attack.crush
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -3141,6 +3729,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3309,9 +3898,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.front.ground
       takeName: Amarture_VER2|attack.front.ground
+      internalID: 0
       firstFrame: 0
       lastFrame: 210
       wrapMode: 0
@@ -3319,6 +3910,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3487,9 +4079,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.jumper.0
       takeName: Amarture_VER2|attack.jumper.0
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -3497,6 +4091,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3665,9 +4260,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.jumper.1
       takeName: Amarture_VER2|attack.jumper.1
+      internalID: 0
       firstFrame: 0
       lastFrame: 32
       wrapMode: 0
@@ -3675,6 +4272,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -3843,9 +4441,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.jumper.2
       takeName: Amarture_VER2|attack.jumper.2
+      internalID: 0
       firstFrame: 0
       lastFrame: 94
       wrapMode: 0
@@ -3853,6 +4453,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4021,9 +4622,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.kick
       takeName: Amarture_VER2|attack.kick
+      internalID: 0
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -4031,6 +4634,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4199,9 +4803,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.scream
       takeName: Amarture_VER2|attack.scream
+      internalID: 0
       firstFrame: 0
       lastFrame: 272
       wrapMode: 0
@@ -4209,6 +4815,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4377,9 +4984,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.slap.back
       takeName: Amarture_VER2|attack.slap.back
+      internalID: 0
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -4387,6 +4996,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4555,9 +5165,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.slap.face
       takeName: Amarture_VER2|attack.slap.face
+      internalID: 0
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -4565,6 +5177,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4733,9 +5346,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.stomp
       takeName: Amarture_VER2|attack.stomp
+      internalID: 0
       firstFrame: 0
       lastFrame: 159
       wrapMode: 0
@@ -4743,6 +5358,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -4911,9 +5527,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.swing.l
       takeName: Amarture_VER2|attack.swing.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 135
       wrapMode: 0
@@ -4921,6 +5539,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5089,9 +5708,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.swing.r
       takeName: Amarture_VER2|attack.swing.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 135
       wrapMode: 0
@@ -5099,6 +5720,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5267,9 +5889,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack.throw
       takeName: Amarture_VER2|attack.throw
+      internalID: 0
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -5277,6 +5901,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5445,9 +6070,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack_quick_turn_l
       takeName: Amarture_VER2|attack_quick_turn_l
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -5455,6 +6082,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5623,9 +6251,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|attack_quick_turn_r
       takeName: Amarture_VER2|attack_quick_turn_r
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -5633,6 +6263,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5801,9 +6432,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|bite
       takeName: Amarture_VER2|bite
+      internalID: 0
       firstFrame: 0
       lastFrame: 111
       wrapMode: 0
@@ -5811,6 +6444,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -5979,9 +6613,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|bite.l
       takeName: Amarture_VER2|bite.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -5989,6 +6625,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6157,9 +6794,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|bite.r
       takeName: Amarture_VER2|bite.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -6167,6 +6806,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6335,9 +6975,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|crawler.die
       takeName: Amarture_VER2|crawler.die
+      internalID: 0
       firstFrame: 0
       lastFrame: 98
       wrapMode: 0
@@ -6345,6 +6987,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6513,9 +7156,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|crawler.idle
       takeName: Amarture_VER2|crawler.idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 200
       wrapMode: 2
@@ -6523,6 +7168,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6691,9 +7337,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|crawler.run
       takeName: Amarture_VER2|crawler.run
+      internalID: 0
       firstFrame: 0
       lastFrame: 32
       wrapMode: 2
@@ -6701,6 +7349,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -6869,9 +7518,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|crawler.turnaround.L
       takeName: Amarture_VER2|crawler.turnaround.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -6879,6 +7530,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7047,9 +7699,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|crawler.turnaround.R
       takeName: Amarture_VER2|crawler.turnaround.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -7057,6 +7711,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7225,9 +7880,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|die.back
       takeName: Amarture_VER2|die.back
+      internalID: 0
       firstFrame: 0
       lastFrame: 138
       wrapMode: 0
@@ -7235,6 +7892,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7403,9 +8061,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|die.blow
       takeName: Amarture_VER2|die.blow
+      internalID: 0
       firstFrame: 0
       lastFrame: 67
       wrapMode: 0
@@ -7413,6 +8073,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7581,9 +8242,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|die.front
       takeName: Amarture_VER2|die.front
+      internalID: 0
       firstFrame: 0
       lastFrame: 170
       wrapMode: 0
@@ -7591,6 +8254,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7759,9 +8423,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|die.ground
       takeName: Amarture_VER2|die.ground
+      internalID: 0
       firstFrame: 0
       lastFrame: 98
       wrapMode: 0
@@ -7769,6 +8435,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -7937,9 +8604,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|die.headOff
       takeName: Amarture_VER2|die.headOff
+      internalID: 0
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -7947,6 +8616,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8115,9 +8785,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|ears
       takeName: Amarture_VER2|ears
+      internalID: 0
       firstFrame: 0
       lastFrame: 227
       wrapMode: 0
@@ -8125,6 +8797,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8293,9 +8966,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.crush.l
       takeName: Amarture_VER2|eat.crush.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 123
       wrapMode: 0
@@ -8303,6 +8978,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8471,9 +9147,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.crush.r
       takeName: Amarture_VER2|eat.crush.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 123
       wrapMode: 0
@@ -8481,6 +9159,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8649,9 +9328,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.fast.L
       takeName: Amarture_VER2|eat.fast.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 267
       wrapMode: 0
@@ -8659,6 +9340,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -8827,9 +9509,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.fast.R
       takeName: Amarture_VER2|eat.fast.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 267
       wrapMode: 0
@@ -8837,6 +9521,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9005,9 +9690,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.l
       takeName: Amarture_VER2|eat.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 540
       wrapMode: 0
@@ -9015,6 +9702,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9183,9 +9871,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.r
       takeName: Amarture_VER2|eat.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 540
       wrapMode: 0
@@ -9193,6 +9883,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9361,9 +10052,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.slow.L
       takeName: Amarture_VER2|eat.slow.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 897
       wrapMode: 0
@@ -9371,6 +10064,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9539,9 +10233,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|eat.slow.R
       takeName: Amarture_VER2|eat.slow.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 897
       wrapMode: 0
@@ -9549,6 +10245,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9717,9 +10414,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|emote_titan_no
       takeName: Amarture_VER2|emote_titan_no
+      internalID: 0
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -9727,6 +10426,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -9895,9 +10595,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|emote_titan_yes
       takeName: Amarture_VER2|emote_titan_yes
+      internalID: 0
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -9905,6 +10607,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10073,9 +10776,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.air.far.l
       takeName: Amarture_VER2|grab.air.far.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -10083,6 +10788,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10251,9 +10957,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.air.far.r
       takeName: Amarture_VER2|grab.air.far.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -10261,6 +10969,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10429,9 +11138,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.air.short.l
       takeName: Amarture_VER2|grab.air.short.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 90
       wrapMode: 0
@@ -10439,6 +11150,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10607,9 +11319,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.air.short.r
       takeName: Amarture_VER2|grab.air.short.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 131
       wrapMode: 0
@@ -10617,6 +11331,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10785,9 +11500,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.back.l
       takeName: Amarture_VER2|grab.back.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 166
       wrapMode: 0
@@ -10795,6 +11512,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -10963,9 +11681,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.back.r
       takeName: Amarture_VER2|grab.back.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -10973,6 +11693,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -11141,9 +11862,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.core.L
       takeName: Amarture_VER2|grab.core.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 114
       wrapMode: 0
@@ -11151,6 +11874,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -11319,9 +12043,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.core.R
       takeName: Amarture_VER2|grab.core.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 114
       wrapMode: 0
@@ -11329,6 +12055,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -11497,9 +12224,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.ground.back.l
       takeName: Amarture_VER2|grab.ground.back.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -11507,6 +12236,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -11675,9 +12405,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.ground.back.r
       takeName: Amarture_VER2|grab.ground.back.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -11685,6 +12417,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -11853,9 +12586,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.ground.front.l
       takeName: Amarture_VER2|grab.ground.front.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -11863,6 +12598,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12031,9 +12767,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.ground.front.r
       takeName: Amarture_VER2|grab.ground.front.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -12041,6 +12779,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12209,9 +12948,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.head.back.l
       takeName: Amarture_VER2|grab.head.back.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 132
       wrapMode: 0
@@ -12219,6 +12960,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12387,9 +13129,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.head.back.r
       takeName: Amarture_VER2|grab.head.back.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 132
       wrapMode: 0
@@ -12397,6 +13141,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12565,9 +13310,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.head.front.1
       takeName: Amarture_VER2|grab.head.front.1
+      internalID: 0
       firstFrame: 0
       lastFrame: 159
       wrapMode: 0
@@ -12575,6 +13322,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12743,9 +13491,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.head.front.r
       takeName: Amarture_VER2|grab.head.front.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 159
       wrapMode: 0
@@ -12753,6 +13503,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -12921,9 +13672,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.high.l
       takeName: Amarture_VER2|grab.high.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 171
       wrapMode: 0
@@ -12931,6 +13684,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13099,9 +13853,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.high.r
       takeName: Amarture_VER2|grab.high.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 171
       wrapMode: 0
@@ -13109,6 +13865,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13277,9 +14034,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.stomach.l
       takeName: Amarture_VER2|grab.stomach.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -13287,6 +14046,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13455,9 +14215,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|grab.stomach.r
       takeName: Amarture_VER2|grab.stomach.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -13465,6 +14227,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13633,9 +14396,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|handhurt.l
       takeName: Amarture_VER2|handhurt.l
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -13643,6 +14408,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13811,9 +14577,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|handhurt.r
       takeName: Amarture_VER2|handhurt.r
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -13821,6 +14589,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -13989,9 +14758,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|Hardening
       takeName: Amarture_VER2|Hardening
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -13999,6 +14770,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -14167,9 +14939,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|hit.eren.L
       takeName: Amarture_VER2|hit.eren.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -14177,6 +14951,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -14345,9 +15120,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|hit.eren.R
       takeName: Amarture_VER2|hit.eren.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -14355,6 +15132,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -14523,9 +15301,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|hit.eye
       takeName: Amarture_VER2|hit.eye
+      internalID: 0
       firstFrame: 0
       lastFrame: 227
       wrapMode: 0
@@ -14533,6 +15313,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -14701,9 +15482,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|idle
       takeName: Amarture_VER2|idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 100
       wrapMode: 2
@@ -14711,6 +15494,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -14879,9 +15663,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|idle.defense
       takeName: Amarture_VER2|idle.defense
+      internalID: 0
       firstFrame: 0
       lastFrame: 136
       wrapMode: 0
@@ -14889,6 +15675,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15057,9 +15844,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|idle.recovery
       takeName: Amarture_VER2|idle.recovery
+      internalID: 0
       firstFrame: 0
       lastFrame: 434
       wrapMode: 0
@@ -15067,6 +15856,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15235,9 +16025,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|laugh
       takeName: Amarture_VER2|laugh
+      internalID: 0
       firstFrame: 0
       lastFrame: 210
       wrapMode: 0
@@ -15245,6 +16037,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15413,9 +16206,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|PoseLib
       takeName: Amarture_VER2|PoseLib
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -15423,6 +16218,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15591,9 +16387,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|run.abnormal
       takeName: Amarture_VER2|run.abnormal
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 2
@@ -15601,6 +16399,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15769,9 +16568,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|run.abnormal.1
       takeName: Amarture_VER2|run.abnormal.1
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 2
@@ -15779,6 +16580,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -15947,9 +16749,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|run.abnormal.2
       takeName: Amarture_VER2|run.abnormal.2
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 2
@@ -15957,6 +16761,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -16125,9 +16930,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|run.walk
       takeName: Amarture_VER2|run.walk
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 2
@@ -16135,6 +16942,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -16303,9 +17111,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_die
       takeName: Amarture_VER2|sit_die
+      internalID: 0
       firstFrame: 0
       lastFrame: 140
       wrapMode: 0
@@ -16313,6 +17123,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -16481,9 +17292,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_down
       takeName: Amarture_VER2|sit_down
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -16491,6 +17304,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -16659,9 +17473,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_getup
       takeName: Amarture_VER2|sit_getup
+      internalID: 0
       firstFrame: 0
       lastFrame: 100
       wrapMode: 0
@@ -16669,6 +17485,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -16837,9 +17654,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_hit_eye
       takeName: Amarture_VER2|sit_hit_eye
+      internalID: 0
       firstFrame: 0
       lastFrame: 200
       wrapMode: 0
@@ -16847,6 +17666,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17015,9 +17835,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_hunt_down
       takeName: Amarture_VER2|sit_hunt_down
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -17025,6 +17847,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17193,9 +18016,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|sit_idle
       takeName: Amarture_VER2|sit_idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 120
       wrapMode: 2
@@ -17203,6 +18028,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17371,9 +18197,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|T-pose
       takeName: Amarture_VER2|T-pose
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -17381,6 +18209,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17549,9 +18378,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|tired
       takeName: Amarture_VER2|tired
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 2
@@ -17559,6 +18390,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17727,9 +18559,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|TitanFalling
       takeName: Amarture_VER2|TitanFalling
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -17737,6 +18571,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -17905,9 +18740,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|Titanjumping
       takeName: Amarture_VER2|Titanjumping
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -17915,6 +18752,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -18083,9 +18921,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|transform.abnormal
       takeName: Amarture_VER2|transform.abnormal
+      internalID: 0
       firstFrame: 0
       lastFrame: 122
       wrapMode: 0
@@ -18093,6 +18933,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -18261,9 +19102,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|transform.crawler
       takeName: Amarture_VER2|transform.crawler
+      internalID: 0
       firstFrame: 0
       lastFrame: 125
       wrapMode: 0
@@ -18271,6 +19114,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -18439,9 +19283,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|turnaround.L
       takeName: Amarture_VER2|turnaround.L
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -18449,6 +19295,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -18617,9 +19464,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Amarture_VER2|turnaround.R
       takeName: Amarture_VER2|turnaround.R
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -18627,6 +19476,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -18795,41 +19645,803 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|crawler.sit.idle
+      takeName: Amarture_VER2|crawler.sit.idle
+      internalID: 3374593250629531405
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|crawler.hunt.down
+      takeName: Amarture_VER2|crawler.hunt.down
+      internalID: -1549092288650665466
+      firstFrame: 0
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|crawler.getup
+      takeName: Amarture_VER2|crawler.getup
+      internalID: -3687195750689487829
+      firstFrame: 0
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|crawler.hiteyes
+      takeName: Amarture_VER2|crawler.hiteyes
+      internalID: 4891686405347437855
+      firstFrame: 0
+      lastFrame: 227
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .425000012
+    globalScale: 0.425
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.425
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

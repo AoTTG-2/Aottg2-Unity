@@ -58,6 +58,7 @@ namespace ApplicationManagers
             CustomLogicManager.Init();
             ChatManager.Init();
             PastebinLoader.Init();
+            AssetBundleManager.Init();
             MusicManager.Init();
             CustomSerialization.Init();
             if (ApplicationConfig.DevelopmentMode)

@@ -25,8 +25,9 @@ namespace CustomLogic
                     return param.UnboxToFloat();
                 if (param is bool)
                     return ((bool)param) ? 1f : 0f;
+                return null;
             }
-            else if (name == "ToInt")
+            if (name == "ToInt")
             {
                 object param = parameters[0];
                 if (param is string)
@@ -37,8 +38,9 @@ namespace CustomLogic
                     return (int)param;
                 if (param is bool)
                     return ((bool)param) ? 1 : 0;
+                return null;
             }
-            else if (name == "ToBool")
+            if (name == "ToBool")
             {
                 object param = parameters[0];
                 if (param is string)
@@ -49,15 +51,43 @@ namespace CustomLogic
                     return (int)param != 0;
                 if (param is bool)
                     return (bool)param;
+                return null;
             }
-            else if (name == "ToString")
+            if (name == "ToString")
             {
                 object param = parameters[0];
+                if (param == null)
+                    return "null";
                 if (param is string)
                     return (string)param;
                 if (param is bool)
                     return ((bool)param) ? "true" : "false";
                 return param.ToString();
+            }
+            if (name == "IsFloat")
+            {
+                object param = parameters[0];
+                return param != null && param is float;
+            }
+            if (name == "IsInt")
+            {
+                object param = parameters[0];
+                return param != null && param is int;
+            }
+            if (name == "IsBool")
+            {
+                object param = parameters[0];
+                return param != null && param is bool;
+            }
+            if (name == "IsString")
+            {
+                object param = parameters[0];
+                return param != null && param is string;
+            }
+            if (name == "IsObject")
+            {
+                object param = parameters[0];
+                return param != null && param is CustomLogicBaseBuiltin;
             }
             return base.CallMethod(name, parameters);
         }

@@ -104,7 +104,7 @@ namespace Map
             else if (sceneName == SceneName.MapEditor)
                 StartMapEditor();
             else
-                MapLoader.StartLoadObjects(new List<MapScriptBaseObject>(), false);
+                MapLoader.StartLoadObjects(new List<string>(), new List<MapScriptBaseObject>(), null, false);
         }
 
         private static void StartInGame()
@@ -144,7 +144,7 @@ namespace Map
             }
             MapScript = new MapScript();
             MapScript.Deserialize(BuiltinLevels.LoadMap("Custom", current.Value));
-            MapLoader.StartLoadObjects(MapScript.Objects.Objects, true);
+            MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options, true);
         }
 
         public static void OnLoadBuiltinMapRPC(string category, string name, PhotonMessageInfo info)
@@ -160,7 +160,7 @@ namespace Map
 
         public static void OnLoadCachedMapRPC(PhotonMessageInfo info)
         {
-            if (!info.Sender.IsMasterClient)
+            if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
             LoadMap();
         }
@@ -168,7 +168,7 @@ namespace Map
         public static void LoadMap()
         {
             PhotonNetwork.LocalPlayer.SetCustomProperty("CustomMapHash", MapTransfer.MapHash);
-            MapLoader.StartLoadObjects(MapScript.Objects.Objects);
+            MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options);
         }
 
         public override void OnPlayerEnteredRoom(Player player)
