@@ -1,3 +1,58 @@
+component PhysicMaterialModifier
+{
+    IncludeChildren = false;
+    IncludeChildrenTooltip = "If this option is enabled, the child map objects' physic material will also be modified.";
+    
+    StaticFriction = 0.6;
+    DynamicFriction = 0.6;
+    Bounciness = 0.0;
+    
+    FrictionCombine = "Average";
+    FrictionCombineDropbox = "Average, Minimum, Multiply, Maximum";
+    
+    BounceCombine = "Average";
+    BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
+
+    function Init()
+    {
+        self.StaticFriction = Math.Max(0.0, self.StaticFriction);
+        self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
+        self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
+        
+        self.MapObject.AddBuiltinComponent("PhysicMaterialModifier", self.IncludeChildren);
+        self.SetStaticFriction(self.StaticFriction);
+        self.SetDynamicFriction(self.DynamicFriction);
+        self.SetBounciness(self.Bounciness);
+        self.SetFrictionCombine(self.FrictionCombine);
+        self.SetBounceCombine(self.BounceCombine);
+    }
+    
+    function SetStaticFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("PhysicMaterialModifier", "StaticFriction", value);
+    }
+    
+    function SetDynamicFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("PhysicMaterialModifier", "DynamicFriction", value);
+    }
+        
+    function SetBounciness(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("PhysicMaterialModifier", "Bounciness", value);
+    }
+    
+    function SetFrictionCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("PhysicMaterialModifier", "FrictionCombine", value);
+    }
+        
+    function SetBounceCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("PhysicMaterialModifier", "BounceCombine", value);
+    }
+}
+
 component CaptureZone
 {
     Enabled = false;
@@ -528,10 +583,12 @@ component Rigidbody
     Mass = 1.0;
     Gravity = Vector3(0.0, -20.0, 0.0);
     FreezeRotation = false;
+    Interpolate = "None";
+    InterpolateDropbox = "None, Interpolate, Extrapolate";
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation);
+        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
     }
 
     function SetVelocity(velocity)

@@ -62,6 +62,19 @@ namespace CustomLogic
                     force.force = gravity;
                     rigidbody.useGravity = false;
                     rigidbody.freezeRotation = (bool)parameters[3];
+
+                    var interpolation = (string)parameters[4];
+                    rigidbody.interpolation = interpolation switch
+                    {
+                        "Interpolate" => RigidbodyInterpolation.Interpolate,
+                        "Extrapolate" => RigidbodyInterpolation.Extrapolate,
+                        _ => RigidbodyInterpolation.None
+                    };
+                }
+                else if (name == "PhysicMaterialModifier")
+                {
+                    var pmModifier = Value.GameObject.AddComponent<PhysicMaterialModifier>();
+                    pmModifier.Setup((bool)parameters[1]);
                 }
                 return null;
             }
@@ -81,6 +94,41 @@ namespace CustomLogic
                     {
                         Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
                         rigidbody.AddForce(force, ForceMode.Acceleration);
+                    }
+                }
+                else if (name == "PhysicMaterialModifier")
+                {
+                    var pmModifier = Value.GameObject.GetComponent<PhysicMaterialModifier>();
+                    if (param == "StaticFriction")
+                    {
+                        pmModifier.StaticFriction = parameters[2].UnboxToFloat();
+                    }
+                    if (param == "DynamicFriction")
+                    {
+                        pmModifier.DynamicFriction = parameters[2].UnboxToFloat();
+                    }
+                    if (param == "Bounciness")
+                    {
+                        pmModifier.Bounciness = parameters[2].UnboxToFloat();
+                    }
+
+                    var isFrictionCombine = param == "FrictionCombine";
+                    var isBounceCombine = param == "BounceCombine";
+                    if (isFrictionCombine || isBounceCombine)
+                    {
+                        var combine = parameters[2] switch
+                        {
+                            "Minimum" => PhysicMaterialCombine.Minimum, 
+                            "Multiply" => PhysicMaterialCombine.Multiply,
+                            "Maximum" => PhysicMaterialCombine.Maximum, 
+                            _ => PhysicMaterialCombine.Average
+                        };
+
+                        if (isFrictionCombine)
+                            pmModifier.FrictionCombine = combine;
+                        else
+                            pmModifier.BounceCombine = combine;
+
                     }
                 }
                 return null;
