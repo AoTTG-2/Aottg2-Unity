@@ -1,25 +1,16 @@
 component DestructibleTrigger
 {
+    Description = "A generic component for destroying, replacing, and recovering objects.";
     # Reference object #
     FindTargetBy = "Name";
+    FindTargetByDropbox = "ID,Tag,Name,None";
     TargetValue = "0";
+    TargetValueTooltip = "Slash (/) separated list of Targets to destroy on trigger.";
 
     FindReplacementBy = "Name";
+    FindReplacementByDropbox = "ID, Tag, Name, None";
     ReplacementValue = "0";
-
-    # Object has animation/effect/sound #
-    HasEffect = false;
-    Effect = "";
-    EffectScale = 1.0;
-
-    HasAnimation = false;
-    Animation = "";
-    AnimationDuration = 0.0;
-    AnimationFade = 0.0;
-
-    HasSound = false;
-    Sound = "";
-
+    ReplacementValueTooltip = "Slash (/) separated list of Targets to turn active on trigger.";
 
     # Modifiers #
     Health = 100;
@@ -28,6 +19,15 @@ component DestructibleTrigger
     RecoverAfterTime = false;
     RecoverTime = 10.0;
     RecoverTimeTooltip = "The amount of time it takes for this object to recover after being destroyed.";
+
+    # Object has animation/effect/sound #
+    HasDestroyEffect = false;
+    DestroyEffect = "";
+    DestroyEffectScale = 1.0;
+
+    HasRecoverEffect = false;
+    RecoverEffect = "";
+    RecoverEffectScale = 1.0;
     
     # Who can destroy this object #
     AttacksThatCanDestroy = "";
@@ -45,10 +45,8 @@ component DestructibleTrigger
     _isDestroyed = false;
     _isHostDestroyed = false;
     _recoverTimeLeft = 0.0;
+    _health = 100;
     # Includes Health #
-
-
-    # Create generic framework for these types of objects #
 
 
     function Init()
@@ -74,7 +72,7 @@ component DestructibleTrigger
         {
             self._teamsThatCanDestroy = String.Split(self.TeamsThatCanDestroy, "/");
         }
-        
+        self._health = self.Health;
     }
 
     function PopulateMapObjectList(strList, method)
@@ -123,7 +121,7 @@ component DestructibleTrigger
         message = Dict();
         message.Set("isDestroyed", self._isHostDestroyed);
         message.Set("recoverTimeLeft", self._recoverTimeLeft);
-        message.Set("health", self.Health);
+        message.Set("health", self._health);
         if (target == null)
         {
             self.NetworkView.SendMessageAll(Json.SaveToString(message));
@@ -145,15 +143,15 @@ component DestructibleTrigger
         data = Json.LoadFromString(message);
         hostDestroyed = data.Get("isDestroyed");
         self._recoverTimeLeft = data.Get("recoverTimeLeft");
-        self.Health = data.Get("health");
+        self._health = data.Get("health");
 
         if (self._isDestroyed == false && hostDestroyed == true)
         {
-            self.Destroy();
+            self.DestroyObject();
         }
         elif (self._isDestroyed == true && hostDestroyed == false)
         {
-            self.Recover();
+            self.RecoverObject();
         }
     }
 
@@ -163,40 +161,18 @@ component DestructibleTrigger
         {
             return;
         }
-        # Send network message to new player #
         self.NetworkSync(Network.MyPlayer);
     }
 
-    coroutine AnimationDestroy()
+    function DestroyObject()
     {
-        wait self.AnimationDuration;
-        self.MapObject.Active = false;
-        self.SetState(self._targets, false);
-        self.SetState(self._replacements, true);
-        self._isDestroyed = true;
-    }
-
-    function Destroy()
-    {
-        Game.Print("Destroyed.");
         # Spawn effect if exists #
-        if (self.HasEffect)
+        if (self.HasDestroyEffect)
         {
-            Game.SpawnEffect(self.Effect, self.MapObject.Position, self.MapObject.Rotation, self.EffectScale);
-        }
-
-        # Play sound if exists #
-        if (self.HasSound)
-        {
-            self.MapObject.Transform.PlaySound(self.Sound);
-        }
-
-        # Play animation if exists #
-        if (self.HasAnimation)
-        {
-            self.MapObject.Transform.PlayAnimation(self.Animation);
-            self.AnimationDestroy();
-            return;
+            for (object in self._targets)
+            {
+                Game.SpawnEffect(self.DestroyEffect, object.Position, object.Rotation, self.DestroyEffectScale);
+            }
         }
 
         # Disable target & self, enable replacement #
@@ -207,19 +183,40 @@ component DestructibleTrigger
         self._isDestroyed = true;
     }
 
-    function Recover()
+    function RecoverObject()
     {
+        if (self.HasRecoverEffect)
+        {
+            for (object in self._targets)
+            {
+                Game.SpawnEffect(self.RecoverEffect, object.Position, object.Rotation, self.RecoverEffectScale);
+            }
+        }
+        self._health = self.Health;
         self.MapObject.Active = true;
         self.SetState(self._targets, true);
         self.SetState(self._replacements, false);
         self._isDestroyed = false;
     }
 
+    function SignalDestroy()
+    {
+        self._health = 0;
+        self._isHostDestroyed = true;
+        self.NetworkSync(null);
+    }
+    
+    function SignalRecover()
+    {
+        self._health = self.Health;
+        self._isHostDestroyed = false;
+        self.NetworkSync(null);
+    }
 
     coroutine WaitTilRecovery()
     {
         wait self.RecoverTime;
-        self.Recover();
+        self.SignalRecover();
     }
 
     function OnGetHit(character, name, damage, type)
@@ -231,12 +228,10 @@ component DestructibleTrigger
 
         if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(character.Team) == false)
         {
-            Game.Print(self._teamsThatCanDestroy.Count);
             return;
         }
         if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(name) == false)
         {
-            Game.Print(self._attacksThatCanDestroy.Count);
             return;
         }
 
@@ -244,13 +239,11 @@ component DestructibleTrigger
         {
             damage = Math.Clamp(damage, 0, self.DamageCap);
         }
-        self.Health = self.Health - Math.Clamp(damage, 0, self.DamageCap);
+        self._health = self._health - Math.Clamp(damage, 0, self.DamageCap);
 
-        if (self.Health <= 0)
+        if (self._health <= 0)
         {
-            self._isHostDestroyed = true;
-            self._recoverTimeLeft = self.RecoverTime;
-            self.NetworkSync(null);
+            self.SignalDestroy();
             if (self.RecoverAfterTime == true)
             {
                 self.WaitTilRecovery();
