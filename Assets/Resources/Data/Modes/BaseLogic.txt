@@ -3,12 +3,12 @@ component DestructibleTrigger
     Description = "A generic component for destroying, replacing, and recovering objects.";
     # Reference object #
     FindTargetBy = "Name";
-    FindTargetByDropbox = "ID,Tag,Name,None";
+    # FindTargetByDropbox = "ID,Tag,Name,None"; #
     TargetValue = "0";
     TargetValueTooltip = "Slash (/) separated list of Targets to destroy on trigger.";
 
     FindReplacementBy = "Name";
-    FindReplacementByDropbox = "ID, Tag, Name, None";
+    # FindReplacementByDropbox = "ID, Tag, Name, None"; # 
     ReplacementValue = "0";
     ReplacementValueTooltip = "Slash (/) separated list of Targets to turn active on trigger.";
 
@@ -24,10 +24,6 @@ component DestructibleTrigger
     HasDestroyEffect = false;
     DestroyEffect = "";
     DestroyEffectScale = 1.0;
-
-    HasRecoverEffect = false;
-    RecoverEffect = "";
-    RecoverEffectScale = 1.0;
     
     # Who can destroy this object #
     AttacksThatCanDestroy = "";
@@ -185,13 +181,6 @@ component DestructibleTrigger
 
     function RecoverObject()
     {
-        if (self.HasRecoverEffect)
-        {
-            for (object in self._targets)
-            {
-                Game.SpawnEffect(self.RecoverEffect, object.Position, object.Rotation, self.RecoverEffectScale);
-            }
-        }
         self._health = self.Health;
         self.MapObject.Active = true;
         self.SetState(self._targets, true);
