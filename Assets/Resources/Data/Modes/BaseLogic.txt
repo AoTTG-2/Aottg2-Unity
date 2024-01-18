@@ -115,6 +115,7 @@ component DestructibleTrigger
     {
         # Send network message to all clients #
         message = Dict();
+        message.Set("event", "sync");
         message.Set("isDestroyed", self._isHostDestroyed);
         message.Set("recoverTimeLeft", self._recoverTimeLeft);
         message.Set("health", self._health);
@@ -130,6 +131,16 @@ component DestructibleTrigger
 
     function OnNetworkMessage(sender, message)
     {
+        if (Network.IsMasterClient)
+        {
+            data = Json.LoadFromString(message);
+            if (data.Get("event") == "hit")
+            {
+                self.OnGetHitHandler(data.Get("team"), data.Get("name"), data.Get("damage"), data.Get("type"));
+                return;
+            }
+        }
+
         if (sender != Network.MasterClient)
         {
             return;
@@ -151,13 +162,13 @@ component DestructibleTrigger
         }
     }
 
-    function OnPlayerJoin()
+    function OnPlayerJoin(player)
     {
         if (Network.IsMasterClient == false)
         {
             return;
         }
-        self.NetworkSync(Network.MyPlayer);
+        self.NetworkSync(player);
     }
 
     function DestroyObject()
@@ -208,18 +219,17 @@ component DestructibleTrigger
         self.SignalRecover();
     }
 
-    function OnGetHit(character, name, damage, type)
+    function OnGetHitHandler(team, name, damage, type)
     {
         if (Network.IsMasterClient == false)
         {
             return;
         }
-
-        if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(character.Team) == false)
+        if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(team) == false)
         {
             return;
         }
-        if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(name) == false)
+        if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(type) == false)
         {
             return;
         }
@@ -228,7 +238,7 @@ component DestructibleTrigger
         {
             damage = Math.Clamp(damage, 0, self.DamageCap);
         }
-        self._health = self._health - Math.Clamp(damage, 0, self.DamageCap);
+        self._health = self._health - damage;
 
         if (self._health <= 0)
         {
@@ -238,6 +248,17 @@ component DestructibleTrigger
                 self.WaitTilRecovery();
             }
         }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        message = Dict();
+        message.Set("event", "hit");
+        message.Set("team", character.Team);
+        message.Set("name", name);
+        message.Set("damage", damage);
+        message.Set("type", type);
+        self.NetworkView.SendMessage(Network.MasterClient, Json.SaveToString(message));
     }
 }
 
