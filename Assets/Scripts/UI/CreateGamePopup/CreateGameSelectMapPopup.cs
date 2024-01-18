@@ -31,7 +31,7 @@ namespace UI
 
         protected virtual string[] GetCategories()
         {
-            return new string[] { "General", "PVP", "Racing Basic", "Racing Hard", "Boss" };
+            return new string[] { "General", "PVP", "Racing Basic", "Racing Hard", "Boss", "Custom" };
         }
 
         protected override void SetupTopButtons()

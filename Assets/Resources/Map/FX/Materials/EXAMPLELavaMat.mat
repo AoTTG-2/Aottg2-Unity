@@ -95,7 +95,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha_Clip_Threshold: 0.5
-    - _Animation_Speed: 11.9
+    - _Animation_Speed: 10
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _BaseColorScrollSpeed: 0.01
@@ -129,11 +129,11 @@ Material:
     - _W: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColorTiling: {r: 10, g: 10, b: 0, a: 0}
+    - _BaseColorTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EmitColorTiling: {r: 30, g: 30, b: 0, a: 0}
-    - _Normal_Tiling: {r: 10, g: 10, b: 0, a: 0}
-    - _Snow_Tiling: {r: 4, g: 4, b: 0, a: 0}
+    - _EmitColorTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Normal_Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Snow_Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Tint: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -32,6 +32,19 @@ namespace CustomLogic
             return base.GetField(name);
         }
 
+        public override void SetField(string name, object value)
+        {
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (name == "Forward")
+            {
+                var vectorBuiltin = (CustomLogicVector3Builtin)value;
+                camera.Cache.Transform.forward = vectorBuiltin.Value;
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+            }
+            else
+                base.SetField(name, value);
+        }
+
         public override object CallMethod(string name, List<object> parameters)
         {
             var camera = (InGameCamera)SceneLoader.CurrentCamera;
@@ -67,13 +80,6 @@ namespace CustomLogic
             {
                 var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
                 camera.Cache.Transform.LookAt(vectorBuiltin.Value);
-                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
-                return null;
-            }
-            if (name == "Forward")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
-                camera.Cache.Transform.forward = vectorBuiltin.Value;
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
                 return null;
             }
