@@ -1,148 +1,402 @@
 fileFormatVersion: 2
 guid: 77b795d317290674885711ea09dae462
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: arm1_l
-    100002: arm1_r
-    100004: arm2_l
-    100006: arm2_r
-    100008: arm3_l
-    100010: arm3_r
-    100012: arm4_l
-    100014: arm4_l_end
-    100016: arm4_r
-    100018: arm4_r_end
-    100020: Armature
-    100022: Armature 1
-    100024: body
-    100026: chashao
-    100028: chest
-    100030: ear_l
-    100032: ear_l_end
-    100034: ear_r
-    100036: ear_r_end
-    100038: //RootNode
-    100040: head
-    100042: hip
-    100044: IK_arm_l
-    100046: ik_arm_r
-    100048: ik_kneel1_l
-    100050: ik_kneel1_l_end
-    100052: ik_kneel1_r
-    100054: ik_kneel1_r_end
-    100056: ik_kneel2_l
-    100058: ik_kneel2_l_end
-    100060: ik_kneel2_r
-    100062: ik_kneel2_r_end
-    100064: ik_leg_l
-    100066: ik_leg_r
-    100068: jaw
-    100070: jaw_end
-    100072: leg1_l
-    100074: leg1_r
-    100076: leg2_l
-    100078: leg2_r
-    100080: leg3_l
-    100082: leg3_r
-    100084: leg4_l
-    100086: leg4_l_end
-    100088: leg4_r
-    100090: leg4_r_end
-    100092: neck
-    100094: Root
-    100096: tail1
-    100098: tail2
-    100100: tail2_end
-    400000: arm1_l
-    400002: arm1_r
-    400004: arm2_l
-    400006: arm2_r
-    400008: arm3_l
-    400010: arm3_r
-    400012: arm4_l
-    400014: arm4_l_end
-    400016: arm4_r
-    400018: arm4_r_end
-    400020: Armature
-    400022: Armature 1
-    400024: body
-    400026: chashao
-    400028: chest
-    400030: ear_l
-    400032: ear_l_end
-    400034: ear_r
-    400036: ear_r_end
-    400038: //RootNode
-    400040: head
-    400042: hip
-    400044: IK_arm_l
-    400046: ik_arm_r
-    400048: ik_kneel1_l
-    400050: ik_kneel1_l_end
-    400052: ik_kneel1_r
-    400054: ik_kneel1_r_end
-    400056: ik_kneel2_l
-    400058: ik_kneel2_l_end
-    400060: ik_kneel2_r
-    400062: ik_kneel2_r_end
-    400064: ik_leg_l
-    400066: ik_leg_r
-    400068: jaw
-    400070: jaw_end
-    400072: leg1_l
-    400074: leg1_r
-    400076: leg2_l
-    400078: leg2_r
-    400080: leg3_l
-    400082: leg3_r
-    400084: leg4_l
-    400086: leg4_l_end
-    400088: leg4_r
-    400090: leg4_r_end
-    400092: neck
-    400094: Root
-    400096: tail1
-    400098: tail2
-    400100: tail2_end
-    4300000: chashao
-    7400000: Idle0
-    7400002: Armature|byby
-    7400004: Armature|Default Take
-    7400006: Itch
-    7400008: Stretch
-    7400010: Lie1
-    7400012: Lie2
-    7400014: Lie3
-    7400016: Run
-    7400018: Shake
-    7400020: Sit1
-    7400022: Sit2
-    7400024: Sleep
-    7400026: Stand
-    7400028: Walk
-    9500000: //RootNode
-    11100000: //RootNode
-    13700000: chashao
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: arm1_l
+  - first:
+      1: 100002
+    second: arm1_r
+  - first:
+      1: 100004
+    second: arm2_l
+  - first:
+      1: 100006
+    second: arm2_r
+  - first:
+      1: 100008
+    second: arm3_l
+  - first:
+      1: 100010
+    second: arm3_r
+  - first:
+      1: 100012
+    second: arm4_l
+  - first:
+      1: 100014
+    second: arm4_l_end
+  - first:
+      1: 100016
+    second: arm4_r
+  - first:
+      1: 100018
+    second: arm4_r_end
+  - first:
+      1: 100020
+    second: Armature
+  - first:
+      1: 100022
+    second: Armature 1
+  - first:
+      1: 100024
+    second: body
+  - first:
+      1: 100026
+    second: chashao
+  - first:
+      1: 100028
+    second: chest
+  - first:
+      1: 100030
+    second: ear_l
+  - first:
+      1: 100032
+    second: ear_l_end
+  - first:
+      1: 100034
+    second: ear_r
+  - first:
+      1: 100036
+    second: ear_r_end
+  - first:
+      1: 100038
+    second: //RootNode
+  - first:
+      1: 100040
+    second: head
+  - first:
+      1: 100042
+    second: hip
+  - first:
+      1: 100044
+    second: IK_arm_l
+  - first:
+      1: 100046
+    second: ik_arm_r
+  - first:
+      1: 100048
+    second: ik_kneel1_l
+  - first:
+      1: 100050
+    second: ik_kneel1_l_end
+  - first:
+      1: 100052
+    second: ik_kneel1_r
+  - first:
+      1: 100054
+    second: ik_kneel1_r_end
+  - first:
+      1: 100056
+    second: ik_kneel2_l
+  - first:
+      1: 100058
+    second: ik_kneel2_l_end
+  - first:
+      1: 100060
+    second: ik_kneel2_r
+  - first:
+      1: 100062
+    second: ik_kneel2_r_end
+  - first:
+      1: 100064
+    second: ik_leg_l
+  - first:
+      1: 100066
+    second: ik_leg_r
+  - first:
+      1: 100068
+    second: jaw
+  - first:
+      1: 100070
+    second: jaw_end
+  - first:
+      1: 100072
+    second: leg1_l
+  - first:
+      1: 100074
+    second: leg1_r
+  - first:
+      1: 100076
+    second: leg2_l
+  - first:
+      1: 100078
+    second: leg2_r
+  - first:
+      1: 100080
+    second: leg3_l
+  - first:
+      1: 100082
+    second: leg3_r
+  - first:
+      1: 100084
+    second: leg4_l
+  - first:
+      1: 100086
+    second: leg4_l_end
+  - first:
+      1: 100088
+    second: leg4_r
+  - first:
+      1: 100090
+    second: leg4_r_end
+  - first:
+      1: 100092
+    second: neck
+  - first:
+      1: 100094
+    second: Root
+  - first:
+      1: 100096
+    second: tail1
+  - first:
+      1: 100098
+    second: tail2
+  - first:
+      1: 100100
+    second: tail2_end
+  - first:
+      4: 400000
+    second: arm1_l
+  - first:
+      4: 400002
+    second: arm1_r
+  - first:
+      4: 400004
+    second: arm2_l
+  - first:
+      4: 400006
+    second: arm2_r
+  - first:
+      4: 400008
+    second: arm3_l
+  - first:
+      4: 400010
+    second: arm3_r
+  - first:
+      4: 400012
+    second: arm4_l
+  - first:
+      4: 400014
+    second: arm4_l_end
+  - first:
+      4: 400016
+    second: arm4_r
+  - first:
+      4: 400018
+    second: arm4_r_end
+  - first:
+      4: 400020
+    second: Armature
+  - first:
+      4: 400022
+    second: Armature 1
+  - first:
+      4: 400024
+    second: body
+  - first:
+      4: 400026
+    second: chashao
+  - first:
+      4: 400028
+    second: chest
+  - first:
+      4: 400030
+    second: ear_l
+  - first:
+      4: 400032
+    second: ear_l_end
+  - first:
+      4: 400034
+    second: ear_r
+  - first:
+      4: 400036
+    second: ear_r_end
+  - first:
+      4: 400038
+    second: //RootNode
+  - first:
+      4: 400040
+    second: head
+  - first:
+      4: 400042
+    second: hip
+  - first:
+      4: 400044
+    second: IK_arm_l
+  - first:
+      4: 400046
+    second: ik_arm_r
+  - first:
+      4: 400048
+    second: ik_kneel1_l
+  - first:
+      4: 400050
+    second: ik_kneel1_l_end
+  - first:
+      4: 400052
+    second: ik_kneel1_r
+  - first:
+      4: 400054
+    second: ik_kneel1_r_end
+  - first:
+      4: 400056
+    second: ik_kneel2_l
+  - first:
+      4: 400058
+    second: ik_kneel2_l_end
+  - first:
+      4: 400060
+    second: ik_kneel2_r
+  - first:
+      4: 400062
+    second: ik_kneel2_r_end
+  - first:
+      4: 400064
+    second: ik_leg_l
+  - first:
+      4: 400066
+    second: ik_leg_r
+  - first:
+      4: 400068
+    second: jaw
+  - first:
+      4: 400070
+    second: jaw_end
+  - first:
+      4: 400072
+    second: leg1_l
+  - first:
+      4: 400074
+    second: leg1_r
+  - first:
+      4: 400076
+    second: leg2_l
+  - first:
+      4: 400078
+    second: leg2_r
+  - first:
+      4: 400080
+    second: leg3_l
+  - first:
+      4: 400082
+    second: leg3_r
+  - first:
+      4: 400084
+    second: leg4_l
+  - first:
+      4: 400086
+    second: leg4_l_end
+  - first:
+      4: 400088
+    second: leg4_r
+  - first:
+      4: 400090
+    second: leg4_r_end
+  - first:
+      4: 400092
+    second: neck
+  - first:
+      4: 400094
+    second: Root
+  - first:
+      4: 400096
+    second: tail1
+  - first:
+      4: 400098
+    second: tail2
+  - first:
+      4: 400100
+    second: tail2_end
+  - first:
+      43: 4300000
+    second: chashao
+  - first:
+      74: 7400000
+    second: Idle0
+  - first:
+      74: 7400002
+    second: Armature|byby
+  - first:
+      74: 7400004
+    second: Armature|Default Take
+  - first:
+      74: 7400006
+    second: Itch
+  - first:
+      74: 7400008
+    second: Stretch
+  - first:
+      74: 7400010
+    second: Lie1
+  - first:
+      74: 7400012
+    second: Lie2
+  - first:
+      74: 7400014
+    second: Lie3
+  - first:
+      74: 7400016
+    second: Run
+  - first:
+      74: 7400018
+    second: Shake
+  - first:
+      74: 7400020
+    second: Sit1
+  - first:
+      74: 7400022
+    second: Sit2
+  - first:
+      74: 7400024
+    second: Sleep
+  - first:
+      74: 7400026
+    second: Stand
+  - first:
+      74: 7400028
+    second: Walk
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: chashao
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Idle0
       takeName: Armature|_idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 2
@@ -150,6 +404,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -268,9 +523,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|byby
       takeName: Armature|byby
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -278,6 +535,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -396,9 +654,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|Default Take
       takeName: Armature|Default Take
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -406,6 +666,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -524,9 +785,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Itch
       takeName: Armature|itch
+      internalID: 0
       firstFrame: 0
       lastFrame: 44
       wrapMode: 8
@@ -534,6 +797,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -652,9 +916,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Stretch
       takeName: Armature|lanyao
+      internalID: 0
       firstFrame: 0
       lastFrame: 149
       wrapMode: 8
@@ -662,6 +928,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -780,9 +1047,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Lie1
       takeName: Armature|lie
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 2
@@ -790,6 +1059,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -908,9 +1178,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Lie2
       takeName: Armature|lie2
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 2
@@ -918,6 +1190,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1036,9 +1309,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Lie3
       takeName: Armature|lie3
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 2
@@ -1046,6 +1321,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1164,9 +1440,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Run
       takeName: Armature|RUN
+      internalID: 0
       firstFrame: 0
       lastFrame: 16
       wrapMode: 2
@@ -1174,6 +1452,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1292,9 +1571,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Shake
       takeName: Armature|shake
+      internalID: 0
       firstFrame: 0
       lastFrame: 104
       wrapMode: 8
@@ -1302,6 +1583,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1420,9 +1702,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Sit1
       takeName: Armature|sit
+      internalID: 0
       firstFrame: 0
       lastFrame: 16
       wrapMode: 2
@@ -1430,6 +1714,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1548,9 +1833,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Sit2
       takeName: Armature|sit2
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 2
@@ -1558,6 +1845,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1676,9 +1964,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Sleep
       takeName: Armature|sleep
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 2
@@ -1686,6 +1976,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1804,9 +2095,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Stand
       takeName: Armature|stand
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 2
@@ -1814,6 +2107,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1932,9 +2226,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Walk
       takeName: Armature|WALK
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 2
@@ -1942,6 +2238,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2060,41 +2357,79 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.01
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
