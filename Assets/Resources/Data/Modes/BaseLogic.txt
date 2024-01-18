@@ -3,7 +3,7 @@ component DestructibleTrigger
     Description = "A generic component for destroying, replacing, and recovering objects.";
     # Reference object #
     FindTargetBy = "Name";
-    # FindTargetByDropbox = "ID,Tag,Name,None"; #
+    # FindTargetByDropbox = "ID,Tag,Name,None"; - ignore until dropbox issue fixed #
     TargetValue = "0";
     TargetValueTooltip = "Slash (/) separated list of Targets to destroy on trigger.";
 
