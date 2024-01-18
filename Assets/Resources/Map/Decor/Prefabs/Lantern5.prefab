@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -54,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 90f65fca56ec87941bf21e81a7352ee0, type: 2}
     - target: {fileID: 919132149155446097, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
       propertyPath: m_Name
-      value: LanternPost5
+      value: Lantern5
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9d12ca5a2d570b44d86c3ff74e2f4fdb, type: 3}
       propertyPath: m_Layer

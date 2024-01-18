@@ -898,7 +898,7 @@ namespace GameManagers
             }
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                // TakePreviewScreenshot();
+                TakePreviewScreenshot();
             }
         }
 

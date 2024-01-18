@@ -19,13 +19,10 @@
 		"Prefabs": [
 			{"Name": "Arc90"},
 			{"Name": "Arc180"},
-			{"Name": "Atom"},
 			{"Name": "Capsule"},
 			{"Name": "Cone"},
 			{"Name": "Cuboid"},
 			{"Name": "Cylinder"},
-			{"Name": "DNA"},
-			{"Name": "Gear"},
 			{"Name": "Plane"},
 			{"Name": "Prism"},
 			{"Name": "Pyramid"},
@@ -121,8 +118,6 @@
 			{"Name": "WallA2"},
 			{"Name": "WallGateA1"},
 			{"Name": "WallGateA2"},
-			{"Name": "WallGateDoor1"},
-			{"Name": "WallGateDoor2"},
 			{"Name": "Windmill1"},
 			{"Name": "Windmill2"}
 		]
@@ -130,6 +125,7 @@
 	"Decor": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Decor/", "AssetSameAsName": true},
 		"Prefabs": [
+			{"Name": "Atom1"},
 			{"Name": "Barrel1"},
 			{"Name": "Barrel2"},
 			{"Name": "Barrel3"},
@@ -162,14 +158,15 @@
 			{"Name": "Crate1"},
 			{"Name": "Crate2"},
 			{"Name": "Crate3"},
+			{"Name": "DNA1"},
 			{"Name": "Dummy1"},
 			{"Name": "Elevator1"},
 			{"Name": "Equipment1"},
 			{"Name": "ExecutionerBase1"},
 			{"Name": "ExecutionerBase2"},
 			{"Name": "ExecutionerBase3"},
-			{"Name": "ExecutionerCounterweight1"},
-			{"Name": "ExecutionerFromHell1"},
+			{"Name": "ExecutionerWeight1"},
+			{"Name": "ExecutionerHell1"},
 			{"Name": "ExecutionerLog1"},
 			{"Name": "Fence1"},
 			{"Name": "Fountain1"},
@@ -177,6 +174,7 @@
 			{"Name": "Flag1"},
 			{"Name": "Flag2"},
 			{"Name": "Gas1"},
+			{"Name": "Gear1"},
 			{"Name": "Gore1"},
 			{"Name": "Gore2"},
 			{"Name": "Gore3"},
@@ -224,6 +222,7 @@
 			{"Name": "Tarp1"},
 			{"Name": "Tarp2"},
 			{"Name": "Teapot1"},
+			{"Name": "TreePaths1"},
 			{"Name": "Wagon1"}
 		]
 	},
@@ -327,9 +326,7 @@
 			{"Name": "Damage Region", "Asset": "Geometry/Cuboid", "Material": "Transparent|255/128/128/128|Misc/None|1/1|0/0|", 
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["DamageRegion|"]},
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
-			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
-			{"Name": "ExecutionerPackage1"},
-			{"Name": "ExecutionerPackage2"}
+			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]}
 		]
 	},
 	"Legacy": {
