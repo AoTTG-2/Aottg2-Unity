@@ -36,6 +36,8 @@ namespace Map
             string shader = value.Split(material.Delimiter)[0];
             if (shader == MapObjectShader.Basic || shader == MapObjectShader.Transparent)
                 material = new MapScriptBasicMaterial();
+            else if (shader == MapObjectShader.DefaultTiled)
+                material = new MapScriptDefaultTiledMaterial();
             else if (shader == MapObjectShader.Reflective)
                 material = new MapScriptReflectiveMaterial();
             else if (MapObjectShader.IsLegacyShader(shader))

@@ -69,6 +69,16 @@ namespace UI
             _gameManager = (MapEditorGameManager)SceneLoader.CurrentGameManager;
         }
 
+        private bool HasNonConvexMeshCollider(MapObject mapObject)
+        {
+            foreach (Collider c in mapObject.GameObject.GetComponentsInChildren<Collider>())
+            {
+                if (c is MeshCollider && !((MeshCollider)c).convex)
+                    return true;
+            }
+            return false;
+        }
+
         public void Show(MapObject mapObject)
         {
             base.Show();
@@ -104,7 +114,7 @@ namespace UI
             ElementFactory.CreateInputSetting(group, style, _scaleZ, "Z", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             CreateHorizontalDivider(SinglePanel);
             style = new ElementStyle(fontSize: 18, titleWidth: 160f, spacing: 20f, themePanel: ThemePanel);
-            if (_mapObject.ScriptObject.Asset.StartsWith("Geometry"))
+            if (!HasNonConvexMeshCollider(_mapObject))
             {
                 ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideMode, "Collide Mode",
                 new string[] { MapObjectCollideMode.Physical, MapObjectCollideMode.Region, MapObjectCollideMode.None },
@@ -124,7 +134,7 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateToggleSetting(SinglePanel, style, _visible, "Visible", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _shader, "Shader",
-               new string[] { MapObjectShader.Default, MapObjectShader.DefaultNoTint, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective },
+               new string[] { MapObjectShader.Default, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective, MapObjectShader.DefaultNoTint, MapObjectShader.DefaultTiled },
                elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             if (_shader.Value != MapObjectShader.DefaultNoTint)
             {
@@ -137,11 +147,16 @@ namespace UI
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingY, "Tiling Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             }
-            else if (_shader.Value != MapObjectShader.Default && _shader.Value != MapObjectShader.DefaultNoTint)
+            else if (_shader.Value == MapObjectShader.DefaultTiled)
+            {
+                ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
+                ElementFactory.CreateInputSetting(SinglePanel, style, _tilingY, "Tiling Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
+            }
+            else if (_shader.Value != MapObjectShader.Default && _shader.Value != MapObjectShader.DefaultNoTint && _shader.Value != MapObjectShader.DefaultTiled)
             {
                 if (_shader.Value == MapObjectShader.Reflective)
                 {
-                    ElementFactory.CreateColorSetting(SinglePanel, style, _reflectColor, "Reflect color", _menu.ColorPickPopup, 
+                    ElementFactory.CreateColorSetting(SinglePanel, style, _reflectColor, "Reflect color", _menu.ColorPickPopup,
                         onChangeColor: () => OnChange(), elementHeight: 25f);
                 }
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
@@ -284,6 +299,12 @@ namespace UI
                 _tilingX.Value = material.Tiling.x;
                 _tilingY.Value = material.Tiling.y;
             }
+            else if (script.Material is MapScriptDefaultTiledMaterial)
+            {
+                var material = (MapScriptDefaultTiledMaterial)script.Material;
+                _tilingX.Value = material.Tiling.x;
+                _tilingY.Value = material.Tiling.y;
+            }    
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
             {
                 var material = (MapScriptBasicMaterial)script.Material;
@@ -358,6 +379,11 @@ namespace UI
                     script.Material = new MapScriptBaseMaterial();
                     _color.Value = new Color255();
                 }
+                else if (_shader.Value == MapObjectShader.DefaultTiled)
+                {
+                    script.Material = new MapScriptDefaultTiledMaterial();
+                    _color.Value = new Color255();
+                }
                 else if (_shader.Value == MapObjectShader.Basic || _shader.Value == MapObjectShader.Transparent)
                     script.Material = new MapScriptBasicMaterial();
                 else if (_shader.Value == MapObjectShader.Reflective)
@@ -371,6 +397,11 @@ namespace UI
             if (script.Material is MapScriptLegacyMaterial)
             {
                 var material = (MapScriptLegacyMaterial)script.Material;
+                material.Tiling = new Vector2(_tilingX.Value, _tilingY.Value);
+            }
+            else if (script.Material is MapScriptDefaultTiledMaterial)
+            {
+                var material = (MapScriptDefaultTiledMaterial)script.Material;
                 material.Tiling = new Vector2(_tilingX.Value, _tilingY.Value);
             }
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
