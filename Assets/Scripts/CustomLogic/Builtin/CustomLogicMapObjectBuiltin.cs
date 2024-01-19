@@ -3,6 +3,7 @@ using UnityEngine;
 using Map;
 using Utility;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CustomLogic
 {
@@ -257,6 +258,10 @@ namespace CustomLogic
             {
                 return new CustomLogicTransformBuiltin(Value.GameObject.transform);
             }
+            else if (name == "HasRenderer")
+            {
+                return Value.renderCache.Count() > 0;
+            }
             if (name == "Color")
             {
                 var color = Value.GameObject.GetComponent<Renderer>().material.color;
@@ -321,6 +326,18 @@ namespace CustomLogic
                 var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
                 // Set my renderer's color
                 Value.GameObject.GetComponent<Renderer>().material.color = color;
+            }
+            else if (name == "ColorAll")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+                var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
+                foreach (Renderer r in Value.renderCache)
+                {
+                    r.material.color = color;
+                }
             }
             else
             {

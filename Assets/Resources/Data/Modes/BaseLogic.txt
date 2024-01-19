@@ -271,7 +271,9 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
-    VisibilityRange = 80.0;
+
+    ShowUI = true;
+    UIVisibilityRange = 80.0;
 
     
     # States: Captured, Capturing, Contested #
@@ -282,21 +284,25 @@ component CaptureZone
     _teamsInZone = Dict();
 
     # Team Colors #
-    _humanColor = Color(255, 255, 62, 80);
-    _shifterColor = Color(115, 222, 255, 80);
-    _titanColor = Color(70, 80, 125, 80);
-    _neutralColor = Color(255, 255, 255, 80);
-    _teamBlueColor = Color(0, 0, 255, 80);
-    _teamRedColor = Color(255, 0, 0, 80);
-    _unknownTeamColor = Color(0, 0, 0, 80);
+    _humanColor = Color(255, 255, 62, 255);
+    _shifterColor = Color(115, 222, 255, 255);
+    _titanColor = Color(70, 80, 125, 255);
+    _neutralColor = Color(255, 255, 255, 255);
+    _teamBlueColor = Color(0, 0, 255, 255);
+    _teamRedColor = Color(255, 0, 0, 255);
+    _unknownTeamColor = Color(0, 0, 0, 255);
     _teamToColor = Dict();
 
     # State Colors #
     _contestedColor = Color(255, 0, 0, 255);
 
+    # UI state #
+    _isViewing = false;
+
 
     function Init()
     {
+        # Setup colors #
         self._teamToColor = Dict();
         self._teamToColor.Set("Human", self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
@@ -318,22 +324,31 @@ component CaptureZone
 		return self._unknownTeamColor;
 	}
 
+    function ChangeColorAll(color)
+    {
+        # For all renderers, change color #
+        self.MapObject.ColorAll = color;
+    }
+
     function ChangeColor()
     {
+        color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
+            
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
             ownerColor = self.GetTeamColor(self._currentOwner);
-            self.MapObject.Color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
+            color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
 		}
+        self.ChangeColorAll(color);
 	}
 
     # Modify local state #
@@ -453,7 +468,7 @@ component CaptureZone
 
     function OnTick()
     {
-        if (self.Enabled == false)
+        if (self.Enabled == false || self.ShowUI == false)
 		{
 			return;
 		}
@@ -465,11 +480,16 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.VisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange)
         {
-            UI.SetLabel("TopCenter", "");
+            if (self._isViewing == true)
+            {
+                self._isViewing = false;
+                UI.SetLabel("TopCenter", "");
+            }
             return;
 		}
+        self._isViewing = true;
 
         owner = self._currentOwner;
         if (owner == "null")
