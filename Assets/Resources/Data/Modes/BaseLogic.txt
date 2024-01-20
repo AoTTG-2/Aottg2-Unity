@@ -15,7 +15,7 @@ component VelocityZone
     StopSpeed = 3;
 
     UseRotation = false;
-    UseRotationTooltip = "If true, the object will get a force in the direction of the up-axis of its current rotation.";
+    UseRotationTooltip = "If true, the object will get a force in the direction of the given rotation axis on the MapObject.";
     RotationAxis = "Up";
     RotationAxisDropbox = "Forward,Up,Right";
     Speed = 0;
