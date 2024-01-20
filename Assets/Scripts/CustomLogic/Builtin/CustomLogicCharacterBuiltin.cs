@@ -1,5 +1,6 @@
 ﻿using Characters;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace CustomLogic
@@ -73,7 +74,28 @@ namespace CustomLogic
             if (name == "AddForce")
             {
                 Vector3 force = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                Character.Cache.Rigidbody.AddForce(force, ForceMode.Acceleration);
+                string forceMode = "Acceleration";
+                if (parameters.Count > 1)
+                {
+                    forceMode = (string)parameters[1];
+                }
+                ForceMode mode = ForceMode.Acceleration;
+                switch (forceMode)
+                {
+                    case "Force":
+                        mode = ForceMode.Force;
+                        break;
+                    case "Acceleration":
+                        mode = ForceMode.Acceleration;
+                        break;
+                    case "Impulse":
+                        mode = ForceMode.Impulse;
+                        break;
+                    case "VelocityChange":
+                        mode = ForceMode.VelocityChange;
+                        break;
+                }   
+                Character.Cache.Rigidbody.AddForce(force, mode);
                 return null;
             }
             return base.CallMethod(name, parameters);
