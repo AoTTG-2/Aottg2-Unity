@@ -29,6 +29,27 @@ namespace CustomLogic
                 float t = parameters[2].UnboxToFloat();
                 return new CustomLogicVector3Builtin(Vector3.Lerp(a.Value, b.Value, t));
             }
+            if (methodName == "LerpUnclamped")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.LerpUnclamped(a.Value, b.Value, t));
+            }
+            if (methodName == "Slerp")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.Slerp(a.Value, b.Value, t));
+            }
+            if (methodName == "SlerpUnclamped")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float t = parameters[2].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.SlerpUnclamped(a.Value, b.Value, t));
+            }
             if (methodName == "Scale")
             {
                 float scale = parameters[0].UnboxToFloat();
@@ -64,6 +85,39 @@ namespace CustomLogic
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 var b = (CustomLogicVector3Builtin)parameters[1];
                 return new CustomLogicVector3Builtin(Util.DivideVectors(a.Value, b.Value));
+            }
+            if (methodName == "Angle")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return Vector3.Angle(a.Value, b.Value);
+            }
+            if (methodName == "SignedAngle")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                var c = (CustomLogicVector3Builtin)parameters[2];
+                return Vector3.SignedAngle(a.Value, b.Value, c.Value);
+            }
+            if (methodName == "Cross")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicVector3Builtin(Vector3.Cross(a.Value, b.Value));
+            }
+            if (methodName == "Dot")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return Vector3.Dot(a.Value, b.Value);
+            }
+            if (methodName == "RotateTowards")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                float angle = Mathf.Deg2Rad * parameters[2].UnboxToFloat();
+                float mag = parameters[3].UnboxToFloat();
+                return new CustomLogicVector3Builtin(Vector3.RotateTowards(a.Value, b.Value, angle, mag));
             }
             return base.CallMethod(methodName, parameters);
         }

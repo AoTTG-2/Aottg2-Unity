@@ -15,6 +15,7 @@ namespace Utility
         public static string Settings = Documents + "/Settings";
         public static string Snapshots = Documents + "/Snapshots";
         public static string GameProgress = Documents + "/GameProgress";
+        public static string PersistentData = Documents + "/PersistentData";
         public static string CustomLogic = Documents + "/CustomLogic";
         public static string CustomMap = Documents + "/CustomMap";
         public static string CustomAssetsLocal = Documents + "/CustomAssets";

@@ -44,5 +44,12 @@ namespace Utility
             int a = (int)Mathf.Lerp(from.A, to.A, t);
             return new Color255(r, g, b, a);
         }
+
+        public static Color255 Gradient(GradientColorKey[] colorKeys, GradientAlphaKey[] alphakeys, GradientMode mode, float t)
+        {
+            var gradient = new Gradient();
+            gradient.SetKeys(colorKeys, alphakeys);
+            return new Color255(gradient.Evaluate(t));
+        }
     }
 }

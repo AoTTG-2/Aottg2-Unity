@@ -108,6 +108,16 @@ public class MeleeWeaponTrail : MonoBehaviour
 			_trailObject.GetComponent<Renderer>().material = material;
     }
 
+	public void StopImmediate()
+    {
+		_emit = false;
+		_points.Clear();
+#if USE_INTERPOLATION
+		_smoothedPoints.Clear();
+#endif
+		Update();
+    }
+
     void Update()
 	{
 		if (SceneLoader.CurrentCamera == null)

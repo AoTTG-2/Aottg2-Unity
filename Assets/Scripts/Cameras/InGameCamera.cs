@@ -37,6 +37,7 @@ namespace Cameras
         private float _shakeTimeLeft;
         private float _currentShakeDistance;
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
+        private bool _freeCam = false;
 
         public void ApplyGraphicsSettings()
         {
@@ -142,7 +143,11 @@ namespace Cameras
             {
                 if (_follow != _inGameManager.CurrentCharacter && _inGameManager.CurrentCharacter != null)
                     SetFollow(_inGameManager.CurrentCharacter);
-                if (_follow == null)
+                if (_input.ChangeCamera.GetKeyDown())
+                    _freeCam = !_freeCam;
+                if (_freeCam)
+                    _follow = null;
+                else if (_follow == null)
                     FindNextSpectate();
                 if (_follow != null)
                 {
@@ -159,6 +164,8 @@ namespace Cameras
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
                 }
+                else if (_freeCam)
+                    UpdateFreeCam();
             }
             UpdateFOV();
             UpdateNapeLockImage();
@@ -288,6 +295,36 @@ namespace Cameras
                         nextSpectateIndex = _inGameManager.Humans.Count - 1;
                     SetFollow(GetSortedCharacters()[nextSpectateIndex]);
                 }
+            }
+        }
+
+        private void UpdateFreeCam()
+        {
+            if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
+            {
+                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKey())
+                {
+                    _freeCam = false;
+                    return;
+                }
+                Vector3 direction = Vector3.zero;
+                if (_input.Forward.GetKey())
+                    direction += Cache.Transform.forward;
+                else if (_input.Back.GetKey())
+                    direction -= Cache.Transform.forward;
+                if (_input.Right.GetKey())
+                    direction += Cache.Transform.right;
+                else if (_input.Left.GetKey())
+                    direction -= Cache.Transform.right;
+                if (_input.Up.GetKey())
+                    direction += Cache.Transform.up;
+                else if (_input.Down.GetKey())
+                    direction -= Cache.Transform.up;
+                Cache.Transform.position += direction * Time.deltaTime * 200f;
+                float inputX = Input.GetAxis("Mouse X");
+                float inputY = Input.GetAxis("Mouse Y");
+                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * Time.deltaTime * 200f);
+                Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, -inputY * Time.deltaTime * 200f);
             }
         }
 

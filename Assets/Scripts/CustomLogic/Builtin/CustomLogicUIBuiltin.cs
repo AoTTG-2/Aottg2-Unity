@@ -121,6 +121,17 @@ namespace CustomLogic
                 menu.GetCustomPopup(popupName).AddButtons(names.List, titles.List);
                 return null;
             }
+            if (name == "WrapStyleTag")
+            {
+                string text = (string)parameters[0];
+                string style = (string)parameters[1];
+                string args = (string)parameters[2];
+                if (args == null)
+                {
+                    return "<" + style + ">" + text + "</" + style + ">";
+                }
+                return "<" + style + "=" + args + ">" + text + "</" + style + ">";
+            }
             return base.CallMethod(name, parameters);
         }
     }

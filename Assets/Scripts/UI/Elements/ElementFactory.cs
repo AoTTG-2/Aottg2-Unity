@@ -311,6 +311,15 @@ namespace UI
             return buttonSetting;
         }
 
+        public static GameObject CreateButtonPopupSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
+            BasePopup popup, string tooltip = "", float elementWidth = 0f, float elementHeight = 0f)
+        {
+            GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/ButtonSetting");
+            var element = buttonSetting.AddComponent<ButtonPopupSettingElement>();
+            element.Setup(setting, style, title, popup, tooltip, elementWidth, elementHeight);
+            return buttonSetting;
+        }
+
         public static GameObject CreateVector3Setting(Transform parent, ElementStyle style, BaseSetting setting, string title, Vector3Popup vector3Popup,
             string tooltip = "", float elementWidth = 90f, float elementHeight = 30f, UnityAction onChangeVector = null)
         {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using Utility;
+using Weather;
 
 namespace Map
 {
@@ -49,6 +50,7 @@ namespace Map
 
         public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, bool editor = false)
         {
+            Debug.Log(objects.Count);
             Errors.Clear();
             _customMaterialCache.Clear();
             _defaultMaterialCache.Clear();
@@ -345,6 +347,22 @@ namespace Map
             }
         }
 
+        public static void SetDefaultTiling(string asset, Material mat, Vector2 tiling)
+        {
+            mat.mainTextureScale = new Vector2(tiling.x, tiling.y);
+            if (asset == "FX/WaterCube1")
+            {
+                mat.SetVector("_Tiling", tiling);
+                mat.SetVector("_Tiling_1", tiling);
+            }
+            else if (asset == "FX/LavaCube1")
+            {
+                mat.SetVector("_BaseColorTiling", tiling);
+                mat.SetVector("_EmitColorTiling", tiling);
+                mat.SetVector("_Normal_Tiling", tiling);
+            }
+        }
+
         public static void SetMaterial(GameObject go, string asset, MapScriptBaseMaterial material, bool visible, bool editor)
         {
             if (asset == "None")
@@ -354,7 +372,8 @@ namespace Map
             if (!visible && editor)
             {
                 visible = true;
-                material = _invisibleMaterial;
+                if (!asset.Contains("Editor"))
+                    material = _invisibleMaterial;
             }
             foreach (var r in allRenderers)
             {
@@ -370,7 +389,7 @@ namespace Map
                 }
                 _assetMaterialCache.Add(asset, assetMats);
             }
-            if (material.Shader == MapObjectShader.Default || material.Shader == MapObjectShader.DefaultNoTint)
+            if (material.Shader == MapObjectShader.Default || material.Shader == MapObjectShader.DefaultNoTint || material.Shader == MapObjectShader.DefaultTiled)
             {
                 string materialHash = asset + material.Serialize();
                 if (!_defaultMaterialCache.ContainsKey(materialHash))
@@ -382,6 +401,8 @@ namespace Map
                         var mat = new Material(assetMat);
                         if (material.Shader != MapObjectShader.DefaultNoTint)
                             mat.color = material.Color.ToColor();
+                        if (material.Shader == MapObjectShader.DefaultTiled)
+                            SetDefaultTiling(asset, mat, ((MapScriptDefaultTiledMaterial)material).Tiling);
                         defaultMats.Add(mat);
                     }
                     _defaultMaterialCache.Add(materialHash, defaultMats);
@@ -405,7 +426,7 @@ namespace Map
                     {
                         var legacy = (MapScriptLegacyMaterial)material;
                         mat = (Material)Instantiate(LoadAssetCached("Map/Legacy/Materials", legacy.Shader));
-                        mat.color = legacy.Color.ToColor();
+                        mat.SetColor("_TintColor", legacy.Color.ToColor());
                         mat.mainTextureScale = new Vector2(legacy.Tiling.x, legacy.Tiling.y);
                     }
                     else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(material.GetType()))
@@ -477,7 +498,7 @@ namespace Map
             c.gameObject.layer = GetColliderLayer(collideWith);
         }
 
-        private static int GetColliderLayer(string collideWith)
+        public static int GetColliderLayer(string collideWith)
         {
             int layer = 0;
             if (collideWith == MapObjectCollideWith.All)
@@ -523,6 +544,8 @@ namespace Map
                     }
                     else
                         _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
+                    if (asset == "Arenas/CaveMap1")
+                        WeatherManager.EnableCaveMap();
                 }
                 return (GameObject)Instantiate(_assetCache[asset]);
             }
@@ -539,6 +562,7 @@ namespace Map
     {
         public static string Default = "Default";
         public static string DefaultNoTint = "DefaultNoTint";
+        public static string DefaultTiled = "DefaultTiled";
         // public static string Background = "Background";
         public static string Basic = "Basic";
         public static string Transparent = "Transparent";

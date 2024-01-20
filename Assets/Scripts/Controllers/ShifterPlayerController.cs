@@ -23,6 +23,7 @@ namespace Controllers
             base.UpdateActionInput(inMenu);
             if (inMenu)
                 return;
+            _shifter.IsWalk = _shifterInput.Walk.GetKey();
             if (_shifter.CanAction())
             {
                 if (_shifterInput.Attack.GetKeyDown())

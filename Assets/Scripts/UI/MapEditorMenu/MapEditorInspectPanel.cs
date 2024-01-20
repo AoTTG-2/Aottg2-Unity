@@ -14,6 +14,9 @@ using MapEditor;
 using Utility;
 using UnityEngine.EventSystems;
 using System.Globalization;
+using CustomLogic;
+using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -66,6 +69,16 @@ namespace UI
             _gameManager = (MapEditorGameManager)SceneLoader.CurrentGameManager;
         }
 
+        private bool HasNonConvexMeshCollider(MapObject mapObject)
+        {
+            foreach (Collider c in mapObject.GameObject.GetComponentsInChildren<Collider>())
+            {
+                if (c is MeshCollider && !((MeshCollider)c).convex)
+                    return true;
+            }
+            return false;
+        }
+
         public void Show(MapObject mapObject)
         {
             base.Show();
@@ -101,7 +114,7 @@ namespace UI
             ElementFactory.CreateInputSetting(group, style, _scaleZ, "Z", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             CreateHorizontalDivider(SinglePanel);
             style = new ElementStyle(fontSize: 18, titleWidth: 160f, spacing: 20f, themePanel: ThemePanel);
-            if (_mapObject.ScriptObject.Asset.StartsWith("Geometry"))
+            if (!HasNonConvexMeshCollider(_mapObject))
             {
                 ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideMode, "Collide Mode",
                 new string[] { MapObjectCollideMode.Physical, MapObjectCollideMode.Region, MapObjectCollideMode.None },
@@ -121,7 +134,7 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateToggleSetting(SinglePanel, style, _visible, "Visible", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _shader, "Shader",
-               new string[] { MapObjectShader.Default, MapObjectShader.DefaultNoTint, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective },
+               new string[] { MapObjectShader.Default, MapObjectShader.Basic, MapObjectShader.Transparent, MapObjectShader.Reflective, MapObjectShader.DefaultNoTint, MapObjectShader.DefaultTiled },
                elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             if (_shader.Value != MapObjectShader.DefaultNoTint)
             {
@@ -134,11 +147,16 @@ namespace UI
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingY, "Tiling Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             }
-            else if (_shader.Value != MapObjectShader.Default && _shader.Value != MapObjectShader.DefaultNoTint)
+            else if (_shader.Value == MapObjectShader.DefaultTiled)
+            {
+                ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
+                ElementFactory.CreateInputSetting(SinglePanel, style, _tilingY, "Tiling Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
+            }
+            else if (_shader.Value != MapObjectShader.Default && _shader.Value != MapObjectShader.DefaultNoTint && _shader.Value != MapObjectShader.DefaultTiled)
             {
                 if (_shader.Value == MapObjectShader.Reflective)
                 {
-                    ElementFactory.CreateColorSetting(SinglePanel, style, _reflectColor, "Reflect color", _menu.ColorPickPopup, 
+                    ElementFactory.CreateColorSetting(SinglePanel, style, _reflectColor, "Reflect color", _menu.ColorPickPopup,
                         onChangeColor: () => OnChange(), elementHeight: 25f);
                 }
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
@@ -151,20 +169,53 @@ namespace UI
                 ElementFactory.CreateInputSetting(SinglePanel, style, _offsetY, "Offset Y", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());
             }
             CreateHorizontalDivider(SinglePanel);
+
             for (int i = 0; i < _components.Count; i++)
             {
                 ElementFactory.CreateDefaultLabel(SinglePanel, style, _componentNames[i]);
-                foreach (string key in _components[i].Keys)
+                var settings = _components[i];
+                string description = CustomLogicManager.GetModeDescription(settings);
+                if (description != "")
+                    ElementFactory.CreateDefaultLabel(SinglePanel, style, description, alignment: TextAnchor.MiddleLeft);
+                var tooltips = new Dictionary<string, string>();
+                var dropboxes = new Dictionary<string, string[]>();
+                foreach (string key in settings.Keys)
                 {
-                    var setting = _components[i][key];
-                    if (setting is BoolSetting)
-                        ElementFactory.CreateToggleSetting(SinglePanel, style, setting, key, onValueChanged: () => OnChange());
+                    BaseSetting setting = settings[key];
+                    if (key.EndsWith("Tooltip") && setting is StringSetting)
+                        tooltips[key.Substring(0, key.Length - 7)] = ((StringSetting)setting).Value;
+                    else if (key.EndsWith("Dropbox") && setting is StringSetting)
+                    {
+                        List<string> options = new List<string>();
+                        foreach (string option in ((StringSetting)setting).Value.Split(','))
+                            options.Add(option.Trim());
+                        if (options.Count == 0)
+                            options.Add("None");
+                        dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
+                    }
+                }
+                foreach (string key in settings.Keys)
+                {
+                    var setting = settings[key];
+                    if (key == "Description")
+                        continue;
+                    if (key.EndsWith("Tooltip") && setting is StringSetting)
+                        continue;
+                    if (key.EndsWith("Dropbox") && setting is StringSetting)
+                        continue;
+                    string tooltip = "";
+                    if (tooltips.ContainsKey(key))
+                        tooltip = tooltips[key];
+                    if (dropboxes.ContainsKey(key) && setting is StringSetting)
+                        ElementFactory.CreateDropdownSetting(SinglePanel, style, setting, key, dropboxes[key], tooltip, elementWidth: 140f, elementHeight: 35f, onDropdownOptionSelect: () => OnChange());
+                    else if (setting is BoolSetting)
+                        ElementFactory.CreateToggleSetting(SinglePanel, style, setting, key, tooltip, onValueChanged: () => OnChange());
+                    else if (setting is StringSetting || setting is FloatSetting || setting is IntSetting)
+                        ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, tooltip, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                     else if (setting is ColorSetting)
                         ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, onChangeColor: () => OnChange());
                     else if (setting is Vector3Setting)
                         ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, onChangeVector: () => OnChange());
-                    else
-                        ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                 }
                 string name = "DeleteComponent" + i.ToString();
                 ElementFactory.CreateDefaultButton(SinglePanel, style, "Delete", onClick: () => OnButtonClick(name));
@@ -248,6 +299,12 @@ namespace UI
                 _tilingX.Value = material.Tiling.x;
                 _tilingY.Value = material.Tiling.y;
             }
+            else if (script.Material is MapScriptDefaultTiledMaterial)
+            {
+                var material = (MapScriptDefaultTiledMaterial)script.Material;
+                _tilingX.Value = material.Tiling.x;
+                _tilingY.Value = material.Tiling.y;
+            }    
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
             {
                 var material = (MapScriptBasicMaterial)script.Material;
@@ -322,6 +379,11 @@ namespace UI
                     script.Material = new MapScriptBaseMaterial();
                     _color.Value = new Color255();
                 }
+                else if (_shader.Value == MapObjectShader.DefaultTiled)
+                {
+                    script.Material = new MapScriptDefaultTiledMaterial();
+                    _color.Value = new Color255();
+                }
                 else if (_shader.Value == MapObjectShader.Basic || _shader.Value == MapObjectShader.Transparent)
                     script.Material = new MapScriptBasicMaterial();
                 else if (_shader.Value == MapObjectShader.Reflective)
@@ -335,6 +397,11 @@ namespace UI
             if (script.Material is MapScriptLegacyMaterial)
             {
                 var material = (MapScriptLegacyMaterial)script.Material;
+                material.Tiling = new Vector2(_tilingX.Value, _tilingY.Value);
+            }
+            else if (script.Material is MapScriptDefaultTiledMaterial)
+            {
+                var material = (MapScriptDefaultTiledMaterial)script.Material;
                 material.Tiling = new Vector2(_tilingX.Value, _tilingY.Value);
             }
             else if (typeof(MapScriptBasicMaterial).IsAssignableFrom(script.Material.GetType()))
@@ -361,8 +428,14 @@ namespace UI
                 HashSet<string> parsedParameters = new HashSet<string>();
                 foreach (string key in settings.Keys)
                 {
-                    newParameters.Add(key + ":" + SerializeSetting(settings[key]));
                     parsedParameters.Add(key);
+                    if (key == "Description")
+                        continue;
+                    if (key.EndsWith("Tooltip") && settings[key] is StringSetting)
+                        continue;
+                    if (key.EndsWith("Dropbox") && settings[key] is StringSetting)
+                        continue;
+                    newParameters.Add(key + ":" + SerializeSetting(settings[key]));
                 }
                 if (oldComponentDict.ContainsKey(_componentNames[i]))
                 {

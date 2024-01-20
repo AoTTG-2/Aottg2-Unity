@@ -12,6 +12,8 @@ using Events;
 using Map;
 using Photon.Realtime;
 using Photon.Pun;
+using UnityEngine.Rendering;
+using Unity.Mathematics;
 
 namespace Weather
 {
@@ -43,6 +45,8 @@ namespace Weather
         float _currentLerpWait;
         float _currentSyncWait;
         bool _finishedLoading;
+        bool _isCaveMap;
+        ReflectionProbe _baker;
 
         public static void Init()
         {
@@ -61,6 +65,44 @@ namespace Weather
                     particle.Disable();
             }
             _instance._finishedLoading = false;
+            DisableCaveMap();
+        }
+
+        public static void EnableCaveMap()
+        {
+            if (_instance._isCaveMap)
+                return;
+            _instance._isCaveMap = true;
+            RenderSettings.skybox = SkyboxMaterials["CaveMap1"];
+            RenderSettings.defaultReflectionMode = DefaultReflectionMode.Custom;
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
+            RenderSettings.ambientIntensity = 1f;
+            RenderSettings.reflectionIntensity = 1f;
+            var gameObject = new GameObject();
+            _instance._baker = gameObject.AddComponent<ReflectionProbe>();
+            _instance._baker.cullingMask = 0;
+            _instance._baker.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
+            _instance._baker.mode = ReflectionProbeMode.Realtime;
+            _instance._baker.timeSlicingMode = ReflectionProbeTimeSlicingMode.NoTimeSlicing;
+            DynamicGI.UpdateEnvironment();
+            _instance._baker.RenderProbe();
+            _instance.StartCoroutine(_instance.UpdateReflectionTexture());
+        }
+
+        IEnumerator UpdateReflectionTexture()
+        {
+            yield return new WaitForEndOfFrame();
+            RenderSettings.customReflectionTexture = _baker.texture;
+        }
+
+        public static void DisableCaveMap()
+        {
+            _instance._isCaveMap = false;
+            RenderSettings.skybox = null;
+            RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
+            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+            RenderSettings.ambientIntensity = 1f;
+            RenderSettings.reflectionIntensity = 0f;
         }
 
         public static void OnFinishLoading()
@@ -77,6 +119,8 @@ namespace Weather
                     "Skyboxes/" + skyboxName.ToString() + "/" + skyboxName.ToString() + "Skybox"));
             foreach (string skybox1 in skyboxNames)
                 SkyboxBlendedMaterials.Add(skybox1, new Dictionary<string, Material>());
+            SkyboxMaterials.Add("CaveMap1", ResourceManager.InstantiateAsset<Material>(ResourcePaths.Weather,
+                    "Skyboxes/CaveMap1/CaveMap1Skybox"));
         }
 
         public static void TakeFlashlight(Transform parent)
@@ -419,14 +463,17 @@ namespace Weather
         {
             yield return new WaitForEndOfFrame();
             Material mat;
-            if (!IsWeatherEnabled())
+            if (_instance._isCaveMap)
+                mat = SkyboxMaterials["CaveMap1"];
+            else if (!IsWeatherEnabled())
                 mat = GetBlendedSkybox("Day1", "Day1");
             else
                 mat = GetBlendedSkybox(_currentWeather.Skybox.Value, _targetWeather.Skybox.Value);
             var skybox = SceneLoader.CurrentCamera.Skybox;
             if (mat != null && skybox.material != mat && SkyboxCustomSkinLoader.SkyboxMaterial == null)
             {
-                mat.SetColor("_Tint", _currentWeather.SkyboxColor.Value.ToColor());
+                if (!_instance._isCaveMap)
+                    mat.SetColor("_Tint", _currentWeather.SkyboxColor.Value.ToColor());
                 foreach (var camera in _skyboxCameras)
                     camera.gameObject.GetComponentInChildren<Skybox>().material = mat;
             }

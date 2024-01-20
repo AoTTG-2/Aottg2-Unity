@@ -799,6 +799,7 @@ namespace Characters
                 weapon.UseDurability(2f);
                 if (weapon.CurrentDurability == 0f)
                 {
+                    StopImmediateBladeTrails();
                     Setup._part_blade_l.SetActive(false);
                     Setup._part_blade_r.SetActive(false);
                     PlaySound(HumanSounds.BladeBreak);
@@ -850,8 +851,6 @@ namespace Characters
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
                     {
-                        if (collider != titan.BaseTitanCache.NapeHurtbox && titan is BasicTitan && ((BasicTitan)titan).IsCrawler)
-                            return;
                         EffectSpawner.Spawn(EffectPrefabs.CriticalHit, hitbox.transform.position, Quaternion.Euler(270f, 0f, 0f));
                         victimChar.GetHit(this, damage, type, collider.name);
                         if (titan.BaseTitanCache.NapeHurtbox != collider)
@@ -2235,7 +2234,7 @@ namespace Characters
             Cache.Transform.rotation = quaternion;
             _targetRotation = quaternion;
             TargetAngle = facingDirection;
-            UseGas(MaxGas * CharacterData.HumanWeaponInfo["Thunderspear"]["StunGasPenalty"].AsFloat);
+            UseGas(Mathf.Min(MaxGas * CharacterData.HumanWeaponInfo["Thunderspear"]["StunGasPenalty"].AsFloat, 100));
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
             PlaySound(HumanSounds.GasBurst);
@@ -2572,6 +2571,12 @@ namespace Characters
             }
         }
 
+        private void StopImmediateBladeTrails()
+        {
+            Setup.LeftTrail.StopImmediate();
+            Setup.RightTrail.StopImmediate();
+        }
+
         protected override string GetFootstepAudio(int phase)
         {
             return phase == 0 ? HumanSounds.Footstep1 : HumanSounds.Footstep2;
@@ -2579,7 +2584,7 @@ namespace Characters
 
         protected override int GetFootstepPhase()
         {
-            if (Cache.Animation.IsPlaying(HumanAnimations.Run))
+            if (Cache.Animation.IsPlaying(HumanAnimations.Run) || Cache.Animation.IsPlaying(HumanAnimations.RunTS))
             {
                 float time = Cache.Animation[HumanAnimations.Run].normalizedTime % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;

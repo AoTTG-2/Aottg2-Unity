@@ -263,8 +263,8 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (string name in new string[] {"Game", "Vector3", "Color", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            "Random", "String", "Camera"})
+            foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
+            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
@@ -334,6 +334,8 @@ namespace CustomLogic
                     instance = new CustomLogicMathBuiltin();
                 else if (className == "Vector3")
                     instance = new CustomLogicVector3Builtin(new List<object>());
+                else if (className == "Quaternion")
+                    instance = new CustomLogicQuaternionBuiltin(new List<object>());
                 else if (className == "Map")
                     instance = new CustomLogicMapBuiltin();
                 else if (className == "String")
@@ -342,6 +344,14 @@ namespace CustomLogic
                     instance = new CustomLogicRandomBuiltin();
                 else if (className == "Camera")
                     instance = new CustomLogicCameraBuiltin();
+                else if (className == "RoomData")
+                    instance = new CustomLogicRoomDataBuiltin();
+                else if (className == "PersistentData")
+                    instance = new CustomLogicPersistentDataBuiltin();
+                else if (className == "Json")
+                    instance = new CustomLogicJsonBuiltin();
+                else if (className == "Physics")
+                    instance = new CustomLogicPhysicsBuiltin();
                 else
                     instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);
@@ -402,6 +412,8 @@ namespace CustomLogic
                 classInstance = new CustomLogicVector3Builtin(parameterValues);
             else if (className == "Color")
                 classInstance = new CustomLogicColorBuiltin(parameterValues);
+            else if (className == "Quaternion")
+                classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
             else if (className == "Range")
                 classInstance = new CustomLogicRangeBuiltin(parameterValues);
             else
@@ -822,6 +834,8 @@ namespace CustomLogic
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
                 else if (right is CustomLogicVector3Builtin)
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+                else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
+                    return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
                 else
                     return left.UnboxToFloat() * right.UnboxToFloat();
             }

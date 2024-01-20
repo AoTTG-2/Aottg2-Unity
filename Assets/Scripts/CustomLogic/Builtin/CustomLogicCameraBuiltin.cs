@@ -27,7 +27,22 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
             if (name == "FOV")
                 return CustomLogicManager.CameraFOV;
+            if (name == "Forward")
+                return new CustomLogicVector3Builtin(camera.Cache.Transform.forward);
             return base.GetField(name);
+        }
+
+        public override void SetField(string name, object value)
+        {
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (name == "Forward")
+            {
+                var vectorBuiltin = (CustomLogicVector3Builtin)value;
+                camera.Cache.Transform.forward = vectorBuiltin.Value;
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+            }
+            else
+                base.SetField(name, value);
         }
 
         public override object CallMethod(string name, List<object> parameters)

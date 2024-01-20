@@ -16,6 +16,7 @@ namespace UI
     class MainMenu: BaseMenu
     {
         public BasePopup _createGamePopup;
+        public BasePopup _selectMapPopup;
         public BasePopup _multiplayerMapPopup;
         public BasePopup _settingsPopup;
         public BasePopup _toolsPopup;
@@ -69,6 +70,7 @@ namespace UI
         protected override void SetupPopups()
         {
             base.SetupPopups();
+            _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
             _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
             _multiplayerMapPopup = ElementFactory.InstantiateAndSetupPanel<MultiplayerMapPopup>(transform, "Prefabs/MainMenu/MultiplayerMapPopup").
                 GetComponent<BasePopup>();
@@ -93,6 +95,7 @@ namespace UI
             _popups.Add(_aboutPopup);
             _popups.Add(_questPopup);
             _popups.Add(_tutorialPopup);
+            _popups.Add(_selectMapPopup);
         }
 
         private void SetupIntroPanel()

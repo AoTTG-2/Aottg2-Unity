@@ -965,7 +965,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 8
   m_Height: 54.398026
   m_Direction: 1
   m_Center: {x: 0, y: 27.2, z: 1.3}
@@ -992,7 +992,6 @@ Animation:
   - {fileID: 7400018, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
   - {fileID: 7400020, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
   - {fileID: 7400022, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400070, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
   - {fileID: 7400026, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
   - {fileID: 7400028, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
   - {fileID: 7400030, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}

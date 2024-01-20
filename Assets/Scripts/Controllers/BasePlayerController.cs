@@ -56,13 +56,6 @@ namespace Controllers
                     }
                 }
             }
-            if (!inMenu)
-            {
-                if (SettingsManager.InputSettings.General.HideUI.GetKeyDown())
-                {
-                    _inGameMenu.ToggleUI(!_inGameMenu.IsActive());
-                }
-            }
         }
 
         protected virtual void UpdateMovementInput(bool inMenu)
