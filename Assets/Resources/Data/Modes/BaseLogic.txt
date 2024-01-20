@@ -1,3 +1,158 @@
+component VelocityZone
+{
+    Description = "Changes the velocity of an object inside this trigger";
+    StopObject = false;
+    StopSpeed = 3;
+
+    UseMagnitude = false;
+    UseMagnitudeTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
+    Magnitude = 0;
+
+    UseVector = false;
+    UseVectorTooltip = "If true, the object will get a force in the direction of Vector.";
+    ForceX = 0;
+    ForceY = 0;
+    ForceZ = 0;
+
+    _enterVelocity = Vector3(0, 0, 0);
+    _enterVelocities = Dict();
+
+    function Init()
+    {
+
+    }
+
+    function OnCollisionEnter(other)
+    {
+       if (self.StopObject)
+        {
+            enterVelocity = other.Velocity;
+            opposingForce = enterVelocity.Scale(-1);
+            self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
+            other.AddForce(opposingForce);
+        }
+    }
+
+    function GetUniqueID(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Player.ID;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return other.ID;
+        }
+    }
+
+    function CalculateForce(other, velocity)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (self.UseMagnitude)
+        {
+            direction = velocity.Normalized;
+            direction = direction.Scale(self.Magnitude);
+            appliedForce = appliedForce + direction;
+        }
+        if (self.UseVector)
+        {
+            appliedForce = appliedForce + Vector3(self.ForceX, self.ForceY, self.ForceZ);
+        }
+        if (self.StopObject)
+        {
+            enterVelocity = Vector3(0,0,0);
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                enterVelocity = self._enterVelocities.Get(self.GetUniqueID(other));
+            }
+            # Apply force in other direction until velocity in that direction is zero. #
+            proj = Vector3.Project(enterVelocity, velocity);
+            newCur = velocity;
+            newCur = newCur.Scale(self.StopSpeed);
+            compensatingForce = Vector3.Project(newCur, appliedForce);
+            opposingForce = proj.Scale(-1 * self.StopSpeed);
+            actualOpposingForce = opposingForce + compensatingForce;
+            if (actualOpposingForce.Magnitude > 0)
+            {
+                appliedForce = appliedForce + actualOpposingForce;
+            }
+        }
+        return appliedForce;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human")
+        {
+            appliedForce = self.CalculateForce(other, other.Velocity);
+            other.AddForce(appliedForce);
+        }
+        elif (other.Type == "MapObject")
+        {
+            if (other.HasBuiltinComponent("GetComponent") == null)
+            {
+                return;
+            }
+            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
+            appliedForce = self.CalculateForce(other, velocity);
+            other.UpdateBuiltinComponent("Rigidbody", "AddForce", appliedForce);
+        }
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(other));
+            }
+        }
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(self.GetUniqueID(character)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(character));
+            }
+        }
+    }
+
+    function OnPlayerLeave(player)
+    {
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(player.ID))
+            {
+                self._enterVelocities.Remove(player.ID);
+            }
+        }
+    }
+
+
+}
+
 component DestructibleTrigger
 {
     Description = "A generic component for destroying, replacing, and recovering objects.";
@@ -327,7 +482,7 @@ component CaptureZone
     function ChangeColorAll(color)
     {
         # For all renderers, change color #
-        self.MapObject.ColorAll = color;
+        self.MapObject.SetColorAll(color);
     }
 
     function ChangeColor()

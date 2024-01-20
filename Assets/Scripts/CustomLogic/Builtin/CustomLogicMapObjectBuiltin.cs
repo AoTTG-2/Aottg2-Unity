@@ -4,6 +4,7 @@ using Map;
 using Utility;
 using System.ComponentModel;
 using System.Linq;
+using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
@@ -200,6 +201,20 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "SetColorAll")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(methodName + " cannot be called on a static MapObject.");
+                }
+
+                var color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+                foreach (Renderer r in Value.renderCache)
+                {
+                    r.material.color = color;
+                }
+                return null;
+            }
             return base.CallMethod(methodName, parameters);
         }
 
@@ -260,12 +275,21 @@ namespace CustomLogic
             }
             else if (name == "HasRenderer")
             {
-                return Value.renderCache.Count() > 0;
+                return Value.renderCache.Length > 0;
             }
             if (name == "Color")
             {
-                var color = Value.GameObject.GetComponent<Renderer>().material.color;
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+
+                var color = Value.renderCache[0].material.color;
                 return new CustomLogicColorBuiltin(new Color255(color));
+            }
+            if (name == "ID")
+            {
+                return Value.ScriptObject.Id;
             }
             return base.GetField(name);
         }
@@ -323,21 +347,14 @@ namespace CustomLogic
                 {
                     throw new System.Exception(name + " cannot be set on a static MapObject.");
                 }
-                var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
-                // Set my renderer's color
-                Value.GameObject.GetComponent<Renderer>().material.color = color;
-            }
-            else if (name == "ColorAll")
-            {
-                if (Value.ScriptObject.Static)
+
+                if (Value.renderCache.Length == 0)
                 {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                    throw new System.Exception("MapObject has no renderer.");
                 }
+
                 var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
-                foreach (Renderer r in Value.renderCache)
-                {
-                    r.material.color = color;
-                }
+                Value.renderCache[0].material.color = color;
             }
             else
             {

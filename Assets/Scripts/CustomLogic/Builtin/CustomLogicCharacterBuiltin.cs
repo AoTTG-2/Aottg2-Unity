@@ -70,6 +70,12 @@ namespace CustomLogic
                     Character.Cache.Transform.LookAt(position);
                 return null;
             }
+            if (name == "AddForce")
+            {
+                Vector3 force = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                Character.Cache.Rigidbody.AddForce(force, ForceMode.Acceleration);
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 

@@ -20,8 +20,14 @@ namespace Map
             Parent = parent;
             GameObject = gameObject;
             ScriptObject = scriptObject;
-
-            renderCache = gameObject.GetComponentsInChildren<Renderer>();
+            if (scriptObject.Static)
+            {
+                renderCache = new Renderer[0];
+            }
+            else
+            {
+                renderCache = GameObject.GetComponentsInChildren<Renderer>();
+            }
         }
 
         public void RegisterComponentInstance(CustomLogicComponentInstance instance)
