@@ -1,14 +1,27 @@
 component VelocityZone
 {
     Description = "Changes the velocity of an object inside this trigger";
-    StopObject = false;
-    StopSpeed = 3;
+
+    Enabled = true;
 
     ForceMode = "Acceleration";
     ForceModeDropbox = "Acceleration,Force,Impulse,VelocityChange";
 
-    UseMagnitude = false;
-    UseMagnitudeTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
+    ApplyOn = "Stay";
+    ApplyOnDropbox = "Enter,Stay,Exit";
+
+    StopObject = false;
+    StopImmediately = false;
+    StopSpeed = 3;
+
+    UseRotation = false;
+    UseRotationTooltip = "If true, the object will get a force in the direction of the up-axis of its current rotation.";
+    RotationAxis = "Up";
+    RotationAxisDropbox = "Forward,Up,Right";
+    Speed = 0;
+
+    UseObject = false;
+    UseObjectTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
     Magnitude = 0;
 
     UseVector = false;
@@ -17,6 +30,7 @@ component VelocityZone
     ForceY = 0;
     ForceZ = 0;
 
+
     _enterVelocity = Vector3(0, 0, 0);
     _enterVelocities = Dict();
 
@@ -24,34 +38,6 @@ component VelocityZone
     {
 
     }
-
-    function OnCollisionEnter(other)
-    {
-       if (self.StopObject)
-        {
-            enterVelocity = other.Velocity;
-            opposingForce = enterVelocity.Scale(-1);
-            self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
-            self.AddForce(other, opposingForce);
-        }
-    }
-
-    function AddForce(other, force)
-    {
-        if (other.Type == "Human")
-        {
-            other.AddForce(force, self.ForceMode);
-        }
-        elif (other.Type == "MapObject")
-        {
-            if (other.GetComponent("Rigidbody") == null)
-            {
-                return;
-            }
-            other.UpdateBuiltinComponent("Rigidbody", "AddForce", force, self.ForceMode);
-        }
-    }
-    
 
     function GetUniqueID(other)
     {
@@ -65,10 +51,59 @@ component VelocityZone
         }
     }
 
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function AddForce(other, force, mode)
+    {
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            if (other.GetComponent("Rigidbody") == null)
+            {
+                return;
+            }
+            other.UpdateBuiltinComponent("Rigidbody", "AddForce", force, self.ForceMode);
+        }
+    }
+
     function CalculateForce(other, velocity)
     {
         appliedForce = Vector3(0, 0, 0);
-        if (self.UseMagnitude)
+        if (self.UseRotation)
+        {
+            mapDir = self.MapObject.Up;
+            if (self.RotationAxis == "Up")
+            {
+                mapDir = self.MapObject.Up;
+            }
+            elif (self.RotationAxis == "Forward")
+            {
+                mapDir = self.MapObject.Forward;
+            }
+            elif (self.RotationAxis == "Right")
+            {
+                mapDir = self.MapObject.Right;
+            }
+            
+            mapDir = mapDir.Scale(self.Speed);
+            appliedForce = appliedForce + mapDir;
+        }
+
+        if (self.UseObject)
         {
             direction = velocity.Normalized;
             direction = direction.Scale(self.Magnitude);
@@ -78,7 +113,7 @@ component VelocityZone
         {
             appliedForce = appliedForce + Vector3(self.ForceX, self.ForceY, self.ForceZ);
         }
-        if (self.StopObject)
+        if (self.StopObject == true && self.StopImmediately == false)
         {
             enterVelocity = Vector3(0,0,0);
             if (self._enterVelocities.Contains(self.GetUniqueID(other)))
@@ -100,9 +135,25 @@ component VelocityZone
         return appliedForce;
     }
 
-    function OnCollisionStay(other)
+    function OnCollisionEnter(other)
     {
-        if (self.IsOwnedByMe(other) == false)
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        if (self.StopObject)
+        {
+            if (self.StopImmediately)
+            {
+                self.AddForce(other, Vector3(0,0,0), self.ForceMode);
+            }
+            else
+            {
+                enterVelocity = other.Velocity;
+                self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
+            }
+        }
+        if (self.ApplyOn != "Enter")
         {
             return;
         }
@@ -121,20 +172,31 @@ component VelocityZone
             appliedForce = self.CalculateForce(other, velocity);
         }
 
-        self.AddForce(other, appliedForce);
+        self.AddForce(other, appliedForce, self.ForceMode);
     }
 
-    function IsOwnedByMe(other)
+    function OnCollisionStay(other)
     {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.ApplyOn != "Stay")
+        {
+            return;
+        }
+        appliedForce = Vector3(0, 0, 0);
         if (other.Type == "Human")
         {
-            return other.IsMine;
+            appliedForce = self.CalculateForce(other, other.Velocity);
         }
         elif (other.Type == "MapObject")
         {
-            return Network.IsMasterClient;
+            if (other.HasBuiltinComponent("GetComponent") == null)
+            {
+                return;
+            }
+            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
+            appliedForce = self.CalculateForce(other, velocity);
         }
-        return false;
+
+        self.AddForce(other, appliedForce, self.ForceMode);
     }
 
     function OnCollisionExit(other)
@@ -146,6 +208,27 @@ component VelocityZone
                 self._enterVelocities.Remove(self.GetUniqueID(other));
             }
         }
+
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.ApplyOn != "Exit")
+        {
+            return;
+        }
+        appliedForce = Vector3(0, 0, 0);
+        if (other.Type == "Human")
+        {
+            appliedForce = self.CalculateForce(other, other.Velocity);
+        }
+        elif (other.Type == "MapObject")
+        {
+            if (other.HasBuiltinComponent("GetComponent") == null)
+            {
+                return;
+            }
+            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
+            appliedForce = self.CalculateForce(other, velocity);
+        }
+
+        self.AddForce(other, appliedForce, self.ForceMode);
     }
 
     function OnCharacterDie(character, killer, killerName)
