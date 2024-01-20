@@ -4,6 +4,9 @@ component VelocityZone
     StopObject = false;
     StopSpeed = 3;
 
+    ForceMode = "Acceleration";
+    ForceModeDropbox = "Acceleration,Force,Impulse,VelocityChange";
+
     UseMagnitude = false;
     UseMagnitudeTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
     Magnitude = 0;
@@ -29,9 +32,26 @@ component VelocityZone
             enterVelocity = other.Velocity;
             opposingForce = enterVelocity.Scale(-1);
             self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
-            other.AddForce(opposingForce);
+            self.AddForce(other, opposingForce);
         }
     }
+
+    function AddForce(other, force)
+    {
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, self.ForceMode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            if (other.GetComponent("Rigidbody") == null)
+            {
+                return;
+            }
+            other.UpdateBuiltinComponent("Rigidbody", "AddForce", force, self.ForceMode);
+        }
+    }
+    
 
     function GetUniqueID(other)
     {
@@ -86,11 +106,10 @@ component VelocityZone
         {
             return;
         }
-
+        appliedForce = Vector3(0, 0, 0);
         if (other.Type == "Human")
         {
             appliedForce = self.CalculateForce(other, other.Velocity);
-            other.AddForce(appliedForce);
         }
         elif (other.Type == "MapObject")
         {
@@ -100,8 +119,9 @@ component VelocityZone
             }
             velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
             appliedForce = self.CalculateForce(other, velocity);
-            other.UpdateBuiltinComponent("Rigidbody", "AddForce", appliedForce);
         }
+
+        self.AddForce(other, appliedForce);
     }
 
     function IsOwnedByMe(other)
