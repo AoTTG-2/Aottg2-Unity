@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6ac1ce5a5adfd9f46adbf5b6f752a47c
+labels:
+- Done
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: -1010
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Standard Assets/CrossPlatformInput/Scripts/CrossPlatformInputManager.cs
+  uploadId: 636261

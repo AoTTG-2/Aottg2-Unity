@@ -14,7 +14,7 @@ namespace UI
     class EmoteHandler : MonoBehaviour
     {
         public static Dictionary<string, Texture2D> EmojiTextures = new Dictionary<string, Texture2D>();
-        public static List<string> AvailableEmojis = new List<string>() { "Smile", "ThumbsUp", "Cool", "Love", "Shocked", "Crying", "Annoyed", "Angry" };
+        public static List<string> AvailableEmojis = new List<string>() { "Smile", "ThumbsUp", "Cool", "Love", "Shocked", "Crying", "Annoyed", "Angry" , "Test" };
         public static List<string> AvailableText = new List<string>() { "Help", "Thanks", "Sorry", "Titan here", "Good game", "Nice hit", "Oops", "Welcome" };
         private List<EmoteTextPopup> _emoteTextPopups = new List<EmoteTextPopup>();
         private List<EmoteTextPopup> _emoteEmojiPopups = new List<EmoteTextPopup>();

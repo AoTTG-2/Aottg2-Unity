@@ -9,6 +9,7 @@ namespace Settings
     {
         protected override string FileName { get { return "Sound.json"; } }
         public FloatSetting Volume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
+        public FloatSetting VoiceChatVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
         public FloatSetting Music = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
         public BoolSetting MuteMinimized = new BoolSetting(true);
         public BoolSetting TitanGrabMusic = new BoolSetting(true);
@@ -19,6 +20,8 @@ namespace Settings
         public BoolSetting HookRetractEffect = new BoolSetting(true);
         public BoolSetting HookImpactEffect = new BoolSetting(true);
         public BoolSetting CrashLandEffect = new BoolSetting(true);
+        public BoolSetting VoiceChat = new BoolSetting(true);
+        public BoolSetting SpatialVoiceChat = new BoolSetting(true);
         public BoolSetting OldHookEffect = new BoolSetting(false);
         public BoolSetting OldBladeEffect = new BoolSetting(false);
         public BoolSetting OldNapeEffect = new BoolSetting(false);
@@ -29,6 +32,10 @@ namespace Settings
         {
             AudioListener.volume = Volume.Value;
             MusicManager.ApplySoundSettings();
+            if (VoiceChatManager.Instance) 
+            {
+                VoiceChatManager.Instance.ApplySoundSettings();
+            }
         }
     }
 }

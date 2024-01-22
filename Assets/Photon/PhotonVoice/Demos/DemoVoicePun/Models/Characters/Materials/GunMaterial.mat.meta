@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bca3401811bea4143afe0a03137cda35
+timeCreated: 1455017652
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Models/Characters/Materials/GunMaterial.mat
+  uploadId: 636261

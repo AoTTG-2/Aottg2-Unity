@@ -48,7 +48,11 @@ namespace UI
             CreateHorizontalDivider(DoublePanelRight);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldHookEffect, UIManager.GetLocale(cat, sub, "OldHookEffect"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldBladeEffect, UIManager.GetLocale(cat, sub, "OldBladeEffect"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldNapeEffect, UIManager.GetLocale(cat, sub, "OldNapeEffect"));
+            CreateHorizontalDivider(DoublePanelRight);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.VoiceChat, UIManager.GetLocale(cat, sub, "VoiceChat"));
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SpatialVoiceChat, UIManager.GetLocale(cat, sub, "SpatialVoiceChat"));
+            ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.VoiceChatVolume, UIManager.GetLocale(cat, sub, "VoiceChatVolume"),
+       elementWidth: 135f);
         }
 
         protected void OnButtonClick(string name)

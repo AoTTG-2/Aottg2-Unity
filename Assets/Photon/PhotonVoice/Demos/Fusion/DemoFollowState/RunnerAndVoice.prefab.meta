@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a0567d83810911a44b06744b74518085
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/Fusion/DemoFollowState/RunnerAndVoice.prefab
+  uploadId: 636261

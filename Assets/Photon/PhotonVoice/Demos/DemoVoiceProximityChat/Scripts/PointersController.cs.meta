@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 455698a23ea64d1438d545455ecaf6a2
+timeCreated: 1561030091
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoiceProximityChat/Scripts/PointersController.cs
+  uploadId: 636261
