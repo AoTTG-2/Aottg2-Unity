@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CustomLogic
@@ -56,7 +57,7 @@ namespace CustomLogic
             }
             if (methodName == "Contains")
             {
-                return List.Contains(parameters[0]);
+                return List.Any(e => e == parameters[0]);
             }
             return base.CallMethod(methodName, parameters);
         }
