@@ -72,11 +72,12 @@ component VelocityZone
         }
         elif (other.Type == "MapObject")
         {
-            if (other.GetComponent("Rigidbody") == null)
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
             {
                 return;
             }
-            other.UpdateBuiltinComponent("Rigidbody", "AddForce", force, self.ForceMode);
+            body.AddForceWithMode(force, self.ForceMode);
         }
     }
 
@@ -135,6 +136,27 @@ component VelocityZone
         return appliedForce;
     }
 
+    function CollisionHandler(other)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (other.Type == "Human")
+        {
+            appliedForce = self.CalculateForce(other, other.Velocity);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            velocity = body.GetVelocity();
+            appliedForce = self.CalculateForce(other, velocity);
+        }
+
+        self.AddForce(other, appliedForce, self.ForceMode);
+    }
+
     function OnCollisionEnter(other)
     {
         if (self.Enabled == false || self.IsOwnedByMe(other) == false)
@@ -157,22 +179,7 @@ component VelocityZone
         {
             return;
         }
-        appliedForce = Vector3(0, 0, 0);
-        if (other.Type == "Human")
-        {
-            appliedForce = self.CalculateForce(other, other.Velocity);
-        }
-        elif (other.Type == "MapObject")
-        {
-            if (other.HasBuiltinComponent("GetComponent") == null)
-            {
-                return;
-            }
-            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
-            appliedForce = self.CalculateForce(other, velocity);
-        }
-
-        self.AddForce(other, appliedForce, self.ForceMode);
+        self.CollisionHandler(other);
     }
 
     function OnCollisionStay(other)
@@ -181,22 +188,7 @@ component VelocityZone
         {
             return;
         }
-        appliedForce = Vector3(0, 0, 0);
-        if (other.Type == "Human")
-        {
-            appliedForce = self.CalculateForce(other, other.Velocity);
-        }
-        elif (other.Type == "MapObject")
-        {
-            if (other.HasBuiltinComponent("GetComponent") == null)
-            {
-                return;
-            }
-            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
-            appliedForce = self.CalculateForce(other, velocity);
-        }
-
-        self.AddForce(other, appliedForce, self.ForceMode);
+        self.CollisionHandler(other);
     }
 
     function OnCollisionExit(other)
@@ -213,22 +205,7 @@ component VelocityZone
         {
             return;
         }
-        appliedForce = Vector3(0, 0, 0);
-        if (other.Type == "Human")
-        {
-            appliedForce = self.CalculateForce(other, other.Velocity);
-        }
-        elif (other.Type == "MapObject")
-        {
-            if (other.HasBuiltinComponent("GetComponent") == null)
-            {
-                return;
-            }
-            velocity = other.ReadBuiltinComponent("Rigidbody", "Velocity");
-            appliedForce = self.CalculateForce(other, velocity);
-        }
-
-        self.AddForce(other, appliedForce, self.ForceMode);
+        self.CollisionHandler(other);
     }
 
     function OnCharacterDie(character, killer, killerName)
@@ -1084,6 +1061,11 @@ component Rigidbody
     function AddForce(force)
     {
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+    }
+
+    function AddForceWithMode(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
     function GetVelocity()
