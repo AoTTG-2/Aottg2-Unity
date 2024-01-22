@@ -1399,7 +1399,6 @@ component Animal
 
 component TitanBarrier
 {
-
     function OnCollisionStay(other)
     {
         if (other.Type == "Titan")
@@ -1428,6 +1427,213 @@ component TitanBarrier
                     other.Position = Vector3(other.Position.X, other.Position.Y, other.Position.Z - (0.05 + 0.02 * Math.Abs(other.Velocity.Z)));
                 }
             }
+        }
+    }
+}
+
+component WallGateA
+{
+    Description = "Makes WallGateA1 and WallGateA2 openable by players.";
+    _currentHuman = null;
+    _open = false;
+    _moving = false;
+    _door = null;
+    _speed = 10.0;
+
+    function Init()
+    {
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
+        self._door = self.MapObject.GetTransform("Door");
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "request" && Network.IsMasterClient)
+        {
+            if (!self._moving)
+            {
+                self.NetworkView.SendMessageAll("toggle");
+            }
+        }
+        if (message == "toggle" && sender == Network.MasterClient)
+        {
+            self.Toggle();
+        }
+    }
+
+    function Toggle()
+    {
+        self._open = !self._open;
+        self._moving = true;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to toggle gate.", 0.1);
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact"))
+            {
+                self.NetworkView.SendMessage(Network.MasterClient, "request");
+            }
+        }
+        if (self._moving)
+        {
+            currentY = self._door.LocalPosition.Y;
+            currentPosition = self._door.LocalPosition;
+            if (self._open)
+            {
+                currentPosition.Y = currentPosition.Y + self._speed * Time.FrameTime;
+                if (currentPosition.Y >= 25)
+                {
+                    currentPosition.Y = 25;
+                    self._moving = false;
+                }
+            }
+            else
+            {
+                currentPosition.Y = currentPosition.Y - self._speed * Time.FrameTime;
+                if (currentPosition.Y <= 0)
+                {
+                    currentPosition.Y = 0;
+                    self._moving = false;
+                }
+            }
+            self._door.LocalPosition = currentPosition;
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
+        }
+    }
+}
+
+component Executioner
+{
+    Description = "Makes Executioner1 and Executioner2 useable by players.";
+    _currentHuman = null;
+    _moving = false;
+    _dropping = false;
+    _log = null;
+    _startPosition = Vector3(0,0,0);
+    _endTransform = null;
+    _dropSpeed = 50.0;
+    _riseSpeed = 10.0;
+    _pauseTime = 3.0;
+    _pauseTimeLeft = 0.0;
+    _killRadius = 10.0;
+
+    function Init()
+    {
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 120, 0), Vector3(80, 50, 80));
+        self._log = self.MapObject.GetTransform("ExecutionerLog1");
+        self._startPosition = self._log.Position;
+        self._endTransform = self._log.GetTransform("End");
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "request" && Network.IsMasterClient)
+        {
+            if (!self._moving)
+            {
+                self.NetworkView.SendMessageAll("drop");
+            }
+        }
+        if (message == "drop" && sender == Network.MasterClient)
+        {
+            self.Drop();
+        }
+    }
+
+    function Drop()
+    {
+        self._dropping = true;
+        self._moving = true;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to use executioner.", 0.1);
+        }
+    }
+
+    function OnTick()
+    {
+        if (self._moving && self._dropping && Network.IsMasterClient)
+        {
+            radius = self._killRadius * self.MapObject.Scale.Z;
+            character = Physics.SphereCast(self._startPosition, self._endTransform.Position, radius, "Characters");
+            if (character != null && (character.Type == "Titan" || character.Type == "Shifter"))
+            {
+                character.GetKilled("Executioner");
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact"))
+            {
+                self.NetworkView.SendMessage(Network.MasterClient, "request");
+            }
+        }
+        if (self._moving)
+        {
+            currentY = self._log.LocalPosition.Y;
+            currentPosition = self._log.LocalPosition;
+            if (self._dropping)
+            {
+                currentPosition.Y = currentPosition.Y - self._dropSpeed * Time.FrameTime;
+                if (currentPosition.Y <= 50)
+                {
+                    currentPosition.Y = 50;
+                    self._dropping = false;
+                    self._pauseTimeLeft = self._pauseTime;
+                }
+            }
+            else
+            {
+                if (self._pauseTimeLeft >= 0)
+                {
+                    self._pauseTimeLeft = self._pauseTimeLeft - Time.FrameTime;
+                }
+                else
+                {
+                    currentPosition.Y = currentPosition.Y + self._riseSpeed * Time.FrameTime;
+                    if (currentPosition.Y >= 120)
+                    {
+                        currentPosition.Y = 120;
+                        self._moving = false;
+                    }
+                }
+            }
+            self._log.LocalPosition = currentPosition;
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
         }
     }
 }

@@ -37,6 +37,9 @@
 		"Prefabs": [
 			{"Name": "Arch1"},
 			{"Name": "Bridge1"},
+			{"Name": "Building1"},
+			{"Name": "Building2"},
+			{"Name": "Building3"},
 			{"Name": "Bridge2"},
 			{"Name": "Canal1"},
 			{"Name": "Canal2"},
@@ -111,6 +114,10 @@
 			{"Name": "Wall2"},
 			{"Name": "Wall3"},
 			{"Name": "Wall4"},
+			{"Name": "WallA1"},
+			{"Name": "WallA2"},
+			{"Name": "WallGateA1", "Static": false, "Networked": true, "Components": ["WallGateA|"]},
+			{"Name": "WallGateA2", "Static": false, "Networked": true, "Components": ["WallGateA|"]},
 			{"Name": "Windmill1"},
 			{"Name": "Windmill2"}
 		]
@@ -118,6 +125,7 @@
 	"Decor": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Decor/", "AssetSameAsName": true},
 		"Prefabs": [
+			{"Name": "Atom1"},
 			{"Name": "Barrel1"},
 			{"Name": "Barrel2"},
 			{"Name": "Barrel3"},
@@ -141,18 +149,32 @@
 			{"Name": "Cabinet1"},
 			{"Name": "Cannon1"},
 			{"Name": "Chair1"},
+			{"Name": "ColossalPaths1"},
+			{"Name": "ColossalPaths2"},
+			{"Name": "ColossalPaths3"},
+			{"Name": "ColossalPaths4"},
+			{"Name": "ColossalPaths5"},
+			{"Name": "ColossalPaths6"},
 			{"Name": "Crate1"},
 			{"Name": "Crate2"},
 			{"Name": "Crate3"},
+			{"Name": "DNA1"},
 			{"Name": "Dummy1"},
 			{"Name": "Elevator1"},
 			{"Name": "Equipment1"},
+			{"Name": "ExecutionerBase1"},
+			{"Name": "ExecutionerBase2"},
+			{"Name": "ExecutionerBase3"},
+			{"Name": "ExecutionerWeight1"},
+			{"Name": "ExecutionerHell1"},
+			{"Name": "ExecutionerLog1"},
 			{"Name": "Fence1"},
 			{"Name": "Fountain1"},
 			{"Name": "Fork1"},
 			{"Name": "Flag1"},
 			{"Name": "Flag2"},
 			{"Name": "Gas1"},
+			{"Name": "Gear1"},
 			{"Name": "Gore1"},
 			{"Name": "Gore2"},
 			{"Name": "Gore3"},
@@ -162,6 +184,11 @@
 			{"Name": "HorseHurdle1"},
 			{"Name": "Lamp1"},
 			{"Name": "Lamp2"},
+			{"Name": "Lantern1"},
+			{"Name": "Lantern2"},
+			{"Name": "Lantern3"},
+			{"Name": "Lantern4"},
+			{"Name": "Lantern5"},
 			{"Name": "ODMHandle1"},
 			{"Name": "ODMHandle2"},
 			{"Name": "Pillar1"},
@@ -195,6 +222,7 @@
 			{"Name": "Tarp1"},
 			{"Name": "Tarp2"},
 			{"Name": "Teapot1"},
+			{"Name": "TreePaths1"},
 			{"Name": "Wagon1"}
 		]
 	},
@@ -276,6 +304,14 @@
 			{"Name": "Utgard2"}
 		]
 	},
+	"FX": {
+		"Info": {"Type": "Scene", "AssetPrefix": "FX/", "AssetSameAsName": true},
+		"Prefabs": [
+			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
+		]
+	},
 	"Interact": {
 		"Info": {"Type": "Scene"},
 		"Prefabs": [
@@ -287,6 +323,8 @@
 			{"Name": "Cannon5", "Asset": "Interact/Cannon5", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dummy2", "Asset": "Interact/Dummy2", "Static": false, "Networked": true, "Components": ["Dummy|"]},
+			{"Name": "Executioner1", "Asset": "Interact/Executioner1",  "Static": false, "Networked": true, "Components": ["Executioner|"]},
+			{"Name": "Executioner2", "Asset": "Interact/Executioner2",  "Static": false, "Networked": true, "Components": ["Executioner|"]},
 			{"Name": "Racing Start Barrier", "Asset": "Geometry/Cuboid", "Static": false, "Material": "Transparent|0/97/255/122|Misc/None|1/1|0/0|", 
 			"Components": ["Tag|Name:RacingStartBarrier"]},
 			{"Name": "Racing Finish Region", "Asset": "Geometry/Cuboid", "Material": "Transparent|209/255/0/128|Misc/None|1/1|0/0|", 
@@ -297,6 +335,10 @@
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["KillRegion|"]},
 			{"Name": "Damage Region", "Asset": "Geometry/Cuboid", "Material": "Transparent|255/128/128/128|Misc/None|1/1|0/0|", 
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["DamageRegion|"]},
+			{"Name": "CaptureZone1", "Asset": "Interact/CaptureZone1", "Material": "Default|255/255/255/255|", 
+			"CollideMode": "Region", "CollideWith": "Characters"},
+			{"Name": "CaptureZone2", "Asset": "Interact/CaptureZone2", "Material": "Default|255/255/255/255|", 
+			"CollideMode": "Region", "CollideWith": "Characters"},
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]}
 		]

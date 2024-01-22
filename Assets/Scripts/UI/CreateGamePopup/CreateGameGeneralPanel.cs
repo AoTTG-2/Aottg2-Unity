@@ -50,6 +50,7 @@ namespace UI
             else
                 selectPopup = ((MainMenu)UIManager.CurrentMenu)._selectMapPopup;
             ElementFactory.CreateButtonPopupSetting(DoublePanelLeft, dropdownStyle, settings.General.MapName, UIManager.GetLocale(cat, sub, "MapName"), selectPopup, elementWidth: 180f);
+            ElementFactory.CreateDefaultLabel(DoublePanelLeft, dropdownStyle, UIManager.GetLocale(cat, sub, "MapCategory") + ": " + settings.General.MapCategory.Value, alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, dropdownStyle, script.Options.Description, alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.General.GameMode, UIManager.GetLocale(cat, sub, "GameMode"),
                 BuiltinLevels.GetGameModes(settings.General.MapCategory.Value, settings.General.MapName.Value, hasMapLogic), elementWidth: 180f, optionsWidth: 240f,
