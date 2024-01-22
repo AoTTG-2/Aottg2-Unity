@@ -73,7 +73,7 @@ namespace CustomLogic
                 }
                 else if (name == "PhysicMaterialModifier")
                 {
-                    var pmModifier = Value.GameObject.AddComponent<PhysicMaterialModifier>();
+                    var pmModifier = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
                     pmModifier.Setup((bool)parameters[1]);
                 }
                 return null;
@@ -98,7 +98,7 @@ namespace CustomLogic
                 }
                 else if (name == "PhysicMaterialModifier")
                 {
-                    var pmModifier = Value.GameObject.GetComponent<PhysicMaterialModifier>();
+                    var pmModifier = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
                     if (param == "StaticFriction")
                     {
                         pmModifier.StaticFriction = parameters[2].UnboxToFloat();

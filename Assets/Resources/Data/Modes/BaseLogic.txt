@@ -1,4 +1,4 @@
-component PhysicMaterialModifier
+component CustomPhysicsMaterial
 {
     IncludeChildren = false;
     IncludeChildrenTooltip = "If this option is enabled, the child map objects' physic material will also be modified.";

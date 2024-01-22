@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Map
 {
-    class PhysicMaterialModifier : MonoBehaviour
+    class CustomPhysicsMaterial : MonoBehaviour
     {
         private PhysicMaterial _material;
 
