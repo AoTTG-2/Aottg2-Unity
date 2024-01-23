@@ -583,8 +583,7 @@ component Rigidbody
     Mass = 1.0;
     Gravity = Vector3(0.0, -20.0, 0.0);
     FreezeRotation = false;
-    Interpolate = "None";
-    InterpolateDropbox = "None, Interpolate, Extrapolate";
+    Interpolate = false;
 
     function Init()
     {

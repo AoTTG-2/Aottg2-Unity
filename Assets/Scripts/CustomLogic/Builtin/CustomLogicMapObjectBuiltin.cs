@@ -63,13 +63,10 @@ namespace CustomLogic
                     rigidbody.useGravity = false;
                     rigidbody.freezeRotation = (bool)parameters[3];
 
-                    var interpolation = (string)parameters[4];
-                    rigidbody.interpolation = interpolation switch
-                    {
-                        "Interpolate" => RigidbodyInterpolation.Interpolate,
-                        "Extrapolate" => RigidbodyInterpolation.Extrapolate,
-                        _ => RigidbodyInterpolation.None
-                    };
+                    var interpolate = (bool)parameters[4];
+                    rigidbody.interpolation = interpolate
+                        ? RigidbodyInterpolation.Interpolate 
+                        : RigidbodyInterpolation.None;
                 }
                 else if (name == "PhysicMaterialModifier")
                 {
