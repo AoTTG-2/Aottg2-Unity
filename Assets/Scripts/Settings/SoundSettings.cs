@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using Cameras;
+using GameManagers;
 
 namespace Settings
 {
@@ -32,10 +33,12 @@ namespace Settings
         {
             AudioListener.volume = Volume.Value;
             MusicManager.ApplySoundSettings();
-            if (VoiceChatManager.Instance) 
+            VoiceChatManager.ApplySoundSettings();
+            
+            /*if (VoiceChatManager.Instance) 
             {
                 VoiceChatManager.Instance.ApplySoundSettings();
-            }
+            }*/
         }
     }
 }

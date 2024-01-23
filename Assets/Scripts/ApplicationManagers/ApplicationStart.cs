@@ -60,6 +60,7 @@ namespace ApplicationManagers
             PastebinLoader.Init();
             AssetBundleManager.Init();
             MusicManager.Init();
+            VoiceChatManager.Init();
             CustomSerialization.Init();
             if (ApplicationConfig.DevelopmentMode)
             {

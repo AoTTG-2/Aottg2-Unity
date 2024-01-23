@@ -16557,6 +16557,7 @@ MonoBehaviour:
   JustGrounded: 0
   TargetAngle: 0
   HasDirection: 0
+  Speaker: {fileID: 7643208462832753933}
   MountState: 0
   CarryState: 0
   Horse: {fileID: 0}
@@ -16876,9 +16877,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
       insertIndex: -1
       addedObject: {fileID: 923800490016396861}
-    - targetCorrespondingSourceObject: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 870560337496704773}
   m_SourcePrefab: {fileID: 100100000, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
 --- !u!4 &424188209751530990 stripped
 Transform:
@@ -16908,16 +16906,8 @@ MonoBehaviour:
     Max: 1000
     SpeedUpPerc: 5
   restartOnDeviceChange: 1
---- !u!114 &870560337496704773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!82 &7643208462832753933 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
+  m_PrefabInstance: {fileID: 3321840625554123212}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3382990966606385358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3b75b59cc9a8748b3224a396168b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PV: {fileID: 2691351268378165370}

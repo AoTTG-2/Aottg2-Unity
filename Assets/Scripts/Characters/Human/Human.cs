@@ -9,6 +9,7 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
 using Settings;
 using SimpleJSONFixed;
 using System;
@@ -116,6 +117,11 @@ namespace Characters
         private float _hookHumanConstantTimeLeft;
         private bool _isReelingOut;
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
+
+
+        // voice
+        [SerializeField]
+        private AudioSource Speaker;
 
 
         [PunRPC]
@@ -721,9 +727,13 @@ namespace Characters
         {
             _inGameManager.Humans.Add(this);
             base.Start();
+            Speaker.volume = VoiceChatManager.GetVoiceChatVolume();
+            Speaker.spatialBlend = VoiceChatManager.GetTypeOfAudio();
             SetInterpolation(true);
             if (IsMine())
             {
+                VoiceChatManager.PV = GetComponent<PhotonVoiceView>();
+                VoiceChatManager.character = _inGameManager.CurrentCharacter;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)

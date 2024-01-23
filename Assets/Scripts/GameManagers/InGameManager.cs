@@ -345,6 +345,11 @@ namespace GameManagers
             else
                 position = GetTitanSpawnPoint();
             SpawnPlayerAt(force, position);
+            OnPlayerSpawn();
+        }
+
+        public virtual void OnPlayerSpawn() 
+        {
         }
 
         public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position)

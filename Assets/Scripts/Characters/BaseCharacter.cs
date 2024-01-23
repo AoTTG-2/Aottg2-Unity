@@ -13,6 +13,7 @@ using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
 using GameProgress;
+using Photon.Voice.Unity;
 
 namespace Characters
 {
@@ -44,6 +45,9 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
+
+     
+
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
@@ -439,7 +443,9 @@ namespace Characters
 
         protected virtual void Start()
         {
+
             MinimapHandler.CreateMinimapIcon(this);
+
             StartCoroutine(WaitAndNotifyCharacterSpawn());
         }
 

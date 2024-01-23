@@ -1,122 +1,96 @@
+using System.Collections.Generic;
+using UnityEngine;
+using Weather;
+using UI;
+using Utility;
+using CustomSkins;
 using ApplicationManagers;
+using System.Diagnostics;
 using Characters;
-using GameManagers;
+using Settings;
+using CustomLogic;
+using Effects;
+using Map;
+using System.Collections;
+using GameProgress;
+using Cameras;
+using System;
 using Photon.Pun;
 using Photon.Realtime;
+using System.IO;
+using Debug = UnityEngine.Debug;
+using Events;
+using SimpleJSONFixed;
 using Photon.Voice.PUN;
 using Photon.Voice.Unity;
-using Settings;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
-using Utility;
 
-public class VoiceChatManager : MonoBehaviourPunCallbacks
+namespace GameManagers
 {
-    [SerializeField]
-    public PhotonVoiceView PV;
-    private BaseCharacter character;
-    private InGameManager _inGameManager;
-    public static VoiceChatManager Instance;
-    private bool _keepTalking = false;
-    // Start is called before the first frame update
-
-    private void Start()
+    class VoiceChatManager : MonoBehaviour
     {
-        if (gameObject.GetComponentInParent<PhotonView>().IsMine) 
+        private static bool _keepTalking;
+        public static PhotonVoiceView PV;
+        public static BaseCharacter character;
+        private static MusicManager _instance;
+     
+
+        public static void Init()
         {
-            if (!Instance) 
+            _instance = SingletonFactory.CreateSingleton(_instance);
+        }
+
+        public static void ApplySoundSettings() 
+        {
+            var microphones = GameObject.FindGameObjectsWithTag("Speaker");
+            foreach (GameObject MicObj in microphones)
             {
-                Instance = this;
-                _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                character = _inGameManager.CurrentCharacter;
-                PV = GetComponentInParent<PhotonVoiceView>();
-                CheckStatus();
-            }
-            else 
-            {
-                Destroy(Instance);
-                Instance = this;
-                _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                character = _inGameManager.CurrentCharacter;
-                PV = GetComponentInParent<PhotonVoiceView>();
-                CheckStatus();
+                if(MicObj != null) 
+                {
+                    AudioSource Mic = MicObj.GetComponent<AudioSource>();
+                    ApplyAudioSettings(Mic);
+                }
             }
         }
-        else 
-        {
-            this.enabled = false;
-        }
-    }
-    public void ApplySoundSettings()
-    {
-        var microphones = GameObject.FindGameObjectsWithTag("Speaker");
-        foreach (GameObject MicObj in microphones) 
-        {
-            AudioSource Mic = MicObj.GetComponent<AudioSource>();
-            Apply(Mic);
-        }
-    }
 
-    private void Update()
-    {
-        if (PV.IsRecording && !_keepTalking) 
+        private void Update()
         {
-            RPCManager.PhotonView.RPC("EmoteVoiceRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, "Speaking"});
-            _keepTalking = true;
+            if (PV != null && character != null)
+            {
+                if (PV.IsRecording && !_keepTalking)
+                {
+                    RPCManager.PhotonView.RPC("EmoteVoiceRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, "Speaking" });
+                    _keepTalking = true;
+                }
+                else if (!PV.IsSpeaking && _keepTalking)
+                {
+                    RPCManager.PhotonView.RPC("StopVoiceRPC", RpcTarget.All, new object[] { });
+                    _keepTalking = false;
+                }
+            }
         }
-        else if(!PV.IsSpeaking && _keepTalking)
-        {
-            RPCManager.PhotonView.RPC("StopVoiceRPC", RpcTarget.All, new object[] {});
-            _keepTalking = false;
-        }
-    }
 
-    public override void OnPlayerEnteredRoom(Player player) 
-    {
-        ApplySoundSettings();
-    }
-    public void Apply(AudioSource Mic) 
-    {
-        CheckStatus();
-        Mic.volume = GetVoiceChatVolume();
-        Mic.spatialBlend = GetTypeOfAudio();
-    }
+        private static void CheckStatus()
+        {
+            PV.GetComponentInParent<Recorder>().RecordingEnabled = SettingsManager.SoundSettings.VoiceChat.Value;
+        }
 
-    private void CheckStatus() 
-    {
-        if (SettingsManager.SoundSettings.VoiceChat.Value) 
+        public static void ApplyAudioSettings(AudioSource Mic)
         {
-            PV.GetComponentInParent<Recorder>().RecordingEnabled = true;
+            CheckStatus();
+            Mic.volume = GetVoiceChatVolume();
+            Mic.spatialBlend = GetTypeOfAudio();
         }
-        else 
+
+        public static float GetVoiceChatVolume()
         {
-            PV.GetComponentInParent<Recorder>().RecordingEnabled = false;
+            return SettingsManager.SoundSettings.VoiceChat.Value ?
+             SettingsManager.SoundSettings.VoiceChatVolume.Value * 2.5f :
+             0f;
         }
-    }
-    private float GetVoiceChatVolume()
-    {
-        if (SettingsManager.SoundSettings.VoiceChat.Value)
+        public static float GetTypeOfAudio()
         {
-            return SettingsManager.SoundSettings.VoiceChatVolume.Value * 2.5f;
+            return SettingsManager.SoundSettings.SpatialVoiceChat.Value ? 1 : 0;
         }
-        else
-        {
-            return 0f;
-        }
-    }
-    private float GetTypeOfAudio()
-    {
-        if (SettingsManager.SoundSettings.SpatialVoiceChat.Value)
-        {
-            return 1;
-        }
-        else 
-        {
-            return 0;
-        }
+
     }
 }
