@@ -27,18 +27,27 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (!Instance) 
-        {
-            Instance = this;
-            _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            character = _inGameManager.CurrentCharacter;
+        if (gameObject.GetComponentInParent<PhotonView>().IsMine) 
+        { 
+            if (!Instance) 
+            {
+                Instance = this;
+                _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                character = _inGameManager.CurrentCharacter;
+                PV = GetComponentInParent<PhotonVoiceView>();
+            }
+            else 
+            {
+                Destroy(Instance);
+                Instance = this;
+                _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                character = _inGameManager.CurrentCharacter;
+                PV = GetComponentInParent<PhotonVoiceView>();
+            }
         }
         else 
         {
-            Destroy(Instance);
-            Instance = this;
-            _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            character = _inGameManager.CurrentCharacter;
+            this.enabled = false;
         }
     }
     public void ApplySoundSettings()
@@ -53,7 +62,7 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(PV.IsSpeaking && !_keepTalking) 
+        if (PV.IsRecording && !_keepTalking) 
         {
             RPCManager.PhotonView.RPC("EmoteVoiceRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, "Speaking"});
             _keepTalking = true;
@@ -80,11 +89,11 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
     {
         if (SettingsManager.SoundSettings.VoiceChat.Value) 
         {
-            PV.GetComponent<Recorder>().RecordingEnabled = true;
+            PV.GetComponentInParent<Recorder>().RecordingEnabled = true;
         }
         else 
         {
-            PV.GetComponent<Recorder>().RecordingEnabled = false;
+            PV.GetComponentInParent<Recorder>().RecordingEnabled = false;
         }
     }
     private float GetVoiceChatVolume()
