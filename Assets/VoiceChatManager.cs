@@ -43,7 +43,6 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
     }
     public void ApplySoundSettings()
     {
-        int i = 0;
         var microphones = GameObject.FindGameObjectsWithTag("Speaker");
         foreach (GameObject MicObj in microphones) 
         {
@@ -72,10 +71,22 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
     }
     public void Apply(AudioSource Mic) 
     {
+        CheckStatus();
         Mic.volume = GetVoiceChatVolume();
         Mic.spatialBlend = GetTypeOfAudio();
     }
 
+    private void CheckStatus() 
+    {
+        if (SettingsManager.SoundSettings.VoiceChat.Value) 
+        {
+            PV.GetComponent<Recorder>().RecordingEnabled = true;
+        }
+        else 
+        {
+            PV.GetComponent<Recorder>().RecordingEnabled = false;
+        }
+    }
     private float GetVoiceChatVolume()
     {
         if (SettingsManager.SoundSettings.VoiceChat.Value)
