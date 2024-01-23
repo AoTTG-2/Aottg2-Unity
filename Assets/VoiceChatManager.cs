@@ -22,19 +22,19 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
     private InGameManager _inGameManager;
     public static VoiceChatManager Instance;
     private bool _keepTalking = false;
-    private List<AudioSource> _audio = new List<AudioSource>();
     // Start is called before the first frame update
 
     private void Start()
     {
         if (gameObject.GetComponentInParent<PhotonView>().IsMine) 
-        { 
+        {
             if (!Instance) 
             {
                 Instance = this;
                 _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
                 character = _inGameManager.CurrentCharacter;
                 PV = GetComponentInParent<PhotonVoiceView>();
+                CheckStatus();
             }
             else 
             {
@@ -43,6 +43,7 @@ public class VoiceChatManager : MonoBehaviourPunCallbacks
                 _inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
                 character = _inGameManager.CurrentCharacter;
                 PV = GetComponentInParent<PhotonVoiceView>();
+                CheckStatus();
             }
         }
         else 

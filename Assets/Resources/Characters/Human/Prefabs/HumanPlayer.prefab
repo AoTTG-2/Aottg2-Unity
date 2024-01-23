@@ -16673,7 +16673,7 @@ MonoBehaviour:
   stopRecordingWhenPaused: 0
   useOnAudioFilterRead: 0
   useMicrophoneTypeFallback: 1
-  recordWhenJoined: 1
+  recordWhenJoined: 0
 --- !u!114 &2691351268378165370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16705,7 +16705,7 @@ MonoBehaviour:
   statsResetInterval: 1000
   speakerPrefab: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
   primaryRecorder: {fileID: -8068924427270291233}
-  usePrimaryRecorder: 0
+  usePrimaryRecorder: 1
   cppCompatibilityMode: 0
   Settings:
     AppIdRealtime: 

@@ -562,7 +562,7 @@ namespace Photon.Voice.Unity
             }
             else
             {
-                this.Logger.LogError("AddRecorder: recorder {0} already added.", rec);
+                //this.Logger.LogError("AddRecorder: recorder {0} already added.", rec);
             }
 
             return false;
