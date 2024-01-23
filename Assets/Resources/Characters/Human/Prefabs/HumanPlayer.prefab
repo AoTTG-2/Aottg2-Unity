@@ -16337,6 +16337,7 @@ GameObject:
   - component: {fileID: 3902152229338984631}
   - component: {fileID: -8068924427270291233}
   - component: {fileID: 2691351268378165370}
+  - component: {fileID: 771645919132878542}
   m_Layer: 0
   m_Name: HumanPlayer
   m_TagString: Untagged
@@ -16685,6 +16686,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &771645919132878542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81d9debcbaf99472bb70ffc2f99cb23f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisconnectAfterKeepAlive: 0
+  KeepAliveInBackground: 60000
+  ApplyDontDestroyOnLoad: 0
+  runInBackground: 1
+  statsResetInterval: 1000
+  speakerPrefab: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
+  primaryRecorder: {fileID: -8068924427270291233}
+  usePrimaryRecorder: 0
+  cppCompatibilityMode: 0
+  Settings:
+    AppIdRealtime: 
+    AppIdFusion: 
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: 
+    UseNameServer: 1
+    FixedRegion: 
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  ShowSettings: 1
+  AutoConnectAndJoin: 1
+  usePunAppSettings: 1
+  usePunAuthValues: 1
 --- !u!1 &4310715724008364727
 GameObject:
   m_ObjectHideFlags: 0
@@ -16878,3 +16920,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3b75b59cc9a8748b3224a396168b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PV: {fileID: 2691351268378165370}

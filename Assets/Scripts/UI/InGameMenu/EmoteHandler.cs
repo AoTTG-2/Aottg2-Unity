@@ -14,7 +14,7 @@ namespace UI
     class EmoteHandler : MonoBehaviour
     {
         public static Dictionary<string, Texture2D> EmojiTextures = new Dictionary<string, Texture2D>();
-        public static List<string> AvailableEmojis = new List<string>() { "Smile", "ThumbsUp", "Cool", "Love", "Shocked", "Crying", "Annoyed", "Angry" , "Test" };
+        public static List<string> AvailableEmojis = new List<string>() { "Smile", "ThumbsUp", "Cool", "Love", "Shocked", "Crying", "Annoyed", "Angry" };
         public static List<string> AvailableText = new List<string>() { "Help", "Thanks", "Sorry", "Titan here", "Good game", "Nice hit", "Oops", "Welcome" };
         private List<EmoteTextPopup> _emoteTextPopups = new List<EmoteTextPopup>();
         private List<EmoteTextPopup> _emoteEmojiPopups = new List<EmoteTextPopup>();
@@ -26,6 +26,7 @@ namespace UI
         private InGameManager _inGameManager;
         protected const float Range = 500f;
         protected const float HumanOffset = 4f;
+        protected const float HumanVoiceChatOffset = 2f;
         protected const float TitanOffset = 25f;
         protected const float CrawlerOffset = 15f;
         protected const float ShifterOffset = 70f;
@@ -65,6 +66,24 @@ namespace UI
                 handler.ShowEmoteEmoji(emoji, c);
         }
 
+        public static void OnEmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
+        {
+            if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
+                return;
+            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
+            BaseCharacter c = Util.FindCharacterByViewId(viewId);
+            if (c != null && handler != null)
+                handler.ShowVoiceEmoji(emoji, c);
+        }
+
+        public static void OnStopVoiceRPC(PhotonMessageInfo info)
+        {
+            if (UIManager.CurrentMenu == null || !SettingsManager.UISettings.ShowEmotes.Value || InGameManager.MuteEmote.Contains(info.Sender.ActorNumber))
+                return;
+            EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
+            handler.StopInfinitePopup();
+        }
+
         private void ShowEmoteText(string text, BaseCharacter character)
         {
             EmoteTextPopup popup = (EmoteTextPopup)GetAvailablePopup(_emoteTextPopups);
@@ -79,20 +98,36 @@ namespace UI
             popup.Load(emoji, ShowTime, character, GetOffset(character));
         }
 
+        private void ShowVoiceEmoji(string emoji, BaseCharacter character)
+        {
+            EmoteEmojiPopup popup = (EmoteEmojiPopup)GetAvailablePopup(_emoteEmojiPopups);
+            popup.infinitePopup = true;
+            popup.Load(emoji, 0.1f, character, Vector3.up * HumanVoiceChatOffset);
+        }
+
+
+        private void StopInfinitePopup()
+        {
+            foreach (var _popup in _emoteEmojiPopups) 
+            { 
+                _popup.infinitePopup = false;
+            }
+        }
+
         private Vector3 GetOffset(BaseCharacter character)
         {
-            if (character is Human)
-                return Vector3.up * HumanOffset;
-            else if (character is BasicTitan)
-            {
-                var titan = (BasicTitan)character;
-                if (titan.IsCrawler)
-                    return Vector3.up * CrawlerOffset * titan.Size;
-                else
-                    return Vector3.up * TitanOffset * titan.Size;
-            }
-            else if (character is BaseShifter)
-                return Vector3.up * ShifterOffset * ((BaseShifter)character).Size;
+        if (character is Human)
+            return Vector3.up * HumanOffset;
+        else if (character is BasicTitan)
+        {
+            var titan = (BasicTitan)character;
+            if (titan.IsCrawler)
+                return Vector3.up * CrawlerOffset * titan.Size;
+            else
+                return Vector3.up * TitanOffset * titan.Size;
+        }
+        else if (character is BaseShifter)
+            return Vector3.up * ShifterOffset * ((BaseShifter)character).Size;
             return Vector3.zero;
         }
 
@@ -156,6 +191,7 @@ namespace UI
                     {
                         string emoji = AvailableEmojis[selected];
                         RPCManager.PhotonView.RPC("EmoteEmojiRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
+                        Debug.Log(emoji.ToString());
                     }
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Action)
@@ -199,7 +235,10 @@ namespace UI
         protected void UpdatePopup(EmoteTextPopup popup, bool inMenu)
         {
             var camera = SceneLoader.CurrentCamera;
-            popup.ShowTimeLeft -= Time.deltaTime;
+            if (!popup.infinitePopup) 
+            {
+                popup.ShowTimeLeft -= Time.deltaTime;
+            }
             if (popup.ShowTimeLeft <= 0f || inMenu || popup.Character == null)
             {
                 popup.HideImmediate();
@@ -229,6 +268,7 @@ namespace UI
             popup.transform.position = screenPosition;
             popup.Show();
         }
+
 
         protected void LateUpdate()
         {

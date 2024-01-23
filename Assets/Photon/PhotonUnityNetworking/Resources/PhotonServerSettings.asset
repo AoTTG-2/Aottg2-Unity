@@ -121,6 +121,8 @@ MonoBehaviour:
   - CantHearYou
   - ChangeColour
   - HeresWhy
+  - EmoteVoiceRPC
+  - StopVoiceRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

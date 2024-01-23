@@ -125,6 +125,18 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void EmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
+        {
+            EmoteHandler.OnEmoteVoiceRPC(viewId, emoji, info);
+        }
+
+        [PunRPC]
+        public void StopVoiceRPC(PhotonMessageInfo Info) 
+        {
+            EmoteHandler.OnStopVoiceRPC(Info);
+        }
+
+        [PunRPC]
         public void EmoteTextRPC(int viewId, string text, PhotonMessageInfo info)
         {
             EmoteHandler.OnEmoteTextRPC(viewId, text, info);
