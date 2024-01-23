@@ -49,6 +49,10 @@ component VelocityZone
         {
             return other.ID;
         }
+        else
+        {
+            return other.Type;
+        }
     }
 
     function IsOwnedByMe(other)
@@ -193,6 +197,11 @@ component VelocityZone
 
     function OnCollisionExit(other)
     {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
         if (self.StopObject)
         {
             if (self._enterVelocities.Contains(self.GetUniqueID(other)))
@@ -201,7 +210,7 @@ component VelocityZone
             }
         }
 
-        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.ApplyOn != "Exit")
+        if (self.ApplyOn != "Exit")
         {
             return;
         }
@@ -212,6 +221,11 @@ component VelocityZone
     {
         if (self.StopObject)
         {
+            # Titans are characters too and they don't have a unique id nor do we care about them #
+            if (character.Type != "Human" || character.Type != "MapObject")
+            {
+                return;
+            }
             if (self._enterVelocities.Contains(self.GetUniqueID(character)))
             {
                 self._enterVelocities.Remove(self.GetUniqueID(character));
