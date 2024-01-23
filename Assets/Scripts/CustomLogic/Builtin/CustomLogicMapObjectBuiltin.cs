@@ -68,10 +68,10 @@ namespace CustomLogic
                         ? RigidbodyInterpolation.Interpolate 
                         : RigidbodyInterpolation.None;
                 }
-                else if (name == "PhysicMaterialModifier")
+                else if (name == "CustomPhysicsMaterial")
                 {
-                    var pmModifier = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
-                    pmModifier.Setup((bool)parameters[1]);
+                    var customPhysicsMaterial = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
+                    customPhysicsMaterial.Setup((bool)parameters[1]);
                 }
                 return null;
             }
@@ -93,20 +93,20 @@ namespace CustomLogic
                         rigidbody.AddForce(force, ForceMode.Acceleration);
                     }
                 }
-                else if (name == "PhysicMaterialModifier")
+                else if (name == "CustomPhysicsMaterial")
                 {
-                    var pmModifier = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
+                    var customPhysicsMaterial = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
                     if (param == "StaticFriction")
                     {
-                        pmModifier.StaticFriction = parameters[2].UnboxToFloat();
+                        customPhysicsMaterial.StaticFriction = parameters[2].UnboxToFloat();
                     }
                     if (param == "DynamicFriction")
                     {
-                        pmModifier.DynamicFriction = parameters[2].UnboxToFloat();
+                        customPhysicsMaterial.DynamicFriction = parameters[2].UnboxToFloat();
                     }
                     if (param == "Bounciness")
                     {
-                        pmModifier.Bounciness = parameters[2].UnboxToFloat();
+                        customPhysicsMaterial.Bounciness = parameters[2].UnboxToFloat();
                     }
 
                     var isFrictionCombine = param == "FrictionCombine";
@@ -122,9 +122,9 @@ namespace CustomLogic
                         };
 
                         if (isFrictionCombine)
-                            pmModifier.FrictionCombine = combine;
+                            customPhysicsMaterial.FrictionCombine = combine;
                         else
-                            pmModifier.BounceCombine = combine;
+                            customPhysicsMaterial.BounceCombine = combine;
 
                     }
                 }
