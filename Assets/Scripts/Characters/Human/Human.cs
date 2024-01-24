@@ -703,10 +703,14 @@ namespace Characters
 
         private void DestroyVoiceChat() 
         {
-            Destroy(Speaker.gameObject);
             Destroy(gameObject.GetComponent<PhotonVoiceView>());
             Destroy(gameObject.GetComponent<PunVoiceClient>());
             Destroy(gameObject.GetComponent<Recorder>());
+            if (IsMine()) 
+            {
+                VoiceChatManager.PV = null;
+                VoiceChatManager.character = null;
+            }
         }
 
         public void Init(bool ai, string team, InGameCharacterSettings settings)
@@ -736,6 +740,7 @@ namespace Characters
 
         protected override void Start()
         {
+            Debug.Log("a");
             _inGameManager.Humans.Add(this);
             base.Start();
             Speaker.volume = VoiceChatManager.GetVoiceChatVolume();
