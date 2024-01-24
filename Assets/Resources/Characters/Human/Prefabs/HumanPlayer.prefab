@@ -16557,7 +16557,6 @@ MonoBehaviour:
   JustGrounded: 0
   TargetAngle: 0
   HasDirection: 0
-  Speaker: {fileID: 7643208462832753933}
   MountState: 0
   CarryState: 0
   Horse: {fileID: 0}
@@ -16595,6 +16594,7 @@ MonoBehaviour:
   RunAnimation: 
   _attackRelease: 0
   _attackButtonRelease: 0
+  Speaker: {fileID: 7643208462832753933}
 --- !u!114 &11414280
 MonoBehaviour:
   m_ObjectHideFlags: 0
