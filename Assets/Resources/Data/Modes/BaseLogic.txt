@@ -1580,3 +1580,1252 @@ component Executioner
         }
     }
 }
+component SignalMover
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    TargetPosition = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Moves the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original position after Target movement.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens movement using frames. Avoid unless necessary.";
+    InfiniteTooltip = "Infinitely moves while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartPosition = Vector3(0,0,0);
+    _GoalPosition = Vector3(0,0,0);
+    _OriginalPosition = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalPosition = self.MapObject.Position;
+        self._StartPosition = self.MapObject.Position;
+        self._GoalPosition = self.MapObject.Position + self.TargetPosition;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition + self.TargetPosition;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition - self.TargetPosition;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition - self.TargetPosition;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._GoalPosition;
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._GoalPosition;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+    }
+}
+component SignalArcMover
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    TargetPosition = Vector3(0,0,0);
+    PivotOffset = Vector3(0,0,0);
+    AlternatePivotOffset = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Moves the object in an arc. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original position after Target movement.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens movement using frames. Avoid unless necessary.";
+    PivotOffsetTooltip = "Axis to offset center, object will arc around the shortest path. Offset of -1 of the X axis, would make the arc happen on positive X axis.";
+    AlternatePivotOffsetTooltip = "Increments pivot offset by this value every operation.";
+    InfiniteTooltip = "Infinitely moves while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartPosition = Vector3(0,0,0);
+    _GoalPosition = Vector3(0,0,0);
+    _RelativeStart = Vector3(0,0,0);
+    _RelativeGoal = Vector3(0,0,0);
+    _OriginalPosition = Vector3(0,0,0);
+    _Center = Vector3(0,0,0);
+    _Pivot = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _Alternate = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalPosition = self.MapObject.Position;
+        self._StartPosition = self.MapObject.Position;
+        self._GoalPosition = self.MapObject.Position + self.TargetPosition;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+        self._Pivot = self.PivotOffset;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition + self.TargetPosition;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition - self.TargetPosition;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition - self.TargetPosition;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+            }
+            self._Center = (self._StartPosition + self._GoalPosition) * 0.5;
+            self._Center = self._Center + self._Pivot;
+            self._RelativeStart = self._StartPosition - self._Center;
+            self._RelativeGoal = self._GoalPosition - self._Center;
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.00;
+            self._Running = false;
+            self.MapObject.Position = self._RelativeGoal + self._Center;
+            if (self._Alternate)
+            {
+                self._Alternate = false;
+                self._Pivot = self.PivotOffset;
+            }
+            elif (!self._Alternate)
+            {
+                self._Alternate = true;
+                self._Pivot = self.AlternatePivotOffset;
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._RelativeGoal + self._Center;
+            if (self._Alternate)
+            {
+                self._Alternate = false;
+                self._Pivot = self.PivotOffset;
+            }
+            elif (!self._Alternate)
+            {
+                self._Alternate = true;
+                self._Pivot = self.AlternatePivotOffset;
+            }
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        self.MapObject.Position = self.MapObject.Position + self._Center;
+    }
+}
+component SignalRotator
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    Rotation = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Rotates the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original rotation after normal rotation.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens rotation using frames. Avoid unless necessary.";
+    InfiniteTooltip = "Infinitely rotates while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartRotation = Vector3(0,0,0);
+    _GoalRotation = Vector3(0,0,0);
+    _OriginalRotation = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalRotation = self.MapObject.Rotation;
+        self._StartRotation = self.MapObject.Rotation;
+        self._GoalRotation = self.MapObject.Rotation + self.Rotation;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartRotation = self.MapObject.Rotation;
+                self._GoalRotation = self._StartRotation + self.Rotation;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartRotation = self.MapObject.Rotation;
+                self._GoalRotation = self._StartRotation - self.Rotation;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation + self.Rotation;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation - self.Rotation;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation + self.Rotation;
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Rotation = self._GoalRotation;
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Rotation = self._GoalRotation;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+    }
+}
+component SignalScaler
+{
+    #
+    //Make sure not to scale any axis by 0 unless you want it to disappear
+    #
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    MultiplyScale = Vector3(1,1,1);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Scales the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original scale after target Scaling.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens scaling using frames. Avoid unless necessary.";
+    MultiplyScaleTooltip = "What to multiply current scale with";
+    InfiniteTooltip = "Infinitely scales while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartScale = Vector3(0,0,0);
+    _GoalScale = Vector3(0,0,0);
+    _OriginalScale = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+    function Init()
+    {
+        self._OriginalScale = self.MapObject.Scale;
+        self._StartScale = self.MapObject.Scale;
+        self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartScale = self.MapObject.Scale;
+                self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartScale = self.MapObject.Scale;
+                self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Scale = self._GoalScale;
+            if (self.MultiplyScale.X == 0.0 || self.MultiplyScale.Y == 0.0 || self.MultiplyScale.Z == 0.0)
+            {
+                Game.Print("One or more axis is set to 0, object will disappear since Scale * 0 = 0");
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Scale = self._GoalScale;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+    }
+}
+component SignalSender
+{
+    ReceiverObjectIDs = "0";
+    SignalTrigger = "Any";
+    ComponentName = "SignalMover";
+    SetEasing = "Original";
+    SetXYZ = Vector3(0, 0, 0);
+    SetTimesPerSecond = 0.0;
+    RepeatTimes = 1;
+    SetInfinite = false;
+    Uses = 0;
+    InfiniteUses = true;
+    OnStayTimer = 0.0;
+    InteractDistance = 0;
+    StopOnConstrains = false;
+    ForwardOrReverse = "Both";
+
+    Description = "Use in tandem with other compatible Signal components for specific operation and activation. Make sure the component has reverse enabled if needed.";
+    ReceiverObjectIDsTooltip = "ID  for the receiving objects, use space to separate multiple receivers.";
+    SignalTriggerTooltip = "How the signal is activated. (OnGetHit only works with cubes and Interact is not included for 'Any')";
+    ComponentNameTooltip = "What component to send the signal to";
+    SetXYZTooltip = "Only modifies original values if set to anything but (0, 0, 0)"
+    SetTimesPerSecondTooltip = "Modify the speed value of target object, is ignored if value is 0";
+    UsesTooltip = "How many times this signal can be used";
+    StopOnConstrainsTooltip = "Receiver object will stop at start and end position. Use for things like doors.";
+    ForwardOrReverseTooltip = "Whether the signal can only make the object go in one direction or both";
+    OnStayTimerTooltip = "If OnCollisionStay trigger is selected. Will use the time input before signal is sent.";
+
+    SetEasingDropbox = "Original, Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+    SignalTriggerDropbox = "Any, OnCollisionEnter, OnCollisionStay, OnCollisionExit, OnGetHit, OnGetHooked, Interact";
+    ComponentNameDropbox = "SignalArcMover, SignalMover, SignalRotator, SignalScaler";
+    ForwardOrReverseDropbox = "Both, Forward, Reverse";
+
+    _OnStayTimer = 0.0;
+    _HumanInRange = null;
+
+    _Receivers = List();
+    _Components = List();
+    function Init()
+    {
+        self._OnStayTimer = self.OnStayTimer;
+        ReceiverIDs = String.Split(self.ReceiverObjectIDs, " ");
+        for (i in Range(0, ReceiverIDs.Count, 1))
+        {
+            self._Receivers.Add(Map.FindMapObjectByID(Convert.ToInt(ReceiverIDs.Get(i))));
+            self._Components.Add(self._Receivers.Get(i).GetComponent(self.ComponentName));
+        }
+        if (self.SignalTrigger == "OnGetHit" || self.SignalTrigger == "Any")
+        {
+            self.MapObject.AddBoxCollider("Physical", "Hitboxes", Vector3(0,self.MapObject.Scale.Y * 5, 0), Vector3(self.MapObject.Scale.X * 10,self.MapObject.Scale.Y * 10,self.MapObject.Scale.Z * 10));
+        }
+        if (self.SignalTrigger == "Interact")
+        {
+            self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,self.MapObject.Scale.Y * 5,0), Vector3(self.MapObject.Scale.X * 10 + self.InteractDistance,self.MapObject.Scale.Y * 10 + self.InteractDistance,self.MapObject.Scale.Z * 10 + self.InteractDistance));
+        }
+    }
+    function OnCollisionEnter(other)
+    {
+        if (self.SignalTrigger == "OnCollisionEnter" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnCollisionStay(other)
+    {
+        if (self.SignalTrigger == "OnCollisionStay" || self.SignalTrigger == "Any")
+        {
+            if (self._OnStayTimer <= 0.0)
+            {
+                for (i in Range(0, self._Receivers.Count, 1))
+                {
+                    self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+                }
+            self._OnStayTimer = self.OnStayTimer;
+            }
+            else
+            {
+                self._OnStayTimer = self._OnStayTimer - Time.TickTime;
+            }
+        }
+        if (self.SignalTrigger == "Interact" && other.Type == "Human" && other.IsMine && (self.Uses > 0 || self.InfiniteUses))
+        {
+            self._HumanInRange = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to interact", 0.1);
+        }
+    }
+    function OnCollisionExit(other)
+    {
+        self._OnStayTimer = self.OnStayTimer;
+        self._HumanInRange = null;
+        if (self.SignalTrigger == "OnCollisionExit" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnGetHit(character, name, damage, type)
+    {
+        if (self.SignalTrigger == "OnGetHit" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnGetHooked(Human, HookPos, LeftHook)
+    {
+        if (self.SignalTrigger == "OnGetHooked" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._HumanInRange != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact") && (self.Uses > 0 || self.InfiniteUses))
+            {
+                for (i in Range(0, self._Receivers.Count, 1))
+                {
+                    self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+                }
+            }
+        }
+    }
+    function SendSignal(Receiver, Component)
+    {
+        if ((self.Uses > 0 || self.InfiniteUses) && !Component._Running)
+        {
+            if (!self.InfiniteUses)
+            {
+                self.Uses = self.Uses - 1;
+            }
+            if (self.ComponentName == "SignalArcMover")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Position != (Component._OriginalPosition + Component.TargetPosition) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Position != Component._OriginalPosition && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.TargetPosition = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                }
+            }
+            if (self.ComponentName == "SignalMover")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Position != (Component._OriginalPosition + Component.TargetPosition) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Position != Component._OriginalPosition && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.TargetPosition = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                }
+            }
+            elif (self.ComponentName == "SignalRotator")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Rotation != (Component._OriginalRotation + Component.Rotation) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Rotation != Component._OriginalRotation && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.Rotation = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                }   
+            }
+            elif (self.ComponentName == "SignalScaler")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Scale != Vector3.Multiply(Component._OriginalScale, Component.MultiplyScale) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Scale != Component._OriginalScale && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.MultiplyScale = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                }
+            }
+        }
+    }
+  
+}
+component Rope
+{
+    Activate = true;
+    Anchor1ID = 0;
+    Anchor2ID = 0;
+    IgnorePosition = false;
+    IgnoreRotation = false;
+    IgnoreScale = false;
+    Interpolate = false;
+    RopeGeometry = "Cube";
+
+    Description = "Creates a rope that sticks between Anchor1 and Anchor2";
+    ActivateTooltip = "Control with custom logic to Enable/Disable";
+
+    RopeGeometryDropbox = "Cube, Cylinder";
+
+    _Anchor1 = null;
+    _Anchor2 = null;
+    _ScaleMultiplier = 0.0;
+
+    function Init()
+    {
+        self._Anchor1 = Map.FindMapObjectByID(self.Anchor1ID);
+        self._Anchor2 = Map.FindMapObjectByID(self.Anchor2ID);
+        if (self.RopeGeometry == "Cube")
+        {
+            self._ScaleMultiplier = 0.1;
+        }
+        elif (self.RopeGeometry == "Cylinder")
+        {
+            self._ScaleMultiplier = 0.05;
+        }
+    }
+    function OnTick()
+    {
+        if (!self.Interpolate && self.Activate)
+        {
+            self.Calculate(self._Anchor1.Position, self._Anchor2.Position);
+        }
+    }
+    function OnFrame()
+    {
+        if (self.Interpolate && self.Activate)
+        {
+            self.Calculate(self._Anchor1.Position, self._Anchor2.Position);
+        }
+    }
+    function Calculate(Anchor1, Anchor2)
+    {
+        if (!self.IgnorePosition)
+        {
+            self.MapObject.Position = (Anchor1 + Anchor2) * 0.5;
+        }
+        if (!self.IgnoreRotation)
+        {
+            self.MapObject.Up = Anchor1 - self.MapObject.Position;
+        }
+        if (!self.IgnoreScale)
+        {
+            self.MapObject.Scale = Vector3(self.MapObject.Scale.X, Vector3.Distance(Anchor1, Anchor2) * self._ScaleMultiplier, self.MapObject.Scale.Z);
+        }
+    }
+}
+
