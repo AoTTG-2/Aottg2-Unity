@@ -71,7 +71,10 @@ namespace GameManagers
 
         private static void CheckStatus()
         {
-            PV.GetComponentInParent<Recorder>().RecordingEnabled = SettingsManager.SoundSettings.VoiceChat.Value;
+            if (PV != null)
+            {
+                PV.GetComponentInParent<Recorder>().RecordingEnabled = SettingsManager.SoundSettings.VoiceChat.Value;
+            }
         }
 
         public static void ApplyAudioSettings(AudioSource Mic)
