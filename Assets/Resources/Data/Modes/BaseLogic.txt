@@ -1,7 +1,6 @@
 component CustomPhysicsMaterial
 {
     IncludeChildren = false;
-    IncludeChildrenTooltip = "If this option is enabled, the child map objects' physic material will also be modified.";
     
     StaticFriction = 0.6;
     DynamicFriction = 0.6;
