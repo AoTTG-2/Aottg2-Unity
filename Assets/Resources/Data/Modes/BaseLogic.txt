@@ -2612,6 +2612,7 @@ component SignalSender
                     {
                         Component._TimesPerSecond = self.SetTimesPerSecond;
                     }
+                    Receiver.Active = true;
                 }
             }
             if (self.ComponentName == "SignalMover")
@@ -2661,6 +2662,7 @@ component SignalSender
                     {
                         Component._TimesPerSecond = self.SetTimesPerSecond;
                     }
+                    Receiver.Active = true;
                 }
             }
             elif (self.ComponentName == "SignalRotator")
@@ -2710,6 +2712,7 @@ component SignalSender
                     {
                         Component._TimesPerSecond = self.SetTimesPerSecond;
                     }
+                    Receiver.Active = true;
                 }   
             }
             elif (self.ComponentName == "SignalScaler")
@@ -2759,6 +2762,7 @@ component SignalSender
                     {
                         Component._TimesPerSecond = self.SetTimesPerSecond;
                     }
+                    Receiver.Active = true;
                 }
             }
         }
