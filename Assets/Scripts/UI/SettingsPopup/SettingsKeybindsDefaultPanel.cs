@@ -25,8 +25,13 @@ namespace UI
             {
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.DashDoubleTap,
                 UIManager.GetLocale(cat, "Keybinds.Human", "DashDoubleTap"));
+
+                ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoUseGas,
+                UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGas"));
+
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoRefillGas,
                 UIManager.GetLocale(cat, "Keybinds.Human", "AutoRefillGas"));
+
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.SwapTSAttackSpecial,
                 UIManager.GetLocale(cat, "Keybinds.Human", "SwapTSAttackSpecial"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "SwapTSAttackSpecialTooltip"));
                 ElementFactory.CreateSliderSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.ReelOutScrollSmoothing,
