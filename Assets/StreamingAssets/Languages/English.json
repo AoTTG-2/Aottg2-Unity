@@ -341,6 +341,7 @@
 		"Keybinds.Human.NapeLock": "Nape lock",
 		"Keybinds.Human.DashDoubleTap": "Double-tap to dash",
 		"Keybinds.Human.AutoUseGas": "Auto use gas",
+		"Keybinds.Human.AutoUseGasTooltip": "Automatically holds Jump/Gas when in the air, hold Jump/Gas to stop using gas.",
 		"Keybinds.Human.ReelOutScrollSmoothing": "Reel out scroll smoothing",
 		"Keybinds.Human.ReelOutScrollSmoothingTooltip": "Determines how powerful reel-out is when keybinded to mouse wheel.",
 		"Keybinds.Human.SwapTSAttackSpecial": "Swap TS attacks",
