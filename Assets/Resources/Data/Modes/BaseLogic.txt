@@ -1,3 +1,214 @@
+component WaterPhysics
+{
+    Description = "Enables water physics for the current region.";
+    Enabled = true;
+    MinSkipSpeed = 100;
+    SurfaceHeight = 0.2;
+    SurfaceVerticalDrag = 0.7;
+    SurfaceHorizontalDrag = 0.85;
+    SunkenDrag = 0.5;
+
+    SunkenGravity = 18.0;
+    DisableHooks = true;
+
+    # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled. #
+    SupportDrowning = true;
+    TimeToDrown = 10.0;
+
+
+    # 
+    Component will apply a force for x% of the map objects y axis this will represent the downward speed limit required to skip instead of breaking the surface.
+    There will also need to be a horizontal component that determines how long you can skip for before starting to sink.
+    After that point, the force applied will be equal to gravity instead and hooks will be disabled if the object hitting it is a player.
+    Apply a normal force equal to the ratio between vertical and horizontal forces. If the angle is greater than 45 degrees, the object will sink.
+    The object will also sink if the horizontal speed is too slow (may happen already with gravity).
+    #
+    # Local player state #
+    _isMyPlayerUnderwater = false;
+    _myPlayerTimer = 0.0;
+
+    # Private vars #
+    _surfaceTop = 0.0;
+    _surfaceBottom = 0.0;
+    _forceMode = "Acceleration";
+    _maxAngle = 40.0;
+
+
+    function Init()
+    {
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function GetVelocity(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return Vector3(0, 0, 0);
+            }
+            return body.GetVelocity();
+        }
+        return Vector3(0, 0, 0);
+    }
+
+    function SetVelocity(other, velocity)
+    {
+        if (other.Type == "Human")
+        {
+            other.Velocity = velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                body.SetVelocity(velocity);
+            }
+        }
+    }
+
+
+    function HandleForce(other, force, mode)
+    {
+        if (self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            body.AddForceWithMode(force, mode);
+        }
+    }
+
+    function RangeToValue(x)
+    {
+        return -4 * x * x + 1;
+    }
+
+    function Vec2String(x)
+    {
+        return Convert.ToString(x.X) + ", " + Convert.ToString(x.Y) + ", " + Convert.ToString(x.Z);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        if (position.Y > self._surfaceBottom)
+        {
+
+            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative #
+            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+            horizontalVector = horizontalVector.Normalized;
+            velocityNorm = velocity.Normalized;
+            angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            {
+                ratio = (1 - (angle / self._maxAngle));
+                angleRatio = ratio - 0.5;
+                horizontalRatio = angle / self._maxAngle;
+
+                skipZoneValue = self.RangeToValue(angleRatio);
+                # flip the y #
+                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1 #
+                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+                self.SetVelocity(other, force);
+
+                if (other.Type == "Human")
+                {
+                    other.PlayAnimation("Armature|slide");
+                }
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        # If the object is below the surface, apply a force equal to gravity - drag. #
+        # Game.Print("Hello, I am under the water."); #
+        force = Vector3(0, self.SunkenGravity, 0);
+        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+        drag = 1 - self.SunkenDrag;
+        force = force + xzVelocity.Scale(-1 * drag);
+        self.HandleForce(other, force, self._forceMode);
+
+        # Requires new logic as this will spam hooks as long as the player is under the water.
+        if (other.Type == "Human" && self.DisableHooks)
+        {
+            other.ClearHooks();
+        }
+        #
+
+        if (other.Type == "Human" && self.SupportDrowning)
+        {
+            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+            UI.SetLabel("MiddleCenter", message);
+            self._isMyPlayerUnderwater = true;
+            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+            if (self._myPlayerTimer >= self.TimeToDrown)
+            {
+                other.GetKilled("Drowning");
+            }
+        }
+
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        self._isMyPlayerUnderwater = false;
+        self._myPlayerTimer = 0.0;
+        UI.SetLabel("TopCenter", "");
+    }
+}
+
 component VelocityZone
 {
     Description = "Changes the velocity of an object inside this trigger";
@@ -251,15 +462,11 @@ component DestructibleTrigger
 {
     Description = "A generic component for destroying, replacing, and recovering objects.";
     # Reference object #
-    FindTargetBy = "Name";
-    # FindTargetByDropbox = "ID,Tag,Name,None"; - ignore until dropbox issue fixed #
-    TargetValue = "0";
-    TargetValueTooltip = "Slash (/) separated list of Targets to destroy on trigger.";
+    TargetIDs = "0";
+    TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
 
-    FindReplacementBy = "Name";
-    # FindReplacementByDropbox = "ID, Tag, Name, None"; # 
-    ReplacementValue = "0";
-    ReplacementValueTooltip = "Slash (/) separated list of Targets to turn active on trigger.";
+    ReplacementIDs = "0";
+    ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
 
     # Modifiers #
     Health = 100;
@@ -297,8 +504,8 @@ component DestructibleTrigger
     function Init()
     {
         # Cache targets and replacements, enable targets, disable replacements#
-        self._targets = self.PopulateMapObjectList(self.TargetValue, self.FindTargetBy);
-        self._replacements = self.PopulateMapObjectList(self.ReplacementValue, self.FindReplacementBy);
+        self._targets = self.PopulateMapObjectList(self.TargetIDs);
+        self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
 
         # Setup state only if this trigger is active #
         if (self.MapObject.Active)
@@ -320,29 +527,14 @@ component DestructibleTrigger
         self._health = self.Health;
     }
 
-    function PopulateMapObjectList(strList, method)
+    function PopulateMapObjectList(strList)
     {
         results = List();
         target = null;
         ssl = String.Split(strList, "/");
         for (value in ssl)
         {
-            if (method == "ID")
-            {
-                target = Map.FindMapObjectByID(Convert.ToInt(value));
-            }
-            elif (method == "Tag")
-            {
-                target = Map.FindMapObjectByTag(value);
-            }
-            elif (method == "Name")
-            {
-                target = Map.FindMapObjectByName(value);
-            }
-            else
-            {
-                target = null;
-            }
+            target = Map.FindMapObjectByID(Convert.ToInt(value));
 
             if (target != null)
             {
