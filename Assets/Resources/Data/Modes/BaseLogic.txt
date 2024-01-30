@@ -205,7 +205,7 @@ component WaterPhysics
         }
         self._isMyPlayerUnderwater = false;
         self._myPlayerTimer = 0.0;
-        UI.SetLabel("TopCenter", "");
+        UI.SetLabel("MiddleCenter", "");
     }
 }
 
