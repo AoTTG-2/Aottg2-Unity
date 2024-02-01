@@ -1,3 +1,11 @@
+component DisplayDialogue
+{
+    function Init()
+    {
+        UI.SetLabel("MiddleCenter", UI.GetLocale("Tutorial", "Basic", "Dialogue1"));
+    }
+}
+
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
