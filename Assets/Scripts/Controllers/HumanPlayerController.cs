@@ -14,6 +14,8 @@ namespace Controllers
         public bool HideCursor;
         protected Human _human;
         protected float _reelOutScrollTimeLeft;
+        protected float _reelInScrollCooldownLeft = 0f;
+        protected float _reelInScrollCooldown = 0.2f;
         protected HumanInputSettings _humanInput;
         protected Dictionary<HumanDashDirection, KeybindSetting> _dashKeys;
         protected Dictionary<HumanDashDirection, float> _dashTimes;
@@ -331,7 +333,34 @@ namespace Controllers
             if (_reelOutScrollTimeLeft <= 0f)
                 _human.ReelOutAxis = 0f;
             if (_humanInput.ReelIn.GetKey())
-                _human.ReelInAxis = -1f;
+            {
+                if (!_human._reelInWaitForRelease)
+                    _human.ReelInAxis = -1f;
+                _reelInScrollCooldownLeft = _reelInScrollCooldown;
+            }
+            else
+            {
+                bool hasScroll = false;
+                _reelInScrollCooldownLeft -= Time.deltaTime;
+                foreach (InputKey inputKey in _humanInput.ReelIn.InputKeys)
+                {
+                    if (inputKey.IsWheel())
+                        hasScroll = true;
+                }
+                foreach (InputKey inputKey in _humanInput.ReelIn.InputKeys)
+                {
+                    if (inputKey.IsWheel())
+                    {
+                        if (_reelInScrollCooldownLeft <= 0f)
+                            _human._reelInWaitForRelease = false;
+                    }
+                    else
+                    {
+                        if (!hasScroll || inputKey.GetKeyUp())
+                            _human._reelInWaitForRelease = false;
+                    }
+                }
+            }
             foreach (InputKey inputKey in _humanInput.ReelOut.InputKeys)
             {
                 if (inputKey.GetKey())

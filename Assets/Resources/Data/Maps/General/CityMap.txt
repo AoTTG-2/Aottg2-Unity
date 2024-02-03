@@ -244,7 +244,7 @@ Scene,Buildings/Tower1,241,0,1,1,1,0,Tower1,-220.514,45.557,-303.548,0,180,0,2.4
 Scene,Buildings/Tower1,242,0,1,1,1,0,Tower1,-199.256,46.81,-150.427,0,180,0,2.48,0.669,2.385,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower1,243,0,1,1,1,0,Tower1,200.397,53.077,-150.427,0,180,0,2.48,0.783,2.385,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower1,244,0,1,1,1,0,Tower1,429.543,56.837,497.338,0,180,0,2.48,0.852,2.385,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply1,245,0,1,1,1,0,Supply1,15.25012,10,-532.3516,0,88.62315,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|;
+Scene,Interact/Supply2,245,0,1,1,1,0,Supply2,15.25012,10,-532.3516,0,88.62315,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|;
 Scene,Buildings/House1,246,0,1,1,1,0,House1,217.8155,19.63832,453.1814,0,358.119,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,247,0,1,1,1,0,House1,-288.2834,19.17764,414.4238,0,359.9068,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,248,0,1,1,1,0,House1,-337.1049,24.78279,119.8937,0,179.741,0,1.5,0.9,1.2,Physical,Entities,Default,Default|255/255/255/255,;

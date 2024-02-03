@@ -118,6 +118,8 @@ MonoBehaviour:
   - UncarryStateRPC
   - CrossFadeWithSpeedRPC
   - ClearRockRPC
+  - ToggleBladeTrailsRPC
+  - ToggleBladesRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

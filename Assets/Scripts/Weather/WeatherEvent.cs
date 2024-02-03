@@ -234,6 +234,7 @@ namespace Weather
         Dusk1,
         Night1,
         Night2,
+        Night3,
         Cloudy1,
         Storm1
     }

@@ -143,8 +143,13 @@ namespace Cameras
             {
                 if (_follow != _inGameManager.CurrentCharacter && _inGameManager.CurrentCharacter != null)
                     SetFollow(_inGameManager.CurrentCharacter);
-                if (_input.ChangeCamera.GetKeyDown())
-                    _freeCam = !_freeCam;
+                if (_inGameManager.CurrentCharacter == null)
+                {
+                    if (_input.ChangeCamera.GetKeyDown())
+                        _freeCam = !_freeCam;
+                }
+                else
+                    _freeCam = false;
                 if (_freeCam)
                     _follow = null;
                 else if (_follow == null)

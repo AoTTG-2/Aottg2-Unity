@@ -47,6 +47,8 @@ namespace UI
             base.SetupPopups();
             AddObjectPopup = ElementFactory.CreateDefaultPopup<MapEditorAddObjectPopup>(transform);
             TexturePopup = ElementFactory.CreateDefaultPopup<MapEditorTexturePopup>(transform);
+            ElementFactory.SetAnchor(AddObjectPopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
+            ElementFactory.SetAnchor(TexturePopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
             CameraPopup = ElementFactory.CreateDefaultPopup<MapEditorCameraPopup>(transform);
             InfoPopup = ElementFactory.CreateDefaultPopup<MapEditorInfoPopup>(transform);
             SettingsPopup = ElementFactory.CreateDefaultPopup<MapEditorSettingsPopup>(transform);

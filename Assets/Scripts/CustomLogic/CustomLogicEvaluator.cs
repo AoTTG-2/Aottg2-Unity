@@ -372,11 +372,18 @@ namespace CustomLogic
             _callback.Add(classInstance);
             if (classInstance.UsesCollider())
             {
+                HashSet<GameObject> children = new HashSet<GameObject>();
+                children.Add(obj.GameObject);
                 foreach (var collider in obj.GameObject.GetComponentsInChildren<Collider>())
                 {
-                    var collisionHandler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
+                    if (!children.Contains(collider.gameObject))
+                        children.Add(collider.gameObject);
+                }
+                foreach (var go in children)
+                {
+                    var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                     if (collisionHandler == null)
-                        collisionHandler = collider.gameObject.AddComponent<CustomLogicCollisionHandler>();
+                        collisionHandler = go.AddComponent<CustomLogicCollisionHandler>();
                     collisionHandler.RegisterInstance(classInstance);
                 }
             }

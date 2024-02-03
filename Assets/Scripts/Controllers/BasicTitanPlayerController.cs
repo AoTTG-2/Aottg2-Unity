@@ -20,10 +20,12 @@ namespace Controllers
             _titanInput = SettingsManager.InputSettings.Titan;
             _titan.RotateSpeed = 5f;
             _titan.RunSpeedBase = 30f;
-            _titan.RunSpeedPerLevel = 10f;
+            _titan.RunSpeedPerLevel = 12f;
             _titan.WalkSpeedBase = 5f;
             _titan.WalkSpeedPerLevel = 1f;
-            _titan.BellyFlopTime = 3f;
+            _titan.BellyFlopTime = 2.6f;
+            _titan.AttackSpeedMultiplier = 1.2f;
+            _titan.JumpForce = 200f;
         }
 
         protected override void UpdateActionInput(bool inMenu)

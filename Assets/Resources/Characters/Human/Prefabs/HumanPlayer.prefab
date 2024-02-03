@@ -16590,6 +16590,7 @@ MonoBehaviour:
   RunAnimation: 
   _attackRelease: 0
   _attackButtonRelease: 0
+  _reelInWaitForRelease: 0
 --- !u!114 &11414280
 MonoBehaviour:
   m_ObjectHideFlags: 0

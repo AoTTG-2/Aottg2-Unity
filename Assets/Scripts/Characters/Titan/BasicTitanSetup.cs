@@ -20,8 +20,10 @@ namespace Characters
 
         public static void Init()
         {
-            // Info = JSON.Parse(ResourceManager.TryLoadText("TitanSetupInfo"));
-            Info = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/TitanSetupInfo.json"));
+            if (ApplicationConfig.DevelopmentMode)
+                Info = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/TitanSetupInfo.json"));
+            else
+                Info = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "TitanSetupInfo"));
         }
 
         public static int[] GetRandomBodyHeadCombo(JSONNode node = null)

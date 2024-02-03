@@ -700,7 +700,9 @@ component DestructibleTrigger
         message.Set("damage", damage);
         message.Set("type", type);
         self.NetworkView.SendMessage(Network.MasterClient, Json.SaveToString(message));
-        
+    }
+}
+
 component CustomPhysicsMaterial
 {
     IncludeChildren = false;
@@ -1166,7 +1168,7 @@ component Bell
     function Init()
     {
         self._soundTransform = self.MapObject.GetTransform("BellHitSound");
-        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 3.0, 0), Vector3(5.3, 6, 5.3));
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 2.6, 0), Vector3(5.3, 6, 5.3));
     }
 
     function OnNetworkMessage(sender, message)
@@ -2157,9 +2159,9 @@ component TitanBarrier
     }
 }
 
-component WallGateA
+component WallGateA1
 {
-    Description = "Makes WallGateA1 and WallGateA2 openable by players.";
+    Description = "Makes WallGateA1 openable by players.";
     _currentHuman = null;
     _open = false;
     _moving = false;

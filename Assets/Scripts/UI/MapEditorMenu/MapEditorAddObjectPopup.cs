@@ -15,15 +15,15 @@ namespace UI
     class MapEditorAddObjectPopup : BasePopup
     {
         protected override string Title => string.Empty;
-        protected override float Width => 1000f;
+        protected override float Width => 1155f;
         protected override float Height => 865f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
-        protected override float TopBarHeight => 130f;
+        protected override float TopBarHeight => 65f;
         protected override string DefaultCategoryPanel => "General";
         public StringSetting Search = new StringSetting(string.Empty);
         private InputSettingElement _searchInput;
-        protected virtual bool TwoRows => true;
+        protected virtual bool TwoRows => false;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -40,7 +40,7 @@ namespace UI
         protected virtual string[] GetCategories()
         {
             return new string[] { "All", "General", "Interact", "Geometry", "Buildings", "Nature", "Decor", 
-                "Arenas", "FX", "Custom" };
+                "Arenas", "Terrain", "FX", "Custom" };
         }
 
         public override float GetPanelVerticalOffset()
@@ -52,7 +52,7 @@ namespace UI
 
         protected override void SetupTopButtons()
         {
-            ElementStyle style = new ElementStyle(fontSize: 24, themePanel: ThemePanel);
+            ElementStyle style = new ElementStyle(fontSize: 20, themePanel: ThemePanel);
             if (TwoRows)
             {
                 DestroyImmediate(TopBar.GetComponent<HorizontalLayoutGroup>());

@@ -65,6 +65,7 @@ namespace Characters
         protected int _currentAttackStage;
         protected bool _needFreshCoreDiff;
         protected Vector3 _oldCoreDiff;
+        protected Vector3 _coreVelocity;
         protected Dictionary<string, float> _rootMotionAnimations = new Dictionary<string, float>();
 
         public virtual void Init(bool ai, string team, JSONNode data)
@@ -200,7 +201,10 @@ namespace Characters
 
         public virtual void Idle()
         {
-            Idle(0.1f);
+            if (AI)
+                Idle(0.1f);
+            else
+                Idle(0f);
         }
         
         public virtual void Idle(float fadeTime)
@@ -337,7 +341,7 @@ namespace Characters
         protected void StateAttack(string animation, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCoreDiff = true;
-            SetRendererUpdateMode(true);
+            SetAnimationUpdateMode(true);
             Ungrab();
             if (deactivateHitboxes)
                 DeactivateAllHitboxes();
@@ -350,7 +354,7 @@ namespace Characters
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCoreDiff = true;
-            SetRendererUpdateMode(state == TitanState.Jump);
+            SetAnimationUpdateMode(state == TitanState.Jump);
             if (state != TitanState.Eat)
                 Ungrab();
             if (deactivateHitboxes)
@@ -362,10 +366,12 @@ namespace Characters
             _stateTimeLeft = stateTime;
         }
 
-        protected void SetRendererUpdateMode(bool offscreen)
+        protected void SetAnimationUpdateMode(bool always)
         {
-            foreach (var renderer in BaseTitanCache.SkinnedMeshRenderers)
-                renderer.updateWhenOffscreen = offscreen;
+            if (always)
+                Cache.Animation.cullingType = AnimationCullingType.AlwaysAnimate;
+            else
+                Cache.Animation.cullingType = AnimationCullingType.BasedOnRenderers;
         }
 
         protected override void Awake()
@@ -379,7 +385,7 @@ namespace Characters
             WalkSpeedBase = DefaultWalkSpeed;
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
-            SetRendererUpdateMode(false);
+            SetAnimationUpdateMode(false);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -524,6 +530,7 @@ namespace Characters
                 {
                     FixedUpdateAttack();
                     SetDefaultVelocity();
+                    Cache.Rigidbody.velocity += _coreVelocity;
                 }
                 else if (State == TitanState.Dead)
                     SetDefaultVelocity();
@@ -553,15 +560,12 @@ namespace Characters
                     Vector3 coreDiff = Cache.Transform.position - BaseTitanCache.Core.position;
                     Vector3 v = coreDiff - _oldCoreDiff;
                     _oldCoreDiff = coreDiff;
-                    RaycastHit hit;
-                    if (Physics.Raycast(Cache.Transform.position, coreDiff.normalized, out hit, coreDiff.magnitude, GroundMask, QueryTriggerInteraction.Ignore))
-                    {
-                        Cache.Transform.position = hit.point;
-                    }
-                    else
-                        Cache.Transform.position += v;
+                    Cache.Rigidbody.velocity = _coreVelocity = v;
                 }
+                else
+                    _coreVelocity = Vector3.zero;
                 Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
+                //Debug.Log(Cache.Rigidbody.velocity);
             }
         }
 

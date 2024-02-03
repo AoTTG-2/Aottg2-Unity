@@ -102,6 +102,7 @@ namespace Characters
         public string RunAnimation;
         public bool _attackRelease;
         public bool _attackButtonRelease;
+        public bool _reelInWaitForRelease;
         private float _stateTimeLeft = 0f;
         private float _dashTimeLeft = 0f;
         private bool _cancelGasDisable;
@@ -484,8 +485,7 @@ namespace Characters
                 weapon.CurrentDurability = previousBlade.CurrentDurability;
                 if (weapon.CurrentDurability == 0)
                 {
-                    Setup._part_blade_l.SetActive(false);
-                    Setup._part_blade_r.SetActive(false);
+                    ToggleBlades(false);
                 }
             }
             else if (previousHumanWeapon is AmmoWeapon)
@@ -511,8 +511,7 @@ namespace Characters
                     return;
                 if (Weapon is AHSSWeapon || Weapon is APGWeapon)
                 {
-                    Setup._part_blade_l.SetActive(false);
-                    Setup._part_blade_r.SetActive(false);
+                    ToggleBlades(false);
                     if (Weapon is AHSSWeapon)
                     {
                         CancelHookLeftKey = true;
@@ -533,8 +532,7 @@ namespace Characters
             {
                 if (((BladeWeapon)Weapon).BladesLeft <= 0)
                     return;
-                Setup._part_blade_l.SetActive(false);
-                Setup._part_blade_r.SetActive(false);
+                ToggleBlades(false);
                 if (Grounded)
                     PlaySound(HumanSounds.BladeReloadGround);
                 else
@@ -571,8 +569,7 @@ namespace Characters
             Weapon.Reload();
             if (Weapon is BladeWeapon || Weapon is AHSSWeapon || Weapon is APGWeapon)
             {
-                Setup._part_blade_l.SetActive(true);
-                Setup._part_blade_r.SetActive(true);
+                ToggleBlades(true);
             }
             else if (Weapon is ThunderspearWeapon)
                 SetThunderspears(true, true);
@@ -621,8 +618,7 @@ namespace Characters
                 return;
             if (Weapon is BladeWeapon)
             {
-                Setup._part_blade_l.SetActive(true);
-                Setup._part_blade_r.SetActive(true);
+                ToggleBlades(true);
             }
             Weapon.Reset();
             CurrentGas = MaxGas;
@@ -799,9 +795,7 @@ namespace Characters
                 weapon.UseDurability(2f);
                 if (weapon.CurrentDurability == 0f)
                 {
-                    StopImmediateBladeTrails();
-                    Setup._part_blade_l.SetActive(false);
-                    Setup._part_blade_r.SetActive(false);
+                    ToggleBlades(false);
                     PlaySound(HumanSounds.BladeBreak);
                 }
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["Blade"]["DamageMultiplier"].AsFloat);
@@ -879,7 +873,6 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
-                UpdateBladeTrails();
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1542,8 +1535,12 @@ namespace Characters
             v = Vector3.RotateTowards(v, _currentVelocity, 1.53938f * reel, 1.53938f * reel).normalized;
             if (reelAxis > 0f)
                 _isReelingOut = true;
-            else if (reelAxis < 0f && SettingsManager.SoundSettings.ReelInEffect.Value)
-                PlaySoundRPC(HumanSounds.ReelIn, Util.CreateLocalPhotonInfo());
+            else if (reelAxis < 0f && !_reelInWaitForRelease)
+            {
+                if (SettingsManager.SoundSettings.ReelInEffect.Value)
+                    PlaySoundRPC(HumanSounds.ReelIn, Util.CreateLocalPhotonInfo());
+                _reelInWaitForRelease = true;
+            }
             _currentVelocity = v * newSpeed;
             Cache.Rigidbody.velocity = _currentVelocity;
         }
@@ -2557,6 +2554,43 @@ namespace Characters
 
         private void ToggleBladeTrails(bool toggle)
         {
+            if (IsMine())
+                Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+        }
+
+        private void ToggleBlades(bool toggle)
+        {
+            if (IsMine())
+                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });
+        }
+
+        [PunRPC]
+        protected void ToggleBladesRPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (toggle)
+            {
+                Setup._part_blade_l.SetActive(true);
+                Setup._part_blade_r.SetActive(true);
+            }
+            else
+            {
+                if (Setup.LeftTrail != null && Setup.RightTrail != null)
+                {
+                    Setup.LeftTrail.StopImmediate();
+                    Setup.RightTrail.StopImmediate();
+                }
+                Setup._part_blade_l.SetActive(false);
+                Setup._part_blade_r.SetActive(false);
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBladeTrailsRPC(bool toggle, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
             if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
             {
                 Setup.LeftTrail.Emit = true;
@@ -2569,12 +2603,6 @@ namespace Characters
                 Setup.LeftTrail._emitTime = 0.1f;
                 Setup.RightTrail._emitTime = 0.1f;
             }
-        }
-
-        private void StopImmediateBladeTrails()
-        {
-            Setup.LeftTrail.StopImmediate();
-            Setup.RightTrail.StopImmediate();
         }
 
         protected override string GetFootstepAudio(int phase)
