@@ -45,8 +45,10 @@ namespace Settings
                 address = PublicAddresses[region];
                 CurrentMultiplayerServerType = MultiplayerServerType.Public;
                 PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
-                PhotonNetwork.GameVersion = GetCurrentLobby();
-
+                string lobby = GetCurrentLobby();
+                if (lobby == ApplicationConfig.LobbyVersion)
+                    lobby = ApplicationVersion.GetVersion();
+                PhotonNetwork.GameVersion = lobby;
                 /*
                 address = CloudAddresses[region];
                 CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
