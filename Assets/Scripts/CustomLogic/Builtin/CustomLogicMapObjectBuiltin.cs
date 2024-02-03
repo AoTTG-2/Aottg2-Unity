@@ -3,6 +3,8 @@ using UnityEngine;
 using Map;
 using Utility;
 using System.ComponentModel;
+using System.Linq;
+using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
@@ -90,7 +92,28 @@ namespace CustomLogic
                     else if (param == "AddForce")
                     {
                         Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                        rigidbody.AddForce(force, ForceMode.Acceleration);
+                        string forceMode = "Acceleration";
+                        if (parameters.Count > 2)
+                        {
+                            forceMode = (string)parameters[1];
+                        }
+                        ForceMode mode = ForceMode.Acceleration;
+                        switch (forceMode)
+                        {
+                            case "Force":
+                                mode = ForceMode.Force;
+                                break;
+                            case "Acceleration":
+                                mode = ForceMode.Acceleration;
+                                break;
+                            case "Impulse":
+                                mode = ForceMode.Impulse;
+                                break;
+                            case "VelocityChange":
+                                mode = ForceMode.VelocityChange;
+                                break;
+                        }
+                        rigidbody.AddForce(force, mode);
                     }
                 }
                 else if (name == "CustomPhysicsMaterial")
@@ -244,6 +267,20 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "SetColorAll")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(methodName + " cannot be called on a static MapObject.");
+                }
+
+                var color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+                foreach (Renderer r in Value.renderCache)
+                {
+                    r.material.color = color;
+                }
+                return null;
+            }
             return base.CallMethod(methodName, parameters);
         }
 
@@ -302,10 +339,23 @@ namespace CustomLogic
             {
                 return new CustomLogicTransformBuiltin(Value.GameObject.transform);
             }
+            else if (name == "HasRenderer")
+            {
+                return Value.renderCache.Length > 0;
+            }
             if (name == "Color")
             {
-                var color = Value.GameObject.GetComponent<Renderer>().material.color;
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+
+                var color = Value.renderCache[0].material.color;
                 return new CustomLogicColorBuiltin(new Color255(color));
+            }
+            if (name == "ID")
+            {
+                return Value.ScriptObject.Id;
             }
             return base.GetField(name);
         }
@@ -363,9 +413,14 @@ namespace CustomLogic
                 {
                     throw new System.Exception(name + " cannot be set on a static MapObject.");
                 }
+
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+
                 var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
-                // Set my renderer's color
-                Value.GameObject.GetComponent<Renderer>().material.color = color;
+                Value.renderCache[0].material.color = color;
             }
             else
             {

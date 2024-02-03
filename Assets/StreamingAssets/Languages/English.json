@@ -511,5 +511,8 @@
 		"HitDamage": "Hit {Damage} damage[ with {Weapon}]",
 		"DealDamage": "Deal damage[ with {Weapon}]",
 		"ReachSpeed": "Reach {Speed} speed"
+	},
+	"Tutorial": {
+		"Basic.Dialogue1": "<size=30>Example</size>"
 	}
 }
