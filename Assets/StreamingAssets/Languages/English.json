@@ -513,6 +513,8 @@
 		"ReachSpeed": "Reach {Speed} speed"
 	},
 	"Tutorial": {
-		"Basic.Dialogue1": "<size=30>Example</size>"
+		"Basic.Dialogue1P1": "Move with the",
+    "Basic.Dialogue1P2": "keys.",
+    "Basic.Dialogue1P3": "Go to the Checkpoint."
 	}
 }
