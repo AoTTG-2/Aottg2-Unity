@@ -1,3 +1,760 @@
+component WaterPhysics
+{
+    Description = "Enables water physics for the current region.";
+    Enabled = true;
+    MinSkipSpeed = 100;
+    SurfaceHeight = 0.2;
+    SurfaceVerticalDrag = 0.7;
+    SurfaceHorizontalDrag = 0.85;
+    SunkenDrag = 0.5;
+
+    SunkenGravity = 18.0;
+    DisableHooks = true;
+
+    # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled. #
+    SupportDrowning = true;
+    TimeToDrown = 10.0;
+
+
+    # 
+    Component will apply a force for x% of the map objects y axis this will represent the downward speed limit required to skip instead of breaking the surface.
+    There will also need to be a horizontal component that determines how long you can skip for before starting to sink.
+    After that point, the force applied will be equal to gravity instead and hooks will be disabled if the object hitting it is a player.
+    Apply a normal force equal to the ratio between vertical and horizontal forces. If the angle is greater than 45 degrees, the object will sink.
+    The object will also sink if the horizontal speed is too slow (may happen already with gravity).
+    #
+    # Local player state #
+    _isMyPlayerUnderwater = false;
+    _myPlayerTimer = 0.0;
+
+    # Private vars #
+    _surfaceTop = 0.0;
+    _surfaceBottom = 0.0;
+    _forceMode = "Acceleration";
+    _maxAngle = 40.0;
+
+
+    function Init()
+    {
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function GetVelocity(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return Vector3(0, 0, 0);
+            }
+            return body.GetVelocity();
+        }
+        return Vector3(0, 0, 0);
+    }
+
+    function SetVelocity(other, velocity)
+    {
+        if (other.Type == "Human")
+        {
+            other.Velocity = velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                body.SetVelocity(velocity);
+            }
+        }
+    }
+
+
+    function HandleForce(other, force, mode)
+    {
+        if (self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            body.AddForceWithMode(force, mode);
+        }
+    }
+
+    function RangeToValue(x)
+    {
+        return -4 * x * x + 1;
+    }
+
+    function Vec2String(x)
+    {
+        return Convert.ToString(x.X) + ", " + Convert.ToString(x.Y) + ", " + Convert.ToString(x.Z);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        if (position.Y > self._surfaceBottom)
+        {
+
+            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative #
+            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+            horizontalVector = horizontalVector.Normalized;
+            velocityNorm = velocity.Normalized;
+            angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            {
+                ratio = (1 - (angle / self._maxAngle));
+                angleRatio = ratio - 0.5;
+                horizontalRatio = angle / self._maxAngle;
+
+                skipZoneValue = self.RangeToValue(angleRatio);
+                # flip the y #
+                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1 #
+                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+                self.SetVelocity(other, force);
+
+                if (other.Type == "Human")
+                {
+                    other.PlayAnimation("Armature|slide");
+                }
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        # If the object is below the surface, apply a force equal to gravity - drag. #
+        # Game.Print("Hello, I am under the water."); #
+        force = Vector3(0, self.SunkenGravity, 0);
+        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+        drag = 1 - self.SunkenDrag;
+        force = force + xzVelocity.Scale(-1 * drag);
+        self.HandleForce(other, force, self._forceMode);
+
+        # Requires new logic as this will spam hooks as long as the player is under the water.
+        if (other.Type == "Human" && self.DisableHooks)
+        {
+            other.ClearHooks();
+        }
+        #
+
+        if (other.Type == "Human" && self.SupportDrowning)
+        {
+            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+            UI.SetLabel("MiddleCenter", message);
+            self._isMyPlayerUnderwater = true;
+            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+            if (self._myPlayerTimer >= self.TimeToDrown)
+            {
+                other.GetKilled("Drowning");
+            }
+        }
+
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        self._isMyPlayerUnderwater = false;
+        self._myPlayerTimer = 0.0;
+        UI.SetLabel("MiddleCenter", "");
+    }
+}
+
+component VelocityZone
+{
+    Description = "Changes the velocity of an object inside this trigger";
+
+    Enabled = true;
+
+    ForceMode = "Acceleration";
+    ForceModeDropbox = "Acceleration,Force,Impulse,VelocityChange";
+
+    ApplyOn = "Stay";
+    ApplyOnDropbox = "Enter,Stay,Exit";
+
+    StopObject = false;
+    StopImmediately = false;
+    StopSpeed = 3;
+
+    UseRotation = false;
+    UseRotationTooltip = "If true, the object will get a force in the direction of the given rotation axis on the MapObject.";
+    RotationAxis = "Up";
+    RotationAxisDropbox = "Forward,Up,Right";
+    Speed = 0;
+
+    UseObject = false;
+    UseObjectTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
+    Magnitude = 0;
+
+    UseVector = false;
+    UseVectorTooltip = "If true, the object will get a force in the direction of Vector.";
+    ForceX = 0;
+    ForceY = 0;
+    ForceZ = 0;
+
+
+    _enterVelocity = Vector3(0, 0, 0);
+    _enterVelocities = Dict();
+
+    function Init()
+    {
+
+    }
+
+    function GetUniqueID(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Player.ID;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return other.ID;
+        }
+        else
+        {
+            return other.Type;
+        }
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function AddForce(other, force, mode)
+    {
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            body.AddForceWithMode(force, self.ForceMode);
+        }
+    }
+
+    function CalculateForce(other, velocity)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (self.UseRotation)
+        {
+            mapDir = self.MapObject.Up;
+            if (self.RotationAxis == "Up")
+            {
+                mapDir = self.MapObject.Up;
+            }
+            elif (self.RotationAxis == "Forward")
+            {
+                mapDir = self.MapObject.Forward;
+            }
+            elif (self.RotationAxis == "Right")
+            {
+                mapDir = self.MapObject.Right;
+            }
+            
+            mapDir = mapDir.Scale(self.Speed);
+            appliedForce = appliedForce + mapDir;
+        }
+
+        if (self.UseObject)
+        {
+            direction = velocity.Normalized;
+            direction = direction.Scale(self.Magnitude);
+            appliedForce = appliedForce + direction;
+        }
+        if (self.UseVector)
+        {
+            appliedForce = appliedForce + Vector3(self.ForceX, self.ForceY, self.ForceZ);
+        }
+        if (self.StopObject == true && self.StopImmediately == false)
+        {
+            enterVelocity = Vector3(0,0,0);
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                enterVelocity = self._enterVelocities.Get(self.GetUniqueID(other));
+            }
+            # Apply force in other direction until velocity in that direction is zero. #
+            proj = Vector3.Project(enterVelocity, velocity);
+            newCur = velocity;
+            newCur = newCur.Scale(self.StopSpeed);
+            compensatingForce = Vector3.Project(newCur, appliedForce);
+            opposingForce = proj.Scale(-1 * self.StopSpeed);
+            actualOpposingForce = opposingForce + compensatingForce;
+            if (actualOpposingForce.Magnitude > 0)
+            {
+                appliedForce = appliedForce + actualOpposingForce;
+            }
+        }
+        return appliedForce;
+    }
+
+    function CollisionHandler(other)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (other.Type == "Human")
+        {
+            appliedForce = self.CalculateForce(other, other.Velocity);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            velocity = body.GetVelocity();
+            appliedForce = self.CalculateForce(other, velocity);
+        }
+
+        self.AddForce(other, appliedForce, self.ForceMode);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        if (self.StopObject)
+        {
+            if (self.StopImmediately)
+            {
+                self.AddForce(other, Vector3(0,0,0), self.ForceMode);
+            }
+            else
+            {
+                enterVelocity = other.Velocity;
+                self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
+            }
+        }
+        if (self.ApplyOn != "Enter")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.ApplyOn != "Stay")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(other));
+            }
+        }
+
+        if (self.ApplyOn != "Exit")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        if (self.StopObject)
+        {
+            # Titans are characters too and they don't have a unique id nor do we care about them #
+            if (character.Type != "Human" || character.Type != "MapObject")
+            {
+                return;
+            }
+            if (self._enterVelocities.Contains(self.GetUniqueID(character)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(character));
+            }
+        }
+    }
+
+    function OnPlayerLeave(player)
+    {
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(player.ID))
+            {
+                self._enterVelocities.Remove(player.ID);
+            }
+        }
+    }
+
+
+}
+
+component DestructibleTrigger
+{
+    Description = "A generic component for destroying, replacing, and recovering objects.";
+    # Reference object #
+    TargetIDs = "0";
+    TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
+
+    ReplacementIDs = "0";
+    ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
+
+    # Modifiers #
+    Health = 100;
+    HasDamageCap = false;
+    DamageCap = 20;
+    RecoverAfterTime = false;
+    RecoverTime = 10.0;
+    RecoverTimeTooltip = "The amount of time it takes for this object to recover after being destroyed.";
+
+    # Object has animation/effect/sound #
+    HasDestroyEffect = false;
+    DestroyEffect = "";
+    DestroyEffectScale = 1.0;
+    
+    # Who can destroy this object #
+    AttacksThatCanDestroy = "";
+    AttacksThatCanDestroyTooltip = "Slash (/) separated list of attack names leave empty to support all attacks.";
+    TeamsThatCanDestroy = "";
+    TeamsThatCanDestroyTooltip = "Slash (/) separated list of team names leave empty to support all teams.";
+
+    # Private state #
+    _targets = List();
+    _replacements = List();
+    _attacksThatCanDestroy = List();
+    _teamsThatCanDestroy = List();
+
+    # Synced State #
+    _isDestroyed = false;
+    _isHostDestroyed = false;
+    _recoverTimeLeft = 0.0;
+    _health = 100;
+    # Includes Health #
+
+
+    function Init()
+    {
+        # Cache targets and replacements, enable targets, disable replacements#
+        self._targets = self.PopulateMapObjectList(self.TargetIDs);
+        self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
+
+        # Setup state only if this trigger is active #
+        if (self.MapObject.Active)
+        {
+            self.SetState(self._targets, true);
+            self.SetState(self._replacements, false);
+        }
+        
+
+        # Parse out attacks into list, parse out teams into list #
+        if (self.AttacksThatCanDestroy != "")
+        {
+            self._attacksThatCanDestroy = String.Split(self.AttacksThatCanDestroy, "/");
+        }
+        if (self.TeamsThatCanDestroy != "")
+        {
+            self._teamsThatCanDestroy = String.Split(self.TeamsThatCanDestroy, "/");
+        }
+        self._health = self.Health;
+    }
+
+    function PopulateMapObjectList(strList)
+    {
+        results = List();
+        target = null;
+        ssl = String.Split(strList, "/");
+        for (value in ssl)
+        {
+            target = Map.FindMapObjectByID(Convert.ToInt(value));
+
+            if (target != null)
+            {
+                results.Add(target);
+            }
+        }
+        return results;
+    }
+
+    function SetState(objectList, state)
+    {
+        for (obj in objectList)
+        {
+            obj.Active = state;
+        }
+    }
+
+    function NetworkSync(target)
+    {
+        # Send network message to all clients #
+        message = Dict();
+        message.Set("event", "sync");
+        message.Set("isDestroyed", self._isHostDestroyed);
+        message.Set("recoverTimeLeft", self._recoverTimeLeft);
+        message.Set("health", self._health);
+        if (target == null)
+        {
+            self.NetworkView.SendMessageAll(Json.SaveToString(message));
+        }
+        else
+        {
+            self.NetworkView.SendMessage(target, Json.SaveToString(message));
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient)
+        {
+            data = Json.LoadFromString(message);
+            if (data.Get("event") == "hit")
+            {
+                self.OnGetHitHandler(data.Get("team"), data.Get("name"), data.Get("damage"), data.Get("type"));
+                return;
+            }
+        }
+
+        if (sender != Network.MasterClient)
+        {
+            return;
+        }
+
+        # Receive network message from host #
+        data = Json.LoadFromString(message);
+        hostDestroyed = data.Get("isDestroyed");
+        self._recoverTimeLeft = data.Get("recoverTimeLeft");
+        self._health = data.Get("health");
+
+        if (self._isDestroyed == false && hostDestroyed == true)
+        {
+            self.DestroyObject();
+        }
+        elif (self._isDestroyed == true && hostDestroyed == false)
+        {
+            self.RecoverObject();
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+        self.NetworkSync(player);
+    }
+
+    function DestroyObject()
+    {
+        # Spawn effect if exists #
+        if (self.HasDestroyEffect)
+        {
+            for (object in self._targets)
+            {
+                Game.SpawnEffect(self.DestroyEffect, object.Position, object.Rotation, self.DestroyEffectScale);
+            }
+        }
+
+        # Disable target & self, enable replacement #
+
+        self.MapObject.Active = false;
+        self.SetState(self._targets, false);
+        self.SetState(self._replacements, true);
+        self._isDestroyed = true;
+    }
+
+    function RecoverObject()
+    {
+        self._health = self.Health;
+        self.MapObject.Active = true;
+        self.SetState(self._targets, true);
+        self.SetState(self._replacements, false);
+        self._isDestroyed = false;
+    }
+
+    function SignalDestroy()
+    {
+        self._health = 0;
+        self._isHostDestroyed = true;
+        self.NetworkSync(null);
+    }
+    
+    function SignalRecover()
+    {
+        self._health = self.Health;
+        self._isHostDestroyed = false;
+        self.NetworkSync(null);
+    }
+
+    coroutine WaitTilRecovery()
+    {
+        wait self.RecoverTime;
+        self.SignalRecover();
+    }
+
+    function OnGetHitHandler(team, name, damage, type)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+        if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(team) == false)
+        {
+            return;
+        }
+        if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(type) == false)
+        {
+            return;
+        }
+
+        if (self.HasDamageCap)
+        {
+            damage = Math.Clamp(damage, 0, self.DamageCap);
+        }
+        self._health = self._health - damage;
+
+        if (self._health <= 0)
+        {
+            self.SignalDestroy();
+            if (self.RecoverAfterTime == true)
+            {
+                self.WaitTilRecovery();
+            }
+        }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        message = Dict();
+        message.Set("event", "hit");
+        message.Set("team", character.Team);
+        message.Set("name", name);
+        message.Set("damage", damage);
+        message.Set("type", type);
+        self.NetworkView.SendMessage(Network.MasterClient, Json.SaveToString(message));
+        
+component CustomPhysicsMaterial
+{
+    IncludeChildren = false;
+    
+    StaticFriction = 0.6;
+    DynamicFriction = 0.6;
+    Bounciness = 0.0;
+    
+    FrictionCombine = "Average";
+    FrictionCombineDropbox = "Average, Minimum, Multiply, Maximum";
+    
+    BounceCombine = "Average";
+    BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
+
+    function Init()
+    {
+        self.StaticFriction = Math.Max(0.0, self.StaticFriction);
+        self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
+        self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
+        
+        self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial", self.IncludeChildren);
+        self.SetStaticFriction(self.StaticFriction);
+        self.SetDynamicFriction(self.DynamicFriction);
+        self.SetBounciness(self.Bounciness);
+        self.SetFrictionCombine(self.FrictionCombine);
+        self.SetBounceCombine(self.BounceCombine);
+    }
+    
+    function SetStaticFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "StaticFriction", value);
+    }
+    
+    function SetDynamicFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "DynamicFriction", value);
+    }
+        
+    function SetBounciness(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "Bounciness", value);
+    }
+    
+    function SetFrictionCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "FrictionCombine", value);
+    }
+        
+    function SetBounceCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "BounceCombine", value);
+    }
+}
+
 component CaptureZone
 {
     Enabled = false;
@@ -7,7 +764,9 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
-    VisibilityRange = 80.0;
+
+    ShowUI = true;
+    UIVisibilityRange = 80.0;
 
     
     # States: Captured, Capturing, Contested #
@@ -18,21 +777,25 @@ component CaptureZone
     _teamsInZone = Dict();
 
     # Team Colors #
-    _humanColor = Color(255, 255, 62, 80);
-    _shifterColor = Color(115, 222, 255, 80);
-    _titanColor = Color(70, 80, 125, 80);
-    _neutralColor = Color(255, 255, 255, 80);
-    _teamBlueColor = Color(0, 0, 255, 80);
-    _teamRedColor = Color(255, 0, 0, 80);
-    _unknownTeamColor = Color(0, 0, 0, 80);
+    _humanColor = Color(255, 255, 62, 255);
+    _shifterColor = Color(115, 222, 255, 255);
+    _titanColor = Color(70, 80, 125, 255);
+    _neutralColor = Color(255, 255, 255, 255);
+    _teamBlueColor = Color(0, 0, 255, 255);
+    _teamRedColor = Color(255, 0, 0, 255);
+    _unknownTeamColor = Color(0, 0, 0, 255);
     _teamToColor = Dict();
 
     # State Colors #
     _contestedColor = Color(255, 0, 0, 255);
 
+    # UI state #
+    _isViewing = false;
+
 
     function Init()
     {
+        # Setup colors #
         self._teamToColor = Dict();
         self._teamToColor.Set("Human", self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
@@ -54,22 +817,31 @@ component CaptureZone
 		return self._unknownTeamColor;
 	}
 
+    function ChangeColorAll(color)
+    {
+        # For all renderers, change color #
+        self.MapObject.SetColorAll(color);
+    }
+
     function ChangeColor()
     {
+        color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
+            
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
             ownerColor = self.GetTeamColor(self._currentOwner);
-            self.MapObject.Color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
+            color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
 		}
+        self.ChangeColorAll(color);
 	}
 
     # Modify local state #
@@ -189,7 +961,7 @@ component CaptureZone
 
     function OnTick()
     {
-        if (self.Enabled == false)
+        if (self.Enabled == false || self.ShowUI == false)
 		{
 			return;
 		}
@@ -201,11 +973,16 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.VisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange)
         {
-            UI.SetLabel("TopCenter", "");
+            if (self._isViewing == true)
+            {
+                self._isViewing = false;
+                UI.SetLabel("TopCenter", "");
+            }
             return;
 		}
+        self._isViewing = true;
 
         owner = self._currentOwner;
         if (owner == "null")
@@ -528,10 +1305,11 @@ component Rigidbody
     Mass = 1.0;
     Gravity = Vector3(0.0, -20.0, 0.0);
     FreezeRotation = false;
+    Interpolate = false;
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation);
+        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
     }
 
     function SetVelocity(velocity)
@@ -542,6 +1320,11 @@ component Rigidbody
     function AddForce(force)
     {
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+    }
+
+    function AddForceWithMode(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
     function GetVelocity()
@@ -1580,6 +2363,7 @@ component Executioner
         }
     }
 }
+
 component SignalMover
 {
     Activate = true;
@@ -1781,6 +2565,7 @@ component SignalMover
         }
     }
 }
+
 component SignalArcMover
 {
     Activate = true;
@@ -2217,6 +3002,7 @@ component SignalRotator
         }
     }
 }
+
 component SignalScaler
 {
     #
@@ -2423,6 +3209,7 @@ component SignalScaler
         }
     }
 }
+
 component SignalSender
 {
     ReceiverObjectIDs = "0";
@@ -2766,9 +3553,9 @@ component SignalSender
                 }
             }
         }
-    }
-  
+    }  
 }
+
 component Rope
 {
     Activate = true;
@@ -2832,4 +3619,3 @@ component Rope
         }
     }
 }
-

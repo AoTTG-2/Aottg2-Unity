@@ -50,7 +50,6 @@ namespace Map
 
         public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, bool editor = false)
         {
-            Debug.Log(objects.Count);
             Errors.Clear();
             _customMaterialCache.Clear();
             _defaultMaterialCache.Clear();

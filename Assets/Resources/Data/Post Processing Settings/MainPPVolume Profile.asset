@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -59,7 +59,7 @@ MonoBehaviour:
     defaultState: 1
   intensity:
     overrideState: 1
-    value: 0
+    value: 0.255
   fastMode:
     overrideState: 1
     value: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb84e30e02715445aeb9959894e3b4d, type: 3}
   m_Name: ColorGrading
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -138,10 +138,10 @@ MonoBehaviour:
     value: 1
   temperature:
     overrideState: 0
-    value: 9
+    value: 0
   tint:
     overrideState: 0
-    value: 12
+    value: 0
   colorFilter:
     overrideState: 0
     value: {r: 1, g: 1, b: 1, a: 1}
@@ -162,7 +162,7 @@ MonoBehaviour:
     value: 0
   mixerRedOutRedIn:
     overrideState: 0
-    value: 118
+    value: 100
   mixerRedOutGreenIn:
     overrideState: 0
     value: 0
@@ -1419,7 +1419,7 @@ MonoBehaviour:
     overrideState: 1
     value: 0.18
   color:
-    overrideState: 1
+    overrideState: 0
     value: {r: 0, g: 0, b: 0, a: 1}
   ambientOnly:
     overrideState: 0
@@ -1434,11 +1434,11 @@ MonoBehaviour:
     overrideState: 0
     value: -12
   thicknessModifier:
-    overrideState: 1
-    value: 2
+    overrideState: 0
+    value: 1
   zBias:
-    overrideState: 1
-    value: 0.000067
+    overrideState: 0
+    value: 0.0001
   directLightingStrength:
     overrideState: 0
     value: 0
@@ -1493,8 +1493,8 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   intensity:
-    overrideState: 1
-    value: -79
+    overrideState: 0
+    value: 0
   intensityX:
     overrideState: 0
     value: 1
@@ -1550,19 +1550,19 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 12.02
+    value: 5
   threshold:
     overrideState: 1
-    value: 1.28
+    value: 1.15
   softKnee:
     overrideState: 1
-    value: 0.76
+    value: 0.63
   clamp:
     overrideState: 1
     value: 500
   diffusion:
     overrideState: 1
-    value: 4.85
+    value: 6
   anamorphicRatio:
     overrideState: 0
     value: 0
@@ -1597,13 +1597,13 @@ MonoBehaviour:
     value: 1
   focusDistance:
     overrideState: 1
-    value: 12.04
+    value: 197.46
   aperture:
     overrideState: 1
-    value: 2.5
+    value: 0.05
   focalLength:
     overrideState: 1
-    value: 35.38
+    value: 46
   kernelSize:
     overrideState: 1
-    value: 1
+    value: 3
