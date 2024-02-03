@@ -1,11 +1,3 @@
-component DisplayDialogue
-{
-    function Init()
-    {
-        UI.SetLabel("MiddleCenter", UI.GetLocale("Tutorial", "Basic", "Dialogue1"));
-    }
-}
-
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
@@ -708,6 +700,58 @@ component DestructibleTrigger
         message.Set("damage", damage);
         message.Set("type", type);
         self.NetworkView.SendMessage(Network.MasterClient, Json.SaveToString(message));
+        
+component CustomPhysicsMaterial
+{
+    IncludeChildren = false;
+    
+    StaticFriction = 0.6;
+    DynamicFriction = 0.6;
+    Bounciness = 0.0;
+    
+    FrictionCombine = "Average";
+    FrictionCombineDropbox = "Average, Minimum, Multiply, Maximum";
+    
+    BounceCombine = "Average";
+    BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
+
+    function Init()
+    {
+        self.StaticFriction = Math.Max(0.0, self.StaticFriction);
+        self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
+        self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
+        
+        self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial", self.IncludeChildren);
+        self.SetStaticFriction(self.StaticFriction);
+        self.SetDynamicFriction(self.DynamicFriction);
+        self.SetBounciness(self.Bounciness);
+        self.SetFrictionCombine(self.FrictionCombine);
+        self.SetBounceCombine(self.BounceCombine);
+    }
+    
+    function SetStaticFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "StaticFriction", value);
+    }
+    
+    function SetDynamicFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "DynamicFriction", value);
+    }
+        
+    function SetBounciness(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "Bounciness", value);
+    }
+    
+    function SetFrictionCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "FrictionCombine", value);
+    }
+        
+    function SetBounceCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "BounceCombine", value);
     }
 }
 
@@ -1261,10 +1305,11 @@ component Rigidbody
     Mass = 1.0;
     Gravity = Vector3(0.0, -20.0, 0.0);
     FreezeRotation = false;
+    Interpolate = false;
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation);
+        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
     }
 
     function SetVelocity(velocity)
