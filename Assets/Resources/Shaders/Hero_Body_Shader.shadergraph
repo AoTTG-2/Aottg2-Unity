@@ -1518,10 +1518,10 @@
     "m_Guid": {
         "m_GuidSerialized": "c6c6aba4-1e16-4be9-abf4-6e6cdcd0c18d"
     },
-    "m_Name": "pants",
+    "m_Name": "pants_tex",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "pants",
-    "m_DefaultReferenceName": "_pants",
+    "m_RefNameGeneratedByDisplayName": "pants_tex",
+    "m_DefaultReferenceName": "_pants_tex",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -2046,7 +2046,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "81664157701a4b9fb76adbfff20c5de7",
     "m_Id": 0,
-    "m_DisplayName": "pants",
+    "m_DisplayName": "pants_tex",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
