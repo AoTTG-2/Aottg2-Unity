@@ -308,7 +308,15 @@
 	"Terrain": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Terrain/", "AssetSameAsName": true},
 		"Prefabs": [
-			{"Name": "OutsideTerrain1"}
+			{"Name": "OutsideTerrain1"},
+			{"Name": "Mountain1"},
+			{"Name": "Mountain2"},
+			{"Name": "Mountain3"},
+			{"Name": "Mountain4"},
+			{"Name": "MountainRange1"},
+			{"Name": "MountainRange2"},
+			{"Name": "MountainRange3"},
+			{"Name": "MountainRange4"}
 		]
 	},
 	"FX": {
