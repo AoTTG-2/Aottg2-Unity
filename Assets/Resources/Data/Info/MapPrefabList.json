@@ -308,6 +308,9 @@
 	"Terrain": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Terrain/", "AssetSameAsName": true},
 		"Prefabs": [
+			{"Name": "Hill1"},
+			{"Name": "Hill2"},
+			{"Name": "Hill3"},
 			{"Name": "OutsideTerrain1"},
 			{"Name": "Mountain1"},
 			{"Name": "Mountain2"},
