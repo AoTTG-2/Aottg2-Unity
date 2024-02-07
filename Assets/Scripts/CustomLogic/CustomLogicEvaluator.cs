@@ -817,8 +817,16 @@ namespace CustomLogic
             {
                 if (left is int && right is int)
                     return (int)left + (int)right;
-                else if (left is string && right is string)
-                    return (string)left + (string)right;
+
+                var leftStr = left is string;
+                var rightStr = right is string;
+                if (leftStr || rightStr)
+                {
+                    if (leftStr)
+                        return (string)left + right;
+
+                    return left + (string)right;
+                }
                 else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
                 else
