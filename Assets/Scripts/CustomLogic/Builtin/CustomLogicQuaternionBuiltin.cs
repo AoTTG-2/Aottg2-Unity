@@ -102,5 +102,10 @@ namespace CustomLogic
             var other = ((CustomLogicQuaternionBuiltin)obj).Value;
             return Value == other;
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }
