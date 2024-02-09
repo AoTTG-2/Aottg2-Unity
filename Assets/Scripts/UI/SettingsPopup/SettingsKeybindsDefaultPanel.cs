@@ -27,7 +27,7 @@ namespace UI
                 UIManager.GetLocale(cat, "Keybinds.Human", "DashDoubleTap"));
 
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoUseGas,
-                UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGas"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGasTooltip"));
+                UIManager.GetLocale(cat, "Keybinds.Human", "AutoUseGas"));
 
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.AutoRefillGas,
                 UIManager.GetLocale(cat, "Keybinds.Human", "AutoRefillGas"));
