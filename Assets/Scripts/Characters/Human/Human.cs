@@ -1370,8 +1370,7 @@ namespace Characters
                         }
                         else
                             _targetRotation = GetTargetRotation();
-                        bool isUsingGas = SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
-                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (CurrentGas > 0f))
+                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && SettingsManager.InputSettings.Human.Jump.GetKey())) && (CurrentGas > 0f))
                         {
                             if (HasDirection)
                             {
@@ -1530,7 +1529,7 @@ namespace Characters
                     Vector3 v = (hook.GetHookPosition() - Cache.Transform.position).normalized * 10f;
                     if (!(_launchLeft && _launchRight))
                         v *= 2f;
-                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && (SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value))
+                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && SettingsManager.InputSettings.Human.Jump.GetKey())
                     {
                         pivot = true;
                     }
