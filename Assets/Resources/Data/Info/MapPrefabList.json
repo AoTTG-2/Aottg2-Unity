@@ -36,9 +36,9 @@
 		"Info": {"Type": "Scene", "AssetPrefix": "Buildings/", "AssetSameAsName": true},
 		"Prefabs": [
 			{"Name": "Arch1"},
-			{"Name": "Arch2Blue"},
-			{"Name": "Arch2Brown"},
-			{"Name": "Arch2Red"},
+			{"Name": "Arch2a"},
+			{"Name": "Arch2b"},
+			{"Name": "Arch2c"},
 			{"Name": "Bridge1"},
 			{"Name": "Building1"},
 			{"Name": "Building2"},
