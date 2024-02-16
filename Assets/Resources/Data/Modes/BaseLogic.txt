@@ -207,6 +207,17 @@ component WaterPhysics
         self._myPlayerTimer = 0.0;
         UI.SetLabel("MiddleCenter", "");
     }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        self._isMyPlayerUnderwater = false;
+        self._myPlayerTimer = 0.0;
+        UI.SetLabel("MiddleCenter", "");
+    }
 }
 
 component VelocityZone
