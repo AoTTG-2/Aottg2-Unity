@@ -128,9 +128,9 @@ component WaterPhysics
         }
         velocity = self.GetVelocity(other);
         position = other.Position;
+        # Game.SpawnEffect("Splash", position, Vector3.GetRotationDirection(velocity, other.Forward), 1.0); #
         if (position.Y > self._surfaceBottom)
         {
-
             # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative #
             horizontalVector = Vector3(velocity.X, 0, velocity.Z);
             horizontalVector = horizontalVector.Normalized;
@@ -210,7 +210,7 @@ component WaterPhysics
 
     function OnCharacterDie(character, killer, killerName)
     {
-        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        if (self.Enabled == false || self.IsOwnedByMe(character) == false)
         {
             return;
         }
