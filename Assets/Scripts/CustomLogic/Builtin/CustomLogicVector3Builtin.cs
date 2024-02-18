@@ -10,9 +10,29 @@ namespace CustomLogic
 
         public CustomLogicVector3Builtin(List<object> parameterValues): base("Vector3")
         {
-            if (parameterValues.Count == 0)
-                return;
-            Value = new Vector3(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat());
+            var x = 0f;
+            var y = 0f;
+            var z = 0f;
+            
+            if (parameterValues.Count == 1)
+            {
+                x = parameterValues[0].UnboxToFloat();
+                y = parameterValues[0].UnboxToFloat();
+                z = parameterValues[0].UnboxToFloat();
+            }
+            else if (parameterValues.Count == 2)
+            {
+                x = parameterValues[0].UnboxToFloat();
+                y = parameterValues[1].UnboxToFloat();
+            }
+            else if (parameterValues.Count == 3)
+            {
+                x = parameterValues[0].UnboxToFloat();
+                y = parameterValues[1].UnboxToFloat();
+                z = parameterValues[2].UnboxToFloat();
+            }
+
+            Value = new Vector3(x, y, z);
         }
 
         public CustomLogicVector3Builtin(Vector3 value): base("Vector3")
@@ -175,6 +195,11 @@ namespace CustomLogic
                 return false;
             var other = ((CustomLogicVector3Builtin)obj).Value;
             return Value == other;
+        }
+
+        public override string ToString()
+        {
+            return Value.ToString();
         }
     }
 }
