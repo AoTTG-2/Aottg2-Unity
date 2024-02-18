@@ -25,7 +25,8 @@ namespace Controllers
             _titan.WalkSpeedPerLevel = 1f;
             _titan.BellyFlopTime = 2.6f;
             _titan.AttackSpeedMultiplier = 1.2f;
-            _titan.JumpForce = 200f;
+            _titan.JumpForce = 240f;
+            _titan.RockThrow1Speed = 500f;
         }
 
         protected override void UpdateActionInput(bool inMenu)
@@ -44,12 +45,7 @@ namespace Controllers
             if (_titan.CanAction())
             {
                 if (_titanInput.Jump.GetKeyDown())
-                {
-                    if (_titan.HasDirection)
-                        _titan.Jump(Vector3.up + _titan.Cache.Transform.forward);
-                    else
-                        _titan.Jump(Vector3.up);
-                }
+                    _titan.Attack(BasicTitanAttacks.AttackJump);
                 else if (_titanInput.AttackPunch.GetKeyDown())
                     _titan.Attack(BasicTitanAttacks.AttackPunch);
                 else if (_titanInput.AttackGrab.GetKeyDown())
@@ -60,6 +56,8 @@ namespace Controllers
                     _titan.Attack(BasicTitanAttacks.AttackBellyFlop);
                 else if (_titanInput.Kick.GetKeyDown())
                     _titan.Attack(BasicTitanAttacks.AttackKick);
+                else if (_titanInput.AttackRockThrow.GetKeyDown())
+                    _titan.Attack(BasicTitanAttacks.AttackRockThrow1);
             }
         }
 

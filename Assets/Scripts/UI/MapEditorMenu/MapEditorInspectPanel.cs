@@ -213,9 +213,9 @@ namespace UI
                     else if (setting is StringSetting || setting is FloatSetting || setting is IntSetting)
                         ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, tooltip, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                     else if (setting is ColorSetting)
-                        ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, onChangeColor: () => OnChange());
+                        ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, tooltip, onChangeColor: () => OnChange());
                     else if (setting is Vector3Setting)
-                        ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, onChangeVector: () => OnChange());
+                        ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, tooltip, onChangeVector: () => OnChange());
                 }
                 string name = "DeleteComponent" + i.ToString();
                 ElementFactory.CreateDefaultButton(SinglePanel, style, "Delete", onClick: () => OnButtonClick(name));

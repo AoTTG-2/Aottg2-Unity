@@ -50,10 +50,12 @@ namespace UI
             if (set.Preset.Value)
                 ElementFactory.CreateDefaultLabel(DoublePanelRight, style, "*Weather presets cannot be modified. Create a new set to use custom settings.",
                     FontStyle.Normal, TextAnchor.MiddleCenter);
+            var vector3Popup = UIManager.CurrentMenu.Vector3Popup;
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, set.Skybox, "Skybox", Util.EnumToStringArray<WeatherSkybox>());
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.SkyboxColor, "Skybox color", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.Daylight, "Daylight", colorPickPopup);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.DaylightIntensity, "Daylight intensity");
+            ElementFactory.CreateVector3Setting(DoublePanelRight, style, set.DaylightDirection, "Daylight direction", vector3Popup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.AmbientLight, "Ambient light", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.Flashlight, "Flashlight", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.FogColor, "Fog color", colorPickPopup);
@@ -62,6 +64,10 @@ namespace UI
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Thunder, "Thunder");
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Snow, "Snow");
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Wind, "Wind");
+            ElementFactory.CreateVector3Setting(DoublePanelRight, style, set.WindDirection, "Wind direction", vector3Popup);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, set.RainForce, "Rain force");
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, set.SnowForce, "Snow force");
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, set.WindForce, "Wind force");
         }
 
         private void OnWeatherSetSelected()

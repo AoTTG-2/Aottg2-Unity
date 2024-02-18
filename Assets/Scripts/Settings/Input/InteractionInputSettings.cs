@@ -15,5 +15,9 @@
         public KeybindSetting QuickSelect6 = new KeybindSetting(new string[] { "Alpha6", "None" });
         public KeybindSetting QuickSelect7 = new KeybindSetting(new string[] { "Alpha7", "None" });
         public KeybindSetting QuickSelect8 = new KeybindSetting(new string[] { "Alpha8", "None" });
+        public KeybindSetting Function1 = new KeybindSetting(new string[] { "F1", "None" });
+        public KeybindSetting Function2 = new KeybindSetting(new string[] { "F2", "None" });
+        public KeybindSetting Function3 = new KeybindSetting(new string[] { "F3", "None" });
+        public KeybindSetting Function4 = new KeybindSetting(new string[] { "F4", "None" });
     }
 }

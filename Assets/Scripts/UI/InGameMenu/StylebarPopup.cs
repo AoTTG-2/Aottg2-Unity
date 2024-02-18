@@ -1,5 +1,9 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using ApplicationManagers;
+using Utility;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace UI
 {
@@ -17,6 +21,10 @@ namespace UI
         private Text _scoreLabel;
         private Text _bottomLabel;
         private Image _bladeFill;
+        private Image _bladeBackground;
+        private Sprite[] _fillSprites;
+        private Sprite[] _backgroundSprites;
+        private int _rank = 0;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -27,6 +35,9 @@ namespace UI
             _scoreLabel = styleBar.Find("ScoreLabel").GetComponent<Text>();
             _bottomLabel = styleBar.Find("BottomLabel").GetComponent<Text>();
             _bladeFill = styleBar.Find("BladeFill").GetComponent<Image>();
+            _bladeBackground = _bladeFill.transform.Find("BladeBackground").GetComponent<Image>();
+            _fillSprites = Resources.LoadAll<Sprite>("UI/Sprites/HUD/StyleMeterBarSpriteSheet");
+            _backgroundSprites = Resources.LoadAll<Sprite>("UI/Sprites/HUD/StyleMeterSpriteSheet");
         }
 
         public void SetText(string letter, string sentence)
@@ -44,6 +55,20 @@ namespace UI
         public void SetFill(float fill)
         {
             _bladeFill.fillAmount = fill;
+        }
+
+        public void SetRank(int rank)
+        {
+            if (rank < 0)
+                rank = 0;
+            if (rank > 9)
+                rank = 9;
+            if (rank != _rank)
+            {
+                _rank = rank;
+                _bladeFill.sprite = _fillSprites[_rank];
+                _bladeBackground.sprite = _backgroundSprites[_rank];
+            }
         }
     }
 }

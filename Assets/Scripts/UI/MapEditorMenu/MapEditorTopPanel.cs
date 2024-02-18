@@ -69,7 +69,7 @@ namespace UI
             // options dropdown
             dropdownWidth = 130f;
             options = new List<string>();
-            foreach (string option in new string[] { "Editor", "MapInfo", "CustomLogic", "CustomAssets" })
+            foreach (string option in new string[] { "Editor", "MapInfo", "Weather", "CustomLogic", "CustomAssets" })
             {
                 options.Add(UIManager.GetLocale(cat, "Top", option));
             }
@@ -180,13 +180,15 @@ namespace UI
         protected void OnOptionsClick()
         {
             int index = _dropdownSelection.Value;
-            if (index == 1) // map info
-                _menu.InfoPopup.Show();
-            else if (index == 2) // custom logic
-                _menu.CustomLogicPopup.Show();
-            else if (index == 0) // editor options
+            if (index == 0) // editor options
                 _menu.SettingsPopup.Show();
-            else if (index == 3) // custom assets
+            else if (index == 1) // map info
+                _menu.InfoPopup.Show();
+            else if (index == 2) // weather
+                _menu.WeatherPopup.Show();
+            else if (index == 3) // custom logic
+                _menu.CustomLogicPopup.Show();
+            else if (index == 4) // custom assets
                 _menu.CustomAssetsPopup.Show();
         }
 

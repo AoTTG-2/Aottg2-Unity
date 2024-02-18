@@ -10,12 +10,12 @@ namespace UI
     {
 
         private StylebarPopup _styleBarPopup;
-        private string[] Letters = new string[] { "D", "C", "B", "A", "S", "SS", "SSS", "X" };
-        private string[] ColorTags = new string[] { "FFFFFF", "ACFA58", "F4FA58", "FAAC58", "FA8258", "BE81F7", "FF0000", "000000" };
-        private string[] Sentences = new string[] { "eja Vu", "asual", "oppin!", "mazing!", "ensational!", "pectacular!!", "tylish!!!", "TREEME!!!" };
+        private string[] Letters = new string[] { "D", "C", "B", "A", "S", "SS", "SSS", "X", "XX", "Z" };
+        private string[] ColorTags = new string[] { "FFFFFF", "ACFA58", "F4FA58", "FAAC58", "FA8258", "BE81F7", "FF0000", "000000", "000000", "000000" };
+        private string[] Sentences = new string[] { "eja Vu", "asual", "oppin!", "mazing!", "ensational!", "pectacular!!", "tylish!!!", "TREME!!!", "TREEME!!!", "ENITH" };
         private float[] Multipliers = new float[] { 1f, 1.1f, 1.2f, 1.3f, 1.5f, 1.7f, 2f, 2.3f, 2.5f };
-        private int[] PointThresholds = new int[] { 350, 950, 0x992, 0x11c6, 0x1b58, 0x3a98, 0x186a0 };
-        private int[] PointDecays = new int[] { 1, 2, 5, 10, 15, 20, 0x19, 0x19 };
+        private int[] PointThresholds = new int[] { 350, 950, 2450, 4550, 7000, 15000, 100000, 300000, 500000 };
+        private int[] PointDecays = new int[] { 1, 2, 5, 10, 15, 20, 25, 25, 25, 25 };
 
         private int _hits;
         private float _points;
@@ -32,6 +32,7 @@ namespace UI
             _styleBarPopup.SetFill(1f);
             _styleBarPopup.SetScore("", "");
             _styleBarPopup.SetText("", "");
+            _styleBarPopup.SetRank(0);
         }
 
         public void OnHit(int damage)
@@ -91,6 +92,7 @@ namespace UI
             string sentence = Sentences[_rank];
             _styleBarPopup.SetText(letter, sentence);
             _styleBarPopup.SetFill(GetRankPercent() * 0.01f);
+            _styleBarPopup.SetRank(_rank);
         }
 
         private int GetRankPercent()

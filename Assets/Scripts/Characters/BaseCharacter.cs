@@ -70,6 +70,13 @@ namespace Characters
             SetTeam(team);
         }
 
+        public virtual Vector3 GetAimPoint()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Vector3 target = ray.origin + ray.direction * 1000f;
+            return target;
+        }
+
         public void SetTeam(string team)
         {
             Cache.PhotonView.RPC("SetTeamRPC", RpcTarget.All, new object[] { team });

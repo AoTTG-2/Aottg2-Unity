@@ -33,7 +33,7 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
-        protected float RockThrow1Speed = 200f;
+        public float RockThrow1Speed = 200f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
@@ -275,6 +275,12 @@ namespace Characters
             StateActionWithTime(TitanState.Run, _runAnimation, 0f, 0.5f);
             if (IsCrawler && !BasicCache.BodyHitbox.IsActive())
                 BasicCache.BodyHitbox.Activate();
+        }
+
+        public override void WallClimb()
+        {
+            _stepPhase = 0;
+            StateActionWithTime(TitanState.WallClimb, BasicAnimations.RunCrawler, 0f, 0.1f);
         }
 
         public override void Jump(Vector3 direction)
@@ -522,24 +528,33 @@ namespace Characters
             }
             else if (_currentAttack == BasicTitanAttacks.AttackRockThrow1)
             {
-                if (TargetEnemy != null)
-                    _rockThrowTarget = TargetEnemy.Cache.Transform.position;
-                else
-                    _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
+                if (!AI)
+                    _rockThrowTarget = GetAimPoint();
                 StateAttack(BasicAnimations.AttackRockThrow);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackJump)
             {
-                if (TargetEnemy != null)
+                if (AI)
                 {
-                    Vector3 to = TargetEnemy.Cache.Transform.position - BasicCache.Head.position;
+                    if (TargetEnemy != null)
+                    {
+                        Vector3 to = TargetEnemy.Cache.Transform.position - BasicCache.Head.position;
+                        float time = to.magnitude / JumpForce;
+                        float down = 0.5f * Gravity.magnitude * time * time;
+                        to.y += down;
+                        Jump(to.normalized);
+                    }
+                    else
+                        Jump(Vector3.up);
+                }
+                else
+                {
+                    Vector3 to = GetAimPoint() - BasicCache.Head.position;
                     float time = to.magnitude / JumpForce;
                     float down = 0.5f * Gravity.magnitude * time * time;
                     to.y += down;
                     Jump(to.normalized);
                 }
-                else
-                    Jump(Vector3.up);
             }
             else if (_currentAttack == BasicTitanAttacks.AttackCrawlerJump)
             {
@@ -1009,6 +1024,21 @@ namespace Characters
             else if (_currentAttack == BasicTitanAttacks.AttackRockThrow1)
             {
                 Vector3 hand = BasicCache.HandRHitbox.transform.position;
+                if (AI)
+                {
+                    if (TargetEnemy != null)
+                    {
+                        float distance = Vector3.Distance(hand, TargetEnemy.Cache.Transform.position);
+                        float time = distance / RockThrow1Speed;
+                        _rockThrowTarget = TargetEnemy.Cache.Transform.position + TargetEnemy.Cache.Rigidbody.velocity * time;
+                    }
+                    else
+                        _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
+                }
+                var flatTarget = _rockThrowTarget;
+                flatTarget.y = Cache.Transform.position.y;
+                var forward = (flatTarget - Cache.Transform.position).normalized;
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
                 if (_currentAttackStage == 0 && animationTime > 0.16f)
                 {
                     _currentAttackStage = 1;
@@ -1234,6 +1264,12 @@ namespace Characters
                 BasicCache.ForearmR.localScale = Vector3.one;
             BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
             BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
+            if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+            {
+                var body = BasicCache.Core.Find("Controller.Body");
+                body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
+            }
         }
 
         protected override void OnDestroy()

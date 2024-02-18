@@ -203,8 +203,8 @@ namespace Controllers
         {
             if (_humanInput.HookLeft.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 800, "Thunderspear");
-                _inGameMenu.ShowKillScore(800);
+                _inGameMenu.ShowKillFeed("test", "test", 100, "Thunderspear");
+                _inGameMenu.ShowKillScore(100);
             }
             if (_humanInput.HookRight.GetKeyDown())
             {
