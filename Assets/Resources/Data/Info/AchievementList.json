@@ -143,6 +143,280 @@
 		"Amount": 1,
 		"Icon": "Speed",
 		"Tier": "Bronze"
+	},
+	{
+		"Category": "KillTitan",
+		"Amount": 10000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Shifter"],
+		"Amount": 2000,
+		"Icon": "Skull2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Amount": 10000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Titan"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Thunderspear"],
+		"Amount": 5000,
+		"Icon": "Sword2",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1500"],
+		"Amount": 500,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:3500"],
+		"Amount": 1,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1500", "Weapon:Blade"],
+		"Amount": 250,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1500", "Weapon:AHSS"],
+		"Amount": 250,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:1500", "Weapon:APG"],
+		"Amount": 250,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "DealDamage",
+		"Amount": 10000000,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 3000000,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 3000000,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 3000000,
+		"Icon": "Sword1",
+		"Tier": "Silver"
+	},
+{
+		"Category": "KillTitan",
+		"Amount": 100000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillTitan",
+		"Conditions": ["Weapon:Shifter"],
+		"Amount": 5000,
+		"Icon": "Skull2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Amount": 100000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Titan"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "KillHuman",
+		"Conditions": ["Weapon:Thunderspear"],
+		"Amount": 50000,
+		"Icon": "Sword2",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000"],
+		"Amount": 1000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:5000"],
+		"Amount": 1,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:Blade"],
+		"Amount": 1000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:AHSS"],
+		"Amount": 1000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "HitDamage",
+		"Conditions": ["Damage:2000", "Weapon:APG"],
+		"Amount": 1000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "DealDamage",
+		"Amount": 100000000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:Blade"],
+		"Amount": 30000000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:AHSS"],
+		"Amount": 30000000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
+	},
+	{
+		"Category": "DealDamage",
+		"Conditions": ["Weapon:APG"],
+		"Amount": 30000000,
+		"Icon": "Sword1",
+		"Tier": "Gold"
 	}
 	]
 }
