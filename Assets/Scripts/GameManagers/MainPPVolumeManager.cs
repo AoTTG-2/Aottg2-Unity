@@ -6,11 +6,12 @@ using UnityEngine;
 public class MainPPVolumeManager : MonoBehaviour
 {
     [SerializeField]GameObject PostProcessingVolume;
+    Collider _collider;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -19,7 +20,7 @@ public class MainPPVolumeManager : MonoBehaviour
         Camera cam = SceneLoader.CurrentCamera.Camera;
 
         // If the camera is inside this objects collider, enable the post processing volume
-        if (GetComponent<Collider>().bounds.Contains(cam.transform.position))
+        if (_collider.bounds.Contains(cam.transform.position))
         {
             PostProcessingVolume.gameObject.SetActive(true);
         }

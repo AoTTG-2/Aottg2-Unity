@@ -31,7 +31,7 @@ component WaterPhysics
     _surfaceTop = 0.0;
     _surfaceBottom = 0.0;
     _forceMode = "Acceleration";
-    _maxAngle = 40.0;
+    _maxAngle = 30.0;
 
 
     function Init()
@@ -154,7 +154,10 @@ component WaterPhysics
 
                 if (other.Type == "Human")
                 {
-                    other.PlayAnimation("Armature|slide");
+                    if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
+                    {
+                        other.PlayAnimation("Armature|slide", 0.01);
+                    }
                 }
             }
         }
