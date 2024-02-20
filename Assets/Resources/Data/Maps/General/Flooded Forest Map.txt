@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:1-1 Remake of AOTTG's Forest map.
+EditorVersion:1.0|Description:1-1 Remake of AOTTG's Forest map with a flooded environment.
 /// Objects
 Scene,Nature/Tree2b,2,0,1,1,1,0,Tree2,67.7864,0,334.2547,0,0,0,1.1355,1.1355,1.1355,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree2b,3,0,1,1,1,0,Tree2,-145.288,0,578.3851,0,0,0,0.8193002,0.8193002,0.8193002,Physical,Entities,Default,Default|255/255/255/255,;
@@ -130,7 +130,7 @@ Scene,Nature/Tree2b,127,0,1,1,1,0,Tree2,439.0837,0,353.6009,0,0,0,0.7024001,0.70
 Scene,Geometry/Cuboid,128,0,1,1,1,0,Cuboid,0,-5,100,0,0,0,200,1,200,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|15/15|0/0,;
 Scene,Decor/Goober1,129,0,1,1,1,0,Goober1,0.4401548,-12.05062,49.65606,26.11497,180,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorDaylight,130,0,1,1,0,0,Daylight,-52.64412,90.2121,48.7079,32.46612,142.2099,176.8563,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/255/255/255|Intensity:1|WeatherControlled:true;
-Scene,Interact/Supply2,131,0,1,1,1,0,Supply2,-104.0451,0,-391.3458,0,69.75909,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,131,0,1,1,1,0,Supply2,-106.1863,14.57096,-392.9867,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Geometry/Cuboid,132,0,1,1,0,0,Barrier,0,1500,1105,0,0,0,200,300,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,133,0,1,1,0,0,Barrier,0,1500,-905,0,0,0,200,300,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,134,0,1,1,0,0,Barrier,-1005,1500,100,0,90,0,200,300,1,Physical,Characters,Default,Default|255/255/255/255,;
@@ -219,5 +219,17 @@ Scene,General/EditorHumanSpawnPoint,220,0,1,1,0,0,Human SpawnPoint,-129.407,75.8
 Scene,Decor/Table1,221,0,1,1,1,0,Table1,0.1518734,-10,41.96515,0,180,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Teapot1,222,0,1,1,1,0,Teapot1,-1.489067,-15.95189,43.36904,0,0,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chair1,223,0,1,1,1,0,Chair1,0.341823,-11.86304,48.6939,-5.008956E-06,5.008956E-06,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Book1,225,0,1,1,1,0,Book1,-0.3190949,-15.14989,46.69358,49.85479,180,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,
+Scene,Decor/Book1,225,0,1,1,1,0,Book1,-0.3190949,-15.14989,46.69358,49.85479,180,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/WaterCube1,226,0,1,0,1,0,WaterCube1,0,2,100,0,0,0,400,2,400,Region,Characters,Default,DefaultTiled|255/255/255/255|25/25,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.3|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10;
+Scene,Decor/Scaffold4,227,0,1,1,1,0,Scaffold4,-102.9441,0,-392.11,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Building2,228,0,1,1,1,0,Building2,375.1118,-29.8982,-1117.339,24.07451,305.6989,359.6772,3,5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Rubble2,229,0,1,1,1,0,Rubble2,290.8356,-12.50954,-1227.086,0,0,0,20,5,20,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Building2,230,0,1,1,1,0,Building2,-46.26901,-13.09223,-1396.589,358.632,349.651,352.5521,3,5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Rubble1,231,0,1,1,1,0,Rubble1,99.97575,-49.6216,-1222.245,0,0,0,15,10,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Leaf1,242,0,1,1,1,0,Leaf1,281.875,115.2984,-1058.316,63.19226,90.00002,151.6512,1.56286,1,3.29423,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Boulder6,237,0,1,1,1,0,Boulder6,-1415.034,-54.23124,-851.9238,0,0,0,20,15,15,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1,234,0,1,1,1,0,Overgrown1,-1274.846,32.76327,-1088.978,7.987177,232.2392,10.17004,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Boulder1,235,0,1,1,1,0,Boulder1,-1319.302,7.366743,-1101.374,0,0,0,10,3,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Boulder6,243,0,1,1,1,0,Boulder6,-1460.039,-54.23124,-883.347,0,130.9129,0,20.66149,17.36007,15,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill2,239,0,1,1,1,0,Windmill2,-1286.299,32.53754,-1028.803,0,328.5869,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
