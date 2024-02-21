@@ -1456,15 +1456,16 @@ namespace Characters
         protected void OnCollisionEnter(Collision collision)
         {
             var velocity = Cache.Rigidbody.velocity;
-            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && velocity.magnitude > RealismDeathVelocity)
-            {
-                GetKilled("Impact");
-                return;
-            }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
             float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
             float speed = _lastVelocity.magnitude * speedMultiplier;
             Cache.Rigidbody.velocity = velocity.normalized * speed;
+            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+            {
+                GetKilled("Impact");
+                return;
+            }
         }
 
         private void LateUpdateReelOut()

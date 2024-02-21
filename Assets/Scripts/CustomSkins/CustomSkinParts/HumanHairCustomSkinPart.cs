@@ -20,7 +20,7 @@ namespace CustomSkins
         protected override Material SetNewTexture(Texture2D texture)
         {
             if (_hairTexture != string.Empty)
-                _renderers[0].material = HumanSetupMaterials.Materials[_hairTexture];
+                _renderers[0].material = HumanSetupMaterials.GetHairMaterial(_hairTexture);
             return base.SetNewTexture(texture);
         }
     }

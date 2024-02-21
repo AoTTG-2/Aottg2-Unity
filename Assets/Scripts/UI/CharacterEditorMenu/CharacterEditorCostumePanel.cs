@@ -17,7 +17,7 @@ namespace UI
     {
         protected override string Title => UIManager.GetLocale("CharacterEditor", "Costume", "Title");
         protected override float Width => 380f;
-        protected override float Height => 950f;
+        protected override float Height => 1050f;
         protected override float VerticalSpacing => 20f;
         protected override int HorizontalPadding => 25;
         protected override int VerticalPadding => 25;
@@ -74,6 +74,10 @@ namespace UI
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptions("Logo", 4),
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.InnerColor, UIManager.GetLocale(cat, sub, "InnerColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.OuterColor, UIManager.GetLocale(cat, sub, "OuterColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
         }
 

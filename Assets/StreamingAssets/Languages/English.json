@@ -458,6 +458,8 @@
 		"Costume.Cape": "Cape",
 		"Costume.Logo": "Logo",
 		"Costume.HairColor": "Hair color",
+		"Costume.InnerColor": "Inner color",
+		"Costume.OuterColor": "Outer color",
 		"Stats.Title": "Stats",
 		"Stats.Speed": "Run speed",
 		"Stats.Gas": "Gas",

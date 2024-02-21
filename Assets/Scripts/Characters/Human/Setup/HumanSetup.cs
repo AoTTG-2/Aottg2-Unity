@@ -73,6 +73,7 @@ namespace Characters
         public static int CostumeFCount;
         public static int HairMCount;
         public static int HairFCount;
+        
 
         public static void Init()
         {
@@ -156,13 +157,15 @@ namespace Characters
             IsDeadBody = isDeadBody;
             if (CustomSet.Sex.Value == (int)HumanSex.Male)
             {
+                if (CustomSet.Costume.Value >= CostumeMCount)
+                    CustomSet.Costume.Value = 0;
                 CurrentCostume = CostumeInfo["Male"][CustomSet.Costume.Value];
-                CurrentHair = HairInfo["Male"][CustomSet.Hair.Value];
             }
             else
             {
+                if (CustomSet.Costume.Value >= CostumeFCount)
+                    CustomSet.Costume.Value = 0;
                 CurrentCostume = CostumeInfo["Female"][CustomSet.Costume.Value];
-                CurrentHair = HairInfo["Female"][CustomSet.Hair.Value];
             }
             string hair = CustomSet.Hair.Value;
             if (hair.StartsWith("HairM"))
@@ -189,10 +192,12 @@ namespace Characters
 
         public void CreateParts()
         {
+            var bodyMaterial = HumanSetupMaterials.GetCostumeMaterial(_textures.GetBodyMainTexture(), _textures.GetBodyMaskTexture(),
+                _textures.GetBodyColorTexture(), _textures.GetBodyPantsTexture(), CustomSet.InnerColor.Value.ToColor(), CustomSet.OuterColor.Value.ToColor());
             CreateHead();
-            CreateUpperBody();
-            CreateArms();
-            CreateLowerBody();
+            CreateUpperBody(bodyMaterial);
+            CreateArms(bodyMaterial);
+            CreateLowerBody(bodyMaterial);
             Create3dmg();
             CreateWeapon();
         }
@@ -232,7 +237,7 @@ namespace Characters
             DestroyIfExists(_part_belt);
             DestroyIfExists(_part_gas_l);
             DestroyIfExists(_part_gas_r);
-            Material material = HumanSetupMaterials.Materials[_textures.Get3dmgTexture()];
+            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
             _part_3dmg = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.Get3dmgMesh(), cached: true);
             AttachToMount(_part_3dmg, _mount_3dmg);
             _part_3dmg.GetComponent<Renderer>().material = material;
@@ -261,7 +266,7 @@ namespace Characters
         {
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
-            Material material = HumanSetupMaterials.Materials[_textures.Get3dmgTexture()];
+            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
             string weaponLMesh = _meshes.GetWeaponMesh(left: true);
             if (weaponLMesh != string.Empty)
             {
@@ -307,7 +312,7 @@ namespace Characters
                 string capeMesh = _meshes.GetCapeMesh();
                 if (capeMesh != string.Empty)
                 {
-                    _part_cape = ClothFactory.GetCape(_mount_cloth, capeMesh, HumanSetupMaterials.Materials[_textures.GetBrandTexture()]);
+                    _part_cape = ClothFactory.GetCape(_mount_cloth, capeMesh, HumanSetupMaterials.GetPartMaterial(_textures.GetBrandTexture()));
                 }
             }
         }
@@ -322,13 +327,13 @@ namespace Characters
             {
                 _part_hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, hairMesh, cached: true);
                 AttachToMount(_part_hair, _part_head);
-                _part_hair.GetComponent<Renderer>().material = HumanSetupMaterials.Materials[_textures.GetHairTexture()];
+                _part_hair.GetComponent<Renderer>().material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
                 _part_hair.GetComponent<Renderer>().material.color = CustomSet.HairColor.Value.ToColor();
             }
             string hairClothMesh = _meshes.GetHairClothMesh();
             if (hairClothMesh != string.Empty && !IsDeadBody)
             {
-                Material material = HumanSetupMaterials.Materials[_textures.GetHairTexture()];
+                Material material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
                 _part_hair_1 = ClothFactory.GetHair(_mount_cloth, hairClothMesh, material, CustomSet.HairColor.Value.ToColor());
             }
         }
@@ -372,14 +377,13 @@ namespace Characters
             CreateGlass();
         }
 
-        public void CreateArms()
+        public void CreateArms(Material bodyMaterial)
         {
             DestroyIfExists(_part_arm_l);
             DestroyIfExists(_part_hand_l);
             DestroyIfExists(_part_arm_r);
             DestroyIfExists(_part_hand_r);
-            Material bodyMaterial = HumanSetupMaterials.Materials[_textures.GetBodyTexture()];
-            Material skinMaterial = HumanSetupMaterials.Materials[_textures.GetSkinTexture()];
+            Material skinMaterial = HumanSetupMaterials.GetPartMaterial(_textures.GetSkinTexture());
             _part_arm_l = GenerateCloth(_meshes.GetArmMesh(left: true));
             SetMaterial(_part_arm_l.GetComponent<Renderer>(), bodyMaterial);
             _part_hand_l = GenerateCloth(_meshes.GetHandMesh(left: true));
@@ -395,12 +399,12 @@ namespace Characters
             renderer.material = material;
         }
 
-        public void CreateLowerBody()
+        public void CreateLowerBody(Material bodyMaterial)
         {
-            SetMaterial(_part_leg.GetComponent<SkinnedMeshRenderer>(), HumanSetupMaterials.Materials[_textures.GetBodyTexture()]);
+            SetMaterial(_part_leg.GetComponent<SkinnedMeshRenderer>(), bodyMaterial);
         }
 
-        public void CreateUpperBody()
+        public void CreateUpperBody(Material bodyMaterial)
         {
             DestroyIfExists(_part_upper_body);
             DestroyIfExists(_part_brand_1);
@@ -419,9 +423,8 @@ namespace Characters
             {
                 _part_chest_1 = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, chest1Mesh, cached: true);
                 AttachToMount(_part_chest_1, _mount_chest);
-                _part_chest_1.GetComponent<Renderer>().material = HumanSetupMaterials.Materials[_textures.GetChestTexture(1)];
+                _part_chest_1.GetComponent<Renderer>().material = HumanSetupMaterials.GetPartMaterial(_textures.GetChestTexture(1));
             }
-            Material bodyMaterial = HumanSetupMaterials.Materials[_textures.GetBodyTexture()];
             string chest2Mesh = _meshes.GetChestMesh(2);
             if (chest2Mesh != string.Empty)
             {
@@ -436,7 +439,7 @@ namespace Characters
             }
             _part_upper_body = GenerateCloth(_meshes.GetBodyMesh());
             SetMaterial(_part_upper_body.GetComponent<Renderer>(), bodyMaterial);
-            Material brandMaterial = HumanSetupMaterials.Materials[_textures.GetBrandTexture()];
+            Material brandMaterial = HumanSetupMaterials.GetPartMaterial(_textures.GetBrandTexture());
             if (CurrentCostume["Type"].Value.StartsWith("Uniform"))
             {
                 _part_brand_1 = GenerateCloth(_meshes.GetBrandMesh(1));
@@ -448,7 +451,7 @@ namespace Characters
                 _part_brand_4 = GenerateCloth(_meshes.GetBrandMesh(4));
                 _part_brand_4.GetComponent<Renderer>().material = brandMaterial;
             }
-            Material skinMaterial = HumanSetupMaterials.Materials[_textures.GetSkinTexture()];
+            Material skinMaterial = HumanSetupMaterials.GetPartMaterial(_textures.GetSkinTexture());
             _part_head.GetComponent<Renderer>().material = skinMaterial;
             _part_chest.GetComponent<Renderer>().material = skinMaterial;
         }
@@ -469,7 +472,7 @@ namespace Characters
 
         public void SetSkin()
         {
-            Material material = HumanSetupMaterials.Materials[_textures.GetSkinTexture()];
+            Material material = HumanSetupMaterials.GetPartMaterial(_textures.GetSkinTexture());
             _part_head.GetComponent<Renderer>().material = material;
             _part_chest.GetComponent<Renderer>().material = material;
             _part_hand_l.GetComponent<Renderer>().material = material;

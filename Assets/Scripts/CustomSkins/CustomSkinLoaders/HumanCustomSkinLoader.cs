@@ -86,7 +86,7 @@ namespace CustomSkins
                     AddRendererIfExists(renderers, human.Setup._part_chest_3);
                     AddRendererIfExists(renderers, human.Setup._part_upper_body);
                     // disabling costume renderers causes animation glitches, so we use transparent material instead
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeLarge, useTransparentMaterial: true);
+                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeLarge, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.Logo:
                     AddRendererIfExists(renderers, human.Setup._part_cape);
                     AddRendererIfExists(renderers, human.Setup._part_brand_1);
