@@ -72,7 +72,7 @@
 				"_pants_tex": "Boots_Uniform",
 			},
 			{
-				"Type": "CasualAHSS",
+				"Type": "CasualA",
 				"_main_tex": "Casual_M_Straps_2",
 				"_main_tex_mask": "Casual_M_Mask_2",
 				"_color_tex": "MA_Shirt_3",
@@ -160,7 +160,7 @@
 				"Holster": true
 			},
 			{
-				"Type": "CasualAHSS",
+				"Type": "CasualA",
 				"_main_tex": "Casual_F_Straps_2",
 				"_main_tex_mask": "Casual_F_Mask_2",
 				"_color_tex": "FA_Shirt_4",
