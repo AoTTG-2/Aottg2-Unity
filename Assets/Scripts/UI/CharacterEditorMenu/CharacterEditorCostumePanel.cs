@@ -79,6 +79,12 @@ namespace UI
                 onChangeColor: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.OuterColor, UIManager.GetLocale(cat, sub, "OuterColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.PantsColor, UIManager.GetLocale(cat, sub, "PantsColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.JacketColor, UIManager.GetLocale(cat, sub, "JacketColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.BootsColor, UIManager.GetLocale(cat, sub, "BootsColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
         }
 
         private string[] GetOptions(string prefix, int options, bool includeNone = false)
