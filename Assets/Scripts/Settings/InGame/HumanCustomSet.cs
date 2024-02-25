@@ -17,8 +17,8 @@ namespace Settings
         public IntSetting Cape = new IntSetting(0);
         public IntSetting Logo = new IntSetting(0);
         public ColorSetting HairColor = new ColorSetting();
-        public ColorSetting InnerColor = new ColorSetting();
-        public ColorSetting OuterColor = new ColorSetting();
+        public ColorSetting ShirtColor = new ColorSetting();
+        public ColorSetting StrapsColor = new ColorSetting();
 		public ColorSetting PantsColor = new ColorSetting();
 		public ColorSetting JacketColor = new ColorSetting();
 		public ColorSetting BootsColor = new ColorSetting();		

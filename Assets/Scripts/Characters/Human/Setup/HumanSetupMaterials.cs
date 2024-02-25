@@ -20,7 +20,7 @@ namespace Characters
             FaceMaterial = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Accessories/Materials/HumanFaceMat");
         }
 
-        public static Material GetCostumeMaterial(string mainTexture, string maskTexture, string colorTexture, string pantsTexture, Color inner, Color outer, Color pants, Color jacket, Color boots)
+        public static Material GetCostumeMaterial(string mainTexture, string maskTexture, string colorTexture, string pantsTexture, Color shirt, Color straps, Color pants, Color jacket, Color boots)
         {
             var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, MaterialPath + "HumanCostumeMat", true);
             var mainTex = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, TexturePath + mainTexture);
@@ -31,8 +31,8 @@ namespace Characters
             material.SetTexture("_main_tex_mask", maskTex);
             material.SetTexture("_color_tex", colorTex);
             material.SetTexture("_pants_tex", pantsTex);
-            material.SetColor("_inner_color", inner);
-            material.SetColor("_outer_color", outer);
+            material.SetColor("_shirt_color", shirt);
+            material.SetColor("_straps_color", straps);
 			material.SetColor("_pants_color", pants);
 			material.SetColor("_jacket_color", jacket);
 			material.SetColor("_boots_color", boots);

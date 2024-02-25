@@ -1812,10 +1812,10 @@
     "m_Guid": {
         "m_GuidSerialized": "969dc2cd-555a-4fa7-94ab-2670a60367c9"
     },
-    "m_Name": "outer_color",
+    "m_Name": "straps_color",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "outer_color",
-    "m_DefaultReferenceName": "_outer_color",
+    "m_RefNameGeneratedByDisplayName": "straps_color",
+    "m_DefaultReferenceName": "_straps_color",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -3005,9 +3005,9 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "r": 1.0,
-        "g": 1.0,
-        "b": 1.0,
+        "r": 0.5843137502670288,
+        "g": 0.4117647111415863,
+        "b": 0.2980392277240753,
         "a": 0.0
     },
     "isMainColor": false,
@@ -3417,10 +3417,10 @@
     "m_Guid": {
         "m_GuidSerialized": "aa0b3529-164c-412f-9458-7494530f4208"
     },
-    "m_Name": "inner_color",
+    "m_Name": "shirt_color",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "inner_color",
-    "m_DefaultReferenceName": "_inner_color",
+    "m_RefNameGeneratedByDisplayName": "shirt_color",
+    "m_DefaultReferenceName": "_shirt_color",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -3889,7 +3889,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "75e005ef5c48440d82b76ee31329a5f4",
     "m_Id": 0,
-    "m_DisplayName": "outer_color",
+    "m_DisplayName": "straps_color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -4986,7 +4986,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "977d359bf1d54b7b9f188bbbd5ceab2f",
     "m_Id": 0,
-    "m_DisplayName": "outer_color",
+    "m_DisplayName": "straps_color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -5833,7 +5833,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "b727d27ca8f640daa67ed5552b99513b",
     "m_Id": 0,
-    "m_DisplayName": "inner_color",
+    "m_DisplayName": "shirt_color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -6694,7 +6694,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "d2ccafef2bf44d8396c30fc394486e69",
     "m_Id": 0,
-    "m_DisplayName": "inner_color",
+    "m_DisplayName": "shirt_color",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -7472,10 +7472,10 @@
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
     "m_Value": {
-        "r": 1.0,
-        "g": 1.0,
-        "b": 1.0,
-        "a": 0.0
+        "r": 0.18431372940540315,
+        "g": 0.125490203499794,
+        "b": 0.10980392247438431,
+        "a": 1.0
     },
     "isMainColor": false,
     "m_ColorMode": 0
