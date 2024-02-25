@@ -75,9 +75,15 @@ namespace UI
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
-            ElementFactory.CreateColorSetting(SinglePanel, style, set.InnerColor, UIManager.GetLocale(cat, sub, "InnerColor"), UIManager.CurrentMenu.ColorPickPopup,
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.ShirtColor, UIManager.GetLocale(cat, sub, "ShirtColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
-            ElementFactory.CreateColorSetting(SinglePanel, style, set.OuterColor, UIManager.GetLocale(cat, sub, "OuterColor"), UIManager.CurrentMenu.ColorPickPopup,
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.StrapsColor, UIManager.GetLocale(cat, sub, "StrapsColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.PantsColor, UIManager.GetLocale(cat, sub, "PantsColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.JacketColor, UIManager.GetLocale(cat, sub, "JacketColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.BootsColor, UIManager.GetLocale(cat, sub, "BootsColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
         }
 

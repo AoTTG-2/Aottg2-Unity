@@ -193,7 +193,7 @@ namespace Characters
         public void CreateParts()
         {
             var bodyMaterial = HumanSetupMaterials.GetCostumeMaterial(_textures.GetBodyMainTexture(), _textures.GetBodyMaskTexture(),
-                _textures.GetBodyColorTexture(), _textures.GetBodyPantsTexture(), CustomSet.InnerColor.Value.ToColor(), CustomSet.OuterColor.Value.ToColor());
+                _textures.GetBodyColorTexture(), _textures.GetBodyPantsTexture(), CustomSet.ShirtColor.Value.ToColor(), CustomSet.StrapsColor.Value.ToColor(), CustomSet.PantsColor.Value.ToColor(), CustomSet.JacketColor.Value.ToColor(), CustomSet.BootsColor.Value.ToColor());
             CreateHead();
             CreateUpperBody(bodyMaterial);
             CreateArms(bodyMaterial);
