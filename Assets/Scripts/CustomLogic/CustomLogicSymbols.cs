@@ -42,6 +42,10 @@ namespace CustomLogic
             Symbols.Add(";", (int)CustomLogicSymbol.Semicolon);
             Symbols.Add("\"", (int)CustomLogicSymbol.DoubleQuote);
             Symbols.Add("=", (int)CustomLogicSymbol.SetEquals);
+            Symbols.Add("+=", (int)CustomLogicSymbol.PlusEquals);
+            Symbols.Add("-=", (int)CustomLogicSymbol.MinusEquals);
+            Symbols.Add("*=", (int)CustomLogicSymbol.TimesEquals);
+            Symbols.Add("/=", (int)CustomLogicSymbol.DivideEquals);
             Symbols.Add(",", (int)CustomLogicSymbol.Comma);
             Symbols.Add(".", (int)CustomLogicSymbol.Dot);
             Symbols.Add("||", (int)CustomLogicSymbol.Or);
@@ -70,6 +74,8 @@ namespace CustomLogic
                     SpecialSymbolNames.Add(symbolName);
             }
             BinopSymbolPriorities.Add((int)CustomLogicSymbol.SetEquals, 0);
+            foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.PlusEquals, CustomLogicSymbol.MinusEquals, CustomLogicSymbol.TimesEquals, CustomLogicSymbol.DivideEquals })
+                BinopSymbolPriorities.Add((int)symbol, 0);
             foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Or, CustomLogicSymbol.And })
                 BinopSymbolPriorities.Add((int)symbol, 1);
             foreach (CustomLogicSymbol symbol in new CustomLogicSymbol[] { CustomLogicSymbol.Equals, CustomLogicSymbol.NotEquals,
@@ -104,6 +110,10 @@ namespace CustomLogic
         Return,
         Not,
         SetEquals,
+        PlusEquals,
+        MinusEquals,
+        TimesEquals,
+        DivideEquals,
         And,
         Or,
         LessThan,

@@ -484,6 +484,25 @@ namespace CustomLogic
                         }
                     }
                 }
+                else if (statement is CustomLogicCompoundAssignmentExpressionAst)
+                {
+                    CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
+                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
+                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
+                    if (value != null && value is CustomLogicStructBuiltin)
+                        value = ((CustomLogicStructBuiltin)value).Copy();
+                    string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
+                    object originalValue = localVariables[variableName];
+                    object newValue = op switch
+                    {
+                        CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                        CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                        CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                        CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                        _ => value,
+                    };
+                    localVariables[variableName] = newValue;
+                }
                 else if (statement is CustomLogicReturnExpressionAst)
                 {
                     yield break;
@@ -603,6 +622,25 @@ namespace CustomLogic
                                 fieldInstance.Variables.Add(fieldExpression.FieldName, value);
                         }
                     }
+                }
+                else if (statement is CustomLogicCompoundAssignmentExpressionAst)
+                {
+                    CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
+                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
+                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
+                    if (value != null && value is CustomLogicStructBuiltin)
+                        value = ((CustomLogicStructBuiltin)value).Copy();
+                    string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
+                    object originalValue = localVariables[variableName];
+                    object newValue = op switch
+                    {
+                        CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                        CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                        CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                        CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                        _ => value,
+                    };
+                    localVariables[variableName] = newValue;
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
                 {
@@ -813,56 +851,10 @@ namespace CustomLogic
 
         private object EvaluateBinopExpression(CustomLogicSymbol symbol, object left, object right)
         {
-            if (symbol == CustomLogicSymbol.Plus)
-            {
-                if (left is int && right is int)
-                    return (int)left + (int)right;
-
-                var leftStr = left is string;
-                var rightStr = right is string;
-                if (leftStr || rightStr)
-                {
-                    if (leftStr)
-                        return (string)left + right;
-
-                    return left + (string)right;
-                }
-                else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
-                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
-                else
-                    return left.UnboxToFloat() + right.UnboxToFloat();
-            }
-            else if (symbol == CustomLogicSymbol.Minus)
-            {
-                if (left is int && right is int)
-                    return (int)left - (int)right;
-                else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
-                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value - ((CustomLogicVector3Builtin)right).Value);
-                else
-                    return left.UnboxToFloat() - right.UnboxToFloat();
-            }
-            else if (symbol == CustomLogicSymbol.Times)
-            {
-                if (left is int && right is int)
-                    return (int)((int)left * (int)right);
-                else if (left is CustomLogicVector3Builtin)
-                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
-                else if (right is CustomLogicVector3Builtin)
-                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
-                else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
-                    return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
-                else
-                    return left.UnboxToFloat() * right.UnboxToFloat();
-            }
-            else if (symbol == CustomLogicSymbol.Divide)
-            {
-                if (left is int && right is int)
-                    return (int)left / (int)right;
-                else if (left is CustomLogicVector3Builtin)
-                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value / right.UnboxToFloat());
-                else
-                    return left.UnboxToFloat() / right.UnboxToFloat();
-            }
+            if (symbol == CustomLogicSymbol.Plus) return AddValues(left, right);
+            else if (symbol == CustomLogicSymbol.Minus) return SubtractValues(left, right);
+            else if (symbol == CustomLogicSymbol.Times) return MultiplyValues(left, right);
+            else if (symbol == CustomLogicSymbol.Divide) return DivideValues(left, right);
             else if (symbol == CustomLogicSymbol.Equals)
                 return CheckEquals(left, right);
             else if (symbol == CustomLogicSymbol.NotEquals)
@@ -876,6 +868,60 @@ namespace CustomLogic
             else if (symbol == CustomLogicSymbol.GreaterThanOrEquals)
                 return left.UnboxToFloat() >= right.UnboxToFloat();
             return null;
+        }
+
+        private object AddValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)left + (int)right;
+
+            var leftStr = left is string;
+            var rightStr = right is string;
+            if (leftStr || rightStr)
+            {
+                if (leftStr)
+                    return (string)left + right;
+
+                return left + (string)right;
+            }
+            else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
+                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
+            else
+                return left.UnboxToFloat() + right.UnboxToFloat();
+        }
+
+        private object SubtractValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)left - (int)right;
+            else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
+                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value - ((CustomLogicVector3Builtin)right).Value);
+            else
+                return left.UnboxToFloat() - right.UnboxToFloat();
+        }
+
+        private object MultiplyValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)((int)left * (int)right);
+            else if (left is CustomLogicVector3Builtin)
+                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
+            else if (right is CustomLogicVector3Builtin)
+                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+            else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
+                return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
+            else
+                return left.UnboxToFloat() * right.UnboxToFloat();
+        }
+
+        private object DivideValues(object left, object right)
+        {
+            if (left is int && right is int)
+                return (int)left / (int)right;
+            else if (left is CustomLogicVector3Builtin)
+                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value / right.UnboxToFloat());
+            else
+                return left.UnboxToFloat() / right.UnboxToFloat();
         }
 
         private bool CheckEquals(object left, object right)
