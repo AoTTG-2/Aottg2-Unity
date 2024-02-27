@@ -31,7 +31,7 @@ component WaterPhysics
     _surfaceTop = 0.0;
     _surfaceBottom = 0.0;
     _forceMode = "Acceleration";
-    _maxAngle = 30.0;
+    _maxAngle = 20.0;
 
 
     function Init()
