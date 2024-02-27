@@ -215,13 +215,36 @@ Scene,Decor/Table1,208,0,1,1,1,0,Table1,0.1518734,-10,41.96515,0,180,180,1,1,1,P
 Scene,Decor/Teapot1,209,0,1,1,1,0,Teapot1,-1.489067,-15.95189,43.36904,0,0,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chair1,210,0,1,1,1,0,Chair1,0.341823,-11.86304,48.6939,-5.008956E-06,5.008956E-06,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Book1,211,0,1,1,1,0,Book1,-0.3190949,-15.14989,46.69358,49.85479,180,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,212,0,1,1,1,0,Cuboid,-50.53821,-5,122.4464,0,0,0,600,1,600,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|25/25|0/0,;
-Scene,Interact/Supply2,213,0,1,1,1,0,Supply2,-53,-0.04145937,-511,0,74.26,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,213,0,1,1,1,0,Supply2,-54.03255,6.166109,-510.6168,0,74.26,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Geometry/Cuboid,214,0,1,1,0,0,Barrier,-880,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,219,0,1,1,0,0,Barrier,880,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,216,0,1,1,0,0,Barrier,0,1100,-1000,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,217,0,1,1,0,0,Barrier,0,1100,1000,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,218,0,1,1,0,0,Barrier,0,2200,0,0,90,90,10,250,250,Physical,Characters,Default,Default|255/255/255/255,
+Scene,Geometry/Cuboid,218,0,1,1,0,0,Barrier,0,2200,0,0,90,90,10,250,250,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,FX/LavaCube1,220,0,1,0,1,0,LavaCube1,0,-5,0,0,0,0,600,1,600,Physical,Entities,Default,DefaultTiled|255/255/255/255|35/35,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:false|KillMessage:Lava;
+Scene,General/EditorDaylight,221,0,1,1,0,0,Daylight,9.442076,121.7746,-84.24001,270,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/71/0/255|Intensity:1|WeatherControlled:false;
+Scene,Geometry/Cuboid,223,0,1,1,1,0,Cuboid,-11.62407,-3,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,240,0,1,1,1,0,Cuboid,-11.62407,-2,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,242,0,1,1,1,0,Cuboid,-11.62407,-1,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,241,0,1,1,1,0,Cuboid,-11.62407,-1.5,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,243,0,1,1,1,0,Cuboid,-11.62407,-0.5,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,244,0,1,1,1,0,Cuboid,-11.62407,0,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/10|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,245,0,1,1,1,0,Cuboid,-11.62407,1,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/5|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,246,0,1,1,1,0,Cuboid,-11.62407,2.5,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/5|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,247,0,1,1,1,0,Cuboid,-11.62407,6,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/5|Misc/Lava2|25/25|0/0,;
+Scene,Geometry/Cuboid,248,0,1,1,1,0,Cuboid,-11.62407,9.867447,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/3|Misc/Lava2|25/25|0/0,;
+Scene,Decor/Rubble5,249,0,1,1,1,0,Rubble5,-47.36819,-0.6076031,-512.2612,0,0,0,2,0.8,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Rubble5,250,0,1,1,1,0,Rubble5,1697.649,0.1626013,-1984.656,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Chair1,251,0,1,1,1,0,Chair1,1701.967,11.16595,-1996.196,0,342.9022,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Bread1,252,0,1,1,1,0,Bread1,1696.543,15.3207,-2016.518,0,93.66712,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Goober1,253,0,1,1,1,0,Goober1,1702.268,12.59136,-1997.235,318.9916,164.3285,359.064,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Bread1,254,0,1,1,1,0,Bread1,1699.646,15.03253,-1994.054,359.022,71.84758,137.1643,2.067976,1,1.019575,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,255,0,1,1,1,0,Fork1,1696.872,14.92035,-2011.419,0,183.8692,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Blackboard2,256,0,1,1,1,0,Blackboard2,1710.414,8.73138,-2003.276,1.126297,134.8077,356.1814,2,2,22,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Rubble5,257,0,1,1,1,0,Rubble5,1719.866,0.1626013,-1995.939,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Table1,258,0,1,1,1,0,Table1,1708.054,9.242898,-1993.235,0,0,0,0.6,0.8,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Teapot1,259,0,1,1,1,0,Teapot1,1707,13.97,-1994,0,195.0348,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/CaptureZone1,260,0,1,1,1,0,CaptureZone1,1707,14.48621,-1994,0,0,0,0.08,0.03,0.08,Region,Characters,Default,Default|255/255/255/255,
 /// Logic
 
 /// Weather

@@ -8,7 +8,10 @@
 					"Name": "Forest"
 				},
 				{
-					"Name": "FloodedForest"
+					"Name": "ForestFlooded"
+				},
+				{
+					"Name": "ForestLava"
 				},
 				{
 					"Name": "City"
@@ -49,7 +52,11 @@
 				},
 				{
 					"Category": "General",
-					"Name": "FloodedForest"
+					"Name": "ForestFlooded"
+				},
+				{
+					"Category": "General",
+					"Name": "ForestLava"
 				},
 				{
 					"Category": "General",
