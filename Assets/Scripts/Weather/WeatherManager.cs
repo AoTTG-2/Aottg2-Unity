@@ -24,7 +24,7 @@ namespace Weather
         const float LerpDelay = 0.05f;
         const float SyncDelay = 5f;
         HashSet<WeatherEffect> LowEffects = new HashSet<WeatherEffect> { WeatherEffect.Daylight, WeatherEffect.AmbientLight,
-            WeatherEffect.Flashlight, WeatherEffect.Skybox, WeatherEffect.DaylightIntensity };
+            WeatherEffect.Flashlight, WeatherEffect.Skybox, WeatherEffect.DaylightIntensity, WeatherEffect.DaylightDirection };
         static Dictionary<string, Material> SkyboxMaterials = new Dictionary<string, Material>();
         static Dictionary<string, Dictionary<string, Material>> SkyboxBlendedMaterials = new Dictionary<string, Dictionary<string, Material>>();
         static Shader _blendedShader;
@@ -46,6 +46,9 @@ namespace Weather
         float _currentSyncWait;
         bool _finishedLoading;
         bool _isCaveMap;
+        float _currentRainForce;
+        float _currentSnowForce;
+        float _currentWindForce;
         ReflectionProbe _baker;
 
         public static void Init()
@@ -148,11 +151,6 @@ namespace Weather
             skybox.SetFloat("_Blend", blend);
         }
 
-        private void Cache()
-        {
-            ResetCameras();   
-        }
-
         private void ResetCameras()
         {
             _skyboxCameras.Clear();
@@ -175,10 +173,30 @@ namespace Weather
             }
         }
 
+        private void ResetPhysics()
+        {
+            _instance._currentWindForce = 0f;
+            _instance._currentRainForce = 0f;
+            _instance._currentSnowForce = 0f;
+        }
+
+        public static Vector3 GetWeatherForce()
+        {
+            Vector3 finalForce = Vector3.zero;
+            if (_instance._currentRainForce > 0f && _instance._effects[WeatherEffect.Rain]._level > 0f)
+                finalForce += _instance._currentRainForce * Vector3.down;
+            if (_instance._currentSnowForce > 0f && _instance._effects[WeatherEffect.Snow]._level > 0f)
+                finalForce += _instance._currentSnowForce * Vector3.down;
+            if (_instance._currentWindForce > 0f && _instance._effects[WeatherEffect.Wind]._level > 0f)
+                finalForce += _instance._currentWindForce * WindWeatherEffect.WindDirection;
+            return finalForce;
+        }
+
         private void RestartWeather()
         {
-            Cache();
+            ResetCameras();
             ResetSkyboxColors();
+            ResetPhysics();
             _scheduleRunners.Clear();
             _effects.Clear();
             _currentWeather.SetDefault();
@@ -194,7 +212,11 @@ namespace Weather
             ApplyCurrentWeather(firstStart: true, applyAll: true);
             if (SceneLoader.SceneName == SceneName.InGame && PhotonNetwork.IsMasterClient)
             {
-                _currentWeather.Copy(SettingsManager.WeatherSettings.WeatherSets.Sets.GetItemAt(SettingsManager.InGameCurrent.WeatherIndex.Value));
+                var set = (WeatherSet)SettingsManager.WeatherSettings.WeatherSets.Sets.GetItemAt(SettingsManager.InGameCurrent.WeatherIndex.Value);
+                if (MapLoader.HasWeather && MapLoader.Weather != null && set.Name.Value == "Map Default*")
+                    _currentWeather.Copy(MapLoader.Weather);
+                else
+                    _currentWeather.Copy(set);
                 CreateScheduleRunners(_currentWeather.Schedule.Value);
                 _currentWeather.Schedule.SetDefault();
                 if (_currentWeather.UseSchedule.Value)
@@ -353,7 +375,14 @@ namespace Weather
                     case WeatherEffect.Snow:
                     case WeatherEffect.Wind:
                     case WeatherEffect.DaylightIntensity:
+                    case WeatherEffect.RainForce:
+                    case WeatherEffect.SnowForce:
+                    case WeatherEffect.WindForce:
                         ((FloatSetting)currentSetting).Value = Mathf.Lerp(((FloatSetting)startSetting).Value, ((FloatSetting)targetSetting).Value, lerp);
+                        break;
+                    case WeatherEffect.DaylightDirection:
+                    case WeatherEffect.WindDirection:
+                        ((Vector3Setting)currentSetting).Value = Vector3.Lerp(((Vector3Setting)startSetting).Value, ((Vector3Setting)targetSetting).Value, lerp);
                         break;
                     case WeatherEffect.Skybox:
                         Material mat = GetBlendedSkybox(_currentWeather.Skybox.Value, _targetWeather.Skybox.Value);
@@ -398,6 +427,10 @@ namespace Weather
                     case WeatherEffect.DaylightIntensity:
                         foreach (Light light in MapLoader.Daylight)
                             light.intensity = _currentWeather.DaylightIntensity.Value;
+                        break;
+                    case WeatherEffect.DaylightDirection:
+                        foreach (Light light in MapLoader.Daylight)
+                            light.transform.rotation = Quaternion.Euler(_currentWeather.DaylightDirection.Value);
                         break;
                     case WeatherEffect.AmbientLight:
                         RenderSettings.ambientLight = _currentWeather.AmbientLight.Value.ToColor();
@@ -453,6 +486,18 @@ namespace Weather
                         }
                         else
                             _effects[effect].Disable(fadeOut: true);
+                        break;
+                    case WeatherEffect.WindDirection:
+                        WindWeatherEffect.WindDirection = _currentWeather.WindDirection.Value.normalized;
+                        break;
+                    case WeatherEffect.RainForce:
+                        _instance._currentRainForce = _currentWeather.RainForce.Value;
+                        break;
+                    case WeatherEffect.SnowForce:
+                        _instance._currentSnowForce = _currentWeather.SnowForce.Value;
+                        break;
+                    case WeatherEffect.WindForce:
+                        _instance._currentWindForce = _currentWeather.WindForce.Value;
                         break;
                 }
             }

@@ -203,8 +203,8 @@ namespace Controllers
         {
             if (_humanInput.HookLeft.GetKeyDown())
             {
-                _inGameMenu.ShowKillFeed("test", "test", 800, "Thunderspear");
-                _inGameMenu.ShowKillScore(800);
+                _inGameMenu.ShowKillFeed("test", "test", 100, "Thunderspear");
+                _inGameMenu.ShowKillScore(100);
             }
             if (_humanInput.HookRight.GetKeyDown())
             {
@@ -375,7 +375,7 @@ namespace Controllers
         void UpdateDashInput(bool inMenu)
         {
             if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
-                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && _human.State != HumanState.SpecialAction
+                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAction
                 && !inMenu && !_human.Dead)
             {
                 HumanDashDirection currentDirection = HumanDashDirection.None;

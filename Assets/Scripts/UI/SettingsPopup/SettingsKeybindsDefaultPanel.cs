@@ -34,6 +34,8 @@ namespace UI
 
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.SwapTSAttackSpecial,
                 UIManager.GetLocale(cat, "Keybinds.Human", "SwapTSAttackSpecial"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "SwapTSAttackSpecialTooltip"));
+                ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.ReelInHolding,
+                UIManager.GetLocale(cat, "Keybinds.Human", "ReelInHolding"), tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "ReelInHoldingTooltip"));
                 ElementFactory.CreateSliderSetting(DoublePanelRight, style, SettingsManager.InputSettings.Human.ReelOutScrollSmoothing,
                     UIManager.GetLocale(cat, "Keybinds.Human", "ReelOutScrollSmoothing"), elementWidth: 130f,
                     tooltip: UIManager.GetLocale(cat, "Keybinds.Human", "ReelOutScrollSmoothingTooltip"));

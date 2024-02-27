@@ -43,6 +43,49 @@
                 "UseSchedule" : false,
                 "ScheduleLoop" : false,
                 "Schedule" : "",
+                "Name" : "Map Default*"
+            },
+            {
+                "Skybox" : "Dawn1",
+                "SkyboxColor" : [
+                    0,
+                    164,
+                    255,
+                    255
+                ],
+                "Daylight" : [
+                    255,
+                    250,
+                    250,
+                    255
+                ],
+                "DaylightIntensity" : 1.68259847164154,
+                "AmbientLight" : [
+                    115,
+                    123,
+                    157,
+                    255
+                ],
+                "Flashlight" : [
+                    255,
+                    255,
+                    255,
+                    0
+                ],
+                "FogDensity" : 0.00806512497365475,
+                "FogColor" : [
+                    157,
+                    178,
+                    200,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : false,
+                "ScheduleLoop" : false,
+                "Schedule" : "",
                 "Name" : "Always Day*"
             },
             {
@@ -132,6 +175,49 @@
                 "Name" : "Always Dawn2*"
             },
             {
+                "Skybox" : "Night3",
+                "SkyboxColor" : [
+                    0,
+                    0,
+                    0,
+                    255
+                ],
+                "Daylight" : [
+                    68,
+                    88,
+                    119,
+                    255
+                ],
+                "DaylightIntensity" : 1.02666664123535,
+                "AmbientLight" : [
+                    40,
+                    55,
+                    82,
+                    255
+                ],
+                "Flashlight" : [
+                    152,
+                    177,
+                    159,
+                    255
+                ],
+                "FogDensity" : 0.00666666682809591,
+                "FogColor" : [
+                    40,
+                    51,
+                    65,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "UseSchedule" : false,
+                "ScheduleLoop" : false,
+                "Schedule" : "",
+                "Name" : "Always Night1*"
+            },
+            {
                 "Skybox" : "Night2",
                 "SkyboxColor" : [
                     0,
@@ -172,7 +258,7 @@
                 "UseSchedule" : false,
                 "ScheduleLoop" : false,
                 "Schedule" : "",
-                "Name" : "Always Night*"
+                "Name" : "Always Night2*"
             }
         ]
     }

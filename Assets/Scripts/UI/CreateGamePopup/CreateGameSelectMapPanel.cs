@@ -21,12 +21,14 @@ namespace UI
         protected override float VerticalSpacing => 10f;
         protected override int HorizontalPadding => 15;
         protected override int VerticalPadding => 10;
+        private bool IsCustom = false;
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             var popup = (CreateGameSelectMapPopup)parent;
             string category = popup.GetCurrentCategoryName();
+            IsCustom = category == "Custom";
             List<string> maps = GetItems(category);
             var rows = Util.GroupItems(maps, Columns);
             foreach (var row in rows)
@@ -45,8 +47,12 @@ namespace UI
             {
                 var obj = ElementFactory.InstantiateAndBind(group.transform, "Prefabs/Misc/MapSelectObjectButton");
                 obj.GetComponent<Button>().onClick.AddListener(() => OnSelectObject(item));
-                string preview = GetPreviewName(item);
-                var texture = ResourceManager.LoadAsset(ResourcePaths.BuiltinMaps, "Previews/" + preview);
+                object texture = null;
+                if (!IsCustom)
+                {
+                    string preview = GetPreviewName(item);
+                    texture = ResourceManager.LoadAsset(ResourcePaths.BuiltinMaps, "Previews/" + preview);
+                }
                 if (texture != null)
                     obj.transform.Find("Icon").GetComponent<RawImage>().texture = (Texture2D)texture;
                 else

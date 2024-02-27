@@ -1,6 +1,6 @@
 {
 	"SpawnRates": {
-		"Training": {"Dummy": 1.0},
+		"Training": {"Normal": 1.0},
 		"Easy": {"Normal": 0.9, "Abnormal": 0.1},
 		"Normal": {"Normal": 0.74, "Abnormal": 0.15, "Jumper": 0.1, "Crawler": 0.01},
 		"Hard": {"Normal": 0.5, "Abnormal": 0.2, "Jumper": 0.1, "Crawler": 0.05, "Punk": 0.1, "Thrower": 0.05}
@@ -54,8 +54,8 @@
 		"RunSpeedPerLevel": 5.0,
 		"JumpForce": 150,
 		"RotateSpeed": 0.8,
-		"HandHitboxRadius": 0.18,
-		"FootHitboxRadius": 0.12,
+		"HandHitboxRadius": 0.25,
+		"FootHitboxRadius": 0.15,
 		"BodyHeadCombos": [
 			{"Body": 0, "Head": 0, "Chance": 0.1},
 			{"Body": 0, "Head": 1, "Chance": 0.1},
@@ -84,13 +84,6 @@
 		},
 		"Attacks": {}
 	},
-	"Dummy": {
-		"Default": {
-			"Name": "Dummy",
-			"DetectRange": 0,
-			"FocusRange": 0
-		}
-	},
 	"Normal": {
 		"Default": {
 			"Attacks": {
@@ -104,6 +97,10 @@
 				"AttackSlapFace": 0.1,
 				"AttackSlapBack": 0.1
 			}
+		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
 		},
 		"Easy": {
 			"TurnPause": 1.0,
@@ -140,6 +137,10 @@
 				"AttackBellyFlop": 0.5
 			}
 		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
+		},
 		"Easy": {
 			"TurnPause": 1.0,
 			"AttackWaitMin": 1.0,
@@ -171,6 +172,10 @@
 				"AttackPunchCombo": 0.1,
 				"AttackJump": 0.5
 			}
+		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
 		},
 		"Easy": {
 			"TurnPause": 1.0,
@@ -207,6 +212,10 @@
 				"AttackCrawlerJump": 0.1
 			}
 		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
+		},
 		"Easy": {
 			"TurnPause": 1.5,
 			"AttackPause": 1.5,
@@ -242,6 +251,10 @@
 				"AttackBrush": 0.1
 			}
 		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
+		},
 		"Easy": {
 			"TurnPause": 0.5,
 			"AttackPause": 1.0,
@@ -270,6 +283,10 @@
 				"AttackRockThrow1": 0.5
 			}
 		},
+		"Training": {
+			"DetectRange": 0,
+			"FocusRange": 0
+		},
 		"Easy": {
 			"TurnPause": 1.0,
 			"AttackWaitMin": 1.0,
@@ -287,5 +304,5 @@
 			"ActionPause": 0.2,
 			"RotateSpeed": 1.0
 		}
-	},
+	}
 }

@@ -79,7 +79,7 @@ namespace Characters
             hair.transform.localScale = Vector3.one;
             foreach (Renderer renderer in hair.GetComponentsInChildren<Renderer>())
             {
-                renderer.material = HumanSetupMaterials.Materials[json["HairPrefab"].Value];
+                renderer.material = HumanSetupMaterials.GetHairMaterial(json["HairPrefab"].Value);
                 renderer.material.color = json["HairColor"].ToColor();
             }
 

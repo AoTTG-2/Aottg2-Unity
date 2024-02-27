@@ -43,7 +43,7 @@ namespace Characters
         {
             GameObject obj = other.transform.root.gameObject;
             BaseCharacter character = obj.GetComponent<BaseCharacter>();
-            if (character != null && character.IsMine() && !TeamInfo.SameTeam(character, Owner))
+            if (character != null && character.IsMine() && (character is Human || !TeamInfo.SameTeam(character, Owner)))
             {
                 _entities.Add(obj);
                 Detect = true;

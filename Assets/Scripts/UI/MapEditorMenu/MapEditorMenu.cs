@@ -28,6 +28,7 @@ namespace UI
         public MapEditorSelectComponentPopup SelectComponentPopup;
         public MapEditorErrorPopup ErrorPopup;
         public MapEditorCustomAssetPopup CustomAssetsPopup;
+        public MapEditorWeatherPopup WeatherPopup;
         public Image DragImage;
         public bool IsMouseUI;
 
@@ -56,6 +57,7 @@ namespace UI
             SelectComponentPopup = ElementFactory.CreateDefaultPopup<MapEditorSelectComponentPopup>(transform);
             ErrorPopup = ElementFactory.CreateDefaultPopup<MapEditorErrorPopup>(transform);
             CustomAssetsPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomAssetPopup>(transform);
+            WeatherPopup = ElementFactory.CreateDefaultPopup<MapEditorWeatherPopup>(transform);
             _popups.Add(AddObjectPopup);
             _popups.Add(TexturePopup);
             _popups.Add(CameraPopup);
@@ -65,6 +67,7 @@ namespace UI
             _popups.Add(SelectComponentPopup);
             _popups.Add(ErrorPopup);
             _popups.Add(CustomAssetsPopup);
+            _popups.Add(WeatherPopup);
         }
 
         public void SetDrag(bool active, Vector2 start, Vector2 end)

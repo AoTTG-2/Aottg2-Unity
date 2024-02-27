@@ -14,7 +14,7 @@ namespace Weather
         protected virtual float _audioFadeTime => 2f;
         protected Transform _parent;
         protected Transform _transform;
-        protected float _level;
+        public float _level;
         protected float _maxParticles;
         protected float _particleMultiplier;
         protected List<ParticleSystem> _particleSystems = new List<ParticleSystem>();

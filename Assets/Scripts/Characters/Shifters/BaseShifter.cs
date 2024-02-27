@@ -22,7 +22,7 @@ namespace Characters
         protected override float DefaultRunSpeed => 100f;
         protected override float DefaultWalkSpeed => 20f;
         protected override float DefaultRotateSpeed => 10f;
-        protected override float DefaultJumpForce => 150f;
+        protected override float DefaultJumpForce => 200f;
         protected override float SizeMultiplier => 3f;
         public override float DefaultCrippleTime => 3.5f;
         protected bool _needRoar = true;

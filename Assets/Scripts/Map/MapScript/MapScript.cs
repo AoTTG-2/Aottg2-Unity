@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Utility;
 using UnityEngine;
+using Settings;
 
 namespace Map
 {
@@ -11,6 +12,7 @@ namespace Map
         public MapScriptOptions Options  = new MapScriptOptions();
         public MapScriptCustomAssets CustomAssets = new MapScriptCustomAssets();
         public MapScriptObjects Objects = new MapScriptObjects();
+        public WeatherSet Weather = new WeatherSet();
         public string Logic = string.Empty;
 
         public static MapScript CreateDefault()
@@ -30,6 +32,7 @@ namespace Map
             mapScript.Objects.Objects.Add(sceneObject);
             sceneObject = new MapScriptSceneObject();
             sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Daylight"]);
+            sceneObject.SetPosition(new Vector3(0f, 20f, 0f));
             sceneObject.SetRotation(new Quaternion(-0.2f, -0.8f, 0.4f, -0.4f));
             sceneObject.Id = 1;
             mapScript.Objects.Objects.Add(sceneObject);
@@ -47,6 +50,8 @@ namespace Map
             items.Add(Objects.Serialize());
             items.Add(CreateHeader("Logic"));
             items.Add(Logic);
+            items.Add(CreateHeader("Weather"));
+            items.Add(Weather.SerializeToJsonString());
             return string.Join(Delimiter.ToString(), items.ToArray());
         }
 
@@ -91,6 +96,11 @@ namespace Map
                 Objects.Deserialize(currentSectionCSV);
             else if (currentSection == "Logic")
                 Logic = currentSectionCSV;
+            else if (currentSection == "Weather")
+            {
+                Weather.DeserializeFromJsonString(currentSectionCSV);
+                Weather.Preset.Value = false;
+            }
         }
     }
 }

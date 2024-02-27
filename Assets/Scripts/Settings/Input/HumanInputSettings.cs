@@ -23,5 +23,6 @@
         public BoolSetting SwapTSAttackSpecial = new BoolSetting(false);
         public BoolSetting AutoRefillGas = new BoolSetting(false);
         public BoolSetting AutoUseGas = new BoolSetting(false);
+        public BoolSetting ReelInHolding = new BoolSetting(true);
     }
 }

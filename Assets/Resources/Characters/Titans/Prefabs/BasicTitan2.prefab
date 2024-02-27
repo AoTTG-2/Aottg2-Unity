@@ -3884,6 +3884,7 @@ MonoBehaviour:
   Setup: {fileID: 0}
   _oldHeadRotation: {x: 0, y: 0, z: 0, w: 0}
   BellyFlopTime: 5.5
+  RockThrow1Speed: 200
   TargetViewId: -1
   HeadPrefab: 0
 --- !u!111 &11165016

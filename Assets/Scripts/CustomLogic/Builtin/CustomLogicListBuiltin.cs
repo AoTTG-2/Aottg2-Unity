@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace CustomLogic
@@ -72,6 +73,26 @@ namespace CustomLogic
         public override void SetField(string name, object value)
         {
             base.SetField(name, value);
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.Append("[");
+
+            for (var i = 0; i < List.Count; i++)
+            {
+                if (List[i] is string str)
+                    builder.Append($"\"{str}\"");
+                else
+                    builder.Append(List[i]);
+
+                if (i != List.Count - 1)
+                    builder.Append(", ");
+            }
+
+            builder.Append("]");
+            return builder.ToString();
         }
     }
 }
