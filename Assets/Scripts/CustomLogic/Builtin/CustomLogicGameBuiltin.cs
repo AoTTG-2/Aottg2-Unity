@@ -75,9 +75,10 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin) parameters[2]).Value : Quaternion.identity;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position));
+                    var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotation));
                     return titan;
                 }
                 return null;
@@ -105,12 +106,13 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                Quaternion rotation = parameters.Count > 3 ? ((CustomLogicQuaternionBuiltin) parameters[3]).Value : Quaternion.identity;
                 if (PhotonNetwork.IsMasterClient)
                 {
                     CustomLogicListBuiltin list = new CustomLogicListBuiltin();
                     for (int i = 0; i < (int)parameters[1]; i++)
                     {
-                        var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position));
+                        var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotation));
                         list.List.Add(titan);
                     }
                     return list;
@@ -139,9 +141,10 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin) parameters[2]).Value : Quaternion.identity;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position));
+                    var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position, rotation));
                     return shifter;
                 }
                 return null;

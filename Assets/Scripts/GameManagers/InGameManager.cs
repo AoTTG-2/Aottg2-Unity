@@ -340,7 +340,7 @@ namespace GameManagers
             else if (character == PlayerCharacter.Human)
                 position = GetHumanSpawnPoint();
             else
-                position = GetTitanSpawnPoint();
+                position = GetTitanSpawnPoint().position;
             SpawnPlayerAt(force, position);
         }
 
@@ -466,12 +466,11 @@ namespace GameManagers
             }
         }
 
-        private Vector3 GetTitanSpawnPoint()
+        private (Vector3 position, Quaternion rotation) GetTitanSpawnPoint()
         {
-            if (MapManager.TryGetRandomTagXform(MapTags.TitanSpawnPoint, out var xform))
-                return xform.position;
-            
-            return Vector3.zero;
+            return MapManager.TryGetRandomTagXform(MapTags.TitanSpawnPoint, out var xform)
+                ? (xform.position, xform.rotation)
+                : (Vector3.zero, Quaternion.identity);
         }
 
         private string GetPlayerTeam(bool titan)
@@ -488,45 +487,50 @@ namespace GameManagers
 
         public BasicTitan SpawnAITitan(string type)
         {
-            Vector3 position = GetTitanSpawnPoint();
-            return SpawnAITitanAt(type, position);
+            var spawn = GetTitanSpawnPoint();
+            return SpawnAITitanAt(type, spawn.position, spawn.rotation);
         }
 
-        public List<BasicTitan> SpawnAITitans(string type, int count)
+        public IEnumerable<BasicTitan> SpawnAITitans(string type, int count)
         {
-            var positions = GetTitanSpawnPositions(count);
-            List<BasicTitan> titans = new List<BasicTitan>();
-            for (int i = 0; i < count; i++)
-                titans.Add(SpawnAITitanAt(type, positions[i]));
-            return titans;
+            return GetTitanSpawnPositions(count).Select(p => SpawnAITitanAt(type, p.position, p.rotation));
         }
 
         public void SpawnAITitansAsync(string type, int count)
         {
-            var randomPositions = GetTitanSpawnPositions(count);
-            if (count <= 0)
-                return;
-            SpawnAITitanAt(type, randomPositions[0]);
-            List<Vector3> positions = new List<Vector3>();
-            for (int i = 1; i < count; i++)
-                positions.Add(randomPositions[i]);
-            if (positions.Count > 0)
-                StartCoroutine(SpawnAITitansCoroutine(type, count - 1, positions));
+            StartCoroutine(SpawnAITitansCoroutine(type, count));
         }
 
-        public void SpawnAITitansAtAsync(string type, int count, Vector3 position)
+        private IEnumerator SpawnAITitansCoroutine(string type, int count)
         {
-            List<Vector3> positions = new List<Vector3>();
-            if (count <= 0)
-                return;
-            SpawnAITitanAt(type, position);
-            for (int i = 1; i < count; i++)
-                positions.Add(position);
-            StartCoroutine(SpawnAITitansCoroutine(type, count - 1, positions));
+            var randomPositions = GetTitanSpawnPositions(count);
+            foreach (var spawn in randomPositions)
+            {
+                SpawnAITitanAt(type, spawn.position, spawn.rotation);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+            }
         }
 
+        public void SpawnAITitansAtAsync(string type, int count, Vector3 position, Quaternion rotation = default)
+        {
+            if (rotation == default) rotation = Quaternion.identity;
+            
+            StartCoroutine(SpawnAITitansAtCoroutine(type, count, position, rotation));
+        }
+
+        private IEnumerator SpawnAITitansAtCoroutine(string type, int count, Vector3 position, Quaternion rotation)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                SpawnAITitanAt(type, position, rotation);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        
         /// <returns><paramref name="count"/> number of positions, from the list of spawn points, or Vector3.zero if no spawn points were found.</returns>
-        private List<Vector3> GetTitanSpawnPositions(int count)
+        private IEnumerable<(Vector3 position, Quaternion rotation)> GetTitanSpawnPositions(int count)
         {
             bool avoidPlayer = CurrentCharacter != null && CurrentCharacter is Human && Humans.Count == 1;
 
@@ -534,22 +538,11 @@ namespace GameManagers
             var avoidRadius = avoidPlayer ? 100f : 0f;
 
             return MapManager.TryGetRandomTagXforms(MapTags.TitanSpawnPoint, avoidPosition, avoidRadius, count, out List<Transform> xforms)
-                ? xforms.Select(xform => xform.position).ToList()
-                : Enumerable.Repeat(Vector3.zero, count).ToList();
+                ? xforms.Select(xform => (xform.position, xform.rotation))
+                : Enumerable.Repeat((Vector3.zero,  Quaternion.identity), count);
         }
 
-        private IEnumerator SpawnAITitansCoroutine(string type, int count, List<Vector3> positions)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                var position = positions[i];
-                SpawnAITitanAt(type, position);
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
-            }
-        }
-
-        public BasicTitan SpawnAITitanAt(string type, Vector3 position)
+        public BasicTitan SpawnAITitanAt(string type, Vector3 position, Quaternion rotation)
         {
             if (type == "Default")
             {
@@ -580,7 +573,7 @@ namespace GameManagers
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0].ToString();
-            var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, Quaternion.identity);
+            var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
             titan.Init(true, TeamInfo.Titan, data, combo[1]);
             SetupTitan(titan);
             return titan;
@@ -631,11 +624,11 @@ namespace GameManagers
 
         public BaseShifter SpawnAIShifter(string type)
         {
-            Vector3 position = GetTitanSpawnPoint();
-            return SpawnAIShifterAt(type, position);
+            var spawn = GetTitanSpawnPoint();
+            return SpawnAIShifterAt(type, spawn.position, spawn.rotation);
         }
 
-        public BaseShifter SpawnAIShifterAt(string type, Vector3 position)
+        public BaseShifter SpawnAIShifterAt(string type, Vector3 position, Quaternion rotation)
         {
             string prefab = "";
             if (type == "Annie")
@@ -646,7 +639,7 @@ namespace GameManagers
                 prefab = CharacterPrefabs.ErenShifter;
             if (prefab == "")
                 return null;
-            var shifter = (BaseShifter)CharacterSpawner.Spawn(prefab, position, Quaternion.identity);
+            var shifter = (BaseShifter)CharacterSpawner.Spawn(prefab, position, rotation);
             var data = CharacterData.GetShifterAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             shifter.Init(true, TeamInfo.Titan, data, 0f);
             return shifter;
