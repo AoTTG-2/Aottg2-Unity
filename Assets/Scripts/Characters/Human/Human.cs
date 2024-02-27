@@ -722,11 +722,11 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
-                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.identity);
+                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Util.ConstrainedToY(Cache.Transform.rotation));
                     Horse.Init(this);
                 }
                 if (DebugTesting.DebugPhase)
