@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Weather;
 using UI;
 using Utility;
 using CustomSkins;
 using ApplicationManagers;
-using System.Diagnostics;
 using Characters;
 using Settings;
 using CustomLogic;
-using Effects;
 using Map;
 using System.Collections;
 using GameProgress;
 using Cameras;
-using System;
 using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
+using System.Linq;
 
 namespace GameManagers
 {
@@ -471,7 +468,10 @@ namespace GameManagers
 
         private Vector3 GetTitanSpawnPoint()
         {
-            return MapManager.GetRandomTagPosition(MapTags.TitanSpawnPoint, Vector3.zero);
+            if (MapManager.TryGetRandomTagXform(MapTags.TitanSpawnPoint, out var xform))
+                return xform.position;
+            
+            return Vector3.zero;
         }
 
         private string GetPlayerTeam(bool titan)
@@ -525,13 +525,17 @@ namespace GameManagers
             StartCoroutine(SpawnAITitansCoroutine(type, count - 1, positions));
         }
 
+        /// <returns><paramref name="count"/> number of positions, from the list of spawn points, or Vector3.zero if no spawn points were found.</returns>
         private List<Vector3> GetTitanSpawnPositions(int count)
         {
-            if (CurrentCharacter != null && CurrentCharacter is Human && Humans.Count == 1)
-                return MapManager.GetRandomTagPositions(MapTags.TitanSpawnPoint, CurrentCharacter.Cache.Transform.position, 100f,
-                    Vector3.zero, count);
-            else
-                return MapManager.GetRandomTagPositions(MapTags.TitanSpawnPoint, Vector3.zero, 0f, Vector3.zero, count);
+            bool avoidPlayer = CurrentCharacter != null && CurrentCharacter is Human && Humans.Count == 1;
+
+            var avoidPosition = avoidPlayer ? CurrentCharacter.Cache.Transform.position : Vector3.zero;
+            var avoidRadius = avoidPlayer ? 100f : 0f;
+
+            return MapManager.TryGetRandomTagXforms(MapTags.TitanSpawnPoint, avoidPosition, avoidRadius, count, out List<Transform> xforms)
+                ? xforms.Select(xform => xform.position).ToList()
+                : Enumerable.Repeat(Vector3.zero, count).ToList();
         }
 
         private IEnumerator SpawnAITitansCoroutine(string type, int count, List<Vector3> positions)

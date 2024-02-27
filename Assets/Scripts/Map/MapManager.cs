@@ -30,43 +30,52 @@ namespace Map
             EventManager.OnPreLoadScene += OnPreLoadScene;
         }
 
-        public static Vector3 GetRandomTagPosition(string tag, Vector3 defaultPosition)
+        public static bool TryGetRandomTagXform(string tag, out Transform xform)
         {
-            GameObject go = GetRandomTag(tag);
-            if (go != null)
-                return go.transform.position;
-            return defaultPosition;
+            var go = GetRandomTag(tag);
+            if (go)
+            {
+                xform = go.transform;
+                return true;
+            }
+
+            xform = null;
+            return false;
         }
 
-        public static List<Vector3> GetRandomTagPositions(string tag, Vector3 avoidPosition, float avoidRadius, Vector3 defaultPosition, int count)
+        /// <summary>
+        /// <para>Outputs a list of <paramref name="count"/> randomly chosen objects with a given tag within avoidance parameters.</para>
+        /// </summary>
+        /// <returns>False if no transforms have the specified tag.</returns>
+        public static bool TryGetRandomTagXforms(string tag, Vector3 avoidPosition, float avoidRadius, int count, out List<Transform> xforms)
         {
-            List<Vector3> allPositions = new List<Vector3>();
-            List<Vector3> finalPositions = new List<Vector3>();
-            if (MapLoader.Tags.ContainsKey(tag))
-            {
-                foreach (var obj in MapLoader.Tags[tag])
-                    allPositions.Add(obj.GameObject.transform.position);
-            }
-            else
-                allPositions.Add(defaultPosition);
-            List<Vector3> currentPositions = new List<Vector3>(allPositions);
+            xforms = null;
+            if (!MapLoader.Tags.TryGetValue(tag, out List<MapObject> objs))
+                return false;
+
+            List<Transform> allXforms = new List<Transform>();
+            xforms = new List<Transform>();
+            foreach (var obj in objs)
+                allXforms.Add(obj.GameObject.transform);
+
+            List<Transform> currentXforms = new List<Transform>(allXforms);
             int avoids = 0;
             for (int i = 0; i < count; i++)
             {
-                if (currentPositions.Count <= 0)
-                    currentPositions = new List<Vector3>(allPositions);
-                int index = Random.Range(0, currentPositions.Count);
-                var position = currentPositions[index];
+                if (currentXforms.Count <= 0)
+                    currentXforms = new List<Transform>(allXforms);
+                int index = Random.Range(0, currentXforms.Count);
+                var position = currentXforms[index].position;
                 if (avoidRadius <= 0f || Vector3.Distance(position, avoidPosition) > avoidRadius || avoids > 100)
-                    finalPositions.Add(currentPositions[index]);
+                    xforms.Add(currentXforms[index]);
                 else
                 {
                     i--;
                     avoids++;
                 }
-                currentPositions.RemoveAt(index);
+                currentXforms.RemoveAt(index);
             }
-            return finalPositions;
+            return true;
         }
 
         public static Vector3 GetRandomTagsPosition(List<string> tags, Vector3 defaultPosition)
