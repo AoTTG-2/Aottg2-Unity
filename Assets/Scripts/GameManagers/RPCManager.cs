@@ -201,11 +201,11 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void SpawnPlayerAtRPC(bool force, Vector3 position, PhotonMessageInfo info)
+        public void SpawnPlayerAtRPC(bool force, Vector3 position, Quaternion rotation, PhotonMessageInfo info)
         {
             if (info.Sender.IsMasterClient)
             {
-                ((InGameManager)SceneLoader.CurrentGameManager).SpawnPlayerAt(force, position);
+                ((InGameManager)SceneLoader.CurrentGameManager).SpawnPlayerAt(force, position, rotation);
             }
         }
 

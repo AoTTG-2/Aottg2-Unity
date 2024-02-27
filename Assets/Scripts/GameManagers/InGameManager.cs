@@ -20,6 +20,10 @@ namespace GameManagers
 {
     class InGameManager : BaseGameManager
     {
+        private static readonly List<string> BlueSpawnTags = new List<string> { MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointRed };
+        private static readonly List<string> RedSpawnTags = new List<string> { MapTags.HumanSpawnPointRed, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue };
+        private static readonly List<string> HumanSpawnTags = new List<string> { MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPointRed };
+        
         private SkyboxCustomSkinLoader _skyboxCustomSkinLoader;
         //private ForestCustomSkinLoader _forestCustomSkinLoader;
         //private CityCustomSkinLoader _cityCustomSkinLoader;
@@ -332,41 +336,49 @@ namespace GameManagers
         {
             if (!IsFinishedLoading())
                 return;
-            var settings = SettingsManager.InGameCharacterSettings;
-            var character = settings.CharacterType.Value;
-            Vector3 position = Vector3.zero;
+            
+            var isHuman = SettingsManager.InGameCharacterSettings.CharacterType.Value == PlayerCharacter.Human;
+
             if (PhotonNetwork.LocalPlayer.HasSpawnPoint())
-                position = PhotonNetwork.LocalPlayer.GetSpawnPoint();
-            else if (character == PlayerCharacter.Human)
-                position = GetHumanSpawnPoint();
+            {
+                var position = PhotonNetwork.LocalPlayer.GetSpawnPoint();
+                SpawnPlayerAt(force, position, Quaternion.identity);
+            }
+            else if (isHuman)
+            {
+                var (position, rotation) = GetHumanSpawnPoint();
+                SpawnPlayerAt(force, position, rotation);
+            }
             else
-                position = GetTitanSpawnPoint().position;
-            SpawnPlayerAt(force, position);
+            {
+                var (position, rotation) = GetTitanSpawnPoint();
+                SpawnPlayerAt(force, position, rotation);
+            }
         }
 
-        public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position)
+        public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position, Quaternion rotation)
         {
             if (shifterName == "Annie")
             {
-                var shifter = (AnnieShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, Quaternion.identity);
+                var shifter = (AnnieShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
                 shifter.Init(false, GetPlayerTeam(false), null, liveTime);
                 CurrentCharacter = shifter;
             }
             else if (shifterName == "Eren")
             {
-                var shifter = (ErenShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, Quaternion.identity);
+                var shifter = (ErenShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
                 shifter.Init(false, GetPlayerTeam(false), null, liveTime);
                 CurrentCharacter = shifter;
             }
             else if (shifterName == "Armored")
             {
-                var shifter = (ArmoredShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, Quaternion.identity);
+                var shifter = (ArmoredShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
                 shifter.Init(false, GetPlayerTeam(false), null, liveTime);
                 CurrentCharacter = shifter;
             }
         }
 
-        public void SpawnPlayerAt(bool force, Vector3 position)
+        public void SpawnPlayerAt(bool force, Vector3 position, Quaternion rotation)
         {
             if (!IsFinishedLoading())
                 return;
@@ -409,16 +421,16 @@ namespace GameManagers
                 List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
                     settings.Special.Value = specials[0];
-                var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, Quaternion.identity);
+                var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
                 human.Init(false, GetPlayerTeam(false), SettingsManager.InGameCharacterSettings);
                 CurrentCharacter = human;
             }
             else if (character == PlayerCharacter.Shifter)
-                SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position);
+                SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotation);
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
-                string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0].ToString();
+                string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, Quaternion.identity);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
                 SetupTitan(titan);
@@ -447,23 +459,16 @@ namespace GameManagers
             RPCManager.PhotonView.RPC("NotifyPlayerSpawnRPC", RpcTarget.All, new object[] { CurrentCharacter.Cache.PhotonView.ViewID });
             UpdateRoundPlayerProperties();
         }
-
-        private Vector3 GetHumanSpawnPoint()
+        
+        private (Vector3, Quaternion) GetHumanSpawnPoint()
         {
+            var tags = HumanSpawnTags;
             if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
-            {
-                List<string> tags;
-                if (SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue)
-                    tags = new List<string>() { MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointRed };
-                else
-                    tags = new List<string>() { MapTags.HumanSpawnPointRed, MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue };
-                return MapManager.GetRandomTagsPosition(tags, Vector3.zero);
-            }
-            else
-            {
-                List<string> tags = new List<string>() { MapTags.HumanSpawnPoint, MapTags.HumanSpawnPointBlue, MapTags.HumanSpawnPointRed};
-                return MapManager.GetRandomTagsPosition(tags, Vector3.zero);
-            }
+                tags = SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue ? BlueSpawnTags : RedSpawnTags;
+
+            return MapManager.TryGetRandomTagsXform(tags, out var xform)
+                ? (xform.position, xform.rotation)
+                : (Vector3.zero, Quaternion.identity);
         }
 
         private (Vector3 position, Quaternion rotation) GetTitanSpawnPoint()

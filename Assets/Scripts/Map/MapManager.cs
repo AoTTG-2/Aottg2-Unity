@@ -42,6 +42,22 @@ namespace Map
             xform = null;
             return false;
         }
+        
+        public static bool TryGetRandomTagsXform(List<string> tags, out Transform xform)
+        {
+            foreach (string tag in tags)
+            {
+                var go = GetRandomTag(tag);
+                if (go)
+                {
+                    xform = go.transform;
+                    return true;
+                }
+            }
+
+            xform = null;
+            return false;
+        }
 
         /// <summary>
         /// <para>Outputs a list of <paramref name="count"/> randomly chosen objects with a given tag within avoidance parameters.</para>
@@ -77,18 +93,7 @@ namespace Map
             }
             return true;
         }
-
-        public static Vector3 GetRandomTagsPosition(List<string> tags, Vector3 defaultPosition)
-        {
-            foreach (string tag in tags)
-            {
-                GameObject go = GetRandomTag(tag);
-                if (go != null)
-                    return go.transform.position;
-            }
-            return defaultPosition;
-        }
-
+        
         public static GameObject GetRandomTag(string tag)
         {
             if (MapLoader.Tags.ContainsKey(tag))

@@ -83,7 +83,7 @@ namespace Characters
             Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered, new object[0]);
             StartCoroutine(WaitAndDie());
             yield return new WaitForSeconds(2f);
-            _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position);
+            _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position, BaseTitanCache.Neck.rotation);
             Human currentCharacter = ((Human)(_inGameManager.CurrentCharacter));
             currentCharacter.StartCoroutine(currentCharacter.WaitAndTransformFromShifter(PreviousHumanGas, PreviousHumanWeapon));
         }

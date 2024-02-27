@@ -242,18 +242,20 @@ namespace CustomLogic
                 var player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
                 bool force = (bool)parameters[1];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                Quaternion rotation = parameters.Count > 3 ? ((CustomLogicQuaternionBuiltin)parameters[3]).Value : Quaternion.identity;
                 if (player == PhotonNetwork.LocalPlayer)
-                    gameManager.SpawnPlayerAt(force, position);
+                    gameManager.SpawnPlayerAt(force, position, rotation);
                 else if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player, new object[] { force, position });
+                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player, force, position, rotation);
                 return null;
             }
             if (name == "SpawnPlayerAtAll")
             {
                 bool force = (bool)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin)parameters[2]).Value : Quaternion.identity;
                 if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, new object[] { force, position });
+                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, force, position, rotation);
                 return null;
             }
             if (name == "SetPlaylist")
