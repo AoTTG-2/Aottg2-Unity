@@ -75,10 +75,10 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin) parameters[2]).Value : Quaternion.identity;
+                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotation));
+                    var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotationY));
                     return titan;
                 }
                 return null;
@@ -106,13 +106,13 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                Quaternion rotation = parameters.Count > 3 ? ((CustomLogicQuaternionBuiltin) parameters[3]).Value : Quaternion.identity;
+                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
                     CustomLogicListBuiltin list = new CustomLogicListBuiltin();
                     for (int i = 0; i < (int)parameters[1]; i++)
                     {
-                        var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotation));
+                        var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotationY));
                         list.List.Add(titan);
                     }
                     return list;
@@ -123,8 +123,9 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
                 if (PhotonNetwork.IsMasterClient)
-                    gameManager.SpawnAITitansAtAsync(type, (int)parameters[1], position);
+                    gameManager.SpawnAITitansAtAsync(type, (int)parameters[1], position, rotationY);
                 return null;
             }
             if (name == "SpawnShifter")
@@ -141,10 +142,10 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin) parameters[2]).Value : Quaternion.identity;
+                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position, rotation));
+                    var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position, rotationY));
                     return shifter;
                 }
                 return null;
@@ -234,7 +235,7 @@ namespace CustomLogic
             {
                 bool force = (bool)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { force });
+                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new { force });
                 return null;
             }
             if (name == "SpawnPlayerAt")
@@ -242,20 +243,20 @@ namespace CustomLogic
                 var player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
                 bool force = (bool)parameters[1];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                Quaternion rotation = parameters.Count > 3 ? ((CustomLogicQuaternionBuiltin)parameters[3]).Value : Quaternion.identity;
+                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
                 if (player == PhotonNetwork.LocalPlayer)
-                    gameManager.SpawnPlayerAt(force, position, rotation);
+                    gameManager.SpawnPlayerAt(force, position, rotationY);
                 else if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player, force, position, rotation);
+                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player, force, position, rotationY);
                 return null;
             }
             if (name == "SpawnPlayerAtAll")
             {
                 bool force = (bool)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                Quaternion rotation = parameters.Count > 2 ? ((CustomLogicQuaternionBuiltin)parameters[2]).Value : Quaternion.identity;
+                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
                 if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, force, position, rotation);
+                    RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, force, position, rotationY);
                 return null;
             }
             if (name == "SetPlaylist")

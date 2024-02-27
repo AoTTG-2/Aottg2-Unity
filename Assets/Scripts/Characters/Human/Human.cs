@@ -466,7 +466,7 @@ namespace Characters
 
         public void TransformShifter(string shifter, float liveTime)
         {
-            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation);
+            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = CurrentGas;
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
             PhotonNetwork.Destroy(gameObject);

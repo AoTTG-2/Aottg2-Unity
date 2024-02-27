@@ -79,12 +79,12 @@ namespace Characters
         protected IEnumerator WaitAndBecomeHuman(float time)
         {
             yield return new WaitForSeconds(time);
-            Cache.PhotonView.RPC("MarkTransformingRPC", RpcTarget.AllBuffered, new object[0]);
-            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered, new object[0]);
+            Cache.PhotonView.RPC("MarkTransformingRPC", RpcTarget.AllBuffered);
+            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered);
             StartCoroutine(WaitAndDie());
             yield return new WaitForSeconds(2f);
-            _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position, BaseTitanCache.Neck.rotation);
-            Human currentCharacter = ((Human)(_inGameManager.CurrentCharacter));
+            _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position, BaseTitanCache.Neck.rotation.eulerAngles.y);
+            Human currentCharacter = ((Human)_inGameManager.CurrentCharacter);
             currentCharacter.StartCoroutine(currentCharacter.WaitAndTransformFromShifter(PreviousHumanGas, PreviousHumanWeapon));
         }
 

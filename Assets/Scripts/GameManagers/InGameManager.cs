@@ -342,22 +342,24 @@ namespace GameManagers
             if (PhotonNetwork.LocalPlayer.HasSpawnPoint())
             {
                 var position = PhotonNetwork.LocalPlayer.GetSpawnPoint();
-                SpawnPlayerAt(force, position, Quaternion.identity);
+                SpawnPlayerAt(force, position, 0f);
             }
             else if (isHuman)
             {
                 var (position, rotation) = GetHumanSpawnPoint();
-                SpawnPlayerAt(force, position, rotation);
+                SpawnPlayerAt(force, position, rotation.eulerAngles.y);
             }
             else
             {
                 var (position, rotation) = GetTitanSpawnPoint();
-                SpawnPlayerAt(force, position, rotation);
+                SpawnPlayerAt(force, position, rotation.eulerAngles.y);
             }
         }
 
-        public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position, Quaternion rotation)
+        public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position, float rotationY)
         {
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
+            
             if (shifterName == "Annie")
             {
                 var shifter = (AnnieShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
@@ -378,8 +380,10 @@ namespace GameManagers
             }
         }
 
-        public void SpawnPlayerAt(bool force, Vector3 position, Quaternion rotation)
+        public void SpawnPlayerAt(bool force, Vector3 position, float rotationY)
         {
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
+            
             if (!IsFinishedLoading())
                 return;
             var settings = SettingsManager.InGameCharacterSettings;
@@ -426,12 +430,12 @@ namespace GameManagers
                 CurrentCharacter = human;
             }
             else if (character == PlayerCharacter.Shifter)
-                SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotation);
+                SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
-                var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, Quaternion.identity);
+                var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
                 SetupTitan(titan);
                 float smallSize = 1f;
@@ -493,12 +497,12 @@ namespace GameManagers
         public BasicTitan SpawnAITitan(string type)
         {
             var spawn = GetTitanSpawnPoint();
-            return SpawnAITitanAt(type, spawn.position, spawn.rotation);
+            return SpawnAITitanAt(type, spawn.position, spawn.rotation.eulerAngles.y);
         }
 
         public IEnumerable<BasicTitan> SpawnAITitans(string type, int count)
         {
-            return GetTitanSpawnPositions(count).Select(p => SpawnAITitanAt(type, p.position, p.rotation));
+            return GetTitanSpawnPositions(count).Select(p => SpawnAITitanAt(type, p.position, p.rotation.eulerAngles.y));
         }
 
         public void SpawnAITitansAsync(string type, int count)
@@ -511,24 +515,22 @@ namespace GameManagers
             var randomPositions = GetTitanSpawnPositions(count);
             foreach (var spawn in randomPositions)
             {
-                SpawnAITitanAt(type, spawn.position, spawn.rotation);
+                SpawnAITitanAt(type, spawn.position, spawn.rotation.eulerAngles.y);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
             }
         }
 
-        public void SpawnAITitansAtAsync(string type, int count, Vector3 position, Quaternion rotation = default)
+        public void SpawnAITitansAtAsync(string type, int count, Vector3 position, float rotationY)
         {
-            if (rotation == default) rotation = Quaternion.identity;
-            
-            StartCoroutine(SpawnAITitansAtCoroutine(type, count, position, rotation));
+            StartCoroutine(SpawnAITitansAtCoroutine(type, count, position, rotationY));
         }
 
-        private IEnumerator SpawnAITitansAtCoroutine(string type, int count, Vector3 position, Quaternion rotation)
+        private IEnumerator SpawnAITitansAtCoroutine(string type, int count, Vector3 position, float rotationY)
         {
             for (int i = 0; i < count; i++)
             {
-                SpawnAITitanAt(type, position, rotation);
+                SpawnAITitanAt(type, position, rotationY);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
             }
@@ -547,8 +549,10 @@ namespace GameManagers
                 : Enumerable.Repeat((Vector3.zero,  Quaternion.identity), count);
         }
 
-        public BasicTitan SpawnAITitanAt(string type, Vector3 position, Quaternion rotation)
+        public BasicTitan SpawnAITitanAt(string type, Vector3 position, float rotationY)
         {
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
+            
             if (type == "Default")
             {
                 var settings = SettingsManager.InGameCurrent.Titan;
@@ -577,7 +581,7 @@ namespace GameManagers
             }
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
-            string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0].ToString();
+            string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
             var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
             titan.Init(true, TeamInfo.Titan, data, combo[1]);
             SetupTitan(titan);
@@ -630,11 +634,13 @@ namespace GameManagers
         public BaseShifter SpawnAIShifter(string type)
         {
             var spawn = GetTitanSpawnPoint();
-            return SpawnAIShifterAt(type, spawn.position, spawn.rotation);
+            return SpawnAIShifterAt(type, spawn.position, spawn.rotation.eulerAngles.y);
         }
 
-        public BaseShifter SpawnAIShifterAt(string type, Vector3 position, Quaternion rotation)
+        public BaseShifter SpawnAIShifterAt(string type, Vector3 position, float rotationY)
         {
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
+            
             string prefab = "";
             if (type == "Annie")
                 prefab = CharacterPrefabs.AnnieShifter;
