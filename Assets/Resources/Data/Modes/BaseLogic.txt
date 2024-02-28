@@ -11,23 +11,23 @@ component WaterPhysics
     SunkenGravity = 18.0;
     DisableHooks = true;
 
-    # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled. #
+    # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled.
     SupportDrowning = true;
     TimeToDrown = 10.0;
 
 
-    # 
+    /*
     Component will apply a force for x% of the map objects y axis this will represent the downward speed limit required to skip instead of breaking the surface.
     There will also need to be a horizontal component that determines how long you can skip for before starting to sink.
     After that point, the force applied will be equal to gravity instead and hooks will be disabled if the object hitting it is a player.
     Apply a normal force equal to the ratio between vertical and horizontal forces. If the angle is greater than 45 degrees, the object will sink.
     The object will also sink if the horizontal speed is too slow (may happen already with gravity).
-    #
-    # Local player state #
+    */
+    # Local player state
     _isMyPlayerUnderwater = false;
     _myPlayerTimer = 0.0;
 
-    # Private vars #
+    # Private vars
     _surfaceTop = 0.0;
     _surfaceBottom = 0.0;
     _forceMode = "Acceleration";
@@ -131,7 +131,7 @@ component WaterPhysics
         if (position.Y > self._surfaceBottom)
         {
 
-            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative #
+            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
             horizontalVector = Vector3(velocity.X, 0, velocity.Z);
             horizontalVector = horizontalVector.Normalized;
             velocityNorm = velocity.Normalized;
@@ -144,10 +144,10 @@ component WaterPhysics
                 horizontalRatio = angle / self._maxAngle;
 
                 skipZoneValue = self.RangeToValue(angleRatio);
-                # flip the y #
+                # flip the y
                 flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
 
-                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1 #
+                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
                 force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
 
                 self.SetVelocity(other, force);
@@ -168,20 +168,20 @@ component WaterPhysics
         }
         velocity = self.GetVelocity(other);
         position = other.Position;
-        # If the object is below the surface, apply a force equal to gravity - drag. #
-        # Game.Print("Hello, I am under the water."); #
+        # If the object is below the surface, apply a force equal to gravity - drag.
+        # Game.Print("Hello, I am under the water.");
         force = Vector3(0, self.SunkenGravity, 0);
         xzVelocity = Vector3(velocity.X, 0, velocity.Z);
         drag = 1 - self.SunkenDrag;
         force = force + xzVelocity.Scale(-1 * drag);
         self.HandleForce(other, force, self._forceMode);
 
-        # Requires new logic as this will spam hooks as long as the player is under the water.
+        /* Requires new logic as this will spam hooks as long as the player is under the water.
         if (other.Type == "Human" && self.DisableHooks)
         {
             other.ClearHooks();
         }
-        #
+        */
 
         if (other.Type == "Human" && self.SupportDrowning)
         {
@@ -336,7 +336,7 @@ component VelocityZone
             {
                 enterVelocity = self._enterVelocities.Get(self.GetUniqueID(other));
             }
-            # Apply force in other direction until velocity in that direction is zero. #
+            # Apply force in other direction until velocity in that direction is zero.
             proj = Vector3.Project(enterVelocity, velocity);
             newCur = velocity;
             newCur = newCur.Scale(self.StopSpeed);
@@ -432,7 +432,7 @@ component VelocityZone
     {
         if (self.StopObject)
         {
-            # Titans are characters too and they don't have a unique id nor do we care about them #
+            # Titans are characters too and they don't have a unique id nor do we care about them
             if (character.Type != "Human" || character.Type != "MapObject")
             {
                 return;
@@ -461,14 +461,14 @@ component VelocityZone
 component DestructibleTrigger
 {
     Description = "A generic component for destroying, replacing, and recovering objects.";
-    # Reference object #
+    # Reference object
     TargetIDs = "0";
     TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
 
     ReplacementIDs = "0";
     ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
 
-    # Modifiers #
+    # Modifiers
     Health = 100;
     HasDamageCap = false;
     DamageCap = 20;
@@ -476,38 +476,38 @@ component DestructibleTrigger
     RecoverTime = 10.0;
     RecoverTimeTooltip = "The amount of time it takes for this object to recover after being destroyed.";
 
-    # Object has animation/effect/sound #
+    # Object has animation/effect/sound
     HasDestroyEffect = false;
     DestroyEffect = "";
     DestroyEffectScale = 1.0;
     
-    # Who can destroy this object #
+    # Who can destroy this object
     AttacksThatCanDestroy = "";
     AttacksThatCanDestroyTooltip = "Slash (/) separated list of attack names leave empty to support all attacks.";
     TeamsThatCanDestroy = "";
     TeamsThatCanDestroyTooltip = "Slash (/) separated list of team names leave empty to support all teams.";
 
-    # Private state #
+    # Private state
     _targets = List();
     _replacements = List();
     _attacksThatCanDestroy = List();
     _teamsThatCanDestroy = List();
 
-    # Synced State #
+    # Synced State
     _isDestroyed = false;
     _isHostDestroyed = false;
     _recoverTimeLeft = 0.0;
     _health = 100;
-    # Includes Health #
+    # Includes Health
 
 
     function Init()
     {
-        # Cache targets and replacements, enable targets, disable replacements#
+        # Cache targets and replacements, enable targets, disable replacements
         self._targets = self.PopulateMapObjectList(self.TargetIDs);
         self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
 
-        # Setup state only if this trigger is active #
+        # Setup state only if this trigger is active
         if (self.MapObject.Active)
         {
             self.SetState(self._targets, true);
@@ -515,7 +515,7 @@ component DestructibleTrigger
         }
         
 
-        # Parse out attacks into list, parse out teams into list #
+        # Parse out attacks into list, parse out teams into list
         if (self.AttacksThatCanDestroy != "")
         {
             self._attacksThatCanDestroy = String.Split(self.AttacksThatCanDestroy, "/");
@@ -554,7 +554,7 @@ component DestructibleTrigger
 
     function NetworkSync(target)
     {
-        # Send network message to all clients #
+        # Send network message to all clients
         message = Dict();
         message.Set("event", "sync");
         message.Set("isDestroyed", self._isHostDestroyed);
@@ -587,7 +587,7 @@ component DestructibleTrigger
             return;
         }
 
-        # Receive network message from host #
+        # Receive network message from host
         data = Json.LoadFromString(message);
         hostDestroyed = data.Get("isDestroyed");
         self._recoverTimeLeft = data.Get("recoverTimeLeft");
@@ -614,7 +614,7 @@ component DestructibleTrigger
 
     function DestroyObject()
     {
-        # Spawn effect if exists #
+        # Spawn effect if exists
         if (self.HasDestroyEffect)
         {
             for (object in self._targets)
@@ -623,7 +623,7 @@ component DestructibleTrigger
             }
         }
 
-        # Disable target & self, enable replacement #
+        # Disable target & self, enable replacement
 
         self.MapObject.Active = false;
         self.SetState(self._targets, false);
@@ -771,14 +771,14 @@ component CaptureZone
     UIVisibilityRange = 80.0;
 
     
-    # States: Captured, Capturing, Contested #
+    # States: Captured, Capturing, Contested
     _state = "Captured";
     _currentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
 
-    # Team Colors #
+    # Team Colors
     _humanColor = Color(255, 255, 62, 255);
     _shifterColor = Color(115, 222, 255, 255);
     _titanColor = Color(70, 80, 125, 255);
@@ -788,16 +788,16 @@ component CaptureZone
     _unknownTeamColor = Color(0, 0, 0, 255);
     _teamToColor = Dict();
 
-    # State Colors #
+    # State Colors
     _contestedColor = Color(255, 0, 0, 255);
 
-    # UI state #
+    # UI state
     _isViewing = false;
 
 
     function Init()
     {
-        # Setup colors #
+        # Setup colors
         self._teamToColor = Dict();
         self._teamToColor.Set("Human", self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
@@ -809,7 +809,7 @@ component CaptureZone
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
     }
 
-    # GameObject Helpers #
+    # GameObject Helpers
     function GetTeamColor(team)
     {
 		if (self._teamToColor.Contains(team))
@@ -821,7 +821,7 @@ component CaptureZone
 
     function ChangeColorAll(color)
     {
-        # For all renderers, change color #
+        # For all renderers, change color
         self.MapObject.SetColorAll(color);
     }
 
@@ -846,7 +846,7 @@ component CaptureZone
         self.ChangeColorAll(color);
 	}
 
-    # Modify local state #
+    # Modify local state
     function OnNetworkMessage(sender, message)
     {
         if (sender != Network.MasterClient)
@@ -854,7 +854,7 @@ component CaptureZone
             return;
         }
 
-        # Message will be state, owner, capturer, and progress #
+        # Message will be state, owner, capturer, and progress
         data = Json.LoadFromString(message);
 
         self._state = data.Get("state");
@@ -953,7 +953,7 @@ component CaptureZone
         self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
     }
 
-    # UI Helpers #
+    # UI Helpers
     function GetTeamHex(team)
     {
         color = self.GetTeamColor(team);
@@ -1076,10 +1076,10 @@ component CaptureZone
         }
     }
 
-    # Handle active player logic #
+    # Handle active player logic
     function OnCollisionEnter(other)
     {
-        # Ignore non-characters and only let host handle collisions #
+        # Ignore non-characters and only let host handle collisions
         if (other.IsCharacter == false || Network.IsMasterClient == false)
         {
             return;
@@ -1112,7 +1112,7 @@ component CaptureZone
 
     function OnCollisionExit(other)
     {
-        # Ignore non-characters and only let host handle collisions #
+        # Ignore non-characters and only let host handle collisions
         if (other.IsCharacter == false || Network.IsMasterClient == false)
         {
             return;
@@ -1133,7 +1133,7 @@ component CaptureZone
         {
             self.RemoveTeamPlayer(other);
         }
-        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture) # Resolve bug here, main character is not the only pt anymore #
+        elif (other.Type == "Titan" && other.IsMainCharacter && self.TitanCanCapture) # Resolve bug here, main character is not the only pt anymore
         {
             self.RemoveTeamPlayer(other);
         }
@@ -1191,7 +1191,7 @@ component Bell
 
     function HandleHit(character)
     {
-        # Only apply this once in multiplayer, others will send you the networked event #
+        # Only apply this once in multiplayer, others will send you the networked event
         if (character.IsMine == false)
         {
             return;
@@ -2515,7 +2515,7 @@ component SignalMover
     }
     function Calculate(XTime)
     {    
-        #Easing handling#
+        #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
         c3 = c1 + 1;
@@ -2751,7 +2751,7 @@ component SignalArcMover
     }
     function Calculate(XTime)
     {    
-        #Easing handling#
+        #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
         c3 = c1 + 1;
@@ -2952,7 +2952,7 @@ component SignalRotator
     }
     function Calculate(XTime)
     {    
-        #Easing handling#
+        #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
         c3 = c1 + 1;
@@ -3007,9 +3007,9 @@ component SignalRotator
 
 component SignalScaler
 {
-    #
+    /*
     //Make sure not to scale any axis by 0 unless you want it to disappear
-    #
+    */
     Activate = true;
     Reverse = false;
     Easing = "Linear";
@@ -3159,7 +3159,7 @@ component SignalScaler
     }
     function Calculate(XTime)
     {    
-        #Easing handling#
+        #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
         c3 = c1 + 1;
