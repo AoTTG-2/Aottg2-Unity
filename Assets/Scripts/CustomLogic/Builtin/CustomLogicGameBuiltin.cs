@@ -75,7 +75,7 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
+                float rotationY = parameters.Count > 2 ? parameters[2].UnboxToFloat() : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
                     var titan = new CustomLogicTitanBuiltin(gameManager.SpawnAITitanAt(type, position, rotationY));
@@ -106,7 +106,7 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
+                float rotationY = parameters.Count > 3 ? parameters[3].UnboxToFloat() : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
                     CustomLogicListBuiltin list = new CustomLogicListBuiltin();
@@ -123,7 +123,7 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
+                float rotationY = parameters.Count > 3 ? parameters[3].UnboxToFloat() : 0f;
                 if (PhotonNetwork.IsMasterClient)
                     gameManager.SpawnAITitansAtAsync(type, (int)parameters[1], position, rotationY);
                 return null;
@@ -142,7 +142,7 @@ namespace CustomLogic
             {
                 string type = (string)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
+                float rotationY = parameters.Count > 2 ? parameters[2].UnboxToFloat() : 0f;
                 if (PhotonNetwork.IsMasterClient)
                 {
                     var shifter = new CustomLogicShifterBuiltin(gameManager.SpawnAIShifterAt(type, position, rotationY));
@@ -243,7 +243,7 @@ namespace CustomLogic
                 var player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
                 bool force = (bool)parameters[1];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                float rotationY = parameters.Count > 3 ? (float)parameters[3] : 0f;
+                float rotationY = parameters.Count > 3 ? parameters[3].UnboxToFloat() : 0f;
                 if (player == PhotonNetwork.LocalPlayer)
                     gameManager.SpawnPlayerAt(force, position, rotationY);
                 else if (PhotonNetwork.IsMasterClient)
@@ -254,7 +254,7 @@ namespace CustomLogic
             {
                 bool force = (bool)parameters[0];
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                float rotationY = parameters.Count > 2 ? (float)parameters[2] : 0f;
+                float rotationY = parameters.Count > 2 ? parameters[2].UnboxToFloat() : 0f;
                 if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, force, position, rotationY);
                 return null;
