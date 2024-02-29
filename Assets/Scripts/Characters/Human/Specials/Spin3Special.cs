@@ -71,6 +71,12 @@ namespace Characters
                         _human.PlaySound(HumanSounds.BladeSwing3);
                     _stage += 1;
                 }
+                if(_stage == 3) 
+                {
+                    _human.HookRight.SetInput(false);
+                    _human.HookLeft.DisableAnyHook();
+                    _human.HookRight.DisableAnyHook();
+                }
             }
 
             if (_human.HookRight.HasHook())
