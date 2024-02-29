@@ -27,7 +27,7 @@ namespace Characters
             _human.HookLeft.DisableAnyHook();
             _human.HookRight.DisableAnyHook();
             if (_human.CurrentGas > 0f)
-                _human.HookLeft.SetInput(true);
+                _human.HookRight.SetInput(true);
             _aimPoint = _human.GetAimPoint();
             _pulled = false;
             _startSpin = false;
@@ -72,15 +72,15 @@ namespace Characters
                     _stage += 1;
                 }
             }
-            if (_human.HookLeft.HasHook())
+            if (_human.HookRight.HasHook())
             {
-                var state = _human.HookLeft.GetHookState();
+                var state = _human.HookRight.GetHookState();
                 if (state == HookState.DisablingHooked || state == HookState.Hooked)
                 {
                     if (!_pulled)
                     {
                         _pulled = true;
-                        var position = _human.HookLeft.GetHookPosition();
+                        var position = _human.HookRight.GetHookPosition();
                         _human.Cache.Rigidbody.AddForce((position - _human.Cache.Rigidbody.position).normalized * PullForce, ForceMode.VelocityChange);
                     }
                 }
