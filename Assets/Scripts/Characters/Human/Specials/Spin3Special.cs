@@ -48,6 +48,10 @@ namespace Characters
             if (_human.Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
             {
                 float time = GetAnimationTime();
+                if (_human.Grounded && time > 0.4f && time < 0.61f)
+                {
+                    _human.Cache.Rigidbody.AddForce((Vector3)(_human.transform.forward * 200f));
+                }
                 if (_stage == 0 && time > AnimationLoopStartTime)
                 {
                     _human.ActivateBlades();
