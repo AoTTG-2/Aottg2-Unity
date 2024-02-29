@@ -127,7 +127,7 @@ namespace UI
                 elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             }
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _collideWith, "Collide With",
-                new string[] { MapObjectCollideWith.Entities, MapObjectCollideWith.Characters, MapObjectCollideWith.Projectiles,
+                new string[] { MapObjectCollideWith.Entities, MapObjectCollideWith.Characters, MapObjectCollideWith.Projectiles, MapObjectCollideWith.Hitboxes,
                     MapObjectCollideWith.MapObjects, MapObjectCollideWith.All}, elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, _physicsMaterial, "Physics Material",
                             new string[] { MapObjectPhysicsMaterial.Default, MapObjectPhysicsMaterial.Ice }, elementHeight: 30f, onDropdownOptionSelect: () => OnChange());
@@ -213,9 +213,9 @@ namespace UI
                     else if (setting is StringSetting || setting is FloatSetting || setting is IntSetting)
                         ElementFactory.CreateInputSetting(SinglePanel, style, setting, key, tooltip, elementWidth: 140f, elementHeight: 35f, onEndEdit: () => OnChange());
                     else if (setting is ColorSetting)
-                        ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, onChangeColor: () => OnChange());
+                        ElementFactory.CreateColorSetting(SinglePanel, style, setting, key, _menu.ColorPickPopup, tooltip, onChangeColor: () => OnChange());
                     else if (setting is Vector3Setting)
-                        ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, onChangeVector: () => OnChange());
+                        ElementFactory.CreateVector3Setting(SinglePanel, style, setting, key, _menu.Vector3Popup, tooltip, onChangeVector: () => OnChange());
                 }
                 string name = "DeleteComponent" + i.ToString();
                 ElementFactory.CreateDefaultButton(SinglePanel, style, "Delete", onClick: () => OnButtonClick(name));

@@ -73,6 +73,11 @@ namespace UI
             base.Setup(setting, style, title, tooltip);
         }
 
+        public void FixScale()
+        {
+            _optionsPanel.transform.localScale = Vector3.one;
+        }
+
         public bool IsOpen()
         {
             return _optionsPanel != null && _optionsPanel.activeSelf;

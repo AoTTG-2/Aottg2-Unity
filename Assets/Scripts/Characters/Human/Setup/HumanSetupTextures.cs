@@ -16,13 +16,8 @@ namespace Characters
         public string Get3dmgTexture()
         {
             if (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG)
-                return "aottg_hero_AHSS_3dmg";
-            return "AOTTG_HERO_3DMG";
-        }
-
-        public string GetFaceTexture()
-        {
-            return "HumanFace";
+                return "Misc/aottg_hero_AHSS_3dmg";
+            return "Misc/AOTTG_HERO_3DMG";
         }
 
         public string GetBrandTexture()
@@ -30,13 +25,13 @@ namespace Characters
             switch (_setup.CustomSet.Logo.Value)
             {
                 case 0:
-                    return "aottg_hero_brand_ts";
+                    return "Brand/aottg_hero_brand_ts";
                 case 1:
-                    return "aottg_hero_brand_sc";
+                    return "Brand/aottg_hero_brand_sc";
                 case 2:
-                    return "aottg_hero_brand_g";
+                    return "Brand/aottg_hero_brand_g";
                 case 3:
-                    return "aottg_hero_brand_mp";
+                    return "Brand/aottg_hero_brand_mp";
             }
             return string.Empty;
         }
@@ -45,10 +40,10 @@ namespace Characters
         {
             string end = (_setup.CustomSet.Skin.Value + 1).ToString();
             if (_setup.Weapon == HumanWeapon.Thunderspear)
-                return "skin_TS" + end;
+                return "Skin/skin_TS" + end;
             else if (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG)
-                return "skin_AHSS" + end;
-            return "skin_blades" + end;
+                return "Skin/skin_AHSS" + end;
+            return "Skin/skin_blades" + end;
         }
 
         public string GetHairTexture()
@@ -56,18 +51,39 @@ namespace Characters
             return _setup.CurrentHair["Texture"].Value;
         }
 
-        public string GetBodyTexture()
+        public string GetBodyMainTexture()
         {
-            return _setup.CurrentCostume["Texture"].Value;
+            if (_setup.CurrentCostume["Type"].Value.StartsWith("Uniform"))
+                return "Uniform/" + _setup.CurrentCostume["_main_tex"].Value;
+            return "Casual/" + _setup.CurrentCostume["_main_tex"].Value;
+        }
+
+        public string GetBodyMaskTexture()
+        {
+            if (_setup.CurrentCostume["Type"].Value.StartsWith("Uniform"))
+                return "Uniform/" + _setup.CurrentCostume["_main_tex_mask"].Value;
+            return "Casual/" + _setup.CurrentCostume["_main_tex_mask"].Value;
+        }
+
+        public string GetBodyColorTexture()
+        {
+            if (_setup.CurrentCostume["Type"].Value.StartsWith("Uniform"))
+                return "Uniform/" + _setup.CurrentCostume["_color_tex"].Value;
+            return "Casual/" + _setup.CurrentCostume["_color_tex"].Value;
+        }
+
+        public string GetBodyPantsTexture()
+        {
+            return "Pants/" + _setup.CurrentCostume["_pants_tex"].Value;
         }
 
         public string GetChestTexture(int chest)
         {
             if (chest == 1)
             {
-                if (_setup.CurrentCostume["Type"].ToString().StartsWith("Uniform"))
-                    return "aottg_hero_annie_cap_uniform";
-                return "aottg_hero_annie_cap_causal";
+                if (_setup.CurrentCostume["Type"].Value.StartsWith("Uniform"))
+                    return "Misc/aottg_hero_annie_cap_uniform";
+                return "Misc/aottg_hero_annie_cap_causal";
             }
             return string.Empty;
         }

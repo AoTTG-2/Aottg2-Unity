@@ -372,11 +372,18 @@ namespace CustomLogic
             _callback.Add(classInstance);
             if (classInstance.UsesCollider())
             {
+                HashSet<GameObject> children = new HashSet<GameObject>();
+                children.Add(obj.GameObject);
                 foreach (var collider in obj.GameObject.GetComponentsInChildren<Collider>())
                 {
-                    var collisionHandler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
+                    if (!children.Contains(collider.gameObject))
+                        children.Add(collider.gameObject);
+                }
+                foreach (var go in children)
+                {
+                    var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                     if (collisionHandler == null)
-                        collisionHandler = collider.gameObject.AddComponent<CustomLogicCollisionHandler>();
+                        collisionHandler = go.AddComponent<CustomLogicCollisionHandler>();
                     collisionHandler.RegisterInstance(classInstance);
                 }
             }
@@ -810,8 +817,16 @@ namespace CustomLogic
             {
                 if (left is int && right is int)
                     return (int)left + (int)right;
-                else if (left is string && right is string)
-                    return (string)left + (string)right;
+
+                var leftStr = left is string;
+                var rightStr = right is string;
+                if (leftStr || rightStr)
+                {
+                    if (leftStr)
+                        return (string)left + right;
+
+                    return left + (string)right;
+                }
                 else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
                     return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
                 else

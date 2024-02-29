@@ -35,7 +35,7 @@ Scene,Nature/Tree2,32,0,1,1,1,0,Tree2,-190.495,78.337,190.103,0,120.2544,0,1.135
 Scene,None,33,0,1,1,1,0,Titan SpawnPoint,-231.879,0.5,548.29,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree2,34,0,1,1,1,0,Tree2,152.528,62.874,428.971,0,0,0,0.91,0.91,0.91,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,35,0,1,1,1,0,Titan SpawnPoint,-208.97,0.5,-35.295,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,Interact/Supply1,36,0,1,1,1,0,Supply1,-48.59991,80.41982,-241.059,359.9714,270,0.8719498,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,36,0,1,1,1,0,Supply2,-48.59991,80.41982,-241.059,359.9714,270,0.8719498,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,None,37,0,1,1,1,0,Titan SpawnPoint,235.907,0.5,431.965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree2,38,0,1,1,1,0,Tree2,180.973,48.647,-481.251,0,136.5674,0,0.702,0.702,0.702,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,39,0,1,1,1,0,Titan SpawnPoint,146.98,0.5,-44.516,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
@@ -199,7 +199,7 @@ Scene,None,196,0,1,1,1,0,Titan SpawnPoint,28.945,0.5,45.855,0,0,0,1,1,1,Physical
 Scene,None,197,0,1,1,1,0,Titan SpawnPoint,398.648,0.5,185.083,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree2,198,0,1,1,1,0,Tree2,281.613,48.647,508.079,0,0,0,0.702,0.702,0.702,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,199,0,1,1,1,0,Titan SpawnPoint,-218.686,0.5,461.984,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,Interact/Supply1,200,0,1,1,1,0,Supply1,-51.64378,0.507,-515.3228,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,200,0,1,1,1,0,Supply2,-51.64378,0.507,-515.3228,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,None,201,0,1,1,1,0,Titan SpawnPoint,-334.88,0.5,-349.981,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,None,202,0,1,1,1,0,Titan SpawnPoint,388.108,0.5,378.549,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree2,203,0,1,1,1,0,Tree2,-493.994,62.818,-17.637,0,0,0,0.91,0.909,0.91,Physical,Entities,Default,Default|255/255/255/255,;

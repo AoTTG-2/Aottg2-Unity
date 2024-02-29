@@ -1,3 +1,762 @@
+component WaterPhysics
+{
+    Description = "Enables water physics for the current region.";
+    Enabled = true;
+    MinSkipSpeed = 100;
+    SurfaceHeight = 0.2;
+    SurfaceVerticalDrag = 0.7;
+    SurfaceHorizontalDrag = 0.85;
+    SunkenDrag = 0.5;
+
+    SunkenGravity = 18.0;
+    DisableHooks = true;
+
+    # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled. #
+    SupportDrowning = true;
+    TimeToDrown = 10.0;
+
+
+    # 
+    Component will apply a force for x% of the map objects y axis this will represent the downward speed limit required to skip instead of breaking the surface.
+    There will also need to be a horizontal component that determines how long you can skip for before starting to sink.
+    After that point, the force applied will be equal to gravity instead and hooks will be disabled if the object hitting it is a player.
+    Apply a normal force equal to the ratio between vertical and horizontal forces. If the angle is greater than 45 degrees, the object will sink.
+    The object will also sink if the horizontal speed is too slow (may happen already with gravity).
+    #
+    # Local player state #
+    _isMyPlayerUnderwater = false;
+    _myPlayerTimer = 0.0;
+
+    # Private vars #
+    _surfaceTop = 0.0;
+    _surfaceBottom = 0.0;
+    _forceMode = "Acceleration";
+    _maxAngle = 40.0;
+
+
+    function Init()
+    {
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function GetVelocity(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return Vector3(0, 0, 0);
+            }
+            return body.GetVelocity();
+        }
+        return Vector3(0, 0, 0);
+    }
+
+    function SetVelocity(other, velocity)
+    {
+        if (other.Type == "Human")
+        {
+            other.Velocity = velocity;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                body.SetVelocity(velocity);
+            }
+        }
+    }
+
+
+    function HandleForce(other, force, mode)
+    {
+        if (self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            body.AddForceWithMode(force, mode);
+        }
+    }
+
+    function RangeToValue(x)
+    {
+        return -4 * x * x + 1;
+    }
+
+    function Vec2String(x)
+    {
+        return Convert.ToString(x.X) + ", " + Convert.ToString(x.Y) + ", " + Convert.ToString(x.Z);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        if (position.Y > self._surfaceBottom)
+        {
+
+            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative #
+            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+            horizontalVector = horizontalVector.Normalized;
+            velocityNorm = velocity.Normalized;
+            angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            {
+                ratio = (1 - (angle / self._maxAngle));
+                angleRatio = ratio - 0.5;
+                horizontalRatio = angle / self._maxAngle;
+
+                skipZoneValue = self.RangeToValue(angleRatio);
+                # flip the y #
+                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1 #
+                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+                self.SetVelocity(other, force);
+
+                if (other.Type == "Human")
+                {
+                    other.PlayAnimation("Armature|slide");
+                }
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        velocity = self.GetVelocity(other);
+        position = other.Position;
+        # If the object is below the surface, apply a force equal to gravity - drag. #
+        # Game.Print("Hello, I am under the water."); #
+        force = Vector3(0, self.SunkenGravity, 0);
+        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+        drag = 1 - self.SunkenDrag;
+        force = force + xzVelocity.Scale(-1 * drag);
+        self.HandleForce(other, force, self._forceMode);
+
+        # Requires new logic as this will spam hooks as long as the player is under the water.
+        if (other.Type == "Human" && self.DisableHooks)
+        {
+            other.ClearHooks();
+        }
+        #
+
+        if (other.Type == "Human" && self.SupportDrowning)
+        {
+            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+            UI.SetLabel("MiddleCenter", message);
+            self._isMyPlayerUnderwater = true;
+            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+            if (self._myPlayerTimer >= self.TimeToDrown)
+            {
+                other.GetKilled("Drowning");
+            }
+        }
+
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        self._isMyPlayerUnderwater = false;
+        self._myPlayerTimer = 0.0;
+        UI.SetLabel("MiddleCenter", "");
+    }
+}
+
+component VelocityZone
+{
+    Description = "Changes the velocity of an object inside this trigger";
+
+    Enabled = true;
+
+    ForceMode = "Acceleration";
+    ForceModeDropbox = "Acceleration,Force,Impulse,VelocityChange";
+
+    ApplyOn = "Stay";
+    ApplyOnDropbox = "Enter,Stay,Exit";
+
+    StopObject = false;
+    StopImmediately = false;
+    StopSpeed = 3;
+
+    UseRotation = false;
+    UseRotationTooltip = "If true, the object will get a force in the direction of the given rotation axis on the MapObject.";
+    RotationAxis = "Up";
+    RotationAxisDropbox = "Forward,Up,Right";
+    Speed = 0;
+
+    UseObject = false;
+    UseObjectTooltip = "If true, the object will get a force of magnitude Magnitude in the direction of its current velocity.";
+    Magnitude = 0;
+
+    UseVector = false;
+    UseVectorTooltip = "If true, the object will get a force in the direction of Vector.";
+    ForceX = 0;
+    ForceY = 0;
+    ForceZ = 0;
+
+
+    _enterVelocity = Vector3(0, 0, 0);
+    _enterVelocities = Dict();
+
+    function Init()
+    {
+
+    }
+
+    function GetUniqueID(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.Player.ID;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return other.ID;
+        }
+        else
+        {
+            return other.Type;
+        }
+    }
+
+    function IsOwnedByMe(other)
+    {
+        if (other.Type == "Human")
+        {
+            return other.IsMine;
+        }
+        elif (other.Type == "MapObject")
+        {
+            return Network.IsMasterClient;
+        }
+        return false;
+    }
+
+    function AddForce(other, force, mode)
+    {
+        if (other.Type == "Human")
+        {
+            other.AddForce(force, mode);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            body.AddForceWithMode(force, self.ForceMode);
+        }
+    }
+
+    function CalculateForce(other, velocity)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (self.UseRotation)
+        {
+            mapDir = self.MapObject.Up;
+            if (self.RotationAxis == "Up")
+            {
+                mapDir = self.MapObject.Up;
+            }
+            elif (self.RotationAxis == "Forward")
+            {
+                mapDir = self.MapObject.Forward;
+            }
+            elif (self.RotationAxis == "Right")
+            {
+                mapDir = self.MapObject.Right;
+            }
+            
+            mapDir = mapDir.Scale(self.Speed);
+            appliedForce = appliedForce + mapDir;
+        }
+
+        if (self.UseObject)
+        {
+            direction = velocity.Normalized;
+            direction = direction.Scale(self.Magnitude);
+            appliedForce = appliedForce + direction;
+        }
+        if (self.UseVector)
+        {
+            appliedForce = appliedForce + Vector3(self.ForceX, self.ForceY, self.ForceZ);
+        }
+        if (self.StopObject == true && self.StopImmediately == false)
+        {
+            enterVelocity = Vector3(0,0,0);
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                enterVelocity = self._enterVelocities.Get(self.GetUniqueID(other));
+            }
+            # Apply force in other direction until velocity in that direction is zero. #
+            proj = Vector3.Project(enterVelocity, velocity);
+            newCur = velocity;
+            newCur = newCur.Scale(self.StopSpeed);
+            compensatingForce = Vector3.Project(newCur, appliedForce);
+            opposingForce = proj.Scale(-1 * self.StopSpeed);
+            actualOpposingForce = opposingForce + compensatingForce;
+            if (actualOpposingForce.Magnitude > 0)
+            {
+                appliedForce = appliedForce + actualOpposingForce;
+            }
+        }
+        return appliedForce;
+    }
+
+    function CollisionHandler(other)
+    {
+        appliedForce = Vector3(0, 0, 0);
+        if (other.Type == "Human")
+        {
+            appliedForce = self.CalculateForce(other, other.Velocity);
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return;
+            }
+            velocity = body.GetVelocity();
+            appliedForce = self.CalculateForce(other, velocity);
+        }
+
+        self.AddForce(other, appliedForce, self.ForceMode);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        if (self.StopObject)
+        {
+            if (self.StopImmediately)
+            {
+                self.AddForce(other, Vector3(0,0,0), self.ForceMode);
+            }
+            else
+            {
+                enterVelocity = other.Velocity;
+                self._enterVelocities.Set(self.GetUniqueID(other), enterVelocity);
+            }
+        }
+        if (self.ApplyOn != "Enter")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.ApplyOn != "Stay")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(self.GetUniqueID(other)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(other));
+            }
+        }
+
+        if (self.ApplyOn != "Exit")
+        {
+            return;
+        }
+        self.CollisionHandler(other);
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        if (self.StopObject)
+        {
+            # Titans are characters too and they don't have a unique id nor do we care about them #
+            if (character.Type != "Human" || character.Type != "MapObject")
+            {
+                return;
+            }
+            if (self._enterVelocities.Contains(self.GetUniqueID(character)))
+            {
+                self._enterVelocities.Remove(self.GetUniqueID(character));
+            }
+        }
+    }
+
+    function OnPlayerLeave(player)
+    {
+        if (self.StopObject)
+        {
+            if (self._enterVelocities.Contains(player.ID))
+            {
+                self._enterVelocities.Remove(player.ID);
+            }
+        }
+    }
+
+
+}
+
+component DestructibleTrigger
+{
+    Description = "A generic component for destroying, replacing, and recovering objects.";
+    # Reference object #
+    TargetIDs = "0";
+    TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
+
+    ReplacementIDs = "0";
+    ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
+
+    # Modifiers #
+    Health = 100;
+    HasDamageCap = false;
+    DamageCap = 20;
+    RecoverAfterTime = false;
+    RecoverTime = 10.0;
+    RecoverTimeTooltip = "The amount of time it takes for this object to recover after being destroyed.";
+
+    # Object has animation/effect/sound #
+    HasDestroyEffect = false;
+    DestroyEffect = "";
+    DestroyEffectScale = 1.0;
+    
+    # Who can destroy this object #
+    AttacksThatCanDestroy = "";
+    AttacksThatCanDestroyTooltip = "Slash (/) separated list of attack names leave empty to support all attacks.";
+    TeamsThatCanDestroy = "";
+    TeamsThatCanDestroyTooltip = "Slash (/) separated list of team names leave empty to support all teams.";
+
+    # Private state #
+    _targets = List();
+    _replacements = List();
+    _attacksThatCanDestroy = List();
+    _teamsThatCanDestroy = List();
+
+    # Synced State #
+    _isDestroyed = false;
+    _isHostDestroyed = false;
+    _recoverTimeLeft = 0.0;
+    _health = 100;
+    # Includes Health #
+
+
+    function Init()
+    {
+        # Cache targets and replacements, enable targets, disable replacements#
+        self._targets = self.PopulateMapObjectList(self.TargetIDs);
+        self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
+
+        # Setup state only if this trigger is active #
+        if (self.MapObject.Active)
+        {
+            self.SetState(self._targets, true);
+            self.SetState(self._replacements, false);
+        }
+        
+
+        # Parse out attacks into list, parse out teams into list #
+        if (self.AttacksThatCanDestroy != "")
+        {
+            self._attacksThatCanDestroy = String.Split(self.AttacksThatCanDestroy, "/");
+        }
+        if (self.TeamsThatCanDestroy != "")
+        {
+            self._teamsThatCanDestroy = String.Split(self.TeamsThatCanDestroy, "/");
+        }
+        self._health = self.Health;
+    }
+
+    function PopulateMapObjectList(strList)
+    {
+        results = List();
+        target = null;
+        ssl = String.Split(strList, "/");
+        for (value in ssl)
+        {
+            target = Map.FindMapObjectByID(Convert.ToInt(value));
+
+            if (target != null)
+            {
+                results.Add(target);
+            }
+        }
+        return results;
+    }
+
+    function SetState(objectList, state)
+    {
+        for (obj in objectList)
+        {
+            obj.Active = state;
+        }
+    }
+
+    function NetworkSync(target)
+    {
+        # Send network message to all clients #
+        message = Dict();
+        message.Set("event", "sync");
+        message.Set("isDestroyed", self._isHostDestroyed);
+        message.Set("recoverTimeLeft", self._recoverTimeLeft);
+        message.Set("health", self._health);
+        if (target == null)
+        {
+            self.NetworkView.SendMessageAll(Json.SaveToString(message));
+        }
+        else
+        {
+            self.NetworkView.SendMessage(target, Json.SaveToString(message));
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient)
+        {
+            data = Json.LoadFromString(message);
+            if (data.Get("event") == "hit")
+            {
+                self.OnGetHitHandler(data.Get("team"), data.Get("name"), data.Get("damage"), data.Get("type"));
+                return;
+            }
+        }
+
+        if (sender != Network.MasterClient)
+        {
+            return;
+        }
+
+        # Receive network message from host #
+        data = Json.LoadFromString(message);
+        hostDestroyed = data.Get("isDestroyed");
+        self._recoverTimeLeft = data.Get("recoverTimeLeft");
+        self._health = data.Get("health");
+
+        if (self._isDestroyed == false && hostDestroyed == true)
+        {
+            self.DestroyObject();
+        }
+        elif (self._isDestroyed == true && hostDestroyed == false)
+        {
+            self.RecoverObject();
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+        self.NetworkSync(player);
+    }
+
+    function DestroyObject()
+    {
+        # Spawn effect if exists #
+        if (self.HasDestroyEffect)
+        {
+            for (object in self._targets)
+            {
+                Game.SpawnEffect(self.DestroyEffect, object.Position, object.Rotation, self.DestroyEffectScale);
+            }
+        }
+
+        # Disable target & self, enable replacement #
+
+        self.MapObject.Active = false;
+        self.SetState(self._targets, false);
+        self.SetState(self._replacements, true);
+        self._isDestroyed = true;
+    }
+
+    function RecoverObject()
+    {
+        self._health = self.Health;
+        self.MapObject.Active = true;
+        self.SetState(self._targets, true);
+        self.SetState(self._replacements, false);
+        self._isDestroyed = false;
+    }
+
+    function SignalDestroy()
+    {
+        self._health = 0;
+        self._isHostDestroyed = true;
+        self.NetworkSync(null);
+    }
+    
+    function SignalRecover()
+    {
+        self._health = self.Health;
+        self._isHostDestroyed = false;
+        self.NetworkSync(null);
+    }
+
+    coroutine WaitTilRecovery()
+    {
+        wait self.RecoverTime;
+        self.SignalRecover();
+    }
+
+    function OnGetHitHandler(team, name, damage, type)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+        if (self._teamsThatCanDestroy.Count > 0 && self._teamsThatCanDestroy.Contains(team) == false)
+        {
+            return;
+        }
+        if (self._attacksThatCanDestroy.Count > 0 && self._attacksThatCanDestroy.Contains(type) == false)
+        {
+            return;
+        }
+
+        if (self.HasDamageCap)
+        {
+            damage = Math.Clamp(damage, 0, self.DamageCap);
+        }
+        self._health = self._health - damage;
+
+        if (self._health <= 0)
+        {
+            self.SignalDestroy();
+            if (self.RecoverAfterTime == true)
+            {
+                self.WaitTilRecovery();
+            }
+        }
+    }
+
+    function OnGetHit(character, name, damage, type)
+    {
+        message = Dict();
+        message.Set("event", "hit");
+        message.Set("team", character.Team);
+        message.Set("name", name);
+        message.Set("damage", damage);
+        message.Set("type", type);
+        self.NetworkView.SendMessage(Network.MasterClient, Json.SaveToString(message));
+    }
+}
+
+component CustomPhysicsMaterial
+{
+    IncludeChildren = false;
+    
+    StaticFriction = 0.6;
+    DynamicFriction = 0.6;
+    Bounciness = 0.0;
+    
+    FrictionCombine = "Average";
+    FrictionCombineDropbox = "Average, Minimum, Multiply, Maximum";
+    
+    BounceCombine = "Average";
+    BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
+
+    function Init()
+    {
+        self.StaticFriction = Math.Max(0.0, self.StaticFriction);
+        self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
+        self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
+        
+        self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial", self.IncludeChildren);
+        self.SetStaticFriction(self.StaticFriction);
+        self.SetDynamicFriction(self.DynamicFriction);
+        self.SetBounciness(self.Bounciness);
+        self.SetFrictionCombine(self.FrictionCombine);
+        self.SetBounceCombine(self.BounceCombine);
+    }
+    
+    function SetStaticFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "StaticFriction", value);
+    }
+    
+    function SetDynamicFriction(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "DynamicFriction", value);
+    }
+        
+    function SetBounciness(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "Bounciness", value);
+    }
+    
+    function SetFrictionCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "FrictionCombine", value);
+    }
+        
+    function SetBounceCombine(value)
+    {
+        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "BounceCombine", value);
+    }
+}
+
 component CaptureZone
 {
     Enabled = false;
@@ -7,7 +766,9 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
-    VisibilityRange = 80.0;
+
+    ShowUI = true;
+    UIVisibilityRange = 80.0;
 
     
     # States: Captured, Capturing, Contested #
@@ -18,21 +779,25 @@ component CaptureZone
     _teamsInZone = Dict();
 
     # Team Colors #
-    _humanColor = Color(255, 255, 62, 80);
-    _shifterColor = Color(115, 222, 255, 80);
-    _titanColor = Color(70, 80, 125, 80);
-    _neutralColor = Color(255, 255, 255, 80);
-    _teamBlueColor = Color(0, 0, 255, 80);
-    _teamRedColor = Color(255, 0, 0, 80);
-    _unknownTeamColor = Color(0, 0, 0, 80);
+    _humanColor = Color(255, 255, 62, 255);
+    _shifterColor = Color(115, 222, 255, 255);
+    _titanColor = Color(70, 80, 125, 255);
+    _neutralColor = Color(255, 255, 255, 255);
+    _teamBlueColor = Color(0, 0, 255, 255);
+    _teamRedColor = Color(255, 0, 0, 255);
+    _unknownTeamColor = Color(0, 0, 0, 255);
     _teamToColor = Dict();
 
     # State Colors #
     _contestedColor = Color(255, 0, 0, 255);
 
+    # UI state #
+    _isViewing = false;
+
 
     function Init()
     {
+        # Setup colors #
         self._teamToColor = Dict();
         self._teamToColor.Set("Human", self._humanColor);
         self._teamToColor.Set("Shifter", self._shifterColor);
@@ -54,22 +819,31 @@ component CaptureZone
 		return self._unknownTeamColor;
 	}
 
+    function ChangeColorAll(color)
+    {
+        # For all renderers, change color #
+        self.MapObject.SetColorAll(color);
+    }
+
     function ChangeColor()
     {
+        color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
+            
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
             ownerColor = self.GetTeamColor(self._currentOwner);
-            self.MapObject.Color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
+            color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-			self.MapObject.Color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self._currentOwner);
 		}
+        self.ChangeColorAll(color);
 	}
 
     # Modify local state #
@@ -189,7 +963,7 @@ component CaptureZone
 
     function OnTick()
     {
-        if (self.Enabled == false)
+        if (self.Enabled == false || self.ShowUI == false)
 		{
 			return;
 		}
@@ -201,11 +975,16 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.VisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange)
         {
-            UI.SetLabel("TopCenter", "");
+            if (self._isViewing == true)
+            {
+                self._isViewing = false;
+                UI.SetLabel("TopCenter", "");
+            }
             return;
 		}
+        self._isViewing = true;
 
         owner = self._currentOwner;
         if (owner == "null")
@@ -389,7 +1168,7 @@ component Bell
     function Init()
     {
         self._soundTransform = self.MapObject.GetTransform("BellHitSound");
-        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 3.0, 0), Vector3(5.3, 6, 5.3));
+        self.MapObject.AddBoxCollider("Region", "Hitboxes", Vector3(0, 2.6, 0), Vector3(5.3, 6, 5.3));
     }
 
     function OnNetworkMessage(sender, message)
@@ -528,10 +1307,11 @@ component Rigidbody
     Mass = 1.0;
     Gravity = Vector3(0.0, -20.0, 0.0);
     FreezeRotation = false;
+    Interpolate = false;
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation);
+        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
     }
 
     function SetVelocity(velocity)
@@ -542,6 +1322,11 @@ component Rigidbody
     function AddForce(force)
     {
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+    }
+
+    function AddForceWithMode(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
     function GetVelocity()
@@ -1374,9 +2159,9 @@ component TitanBarrier
     }
 }
 
-component WallGateA
+component WallGateA1
 {
-    Description = "Makes WallGateA1 and WallGateA2 openable by players.";
+    Description = "Makes WallGateA1 openable by players.";
     _currentHuman = null;
     _open = false;
     _moving = false;
@@ -1577,6 +2362,1262 @@ component Executioner
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;
+        }
+    }
+}
+
+component SignalMover
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    TargetPosition = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Moves the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original position after Target movement.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens movement using frames. Avoid unless necessary.";
+    InfiniteTooltip = "Infinitely moves while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartPosition = Vector3(0,0,0);
+    _GoalPosition = Vector3(0,0,0);
+    _OriginalPosition = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalPosition = self.MapObject.Position;
+        self._StartPosition = self.MapObject.Position;
+        self._GoalPosition = self.MapObject.Position + self.TargetPosition;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition + self.TargetPosition;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition - self.TargetPosition;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition - self.TargetPosition;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._GoalPosition;
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._GoalPosition;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Position = Vector3.Lerp(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Position = Vector3.LerpUnclamped(self._StartPosition, self._GoalPosition, XTime);
+        }
+    }
+}
+
+component SignalArcMover
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    TargetPosition = Vector3(0,0,0);
+    PivotOffset = Vector3(0,0,0);
+    AlternatePivotOffset = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Moves the object in an arc. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original position after Target movement.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens movement using frames. Avoid unless necessary.";
+    PivotOffsetTooltip = "Axis to offset center, object will arc around the shortest path. Offset of -1 of the X axis, would make the arc happen on positive X axis.";
+    AlternatePivotOffsetTooltip = "Increments pivot offset by this value every operation.";
+    InfiniteTooltip = "Infinitely moves while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartPosition = Vector3(0,0,0);
+    _GoalPosition = Vector3(0,0,0);
+    _RelativeStart = Vector3(0,0,0);
+    _RelativeGoal = Vector3(0,0,0);
+    _OriginalPosition = Vector3(0,0,0);
+    _Center = Vector3(0,0,0);
+    _Pivot = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _Alternate = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalPosition = self.MapObject.Position;
+        self._StartPosition = self.MapObject.Position;
+        self._GoalPosition = self.MapObject.Position + self.TargetPosition;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+        self._Pivot = self.PivotOffset;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition + self.TargetPosition;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartPosition = self.MapObject.Position;
+                self._GoalPosition = self._StartPosition - self.TargetPosition;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition - self.TargetPosition;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartPosition = self.MapObject.Position;
+                    self._GoalPosition = self._StartPosition + self.TargetPosition;
+                }
+            }
+            self._Center = (self._StartPosition + self._GoalPosition) * 0.5;
+            self._Center = self._Center + self._Pivot;
+            self._RelativeStart = self._StartPosition - self._Center;
+            self._RelativeGoal = self._GoalPosition - self._Center;
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.00;
+            self._Running = false;
+            self.MapObject.Position = self._RelativeGoal + self._Center;
+            if (self._Alternate)
+            {
+                self._Alternate = false;
+                self._Pivot = self.PivotOffset;
+            }
+            elif (!self._Alternate)
+            {
+                self._Alternate = true;
+                self._Pivot = self.AlternatePivotOffset;
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Position = self._RelativeGoal + self._Center;
+            if (self._Alternate)
+            {
+                self._Alternate = false;
+                self._Pivot = self.PivotOffset;
+            }
+            elif (!self._Alternate)
+            {
+                self._Alternate = true;
+                self._Pivot = self.AlternatePivotOffset;
+            }
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Position = Vector3.Slerp(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Position = Vector3.SlerpUnclamped(self._RelativeStart, self._RelativeGoal, XTime);
+        }
+        self.MapObject.Position = self.MapObject.Position + self._Center;
+    }
+}
+component SignalRotator
+{
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    Rotation = Vector3(0,0,0);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Rotates the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original rotation after normal rotation.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens rotation using frames. Avoid unless necessary.";
+    InfiniteTooltip = "Infinitely rotates while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartRotation = Vector3(0,0,0);
+    _GoalRotation = Vector3(0,0,0);
+    _OriginalRotation = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+
+    function Init()
+    {
+        self._OriginalRotation = self.MapObject.Rotation;
+        self._StartRotation = self.MapObject.Rotation;
+        self._GoalRotation = self.MapObject.Rotation + self.Rotation;
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartRotation = self.MapObject.Rotation;
+                self._GoalRotation = self._StartRotation + self.Rotation;
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartRotation = self.MapObject.Rotation;
+                self._GoalRotation = self._StartRotation - self.Rotation;
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation + self.Rotation;
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation - self.Rotation;
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartRotation = self.MapObject.Rotation;
+                    self._GoalRotation = self._StartRotation + self.Rotation;
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Rotation = self._GoalRotation;
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Rotation = self._GoalRotation;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Rotation = Vector3.Lerp(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Rotation = Vector3.LerpUnclamped(self._StartRotation, self._GoalRotation, XTime);
+        }
+    }
+}
+
+component SignalScaler
+{
+    #
+    //Make sure not to scale any axis by 0 unless you want it to disappear
+    #
+    Activate = true;
+    Reverse = false;
+    Easing = "Linear";
+    ReverseFlipsCurve = false;
+    MultiplyScale = Vector3(1,1,1);
+    TimesPerSecond = 1.0;
+    RepeatTimes = 0;
+    Infinite = true;
+    Interpolate = false;
+    
+    Description = "Scales the object. Activate auto-disables after operation is done, re-send signal to restart. Use SignalSender component if Modular use is necessary.";
+    ActivateTooltip = "Enable to start operation. Counts as 1 repeat time.";
+    ReverseTooltip = "Returns to original scale after target Scaling.";
+    ReverseFlipsCurveTooltip = "If reverse is enabled, this alternates the easing for the In/Out counterparts. Does nothing for InOut or Linear.";
+    InterpolateTooltip = "Smoothens scaling using frames. Avoid unless necessary.";
+    MultiplyScaleTooltip = "What to multiply current scale with";
+    InfiniteTooltip = "Infinitely scales while activated, regardless of Repeat times.";
+    TimesPerSecondTooltip = "The speed of the operation.";
+    RepeatTimesTooltip = "How many operations will be done.";
+    EasingTooltip = "The type of weight to apply to the animation.";
+
+    EasingDropbox = "Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+
+    _StartScale = Vector3(0,0,0);
+    _GoalScale = Vector3(0,0,0);
+    _OriginalScale = Vector3(0,0,0);
+
+    _Forwards = true;
+    _Running = false;
+    _TimesPerSecond = 0.0;
+    _TickTimer = 0.0;
+    _FrameTimer = 0.0;
+    _XTime = 0.0;
+    _RepeatTimes = 0;
+    _ForwardTimes = 0;
+    _ReverseTimes = 0;
+    function Init()
+    {
+        self._OriginalScale = self.MapObject.Scale;
+        self._StartScale = self.MapObject.Scale;
+        self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+        self._RepeatTimes = self.RepeatTimes;
+        self._TimesPerSecond = self.TimesPerSecond;
+    }
+    function OnTick()
+    {   
+        if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
+        {
+            self._Running = true;
+            if (self._ForwardTimes > 0)
+            {
+                self._StartScale = self.MapObject.Scale;
+                self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                self._ForwardTimes = self._ForwardTimes - 1;
+            }
+            elif (self._ReverseTimes > 0)
+            {
+                self._StartScale = self.MapObject.Scale;
+                self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
+                self._ReverseTimes = self._ReverseTimes - 1;
+            }
+            elif (self.Infinite || self._RepeatTimes > 0)
+            {
+                if (!self.Infinite)
+                {
+                    self._RepeatTimes = self._RepeatTimes - 1;
+                }
+                if (self._Forwards)
+                {
+                    self._Forwards = false;
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                }
+                elif (!self._Forwards && self.Reverse == true)
+                {
+                    self._Forwards = true;
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
+                    if (self.ReverseFlipsCurve)
+                    {
+                        self.Easing = ReverseEasing(self.Easing);
+                    }
+                }
+                elif (!self._Forwards && self.Reverse == false)
+                {
+                    self._StartScale = self.MapObject.Scale;
+                    self._GoalScale = Vector3.Multiply(self.MapObject.Scale, self.MultiplyScale);
+                }
+            }
+        }
+        elif (!self.Infinite && self._RepeatTimes == 0 && self._ForwardTimes == 0 && self._ReverseTimes == 0 && !self._Running)
+        {
+            self.Activate = false;
+            self._TimesPerSecond = self.TimesPerSecond;
+        }
+        if (self._Running && !self.Interpolate && self._TickTimer < (0.99 / self._TimesPerSecond))
+        {
+            self._TickTimer = self._TickTimer + Time.TickTime;
+            XTime = self._TickTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && !self.Interpolate)
+        {
+            self._TickTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Scale = self._GoalScale;
+            if (self.MultiplyScale.X == 0.0 || self.MultiplyScale.Y == 0.0 || self.MultiplyScale.Z == 0.0)
+            {
+                Game.Print("One or more axis is set to 0, object will disappear since Scale * 0 = 0");
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
+        {
+            self._FrameTimer = self._FrameTimer + Time.FrameTime;
+            XTime = self._FrameTimer * self._TimesPerSecond;
+            self.Calculate(XTime);
+        }
+        elif (self._Running && self.Interpolate)
+        {
+            self._FrameTimer = 0.0;
+            self._Running = false;
+            self.MapObject.Scale = self._GoalScale;
+        }
+    }
+    function ReverseEasing(Easing)
+    {
+    if (Easing == "EaseIn")
+    {
+        Easing = "EaseOut";
+    }
+    elif (Easing == "EaseOut")
+    {
+        Easing = "EaseIn";
+    }
+    elif (Easing == "BackIn")
+    {
+        Easing = "BackOut";
+    }
+    elif (Easing == "BackOut")
+    {
+        Easing = "BackIn";
+    }
+    return Easing;
+    }
+    function Calculate(XTime)
+    {    
+        #Easing handling#
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+        c3 = c1 + 1;
+        if (self.Easing == "Linear")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "EaseIn")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, Math.Pow(XTime , 3));
+        }
+        elif (self.Easing == "EaseOut")
+        {
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, 1 - Math.Pow(1 - XTime, 3));
+        }
+        elif (self.Easing == "EaseInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = 4 * XTime * XTime * XTime;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = 1 - Math.Pow(-2 * XTime + 2, 3) / 2;
+            }
+            self.MapObject.Scale = Vector3.Lerp(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackIn")
+        {
+            XTime = c3 * XTime * XTime * XTime - c1 * XTime * XTime;
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackOut")
+        {
+            XTime = 1 + c3 * Math.Pow(XTime - 1, 3) + c1 * Math.Pow(XTime - 1, 2);
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+        elif (self.Easing == "BackInOut")
+        {
+            if (XTime < 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime, 2) * ((c2 + 1) * 2 * XTime - c2)) / 2;
+            }
+            elif (XTime >= 0.5)
+            {
+                XTime = (Math.Pow(2 * XTime - 2, 2) * ((c2 + 1) * (XTime * 2 - 2) + c2) + 2) / 2;
+            }
+            self.MapObject.Scale = Vector3.LerpUnclamped(self._StartScale, self._GoalScale, XTime);
+        }
+    }
+}
+
+component SignalSender
+{
+    ReceiverObjectIDs = "0";
+    SignalTrigger = "Any";
+    ComponentName = "SignalMover";
+    SetEasing = "Original";
+    SetXYZ = Vector3(0, 0, 0);
+    SetTimesPerSecond = 0.0;
+    RepeatTimes = 1;
+    SetInfinite = false;
+    Uses = 0;
+    InfiniteUses = true;
+    OnStayTimer = 0.0;
+    InteractDistance = 0;
+    StopOnConstrains = false;
+    ForwardOrReverse = "Both";
+
+    Description = "Use in tandem with other compatible Signal components for specific operation and activation. Make sure the component has reverse enabled if needed.";
+    ReceiverObjectIDsTooltip = "ID  for the receiving objects, use space to separate multiple receivers.";
+    SignalTriggerTooltip = "How the signal is activated. (OnGetHit only works with cubes and Interact is not included for 'Any')";
+    ComponentNameTooltip = "What component to send the signal to";
+    SetXYZTooltip = "Only modifies original values if set to anything but (0, 0, 0)"
+    SetTimesPerSecondTooltip = "Modify the speed value of target object, is ignored if value is 0";
+    UsesTooltip = "How many times this signal can be used";
+    StopOnConstrainsTooltip = "Receiver object will stop at start and end position. Use for things like doors.";
+    ForwardOrReverseTooltip = "Whether the signal can only make the object go in one direction or both";
+    OnStayTimerTooltip = "If OnCollisionStay trigger is selected. Will use the time input before signal is sent.";
+
+    SetEasingDropbox = "Original, Linear, EaseIn, EaseOut, EaseInOut, BackIn, BackOut, BackInOut";
+    SignalTriggerDropbox = "Any, OnCollisionEnter, OnCollisionStay, OnCollisionExit, OnGetHit, OnGetHooked, Interact";
+    ComponentNameDropbox = "SignalArcMover, SignalMover, SignalRotator, SignalScaler";
+    ForwardOrReverseDropbox = "Both, Forward, Reverse";
+
+    _OnStayTimer = 0.0;
+    _HumanInRange = null;
+
+    _Receivers = List();
+    _Components = List();
+    function Init()
+    {
+        self._OnStayTimer = self.OnStayTimer;
+        ReceiverIDs = String.Split(self.ReceiverObjectIDs, " ");
+        for (i in Range(0, ReceiverIDs.Count, 1))
+        {
+            self._Receivers.Add(Map.FindMapObjectByID(Convert.ToInt(ReceiverIDs.Get(i))));
+            self._Components.Add(self._Receivers.Get(i).GetComponent(self.ComponentName));
+        }
+        if (self.SignalTrigger == "OnGetHit" || self.SignalTrigger == "Any")
+        {
+            self.MapObject.AddBoxCollider("Physical", "Hitboxes", Vector3(0,self.MapObject.Scale.Y * 5, 0), Vector3(self.MapObject.Scale.X * 10,self.MapObject.Scale.Y * 10,self.MapObject.Scale.Z * 10));
+        }
+        if (self.SignalTrigger == "Interact")
+        {
+            self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,self.MapObject.Scale.Y * 5,0), Vector3(self.MapObject.Scale.X * 10 + self.InteractDistance,self.MapObject.Scale.Y * 10 + self.InteractDistance,self.MapObject.Scale.Z * 10 + self.InteractDistance));
+        }
+    }
+    function OnCollisionEnter(other)
+    {
+        if (self.SignalTrigger == "OnCollisionEnter" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnCollisionStay(other)
+    {
+        if (self.SignalTrigger == "OnCollisionStay" || self.SignalTrigger == "Any")
+        {
+            if (self._OnStayTimer <= 0.0)
+            {
+                for (i in Range(0, self._Receivers.Count, 1))
+                {
+                    self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+                }
+            self._OnStayTimer = self.OnStayTimer;
+            }
+            else
+            {
+                self._OnStayTimer = self._OnStayTimer - Time.TickTime;
+            }
+        }
+        if (self.SignalTrigger == "Interact" && other.Type == "Human" && other.IsMine && (self.Uses > 0 || self.InfiniteUses))
+        {
+            self._HumanInRange = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to interact", 0.1);
+        }
+    }
+    function OnCollisionExit(other)
+    {
+        self._OnStayTimer = self.OnStayTimer;
+        self._HumanInRange = null;
+        if (self.SignalTrigger == "OnCollisionExit" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnGetHit(character, name, damage, type)
+    {
+        if (self.SignalTrigger == "OnGetHit" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnGetHooked(Human, HookPos, LeftHook)
+    {
+        if (self.SignalTrigger == "OnGetHooked" || self.SignalTrigger == "Any")
+        {
+            for (i in Range(0, self._Receivers.Count, 1))
+            {
+                self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+            }
+        }
+    }
+    function OnFrame()
+    {
+        if (self._HumanInRange != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact") && (self.Uses > 0 || self.InfiniteUses))
+            {
+                for (i in Range(0, self._Receivers.Count, 1))
+                {
+                    self.SendSignal(self._Receivers.Get(i), self._Components.Get(i));
+                }
+            }
+        }
+    }
+    function SendSignal(Receiver, Component)
+    {
+        if ((self.Uses > 0 || self.InfiniteUses) && !Component._Running)
+        {
+            if (!self.InfiniteUses)
+            {
+                self.Uses = self.Uses - 1;
+            }
+            if (self.ComponentName == "SignalArcMover")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Position != (Component._OriginalPosition + Component.TargetPosition) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Position != Component._OriginalPosition && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.TargetPosition = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                    Receiver.Active = true;
+                }
+            }
+            if (self.ComponentName == "SignalMover")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Position != (Component._OriginalPosition + Component.TargetPosition) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Position != Component._OriginalPosition && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.TargetPosition = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                    Receiver.Active = true;
+                }
+            }
+            elif (self.ComponentName == "SignalRotator")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Rotation != (Component._OriginalRotation + Component.Rotation) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Rotation != Component._OriginalRotation && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.Rotation = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                    Receiver.Active = true;
+                }   
+            }
+            elif (self.ComponentName == "SignalScaler")
+            {
+                if (self.ForwardOrReverse == "Forward")
+                {
+                    if (Component.MapObject.Scale != Vector3.Multiply(Component._OriginalScale, Component.MultiplyScale) && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ForwardTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Reverse")
+                {
+                    if (Component.MapObject.Scale != Component._OriginalScale && self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                    elif (!self.StopOnConstrains)
+                    {
+                        Component.Activate = true;
+                        Component._ReverseTimes = self.RepeatTimes;
+                    }
+                }
+                elif (self.ForwardOrReverse == "Both")
+                {
+                    Component.Activate = true;
+                    Component._RepeatTimes = self.RepeatTimes;
+                }
+                if (Component.Activate)  
+                {
+                    if (self.SetXYZ != Vector3(0, 0, 0))
+                    {
+                        Component.MultiplyScale = self.SetXYZ;
+                    }
+                    if (self.SetEasing != "Original")
+                    {
+                        Component.Easing = self.SetEasing;
+                    }
+                    if (self.SetTimesPerSecond != 0.0)
+                    {
+                        Component._TimesPerSecond = self.SetTimesPerSecond;
+                    }
+                    Receiver.Active = true;
+                }
+            }
+        }
+    }  
+}
+
+component Rope
+{
+    Activate = true;
+    Anchor1ID = 0;
+    Anchor2ID = 0;
+    IgnorePosition = false;
+    IgnoreRotation = false;
+    IgnoreScale = false;
+    Interpolate = false;
+    RopeGeometry = "Cube";
+
+    Description = "Creates a rope that sticks between Anchor1 and Anchor2";
+    ActivateTooltip = "Control with custom logic to Enable/Disable";
+
+    RopeGeometryDropbox = "Cube, Cylinder";
+
+    _Anchor1 = null;
+    _Anchor2 = null;
+    _ScaleMultiplier = 0.0;
+
+    function Init()
+    {
+        self._Anchor1 = Map.FindMapObjectByID(self.Anchor1ID);
+        self._Anchor2 = Map.FindMapObjectByID(self.Anchor2ID);
+        if (self.RopeGeometry == "Cube")
+        {
+            self._ScaleMultiplier = 0.1;
+        }
+        elif (self.RopeGeometry == "Cylinder")
+        {
+            self._ScaleMultiplier = 0.05;
+        }
+    }
+    function OnTick()
+    {
+        if (!self.Interpolate && self.Activate)
+        {
+            self.Calculate(self._Anchor1.Position, self._Anchor2.Position);
+        }
+    }
+    function OnFrame()
+    {
+        if (self.Interpolate && self.Activate)
+        {
+            self.Calculate(self._Anchor1.Position, self._Anchor2.Position);
+        }
+    }
+    function Calculate(Anchor1, Anchor2)
+    {
+        if (!self.IgnorePosition)
+        {
+            self.MapObject.Position = (Anchor1 + Anchor2) * 0.5;
+        }
+        if (!self.IgnoreRotation)
+        {
+            self.MapObject.Up = Anchor1 - self.MapObject.Position;
+        }
+        if (!self.IgnoreScale)
+        {
+            self.MapObject.Scale = Vector3(self.MapObject.Scale.X, Vector3.Distance(Anchor1, Anchor2) * self._ScaleMultiplier, self.MapObject.Scale.Z);
         }
     }
 }

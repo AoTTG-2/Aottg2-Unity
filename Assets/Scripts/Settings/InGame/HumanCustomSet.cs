@@ -1,5 +1,6 @@
 ﻿using Settings;
 using UnityEngine;
+using Characters;
 
 namespace Settings
 {
@@ -16,6 +17,11 @@ namespace Settings
         public IntSetting Cape = new IntSetting(0);
         public IntSetting Logo = new IntSetting(0);
         public ColorSetting HairColor = new ColorSetting();
+        public ColorSetting ShirtColor = new ColorSetting();
+        public ColorSetting StrapsColor = new ColorSetting();
+		public ColorSetting PantsColor = new ColorSetting();
+		public ColorSetting JacketColor = new ColorSetting();
+		public ColorSetting BootsColor = new ColorSetting();		
 
         // stats
         public IntSetting Speed = new IntSetting(110, minValue: 100, maxValue: 150);
@@ -25,7 +31,13 @@ namespace Settings
 
         protected override bool Validate()
         {
-            return Speed.Value + Gas.Value + Blade.Value + Acceleration.Value <= 450;
+            if (Speed.Value + Gas.Value + Blade.Value + Acceleration.Value > 450)
+                return false;
+            if (Sex.Value == 0 && Costume.Value >= HumanSetup.CostumeMCount)
+                return false;
+            if (Sex.Value == 1 && Costume.Value >= HumanSetup.CostumeFCount)
+                return false;
+            return true;
         }
     }
 

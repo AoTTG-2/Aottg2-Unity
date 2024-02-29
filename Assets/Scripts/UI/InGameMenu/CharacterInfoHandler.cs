@@ -49,12 +49,7 @@ namespace UI
                     (showHealthMode == ShowMode.Others && !character.IsMainCharacter()));
                 bool toggleName = showName && !character.AI && !(character is BasicTitan);
                 bool toggleHealth = showHealth && character.MaxHealth > 1 && character.CurrentHealth < character.MaxHealth;
-                if (character.IsMainCharacter() && camera._cameraDistance <= 0f)
-                {
-                    toggleName = false;
-                    toggleHealth = false;
-                }
-                if (_inGameManager.Restarting)
+                if (_inGameManager.Restarting || SettingsManager.InGameCurrent.Misc.RealismMode.Value || (character.IsMainCharacter() && camera._cameraDistance <= 0f))
                     toggleName = toggleHealth = false;
                 if ((!toggleName && !toggleHealth) || inMenu)
                 {

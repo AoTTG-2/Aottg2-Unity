@@ -7,6 +7,7 @@
         public KeybindSetting AttackBody = new KeybindSetting(new string[] { "Mouse1", "None" });
         public KeybindSetting AttackSlap = new KeybindSetting(new string[] { "Q", "None" });
         public KeybindSetting AttackGrab = new KeybindSetting(new string[] { "E", "None" });
+        public KeybindSetting AttackRockThrow = new KeybindSetting(new string[] { "R", "None" });
         public KeybindSetting Kick = new KeybindSetting(new string[] { "LeftControl", "None" });
         public KeybindSetting Jump = new KeybindSetting(new string[] { "Space", "None" });
         public KeybindSetting Sit = new KeybindSetting(new string[] { "X", "None" });

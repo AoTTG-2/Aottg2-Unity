@@ -2,6 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
+using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
@@ -11,10 +12,24 @@ namespace CustomLogic
 
         public CustomLogicColorBuiltin(List<object> parameterValues) : base("Color")
         {
-            if (parameterValues.Count == 0)
-                return;
-            Value = new Color255((int)parameterValues[0], (int)parameterValues[1], 
-                (int)parameterValues[2], (int)parameterValues[3]);
+            var color = new Color255();
+            
+            if (parameterValues.Count == 1)
+            {
+                if (ColorUtility.TryParseHtmlString((string)parameterValues[0], out var c))
+                    color = new Color255(c);
+            }
+            else if (parameterValues.Count == 3)
+            {
+                color = new Color255((int)parameterValues[0], (int)parameterValues[1], (int)parameterValues[2]);
+            }
+            else if (parameterValues.Count == 4)
+            {
+                color = new Color255((int)parameterValues[0], (int)parameterValues[1], 
+                    (int)parameterValues[2], (int)parameterValues[3]);
+            }
+
+            Value = color;
         }
 
         public CustomLogicColorBuiltin(Color255 value) : base("Color")
@@ -83,6 +98,11 @@ namespace CustomLogic
                 return false;
             var other = ((CustomLogicColorBuiltin)obj).Value;
             return Value.R == other.R && Value.G == other.G && Value.B == other.B && Value.A == other.A;
+        }
+
+        public override string ToString()
+        {
+            return $"({Value.R}, {Value.G}, {Value.B}, {Value.A})";
         }
 
         public override CustomLogicStructBuiltin Copy()

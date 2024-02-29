@@ -27,7 +27,6 @@ namespace Characters
         public List<Collider> ToggleColliders = new List<Collider>();
         public List<BaseHitbox> Hitboxes = new List<BaseHitbox>();
         public List<Collider> Hurtboxes = new List<Collider>();
-        public List<SkinnedMeshRenderer> SkinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 
         public BaseTitanComponentCache(GameObject owner): base(owner)
         {
@@ -76,10 +75,6 @@ namespace Characters
             foreach (BaseHitbox hitbox in owner.GetComponentsInChildren<BaseHitbox>())
             {
                 Hitboxes.Add(hitbox);
-            }
-            foreach (SkinnedMeshRenderer renderer in owner.GetComponentsInChildren<SkinnedMeshRenderer>())
-            {
-                SkinnedMeshRenderers.Add(renderer);
             }
         }
     }

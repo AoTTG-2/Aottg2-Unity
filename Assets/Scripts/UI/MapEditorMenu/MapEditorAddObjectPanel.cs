@@ -16,8 +16,8 @@ namespace UI
     class MapEditorAddObjectPanel : CategoryPanel
     {
         protected override bool ScrollBar => true;
-        protected const int Columns = 7;
-        protected override float VerticalSpacing => 10f;
+        protected const int Columns = 8;
+        protected override float VerticalSpacing => 12f;
         protected override int HorizontalPadding => 15;
         protected override int VerticalPadding => 10;
 

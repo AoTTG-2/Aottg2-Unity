@@ -2,6 +2,7 @@
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using Settings;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
@@ -131,6 +132,17 @@ namespace CustomLogic
                     return "<" + style + ">" + text + "</" + style + ">";
                 }
                 return "<" + style + "=" + args + ">" + text + "</" + style + ">";
+            }
+            if (name == "GetLocale")
+            {
+                string cat = (string)parameters[0];
+                string sub = (string)parameters[1];
+                string key = (string)parameters[2];
+                return UIManager.GetLocale(cat, sub, key);
+            }
+            if (name == "GetLanguage")
+            {
+                return SettingsManager.GeneralSettings.Language.Value;
             }
             return base.CallMethod(name, parameters);
         }

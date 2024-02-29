@@ -10,7 +10,7 @@ Scene,Geometry/Cuboid,5,0,1,1,0,0,Barrier,0,0,-750,0,0,0,1000,1000,5,Physical,Ch
 Scene,Geometry/Cuboid,6,0,1,1,0,0,Barrier,0,1000,0,0,0,0,1000,5,1000,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Nature/Tree11,11,0,1,1,1,0,Tree11,-667.1373,4.897892,-531.3044,0,336.9099,0,0.9795783,0.9795783,0.9795783,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,156,0,1,1,1,0,Human SpawnPoint,-211.6892,107.4984,-476.8173,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
-Scene,Interact/Supply1,157,0,1,1,1,0,Supply1,-104.793,128.3335,-476.1255,0,190,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,157,0,1,1,1,0,Supply2,-104.793,128.3335,-476.1255,0,190,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Nature/Tree12,14,0,1,1,1,0,Tree12,-665.1398,4.565277,-222.7704,0,120.8932,0,0.9130554,0.9130554,0.9130554,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree11,15,0,1,1,1,0,Tree11,-703.8373,5.966592,-97.13446,0,300.031,0,1.193318,1.193318,1.193318,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,158,0,1,1,1,0,Human SpawnPoint,-105.8041,128.889,-484.809,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
@@ -71,7 +71,7 @@ Scene,Nature/Tree11,73,0,1,1,1,0,Tree11,-108.0089,5.817698,-314.0028,0,155.996,0
 Scene,Nature/Tree12,74,0,1,1,1,0,Tree12,-81.37998,4.60114,-224.8264,0,55.87875,0,0.920228,0.920228,0.920228,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree11,75,0,1,1,1,0,Tree11,-100.7353,4.596112,-122.7736,0,341.4865,0,0.9192225,0.9192225,0.9192225,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree11,76,0,1,1,1,0,Tree11,-60.04099,5.747337,-1.960576,0,106.3229,0,1.149467,1.149467,1.149467,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply1,155,0,1,1,1,0,Supply1,-217.0628,106.9042,-475.7987,0,99.99999,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,155,0,1,1,1,0,Supply2,-217.0628,106.9042,-475.7987,0,99.99999,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,None,154,0,1,1,1,0,AnnieSpawnPoint,-68.92361,2,214.505,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree11,79,0,1,1,1,0,Tree11,-122.2214,4.73065,342.0558,0,305.2852,0,0.94613,0.94613,0.94613,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,80,0,1,1,1,0,Tree12,-63.80658,4.225136,498.6046,0,186.024,0,0.8450273,0.8450273,0.8450273,Physical,Entities,Default,Default|255/255/255/255,;

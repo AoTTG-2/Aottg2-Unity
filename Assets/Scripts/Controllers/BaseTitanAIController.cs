@@ -129,6 +129,7 @@ namespace Controllers
             _enemy = enemy;
             if (focusTime == 0f)
                 focusTime = FocusTime;
+            _focusTimeLeft = focusTime;
         }
 
         protected override void Update()

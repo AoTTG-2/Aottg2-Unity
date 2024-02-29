@@ -16594,6 +16594,7 @@ MonoBehaviour:
   _attackRelease: 0
   _attackButtonRelease: 0
   Speaker: {fileID: 7643208462832753933}
+  _reelInWaitForRelease: 0
 --- !u!114 &11414280
 MonoBehaviour:
   m_ObjectHideFlags: 0

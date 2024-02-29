@@ -49,7 +49,7 @@ namespace ApplicationManagers
             else
                 SceneManager.LoadScene(0);
             FullscreenHandler.UpdateFPS();
-            CharacterData.Init(); // remove this after testing is done
+            CharacterData.Init();
         }
 
         private static void CreateGameManager()

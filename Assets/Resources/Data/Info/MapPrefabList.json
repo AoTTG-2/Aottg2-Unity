@@ -116,8 +116,8 @@
 			{"Name": "Wall4"},
 			{"Name": "WallA1"},
 			{"Name": "WallA2"},
-			{"Name": "WallGateA1", "Static": false, "Networked": true, "Components": ["WallGateA|"]},
-			{"Name": "WallGateA2", "Static": false, "Networked": true, "Components": ["WallGateA|"]},
+			{"Name": "WallGateA1", "Static": false, "Networked": true, "Components": ["WallGateA1|"]},
+			{"Name": "WallGateA2"},
 			{"Name": "Windmill1"},
 			{"Name": "Windmill2"}
 		]
@@ -301,7 +301,14 @@
 			{"Name": "HQ5"},
 			{"Name": "HQ6"},
 			{"Name": "Utgard1"},
-			{"Name": "Utgard2"}
+			{"Name": "Utgard2"},
+			{"Name": "Utgard3"},
+		]
+	},
+	"Terrain": {
+		"Info": {"Type": "Scene", "AssetPrefix": "Terrain/", "AssetSameAsName": true},
+		"Prefabs": [
+			{"Name": "OutsideTerrain1"}
 		]
 	},
 	"FX": {

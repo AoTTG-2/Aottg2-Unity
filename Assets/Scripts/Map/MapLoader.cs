@@ -1,5 +1,6 @@
 ﻿using ApplicationManagers;
 using Events;
+using Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
@@ -24,6 +25,8 @@ namespace Map
         public static int HighestObjectId;
         private static MapScriptBasicMaterial _invisibleMaterial;
         public static List<string> Errors = new List<string>();
+        public static bool HasWeather;
+        public static WeatherSet Weather;
         private static GameObject _background;
 
         public static void Init()
@@ -40,6 +43,8 @@ namespace Map
         private static void OnPreLoadScene(SceneName sceneName)
         {
             _instance.StopAllCoroutines();
+            HasWeather = false;
+            Weather = null;
         }
 
         public static int GetNextObjectId()
@@ -48,9 +53,8 @@ namespace Map
             return HighestObjectId;
         }
 
-        public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, bool editor = false)
+        public static void StartLoadObjects(List<string> customAssets, List<MapScriptBaseObject> objects, MapScriptOptions options, WeatherSet weather, bool editor = false)
         {
-            Debug.Log(objects.Count);
             Errors.Clear();
             _customMaterialCache.Clear();
             _defaultMaterialCache.Clear();
@@ -62,6 +66,8 @@ namespace Map
             _assetCache.Clear();
             Tags.Clear();
             HighestObjectId = 1;
+            HasWeather = !editor && options != null && options.HasWeather;
+            Weather = weather;
             /*
             if (options != null)
                 LoadBackground(options.Background, options.BackgroundPosition, options.BackgroundRotation);
@@ -349,7 +355,6 @@ namespace Map
 
         public static void SetDefaultTiling(string asset, Material mat, Vector2 tiling)
         {
-            mat.mainTextureScale = new Vector2(tiling.x, tiling.y);
             if (asset == "FX/WaterCube1")
             {
                 mat.SetVector("_Tiling", tiling);

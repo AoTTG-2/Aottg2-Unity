@@ -8,6 +8,7 @@ namespace Utility
     {
         public static string UI = "UI";
         public static string Characters = "Characters";
+        public static string CharacterData = "Data/CharacterData";
         public static string Info = "Data/Info";
         public static string BuiltinMaps = "Data/Maps";
         public static string Modes = "Data/Modes";

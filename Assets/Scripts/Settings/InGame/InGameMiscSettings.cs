@@ -20,6 +20,7 @@
         public BoolSetting AllowStock = new BoolSetting(true);
         public BoolSetting ClearKDROnRestart = new BoolSetting(false);
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
+        public BoolSetting RealismMode = new BoolSetting(false);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
     }
 

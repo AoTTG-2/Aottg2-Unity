@@ -20,6 +20,7 @@ namespace UI
             string sub = "Misc";
             ElementStyle style = new ElementStyle(titleWidth: 240f, themePanel: ThemePanel);
             float inputWidth = 120f;
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismMode, UIManager.GetLocale(cat, sub, "RealismMode"), UIManager.GetLocale(cat, sub, "RealismModeTooltip"));
             ElementFactory.CreateToggleGroupSetting(DoublePanelLeft, style, settings.PVP, UIManager.GetLocale(cat, sub, "PVP"), UIManager.GetLocaleArray(cat, sub, "PVPOptions" ));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.EndlessRespawnEnabled, UIManager.GetLocale(cat, sub, "EndlessRespawnEnabled"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), 
