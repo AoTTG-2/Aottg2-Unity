@@ -1090,7 +1090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 401050}
   - component: {fileID: 13601012}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3422,7 +3422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 401168}
   - component: {fileID: 13601016}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: NapeHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1971,11 +1971,11 @@ namespace Characters
                         rangeStat = 3;
                         cdStat = 1;
                     }
-                    float travelTime = ((rangeStat * 60f) + 200f) / ((speedStat * 60f) + 200f);
+                    float travelTimeHumanSpecials = ((rangeStat * 60f) + 200f) / ((speedStat * 60f) + 200f);
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTimeHumanSpecials, 0f);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else

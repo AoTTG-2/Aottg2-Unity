@@ -51,7 +51,7 @@ namespace Characters
                     c.enabled = false;
                     c.isTrigger = true;
                 }
-                if (name == "NapeHurtbox")
+                if (name == "neck")
                     NapeHurtbox = c;
                 else if (name == "EyesHurtbox")
                     EyesHurtbox = c;
