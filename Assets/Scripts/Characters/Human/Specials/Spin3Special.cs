@@ -14,7 +14,7 @@ namespace Characters
         protected Vector3 _aimPoint;
         protected bool _pulled;
         protected bool _startSpin;
-        protected float PullForce = 30f;
+        protected float PullForce = 13f;
 
         public Spin3Special(BaseCharacter owner) : base(owner)
         {
@@ -35,6 +35,7 @@ namespace Characters
 
         protected override void ActiveFixedUpdate()
         {
+            Debug.Log(_human.HookRight.IsActive);
             if (!_startSpin)
             {
                 if (_activeTimeLeft <= 1f)
@@ -72,6 +73,7 @@ namespace Characters
                     _stage += 1;
                 }
             }
+
             if (_human.HookRight.HasHook())
             {
                 var state = _human.HookRight.GetHookState();
@@ -81,7 +83,7 @@ namespace Characters
                     {
                         _pulled = true;
                         var position = _human.HookRight.GetHookPosition();
-                        _human.Cache.Rigidbody.AddForce((position - _human.Cache.Rigidbody.position).normalized * PullForce, ForceMode.VelocityChange);
+                        _human.Cache.Rigidbody.AddForce((position - _human.Cache.Rigidbody.position).normalized * PullForce, ForceMode.Impulse);
                     }
                 }
             }
