@@ -37,7 +37,7 @@ namespace Characters
         {
             if (!_startSpin)
             {
-                if (_activeTimeLeft <= 0.8f)
+                if (_activeTimeLeft <= 1f)
                 {
                     _human.StartSpecialAttack(HumanAnimations.SpecialLevi);
                     _startSpin = true;
