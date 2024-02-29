@@ -35,7 +35,6 @@ namespace Characters
 
         protected override void ActiveFixedUpdate()
         {
-            Debug.Log(_human.HookRight.IsActive);
             if (!_startSpin)
             {
                 if (_activeTimeLeft <= 1f)
