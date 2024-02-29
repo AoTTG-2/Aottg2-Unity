@@ -104,7 +104,6 @@ namespace Characters
                     _originalCapsuleValue = capsule.height;
                     var nape = (CapsuleCollider)BasicCache.NapeHurtbox;
                     nape.radius *= 1f;
-                    Gizmos.DrawWireSphere(capsule.transform.position, nape.radius);
                 }
                 else
                     _originalCapsuleValue = capsule.radius;
