@@ -40,6 +40,7 @@ namespace Characters
                 if (_activeTimeLeft <= 1f)
                 {
                     _human.StartSpecialAttack(HumanAnimations.SpecialLevi);
+                    _human.Cache.Rigidbody.velocity += (Vector3)(Vector3.up * 5f);
                     _startSpin = true;
                 }
                 return;
