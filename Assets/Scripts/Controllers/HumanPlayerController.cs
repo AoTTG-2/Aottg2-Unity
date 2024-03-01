@@ -55,6 +55,7 @@ namespace Controllers
             base.Update();
         }
 
+        
         protected override void UpdateMovementInput(bool inMenu)
         {
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
@@ -189,8 +190,8 @@ namespace Controllers
             }
             _human.HookLeft.HookBoth = hookBoth && !hookLeft;
             _human.HookRight.HookBoth = hookBoth && !hookRight;
-            _human.HookLeft.SetInput(canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
-            _human.HookRight.SetInput(canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
+            _human.HookLeft.SetInput(!_human.GetLeviModeStatus() && canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
+            _human.HookRight.SetInput(!_human.GetLeviModeStatus() && canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
             if (_human.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
             {
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
