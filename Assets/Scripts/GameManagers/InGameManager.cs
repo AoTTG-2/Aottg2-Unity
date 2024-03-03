@@ -18,6 +18,7 @@ using System;
 using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
+using System.Linq;
 
 namespace GameManagers
 {
@@ -39,6 +40,8 @@ namespace GameManagers
         public static Dictionary<int, PlayerInfo> AllPlayerInfo = new Dictionary<int, PlayerInfo>();
         public static HashSet<int> MuteEmote = new HashSet<int>();
         public static HashSet<int> MuteText = new HashSet<int>();
+        public static HashSet<int> MuteVoiceChat = new HashSet<int>();
+        public static Dictionary<int, float> VoiceChatVolumeMultiplier = new Dictionary<int, float>();
         public static PlayerInfo MyPlayerInfo = new PlayerInfo();
         private static bool _needSendPlayerInfo;
         public bool HasSpawned = false;
@@ -65,6 +68,11 @@ namespace GameManagers
                     characters.Add(shifter);
             }
             return characters;
+        }
+
+        public HashSet<BaseCharacter> GetAllNonAICharacters()
+        {
+            return GetAllCharacters().Where(x => !x.AI).ToHashSet();
         }
 
         public void PauseGame()
@@ -298,6 +306,17 @@ namespace GameManagers
             ChatManager.AddLine(line);
             if (CustomLogicManager.Evaluator != null)
                 CustomLogicManager.Evaluator.OnPlayerLeave(player);
+
+            // Clear the mute lists for the player that left (only if they are in the lists)
+            if (MuteEmote.Contains(player.ActorNumber))
+                MuteEmote.Remove(player.ActorNumber);
+            if (MuteText.Contains(player.ActorNumber))
+                MuteText.Remove(player.ActorNumber);
+            if (MuteVoiceChat.Contains(player.ActorNumber))
+                MuteVoiceChat.Remove(player.ActorNumber);
+            if (VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
+                VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
+
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)

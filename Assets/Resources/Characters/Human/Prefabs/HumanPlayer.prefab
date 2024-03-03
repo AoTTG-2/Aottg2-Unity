@@ -16335,8 +16335,6 @@ GameObject:
   - component: {fileID: 11414282}
   - component: {fileID: 11414280}
   - component: {fileID: 3902152229338984631}
-  - component: {fileID: -8068924427270291233}
-  - component: {fileID: 2691351268378165370}
   m_Layer: 0
   m_Name: HumanPlayer
   m_TagString: Untagged
@@ -16370,7 +16368,6 @@ Transform:
   - {fileID: 401898}
   - {fileID: 1295463296419230288}
   - {fileID: 7189255670876946091}
-  - {fileID: 424188209751530990}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &11101826
@@ -16556,6 +16553,11 @@ MonoBehaviour:
   JustGrounded: 0
   TargetAngle: 0
   HasDirection: 0
+  PVV: {fileID: 0}
+  Recorder: {fileID: 0}
+  Speaker: {fileID: 0}
+  AudioSource: {fileID: 0}
+  SpeakerSpeaker: {fileID: 0}
   MountState: 0
   CarryState: 0
   Horse: {fileID: 0}
@@ -16593,7 +16595,6 @@ MonoBehaviour:
   RunAnimation: 
   _attackRelease: 0
   _attackButtonRelease: 0
-  Speaker: {fileID: 7643208462832753933}
   _reelInWaitForRelease: 0
 --- !u!114 &11414280
 MonoBehaviour:
@@ -16632,61 +16633,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-8068924427270291233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91175dcc15224463780e01a8a98b1b60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  voiceDetection: 1
-  voiceDetectionThreshold: 0.01
-  voiceDetectionDelayMs: 500
-  interestGroup: 0
-  useTargetPlayers: 0
-  targetPlayers: 
-  debugEchoMode: 0
-  reliableMode: 0
-  encrypt: 0
-  transmitEnabled: 1
-  samplingRate: 24000
-  frameDuration: 20000
-  bitrate: 30000
-  sourceType: 0
-  microphoneType: 0
-  audioClip: {fileID: 0}
-  loopAudioClip: 1
-  recordingEnabled: 1
-  audioSessionParameters:
-    Category: 4
-    Mode: 1
-    CategoryOptions: 0800000004000000
-  editorAudioSessionPreset: 1
-  androidMicrophoneSettings:
-    EnableAEC: 1
-    EnableAGC: 1
-    EnableNS: 1
-  stopRecordingWhenPaused: 0
-  useOnAudioFilterRead: 0
-  useMicrophoneTypeFallback: 1
-  recordWhenJoined: 0
---- !u!114 &2691351268378165370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4310715724008364727
 GameObject:
   m_ObjectHideFlags: 0
@@ -16749,124 +16695,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 401914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3321840625554123212
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 401914}
-    m_Modifications:
-    - target: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_Name
-      value: Speaker
-      objectReference: {fileID: 0}
-    - target: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_TagString
-      value: Speaker
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.027
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.105
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: Priority
-      value: 191
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: MaxDistance
-      value: 2500
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: MinDistance
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: DopplerLevel
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 923800490016396861}
-  m_SourcePrefab: {fileID: 100100000, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
---- !u!4 &424188209751530990 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3168995504805344290, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-  m_PrefabInstance: {fileID: 3321840625554123212}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3382990966606385358 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 66217189269616898, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-  m_PrefabInstance: {fileID: 3321840625554123212}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &923800490016396861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3382990966606385358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd7fea91fe63f4e1b884ef1e16a975c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playDelayConfig:
-    Low: 200
-    High: 200
-    Max: 1000
-    SpeedUpPerc: 5
-  restartOnDeviceChange: 1
---- !u!82 &7643208462832753933 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 4903203844386370753, guid: 759019964b6d4bd45b15edd4da550043, type: 3}
-  m_PrefabInstance: {fileID: 3321840625554123212}
-  m_PrefabAsset: {fileID: 0}

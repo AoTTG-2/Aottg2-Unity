@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Linq;
+using GameManagers;
 
 namespace UI
 {
@@ -41,6 +42,10 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowShifterSpecials, UIManager.GetLocale(cat, sub, "AllowShifterSpecials"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.ClearKDROnRestart, UIManager.GetLocale(cat, sub, "ClearKDROnRestart"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GlobalMinimapDisable, UIManager.GetLocale(cat, sub, "GlobalMinimapDisable"));
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.VoiceChatMode, UIManager.GetLocale(cat, sub, "VoiceChatMode"), 
+                               VoiceChatManager.VoiceChatModes, elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMaxDistance, UIManager.GetLocale(cat, sub, "ProximityMaxDistance"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMinDistance, UIManager.GetLocale(cat, sub, "ProximityMinDistance"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Motd, UIManager.GetLocale(cat, sub, "MOTD"), elementWidth: inputWidth);
         }
     }

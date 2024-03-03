@@ -123,11 +123,6 @@ namespace Characters
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
 
 
-        // voice
-        [SerializeField]
-        private AudioSource Speaker;
-
-
         [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
         {
@@ -706,7 +701,7 @@ namespace Characters
             Destroy(gameObject.GetComponent<Recorder>());
             if (IsMine()) 
             {
-                VoiceChatManager.PV = null;
+                VoiceChatManager.PVV = null;
                 VoiceChatManager.character = null;
             }
         }
@@ -738,16 +733,11 @@ namespace Characters
 
         protected override void Start()
         {
-            Debug.Log("a");
             _inGameManager.Humans.Add(this);
             base.Start();
-            Speaker.volume = VoiceChatManager.GetVoiceChatVolume();
-            Speaker.spatialBlend = VoiceChatManager.GetTypeOfAudio();
             SetInterpolation(true);
             if (IsMine())
             {
-                VoiceChatManager.PV = GetComponent<PhotonVoiceView>();
-                VoiceChatManager.character = _inGameManager.CurrentCharacter;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
