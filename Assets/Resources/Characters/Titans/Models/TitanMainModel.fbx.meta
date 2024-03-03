@@ -20370,6 +20370,549 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|crawler.idle.new
+      takeName: Amarture_VER2|crawler.idle.new
+      internalID: -6504981585278724898
+      firstFrame: 0
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|arm_hurt_L
+      takeName: Amarture_VER2|arm_hurt_L
+      internalID: 4133291348228552116
+      firstFrame: 0
+      lastFrame: 70
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Amarture_VER2|arm_hurt_R
+      takeName: Amarture_VER2|arm_hurt_R
+      internalID: -8270989162095205966
+      firstFrame: 0
+      lastFrame: 70
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Amarture_VER2
+        weight: 1
+      - path: Amarture_VER2/Core
+        weight: 1
+      - path: Amarture_VER2/Core/Configure
+        weight: 1
+      - path: Amarture_VER2/Core/Configure/Configure_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head/Bone/Bone_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.001/hand.L.002/hand.L.003/hand.L.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.L/upper_arm.L/forearm.L/hand.L/hand.L.004/hand.L.005/hand.L.006/hand.L.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.001/hand.R.002/hand.R.003/hand.R.003_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/spine/chest/shoulder.R/upper_arm.R/forearm.R/hand.R/hand.R.004/hand.R.005/hand.R.006/hand.R.006_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.L/shin.L/foot.L/toe.L/toe.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Body/hip/thigh.R/shin.R/foot.R/toe.R/toe.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.asset.foot.IK.L.002/Controller.asset.foot.IK.L.001/Controller.foot.IK.L/kneel.L/kneel.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.L/Controller.Foot.L/Controller.Foot.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.asset.foot.IK.R.002/Controller.asset.foot.IK.R.001/Controller.foot.IK.R/kneel.R/kneel.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R
+        weight: 1
+      - path: Amarture_VER2/Core/Controller.Leg.R/Controller.Foot.R/Controller.Foot.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.L/IK_ElbowController.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_ElbowController.R/IK_ElbowController.R_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.L/BridgeHand.L/BridgeHand.L_end
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R
+        weight: 1
+      - path: Amarture_VER2/Core/IK_HandController.R/BridgeHand.R/BridgeHand.R_end
+        weight: 1
+      - path: body_0
+        weight: 1
+      - path: eyes_0
+        weight: 1
+      - path: head_0
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
