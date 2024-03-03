@@ -11868,7 +11868,7 @@ ModelImporter:
       takeName: Amarture_VER2|grab.core.L
       internalID: 0
       firstFrame: 0
-      lastFrame: 114
+      lastFrame: 140
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -12049,7 +12049,7 @@ ModelImporter:
       takeName: Amarture_VER2|grab.core.R
       internalID: 0
       firstFrame: 0
-      lastFrame: 114
+      lastFrame: 140
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
