@@ -36,7 +36,7 @@ namespace Settings
         {
             AudioListener.volume = Volume.Value;
             MusicManager.ApplySoundSettings();
-            VoiceChatManager.ApplySoundSettings();
+            VoiceChatManager.ApplySoundSettingsAll();
         }
     }
 }

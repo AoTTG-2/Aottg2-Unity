@@ -67,7 +67,7 @@ namespace GameManagers
             _instance = SingletonFactory.CreateSingleton(_instance);
         }
 
-        public static void SetupCharacterVoiceChat(BaseCharacter character)
+        public static void SetupMyCharacterVoiceChat(BaseCharacter character)
         {
             PVV = character.PVV;
             Recorder = character.Recorder;
@@ -84,10 +84,54 @@ namespace GameManagers
                 Recorder.VoiceDetectionDelayMs = 500;
             }
 
-            ApplySoundSettings();
+            ApplySoundSettings(character);
         }
 
-        public static void ApplySoundSettings() 
+        public static void ApplySoundSettings(BaseCharacter character)
+        {
+            if (character == null)
+            {
+                return;
+            }
+
+            if (character.IsMine())
+            {
+                // First change local player's sound settings (whether or not its transmitting, volume, etc)
+                if (Recorder != null)
+                {
+                    Recorder.TransmitEnabled = SettingsManager.SoundSettings.VoiceChat.Value != "Off";
+                    Recorder.VoiceDetection = SettingsManager.SoundSettings.VoiceChat.Value == "AutoDetect";
+                    Recorder.MicrophoneType = Recorder.MicType.Unity;
+                    Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                }
+            }
+
+            if (character.AudioSource != null)
+            {
+                if (SettingsManager.InGameCurrent.Misc.VoiceChatMode.Value == "Proximity")
+                {
+                    character.AudioSource.maxDistance = SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
+                    character.AudioSource.minDistance = SettingsManager.InGameCurrent.Misc.ProximityMinDistance.Value;
+                    character.AudioSource.spatialBlend = _proximitySpatialBlend;
+                }
+                else
+                {
+                    character.AudioSource.spatialBlend = 0.0f;
+                }
+
+                if (character.IsMine())
+                {
+                    character.AudioSource.volume = GetMyVoiceChatVolume();
+                }
+                else
+                {
+                    character.AudioSource.volume = GetVoiceChatVolume(character);
+                }
+            }
+
+        }
+
+        public static void ApplySoundSettingsAll() 
         {
             // Cannot apply the settings unless we are in a game.
             if (SceneLoader.CurrentGameManager == null || !(SceneLoader.CurrentGameManager is InGameManager))
@@ -95,42 +139,11 @@ namespace GameManagers
                 return;
             }
 
-            // First change local player's sound settings (whether or not its transmitting, volume, etc)
-            if (Recorder != null)
-            {
-                Recorder.TransmitEnabled = SettingsManager.SoundSettings.VoiceChat.Value != "Off";
-                Recorder.VoiceDetection = SettingsManager.SoundSettings.VoiceChat.Value == "AutoDetect";
-                Recorder.MicrophoneType = Recorder.MicType.Unity;
-                Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
-            }
-
             // Then change all players sound settings (volume, spatial blend, etc)
             var players = ((InGameManager)SceneLoader.CurrentGameManager).GetAllNonAICharacters();
             foreach (BaseCharacter player in players)
             {
-                if (player != null)
-                {
-                    if (SettingsManager.InGameCurrent.Misc.VoiceChatMode.Value == "Proximity")
-                    {
-                        player.AudioSource.maxDistance = SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
-                        player.AudioSource.minDistance = SettingsManager.InGameCurrent.Misc.ProximityMinDistance.Value;
-                        player.AudioSource.spatialBlend = _proximitySpatialBlend;
-                    }
-                    else
-                    {
-                        player.AudioSource.spatialBlend = 0.0f;
-                    }
-                    
-                    if (player.IsMine())
-                    {
-                        player.AudioSource.volume = GetMyVoiceChatVolume();
-                    }
-                    else
-                    {
-                        player.AudioSource.volume = GetVoiceChatVolume(player);
-                    }
-                    
-                }
+                ApplySoundSettings(player);
             }
         }
 

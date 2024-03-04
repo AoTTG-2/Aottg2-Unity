@@ -478,7 +478,11 @@ namespace Characters
                 // Set corresponding props in VoiceChatManager for my character.
                 if (IsMine())
                 {
-                    VoiceChatManager.SetupCharacterVoiceChat(this);
+                    VoiceChatManager.SetupMyCharacterVoiceChat(this);
+                }
+                else
+                {
+                    VoiceChatManager.ApplySoundSettings(this);
                 }
 
             }
@@ -569,7 +573,7 @@ namespace Characters
             Speaker = null;
             SpeakerSpeaker = null;
             // Update PhotonVoiceManager
-            VoiceChatManager.SetupCharacterVoiceChat(this);
+            VoiceChatManager.SetupMyCharacterVoiceChat(this);
         }
 
         protected virtual void LateUpdate()
