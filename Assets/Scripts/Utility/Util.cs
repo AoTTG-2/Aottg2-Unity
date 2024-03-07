@@ -276,5 +276,14 @@ namespace Utility
 
             return paginatedCommands;
         }
+        
+        public static Quaternion ConstrainedToX(Quaternion rotation) =>
+            Quaternion.Euler(rotation.eulerAngles.x, 0f,  0f);
+        
+        public static Quaternion ConstrainedToY(Quaternion rotation) =>
+            Quaternion.Euler(0f, rotation.eulerAngles.y,  0f);
+        
+        public static Quaternion ConstrainedToZ(Quaternion rotation) =>
+            Quaternion.Euler(0f, 0f,  rotation.eulerAngles.z);
     }
 }

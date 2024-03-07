@@ -466,7 +466,7 @@ namespace Characters
 
         public void TransformShifter(string shifter, float liveTime)
         {
-            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position);
+            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = CurrentGas;
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
             PhotonNetwork.Destroy(gameObject);
@@ -722,11 +722,12 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
+                TargetAngle = Cache.Transform.eulerAngles.y;
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
-                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.identity);
+                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
                 if (DebugTesting.DebugPhase)
