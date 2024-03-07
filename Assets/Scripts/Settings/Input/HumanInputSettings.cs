@@ -22,6 +22,7 @@
         public FloatSetting ReelOutScrollSmoothing = new FloatSetting(0.2f, minValue: 0f, maxValue: 1f);
         public BoolSetting SwapTSAttackSpecial = new BoolSetting(false);
         public BoolSetting AutoRefillGas = new BoolSetting(false);
+        public BoolSetting AutoUseGas = new BoolSetting(false);
         public BoolSetting ReelInHolding = new BoolSetting(true);
     }
 }
