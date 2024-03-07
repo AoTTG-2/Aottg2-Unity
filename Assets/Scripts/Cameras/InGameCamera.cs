@@ -132,9 +132,19 @@ namespace Cameras
             Cache.Transform.position = CustomLogicManager.CameraPosition;
             Cache.Transform.rotation = Quaternion.Euler(CustomLogicManager.CameraRotation);
         }
+
+        private void UpdateMapLights()
+        {
+            var transform = Cache.Transform;
+            foreach (var mapLight in MapLoader.MapLights)
+            {
+                mapLight.UpdateCull(transform);
+            }
+        }
         
         protected override void LateUpdate()
         {
+            UpdateMapLights();
             if (CustomLogicManager.Cutscene || CustomLogicManager.ManualCamera)
             {
                 SyncCustomPosition();

@@ -244,6 +244,7 @@
 		"Graphics.ShadowQuality": "Shadow quality",
 		"Graphics.ShadowQualityOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.ShadowDistance": "Shadow distance",
+		"Graphics.LightDistance": "Light distance",
 		"Graphics.AntiAliasing": "Anti-aliasing",
 		"Graphics.AntiAliasingOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.Anisotropic": "Anisotropic filtering",
@@ -480,7 +481,7 @@
 		"Top.CustomLogic": "Custom Logic",
 		"Top.CustomAssets": "Custom Assets",
 		"Top.Editor": "Editor",
-		"Top.Weather": "Weather",
+		"Top.Weather": "Weather"
 	},
 	"MapEditorSettings": {
 		"Top.GeneralButton": "General",

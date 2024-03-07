@@ -48,6 +48,7 @@ namespace CustomLogic
                     light.range = parameters[3].UnboxToFloat();
                     light.shadows = LightShadows.None;
                     light.renderMode = LightRenderMode.ForcePixel;
+                    MapLoader.RegisterMapLight(light);
                 }
                 else if (name == "Tag")
                 {
