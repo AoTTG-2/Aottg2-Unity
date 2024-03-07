@@ -45,26 +45,35 @@ namespace UI
             _player = player;
             _muteEmote.Value = InGameManager.MuteEmote.Contains(player.ActorNumber);
             _muteText.Value = InGameManager.MuteText.Contains(player.ActorNumber);
+            _muteVoice.Value = InGameManager.MuteVoiceChat.Contains(player.ActorNumber);
             SyncSettingElements();
+        }
+
+        protected void HandleMute(Player player, string type, bool mute, bool isMuted)
+        {
+            if (mute && !isMuted)
+            {
+                ChatManager.MutePlayer(player, type);
+            }
+            else if (!mute && isMuted)
+            {
+                ChatManager.UnmutePlayer(player, type);
+            }
         }
 
         protected void OnButtonClick(string name)
         {
             if (name == "Confirm")
             {
-                if (_muteEmote.Value)
-                    ChatManager.MutePlayer(_player, "Emote");
-                else
-                    ChatManager.UnmutePlayer(_player, "Emote");
-                if (_muteText.Value)
-                    ChatManager.MutePlayer(_player, "Text");
-                else
-                    ChatManager.UnmutePlayer(_player, "Text");
-                if (_muteVoice.Value)
-                    ChatManager.MutePlayer(_player, "Voice");
-                else
-                    ChatManager.UnmutePlayer(_player, "Voice");
+                bool prevMuteEmote = InGameManager.MuteEmote.Contains(_player.ActorNumber);
+                bool prevMuteText = InGameManager.MuteText.Contains(_player.ActorNumber);
+                bool prevMuteVoice = InGameManager.MuteVoiceChat.Contains(_player.ActorNumber);
+
+                HandleMute(_player, "emote", _muteEmote.Value, prevMuteEmote);
+                HandleMute(_player, "text", _muteText.Value, prevMuteText);
+                HandleMute(_player, "voice", _muteVoice.Value, prevMuteVoice);
                 ChatManager.SetPlayerVolume(_player, _voiceVolume.Value);
+
                 Hide();
             }
         }

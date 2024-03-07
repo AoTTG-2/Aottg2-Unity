@@ -29,15 +29,11 @@ namespace GameManagers
 {
     class VoiceChatManager : MonoBehaviour
     {
-
-
-
         private static bool _keepTalking;
         public static PhotonVoiceView PVV;
         public static Recorder Recorder;
         public static AudioSource AudioSource;
         public static BaseCharacter character;
-        private static MusicManager _instance;
         
         private static float _audioMultiplier = 2.5f;
         private static float _proximitySpatialBlend = 1.0f;
@@ -64,7 +60,13 @@ namespace GameManagers
 
         public static void Init()
         {
-            _instance = SingletonFactory.CreateSingleton(_instance);
+            // Create a PhotonVoiceClient if it doesn't exist
+            if (FindObjectOfType<PunVoiceClient>() == null)
+            {
+                var go = new GameObject("PunVoiceClient");
+                go.AddComponent<PunVoiceClient>();
+                DontDestroyOnLoad(go);
+            }
         }
 
         public static void SetupMyCharacterVoiceChat(BaseCharacter character)

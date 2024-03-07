@@ -442,7 +442,6 @@ namespace GameManagers
                 if (InGameManager.VoiceChatVolumeMultiplier[player.ActorNumber] == volume)
                     return;
             InGameManager.VoiceChatVolumeMultiplier[player.ActorNumber] = volume;
-            AddLine($"{player.GetStringProperty(PlayerProperty.Name)}'s voice volume has been set to {volume}.", ChatTextColor.System);
         }
 
         private static Player GetPlayer(string stringID)
