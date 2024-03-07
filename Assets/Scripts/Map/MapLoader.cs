@@ -312,13 +312,15 @@ namespace Map
 
         private static GameObject LoadSceneObject(MapScriptSceneObject obj, bool editor)
         {
-            GameObject go;
-            if (obj.Asset == "None")
-                go = new GameObject();
-            else
-                go = LoadPrefabCached(obj.Asset);
+            GameObject go = obj.Asset == "None"
+                ? new GameObject()
+                : LoadPrefabCached(obj.Asset);
+            
             if (editor)
-                SetPhysics(go, MapObjectCollideMode.Physical, MapObjectCollideWith.MapEditor, obj.PhysicsMaterial);
+            {
+                int colliderCount = SetPhysics(go, MapObjectCollideMode.Physical, MapObjectCollideWith.MapEditor, obj.PhysicsMaterial);
+                if (colliderCount == 0) go.AddComponent<MeshCollider>();
+            }
             else
                 SetPhysics(go, obj.CollideMode, obj.CollideWith, obj.PhysicsMaterial);
             SetMaterial(go, obj.Asset, obj.Material, obj.Visible, editor);
@@ -479,13 +481,15 @@ namespace Map
             }
         }
 
-        private static void SetPhysics(GameObject go, string collideMode, string collideWith, string physicsMaterial)
+        /// <returns>Number of colliders on <paramref name="go"/>.</returns>
+        private static int SetPhysics(GameObject go, string collideMode, string collideWith, string physicsMaterial)
         {
             PhysicMaterial material = null;
             if (physicsMaterial != "Default")
                 material = (PhysicMaterial)LoadAssetCached("Physics", physicsMaterial);
             int layer = GetColliderLayer(collideWith);
-            foreach (Collider c in go.GetComponentsInChildren<Collider>())
+            Collider[] colliders = go.GetComponentsInChildren<Collider>();
+            foreach (Collider c in colliders)
             {
                 c.isTrigger = collideMode == MapObjectCollideMode.Region;
                 c.enabled = collideMode != MapObjectCollideMode.None;
@@ -494,6 +498,7 @@ namespace Map
                 c.gameObject.layer = layer;
             }
             go.layer = layer;
+            return colliders.Length;
         }
 
         public static void SetCollider(Collider c, string collideMode, string collideWith)

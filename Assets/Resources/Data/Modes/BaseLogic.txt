@@ -31,7 +31,7 @@ component WaterPhysics
     _surfaceTop = 0.0;
     _surfaceBottom = 0.0;
     _forceMode = "Acceleration";
-    _maxAngle = 40.0;
+    _maxAngle = 20.0;
 
 
     function Init()
@@ -128,9 +128,9 @@ component WaterPhysics
         }
         velocity = self.GetVelocity(other);
         position = other.Position;
+        # Game.SpawnEffect("Splash", position, Vector3.GetRotationDirection(velocity, other.Forward), 1.0); #
         if (position.Y > self._surfaceBottom)
         {
-
             # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
             horizontalVector = Vector3(velocity.X, 0, velocity.Z);
             horizontalVector = horizontalVector.Normalized;
@@ -154,7 +154,10 @@ component WaterPhysics
 
                 if (other.Type == "Human")
                 {
-                    other.PlayAnimation("Armature|slide");
+                    if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
+                    {
+                        other.PlayAnimation("Armature|slide", 0.01);
+                    }
                 }
             }
         }
@@ -200,6 +203,17 @@ component WaterPhysics
     function OnCollisionExit(other)
     {
         if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        {
+            return;
+        }
+        self._isMyPlayerUnderwater = false;
+        self._myPlayerTimer = 0.0;
+        UI.SetLabel("MiddleCenter", "");
+    }
+
+    function OnCharacterDie(character, killer, killerName)
+    {
+        if (self.Enabled == false || self.IsOwnedByMe(character) == false)
         {
             return;
         }

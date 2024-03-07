@@ -47,5 +47,6 @@
         public static string Checkpoint = "Checkpoint";
         public static string GunExplode = "GunExplode";
         public static string GunExplodeLoud = "GunExplodeLoud";
+        public static string WaterSplash = "WaterSplash";
     }
 }

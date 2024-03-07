@@ -16,6 +16,7 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
+using UnityEditor;
 
 namespace Characters
 {
@@ -67,6 +68,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
+            
         }
 
         protected override Dictionary<string, float> GetRootMotionAnimations()
@@ -101,7 +103,7 @@ namespace Characters
                     capsule.center = new Vector3(0f, capsule.radius, 0f);
                     _originalCapsuleValue = capsule.height;
                     var nape = (CapsuleCollider)BasicCache.NapeHurtbox;
-                    nape.radius *= 1.5f;
+                    nape.radius *= 1f;
                 }
                 else
                     _originalCapsuleValue = capsule.radius;

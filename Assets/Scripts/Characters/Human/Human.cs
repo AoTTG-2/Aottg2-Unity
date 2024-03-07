@@ -466,7 +466,7 @@ namespace Characters
 
         public void TransformShifter(string shifter, float liveTime)
         {
-            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position);
+            _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = CurrentGas;
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
             PhotonNetwork.Destroy(gameObject);
@@ -722,11 +722,12 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon });
+                TargetAngle = Cache.Transform.eulerAngles.y;
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
-                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.identity);
+                    Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
                 if (DebugTesting.DebugPhase)
@@ -1339,7 +1340,8 @@ namespace Characters
                         }
                         else
                             _targetRotation = GetTargetRotation();
-                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && SettingsManager.InputSettings.Human.Jump.GetKey())) && (CurrentGas > 0f))
+                        bool isUsingGas = SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
+                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (CurrentGas > 0f))
                         {
                             if (HasDirection)
                             {
@@ -1505,7 +1507,7 @@ namespace Characters
                     Vector3 v = (hook.GetHookPosition() - Cache.Transform.position).normalized * 10f;
                     if (!(_launchLeft && _launchRight))
                         v *= 2f;
-                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && SettingsManager.InputSettings.Human.Jump.GetKey())
+                    if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && (SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value))
                     {
                         pivot = true;
                     }
