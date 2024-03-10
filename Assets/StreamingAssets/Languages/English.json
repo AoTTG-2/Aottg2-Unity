@@ -251,6 +251,7 @@
 		"Graphics.ShadowQuality": "Shadow quality",
 		"Graphics.ShadowQualityOptions": [ "Off", "Low", "Medium", "High" ],
 		"Graphics.ShadowDistance": "Shadow distance",
+		"Graphics.LightDistance": "Light distance",
 		"Graphics.AntiAliasing": "Anti-aliasing",
 		"Graphics.AntiAliasingOptions": [ "Off", "Low", "Medium", "High" ],
 		"Graphics.Anisotropic": "Anisotropic filtering",
@@ -347,6 +348,8 @@
 		"Keybinds.Human.HorseJump": "Horse jump",
 		"Keybinds.Human.NapeLock": "Nape lock",
 		"Keybinds.Human.DashDoubleTap": "Double-tap to dash",
+		"Keybinds.Human.AutoUseGas": "Auto use gas",
+		"Keybinds.Human.AutoUseGasTooltip": "Automatically holds Jump/Gas when in the air, hold Jump/Gas to stop using gas.",
 		"Keybinds.Human.ReelOutScrollSmoothing": "Reel out scroll smoothing",
 		"Keybinds.Human.ReelOutScrollSmoothingTooltip": "Determines how powerful reel-out is when keybinded to mouse wheel.",
 		"Keybinds.Human.SwapTSAttackSpecial": "Swap TS attacks",
@@ -488,7 +491,7 @@
 		"Top.CustomLogic": "Custom Logic",
 		"Top.CustomAssets": "Custom Assets",
 		"Top.Editor": "Editor",
-		"Top.Weather": "Weather",
+		"Top.Weather": "Weather"
 	},
 	"MapEditorSettings": {
 		"Top.GeneralButton": "General",

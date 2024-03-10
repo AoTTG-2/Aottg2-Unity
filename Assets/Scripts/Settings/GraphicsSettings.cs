@@ -2,6 +2,7 @@
 using Cameras;
 using System;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Settings
 {
@@ -20,6 +21,7 @@ namespace Settings
         public IntSetting TextureQuality = new IntSetting((int)TextureQualityLevel.High);
         public IntSetting ShadowQuality = new IntSetting((int)ShadowQualityLevel.High);
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
+        public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
@@ -76,6 +78,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Off;
                 ShadowDistance.Value = 500;
+                LightDistance.Value = 250;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -85,6 +88,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Low;
                 ShadowDistance.Value = 500;
+                LightDistance.Value = 250;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -94,6 +98,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Low;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Medium;
                 ShadowDistance.Value = 500;
+                LightDistance.Value = 500;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -103,6 +108,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
+                LightDistance.Value = 500;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -112,6 +118,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
+                LightDistance.Value = 1000;
             }
         }
     }

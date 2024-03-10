@@ -8,12 +8,14 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    class BasePopup: HeadedPanel
+    class BasePopup : HeadedPanel
     {
         protected virtual float MinTweenScale => 0.3f;
         protected virtual float MaxTweenScale => 1f;
         protected virtual float MinFadeAlpha => 0f;
         protected virtual float MaxFadeAlpha => 1f;
+        protected virtual float SpringDamping => 0.5f;
+        protected virtual float SpringStiffness => 0.1f;
         protected virtual float AnimationTime => 0.1f;
         protected virtual bool ShowOnTop => true;
         protected virtual bool UseSound => false;
@@ -38,6 +40,8 @@ namespace UI
                 StartCoroutine(TweenIn());
             else if (PopupAnimationType == PopupAnimation.Fade)
                 StartCoroutine(FadeIn());
+            else if (PopupAnimationType == PopupAnimation.KillPopup)
+                StartCoroutine(KillPopupIn());
         }
 
         public void ShowImmediate()
@@ -76,6 +80,8 @@ namespace UI
                 StartCoroutine(TweenOut());
             else if (PopupAnimationType == PopupAnimation.Fade)
                 StartCoroutine(FadeOut());
+            else if (PopupAnimationType == PopupAnimation.KillPopup)
+                StartCoroutine(KillPopupOut());
             else if (PopupAnimationType == PopupAnimation.None)
                 FinishHide();
         }
@@ -106,7 +112,7 @@ namespace UI
             while (_currentAnimationValue < MaxTweenScale)
             {
                 SetTransformScale(_currentAnimationValue);
-                _currentAnimationValue += GetAnimmationSpeed(MinTweenScale, MaxTweenScale) * Time.unscaledDeltaTime;
+                _currentAnimationValue += GetAnimationSpeed(MinTweenScale, MaxTweenScale) * Time.unscaledDeltaTime;
                 yield return null;
             }
             SetTransformScale(MaxTweenScale);
@@ -118,9 +124,108 @@ namespace UI
             while (_currentAnimationValue > MinTweenScale)
             {
                 SetTransformScale(_currentAnimationValue);
-                _currentAnimationValue -= GetAnimmationSpeed(MinTweenScale, MaxTweenScale) * Time.unscaledDeltaTime;
+                _currentAnimationValue -= GetAnimationSpeed(MinTweenScale, MaxTweenScale) * Time.unscaledDeltaTime;
                 yield return null;
             }
+            SetTransformScale(MinTweenScale);
+            FinishHide();
+        }
+
+        [Serializable]
+        public struct AnimationKeyframe
+        {
+            public float time; // Time percentage (0 to 1)
+            public float scale; // Scale value at this keyframe
+
+            public AnimationKeyframe(float time, float scale)
+            {
+                this.time = time;
+                this.scale = scale;
+            }
+        }
+
+
+        // Method to interpolate the scale based on the current time percentage
+        protected float EvaluateKeyframes(float timePercentage, List<AnimationKeyframe> keyframes)
+        {
+            if (keyframes == null || keyframes.Count == 0)
+                return MinTweenScale;
+
+            // Find the keyframes to interpolate between
+            AnimationKeyframe prevFrame = keyframes[0];
+            AnimationKeyframe nextFrame = keyframes[keyframes.Count - 1];
+
+            foreach (var frame in keyframes)
+            {
+                if (frame.time < timePercentage && frame.time > prevFrame.time)
+                    prevFrame = frame;
+                else if (frame.time >= timePercentage)
+                {
+                    nextFrame = frame;
+                    break;
+                }
+            }
+
+            // Interpolate between the two keyframes
+            float frameDelta = nextFrame.time - prevFrame.time;
+            if (frameDelta == 0)
+                return prevFrame.scale;
+
+            float interp = (timePercentage - prevFrame.time) / frameDelta;
+            return Mathf.Lerp(prevFrame.scale, nextFrame.scale, interp);
+        }
+
+        private readonly List<AnimationKeyframe> killPopupKeyframesIn = new List<AnimationKeyframe>
+        {
+            // Spring Bounce in
+            new AnimationKeyframe(0.0f, 0.0f),
+            new AnimationKeyframe(0.15f, 1.3f),
+            new AnimationKeyframe(0.3f, 0.8f),
+            new AnimationKeyframe(0.45f, 1.1f),
+            new AnimationKeyframe(0.6f, 0.95f),
+            new AnimationKeyframe(0.75f, 1.05f),
+            new AnimationKeyframe(1.0f, 1.0f),
+        };
+
+        private readonly List<AnimationKeyframe> killPopupKeyframesOut = new List<AnimationKeyframe>
+        {
+            new AnimationKeyframe(0.0f, 0.0f),
+            new AnimationKeyframe(0.6f, 0.0f),
+            new AnimationKeyframe(0.7f, 0.85f),
+            new AnimationKeyframe(0.85f, 0.8f),
+            new AnimationKeyframe(1.0f, 1.0f),
+        };
+
+        protected IEnumerator KillPopupIn()
+        {
+            float startTime = Time.time;
+            float endTime = startTime + 0.6f;
+
+            while (Time.time < endTime)
+            {
+                float currentPercentage = (Time.time - startTime) / 0.6f;
+                float scaleValue = EvaluateKeyframes(currentPercentage, killPopupKeyframesIn);
+                SetTransformScale(scaleValue);
+                yield return null;
+            }
+
+            SetTransformScale(MaxTweenScale);
+        }
+
+        protected IEnumerator KillPopupOut()
+        {
+            float startTime = Time.time;
+            float endTime = startTime + 1f;
+
+            while (Time.time < endTime)
+            {
+                float currentPercentage = (Time.time - startTime) / 1f;
+                float reversePercentage = 1f - currentPercentage; // Reverse the percentage
+                float scaleValue = EvaluateKeyframes(reversePercentage, killPopupKeyframesOut);
+                SetTransformScale(scaleValue);
+                yield return null;
+            }
+
             SetTransformScale(MinTweenScale);
             FinishHide();
         }
@@ -131,7 +236,7 @@ namespace UI
             while (_currentAnimationValue < MaxFadeAlpha)
             {
                 SetTransformAlpha(_currentAnimationValue);
-                _currentAnimationValue += GetAnimmationSpeed(MinFadeAlpha, MaxFadeAlpha) * Time.unscaledDeltaTime;
+                _currentAnimationValue += GetAnimationSpeed(MinFadeAlpha, MaxFadeAlpha) * Time.unscaledDeltaTime;
                 yield return null;
             }
             SetTransformAlpha(MaxFadeAlpha);
@@ -143,7 +248,7 @@ namespace UI
             while (_currentAnimationValue > MinFadeAlpha)
             {
                 SetTransformAlpha(_currentAnimationValue);
-                _currentAnimationValue -= GetAnimmationSpeed(MinFadeAlpha, MaxFadeAlpha) * Time.unscaledDeltaTime;
+                _currentAnimationValue -= GetAnimationSpeed(MinFadeAlpha, MaxFadeAlpha) * Time.unscaledDeltaTime;
                 yield return null;
             }
             SetTransformAlpha(MinFadeAlpha);
@@ -178,7 +283,7 @@ namespace UI
             return new Vector3(scale, scale, scale);
         }
 
-        protected virtual float GetAnimmationSpeed(float min, float max)
+        protected virtual float GetAnimationSpeed(float min, float max)
         {
             return (max - min) / AnimationTime;
         }
@@ -188,6 +293,7 @@ namespace UI
     {
         None,
         Fade,
-        Tween
+        Tween,
+        KillPopup,
     }
 }

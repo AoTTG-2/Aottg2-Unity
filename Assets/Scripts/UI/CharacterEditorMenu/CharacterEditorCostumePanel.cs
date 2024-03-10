@@ -17,10 +17,11 @@ namespace UI
     {
         protected override string Title => UIManager.GetLocale("CharacterEditor", "Costume", "Title");
         protected override float Width => 380f;
-        protected override float Height => 1050f;
+        protected override float Height => 1020f;
         protected override float VerticalSpacing => 20f;
         protected override int HorizontalPadding => 25;
         protected override int VerticalPadding => 25;
+        protected override bool ScrollBar => true;
         private CharacterEditorMenu _menu;
 
         public override void Setup(BasePanel parent = null)
@@ -38,13 +39,13 @@ namespace UI
             ElementFactory.CreateDropdownSetting(SinglePanel, style, settings.CustomSets.GetSelectedSetIndex(),
                 "Custom set", settings.CustomSets.GetSetNames(), elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnCustomSetSelected());
             GameObject group = ElementFactory.CreateHorizontalGroup(SinglePanel, 10f, TextAnchor.UpperLeft);
-            foreach (string button in new string[] { "Create", "Delete" })
+            foreach (string button in new string[] { "Create", "Delete", "Copy" })
             {
                 GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                     onClick: () => OnButtonClick(button));
             }
             group = ElementFactory.CreateHorizontalGroup(SinglePanel, 10f, TextAnchor.UpperLeft);
-            foreach (string button in new string[] { "Rename", "Copy" })
+            foreach (string button in new string[] { "Rename", "Import", "Export" })
             {
                 GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                     onClick: () => OnButtonClick(button));
@@ -179,6 +180,16 @@ namespace UI
                     List<string> sets = new List<string>(SettingsManager.HumanCustomSettings.Costume1Sets.GetSetNames());
                     UIManager.CurrentMenu.SelectListPopup.ShowLoad(sets, "Presets", onLoad: () => OnCostumeSetOperationFinish("LoadPreset"));
                     break;
+                case "Import":
+                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnCostumeSetOperationFinish(name));
+                    break;
+                case "Export":
+                    var set = (HumanCustomSet)settings.CustomSets.GetSelectedSet();
+                    var json = set.SerializeToJsonObject();
+                    if (json.HasKey("Preset"))
+                        json["Preset"] = false;
+                    UIManager.CurrentMenu.ExportPopup.Show(json.ToString(aIndent: 4));
+                    break;
             }
         }
 
@@ -213,6 +224,21 @@ namespace UI
                             settings.GetSelectedSet().Preset.Value = false;
                             settings.GetSelectedSet().Name.Value = setName;
                         }
+                    }
+                    break;
+                case "Import":
+                    ImportPopup importPopup = UIManager.CurrentMenu.ImportPopup;
+                    try
+                    {
+                        var setName2 = settings.GetSelectedSet().Name.Value;
+                        settings.GetSelectedSet().DeserializeFromJsonString(importPopup.ImportSetting.Value);
+                        settings.GetSelectedSet().Preset.Value = false;
+                        settings.GetSelectedSet().Name.Value = setName2;
+                        importPopup.Hide();
+                    }
+                    catch
+                    {
+                        importPopup.ShowError("Invalid human preset.");
                     }
                     break;
             }
