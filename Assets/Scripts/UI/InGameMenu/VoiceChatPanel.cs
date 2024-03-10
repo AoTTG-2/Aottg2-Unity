@@ -19,7 +19,6 @@ namespace UI
         {
             _panel = transform.Find("Content/Panel").gameObject;
             transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = 100;
-            var style = new ElementStyle(fontSize: 20, themePanel: ThemePanel);
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 100f);
         }
 
