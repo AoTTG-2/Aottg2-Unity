@@ -53,6 +53,18 @@ namespace GameManagers
 
         public static void SetupMyCharacterVoiceChat(BaseCharacter character)
         {
+            // Destroy old versions
+            if (PVV != null)
+            {
+                Destroy(PVV);
+            }
+            if (Recorder != null)
+            {
+                Destroy(Recorder);
+            }
+
+
+            // Set new version
             PVV = character.PVV;
             Recorder = character.Recorder;
             AudioSource = character.AudioSource;

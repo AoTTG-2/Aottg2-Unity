@@ -40,6 +40,7 @@ namespace Characters
         public List<BaseUseable> Items = new List<BaseUseable>();
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
+        protected bool _wasMainCharacter = false;
 
         // movement
         public bool Grounded;
@@ -476,8 +477,9 @@ namespace Characters
                 SpeakerSpeaker = Speaker.AddComponent<Speaker>();
 
                 // Set corresponding props in VoiceChatManager for my character.
-                if (IsMine())
+                if (IsMainCharacter())
                 {
+                    _wasMainCharacter = true;
                     VoiceChatManager.SetupMyCharacterVoiceChat(this);
                 }
                 else
@@ -565,16 +567,16 @@ namespace Characters
 
         protected virtual void OnDestroy()
         {
-            // Set the photon voice view and recorder to null
-            ChatManager.IsTalking(this.photonView.Owner, false);
             Destroy(Speaker);
             PVV = null;
             Recorder = null;
             AudioSource = null;
             Speaker = null;
             SpeakerSpeaker = null;
-            // Update PhotonVoiceManager
-            VoiceChatManager.SetupMyCharacterVoiceChat(this);
+            if (IsMainCharacter())
+            {
+                ChatManager.IsTalking(this.photonView.Owner, false);
+            }
         }
 
         protected virtual void LateUpdate()
@@ -642,7 +644,7 @@ namespace Characters
         {
             if (PVV != null && ChatManager.IsChatAvailable())
             {
-                if (IsMine())
+                if (IsMainCharacter() && IsMine())
                 {
                     ChatManager.IsTalking(this.photonView.Owner, PVV.IsRecording);
                 }
@@ -656,7 +658,6 @@ namespace Characters
                         var mainCharacter = _inGameManager.CurrentCharacter;
                         if (mainCharacter != null)
                         {
-                            // If the speaker is not the main character, then check if they are loud enough
                             var distance = Vector3.Distance(mainCharacter.Cache.Transform.position, Cache.Transform.position);
                             var volume = this.AudioSource.volume;
                             isSpeaking = isSpeaking && volume > 0f && distance <= SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
