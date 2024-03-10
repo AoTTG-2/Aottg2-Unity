@@ -178,6 +178,19 @@ namespace GameManagers
             feed.AddLine(line);
         }
 
+        public static void IsTalking(Player player, bool isSpeaking)
+        {
+            if (!IsChatAvailable())
+                return;
+            var voiceChatPanel = GetVoiceChatPanel();
+            if (voiceChatPanel == null)
+                return;
+            if (isSpeaking)
+                voiceChatPanel.AddPlayer(player);
+            else
+                voiceChatPanel.RemovePlayer(player);
+        }
+
         protected static void LoadTheme()
         {
             ColorTags.Clear();
@@ -484,6 +497,11 @@ namespace GameManagers
         private static FeedPanel GetFeedPanel()
         {
             return ((InGameMenu)UIManager.CurrentMenu).FeedPanel;
+        }
+
+        private static VoiceChatPanel GetVoiceChatPanel()
+        {
+            return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
         public static string GetIDString(int id, bool includeMC = false)

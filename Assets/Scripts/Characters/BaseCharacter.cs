@@ -566,6 +566,7 @@ namespace Characters
         protected virtual void OnDestroy()
         {
             // Set the photon voice view and recorder to null
+            ChatManager.IsTalking(this.photonView.Owner, false);
             Destroy(Speaker);
             PVV = null;
             Recorder = null;
@@ -580,6 +581,7 @@ namespace Characters
         {
             LateUpdateFootstep();
             LateUpdateFPS();
+            LateUpdateVoiceIndicator();
         }
 
         protected virtual void LateUpdateFootstep()
@@ -634,6 +636,36 @@ namespace Characters
                         renderer.enabled = true;
                 }
             }
+        }
+
+        protected virtual void LateUpdateVoiceIndicator()
+        {
+            if (PVV != null && ChatManager.IsChatAvailable())
+            {
+                if (IsMine())
+                {
+                    ChatManager.IsTalking(this.photonView.Owner, PVV.IsRecording);
+                }
+                else
+                {
+                    bool isSpeaking = PVV.IsSpeaking;
+                    
+                    // If proximity chat is enabled, figure out if the speaker is loud enough relative to the player
+                    if (SettingsManager.SoundSettings.VoiceChat.Value == "Proximity")
+                    {
+                        var mainCharacter = _inGameManager.CurrentCharacter;
+                        if (mainCharacter != null)
+                        {
+                            // If the speaker is not the main character, then check if they are loud enough
+                            var distance = Vector3.Distance(mainCharacter.Cache.Transform.position, Cache.Transform.position);
+                            var volume = this.AudioSource.volume;
+                            isSpeaking = isSpeaking && volume > 0f && distance <= SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
+                        }
+                    }
+
+                    ChatManager.IsTalking(this.photonView.Owner, isSpeaking);
+                }
+            }    
         }
 
         protected virtual int GetFootstepPhase()

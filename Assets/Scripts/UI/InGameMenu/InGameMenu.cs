@@ -26,6 +26,7 @@ namespace UI
         public GameObject NapeLock;
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
+        public VoiceChatPanel VoiceChatPanel;
         public BasePopup _settingsPopup;
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
@@ -131,6 +132,11 @@ namespace UI
             {
                 FeedPanel = ElementFactory.InstantiateAndSetupPanel<FeedPanel>(_bottomRightLabel.transform, "Prefabs/InGame/FeedPanel", true).GetComponent<FeedPanel>();
                 ElementFactory.SetAnchor(FeedPanel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(0f, -50f));
+            }
+            if (SettingsManager.InGameCurrent.Misc.VoiceChatMode.Value != "Off" && SettingsManager.SoundSettings.VoiceChat.Value != "Off" || true)
+            {
+                VoiceChatPanel = ElementFactory.InstantiateAndSetupPanel<VoiceChatPanel>(transform, "Prefabs/InGame/VoiceChatPanel", true).GetComponent<VoiceChatPanel>();
+                ElementFactory.SetAnchor(VoiceChatPanel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10, 10f));
             }
             ChatPanel = ElementFactory.InstantiateAndSetupPanel<ChatPanel>(transform, "Prefabs/InGame/ChatPanel", true).GetComponent<ChatPanel>();
             ElementFactory.SetAnchor(ChatPanel.gameObject, TextAnchor.LowerLeft, TextAnchor.LowerLeft, new Vector2(10f, 10f));

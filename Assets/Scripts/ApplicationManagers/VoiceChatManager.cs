@@ -1,26 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
-using Weather;
-using UI;
-using Utility;
-using CustomSkins;
 using ApplicationManagers;
-using System.Diagnostics;
 using Characters;
 using Settings;
-using CustomLogic;
-using Effects;
-using Map;
-using System.Collections;
-using GameProgress;
-using Cameras;
-using System;
 using Photon.Pun;
-using Photon.Realtime;
-using System.IO;
-using Debug = UnityEngine.Debug;
-using Events;
-using SimpleJSONFixed;
 using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using Photon.Voice;
@@ -159,7 +141,7 @@ namespace GameManagers
             // Handle Push-To-Talk Logic
             if (SettingsManager.SoundSettings.VoiceChat.Value == "PushToTalk")
             {
-                if (SettingsManager.InputSettings.General.PushToTalk.GetKeyDown())
+                if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
                 {
                     Recorder.TransmitEnabled = true;
                 }
@@ -168,18 +150,6 @@ namespace GameManagers
                         
                     Recorder.TransmitEnabled = false;
                 }
-            }
-
-            // Needs fixing, emote system flickers when viewing non-local players - switch to a 2d side panel ui-based voice chat list.
-            if (PVV.IsRecording && !_keepTalking)
-            {
-                RPCManager.PhotonView.RPC("EmoteVoiceRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, "Speaking" });
-                _keepTalking = true;
-            }
-            else if (!PVV.IsSpeaking && _keepTalking)
-            {
-                RPCManager.PhotonView.RPC("StopVoiceRPC", RpcTarget.All, new object[] { });
-                _keepTalking = false;
             }
         }
 
