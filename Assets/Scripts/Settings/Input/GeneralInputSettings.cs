@@ -16,6 +16,7 @@ namespace Settings
         public KeybindSetting RestartGame = new KeybindSetting(new string[] { "F5", "None" });
         public KeybindSetting ToggleScoreboard = new KeybindSetting(new string[] { "Tab", "None" });
         public KeybindSetting Chat = new KeybindSetting(new string[] { "Return", "None" });
+        public KeybindSetting PushToTalk = new KeybindSetting(new string[] { "V", "None" });
         public KeybindSetting ChangeCamera = new KeybindSetting(new string[] { "C", "None" });
         public KeybindSetting HideCursor = new KeybindSetting(new string[] { "X", "None" });
         //public KeybindSetting MinimapMaximize = new KeybindSetting(new string[] { "M", "None" });

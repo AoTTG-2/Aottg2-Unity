@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c837b50fc5b9d4e45931d6380ecb1086
+timeCreated: 1445435708
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Resources/ZomBear-Remote.prefab
+  uploadId: 636261

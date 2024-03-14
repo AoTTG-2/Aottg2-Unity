@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a7b562e0f0770a8498e3e1e07993ddbe
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceApi/PhotonTransport.cs
+  uploadId: 636261

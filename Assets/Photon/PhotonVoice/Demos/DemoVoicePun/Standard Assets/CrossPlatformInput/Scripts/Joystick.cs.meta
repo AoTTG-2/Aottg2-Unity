@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 00c3c865782347f41b6358d9fba14b48
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Standard Assets/CrossPlatformInput/Scripts/Joystick.cs
+  uploadId: 636261

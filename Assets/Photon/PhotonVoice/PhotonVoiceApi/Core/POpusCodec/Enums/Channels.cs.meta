@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4866c479545570d41abaff5f6a604676
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceApi/Core/POpusCodec/Enums/Channels.cs
+  uploadId: 636261

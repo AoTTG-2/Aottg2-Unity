@@ -9,6 +9,8 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 using Settings;
 using SimpleJSONFixed;
 using System;
@@ -686,8 +688,22 @@ namespace Characters
             else
                 PlaySound(HumanSounds.Death2);
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
+            DestroyVoiceChat();
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
+        }
+
+
+        private void DestroyVoiceChat() 
+        {
+            Destroy(gameObject.GetComponent<PhotonVoiceView>());
+            Destroy(gameObject.GetComponent<PunVoiceClient>());
+            Destroy(gameObject.GetComponent<Recorder>());
+            if (IsMine()) 
+            {
+                VoiceChatManager.PVV = null;
+                VoiceChatManager.character = null;
+            }
         }
 
         public void Init(bool ai, string team, InGameCharacterSettings settings)

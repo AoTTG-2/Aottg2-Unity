@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b7c50b954b279bb43a2d7a6c6b062644
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceApi/Platforms/UWP/CaptureDevice.cs
+  uploadId: 636261

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d62e4537d6f8ca64c8d2affe565a5cd1
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Code/PUN/PhotonVoice.PUN.asmdef
+  uploadId: 636261

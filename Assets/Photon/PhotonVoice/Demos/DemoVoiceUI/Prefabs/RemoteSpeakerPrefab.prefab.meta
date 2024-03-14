@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 68d1999e77809664ab4e058635090f3c
+timeCreated: 1535018373
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoiceUI/Prefabs/RemoteSpeakerPrefab.prefab
+  uploadId: 636261

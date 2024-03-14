@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ae8024269c736ee49ba1179cb00214e5
+timeCreated: 1538045250
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Code/Editor/PhotonVoice.Editor.asmdef
+  uploadId: 636261

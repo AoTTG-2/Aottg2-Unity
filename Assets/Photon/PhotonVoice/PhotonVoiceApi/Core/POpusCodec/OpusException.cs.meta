@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6a76e6ebcab0b9344837c3cbd4124687
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceApi/Core/POpusCodec/OpusException.cs
+  uploadId: 636261

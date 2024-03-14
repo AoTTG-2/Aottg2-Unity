@@ -13,6 +13,9 @@ using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
 using GameProgress;
+using Photon.Voice.Unity;
+using Photon.Voice.PUN;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
@@ -37,6 +40,7 @@ namespace Characters
         public List<BaseUseable> Items = new List<BaseUseable>();
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
+        protected bool _wasMainCharacter = false;
 
         // movement
         public bool Grounded;
@@ -44,6 +48,15 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
+
+        // sound
+        public PhotonVoiceView PVV;
+        public Recorder Recorder;
+        public GameObject Speaker;
+        public AudioSource AudioSource;
+        public Speaker SpeakerSpeaker;
+        
+
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
@@ -61,6 +74,7 @@ namespace Characters
         public virtual void Init(bool ai, string team)
         {
             AI = ai;
+            
             if (!ai)
             {
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
@@ -69,6 +83,8 @@ namespace Characters
             Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
             SetTeam(team);
         }
+
+
 
         public virtual Vector3 GetAimPoint()
         {
@@ -446,7 +462,33 @@ namespace Characters
 
         protected virtual void Start()
         {
+
             MinimapHandler.CreateMinimapIcon(this);
+
+            if (!AI)
+            {
+                // Set up photon voice view, recorder, and speaker.
+                PVV = gameObject.AddComponent<PhotonVoiceView>();
+                Recorder = gameObject.AddComponent<Recorder>();
+
+                Speaker = new GameObject("Speaker");
+                Speaker.transform.parent = gameObject.transform;
+                AudioSource = Speaker.AddComponent<AudioSource>();
+                SpeakerSpeaker = Speaker.AddComponent<Speaker>();
+
+                // Set corresponding props in VoiceChatManager for my character.
+                if (IsMainCharacter())
+                {
+                    _wasMainCharacter = true;
+                    VoiceChatManager.SetupMyCharacterVoiceChat(this);
+                }
+                else
+                {
+                    VoiceChatManager.ApplySoundSettings(this);
+                }
+
+            }
+
             StartCoroutine(WaitAndNotifyCharacterSpawn());
         }
 
@@ -525,12 +567,23 @@ namespace Characters
 
         protected virtual void OnDestroy()
         {
+            Destroy(Speaker);
+            PVV = null;
+            Recorder = null;
+            AudioSource = null;
+            Speaker = null;
+            SpeakerSpeaker = null;
+            if (IsMainCharacter())
+            {
+                ChatManager.IsTalking(this.photonView.Owner, false);
+            }
         }
 
         protected virtual void LateUpdate()
         {
             LateUpdateFootstep();
             LateUpdateFPS();
+            LateUpdateVoiceIndicator();
         }
 
         protected virtual void LateUpdateFootstep()
@@ -585,6 +638,35 @@ namespace Characters
                         renderer.enabled = true;
                 }
             }
+        }
+
+        protected virtual void LateUpdateVoiceIndicator()
+        {
+            if (PVV != null && ChatManager.IsChatAvailable())
+            {
+                if (IsMainCharacter() && IsMine())
+                {
+                    ChatManager.IsTalking(this.photonView.Owner, PVV.IsRecording);
+                }
+                else
+                {
+                    bool isSpeaking = PVV.IsSpeaking;
+                    
+                    // If proximity chat is enabled, figure out if the speaker is loud enough relative to the player
+                    if (SettingsManager.SoundSettings.VoiceChat.Value == "Proximity")
+                    {
+                        var mainCharacter = _inGameManager.CurrentCharacter;
+                        if (mainCharacter != null)
+                        {
+                            var distance = Vector3.Distance(mainCharacter.Cache.Transform.position, Cache.Transform.position);
+                            var volume = this.AudioSource.volume;
+                            isSpeaking = isSpeaking && volume > 0f && distance <= SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
+                        }
+                    }
+
+                    ChatManager.IsTalking(this.photonView.Owner, isSpeaking);
+                }
+            }    
         }
 
         protected virtual int GetFootstepPhase()

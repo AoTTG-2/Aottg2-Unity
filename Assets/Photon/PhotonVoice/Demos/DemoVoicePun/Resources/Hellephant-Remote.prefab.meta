@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 912c2829d51be264d909b2ec61a5c020
+timeCreated: 1445435708
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Resources/Hellephant-Remote.prefab
+  uploadId: 636261
