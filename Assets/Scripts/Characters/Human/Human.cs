@@ -46,7 +46,6 @@ namespace Characters
 
         // state
         private HumanState _state = HumanState.Idle;
-        private Boolean leviMode = false;
         public float CurrentGas = -1f;
         public float MaxGas = -1f;
         public float GasUsage = 0.2f;
@@ -145,10 +144,6 @@ namespace Characters
             Ungrab(false, true);
         }
 
-        public bool GetLeviModeStatus() 
-        {
-            return leviMode;
-        }
         public override Vector3 GetAimPoint()
         {
             RaycastHit hit;
@@ -881,14 +876,6 @@ namespace Characters
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
 
-                if (State == HumanState.SpecialAttack && Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
-                {
-                    leviMode = true;
-                }
-                else 
-                {
-                    leviMode = false;
-                }
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;

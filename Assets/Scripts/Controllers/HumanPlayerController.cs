@@ -190,8 +190,8 @@ namespace Controllers
             }
             _human.HookLeft.HookBoth = hookBoth && !hookLeft;
             _human.HookRight.HookBoth = hookBoth && !hookRight;
-            _human.HookLeft.SetInput(!_human.GetLeviModeStatus() && canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
-            _human.HookRight.SetInput(!_human.GetLeviModeStatus() && canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
+            _human.HookLeft.SetInput(!GetLeviModeStatus() && canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
+            _human.HookRight.SetInput(!GetLeviModeStatus() && canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
             if (_human.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
             {
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
@@ -213,6 +213,7 @@ namespace Controllers
                 _inGameMenu.ShowKillScore(3000);
             }
         }
+        public bool GetLeviModeStatus() => _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
 
         protected override void UpdateActionInput(bool inMenu)
         {
