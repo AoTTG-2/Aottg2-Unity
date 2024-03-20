@@ -129,6 +129,8 @@
 			{"Name": "Wall4"},
 			{"Name": "WallA1"},
 			{"Name": "WallA2"},
+			{"Name": "WallBrace"},
+			{"Name": "WallColumn"},
 			{"Name": "WallGateA1", "Static": false, "Networked": true, "Components": ["WallGateA1|"]},
 			{"Name": "WallGateA2"},
 			{"Name": "Windmill1"},

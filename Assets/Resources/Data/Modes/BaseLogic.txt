@@ -2176,6 +2176,12 @@ component TitanBarrier
 component WallGateA1
 {
     Description = "Makes WallGateA1 openable by players.";
+
+    StartState = "Closed";
+    StartStateDropdown = "Closed, Open";
+
+    Interactable = true;
+
     _currentHuman = null;
     _open = false;
     _moving = false;
@@ -2186,10 +2192,15 @@ component WallGateA1
     {
         self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
         self._door = self.MapObject.GetTransform("Door");
+        self._open = self.StartState == "Open";
     }
 
     function OnNetworkMessage(sender, message)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (message == "request" && Network.IsMasterClient)
         {
             if (!self._moving)
@@ -2211,6 +2222,10 @@ component WallGateA1
 
     function OnCollisionStay(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = other;
@@ -2220,6 +2235,10 @@ component WallGateA1
 
     function OnFrame()
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
@@ -2255,6 +2274,10 @@ component WallGateA1
 
     function OnCollisionExit(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;
