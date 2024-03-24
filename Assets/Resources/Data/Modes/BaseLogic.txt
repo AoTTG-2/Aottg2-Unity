@@ -780,6 +780,10 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
+    DecaySpeed = 1.0;
+    Order = 0;
+    SupplyStationID = "";
+    SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
 
     ShowUI = true;
     UIVisibilityRange = 80.0;
@@ -787,6 +791,7 @@ component CaptureZone
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
+    _lastState = "Captured";
     _currentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
@@ -807,7 +812,15 @@ component CaptureZone
 
     # UI state
     _isViewing = false;
-
+    
+    # Supply Station
+    _supplyStation = null;
+    _hasSupplyStation = false;
+    _isSupplyStationActive = false;
+    
+    # Event Handler
+    _callbackReceiver = null;
+    _hasCallbackReceiver = false;
 
     function Init()
     {
@@ -821,6 +834,31 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
+        
+        # Setup supply station
+        if (self.SupplyStationID != "")
+        {
+            id = Convert.ToInt(self.SupplyStationID);
+            self._supplyStation = Map.FindMapObjectByID(id);
+            self._hasSupplyStation = self._supplyStation != null;
+            
+            if (self._hasSupplyStation)
+            {
+                self._supplyStation.Active = false;
+            }
+        }
+    }
+    
+    function SetupCallbackReceiver(callbackReceiver)
+    {
+        self._callbackReceiver = callbackReceiver;
+        self._hasCallbackReceiver = self._callbackReceiver != null;
+    }
+
+    # Getters
+    function GetCurrentOwner()
+    {
+        return self._currentOwner;
     }
 
     # GameObject Helpers
@@ -928,7 +966,15 @@ component CaptureZone
             }
             elif (self._teamsInZone.Contains(self._currentCapturer) == false)
             {
-                self._captureProgress = self._captureProgress - 1.0;
+                if (self._teamsInZone.Count == 0)
+                {
+                    self._captureProgress = self._captureProgress - self.DecaySpeed;
+                }
+                else
+                {
+                    self._captureProgress = self._captureProgress - 1.0;
+                }
+                
                 if (self._captureProgress <= 0.0)
                 {
                     self._state = "Captured";
@@ -981,6 +1027,46 @@ component CaptureZone
 		{
 			return;
 		}
+		
+		if (self._lastState != self._state)
+		{
+		    if (self._hasCallbackReceiver)
+		    {
+                if (self._state == "Captured")
+                {
+                    self._callbackReceiver.OnCaptured(self, self._currentOwner);
+                }
+                elif (self._state == "Capturing")
+                {
+                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                }
+                elif (self._state == "Contested")
+                {
+                    self._callbackReceiver.OnContested(self);
+                }
+		    }
+            self._lastState = self._state;
+		}
+		
+		if (self._state == "Captured")
+        {
+            if (self._currentOwner == "Human")
+            {
+                if (self._hasSupplyStation && !self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = true;
+                    self._isSupplyStationActive = true;
+                }
+            }
+            else
+            {
+                if (self._hasSupplyStation && self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = false;
+                    self._isSupplyStationActive = false;
+                }
+            }
+        }
 
         if (Network.MyPlayer.Character == null)
 		{
