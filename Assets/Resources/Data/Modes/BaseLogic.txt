@@ -849,6 +849,13 @@ component CaptureZone
         }
     }
     
+    /*
+     * Callback receiver can be an instance of any class
+     * that have the following functions:
+     *      OnCaptured(captureZone, newOwner),
+     *      OnCapturing(captureZone, capturer),
+     *      OnContested(captureZone),
+     */
     function SetupCallbackReceiver(callbackReceiver)
     {
         self._callbackReceiver = callbackReceiver;
