@@ -85,7 +85,7 @@ namespace Characters
             if (!Cache.Animation.IsPlaying(HorseAnimations.Idle0))
             {
                 CrossFade(HorseAnimations.Idle0, 0.1f);
-                _idleTimeLeft = UnityEngine.Random.Range(3f, 6f);
+                _idleTimeLeft = UnityEngine.Random.Range(6f, 9f);
                 return;
             }
             float choose = UnityEngine.Random.Range(0f, 1f);

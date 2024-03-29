@@ -308,8 +308,6 @@
 			{"Name": "Cattail1", "CollideMode": "None"},
 			{"Name": "Cave1"},
 			{"Name": "Cave2"},
-			{"Name": "Fallen1"},
-			{"Name": "Fallen2"},
 			{"Name": "Fern1", "CollideMode": "None"},
 			{"Name": "Fern2", "CollideMode": "None"},
 			{"Name": "Fern3", "CollideMode": "None"},
