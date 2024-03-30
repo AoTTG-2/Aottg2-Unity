@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Map;
 using Utility;
@@ -437,6 +437,11 @@ namespace CustomLogic
                 return false;
             var other = ((CustomLogicMapObjectBuiltin)obj).Value;
             return Value == other;
+        }
+
+        public override string ToString()
+        {
+            return $"{Value.GameObject.name} (MapObject)";
         }
     }
 }
