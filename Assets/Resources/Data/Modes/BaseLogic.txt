@@ -818,7 +818,8 @@ component CaptureZone
     _hasSupplyStation = false;
     _isSupplyStationActive = false;
     
-    # Event Handler
+    # Callback Receiver
+    _lastOwner = "null"; # Use to avoid calling "OnCaptured" multiple times
     _callbackReceiver = null;
     _hasCallbackReceiver = false;
 
@@ -866,6 +867,16 @@ component CaptureZone
     function GetCurrentOwner()
     {
         return self._currentOwner;
+    }
+
+    function GetCaptureProgress()
+    {
+        return self._captureProgress / self.CaptureTime;
+    }
+
+    function GetState()
+    {
+        return self._state;
     }
 
     # GameObject Helpers
@@ -1041,7 +1052,11 @@ component CaptureZone
 		    {
                 if (self._state == "Captured")
                 {
-                    self._callbackReceiver.OnCaptured(self, self._currentOwner);
+                    if (self._lastOwner != self._currentOwner)
+                    {
+                        self._callbackReceiver.OnCaptured(self, self._currentOwner);
+                        self._lastOwner = self._currentOwner;
+                    }
                 }
                 elif (self._state == "Capturing")
                 {
