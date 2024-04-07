@@ -54,6 +54,14 @@ namespace CustomLogic
                     assignmentAst.Right = right;
                     return assignmentAst;
                 }
+                else if (IsAnySymbolValue(binopToken, (int)CustomLogicSymbol.PlusEquals,
+                             (int)CustomLogicSymbol.MinusEquals, (int)CustomLogicSymbol.TimesEquals,
+                             (int)CustomLogicSymbol.DivideEquals))
+                {
+                    var assignmentAst = new CustomLogicCompoundAssignmentExpressionAst(left, binopToken, currToken.Line);
+                    assignmentAst.Right = right;
+                    return assignmentAst;
+                }
                 else
                 {
                     var binopAst = new CustomLogicBinopExpressionAst(binopToken, binopToken.Line);
@@ -385,6 +393,17 @@ namespace CustomLogic
         private bool IsSymbolValue(CustomLogicToken token, int symbolValue)
         {
             return token != null && token.Type == CustomLogicTokenType.Symbol && (int)token.Value == symbolValue;
+        }
+
+        private bool IsAnySymbolValue(CustomLogicToken token, params int[] symbolValues)
+        {
+            foreach (var symbolValue in symbolValues)
+            {
+                if (IsSymbolValue(token, symbolValue))
+                    return true;
+            }
+
+            return false;
         }
 
         private void AssertSymbolValue(CustomLogicToken token, int symbolValue)

@@ -56,10 +56,10 @@ namespace UI
             }
         }
 
-        protected override float GetAnimmationSpeed(float min, float max)
+        protected override float GetAnimationSpeed(float min, float max)
         {
             if (SettingsManager.UISettings.FadeLoadscreen.Value)
-                return base.GetAnimmationSpeed(min, max);
+                return base.GetAnimationSpeed(min, max);
             return (max - min) / 0.01f;
         }
     }
