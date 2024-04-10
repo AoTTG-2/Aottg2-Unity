@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hill2Mat
+  m_Name: Hole1Mat
   m_Shader: {fileID: -6465566751694194690, guid: 5eefc23bf367dd04bb4e3e3729ee7e23, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Detail_Texture:
-        m_Texture: {fileID: 2800000, guid: c8f3bc56f18bdfa47a3438a14e753787, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1d6b2d605e0613a4396fdb0553acfd8f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Rock_Texture:
-        m_Texture: {fileID: 2800000, guid: 9464c000719cc704d974d4463ae5059a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6987f2d5c6d1a25439c49b7c8ca4b376, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c0b67565abcd44378b75d211b62c0298_Texture_1_Texture2D:
@@ -76,14 +76,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Snow_Texture:
-        m_Texture: {fileID: 2800000, guid: b993477824da2d348a55ab6e42996e77, type: 3}
+        m_Texture: {fileID: 2800000, guid: d2d33564c85f6e04ea146ddcf36466f8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Blend: -0.66
+    - _Blend: -0.51
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -96,14 +96,14 @@ Material:
     - _Intensity: 0.25
     - _Metallic: 0
     - _Mode: 0
-    - _Normal_Strength: 3.35
+    - _Normal_Strength: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Rock1: 0.57
-    - _Rock2: 1.03
+    - _Rock1: -0.03
+    - _Rock2: 0.24
     - _SmoothnessTextureChannel: 0
-    - _Snow1: 0.87
-    - _Snow2: 1.31
+    - _Snow1: 0.82
+    - _Snow2: 1.2
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
@@ -112,9 +112,9 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Tiling: {r: 20, g: 20, b: 0, a: 0}
-    - _Tiling_1: {r: 20, g: 20, b: 0, a: 0}
-    - _Tiling_2: {r: 50, g: 50, b: 0, a: 0}
+    - _Tiling: {r: 20, g: 40, b: 0, a: 0}
+    - _Tiling_1: {r: 20, g: 40, b: 0, a: 0}
+    - _Tiling_2: {r: 5, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3004250062606054794
 MonoBehaviour:
