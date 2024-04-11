@@ -2301,6 +2301,17 @@ component WallGateA1
         self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
         self._open = self.StartState == "Open";
+
+        localPosition = self._door.LocalPosition;
+        if (self._open)
+        {
+            localPosition.Y = 25;
+        }
+        else
+        {
+            localPosition.Y = 0;
+        }
+        self._door.LocalPosition = localPosition;
     }
 
     function OnNetworkMessage(sender, message)
