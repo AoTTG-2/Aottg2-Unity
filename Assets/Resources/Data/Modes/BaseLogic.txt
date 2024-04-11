@@ -2339,6 +2339,16 @@ component WallGateA1
         self._moving = true;
     }
 
+    function SetState(state)
+    {
+        isOpen = state == "Open";
+        if (self._open != isOpen)
+        {
+            self._open = isOpen;
+            self._moving = true;
+        }
+    }
+
     function OnCollisionStay(other)
     {
         if (self.Interactable == false)
