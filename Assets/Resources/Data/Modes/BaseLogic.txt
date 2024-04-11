@@ -2298,7 +2298,7 @@ component WallGateA1
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
         self._open = self.StartState == "Open";
     }
