@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ef80233b2cf177b4fb3e47af263e38b7
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceLibs/WebRTC-LICENSE.txt
+  uploadId: 636261

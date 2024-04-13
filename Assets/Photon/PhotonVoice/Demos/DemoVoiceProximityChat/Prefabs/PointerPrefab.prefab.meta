@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8c9dd2884f9d648439dab25a3b5f9771
+NativeFormatImporter:
+  mainObjectFileID: -1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoiceProximityChat/Prefabs/PointerPrefab.prefab
+  uploadId: 636261

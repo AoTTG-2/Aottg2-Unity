@@ -1,4 +1,6 @@
-﻿namespace Settings
+﻿using GameManagers;
+
+namespace Settings
 {
     class InGameMiscSettings : BaseSettingsContainer
     {
@@ -22,6 +24,9 @@
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
         public BoolSetting RealismMode = new BoolSetting(false);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
+        public StringSetting VoiceChatMode = new StringSetting(VoiceChatManager.VoiceChatModes[0]);
+        public FloatSetting ProximityMaxDistance = new FloatSetting(10f, minValue: 1f);
+        public FloatSetting ProximityMinDistance = new FloatSetting(10f, minValue: 1f);
     }
 
     public enum PVPMode

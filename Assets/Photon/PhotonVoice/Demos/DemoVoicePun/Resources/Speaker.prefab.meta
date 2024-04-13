@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 74d3f5789ce48c041b35b67b9f1e8064
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Resources/Speaker.prefab
+  uploadId: 636261

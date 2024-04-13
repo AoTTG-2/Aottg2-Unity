@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 378e6f5b30ae67c4da6848fcb2f8b455
+timeCreated: 1534766567
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/Materials/SkyBox-Voice.mat
+  uploadId: 636261

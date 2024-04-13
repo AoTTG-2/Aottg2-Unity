@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: baf95840af423aa4d8afbbf5ccb17f1f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/PhotonVoiceApi/Core/POpusCodec/Enums/OpusStatusCode.cs
+  uploadId: 636261

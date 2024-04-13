@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: fa70a22b498b27f41a0bb50f9a287764
+timeCreated: 1537357720
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/Code/PUN/Editor/PunVoiceClientEditor.cs
+  uploadId: 636261

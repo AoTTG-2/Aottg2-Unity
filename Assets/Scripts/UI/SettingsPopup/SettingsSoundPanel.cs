@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using GameManagers;
 using Settings;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +49,16 @@ namespace UI
             CreateHorizontalDivider(DoublePanelRight);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldHookEffect, UIManager.GetLocale(cat, sub, "OldHookEffect"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldBladeEffect, UIManager.GetLocale(cat, sub, "OldBladeEffect"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldNapeEffect, UIManager.GetLocale(cat, sub, "OldNapeEffect"));
+            CreateHorizontalDivider(DoublePanelRight);
+
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.VoiceChat, UIManager.GetLocale(cat, sub, "VoiceChat"),
+                VoiceChatManager.VoiceChatInputModes, elementWidth: 160f);
+
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.VoiceChatDevice, UIManager.GetLocale(cat, sub, "VoiceChatDevice"),
+                VoiceChatManager.MicrophoneDevices, elementWidth: 160f);
+
+            ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.VoiceChatMicVolume, UIManager.GetLocale(cat, sub, "VoiceChatMicVolume"), elementWidth: 135f);
+            ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.VoiceChatAudioVolume, UIManager.GetLocale(cat, sub, "VoiceChatAudioVolume"), elementWidth: 135f);
         }
 
         protected void OnButtonClick(string name)
