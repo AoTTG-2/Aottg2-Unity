@@ -1,0 +1,179 @@
+class Main
+{
+    Description = "Cage fight. Make sure to enable team mode. (Pause -> Game -> Misc -> PVP Team)";
+
+    StartTitans = 3;
+    StartTitansTooltip = "The amount of titans in each cage.";
+
+    _aliveRedTitans = 0;
+    _aliveBlueTitans = 0;
+
+    _gameEnded = false;
+
+    function OnGameStart()
+    {
+        if (Network.IsMasterClient)
+        {
+            self._titanSpawnPointsA = Map.FindMapObjectsByName("Titan A");
+            self._titanSpawnPointsB = Map.FindMapObjectsByName("Titan B");
+            self.SpawnTitans(self._titanSpawnPointsA);
+            self.SpawnTitans(self._titanSpawnPointsB);
+
+            self._aliveRedTitans = self.StartTitans;
+            self._aliveBlueTitans = self.StartTitans;
+
+            UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+        }
+    }
+
+    function OnCharacterDie(victim, killer, killerName)
+    {
+        if (victim.Type == "Titan")
+        {
+            if (Network.IsMasterClient)
+            {
+                if (killer.Team == "Red")
+                {
+                    self._aliveRedTitans = self._aliveRedTitans - 1;
+                    self._aliveBlueTitans = self._aliveBlueTitans + 1;
+                    self.SpawnTitan(self._titanSpawnPointsB);
+                }
+                elif (killer.Team == "Blue")
+                {
+                    self._aliveBlueTitans = self._aliveBlueTitans - 1;
+                    self._aliveRedTitans = self._aliveRedTitans + 1;
+                    self.SpawnTitan(self._titanSpawnPointsA);
+                }
+
+                UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+            }
+        }
+        elif (victim.Type == "Human")
+        {
+            if (Network.IsMasterClient)
+            {
+                self.CheckIfTeamPlayersAreDead();
+            }
+        }
+    }
+
+    function OnPlayerLeave(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.CheckIfTeamPlayersAreDead();
+        }
+    }
+
+    function OnFrame()
+    {
+        if (Network.IsMasterClient)
+        {
+            if (self._aliveRedTitans <= 0)
+            {
+                self.AnnounceWinner("Red");
+            }
+            elif (self._aliveBlueTitans <= 0)
+            {
+                self.AnnounceWinner("Blue");
+            }
+        }
+    }
+
+    coroutine CheckIfTeamPlayersAreDead(team)
+    {
+        wait 1.0;
+
+        redAlive = false;
+        blueAlive = false;
+
+        for (p in Network.Players)
+        {
+            if (p.Status == "Alive")
+            {
+                if (p.Team == "Red")
+                {
+                    redAlive = true;
+                }
+                elif (p.Team == "Blue")
+                {
+                    blueAlive = true;
+                }
+            }
+        }
+
+        if (!redAlive)
+        {
+            self.AnnounceWinner("Blue");
+        }
+        elif (!blueAlive)
+        {
+            self.AnnounceWinner("Red");
+        }
+    }
+
+    function AnnounceWinner(team)
+    {
+        if (self._gameEnded)
+        {
+            return;
+        }
+
+        if (team == "Red")
+        {
+            UI.SetLabelAll("MiddleCenter", "<color=#f06464>Red</color> team won!");
+            Game.End(15);
+        }
+        else
+        {
+            UI.SetLabelAll("MiddleCenter", "<color=#62b7f0>Blue</color> team won!");
+            Game.End(15);
+        }
+
+        self._gameEnded = true;
+    }
+
+    function SpawnTitan(spawnPoints)
+    {
+        position = self.GetRandomListElement(spawnPoints).Position;
+        Game.SpawnTitanAt("Default", position);
+    }
+
+    function SpawnTitans(spawnPoints)
+    {
+        randomSpawnPoint = false;
+        if (self.StartTitans > spawnPoints.Count)
+        {
+            randomSpawnPoint = true;
+        }
+
+        for(i in Range(0, self.StartTitans, 1))
+        {
+            position = Vector3.Zero;
+            if (randomSpawnPoint)
+            {
+                position = self.GetRandomListElement(spawnPoints).Position;
+            }
+            else
+            {
+                position = spawnPoints.Get(i).Position;
+            }
+
+            Game.SpawnTitanAt("Default", position);
+        }
+    }
+
+    function GetRemainingTitansLabel()
+    {
+        redStr = Convert.ToString(self._aliveRedTitans);
+        blueStr = Convert.ToString(self._aliveBlueTitans);
+
+        return "<color=#f06464>" + redStr + "</color> | " + "<color=#62b7f0>" + blueStr + "</color>";
+    }
+
+    function GetRandomListElement(list)
+    {
+        index = Random.RandomInt(0, list.Count);
+        return list.Get(index);
+    }
+}
