@@ -127,8 +127,14 @@ component WaterPhysics
             return;
         }
         velocity = self.GetVelocity(other);
-        position = other.Position;
-        # Game.SpawnEffect("Splash", position, Vector3.GetRotationDirection(velocity, other.Forward), 1.0);
+        position = other.Position;      
+
+        # Convert velocity to euler angle on just the y axis
+        angle = Vector3.Angle(Vector3(0, 0, 1), velocity.Normalized);  
+
+        effectSize = velocity.Magnitude / 100;
+        effectSize = Math.Clamp(effectSize, 2, 7);
+        Game.SpawnEffect("Splash2", position, Vector3(-90,0,0), effectSize);
         if (position.Y > self._surfaceBottom)
         {
             # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
@@ -159,8 +165,11 @@ component WaterPhysics
                         other.PlayAnimation("Armature|slide", 0.01);
                     }
                 }
+                return;
             }
         }
+        # Play WaterSplash sound
+        other.PlaySound("WaterSplash");
     }
 
     function OnCollisionStay(other)
