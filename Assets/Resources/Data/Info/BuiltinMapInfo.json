@@ -44,7 +44,7 @@
 		},
 		{
 			"Name": "PVP",
-			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "Cage Fight", "None"],
+			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
 			"Maps": [
 				{
 					"Category": "General",
@@ -61,18 +61,6 @@
 				{
 					"Category": "General",
 					"Name": "City"
-				},
-				{
-					"Name": "Veneration"
-				},
-				{
-					"Name": "Refuge"
-				},
-				{
-					"Name": "Crystalline"
-				},
-				{
-					"Name": "En Passant"
 				},
 				{
 					"Name": "House"
@@ -106,6 +94,24 @@
 				},
 				{
 					"Name": "Box Arena"
+				}
+			]
+		},
+		{
+			"Name": "Cage Fight",
+			"IncludedModes": ["Cage Fight", "None"],
+			"Maps": [
+				{
+					"Name": "Veneration"
+				},
+				{
+					"Name": "Refuge"
+				},
+				{
+					"Name": "Crystalline"
+				},
+				{
+					"Name": "En Passant"
 				}
 			]
 		},
