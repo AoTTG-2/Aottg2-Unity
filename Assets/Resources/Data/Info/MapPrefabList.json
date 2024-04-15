@@ -400,7 +400,11 @@
 		"Prefabs": [
 			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "WaterCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
-			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
+			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Bubbles1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Bubbles2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Fish", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Seaweed", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
 		]
 	},
 	"Interact": {
