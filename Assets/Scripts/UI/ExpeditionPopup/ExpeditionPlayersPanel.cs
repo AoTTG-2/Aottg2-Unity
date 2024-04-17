@@ -1,15 +1,22 @@
-﻿using Settings;
+﻿using ApplicationManagers;
+using GameManagers;
+using Settings;
+using Photon;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace UI
 {
     class ExpeditionPlayerPanel : SettingsCategoryPanel
     {
         protected override bool ScrollBar => true;
-        public override void Setup(BasePanel parent = null)
+        private Player selectedPlayer;
+
+        public override void Setup(BasePanel parent = null) //Zippy: Finish the player List
         {
             base.Setup(parent);
             ExpeditionPopup RolesPopup = (ExpeditionPopup)parent;
@@ -17,9 +24,27 @@ namespace UI
             string sub = "Players";
             EMSettings settings = SettingsManager.EMSettings;
 
+            ElementStyle style = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
+
+            #region Left Side
+
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + player.GetStringProperty(PlayerProperty.Name);
+                GameObject obj = ElementFactory.CreateDefaultButton(DoublePanelLeft, style, name, 400f, 35f,
+                                                                    onClick: () => OnPlayerButtonClick(player));
+            }
+
+            #endregion
+
+            #region Right Side
+
+
+
+            #endregion
+            #region //Code
             /*
             
-            ElementStyle style = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.Language, "Language", UIManager.GetLanguages(),
                 elementWidth: 160f, onDropdownOptionSelect: () => settingsPopup.RebuildCategoryPanel(), tooltip: UIManager.GetLocaleCommon("RequireRestart"));
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.CameraMode, UIManager.GetLocale(cat, sub, "CameraMode"),
@@ -54,6 +79,12 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             
              */
+            #endregion
+        }
+
+        private void OnPlayerButtonClick(Player player)
+        {
+            selectedPlayer = player;
         }
     }
 }
