@@ -26,6 +26,8 @@ namespace ApplicationManagers
         public static BaseGameManager CurrentGameManager;
         public static BaseCamera CurrentCamera;
 
+        public static bool CustomSceneLoad = false;
+
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
@@ -95,6 +97,11 @@ namespace ApplicationManagers
 
         private void OnSceneWasLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (CustomSceneLoad)
+            {
+                CustomSceneLoad = false;
+                return;
+            }
             CreateGameManager();
             CreateCamera();
             EventManager.InvokeLoadScene(SceneName);

@@ -14,6 +14,9 @@ namespace Settings
         public StringSetting RoomName = new StringSetting("FoodForTitan", maxLength: 100);
         public StringSetting Password = new StringSetting(string.Empty, maxLength: 100);
         public IntSetting MaxPlayers = new IntSetting(10, minValue: 0, maxValue: 255);
+
+        //Custom Scene Loading
+        public StringSetting SceneLoading = new StringSetting("", maxLength: 100);
     }
 
     public enum GameDifficulty

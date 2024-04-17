@@ -229,6 +229,24 @@ namespace GameManagers
             }
         }
 
+        [CommandAttribute("load", "/load [SCENE NAME]: Loads a custom scene for expeditions")]
+        private static void LoadScene(string[] args)
+        {
+            InGameGeneralSettings settings = SettingsManager.InGameCurrent.General;
+
+            if (CheckMC())
+            {
+                if (settings.MapCategory.Value == "Custom")
+                {
+                    RPCManager.PhotonView.RPC("LoadSceneRPC", RpcTarget.AllBuffered, new object[] { args[1] });
+                }
+                else
+                {
+                    AddLine("This command only works in custom maps", ChatTextColor.System);
+                }
+            }
+        }
+
         [CommandAttribute("restart", "/restart: Restarts the game.", Alias = "r")]
         private static void Restart(string[] args)
         {

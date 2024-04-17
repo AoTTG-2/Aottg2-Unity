@@ -11,6 +11,7 @@ using GameManagers;
 using Characters;
 using Map;
 using System.Threading;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -82,6 +83,10 @@ namespace UI
             _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", onClick: () => OnButtonClick("Gizmo"));
             _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", onClick: () => OnButtonClick("Snap"));
             ElementFactory.CreateDefaultButton(group, style, "Camera", onClick: () => OnButtonClick("Camera"));
+
+            MapEditorSettings settings = SettingsManager.MapEditorSettings;
+            ElementFactory.CreateInputSetting(group, style, settings.SceneName, "Scene Name", elementWidth: 200f);
+            ElementFactory.CreateTextButton(group, style, "Load Scene", onClick: () => OnButtonClick("Scene"));
         }
 
         public bool IsDropdownOpen()
@@ -202,6 +207,12 @@ namespace UI
                 NextGizmo();
             else if (name == "Snap")
                 ToggleSnap();
+            else if (name == "Scene")
+            {
+                SceneLoader.CustomSceneLoad = true;
+                MapEditorSettings settings = SettingsManager.MapEditorSettings;
+                SceneManager.LoadSceneAsync(settings.SceneName.Value, LoadSceneMode.Additive);
+            }
         }
 
         public void ToggleSnap()

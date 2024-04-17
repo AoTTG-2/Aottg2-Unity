@@ -18,6 +18,8 @@ namespace Settings
         public FloatSetting SnapRotate = new FloatSetting(15f, minValue: 0f);
         public FloatSetting SnapScale = new FloatSetting(0.1f, minValue: 0f);
 
+        public StringSetting SceneName = new StringSetting(string.Empty, maxLength: 100);
+
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is MapEditorCamera)
