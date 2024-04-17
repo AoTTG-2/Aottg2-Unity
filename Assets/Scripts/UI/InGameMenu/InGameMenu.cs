@@ -27,6 +27,7 @@ namespace UI
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
         public BasePopup _settingsPopup;
+        public BasePopup _ExpeditionPopup;
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
         public BasePopup _characterPopup;
@@ -505,16 +506,19 @@ namespace UI
         {
             base.SetupPopups();
             _settingsPopup = ElementFactory.CreateHeadedPanel<SettingsPopup>(transform).GetComponent<BasePopup>();
+            _ExpeditionPopup = ElementFactory.CreateHeadedPanel<ExpeditionPopup>(transform).GetComponent<BasePopup>();
             _pausePopup = ElementFactory.CreateHeadedPanel<PausePopup>(transform).GetComponent<PausePopup>();
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
             _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
             _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
             _popups.Add(_settingsPopup);
+            _popups.Add(_ExpeditionPopup);
             _popups.Add(_pausePopup);
             _popups.Add(_createGamePopup);
             _popups.Add(_selectMapPopup);
             _popups.Add(_customAssetUrlPopup);
             _allPausePopups.Add(_settingsPopup);
+            _allPausePopups.Add(_ExpeditionPopup);
             _allPausePopups.Add(_pausePopup);
             _allPausePopups.Add(_createGamePopup);
             _allPausePopups.Add(_customAssetUrlPopup);

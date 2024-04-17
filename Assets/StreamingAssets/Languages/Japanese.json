@@ -18,7 +18,7 @@
 		"Delete": "削除",
 		"Rename": "名前変更",
 		"Copy": "複製",
-		"Category": "種族",	//since "Category" is used in seperating Human and Titan(yet to be implemented?), "種族" felt more natural than "種類"
+		"Category": "種族", //since "Category" is used in seperating Human and Titan(yet to be implemented?), "種族" felt more natural than "種類"
 		"Settings": "設定",
 		"Options": "オプション",
 		"Name": "名前",
@@ -52,6 +52,7 @@
 		"Shifter": "巨人化能力者",
 		"Join": "参加",
 		"Icon": "アイコン",
+		"Expedition": "遠征",
 		"ExternalLinkConfirm": "外部のリンクにアクセスしようとしてます。"
 	},
 	"MainMenu": {
@@ -64,11 +65,11 @@
 		"MultiplayerMapPopup.ServerButton": "サーバー",
 		"MultiplayerSettingsPopup.Title": "マルチプレイ設定",
 		"MultiplayerSettingsPopup.AppId": "アプリID",
-		"MultiplayerSettingsPopup.AppIdOptions": ["公開", "カスタム"],
+		"MultiplayerSettingsPopup.AppIdOptions": [ "公開", "カスタム" ],
 		"MultiplayerSettingsPopup.AppIdTooltip": "公開サーバーまたはカスタム個人サーバーに接続する。",
 		"MultiplayerSettingsPopup.AppIdCustom": "カスタムアプリID",
 		"MultiplayerSettingsPopup.Lobby": "ロビー",
-		"MultiplayerSettingsPopup.LobbyOptions": ["公開", "プライベート", "カスタム"],
+		"MultiplayerSettingsPopup.LobbyOptions": [ "公開", "プライベート", "カスタム" ],
 		"MultiplayerSettingsPopup.LobbyTooltip": "サーバー内の特定のサーバーに接続する。ロビー内のプレイヤー同士のみお互いを確認できます。",
 		"MultiplayerSettingsPopup.LobbyCustom": "カスタムロビー",
 		"MultiplayerLanPopup.Connect": "接続",
@@ -157,11 +158,19 @@
 		"Mode.MaxWaves": "最大ウェーブ",
 		"Mode.RespawnOnWave": "ウェーブ毎にリスポーン"
 	},
+	"ExpeditionPopup": {
+		"Top.PlayersButton": "Players",
+		"Top.EM SettingsButton": "EM Settings",
+		"Top.Command ListButton": "Command List"
+	},
 	"SettingsPopup": {
 		"Top.GeneralButton": "一般",
 		"Top.UIButton": "UI",
 		"Top.GraphicsButton": "グラフィック",
 		"Top.KeybindsButton": "キーバインド",
+		"Top.Players": "選手",
+		"Top.EM Settings": "EM設定",
+		"Top.Command List": "コマンド一覧",
 		"Top.SkinsButton": "スキン",
 		"Top.GameButton": "ゲーム",
 		"Top.AbilityButton": "アビリティ",
@@ -251,7 +260,7 @@
 		"Keybinds.General.ChangeCharacter": "キャラクター変更",
 		"Keybinds.General.Chat": "チャット",
 		"Keybinds.General.ChangeCamera": "カメラ変更",
-		"Keybinds.General.HideCursor": "カーソル非表示",	// NEW
+		"Keybinds.General.HideCursor": "カーソル非表示", // NEW
 		"Keybinds.General.MinimapMaximize": "ミニマップ拡大",
 		"Keybinds.General.SpectatePreviousPlayer": "前を観戦",
 		"Keybinds.General.SpectateNextPlayer": "次を観戦",
@@ -277,7 +286,7 @@
 		"Keybinds.Human.HorseMount": "乗馬",
 		"Keybinds.Human.HorseWalk": "馬 歩き",
 		"Keybinds.Human.HorseJump": "馬 ジャンプ",
-		"Keybinds.Human.NapeLock":  "うなじロックオン",	// NEW
+		"Keybinds.Human.NapeLock": "うなじロックオン", // NEW
 		"Keybinds.Human.DashDoubleTap": "ダブルタップで空中ダッシュ",
 		"Keybinds.Human.ReelOutScrollSmoothing": "スクロールでの巻き出しの滑らかさ",
 		"Keybinds.Human.ReelOutScrollSmoothingTooltip": "マウスホイールでの巻き出しの量を決める。",

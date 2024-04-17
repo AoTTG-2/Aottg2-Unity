@@ -52,6 +52,7 @@
     "Shifter": "巨人之力",
     "Join": "加入",
     "Icon": "图标",
+    "Expedition": "远征",
     "ExternalLinkConfirm": "你即将打开一个外部链接"
   },
   "MainMenu": {
@@ -157,11 +158,19 @@
     "Mode.MaxWaves": "最大波次",
     "Mode.RespawnOnWave": "在当前波次复活"
   },
+  "ExpeditionPopup": {
+    "Top.PlayersButton": "Players",
+    "Top.EM SettingsButton": "EM Settings",
+    "Top.Command ListButton": "Command List"
+  },
   "SettingsPopup": {
     "Top.GeneralButton": "一般",
     "Top.UIButton": "UI",
     "Top.GraphicsButton": "画面选项",
     "Top.KeybindsButton": "按键绑定",
+    "Top.Players": "選手",
+    "Top.EM Settings": "EM設定",
+    "Top.Command List": "コマンド一覧",
     "Top.SkinsButton": "皮肤",
     "Top.GameButton": "游戏",
     "Top.AbilityButton": "爆炸模式设置",

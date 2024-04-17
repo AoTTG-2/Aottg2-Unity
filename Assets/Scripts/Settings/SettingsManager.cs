@@ -13,6 +13,7 @@ namespace Settings
         public static CustomSkinSettings CustomSkinSettings;
         public static GraphicsSettings GraphicsSettings;
         public static GeneralSettings GeneralSettings;
+        public static EMSettings EMSettings;
         public static UISettings UISettings;
         public static AbilitySettings AbilitySettings;
         public static InputSettings InputSettings;
@@ -32,6 +33,7 @@ namespace Settings
             CustomSkinSettings = new CustomSkinSettings();
             GraphicsSettings = new GraphicsSettings();
             GeneralSettings = new GeneralSettings();
+            EMSettings = new EMSettings();
             UISettings = new UISettings();
             AbilitySettings = new AbilitySettings();
             InputSettings = new InputSettings();
