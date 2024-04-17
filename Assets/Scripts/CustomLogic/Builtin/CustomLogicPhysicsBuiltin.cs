@@ -23,15 +23,19 @@ namespace CustomLogic
                 int layer = MapLoader.GetColliderLayer(collideWith);
                 if (Physics.Linecast(start, end, out hit, PhysicsLayer.CopyMask(layer).value))
                 {
-                    var result = new CustomLogicLineCastHitResultBuiltin();
                     var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
-                    result.IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin;
-                    result.IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin;
-                    result.Point = new CustomLogicVector3Builtin(hit.point);
-                    result.Normal = new CustomLogicVector3Builtin(hit.normal);
-                    result.Distance = hit.distance;
-                    result.Collider = collider;
-                    return result;
+                    if (collider != null)
+                    {
+                        return new CustomLogicLineCastHitResultBuiltin
+                        {
+                            IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
+                            IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
+                            Point = new CustomLogicVector3Builtin(hit.point),
+                            Normal = new CustomLogicVector3Builtin(hit.normal),
+                            Distance = hit.distance,
+                            Collider = collider
+                        };
+                    }
                 }
                 return null;
             }
