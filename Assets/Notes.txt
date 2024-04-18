@@ -1,1 +1,0 @@
-﻿Make sure decay speed is always above 0.0
