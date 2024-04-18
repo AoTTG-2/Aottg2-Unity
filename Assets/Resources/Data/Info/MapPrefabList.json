@@ -291,6 +291,7 @@
 		"Info": {"Type": "Scene", "AssetPrefix": "Nature/", "AssetSameAsName": true},
 		"Prefabs": [
 			{"Name": "Axe1"},
+			{"Name": "Aspen1"},
 			{"Name": "Bamboo1"},
 			{"Name": "Boulder1"},
 			{"Name": "Boulder2"},
@@ -320,6 +321,7 @@
 			{"Name": "Grass3", "CollideMode": "None"},
 			{"Name": "Grass4", "CollideMode": "None"},
 			{"Name": "Grass5", "CollideMode": "None"},
+			{"Name": "Grass6", "CollideMode": "None"},
 			{"Name": "Ivy1", "CollideMode": "None"},
 			{"Name": "Ivy2", "CollideMode": "None"},
 			{"Name": "Ivy3", "CollideMode": "None"},
@@ -341,6 +343,8 @@
 			{"Name": "Mushroom2", "CollideMode": "None"},
 			{"Name": "Pebbles1", "CollideMode": "None"},
 			{"Name": "Pebbles2", "CollideMode": "None"},
+			{"Name": "Pine1"},
+			{"Name": "Pine2"},
 			{"Name": "TallGrass1", "CollideMode": "None"},
 			{"Name": "TallGrass2", "CollideMode": "None"},
 			{"Name": "Tree0"},
@@ -366,6 +370,8 @@
 			{"Name": "Tree19"},
 			{"Name": "Tree20"},
 			{"Name": "Tree21"},
+			{"Name": "Tree22"},
+			{"Name": "Tree23"},
 			{"Name": "Trunk1"},
 			{"Name": "Vines1", "CollideMode": "None"}
 		]
