@@ -90,10 +90,17 @@ namespace UI
             #endregion
         }
 
+        private float timer = 0.0f;
         private void FixedUpdate()
         {
-            
+            timer += Time.fixedDeltaTime;
+            if (timer >= 1.0f)
+            {
+                RebuildCategoryPanel();
+                timer = 0.0f; // Reset the timer
+            }
         }
+
 
         private void UpdateSettings()
         {
