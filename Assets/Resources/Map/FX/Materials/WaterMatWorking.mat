@@ -123,7 +123,7 @@ Material:
     - _SudsTiling: 25
     - _TIling: 5
     - _TideSpeed: 1
-    - _Tiling_2: 5
+    - _Tiling_2: 200
     - _Turb_Strength: 0.02
     - _Turbulence: 0.02
     - _UVSec: 0
