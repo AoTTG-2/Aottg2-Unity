@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Characters;
+using static UnityEditor.PlayerSettings;
 
 namespace UI
 {
@@ -16,6 +17,8 @@ namespace UI
     {
         protected override bool ScrollBar => true;
         private Player selectedPlayer;
+        private string tpCoords;
+        private List<SaveableSettingsContainer> _saveableSettings = new List<SaveableSettingsContainer>();
 
         public override void Setup(BasePanel parent = null) //Zippy: Finish the player List
         {
@@ -44,7 +47,7 @@ namespace UI
             ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Selected player to me", 400f, 35f, onClick: () => OnTPPlayerButtonClick(1));
             ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Me to selected player", 400f, 35f, onClick: () => OnTPPlayerButtonClick(2));
             ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Selected player to Coords", 400f, 35f, onClick: () => OnTPPlayerButtonClick(3));
-            //ElementFactory.CreateInputSetting(DoublePanelRight, style, "Coordinates", 400f, 35f, onValueChanged: () => CoordsChanged());
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TPcoords, "Coordinates", tooltip: "Coordinates for TP button", elementWidth: 100f); 
 
             #endregion
             #region //Code
@@ -87,6 +90,22 @@ namespace UI
             #endregion
         }
 
+        private void FixedUpdate()
+        {
+            
+        }
+
+        private void UpdateSettings()
+        {
+            _saveableSettings.Add(SettingsManager.EMSettings);
+
+            foreach (SaveableSettingsContainer setting in _saveableSettings)
+                setting.Load();
+            RebuildCategoryPanel();
+
+            _saveableSettings.Clear();
+        }
+
         private void OnPlayerButtonClick(Player player)
         {
             selectedPlayer = player;
@@ -94,34 +113,36 @@ namespace UI
 
         private void OnTPPlayerButtonClick(int setting)
         {
-            GameObject playerGameObject = selectedPlayer.TagObject as GameObject;
+            GameObject TargetplayerGameObject = PhotonExtensions.GetPlayerFromID(selectedPlayer.ActorNumber);
+            Vector3 Mypos = PhotonExtensions.GetMyPlayer().transform.position;
 
             switch (setting) 
             { 
                 case 0: //TP all to me 
+                    foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player"))
+                    {
+                        go.GetComponent<Human>().photonView.RPC("moveToRPC", RpcTarget.Others, new object[] { Mypos.x, Mypos.y, Mypos.z });
+                    }
                     break;
                 case 1: //TP player to me
+                    TargetplayerGameObject.GetComponent<Human>().photonView.RPC("moveToRPC", selectedPlayer, new object[] { Mypos.x, Mypos.y, Mypos.z });
                     break;
                 case 2: //TP me to player
+                    GameObject ME = PhotonExtensions.GetMyPlayer();
+                    ME.transform.position = TargetplayerGameObject.transform.position;
                     break;
                 case 3: //TP player to coords
-
+                    UpdateSettings();
+                    tpCoords = SettingsManager.EMSettings.TPcoords.Value;
                     string[] tpCoordsSplit = tpCoords.Split(' ');
-                    playerGameObject.GetComponent<Human>().photonView.RPC("moveToRPC", selectedPlayer, new object[]
+                    TargetplayerGameObject.GetComponent<Human>().photonView.RPC("moveToRPC", selectedPlayer, new object[]
                     {
                     float.Parse(tpCoordsSplit[0]),
                     float.Parse(tpCoordsSplit[1]),
                     float.Parse(tpCoordsSplit[2])
                     });
-
-                    break;
+                break;
             }
-        }
-
-        private string tpCoords;
-        private void CoordsChanged()
-        {
-
         }
     }
 }

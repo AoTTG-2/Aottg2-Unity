@@ -9,12 +9,13 @@ namespace Settings
     {
         protected override string FileName { get { return "EMSettings.json"; } }
 
-     /* 
-        public StringSetting Language = new StringSetting("English");
-        public FloatSetting MouseSpeed = new FloatSetting(0.5f, minValue: 0.01f, maxValue: 1f);
-        public BoolSetting MinimapEnabled = new BoolSetting(true);
-        public IntSetting SnapshotsMinimumDamage = new IntSetting(0, minValue: 0);
-     */
+        public StringSetting TPcoords = new StringSetting("0 0 0");
+        /* 
+           public StringSetting Language = new StringSetting("English");
+           public FloatSetting MouseSpeed = new FloatSetting(0.5f, minValue: 0.01f, maxValue: 1f);
+           public BoolSetting MinimapEnabled = new BoolSetting(true);
+           public IntSetting SnapshotsMinimumDamage = new IntSetting(0, minValue: 0);
+        */
 
 
 

@@ -1,4 +1,6 @@
 ﻿using GameManagers;
+using NUnit.Framework.Internal.Commands;
+using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
@@ -89,4 +91,31 @@ static class PhotonExtensions
         var strArr = property.Split(',');
         return new Vector3(float.Parse(strArr[0]), float.Parse(strArr[1]), float.Parse(strArr[2]));
     }
+
+    public static GameObject GetMyPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+         
+        foreach (GameObject player in players)
+        {
+            PhotonView pv = player.GetComponent<PhotonView>();
+            if (pv.IsMine)
+                return player;
+        }
+        return null;
+    } 
+
+    public static GameObject GetPlayerFromID(int actorNumber)
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject player in players)
+        {
+            PhotonView pv = player.GetComponent<PhotonView>();
+            if (pv != null && pv.OwnerActorNr == actorNumber)
+                return player;
+        }
+        return null;
+    }
+
 }
