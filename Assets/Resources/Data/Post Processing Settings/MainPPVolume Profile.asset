@@ -84,7 +84,7 @@ MonoBehaviour:
     value: 360
   sampleCount:
     overrideState: 1
-    value: 4
+    value: 16
 --- !u!114 &-4625510297898506084
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -106,11 +106,11 @@ MonoBehaviour:
     value: 2
   externalLut:
     overrideState: 1
-    value: {fileID: 11700000, guid: 41cbb1887bc5dc148b26073f4f416336, type: 2}
+    value: {fileID: 11700000, guid: 51116640786d3414a83a18a48f070115, type: 2}
     defaultState: 1
   tonemapper:
     overrideState: 1
-    value: 3
+    value: 2
   toneCurveToeStrength:
     overrideState: 0
     value: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
     value: 0
   colorFilter:
     overrideState: 0
-    value: {r: 0.9716981, g: 0.3254272, b: 0.3254272, a: 1}
+    value: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
   hueShift:
     overrideState: 0
     value: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
     value: 0.47
   contrast:
     overrideState: 0
-    value: 0
+    value: 48
   mixerRedOutRedIn:
     overrideState: 0
     value: 100
@@ -180,10 +180,10 @@ MonoBehaviour:
     value: 0
   mixerBlueOutRedIn:
     overrideState: 0
-    value: 0
+    value: -130
   mixerBlueOutGreenIn:
     overrideState: 0
-    value: 0
+    value: 142
   mixerBlueOutBlueIn:
     overrideState: 0
     value: 100
