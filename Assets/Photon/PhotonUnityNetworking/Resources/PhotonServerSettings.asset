@@ -121,6 +121,7 @@ MonoBehaviour:
   - ToggleBladeTrailsRPC
   - ToggleBladesRPC
   - LoadSceneRPC
+  - moveToRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

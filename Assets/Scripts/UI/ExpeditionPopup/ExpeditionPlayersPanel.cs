@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using Characters;
 
 namespace UI
 {
@@ -39,7 +40,11 @@ namespace UI
 
             #region Right Side
 
-
+            ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP All To Me", 400f, 35f, onClick: () => OnTPPlayerButtonClick(0));
+            ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Selected player to me", 400f, 35f, onClick: () => OnTPPlayerButtonClick(1));
+            ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Me to selected player", 400f, 35f, onClick: () => OnTPPlayerButtonClick(2));
+            ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Selected player to Coords", 400f, 35f, onClick: () => OnTPPlayerButtonClick(3));
+            //ElementFactory.CreateInputSetting(DoublePanelRight, style, "Coordinates", 400f, 35f, onValueChanged: () => CoordsChanged());
 
             #endregion
             #region //Code
@@ -85,6 +90,38 @@ namespace UI
         private void OnPlayerButtonClick(Player player)
         {
             selectedPlayer = player;
+        }
+
+        private void OnTPPlayerButtonClick(int setting)
+        {
+            GameObject playerGameObject = selectedPlayer.TagObject as GameObject;
+
+            switch (setting) 
+            { 
+                case 0: //TP all to me 
+                    break;
+                case 1: //TP player to me
+                    break;
+                case 2: //TP me to player
+                    break;
+                case 3: //TP player to coords
+
+                    string[] tpCoordsSplit = tpCoords.Split(' ');
+                    playerGameObject.GetComponent<Human>().photonView.RPC("moveToRPC", selectedPlayer, new object[]
+                    {
+                    float.Parse(tpCoordsSplit[0]),
+                    float.Parse(tpCoordsSplit[1]),
+                    float.Parse(tpCoordsSplit[2])
+                    });
+
+                    break;
+            }
+        }
+
+        private string tpCoords;
+        private void CoordsChanged()
+        {
+
         }
     }
 }

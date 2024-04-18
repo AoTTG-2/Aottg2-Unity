@@ -264,7 +264,7 @@ namespace Characters
 
         public void Unmount(bool immediate)
         {
-            SetInterpolation(true);
+            SetInterpolation(true); 
             if (MountState == HumanMountState.Horse && !immediate)
             {
                 PlayAnimation(HumanAnimations.HorseDismount);
@@ -2740,6 +2740,17 @@ namespace Characters
                 if (_state == HumanState.AirDodge || _state == HumanState.GroundDodge)
                     _dashTimeLeft = 0f;
                 _state = value;
+            }
+        }
+
+
+        [PunRPC]
+        public void moveToRPC(float x, float y, float z, PhotonMessageInfo info)
+        {
+            if (info.Sender.IsMasterClient)
+            {
+                if (MountState == HumanMountState.Horse) Horse.transform.position = new Vector3(x, y, z);
+                else transform.position = new Vector3(x, y, z);
             }
         }
     }
