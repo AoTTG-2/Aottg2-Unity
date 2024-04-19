@@ -67,7 +67,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalFromTexture_effd1d8e6d314f818b3bb94f157443c2_Texture_0_Texture2D:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d129098112f58b844b8a76afdcbb61ad, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -79,6 +79,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_c95fb48a7f7e420597d2833d25455a23_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d129098112f58b844b8a76afdcbb61ad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -120,13 +124,14 @@ Material:
     - _Speed_1: 0.03
     - _SrcBlend: 1
     - _Strength: 0.04
-    - _SudsTiling: 25
+    - _SudsTiling: 50
     - _TIling: 5
     - _TideSpeed: 1
-    - _Tiling_2: 200
+    - _Tiling_2: 50
     - _Turb_Strength: 0.02
     - _Turbulence: 0.02
     - _UVSec: 0
+    - _Use_Debris: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
