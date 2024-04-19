@@ -789,6 +789,10 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
+    DecaySpeed = 1.0;
+    Order = 0;
+    SupplyStationID = "";
+    SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
 
     ShowUI = true;
     UIVisibilityRange = 80.0;
@@ -796,6 +800,7 @@ component CaptureZone
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
+    _lastState = "Captured";
     _currentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
@@ -816,7 +821,16 @@ component CaptureZone
 
     # UI state
     _isViewing = false;
-
+    
+    # Supply Station
+    _supplyStation = null;
+    _hasSupplyStation = false;
+    _isSupplyStationActive = false;
+    
+    # Callback Receiver
+    _lastOwner = "null"; # Use to avoid calling "OnCaptured" multiple times
+    _callbackReceiver = null;
+    _hasCallbackReceiver = false;
 
     function Init()
     {
@@ -830,6 +844,48 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
+        
+        # Setup supply station
+        if (self.SupplyStationID != "")
+        {
+            id = Convert.ToInt(self.SupplyStationID);
+            self._supplyStation = Map.FindMapObjectByID(id);
+            self._hasSupplyStation = self._supplyStation != null;
+            
+            if (self._hasSupplyStation)
+            {
+                self._supplyStation.Active = false;
+            }
+        }
+    }
+    
+    /*
+     * Callback receiver can be an instance of any class
+     * that have the following functions:
+     *      OnCaptured(captureZone, newOwner),
+     *      OnCapturing(captureZone, capturer),
+     *      OnContested(captureZone),
+     */
+    function SetupCallbackReceiver(callbackReceiver)
+    {
+        self._callbackReceiver = callbackReceiver;
+        self._hasCallbackReceiver = self._callbackReceiver != null;
+    }
+
+    # Getters
+    function GetCurrentOwner()
+    {
+        return self._currentOwner;
+    }
+
+    function GetCaptureProgress()
+    {
+        return self._captureProgress / self.CaptureTime;
+    }
+
+    function GetState()
+    {
+        return self._state;
     }
 
     # GameObject Helpers
@@ -937,7 +993,15 @@ component CaptureZone
             }
             elif (self._teamsInZone.Contains(self._currentCapturer) == false)
             {
-                self._captureProgress = self._captureProgress - 1.0;
+                if (self._teamsInZone.Count == 0)
+                {
+                    self._captureProgress = self._captureProgress - self.DecaySpeed;
+                }
+                else
+                {
+                    self._captureProgress = self._captureProgress - 1.0;
+                }
+                
                 if (self._captureProgress <= 0.0)
                 {
                     self._state = "Captured";
@@ -990,6 +1054,50 @@ component CaptureZone
 		{
 			return;
 		}
+		
+		if (self._lastState != self._state)
+		{
+		    if (self._hasCallbackReceiver)
+		    {
+                if (self._state == "Captured")
+                {
+                    if (self._lastOwner != self._currentOwner)
+                    {
+                        self._callbackReceiver.OnCaptured(self, self._currentOwner);
+                        self._lastOwner = self._currentOwner;
+                    }
+                }
+                elif (self._state == "Capturing")
+                {
+                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                }
+                elif (self._state == "Contested")
+                {
+                    self._callbackReceiver.OnContested(self);
+                }
+		    }
+            self._lastState = self._state;
+		}
+		
+		if (self._state == "Captured")
+        {
+            if (self._currentOwner == "Human")
+            {
+                if (self._hasSupplyStation && !self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = true;
+                    self._isSupplyStationActive = true;
+                }
+            }
+            else
+            {
+                if (self._hasSupplyStation && self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = false;
+                    self._isSupplyStationActive = false;
+                }
+            }
+        }
 
         if (Network.MyPlayer.Character == null)
 		{
@@ -2199,9 +2307,20 @@ component WallGateA1
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
         self._open = self.StartState == "Open";
+
+        localPosition = self._door.LocalPosition;
+        if (self._open)
+        {
+            localPosition.Y = 25;
+        }
+        else
+        {
+            localPosition.Y = 0;
+        }
+        self._door.LocalPosition = localPosition;
     }
 
     function OnNetworkMessage(sender, message)
@@ -2227,6 +2346,16 @@ component WallGateA1
     {
         self._open = !self._open;
         self._moving = true;
+    }
+
+    function SetState(state)
+    {
+        isOpen = state == "Open";
+        if (self._open != isOpen)
+        {
+            self._open = isOpen;
+            self._moving = true;
+        }
     }
 
     function OnCollisionStay(other)
