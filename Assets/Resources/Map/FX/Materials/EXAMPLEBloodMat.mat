@@ -97,6 +97,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _H: 1
+    - _Invert_Direction: 0
     - _Metallic: 0.898
     - _Mode: 0
     - _Normal_Scrolling: 0.01
@@ -111,6 +112,7 @@ Material:
     - _UVSec: 0
     - _Use_Animation: 0
     - _Use_Normals: 1
+    - _Use_Snow: 0
     - _W: 1
     - _ZWrite: 1
     m_Colors:
