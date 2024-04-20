@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterMatWorking
+  m_Name: WaterNatureMat
   m_Shader: {fileID: -6465566751694194690, guid: 6a52aadb3f61d614f9c991644a1e3eb7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
