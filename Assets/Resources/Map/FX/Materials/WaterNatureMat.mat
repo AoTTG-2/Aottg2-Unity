@@ -145,8 +145,8 @@ Material:
     - _Depths_Color: {r: 0.21622464, g: 0.24274567, b: 0.4056604, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Tide_Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _Tiling: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
     - _Tiling_1: {r: 5, g: 5, b: 0, a: 0}
     - _Tiling_3: {r: 1, g: 1, b: 0, a: 0}
-    - _Water_Color: {r: 0.29654682, g: 0.40265158, b: 0.5283019, a: 1}
+    - _Water_Color: {r: 0.29803923, g: 0.44367763, b: 0.5294118, a: 1}
   m_BuildTextureStacks: []

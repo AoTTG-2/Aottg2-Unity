@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaterDebrisMat
+  m_Name: WaterBlood2Mat
   m_Shader: {fileID: -6465566751694194690, guid: 6a52aadb3f61d614f9c991644a1e3eb7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -71,7 +71,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Texture:
-        m_Texture: {fileID: 2800000, guid: cc6dc88f40e835a46bf52a2966d0cc50, type: 3}
+        m_Texture: {fileID: 2800000, guid: 53b6f92fda328834182c09b295e80856, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -87,7 +87,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: cc6dc88f40e835a46bf52a2966d0cc50, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9868e0abfe627ed478303c4b8cbf8359, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -106,46 +106,48 @@ Material:
     - _Blend: 0.17
     - _BumpScale: 1
     - _Custom_Map_Mode: 1
-    - _Cutoff: -0.08
-    - _Depth: 5
+    - _Cutoff: -0.1
+    - _Depth: 0
     - _DetailNormalMapScale: 1
-    - _Distance: 8
+    - _Distance: 3.06
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _Normal_Strength: 10
+    - _Normal_Strength: 4.46
     - _OcclusionStrength: 1
     - _Opacity: 0.01
-    - _Opacity_1: 0.01
+    - _Opacity_1: 0.005
     - _Parallax: 0.02
     - _River_Mode: 1
-    - _Shiny: 0.11
+    - _Shiny: 0.14
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 0.78
+    - _Speed: 0.69
     - _Speed_1: 0.03
     - _SrcBlend: 1
     - _Strength: 0.04
-    - _SudsTiling: 76.48
+    - _SudsTiling: 256.62
     - _TIling: 5
-    - _TideSpeed: 1
+    - _TideSpeed: 15.6
     - _Tide_Direction: 0
-    - _Tiling_2: 8.2
-    - _Turb_Strength: -0.02
-    - _Turbulence: 0.13
+    - _Tiling_2: 45
+    - _Turb_Strength: 0.005
+    - _Turbulence: 0.35
     - _UVSec: 0
     - _Use_Debris: 1
     - _Use_Debris_Tiling: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Depths_Color: {r: 0.12032752, g: 0.12311078, b: 0.1509434, a: 1}
+    - _Depths_Color: {r: 0.1981132, g: 0.010885342, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Tiling_1: {r: 10, g: 10, b: 0, a: 0}
+    - _TideSpeed: {r: 0, g: 9.15, b: 0, a: 0}
+    - _Tide_Speed: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling: {r: 10, g: 10, b: 0, a: 0}
+    - _Tiling_1: {r: 5, g: 5, b: 0, a: 0}
     - _Tiling_3: {r: 1, g: 1, b: 0, a: 0}
-    - _Water_Color: {r: 0.09433961, g: 0.07585982, b: 0.06541473, a: 1}
+    - _Water_Color: {r: 0.3301887, g: 0.032558262, b: 0, a: 1}
   m_BuildTextureStacks: []
