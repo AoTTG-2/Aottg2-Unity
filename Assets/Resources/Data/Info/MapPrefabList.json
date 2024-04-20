@@ -404,13 +404,22 @@
 	"FX": {
 		"Info": {"Type": "Scene", "AssetPrefix": "FX/", "AssetSameAsName": true},
 		"Prefabs": [
-			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
-			{"Name": "WaterCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
-			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			
+			{"Name": "Blood1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Bubbles1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Bubbles2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Crystal1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Fish", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
-			{"Name": "Seaweed", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
+			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "Rumbling1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Scifi1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Seaweed", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "WaterCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterCube2", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterCube3", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterCube4", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterCube5", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
 		]
 	},
 	"Interact": {
