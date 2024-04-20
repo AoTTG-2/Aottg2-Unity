@@ -398,7 +398,27 @@
 	"Terrain": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Terrain/", "AssetSameAsName": true},
 		"Prefabs": [
-			{"Name": "OutsideTerrain1"}
+			{"Name": "OutsideTerrain1"},
+			{"Name": "Crater1"},
+			{"Name": "Crater2"},
+			{"Name": "Crater3"},
+			{"Name": "Hill1"},
+			{"Name": "Hill2"},
+			{"Name": "Hill3"},
+			{"Name": "Hole1"},
+			{"Name": "Lake1"},
+			{"Name": "Lake2"},
+			{"Name": "Mesa1"},
+			{"Name": "Mesa2"},
+			{"Name": "Mesa3"},
+			{"Name": "Mesa4"},
+			{"Name": "Mountain1"},
+			{"Name": "Mountain2"},
+			{"Name": "Mountain3"},
+			{"Name": "Mountain4"},
+			{"Name": "MountainRange1"},
+			{"Name": "MountainRange2"},
+			{"Name": "MountainRange3"}
 		]
 	},
 	"FX": {
