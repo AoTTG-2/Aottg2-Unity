@@ -416,9 +416,12 @@
 			{"Name": "Mountain2"},
 			{"Name": "Mountain3"},
 			{"Name": "Mountain4"},
-			{"Name": "MountainRange1"},
-			{"Name": "MountainRange2"},
-			{"Name": "MountainRange3"}
+			{"Name": "MountainRange1a"},
+			{"Name": "MountainRange1b"},
+			{"Name": "MountainRange2a"},
+			{"Name": "MountainRange2b"},
+			{"Name": "MountainRange3a"},
+			{"Name": "MountainRange3b"}
 		]
 	},
 	"FX": {

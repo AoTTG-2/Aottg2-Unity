@@ -99,11 +99,27 @@ namespace Characters
             }
         }
 
+        public void AddOutline()
+        {
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+            }
+        }
+
+        public void RemoveOutline()
+        {
+            if (_outline != null)
+            {
+                Destroy(_outline);
+                _outline = null;
+            }
+        }
+
         private IEnumerator WaitAndRemoveOutline(Outline outline, float seconds)
         {
             yield return new WaitForSeconds(seconds);
-            Destroy(outline);
-            outline = null;
+            RemoveOutline();
         }
 
         [PunRPC]
