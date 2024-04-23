@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cce19d2c5fcd04142ad35d81eebee3b3
+timeCreated: 1477483224
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMFonts/arial.asset
+  uploadId: 656890

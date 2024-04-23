@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 6f40085514eca2c419a9d01bd362bac7
+timeCreated: 1519176599
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Pre Parse/STMPreParse2.cs
+  uploadId: 656890

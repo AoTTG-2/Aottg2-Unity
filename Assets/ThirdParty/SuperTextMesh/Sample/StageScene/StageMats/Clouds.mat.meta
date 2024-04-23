@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f95249d60ac22482581a2d624bd4984a
+timeCreated: 1460627036
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/StageScene/StageMats/Clouds.mat
+  uploadId: 656890

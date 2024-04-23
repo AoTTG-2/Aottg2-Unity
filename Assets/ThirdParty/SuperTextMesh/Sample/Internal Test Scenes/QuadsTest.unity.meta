@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 188472b91e52270419b42534ef46bd03
+timeCreated: 1532525919
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/QuadsTest.unity
+  uploadId: 656890

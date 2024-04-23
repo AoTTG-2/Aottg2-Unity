@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1b351cc9be7fb4d5a9b52cea57c85a8b
+timeCreated: 1476592925
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMColors/rev.asset
+  uploadId: 656890

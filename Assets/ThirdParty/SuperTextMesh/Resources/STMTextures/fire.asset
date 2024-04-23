@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf25a9a2e538d41d3b0ffedbe5d85115, type: 3}
+  m_Name: fire
+  m_EditorClassIdentifier: 
+  showFoldout: 1
+  texture: {fileID: 2800000, guid: 1502258caa0ca46c3b9eff9bbe53b19e, type: 3}
+  filterMode: 1
+  relativeToLetter: 0
+  scaleWithText: 0
+  tiling: {x: 0.2, y: 0.2}
+  offset: {x: 0, y: 0}
+  scrollSpeed: {x: 0.5, y: 0.25}

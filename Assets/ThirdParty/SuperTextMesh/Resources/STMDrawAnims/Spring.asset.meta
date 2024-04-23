@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 52ef1b3d91f7cb140ac3f759ba4d9cad
+timeCreated: 1527632663
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMDrawAnims/Spring.asset
+  uploadId: 656890

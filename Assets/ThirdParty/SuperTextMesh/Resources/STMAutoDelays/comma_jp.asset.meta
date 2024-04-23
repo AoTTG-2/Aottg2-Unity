@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2ea4f9a76915c3e448880b021307b7a9
+timeCreated: 1701128453
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMAutoDelays/comma_jp.asset
+  uploadId: 656890

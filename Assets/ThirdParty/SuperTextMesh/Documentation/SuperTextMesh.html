@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Features</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <pre>
+<head>
+	<title>Super Text Mesh Documentation</title>
+	<link rel="shortcut icon" type="image/png" href="/STMDocImages/favicon.png"/>
+</head>
+<style>
+* {
+	box-sizing:border-box;
+}
+body {
+    background-color: #170f02;
+    background-image: url("STMDocImages/background.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    color: #3c2707;
+    padding:0 15px;
+}
+a {
+    color: #64B0FF;
+    font-weight: bold;
+}
+pre {
+    font-family: "courier new", courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+}
+code {
+    font-family: "courier new", courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+}
+.column{
+    background-color: #F7D8A5;
+    width: 100%;
+	max-width:1200px;
+    margin:30px auto;
+    padding: 15px;
+}
+.banner {
+    text-align: center;
+    max-width: 100%;
+    color: #e4941b;
+}
+.banner img {
+    max-width: 100%;
+}
+.tableofcontents {
+    background-color: #FFF;
+    max-width: 50%;
+    padding: 15px;
+    margin: 15px;
+	margin-left: 0px;
+}
+/* Main Level */
+ul{
+  margin-left:0px;
+}
+
+/* Second Level */
+ul ul{
+  margin-left:-20px;
+}
+
+/* Third Level */
+ul ul ul{
+  margin-left:-20px;
+  
+}
+/* Fourth Level */
+ul ul ul ul{
+  margin-left:-20px;
+  font-family: "courier new", courier, monospace;
+}
+p{
+    margin-left:96px;
+    margin-right:96px;
+}
+.textarea {
+    margin: 50px 50px;
+}
+.rightbox {
+    color: #e4941b;
+    text-align: center;
+    font-style: italic;
+    float: right;
+    background-color: #FFF;
+    max-width: 20%;
+}
+.rightbox p {
+    margin-left:15px;
+    margin-right:15px;
+}
+.rightbox img {
+    width: 100%;
+}
+h1 {
+    font-weight: bold;
+    font-size: 32px;
+    text-decoration: underline;
+}
+h2 {
+    font-weight: bold;
+    font-size: 28px;
+	text-indent: 24px;
+    text-decoration: underline;
+}
+h3 {
+    font-weight: bold;
+    font-size: 24px;
+	text-indent: 48px;
+    text-decoration: underline;
+}
+h4 {
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+	text-indent: 72px;
+	font-family: "courier new", courier, monospace;
+}
+h5 {
+	font-size: 16px;
+    text-indent: 72px;
+	font-family: "courier new", courier, monospace;
+}
+h6 {
+    font-size: 0px;
+}
+hr {
+    border-top: 2px solid #3c2707;
+    border-bottom: 2px solid #3c2707;
+    border-left: 2px solid #3c2707;
+    border-right: 2px solid #3c2707;
+}
+
+/* Mobiley Styley */
+
+@media only screen and (max-width: 1000px) { 
+
+	.tableofcontents {
+		max-width:100%;
+	}
+
+	p{
+        margin-left:30px;
+        margin-right:30px;
+    }
+    h2 {
+        text-indent: 10px;
+    }
+    h3 {
+        text-indent: 20px;
+    }
+    h4 {
+        text-indent: 30px;
+    }
+    h5 {
+        text-indent: 30px;
+    }
+	
+}
+
+@media only screen and (max-width: 640px) { 
+
+	.textarea {
+		margin:15px;
+		word-break:break-word;
+	}
+	.rightbox {
+		float:none;
+		max-width:100%;
+		margin:0 0 15px;
+		padding:5px;
+	}
+	
+}
+</style>
+</pre>
+<br>
+<br>
+<br>
+<article class="column"><article class="banner">
+<img src="STMDocImages/banner.png"/><br>
+<br>
+Super Text Mesh Documentation
+</article><article class="tableofcontents"><article class="textarea">
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#adding-super-text-mesh-to-unity">Adding Super Text Mesh to Unity</a>
+<ul>
+<li><a href="#importing-super-text-mesh-into-unity">Importing Super Text Mesh into Unity</a>
+<ul>
+<li><a href="#imported-folders-and-what-they-do">Imported folders and what they do</a></li>
+</ul>
+</li>
+<li><a href="#adding-super-text-mesh-to-a-scene">Adding Super Text Mesh to a Scene</a></li>
+</ul>
+</li>
+<li><a href="#text-data-file--rich-text-tags">Text Data File &amp; Rich Text Tags</a>
+<ul>
+<li><a href="#text-data">Text Data</a></li>
+<li><a href="#text-data-customization">Text Data Customization</a>
+<ul>
+<li><a href="#effects">Effects</a>
+<ul>
+<li><a href="#waves">Waves</a>
+<ul>
+<li><a href="#w--wname">[<code>&lt;w&gt;</code> / <code>&lt;w=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#jitters">Jitters</a>
+<ul>
+<li><a href="#j--jname">[<code>&lt;j&gt;</code> / <code>&lt;j=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#draw-animations">Draw Animations</a>
+<ul>
+<li><a href="#drawanimname">[<code>&lt;drawAnim=name&gt;</code>]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#text-color">Text Color</a>
+<ul>
+<li><a href="#colors">Colors</a>
+<ul>
+<li><a href="#c--cname">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#gradients">Gradients</a>
+<ul>
+<li><a href="#c--cname-1">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#textures">Textures</a>
+<ul>
+<li><a href="#c--cname-2">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#inline">Inline</a>
+<ul>
+<li><a href="#delays">Delays</a>
+<ul>
+<li><a href="#d--dname">[<code>&lt;d&gt;</code> / <code>&lt;d=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#voices">Voices</a>
+<ul>
+<li><a href="#v--vname">[<code>&lt;v&gt;</code> / <code>&lt;v=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#fonts">Fonts</a>
+<ul>
+<li><a href="#f--fname">[<code>&lt;f&gt;</code> / <code>&lt;f=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#audio-clips">Audio Clips</a>
+<ul>
+<li><a href="#audioclipsname">[<code>&lt;audioClips=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#sound-clips">Sound Clips</a>
+<ul>
+<li><a href="#clipsname">[<code>&lt;clips=name&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#quads">Quads</a>
+<ul>
+<li><a href="#qname--qnameindex--qnamexposypos">[<code>&lt;q=name&gt;</code> / <code>&lt;q=name,index&gt;</code> / <code>&lt;q=name,xPos,yPos&gt;</code>]</a></li>
+</ul>
+</li>
+<li><a href="#materials">Materials</a>
+<ul>
+<li><a href="#mname">[<code>&lt;m=name&gt;</code>]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#automatic">Automatic</a>
+<ul>
+<li><a href="#auto-delays">Auto Delays</a></li>
+<li><a href="#auto-clips">Auto Clips</a></li>
+</ul>
+</li>
+<li><a href="#master">Master</a>
+<ul>
+<li><a href="#disable-animated-text">Disable Animated Text</a></li>
+<li><a href="#default-font">Default Font</a></li>
+<li><a href="#bounds-color">Bounds Color</a></li>
+<li><a href="#text-bounds-color">Text Bounds Color</a></li>
+<li><a href="#bounds-color-1">Bounds Color</a></li>
+<li><a href="#superscript-offset">Superscript Offset</a></li>
+<li><a href="#superscript-size">Superscript Size</a></li>
+<li><a href="#subscript-offset">Subscript Offset</a></li>
+<li><a href="#subscript-size">Subscript Size</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#rich-text-tags">Rich Text Tags</a></li>
+</ul>
+</li>
+<li><a href="#methods-parameters--events">Methods, Parameters &amp; Events</a>
+<ul>
+<li><a href="#public-methods">Public Methods</a>
+<ul>
+<li><a href="#rebuild">Rebuild</a>
+- <a href="#void-supertextmeshrebuild">void SuperTextMesh.Rebuild()</a>
+- <a href="#void-supertextmeshrebuildbool-readautomatically">void SuperTextMesh.Rebuild(bool readAutomatically)</a></li>
+<li><a href="#rebuildall">RebuildAll</a>
+- <a href="#static-void-supertextmeshrebuildall">[STATIC] void SuperTextMesh.RebuildAll()</a></li>
+<li><a href="#read">Read</a>
+- <a href="#void-supertextmeshread">void SuperTextMesh.Read()</a>
+- <a href="#void-supertextmeshreadfloat-starttime">void SuperTextMesh.Read(float startTime)</a></li>
+<li><a href="#speedread">SpeedRead</a>
+- <a href="#void-supertextmeshspeedread">void SuperTextMesh.SpeedRead()</a></li>
+<li><a href="#regularread">RegularRead</a>
+- <a href="#void-supertextmeshregularread">void SuperTextMesh.RegularRead()</a></li>
+<li><a href="#skiptoend">SkipToEnd</a>
+- <a href="#void-supertextmeshskiptoend">void SuperTextMesh.SkipToEnd()</a></li>
+<li><a href="#append">Append</a>
+- <a href="#void-supertextmeshappendstring">void SuperTextMesh.Append(string)</a></li>
+<li><a href="#unread">UnRead</a>
+- <a href="#void-supertextmeshunread">void SuperTextMesh.UnRead()</a></li>
+<li><a href="#continue">Continue</a>
+- <a href="#bool-supertextmeshcontinue">bool SuperTextMesh.Continue()</a></li>
+<li><a href="#undocontinue">UndoContinue()</a>
+- <a href="#bool-supertextmeshcontinue-1">bool SuperTextMesh.Continue()</a></li>
+</ul>
+</li>
+<li><a href="#public-properties">Public Properties</a>
+<ul>
+<li><a href="#text">Text</a>
+<ul>
+<li><a href="#text-1">text</a>
+<ul>
+<li><a href="#string-supertextmeshtext">string SuperTextMesh.text</a></li>
+</ul>
+</li>
+<li><a href="#_text">_text</a>
+<ul>
+<li><a href="#string-supertextmesh_text">string SuperTextMesh._text</a></li>
+</ul>
+</li>
+<li><a href="#drawtext">drawText</a>
+<ul>
+<li><a href="#read-only-string-supertextmeshdrawtext">[READ ONLY] string SuperTextMesh.drawText</a></li>
+</ul>
+</li>
+<li><a href="#hyphenedtext">hyphenedText</a>
+<ul>
+<li><a href="#read-only-string-supertextmeshhyphenedtext">[READ ONLY] string SuperTextMesh.hyphenedText</a></li>
+</ul>
+</li>
+<li><a href="#reading">reading</a>
+<ul>
+<li><a href="#read-only-bool-supertextmeshreading">[READ ONLY] bool SuperTextMesh.reading</a></li>
+</ul>
+</li>
+<li><a href="#unreading">unreading</a>
+<ul>
+<li><a href="#read-only-bool-supertextmeshunreading">[READ ONLY] bool SuperTextMesh.unreading</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appearance">Appearance</a>
+<ul>
+<li><a href="#font">font</a>
+<ul>
+<li><a href="#font-supertextmeshfont">Font SuperTextMesh.font</a></li>
+</ul>
+</li>
+<li><a href="#color">color</a>
+<ul>
+<li><a href="#color-supertextmeshcolor">Color SuperTextMesh.color</a></li>
+</ul>
+</li>
+<li><a href="#size">size</a>
+<ul>
+<li><a href="#float-supertextmeshsize">float SuperTextMesh.size</a></li>
+</ul>
+</li>
+<li><a href="#bestfit">bestFit</a>
+<ul>
+<li><a href="#supertextmeshbestfitmode-supertextmeshbestfit">SuperTextMesh.BestFitMode SuperTextMesh.bestFit</a></li>
+</ul>
+</li>
+<li><a href="#style">style</a>
+<ul>
+<li><a href="#fontstyle-supertextmeshstyle">FontStyle SuperTextMesh.style</a></li>
+</ul>
+</li>
+<li><a href="#richtext">richText</a>
+<ul>
+<li><a href="#bool-supertextmeshrichtext">bool SuperTextMesh.richText</a></li>
+</ul>
+</li>
+<li><a href="#quality">quality</a>
+<ul>
+<li><a href="#int-supertextmeshquality">int SuperTextMesh.quality</a></li>
+</ul>
+</li>
+<li><a href="#filtermode">filterMode</a>
+<ul>
+<li><a href="#filtermode-supertextmeshfiltermode">FilterMode SuperTextMesh.filterMode</a></li>
+</ul>
+</li>
+<li><a href="#maskmode">maskMode</a>
+<ul>
+<li><a href="#supertextmeshmaskmode-supertextmeshmaskmode">SuperTextMesh.MaskMode SuperTextMesh.maskMode</a></li>
+</ul>
+</li>
+<li><a href="#textmaterial">textMaterial</a>
+<ul>
+<li><a href="#material-supertextmeshtextmaterial">Material SuperTextMesh.textMaterial</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#position">Position</a>
+<ul>
+<li><a href="#baseoffset">baseOffset</a>
+<ul>
+<li><a href="#vector3-supertextmeshbaseoffset">Vector3 SuperTextMesh.baseOffset</a></li>
+</ul>
+</li>
+<li><a href="#relativebaseoffset">relativeBaseOffset</a>
+<ul>
+<li><a href="#bool-supertextmeshrelativebaseoffset">bool SuperTextMesh.relativeBaseOffset</a></li>
+</ul>
+</li>
+<li><a href="#anchor">anchor</a>
+<ul>
+<li><a href="#textanchor-supertextmeshanchor">TextAnchor SuperTextMesh.anchor</a></li>
+</ul>
+</li>
+<li><a href="#alignment">alignment</a>
+<ul>
+<li><a href="#supertextmeshalignment-supertextmeshalignment">SuperTextMesh.Alignment SuperTextMesh.alignment</a></li>
+</ul>
+</li>
+<li><a href="#linespacing">lineSpacing</a>
+<ul>
+<li><a href="#float-supertextmeshlinespacing">float SuperTextMesh.lineSpacing</a></li>
+</ul>
+</li>
+<li><a href="#characterspacing">characterSpacing</a>
+<ul>
+<li><a href="#float-supertextmeshcharacterspacing">float SuperTextMesh.characterSpacing</a></li>
+</ul>
+</li>
+<li><a href="#tabsize">tabSize</a>
+<ul>
+<li><a href="#float-supertextmeshtabsize">float SuperTextMesh.tabSize</a></li>
+</ul>
+</li>
+<li><a href="#autowrap">autoWrap</a>
+<ul>
+<li><a href="#float-supertextmeshautowrap">float SuperTextMesh.autoWrap</a></li>
+</ul>
+</li>
+<li><a href="#uiwrap">uiWrap</a>
+<ul>
+<li><a href="#bool-supertextmeshuiwrap">bool SuperTextMesh.uiWrap</a></li>
+</ul>
+</li>
+<li><a href="#breaktext">breakText</a>
+<ul>
+<li><a href="#bool-supertextmeshbreaktext">bool SuperTextMesh.breakText</a></li>
+</ul>
+</li>
+<li><a href="#inserthyphens">insertHyphens</a>
+<ul>
+<li><a href="#bool-supertextmeshinserthyphens">bool SuperTextMesh.insertHyphens</a></li>
+</ul>
+</li>
+<li><a href="#verticallimit">verticalLimit</a>
+<ul>
+<li><a href="#int-supertextmeshverticallimit">int SuperTextMesh.verticalLimit</a></li>
+</ul>
+</li>
+<li><a href="#uilimit">uiLimit</a>
+<ul>
+<li><a href="#bool-supertextmeshuilimit">bool SuperTextMesh.uiLimit</a></li>
+</ul>
+</li>
+<li><a href="#verticallimitmode">verticalLimitMode</a>
+<ul>
+<li><a href="#supertextmeshverticallimitmode">SuperTextMesh.verticalLimitMode</a></li>
+</ul>
+</li>
+<li><a href="#lineheights">lineHeights</a>
+<ul>
+<li><a href="#read-only-list-supertextmeshlineheights">[READ ONLY] List SuperTextMesh.lineHeights</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#timing">Timing</a>
+<ul>
+<li><a href="#ignoretimescale">ignoreTimeScale</a>
+<ul>
+<li><a href="#bool-supertextmeshignoretimescale">bool SuperTextMesh.ignoreTimeScale</a></li>
+</ul>
+</li>
+<li><a href="#disableanimatedtext">disableAnimatedText</a>
+<ul>
+<li><a href="#bool-supertextmeshdisableanimatedtext">bool SuperTextMesh.disableAnimatedText</a></li>
+</ul>
+</li>
+<li><a href="#forceanimation">forceAnimation</a>
+<ul>
+<li><a href="#bool-supertextmeshforceanimation">bool SuperTextMesh.forceAnimation</a></li>
+</ul>
+</li>
+<li><a href="#autoread">autoRead</a>
+<ul>
+<li><a href="#bool-supertextmeshautoread">bool SuperTextMesh.autoRead</a></li>
+</ul>
+</li>
+<li><a href="#rememberreadposition">rememberReadPosition</a>
+<ul>
+<li><a href="#bool-supertextmeshrememberreadposition">bool SuperTextMesh.rememberReadPosition</a></li>
+</ul>
+</li>
+<li><a href="#readdelay">readDelay</a>
+<ul>
+<li><a href="#float-supertextmeshreaddelay">float SuperTextMesh.readDelay</a></li>
+</ul>
+</li>
+<li><a href="#draworder">drawOrder</a>
+<ul>
+<li><a href="#supertextmeshdraworder-draworder">SuperTextMesh.DrawOrder drawOrder</a></li>
+</ul>
+</li>
+<li><a href="#drawanimname-1">drawAnimName</a>
+<ul>
+<li><a href="#string-supertextmeshdrawanimname">string SuperTextMesh.drawAnimName</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#functionality">Functionality</a>
+<ul>
+<li><a href="#speedreadscale">speedReadScale</a>
+<ul>
+<li><a href="#float-supertextmeshspeedreadscale">float SuperTextMesh.speedReadScale</a></li>
+</ul>
+</li>
+<li><a href="#unreaddelay">unreadDelay</a>
+<ul>
+<li><a href="#float-supertextmeshunreaddelay">float SuperTextMesh.unreadDelay</a></li>
+</ul>
+</li>
+<li><a href="#undraworder">undrawOrder</a>
+<ul>
+<li><a href="#supertextmeshdraworder-undraworder">SuperTextMesh.DrawOrder undrawOrder</a></li>
+</ul>
+</li>
+<li><a href="#undrawanimname">undrawAnimName</a>
+<ul>
+<li><a href="#string-supertextmeshundrawanimname">string SuperTextMesh.undrawAnimName</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#audio">Audio</a>
+<ul>
+<li><a href="#audiosource">audioSource</a>
+<ul>
+<li><a href="#audiosource-supertextmeshaudiosource">AudioSource SuperTextMesh.audioSource</a></li>
+</ul>
+</li>
+<li><a href="#audioclips">audioClips</a>
+<ul>
+<li><a href="#audioclip-supertextmeshaudioclips">AudioClip[] SuperTextMesh.audioClips</a></li>
+</ul>
+</li>
+<li><a href="#stopprevioussound">stopPreviousSound</a>
+<ul>
+<li><a href="#bool-supertextmeshstopprevioussound">bool SuperTextMesh.stopPreviousSound</a></li>
+</ul>
+</li>
+<li><a href="#pitchmode">pitchMode</a>
+<ul>
+<li><a href="#supertextmeshpitchmode">SuperTextMesh.pitchMode</a></li>
+</ul>
+</li>
+<li><a href="#overridepitch">overridePitch</a>
+<ul>
+<li><a href="#float-supertextmeshoverridepitch-range0f3f">float SuperTextMesh.overridePitch [Range(0f,3f)]</a></li>
+</ul>
+</li>
+<li><a href="#minpitch">minPitch</a>
+<ul>
+<li><a href="#float-supertextmeshminpitch-range0f3f">float SuperTextMesh.minPitch [Range(0f,3f)]</a></li>
+</ul>
+</li>
+<li><a href="#maxpitch">maxPitch</a>
+<ul>
+<li><a href="#float-supertextmeshmaxpitch-range0f3f">float SuperTextMesh.maxPitch [Range(0f,3f)]</a></li>
+</ul>
+</li>
+<li><a href="#perlinpitchmulti">perlinPitchMulti</a>
+<ul>
+<li><a href="#float-supertextmeshperlinpitchmulti">float SuperTextMesh.perlinPitchMulti</a></li>
+</ul>
+</li>
+<li><a href="#speedreadpitch">speedReadPitch</a>
+<ul>
+<li><a href="#float-supertextmeshspeedreadpitch">float SuperTextMesh.speedReadPitch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#bounds-variables">Bounds Variables</a>
+<ul>
+<li><a href="#raw-bounds">Raw Bounds</a>
+<ul>
+<li><a href="#rawtopleftbounds">rawTopLeftBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshrawtopleftbounds">[READ ONLY] Vector3 SuperTextMesh.rawTopLeftBounds</a></li>
+</ul>
+</li>
+<li><a href="#rawbottomrightbounds">rawBottomRightBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshrawbottomrightbounds">[READ ONLY] Vector3 SuperTextMesh.rawBottomRightBounds</a></li>
+</ul>
+</li>
+<li><a href="#rawbottomrighttextbounds">rawBottomRightTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshrawbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.rawBottomRightTextBounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#defined-bounds">Defined Bounds</a>
+<ul>
+<li><a href="#topleftbounds">topLeftBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshtopleftbounds">[READ ONLY] Vector3 SuperTextMesh.topLeftBounds</a></li>
+</ul>
+</li>
+<li><a href="#toprightbounds">topRightBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshtoprightbounds">[READ ONLY] Vector3 SuperTextMesh.topRightBounds</a></li>
+</ul>
+</li>
+<li><a href="#bottomleftbounds">bottomLeftBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshbottomleftbounds">[READ ONLY] Vector3 SuperTextMesh.bottomLeftBounds</a></li>
+</ul>
+</li>
+<li><a href="#bottomrightbounds">bottomRightBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshbottomrightbounds">[READ ONLY] Vector3 SuperTextMesh.bottomRightBounds</a></li>
+</ul>
+</li>
+<li><a href="#centerbounds">centerBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshcenterbounds">[READ ONLY] Vector3 SuperTextMesh.centerBounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#text-bounds">Text Bounds</a>
+<ul>
+<li><a href="#toplefttextbounds">topLeftTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshtoplefttextbounds">[READ ONLY] Vector3 SuperTextMesh.topLeftTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#toprighttextbounds">topRightTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshtoprighttextbounds">[READ ONLY] Vector3 SuperTextMesh.topRightTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#bottomlefttextbounds">bottomLeftTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshbottomlefttextbounds">[READ ONLY] Vector3 SuperTextMesh.bottomLeftTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#bottomrighttextbounds">bottomRightTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.bottomRightTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#centertextbounds">centerTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshcentertextbounds">[READ ONLY] Vector3 SuperTextMesh.centerTextBounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#final-text-bounds">Final Text Bounds</a>
+<ul>
+<li><a href="#finaltoplefttextbounds">finalTopLeftTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshfinaltoplefttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalTopLeftTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#finaltoprighttextbounds">finalTopRightTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshfinaltoprighttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalTopRightTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#finalbottomlefttextbounds">finalBottomLeftTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshfinalbottomlefttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalBottomLeftTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#finalbottomrighttextbounds">finalBottomRightTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshfinalbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalBottomRightTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#finalcentertextbounds">finalCenterTextBounds</a>
+<ul>
+<li><a href="#read-only-vector3-supertextmeshfinalcentertextbounds">[READ ONLY] Vector3 SuperTextMesh.finalCenterTextBounds</a></li>
+</ul>
+</li>
+<li><a href="#unwrapped-bounds">Unwrapped Bounds</a></li>
+<li><a href="#unwrappedmaxx">unwrappedMaxX</a>
+<ul>
+<li><a href="#read-only-float-supertextmeshunwrappedmaxx">[READ ONLY] float SuperTextMesh.unwrappedMaxX</a></li>
+</ul>
+</li>
+<li><a href="#unwrappedminy">unwrappedMinY</a>
+<ul>
+<li><a href="#read-only-float-supertextmeshunwrappedminy">[READ ONLY] float SuperTextMesh.unwrappedMinY</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#extra-stuff">Extra Stuff</a>
+<ul>
+<li><a href="#debugmode">debugMode</a>
+<ul>
+<li><a href="#editor-only-bool-supertextmeshdebugmode">[EDITOR ONLY] bool SuperTextMesh.debugMode</a></li>
+</ul>
+</li>
+<li><a href="#latestnumber">latestNumber</a>
+<ul>
+<li><a href="#read-only-int-supertextmeshlatestnumber">[READ ONLY] int SuperTextMesh.latestNumber</a></li>
+</ul>
+</li>
+<li><a href="#currentreadtime">currentReadTime</a>
+<ul>
+<li><a href="#read-only-float-supertextmeshcurrentreadtime">[READ ONLY] float SuperTextMesh.currentReadTime</a></li>
+</ul>
+</li>
+<li><a href="#totalreadtime">totalReadTime</a>
+<ul>
+<li><a href="#read-only-float-supertextmeshtotalreadtime">[READ ONLY] float SuperTextMesh.totalReadTime</a></li>
+</ul>
+</li>
+<li><a href="#totalunreadtime">totalUnreadTime</a>
+<ul>
+<li><a href="#read-only-float-supertextmeshtotalunreadtime">[READ ONLY] float SuperTextMesh.totalUnreadTime</a></li>
+</ul>
+</li>
+<li><a href="#leftovertext">leftoverText</a>
+<ul>
+<li><a href="#read-only-string-supertextmeshleftovertext">[READ ONLY] string SuperTextMesh.leftoverText</a></li>
+</ul>
+</li>
+<li><a href="#linebreakfriendlychars">linebreakFriendlyChars</a>
+<ul>
+<li><a href="#private-char-supertextmeshlinebreakfriendlychars">[PRIVATE] char[] SuperTextMesh.linebreakFriendlyChars</a></li>
+</ul>
+</li>
+<li><a href="#cancontinue">canContinue</a>
+<ul>
+<li><a href="#read-only-bool-supertextmeshcancontinue">[READ ONLY] bool SuperTextMesh.canContinue</a></li>
+</ul>
+</li>
+<li><a href="#canundocontinue">canUndoContinue</a>
+<ul>
+<li><a href="#read-only-bool-supertextmeshcanundocontinue">[READ ONLY] bool SuperTextMesh.canUndoContinue</a></li>
+</ul>
+</li>
+<li><a href="#pausecount">pauseCount</a>
+<ul>
+<li><a href="#read-only-int-supertextmeshpausecount">[READ ONLY] int SuperTextMesh.pauseCount</a></li>
+</ul>
+</li>
+<li><a href="#currentpausecount">currentPauseCount</a>
+<ul>
+<li><a href="#read-only-int-supertextmeshcurrentpausecount">[READ ONLY] int SuperTextMesh.currentPauseCount</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#unityevents--delegate-events">UnityEvents &amp; Delegate Events</a>
+<ul>
+<li><a href="#on-print-event-">On Print Event ()</a></li>
+<li><a href="#on-rebuild-event-">On Rebuild Event ()</a></li>
+<li><a href="#on-complete-event-">On Complete Event ()</a></li>
+<li><a href="#on-undrawn-event-">On Undrawn Event ()</a></li>
+<li><a href="#custom-event-string-stmtextinfo">Custom Event (string, STMTextInfo)</a></li>
+<li><a href="#vertex-mod-vector3-vector3-vector3">Vertex Mod (Vector3[], Vector3[], Vector3[])</a></li>
+<li><a href="#pre-parse-stmtextcontainer">Pre Parse (STMTextContainer)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#shaders--shadows">Shaders &amp; Shadows</a>
+<ul>
+<li><a href="#changing-shaders--included-shaders">Changing Shaders &amp; Included Shaders</a></li>
+<li><a href="#enabling-shadowcasting">Enabling Shadowcasting</a></li>
+<li><a href="#outlines-and-dropshadows">Outlines and Dropshadows</a></li>
+<li><a href="#sdf-fonts">SDF Fonts</a></li>
+</ul>
+</li>
+<li><a href="#utilities">Utilities</a>
+<ul>
+<li><a href="#curve-generator">Curve Generator</a></li>
+<li><a href="#change-sorting-order">Change Sorting Order</a></li>
+<li><a href="#additional-helper-scripts">Additional Helper Scripts</a></li>
+<li><a href="#support-packages-for-other-assets">Support Packages for Other Assets</a></li>
+<li><a href="#faq">FAQ</a>
+- <a href="#what-fonts-are-supported">What fonts are supported?</a>
+- <a href="#what-languages-are-supported">What languages are supported?</a>
+- <a href="#how-can-i-credit-you-in-my-game">How can I credit you in my game?</a>
+- <a href="#should-i-buy-super-text-mesh-on-itchio-or-the-unity-asset-store">Should I buy Super Text Mesh on itch.io or the unity asset store?</a>
+- <a href="#i-changed-the-material-settings-on-one-text-mesh-and-others-changed-too-help">I changed the material settings on one text mesh and others changed too! Help!</a>
+- <a href="#how-do-i-get-the-latest-character-drawn-by-super-text-mesh">How do I get the latest character drawn by Super Text Mesh?</a>
+- <a href="#text-is-just-rendering-the-outline">Text is just rendering the outline!</a>
+- <a href="#text-is-rendering-just-plain-weird-when-i-change-the-font-or-use-a-quad">Text is rendering just plain weird when I change the font or use a quad!!</a></li>
+<li><a href="#notes">Notes</a></li>
+<li><a href="#known-bugs">Known Bugs</a></li>
+<li><a href="#planned-features--to-do-list">Planned Features / To Do List:</a></li>
+</ul>
+</li>
+<li><a href="#changelog">ChangeLog</a>
+- <a href="#v10">v1.0</a>
+- <a href="#v11">v1.1</a>
+- <a href="#v111">v1.1.1</a>
+- <a href="#v12">v1.2:</a>
+- <a href="#v121">v1.2.1</a>
+- <a href="#v122">v1.2.2</a>
+- <a href="#v13">v1.3</a>
+- <a href="#v131">v1.3.1</a>
+- <a href="#v14">v1.4</a>
+- <a href="#v141">v1.4.1</a>
+- <a href="#v142">v1.4.2</a>
+- <a href="#v143">v1.4.3</a>
+- <a href="#v144">v1.4.4</a>
+- <a href="#v145">v1.4.5</a>
+- <a href="#v146">v1.4.6</a>
+- <a href="#v147">v1.4.7</a>
+- <a href="#v148">v1.4.8</a>
+- <a href="#v149">v1.4.9</a>
+- <a href="#v1410">v1.4.10</a>
+- <a href="#v1411">v1.4.11</a>
+- <a href="#v1412">v1.4.12</a>
+- <a href="#v1413">v1.4.13</a>
+- <a href="#v15">v1.5</a>
+- <a href="#v151">v1.5.1</a>
+- <a href="#v152">v1.5.2</a>
+- <a href="#v16">v1.6</a>
+- <a href="#v161">v1.6.1</a>
+- <a href="#v162">v1.6.2</a>
+- <a href="#v163">v1.6.3</a>
+- <a href="#v17">v1.7</a>
+- <a href="#v171">v1.7.1</a>
+- <a href="#v18">v1.8</a>
+- <a href="#v181">v1.8.1</a>
+- <a href="#v182">v1.8.2</a>
+- <a href="#v183">v1.8.3</a>
+- <a href="#v184">v1.8.4</a>
+- <a href="#v185">v1.8.5</a>
+- <a href="#v186">v1.8.6</a>
+- <a href="#v187">v1.8.7</a>
+- <a href="#v188">v1.8.8</a>
+- <a href="#v189">v1.8.9</a>
+- <a href="#v1810">v1.8.10</a>
+- <a href="#v1811">v1.8.11</a>
+- <a href="#v1812">v1.8.12</a>
+- <a href="#v1813">v1.8.13</a>
+- <a href="#v1814">v1.8.14</a>
+- <a href="#v1815">v1.8.15</a>
+- <a href="#v1816">v1.8.16</a>
+- <a href="#v1817">v1.8.17</a>
+- <a href="#v1818">v1.8.18</a>
+- <a href="#v19">v1.9</a>
+- <a href="#v191">v1.9.1</a>
+- <a href="#v192">v1.9.2</a>
+- <a href="#v1100">v1.10.0</a>
+- <a href="#v1101">v1.10.1</a>
+- <a href="#v1102">v1.10.2</a>
+- <a href="#v1103">v1.10.3</a>
+- <a href="#v111-1">v1.11</a>
+- <a href="#v1111">v1.11.1</a>
+- <a href="#v1112">v1.11.2</a>
+- <a href="#v1113">v1.11.3</a>
+- <a href="#v1114">v1.11.4</a>
+- <a href="#v1115">v1.11.5</a>
+- <a href="#v1120">v1.12.0</a>
+- <a href="#v1121">v1.12.1</a>
+- <a href="#v1122">v1.12.2</a>
+- <a href="#v1123">v1.12.3</a>
+- <a href="#v1124">v1.12.4</a>
+- <a href="#v1130">v1.13.0</a>
+- <a href="#v1131">v1.13.1</a></li>
+<li><a href="#update-warnings">Update Warnings</a>
+- <a href="#v13-to-v14">v1.3 to v1.4+:</a>
+- <a href="#v14-to-v15">v1.4 to v1.5+:</a>
+- <a href="#v15-to-v16">v1.5 to v1.6+:</a>
+- <a href="#v16-to-v17">v1.6 to v1.7+:</a>
+- <a href="#v17-to-v18">v1.7 to v1.8+</a>
+- <a href="#v18-to-v19">v1.8 to v1.9+</a>
+- <a href="#v19-to-v110">v1.9 to v1.10+</a>
+- <a href="#v110-to-v111">v1.10 to v1.11</a></li>
+<li><a href="#credits">Credits</a></li>
+</ul>
+</article></article><article class="textarea">
+<hr>
+<h1 id="features">Features</h1>
+<ul>
+<li>Super Text Mesh is a text-rendering asset for Unity, with similar implementation to Unity's default text mesh. Its primary focus is accessibility towards developers and players, and is made to work easily with in-game dialogue.</li>
+<li>Size and quality (font point size) are independent of each other. You can adjust the quality of a character without changing its size in-editor. This makes it much easier to get text to be the right size while looking sharp.</li>
+<li>Animated text effects! Text can move in completely customizable wave and jitter patterns!</li>
+<li>A universal switch to disable animated text effects, for adding easy accessibility to games.</li>
+<li>Text color can be set from a hex code, or from a definable preset.</li>
+<li>Moving gradients and textures can also be used as a text color!</li>
+<li>Lots of customization, kept simple. All customizations are kept files shared across all text meshes in your project. You can toss these settings to friends, back them up with source control, and save them for later projects.</li>
+<li>Text wrap is shown with a visible bounding box.</li>
+<li>Built for dialogue! There are several ways to tweak sound effects, writing animations, and more. You can even expand on this with custom events!</li>
+<li>Animated inline images (quads).</li>
+<li>Outlines and Drop Shadows.</li>
+<li>Signed distance field (SDF) support!</li>
+<li>Best fit text options!</li>
+<li>Works great with mobile platforms! Featured in game releases on PS4, Xbox One, and Nintendo Switch too!</li>
+<li>Works with Unity UI!</li>
+<li>Surprisingly fast support, or so I've been told.</li>
+</ul>
+<hr>
+<h1 id="adding-super-text-mesh-to-unity">Adding Super Text Mesh to Unity</h1>
+<h2 id="importing-super-text-mesh-into-unity">Importing Super Text Mesh into Unity</h2>
+<article class="rightbox">
+<a href="STMDocImages/importing1.png"><img src="STMDocImages/importing1.png"/></a><br><br>
+Recommended minimum install.
+</article>
+<p>To import Super Text Mesh into your project, either drag in the .unitypackage file, or get it from the asset store window.</p>
+<h3 id="imported-folders-and-what-they-do">Imported folders and what they do</h3>
+<ul>
+<li><strong>&quot;DefaultMedia&quot;</strong> contains media that's referenced by the TextData assets in the resources folder. If you don't import it it'll break some of the default settings, but it's not required.</li>
+<li><strong>&quot;Documentation&quot;</strong> contains these docs! You don't need to import them, but you probably should!</li>
+<li><strong>&quot;Materials&quot;</strong> is a spot to put user-made materials for Super Text Mesh. Not neccesary, but it'll help keep things organized. If you create a new material using the &quot;new&quot; button next to material settings in Super Text Mesh, your new material will automatically end up here.</li>
+<li><strong>&quot;Prefabs&quot;</strong> contains prefabs to be instantiated by Super Text Mesh, if you add it to a scene through the &quot;GameObject&quot; menu. If you only plan to add Super Text Mesh to a scene as a component, you don't need this folder.</li>
+<li><strong>&quot;Resources&quot;</strong> contains the &quot;TextData&quot; file and other assets referenced directly by Super Text Mesh's script. All folders and assets directly inside are required, but everything inside those folders is not, as those are just default settings.</li>
+<li><strong>&quot;Sample&quot;</strong> has resources for the example scene, and default media used by TextData. If you don't need to see the example scene, you don't need this folder.</li>
+<li><strong>&quot;Scripts&quot;</strong> contains the actual code for Super Text Mesh and its icons. Required.</li>
+<li><strong>&quot;Shaders&quot;</strong> contains different default shaders for Super Text Mesh. All the .cginc files should be imported. The &quot;Unlit&quot; shader is required as well as the &quot;UI&quot; one, as they're default and an error will be returned if this shader can't be found. The rest don't have to be imported.</li>
+<li><strong>&quot;Utility&quot;</strong> contains a script that generates AnimationCurves that you can save, and then load into curve fields. Also contains a script that lets you change the sorting order of STM or any object with a renderer. Not required.</li>
+</ul>
+<p>Additional support packages are listed under [Support Packages for Other Assets](#Support Packages for Other Assets).</p>
+<p>The outline shaders take a long time to compile, so don't import them if you're in a hurry or don't want to use them.</p>
+<h2 id="adding-super-text-mesh-to-a-scene">Adding Super Text Mesh to a Scene</h2>
+<article class="rightbox">
+<a href="STMDocImages/adding1.png"><img src="STMDocImages/adding1.png"/></a><br><br>
+Adding as a new Game Object.
+</article>
+<p>To add it as a new GameObject, you can also go &quot;GameObject &gt; 3D Object &gt; Super 3D Text&quot;, to create a new Text Mesh object. This option may require a reset of Unity to appear, initially.
+&quot;GameObject &gt; UI &gt; Super Text&quot; is the path for adding a new UI Text object. Please do not add Super Text Mesh to your game by dragging in the prefabs from the &quot;prefabs&quot; folder. Those only exist so adding it from the GameObject menu can work!</p>
+<p>To add Super Text Mesh to an existing object in your project, you can select &quot;Add Component&quot; on an existing GameObject and find it under &quot;Mesh &gt; Super Text Mesh&quot;. Even when adding it as a UI element, you can add it this way, as long as the object you're adding it to is already the child of a canvas (if it has a RectTransform).</p>
+<hr>
+<h1 id="text-data-file--rich-text-tags">Text Data File &amp; Rich Text Tags</h1>
+<h2 id="text-data">Text Data</h2>
+<article class="rightbox">
+<a href="STMDocImages/inspector1.png"><img src="STMDocImages/inspector1.png"/></a><br><br>
+The inspector window.
+</article>
+<p>In &quot;Assets &gt; Clavian &gt; SuperTextMesh &gt; Resources&quot;, you'll find a set of files used to change the presets of all text meshes in your project. You can edit these directly here, or click on the &quot;[T]&quot; icon in any Super Text Mesh's inspector to edit them with a custom inspector!</p>
+<p>This file allows customization of effects called by Super Text Mesh's rich text tags. For example, you can define a color named &quot;1&quot; to be called with the tag <code>&lt;c=1&gt;</code>, or a text delay to be called using <code>&lt;d=myDelay&gt;</code> so you wouldn't have to type the same number over and over to call the same effect.</p>
+<h2 id="text-data-customization">Text Data Customization</h2>
+<p>Lots of Super Text Mesh's settings can be changed mid-strin`g with tags such as <code>&lt;c=red&gt;</code> to change text to be red, or <code>&lt;d=10&gt;</code> to insert a delay that would be equal to 10 characters being read out. Most tags can be customized in a group of assets referred to as &quot;TextData&quot;.</p>
+<p>All TextData files can be found within &quot;Assets &gt; Clavian &gt; SuperTextMesh &gt; Resources&quot; and can be edited there, or by clicking the [T] icon within a Super Text Mesh component. The name of the file will determine what tag it uses (eg. A color named &quot;Teal&quot; would be called with <code>&lt;c=Teal&gt;</code>).</p>
+<p>When editing in the Super Text Mesh inspector, each TextData file has a header with a button to ping the asset in the project folder, a button to delete it, and a bar where the name can be edited. At the bottom of each group is a button to create a new asset, and at the very bottom of the inspector is a button to refresh the database, incase you make assets outside of the inspector.</p>
+<p>Waves, Jitters, and Delays all have customizable default settings. When you go to edit them, you'll notice a setting named &quot;default&quot;. This will be the setting called by the basic version of this tag. (<code>&lt;w&gt;</code>, <code>&lt;j&gt;</code>, <code>&lt;d&gt;</code>.) These can be changed to whatever settings you want.
+In other words, using the <code>&lt;w&gt;</code> tag would be the same as calling <code>&lt;w=default&gt;</code>.</p>
+<p>For autodelays and autoclips, you might want to have a delay or a clip inserted for a character that can't be saved in a file name, such as &quot;?&quot;, &quot;!&quot;, &quot;.&quot;, etc. For these, use the written-out name of these characters instead:
+&quot;space&quot;, &quot;tab&quot;, &quot;line break&quot;, &quot;exclamation point&quot;, &quot;question mark&quot;, &quot;semicolon&quot;, &quot;colon&quot;, &quot;tilde&quot;, &quot;period&quot;, &quot;comma&quot;, &quot;number sign&quot;, &quot;percent&quot;, &quot;ampersand&quot;, &quot;asterix&quot;, &quot;backslash&quot;, &quot;forwardslash&quot;, &quot;openbrace&quot;, &quot;closebrace&quot;</p>
+<p>You can also reference quads this way! If you have a quad named &quot;cross&quot;, then when you type <code>&lt;q=cross&gt;</code> into a mesh, it'll react to autodelays, autoclips, and sound clips named &quot;cross&quot;.</p>
+<p>Other aspects of Super Text Mesh, like draw animations, automatic voice clips, and master switches are also controlled with these text data files.</p>
+<h3 id="effects">Effects</h3>
+<h4 id="waves">Waves</h4>
+<h5 id="w--wname">[<code>&lt;w&gt;</code> / <code>&lt;w=name&gt;</code>]</h5>
+<article class="rightbox">
+<a href="STMDocImages/waves1.png"><img src="STMDocImages/waves1.png"/></a><br><br>
+Editing a wave.
+</article>
+<ul>
+<li><strong>&quot;Animate From Time Drawn&quot;</strong> makes it so the animation of this wave is based on when a letter gets read by a text mesh. Using this, you can have waves that &quot;cool down&quot; over time by making their curves not loop, for example.</li>
+<li><strong>&quot;Multi Over Time&quot;</strong> will change the wave's overall strength over time, similar to the &quot;Distance Over Time&quot; parameter in Jitters. It should be left as a horizontal line with a value of 1 to go unused.</li>
+<li><strong>&quot;Position Control&quot;</strong> determines whether positional data is used or not.</li>
+<li><strong>&quot;Position&quot;</strong> sets the positions for this wave.
+&quot;Curve X/Y/Z&quot; is how the wave will move on the X/Y/Z axises.
+&quot;Phase&quot; is a value from 0 to 1, representing the point on the curve where the animation starts.
+<ul>
+<li><strong>&quot;Speed&quot;</strong> is how fast the wave will play, multiplied by Time.time.</li>
+<li><strong>&quot;Strength&quot;</strong> is how far the wave will move letters away from their centers.</li>
+<li><strong>&quot;Density&quot;</strong> is how tight/loose the wave will be.
+All 3 of these aspects can be controlled individually on all 3 axises, and can also be negative.</li>
+</ul>
+</li>
+<li><strong>&quot;Rotation Control&quot;</strong> determines whether rotational data is used or not.</li>
+<li><strong>&quot;Rotation&quot;</strong> sets the rotations for this wave.
+Fields here are similar to &quot;position&quot; except for...
+<ul>
+<li><strong>&quot;Pivot&quot;</strong> determines the pivot point for this rotation. The x value is based on individual letter width, and the y value is based on individual letter size.</li>
+</ul>
+</li>
+<li><strong>&quot;Scale Control&quot;</strong> determines whether scale data is used or not.</li>
+<li><strong>&quot;Scale&quot;</strong> sets the scales for this wave.
+Fields under scale are similar to the ones under &quot;position&quot; and &quot;rotation&quot;!</li>
+<li><strong>&quot;Individual Vertex Control&quot;</strong> determines if the four below values are active or not.</li>
+<li><strong>&quot;Top Left/Top Right/Bottom Left/Bottom Right&quot;</strong> are all similar to &quot;Position&quot;, but they let you assign a wave to each corner of a letter's mesh. You can do some pretty crazy effects with this, such as the &quot;seasick&quot; wave example.</li>
+</ul>
+<h4 id="jitters">Jitters</h4>
+<h5 id="j--jname">[<code>&lt;j&gt;</code> / <code>&lt;j=name&gt;</code>]</h5>
+<ul>
+<li><strong>&quot;Amount&quot;</strong> is the max distance that letters will jitter.</li>
+<li><strong>&quot;Perlin&quot;</strong> decides if the jitter will use perlin noise or not.</li>
+<li><strong>&quot;Perlin Time Multiplier&quot;</strong> decides the speed of the jitter, if perlin mode is on.</li>
+<li><strong>&quot;Distance&quot;</strong> can be used to change how far out the jitter will go on average. A linear curve is the default.</li>
+<li><strong>&quot;Distance Over Time&quot;</strong> will be how far the jitter will reach, after being drawn. It should just be a horizontal line, if you want it to be permenant.</li>
+<li><strong>&quot;Distance Over Time Scale&quot;</strong> is a multipler of the above curve.</li>
+</ul>
+<h4 id="draw-animations">Draw Animations</h4>
+<h5 id="drawanimname">[<code>&lt;drawAnim=name&gt;</code>]</h5>
+<p>The initial draw animation of a mesh is defined in the inspector, but can be changed mid-string with tags. Draw animations are also used in reverse for undrawing animations. They are referenced with case-sensitive strings.</p>
+<ul>
+<li><strong>&quot;Anim Time&quot;</strong> is how long the animation will last.</li>
+<li><strong>&quot;Anim Curve&quot;</strong> is the curve the animation will take.</li>
+<li><strong>&quot;Start Scale&quot;</strong> is a multiple of the size of a letter, from its center. When it starts drawing out, the letter will be at this scale. ((1,1,1) means it won't change in scale, (0,0,0) means it will start invisible)</li>
+<li><strong>&quot;Start Offset&quot;</strong> is, relative from the center of a letter, where it will be at the start of the draw animation. For instance, (-1,0,0) would start the letter a bit to the left.</li>
+<li><strong>&quot;Fade Time&quot;</strong> is how long the letter will take to fade in. If set to 0, it'll just appear.</li>
+<li><strong>&quot;Fade Curve&quot;</strong> is the curve the fade will take.</li>
+<li><strong>&quot;Start Color&quot;</strong> is the initial color of the mesh. Should be left at (0,0,0,0) if you dont want to do something like the default &quot;Fill&quot; animation.</li>
+</ul>
+<h3 id="text-color">Text Color</h3>
+<h4 id="colors">Colors</h4>
+<h5 id="c--cname">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</h5>
+<p>Define colours by name to be called by the <code>&lt;c=name&gt;</code> tag.</p>
+<h4 id="gradients">Gradients</h4>
+<h5 id="c--cname-1">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</h5>
+<p>Define a gradient to be called by the <code>&lt;c=name&gt;</code> tag.</p>
+<ul>
+<li><strong>&quot;Gradient&quot;</strong> is defined using Unity's gradient editor.</li>
+<li><strong>&quot;Gradient Spread&quot;</strong> is how far the gradient stretches over the text mesh.</li>
+<li><strong>&quot;Scroll Speed&quot;</strong> is how fast the gradient moves. Can be set to 0 to not animate, or negative to scroll in reverse. If set to 0, this skips redrawing the mesh every frame.</li>
+<li><strong>&quot;Direction&quot;</strong> is the gradient's direction. Horizontal and Vertical are the only options.</li>
+<li><strong>&quot;Smooth Gradient&quot;</strong>, if unchecked will make it so only one color will be present on each letter. All four vertices on a letter will have the same color set for them.</li>
+</ul>
+<h4 id="textures">Textures</h4>
+<h5 id="c--cname-2">[<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code>]</h5>
+<p>Define a texture to color text with. Also called with the <code>&lt;c=name&gt;</code> tag.</p>
+<ul>
+<li><strong>&quot;Texture&quot;</strong> is the texture to be used. Make SURE the texture you use is set to &quot;Repeat&quot;, not &quot;Clamp&quot;!!</li>
+<li><strong>&quot;Relative to Letter&quot;</strong> determines if the texture will be relative to each individual letter, or not.</li>
+<li><strong>&quot;Scale with Text&quot;</strong> makes it so your texture's size stays locked to the text's size, or not.</li>
+<li><strong>&quot;Tiling&quot;</strong> is how big the texture will be, mapped to the text.</li>
+<li><strong>&quot;Offset&quot;</strong> is an additional offset for the texture.</li>
+<li><strong>&quot;Scroll Speed&quot;</strong> is how fast the texture will move. Can be set to 0 to be static. (This will skip redrawing the mesh every frame)</li>
+</ul>
+<h3 id="inline">Inline</h3>
+<h4 id="delays">Delays</h4>
+<h5 id="d--dname">[<code>&lt;d&gt;</code> / <code>&lt;d=name&gt;</code>]</h5>
+<p>Delays can be defined here, to be called back quickly using tags instead of numbers.</p>
+<h4 id="voices">Voices</h4>
+<h5 id="v--vname">[<code>&lt;v&gt;</code> / <code>&lt;v=name&gt;</code>]</h5>
+<p>Define longer strings that can be inserted with shorter ones, called by <code>&lt;v=name&gt;</code>. Good for setting multiple things at once, and defining different settings for characters. The usage is similar to text macros.</p>
+<h4 id="fonts">Fonts</h4>
+<h5 id="f--fname">[<code>&lt;f&gt;</code> / <code>&lt;f=name&gt;</code>]</h5>
+<p>You can define a font to be called with the <code>&lt;f=name&gt;</code> tag, here.</p>
+<h4 id="audio-clips">Audio Clips</h4>
+<h5 id="audioclipsname">[<code>&lt;audioClips=name&gt;</code>]</h5>
+<p>Changes the set of audio clips to be used.</p>
+<h4 id="sound-clips">Sound Clips</h4>
+<h5 id="clipsname">[<code>&lt;clips=name&gt;</code>]</h5>
+<p>Adds a set of auto clips to be used. For adding auto clips mid-string.</p>
+<h4 id="quads">Quads</h4>
+<h5 id="qname--qnameindex--qnamexposypos">[<code>&lt;q=name&gt;</code> / <code>&lt;q=name,index&gt;</code> / <code>&lt;q=name,xPos,yPos&gt;</code>]</h5>
+<article class="rightbox">
+<a href="STMDocImages/quads1.png"><img src="STMDocImages/quads1.png"/></a><br><br>
+How quad columns work.
+</article>
+Used to define quads, inline images that can be used in a similar fasion to emoji.
+When writing out the tags for quads, you can override the index or get a quad at a specific point in your texture if you don't want to define multiple quads in the inspector!
+<ul>
+<li><strong>&quot;Texture&quot;</strong> The texture used by this quad.</li>
+<li><strong>&quot;Silhouette&quot;</strong> determines whether the quad will respect font color or not. If set to true, it will respond to color like any other character in a font, but if false it will display its colors true to the texture.</li>
+<li><strong>&quot;Filter Mode&quot;</strong> changes the filter mode of the texture.</li>
+<li><strong>&quot;Columns&quot;</strong> determines how many subdivisions exist in the texture sheet, vertically.</li>
+<li><strong>&quot;Rows&quot;</strong> determines how many subdivisions exist in the texture sheet, horizontally.</li>
+<li><strong>&quot;Icon Index&quot;</strong> If the column count  or row count is greater than one, this will determine which area of the texture will be used for this quad. The diagram demonstrates how this works with a default textures.</li>
+<li><strong>&quot;Anim Delay&quot;</strong> is used for animated quads. This value determines the delay between frames. If set to 0, it doesn't animate.</li>
+<li><strong>&quot;Frames&quot;</strong> this integer array is used instead of Icon Index for an animating quad. It determines which indexes are used, in what order.</li>
+<li><strong>&quot;Size&quot;</strong> controls how much space the quad takes up, relative to the current font size.</li>
+<li><strong>&quot;Offset&quot;</strong> moved around the entire quad without effecting text spacing, usually for making centering corrections.</li>
+<li><strong>&quot;Advance&quot;</strong> adds extra space between this character and the next one.</li>
+</ul>
+<h4 id="materials">Materials</h4>
+<h5 id="mname">[<code>&lt;m=name&gt;</code>]</h5>
+<p>Defines materials to switch to mid-string.</p>
+<h3 id="automatic">Automatic</h3>
+<h4 id="auto-delays">Auto Delays</h4>
+<p>Automatic delays that happen after specific characters can be defined, here. They only occur if the following character in a string is a space, tab or line break.</p>
+<ul>
+<li><strong>&quot;Character&quot;</strong> is the character this delay will be looking for.</li>
+<li><strong>&quot;Count&quot;</strong> is the delay amount, which is a multiple of a text mesh's reading speed. (A count of 2 on a Text Mesh where delay is set to 0.1 will result in a delay of 0.2 seconds.)</li>
+</ul>
+<p>An auto delay will be inserted <em>after</em> its character is read out.</p>
+<h4 id="auto-clips">Auto Clips</h4>
+<p>Certain audio clips can be defined to play for specific characters, here.
+If &quot;Clip&quot; is undefined, a sound will NOT be played for this character. This is good for spaces, line breaks, and tabs, all of which are defined for this by default.
+This feature could also be used to set up a typewriter, so you can have it make the distinctive &quot;ding&quot; sound, every time a line break is read out.</p>
+<ul>
+<li><strong>&quot;Ignore Case&quot;</strong> tells Super Text Mesh to not care about the character's case. (&quot;M&quot; and &quot;m&quot; will be treated the same)</li>
+</ul>
+<h3 id="master">Master</h3>
+<h4 id="disable-animated-text">Disable Animated Text</h4>
+<p>For accessibility, you can use this bool to easily enable/disable ALL animated text effects in your game. To call it with code, you can use &quot;<code>SuperTextMesh.data.disableAnimatedText</code>&quot;.</p>
+<h4 id="default-font">Default Font</h4>
+<p>This will be the font STM will fallback to. By default, this value is Arial, Unity's built-in font. It's only suggested to change this if you are having issues with Arial as a fallback, since the default font will be used if a character doesn't exist in a font and Arial seems to have every character Unity supports available.</p>
+<h4 id="bounds-color">Bounds Color</h4>
+<p>Controls the colour of STM's autoWrap/verticalLimit bounds gizmos. Set transparency to 0 to disable.</p>
+<h4 id="text-bounds-color">Text Bounds Color</h4>
+<p>Controls the colour of STM's text bounds gizmos. Set transparency to 0 to disable.</p>
+<h4 id="bounds-color-1">Bounds Color</h4>
+<p>Controls the colour of STM's final text bounds gizmos. Set transparency to 0 to disable.</p>
+<h4 id="superscript-offset">Superscript Offset</h4>
+<p>How high superscript text (<code>&lt;sup&gt;</code>) will be relative to text.</p>
+<h4 id="superscript-size">Superscript Size</h4>
+<p>How big superscript text will be relative to text.</p>
+<h4 id="subscript-offset">Subscript Offset</h4>
+<p>How high subscript text (<code>&lt;sub&gt;</code>) will be relative to text.</p>
+<h4 id="subscript-size">Subscript Size</h4>
+<p>How big subscript text will be relative to text.</p>
+<h2 id="rich-text-tags">Rich Text Tags</h2>
+<article class="rightbox">
+<a href="STMDocImages/tags1.png"><img src="STMDocImages/tags1.png"/></a><br><br>
+Demonstration of some tags.
+</article>
+<p>These tags can be used mid-string to change aspects of the text! Any tag that has &quot;name&quot; on it like &quot;<code>&lt;c=name&gt;</code>&quot; can be modified with the [Text Data file](#Text Data). All tags can be closed with a tag like &quot;<code>&lt;/c&gt;</code>&quot;, for example.</p>
+<ul>
+<li><strong>Color</strong> [<code>&lt;c&gt;</code> / <code>&lt;c=name&gt;</code> / <code>&lt;c=hexcode&gt;</code> / <code>&lt;c=</code><a href="https://docs.unity3d.com/ScriptReference/Color.html">DefaultColorName</a><code>&gt;</code> / <code>&lt;c=myColor,myGradient,myTexture&gt;</code>] Change color/gradient/texture of text. Hex code is with or without # symbol, and supports alpha (8 digit hex code). For example... <code>000</code>, <code>0000</code>, <code>000000</code>, and <code>00000000</code> are all valid values, along with <code>#000</code>, <code>#0000</code>, <code>#000000</code>, and <code>#00000000</code>. Like that final example, you can multiply a color, gradient, and texture together (Only one of each may be used) by putting them in the same color tag, seperated by commas.</li>
+<li><strong>Relative Size</strong> [<code>&lt;s=float&gt;</code>] Change size of text, relative to the default size.</li>
+<li><strong>Y Offset</strong> [<code>&lt;y=float&gt;</code>] Sets a vertical offset for text, relative to its current size.</li>
+<li><strong>Superscript</strong> [<code>&lt;sup&gt;</code> / <code>&lt;sub&gt;&gt;</code>] Sets both relative size and y offset based on settings under &quot;Master&quot; in text data to reflect superscript text.</li>
+<li><strong>Subscript</strong> [<code>&lt;sub&gt;</code> / <code>&lt;sub&gt;&gt;</code>] Sets both relative size and y offset based on settings under &quot;Master&quot; in text data to reflect subscript text.</li>
+<li><strong>Delay</strong> [<code>&lt;d&gt;</code> / <code>&lt;d=int&gt;</code> / <code>&lt;d=string&gt;</code>] For reading out text, insert a delay that's worth the time it takes to read out x amount of characters, or use a predefined delay amount.</li>
+<li><strong>Timing</strong> [<code>&lt;t=float&gt;</code>] Set the exact time the following letters will read from. Good for syncing up text to something.</li>
+<li><strong>Event</strong> [<code>&lt;e=string&gt;</code>] Will invoke a <a href="#UnityEvents">custom event</a> when the text mesh reads it.</li>
+<li><strong>Repeating Event</strong> [<code>&lt;e2=string&gt;</code>] Will do the same as the normal event tag, but repeat for each letter until cancelled with <code>&lt;/e2&gt;</code>.</li>
+<li><strong>Voice</strong> [<code>&lt;v=name&gt;</code>] Shortform to insert a longer string.</li>
+<li><strong>Font</strong> [<code>&lt;f=name&gt;</code>] Changes the font mid-string.</li>
+<li><strong>Material</strong> [<code>&lt;m=name&gt;</code>] Changes material mid-string.</li>
+<li><strong>Quad (Inline Image)</strong> [<code>&lt;q=name&gt;</code> / <code>&lt;q=name,index&gt;</code> / <code>&lt;q=name,xPos,yPos&gt;</code>] Inserts a quad. The index can be overridden.</li>
+<li><strong>Bold</strong> [<code>&lt;b&gt;</code>] Set text to be bold. Can stack with italic.</li>
+<li><strong>Italic</strong> [<code>&lt;i&gt;</code>] Set text to be italic. Can stack with bold.</li>
+<li><strong>Wave</strong> [<code>&lt;w&gt;</code> / <code>&lt;w=name&gt;</code>] Use a wave from the Text Data file.</li>
+<li><strong>Jitter</strong> [<code>&lt;j&gt;</code> / <code>&lt;j=name&gt;</code>] use a jitter fromt he Text Data file.</li>
+<li><strong>Alignment Tags</strong> [<code>&lt;a=alignment&gt;</code>] These will set text alignment, mid-string.
+<ul>
+<li><strong>Left</strong> [<code>&lt;a=left&gt;</code>] Align text left.</li>
+<li><strong>Right</strong> [<code>&lt;a=right&gt;</code>] Align text right.</li>
+<li><strong>Center</strong> [<code>&lt;a=center&gt;</code> / <code>&lt;a=centre&gt;</code>] Align text to be centred.</li>
+<li><strong>Justified</strong> [<code>&lt;a=just&gt;</code> / <code>&lt;a=justify&gt;</code> / <code>&lt;a=justified&gt;</code>] Justify text, paragraph-style.</li>
+<li><strong>Force Justified</strong> [<code>&lt;a=just2&gt;</code> / <code>&lt;a=justify2&gt;</code> / <code>&lt;a=justified2&gt;</code>] Force text to be justified, even if it breaks traditional paragraph rules.</li>
+</ul>
+</li>
+<li><strong>Line Break</strong> [<code>&lt;br&gt;</code>] Inserts a line break, the same as typing <code>\n</code>. Good for inserting line breaks on single-line text entry fields.</li>
+<li><strong>Indent</strong> [<code>&lt;indent=float&gt;</code>] Sets a margin in localspace units.</li>
+<li><strong>Pause</strong> [<code>&lt;pause&gt;</code>] Tells the mesh to stop reading at this point until Continue() is called.</li>
+<li><strong>Unicode</strong> [<code>&lt;u=unicode value&gt;</code>] Inserts a unicode character by its code. Typically the same as typing <code>\u[unicode value]</code>, but works in-editor.</li>
+</ul>
+<p>Other elements of Super Text Mesh can be changed directly with tags, but these are meant to be changed with voice tags, as they are longer than standard tags. Still, you can use them in regular text, too:</p>
+<ul>
+<li><strong>Size</strong> [<code>&lt;size=float&gt;</code>] Set the exact size of text.</li>
+<li><strong>Stop Previous Sound</strong> [<code>&lt;stopPreviousSound=bool&gt;</code>] Change audio settings.</li>
+<li><strong>Pitch Mode</strong> [<code>&lt;pitchMode=PitchMode&gt;</code>] Change audio settings.
+<ul>
+<li><strong>Normal</strong> [<code>&lt;pitchMode=normal&gt;</code>] Set the pitch mode to &quot;Normal&quot;.</li>
+<li><strong>Single</strong> [<code>&lt;pitchMode=single&gt;</code>] Set the pitch mode to &quot;Single&quot;.</li>
+<li><strong>Random</strong> [<code>&lt;pitchMode=random&gt;</code>] Set the pitch mode to &quot;Random&quot;.</li>
+<li><strong>Perlin</strong> [<code>&lt;pitchMode=perlin&gt;</code>] Set the pitch mode to &quot;Perlin&quot;.</li>
+</ul>
+</li>
+<li><strong>Override Pitch</strong> [<code>&lt;overridePitch=float&gt;</code>] Set the pitch for the &quot;Single&quot; pitch mode.</li>
+<li><strong>Minimum Pitch</strong> [<code>&lt;minPitch=float&gt;</code>] Set the minimum pitch for the &quot;Random&quot; &amp; &quot;Perlin&quot; pitch mode.</li>
+<li><strong>Maximum Pitch</strong> [<code>&lt;maxPitch=float&gt;</code>] Set the maximum pitch for the &quot;Random&quot; &amp; &quot;Perlin&quot; pitch mode.</li>
+<li><strong>Read Delay</strong> [<code>&lt;readDelay=float&gt;</code>] Set the read delay to a specified value.</li>
+<li><strong>Speedread Pitch</strong> [<code>&lt;speedReadPitch=float&gt;</code>] Set the pitch to be used for speedreading.</li>
+<li><strong>Auto Clips</strong> [<code>&lt;clips=string&gt;</code>] Use specific auto clips.</li>
+<li><strong>Audio Clips</strong> [<code>&lt;audioClips=string&gt;</code>] Change the audio clips being used.</li>
+<li><strong>Draw Animation</strong> [<code>&lt;drawAnim=string&gt;</code>] Case-sensitive. Set the name of the draw animation to be used.</li>
+<li><strong>Draw Order</strong> [<code>&lt;drawOrder=DrawOrder&gt;</code>]
+<ul>
+<li><strong>Left To Right</strong> [<code>&lt;drawOrder=lefttoright&gt;</code> / <code>&lt;drawOrder=ltr&gt;</code>]</li>
+<li><strong>All At Once</strong> [<code>&lt;drawOrder=allatonce&gt;</code> / <code>&lt;drawOrder=all&gt;</code>]</li>
+<li><strong>One Word At A Time</strong> [<code>&lt;drawOrder=onewordatatime&gt;</code> / <code>&lt;drawOrder=robot&gt;</code>]</li>
+<li><strong>Random</strong> [<code>&lt;drawOrder=random&gt;</code>]</li>
+<li><strong>Right To Left</strong> [<code>&lt;drawOrder=righttoleft&gt;</code> / <code>&lt;drawOrder=rtl&gt;</code>]</li>
+<li><strong>Reverse LTR</strong> [<code>&lt;drawOrder=reverseltr&gt;</code>]</li>
+<li><strong>One Line At A Time</strong> [<code>&lt;drawOrder=onelineatatime&gt;</code> / <code>&lt;drawOrder=computer&gt;</code>]</li>
+<li><strong>RTL One Word At A Time</strong> [<code>&lt;drawOrder=rtlonewordatatime&gt;</code> / <code>&lt;drawOrder=rtlrobot&gt;</code>]</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="methods-parameters--events">Methods, Parameters &amp; Events</h1>
+<h2 id="public-methods">Public Methods</h2>
+<p>These functions can be called with code, and are useful for dialogue managers:</p>
+<h3 id="rebuild">Rebuild</h3>
+<h5 id="void-supertextmeshrebuild">void SuperTextMesh.Rebuild()</h5>
+<p>Call this to update the mesh's text. This will also cause it to read out again, if the read delay is above 0.</p>
+<h5 id="void-supertextmeshrebuildbool-readautomatically">void SuperTextMesh.Rebuild(bool readAutomatically)</h5>
+<p>Can be used to rebuild the mesh without automatically reading out. Good for some text boxes. Will override the &quot;autoRead&quot; variable.</p>
+<h3 id="rebuildall">RebuildAll</h3>
+<h5 id="static-void-supertextmeshrebuildall">[STATIC] void SuperTextMesh.RebuildAll()</h5>
+<p>Will call Rebuild() on every mesh in the scene. Should only be used when starting a scene as it uses FindObjectsOfType, which is very intensive.</p>
+<h3 id="read">Read</h3>
+<h5 id="void-supertextmeshread">void SuperTextMesh.Read()</h5>
+<p>You can use this to have text get re-read without rebuilding the mesh.</p>
+<h5 id="void-supertextmeshreadfloat-starttime">void SuperTextMesh.Read(float startTime)</h5>
+<p>You can also get the mesh to read from a specific point.</p>
+<h3 id="speedread">SpeedRead</h3>
+<h5 id="void-supertextmeshspeedread">void SuperTextMesh.SpeedRead()</h5>
+<p>Tells the text mesh to switch to its faster reading speed.</p>
+<h3 id="regularread">RegularRead</h3>
+<h5 id="void-supertextmeshregularread">void SuperTextMesh.RegularRead()</h5>
+<p>Tells the text mesh to return to its regular reading speed.</p>
+<h3 id="skiptoend">SkipToEnd</h3>
+<h5 id="void-supertextmeshskiptoend">void SuperTextMesh.SkipToEnd()</h5>
+<p>Makes the mesh finish drawing immediately, calling all events that haven't been read yet.</p>
+<h3 id="append">Append</h3>
+<h5 id="void-supertextmeshappendstring">void SuperTextMesh.Append(string)</h5>
+<p>Add to the end of the current text mesh string, and begin reading from this point.</p>
+<h3 id="unread">UnRead</h3>
+<h5 id="void-supertextmeshunread">void SuperTextMesh.UnRead()</h5>
+<p>Tell the mesh to play its &quot;undrawing animation&quot;. Other aliases for this function are &quot;Unread()&quot;, &quot;UnDraw()&quot;, and &quot;Undraw()&quot;. After the animation finishes, the mesh won't update until Rebuild() is called again.</p>
+<h3 id="continue">Continue</h3>
+<h5 id="bool-supertextmeshcontinue">bool SuperTextMesh.Continue()</h5>
+<p>Tells the mesh to continue past a <code>&lt;pause&gt;</code> tag. Will return true if any more pauses needed to be passed by, and false if the end of the mesh was already reached.</p>
+<h3 id="undocontinue">UndoContinue()</h3>
+<h5 id="bool-supertextmeshcontinue-1">bool SuperTextMesh.Continue()</h5>
+<p>Makes text begin reading from the previous pause point used by Continue().</p>
+<h2 id="public-properties">Public Properties</h2>
+<p>All public variables can be changed with code, if needed.</p>
+<h3 id="text">Text</h3>
+<h4 id="text-1">text</h4>
+<h5 id="string-supertextmeshtext">string SuperTextMesh.text</h5>
+<p>Same as SuperTextMesh._text, but Rebuild() will be called automatically upon setting.</p>
+<h4 id="_text">_text</h4>
+<h5 id="string-supertextmesh_text">string SuperTextMesh._text</h5>
+<p>This is the text stored within the text mesh. The text mesh will not display it until Rebuild() is called. There's an underscore there, by the way, it's just covered up by the underline.</p>
+<h4 id="drawtext">drawText</h4>
+<h5 id="read-only-string-supertextmeshdrawtext">[READ ONLY] string SuperTextMesh.drawText</h5>
+<p>Text that the mesh will display. So this is the same as SuperTextMesh.text, but after being processed as rich text! If rich text is turned off, this will be the same as SuperTextMesh.text. This string will not include automatically-inserted hypens and line breaks.</p>
+<h4 id="hyphenedtext">hyphenedText</h4>
+<h5 id="read-only-string-supertextmeshhyphenedtext">[READ ONLY] string SuperTextMesh.hyphenedText</h5>
+<p>Text that the mesh will display, including characters that may have been added like hyphens and line breaks, and with some characters removed, such as spaces replaced by line breaks.</p>
+<h4 id="reading">reading</h4>
+<h5 id="read-only-bool-supertextmeshreading">[READ ONLY] bool SuperTextMesh.reading</h5>
+<p>This bool returns true if the text mesh is currently reading out text. Returns false when the mesh has finished, or if the mesh has a read delay of 0.</p>
+<h4 id="unreading">unreading</h4>
+<h5 id="read-only-bool-supertextmeshunreading">[READ ONLY] bool SuperTextMesh.unreading</h5>
+<p>This bool returns true if the text mesh is currently playing its unreading animation.</p>
+<h3 id="appearance">Appearance</h3>
+<h4 id="font">font</h4>
+<h5 id="font-supertextmeshfont">Font SuperTextMesh.font</h5>
+<p>The font to be used by the text mesh.</p>
+<h4 id="color">color</h4>
+<h5 id="color-supertextmeshcolor">Color SuperTextMesh.color</h5>
+<p>Default color used by this text mesh.</p>
+<h4 id="size">size</h4>
+<h5 id="float-supertextmeshsize">float SuperTextMesh.size</h5>
+<p>Size of this text in local space. For UI elements, this is the size in screen space.</p>
+<h4 id="bestfit">bestFit</h4>
+<h5 id="supertextmeshbestfitmode-supertextmeshbestfit">SuperTextMesh.BestFitMode SuperTextMesh.bestFit</h5>
+<p>Controls Best Fit text.</p>
+<ul>
+<li><strong>BestFitMode.Off</strong><br>
+Text will not use best fit.</li>
+<li><strong>BestFitMode.Always</strong><br>
+Text will be the right size to match with autoWrap/verticalLimit's bounds.</li>
+<li><strong>BestFitMode.OverLimit</strong><br>
+Text will only shrink if it goes over autoWrap/verticalLimit's bounds.</li>
+<li><strong>BestFitMode.SquishAlways</strong>
+Similar to &quot;Always&quot; but text will expand/shrink on the X axis only.</li>
+<li><strong>BestFitMode.SquishOverLimit</strong>
+Similar to &quot;OverLimit&quot; but text will expand/shrink on the X axis only.</li>
+</ul>
+<h4 id="style">style</h4>
+<h5 id="fontstyle-supertextmeshstyle">FontStyle SuperTextMesh.style</h5>
+<p>Default font style for the text mesh.</p>
+<ul>
+<li><strong>FontStyle.Normal</strong></li>
+<li><strong>FontStyle.Bold</strong></li>
+<li><strong>FontStyle.Italic</strong></li>
+<li><strong>FontStyle.BoldAndItalic</strong></li>
+</ul>
+<h4 id="richtext">richText</h4>
+<h5 id="bool-supertextmeshrichtext">bool SuperTextMesh.richText</h5>
+<p>If this text mesh responds to rich text tags or not.</p>
+<h4 id="quality">quality</h4>
+<h5 id="int-supertextmeshquality">int SuperTextMesh.quality</h5>
+<p>This is a font's point size.</p>
+<h4 id="filtermode">filterMode</h4>
+<h5 id="filtermode-supertextmeshfiltermode">FilterMode SuperTextMesh.filterMode</h5>
+<p>Filter mode to be used by the text mesh.</p>
+<ul>
+<li><strong>FilterMode.Point</strong><br>
+Texture pixels become blocky up close. Good for pixel fonts.</li>
+<li><strong>FilterMode.Bilinear</strong><br>
+Texture samples are averaged, looks smoother.</li>
+<li><strong>FilterMode.Trilinear</strong><br>
+Texture samples are averaged, and blended between mipmap levels.</li>
+</ul>
+<p>A note about filter modes! If two text meshes are using the same font, but with different filter modes applied, the material settings will get confused and blink between filter modes. I suggest duplicating your font in the assets folder and using the different filter mode on this new font to avoid this.</p>
+<h4 id="maskmode">maskMode</h4>
+<h5 id="supertextmeshmaskmode-supertextmeshmaskmode">SuperTextMesh.MaskMode SuperTextMesh.maskMode</h5>
+<p>What operation STM will use when masking.</p>
+<ul>
+<li><strong>MaskMode.Inside</strong>
+STM will render inside of masks.</li>
+<li><strong>MaskMode.Outside</strong>
+STM will render outside of masks.</li>
+</ul>
+<h4 id="textmaterial">textMaterial</h4>
+<h5 id="material-supertextmeshtextmaterial">Material SuperTextMesh.textMaterial</h5>
+<article class="rightbox">
+<a href="STMDocImages/shadercontrols1.png"><img src="STMDocImages/shadercontrols1.png"/></a><br><br>
+Material controls.
+</article>
+The default material being used by this mesh. Will be referenced by the mesh upon rebuild, and should be treated as "a shader, with settings". A good example of this is that if you had an in-game keyboard made up of several Super Text Meshes, they could all share the same material and changes could be made to all of them quickly this way.
+<p>NOTE: This value is only referenced once Rebuild() is called, where Super Text Mesh will then create an internal material that the mesh will reference instead. This is done so that multiple fonts can use the same material's look. So the above trick with changing a single material to effect multiple meshes only works in edit mode.</p>
+<h3 id="position">Position</h3>
+<h4 id="baseoffset">baseOffset</h4>
+<h5 id="vector3-supertextmeshbaseoffset">Vector3 SuperTextMesh.baseOffset</h5>
+<p>Additional offset for the mesh from the anchor point.</p>
+<h4 id="relativebaseoffset">relativeBaseOffset</h4>
+<h5 id="bool-supertextmeshrelativebaseoffset">bool SuperTextMesh.relativeBaseOffset</h5>
+<p>Changes whether baseOffset is multiplied by a letter's size or not. Z is not effected.</p>
+<h4 id="anchor">anchor</h4>
+<h5 id="textanchor-supertextmeshanchor">TextAnchor SuperTextMesh.anchor</h5>
+<p>Anchor point of the text box. In UI mode, upper/middle/lower anchors can be adjusted. This also controls where text will draw from if you have bounds defined. (Bottom-anchored text will snap to the bottom of your defined bounds.)</p>
+<ul>
+<li><strong>TextAnchor.UpperLeft</strong></li>
+<li><strong>TextAnchor.UpperCenter</strong></li>
+<li><strong>TextAnchor.UpperRight</strong></li>
+<li><strong>TextAnchor.MiddleLeft</strong></li>
+<li><strong>TextAnchor.MiddleCenter</strong></li>
+<li><strong>TextAnchor.MiddleRight</strong></li>
+<li><strong>TextAnchor.LowerLeft</strong></li>
+<li><strong>TextAnchor.LowerCenter</strong></li>
+<li><strong>TextAnchor.LowerRight</strong></li>
+</ul>
+<h4 id="alignment">alignment</h4>
+<h5 id="supertextmeshalignment-supertextmeshalignment">SuperTextMesh.Alignment SuperTextMesh.alignment</h5>
+<p>Decides text alignment.</p>
+<ul>
+<li><strong>SuperTextMesh.Alignment.Left</strong></li>
+<li><strong>SuperTextMesh.Alignment.Center</strong></li>
+<li><strong>SuperTextMesh.Alignment.Right</strong></li>
+<li><strong>SuperTextMesh.Alignment.Justified</strong></li>
+<li><strong>SuperTextMesh.Alignment.ForceJustified</strong></li>
+</ul>
+<h4 id="linespacing">lineSpacing</h4>
+<h5 id="float-supertextmeshlinespacing">float SuperTextMesh.lineSpacing</h5>
+<p>The space between rows of text. 1 is the default.</p>
+<h4 id="characterspacing">characterSpacing</h4>
+<h5 id="float-supertextmeshcharacterspacing">float SuperTextMesh.characterSpacing</h5>
+<p>Extra horizontal space between characters. Default is 0.</p>
+<h4 id="tabsize">tabSize</h4>
+<h5 id="float-supertextmeshtabsize">float SuperTextMesh.tabSize</h5>
+<p>The width that a tab should take up. Default is 4.</p>
+<h4 id="autowrap">autoWrap</h4>
+<h5 id="float-supertextmeshautowrap">float SuperTextMesh.autoWrap</h5>
+<p>For non-UI text, text will wrap after it goes past this point. Wrapping is disabled if this is set to 0.</p>
+<h4 id="uiwrap">uiWrap</h4>
+<h5 id="bool-supertextmeshuiwrap">bool SuperTextMesh.uiWrap</h5>
+<p>For UI text, if this is true, text will wrap at the rectTransform bounds.</p>
+<h4 id="breaktext">breakText</h4>
+<h5 id="bool-supertextmeshbreaktext">bool SuperTextMesh.breakText</h5>
+<p>If true, instead of text trying to always insert automatic line breaks at previous spaces, tabs, and hyphens, text will just drop down a row a the very end of a row.</p>
+<h4 id="inserthyphens">insertHyphens</h4>
+<h5 id="bool-supertextmeshinserthyphens">bool SuperTextMesh.insertHyphens</h5>
+<p>If true, when text exceeds the bounds, and there isn't a previous space to insert a line break, a hyphen will be inserted, and the word will be split.</p>
+<h4 id="verticallimit">verticalLimit</h4>
+<h5 id="int-supertextmeshverticallimit">int SuperTextMesh.verticalLimit</h5>
+<p>For non-UI text, When greater than 0, this sets the vertical bounding box. Text beyond this limit will behave differently depending on the current vertical limit mode.</p>
+<h4 id="uilimit">uiLimit</h4>
+<h5 id="bool-supertextmeshuilimit">bool SuperTextMesh.uiLimit</h5>
+<p>For UI text, if this is true, text will be limited by the rectTransform bounds.</p>
+<h4 id="verticallimitmode">verticalLimitMode</h4>
+<h5 id="supertextmeshverticallimitmode">SuperTextMesh.verticalLimitMode</h5>
+<p>Controls how text is treated if it exceeds the vertical limit.</p>
+<ul>
+<li><strong>SuperTextMesh.VerticalLimitMode.ShowLast</strong></li>
+</ul>
+<p>Text will scroll to show the last lines of text in the box. This is good for textboxes like the ones in most RPGs with small text boxes.</p>
+<ul>
+<li><strong>SuperTextMesh.VerticalLimitMode.CutOff</strong></li>
+</ul>
+<p>Text will be cut off at the limit, and all extra text will end up, with proper tags, in a variable named &quot;leftoverText&quot;.</p>
+<ul>
+<li><strong>SuperTextMesh.VerticalLimitMode.Ignore</strong></li>
+</ul>
+<p>Text will ignore the limit. You can use this if you want to use the vertical limit to position a box, but not restrict it for whatever reason.</p>
+<ul>
+<li><strong>SuperTextMesh.VerticalLimitMode.AutoPause</strong></li>
+</ul>
+<p>A combination of cutoff and showlast. When text reaches the vertical limit, it will be cut off until Continue() is called. After calling continue, this will repeat until the vertical limit is met again.</p>
+<ul>
+<li><strong>SuperTextMesh.VerticalLimitMode.AutoPauseFull</strong></li>
+</ul>
+<p>Like auto pause, but when Continue() is called, the text box starts reading the new text from the top of the box, instead of using the show last effect. This value is based on verticalLimit, so it's suggested to use a vertical limit that is a multiple, or close to a multiple of size.</p>
+<p>Note: Text Bounds for Show Last, Auto Pause, and Auto Pause Full might appear incorrectly for text that changes size mid-string.</p>
+<h4 id="lineheights">lineHeights</h4>
+<h5 id="read-only-list-supertextmeshlineheights">[READ ONLY] List<float> SuperTextMesh.lineHeights</h5>
+<p>A list containing the heights of each line. The Count property of this is the amount of lines the STM object has, and the floats are the height of each line. Can beused for things like the LinkController class!</p>
+<h3 id="timing">Timing</h3>
+<h4 id="ignoretimescale">ignoreTimeScale</h4>
+<h5 id="bool-supertextmeshignoretimescale">bool SuperTextMesh.ignoreTimeScale</h5>
+<p>If set to true, this text mesh will not be effected by time scale in any way.</p>
+<h4 id="disableanimatedtext">disableAnimatedText</h4>
+<h5 id="bool-supertextmeshdisableanimatedtext">bool SuperTextMesh.disableAnimatedText</h5>
+<p>Disable all animated effects for this text mesh. A master toggle for all text meshes can be found in [Text Data](#Text Data Customization).</p>
+<h4 id="forceanimation">forceAnimation</h4>
+<h5 id="bool-supertextmeshforceanimation">bool SuperTextMesh.forceAnimation</h5>
+<p>If true, Super Text Mesh will update every frame, even if there isn't an animation to play. This is intended to be used if you're animating an STM parameter (such as color) through an Animator.</p>
+<h4 id="autoread">autoRead</h4>
+<h5 id="bool-supertextmeshautoread">bool SuperTextMesh.autoRead</h5>
+<p>Tell text to read out by itself or not when Rebuild() is called. Text can be told to read manually with Read().</p>
+<h4 id="rememberreadposition">rememberReadPosition</h4>
+<h5 id="bool-supertextmeshrememberreadposition">bool SuperTextMesh.rememberReadPosition</h5>
+<p>When the mesh is enabled/disabled, this controls whether the mesh will remember where it was while drawing, or follow its legacy behaviour and act as if Rebuild() was called. Rebuild() can be called when re-enabling text while this boolean is true, too.</p>
+<h4 id="readdelay">readDelay</h4>
+<h5 id="float-supertextmeshreaddelay">float SuperTextMesh.readDelay</h5>
+<p>The delay between letters when text is being read out. Reading disabled if set to 0.</p>
+<h4 id="draworder">drawOrder</h4>
+<h5 id="supertextmeshdraworder-draworder">SuperTextMesh.DrawOrder drawOrder</h5>
+<p>What order the text will draw in.</p>
+<ul>
+<li><strong>SuperTextMesh.DrawOrder.LeftToRight</strong><br>
+Default draw order.</li>
+<li><strong>SuperTextMesh.DrawOrder.AllAtOnce</strong><br>
+All letters will draw at once, ignoring read delay.</li>
+<li><strong>SuperTextMesh.DrawOrder.OneWordAtATime</strong><br>
+Read delay will only apply at spaces, tabs, line breaks, and hyphens.</li>
+<li><strong>SuperTextMesh.DrawOrder.Random</strong><br>
+Read delay will become the total time to read out the mesh. Letters will draw at a random point.</li>
+<li><strong>SuperTextMesh.DrawOrder.RightToLeft</strong><br>
+For right to left scripts.</li>
+<li><strong>SuperTextMesh.DrawOrder.ReverseLTR</strong><br>
+Left to Right, but starting at the end and going backwards.</li>
+</ul>
+<h4 id="drawanimname-1">drawAnimName</h4>
+<h5 id="string-supertextmeshdrawanimname">string SuperTextMesh.drawAnimName</h5>
+<p>The name of the draw animation that will be used for this mesh. Can be defined in [TextData](#Text Data). Case-sensitive.</p>
+<h3 id="functionality">Functionality</h3>
+<h4 id="speedreadscale">speedReadScale</h4>
+<h5 id="float-supertextmeshspeedreadscale">float SuperTextMesh.speedReadScale</h5>
+<p>Multiple of timeScale for when SpeedRead() is active.</p>
+<h4 id="unreaddelay">unreadDelay</h4>
+<h5 id="float-supertextmeshunreaddelay">float SuperTextMesh.unreadDelay</h5>
+<p>The delay between letters for when text is unreading.</p>
+<h4 id="undraworder">undrawOrder</h4>
+<h5 id="supertextmeshdraworder-undraworder">SuperTextMesh.DrawOrder undrawOrder</h5>
+<p>What order the text will undraw in. Same options as drawOrder.</p>
+<h4 id="undrawanimname">undrawAnimName</h4>
+<h5 id="string-supertextmeshundrawanimname">string SuperTextMesh.undrawAnimName</h5>
+<p>The name of the draw animation that will be used for undrawing on this mesh. Can be defined in <a href="#Text-Data">TextData</a>. Case-sensitive.</p>
+<h3 id="audio">Audio</h3>
+<h4 id="audiosource">audioSource</h4>
+<h5 id="audiosource-supertextmeshaudiosource">AudioSource SuperTextMesh.audioSource</h5>
+<p>The audio source to be used by this text mesh. Must be defined to use audio.</p>
+<h4 id="audioclips">audioClips</h4>
+<h5 id="audioclip-supertextmeshaudioclips">AudioClip[] SuperTextMesh.audioClips</h5>
+<p>Audio clips to be used while reading out text. Only a single clip is needed, but if there's multiple, a random sound clip will be chosen from the array.</p>
+<h4 id="stopprevioussound">stopPreviousSound</h4>
+<h5 id="bool-supertextmeshstopprevioussound">bool SuperTextMesh.stopPreviousSound</h5>
+<p>If set to true, whenever a new letter is read, it'll play a new sound and stop the old one.
+If set to false, new letters will not override old ones, it'll wait for the clip to end before playing a new sound.</p>
+<h4 id="pitchmode">pitchMode</h4>
+<h5 id="supertextmeshpitchmode">SuperTextMesh.pitchMode</h5>
+<p>When reading out text, how the pitch of the sounds will be effected.</p>
+<ul>
+<li><strong>SuperTextMesh.PitchMode.Normal</strong><br>
+No additional effects.</li>
+<li><strong>SuperTextMesh.PitchMode.Single</strong><br>
+Override the pitch of the sound clip(s) directly.</li>
+<li><strong>SuperTextMesh.PitchMode.Random</strong><br>
+For each letter, the pitch will be randomly chosen between two values.</li>
+<li><strong>SuperTextMesh.PitchMode.Perlin</strong><br>
+For each letter, the pitch will be randomly chosen between two values using perlin noise. Results in a smoother, more dialogue-like sound.</li>
+</ul>
+<h4 id="overridepitch">overridePitch</h4>
+<h5 id="float-supertextmeshoverridepitch-range0f3f">float SuperTextMesh.overridePitch [Range(0f,3f)]</h5>
+<p>If the pitchMode is set to &quot;Single&quot;, this will be the new pitch used.</p>
+<h4 id="minpitch">minPitch</h4>
+<h5 id="float-supertextmeshminpitch-range0f3f">float SuperTextMesh.minPitch [Range(0f,3f)]</h5>
+<p>If the pitchMode is set to &quot;Random&quot; or &quot;Perlin&quot;, this will be the minimum random pitch.</p>
+<h4 id="maxpitch">maxPitch</h4>
+<h5 id="float-supertextmeshmaxpitch-range0f3f">float SuperTextMesh.maxPitch [Range(0f,3f)]</h5>
+<p>If the pitchMode is set to &quot;Random&quot; or &quot;Perlin&quot;, this will be the maximum random pitch.</p>
+<h4 id="perlinpitchmulti">perlinPitchMulti</h4>
+<h5 id="float-supertextmeshperlinpitchmulti">float SuperTextMesh.perlinPitchMulti</h5>
+<p>If the pitchMode is set to &quot;Perlin&quot;, this will control how quickly the perlin noise value changes.</p>
+<h4 id="speedreadpitch">speedReadPitch</h4>
+<h5 id="float-supertextmeshspeedreadpitch">float SuperTextMesh.speedReadPitch</h5>
+<p>When speedReading, this value will be ADDED to the pitch.</p>
+<p>Looking for even more advanced audio control? STM's PlaySound() method is virtual, and STM can be extended to work with other audio engines! You can also use OnPrintEvent, which gets invoked at the exact same time as PlaySound().</p>
+<h2 id="bounds-variables">Bounds Variables</h2>
+<h3 id="raw-bounds">Raw Bounds</h3>
+<h4 id="rawtopleftbounds">rawTopLeftBounds</h4>
+<h5 id="read-only-vector3-supertextmeshrawtopleftbounds">[READ ONLY] Vector3 SuperTextMesh.rawTopLeftBounds</h5>
+<p>The top-left bounds of the mesh, local to the mesh and uneffected by transform.</p>
+<h4 id="rawbottomrightbounds">rawBottomRightBounds</h4>
+<h5 id="read-only-vector3-supertextmeshrawbottomrightbounds">[READ ONLY] Vector3 SuperTextMesh.rawBottomRightBounds</h5>
+<p>The bottom-right bounds of the mesh, local to the mesh and uneffected by transform.</p>
+<h4 id="rawbottomrighttextbounds">rawBottomRightTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshrawbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.rawBottomRightTextBounds</h5>
+<p>The the with and height of text is stored here, unclamped by bounds.</p>
+<h3 id="defined-bounds">Defined Bounds</h3>
+<h4 id="topleftbounds">topLeftBounds</h4>
+<h5 id="read-only-vector3-supertextmeshtopleftbounds">[READ ONLY] Vector3 SuperTextMesh.topLeftBounds</h5>
+<p>The top-left bounds of the mesh, in world space.</p>
+<h4 id="toprightbounds">topRightBounds</h4>
+<h5 id="read-only-vector3-supertextmeshtoprightbounds">[READ ONLY] Vector3 SuperTextMesh.topRightBounds</h5>
+<p>The top-right bounds of the mesh, in world space.</p>
+<h4 id="bottomleftbounds">bottomLeftBounds</h4>
+<h5 id="read-only-vector3-supertextmeshbottomleftbounds">[READ ONLY] Vector3 SuperTextMesh.bottomLeftBounds</h5>
+<p>The bottom-left bounds of the mesh, in world space.</p>
+<h4 id="bottomrightbounds">bottomRightBounds</h4>
+<h5 id="read-only-vector3-supertextmeshbottomrightbounds">[READ ONLY] Vector3 SuperTextMesh.bottomRightBounds</h5>
+<p>The bottom-right bounds of the mesh, in world space.</p>
+<h4 id="centerbounds">centerBounds</h4>
+<h5 id="read-only-vector3-supertextmeshcenterbounds">[READ ONLY] Vector3 SuperTextMesh.centerBounds</h5>
+<p>The center of the bounds of the mesh, in world space.</p>
+<h3 id="text-bounds">Text Bounds</h3>
+<h4 id="toplefttextbounds">topLeftTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshtoplefttextbounds">[READ ONLY] Vector3 SuperTextMesh.topLeftTextBounds</h5>
+<p>The top-left corner of the mesh's text bounds, in world space. This value changes as a mesh reads out.</p>
+<h4 id="toprighttextbounds">topRightTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshtoprighttextbounds">[READ ONLY] Vector3 SuperTextMesh.topRightTextBounds</h5>
+<p>The top-right corner of the mesh's text bounds, in world space. This value changes as a mesh reads out.</p>
+<h4 id="bottomlefttextbounds">bottomLeftTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshbottomlefttextbounds">[READ ONLY] Vector3 SuperTextMesh.bottomLeftTextBounds</h5>
+<p>The bottom-left corner of the mesh's text bounds, in world space. This value changes as a mesh reads out.</p>
+<h4 id="bottomrighttextbounds">bottomRightTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.bottomRightTextBounds</h5>
+<p>The bottom-right corner of the mesh's text bounds, in world space. This value changes as a mesh reads out.</p>
+<h4 id="centertextbounds">centerTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshcentertextbounds">[READ ONLY] Vector3 SuperTextMesh.centerTextBounds</h5>
+<p>The center of the text bounds of the mesh, in world space. This value changes as a mesh reads out.</p>
+<h3 id="final-text-bounds">Final Text Bounds</h3>
+<h4 id="finaltoplefttextbounds">finalTopLeftTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshfinaltoplefttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalTopLeftTextBounds</h5>
+<p>The top-left corner of the mesh's text bounds after it has finished reading out, in world space.</p>
+<h4 id="finaltoprighttextbounds">finalTopRightTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshfinaltoprighttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalTopRightTextBounds</h5>
+<p>The top-right corner of the mesh's text bounds after it has finished reading out, in world space.</p>
+<h4 id="finalbottomlefttextbounds">finalBottomLeftTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshfinalbottomlefttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalBottomLeftTextBounds</h5>
+<p>The bottom-left corner of the mesh's text bounds after it has finished reading out, in world space.</p>
+<h4 id="finalbottomrighttextbounds">finalBottomRightTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshfinalbottomrighttextbounds">[READ ONLY] Vector3 SuperTextMesh.finalBottomRightTextBounds</h5>
+<p>The bottom-right corner of the mesh's text bounds after it has finished reading out, in world space.</p>
+<h4 id="finalcentertextbounds">finalCenterTextBounds</h4>
+<h5 id="read-only-vector3-supertextmeshfinalcentertextbounds">[READ ONLY] Vector3 SuperTextMesh.finalCenterTextBounds</h5>
+<p>The center of the text bounds of the mesh after it has finished reading out, in world space.</p>
+<h4 id="unwrapped-bounds">Unwrapped Bounds</h4>
+<h4 id="unwrappedmaxx">unwrappedMaxX</h4>
+<h5 id="read-only-float-supertextmeshunwrappedmaxx">[READ ONLY] float SuperTextMesh.unwrappedMaxX</h5>
+<p>Width of rendered text, ignoring autoWrap.</p>
+<h4 id="unwrappedminy">unwrappedMinY</h4>
+<h5 id="read-only-float-supertextmeshunwrappedminy">[READ ONLY] float SuperTextMesh.unwrappedMinY</h5>
+<p>Height of rendered text, ignoring autoWrap &amp; vertical limit.</p>
+<h3 id="extra-stuff">Extra Stuff</h3>
+<h4 id="debugmode">debugMode</h4>
+<h5 id="editor-only-bool-supertextmeshdebugmode">[EDITOR ONLY] bool SuperTextMesh.debugMode</h5>
+<p>If true, in the Unity editor, the Mesh Renderer and Mesh Filter components will become visible, along with any materials.</p>
+<h4 id="latestnumber">latestNumber</h4>
+<h5 id="read-only-int-supertextmeshlatestnumber">[READ ONLY] int SuperTextMesh.latestNumber</h5>
+<p>As the mesh is reading out, this will be the index of the last number read this frame. You can use SuperTextMesh.hyphenedText[latestNumber] to get the latest character drawn on any frame.</p>
+<h4 id="currentreadtime">currentReadTime</h4>
+<h5 id="read-only-float-supertextmeshcurrentreadtime">[READ ONLY] float SuperTextMesh.currentReadTime</h5>
+<p>As the mesh reads out, this is the time elapsed reading. Use Rebuild(currentReadTime) to have a mesh rebuild from its current position!</p>
+<h4 id="totalreadtime">totalReadTime</h4>
+<h5 id="read-only-float-supertextmeshtotalreadtime">[READ ONLY] float SuperTextMesh.totalReadTime</h5>
+<p>The total amount of time it will take the mesh to read out text, including animations.</p>
+<h4 id="totalunreadtime">totalUnreadTime</h4>
+<h5 id="read-only-float-supertextmeshtotalunreadtime">[READ ONLY] float SuperTextMesh.totalUnreadTime</h5>
+<p>The total amount of time it will take the mesh to unread text, including animations.</p>
+<h4 id="leftovertext">leftoverText</h4>
+<h5 id="read-only-string-supertextmeshleftovertext">[READ ONLY] string SuperTextMesh.leftoverText</h5>
+<p>If text is given a vertical limit and set to &quot;Cut Off&quot;, &quot;Auto Pause&quot;, or &quot;Auto Pause Full&quot; mode, all text that gets cut off will end up here as unformatted text, ready to be sent to another Super Text Mesh object. To avoid spaces at the start, you can set the text to be leftoverText.TrimStart().</p>
+<h4 id="linebreakfriendlychars">linebreakFriendlyChars</h4>
+<h5 id="private-char-supertextmeshlinebreakfriendlychars">[PRIVATE] char[] SuperTextMesh.linebreakFriendlyChars</h5>
+<p>An array of characters that a linebreak/hyphen will prefer to appear at when breaking up text at the autoWrap limit. By default, these characters are... Space, Tab, Linebreak, Hyphen, Soft Hyphen, Hair Space, and Zero Width Space.</p>
+<h4 id="cancontinue">canContinue</h4>
+<h5 id="read-only-bool-supertextmeshcancontinue">[READ ONLY] bool SuperTextMesh.canContinue</h5>
+<p>Returns true if Continue() will make Super Text Mesh read more text. It isn't really needed, since calling Continue() will return true if text has continued.</p>
+<h4 id="canundocontinue">canUndoContinue</h4>
+<h5 id="read-only-bool-supertextmeshcanundocontinue">[READ ONLY] bool SuperTextMesh.canUndoContinue</h5>
+<p>Same as canContinue, but for UndoContinue().</p>
+<h4 id="pausecount">pauseCount</h4>
+<h5 id="read-only-int-supertextmeshpausecount">[READ ONLY] int SuperTextMesh.pauseCount</h5>
+<p>Total amount of pauses Super Text Mesh will have before reaching the end of the string, both automatic and manual.</p>
+<h4 id="currentpausecount">currentPauseCount</h4>
+<h5 id="read-only-int-supertextmeshcurrentpausecount">[READ ONLY] int SuperTextMesh.currentPauseCount</h5>
+<p>Total times Continue() has been called, essentially.</p>
+<h2 id="unityevents--delegate-events">UnityEvents &amp; Delegate Events</h2>
+<article class="rightbox">
+<a href="STMDocImages/events1.png"><img src="STMDocImages/events1.png"/></a><br><br>
+Events from the sample scene.
+</article>
+<p>Unity Events call a list of component methods via the Unity Event System.</p>
+<p>You can tell a function to be called when a certain event happens, by dragging in the GameObject &amp; function in the Unity editor.</p>
+<h3 id="on-print-event-">On Print Event ()</h3>
+<p>Invoked when a new letter is printed by STM. Can be used to tell a textbox to resize, among other uses.</p>
+<h3 id="on-rebuild-event-">On Rebuild Event ()</h3>
+<p>Invoked when Rebuild() is called. Good for custom events, like clearing generated particles or colliders.</p>
+<h3 id="on-complete-event-">On Complete Event ()</h3>
+<p>Invoked when a text mesh is finished writing out text.</p>
+<h3 id="on-undrawn-event-">On Undrawn Event ()</h3>
+<p>Invoked when a text mesh finishes its undrawing animation.</p>
+<h3 id="custom-event-string-stmtextinfo">Custom Event (string, STMTextInfo)</h3>
+<p>Invoked with the event tag (<code>&lt;e=myString&gt;</code> / <code>&lt;e2=myString&gt;</code>). Passes an argument that has a string, and the STMTextInfo attached to the letter. The &quot;<code>e</code>&quot; tag makes an event happen for one character, and the &quot;<code>e2</code>&quot; tag repeats that event for every character until cancelled with &quot;<code>&lt;/e2&gt;</code>&quot;. The string is the &quot;tag&quot; written with the event. (&quot;myString&quot;, in this case) STMTextInfo is an internal class used by Super Text mesh that contains all kinds of data about letters in a mesh like size &amp; position. Here's some basics of the STMTextInfo class that you can use to reposition letters:</p>
+<ul>
+<li><strong><a href="http://STMTextInfo.ch">STMTextInfo.ch</a></strong> is the <a href="https://docs.unity3d.com/ScriptReference/CharacterInfo.html">CharacterInfo</a> for this letter. UV data, font style, and which character is used is stored in here.</li>
+<li><strong>STMTextInfo.pos</strong> is a Vector3 of this letter's bottom-left corner relative to the transform.</li>
+<li><strong>STMTextInfo.size</strong> is a float representing the size of this character in the mesh.</li>
+<li><strong>STMTextInfo.TopLeftVert</strong> gets a Vector3 of where the top left vert is.</li>
+<li><strong>STMTextInfo.TopRightVert</strong> gets a Vector3 of where the top right vert is.</li>
+<li><strong>STMTextInfo.BottomLeftVert</strong> gets a Vector3 of where the bottom left vert is.</li>
+<li><strong>STMTextInfo.BottomRightVert</strong> gets a Vector3 of where the bottom right vert is.</li>
+<li><strong>STMTextInfo.Middle</strong> gets a Vector3 of middle of this letter is.</li>
+</ul>
+<p>You can check out &quot;TextMeshData.cs&quot; to have a look at the complete code for this class!</p>
+<p>Using the tag (<code>&lt;e=helloWorld&gt;</code>) mid-string could be used to invoke a function like this:</p>
+<code>
+void MyFunction(string myString, int letterIndex, Vector3 letterMiddle, Vector3 letterCorner){  
+<p>    Debug.Log(myString); //prints &quot;helloWorld&quot;</p>
+<p>    Debug.Log(letterIndex); //prints index of letter event was attached to</p>
+<p>    Debug.Log(letterMiddle); //prints world position of letter</p>
+<p>}<br>
+</code></p>
+<p>Check out &quot;STMEventInterpreter&quot; in the &quot;Sample&quot; folder, for an example of how to use this. The &quot;TextMeshExample&quot; scene has a few examples that use this, as well as common uses for it. Included samples show things like using STM as links and buttons, and spawning particle effects on certain letters. Check it out!</p>
+<h3 id="vertex-mod-vector3-vector3-vector3">Vertex Mod (Vector3[], Vector3[], Vector3[])</h3>
+<article class="rightbox">
+<a href="STMDocImages/vertexmod1.png"><img src="STMDocImages/vertexmod1.png"/></a><br><br>
+Vertex Mod in action.
+</article>
+<p>Not a typical event like the rest, this event is used to modify the vertices of an entire mesh. To use it, under the &quot;Position&quot; foldout enable &quot;modify vertices&quot; and the event dialogue will appear. The kind of event you'll want to call would be laid out like this:</p>
+<code>
+void ChangeVertices (Vector3[] verts, Vector3[] middles, Vector3[] positions)
+<p>{</p>
+<p>    for(int i = 0; i &lt; allMeshVertices.Length / 4; i++)</p>
+<p>{</p>
+<p>        //change a letter's verts:</p>
+<p>        verts[4 * i + 0] += Vector3.right;</p>
+<p>        verts[4 * i + 1] += Vector3.right;</p>
+<p>        verts[4 * i + 2] += Vector3.right;</p>
+<p>        verts[4 * i + 3] += Vector3.right;</p>
+<p>        //move all to the right</p>
+<p>        Debug.Log(middles[i]); //middle of this letter</p>
+<p>        Debug.Log(positions[i]); //position of this
+letter<br>
+    }</p>
+<p>}<br>
+</code></p>
+<p>An included example script named &quot;STMVertexMod&quot; shows a few basic modifications you can do to a text mesh. (In the sample scene, look for an object named &quot;CurvedTextSample&quot; to see it in action)</p>
+<h3 id="pre-parse-stmtextcontainer">Pre Parse (STMTextContainer)</h3>
+<p>Another non-typical event like the vertex mod. Pre-parsing can be used to manually parse text before it reaches SuperTextMesh's internal parser. This can be used for things such as...</p>
+<ul>
+<li>Always adding a wave effect to the start of your text.</li>
+<li>Parsing your own custom tags (eg. replacing [FIRE] with your game's fire button)</li>
+</ul>
+<code>
+public string addToStart = "<w>";  
+<p>public void Parse(STMTextContainer x)</p>
+<p>{</p>
+<p> x.text = addToStart + x.text;</p>
+<p>}<br>
+</code></p>
+<p>Make sure when adding a new event to select &quot;Editor and Runtime&quot; from the event dropdown so you can see changes made in-editor.</p>
+<p>These events all have matching <strong>Delegate Events</strong> that are invoked at the same time. If you prefer to use delegate events, the names you can subscribe to are &quot;<strong>OnPrintEvent</strong>&quot;, &quot;<strong>OnRebuildEvent</strong>&quot;, &quot;<strong>OnCompleteEvent</strong>&quot;, &quot;<strong>OnUndrawnEvent</strong>&quot;, &quot;<strong>OnCustomEvent</strong>&quot;, &quot;<strong>OnVertexMod</strong>&quot;, and &quot;<strong>OnPreParse</strong>&quot;. (Note the uppercase letters)</p>
+<hr>
+<h1 id="shaders--shadows">Shaders &amp; Shadows</h1>
+<h2 id="changing-shaders--included-shaders">Changing Shaders &amp; Included Shaders</h2>
+<p>You can drag a new shader onto the &quot;text shader&quot; area to change that. The included shaders all start with the prefix &quot;STM&quot; for easy searching.</p>
+<ul>
+<li>
+<p><strong>&quot;STM Unlit&quot;</strong> is the default shader. It's an unlit shader, which means light sources don't affect it.</p>
+</li>
+<li>
+<p><strong>&quot;STM Unlit Dropshadow&quot;</strong> is the default shader, but with a drop shadow.</p>
+</li>
+<li>
+<p><strong>&quot;STM Unlit Outline&quot;</strong> is the default shader, but with an outline.</p>
+</li>
+<li>
+<p><strong>&quot;STM Unlit DropshadowAndOutline&quot;</strong> is a combination of the previous two shaders.</p>
+</li>
+<li>
+<p><strong>&quot;STM UI&quot;</strong> is the default shader for a UI text mesh.</p>
+</li>
+<li>
+<p><strong>&quot;UI Dropshadow&quot;</strong> works like Unlit Dropshadow, but for UI elements.</p>
+</li>
+<li>
+<p><strong>&quot;UI Outline&quot;</strong> works like Unlit Outline, but for UI elements.</p>
+</li>
+<li>
+<p><strong>&quot;UI DropshadowAndOutline&quot;</strong> is a combo of the previous two shaders.</p>
+</li>
+</ul>
+<p>As of v1.8.2, all these shaders have uber shader features! Each one has a culling mode toggle (Cull Back, Cull Front, Cull Off), An option to Render On Top (Set automatically for UI shaders), a Pixel Snap toggle, a toggle to render [SDF fonts](#SDF Fonts) properly, and for UI shaders, masking options!</p>
+<h2 id="enabling-shadowcasting">Enabling Shadowcasting</h2>
+<p>To toggle Super Text Mesh's shadow casting, check out the &quot;Shadow Casting Mode&quot; dropdown under the &quot;appearance&quot; section!</p>
+<h2 id="outlines-and-dropshadows">Outlines and Dropshadows</h2>
+<p>To use outlines or drop shadows, drag the &quot;Unlit Dropshadow&quot;, &quot;Unlit Outline&quot;, or &quot;Unlit DropshadowAndOutline&quot; shaders from the &quot;Shaders&quot; folder into the &quot;shader&quot; varaible on Super Text Mesh. After this, an additional header labelled &quot;Shader&quot; will appear in the inspector. You can use this to set how the dropshadow and outline look!</p>
+<h2 id="sdf-fonts">SDF Fonts</h2>
+<p>To use &quot;SDF Mode&quot; on a shader properly, you will first have to convert an existing font to an SDF font, using an external SDF texture generator. I use <a href="https://www.assetstore.unity3d.com/#!/content/50191?aid=1100lIKj">SDF Toolkit Free</a> by <a href="http://catlikecoding.com/">Catlike Coding</a>, and this guide will involve how to set up an SDF font using this. Please consider getting <a href="https://www.assetstore.unity3d.com/#!/content/34821?aid=1100lIKj">the paid version</a> to support Jasper, who let me write this up for you!</p>
+<ul>
+<li>To set up an SDF font, you will first have to get a font you want to use, and get it into Unity.</li>
+<li>Next, select a large enough &quot;size&quot; for the font in the inspector, and what character set to use. The size you choose before will determine the size of each letter on the texture. &quot;Unicode&quot; will use all characters in the font if some characters aren't working.</li>
+<li>Click the gear in the top-right of the font inspector, and select &quot;Create Editable Font&quot;. This will create a version of the font that's split into 3 parts: The Font file, a Material, and a Texture.</li>
+<li>You will have to run the texture through SDF Toolkit. After installing SDF toolkit, you can do this by going to &quot;Window &gt; SDF Texture Generator&quot;, then dragging in the texture from the split-up font.</li>
+<li>For the SDF Generator's settings, the &quot;Outside Distance&quot; and &quot;Inside Distance&quot; should be the same. Usually just setting it to 2 is fine. Make sure to save the texture after! You can save over the old one so you don't have to shuffle around more files. You might have to adjust these settings for different fonts! A font with more straight edges can require a higher value.</li>
+<li>Drag the split-up Font file into Super Text Mesh and select the &quot;SDF Unlit Outline&quot; shader for your Material. The outline width and color can be changed just like the shaders above. The cutoff setting can be adjusted on the material to control how sharp it is.</li>
+</ul>
+<p>Now you have super-crisp SDF text in your game! Enjoy!</p>
+<p>NOTE: You can also use SDF mode on normal fonts! They'll render sharp, but not as precisely as converted fonts when observed close-up. Give it a try!</p>
+<hr>
+<h1 id="utilities">Utilities</h1>
+<h2 id="curve-generator">Curve Generator</h2>
+<article class="rightbox">
+<a href="STMDocImages/curveutil1.png"><img src="STMDocImages/curveutil1.png"/></a><br><br>
+The "New" button in the curve dialogue.
+</article>
+<p>Within &quot;Assets &gt; Clavian &gt; SuperTextMesh &gt; Utility&quot;, you'll find a script named &quot;STMCurveGenerator&quot;. This script is meant to generate curves that are pretty common for waves. To use it, drag it onto any Game Object in your project, then click on one of the curves to open up the curve editor. From there, you can click the gear in the bottom left to save the curve into Unity as a preset! Then you can use it again for other curve fields, like the ones on waves and jitters.</p>
+<h2 id="change-sorting-order">Change Sorting Order</h2>
+<p>In the Utility folder, there's a script names &quot;STMChangeSortingOrder&quot;. Add the component to any object with a Super Text Mesh component on it, and you'll be able to change the sprite sorting order and the sprite sorting layer. It also works with any gameobject with a renderer.</p>
+<h2 id="additional-helper-scripts">Additional Helper Scripts</h2>
+<p>I sometimes upload other scripts that haven't made the final cut to STM just yet to <a href="https://pastebin.com/u/KaiClavier">my Pastebin</a>! Look for the scripts that begin with &quot;STM&quot;.</p>
+<h2 id="support-packages-for-other-assets">Support Packages for Other Assets</h2>
+<p>Fleece support!</p>
+<ul>
+<li><a href="https://pastebin.com/QxbYZaGf">STM Jumper</a></li>
+<li><a href="https://pastebin.com/0zrwFhBm">STM Drawstring</a></li>
+</ul>
+<p>There are additional tools that assist with setting up Super Text Mesh with other Unity assets that others have coded. Linking them here, but I cannot provide direct support for these. Compatibility is not guaranteed for these packages, and they might have to be updated for compatibility with newer versions of the connected assets.</p>
+<ul>
+<li><a href="http://SuperTextMesh.com/packages/PlaymakerSupport.unitypackage">Playmaker Actions</a> by <a href="http://twitter.com/Taxiderby">@Taxiderby</a></li>
+<li><a href="http://SuperTextMesh.com/packages/FungusSupport.unitypackage">Fungus Support</a> by <a href="http://twitter.com/FlinFlonimation">@FlinFlonimation</a> (<a href="https://github.com/partybusiness/Super-Text-With-Fungus">Github Link</a>)</li>
+<li><a href="https://itch.io/t/40332/super-text-mesh-adventure-creator-script">Adventure Creator Integration</a> by <a href="http://twitter.com/johndaguerra">@johndaguerra</a> (<a href="http://adventure-creator.wikia.com/wiki/Super_Text_Mesh_subtitle_integration">Alt Link</a>)</li>
+</ul>
+<p>Other assets that can be used in conjunction with Super Text Mesh, but weren't written specifically for it:</p>
+<ul>
+<li><a href="https://www.assetstore.unity3d.com/#!/content/34821">SDF Toolkit</a> and <a href="https://www.assetstore.unity3d.com/#!/content/50191">SDF Toolkit Free</a> can be used together with Super Text Mesh to <a href="#sdf-fonts">generate SDF fonts</a></li>
+<li><a href="https://www.assetstore.unity3d.com/en/#!/content/2674">Arabic Support for Unity</a> can be used together with Super Text Mesh to support Arabic characters. (<a href="https://github.com/Konash/arabic-support-unity">Open-source link</a>) I have written a helper script that sends text through this plugin to Super Text Mesh: <a href="https://pastebin.com/h9fyzJcq">Arabic Support Helper</a></li>
+</ul>
+<p><a href="https://itch.io/t/544590/helper-scripts">Here's an additional page where I keep track of this information!</a></p>
+<hr>
+<h2 id="faq">FAQ</h2>
+<h5 id="what-fonts-are-supported">What fonts are supported?</h5>
+<p>.OTF and .TTF fonts are supported, as well as any font that uses <a href="https://docs.unity3d.com/Manual/class-Font.html">Unity's Custom Font Class</a>. SDF fonts are also supported, but <a href="#sdf-fonts">must be converted first</a>. To see if your font is supported before purchasing, see if it works with Unity's built-in text mesh!</p>
+<h5 id="what-languages-are-supported">What languages are supported?</h5>
+<p>This is actually the same as the above question! If your font has characters for the language you want, check to see if it works with Unity's built-in text mesh! Super Text Mesh will default back to Unity's default font, Arial, where most languages are supported if your font doesn't contain the appropriate characters. Super Text Mesh also supports linebreak rules for Japanese &amp; Chinese, with other zero-space languages to be supported in the future. (Just message me!)</p>
+<h5 id="how-can-i-credit-you-in-my-game">How can I credit you in my game?</h5>
+<p>First of all, thanks! Here's how you can credit me:</p>
+<center>
+<p><strong>ASSETS USED / TEXT PROGRAMMING &amp; FX</strong></p>
+<p><em>Super Text Mesh by Kai Clavier</em></p>
+</center>
+<p>Or if you don't want to mention used assets:</p>
+<center>
+<p><strong>ADDITIONAL PROGRAMMING</strong></p>
+<p><em>Text Programming &amp; FX by Kai Clavier (<a href="http://kaiclavier.com">kaiclavier.com</a>)</em></p>
+</center>
+<p>Something along these lines should do it!</p>
+<h5 id="should-i-buy-super-text-mesh-on-itchio-or-the-unity-asset-store">Should I buy Super Text Mesh on <a href="http://itch.io">itch.io</a> or the unity asset store?</h5>
+<p>Here's the pros of buying on each storefront:</p>
+<p><strong>Unity Asset Store</strong></p>
+<ul>
+<li>Can update the asset through Unity through the asset store window. (itch purchase requires you to drag in a .unitypackage instead)</li>
+<li>You can leave me a review on the asset store! This seriously helps me out.</li>
+</ul>
+<p><strong>itch</strong></p>
+<ul>
+<li>Updates get published as soon as I finish them. (Asset Store updates can take up to a week)</li>
+<li>Natural access to beta builds.</li>
+<li>90% of your purchase goes towards the developer instead of 70%. You're effectively buying me a pizza if you do this.</li>
+</ul>
+<h5 id="i-changed-the-material-settings-on-one-text-mesh-and-others-changed-too-help">I changed the material settings on one text mesh and others changed too! Help!</h5>
+<p>A Text Mesh's &quot;Text Material&quot; field represents a material that can be shared between multiple meshes. This is useful for situations like having a bunch of UI elements that you want to use the same outline settings, and then when you want to change the outline width, you'll only have to edit the material, not select every element. If you want your mesh to have a new material, you can create a new material with the &quot;New&quot; button right in the inspector!</p>
+<h5 id="how-do-i-get-the-latest-character-drawn-by-super-text-mesh">How do I get the latest character drawn by Super Text Mesh?</h5>
+<p>Use <code>superTextMesh.hyphenedText[superTextMesh.latestNumber]</code>!</p>
+<h5 id="text-is-just-rendering-the-outline">Text is just rendering the outline!</h5>
+<p>Are you using URP/HDRP in Unity? The older &quot;Universal&quot; set of shaders in STM don't render properly in-editor outside of the built-in render pipeline without <a href="https://pastebin.com/wWv49mgG">some additional scripts.</a>
+Instead, try the new &quot;Ultra&quot; shader, which can draw outlines &amp; dropshadows in URP/HDRP in just a single pass!</p>
+<h5 id="text-is-rendering-just-plain-weird-when-i-change-the-font-or-use-a-quad">Text is rendering just plain weird when I change the font or use a quad!!</h5>
+<p>Are you using Unity 2021? It's an experimental version of Unity, and it seems that mesh renderers with multiple materials on them render strangely with it. Text will use multiple materials if you change the font or use a quad, so if you were to avoid those effects it should work. Otherwise, all I can reccommend is avoiding Unity 2021 for the time being.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>&quot;Quality&quot; means font point size. When you change this value on a &quot;dynamic&quot; font, it updates the font's atlas.</li>
+<li>For UI text, set size to be the same value as quality to get quality that matches screen size. You can now set this automatically by using &quot;auto quality&quot;.</li>
+<li>Unity's built-in UI effects like outline and drop shadow are not supported. The included shaders should be used, instead.</li>
+<li>Tabbing out of the Unity editor and back in might cause a text mesh to redraw. This does not happen in builds. To disable this in the editor, go into Preferences, and turn &quot;Auto Refresh&quot; off! (Thanks, Chess!)</li>
+<li>Textures are shared between fonts in Unity, and filtering mode is linked to texture. If you have a text mesh that's using a particular filtering mode, it can conflict with another using the same font and a different mode. If you see text flashing between smooth and blurry at any point, or text that won't settle on a filter mode period, you probably have a mesh with a different filter mode somewhere in the scene. If you want to use the same font twice with different filtering modes, you can duplicate the font asset!</li>
+<li>If you have two variants of the same font (eg. font-bold.ttf &amp; font-regular.ttf) be wary of the &quot;font names&quot; properties on their import settings, as these properties must be unique. (By default, both properties will just be &quot;font&quot;) Having these fonts exist in the same scene will cause a crash when built, so they need to be changed to be unique.</li>
+<li>If you have a font with variants, but STM just renders bold faces as wide versions of regular text, you might have to fix <a href="https://answers.unity.com/questions/1284166/trying-to-make-fonts-fallbacks-to-real-bolditalic.html">a Unity bug related to .meta files.</a></li>
+<li>The &quot;Universal&quot; outline and dropshadow shaders don't work with Unity's new render pipelines in-editor, but apparently render just fine in builds... <a href="https://pastebin.com/ixxVjtCH">I wrote this script that generates outlines in an alternate way if you want consistency.</a> (The new &quot;Ultra&quot; shader can be used instead, and will replace the &quot;Universal&quot; shaders as the default eventually.)</li>
+<li>Script Excecution Order might effect UI masking in some situations.</li>
+</ul>
+<h2 id="known-bugs">Known Bugs</h2>
+<ul>
+<li>Right to Left draw order gets the timing for auto-hyphens incorrect. Also puts auto-hyphens on the wrong side.</li>
+<li>Adding Super Text Mesh to an object that has a Sprite Renderer has a conflict, so this shouldn't be allowed... somehow.</li>
+<li>Layout groups of UI text with multiple lines may not work as intended yet.</li>
+<li>Certain versions or configurations of Unity (mostly older ones) seem to be unable to render dropshadows or outlines in Unity UI with the Ultra shader, while disabling those effects works fine. Currently looking into the cause.</li>
+</ul>
+<h2 id="planned-features--to-do-list">Planned Features / To Do List:</h2>
+<ul>
+<li>Backspacing. Can already be done with Unread(), just not up to a certain point automatically yet. Actually... as of v1.11.4, you can call UndoContinue() and invert STM's draw order for an effect like this.</li>
+<li>Additional spacing tag. (Can already be done with a blank quad or... multiple spaces. Ok, not really needed.)</li>
+<li>Make it so text only rebuilds if the string changes, since OnValidate() might be causing unnecessary updates in newer versions of Unity, requiring scenes to be saved upon exiting.</li>
+<li>Nice rag text.</li>
+<li>If nice rag text won't work, maybe some way to evenly distribute line breaks so subtitles can look nicer?</li>
+<li>Swap colour conversion to use Unity's ColourUtility? Same functionality, but it exists within Unity already. Does not matter, really.</li>
+<li>Use namespaces? It's a good practice, but most of my scripts either contain &quot;SuperTextMesh&quot; or &quot;STM&quot; anyway already, and those &quot;STM&quot; prefixes aren't going away since the folder names keep everything organized within Resources.</li>
+<li>currentReadTime goes beyond totalReadTime to animate some waves... change the system to rely on timeDrawn - Time.time or something? Very small opto.</li>
+</ul>
+<hr>
+<h1 id="changelog">ChangeLog</h1>
+<h5 id="v10">v1.0</h5>
+<ul>
+<li>Initial release!</li>
+</ul>
+<h5 id="v11">v1.1</h5>
+<ul>
+<li>Fixed a stall related to reading out text. Info will always be shorter or equal to the hyphened letter count.</li>
+<li>Vertexes can be controlled individually on waves, now.</li>
+<li>Added hard gradients.</li>
+<li>Autowrap can happen at a hyphen, now.</li>
+<li>Tabs count as space properly.</li>
+</ul>
+<h5 id="v111">v1.1.1</h5>
+<ul>
+<li>Autowrap bounds scale &amp; rotate properly with the mesh now.</li>
+<li>Added an accessor so that you can change text and call rebuild at once.</li>
+</ul>
+<h5 id="v12">v1.2:</h5>
+<ul>
+<li>Added more audio options for reading out text. (Random, Single)</li>
+<li>Speedread audio can automatically have a different pitch now, too.</li>
+<li>Added custom events! <code>&lt;e=myEvent&gt;</code> There's a sample script to show how to interpret this.</li>
+<li>Added button to inspector for quickly going to TextData.</li>
+<li>Added <code>&lt;left&gt;</code>, <code>&lt;center&gt;</code>/<code>&lt;centre&gt;</code>, and <code>&lt;right&gt;</code> tags. Alignment can be changed mid-string now, but is only recommended to be done at the start of a new line. In most cases it works fine.</li>
+<li>Added voice tags. <code>&lt;v=name&gt;</code> You can switch all kinds of read settings w/ this.</li>
+<li>Added font tags! They can only change the font of the entire mesh right now.</li>
+<li>Option for text to be effected (affected?) by time scale or not.</li>
+<li>Added a Utility that generates useful AnimationCurves.</li>
+<li>Stamp size is more uniform now.</li>
+<li><code>&lt;br&gt;</code> and <code>\n</code> can be typed to insert a linebreak, now. Makes typing multiple lines into most unity text fields easier.</li>
+<li>Added a temporary masked UI shader; (thank you, isyourguy!)</li>
+<li>Drawing animations are now independent of draw order! Drawing text can now go super-fast (delay isn't limited by framerate), and animations can animate at different rates.</li>
+<li>Drawing animations can now be customized in TextData.</li>
+<li>Speedread is a scale of time now instead of a different delay.</li>
+<li>You can customize the curves used for waves, now!</li>
+<li>Waves now have an option to be synced to the time they're drawn, rather than Time.time.</li>
+<li>Added an option to change mesh draw order.</li>
+<li>Auto-delays now only work if the following character is a space, line break, or tab. For the strings like &quot;Hello!!!!&quot;, only the last exclamation point will have a delay.</li>
+<li>Added Playmaker support through custom actions!</li>
+</ul>
+<h5 id="v121">v1.2.1</h5>
+<ul>
+<li>Draw Animation now defaults to first draw animation when an improper name is typed.</li>
+<li>Non-dynamic fonts now supported.</li>
+<li>Added a shader that supports outlines &amp; smoothed edges for SDF fonts.</li>
+<li>Converted documentation to markdown/html!</li>
+</ul>
+<h5 id="v122">v1.2.2</h5>
+<ul>
+<li>Added an Append() function.</li>
+<li>Debug Mode now shows/hides mesh renderer.</li>
+<li>Updated for Unity 5.4. (Updated OnSceneLoad)</li>
+<li>Added the &quot;Justify&quot; alignment option. No way to select it with UI yet. <code>&lt;just&gt;</code> and <code>&lt;justify&gt;</code> can be used mid-string.</li>
+<li>Text meshes copy/pasted into new scenes now work. (Thanks, Ben!)</li>
+<li>Text meshes now have unique materials so one mesh can't change the font texture of another.</li>
+<li>Updated dead prefabs.</li>
+<li>&quot;Effected by time scale&quot; is now &quot;Ignore time scale&quot;.</li>
+<li>&quot;Ignore time scale&quot; now effects waves, gradients, and textures.</li>
+<li>Fixed a small error being returned when a mesh was inactive in the hierarchy.</li>
+<li>Fixed meshes returning an error when destroyed while animating.</li>
+<li>Added Fungus actions. (Thanks, Ryan!)</li>
+</ul>
+<h5 id="v13">v1.3</h5>
+<ul>
+<li>Textures now have &quot;Relative To Letter&quot; and &quot;Scale With Text&quot; options, as well as an offset value, now.</li>
+<li>The <code>&lt;s&gt;</code> tag now resizes relative to original size. <code>&lt;size&gt;</code> takes its old place.</li>
+<li>latestNumber is now public, so you can get the last character being drawn with <code>hyphenedText[latestNumber]</code> at any time! (Thanks, Setsune!)</li>
+<li>Added an override option for animated text effects in textdata, for accessibility. Also added as a bool text meshes, individually.</li>
+<li>Added a timing tag <code>&lt;t=1.0&gt;</code>, which lets you manually set the timing for a letter.</li>
+<li>Added &quot;Force Justify&quot; alignment option, which justifies manual line breaks and the last line of a paragraph. You can use <code>&lt;just2&gt;</code> and <code>&lt;justified2&gt;</code> for this.</li>
+<li>Wrote shaders for shader-based outlines &amp; dropshadows! Shader controls can be edited right in the inspector.</li>
+<li>More jitter options. Jitters can now have strength controlled by a curve, meaning they can be temporary. Also added a weird jitter that uses perlin noise.</li>
+<li>Added dropdowns/titles to the inspector. This cleans up the inspector and makes it easier to read with so many variables!</li>
+<li>&quot;Ignore Time Scale&quot; is now not hidden under a read delay greater than 0, since it can effect other things too.</li>
+<li>Added a &quot;Character Spacing&quot; variable that adds/subtracts space between characters.</li>
+<li>Multiple events can happen on the same character, now.</li>
+<li>Added a &quot;Repeating Event Tag&quot; (<code>&lt;e2=string&gt;</code>), works just like the normal event tags, but continues for each letter until cancelled with <code>&lt;/e2&gt;</code>.</li>
+<li>Added a SkipToEnd() function. Does the same as SpeedRead() with a very fast scale. Calls events, unlike ShowAllText().</li>
+<li>Hex codes now support 3 &amp; 4 byte hex codes (FF0 is FFFF00, FF0F is FFFF00FF, for example)</li>
+<li>Fixed a bug where if the first character of a non-left justified mesh was a linebreak, it'd return an error.</li>
+<li>Added &quot;Undrawing Animations&quot;! You can call the public &quot;UnRead()&quot; function, and set up the variables under &quot;Functionality&quot; in the inspector. It'll play drawing animations backwards, then hold the mesh in place, so this is good if you want text to fade out! When it's done fading out, it'll invoke the new &quot;onUndrawComplete&quot; event. I've updated the sample scene to show an example of this in action.</li>
+<li>Clicking the &quot;help&quot; icon in the inspector now opens up documentation in-browser.</li>
+<li>New icon for text data that's a bit easier to read.</li>
+<li>Tab size is a float instead of an int now.</li>
+<li>Text alignments can be selected with UI mode now, instead of being set automatically. Allows for justified text to be used with UI text. Should only be used with left anchor points, but I'm not gonna stop you.</li>
+<li>Fixed a small leak with debug mode.</li>
+<li>Fancier docs, now with CSS!</li>
+<li>TextData now opens in the text mesh component, instead of taking you to the TextData object. Feels better to navigate, and will allow for better customization of the inspector in the future.</li>
+<li>Fungus support has been updated to work with undrawing animations, Playmaker support has had a bug fixed.</li>
+<li>Added a Reverse Left to Right and a Right to Left draw order. RTL has some small timing issues atm, but works for basic text.</li>
+<li>Added a time multiplier for the &quot;Perlin&quot; read sound option.</li>
+<li>Alignment tags now work like <code>&lt;a=left&gt;</code> instead of <code>&lt;left&gt;</code>.</li>
+<li>SoundClipData now uses a string field instead of a char field, but will only take the first character. This lets line breaks be silent, now!</li>
+<li>Added a &quot;VertexMod&quot; event that lets you call an external function to change the position of vertices, under the &quot;appearance&quot; foldout.</li>
+</ul>
+<h5 id="v131">v1.3.1</h5>
+<ul>
+<li>Rebuild() now calls HideInspectorStuff() and UpdateShaderSettings().</li>
+</ul>
+<h5 id="v14">v1.4</h5>
+<ul>
+<li>Redid rich text tags to parse about 3x faster than before.</li>
+<li>Meshes are now marked as dynamic to improve performance.</li>
+<li>Fixed bold and italic tags.</li>
+<li>Voice tags are very different, now. They now work by inserting a longer string of text to control the appearance of STM.</li>
+<li>Added indivudial tags that let you change things that the voice tag used to let you do. (Audio clips, read delay, etc.)</li>
+<li>Clips &amp; auto clips now ignore case.</li>
+<li>TextData is now split up among multiple ScriptableObjects, meaning parts can be passed around &amp; saved with source control. Do NOT upgrade from v1.3 to v1.4 if you don't want to have to remake your custom waves.</li>
+<li>Since textdata can now be edited outside of the custom inspector as an asset, added a &quot;Refresh Database&quot; button to the inspector that manually reloads resources.</li>
+<li>Added an &quot;On Rebuild&quot; Event.</li>
+<li>Custom Event now returns TextInfo directly. Included examples of how to do old methods in the event sample script.</li>
+<li>Fixed a bug where the last event and last sound made by a mesh wouldn't invoke/play.</li>
+<li>Two Super Text Meshes can't be placed on the same object now, preventing a crash.</li>
+<li>Completely redid he internal materials system, allowing for a lot of cool new stuff.</li>
+<li>A default material is now used in the editor instead of a shader. Should be treated as &quot;A shader, with settings&quot;. Dragging a material into this slot and changing it under the &quot;Material&quot; foldout changes the stored material, like a miniature material editor.</li>
+<li>Added inline font changes with the <code>&lt;f=font&gt;</code> tag.</li>
+<li>Added inline images as &quot;quads&quot;. Uses the new <code>&lt;q=quad&gt;</code> tag.</li>
+<li>Added inline material/shader changes. Uses <code>&lt;m=material&gt;</code>.</li>
+<li>Seems to be no garbage generated when text isn't reading now, and the garbage from the reading routine is down by a lot.</li>
+<li>The &quot;_Cutoff&quot; property of shaders is hidden and always set to 0.0001, now.</li>
+<li>Added a per-mesh option to disable animated text.</li>
+<li>Events work if they're the last thing typed in a string, now.</li>
+<li>Tried to kill the texture atlas bug again. Seeing success in a WebGL build, but might still be present.</li>
+<li>Also killed the offset bug. (Horizontal &amp; Vertical)</li>
+<li>Shadow casting mode can now be selected in the inspector instead of having to go into debug mode.</li>
+<li>UI text now automatically gets added to a canvas when created through the GameObject menu. Also creates new Canvas if none exists.</li>
+</ul>
+<h5 id="v141">v1.4.1</h5>
+<ul>
+<li>Added some platform-dependent code that allows STM to work in Unity 5.3 again.</li>
+<li>Fixed OnFontTextureRebuilt() from re-reading a mesh from the start when called.</li>
+<li>Added a &quot;Line Count Limit&quot; so you can limit the max amount of lines that can be displayed by a text mesh.</li>
+<li>Changed behaviour of &quot;break text&quot;. For text with autowrap limits, text will always try to break at a space if a long word goes over the limit now, which is what &quot;break text&quot; did before. &quot;Break text&quot; now tells text to drop a line immediately at the end of a row.</li>
+<li>Auto-hyphens now copy the mesh's font style setting instead of just being the &quot;normal&quot; font style.</li>
+<li>Tested out Super Text Mesh with <a href="https://github.com/Konash/arabic-support-unity">this amazing Arabic Support script</a>, and it works perfectly! Arabic letters are now supported in Super Text Mesh with this script; thank you so much Abdullah!</li>
+<li>Fixed UI Text not disappearing on disable.</li>
+</ul>
+<h5 id="v142">v1.4.2</h5>
+<ul>
+<li>STM no longer requests all characters in a mesh each frame. Should still behave the same. It's commented out just in case, though.</li>
+<li>Added text backgrounds to default custom events.</li>
+<li>Fixed OnSceneLoaded calling an error sometimes.</li>
+<li>fix: On Complete Event is no longer invoked on brand-new meshes when they start to draw. (thanks, Noah!)</li>
+</ul>
+<h5 id="v143">v1.4.3</h5>
+<ul>
+<li>Prefabs no longer break text by default.</li>
+<li>New Super Text Meshes made through the GameObject menu use the resources folder now, allowing the GameObject menu to still work, even when Super Text Mesh's files are moved.</li>
+</ul>
+<h5 id="v144">v1.4.4</h5>
+<ul>
+<li>Internal bounds update w/ UI text now.</li>
+<li>Disabling wrapped text on UI Text now automatically sets the RectTransform bounds. (Thanks, Noa!)</li>
+<li>UI Text can now use multiple materials!!</li>
+<li>Some material settings use float fields instead of sliders, now.</li>
+</ul>
+<h5 id="v145">v1.4.5</h5>
+<ul>
+<li>UI materials are toggled under a bool for now, after reports that they still cause crashes on windows.</li>
+<li>Materials now retain custom render queue, and this can be changed in-editor.</li>
+</ul>
+<h5 id="v146">v1.4.6</h5>
+<ul>
+<li>Moved submesh prep script to its own function, which is called under Rebuild() instead of Update() now, reducing GC further.</li>
+<li>Improved Update() cycle to call even less if not needed.</li>
+<li>Sounds and events don't use lists anymore, speeding up STM.</li>
+<li>Outline &amp; Dropshadows are effected by alpha changes now.</li>
+<li>Organized shaders into folders for easier importing.</li>
+<li>Wrote new SDF shaders for outline &amp; dropshadow support.</li>
+<li>Exposed the Read() function.</li>
+<li>Added an &quot;autoRead&quot; variable, which controls if the mesh reads out by itself whenever Rebuild() is called. (Rebuild() is also called on Start()/Awake())</li>
+<li>Fixed hyphens being put in weird places on non-left-aligned text.</li>
+<li>UI mesh hides materials in the editor.</li>
+</ul>
+<h5 id="v147">v1.4.7</h5>
+<ul>
+<li>OnEnable() is used instead of Start().</li>
+</ul>
+<h5 id="v148">v1.4.8</h5>
+<ul>
+<li>Fixed autoreading showing entire mesh under OnEnable().</li>
+<li>Cleaned up old code related to OnValidate().</li>
+<li>Changed up the bounds variables. Old ones are now renamed &quot;rawTopLeftBounds&quot; and &quot;rawBottomRightBounds&quot;. New ones are &quot;topLeftBounds&quot;, &quot;topRightBounds&quot;, &quot;bottomLeftBounds&quot;, &quot;bottomRightBounds&quot;, and &quot;centerBounds&quot;. These new bounds have the world-space values of the mesh's bounds (including transform changes!) of the mesh when it's done reading. These can be used to set up a text box easily.</li>
+</ul>
+<h5 id="v149">v1.4.9</h5>
+<ul>
+<li>Fixed text not animating when not being read out.</li>
+</ul>
+<h5 id="v1410">v1.4.10</h5>
+<ul>
+<li>Fixed UI text disappearing when exiting play mode.</li>
+<li>Fixed mesh forgetting material when duplicated.</li>
+<li>Fixed audio not playing properly for reading out text with the Appear animation.</li>
+</ul>
+<h5 id="v1411">v1.4.11</h5>
+<ul>
+<li>Fixed text not AutoReading when a new scene is loaded.</li>
+<li>Added a &quot;remember read position&quot; function.</li>
+<li>Added a RebuildAll() function to be called when meshes fail to rebuild on async loading.</li>
+</ul>
+<h5 id="v1412">v1.4.12</h5>
+<ul>
+<li>Fixed new OnEnable() stuff bringing back the texture atlas bug on re-enabled meshes.</li>
+<li>Fixed mesh not showing when re-enabled on some animating text.</li>
+</ul>
+<h5 id="v1413">v1.4.13</h5>
+<ul>
+<li>Fixed OnCompleteEvent and OnUndrawnEvent not being invoked properly.</li>
+</ul>
+<h5 id="v15">v1.5</h5>
+<ul>
+<li>Changed the &quot;TextInfo&quot; class to be called &quot;STMTextInfo&quot;.</li>
+<li>Bounds vectors are now updated correctly for UI text.</li>
+<li>STM's bounds outline gizmos are now shown on UI text.</li>
+<li>Moved OnValidate()'s Refresh() to Update() to avoid an error message in Unity 2017.1.</li>
+</ul>
+<h5 id="v151">v1.5.1</h5>
+<ul>
+<li>Multi-material UI now works automatically in Unity 2017.1</li>
+<li>Renamed &quot;TextMeshData&quot; to &quot;SuperTextMeshData&quot;.</li>
+<li>Renamed &quot;TextData&quot; to &quot;SuperTextMeshData&quot; in the resources folder.</li>
+</ul>
+<h5 id="v152">v1.5.2</h5>
+<ul>
+<li>UI outline and dropshadow shaders respond properly to alpha changes, now.</li>
+<li>Added a UI dropshadow outline shader.</li>
+<li>Mesh will no longer jump forward if time scale is being ignored and window goes out of focus when application is told not to run in the background, then comes back in focus.</li>
+<li>Added an experimental unlit &amp; UI pixel snap shader.</li>
+<li>Added a &quot;snap to grid&quot; vertex mod to the vertex mod sample script.</li>
+</ul>
+<h5 id="v16">v1.6</h5>
+<ul>
+<li>Added a script to change sorting order, under the utilities folder.</li>
+<li>Fixed extra sounds being played on text that reads out very fast and has delays.</li>
+<li>Changed the variable &quot;text&quot; to &quot;_text&quot; and changed the accessor &quot;Text&quot; to &quot;text&quot;. &quot;Text&quot; is still kept as a legacy fix.</li>
+<li>Fixed auto clips not being created when trying to create one in the inspector.</li>
+<li>Line count limit now shows the LAST lines of text in a mesh. Works with reading-out text!</li>
+<li>Added a &quot;lowestLine&quot; variable that keeps track of the latest line of text drawn by STM.</li>
+<li>Added an &quot;indent&quot; tag that lets you set a margin for text.</li>
+<li>Added a &quot;pause&quot; tag which pauses a mesh reading out until Continue() is called.</li>
+<li>Added an &quot;automatic voice&quot; under the master foldout of textdata. This field contains a string that will be added to the start of every text mesh in the project.</li>
+<li>UI text can only be anchored left now.</li>
+<li>Fixed the blue boundary box not being scaled properly when a text mesh's transform changes.</li>
+</ul>
+<h5 id="v161">v1.6.1</h5>
+<ul>
+<li>Fixed a 1-frame timing issue with limited text fields.</li>
+</ul>
+<h5 id="v162">v1.6.2</h5>
+<ul>
+<li>Fixed meshes appearing for one frame then disappearing when async loading a new scene with &quot;single&quot; mode.</li>
+<li>Fixed Continue() not working properly.</li>
+</ul>
+<h5 id="v163">v1.6.3</h5>
+<ul>
+<li>breakText is false by default now.</li>
+<li>Bounding box for non-autowrapped text is now based on maximum width, not position of last vertice.</li>
+<li>Fixed a bug where sometimes when creating a mesh under specific circumstances, the completion event would be null, causing an error to return. This would sometimes causing the mesh to not render properly.</li>
+</ul>
+<h5 id="v17">v1.7</h5>
+<ul>
+<li>&quot;textMat&quot; is now &quot;textMaterial&quot;.</li>
+<li>Added a button next to &quot;textMaterial&quot; that creates a new material asset in &quot;Assets/Clavian/SuperTextMesh/Materials&quot; and assigns it to the text mesh.</li>
+<li>Material name can be changed from the material foldout, now.</li>
+<li>Removed Mesh Renderer and Mesh Filter components from UI Text Prefab.</li>
+<li>TextData inspector now has foldouts for each individual object. This prevents classes like waves taking up too much space on smaller screens.</li>
+<li>Waves now have an option for rotation waves!</li>
+<li>Waves can also do scale-based waves!</li>
+<li>&quot;Disable animated text&quot; now makes waves &amp; jitters be ignored entirely instead of freezing in place.</li>
+<li>Fixed an issue involving a parent canvas being disabled causing errors on UI text trying to enable additional material layers for Unity 2017.1+.</li>
+<li>Removed lineCountLimit and replaced it with verticalLimit. In UI mode, this value can be determinded by the rect transform's height.</li>
+<li>Added new modes for how text will be treated if it goes over this limit, &quot;Show Last&quot;, &quot;Cut Off&quot;, &quot;Auto Pause&quot;, &quot;Auto Pause Full&quot;, and &quot;Ignore&quot;.</li>
+<li>Hid debug mode from the inspector.</li>
+<li>Added support for pagination! If text has a limited vertically and set to &quot;Cut Off&quot; or &quot;Auto Pause&quot;, all the remaining text will appear in a string named &quot;leftoverText&quot;. This string will have all tags that came before it, and all raw text that comes after the cutoff point, so it's ready to be put in another Super Text Mesh object.</li>
+<li>Removed &quot;wrapText&quot; from UI text.</li>
+<li>Exposed a &quot;maxX&quot; variable, and added &quot;minY&quot;, &quot;unwrappedMaxX&quot;, and &quot;unwrappedMinY&quot; variables, too.</li>
+<li>Super Text Mesh responds properly to Unity UI elements like the Content Size Fitter, now!</li>
+<li>Fixed a bug where small text followed by large text might cause a crash if the autowrap value is too small.</li>
+<li>Quads now use unicode character U+2000 in hyphenedText, not `.</li>
+<li>Added overridden index quads. Use the tag <code>&lt;q=myQuad,3&gt;</code> to force a quad to use that index, or <code>&lt;q=myQuad,0,1&gt;</code> to force a quad to use the icon at that position.</li>
+<li>Init() and UnInit() are only called under OnEnable() and OnDisable() now, fixing a lot of scene loading related issues.</li>
+<li>Added Best Fit functionality! Under the &quot;Appearance&quot; tab, best fit can be set to Off, Always, or Over Limit. Always will make text size always be the autowrap limit. Over Limit does the same, but will not if doing so would make the text larger.</li>
+<li>Split SuperTextMeshData and STMTextInfo into their own scripts to prevent some errors with compiling ScriptableObjects.</li>
+<li>Events foldout is now outside of the timing foldout.</li>
+<li>Cleaned up custom inspector code.</li>
+<li>Moved Vertex Mod to be under the Events foldout.</li>
+<li>Added a PreParsing event. This can be used to parse text before it reaches STM's internal text parser.</li>
+<li>Removed autoVoice since PreParsing replaces that.</li>
+<li>Adjusting base offset no longer moves the bounding box, just text. To move the bounding box and text, just adjust the transform!</li>
+<li>Solved a bug with effects only meant to drawn once being called again.</li>
+<li>Updated all shaders to share code using .cginc files, making custom shaders easier to create. (Thanks, ompuco!)</li>
+<li>Fonts and quads now have the option to not override filtermodes, and fonts can opt to not override quality settings from a mesh.</li>
+<li>Fixed quads not aligning properly as last character in a row.</li>
+<li>Reorganized folders and sample scenes.</li>
+</ul>
+<h5 id="v171">v1.7.1</h5>
+<ul>
+<li>Fixed a bug where the vertical anchor position would be incorrect if a text mesh ended with a closing tag like <code>&lt;/w&gt;</code>.</li>
+<li>Fixed a bug where the bounds/alignment would be incorrect on rows ending with a quad.</li>
+</ul>
+<h5 id="v18">v1.8</h5>
+<ul>
+<li>Huge memory opto by RedVonix!</li>
+<li>Materials folder referenced by the &quot;New Material&quot; button on the inspector will now be created dynamically, no matter where the Clavian/SuperTextMesh folder is.</li>
+<li>Default vertical limit mode is now &quot;Ignore&quot;.</li>
+<li>Fixed a bug where the first sound/event a mesh plays would ignore an initial delay.</li>
+<li>Added a &quot;default font&quot; varaible under &quot;Master&quot; in the textinfo inspector. This value is Arial by default.</li>
+<li>Fixed a bug where when using a non-dynamic font, if requesting a character that didn't exist in the font were to be requested, Super Text Mesh would ignore autowrap for the rest of the mesh, probably due to the invalid font data. This is fixed by requesting the character in the default font instead.</li>
+<li>OnFontTextureRebuilt() will only call Rebuild() if a mesh contains the font that is being rebuilt now, by keeping track of all fonts used in the mesh.</li>
+<li>Draw animations no longer clamp when lerping, allowing for AnimationCurves to go above 1. Included a &quot;Spring&quot; example draw animation to demonstrate this.</li>
+<li>Added a &quot;character&quot; accessor to the STMTextInfo class to quickly get a char from the stored unicode value.</li>
+<li>Color hex tags can now use # symbols at the start of them, but they are optional. (<code>&lt;c=fff000&gt;</code> is the same as <code>&lt;c=#fff000&gt;</code>)</li>
+<li>Extra character spacing after quads is accurate now.</li>
+<li>Added an &quot;onPrintEvent&quot; that gets invoked each time a new letter has been printed.</li>
+<li>onCompleteEvent, onUndrawnEvent, onRebuildEvent and onPrintEvent events now have matching C# Events, OnCompleteEvent, OnUndrawnEvent, OnRebuildEvent, and OnPrintEvent.</li>
+<li>Tacked-on events are now handled by adding a zero-width space to the end of a mesh and just letting it read out.</li>
+<li>Fixed a bug where quad index was being calculated incorrectly. (Thanks, Jakub!)</li>
+<li>Fixed a bug where text would anchor differently as it reads out.</li>
+<li>Updated 3rd party licenses to match Unity's new guidelines.</li>
+<li>Fixed a bug where Resources.UnloadUnusedAssets() would unload a Super Text Mesh's material. (Thanks, 薛玉瑶!)</li>
+<li>Added textBounds vectors that resize as new letters are drawn. RawTextBounds values replace maxX and minY.</li>
+<li>Text now uses its advance to determine its horizontal size. This means monospace fonts should center properly now.</li>
+<li>Based on Upper, Middle, and Lower anchor points, text will now read out from that given direction as the root.</li>
+<li>Fixed a bug where if a mesh contained only a linebreak or a tab (or a quad in addition to these), an AABB error would occur.</li>
+<li>Added back wrapText and limitText as uiWrap and uiLimit.</li>
+<li>Fixed a bug where UI text would constantly rebuild itself when highlighted in the editor.</li>
+<li>Fixed a bug where AnimateFromTimeDrawn waves would animate again when OnFontTextureRebuilt() was called. (Thanks, Tom!)</li>
+<li>Added more example scenes.</li>
+<li>Added a debug that appears when you try to use an undefined font.</li>
+</ul>
+<h5 id="v181">v1.8.1</h5>
+<ul>
+<li>Fixed a bug where &quot;ignoreTimeScale&quot; wouldn't work.</li>
+<li>Fixed a bug where text wouldn't rebuild if Time.timeScale = 0.</li>
+<li>Fixed a bug where using VertexMods would return an error.</li>
+<li>Changed the &quot;Sketchify&quot; example to no longer be dependent on random seeds and gave it an unscaled time option.</li>
+</ul>
+<h5 id="v182">v1.8.2</h5>
+<ul>
+<li>Big shader update! New fragment shaders replace older Unlit/UI/SDF surface shaders by default. (Older shaders have been marked as Legacy) New shaders have uber shader properties, allowing culling mode, options to render on top, SDF mode toggle, and pixel snap all from the inspector. The only features that require changing shaders now are dropshadow/outline, and whether the shader is configured for UI or not, giving a total of just 8 basic shaders!</li>
+<li>Added a button to reset a material's render queue to the shader's original setting.</li>
+<li>Fixed a bug where the &quot;custom event&quot; unity event would render in the inspector twice.</li>
+<li>Fixed a bug where quads would ignore horizontal pivot points on rotation &amp; scale waves.</li>
+<li>Fixed a bug where an error would appear if STM's font field is null in the inspector.</li>
+<li>Added an &quot;auto quality&quot; variable for UI text that automatically sets a mesh's default quality to match its default size.</li>
+<li>Internally, STM no longer uses the Resources folder to load its prefabs and default materials. These files may be relocated in a future update.</li>
+<li>Added undo support to all STM data objects.</li>
+<li>Fixed a bug where AnimationCurves set through the STM data editor wouldn't be updated on some computers.</li>
+<li>Fixed a bug where in a situation like <code>&lt;e=myEvent&gt;&lt;pause&gt;&lt;e=myEvent2&gt;</code>, myEvent2 wouldn't play after a mesh continues reading.</li>
+<li>Fixed a bug where when a new scene is loaded, STM would rebuild even if the new scene was a new one loaded async.</li>
+</ul>
+<h5 id="v183">v1.8.3</h5>
+<ul>
+<li>Reverted some parts of the code to load using the Resources folder instead of AssetDatabase so STM can be built in projects.</li>
+<li>Cleaned up inconsistent line endings in scripts.</li>
+<li>Wrote about new shaders in docs.</li>
+</ul>
+<h5 id="v184">v1.8.4</h5>
+<ul>
+<li>Fixed a typo that prevented a new auto clip data from being created through the create asset menu.</li>
+<li>AutoDelays, AutoClips, and Sound Clips can now work with quads. (An autodelay named &quot;cross&quot; will work after <code>&quot;&lt;q=cross&gt;&quot;</code>)</li>
+<li>A sound clip reference not being found no longer causes an error.</li>
+</ul>
+<h5 id="v185">v1.8.5</h5>
+<ul>
+<li>Fixed a bug with the new shaders .cginc where outline/dropshadow color wouldn't respond to text alpha. Might require a shader reimport.</li>
+<li>Fixed the <code>&lt;/v&gt;</code> tag.</li>
+<li>Wrote a more in-depth preparsing example. (STMPreParsing3.cs)</li>
+</ul>
+<h5 id="v186">v1.8.6</h5>
+<ul>
+<li>Continue() and Append() always makes text start reading now, preventing a bug where sound clips wouldn't play after calling Continue().</li>
+<li>Events are called on non-reading meshes now.</li>
+<li>Added a sample scene showing how to make underline &amp; strikethrough effects.</li>
+</ul>
+<h5 id="v187">v1.8.7</h5>
+<ul>
+<li>Fixed a bug where trying to create a new material from the inspector of a UI STM object would fail.</li>
+</ul>
+<h5 id="v188">v1.8.8</h5>
+<ul>
+<li>New hidden mask shader options available from the material inspector.</li>
+<li>Fixed a bug where shaders wouldn't cast shadows and wouldn't build to some platforms.</li>
+<li>UI Masking options appear as an enum in STM's inspector now.</li>
+</ul>
+<h5 id="v189">v1.8.9</h5>
+<ul>
+<li>Fixed UI Default shader having mask enabled by default.</li>
+<li>Changed how UI text sets text to canvas when set on Start/Awake.</li>
+<li>Changed the events &quot;customEvent&quot;, &quot;vertexMod&quot;, and &quot;preParse&quot; to &quot;onCustomEvent&quot;, &quot;onVertexMod&quot;, and &quot;onPreParse&quot;.</li>
+<li>Gave these events matching delegate events.</li>
+</ul>
+<h5 id="v1810">v1.8.10</h5>
+<ul>
+<li>Fixed a bug where UI text wouldn't wrap. (Oops.)</li>
+</ul>
+<h5 id="v1811">v1.8.11</h5>
+<ul>
+<li>Fixed a bug where SDF mode &amp; pixel snap couldn't be toggled from STM's inspector in Unity 2018.1.1+. (Thanks, vostok4!)</li>
+<li>Fixed a bug where all undrawn animations would act as Appear if there was no defined fade time.</li>
+<li>Fixed a bug where undraw animations would end strangely in an undraw animation took longer to play than a draw animation.</li>
+<li>Due to a hardware crash, line endings should now CRLF instead of LF due to a sourcetree pull.</li>
+</ul>
+<h5 id="v1812">v1.8.12</h5>
+<ul>
+<li>Updated &quot;text&quot; accesor so that its value can never be set to a null string, causing an error to appear.</li>
+<li>Fixed broken &quot;Text&quot; accessor.</li>
+<li>Creating a new TextInfo from the inspector works if STM has been placed in a different directory now.</li>
+<li>Bounds are recalculated before custom events and print events are called, now.</li>
+<li>Added an example script, &quot;STMMatchRect.cs&quot;.</li>
+<li>Changing anchor point on UI text makes the mesh rebuild, now.</li>
+<li>Removed legacy shaders from the project file.</li>
+</ul>
+<h5 id="v1813">v1.8.13</h5>
+<ul>
+<li>STMMatchRect.cs now gives accurate results if it's attached to a non-child object.</li>
+<li>Added STMRubyText.cs, and example script which can be attached to an STM component to give it ruby text support.</li>
+<li>Fixed the &quot;Blink&quot; draw animation not animating.</li>
+</ul>
+<h5 id="v1814">v1.8.14</h5>
+<ul>
+<li>Fixed a bug where STM would call OnCompleteEvent on Enable.</li>
+<li>Fixed a bug where ShowAllText() could cause unwanted events to be called.</li>
+<li>Added a &quot;UseVector3&quot; variable to shaders that lets you position a dropshadow to an exact vector3 value.</li>
+</ul>
+<h5 id="v1815">v1.8.15</h5>
+<ul>
+<li>Best fit mode will now react to vertical limit in addition to auto wrap! Leave vertical limit at 0 to ignore this.</li>
+<li>Added a* Best fit mode will now react to vertical limit in addition to auto wrap! Leave vertical limit at 0 to ignore this.</li>
+<li>Added a &quot;linebreakFriendlyChars&quot; private array so STM can autowrap at more characters! private array so STM can autowrap at more characters!</li>
+</ul>
+<h5 id="v1816">v1.8.16</h5>
+<ul>
+<li>Added a y offset tag, <code>&lt;y=float&gt;</code>.</li>
+<li>Added superscript and subscript tags, <code>&lt;sup&gt;</code> and <code>&lt;sub&gt;</code>. These set both y offset and relative size at the same time, based on new values in Text Data, under &quot;Master&quot;.</li>
+</ul>
+<h5 id="v1817">v1.8.17</h5>
+<ul>
+<li>Shaders should work without automatically rebuilding in newer versions of Unity now.</li>
+<li>Fixed default UI shader having some old code causing problems.</li>
+<li>Removed unneccesary warnings.</li>
+<li>Changed how y offset works in the backend, preventing a small bug.</li>
+<li>Worked on a new revision of the documentation.</li>
+</ul>
+<h5 id="v1818">v1.8.18</h5>
+<ul>
+<li>Fixed Auto Pause Full not working correctly for UI text.</li>
+</ul>
+<h5 id="v19">v1.9</h5>
+<ul>
+<li>Added a toggle allowing base offset to be relative to the size of a letter.</li>
+<li>Fixed STM returning errors when asked to rebuild while inactive. (Thanks, mrtenda!)</li>
+<li>PlaySound() is now a public virtual method, allowing STM to be extended to work with other audio engines.</li>
+<li>Fixed wavedata curves displaying the wrong parameter name.</li>
+<li>Cleaned up shaders a little. Maskmode can now go above 1 in the backend.</li>
+<li>Added UI prefabs, copying Unity's Button, Toggle and Dropdown prefabs, but with Super Text Mesh instead of Unity UI Text. Input Field is still a work-in-progress, having trouble making the caret play nice.</li>
+<li>STM works naturally with nested UI masks now. Added a &quot;mask mode&quot; variable to the component, itself.</li>
+<li>hyphenedText now replaces spaces with linebreaks, while still just inserting linebreaks on other linebreak-safe characters, preventing a bug where text would not align properly. (Remember to use drawText if you're trying to get the text that a mesh is showing without any potentially-added formatting characters!)</li>
+<li>Autodelays respond properly with the <code>&lt;br&gt;</code> tag now.</li>
+<li>Fixed UI text disappearing if it finishes reading and &quot;remember read position&quot; is true.</li>
+<li>Inserted hyphens are now soft hyphens.</li>
+<li>Added a unicode tag, <code>&lt;u=unicode value&gt;</code>.</li>
+<li>Insert hyphens now actually inserts hyphens when splitting at linebreak-friendly characters, aside from spaces.</li>
+</ul>
+<h5 id="v191">v1.9.1</h5>
+<ul>
+<li>Started optimization work on <code>Rebuild()</code>. STM now rebuilds twice as fast thanks to...
+<ul>
+<li>ApplyOffsetDataToTextInfo caches VerticalLimit now.</li>
+<li>FigureOutUnwrappedLimits only called when best fit is on.</li>
+<li>SpecialKeyToName doesn't do a conversion to lowercase first.</li>
+<li>delays are now only applied to letters if a mesh will read.</li>
+</ul>
+</li>
+<li>OnCompleteEvent is now invoked even if a mesh doesn't have a read delay &gt; 0 or any text to show.</li>
+<li>Changes made to materials through the inspector now reflect immediately. (Could swear it already did this...)</li>
+<li>Undo/redo will now force <code>Rebuild()</code> to invoke.</li>
+<li>Dropshadow and outline shaders now respect base alpha.</li>
+<li>Canvas STM attaches properly to prefabs, now.</li>
+<li>STM will rebuild when enabled in-editor now. (Seriously, did it not do this, before??)</li>
+</ul>
+<h5 id="v192">v1.9.2</h5>
+<ul>
+<li>Fixed STM not compiling.</li>
+</ul>
+<h5 id="v1100">v1.10.0</h5>
+<ul>
+<li>Internal optimizations to Rebuild().</li>
+<li>New &quot;infoCount&quot; variable is used internally to keep track of the info list.</li>
+<li>STM should play nicer with LWRP, now.</li>
+<li>STM now validates in-editor when the transform changes.</li>
+<li>STM now batches materials across ALL meshes. If you have custom material backend code for your game, this will probably break it! Otherwise, enjoy the performance boost!</li>
+<li>Added a new &quot;one line at a time&quot; draw order. <code>&lt;drawOrder=onelineatatime&gt;</code> or <code>&lt;drawOrder=computer&gt;</code> can be used to switch to this inline!</li>
+<li>Added a new &quot;right to left one word at a time&quot; draw order! <code>&lt;drawOrder=rtlonewordatatime&gt;</code> or <code>&lt;drawOrder=rtlrobot&gt;</code> can be used to switch to this inline.</li>
+<li>Fixed array lengths not matching up under specific circumstances.</li>
+<li>Updated the Arabic support script to work with PreParsing now. Links can be found in the docs!</li>
+<li>Added another PreParsing example script, &quot;STMPreParseEffect.cs&quot;. This one adds a color effect tag to the start of text.</li>
+<li>Updated shader example scene to no longer be broken.</li>
+</ul>
+<h5 id="v1101">v1.10.1</h5>
+<ul>
+<li>Working on a new right-to-left rendering mode that flips text that was typed in right-to-left. Still in beta, as tags aren't parsed in the way I want. (They're flipped left-to-right too, and are picky about spaces) Using a tag at the very start of a line should still work fine. To toggle this on, find the &quot;rtl&quot; boolean under the new &quot;beta&quot; foldout in the STM inspector.</li>
+<li>Further caching optimizations.</li>
+<li>Fixed random &amp; right-to-left draw orders not playing sounds.</li>
+<li>Fixed array lengths not matching up in certain circumstances... again. Did a bit of a hotfix that's slightly less efficient in terms of resizing arrays, but I don't see a performance hit so it'll be fine for now!</li>
+</ul>
+<h5 id="v1102">v1.10.2</h5>
+<ul>
+<li>Changed array length code in one section.</li>
+<li>Fixed quads not sharing submeshes.</li>
+</ul>
+<h5 id="v1103">v1.10.3</h5>
+<ul>
+<li>Fixed STM not updating to rectTransform size changes in editor.</li>
+</ul>
+<h5 id="v111-1">v1.11</h5>
+<ul>
+<li>Added an option to change the font used in STM's inspector under &quot;Master&quot; in the text data editor.</li>
+<li>Fixed a bug where STM would render if the component was disabled on scene load.</li>
+<li>Potential fix for a rare bug where Rebuild() calls itself.</li>
+<li>Temp fix for events being called again upon Continue().</li>
+<li>Added multiOverTime parameter to waves.</li>
+<li>Fixed line heights being incorrect under specific circumstances.</li>
+<li>Fixed inline font changes returning an error with specific circumstances.</li>
+<li>Fixed certain drawOrders not behaving properly.</li>
+<li>Added/fixed incorrect drawOrder animations when UnRead()ing.</li>
+<li>Changed &quot;color&quot; from type &quot;Color32&quot; to &quot;Color&quot; to allow animation. There is extra code in place to convert the old value to the new one upon OnValidate(). After testing, this change appears to be seamless! You won't even have to update any older code if you don't want to.</li>
+<li>Added a &quot;forceAnimation&quot; boolean to work together with this for color animation. Check out the &quot;ColorAnimationTest&quot; scene for an example.</li>
+<li>Upgraded the color tag! Now colors/gradients/textures can be multiplied with one another. Only the seperate types can be combined with eachother. (Meaning you cannot combine two gradients, two colours) To do this, for example, type <code>&lt;c=myColor,myGradient,myTexture&gt;</code> to combine them. The order doesn't matter, and the colour values can only multiply for now.</li>
+<li>Fixed an exception to the internal hex code validator method.</li>
+<li>Relative base offset no longer calculates Z.</li>
+<li>Fixed superscript text not being placed correctly under certain circumstances.</li>
+<li>Internal text size is now stored as a Vector2 instead of a float. You'll most likely want to use size.y if you have to update a script that uses size.</li>
+<li>Added two new best fit modes, &quot;Horizontal Always&quot; and &quot;Horizontal Over Limit&quot;. They'll make text fit within autoWrap limits like the other best fit modes, but only change text size on the X axis!</li>
+<li>Moved some more generic-use scripts from the Sample folder to the Utilities folder.</li>
+<li>Upgraded STMRubyText.cs to fix some bugs and add some small features.</li>
+<li>Fixed broken Auto Pause and Auto Pause Full vertical limit modes. Also fixed Auto Pause, Auto Pause Full and Show Last vertical limit modes not reacting to line spacing besides 1.</li>
+<li>ZWrite is now off on the standard shader and material. (To match the other shaders and materials.)</li>
+<li>OnRebuild events will now not be invoked when Super Text Mesh rebuilds through a font texture rebuild.</li>
+<li>Text Data name fields now use Delayed Text Fields, meaning the names only apply when enter is pressed or focus leaves the text entry field.</li>
+<li>Remade the default fire and clap assets myself to match the updated asset store EULA, and updated appropriate licenses.</li>
+</ul>
+<h5 id="v1111">v1.11.1</h5>
+<ul>
+<li>Fixed STM data inspector not remembering state when reloading Unity.</li>
+<li>Fixed STM not playing sounds or invoking events when Read() is called manually.</li>
+<li>Fixed events being called immediately on meshes where autoRead isn't used.</li>
+<li>Fixed unnecessary garbage in Unity 2018.4+ (or earlier versions, possibly) during Rebuild()</li>
+</ul>
+<h5 id="v1112">v1.11.2</h5>
+<ul>
+<li>Fixed UI Mode STM getting cut off at half the vertical limit, despite drawing the correct bounds.</li>
+<li>Auto Quality call is now done under Rebuild() instead of OnValidate(), and uses the scaleFactor of STM's parent canvas now.</li>
+</ul>
+<h5 id="v1113">v1.11.3</h5>
+<ul>
+<li>ReadOutText() IEnumerator now advances one frame automatically, since the first frame would always be blank. This could potentially change back if it causes conflicts, but I think it should be fine for most use-cases...</li>
+<li>OnApplicationFocus() behaves differently in-editor now. Text will no longer stop updating if only the scene view is visible.</li>
+<li>Editing the anchor on multiple UI Super Text Mesh objects behaves as expected now.</li>
+<li>Added a &quot;fade&quot; parameter to control the overall alpha value of a Super Text Mesh object. It's under the beta section of the inspector for now.</li>
+<li>Renamed &quot;HorizontalOverLimit&quot; and &quot;HorizontalAlways&quot; best fit modes to &quot;SquishOverLimit&quot; and &quot;SquishAlways&quot;, respectively.</li>
+<li>Added a &quot;Squish&quot; vertical limit mode. It's still in beta and doesn't work in all circumstances.</li>
+<li>Added a &quot;Multiline&quot; best fit mode. It's still in beta and doesn't get text as big as I would like it to just yet.</li>
+<li>Made some &quot;Object&quot; type conversions explicitly &quot;UnityEngine.Object&quot; to avoid conflicts with some libraries.</li>
+</ul>
+<h5 id="v1114">v1.11.4</h5>
+<ul>
+<li>Fixed insert hyphens feature.</li>
+<li>The Arabic support script is now vastly improved, and now a more general right to left text script. <a href="https://pastebin.com/h9fyzJcq">You can get it from my pastebin</a>, since it still relies on Konash's &quot;Arabic Support for Unity&quot; script.</li>
+<li>Cleaning up sample folder. Moved assets around to more logical places, made better example scenes, and put the ugly internal test scenes in their own folder. This includes dividing up STMEventInterpreter into multiple scripts.</li>
+<li>Updated bestfitMultiBETA's behaviour.</li>
+<li>Fixed vertical limit cutting off the first line of text when line spacing is less than 1.</li>
+<li>Fixed line spacing greater than 1 pushing the first row of text down.</li>
+<li>Adjustments to AutoPause and AutoPauseFull. They now work with line spacing, and the Vertical Limit value doesn't need to be a perfect multiple of size anymore, just whatever amount is big enough to fit text. (I would still recomend using a perfect multiple for organizational purposes, though. If your text size is 0.25, you line spacing is 1.4 and you want to have 4 lines of text, set the box limit to 0.25 * 1.4 * 4. If you end up mixing text sizes on a Super Text Mesh with AutoPause, and AutoPauseFull, calling Continue() might still leave text that was read on-screen when advancing under some circumstances. (But it won't skip over text that hasn't been read yet under any.) I've tested changing size mid-string and it seems to work fine, but I'm not 100% confident just yet. If you see any strange behaviour, please let me know!</li>
+<li>Moved fade property out of &quot;Beta&quot; foldout and into &quot;Appearance&quot; foldout.</li>
+<li>Added an UndoContinue() method that reverses Continue() calls, and returns true if it was able to undo, and false if it wasn't.</li>
+<li>Exposed pauseCount and currentPauseCount as read-only variables.</li>
+<li>Added canContinue and canUndoContinue, which return true if Continue() would advance text, and if UndoContinue() would reverse text, respectively.</li>
+</ul>
+<h5 id="v1115">v1.11.5</h5>
+<ul>
+<li>All ToString() calls explicitly use System.Globalization.CultureInfo.InvariantCulture now.</li>
+<li>Fixed setting color after texture tag not checking for now submesh, sometimes rendering colours incorrectly.</li>
+</ul>
+<h5 id="v1120">v1.12.0</h5>
+<ul>
+<li>Shader support for single-pass stereo instancing. (This is for VR games!)</li>
+<li>Added more linebreak-friendly characters.</li>
+<li>Made strikethrus in their demo scene explicitly render above text by adjusting the sprite order in layer.</li>
+<li>Emoji characters are explicitly replaced before being displayed now (they are kept in the text string), to prevent a crash.</li>
+<li>Made an experimental script for rendering emoji with Super Text Mesh. It automatically converts typed emoji to automatically-generated quads. It's still a work-in-progress: <a href="https://pastebin.com/qr9me3GA">https://pastebin.com/qr9me3GA</a></li>
+<li>Added a linespacing tag. <code>&lt;linespacing=x&gt;</code> <code>&lt;lineSpacing=x&gt;</code> <code>&lt;ls=x&gt;</code> This will change the linespacing for the next line used, so can be used for when text size changes.</li>
+<li>The &quot;reading&quot; boolean is set true in a more reliable way.</li>
+<li>Non-ui text now displays color properly in projects with linear color space.</li>
+<li>Small optimizations to UpdateMesh().</li>
+<li>Rebuild(), text, and _text now respond to the setting of autoRead instead of reading automatically no matter what.</li>
+<li>Fixed behaviour where adding an STM prefab object through the GameObject menu in prefab mode where the root prefab is a canvas would make the object disappear.</li>
+<li>Updated colors on an example texture.</li>
+<li>Added linebreak rules for Japanese, Chinese, and inadvertently English! This means that when using auto-wrap to split lines, characters like '{' and '$' will prefer not to appear at the end of a line, characters like '}' and '.' will prefer not to appear at the start, and numbers will prefer not to be split up. (If a text box is too thin to find a good place to split, it will still split on the spot, breaking these rules.)</li>
+<li>Super Text Mesh now displays an explanation message when importing returns an error.</li>
+</ul>
+<h5 id="v1121">v1.12.1</h5>
+<ul>
+<li>Fixed pagination &amp; leftoverText getting incorrect index offset under specific circumstances.</li>
+<li>Added proper support for the carriage return (\r), additionally fixing some alignment errors with text with characterSpacing enabled and a non-left alignment mode.</li>
+</ul>
+<h5 id="v1122">v1.12.2</h5>
+<ul>
+<li>Possibly fixed autoRead happening when it wasn't meant to.</li>
+<li>Updated STM's .cginc files so that outlines respond to the &quot;Use Vector3&quot; boolean. Enabling this will make outlines render better for pixel art, the intended use of the &quot;Use Vector3&quot; option.</li>
+<li>Updated the Use Vector3 calls in the .cginc files to use ifdefs.</li>
+<li>Updated shader example scene.</li>
+<li>Included a sample surface shader with STM.</li>
+<li>Changed how Super Text Mesh responds to rectTransform size changes, especially within layout groups.</li>
+</ul>
+<h5 id="v1123">v1.12.3</h5>
+<ul>
+<li>Fixed Super Dropdown prefab not behaving as expected.</li>
+<li>Fixed UI STM trying to invoke a coroutine while disabled. (Thanks, ADDADA!)</li>
+<li>Added a &quot;remove emoji&quot; option to the beta foldout. Before this, this behaviour was enabled by default, but I found it was occassionally removing characters that could be rendered just fine, such as Unicode symbols. So now this feature can be disabled per-mesh.</li>
+<li>Exposed Super Text Mesh's lineHeights variable to be public.</li>
+<li>Added new sample code and the &quot;Links&quot; sample scene. (LinkController.cs) Check it out for a simple way to add links to text!</li>
+<li>Sketchify now works together with effects like waves!</li>
+<li>Fixed manual pauses interfering with automatic pauses.</li>
+<li>Fixed hyphens being inserted after a manual pause, if the manual pause happened to be at the end of a row of text.</li>
+</ul>
+<h5 id="v1124">v1.12.4</h5>
+<ul>
+<li>Changes to internal Rebuild() calls to fix unexpected behaviour with calling Read() on the same frame text is rebuilt.</li>
+<li>Fixed automatic linebreaks in Asian languages having a preference to commas.</li>
+<li>Added Japanese monospace numbers to the list of linestart-unfriendly characters.</li>
+<li>Fixed error where characters could render invisible in specific circumstances.</li>
+<li>Fixed text that UnRead() had been called on reappearing when onFontTextureRebuilt is called.</li>
+<li>Removed GUI Layer and Flare Layer from camera components in sample scenes.</li>
+<li>Added a &quot;minSize&quot; property for some best fit modes.</li>
+<li>Wrote a new version of STMVerticalWriting and included that in samples.</li>
+</ul>
+<h5 id="v1130">v1.13.0</h5>
+<ul>
+<li>Autodelays have their own class now! They can have distinct rules, and be applied to characters and quads. They do not require the name of the ScriptableObject to be the character the delay is applied to or a special name any more, since it's defined on the object.</li>
+<li>STMAutoClipData also has the same change to distinguish characters and quads, and do not require custom file names.</li>
+<li>Changed STMSoundClipData to be in-line with changes to STMAutoClipData.</li>
+<li>Quality tag! So now font point size can be changed mid-string. It looks like this: <code>&lt;quality=10&gt;</code>.</li>
+<li>Created a new &quot;Universal&quot; class of shaders! These combine the regular and UI shaders into one!</li>
+<li>These new Universal shaders naturally support masking! The 'Sprite Mask' component is used for this outside of Unity UI, which uses the 'Mask' Component.</li>
+<li>I've added masking to the old UI shaders, too. I'm keeping the old shaders in for the time being for compatibility, but eventually they will probably be phased out.</li>
+<li>The text data editor defaults to being closed and doesn't remember its settings any more. (Subject to change...)</li>
+<li>In addition to the Universal shaders... The all-in-one shader, STM Ultra is here!!</li>
+<li>The Ultra shader works everywhere - Inside and outside of UI.</li>
+<li>It has options for Dropshadows and Outlines within the shader itself, and those outlines can get very detailed for a much smaller performance cost than before!</li>
+<li>The new shader uses a single pass to render. ...And using a single pass means...</li>
+<li>It works in URP and HDRP! Dropshadows and Outlines finally work in URP and HDRP now. Thank you for your patience, everyone!</li>
+<li>(The Ultra shader is still being worked on, so expect small changes/fixes in the near future!)</li>
+</ul>
+<h5 id="v1131">v1.13.1</h5>
+<ul>
+<li>Fixed Render on Top not working properly.</li>
+<li>Fixed STMCurveGenerator printing an error in builds.</li>
+<li>Fixed not following UI masking properly when re-enabled.</li>
+</ul>
+<h5 id="v1132">v1.13.2</h5>
+<ul>
+<li>Fixed DrawInspector override in AutoDelayData.</li>
+<li>Fixed icon HideFlags preventing builds from completing occasionally. The fix is some new textures and updated quads, so make sure the default quads are updated if you're using them.</li>
+<li>Ultra shader fixes:</li>
+<li>Bitmap fonts now render as expected.</li>
+<li>Fixed a transparent gap appearing between text and outline/dropshadow in some URP/HDRP settings.</li>
+<li>Fixed quads not behaving properly with outlines and dropshadows.</li>
+<li>Vector-based dropshadows work now.</li>
+</ul>
+<h5 id="v1133">v1.13.3</h5>
+<ul>
+<li>Fixed the &quot;Middle&quot; property on STMTextInfo not being correct if lineSpacing wasn't set to 1. This fixes an error with STMVerticalWriting.</li>
+<li>Fixed animations not playing initially if Super Text Mesh is disabled by default then enabled in builds only.</li>
+</ul>
+<h1 id="update-warnings">Update Warnings</h1>
+<h5 id="v13-to-v14">v1.3 to v1.4+:</h5>
+<ul>
+<li>v1.4 uses a brand-new system for TextData, so if you upgrade from v1.3, you will lose all your custom waves/jitters/etc. Please be wary of this and make a backup, first! The old settings and new settings have the same look, so the easiest way to move them over will just be to screenshot them. All default settings have been ported over already.</li>
+</ul>
+<h5 id="v14-to-v15">v1.4 to v1.5+:</h5>
+<ul>
+<li>v1.5 changes the name of &quot;TextData&quot; in the Resources folder and the &quot;TextData&quot; script in the Scripts folder to &quot;SuperTextMeshData&quot;, make sure to import the new files, or to rename the old one.</li>
+</ul>
+<h5 id="v15-to-v16">v1.5 to v1.6+:</h5>
+<ul>
+<li>
+<p>The field &quot;text&quot; is now called <code>_text</code>, and the accessor (which calls Rebuild() when called) <code>Text</code> takes it's old name, <code>text</code>. Unity will automatically serialize the old field as the new one so text won't be lost, but make sure to back up just in case. If you want to set the text value without calling rebuild, you need to set <code>_text</code> instead of <code>text</code> now, so please review your code for that.</p>
+</li>
+<li>
+<p>The accessor <code>Text</code> has also been left in for legacy, so no code will be broken by that, yet. It might be removed in the future.</p>
+</li>
+</ul>
+<h5 id="v16-to-v17">v1.6 to v1.7+:</h5>
+<ul>
+<li>
+<p>&quot;textMat&quot; is now &quot;textMaterial&quot;.</p>
+</li>
+<li>
+<p>lineCountLimit has been replaced with verticalLimit, which is now a float measuring allowed space instead of an int measauring the amount of lines allowed.</p>
+</li>
+<li>
+<p>Waves have new values added to them, and some values have had their names changed. Unity should automatically carry over the correct data, but remember to back up just in case!</p>
+</li>
+<li>
+<p>Removed &quot;wrapText&quot; variable used by UI text.</p>
+</li>
+<li>
+<p>baseOffset works differently, only changing text position, not bounding box position.</p>
+</li>
+<li>
+<p>UI text works with LayoutGroups now, so STM's UI behaviour is different to be more standard with Unity's implementation. You might have to attach a &quot;Content Size Fitter&quot; component to get the results you're after.</p>
+</li>
+</ul>
+<h5 id="v17-to-v18">v1.7 to v1.8+</h5>
+<ul>
+<li>
+<p>minY and maxX have been removed and replaced with Vector3s like &quot;bottomRightTextBounds&quot; and &quot;finalBottomRightTextBounds&quot;. minY should be the same as &quot;finalBottomRightTextBounds.y&quot; and maxX should be equivalent to &quot;finalBottomRightTextBounds.x&quot;.</p>
+</li>
+<li>
+<p>Text will now &quot;originate&quot; from the proper top/middle/bottom anchor point. If an anchor is set to &quot;bottom&quot;, the text will snap to the bottom of the bounds, now.</p>
+</li>
+</ul>
+<h5 id="v18-to-v19">v1.8 to v1.9+</h5>
+<ul>
+<li>New relativeOffset variable is true by default. Old behaviour is the same as if this value was false.</li>
+</ul>
+<h5 id="v19-to-v110">v1.9 to v1.10+</h5>
+<ul>
+<li>Materials are shared between all objects now, so a custom material mod might break.</li>
+</ul>
+<h5 id="v110-to-v111">v1.10 to v1.11</h5>
+<ul>
+<li>Color is now stored as a Color instead of Color32. There is extra code in place to convert the old value to the new one upon OnValidate(), but otherwise no real changes have to be made to code.</li>
+<li>STMTextInfo now stores size as a Vector2 instead of a float. The old value is typically held by size.y now.</li>
+</ul>
+<hr>
+<h1 id="credits">Credits</h1>
+<p>Coding and design by Kai Clavier (<a href="http://twitter.com/KaiClavier">@KaiClavier</a>)<br>
+Extra CSS help by Tak (<a href="http://twitter.com/takorii">@takorii</a>)<br>
+<br>
+<br></p>
+</article>
+</article>
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>

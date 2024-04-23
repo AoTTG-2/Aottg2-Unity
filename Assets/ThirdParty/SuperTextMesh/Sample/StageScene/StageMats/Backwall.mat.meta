@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5f93a864036044746a2ece299ad8642d
+timeCreated: 1460672822
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/StageScene/StageMats/Backwall.mat
+  uploadId: 656890

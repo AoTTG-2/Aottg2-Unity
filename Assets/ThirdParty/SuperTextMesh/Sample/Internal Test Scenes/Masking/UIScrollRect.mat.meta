@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 70ca34020e103e245af8df5a7b930eb3
+timeCreated: 1550015916
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/Masking/UIScrollRect.mat
+  uploadId: 656890

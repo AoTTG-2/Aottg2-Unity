@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e0195eb33d5b847d4a1ad54c04efc088
+timeCreated: 1477222653
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/DefaultSTMMaterials/Default.mat
+  uploadId: 656890

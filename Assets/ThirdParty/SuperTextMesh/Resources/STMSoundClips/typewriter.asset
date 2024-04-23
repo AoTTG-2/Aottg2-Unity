@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96148ec3adfd14570a81c93fe91c018d, type: 3}
+  m_Name: typewriter
+  m_EditorClassIdentifier: 
+  showFoldout: 1
+  clips:
+  - type: 2
+    _character: 0
+    quadName: 
+    clip: {fileID: 8300000, guid: 39333d228fa204245872f847e5964634, type: 3}

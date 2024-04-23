@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3fc800ba515fecf46a179e51e3e6d43b
+timeCreated: 1527611037
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/ReadingTest.unity
+  uploadId: 656890

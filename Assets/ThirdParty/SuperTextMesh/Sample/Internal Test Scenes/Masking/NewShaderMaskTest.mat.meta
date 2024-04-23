@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0129e740d172ccd4e9c31ac69c15a772
+timeCreated: 1701806012
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/Masking/NewShaderMaskTest.mat
+  uploadId: 656890

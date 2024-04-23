@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 96728fc52b69b4ef7952fc5f0558ac4b
+timeCreated: 1468037946
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/StageScene/Confetti.prefab
+  uploadId: 656890

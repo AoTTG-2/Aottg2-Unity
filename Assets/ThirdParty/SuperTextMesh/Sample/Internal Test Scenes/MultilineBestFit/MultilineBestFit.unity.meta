@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f3e429de0147d574da5b7e9fea2e0462
+timeCreated: 1618422357
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/MultilineBestFit/MultilineBestFit.unity
+  uploadId: 656890

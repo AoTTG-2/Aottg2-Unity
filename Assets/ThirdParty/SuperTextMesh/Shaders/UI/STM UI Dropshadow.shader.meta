@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6764d8d98906cb94780ac4ff16477da0
+timeCreated: 1537680178
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Shaders/UI/STM UI Dropshadow.shader
+  uploadId: 656890

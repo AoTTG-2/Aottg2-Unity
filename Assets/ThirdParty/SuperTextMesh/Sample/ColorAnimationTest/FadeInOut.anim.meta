@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 914c999183fd1d24f80b39d2f3163daf
+timeCreated: 1597622257
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/ColorAnimationTest/FadeInOut.anim
+  uploadId: 656890

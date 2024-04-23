@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4cbec3ea93684014794a669baf25fd38
+timeCreated: 1562228218
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMPrefabs/Super InputField.prefab
+  uploadId: 656890

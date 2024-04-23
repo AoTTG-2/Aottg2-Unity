@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c710ea477674571458eba807049c7a95
+timeCreated: 1537663920
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Shaders/Unlit/STM Unlit Outline.shader
+  uploadId: 656890

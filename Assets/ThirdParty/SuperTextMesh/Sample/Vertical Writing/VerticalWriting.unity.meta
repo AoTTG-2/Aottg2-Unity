@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 608beccc6970cd344a60cbbaeda632c2
+timeCreated: 1522317739
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Vertical Writing/VerticalWriting.unity
+  uploadId: 656890

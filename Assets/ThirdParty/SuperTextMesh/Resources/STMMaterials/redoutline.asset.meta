@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5ca455b220c41854a8d5d52be99fdba3
+timeCreated: 1564601365
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMMaterials/redoutline.asset
+  uploadId: 656890

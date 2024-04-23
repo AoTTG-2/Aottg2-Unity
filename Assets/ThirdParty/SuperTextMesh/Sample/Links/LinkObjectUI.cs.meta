@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: f7c20a021529cbf4cafbbfb684fb2bdf
+timeCreated: 1651364759
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Links/LinkObjectUI.cs
+  uploadId: 656890

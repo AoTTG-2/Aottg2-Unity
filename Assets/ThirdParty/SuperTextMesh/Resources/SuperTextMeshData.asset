@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b347e5d79dd1484ebedcac94b18f81d, type: 3}
+  m_Name: SuperTextMeshData
+  m_EditorClassIdentifier: 
+  showEffectsFoldout: 0
+  showWavesFoldout: 0
+  showJittersFoldout: 0
+  showDrawAnimsFoldout: 0
+  showTextColorFoldout: 0
+  showColorsFoldout: 0
+  showGradientsFoldout: 0
+  showTexturesFoldout: 0
+  showInlineFoldout: 1
+  showDelaysFoldout: 0
+  showVoicesFoldout: 0
+  showFontsFoldout: 0
+  showSoundClipsFoldout: 0
+  showAudioClipsFoldout: 0
+  showQuadsFoldout: 1
+  showMaterialsFoldout: 0
+  showAutomaticFoldout: 1
+  showAutoClipsFoldout: 1
+  showAutoDelaysFoldout: 0
+  showMasterFoldout: 0
+  disableAnimatedText: 0
+  defaultFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  boundsColor: {r: 0.5075098, g: 0.50196075, b: 1, a: 1}
+  textBoundsColor: {r: 1, g: 0.8738065, b: 0, a: 0.753}
+  finalTextBoundsColor: {r: 1, g: 0.50196075, b: 0.99306357, a: 0.297}
+  superscriptOffset: 0.5
+  superscriptSize: 0.5
+  subscriptOffset: -0.2
+  subscriptSize: 0.5
+  inspectorFont: {fileID: 0}

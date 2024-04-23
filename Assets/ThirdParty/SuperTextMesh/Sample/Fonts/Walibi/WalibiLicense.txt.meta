@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d4d4e168e517b4a2784c937d9342bcb1
+timeCreated: 1478805955
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Fonts/Walibi/WalibiLicense.txt
+  uploadId: 656890

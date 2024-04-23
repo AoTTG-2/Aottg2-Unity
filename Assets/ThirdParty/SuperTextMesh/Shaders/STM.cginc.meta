@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dace9fac426f4ef4083b1d70b51dc5c4
+timeCreated: 1537416590
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Shaders/STM.cginc
+  uploadId: 656890

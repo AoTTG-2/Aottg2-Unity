@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 22be670e84df04af79ac36b01352fc54
+timeCreated: 1479893554
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMFonts/walibi.asset
+  uploadId: 656890

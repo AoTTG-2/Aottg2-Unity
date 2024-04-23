@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5a691c68ef8acfb41aa8f389ed1cf87d
+timeCreated: 1537680186
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Shaders/UI/STM UI Outline.shader
+  uploadId: 656890

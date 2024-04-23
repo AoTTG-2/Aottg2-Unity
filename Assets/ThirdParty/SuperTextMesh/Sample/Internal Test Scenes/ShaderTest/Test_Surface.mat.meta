@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 81e7d005ea8bcf441a7322f628ee5254
+timeCreated: 1644116409
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/ShaderTest/Test_Surface.mat
+  uploadId: 656890

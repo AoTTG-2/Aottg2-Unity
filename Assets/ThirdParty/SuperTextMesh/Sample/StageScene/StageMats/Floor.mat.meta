@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c6a2ab92d242143f3826ee2dd21e760f
+timeCreated: 1460626594
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/StageScene/StageMats/Floor.mat
+  uploadId: 656890

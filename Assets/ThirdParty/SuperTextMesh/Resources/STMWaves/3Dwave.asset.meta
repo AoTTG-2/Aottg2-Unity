@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d40a3f6a5d5d443bf81d08ee0cd2d37e
+timeCreated: 1479420422
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMWaves/3Dwave.asset
+  uploadId: 656890

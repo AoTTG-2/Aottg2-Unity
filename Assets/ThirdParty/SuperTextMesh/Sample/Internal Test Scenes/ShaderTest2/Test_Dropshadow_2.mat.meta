@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bb9c38c54b7d6d34a82befdb2341b5fd
+timeCreated: 1701802856
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Internal Test Scenes/ShaderTest2/Test_Dropshadow_2.mat
+  uploadId: 656890

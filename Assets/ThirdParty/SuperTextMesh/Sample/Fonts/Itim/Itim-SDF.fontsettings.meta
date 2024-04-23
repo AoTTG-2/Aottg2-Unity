@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 92af8c94974284c4388316b4f89b4f02
+timeCreated: 1477980846
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Sample/Fonts/Itim/Itim-SDF.fontsettings
+  uploadId: 656890

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2342f278b203d4360b84574c56f2f7f5
+timeCreated: 1477528073
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Resources/STMQuads/circle.asset
+  uploadId: 656890

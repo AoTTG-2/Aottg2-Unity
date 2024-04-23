@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d7c067d8e324345ad5536ec2726104, type: 3}
+  m_Name: watermelon
+  m_EditorClassIdentifier: 
+  showFoldout: 1
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0.14901961, b: 0.34117648, a: 1}
+    key1: {r: 0.16078432, g: 1, b: 0.89411765, a: 1}
+    key2: {r: 1, g: 0.14901961, b: 0.34117648, a: 0}
+    key3: {r: 0.15294118, g: 0.94509804, b: 0.84313726, a: 0}
+    key4: {r: 1, g: 0.14901961, b: 0.34117648, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16384
+    ctime2: 32768
+    ctime3: 49151
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  gradientSpread: 0.15
+  scrollSpeed: 0.5
+  direction: 1
+  smoothGradient: 1

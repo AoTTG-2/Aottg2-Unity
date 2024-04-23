@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b56f8c1c75b446a4ba620c971a4c0e7e
+timeCreated: 1517962682
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Scripts/STMTextInfo.cs
+  uploadId: 656890

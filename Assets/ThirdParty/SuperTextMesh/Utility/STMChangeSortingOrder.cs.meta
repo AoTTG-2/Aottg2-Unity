@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 7f3ec483f32772948a261212ed99562c
+timeCreated: 1506652630
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Utility/STMChangeSortingOrder.cs
+  uploadId: 656890

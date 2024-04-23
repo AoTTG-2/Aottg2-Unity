@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6f8cc477c3794e54090832aadb928ad0
+timeCreated: 1537521110
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 57995
+  packageName: Super Text Mesh
+  packageVersion: 1.13.3
+  assetPath: Assets/Clavian/SuperTextMesh/Shaders/Unlit/STM Unlit DropshadowAndOutline.shader
+  uploadId: 656890
