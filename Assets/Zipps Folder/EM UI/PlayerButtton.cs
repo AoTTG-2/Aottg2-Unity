@@ -1,18 +1,26 @@
+using GameManagers;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerButtton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private TMP_Text Button_Text;
+
+    public Player PhotonPlayer { get; private set; }
+
+    public void SetPlayerInfo(Player player)
     {
-        
+        PhotonPlayer = player;
+
+        Button_Text.text = $"[{player.ActorNumber}] {player.GetStringProperty(PlayerProperty.Name)}";
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClick_Button()
     {
-        
+        //Zippy: change selected player variable once made
     }
 }
