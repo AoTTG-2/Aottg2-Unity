@@ -769,7 +769,6 @@ GameObject:
   - component: {fileID: 1076230854}
   - component: {fileID: 1076230856}
   - component: {fileID: 1076230855}
-  - component: {fileID: 1076230857}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -836,20 +835,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1076230857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1076230853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac50e8c778a6361488d73837d0802aa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerButtonPrefab: {fileID: 2996540141623500645, guid: 9383359d5fd465847ae31e63a0ed0bdb, type: 3}
-  ScrollViewContent: {fileID: 1076230854}
 --- !u!1 &1147471467
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +846,7 @@ GameObject:
   - component: {fileID: 1147471469}
   - component: {fileID: 1147471468}
   - component: {fileID: 1147471470}
+  - component: {fileID: 1147471471}
   m_Layer: 0
   m_Name: Zipps UI
   m_TagString: Untagged
@@ -910,6 +896,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasObj: {fileID: 106759998}
+--- !u!114 &1147471471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147471467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac50e8c778a6361488d73837d0802aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerButtonPrefab: {fileID: 2996540141623500645, guid: 9383359d5fd465847ae31e63a0ed0bdb, type: 3}
+  ScrollViewContent: {fileID: 1076230854}
 --- !u!1 &1406771702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,7 +1136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2059374081
 RectTransform:
   m_ObjectHideFlags: 0

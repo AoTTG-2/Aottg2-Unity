@@ -23,4 +23,19 @@ public class PlayerButtton : MonoBehaviour
     {
         //Zippy: change selected player variable once made
     }
+
+    private void Start()
+    {
+        Invoke("NameRefresh", 1f);
+    }
+
+    private void OnEnable()
+    {
+        Invoke("NameRefresh", 1f);
+    }
+
+    private void NameRefresh()
+    {
+        Button_Text.text = $"[{PhotonPlayer.ActorNumber}] {PhotonPlayer.GetStringProperty(PlayerProperty.Name)}";
+    }
 }
