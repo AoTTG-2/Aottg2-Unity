@@ -35,6 +35,16 @@ public class EmPlayerListManager : MonoBehaviourPunCallbacks
         base.OnPlayerLeftRoom(otherPlayer);
     }
 
+    public override void OnJoinedRoom()
+    {
+        PlayerButtton listing = Instantiate(PlayerButtonPrefab, ScrollViewContent);
+        if (listing != null)
+            listing.SetPlayerInfo(PhotonNetwork.LocalPlayer);
+        PlayerListings.Add(listing);
+
+        base.OnJoinedRoom();
+    }
+
     public override void OnLeftRoom()
     {
         if (PlayerListings.Count > 0)
