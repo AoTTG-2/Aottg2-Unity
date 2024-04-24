@@ -16,8 +16,8 @@ namespace UI
         protected override string Title => string.Empty;
         protected override float Width => 1000f;
         protected override float Height => 630f;
-        protected override bool CategoryPanel => true;
-        protected override bool CategoryButtons => true;
+        protected override bool CategoryPanel => false;
+        protected override bool CategoryButtons => false;
         protected override string DefaultCategoryPanel => "Players";
         public string LocaleCategory = "ExpeditionPopup";
         private List<BaseSettingsContainer> _ignoreDefaultButtonSettings = new List<BaseSettingsContainer>();
@@ -34,20 +34,18 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Players", "EM Settings", "Command List" })
+            /*foreach (string buttonName in new string[] { "Players" })
             {
                 GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale(LocaleCategory, "Top", buttonName + "Button"),
                     onClick: () => SetCategoryPanel(buttonName));
                 _topButtons.Add(buttonName, obj.GetComponent<Button>());
             }
-            base.SetupTopButtons();
+            base.SetupTopButtons();*/
         }
 
         protected override void RegisterCategoryPanels()
         {
             _categoryPanelTypes.Add("Players", typeof(ExpeditionPlayerPanel));
-            _categoryPanelTypes.Add("EM Settings", typeof(ExpeditionEMSettingsPanel));
-            _categoryPanelTypes.Add("Command List", typeof(ExpeditionCommandListPanel));
         }
 
         private void SetupSettingsList()

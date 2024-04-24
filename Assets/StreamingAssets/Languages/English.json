@@ -173,9 +173,7 @@
 		"Mode.RespawnOnWave": "Respawn on waves"
 	},
 	"ExpeditionPopup": {
-		"Top.PlayersButton": "Players",
-		"Top.EM SettingsButton": "EM Settings",
-		"Top.Command ListButton": "Command List"
+		"Top.PlayersButton": "Players"
 	},
 	"SettingsPopup": {
 		"Top.GeneralButton": "General",

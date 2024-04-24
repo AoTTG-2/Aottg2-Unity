@@ -20,17 +20,17 @@ namespace UI
         private string tpCoords;
         private List<SaveableSettingsContainer> _saveableSettings = new List<SaveableSettingsContainer>();
 
-        public override void Setup(BasePanel parent = null) //Zippy: Finish the player List
+        public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             ExpeditionPopup RolesPopup = (ExpeditionPopup)parent;
-            string cat = RolesPopup.LocaleCategory; //zippy: fix the null ref error
+            string cat = RolesPopup.LocaleCategory;
             string sub = "Players";
             EMSettings settings = SettingsManager.EMSettings;
 
             ElementStyle style = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
 
-            #region Left Side
+            /*#region Left Side
 
             foreach (Player player in PhotonNetwork.PlayerList)
             {
@@ -49,7 +49,7 @@ namespace UI
             ElementFactory.CreateDefaultButton(DoublePanelRight, style, "TP Selected player to Coords", 400f, 20f, onClick: () => OnTPPlayerButtonClick(3));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.TPcoords, "Coordinates", tooltip: "Coordinates for TP button", elementWidth: 100f); 
 
-            #endregion
+            #endregion*/
         }
 
         private float timer = 0.0f;
