@@ -45,6 +45,7 @@ namespace UI
             else if (name == "Expedition")
             {
                 menu._ExpeditionPopup.Show();
+                GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().OpenEmMenu();
                 Hide();
             }
             else if (name == "Back")

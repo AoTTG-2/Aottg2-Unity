@@ -16,6 +16,16 @@ public class ZippsUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void CloseEmMenu()
+    {
+        CanvasObj.SetActive(false);
+    }
+
+    public void OpenEmMenu()
+    {
+        CanvasObj.SetActive(true);
     }
 }

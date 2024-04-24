@@ -50,6 +50,8 @@ namespace UI
             if (name == "Confirm")
                 _onConfirm.Invoke();
             Hide();
+
+            GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().CloseEmMenu();
         }
     }
 }
