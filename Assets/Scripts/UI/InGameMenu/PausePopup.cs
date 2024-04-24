@@ -1,4 +1,5 @@
 ﻿using GameManagers;
+using Photon.Pun;
 using Settings;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,11 @@ namespace UI
             }
             else if (name == "Expedition")
             {
+                if (!PhotonNetwork.IsMasterClient)
+                {
+                    UIManager.CurrentMenu.MessagePopup.Show("This is for MasterClient only.");
+                    return;
+                }
                 menu._ExpeditionPopup.Show();
                 GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().OpenEmMenu();
                 Hide();
