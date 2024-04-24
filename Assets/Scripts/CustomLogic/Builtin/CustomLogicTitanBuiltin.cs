@@ -76,10 +76,12 @@ namespace CustomLogic
                 else if (methodName == "AddOutline")
                 {
                     Titan.AddOutline();
+                    return null;
                 }
                 else if (methodName == "RemoveOutline")
                 {
                     Titan.RemoveOutline();
+                    return null;
                 }
                 return base.CallMethod(methodName, parameters);
             }
