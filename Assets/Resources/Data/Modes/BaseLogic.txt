@@ -807,9 +807,9 @@ component CaptureZone
     _teamsInZone = Dict();
 
     # Team Colors
-    _humanColor = Color(255, 255, 62, 255);
+    _humanColor = Color(70, 80, 125, 255);
     _shifterColor = Color(115, 222, 255, 255);
-    _titanColor = Color(70, 80, 125, 255);
+    _titanColor = Color(255, 255, 62, 255);
     _neutralColor = Color(255, 255, 255, 255);
     _teamBlueColor = Color(0, 0, 255, 255);
     _teamRedColor = Color(255, 0, 0, 255);
@@ -1035,6 +1035,8 @@ component CaptureZone
 			return;
 		}
 
+        self.CheckPlayersInZone();
+
         self.HandleStateTransition();
 
         self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
@@ -1046,6 +1048,46 @@ component CaptureZone
         color = self.GetTeamColor(team);
         teamColor = Color(color.R, color.G, color.B, 255);
         return "#" + teamColor.ToHexString();
+    }
+
+    function CheckPlayersInZone()
+    {
+        teamsToRemove = List();
+        for (team in self._teamsInZone.Keys)
+        {
+            playersToRemove = List();
+            players = self._teamsInZone.Get(team);
+            for (player in players)
+            {
+                if (player == null)
+                {
+                    playersToRemove.Add(player);
+                }
+                else {
+                    hPos = Vector3(player.Position.X, 0, player.Position.Z);
+                    hCenter = Vector3(self.MapObject.Position.X, 0, self.MapObject.Position.Z);
+                    if (Vector3.Distance(hPos, hCenter) > self.MapObject.Scale.X * 20)
+                    {
+                        playersToRemove.Add(player);
+                    }
+                }
+            }
+            for (player in playersToRemove)
+            {
+                players.Remove(player);
+            }
+            self._teamsInZone.Set(team, players);
+
+            if (players.Count == 0)
+            {
+                teamsToRemove.Add(team);
+            }
+        }
+
+        for (team in teamsToRemove)
+        {
+            self._teamsInZone.Remove(team);
+        }
     }
 
     function OnTick()
@@ -1106,7 +1148,7 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.UIVisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange || self.MapObject.Active == false)
         {
             if (self._isViewing == true)
             {

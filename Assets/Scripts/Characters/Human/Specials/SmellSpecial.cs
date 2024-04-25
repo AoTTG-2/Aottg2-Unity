@@ -8,12 +8,12 @@ namespace Characters
     class SmellSpecial : BaseEmoteSpecial
     {
         protected override float ActiveTime => 2f;
-        protected float Range = 200f;
+        protected float Range = 400f;
         protected override bool GroundedOnly => false;
 
         public SmellSpecial(BaseCharacter owner): base(owner)
         {
-            Cooldown = 5f;
+            Cooldown = 60f;
         }
 
         protected override void Activate()
@@ -28,7 +28,7 @@ namespace Characters
                 foreach (var titan in ((InGameManager)SceneLoader.CurrentGameManager).Titans)
                 {
                     if (Vector3.Distance(_human.Cache.Transform.position, titan.Cache.Transform.position) < Range)
-                        titan.Reveal(300);
+                        titan.Reveal(30);
                 }
             }
         }

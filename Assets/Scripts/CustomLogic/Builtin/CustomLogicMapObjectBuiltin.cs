@@ -282,6 +282,22 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "InBounds")
+            {
+                // Iterate over colliders and check if the param position is within the bounds
+                Vector3 position = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                
+                // Check all colliders on the object and on its children
+                foreach (var collider in Value.colliderCache)
+                {
+                    if (collider.bounds.Contains(position))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
             return base.CallMethod(methodName, parameters);
         }
 

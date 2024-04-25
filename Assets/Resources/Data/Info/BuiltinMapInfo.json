@@ -216,6 +216,12 @@
 						"AllowAHSS": false,
 						"AllowAPG": false
 					}
+				},
+				{
+					"Name": "Outside The Walls",
+					"MiscSettings": {
+						"Horses": true
+					}
 				}
 			]
 		}
