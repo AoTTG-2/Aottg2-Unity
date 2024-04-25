@@ -21,7 +21,7 @@ public class PlayerButtton : MonoBehaviour
 
     public void OnClick_Button()
     {
-        //Zippy: change selected player variable once made
+        EmVariables.SelectedPlayer = PhotonPlayer;
     }
 
     private void Start()
@@ -31,7 +31,7 @@ public class PlayerButtton : MonoBehaviour
 
     private void OnEnable()
     {
-        Invoke("NameRefresh", 1f);
+        Invoke("NameRefresh", 0.3f);
     }
 
     private void NameRefresh()

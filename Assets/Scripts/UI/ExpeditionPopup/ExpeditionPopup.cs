@@ -74,7 +74,7 @@ namespace UI
                 }
             }
             RebuildCategoryPanel();
-            GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().OpenEmMenu();
+            GameObject.Find("Zipps UI(Clone)").GetComponent<ZippsUIManager>().OpenEmMenu();
             UIManager.CurrentMenu.MessagePopup.Show("Settings reset to default.");
         }
 
@@ -101,11 +101,11 @@ namespace UI
                 case "Back":
                     if (SceneLoader.SceneName == SceneName.InGame)
                         ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
-                    GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().CloseEmMenu();
+                    GameObject.Find("Zipps UI(Clone)").GetComponent<ZippsUIManager>().CloseEmMenu();
                     Hide();
                     break;
                 case "Default":
-                    GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().CloseEmMenu();
+                    GameObject.Find("Zipps UI(Clone)").GetComponent<ZippsUIManager>().CloseEmMenu();
                     UIManager.CurrentMenu.ConfirmPopup.Show("Are you sure you want to reset to default?", () => OnConfirmSetDefault(),
                         "Reset default");
                     break;

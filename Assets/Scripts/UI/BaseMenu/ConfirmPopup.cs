@@ -51,7 +51,7 @@ namespace UI
                 _onConfirm.Invoke();
             Hide();
 
-            GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().CloseEmMenu();
+            GameObject.Find("Zipps UI(Clone)").GetComponent<ZippsUIManager>().CloseEmMenu();
         }
     }
 }

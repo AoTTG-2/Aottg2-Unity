@@ -51,7 +51,7 @@ namespace UI
                     return;
                 }
                 menu._ExpeditionPopup.Show();
-                GameObject.Find("Zipps UI").GetComponent<ZippsUIManager>().OpenEmMenu();
+                GameObject.Find("Zipps UI(Clone)").GetComponent<ZippsUIManager>().OpenEmMenu();
                 Hide();
             }
             else if (name == "Back")
