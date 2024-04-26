@@ -157,7 +157,7 @@ namespace Cameras
                     SetFollow(_inGameManager.CurrentCharacter);
                 if (_inGameManager.CurrentCharacter == null)
                 {
-                    if (_input.ChangeCamera.GetKeyDown())
+                    if (_input.ChangeCamera.GetKeyDown() && !ChatManager.IsChatActive())
                         _freeCam = !_freeCam;
                 }
                 else
