@@ -2006,6 +2006,7 @@ component Cannon
     _barrelEnd = null;
     _inUse = false;
     _cooldownLeft = 0.0;
+    _ammoLeft = 0;
     _human = null;
     _collidingHuman = null;
 
@@ -2015,12 +2016,14 @@ component Cannon
         self._barrelEnd = self._barrel.GetTransform("End");
         self._humanMount = self.MapObject.GetTransform("HumanMount");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 15.0);
+        self._ammoLeft = self.MaxAmmo;
     }
 
     function SendNetworkStream()
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
+        self.NetworkSync.SendStream(self._ammoLeft)
     }
 
     function OnNetworkStream()
@@ -2028,6 +2031,7 @@ component Cannon
         rotation = self.NetworkView.ReceiveStream();
         self._barrel.LocalRotation = rotation;
         self._inUse = self.NetworkView.ReceiveStream();
+        self._ammoLeft = self.NetworkSync.ReceiveStream();
     }
 
     function OnNetworkMessage(sender, message)
@@ -2076,6 +2080,12 @@ component Cannon
         if (self._inUse && self.NetworkView.Owner == Network.MyPlayer)
         {
             self._cooldownLeft = self._cooldownLeft - Time.FrameTime;
+            message = "Cooldown: " + Convert.ToString(Convert.ToInt(Math.Clamp(self._cooldownLeft, 0.0, self.Cooldown)));
+            if (!self.UnlimitedAmmo)
+            {
+                message = message + " Ammo: " + Convert.ToString(self._ammoLeft);
+            }
+            UI.SetLabelForTime("MiddleCenter", message, 0.1);
             barrelRotation = self._barrel.LocalRotation;
             baseRotation = self.MapObject.Rotation;
             if (Input.GetKeyHold("General/Left"))
@@ -2097,7 +2107,8 @@ component Cannon
             barrelRotation.X = Math.Clamp(barrelRotation.X, -45.0, 45.0);
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
-            if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
+            hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
+            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold("Human/AttackDefault"))
             {
                 self.Fire();
             }
@@ -2146,6 +2157,7 @@ component Cannon
     function Fire()
     {
         self._cooldownLeft = self.Cooldown;
+        self._ammoLeft = self._ammoLeft - 1;
         if (self._human != null)
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
