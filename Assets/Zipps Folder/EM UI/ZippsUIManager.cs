@@ -7,6 +7,7 @@ using Characters;
 using Settings;
 using Unity.VisualScripting;
 using TMPro;
+using System.Linq;
 
 public class ZippsUIManager : MonoBehaviour
 {
@@ -67,6 +68,40 @@ public class ZippsUIManager : MonoBehaviour
                     float.Parse(tpCoordsSplit[2])
                 });
                 break;
+        }
+    }
+
+    public void GiveRoles(int Role)
+    {
+        string RoleName = "";
+        ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable();
+        switch (Role)
+        {
+            case 0:
+                RoleName = "Logistician";
+                break;
+            case 1:
+                RoleName = "Cannoneer";
+                break;
+            case 2:
+                RoleName = "Carpenter";
+                break;
+            case 3:
+                RoleName = "Veteran";
+                break;
+        }
+
+        if (RoleName == string.Empty) return;
+
+        if (EmVariables.SelectedPlayer.CustomProperties.ContainsKey(RoleName))
+        {
+            playerProps[RoleName] = true;
+            EmVariables.SelectedPlayer.SetCustomProperties(playerProps);
+        }
+        else
+        {
+            playerProps.Remove(RoleName);
+            EmVariables.SelectedPlayer.SetCustomProperties(playerProps);
         }
     }
 }
