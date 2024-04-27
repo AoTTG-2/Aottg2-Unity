@@ -7,6 +7,7 @@ component WaterPhysics
     SurfaceVerticalDrag = 0.7;
     SurfaceHorizontalDrag = 0.85;
     SunkenDrag = 0.5;
+    DampingForce = 0.3;
 
     SunkenGravity = 18.0;
     DisableHooks = true;
@@ -36,7 +37,7 @@ component WaterPhysics
 
     function Init()
     {
-        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
         self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
     }
 
@@ -69,6 +70,24 @@ component WaterPhysics
             return body.GetVelocity();
         }
         return Vector3(0, 0, 0);
+    }
+
+    function GetMass(other)
+    {
+        if (other.Type == "Human")
+        {
+            return 1;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return 1;
+            }
+            return body.Mass;
+        }
+        return 1;
     }
 
     function SetVelocity(other, velocity)
@@ -168,8 +187,10 @@ component WaterPhysics
                 return;
             }
         }
-        # Play WaterSplash sound
-        other.PlaySound("WaterSplash");
+        if (other.Type == "Human")
+        {
+            other.PlaySound("WaterSplash");
+        }
     }
 
     function OnCollisionStay(other)
@@ -186,7 +207,23 @@ component WaterPhysics
         xzVelocity = Vector3(velocity.X, 0, velocity.Z);
         drag = 1 - self.SunkenDrag;
         force = force + xzVelocity.Scale(-1 * drag);
-        self.HandleForce(other, force, self._forceMode);
+
+        if (other.Type == "MapObject")
+        {
+            xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+            drag = 1 - self.SunkenDrag;
+            force = xzVelocity.Scale(-1 * drag);
+            maxDisplacement = other.Scale.Y * 10;
+            displaced = (self._surfaceTop - (other.Position.Y - other.Scale.Y * 10 / 2));
+            displaced = Math.Clamp(displaced, 0, maxDisplacement);
+            displaced = displaced / maxDisplacement;
+            force = force + Vector3(0, -2 * other.GetComponent("Rigidbody").Gravity.Y * displaced - self.DampingForce * velocity.Y, 0);
+            self.HandleForce(other, force, self._forceMode);
+        }
+        else
+        {
+            self.HandleForce(other, force, self._forceMode);
+        }
 
         /* Requires new logic as this will spam hooks as long as the player is under the water.
         if (other.Type == "Human" && self.DisableHooks)
