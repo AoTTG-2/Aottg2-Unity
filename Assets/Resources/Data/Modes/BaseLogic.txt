@@ -154,38 +154,35 @@ component WaterPhysics
         effectSize = velocity.Magnitude / 100;
         effectSize = Math.Clamp(effectSize, 2, 7);
         Game.SpawnEffect("Splash2", position, Vector3(-90,0,0), effectSize);
-        if (position.Y > self._surfaceBottom)
+        # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
+        horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+        horizontalVector = horizontalVector.Normalized;
+        velocityNorm = velocity.Normalized;
+        angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+        if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
         {
-            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
-            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
-            horizontalVector = horizontalVector.Normalized;
-            velocityNorm = velocity.Normalized;
-            angle = Vector3.Angle(horizontalVector, velocityNorm);
+            ratio = (1 - (angle / self._maxAngle));
+            angleRatio = ratio - 0.5;
+            horizontalRatio = angle / self._maxAngle;
 
-            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            skipZoneValue = self.RangeToValue(angleRatio);
+            # flip the y
+            flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+            # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
+            force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+            self.SetVelocity(other, force);
+
+            if (other.Type == "Human")
             {
-                ratio = (1 - (angle / self._maxAngle));
-                angleRatio = ratio - 0.5;
-                horizontalRatio = angle / self._maxAngle;
-
-                skipZoneValue = self.RangeToValue(angleRatio);
-                # flip the y
-                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
-
-                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
-                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
-
-                self.SetVelocity(other, force);
-
-                if (other.Type == "Human")
+                if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
                 {
-                    if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
-                    {
-                        other.PlayAnimation("Armature|slide", 0.01);
-                    }
+                    other.PlayAnimation("Armature|slide", 0.01);
                 }
-                return;
             }
+            return;
         }
         if (other.Type == "Human")
         {
