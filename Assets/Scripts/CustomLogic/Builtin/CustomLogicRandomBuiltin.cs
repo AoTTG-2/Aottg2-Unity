@@ -29,6 +29,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(RandomGen.GetRandomDirection());
             if (name == "RandomSign")
                 return (int)RandomGen.GetRandomSign();
+            if (name == "PerlinNoise")
+                return Mathf.PerlinNoise(parameters[0].UnboxToFloat(), parameters[1].UnboxToFloat());
             return base.CallMethod(name, parameters);
         }
     }

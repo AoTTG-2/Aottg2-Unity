@@ -106,6 +106,23 @@ component WaterPhysics
         }
     }
 
+    function HasPhysics(other)
+    {
+        if (other.Type == "Human")
+        {
+            return true;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     function HandleForce(other, force, mode)
     {
@@ -190,57 +207,123 @@ component WaterPhysics
         }
     }
 
+    function GetWavePosition(position)
+    {
+        waveDistance = 20;
+        waveSpeed = 500;
+        noiseStrength = 5;
+        noiseWalk = 1;
+        scale = 2;
+
+        deltaY = 0;
+        deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
+        deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
+        return self._surfaceTop + deltaY;
+    }
+
     function OnCollisionStay(other)
     {
-        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.HasPhysics(other) == false)
         {
             return;
         }
+
         velocity = self.GetVelocity(other);
         position = other.Position;
-        # If the object is below the surface, apply a force equal to gravity - drag.
-        # Game.Print("Hello, I am under the water.");
-        force = Vector3(0, self.SunkenGravity, 0);
-        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
-        drag = 1 - self.SunkenDrag;
-        force = force + xzVelocity.Scale(-1 * drag);
 
-        if (other.Type == "MapObject")
+        if (other.Type == "Human")
         {
+            # If the object is below the surface, apply a force equal to gravity - drag.
+            # Game.Print("Hello, I am under the water.");
+            force = Vector3(0, self.SunkenGravity, 0);
             xzVelocity = Vector3(velocity.X, 0, velocity.Z);
             drag = 1 - self.SunkenDrag;
-            force = xzVelocity.Scale(-1 * drag);
-            maxDisplacement = other.Scale.Y * 10;
-            displaced = (self._surfaceTop - (other.Position.Y - other.Scale.Y * 10 / 2));
-            displaced = Math.Clamp(displaced, 0, maxDisplacement);
-            displaced = displaced / maxDisplacement;
-            force = force + Vector3(0, -2 * other.GetComponent("Rigidbody").Gravity.Y * displaced - self.DampingForce * velocity.Y, 0);
+            force = force + xzVelocity.Scale(-1 * drag);
             self.HandleForce(other, force, self._forceMode);
-        }
-        else
-        {
-            self.HandleForce(other, force, self._forceMode);
-        }
 
-        /* Requires new logic as this will spam hooks as long as the player is under the water.
-        if (other.Type == "Human" && self.DisableHooks)
-        {
-            other.ClearHooks();
-        }
-        */
-
-        if (other.Type == "Human" && self.SupportDrowning)
-        {
-            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
-            UI.SetLabel("MiddleCenter", message);
-            self._isMyPlayerUnderwater = true;
-            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
-            if (self._myPlayerTimer >= self.TimeToDrown)
+            if (self.SupportDrowning)
             {
-                other.GetKilled("Drowning");
+                message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+                UI.SetLabel("MiddleCenter", message);
+                self._isMyPlayerUnderwater = true;
+                self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+                if (self._myPlayerTimer >= self.TimeToDrown)
+                {
+                    other.GetKilled("Drowning");
+                }
             }
         }
 
+        elif (other.Type == "MapObject")
+        {
+            /*xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+            drag = 1 - self.SunkenDrag;
+            force = xzVelocity.Scale(-1 * drag);
+            maxDisplacement = other.Scale.Y * 10;*/
+
+            minPoint = other.GetBoundsMin();
+            maxPoint = other.GetBoundsMax();
+            center = other.GetBoundsCenter();
+
+            bp1 = minPoint;
+            bp2 = maxPoint;
+            bp3 = Vector3(bp1.X, bp1.Y, bp2.Z);
+            bp4 = Vector3(bp1.X, bp2.Y, bp1.Z);
+            bp5 = Vector3(bp2.X, bp1.Y, bp1.Z);
+            bp6 = Vector3(bp1.X, bp2.Y, bp2.Z);
+            bp7 = Vector3(bp2.X, bp1.Y, bp2.Z);
+            bp8 = Vector3(bp2.X, bp2.Y, bp1.Z);
+
+            # Add all to a list
+            boundPoints = List();
+            boundPoints.Add(bp1);
+            boundPoints.Add(bp2);
+            boundPoints.Add(bp3);
+            boundPoints.Add(bp4);
+            boundPoints.Add(bp5);
+            boundPoints.Add(bp6);
+            boundPoints.Add(bp7);
+            boundPoints.Add(bp8);
+
+            depthBeforeFloating = Vector3.Distance(bp1, bp4) * 0.5;
+            displacementAmount = 1;
+            numPoints = 8;
+            angularDrag = 0.5;
+            drag = 0.3;
+
+            rb = other.GetComponent("Rigidbody");
+            for (point in boundPoints)
+            {
+                surfaceTop = self.GetWavePosition(point);
+                displaced = (surfaceTop - (point.Y + depthBeforeFloating)) / depthBeforeFloating;
+                dMult = Math.Clamp(displaced, 0, 1) * displacementAmount;
+
+                wdForce = velocity.Scale(drag);
+
+                bForce = Vector3(0, Math.Abs(rb.Gravity.Y) * dMult - wdForce.Y, 0);
+                rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+
+                wdForce = velocity.Scale(0.7 * -1 * Time.TickTime);
+                rb.AddForceWithMode(bForce, "VeclocityChange");
+
+                ag = rb.GetAngularVelocity();
+                agdForce = ag.Scale(angularDrag * -1 * Time.TickTime);
+                rb.AddTorque(agdForce, "VelocityChange");
+            }
+
+            
+
+
+            /*objectBottom = center.Y - other.Scale.Y * 2.5;
+            surfaceTop = self.GetWavePosition(center);
+
+            displaced = surfaceTop - objectBottom;
+            displaced = Math.Clamp(displaced, 0, maxDisplacement);
+            displaced = displaced / maxDisplacement;
+
+            force = force + Vector3(0, -2 * other.GetComponent("Rigidbody").Gravity.Y * displaced - self.DampingForce * velocity.Y, 0);
+            self.HandleForce(other, force, self._forceMode);*/
+        }
     }
 
     function OnCollisionExit(other)
@@ -1536,9 +1619,24 @@ component Rigidbody
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
+    function AddForceWithModeAtPoint(force, point, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+    }
+
+    function AddTorque(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+    }
+
     function GetVelocity()
     {
         return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+    }
+
+    function GetAngularVelocity()
+    {
+        return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
     }
 }
 
