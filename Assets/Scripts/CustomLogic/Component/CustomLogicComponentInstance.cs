@@ -46,7 +46,7 @@ namespace CustomLogic
 
         public void OnCollisionStay(CustomLogicBaseBuiltin other)
         {
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
+            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
         }
 
         public void OnCollisionEnter(CustomLogicBaseBuiltin other)
