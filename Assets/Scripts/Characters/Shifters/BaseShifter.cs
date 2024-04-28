@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
@@ -29,6 +29,7 @@ namespace Characters
         public bool TransformingToHuman;
         public float PreviousHumanGas;
         public BaseUseable PreviousHumanWeapon;
+        public float DeathAnimationLength = 2f;
         protected BaseCustomSkinLoader _customSkinLoader;
 
         protected override void Start()
@@ -86,6 +87,16 @@ namespace Characters
             _inGameManager.SpawnPlayerAt(false, BaseTitanCache.Neck.position, BaseTitanCache.Neck.rotation.eulerAngles.y);
             Human currentCharacter = ((Human)_inGameManager.CurrentCharacter);
             currentCharacter.StartCoroutine(currentCharacter.WaitAndTransformFromShifter(PreviousHumanGas, PreviousHumanWeapon));
+        }
+
+        protected override IEnumerator WaitAndDie()
+        {
+            StateActionWithTime(TitanState.Dead, BaseTitanAnimations.Die, 0f, 0.1f);
+            yield return new WaitForSeconds(DeathAnimationLength);
+            EffectSpawner.Spawn(EffectPrefabs.TitanDie1, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
+            yield return new WaitForSeconds(3f);
+            EffectSpawner.Spawn(EffectPrefabs.TitanDie2, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         protected override void Awake()

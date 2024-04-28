@@ -11,6 +11,16 @@ namespace CustomLogic
         {
         }
 
+        public override object GetField(string name)
+        {
+            if (name == "PI")
+            {
+                return Mathf.PI;
+            }
+            
+            return base.GetField(name);
+        }
+
         public override object CallMethod(string name, List<object> parameters)
         {
             if (name == "Clamp")
@@ -106,6 +116,16 @@ namespace CustomLogic
             {
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.RoundToInt(a);
+            }
+            if (name == "Deg2Rad")
+            {
+                float a = parameters[0].UnboxToFloat();
+                return a * Mathf.Deg2Rad;
+            }
+            if (name == "Rad2Deg")
+            {
+                float a = parameters[0].UnboxToFloat();
+                return a * Mathf.Rad2Deg;
             }
             return base.CallMethod(name, parameters);
         }

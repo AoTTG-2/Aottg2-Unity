@@ -98,6 +98,24 @@
 			]
 		},
 		{
+			"Name": "Cage Fight",
+			"IncludedModes": ["Cage Fight", "None"],
+			"Maps": [
+				{
+					"Name": "Veneration"
+				},
+				{
+					"Name": "Refuge"
+				},
+				{
+					"Name": "Crystalline"
+				},
+				{
+					"Name": "En Passant"
+				}
+			]
+		},
+		{
 			"Name": "Racing Basic",
 			"IncludedModes": ["Racing"],
 			"Maps": [
@@ -188,6 +206,22 @@
 						"AllowThunderspears": false,
 						"AllowShifterSpecials": false
 					}
+				},
+				{
+					"Name": "Armored",
+					"MiscSettings": {
+						"AllowThunderspears": true,
+						"AllowShifterSpecials": false,
+						"AllowBlades": false,
+						"AllowAHSS": false,
+						"AllowAPG": false
+					}
+				},
+				{
+					"Name": "Outside The Walls",
+					"MiscSettings": {
+						"Horses": true
+					}
 				}
 			]
 		},
@@ -227,6 +261,14 @@
 				"AllowAPG": false,
 				"AllowPlayerTitans": false,
 				"ThunderspearPVP": true,
+				"AllowShifterSpecials": false
+			}
+		},
+		{
+			"Name": "Cage Fight",
+			"MiscSettings": {
+				"PVP": 2,
+				"AllowPlayerTitans": false,
 				"AllowShifterSpecials": false
 			}
 		},

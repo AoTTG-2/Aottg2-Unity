@@ -25,5 +25,10 @@
         public static string ShifterThunder = "ShifterThunderEffect";
         public static string BladeThrowHit = "BladeThrowHitEffect";
         public static string APGTrail = "APGTrailEffect";
+        public static string SingleSplash = "SplashEffect";
+        public static string Splash1 = "Splash1Effect";
+        public static string Splash2 = "Splash2Effect";
+        public static string Splash3 = "Splash3Effect";
+        public static string WaterWake = "WaterWakeEffect";
     }
 }

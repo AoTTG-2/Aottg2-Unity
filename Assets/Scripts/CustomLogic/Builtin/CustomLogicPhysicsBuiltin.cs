@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Map;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +23,19 @@ namespace CustomLogic
                 int layer = MapLoader.GetColliderLayer(collideWith);
                 if (Physics.Linecast(start, end, out hit, PhysicsLayer.CopyMask(layer).value))
                 {
-                    return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                    var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                    if (collider != null)
+                    {
+                        return new CustomLogicLineCastHitResultBuiltin
+                        {
+                            IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
+                            IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
+                            Point = new CustomLogicVector3Builtin(hit.point),
+                            Normal = new CustomLogicVector3Builtin(hit.normal),
+                            Distance = hit.distance,
+                            Collider = collider
+                        };
+                    }
                 }
                 return null;
             }

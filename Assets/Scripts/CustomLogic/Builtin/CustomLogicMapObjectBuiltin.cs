@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using Map;
 using Utility;
 using System.ComponentModel;
 using System.Linq;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
@@ -93,28 +94,60 @@ namespace CustomLogic
                     else if (param == "AddForce")
                     {
                         Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                        string forceMode = "Acceleration";
-                        if (parameters.Count > 2)
-                        {
-                            forceMode = (string)parameters[1];
-                        }
                         ForceMode mode = ForceMode.Acceleration;
-                        switch (forceMode)
+                        if (parameters.Count >= 4)
                         {
-                            case "Force":
-                                mode = ForceMode.Force;
-                                break;
-                            case "Acceleration":
-                                mode = ForceMode.Acceleration;
-                                break;
-                            case "Impulse":
-                                mode = ForceMode.Impulse;
-                                break;
-                            case "VelocityChange":
-                                mode = ForceMode.VelocityChange;
-                                break;
+                            string forceMode = (string)parameters[3];
+                            switch (forceMode)
+                            {
+                                case "Force":
+                                    mode = ForceMode.Force;
+                                    break;
+                                case "Acceleration":
+                                    mode = ForceMode.Acceleration;
+                                    break;
+                                case "Impulse":
+                                    mode = ForceMode.Impulse;
+                                    break;
+                                case "VelocityChange":
+                                    mode = ForceMode.VelocityChange;
+                                    break;
+                            }
                         }
-                        rigidbody.AddForce(force, mode);
+                        if (parameters.Count >= 5)
+                        {
+                            Vector3 position = ((CustomLogicVector3Builtin)parameters[4]).Value;
+                            rigidbody.AddForceAtPosition(force, position, mode);
+                        }
+                        else
+                        {
+                            rigidbody.AddForce(force, mode);
+                        }
+                    }
+                    else if (param == "AddTorque")
+                    {
+                        Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                        ForceMode mode = ForceMode.Acceleration;
+                        if (parameters.Count >= 4)
+                        {
+                            string forceMode = (string)parameters[3];
+                            switch (forceMode)
+                            {
+                                case "Force":
+                                    mode = ForceMode.Force;
+                                    break;
+                                case "Acceleration":
+                                    mode = ForceMode.Acceleration;
+                                    break;
+                                case "Impulse":
+                                    mode = ForceMode.Impulse;
+                                    break;
+                                case "VelocityChange":
+                                    mode = ForceMode.VelocityChange;
+                                    break;
+                            }
+                        }
+                        rigidbody.AddTorque(force, mode);
                     }
                 }
                 else if (name == "CustomPhysicsMaterial")
@@ -164,6 +197,10 @@ namespace CustomLogic
                     if (param == "Velocity")
                     {
                         return new CustomLogicVector3Builtin(rigidbody.velocity);
+                    }
+                    else if (param == "AngularVelocity")
+                    {
+                        return new CustomLogicVector3Builtin(rigidbody.angularVelocity);
                     }
                 }
                 return null;
@@ -281,6 +318,63 @@ namespace CustomLogic
                     r.material.color = color;
                 }
                 return null;
+            }
+            if (methodName == "InBounds")
+            {
+                // Iterate over colliders and check if the param position is within the bounds
+                Vector3 position = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                
+                // Check all colliders on the object and on its children
+                foreach (var collider in Value.colliderCache)
+                {
+                    if (collider.bounds.Contains(position))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            if (methodName == "GetBoundsAverageCenter")
+            {
+                // Check all colliders on the object and on its children
+                Vector3 center = Vector3.zero;
+                int count = 0;
+                foreach (var collider in Value.colliderCache)
+                {
+                    center += collider.bounds.center;
+                    count++;
+                }
+
+                if (count > 0)
+                {
+                    return new CustomLogicVector3Builtin(center / count);
+                }
+                return new CustomLogicVector3Builtin(Value.GameObject.transform.position);
+            }
+            if (methodName == "GetBoundsCenter")
+            {
+                if (Value.colliderCache.Length == 0)
+                {
+                    return null;
+                }
+                return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.center);
+            }
+            if (methodName == "GetBoundsMin")
+            {
+                if (Value.colliderCache.Length == 0)
+                {
+                    return null;
+                }
+                return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.min);
+            }
+            if (methodName == "GetBoundsMax")
+            {
+                if (Value.colliderCache.Length == 0)
+                {
+                    return null;
+                }
+                return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.max);
             }
             return base.CallMethod(methodName, parameters);
         }
@@ -437,6 +531,11 @@ namespace CustomLogic
                 return false;
             var other = ((CustomLogicMapObjectBuiltin)obj).Value;
             return Value == other;
+        }
+
+        public override string ToString()
+        {
+            return $"{Value.GameObject.name} (MapObject)";
         }
     }
 }

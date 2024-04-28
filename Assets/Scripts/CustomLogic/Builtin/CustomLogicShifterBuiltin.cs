@@ -91,6 +91,10 @@ namespace CustomLogic
             {
                 return new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
             }
+            if (name == "DeathAnimLength")
+            {
+                return Shifter.DeathAnimationLength;
+            }
             return base.GetField(name);
         }
 
@@ -109,6 +113,10 @@ namespace CustomLogic
             {
                 if (Shifter.AI)
                     Shifter.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
+            }
+            if (name == "DeathAnimLength")
+            {
+                Shifter.DeathAnimationLength = value.UnboxToFloat();
             }
             else
                 base.SetField(name, value);

@@ -68,6 +68,21 @@ namespace CustomLogic
                     Titan.Emote((string)parameters[0]);
                     return null;
                 }
+                if (methodName == "Reveal")
+                {
+                    Titan.Reveal(parameters[0].UnboxToFloat());
+                    return null;
+                }
+                else if (methodName == "AddOutline")
+                {
+                    Titan.AddOutline();
+                    return null;
+                }
+                else if (methodName == "RemoveOutline")
+                {
+                    Titan.RemoveOutline();
+                    return null;
+                }
                 return base.CallMethod(methodName, parameters);
             }
             return null;

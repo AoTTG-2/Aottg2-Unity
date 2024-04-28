@@ -151,8 +151,13 @@ Scene,Nature/Tree12,153,0,1,1,1,0,Tree12,653.4009,4.848518,591.3136,0,146.4757,0
 /// Logic
 class Main
 {
+	TitansCount = 15;
+	TitansCountTooltip = "Number of titans that is spawned after the female titan died. Can be 0.";
+
 	_hasSpawned = false;
 	_hasSpawnedEnemy = false;
+	_hasSpawnedTitans = false;
+	_enemyShifterPosition = Vector3(0, 0, 0);
 
 	function OnGameStart()
 	{
@@ -175,9 +180,17 @@ class Main
 			if (aiShifters > 0)
 			{
 				self._hasSpawnedEnemy = true;
+				self._enemyShifterPosition = Game.AIShifters.Get(0).Position;
 			}
 			if (aiShifters == 0 && titans == 0 && self._hasSpawnedEnemy)
 			{
+				if (self.TitansCount > 0 && !self._hasSpawnedTitans)
+				{
+					self.SpawnTitans(self.TitansCount);
+					self._hasSpawnedTitans = true;
+					return;
+				}
+
 				UI.SetLabelAll("MiddleCenter", "Humanity wins!");
 				Game.End(10.0);
 				return;
@@ -189,6 +202,39 @@ class Main
 				return;
 			}
 			UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans + aiShifters));
+		}
+	}
+
+	coroutine SpawnTitans(count)
+	{
+		i = 0;
+		titans = List();
+		while (i < count)
+		{
+			titan = Game.SpawnTitan("Default");
+			titan.DetectRange = 0;
+			titan.FocusRange = 0;
+			titans.Add(titan);
+
+			i += 1;
+			wait 0.01;
+		}
+
+		for(t in titans)
+		{
+			t.MoveTo(self._enemyShifterPosition, 1, true);
+		}
+
+		wait 13.0;
+
+		for(t in titans)
+		{
+			if (t != null)
+			{
+				t.Wander();
+				t.DetectRange = 2000;
+				t.FocusRange = 2000;
+			}
 		}
 	}
 }
@@ -210,6 +256,7 @@ cutscene MainCutscene
 		{
 			annie = Game.SpawnShifterAt("Annie", spawn.Position);
 			annie.Rotation = Vector3(0, 180, 0);
+			annie.DeathAnimLength = 10;
 		}
 		wait 4.0;
 	}

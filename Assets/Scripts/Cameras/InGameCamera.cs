@@ -136,10 +136,10 @@ namespace Cameras
         private void UpdateMapLights()
         {
             var transform = Cache.Transform;
-            foreach (var mapLight in MapLoader.MapLights)
+            /*foreach (var mapLight in MapLoader.MapLights)
             {
                 mapLight.UpdateCull(transform);
-            }
+            }*/
         }
 
         protected void FixedUpdate()

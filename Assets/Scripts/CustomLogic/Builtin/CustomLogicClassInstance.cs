@@ -19,5 +19,10 @@ namespace CustomLogic
             else
                 Variables.Add(variableName, value);
         }
+
+        public override string ToString()
+        {
+            return $"{ClassName} (CustomLogicClassInstance)";
+        }
     }
 }

@@ -7,6 +7,7 @@ component WaterPhysics
     SurfaceVerticalDrag = 0.7;
     SurfaceHorizontalDrag = 0.85;
     SunkenDrag = 0.5;
+    DampingForce = 0.3;
 
     SunkenGravity = 18.0;
     DisableHooks = true;
@@ -36,7 +37,7 @@ component WaterPhysics
 
     function Init()
     {
-        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
         self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
     }
 
@@ -71,6 +72,24 @@ component WaterPhysics
         return Vector3(0, 0, 0);
     }
 
+    function GetMass(other)
+    {
+        if (other.Type == "Human")
+        {
+            return 1;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return 1;
+            }
+            return body.Mass;
+        }
+        return 1;
+    }
+
     function SetVelocity(other, velocity)
     {
         if (other.Type == "Human")
@@ -85,6 +104,23 @@ component WaterPhysics
                 body.SetVelocity(velocity);
             }
         }
+    }
+
+    function HasPhysics(other)
+    {
+        if (other.Type == "Human")
+        {
+            return true;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -127,77 +163,167 @@ component WaterPhysics
             return;
         }
         velocity = self.GetVelocity(other);
-        position = other.Position;
-        # Game.SpawnEffect("Splash", position, Vector3.GetRotationDirection(velocity, other.Forward), 1.0);
-        if (position.Y > self._surfaceBottom)
+        position = other.Position;      
+
+        # Convert velocity to euler angle on just the y axis
+        angle = Vector3.Angle(Vector3(0, 0, 1), velocity.Normalized);  
+
+        effectSize = velocity.Magnitude / 100;
+        effectSize = Math.Clamp(effectSize, 2, 7);
+        Game.SpawnEffect("Splash2", position, Vector3(-90,0,0), effectSize);
+        # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
+        horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+        horizontalVector = horizontalVector.Normalized;
+        velocityNorm = velocity.Normalized;
+        angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+        if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
         {
-            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
-            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
-            horizontalVector = horizontalVector.Normalized;
-            velocityNorm = velocity.Normalized;
-            angle = Vector3.Angle(horizontalVector, velocityNorm);
+            ratio = (1 - (angle / self._maxAngle));
+            angleRatio = ratio - 0.5;
+            horizontalRatio = angle / self._maxAngle;
 
-            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            skipZoneValue = self.RangeToValue(angleRatio);
+            # flip the y
+            flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+            # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
+            force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+            self.SetVelocity(other, force);
+
+            if (other.Type == "Human")
             {
-                ratio = (1 - (angle / self._maxAngle));
-                angleRatio = ratio - 0.5;
-                horizontalRatio = angle / self._maxAngle;
-
-                skipZoneValue = self.RangeToValue(angleRatio);
-                # flip the y
-                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
-
-                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
-                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
-
-                self.SetVelocity(other, force);
-
-                if (other.Type == "Human")
+                if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
                 {
-                    if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
-                    {
-                        other.PlayAnimation("Armature|slide", 0.01);
-                    }
+                    other.PlayAnimation("Armature|slide", 0.01);
                 }
             }
+            return;
         }
+        if (other.Type == "Human")
+        {
+            other.PlaySound("WaterSplash");
+        }
+    }
+
+    function GetWavePosition(position)
+    {
+        waveDistance = 20;
+        waveSpeed = 500;
+        noiseStrength = 5;
+        noiseWalk = 1;
+        scale = 2;
+
+        deltaY = 0;
+        deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
+        deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
+        return self._surfaceTop + deltaY;
     }
 
     function OnCollisionStay(other)
     {
-        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.HasPhysics(other) == false)
         {
             return;
         }
+
         velocity = self.GetVelocity(other);
         position = other.Position;
-        # If the object is below the surface, apply a force equal to gravity - drag.
-        # Game.Print("Hello, I am under the water.");
-        force = Vector3(0, self.SunkenGravity, 0);
-        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
-        drag = 1 - self.SunkenDrag;
-        force = force + xzVelocity.Scale(-1 * drag);
-        self.HandleForce(other, force, self._forceMode);
 
-        /* Requires new logic as this will spam hooks as long as the player is under the water.
-        if (other.Type == "Human" && self.DisableHooks)
+        if (other.Type == "Human")
         {
-            other.ClearHooks();
-        }
-        */
+            # If the object is below the surface, apply a force equal to gravity - drag.
+            # Game.Print("Hello, I am under the water.");
+            force = Vector3(0, self.SunkenGravity, 0);
+            xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+            drag = 1 - self.SunkenDrag;
+            force = force + xzVelocity.Scale(-1 * drag);
+            self.HandleForce(other, force, self._forceMode);
 
-        if (other.Type == "Human" && self.SupportDrowning)
-        {
-            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
-            UI.SetLabel("MiddleCenter", message);
-            self._isMyPlayerUnderwater = true;
-            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
-            if (self._myPlayerTimer >= self.TimeToDrown)
+            if (self.SupportDrowning)
             {
-                other.GetKilled("Drowning");
+                message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+                UI.SetLabel("MiddleCenter", message);
+                self._isMyPlayerUnderwater = true;
+                self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+                if (self._myPlayerTimer >= self.TimeToDrown)
+                {
+                    other.GetKilled("Drowning");
+                }
             }
         }
 
+        elif (other.Type == "MapObject")
+        {
+            /*xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+            drag = 1 - self.SunkenDrag;
+            force = xzVelocity.Scale(-1 * drag);
+            maxDisplacement = other.Scale.Y * 10;*/
+
+            minPoint = other.GetBoundsMin();
+            maxPoint = other.GetBoundsMax();
+            center = other.GetBoundsCenter();
+
+            bp1 = minPoint;
+            bp2 = maxPoint;
+            bp3 = Vector3(bp1.X, bp1.Y, bp2.Z);
+            bp4 = Vector3(bp1.X, bp2.Y, bp1.Z);
+            bp5 = Vector3(bp2.X, bp1.Y, bp1.Z);
+            bp6 = Vector3(bp1.X, bp2.Y, bp2.Z);
+            bp7 = Vector3(bp2.X, bp1.Y, bp2.Z);
+            bp8 = Vector3(bp2.X, bp2.Y, bp1.Z);
+
+            # Add all to a list
+            boundPoints = List();
+            boundPoints.Add(bp1);
+            boundPoints.Add(bp2);
+            boundPoints.Add(bp3);
+            boundPoints.Add(bp4);
+            boundPoints.Add(bp5);
+            boundPoints.Add(bp6);
+            boundPoints.Add(bp7);
+            boundPoints.Add(bp8);
+
+            depthBeforeFloating = Vector3.Distance(bp1, bp4) * 0.5;
+            displacementAmount = 1;
+            numPoints = 8;
+            angularDrag = 0.5;
+            drag = 0.3;
+
+            rb = other.GetComponent("Rigidbody");
+            for (point in boundPoints)
+            {
+                surfaceTop = self.GetWavePosition(point);
+                displaced = (surfaceTop - (point.Y + depthBeforeFloating)) / depthBeforeFloating;
+                dMult = Math.Clamp(displaced, 0, 1) * displacementAmount;
+
+                wdForce = velocity.Scale(drag);
+
+                bForce = Vector3(0, Math.Abs(rb.Gravity.Y) * dMult - wdForce.Y, 0);
+                rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+
+                wdForce = velocity.Scale(0.7 * -1 * Time.TickTime);
+                rb.AddForceWithMode(bForce, "VeclocityChange");
+
+                ag = rb.GetAngularVelocity();
+                agdForce = ag.Scale(angularDrag * -1 * Time.TickTime);
+                rb.AddTorque(agdForce, "VelocityChange");
+            }
+
+            
+
+
+            /*objectBottom = center.Y - other.Scale.Y * 2.5;
+            surfaceTop = self.GetWavePosition(center);
+
+            displaced = surfaceTop - objectBottom;
+            displaced = Math.Clamp(displaced, 0, maxDisplacement);
+            displaced = displaced / maxDisplacement;
+
+            force = force + Vector3(0, -2 * other.GetComponent("Rigidbody").Gravity.Y * displaced - self.DampingForce * velocity.Y, 0);
+            self.HandleForce(other, force, self._forceMode);*/
+        }
     }
 
     function OnCollisionExit(other)
@@ -780,6 +906,10 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
+    DecaySpeed = 1.0;
+    Order = 0;
+    SupplyStationID = "";
+    SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
 
     ShowUI = true;
     UIVisibilityRange = 80.0;
@@ -787,15 +917,16 @@ component CaptureZone
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
+    _lastState = "Captured";
     _currentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
 
     # Team Colors
-    _humanColor = Color(255, 255, 62, 255);
+    _humanColor = Color(70, 80, 125, 255);
     _shifterColor = Color(115, 222, 255, 255);
-    _titanColor = Color(70, 80, 125, 255);
+    _titanColor = Color(255, 255, 62, 255);
     _neutralColor = Color(255, 255, 255, 255);
     _teamBlueColor = Color(0, 0, 255, 255);
     _teamRedColor = Color(255, 0, 0, 255);
@@ -807,7 +938,16 @@ component CaptureZone
 
     # UI state
     _isViewing = false;
-
+    
+    # Supply Station
+    _supplyStation = null;
+    _hasSupplyStation = false;
+    _isSupplyStationActive = false;
+    
+    # Callback Receiver
+    _lastOwner = "null"; # Use to avoid calling "OnCaptured" multiple times
+    _callbackReceiver = null;
+    _hasCallbackReceiver = false;
 
     function Init()
     {
@@ -821,6 +961,48 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
+        
+        # Setup supply station
+        if (self.SupplyStationID != "")
+        {
+            id = Convert.ToInt(self.SupplyStationID);
+            self._supplyStation = Map.FindMapObjectByID(id);
+            self._hasSupplyStation = self._supplyStation != null;
+            
+            if (self._hasSupplyStation)
+            {
+                self._supplyStation.Active = false;
+            }
+        }
+    }
+    
+    /*
+     * Callback receiver can be an instance of any class
+     * that have the following functions:
+     *      OnCaptured(captureZone, newOwner),
+     *      OnCapturing(captureZone, capturer),
+     *      OnContested(captureZone),
+     */
+    function SetupCallbackReceiver(callbackReceiver)
+    {
+        self._callbackReceiver = callbackReceiver;
+        self._hasCallbackReceiver = self._callbackReceiver != null;
+    }
+
+    # Getters
+    function GetCurrentOwner()
+    {
+        return self._currentOwner;
+    }
+
+    function GetCaptureProgress()
+    {
+        return self._captureProgress / self.CaptureTime;
+    }
+
+    function GetState()
+    {
+        return self._state;
     }
 
     # GameObject Helpers
@@ -928,7 +1110,15 @@ component CaptureZone
             }
             elif (self._teamsInZone.Contains(self._currentCapturer) == false)
             {
-                self._captureProgress = self._captureProgress - 1.0;
+                if (self._teamsInZone.Count == 0)
+                {
+                    self._captureProgress = self._captureProgress - self.DecaySpeed;
+                }
+                else
+                {
+                    self._captureProgress = self._captureProgress - 1.0;
+                }
+                
                 if (self._captureProgress <= 0.0)
                 {
                     self._state = "Captured";
@@ -962,6 +1152,8 @@ component CaptureZone
 			return;
 		}
 
+        self.CheckPlayersInZone();
+
         self.HandleStateTransition();
 
         self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
@@ -975,12 +1167,96 @@ component CaptureZone
         return "#" + teamColor.ToHexString();
     }
 
+    function CheckPlayersInZone()
+    {
+        teamsToRemove = List();
+        for (team in self._teamsInZone.Keys)
+        {
+            playersToRemove = List();
+            players = self._teamsInZone.Get(team);
+            for (player in players)
+            {
+                if (player == null)
+                {
+                    playersToRemove.Add(player);
+                }
+                else {
+                    hPos = Vector3(player.Position.X, 0, player.Position.Z);
+                    hCenter = Vector3(self.MapObject.Position.X, 0, self.MapObject.Position.Z);
+                    if (Vector3.Distance(hPos, hCenter) > self.MapObject.Scale.X * 20)
+                    {
+                        playersToRemove.Add(player);
+                    }
+                }
+            }
+            for (player in playersToRemove)
+            {
+                players.Remove(player);
+            }
+            self._teamsInZone.Set(team, players);
+
+            if (players.Count == 0)
+            {
+                teamsToRemove.Add(team);
+            }
+        }
+
+        for (team in teamsToRemove)
+        {
+            self._teamsInZone.Remove(team);
+        }
+    }
+
     function OnTick()
     {
         if (self.Enabled == false || self.ShowUI == false)
 		{
 			return;
 		}
+		
+		if (self._lastState != self._state)
+		{
+		    if (self._hasCallbackReceiver)
+		    {
+                if (self._state == "Captured")
+                {
+                    if (self._lastOwner != self._currentOwner)
+                    {
+                        self._callbackReceiver.OnCaptured(self, self._currentOwner);
+                        self._lastOwner = self._currentOwner;
+                    }
+                }
+                elif (self._state == "Capturing")
+                {
+                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                }
+                elif (self._state == "Contested")
+                {
+                    self._callbackReceiver.OnContested(self);
+                }
+		    }
+            self._lastState = self._state;
+		}
+		
+		if (self._state == "Captured")
+        {
+            if (self._currentOwner == "Human")
+            {
+                if (self._hasSupplyStation && !self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = true;
+                    self._isSupplyStationActive = true;
+                }
+            }
+            else
+            {
+                if (self._hasSupplyStation && self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = false;
+                    self._isSupplyStationActive = false;
+                }
+            }
+        }
 
         if (Network.MyPlayer.Character == null)
 		{
@@ -989,7 +1265,7 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.UIVisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange || self.MapObject.Active == false)
         {
             if (self._isViewing == true)
             {
@@ -1351,9 +1627,24 @@ component Rigidbody
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
+    function AddForceWithModeAtPoint(force, point, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+    }
+
+    function AddTorque(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+    }
+
     function GetVelocity()
     {
         return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+    }
+
+    function GetAngularVelocity()
+    {
+        return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
     }
 }
 
@@ -1855,6 +2146,7 @@ component Cannon
     _barrelEnd = null;
     _inUse = false;
     _cooldownLeft = 0.0;
+    _ammoLeft = 0;
     _human = null;
     _collidingHuman = null;
 
@@ -1864,12 +2156,14 @@ component Cannon
         self._barrelEnd = self._barrel.GetTransform("End");
         self._humanMount = self.MapObject.GetTransform("HumanMount");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 15.0);
+        self._ammoLeft = self.MaxAmmo;
     }
 
     function SendNetworkStream()
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
+        self.NetworkSync.SendStream(self._ammoLeft)
     }
 
     function OnNetworkStream()
@@ -1877,6 +2171,7 @@ component Cannon
         rotation = self.NetworkView.ReceiveStream();
         self._barrel.LocalRotation = rotation;
         self._inUse = self.NetworkView.ReceiveStream();
+        self._ammoLeft = self.NetworkSync.ReceiveStream();
     }
 
     function OnNetworkMessage(sender, message)
@@ -1925,6 +2220,12 @@ component Cannon
         if (self._inUse && self.NetworkView.Owner == Network.MyPlayer)
         {
             self._cooldownLeft = self._cooldownLeft - Time.FrameTime;
+            message = "Cooldown: " + Convert.ToString(Convert.ToInt(Math.Clamp(self._cooldownLeft, 0.0, self.Cooldown)));
+            if (!self.UnlimitedAmmo)
+            {
+                message = message + " Ammo: " + Convert.ToString(self._ammoLeft);
+            }
+            UI.SetLabelForTime("MiddleCenter", message, 0.1);
             barrelRotation = self._barrel.LocalRotation;
             baseRotation = self.MapObject.Rotation;
             if (Input.GetKeyHold("General/Left"))
@@ -1946,7 +2247,8 @@ component Cannon
             barrelRotation.X = Math.Clamp(barrelRotation.X, -45.0, 45.0);
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
-            if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
+            hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
+            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold("Human/AttackDefault"))
             {
                 self.Fire();
             }
@@ -1995,6 +2297,7 @@ component Cannon
     function Fire()
     {
         self._cooldownLeft = self.Cooldown;
+        self._ammoLeft = self._ammoLeft - 1;
         if (self._human != null)
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
@@ -2184,6 +2487,12 @@ component TitanBarrier
 component WallGateA1
 {
     Description = "Makes WallGateA1 openable by players.";
+
+    StartState = "Closed";
+    StartStateDropdown = "Closed, Open";
+
+    Interactable = true;
+
     _currentHuman = null;
     _open = false;
     _moving = false;
@@ -2192,12 +2501,28 @@ component WallGateA1
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
+        self._open = self.StartState == "Open";
+
+        localPosition = self._door.LocalPosition;
+        if (self._open)
+        {
+            localPosition.Y = 25;
+        }
+        else
+        {
+            localPosition.Y = 0;
+        }
+        self._door.LocalPosition = localPosition;
     }
 
     function OnNetworkMessage(sender, message)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (message == "request" && Network.IsMasterClient)
         {
             if (!self._moving)
@@ -2217,8 +2542,22 @@ component WallGateA1
         self._moving = true;
     }
 
+    function SetState(state)
+    {
+        isOpen = state == "Open";
+        if (self._open != isOpen)
+        {
+            self._open = isOpen;
+            self._moving = true;
+        }
+    }
+
     function OnCollisionStay(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = other;
@@ -2228,6 +2567,10 @@ component WallGateA1
 
     function OnFrame()
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
@@ -2263,6 +2606,10 @@ component WallGateA1
 
     function OnCollisionExit(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;

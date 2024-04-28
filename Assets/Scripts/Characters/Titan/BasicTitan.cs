@@ -40,6 +40,7 @@ namespace Characters
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
         public int HeadPrefab;
+        private Outline _outline = null;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
 
@@ -92,6 +93,38 @@ namespace Characters
             }
             BasicCache.ForearmSmokeL.transform.localScale = Vector3.one * Size;
             BasicCache.ForearmSmokeR.transform.localScale = Vector3.one * Size;
+        }
+
+        public void Reveal(float seconds)
+        {
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+                StartCoroutine(WaitAndRemoveOutline(_outline, seconds));
+            }
+        }
+
+        public void AddOutline()
+        {
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+            }
+        }
+
+        public void RemoveOutline()
+        {
+            if (_outline != null)
+            {
+                Destroy(_outline);
+                _outline = null;
+            }
+        }
+
+        private IEnumerator WaitAndRemoveOutline(Outline outline, float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            RemoveOutline();
         }
 
         [PunRPC]
