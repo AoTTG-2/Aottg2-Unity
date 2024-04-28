@@ -92,7 +92,7 @@ Material:
     - _InvFade: 1
     - _LightingEnabled: 0
     - _Mode: 1
-    - _Multiply: 15
+    - _Multiply: 3
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
