@@ -4017,6 +4017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0
+  _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
 --- !u!54 &5488840
 Rigidbody:
@@ -4119,7 +4120,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.15
+  m_Radius: 0.18
   m_Center: {x: 0, y: 0, z: -0.02}
 --- !u!1 &165016
 GameObject:
@@ -4172,7 +4173,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.15
+  m_Radius: 0.18
   m_Center: {x: 0, y: 0, z: -0.02}
 --- !u!1 &174922
 GameObject:
@@ -4225,7 +4226,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.1
+  m_Radius: 0.18
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &174924
 GameObject:
@@ -4278,7 +4279,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.1
+  m_Radius: 0.18
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &187592
 GameObject:

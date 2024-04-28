@@ -16,7 +16,7 @@ namespace UI
             InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
             charSettings.CharacterType.Value = PlayerCharacter.Shifter;
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
-            List<string> loadouts = new List<string>() { "Annie", "Eren", "Armored" };
+            List<string> loadouts = new List<string>() { "Annie", "Eren" };
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Character"),

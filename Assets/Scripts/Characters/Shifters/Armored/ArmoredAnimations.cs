@@ -7,6 +7,6 @@
         public override string Walk => "Amarture_VER2|dt_run";
         public override string Die => "Amarture_VER2|dt_die";
         public override string Stun => "Amarture_VER2|dt_exhaust";
-        public override string Attack => "Amarture_VER2|dt_attack_swipe_L";
+        public string AttackSwipe => "Amarture_VER2|dt_attack_swipe_L";
     }
 }

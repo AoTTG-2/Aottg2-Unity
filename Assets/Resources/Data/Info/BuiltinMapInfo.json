@@ -224,6 +224,12 @@
 					}
 				}
 			]
+		},
+		{
+			"Name": "Misc",
+			"IncludedModes": ["Map Logic"],
+			"Maps": [
+			]
 		}
 	],
 	"GameModes": [

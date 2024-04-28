@@ -16,7 +16,7 @@ namespace Characters
         public bool Disabled;
         protected Vector3 _correctPosition = Vector3.zero;
         protected Quaternion _correctRotation = Quaternion.identity;
-        protected Vector3 _correctVelocity = Vector3.zero;
+        public Vector3 _correctVelocity = Vector3.zero;
         public Quaternion _correctCamera = Quaternion.identity;
         protected bool _syncVelocity = false;
         protected bool _syncCamera = false;

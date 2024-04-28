@@ -63,9 +63,11 @@
         public string AttackSlapLowR = "Amarture_VER2|attack.anti.AE.low.r";
         public string AttackBrushChestL = "Amarture_VER2|attack.chest.L";
         public string AttackBrushChestR = "Amarture_VER2|attack.chest.R";
-        public string AttackSlapBack = "Amarture_VER2|attack.slap.back";
-        public string AttackSlapFace = "Amarture_VER2|attack.slap.face";
+        public string AttackHitBack = "Amarture_VER2|attack.slap.back";
+        public string AttackHitFace = "Amarture_VER2|attack.slap.face";
         public string AttackRockThrow = "Amarture_VER2|attack.throw";
+        public string AttackJump = "Amarture_VER2|attack.jumper.0";
+        public string AttackJumpCrawler = "Amarture_VER2|attack.crawler.jump.0";
         public override string SitIdle => "Amarture_VER2|sit_idle";
         public string SitIdleCrawler = "Amarture_VER2|crawler.sit.idle";
         public override string SitDown => "Amarture_VER2|sit_down";
@@ -80,6 +82,8 @@
         public override string Blind => "Amarture_VER2|hit.eye";
         public override string SitBlind => "Amarture_VER2|sit_hit_eye";
         public string BlindCrawler = "Amarture_VER2|crawler.hiteyes";
+        public string ArmHurtL = "Amarture_VER2|arm_hurt_L";
+        public string ArmHurtR = "Amarture_VER2|arm_hurt_R";
         public string EmoteLaugh = "Amarture_VER2|laugh";
         public string EmoteNod = "Amarture_VER2|emote_titan_yes";
         public string EmoteShake = "Amarture_VER2|emote_titan_no";

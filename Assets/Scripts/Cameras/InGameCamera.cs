@@ -141,10 +141,14 @@ namespace Cameras
                 mapLight.UpdateCull(transform);
             }*/
         }
-        
-        protected override void LateUpdate()
+
+        protected void FixedUpdate()
         {
             UpdateMapLights();
+        }
+
+        protected override void LateUpdate()
+        {
             if (CustomLogicManager.Cutscene || CustomLogicManager.ManualCamera)
             {
                 SyncCustomPosition();
@@ -157,7 +161,7 @@ namespace Cameras
                     SetFollow(_inGameManager.CurrentCharacter);
                 if (_inGameManager.CurrentCharacter == null)
                 {
-                    if (_input.ChangeCamera.GetKeyDown() && !ChatManager.IsChatActive())
+                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKeyDown())
                         _freeCam = !_freeCam;
                 }
                 else

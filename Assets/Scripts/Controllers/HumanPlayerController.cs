@@ -160,7 +160,7 @@ namespace Controllers
         {
             if (inMenu)
                 return;
-            bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.CurrentGas > 0f 
+            bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.Stats.CurrentGas > 0f
                 && _human.MountState != HumanMountState.MapObject && !_human.Dead;
             bool hookBoth = _humanInput.HookBoth.GetKey();
             bool hookLeft = _humanInput.HookLeft.GetKey();
@@ -189,12 +189,13 @@ namespace Controllers
             }
             _human.HookLeft.HookBoth = hookBoth && !hookLeft;
             _human.HookRight.HookBoth = hookBoth && !hookRight;
-            _human.HookLeft.SetInput(canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
-            _human.HookRight.SetInput(canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
-            if (_human.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
+            _human.HookLeft.SetInput(canHook && !IsSpin3Special() && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
+            _human.HookRight.SetInput(canHook && !IsSpin3Special() && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
+
+            if (_human.Stats.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
             {
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
-                _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
+                    _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
             }
             // TestScore();
         }
@@ -225,7 +226,7 @@ namespace Controllers
                     HideCursor = !HideCursor;
             }
 
-            
+
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
@@ -239,7 +240,7 @@ namespace Controllers
             _human._gunArmAim = false;
             if (canWeapon)
             {
-                if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 && 
+                if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 &&
                     !(_human.Weapon is ThunderspearWeapon && ((ThunderspearWeapon)_human.Weapon).HasActiveProjectile()))
                 {
                     if (attackInput.GetKeyDown() && _human.State == HumanState.Idle)
@@ -269,7 +270,7 @@ namespace Controllers
                 _human.Weapon.SetInput(false);
             if (_human.Special != null)
             {
-                bool canSpecial = _human.MountState == HumanMountState.None && 
+                bool canSpecial = _human.MountState == HumanMountState.None &&
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab)
                     && _human.CarryState != HumanCarryState.Carry && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
                 if (canSpecial)
@@ -301,7 +302,7 @@ namespace Controllers
                     if (_humanInput.Reload.GetKeyDown())
                         _human.Reload();
                 }
-                if(_human.CarryState == HumanCarryState.Carry)
+                if (_human.CarryState == HumanCarryState.Carry)
                 {
                     if (_humanInput.HorseMount.GetKeyDown())
                         _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
@@ -389,6 +390,27 @@ namespace Controllers
                             break;
                         }
                     }
+                    if (currentDirection == HumanDashDirection.None)
+                    {
+                        if (_human.Stats.Perks["OmniDash"].CurrPoints == 1)
+                        {
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            _human.DashVertical(GetTargetAngle(direction), direction);
+                        }
+                        else if (_human.Stats.Perks["VerticalDash"].CurrPoints == 1)
+                        {
+                            float angle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.x;
+                            if (angle < 0)
+                                angle += 360f;
+                            if (angle >= 360f)
+                                angle -= 360f;
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            if (angle > 0f && angle < 180f)
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.down);
+                            else
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.up);
+                        }
+                    }
                 }
                 if (SettingsManager.InputSettings.Human.DashDoubleTap.Value)
                 {
@@ -426,6 +448,11 @@ namespace Controllers
             else if (direction == HumanDashDirection.Left)
                 angle = GetTargetAngle(0, -1);
             return angle;
+        }
+
+        bool IsSpin3Special()
+        {
+            return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
         }
     }
 }

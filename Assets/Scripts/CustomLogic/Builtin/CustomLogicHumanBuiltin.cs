@@ -87,15 +87,15 @@ namespace CustomLogic
             if (name == "CurrentSpecial")
                 return Human.CurrentSpecial;
             if (name == "CurrentGas")
-                return Human.CurrentGas;
+                return Human.Stats.CurrentGas;
             if (name == "MaxGas")
-                return Human.MaxGas;
+                return Human.Stats.MaxGas;
             if (name == "Acceleration")
-                return Human.AccelerationStat;
-            if (name == "RunSpeed")
-                return Human.RunSpeedStat;
+                return Human.Stats.Acceleration;
+            if (name == "Speed")
+                return Human.Stats.Speed;
             if (name == "HorseSpeed")
-                return Human.HorseSpeed;
+                return Human.Stats.HorseSpeed;
             if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)
@@ -178,15 +178,15 @@ namespace CustomLogic
             else if (Human.Weapon is AmmoWeapon)
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
             if (name == "CurrentGas")
-                Human.CurrentGas = Mathf.Min(Human.MaxGas, value.UnboxToFloat());
+                Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
             else if (name == "MaxGas")
-                Human.MaxGas = value.UnboxToFloat();
+                Human.Stats.MaxGas = value.UnboxToFloat();
             else if (name == "Acceleration")
-                Human.SetAcceleration(value.UnboxToInt());
-            else if (name == "RunSpeed")
-                Human.SetRunSpeed(value.UnboxToInt());
+                Human.Stats.Acceleration = value.UnboxToInt();
+            else if (name == "Speed")
+                Human.Stats.Speed = value.UnboxToInt();
             else if (name == "HorseSpeed")
-                Human.HorseSpeed = value.UnboxToFloat();
+                Human.Stats.HorseSpeed = value.UnboxToFloat();
             else if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)
@@ -229,6 +229,7 @@ namespace CustomLogic
             }
             else
                 base.SetField(name, value);
+            Human.Stats.UpdateStats();
         }
     }
 }

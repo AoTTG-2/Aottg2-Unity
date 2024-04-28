@@ -181,22 +181,22 @@ namespace Characters
                             Cache.Rigidbody.velocity = Vector3.up * Cache.Rigidbody.velocity.y;
                         else
                         {
-                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(_owner.HorseSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
+                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(_owner.Stats.HorseSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
                                 ForceMode.Acceleration);
                         }
                     }
                     else if (State == HorseState.WalkToPoint || State == HorseState.RunToPoint  || 
                         State == HorseState.ControlledWalk || State == HorseState.ControlledRun)
                     {
-                        float speed = _owner.HorseSpeed;
+                        float speed = _owner.Stats.HorseSpeed;
                         if (State == HorseState.ControlledWalk)
                             speed = WalkSpeed;
                         else if (State == HorseState.WalkToPoint)
                             speed = RunCloseSpeed;
-                        Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.HorseSpeed, ForceMode.Acceleration);
+                        Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.Stats.HorseSpeed, ForceMode.Acceleration);
                         if (Cache.Rigidbody.velocity.magnitude >= speed)
                         {
-                            if (speed == _owner.HorseSpeed)
+                            if (speed == _owner.Stats.HorseSpeed)
                                 Cache.Rigidbody.AddForce((speed - Cache.Rigidbody.velocity.magnitude) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);
                             else
                                 Cache.Rigidbody.AddForce((Mathf.Max(speed - Cache.Rigidbody.velocity.magnitude, -1f)) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);

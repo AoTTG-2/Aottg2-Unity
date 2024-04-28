@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Utility;
 using Projectiles;
 using GameManagers;
+using Unity.VisualScripting;
 
 namespace Characters
 {
     class TitanEntityDetection: MonoBehaviour
     {
         public HashSet<GameObject> _entities = new HashSet<GameObject>();
+        public HashSet<GameObject> _humans = new HashSet<GameObject>();
         public HashSet<Hook> _hooks = new HashSet<Hook>();
         public BaseTitan Owner;
         public bool Detect = false;
@@ -43,6 +45,10 @@ namespace Characters
         {
             GameObject obj = other.transform.root.gameObject;
             BaseCharacter character = obj.GetComponent<BaseCharacter>();
+            if (character != null && character is Human && !TeamInfo.SameTeam(character, Owner))
+            {
+                _humans.Add(obj);
+            }
             if (character != null && character.IsMine() && (character is Human || !TeamInfo.SameTeam(character, Owner)))
             {
                 _entities.Add(obj);
@@ -63,6 +69,8 @@ namespace Characters
             GameObject obj = other.transform.root.gameObject;
             if (_entities.Contains(obj))
                 _entities.Remove(obj);
+            if (_humans.Contains(obj))
+                _humans.Remove(obj);
             if (_entities.Count == 0 && _hooks.Count == 0)
                 Detect = false;
         }
@@ -70,6 +78,7 @@ namespace Characters
         protected void FixedUpdate()
         {
             _entities = Util.RemoveNull(_entities);
+            _humans = Util.RemoveNull(_humans);
             var newHooks = new HashSet<Hook>();
             foreach (var item in _hooks)
             {

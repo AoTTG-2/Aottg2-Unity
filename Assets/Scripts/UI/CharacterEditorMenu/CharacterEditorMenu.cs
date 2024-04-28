@@ -16,6 +16,8 @@ namespace UI
         private CharacterEditorCostumePanel _costumePanel;
         private CharacterEditorStatsPanel _statsPanel;
         private CharacterEditorPreviewPanel _previewPanel;
+        public CharacterEditorEditStatsPopup _editStatsPopup;
+        public CharacterEditorEditPerksPopup _editPerksPopup;
         public HumanDummy Character;
         public IntSetting Weapon = new IntSetting((int)HumanWeapon.Blade);
 
@@ -27,9 +29,16 @@ namespace UI
             ResetCharacter();
         }
 
+        protected override void SetupPopups()
+        {
+            base.SetupPopups();
+            _editStatsPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditStatsPopup>(transform, false);
+            _editPerksPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditPerksPopup>(transform, false);
+        }
+
         public bool IsPopupActive()
         {
-            return SelectListPopup.IsActive || IconPickPopup.IsActive;
+            return SelectListPopup.IsActive || IconPickPopup.IsActive || _editStatsPopup.IsActive || _editPerksPopup.IsActive;
         }
 
         public void RebuildPanels(bool costumePopup)
@@ -39,6 +48,8 @@ namespace UI
                 Destroy(_costumePanel.gameObject);
                 Destroy(_statsPanel.gameObject);
                 Destroy(_previewPanel.gameObject);
+                Destroy(_editStatsPopup.gameObject);
+                Destroy(_editPerksPopup.gameObject);
             }
             _costumePanel = ElementFactory.CreateHeadedPanel<CharacterEditorCostumePanel>(transform, enabled: true).GetComponent<CharacterEditorCostumePanel>();
             _statsPanel = ElementFactory.CreateHeadedPanel<CharacterEditorStatsPanel>(transform, enabled: true).GetComponent<CharacterEditorStatsPanel>();
@@ -46,6 +57,8 @@ namespace UI
             ElementFactory.SetAnchor(_costumePanel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(20f, -20f));
             ElementFactory.SetAnchor(_statsPanel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-20f, -20f));
             ElementFactory.SetAnchor(_previewPanel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-20f, -450f));
+            _editStatsPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditStatsPopup>(transform, false);
+            _editPerksPopup = ElementFactory.CreateDefaultPopup<CharacterEditorEditPerksPopup>(transform, false);
         }
 
         public void ResetCharacter(bool changeAnimation = false)

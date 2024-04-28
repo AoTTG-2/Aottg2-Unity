@@ -49,7 +49,7 @@ namespace Characters
 
         public override void Kick()
         {
-            Attack(ShifterAttacks.AttackKick);
+            Attack("AttackKick");
         }
 
         [PunRPC]

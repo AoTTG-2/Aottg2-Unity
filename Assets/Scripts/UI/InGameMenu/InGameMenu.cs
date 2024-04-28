@@ -30,6 +30,7 @@ namespace UI
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
         public BasePopup _characterPopup;
+        public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
         public BasePopup _selectMapPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
@@ -248,8 +249,26 @@ namespace UI
                 InGameManager.UpdateRoundPlayerProperties();
             }
             else if (!enabled)
+            {
                 _characterPopup.Hide();
+                if (_characterChangePopup != null)
+                    _characterChangePopup.Hide();
+            }
             ToggleUI(true);
+        }
+
+        public void ShowCharacterChangeMenu()
+        {
+            if (!InMenu())
+            {
+                HideAllMenus();
+                if (_characterChangePopup == null)
+                {
+                    _characterChangePopup = ElementFactory.CreateDefaultPopup<CharacterChangePopup>(transform);
+                    _popups.Add(_characterChangePopup);
+                }
+                _characterChangePopup.Show();
+            }
         }
 
         public void ShowCutsceneMenu(string icon, string title, string content)

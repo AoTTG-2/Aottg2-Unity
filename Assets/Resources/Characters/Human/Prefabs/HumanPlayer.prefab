@@ -16558,10 +16558,6 @@ MonoBehaviour:
   Horse: {fileID: 0}
   Setup: {fileID: 0}
   FinishSetup: 0
-  CurrentGas: -1
-  MaxGas: -1
-  GasUsage: 0.2
-  HorseSpeed: 50
   CurrentSpecial: 
   Grabber: {fileID: 0}
   GrabHand: {fileID: 0}
@@ -16572,8 +16568,6 @@ MonoBehaviour:
   MountedTransform: {fileID: 0}
   MountedPositionOffset: {x: 0, y: 0, z: 0}
   MountedRotationOffset: {x: 0, y: 0, z: 0}
-  AccelerationStat: 0
-  RunSpeedStat: 0
   CancelHookLeftKey: 0
   CancelHookRightKey: 0
   CancelHookBothKey: 0
@@ -16582,7 +16576,6 @@ MonoBehaviour:
   ReelOutScrollTimeLeft: 0
   TargetMagnitude: 0
   IsWalk: 0
-  RunSpeed: 0
   _targetRotation: {x: 0, y: 0, z: 0, w: 0}
   StandAnimation: 
   AttackAnimation: 
@@ -16604,6 +16597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0
+  _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &3902152229338984631
 MonoBehaviour:

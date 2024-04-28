@@ -32,14 +32,16 @@ namespace Characters
             PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         protected float _tiling;
         protected float _lastLength;
+        protected float _maxLiveTime;
 
-        public static Hook CreateHook(Human owner, bool left, int id, bool gun = false)
+        public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
             GameObject obj = new GameObject();
             obj.transform.SetParent(owner.transform);
             Hook hook = obj.AddComponent<Hook>();
             hook._left = left;
             hook._owner = owner;
+            hook._maxLiveTime = maxLiveTime;
             hook._id = id;
             if (left)
             {
@@ -106,7 +108,6 @@ namespace Characters
             if (info.Sender != _owner.Cache.PhotonView.Owner)
                 return;
             State = HookState.Hooking;
-            
             _baseVelocity = baseVelocity;
             _relativeVelocity = relativeVelocity;
             _hookPosition = Anchor.position;
@@ -323,7 +324,7 @@ namespace Characters
                 }
                 _nodes.Add(_hookPosition);
                 _currentLiveTime += Time.deltaTime;
-                if (_currentLiveTime > 0.8f)
+                if (_currentLiveTime > _maxLiveTime)
                     SetHookState(HookState.DisablingHooking);
             }
             else

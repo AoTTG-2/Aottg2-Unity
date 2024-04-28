@@ -11,12 +11,16 @@ namespace Characters
         public bool HookBoth;
         private Hook _activeHook = null;
         private bool _left;
+        private float _hookSpeed;
 
         public HookUseable(BaseCharacter owner, bool left, bool gun) : base(owner)
         {
             _left = left;
+            var human = (Human)owner;
+            _hookSpeed = 3f + human.Stats.Perks["HookSpeed"].CurrPoints;
+            float maxLiveTime = (2.4f / _hookSpeed) * (1f + ((float)human.Stats.Perks["HookLength"].CurrPoints * 0.2f));
             for (int i = 0; i < 3; i++)
-                Hooks.Add(Hook.CreateHook((Human)owner, left, i, gun));
+                Hooks.Add(Hook.CreateHook((Human)owner, left, i, maxLiveTime, gun));
         }
 
         public List<Renderer> GetRenderers()
@@ -107,7 +111,7 @@ namespace Characters
                         offset *= -1f;
                     target += offset * _owner.Cache.Transform.right;
                 }
-                Vector3 baseVel = (target - _activeHook.Anchor.position).normalized * 3f;
+                Vector3 baseVel = (target - _activeHook.Anchor.position).normalized * _hookSpeed;
                 Vector3 playerVel = _owner.Cache.Rigidbody.velocity;
                 Vector3 relativeVel = Vector3.zero;
                 float f = Mathf.Acos(Vector3.Dot(baseVel.normalized, playerVel.normalized)) * Mathf.Rad2Deg;
@@ -115,7 +119,7 @@ namespace Characters
                     relativeVel = Vector3.Project(playerVel, baseVel);
                 _activeHook.SetHooking(baseVel, relativeVel);
                 var human = (Human)_owner;
-                human.UseGas(human.GasUsage);
+                human.Stats.UseHookGas();
             }
         }
 

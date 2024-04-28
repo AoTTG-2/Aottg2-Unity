@@ -14,11 +14,11 @@ namespace Characters
         protected Vector3 _aimPoint;
         protected bool _pulled;
         protected bool _startSpin;
-        protected float PullForce = 30f;
+        protected float PullForce = 13f;
 
         public Spin3Special(BaseCharacter owner) : base(owner)
         {
-            Cooldown = 5f;
+            Cooldown = 3.5f;
         }
 
         protected override void Activate()
@@ -26,8 +26,8 @@ namespace Characters
             _stage = 0;
             _human.HookLeft.DisableAnyHook();
             _human.HookRight.DisableAnyHook();
-            if (_human.CurrentGas > 0f)
-                _human.HookLeft.SetInput(true);
+            if (_human.Stats.CurrentGas > 0f)
+                _human.HookRight.SetInput(true);
             _aimPoint = _human.GetAimPoint();
             _pulled = false;
             _startSpin = false;
@@ -37,9 +37,10 @@ namespace Characters
         {
             if (!_startSpin)
             {
-                if (_activeTimeLeft <= 0.8f)
+                if (_activeTimeLeft <= 1f)
                 {
                     _human.StartSpecialAttack(HumanAnimations.SpecialLevi);
+                    _human.Cache.Rigidbody.velocity += (Vector3)(Vector3.up * 5f);
                     _startSpin = true;
                 }
                 return;
@@ -48,6 +49,10 @@ namespace Characters
             if (_human.Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
             {
                 float time = GetAnimationTime();
+                if (_human.Grounded && time > 0.4f && time < 0.61f)
+                {
+                    _human.Cache.Rigidbody.AddForce((Vector3)(_human.transform.forward * 200f));
+                }
                 if (_stage == 0 && time > AnimationLoopStartTime)
                 {
                     _human.ActivateBlades();
@@ -66,17 +71,24 @@ namespace Characters
                         _human.PlaySound(HumanSounds.BladeSwing3);
                     _stage += 1;
                 }
+                if (_stage == 3)
+                {
+                    _human.HookRight.SetInput(false);
+                    _human.HookLeft.DisableAnyHook();
+                    _human.HookRight.DisableAnyHook();
+                    _stage += 1;
+                }
             }
-            if (_human.HookLeft.HasHook())
+            if (_human.HookRight.HasHook())
             {
-                var state = _human.HookLeft.GetHookState();
+                var state = _human.HookRight.GetHookState();
                 if (state == HookState.DisablingHooked || state == HookState.Hooked)
                 {
                     if (!_pulled)
                     {
                         _pulled = true;
-                        var position = _human.HookLeft.GetHookPosition();
-                        _human.Cache.Rigidbody.AddForce((position - _human.Cache.Rigidbody.position).normalized * PullForce, ForceMode.VelocityChange);
+                        var position = _human.HookRight.GetHookPosition();
+                        _human.Cache.Rigidbody.AddForce((position - _human.Cache.Rigidbody.position).normalized * PullForce, ForceMode.Impulse);
                     }
                 }
             }

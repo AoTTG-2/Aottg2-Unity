@@ -15,6 +15,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
 using System.Linq;
+using Controllers;
 
 namespace GameManagers
 {
@@ -842,6 +843,55 @@ namespace GameManagers
             UpdateCleanCharacters();
             EndTimeLeft -= Time.deltaTime;
             EndTimeLeft = Mathf.Max(EndTimeLeft, 0f);
+        }
+
+        private void FixedUpdate()
+        {
+            if (State == GameState.Playing && PhotonNetwork.IsMasterClient)
+            {
+                UpdateSmartTitans();
+            }
+        }
+
+        private void UpdateSmartTitans()
+        {
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
+            foreach (var human in Humans)
+            {
+                if (human == null || human.Dead)
+                    continue;
+                EnableFirstSmartTitan(human, mask);
+            }
+        }
+
+        private void EnableFirstSmartTitan(Human human, LayerMask mask)
+        {
+            foreach (var titan in Titans)
+            {
+                if (titan == null || titan.Dead || !titan.IsMine() || !titan.AI)
+                    continue;
+                if (Vector3.Distance(human.Cache.Transform.position, titan.Cache.Transform.position) < 20f)
+                {
+                    titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
+                    return;
+                }
+            }
+            Vector3 velocity;
+            if (human.IsMine())
+                velocity = human.Cache.Rigidbody.velocity;
+            else
+                velocity = human.GetComponent<HumanMovementSync>()._correctVelocity;
+            RaycastHit hit;
+            if (Physics.Raycast(human.Cache.Transform.position, velocity.normalized, out hit, velocity.magnitude, mask.value))
+            {
+                if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
+                {
+                    var titan = hit.collider.gameObject.GetComponent<BaseTitan>();
+                    if (titan == null || titan.Dead || !titan.IsMine() || !titan.AI)
+                        return;
+                    titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
+                }
+            }
         }
 
         protected override void OnFinishLoading()

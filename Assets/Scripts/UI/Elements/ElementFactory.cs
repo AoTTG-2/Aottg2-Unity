@@ -264,6 +264,14 @@ namespace UI
             return label;
         }
 
+        public static GameObject CreateEmptySpace(Transform parent)
+        {
+            GameObject label = InstantiateAndBind(parent, "Prefabs/Elements/DefaultLabel");
+            Text text = label.GetComponent<Text>();
+            text.text = "";
+            return label;
+        }
+
         public static GameObject CreateHUDLabel(Transform parent, ElementStyle style, string title, FontStyle fontStyle = FontStyle.Normal,
             TextAnchor alignment = TextAnchor.MiddleCenter)
         {

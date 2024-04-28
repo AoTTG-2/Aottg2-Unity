@@ -25,6 +25,8 @@ namespace UI
         public static float CurrentCanvasScale = 1f;
         public static List<string> AvailableProfileIcons = new List<string>();
         public static float LastFrameTime = 0.0f;
+        public static bool NeedResizeText = false;
+        public static bool NeedResizeTextSecondFrame = false;
         private static Dictionary<string, AudioSource> _sounds = new Dictionary<string, AudioSource>();
 
         public static void Init()
@@ -121,6 +123,7 @@ namespace UI
                 CurrentMenu.Setup();
                 CurrentMenu.ApplyScale(sceneName);
             }
+            NeedResizeText = true;
         }
 
         public static string GetProfileIcon(string icon)
@@ -329,6 +332,22 @@ namespace UI
         private void Update()
         {
             LastFrameTime += (Time.unscaledDeltaTime - LastFrameTime) * 0.1f;
+            if (CurrentMenu != null && NeedResizeText && CurrentMenu.gameObject != null)
+            {
+                NeedResizeText = false;
+                foreach (Text text in CurrentMenu.GetComponentsInChildren<Text>())
+                {
+                    if (text.cachedTextGenerator.characterCountVisible < text.text.Length)
+                    {
+                        if (NeedResizeTextSecondFrame)
+                            text.fontSize = Math.Max(text.fontSize - 1, 1);
+                        NeedResizeText = true;
+                    }
+                }
+            }
+            else
+                NeedResizeText = false;
+            NeedResizeTextSecondFrame = NeedResizeText;
         }
 
         public static int GetFPS()
