@@ -17,7 +17,7 @@ namespace Map
         public static Dictionary<GameObject, MapObject> GoToMapObject = new Dictionary<GameObject, MapObject>();
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
         public static List<Light> Daylight = new List<Light>();
-        //public static List<MapLight> MapLights = new List<MapLight>();
+        public static List<MapLight> MapLights = new List<MapLight>();
         private static Dictionary<string, Object> _assetCache = new Dictionary<string, Object>();
         private static Dictionary<string, List<Material>> _assetMaterialCache = new Dictionary<string, List<Material>>();
         private static Dictionary<string, List<Material>> _defaultMaterialCache = new Dictionary<string, List<Material>>();
@@ -64,7 +64,7 @@ namespace Map
             IdToMapObject.Clear();
             GoToMapObject.Clear();
             Daylight.Clear();
-            //MapLights.Clear();
+            MapLights.Clear();
             _assetCache.Clear();
             Tags.Clear();
             HighestObjectId = 1;
@@ -100,7 +100,7 @@ namespace Map
 
         public static void RegisterMapLight(Light light)
         {
-            //MapLights.Add(new MapLight(light));
+            MapLights.Add(new MapLight(light));
         }
 
         public static MapObject FindObjectFromCollider(Collider collider)

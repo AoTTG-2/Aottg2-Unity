@@ -109,12 +109,12 @@ namespace Controllers
             node["x"] = position.x;
             node["y"] = position.y;
             node["z"] = position.z;
-            mins[0] = Mathf.Min(mins[0], position.x);
-            mins[1] = Mathf.Min(mins[1], position.y);
-            mins[2] = Mathf.Min(mins[2], position.z);
-            maxes[0] = Mathf.Max(maxes[0], position.x);
-            maxes[1] = Mathf.Max(maxes[1], position.y);
-            maxes[2] = Mathf.Max(maxes[2], position.z);
+            mins[0] = Mathf.Min(mins[0], position.x - radius);
+            mins[1] = Mathf.Min(mins[1], position.y - radius);
+            mins[2] = Mathf.Min(mins[2], position.z - radius);
+            maxes[0] = Mathf.Max(maxes[0], position.x + radius);
+            maxes[1] = Mathf.Max(maxes[1], position.y + radius);
+            maxes[2] = Mathf.Max(maxes[2], position.z + radius);
             return node;
         }
     }

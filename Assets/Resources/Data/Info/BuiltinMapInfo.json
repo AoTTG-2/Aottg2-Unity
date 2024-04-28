@@ -197,7 +197,7 @@
 			]
 		},
 		{
-			"Name": "Boss",
+			"Name": "Misc",
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
@@ -208,27 +208,11 @@
 					}
 				},
 				{
-					"Name": "Armored",
-					"MiscSettings": {
-						"AllowThunderspears": true,
-						"AllowShifterSpecials": false,
-						"AllowBlades": false,
-						"AllowAHSS": false,
-						"AllowAPG": false
-					}
-				},
-				{
 					"Name": "Outside The Walls",
 					"MiscSettings": {
 						"Horses": true
 					}
 				}
-			]
-		},
-		{
-			"Name": "Misc",
-			"IncludedModes": ["Map Logic"],
-			"Maps": [
 			]
 		}
 	],

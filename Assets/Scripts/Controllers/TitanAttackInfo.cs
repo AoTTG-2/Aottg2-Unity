@@ -24,12 +24,9 @@ namespace Characters
             FarOnly = attackInfo["Far"].AsBool;
             if (attackInfo.HasKey("Ranges"))
             {
-                for (int i = 0; i < attackInfo["Ranges"].Count; i++)
-                {
-                    var range = attackInfo["Ranges"][i];
-                    MinRange = new Vector3(range["X"][0].AsFloat, range["Y"][0].AsFloat, range["Z"][0].AsFloat);
-                    MaxRange = new Vector3(range["X"][1].AsFloat, range["Y"][1].AsFloat, range["Z"][1].AsFloat);
-                }
+                var range = attackInfo["Ranges"];
+                MinRange = new Vector3(range["X"][0].AsFloat, range["Y"][0].AsFloat, range["Z"][0].AsFloat);
+                MaxRange = new Vector3(range["X"][1].AsFloat, range["Y"][1].AsFloat, range["Z"][1].AsFloat);
             }
             if (keyframes != null)
             {
@@ -45,15 +42,19 @@ namespace Characters
         public bool CheckSimpleAttack(Vector3 relativePosition)
         {
             return (relativePosition.x >= MinRange.x && relativePosition.y >= MinRange.y && relativePosition.z >= MinRange.z
-                && relativePosition.x <= MinRange.x && relativePosition.y <= MinRange.y && relativePosition.z <= MinRange.z);
+                && relativePosition.x <= MaxRange.x && relativePosition.y <= MaxRange.y && relativePosition.z <= MaxRange.z);
         }
 
         public bool CheckSmartAttack(Transform titan, Vector3 worldPosition, Vector3 velocity, float attackSpeed, float size)
         {
+            int count = 0;
             foreach (var keyframe in Keyframes)
             {
+                count++;
                 if (keyframe.CheckCollision(titan, worldPosition, velocity, attackSpeed, size))
                     return true;
+                if (count >= 10)
+                    return false;
             }
             return false;
         }

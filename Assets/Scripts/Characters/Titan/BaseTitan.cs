@@ -127,6 +127,14 @@ namespace Characters
             return false;
         }
 
+        public float GetCurrentSpeed()
+        {
+            if (IsWalk)
+                return WalkSpeedBase + WalkSpeedPerLevel * Size;
+            else
+                return RunSpeedBase + RunSpeedPerLevel * Size;
+        }
+
         public virtual bool CanAction()
         {
             return !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk;

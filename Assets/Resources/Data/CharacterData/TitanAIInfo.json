@@ -50,7 +50,7 @@
 		"AttackGrabStomachR": {"HumanOnly": true},
 		"AttackJump": {"Ranges": {"X": [-6, 6], "Y": [16, 100], "Z": [-2, 100]}, "HumanOnly": true, "Far": true},
 		"AttackJumpCrawler": {"Ranges": {"X": [-6, 6], "Y": [12, 100], "Z": [0, 100]}, "HumanOnly": true, "Far": true},
-		"AttackRockThrow1": {"Ranges": {"X": [-10, 10], "Y": [-100, 200], "Z": [0, 200]}, "HumanOnly": false, "Far": true}
+		"AttackRockThrow": {"Ranges": {"X": [-10, 10], "Y": [-100, 200], "Z": [0, 200]}, "HumanOnly": false, "Far": true}
 	},
 	"Default": {
 		"Name": "Titan",
@@ -260,7 +260,9 @@
 			"Attacks": {
 				"AttackPunchCombo": 0.1,
 				"AttackSlap*": 0.1,
-				"AttackBrush*": 0.1
+				"AttackBrush*": 0.1,
+				"AttackGrab*": 0.1,
+				"AttackSwing*": 0.1
 			}
 		},
 		"Training": {
@@ -291,7 +293,7 @@
 				"AttackBite*": 0.1,
 				"AttackHit*": 0.1,
 				"AttackPunchCombo": 0.1,
-				"AttackRockThrow1": 0.5
+				"AttackRockThrow": 0.5
 			}
 		},
 		"Training": {
