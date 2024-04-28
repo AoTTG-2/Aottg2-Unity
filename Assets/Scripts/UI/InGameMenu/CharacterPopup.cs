@@ -14,12 +14,12 @@ namespace UI
     {
         protected override string Title => string.Empty;
         protected override float Width => 1000f;
-        protected override float Height => 380f;
+        protected override float Height => 470f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "";
         public string LocaleCategory = "CharacterPopup";
-        List<string> _allowedCategories = new List<string>();
+        protected List<string> _allowedCategories = new List<string>();
 
         public override void Setup(BasePanel parent = null)
         {
@@ -30,7 +30,7 @@ namespace UI
             SetupBottomButtons();
         }
 
-        protected void SetAllowedCategories()
+        protected virtual void SetAllowedCategories()
         {
             InGameMiscSettings settings = SettingsManager.InGameCurrent.Misc;
             if (settings.AllowAHSS.Value || settings.AllowBlades.Value || settings.AllowThunderspears.Value || settings.AllowAPG.Value)
@@ -63,7 +63,7 @@ namespace UI
             _categoryPanelTypes.Add("Shifter", typeof(CharacterShifterPanel));
         }
 
-        private void SetupBottomButtons()
+        protected virtual void SetupBottomButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale(LocaleCategory, "Bottom", "SpectateButton"),

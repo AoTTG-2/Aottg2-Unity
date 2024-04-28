@@ -34,7 +34,7 @@ namespace ApplicationManagers
                 Init();
             }
         }
-
+       
         private static void Init()
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;

@@ -5,7 +5,7 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry"};
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry", "Switchback"};
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie", "Armored" };
@@ -74,6 +74,8 @@ namespace Characters
                 return new ShifterTransformSpecial(owner, "Annie");
             else if (special == "Armored")
                 return new ShifterTransformSpecial(owner, "Armored");
+            else if (special == "Switchback")
+                return new SwitchbackSpecial(owner);
             return null;
         }
 

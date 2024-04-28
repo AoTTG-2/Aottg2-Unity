@@ -83,6 +83,7 @@ namespace UI
                 else
                     SetCategoryPanel(DefaultCategoryPanel);
             }
+            UIManager.NeedResizeText = true;
         }
 
         public virtual void Show()
@@ -160,6 +161,7 @@ namespace UI
             if (MaskBackground != null)
                 MaskBackground.color = new Color(0f, 0f, 0f, 0.05f);
             _currentCategoryPanel.SetActive(true);
+            UIManager.NeedResizeText = true;
         }
 
         public string GetCurrentCategoryName()

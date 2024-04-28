@@ -50,20 +50,12 @@ namespace Characters
         protected override Dictionary<string, float> GetRootMotionAnimations()
         {
             return new Dictionary<string, float>();
-            // return new Dictionary<string, float>() { { AnnieAnimations.Attack, 0.95f } };
-        }
-
-        public override void Attack(string attack)
-        {
-            ResetAttackState(attack);
-            if (_currentAttack == ShifterAttacks.AttackDefault)
-                StateAttack(ArmoredAnimations.Attack);
         }
 
         protected override void UpdateAttack()
         {
             float animationTime = GetAnimationTime();
-            if (_currentStateAnimation == ArmoredAnimations.Attack)
+            if (_currentStateAnimation == ArmoredAnimations.AttackSwipe)
             {
                 if (_currentAttackStage == 0 && animationTime > 0.06f)
                 {

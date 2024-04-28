@@ -27,7 +27,7 @@ namespace Controllers
             if (_shifter.CanAction())
             {
                 if (_shifterInput.Attack.GetKeyDown())
-                    _shifter.Attack(ShifterAttacks.AttackDefault);
+                    _shifter.Attack("AttackCombo");
                 else if (_shifterInput.Jump.GetKeyDown())
                 {
                     if (_shifter.HasDirection)

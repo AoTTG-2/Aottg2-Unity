@@ -138,6 +138,7 @@ namespace UI
             _optionsPanel.transform.SetAsLastSibling();
             _lastKnownPosition = transform.position;
             _optionsPanel.SetActive(true);
+            UIManager.NeedResizeText = true;
             yield return new WaitForEndOfFrame();
             _scrollBar.value = _currentScrollValue;
         }

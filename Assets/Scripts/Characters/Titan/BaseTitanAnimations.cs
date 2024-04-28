@@ -8,8 +8,6 @@
         public virtual string Jump => "";
         public virtual string Fall => "";
         public virtual string Land => "";
-        public virtual string Attack => "";
-        public virtual string Kick => "";
         public virtual string Stun => "";
         public virtual string Die => "";
         public virtual string DieSit => "";

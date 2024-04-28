@@ -38,12 +38,11 @@ namespace Characters
 
         public string GetSkinTexture()
         {
-            string end = (_setup.CustomSet.Skin.Value + 1).ToString();
             if (_setup.Weapon == HumanWeapon.Thunderspear)
-                return "Skin/skin_TS" + end;
+                return "Skin/skin_TS";
             else if (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG)
-                return "Skin/skin_AHSS" + end;
-            return "Skin/skin_blades" + end;
+                return "Skin/skin_AHSS";
+            return "Skin/skin_blades";
         }
 
         public string GetHairTexture()
@@ -74,7 +73,10 @@ namespace Characters
 
         public string GetBodyPantsTexture()
         {
-            return "Pants/" + _setup.CurrentCostume["_pants_tex"].Value;
+            if (_setup.CustomSet.Boots.Value == 1)
+                return "Pants/Shoes_Casual";
+            else
+                return "Pants/" + _setup.CurrentCostume["_pants_tex"].Value;
         }
 
         public string GetChestTexture(int chest)

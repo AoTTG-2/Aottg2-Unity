@@ -36,6 +36,7 @@ namespace Characters
         public HumanCarryState CarryState = HumanCarryState.None;
         public Horse Horse;
         public HumanSetup Setup;
+        public HumanStats Stats;
         public bool FinishSetup;
         private HumanCustomSkinLoader _customSkinLoader;
         public override List<string> EmoteActions => new List<string>() { "Salute", "Wave", "Nod", "Shake", "Dance", "Eat", "Flip" };
@@ -43,13 +44,10 @@ namespace Characters
            PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         public static LayerMask ClipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
             PhysicsLayer.MapObjectEntities);
+        protected HumanMovementSync MovementSync;
 
         // state
         private HumanState _state = HumanState.Idle;
-        public float CurrentGas = -1f;
-        public float MaxGas = -1f;
-        public float GasUsage = 0.2f;
-        public float HorseSpeed = 50f;
         public string CurrentSpecial;
         public BaseTitan Grabber;
         public Transform GrabHand;
@@ -61,8 +59,6 @@ namespace Characters
         public Transform MountedTransform;
         public Vector3 MountedPositionOffset;
         public Vector3 MountedRotationOffset;
-        public int AccelerationStat;
-        public int RunSpeedStat;
         public bool CancelHookLeftKey;
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
@@ -77,11 +73,12 @@ namespace Characters
         public const float RealismMaxReel = 120f;
         public const float RealismDeathVelocity = 100f;
         private const float MaxVelocityChange = 10f;
-        public float RunSpeed;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
         private float _wallRunTime = 0f;
         private bool _wallJump = false;
+        private bool _wallSlide = false;
+        private Vector3 _wallSlideGround = Vector3.zero;
         private bool _launchLeft;
         private bool _launchRight;
         private float _launchLeftTime;
@@ -93,7 +90,7 @@ namespace Characters
         private Vector3 _lastPosition;
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
-
+        private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
         public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
 
@@ -119,6 +116,12 @@ namespace Characters
         private float _hookHumanConstantTimeLeft;
         private bool _isReelingOut;
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
+
+        public void DieChangeCharacter()
+        {
+            Cache.PhotonView.RPC("MarkDeadRPC", RpcTarget.AllBuffered, new object[0]);
+            PhotonNetwork.Destroy(gameObject);
+        }
 
 
         [PunRPC]
@@ -320,14 +323,36 @@ namespace Characters
 
         public void Dash(float targetAngle)
         {
-            if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None &&
+            if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
             {
-                UseGas(Mathf.Min(MaxGas * 0.04f, 10));
+                Stats.UseDashGas();
                 TargetAngle = targetAngle;
                 Vector3 direction = GetTargetDirection();
                 _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
                 _targetRotation = GetTargetRotation();
+                Cache.Rigidbody.rotation = _targetRotation;
+                EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
+                PlaySound(HumanSounds.GasBurst);
+                _dashTimeLeft = 0.5f;
+                CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
+                State = HumanState.AirDodge;
+                FalseAttack();
+                Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
+                _dashCooldownLeft = 0.2f;
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+            }
+        }
+
+        public void DashVertical(float targetAngle, Vector3 direction)
+        {
+            if (_dashTimeLeft <= 0f && Stats.CurrentGas > 0 && MountState == HumanMountState.None &&
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
+            {
+                Stats.UseDashGas();
+                TargetAngle = targetAngle;
+                _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
+                _targetRotation = Quaternion.LookRotation(direction);
                 Cache.Rigidbody.rotation = _targetRotation;
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
@@ -467,7 +492,7 @@ namespace Characters
         public void TransformShifter(string shifter, float liveTime)
         {
             _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
-            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = CurrentGas;
+            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = Stats.CurrentGas;
             ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
             PhotonNetwork.Destroy(gameObject);
         }
@@ -478,7 +503,7 @@ namespace Characters
             {
                 yield return null;
             }
-            CurrentGas = previousHumanGas;
+            Stats.CurrentGas = previousHumanGas;
             if (previousHumanWeapon is BladeWeapon)
             {
                 BladeWeapon previousBlade = (BladeWeapon)previousHumanWeapon;
@@ -589,13 +614,13 @@ namespace Characters
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
             PlaySound(HumanSounds.Refill);
-            _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length;
+            _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length / Cache.Animation[HumanAnimations.Refill].speed;
             return true;
         }
 
         public bool NeedRefill()
         {
-            if (CurrentGas < MaxGas)
+            if (Stats.CurrentGas < Stats.MaxGas)
                 return true;
             if (Special is SupplySpecial && Special.UsesLeft == 0)
             {
@@ -623,7 +648,7 @@ namespace Characters
                 ToggleBlades(true);
             }
             Weapon.Reset();
-            CurrentGas = MaxGas;
+            Stats.CurrentGas = Stats.MaxGas;
         }
 
         public override void Emote(string emote)
@@ -706,12 +731,14 @@ namespace Characters
                 return;
             }
             base.Awake();
+            MovementSync = GetComponent<HumanMovementSync>();
             HumanCache = (HumanComponentCache)Cache;
             Cache.Rigidbody.freezeRotation = true;
             Cache.Rigidbody.useGravity = false;
             if (gameObject.GetComponent<HumanSetup>() == null)
                 Setup = gameObject.AddComponent<HumanSetup>();
             Setup = gameObject.GetComponent<HumanSetup>();
+            Stats = new HumanStats(this);
             _customSkinLoader = gameObject.AddComponent<HumanCustomSkinLoader>();
         }
 
@@ -795,7 +822,13 @@ namespace Characters
                 else
                     PlaySound(HumanSounds.BladeHit);
                 var weapon = (BladeWeapon)Weapon;
-                weapon.UseDurability(2f);
+                if (Stats.Perks["AdvancedAlloy"].CurrPoints == 1)
+                {
+                    if (damage < 500)
+                        weapon.UseDurability(weapon.CurrentDurability);
+                }
+                else
+                    weapon.UseDurability(2f);
                 if (weapon.CurrentDurability == 0f)
                 {
                     ToggleBlades(false);
@@ -1034,7 +1067,6 @@ namespace Characters
                     else
                         Idle();
                 }
-
                 if (CarryState == HumanCarryState.Carry)
                 {
                     if (Carrier == null || Carrier.Dead)
@@ -1123,7 +1155,7 @@ namespace Characters
                             _attackButtonRelease = true;
                             Vector3 v = _currentVelocity;
                             if (State != HumanState.Attack && State != HumanState.SpecialAttack && State != HumanState.SpecialAction && State != HumanState.Stun &&
-                                State != HumanState.EmoteAction && (v.x * v.x + v.z * v.z > RunSpeed * RunSpeed * 1.5f) && State != HumanState.Refill)
+                                State != HumanState.EmoteAction && (v.x * v.x + v.z * v.z > Stats.RunSpeed * Stats.RunSpeed * 1.5f) && State != HumanState.Refill)
                             {
                                 State = HumanState.Slide;
                                 CrossFade(HumanAnimations.Slide, 0.05f);
@@ -1140,7 +1172,7 @@ namespace Characters
                     if (State == HumanState.GroundDodge)
                     {
                         if (Cache.Animation[HumanAnimations.Dodge].normalizedTime >= 0.2f && Cache.Animation[HumanAnimations.Dodge].normalizedTime < 0.8f)
-                            newVelocity = -Cache.Transform.forward * 2.4f * RunSpeed;
+                            newVelocity = -Cache.Transform.forward * 2.4f * Stats.RunSpeed;
                         else if (Cache.Animation[HumanAnimations.Dodge].normalizedTime > 0.8f)
                             newVelocity = Cache.Rigidbody.velocity * 0.9f;
                     }
@@ -1149,7 +1181,7 @@ namespace Characters
                         newVelocity = Vector3.zero;
                         if (HasDirection)
                         {
-                            newVelocity = GetTargetDirection() * TargetMagnitude * RunSpeed;
+                            newVelocity = GetTargetDirection() * TargetMagnitude * Stats.RunSpeed;
                             if (!Cache.Animation.IsPlaying(HumanAnimations.Run) && !Cache.Animation.IsPlaying(HumanAnimations.Jump) &&
                                 !Cache.Animation.IsPlaying(HumanAnimations.RunBuffed) && (!Cache.Animation.IsPlaying(HumanAnimations.HorseMount) ||
                                 Cache.Animation[HumanAnimations.HorseMount].normalizedTime >= 0.5f))
@@ -1172,7 +1204,7 @@ namespace Characters
                     else if (State == HumanState.Slide)
                     {
                         newVelocity = Cache.Rigidbody.velocity * 0.985f;
-                        if (_currentVelocity.magnitude < RunSpeed * 1.2f)
+                        if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
                             ToggleSparks(false);
@@ -1183,7 +1215,12 @@ namespace Characters
                     force.z = Mathf.Clamp(force.z, -MaxVelocityChange, MaxVelocityChange);
                     force.y = 0f;
                     if (Cache.Animation.IsPlaying(HumanAnimations.Jump) && Cache.Animation[HumanAnimations.Jump].normalizedTime > 0.18f)
-                        force.y += 8f;
+                    {
+                        float jumpSpeed = ((0.3f * Stats.Speed) - 8f);
+                        if (_currentVelocity.y > 0f)
+                            jumpSpeed -= _currentVelocity.y;
+                        force.y += Mathf.Max(jumpSpeed, 0f);
+                    }
                     if (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) && Cache.Animation[HumanAnimations.HorseMount].normalizedTime > 0.18f && Cache.Animation[HumanAnimations.HorseMount].normalizedTime < 1f)
                     {
                         force = -_currentVelocity;
@@ -1200,7 +1237,6 @@ namespace Characters
                 }
                 else
                 {
-                    ToggleSparks(false);
                     if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 0.5f)
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
@@ -1210,11 +1246,16 @@ namespace Characters
                         if (!Cache.Animation.IsPlaying(HumanAnimations.HorseIdle))
                             CrossFade(HumanAnimations.HorseIdle, 0.1f);
                     }
-                    if (Cache.Animation[HumanAnimations.Dash].normalizedTime >= 0.99f || (State == HumanState.Idle && !Cache.Animation.IsPlaying(HumanAnimations.Dash) && !Cache.Animation.IsPlaying(HumanAnimations.WallRun) && !Cache.Animation.IsPlaying(HumanAnimations.ToRoof)
+                    else if (Cache.Animation[HumanAnimations.Dash].normalizedTime >= 0.99f || (State == HumanState.Idle && !Cache.Animation.IsPlaying(HumanAnimations.Dash) && !Cache.Animation.IsPlaying(HumanAnimations.WallRun) && !Cache.Animation.IsPlaying(HumanAnimations.ToRoof)
                         && !Cache.Animation.IsPlaying(HumanAnimations.HorseMount) && !Cache.Animation.IsPlaying(HumanAnimations.HorseDismount) && !Cache.Animation.IsPlaying(HumanAnimations.AirRelease)
                         && MountState == HumanMountState.None && (!Cache.Animation.IsPlaying(HumanAnimations.AirHookLJust) || Cache.Animation[HumanAnimations.AirHookLJust].normalizedTime >= 1f) && (!Cache.Animation.IsPlaying(HumanAnimations.AirHookRJust) || Cache.Animation[HumanAnimations.AirHookRJust].normalizedTime >= 1f)))
                     {
-                        if (!IsHookedAny() && (Cache.Animation.IsPlaying(HumanAnimations.AirHookL) || Cache.Animation.IsPlaying(HumanAnimations.AirHookR) || Cache.Animation.IsPlaying(HumanAnimations.AirHook)) && Cache.Rigidbody.velocity.y > 20f)
+                        if (_wallSlide)
+                        {
+                            if (!Cache.Animation.IsPlaying(HumanAnimations.Slide))
+                                CrossFade(HumanAnimations.Slide, 0.1f);
+                        }
+                        else if (!IsHookedAny() && (Cache.Animation.IsPlaying(HumanAnimations.AirHookL) || Cache.Animation.IsPlaying(HumanAnimations.AirHookR) || Cache.Animation.IsPlaying(HumanAnimations.AirHook)) && Cache.Rigidbody.velocity.y > 20f)
                         {
                             CrossFade(HumanAnimations.AirRelease);
                         }
@@ -1315,11 +1356,11 @@ namespace Characters
                     }
                     else if (Cache.Animation.IsPlaying(HumanAnimations.WallRun))
                     {
-                        Cache.Rigidbody.AddForce(Vector3.up * RunSpeed - Cache.Rigidbody.velocity, ForceMode.VelocityChange);
+                        Cache.Rigidbody.AddForce(Vector3.up * Stats.RunSpeed - Cache.Rigidbody.velocity, ForceMode.VelocityChange);
                         _wallRunTime += Time.deltaTime;
-                        if (_wallRunTime > 1f || !HasDirection)
+                        if (!HasDirection)
                         {
-                            Cache.Rigidbody.AddForce(-Cache.Transform.forward * RunSpeed * 0.75f, ForceMode.Impulse);
+                            Cache.Rigidbody.AddForce(-Cache.Transform.forward * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
                             DodgeWall();
                         }
                         else if (!IsUpFrontGrounded())
@@ -1332,7 +1373,7 @@ namespace Characters
                     }
                     else if (!Cache.Animation.IsPlaying(HumanAnimations.Dash) && !Cache.Animation.IsPlaying(HumanAnimations.Jump) && !IsFiringThunderspear())
                     {
-                        Vector3 targetDirection = GetTargetDirection() * TargetMagnitude * Setup.CustomSet.Acceleration.Value / 5f;
+                        Vector3 targetDirection = GetTargetDirection() * TargetMagnitude * Stats.Acceleration / 5f;
                         if (!HasDirection)
                         {
                             if (State == HumanState.Attack)
@@ -1341,7 +1382,7 @@ namespace Characters
                         else
                             _targetRotation = GetTargetRotation();
                         bool isUsingGas = SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
-                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (CurrentGas > 0f))
+                        if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (Stats.CurrentGas > 0f))
                         {
                             if (HasDirection)
                             {
@@ -1358,6 +1399,7 @@ namespace Characters
                     {
                         CrossFade(HumanAnimations.OnWall, 0.3f);
                     }
+                    FixedUpdateWallSlide();
                 }
                 if (pivotLeft && pivotRight)
                     FixedUpdatePivot((HookRight.GetHookPosition() + HookLeft.GetHookPosition()) * 0.5f);
@@ -1400,7 +1442,7 @@ namespace Characters
                 {
                     if (pivot)
                     {
-                        UseGas(GasUsage * Time.deltaTime);
+                        Stats.UseFrameGas();
                         if (!HumanCache.Smoke.emission.enabled)
                             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { true });
                         if (!IsPlayingSound(HumanSounds.GasLoop) && SettingsManager.SoundSettings.GasEffect.Value)
@@ -1442,6 +1484,7 @@ namespace Characters
                 FixedUpdateClippingCheck();
                 ReelInAxis = 0f;
             }
+            EnableFirstSmartTitan();
         }
 
         protected override void LateUpdate()
@@ -1458,6 +1501,11 @@ namespace Characters
         protected void OnCollisionEnter(Collision collision)
         {
             var velocity = Cache.Rigidbody.velocity;
+            if (Special != null && Special is SwitchbackSpecial)
+            {
+                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, velocity.magnitude))
+                    return;
+            }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
             float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
             float speed = _lastVelocity.magnitude * speedMultiplier;
@@ -1470,14 +1518,36 @@ namespace Characters
             }
         }
 
+        protected void OnCollisionStay(Collision collision)
+        {
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f)
+            {
+                _wallSlide = true;
+                _wallSlideGround = collision.contacts[0].normal.normalized;
+            }
+            if (Special != null && Special is SwitchbackSpecial)
+            {
+                ((SwitchbackSpecial)Special).RegisterCollision(this, collision, Cache.Rigidbody.velocity.magnitude);
+            }
+        }
+
+        private void FixedUpdateWallSlide()
+        {
+            if (_wallSlide)
+            {
+                if (Grounded)
+                    _wallSlide = false;
+                else if (Cache.Rigidbody.velocity.magnitude < 15f)
+                    _wallSlide = false;
+                else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
+                    _wallSlide = false;
+            }
+            ToggleSparks(_wallSlide);
+        }
+
         private void LateUpdateReelOut()
         {
             ToggleSound(HumanSounds.ReelOut, _isReelingOut && SettingsManager.SoundSettings.ReelOutEffect.Value);
-        }
-
-        private void UpdateBladeTrails()
-        {
-
         }
 
         private bool FixedUpdateLaunch(bool left)
@@ -1518,8 +1588,8 @@ namespace Characters
                             Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity * 2f, ForceMode.Acceleration);
                     }
                 }
-                if (hook.IsActive && CurrentGas > 0f)
-                    UseGas(GasUsage * Time.deltaTime);
+                if (hook.IsActive && Stats.CurrentGas > 0f)
+                    Stats.UseFrameGas();
                 else if (launchTime > 0.3f)
                 {
                     if (left)
@@ -1688,6 +1758,10 @@ namespace Characters
                 }
                 else if (State != HumanState.Attack && !Cache.Animation.IsPlaying(HumanAnimations.WallRun))
                     _targetRotation = Quaternion.Euler(0f, TargetAngle, 0f);
+                if (_wallSlide && !Grounded)
+                {
+                    _targetRotation = Quaternion.LookRotation(Cache.Rigidbody.velocity, _wallSlideGround);
+                }
             }
         }
 
@@ -1896,15 +1970,21 @@ namespace Characters
             HumanCustomSet set = new HumanCustomSet();
             set.DeserializeFromJsonString(customSetJson);
             Setup.Load(set, (HumanWeapon)humanWeapon, false);
+            Stats = HumanStats.Deserialize(Stats, Setup.CustomSet.Stats.Value);
+            if (!SettingsManager.InGameCurrent.Misc.CustomPerks.Value)
+                Stats.DisablePerks();
+            if (!SettingsManager.InGameCurrent.Misc.CustomStats.Value)
+            {
+                Stats.Acceleration = 100;
+                Stats.Speed = 75;
+                Stats.Gas = 75;
+                Stats.Ammunition = 70;
+                Stats.ResetGas();
+                Stats.UpdateStats();
+            }
             bool isGun = humanWeapon == (int)HumanWeapon.AHSS || humanWeapon == (int)HumanWeapon.APG;
             HookLeft = new HookUseable(this, true, isGun);
             HookRight = new HookUseable(this, false, isGun);
-            if (MaxGas == -1f)
-                MaxGas = set.Gas.Value;
-            if (CurrentGas == -1f)
-                CurrentGas = MaxGas;
-            SetAcceleration(set.Acceleration.Value);
-            SetRunSpeed(set.Speed.Value);
             bool male = Setup.CustomSet.Sex.Value == (int)HumanSex.Male;
             RunAnimation = HumanAnimations.Run;
             if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
@@ -1918,7 +1998,7 @@ namespace Characters
                 StandAnimation = male ? HumanAnimations.IdleM : HumanAnimations.IdleF;
             if (IsMine())
             {
-                SetupWeapon(set, humanWeapon);
+                SetupWeapon(humanWeapon);
                 SetupItems();
                 SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
             }
@@ -1926,29 +2006,24 @@ namespace Characters
             CustomAnimationSpeed();
         }
 
-        public void SetAcceleration(int acceleration)
-        {
-            AccelerationStat = acceleration;
-            Cache.Rigidbody.mass = 0.5f - (acceleration - 100) * 0.001f;
-        }
-
-        public void SetRunSpeed(int speed)
-        {
-            RunSpeedStat = speed;
-            RunSpeed = speed / 10f;
-        }
-
-        protected void SetupWeapon(HumanCustomSet set, int humanWeapon)
+        protected void SetupWeapon(int humanWeapon)
         {
             if (humanWeapon == (int)HumanWeapon.Blade)
             {
                 var bladeInfo = CharacterData.HumanWeaponInfo["Blade"];
-                Weapon = new BladeWeapon(this, set.Blade.Value * bladeInfo["DurabilityMultiplier"].AsFloat, bladeInfo["Blades"].AsInt);
+                float durability = Stats.Ammunition * 3f - 140f;
+                int bladeCount = bladeInfo["Blades"].AsInt;
+                if (Stats.Perks["DurableBlades"].CurrPoints > 0)
+                {
+                    durability *= 2f;
+                    bladeCount = Mathf.FloorToInt(bladeCount * 0.5f);
+                }
+                Weapon = new BladeWeapon(this, durability, bladeCount);
             }
             else if (humanWeapon == (int)HumanWeapon.AHSS)
             {
                 var gunInfo = CharacterData.HumanWeaponInfo["AHSS"];
-                Weapon = new AHSSWeapon(this, gunInfo["AmmoTotal"].AsInt, gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
+                Weapon = new AHSSWeapon(this,  Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 22, 4, 30), gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
             }
             else if (humanWeapon == (int)HumanWeapon.APG)
             {
@@ -1957,7 +2032,7 @@ namespace Characters
                     gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
                 else
                     gunInfo = CharacterData.HumanWeaponInfo["APG"];
-                Weapon = new APGWeapon(this, gunInfo["AmmoTotal"].AsInt, gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
+                Weapon = new APGWeapon(this, Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.7f) - 30, 2, 50), gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
             }
             else if (humanWeapon == (int)HumanWeapon.Thunderspear)
             {
@@ -1987,7 +2062,7 @@ namespace Characters
                 {
                     var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                     float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
-                    Weapon = new ThunderspearWeapon(this, tsInfo["AmmoTotal"].AsInt, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
+                    Weapon = new ThunderspearWeapon(this, Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 20, 4, 30), tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
                         tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
                 }
             }
@@ -1995,12 +2070,17 @@ namespace Characters
 
         protected void SetupItems()
         {
-            Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Black", new Color(0f, 0f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Purple", new Color(153f / 255, 0f, 204f / 255, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Blue", new Color(0f, 102f / 255, 204f / 255, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), 10f));
+            float cooldown = 15f;
+            if (Stats.Perks["FlareCD"].CurrPoints == 2)
+                cooldown = 5f;
+            else if (Stats.Perks["FlareCD"].CurrPoints == 1)
+                cooldown = 10f;
+            Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Black", new Color(0f, 0f, 0f, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Purple", new Color(153f / 255, 0f, 204f / 255, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Blue", new Color(0f, 102f / 255, 204f / 255, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), cooldown));
         }
 
         public void SetSpecial(string special)
@@ -2248,7 +2328,7 @@ namespace Characters
             Cache.Transform.rotation = quaternion;
             _targetRotation = quaternion;
             TargetAngle = facingDirection;
-            UseGas(Mathf.Min(MaxGas * CharacterData.HumanWeaponInfo["Thunderspear"]["StunGasPenalty"].AsFloat, 100));
+            Stats.UseTSGas();
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
             EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
             PlaySound(HumanSounds.GasBurst);
@@ -2519,6 +2599,8 @@ namespace Characters
                 Cache.Animation[HumanAnimations.AHSSGunReloadBoth].speed = 0.76f;
                 Cache.Animation[HumanAnimations.AHSSGunReloadBothAir].speed = 1f;
             }
+            int refillPoints = Stats.Perks["RefillTime"].CurrPoints;
+            Cache.Animation[HumanAnimations.Refill].speed = (refillPoints + 1);
         }
 
         private bool HasHook()
@@ -2562,13 +2644,7 @@ namespace Characters
         {
             return Setup.Weapon == HumanWeapon.Thunderspear && (Cache.Animation.IsPlaying(HumanAnimations.TSShootL) || Cache.Animation.IsPlaying(HumanAnimations.TSShootR) || Cache.Animation.IsPlaying(HumanAnimations.TSShootLAir) || Cache.Animation.IsPlaying(HumanAnimations.TSShootRAir));
         }
-
-        public void UseGas(float amount)
-        {
-            CurrentGas -= amount;
-            CurrentGas = Mathf.Max(CurrentGas, 0f);
-        }
-
+      
         private void ToggleBladeTrails(bool toggle)
         {
             if (IsMine())
@@ -2654,6 +2730,48 @@ namespace Characters
             }
             if (Setup != null)
                 Setup.DeleteDie();
+        }
+
+        protected void EnableFirstSmartTitan()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (var titan in _inGameManager.Titans)
+                {
+                    if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
+                    {
+                        titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
+                        return;
+                    }
+                }
+                foreach (var titan in _inGameManager.Shifters)
+                {
+                    if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
+                    {
+                        titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
+                        return;
+                    }
+                }
+                RaycastHit hit;
+                Vector3 velocity = GetVelocity();
+                if (Physics.Raycast(Cache.Transform.position, velocity.normalized, out hit, velocity.magnitude, TitanDetectionMask.value))
+                {
+                    if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
+                    {
+                        var titan = hit.collider.gameObject.GetComponent<BaseTitan>();
+                        if (titan != null && !titan.Dead && titan.AI && titan.IsMine())
+                            titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
+                    }
+                }
+            }
+        }
+
+        public Vector3 GetVelocity()
+        {
+            if (IsMine())
+                return Cache.Rigidbody.velocity;
+            else
+                return MovementSync._correctVelocity;
         }
 
         protected override void CheckGround()
@@ -2761,7 +2879,8 @@ namespace Characters
         Run,
         Land,
         MountingHorse,
-        Stun
+        Stun,
+        WallSlide
     }
 
     public enum HumanMountState

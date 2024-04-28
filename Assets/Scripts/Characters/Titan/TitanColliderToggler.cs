@@ -7,7 +7,7 @@ namespace Characters
     class TitanColliderToggler: MonoBehaviour
     {
         public BaseTitan Owner;
-        protected TitanEntityDetection _entity;
+        public TitanEntityDetection _entity;
         protected bool _look = false;
         protected bool _enabled = false;
 

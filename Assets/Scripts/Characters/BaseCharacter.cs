@@ -19,7 +19,6 @@ namespace Characters
     class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks
     {
         protected virtual int DefaultMaxHealth => 1;
-        protected virtual bool HasMovement => true;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
         public virtual List<string> EmoteActions => new List<string>();
         public string Name = "";
@@ -499,7 +498,7 @@ namespace Characters
                 Grounded = false;
         }
 
-        protected virtual bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
+        public virtual bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
         {
             return RaycastIgnoreTriggers(origin, direction, distance, layerMask).HasValue;
         }

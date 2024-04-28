@@ -11,8 +11,9 @@ namespace GameProgress
     {
         const int ExpPerKill = 10;
         const int ExpPerLevelBase = 500;
+        const int MaxExpPerLevel = 2000;
         const float ExpPerLevelMultiplier = 1.2f;
-        const int MaxLevel = 20;
+        const int MaxLevel = 50;
         private List<int> _expPerLevel = new List<int>();
         private GameStatContainer _gameStat;
 
@@ -21,7 +22,7 @@ namespace GameProgress
             _gameStat = gameStat;
             _expPerLevel.Add(ExpPerLevelBase);
             for (int i = 1; i < MaxLevel; i++)
-                _expPerLevel.Add((int)(_expPerLevel[i - 1] * ExpPerLevelMultiplier));
+                _expPerLevel.Add((int)(Mathf.Min(_expPerLevel[i - 1] * ExpPerLevelMultiplier, MaxExpPerLevel)));
         }
 
         public int GetExpToNext()

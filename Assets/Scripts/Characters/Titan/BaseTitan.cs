@@ -58,11 +58,11 @@ namespace Characters
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
         protected float _currentFallTime;
-        protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities,
-                PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+        protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
         public float _stateTimeLeft;
+        protected string _currentAttackAnimation;
         protected string _currentAttack;
         protected string _currentStateAnimation;
         protected float _currentAttackSpeed;
@@ -72,6 +72,7 @@ namespace Characters
         protected Vector3 _previousCoreLocalPosition;
         protected Vector3 _furthestCoreLocalPosition;
         protected Dictionary<string, float> _rootMotionAnimations = new Dictionary<string, float>();
+        public Dictionary<string, string> AttackAnimations = new Dictionary<string, string>();
 
         public virtual void Init(bool ai, string team, JSONNode data)
         {
@@ -105,16 +106,6 @@ namespace Characters
                     foreach (string attack in data["AttackSpeeds"].Keys)
                         AttackSpeeds.Add(attack, data["AttackSpeeds"][attack].AsFloat);
                 }
-                if (data.HasKey("HandHitboxRadius"))
-                {
-                    BaseTitanCache.HandLHitbox.UpdateSphereCollider(data["HandHitboxRadius"].AsFloat);
-                    BaseTitanCache.HandRHitbox.UpdateSphereCollider(data["HandHitboxRadius"].AsFloat);
-                }
-                if (data.HasKey("FootHitboxRadius"))
-                {
-                    BaseTitanCache.FootLHitbox.UpdateSphereCollider(data["FootHitboxRadius"].AsFloat);
-                    BaseTitanCache.FootRHitbox.UpdateSphereCollider(data["FootHitboxRadius"].AsFloat);
-                }
                 if (data.HasKey("TurnSpeed"))
                 {
                     TurnSpeed = data["TurnSpeed"].AsFloat;
@@ -129,6 +120,11 @@ namespace Characters
         protected virtual Dictionary<string, float> GetRootMotionAnimations()
         {
             return new Dictionary<string, float>();
+        }
+
+        public virtual bool IsGrabAttack()
+        {
+            return false;
         }
 
         public virtual bool CanAction()
@@ -158,6 +154,8 @@ namespace Characters
 
         public virtual void Attack(string attack)
         {
+            ResetAttackState(attack);
+            StateAttack(_currentAttackAnimation);
         }
 
         public virtual bool CanAttack()
@@ -169,13 +167,20 @@ namespace Characters
         {
             Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
-            _currentAttackSpeed = 1f;
-            if (AttackSpeeds.ContainsKey(attack))
-                _currentAttackSpeed = AttackSpeeds[attack];
-            _currentAttackSpeed *= AttackSpeedMultiplier;
-            if (_currentAttackSpeed <= 0f)
-                _currentAttackSpeed = 1f;
+            _currentAttackAnimation = AttackAnimations[attack];
+            _currentAttackSpeed = GetAttackSpeed(attack);
             _currentAttackStage = 0;
+        }
+
+        public float GetAttackSpeed(string attack)
+        {
+            float speed = 1f;
+            if (AttackSpeeds.ContainsKey(attack))
+                speed = AttackSpeeds[attack];
+            speed *= AttackSpeedMultiplier;
+            if (speed <= 0f)
+                speed = 1f;
+            return speed;
         }
 
         public virtual void Kick()
@@ -225,7 +230,7 @@ namespace Characters
 
         public virtual void IdleWait(float waitTime)
         {
-            Idle(Mathf.Clamp(waitTime, 0.1f, 0.5f));
+            Idle(Mathf.Clamp(waitTime, 0.1f, 2f));
             _stateTimeLeft = waitTime;
         }
 
@@ -411,6 +416,13 @@ namespace Characters
                 animations = new BaseTitanAnimations();
             BaseTitanAnimations = animations;
             _rootMotionAnimations = GetRootMotionAnimations();
+            foreach (var fieldInfo in BaseTitanAnimations.GetType().GetFields())
+            {
+                if (fieldInfo.Name.StartsWith("Attack"))
+                {
+                    AttackAnimations.Add(fieldInfo.Name, (string)fieldInfo.GetValue(BaseTitanAnimations));
+                }
+            }
         }
 
         public override Transform GetCameraAnchor()
@@ -529,6 +541,8 @@ namespace Characters
                     IdleWait(TurnPause);
                 else if (State == TitanState.Blind || State == TitanState.SitUp || State == TitanState.Emote)
                     IdleWait(0.3f);
+                else if (State == TitanState.ArmHurt)
+                    IdleWait(0.2f);
                 else if (State == TitanState.SitBlind)
                     StateActionWithTime(TitanState.SitIdle, BaseTitanAnimations.SitIdle, 0.3f, 0.3f);
                 else
@@ -556,10 +570,14 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     FixedUpdateAttack();
-                    SetDefaultVelocity();
+                    if (Grounded)
+                        SetDefaultVelocity();
                 }
                 else if (State == TitanState.Dead)
-                    SetDefaultVelocity();
+                {
+                    if (Grounded)
+                        SetDefaultVelocity();
+                }
                 else if (Grounded && State != TitanState.Jump && State != TitanState.StartJump && State != TitanState.WallClimb)
                 {
                     SetDefaultVelocity();
@@ -793,21 +811,6 @@ namespace Characters
                 || IsPlayingClip(BaseTitanAnimations.SitUp) || IsPlayingClip(BaseTitanAnimations.DieSit);
         }
 
-        protected float[] GetNearestHumanAngles()
-        {
-            float angleX = 0f;
-            float angleY = 0f;
-            if (TargetEnemy != null)
-            {
-                Vector3 to = TargetEnemy.Cache.Transform.position - BaseTitanCache.Neck.position;
-                angleY = Mathf.Asin(to.y / to.magnitude) * Mathf.Rad2Deg;
-                to.y = 0f;
-                angleX = -Mathf.Atan2(to.z, to.x) * Mathf.Rad2Deg;
-                angleX = -Mathf.DeltaAngle(angleX, BaseTitanCache.Neck.rotation.eulerAngles.y - 90f);
-            }
-            return new float[] { angleX, angleY };
-        }
-
         protected override string GetFootstepAudio(int phase)
         {
             return phase == 0 ? TitanSounds.Footstep1 : TitanSounds.Footstep2;
@@ -850,6 +853,7 @@ namespace Characters
         Emote,
         Land,
         Attack,
+        ArmHurt,
         Special,
         Stun,
         Block,

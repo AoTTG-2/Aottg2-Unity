@@ -188,17 +188,13 @@
 						"AllowThunderspears": false,
 						"AllowShifterSpecials": false
 					}
-				},
-				{
-					"Name": "Armored",
-					"MiscSettings": {
-						"AllowThunderspears": true,
-						"AllowShifterSpecials": false,
-						"AllowBlades": false,
-						"AllowAHSS": false,
-						"AllowAPG": false
-					}
 				}
+			]
+		},
+		{
+			"Name": "Misc",
+			"IncludedModes": ["Map Logic"],
+			"Maps": [
 			]
 		}
 	],

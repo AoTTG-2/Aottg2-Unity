@@ -1251,6 +1251,7 @@ component SupplyStation
 {
     UnlimitedRefills = true;
     MaxRefills = 0;
+    _currentHumanRefill = null;
     _currentHuman = null;
 
     function Init()
@@ -1264,21 +1265,27 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine && (self.UnlimitedRefills || self._refillsLeft > 0))
         {
             self._currentHuman = other;
-            if (!other.AutoRefillGas)
-            {
-                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
-            }
+            self._currentHumanRefill = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.", 0.1);
         }
     }
 
     function OnFrame()
     {
+        if (self._currentHumanRefill != null)
+        {
+            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill(true))
+            {
+                self._currentHumanRefill = null;
+                self._refillsLeft = self._refillsLeft - 1;
+            }
+        }
         if (self._currentHuman != null)
         {
-            if ((self._currentHuman.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHuman.Refill(true))
+            if (Input.GetKeyDown("Interaction/Interact2"))
             {
                 self._currentHuman = null;
-                self._refillsLeft = self._refillsLeft - 1;
+                UI.ShowChangeCharacterMenu();
             }
         }
     }
@@ -1288,6 +1295,7 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;
+            self._currentHumanRefill = null;
         }
     }
 }

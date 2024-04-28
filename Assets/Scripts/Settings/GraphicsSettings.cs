@@ -78,7 +78,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Off;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 250;
+                LightDistance.Value = 0;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {

@@ -12,11 +12,11 @@ namespace UI
     class AboutPopup: BasePopup
     {
         protected override string Title => string.Empty;
-        protected override float Width => 730f;
-        protected override float Height => 400f;
+        protected override float Width => 1400f;
+        protected override float Height => 1040f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
-        protected override string DefaultCategoryPanel => "Help";
+        protected override string DefaultCategoryPanel => "Credits";
         protected override bool UseSound => true;
 
         public override void Setup(BasePanel parent = null)
@@ -28,7 +28,7 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Help", "Changelog", "Credits" })
+            foreach (string buttonName in new string[] { "Credits", "Help", "Changelog" })
             {
                 GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale("MainMenu", "AboutPopup", buttonName),
                     onClick: () => SetCategoryPanel(buttonName));

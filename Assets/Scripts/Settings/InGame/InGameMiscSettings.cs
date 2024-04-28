@@ -21,6 +21,8 @@
         public BoolSetting ClearKDROnRestart = new BoolSetting(false);
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
         public BoolSetting RealismMode = new BoolSetting(false);
+        public BoolSetting CustomStats = new BoolSetting(true);
+        public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
     }
 

@@ -346,10 +346,17 @@ namespace UI
                     _currentSpecialIcon = _newSpecialIcon;
                     if (_currentSpecialIcon != "")
                     {
-                        var icon = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/" + _currentSpecialIcon, true);
-                        var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, icon.width, icon.height), new Vector2(0.5f, 0.5f));
-                        _specialIconBackground.sprite = sprite;
-                        _specialIconFill.sprite = sprite;
+                        try
+                        {
+                            var icon = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/" + _currentSpecialIcon, true);
+                            var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, icon.width, icon.height), new Vector2(0.5f, 0.5f));
+                            _specialIconBackground.sprite = sprite;
+                            _specialIconFill.sprite = sprite;
+                        }
+                        catch
+                        {
+                            Debug.Log("Error loading special icon " + _currentSpecialIcon);
+                        }
                     }
                 }
             }
@@ -360,10 +367,10 @@ namespace UI
         private void UpdateGas()
         {
             float gasRatio;
-            if (_human.MaxGas <= 0f)
+            if (_human.Stats.MaxGas <= 0f)
                 gasRatio = 0f;
             else
-                gasRatio = _human.CurrentGas / _human.MaxGas;
+                gasRatio = _human.Stats.CurrentGas / _human.Stats.MaxGas;
             _gasFillLeft.fillAmount = gasRatio;
             _gasFillRight.fillAmount = gasRatio;
             bool animate = false;

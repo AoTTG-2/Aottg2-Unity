@@ -20,10 +20,7 @@ namespace Characters
 
         public static void Init()
         {
-            if (ApplicationConfig.DevelopmentMode)
-                Info = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/TitanSetupInfo.json"));
-            else
-                Info = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "TitanSetupInfo"));
+            Info = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "TitanSetupInfo"));
         }
 
         public static int[] GetRandomBodyHeadCombo(JSONNode node = null)
@@ -36,7 +33,7 @@ namespace Characters
                 return result;
             }
             if (node == null)
-                node = CharacterData.TitanAIInfo["Default"];
+                node = CharacterData.TitanAIInfos["Titan"]["Default"];
             var combos = node["BodyHeadCombos"];
             List<object> nodes = new List<object>();
             List<float> weights = new List<float>();
