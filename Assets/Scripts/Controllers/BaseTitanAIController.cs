@@ -207,7 +207,7 @@ namespace Controllers
                     Idle();
                 }
                 else if (_stateTimeLeft <= 0)
-                    MoveToPosition();
+                    MoveToPosition(true);
                 else if (!_wasPreviouslyBlocked)
                     _titan.TargetAngle = GetChaseAngle(_moveToPosition);
             }
@@ -343,8 +343,11 @@ namespace Controllers
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
             if (Physics.SphereCast(start, colliderRadius, _titan.Cache.Transform.forward, out hit, _collisionDetectionDistance, mask))
             {
+                // display the ray
+                Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
                 return true;
             }
+            Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
             return false;
         }
 
@@ -382,6 +385,10 @@ namespace Controllers
                             bestDirAlignment = alignment;
                         }
                     }
+
+                    // Draw the ray to the hit point
+                    Debug.DrawRay(start, rayDirection * hit.distance, Color.red, 1);
+
                 }
                 else
                 {
@@ -402,6 +409,9 @@ namespace Controllers
                             bestDirAlignment = alignment;
                         }
                     }
+
+                    // Draw the ray to the end of the range
+                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.green, 1);
                 }
             }
             return bestDirection;

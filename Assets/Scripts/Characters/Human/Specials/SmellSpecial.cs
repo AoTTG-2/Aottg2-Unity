@@ -8,7 +8,7 @@ namespace Characters
     class SmellSpecial : BaseEmoteSpecial
     {
         protected override float ActiveTime => 2f;
-        protected float Range = 400f;
+        protected float Range = 600f;
         protected override bool GroundedOnly => false;
 
         public SmellSpecial(BaseCharacter owner): base(owner)
@@ -18,7 +18,7 @@ namespace Characters
 
         protected override void Activate()
         {
-            _human.EmoteAnimation(HumanAnimations.SpecialArmin);
+            _human.EmoteAnimation(HumanAnimations.SpecialShifter);
         }
 
         protected override void Deactivate()

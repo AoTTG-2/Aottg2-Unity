@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:|HasWeather:0
+EditorVersion:1.0|Description:A progressive capture point gamemode made by Thyme.|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -8,14 +8,13 @@ Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,20,0,53.13011,126.8699,0,1,1
 Scene,General/EditorHumanSpawnPoint,3,0,1,1,0,0,Human SpawnPoint,-2596,1,-4622,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,Buildings/WallGateA1,9,0,1,0,1,1,WallGateA1,-2600,-38,-3755,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Closed|StartStateDropdown:Closed  Open|Interactable:false,Tag|Name:StartWallGate;
 Scene,Interact/CaptureZone1,21,0,1,0,1,1,CaptureZone1,-2596,0,-3662,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:0|SupplyStationID:941|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,22,0,1,0,1,1,CaptureZone1,-2589,0,-2761,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.1|Order:1|SupplyStationID:942|ShowUI:true|UIVisibilityRange:80;
+Scene,Geometry/Cuboid,1357,0,1,1,0,0,Titan Barrier,-2543,27.5,-2827.5,0,0,0,3.3,6.4,3.2,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Interact/CaptureZone1,23,0,1,0,1,1,CaptureZone1,-1940,15,-2315,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:2|SupplyStationID:943|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,24,0,1,0,1,1,CaptureZone1,-1151,20,-2161,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.1|Order:3|SupplyStationID:944|ShowUI:true|UIVisibilityRange:80;
 Scene,Buildings/Church1,575,0,1,1,1,0,Church1,-1125.133,36.07217,-2049,0,270,4.244037,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Interact/CaptureZone1,26,0,1,0,1,1,CaptureZone1,-204,-0.7070895,-1902,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:30|DecaySpeed:0.1|Order:4|SupplyStationID:945|ShowUI:true|UIVisibilityRange:80;
 Scene,Interact/CaptureZone1,27,0,1,0,1,1,CaptureZone1,897,44,-2022,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:5|SupplyStationID:946|ShowUI:true|UIVisibilityRange:80;
 Scene,Interact/CaptureZone1,28,0,1,0,1,1,CaptureZone1,1713,58,-1671,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:0.1|Order:6|SupplyStationID:789|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,29,0,1,0,1,1,CaptureZone1,2442,70,-1395,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:2|DecaySpeed:1|Order:7|SupplyStationID:947|ShowUI:true|UIVisibilityRange:80;
+Scene,Interact/CaptureZone1,29,0,1,0,1,1,CaptureZone1,2442,70,-1395,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:false|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:1|DecaySpeed:1|Order:7|SupplyStationID:947|ShowUI:true|UIVisibilityRange:80;
 Scene,Nature/Tree12,30,0,1,1,1,0,Tree12,2374.913,76,-1286.769,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,31,0,1,1,1,0,Tree12,2169.248,76,-1388.022,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,32,0,1,1,1,0,Tree12,2264,76,-1583,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -941,10 +940,10 @@ Scene,Interact/Wagon2,1325,0,1,0,1,1,Wagon2,-2651,0.5,-4003.5,0,90,0,1,1,1,Physi
 Scene,Interact/Wagon2,1326,0,1,0,1,1,Wagon2,-2651,0.5,-3994.5,0,90,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Wagon|MoveForce:20|MaxMoveSpeed:50|RotateSpeed:3,Rigidbody|Mass:20|Gravity:0/-100/0|FreezeRotation:true|Interpolate:false;
 Scene,Interact/Wagon2,1327,0,1,0,1,1,Wagon2,-2651,0.5,-4021,0,90,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Wagon|MoveForce:20|MaxMoveSpeed:50|RotateSpeed:3,Rigidbody|Mass:20|Gravity:0/-100/0|FreezeRotation:true|Interpolate:false;
 Scene,Decor/Barrel2,1328,0,1,1,1,0,Barrel2,-2628,0,-2923,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Barrel2,1329,0,1,1,1,0,Barrel2,-2545.5,0,-2920.5,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Barrel2,1329,0,1,1,1,0,Barrel2,-2545.5,0,-2920.5,0,180,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,1330,0,1,1,1,0,Box2,-2617.5,0,-2916.5,0,277.5,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall3c,1334,0,1,1,1,0,Stall3c,-2625,0,-2815,0,270,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Stall3c,1335,0,1,1,1,0,Stall3c,-2476,0,-2783.5,0,90,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Stall3c,1335,0,1,1,1,0,Stall3c,-2476,0,-2783.5,0,90,0,0.6,0.6,0.6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall2c,1347,0,1,1,1,0,Stall2c,-2746,0,-2847.5,0,90.00005,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall2c,1348,0,1,1,1,0,Stall2c,-2747.5,0,-2763.5,0,90.00005,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,1343,0,1,1,1,0,Box2,-2554.5,44,-2821,0,90,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
@@ -955,7 +954,11 @@ Scene,Decor/Barrel3,1351,0,1,1,1,0,Barrel3,-2744.225,-0.320506,-2819.5,9.702527,
 Scene,Decor/Barrel3,1352,0,1,1,1,0,Barrel3,-2748,1,-2827,0,75.00004,90.00005,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall2c,1353,0,1,1,1,0,Stall2c,-2521.5,0,-2823.5,0,270,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,1354,0,1,1,1,0,Tree21,-2330.5,-1,-3344,0,150,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree21,1355,0,1,1,1,0,Tree21,-2192.5,-4.5,-3556,0.9762015,187.4366,352.5634,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,
+Scene,Nature/Tree21,1355,0,1,1,1,0,Tree21,-2192.5,-4.5,-3556,0.9762015,187.4366,352.5634,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/CaptureZone2,1356,0,1,0,1,1,CaptureZone1,-2602.5,0,-2783,0,0,0,45,10,45,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.3|Order:1|SupplyStationID:942|ShowUI:true|UIVisibilityRange:100;
+Scene,Geometry/Cuboid,1358,0,1,1,0,0,Titan Barrier,-2639,27.5,-2909.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
+Scene,Geometry/Cuboid,1359,0,1,1,0,0,Titan Barrier,-2538.5,27.5,-2910.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
+Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1151,20,-2161.5,0,0,0,30,10,30,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.5|Order:3|SupplyStationID:944|ShowUI:true|UIVisibilityRange:100
 /// Logic
 class Main
 {
@@ -1112,7 +1115,7 @@ class EventController
         if (main.Difficulty == "Easy")
         {
             townSpawnMin = 1;
-            townSpawnMax = 3;
+            townSpawnMax = 2;
             townSpawnTimeMin = 15;
             townSpawnTimeMax = 25;
             pointSpawnMin = 3;
@@ -1120,20 +1123,20 @@ class EventController
             forestSpawnCount = 10;
             ftHealth1 = 1500;
             ftHealth2 = 2500;
-            townMaxTitans = 6;
+            townMaxTitans = 4;
         }
         elif (main.Difficulty == "Normal")
         {
-            townSpawnMin = 3;
-            townSpawnMax = 8;
-            townSpawnTimeMin = 10;
+            townSpawnMin = 2;
+            townSpawnMax = 4;
+            townSpawnTimeMin = 15;
             townSpawnTimeMax = 20;
             pointSpawnMin = 6;
             pointSpawnMax = 10;
             forestSpawnCount = 20;
             ftHealth1 = 2000;
             ftHealth2 = 4000;
-            townMaxTitans = 11;
+            townMaxTitans = 8;
         }
         elif (main.Difficulty == "Hard")
         {
@@ -1147,11 +1150,10 @@ class EventController
             forestSpawnCount = 25;
             ftHealth1 = 3000;
             ftHealth2 = 6000;
-            townMaxTitans = 20;
+            townMaxTitans = 15;
         }
 
         event1.StartTitans = Random.RandomInt(pointSpawnMin, pointSpawnMax);
-        # event1.SetCaptureZoneProps(3.0, 5.0); # Set capture zone's CaptureTime and DecaySpeed
         event2.StartTitans = Random.RandomInt(townSpawnMin, townSpawnMax);
         event2.MinTimeBetweenSpawns = townSpawnTimeMin;
         event2.MaxTimeBetweenSpawns = townSpawnTimeMax;
