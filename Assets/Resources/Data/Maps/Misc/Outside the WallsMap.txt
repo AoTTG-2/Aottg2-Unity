@@ -21,7 +21,7 @@ Scene,Nature/Tree12,32,0,1,1,1,0,Tree12,2264,76,-1583,0,0,0,1,1,1,Physical,Entit
 Scene,Nature/Tree12,33,0,1,1,1,0,Tree12,2460,76,-1502,0,169.3643,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower6,34,0,1,1,1,0,Tower6,-2499,0,-2633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell2,35,0,1,0,1,1,Bell2,-2499,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
-Scene,Buildings/Windmill2,36,0,1,0,1,0,Windmill2,-2631,50,-2483,0,40.00001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill2,36,0,1,0,1,0,Windmill2,-2631,50,-2483,0,40.00001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Animator|AnimationName:Windmill2Spin|PlayOnAwake:true|HasFade:false|Fade:0;
 Scene,Buildings/Village2,37,0,1,1,1,0,Village2,-2665.787,6,-3322.394,0,120,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,38,0,1,1,1,0,Tree21,-2684.787,-1,-3209.394,0,45.00002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Wagon1,40,0,1,1,1,0,Wagon1,-2660.894,4,-3279,345,330,4.419458E-07,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -439,7 +439,7 @@ Scene,Buildings/House27,622,0,1,1,1,0,House27,-2746,0,-2963,0,217.5,0,1,0.7,1,Ph
 Scene,Buildings/House21,643,0,1,1,1,0,House21,-2641,0,-2996,0,180,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown2,791,0,1,1,1,0,Overgrown2,-1293,20.8449,-2270,0,97.50005,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown3,793,0,1,1,1,0,Overgrown3,-1201.826,13.8382,-2298.02,354.6881,7.097216,12.23818,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Windmill1,630,0,1,0,1,0,Windmill1,-1029.352,18,-2243.178,2.663395,210.0357,1.538999,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill1,630,0,1,0,1,0,Windmill1,-1029.352,18,-2243.178,2.663395,210.0357,1.538999,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Animator|AnimationName:Windmill1Spin|PlayOnAwake:true|HasFade:false|Fade:0;
 Scene,FX/WaterCube1,631,0,1,0,1,0,WaterCube1,-1598.943,6,-2148,0,0,0,75,1.5,130.2532,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10;
 Scene,Buildings/House21,637,0,1,1,1,0,House21,-2700,0,-2989,0,195,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House23,636,0,1,1,1,0,House23,-2603,50,-2449,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;

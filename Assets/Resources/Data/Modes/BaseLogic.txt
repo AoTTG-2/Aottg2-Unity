@@ -1,3 +1,37 @@
+component Animator
+{
+    AnimationName = "";
+    PlayOnAwake = true;
+    HasFade = false;
+    Fade = 0;
+
+    function Init()
+    {
+        if (self.PlayOnAwake)
+        {
+            self.PlayAnimation();
+        }
+    }
+
+    function ChangeAnimation(newAnimation)
+    {
+        self.AnimationName = newAnimation;
+        self.PlayAnimation();
+    }
+
+    function PlayAnimation()
+    {
+        if (self.HasFade)
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName, self.Fade);
+        }
+        else
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName);
+        }
+    }
+}
+
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
@@ -2163,7 +2197,7 @@ component Cannon
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
-        self.NetworkSync.SendStream(self._ammoLeft);
+        self.NetworkView.SendStream(self._ammoLeft);
     }
 
     function OnNetworkStream()
@@ -2171,7 +2205,7 @@ component Cannon
         rotation = self.NetworkView.ReceiveStream();
         self._barrel.LocalRotation = rotation;
         self._inUse = self.NetworkView.ReceiveStream();
-        self._ammoLeft = self.NetworkSync.ReceiveStream();
+        self._ammoLeft = self.NetworkView.ReceiveStream();
     }
 
     function OnNetworkMessage(sender, message)
