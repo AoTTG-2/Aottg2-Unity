@@ -2163,7 +2163,7 @@ component Cannon
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
-        self.NetworkSync.SendStream(self._ammoLeft)
+        self.NetworkSync.SendStream(self._ammoLeft);
     }
 
     function OnNetworkStream()
