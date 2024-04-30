@@ -7,15 +7,15 @@ using UnityEngine;
 public class EmPlayerListManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    private PlayerButtton PlayerButtonPrefab;
+    private PlayerButton PlayerButtonPrefab;
     [SerializeField]
     private Transform ScrollViewContent;
 
-    private List<PlayerButtton> PlayerListings = new List<PlayerButtton>();
+    private List<PlayerButton> PlayerListings = new List<PlayerButton>();
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        PlayerButtton listing = Instantiate(PlayerButtonPrefab, ScrollViewContent);
+        PlayerButton listing = Instantiate(PlayerButtonPrefab, ScrollViewContent);
         if (listing != null)
             listing.SetPlayerInfo(newPlayer);
         PlayerListings.Add(listing);
@@ -37,7 +37,7 @@ public class EmPlayerListManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PlayerButtton listing = Instantiate(PlayerButtonPrefab, ScrollViewContent);
+        PlayerButton listing = Instantiate(PlayerButtonPrefab, ScrollViewContent);
         if (listing != null)
             listing.SetPlayerInfo(PhotonNetwork.LocalPlayer);
         PlayerListings.Add(listing);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PlayerButtton : MonoBehaviour
+public class PlayerButton : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text Button_Text;
@@ -16,7 +16,7 @@ public class PlayerButtton : MonoBehaviour
     {
         PhotonPlayer = player;
 
-        Button_Text.text = $"[{player.ActorNumber}] {player.GetStringProperty(PlayerProperty.Name)}";
+        NameRefresh();
     }
 
     public void OnClick_Button()
