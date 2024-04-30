@@ -19,23 +19,26 @@ public class PlayerButton : MonoBehaviour
         NameRefresh();
     }
 
+    private float timer = 0;
+    private void FixedUpdate()
+    {
+        timer += Time.fixedDeltaTime;
+        if (timer >= 0.5f)
+        {
+            NameRefresh();
+            timer = 0f;
+        }
+    }
+
     public void OnClick_Button()
     {
         EmVariables.SelectedPlayer = PhotonPlayer;
     }
 
-    private void Start()
-    {
-        Invoke("NameRefresh", 1f);
-    }
-
-    private void OnEnable()
-    {
-        Invoke("NameRefresh", 0.3f);
-    }
-
     private void NameRefresh()
     {
-        Button_Text.text = $"[{PhotonPlayer.ActorNumber}] {PhotonPlayer.GetStringProperty(PlayerProperty.Name)}";
+        Button_Text.text = 
+            $"[{PhotonPlayer.ActorNumber}]" +
+            $" {PhotonPlayer.GetStringProperty(PlayerProperty.Name)}";
     }
 }
