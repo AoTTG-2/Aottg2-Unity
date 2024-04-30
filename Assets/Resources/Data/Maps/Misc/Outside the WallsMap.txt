@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:A progressive capture point gamemode made by Thyme.|HasWeather:0
+EditorVersion:1.0|Description:A progressive capture point gamemode made by O & Thyme.|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -21,7 +21,7 @@ Scene,Nature/Tree12,32,0,1,1,1,0,Tree12,2264,76,-1583,0,0,0,1,1,1,Physical,Entit
 Scene,Nature/Tree12,33,0,1,1,1,0,Tree12,2460,76,-1502,0,169.3643,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower6,34,0,1,1,1,0,Tower6,-2499,0,-2633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bell2,35,0,1,0,1,1,Bell2,-2499,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
-Scene,Buildings/Windmill2,36,0,1,0,1,0,Windmill2,-2631,50,-2483,0,40.00001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Animator|AnimationName:Windmill2Spin|PlayOnAwake:true|HasFade:false|Fade:0;
+Scene,Buildings/Windmill2,36,0,1,0,1,0,Windmill2,-2631,50,-2483,0,40.00001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Village2,37,0,1,1,1,0,Village2,-2665.787,6,-3322.394,0,120,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,38,0,1,1,1,0,Tree21,-2684.787,-1,-3209.394,0,45.00002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Wagon1,40,0,1,1,1,0,Wagon1,-2660.894,4,-3279,345,330,4.419458E-07,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -410,9 +410,9 @@ Scene,Buildings/House15,797,0,1,1,1,0,House15,-1294.5,16.07396,-2052.03,354.8423
 Scene,Buildings/Overgrown3,794,0,1,1,1,0,Overgrown3,-1215.174,15.8382,-2275.507,354.2869,113.4192,359.2453,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown3,790,0,1,1,1,0,Overgrown3,-1132,15.8382,-2265,0,60.00007,0,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Bridge1,582,0,1,1,1,0,Bridge1,-1597,-4.4,-2093,0,5.401592,0,2,1,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fence1,589,0,1,1,1,0,Fence1,-1209.133,19.21517,-2085,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence1,589,0,1,1,1,0,Fence1,-1209.133,19.21517,-2085,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House32,777,0,1,1,1,0,House32,-122,29,-1972,0,165.0001,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fence1,588,0,1,1,1,0,Fence1,-1209.133,19.21517,-2011,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence1,588,0,1,1,1,0,Fence1,-1209.133,19.21517,-2011,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,594,0,1,1,1,0,Lantern3,-1314.133,20.8449,-2235,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown3,792,0,1,1,1,0,Overgrown3,-1141,15.8382,-2273,346.1655,336.7891,5.85463,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,596,0,1,1,1,0,Lantern3,-1225.133,19,-2235,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -439,7 +439,7 @@ Scene,Buildings/House27,622,0,1,1,1,0,House27,-2746,0,-2963,0,217.5,0,1,0.7,1,Ph
 Scene,Buildings/House21,643,0,1,1,1,0,House21,-2641,0,-2996,0,180,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown2,791,0,1,1,1,0,Overgrown2,-1293,20.8449,-2270,0,97.50005,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown3,793,0,1,1,1,0,Overgrown3,-1201.826,13.8382,-2298.02,354.6881,7.097216,12.23818,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Windmill1,630,0,1,0,1,0,Windmill1,-1029.352,18,-2243.178,2.663395,210.0357,1.538999,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Animator|AnimationName:Windmill1Spin|PlayOnAwake:true|HasFade:false|Fade:0;
+Scene,Buildings/Windmill1,630,0,1,0,1,0,Windmill1,-992.7642,18,-2249.781,2.663395,210.0357,1.538999,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/WaterCube1,631,0,1,0,1,0,WaterCube1,-1598.943,6,-2148,0,0,0,75,1.5,130.2532,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10;
 Scene,Buildings/House21,637,0,1,1,1,0,House21,-2700,0,-2989,0,195,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House23,636,0,1,1,1,0,House23,-2603,50,-2449,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -625,7 +625,7 @@ Scene,Nature/Aspen1,932,0,1,1,1,0,Aspen1,-2572,49,-2378,0,60.00003,0,0.5,0.5,0.5
 Scene,Nature/Boulder9,935,0,1,1,1,0,Boulder9,-2641,49,-2464,0,0,0,11,11,11,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Planter1,936,0,1,1,1,0,Planter1,-2602.838,50.93203,-2458.902,0,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box3,938,0,1,1,1,0,Box3,-2589.646,49.89522,-2452.835,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply2,941,0,1,0,1,0,Supply2,-2596,0,-3662,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,941,0,1,0,1,0,Supply2,-2596,-9.250644E-05,-3662,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Interact/Supply2,942,0,1,0,1,0,Supply2,-2589,0,-2761,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Interact/Supply2,943,0,1,0,1,0,Supply2,-1940,17.30987,-2315,0,0,2.559279,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Interact/Supply2,944,0,1,0,1,0,Supply2,-1151,20,-2161,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
@@ -955,10 +955,12 @@ Scene,Decor/Barrel3,1352,0,1,1,1,0,Barrel3,-2748,1,-2827,0,75.00004,90.00005,0.7
 Scene,Decor/Stall2c,1353,0,1,1,1,0,Stall2c,-2521.5,0,-2823.5,0,270,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,1354,0,1,1,1,0,Tree21,-2330.5,-1,-3344,0,150,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,1355,0,1,1,1,0,Tree21,-2192.5,-4.5,-3556,0.9762015,187.4366,352.5634,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/CaptureZone2,1356,0,1,0,1,1,CaptureZone1,-2602.5,0,-2783,0,0,0,45,10,45,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.3|Order:1|SupplyStationID:942|ShowUI:true|UIVisibilityRange:100;
+Scene,Interact/CaptureZone2,1356,0,1,0,1,1,CaptureZone1,-2602.5,0,-2783,0,0,0,45,10,45,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:1|Order:1|SupplyStationID:942|ShowUI:true|UIVisibilityRange:250;
 Scene,Geometry/Cuboid,1358,0,1,1,0,0,Titan Barrier,-2639,27.5,-2909.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,1359,0,1,1,0,0,Titan Barrier,-2538.5,27.5,-2910.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1151,20,-2161.5,0,0,0,30,10,30,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.5|Order:3|SupplyStationID:944|ShowUI:true|UIVisibilityRange:100
+Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1151,20,-2161.5,0,0,0,23,10,23,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:1|Order:3|SupplyStationID:944|ShowUI:true|UIVisibilityRange:150;
+Scene,Geometry/Cuboid,1361,0,1,1,0,0,Titan Barrier,-1116.5,36,-2055.5,0,0,0,17,10,10.1,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
+Scene,Geometry/Cuboid,1362,0,1,1,0,0,Titan Barrier,-1011.5,68,-2241,0,30.00001,0,2.1,10.9,9.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|
 /// Logic
 class Main
 {
@@ -1098,83 +1100,62 @@ class EventController
         event7 = Event2(self, 6);
         event8 = Event8(self, 7);
 
-        townSpawnMin = 4;
-        townSpawnMax = 8;
-        townSpawnTimeMin = 20;
-        townSpawnTimeMax = 40;
+        pointSpawn = 5;
+        townSpawn = 4;
+        townSpawnTime = 20;
         townMaxTitans = 10;
-
-        pointSpawnMin = 5;
-        pointSpawnMax = 10;
-
         forestSpawnCount = 20;
-        ftHealth1 = 1500;
-        ftHealth2 = 2500;
-
-
+        femaleTitanHealth = 2000;
         if (main.Difficulty == "Easy")
         {
-            townSpawnMin = 1;
-            townSpawnMax = 2;
-            townSpawnTimeMin = 15;
-            townSpawnTimeMax = 25;
-            pointSpawnMin = 3;
-            pointSpawnMax = 6;
-            forestSpawnCount = 10;
-            ftHealth1 = 1500;
-            ftHealth2 = 2500;
-            townMaxTitans = 4;
+            pointSpawn = 5;
+            townSpawn = 2;
+            townSpawnTime = 25;
+            townMaxTitans = 10;
+            femaleTitanHealth = 2000;
+            forestSpawnCount = 15;
         }
         elif (main.Difficulty == "Normal")
         {
-            townSpawnMin = 2;
-            townSpawnMax = 4;
-            townSpawnTimeMin = 15;
-            townSpawnTimeMax = 20;
-            pointSpawnMin = 6;
-            pointSpawnMax = 10;
+            pointSpawn = 8;
+            townSpawn = 4;
+            townSpawnTime = 25;
+            townMaxTitans = 10;
+            femaleTitanHealth = 3500;
             forestSpawnCount = 20;
-            ftHealth1 = 2000;
-            ftHealth2 = 4000;
-            townMaxTitans = 8;
         }
         elif (main.Difficulty == "Hard")
         {
-            # Todo: Set event variables for this difficulty
-            townSpawnMin = 8;
-            townSpawnMax = 14;
-            townSpawnTimeMin = 5;
-            townSpawnTimeMax = 10;
-            pointSpawnMin = 10;
-            pointSpawnMax = 14;
-            forestSpawnCount = 25;
-            ftHealth1 = 3000;
-            ftHealth2 = 6000;
+            pointSpawn = 11;
+            townSpawn = 5;
+            townSpawnTime = 20;
             townMaxTitans = 15;
+            femaleTitanHealth = 3500;
+            forestSpawnCount = 25;
         }
 
-        event1.StartTitans = Random.RandomInt(pointSpawnMin, pointSpawnMax);
-        event2.StartTitans = Random.RandomInt(townSpawnMin, townSpawnMax);
-        event2.MinTimeBetweenSpawns = townSpawnTimeMin;
-        event2.MaxTimeBetweenSpawns = townSpawnTimeMax;
+        event1.StartTitans = pointSpawn;
+        event2.StartTitans = townSpawn;
+        event2.MinTimeBetweenSpawns = townSpawnTime;
+        event2.MaxTimeBetweenSpawns = townSpawnTime;
         event2.MaxTitans = townMaxTitans;
-        event3.StartTitans = Random.RandomInt(pointSpawnMin, pointSpawnMax);
-        event4.StartTitans = Random.RandomInt(townSpawnMin, townSpawnMax);
-        event4.MinTimeBetweenSpawns = townSpawnTimeMin;
-        event4.MaxTimeBetweenSpawns = townSpawnTimeMax;
+        event3.StartTitans = pointSpawn;
+        event4.StartTitans = townSpawn;
+        event4.MinTimeBetweenSpawns = townSpawnTime;
+        event4.MaxTimeBetweenSpawns = townSpawnTime;
         event4.MaxTitans = townMaxTitans;
-        event4.ShifterHealth = ftHealth2;
-        event5.StartTitans = Random.RandomInt(townSpawnMin, townSpawnMax);
-        event5.MinTimeBetweenSpawns = townSpawnTimeMin;
-        event5.MaxTimeBetweenSpawns = townSpawnTimeMax;
+        event4.ShifterHealth = femaleTitanHealth;
+        event5.StartTitans = townSpawn;
+        event5.MinTimeBetweenSpawns = townSpawnTime;
+        event5.MaxTimeBetweenSpawns = townSpawnTime;
         event5.MaxTitans = townMaxTitans;
-        event6.StartTitans = Random.RandomInt(pointSpawnMin, pointSpawnMax);
-        event7.StartTitans = Random.RandomInt(townSpawnMin, townSpawnMax);
-        event7.MinTimeBetweenSpawns = townSpawnTimeMin;
-        event7.MaxTimeBetweenSpawns = townSpawnTimeMax;
+        event6.StartTitans = pointSpawn;
+        event7.StartTitans = townSpawn;
+        event7.MinTimeBetweenSpawns = townSpawnTime;
+        event7.MaxTimeBetweenSpawns = townSpawnTime;
         event7.MaxTitans = townMaxTitans;
         event8.TitansCount = forestSpawnCount;
-        event8.ShifterHealth = ftHealth2;
+        event8.ShifterHealth = femaleTitanHealth;
 
         self._events.Add(event1);
         self._events.Add(event2);
@@ -2229,14 +2210,26 @@ extension CaptureZones
     function Setup(callbackReceiver)
     {
         captureZones = Map.FindMapObjectsByName("CaptureZone1");
+        captureZoneOrderMap = Dict();
         for(captureZone in captureZones)
         {
-            captureZone = captureZone.GetComponent("CaptureZone");
-            captureZone.SetupCallbackReceiver(callbackReceiver);
-            self._captureZones.Add(captureZone);
+            captureZoneComponent = captureZone.GetComponent("CaptureZone");
+            captureZoneComponent.SetupCallbackReceiver(callbackReceiver);
+            if (captureZoneOrderMap.Contains(captureZoneComponent.Order) == true)
+            {
+                Game.Print("Capture zone order " + captureZoneComponent.Order + " is already added, please remove duplicate zone!");
+                Game.End(10);
+                return;
+            }
+            captureZoneOrderMap.Set(captureZoneComponent.Order, captureZoneComponent);
         }
 
-        # Todo: Make sure that capture zones are sorted by their "Order" variable
+        keys = captureZoneOrderMap.Keys;
+        keys.Sort();
+        for(key in keys)
+        {
+            self._captureZones.Add(captureZoneOrderMap.Get(key));
+        }
     }
 
     function Count()

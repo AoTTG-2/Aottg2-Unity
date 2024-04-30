@@ -60,6 +60,11 @@ namespace CustomLogic
             {
                 return List.Any(e => e == parameters[0]);
             }
+            if (methodName == "Sort")
+            {
+                List.Sort();
+                return null;
+            }
             return base.CallMethod(methodName, parameters);
         }
 

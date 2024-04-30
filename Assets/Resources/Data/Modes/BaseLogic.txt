@@ -252,7 +252,8 @@ component WaterPhysics
         deltaY = 0;
         deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
         deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
-        return self._surfaceTop + deltaY;
+        surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+        return surfaceTop + deltaY;
     }
 
     function OnCollisionStay(other)
