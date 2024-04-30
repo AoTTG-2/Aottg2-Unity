@@ -1121,8 +1121,9 @@ namespace Characters
                 {
                     Vector3 vector2 = _hookHuman.Cache.Transform.position - Cache.Transform.position;
                     float magnitude = vector2.magnitude;
-                    if (magnitude > 2f)
-                        Cache.Rigidbody.AddForce((vector2.normalized * Mathf.Pow(magnitude, 0.15f) * 30f) - (Cache.Rigidbody.velocity * 0.95f), ForceMode.VelocityChange);
+                    // Temporarily remove until a rework is done as this completely breaks hook physics
+                    /*if (magnitude > 2f)
+                        Cache.Rigidbody.AddForce((vector2.normalized * Mathf.Pow(magnitude, 0.15f) * 30f) - (Cache.Rigidbody.velocity * 0.95f), ForceMode.VelocityChange);*/
                     _hookHumanConstantTimeLeft -= Time.fixedDeltaTime;
                     if (_hookHumanConstantTimeLeft <= 0f)
                     {
