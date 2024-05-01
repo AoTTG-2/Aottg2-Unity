@@ -1102,6 +1102,8 @@ class EventController
 
         pointSpawn = 5;
         townSpawn = 4;
+        TownWaveMin = 1;
+        TownWaveMax = 2;
         townSpawnTime = 20;
         townMaxTitans = 10;
         forestSpawnCount = 20;
@@ -1110,6 +1112,8 @@ class EventController
         {
             pointSpawn = 5;
             townSpawn = 2;
+            TownWaveMin = 1;
+            TownWaveMax = 2;
             townSpawnTime = 25;
             townMaxTitans = 10;
             femaleTitanHealth = 2000;
@@ -1119,6 +1123,8 @@ class EventController
         {
             pointSpawn = 8;
             townSpawn = 4;
+            TownWaveMin = 3;
+            TownWaveMax = 4;
             townSpawnTime = 25;
             townMaxTitans = 10;
             femaleTitanHealth = 3500;
@@ -1128,6 +1134,8 @@ class EventController
         {
             pointSpawn = 11;
             townSpawn = 5;
+            TownWaveMin = 5;
+            TownWaveMax = 6;
             townSpawnTime = 20;
             townMaxTitans = 15;
             femaleTitanHealth = 3500;
@@ -1136,21 +1144,29 @@ class EventController
 
         event1.StartTitans = pointSpawn;
         event2.StartTitans = townSpawn;
+        event2.MinTitansPerWave = TownWaveMin;
+        event2.MaxTitansPerWave = TownWaveMax;
         event2.MinTimeBetweenSpawns = townSpawnTime;
         event2.MaxTimeBetweenSpawns = townSpawnTime;
         event2.MaxTitans = townMaxTitans;
         event3.StartTitans = pointSpawn;
         event4.StartTitans = townSpawn;
+        event4.MinTitansPerWave = TownWaveMin;
+        event4.MaxTitansPerWave = TownWaveMax;
         event4.MinTimeBetweenSpawns = townSpawnTime;
         event4.MaxTimeBetweenSpawns = townSpawnTime;
         event4.MaxTitans = townMaxTitans;
         event4.ShifterHealth = femaleTitanHealth;
         event5.StartTitans = townSpawn;
+        event5.MinTitansPerWave = TownWaveMin;
+        event5.MaxTitansPerWave = TownWaveMax;
         event5.MinTimeBetweenSpawns = townSpawnTime;
         event5.MaxTimeBetweenSpawns = townSpawnTime;
         event5.MaxTitans = townMaxTitans;
         event6.StartTitans = pointSpawn;
         event7.StartTitans = townSpawn;
+        event7.MinTitansPerWave = TownWaveMin;
+        event7.MaxTitansPerWave = TownWaveMax;
         event7.MinTimeBetweenSpawns = townSpawnTime;
         event7.MaxTimeBetweenSpawns = townSpawnTime;
         event7.MaxTitans = townMaxTitans;
