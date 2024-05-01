@@ -1093,6 +1093,7 @@ component CaptureZone
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
+        self.MapObject.Active = data.Get("active");
 
         self.ChangeColor();
     }
@@ -1105,8 +1106,22 @@ component CaptureZone
         message.Set("capturer", capturer);
         message.Set("progress", progress);
         message.Set("enabled", Enabled);
+        message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessageOthers(Json.SaveToString(message));
+    }
+
+    function OnPlayerJoin(player)
+    {
+        message = Dict();
+        message.Set("state", state);
+        message.Set("owner", owner);
+        message.Set("capturer", capturer);
+        message.Set("progress", progress);
+        message.Set("enabled", Enabled);
+        message.Set("active", self.MapObject.Active);
+        self.ChangeColor();
+        self.NetworkView.SendMessage(player, Json.SaveToString(message));
     }
 
     function HandleStateTransition()
