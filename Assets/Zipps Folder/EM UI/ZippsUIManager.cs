@@ -89,6 +89,9 @@ public class ZippsUIManager : MonoBehaviour
             case 3:
                 RoleName = "Veteran";
                 break;
+            case 4:
+                RoleName = "Wagon";
+                break;
         }
 
         if (RoleName == string.Empty) return;
