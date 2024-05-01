@@ -49,6 +49,7 @@ namespace Characters
 
         protected override void Deactivate()
         {
+            
         }
 
         protected override void ActiveFixedUpdate()

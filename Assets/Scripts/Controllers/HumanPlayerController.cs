@@ -219,6 +219,7 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
+            UpdateDashUpwardsInput(inMenu);
             if (!inMenu)
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
@@ -228,7 +229,7 @@ namespace Controllers
             
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
-            bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon = (_human.MountState == HumanMountState.None /*|| _human.MountState == HumanMountState.Horse*/) && !states.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)
@@ -427,5 +428,20 @@ namespace Controllers
                 angle = GetTargetAngle(0, -1);
             return angle;
         }
+
+        #region Dashing Upwards by Ata 2 May 2024
+        void UpdateDashUpwardsInput(bool inMenu)
+        {
+            if (/*!_human.Grounded && */_human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
+                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAction
+                && !inMenu && !_human.Dead)
+            {
+                if (_humanInput.DashUpwards.GetKeyDown())
+                {
+                    _human.DashUpwards();
+                }
+            }
+        }
+        #endregion
     }
 }
