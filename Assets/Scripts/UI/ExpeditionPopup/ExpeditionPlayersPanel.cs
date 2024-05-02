@@ -9,7 +9,6 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Characters;
-using static UnityEditor.PlayerSettings;
 
 namespace UI
 {
