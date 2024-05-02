@@ -104,6 +104,10 @@
 			{"Name": "Ramp1"},
 			{"Name": "Stairs1"},
 			{"Name": "Stairs2"},
+			{"Name": "ShiganHouse1"},
+			{"Name": "ShiganHouse2"},
+			{"Name": "ShiganHouse3"},
+			{"Name": "ShiganHouse4"},
 			{"Name": "Tent1"},
 			{"Name": "Tent2"},
 			{"Name": "Tent3"},
@@ -390,6 +394,7 @@
 			{"Name": "HQ4"},
 			{"Name": "HQ5"},
 			{"Name": "HQ6"},
+			{"Name": "HQ7"},
 			{"Name": "Utgard1"},
 			{"Name": "Utgard2"},
 			{"Name": "Utgard3"}
