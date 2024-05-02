@@ -461,7 +461,8 @@
 			{"Name": "WaterCube4", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "WaterCube5", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "WaterCube6", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
-			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
+			{"Name": "WaterFall1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "WindEffect", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"}
 		]
 	},
 	"Interact": {
