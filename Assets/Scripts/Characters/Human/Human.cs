@@ -8,6 +8,7 @@ using GameManagers;
 using GameProgress;
 using Map;
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Realtime;
 using Settings;
 using SimpleJSONFixed;
@@ -341,12 +342,43 @@ namespace Characters
             }
         }
 
+        #region Upward Dash by Ata - 2 May 24
+
+        public void DashUpwards()
+        {
+            if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None && 
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
+            {
+                UseGas(Mathf.Min(MaxGas * 0.08f, 10));
+                EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
+                PlaySound(HumanSounds.GasBurst);
+                _dashTimeLeft = 0.5f;
+                CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
+                State = HumanState.AirDodge;
+                FalseAttack();
+                Cache.Rigidbody.AddForce(Vector3.up * 70f, ForceMode.VelocityChange);
+                _dashCooldownLeft = 0.5f;
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+            }
+        }
+
+
+        #endregion
+
         public void Idle()
         {
             if (State == HumanState.Attack || State == HumanState.SpecialAttack)
                 FalseAttack();
             State = HumanState.Idle;
-            CrossFade(StandAnimation, 0.1f);
+            if (MountState == HumanMountState.Horse) // added by ata 2 May 2024 for a potential sword slash while mounted in the future //
+            {
+                // CrossFade an animation here after actually fixing the state issues //
+                return;
+            }
+            else if (MountState == HumanMountState.None)
+            {
+                CrossFade(StandAnimation, 0.1f);
+            }
         }
 
         public void Grab(BaseTitan grabber, Transform hand)
@@ -2312,7 +2344,7 @@ namespace Characters
 
         public bool CanBladeAttack()
         {
-            return Weapon is BladeWeapon && ((BladeWeapon)Weapon).CurrentDurability > 0f && State == HumanState.Idle;
+            return Weapon is BladeWeapon && Weapon.CanUse();
         }
 
         public void StartSpecialAttack(string animation)
@@ -2351,6 +2383,17 @@ namespace Characters
                 else
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
             }
+            /*else if (_state == HumanState.MountingHorse) // Added and commented out by Ata 2 May 24 //
+            {
+                if (SettingsManager.InputSettings.General.Left.GetKey())
+                    AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
+                else if (SettingsManager.InputSettings.General.Right.GetKey())
+                    AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
+                else if (_leanLeft)
+                    AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
+                else
+                    AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
+            }*/
             else if (SettingsManager.InputSettings.General.Left.GetKey())
                 AttackAnimation = HumanAnimations.Attack2;
             else if (SettingsManager.InputSettings.General.Right.GetKey())
