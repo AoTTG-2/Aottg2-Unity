@@ -1,3 +1,37 @@
+component Animator
+{
+    AnimationName = "";
+    PlayOnAwake = true;
+    HasFade = false;
+    Fade = 0;
+
+    function Init()
+    {
+        if (self.PlayOnAwake)
+        {
+            self.PlayAnimation();
+        }
+    }
+
+    function ChangeAnimation(newAnimation)
+    {
+        self.AnimationName = newAnimation;
+        self.PlayAnimation();
+    }
+
+    function PlayAnimation()
+    {
+        if (self.HasFade)
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName, self.Fade);
+        }
+        else
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName);
+        }
+    }
+}
+
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
@@ -218,7 +252,8 @@ component WaterPhysics
         deltaY = 0;
         deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
         deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
-        return self._surfaceTop + deltaY;
+        surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+        return surfaceTop + deltaY;
     }
 
     function OnCollisionStay(other)
@@ -1058,6 +1093,7 @@ component CaptureZone
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
+        self.MapObject.Active = data.Get("active");
 
         self.ChangeColor();
     }
@@ -1070,8 +1106,22 @@ component CaptureZone
         message.Set("capturer", capturer);
         message.Set("progress", progress);
         message.Set("enabled", Enabled);
+        message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessageOthers(Json.SaveToString(message));
+    }
+
+    function OnPlayerJoin(player)
+    {
+        message = Dict();
+        message.Set("state", state);
+        message.Set("owner", owner);
+        message.Set("capturer", capturer);
+        message.Set("progress", progress);
+        message.Set("enabled", Enabled);
+        message.Set("active", self.MapObject.Active);
+        self.ChangeColor();
+        self.NetworkView.SendMessage(player, Json.SaveToString(message));
     }
 
     function HandleStateTransition()
@@ -2163,7 +2213,7 @@ component Cannon
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
-        self.NetworkSync.SendStream(self._ammoLeft)
+        self.NetworkView.SendStream(self._ammoLeft);
     }
 
     function OnNetworkStream()
@@ -2171,7 +2221,7 @@ component Cannon
         rotation = self.NetworkView.ReceiveStream();
         self._barrel.LocalRotation = rotation;
         self._inUse = self.NetworkView.ReceiveStream();
-        self._ammoLeft = self.NetworkSync.ReceiveStream();
+        self._ammoLeft = self.NetworkView.ReceiveStream();
     }
 
     function OnNetworkMessage(sender, message)

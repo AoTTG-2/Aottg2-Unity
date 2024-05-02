@@ -95,12 +95,11 @@ namespace Characters
             BasicCache.ForearmSmokeR.transform.localScale = Vector3.one * Size;
         }
 
-        public void Reveal(float seconds)
+        public void Reveal(float startDelay, float activeTime)
         {
             if (_outline == null)
             {
-                _outline = gameObject.AddComponent<Outline>();
-                StartCoroutine(WaitAndRemoveOutline(_outline, seconds));
+                StartCoroutine(RevealAndRemove(startDelay, activeTime));
             }
         }
 
@@ -121,8 +120,10 @@ namespace Characters
             }
         }
 
-        private IEnumerator WaitAndRemoveOutline(Outline outline, float seconds)
+        private IEnumerator RevealAndRemove(float startDelay, float seconds)
         {
+            yield return new WaitForSeconds(startDelay);
+            AddOutline();
             yield return new WaitForSeconds(seconds);
             RemoveOutline();
         }

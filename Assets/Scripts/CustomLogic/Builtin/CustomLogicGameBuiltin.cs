@@ -235,7 +235,7 @@ namespace CustomLogic
             {
                 bool force = (bool)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new { force });
+                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { force });
                 return null;
             }
             if (name == "SpawnPlayerAt")

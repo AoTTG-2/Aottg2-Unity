@@ -70,7 +70,7 @@ namespace CustomLogic
                 }
                 if (methodName == "Reveal")
                 {
-                    Titan.Reveal(parameters[0].UnboxToFloat());
+                    Titan.Reveal(0, parameters[0].UnboxToFloat());
                     return null;
                 }
                 else if (methodName == "AddOutline")
