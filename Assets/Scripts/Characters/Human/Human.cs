@@ -2796,6 +2796,15 @@ namespace Characters
                 else transform.position = new Vector3(x, y, z);
             }
         }
+        #region EXPEDITION EXTENSION HUMAN
+
+        //THUNDERSPEAR EDIT
+        public void DieToTS() //Added by Momo Dec 6 2023 to kill people too close to the explosion. and print 100 damage.
+        {
+            GetHit("Thunderspear", 100, "Thunderspear", "");
+            Die();
+        }
+        #endregion
     }
 
     public enum HumanState

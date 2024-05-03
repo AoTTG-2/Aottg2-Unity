@@ -11,6 +11,8 @@ using UI;
 using Utility;
 using CustomLogic;
 using Cameras;
+using Photon.Pun;
+using UnityEditor.Experimental.GraphView;
 
 namespace Projectiles
 {
@@ -24,6 +26,14 @@ namespace Projectiles
             PhysicsLayer.TitanPushbox);
         static LayerMask _blockMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectProjectiles,
             PhysicsLayer.TitanPushbox, PhysicsLayer.Human);
+        //Expedition Extension
+        float falloff = 1f; //Added by Sysyfus for damage calculation
+        bool gravity = true; //Added by Sysyfus for attaching to titan/object
+        bool attached = false; //Added by Sysyfus for attaching to titan/object
+        GameObject attachParent = null;
+        Collider attachCollider = null;
+        Vector3 relativeAttachPoint = new Vector3(0f, 0f, 0f);
+        AudioSource tsCharge;
 
         protected override void SetupSettings(object[] settings)
         {
@@ -56,7 +66,9 @@ namespace Projectiles
                     GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * _velocity.magnitude * CharacterData.HumanWeaponInfo["Thunderspear"]["RicochetSpeed"].AsFloat;
                 else
                 {
-                    Explode();
+                    //Explode(); //removed by Sysyfus Dec 20 2023 for sticky TS
+                    if (!attached)
+                        Attach(collision);
                     _rigidbody.velocity = Vector3.zero;
                 }
             }
@@ -71,7 +83,7 @@ namespace Projectiles
         {
             if (!Disabled)
             {
-                float effectRadius = _radius * 4f;
+                float effectRadius = _radius * 5f;
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                     effectRadius = _radius * 2f;
                 bool killedPlayer = KillPlayersInRadius(_radius);
@@ -79,6 +91,9 @@ namespace Projectiles
                 EffectSpawner.Spawn(EffectPrefabs.ThunderspearExplode, transform.position, transform.rotation, effectRadius, true, new object[] { _color, killedPlayer || killedTitan });
                 StunMyHuman();
                 DestroySelf();
+                KillMyHuman(); //Added by Momo Dec 6 2023 to kill people too close to the explosion.
+                photonView.RPC("StopChargeEffectRPC", RpcTarget.AllViaServer, new object[0]); //Added by Sysyfus Jan 4 2024
+                gravity = false;
             }
         }
 
@@ -124,10 +139,10 @@ namespace Projectiles
                             titan.GetHit("Thunderspear", 100, "Thunderspear", collider.name);
                         else
                         {
-                            var damage = CalculateDamage();
+                            var damage = CalculateDamage4(titan, radius, collider); //changed by Sysyfus Dec 21 2023 to CalculateDamage4 //changed by Sysyfus Dec 20 2023 to CalculateDamage3 //changed by Sysyfus Dec 6 2023 from CalculateDamage() to CalculateDamage2()
                             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                             ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
-                            titan.GetHit(_owner, damage, "Thunderspear", collider.name);
+                            titan.GetHit(_owner, damage, "Thunderspear", collider.name); //removed by Sysyfus Dec 20 2023 to accommodate accuracy tier damage
                         }
                         killedTitan = true;
                     }
@@ -193,16 +208,193 @@ namespace Projectiles
 
         protected void FixedUpdate()
         {
+
             if (_photonView.IsMine)
             {
-                RaycastHit hit;
-                Vector3 direction = (transform.position - _lastPosition);
-                if (Physics.SphereCast(_lastPosition, 0.5f, direction.normalized, out hit, direction.magnitude, _collideMask))
+                if (!attached)
                 {
-                    transform.position = hit.point;
+                    GetComponent<Rigidbody>().velocity *= 0.94f; //added by Sysyfus Dec 6 2023 to simulate wind resistance
+                    //FixedUpdateInWater(); //added by Sysyfus Jan 9 2024
+                    if (gravity)
+                        GetComponent<Rigidbody>().velocity -= new Vector3(0f, 3.2f, 0f); //added by Sysyfus Dec 6 2023 to simulate gravity
+
+                    RaycastHit hit;
+                    Vector3 direction = (transform.position - _lastPosition);
+                    if (Physics.SphereCast(_lastPosition, 0.5f, direction.normalized, out hit, direction.magnitude, _collideMask))
+                    {
+                        transform.position = hit.point;
+                        Attach(hit);
+                    }
+                    _lastPosition = transform.position;
                 }
-                _lastPosition = transform.position;
+                else
+                    transform.position = GetAttachedPosition(); //Changed by Sysyfus Dec 20 2023 for sticky TS
             }
         }
+
+        #region EXPEDITION EXTENSION TS
+        void KillMyHuman()
+        {
+            if (_owner == null || !(_owner is Human) || !_owner.IsMainCharacter())
+                return;
+            if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                return;
+            float radius = CharacterData.HumanWeaponInfo["Thunderspear"]["StunBlockRadius"].AsFloat / 1.6f;
+            float range = CharacterData.HumanWeaponInfo["Thunderspear"]["StunRange"].AsFloat / 1.6f;
+            Vector3 direction = _owner.Cache.Transform.position - transform.position;
+            RaycastHit hit;
+            if (Vector3.Distance(_owner.Cache.Transform.position, transform.position) < range)
+            {
+                if (Physics.SphereCast(transform.position, radius, direction.normalized, out hit, range, _blockMask))
+                {
+                    if (hit.collider.transform.root.gameObject == _owner.gameObject)
+                    {
+                        ((Human)_owner).DieToTS();
+                    }
+                }
+            }
+        }
+        //added by Sysyfus Dec 6 2023 to make damage proportional to titan health and affected by distance of explosion from target
+        int CalculateDamage2(BaseTitan titan, float radius, Collider collider)
+        {
+            //falloff = 1 - Mathf.Clamp((((-0.75f * radius) + Vector3.Distance(this.transform.position, collider.transform.position)) / (0.5f * radius)), 0f, 0.5f); //falloff should not exceed 50%
+            falloff = 1 - Mathf.Clamp((((-0.63f * radius) + Vector3.Distance(this.transform.position, collider.transform.position)) / (0.49333f * radius)), 0f, 0.75f); //falloff should not exceed 75%
+            int damage = (int)(falloff * (float)titan.GetComponent<BaseCharacter>().MaxHealth /* * (1 + InitialPlayerVelocity.magnitude / 250f)*/);
+            int commonDamage = (int)(falloff * InitialPlayerVelocity.magnitude * 10f); //regular blade calculation
+            if (damage < commonDamage) //damage back to regular blade calculation if exceeds necessary damage to kill
+            {
+                //damage = commonDamage; //commented out for fall off and damage tier testing
+            }
+            if (damage < 10) //minimum 10 damage no matter what
+            {
+                damage = 10;
+            }
+            return damage;
+        }
+        //added by Sysyfus Dec 20 2023 to use regular damage calc but with falloff
+        int CalculateDamage3(BaseTitan titan, float radius, Collider collider)
+        {
+            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
+                CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat), 10);
+            if (_owner != null && _owner is Human)
+            {
+                var human = (Human)_owner;
+                if (human.CustomDamageEnabled)
+                    return human.CustomDamage;
+            }
+            //falloff = 1 - Mathf.Clamp((((-0.63f * radius) + Vector3.Distance(this.transform.position, collider.transform.position)) / (0.49333f * radius)), 0f, 0.75f); //falloff should not exceed 75%
+            falloff = 1 - Mathf.Clamp((((-0.63f * radius) + Vector3.Distance(this.transform.position, collider.transform.position)) / (0.49333f * radius)), 0f, 0.75f); //falloff should not exceed 75%
+            damage = (int)((float)damage * falloff);
+            if (damage < 10)
+                damage = 10;
+            return damage;
+        }
+        int CalculateDamage4(BaseTitan titan, float radius, Collider collider)
+        {
+            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
+                CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat), 100);
+            if (_owner != null && _owner is Human)
+            {
+                var human = (Human)_owner;
+                if (human.CustomDamageEnabled)
+                    return human.CustomDamage;
+            }
+
+            float distanceRatio = Vector3.Distance(this.transform.position, collider.transform.position) / radius; //how far hit point is from nape relative to explosion radius
+            falloff = Mathf.Clamp(-1f * Mathf.Pow(1.1f * distanceRatio, 2) + 2.0625f, 0.5f, 1.5f); //falloff should not exceed +-50%, +50% at 0.6 distance ratio and -50% at 1.0 distance ratio
+
+            damage = (int)((float)damage * falloff);
+
+            return damage;
+        }
+
+        //added by Sysyfus Dec 20 2023
+        //when raw damage insufficient to kill titan, hidden bonus damage may apply based on quality of aim
+        void AdjustTitanHealth(BaseTitan titan, int damage, Collider collider)
+        {
+            int newHealth = titan.CurrentHealth - damage;
+
+            int newDamage = 0;
+            if (newHealth > 0) //if raw damage insufficient to kill titan, calculate % max HP damage
+            {
+                if (falloff >= 0.99f)    //A tier, good aim, instant kill regardless of damage 
+                {
+                    newDamage = titan.MaxHealth;
+                }
+                else if (falloff > 0.25f) //B tier, decent aim, bonus damage up to 50% of titan's maximum health
+                {
+                    newDamage = titan.MaxHealth / 2;
+                }
+                else //C tier, you barely hit the nape, bonus damage up to 25% of titan's maximum health
+                {
+                    newDamage = titan.MaxHealth / 4;
+                }
+            }
+
+            if (damage < newDamage) //apply bonus damage if raw damage lower
+            {
+                newHealth = titan.CurrentHealth - newDamage;
+            }
+
+            if (newHealth < 0) // no negative HP >:(
+            {
+                newHealth = 0;
+            }
+
+            titan.GetHit(_owner, damage, "Thunderspear", collider.name); //still show the raw damage number in feed
+            titan.SetCurrentHealth(newHealth); //make sure health adjusted to proper level
+        }
+
+        //added by Sysyfus Dec 20 2023 to make TS stick to surface before exploding
+        void Attach(Collision collision)
+        {
+            this._timeLeft = 1f; //TS explodes after 1 second
+
+            attachParent = collision.collider.gameObject;
+            attachCollider = collision.collider;
+            Vector3 point = attachCollider.ClosestPoint(collision.GetContact(0).point);
+            relativeAttachPoint = point - attachCollider.transform.position;
+            relativeAttachPoint = attachCollider.transform.InverseTransformPoint(point);
+            //transform.position = attachCollider.transform.position + relativeAttachPoint;
+            transform.position = attachCollider.transform.TransformPoint(relativeAttachPoint);
+
+            //transform.SetParent(attachCollider.transform);;
+
+            photonView.RPC("PlayChargeEffectRPC", RpcTarget.AllViaServer, new object[0]);
+
+            attached = true;
+
+        }
+        void Attach(RaycastHit hit)
+        {
+            this._timeLeft = 1f; //TS explodes after 1 second
+
+
+            attachParent = hit.collider.gameObject;
+            relativeAttachPoint = attachParent.transform.position - hit.point;
+            transform.position = attachParent.transform.position + relativeAttachPoint;
+            photonView.RPC("PlayChargeEffectRPC", RpcTarget.AllViaServer, new object[0]);
+            attached = true;
+
+        }
+
+
+        private Vector3 GetAttachedPosition()
+        {
+            return attachCollider.transform.TransformPoint(relativeAttachPoint);
+            //return attachCollider.transform.position + relativeAttachPoint;
+        }
+
+        [PunRPC]
+        public void PlayChargeEffectRPC(PhotonMessageInfo info)
+        {
+            tsCharge.Play();
+        }
+        [PunRPC]
+        public void StopChargeEffectRPC(PhotonMessageInfo info)
+        {
+            tsCharge.Stop();
+        }
+        #endregion
     }
 }
