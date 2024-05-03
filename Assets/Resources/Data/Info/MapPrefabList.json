@@ -442,6 +442,7 @@
 			{"Name": "Bubbles1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Bubbles2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Crystal1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "Debris1Effect", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeaves1Effect", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeaves2Effect", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeaves3Effect", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},

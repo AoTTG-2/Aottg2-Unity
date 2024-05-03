@@ -25,6 +25,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Alpha_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Basecolor:
         m_Texture: {fileID: 2800000, guid: 1f973e971bca8a64e9647d95e8dd77ec, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -71,6 +75,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClamp1: 0
+    - _AlphaClamp2: 1
     - _Alpha_Clip: -0.51
     - _BUILTIN_AlphaClip: 0
     - _BUILTIN_Blend: 2
@@ -92,13 +98,14 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _Multiply: 50
+    - _Multiply: 15
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _Use_Alpha_Map: 0
     - _Use_Emit_Texture: 1
     - _ZWrite: 1
     m_Colors:

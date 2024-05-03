@@ -126,7 +126,7 @@ Material:
     - _LightingEnabled: 0
     - _Metallic: 0
     - _Mode: 0
-    - _Multiply: 8
+    - _Multiply: 5
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -142,7 +142,7 @@ Material:
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Color2: {r: 1, g: 0.24595508, b: 0, a: 1}
+    - _Color2: {r: 1, g: 0.3381294, b: 0, a: 1}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
