@@ -966,10 +966,9 @@ class Main
 {
     DebugMode = false;
     Difficulty = "Normal";
-    RespawnMode = "OnCapture";
+    RevivePlayersOnCapture = true;
 
     DifficultyDropbox = "Easy, Normal, Hard";
-    RespawnModeDropbox = "None, OnCapture";
 
     _debug = null;
     _eventController = null;
@@ -1006,6 +1005,54 @@ class Main
         if (Network.IsMasterClient)
         {
             self.CheckIfHumansAreAlive();
+        }
+    }
+
+    coroutine OnPlayerSpawn(player, character)
+    {
+        if (Network.IsMasterClient && character.Type == "Titan")
+        {
+            wait 1.0;
+            character.GetKilled("Server");
+            Network.SendMessage(player, "pt");
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "pt")
+        {
+            Game.Print("Player titans are not supported");
+        }
+        else
+        {
+            data = Json.LoadFromString(message);
+            msgType = data.Get("type");
+            if (msgType == "Dialogue")
+            {
+                key = data.Get("key");
+                profileIndex = data.Get("profileIndex");
+                DialogueUtils.ShowDialogue(key, profileIndex);
+            }
+            elif (msgType == "RevealTitans")
+            {
+                duration = data.Get("duration");
+                TitanUtils.RevealTitans(duration);
+            }
+            elif (msgType == "Gate")
+            {
+                state = data.Get("state");
+                interactable = data.Get("interactable");
+
+                wallGateObj = Map.FindMapObjectByTag("StartWallGate");
+                wallGate = wallGateObj.GetComponent("WallGateA1");
+                wallGate.Interactable = interactable;
+                wallGate.SetState(state);
+            }
+            else
+            {
+                Game.Print(data);
+            }
         }
     }
 
@@ -1215,23 +1262,25 @@ class EventController
                 self._remaining -= 1;
                 if (self._remaining <= 0)
                 {
-                    Game.Print("Titans won");
                     UI.SetLabelAll("MiddleCenter", "Humanity failed!");
 				    Game.End(10.0);
                 }
                 InGameUI.UpdateUI(self._remaining, self._currentIndex);
-                # Game.Print("Previous point " + captureZone.Order + " is captured by " + newOwner + "! Take it back!!");
             }
         }
         elif (newOwner == "Human")
         {
             c = CaptureZones.Get(self._currentIndex);
 
-            # If it is the target zone, 
-            # change the players spawn point
             if (captureZone.Order > self._currentSpawnPointIndex)
             {
                 PlayerUtils.SetSpawnPointInsideCaptureZone(c);
+
+                if (self._main.RevivePlayersOnCapture)
+                {
+                    PlayerUtils.RevivePlayers();
+                }
+                
                 self._currentSpawnPointIndex = captureZone.Order;
             }
 
@@ -1240,12 +1289,18 @@ class EventController
             {
                 # If the zone is captured and the titans are remaining
                 # show the dialogue and "reveal" the titans
-                text = "Clear out the remaining titans";
-                if (self._currentIndex == 3)
+                if (EventUtils.IsTown(self._currentIndex))
                 {
-                    text = "Defeat the female titan and kill any remaining titan";
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("TownCapturedTitansRemain");
                 }
-                DialogueUtils.ShowDialogue(text);
+                elif (self._currentIndex == 3)
+                {
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie1");
+                }
+                else
+                {
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("PointCapturedTitansRemain");
+                }
                 EventUtils.RevealTitans(self._events.Get(self._currentIndex), null);
             }
         }
@@ -1259,6 +1314,7 @@ class EventController
         {
             if (self._events.Get(self._currentIndex).CanActivateNextCaptureZone())
             {
+                prevIndex = self._currentIndex;
                 self._events.Get(self._currentIndex).OnEventEnd();
                 self._currentIndex = self._currentIndex + 1;
 
@@ -1266,7 +1322,15 @@ class EventController
                 {
                     self._events.Get(self._currentIndex).OnEventStart();
                     CaptureZones.ActivateCaptureZone(self._currentIndex);
-                    DialogueUtils.ShowDialogue("Advance to the next point");
+
+                    if (EventUtils.IsTown(prevIndex))
+                    {
+                        DialogueUtils.SendShowDialogueRandomProfileMessage("TownCaptured");
+                    }
+                    else
+                    {
+                        DialogueUtils.SendShowDialogueRandomProfileMessage("PointCaptured");
+                    }
                 }
                 else
                 {
@@ -1414,11 +1478,12 @@ class Event1
     coroutine OnGameStart()
     {
         wait 4.0;
-        DialogueUtils.ShowDialogue("Secure the wall gate");
-        wallGateObj = Map.FindMapObjectByTag("StartWallGate");
-        wallGate = wallGateObj.GetComponent("WallGateA1");
-        wallGate.Interactable = true;
-        wallGate.SetState("Open");
+        DialogueUtils.SendShowDialogueRandomProfileMessage("Start");
+        NetworkMessage()
+            .Set("type", "Gate")
+            .Set("state", "Open")
+            .Set("interactable", true)
+            .SendAll();
     }
     
     function OnFrame() { }
@@ -1474,10 +1539,6 @@ class Event2
     MinTimeBetweenSpawns = 5.0; # In seconds
     MaxTimeBetweenSpawns = 15.0;
 
-    # If humans are capturing the point, a random amount of
-    # titans will be selected based on these 2 variables
-    # and will be continuously spawned around the point
-    # after some delay between each spawn
     MinTitansPerWave = 1;
     MaxTitansPerWave = 5;
 
@@ -1736,11 +1797,6 @@ class Event3
     function OnEventUpdate() { }
     function OnEventEnd() { }
 }
-/* 
- * Event for the 4th capture zone. This events work the same as Event2, 
- * except that at the end of the event (when the players captured the 4th zone) 
- * the female titan is spawned and players have to make her lose half her health.
- */
 class Event4
 {
     MaxTitans = 30;
@@ -1806,17 +1862,7 @@ class Event4
     function OnGameStart() { }
     function OnTick() { }
     function OnSecond() { }
-    function OnFrame()
-    {
-        if (Input.GetKeyDown("Interaction/Function2"))
-        {
-            if (self._shifter != null)
-            {
-                dmg = Random.RandomInt(100, 500);
-                self._shifter.GetDamaged("Server", dmg);
-            }
-        }
-    }
+    function OnFrame() { }
 
     function OnCharacterDie(victim, killer, killerName)
     {
@@ -1838,7 +1884,7 @@ class Event4
                 self._shifter = null;
                 if (!self._eventController.TryStartNextEvent())
                 {
-                    DialogueUtils.ShowDialogue("The female titan is running away. Clear out the remaining titans");
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("AfterAnnie1");
                 }
             }
         }
@@ -1994,17 +2040,7 @@ class Event8
     }
 
     function OnGameStart() { }
-    function OnFrame()
-    {
-        if (Input.GetKeyDown("Interaction/Function2"))
-        {
-            if (self._shifter != null)
-            {
-                dmg = Random.RandomInt(100, 500);
-                self._shifter.GetDamaged("Server", dmg);
-            }
-        }
-    }
+    function OnFrame() { }
     function OnTick() { }
     function OnSecond() { }
     function OnCharacterDamaged(victim, killer, killerName, damage) { }
@@ -2021,7 +2057,6 @@ class Event8
             EventUtils.TryRemoveTitanFromList(self._titans, victim);
             if (self._titans.Count == 0)
             {
-                Game.Print("Humans won");
                 UI.SetLabelAll("MiddleCenter", "Humanity wins!");
 				Game.End(10.0);
             }
@@ -2039,7 +2074,7 @@ class Event8
         self._shifter.DeathAnimLength = 10;
         self._shifterWasSpawned = true;
 
-        DialogueUtils.ShowDialogue("Defeat the female titan");
+        DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie2");
     }
 
     coroutine SpawnTitans(shifterPosition)
@@ -2075,37 +2110,6 @@ class Event8
 			}
 		}
     }
-}
-cutscene DialogueCutscene
-{
-    coroutine Start()
-    {
-        p = DialogueCutsceneProps.DialogueProfile;
-        if (p == null)
-        {
-            p = DialogueUtils.GetRandomProfile();
-        }
-        text = DialogueCutsceneProps.DialogueText;
-        Cutscene.ShowDialogue(p.Icon, p.Name, text);
-        wait 4.0;
-    }
-}
-
-class Profile
-{
-    Name = "Eren";
-    Icon = "Eren1";
-
-    function Init(name, icon)
-    {
-        self.Name = name;
-        self.Icon = icon;
-    }
-}
-extension DialogueCutsceneProps
-{
-    DialogueText = "Empty";
-    DialogueProfile = null;   
 }
 class Debug
 {
@@ -2179,12 +2183,17 @@ class Debug
         {
             return;
         }
-        
-        if (Network.MyPlayer.Status == "Alive")
+
+        player = Network.MyPlayer;
+        if (player.Status == "Alive")
         {
-            Network.MyPlayer.Character.MaxHealth = 1000;
-            Network.MyPlayer.Character.Health = 1000;
-            Network.MyPlayer.Character.RefillImmediate();
+            character = player.Character;
+            if (character != null && character.Type == "Human")
+            {
+                character.MaxHealth = 1000;
+                character.Health = 1000;
+                character.RefillImmediate();
+            }
         }
     }
 
@@ -2304,13 +2313,11 @@ extension CaptureZones
         for(cz in self._captureZones)
         {
             cz.MapObject.Active = false;
-            cz.Enabled = false;
         }
     }
 
     function ActivateCaptureZone(index)
     {
-        self.Get(index).Enabled = true;
         self.Get(index).MapObject.Active = true;
     }
 
@@ -2331,8 +2338,8 @@ extension CaptureZones
 }
 extension InGameUI
 {
-    _humanColor = Color(255, 255, 62, 255);
-    _titanColor = Color(70, 80, 125, 255);
+    _humanColor = Color(70, 80, 125, 255);
+    _titanColor = Color(255, 255, 62, 255);
     _neutralColor = Color(255, 255, 255, 255);
     
     function UpdateUI(remaining, currentIndex)
@@ -2457,6 +2464,36 @@ extension TitanSpawnPoints
         return sp.Position;
     }
 }
+class NetworkMessage
+{
+    Params = Dict();
+
+    function Set(name, value)
+    {
+        self.Params.Set(name, value);
+        return self;
+    }
+
+    function SendAll()
+    {
+        Network.SendMessageAll(self.ToString());
+    }
+
+    function SendOthers()
+    {
+        Network.SendMessageOthers(self.ToString());
+    }
+
+    function Send(player)
+    {
+        Network.SendMessage(player, self.ToString());
+    }
+
+    function ToString()
+    {
+        return Json.SaveToString(self.Params);
+    }
+}
 extension DialogueUtils
 {
     function Init()
@@ -2480,33 +2517,55 @@ extension DialogueUtils
         self.Profiles.Add(Profile("Levi", "Levi6"));
     }
 
-    function ShowDialogue(text)
+    function SendShowDialogueRandomProfileMessage(key)
     {
-        # Todo: get text from locale
-        DialogueCutsceneProps.DialogueText = text;
-        DialogueCutsceneProps.DialogueProfile = DialogueCutsceneProps.GetRandomProfile();
-        self.StartDialogueCutscene();
+        self.SendShowDialogueMessage(key, self.GetRandomProfileIndex());
     }
 
-    function ShowDialogueWithProfile(text, profile)
+    function SendShowDialogueMessage(key, profileIndex)
     {
-        DialogueCutsceneProps.DialogueText = text;
-        DialogueCutsceneProps.DialogueProfile = profile;
-        self.StartDialogueCutscene();
+        NetworkMessage()
+            .Set("type", "Dialogue")
+            .Set("key", key)
+            .Set("profileIndex", profileIndex)
+            .SendAll();
     }
 
-    function StartDialogueCutscene()
+    coroutine ShowDialogue(key, profileIndex)
     {
-        Cutscene.Start("DialogueCutscene", false);
+        profile = self.Profiles.Get(profileIndex);
+        text = UI.GetLocale("OutsideTheWalls", "Dialogue", key);
+        Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
+        wait 4.0;
+        Cutscene.HideDialogue();
     }
 
-    function GetRandomProfile()
+    function GetRandomProfileIndex()
     {
-        return Utils.GetRandomListElement(self.Profiles);
+        return Random.RandomInt(0, self.Profiles.Count);
+    }
+}
+
+class Profile
+{
+    Name = "Eren";
+    Icon = "Eren1";
+
+    function Init(name, icon)
+    {
+        self.Name = name;
+        self.Icon = icon;
     }
 }
 extension EventUtils
 {
+    function IsTown(currentIndex)
+    {
+        # Capture zones 2, 5, 7 are towns
+        # 4 is also a town but it is different
+        return currentIndex == 1 || currentIndex == 4 || currentIndex == 6;
+    }
+
     /* 
      * Makes the titans either attack the previous zone
      * or wander around the current capture zone
@@ -2537,36 +2596,18 @@ extension EventUtils
 
     function RevealTitans(event, seconds)
     {
-        for(t in event._titans)
-        {
-            if (t != null)
-            {
-                if (seconds == null)
-                {
-                    t.AddOutline();
-                }
-                else
-                {
-                    t.Reveal(seconds);
-                }
-            }
-        }
+        NetworkMessage()
+            .Set("type", "RevealTitans")
+            .Set("duration", seconds)
+            .SendAll();
     }
 }
 extension PlayerUtils
 {
-    function GetAlivePlayers()
+    coroutine RevivePlayers()
     {
-        players = List();
-        for(p in Network.Players)
-        {
-            if (p.Status == "Alive")
-            {
-                players.Add(p);
-            }
-        }
-
-        return players;
+        wait 1.0;
+        Game.SpawnPlayerAll(false);
     }
 
     function SetSpawnPointInsideCaptureZone(captureZone)
@@ -2595,6 +2636,24 @@ extension PlayerUtils
 }
 extension TitanUtils
 {
+    function RevealTitans(seconds)
+    {
+        for(t in Game.Titans)
+        {
+            if (t != null)
+            {
+                if (seconds == null)
+                {
+                    t.AddOutline();
+                }
+                else
+                {
+                    t.Reveal(seconds);
+                }
+            }
+        }
+    }
+
     function AttackCaptureZone(titan, captureZone)
     {
         pos = captureZone.MapObject.Position;
