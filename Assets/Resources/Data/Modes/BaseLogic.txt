@@ -1098,14 +1098,14 @@ component CaptureZone
         self.ChangeColor();
     }
 
-    function NetworkSync(state, owner, capturer, progress, Enabled)
+    function NetworkSync()
     {
         message = Dict();
-        message.Set("state", state);
-        message.Set("owner", owner);
-        message.Set("capturer", capturer);
-        message.Set("progress", progress);
-        message.Set("enabled", Enabled);
+        message.Set("state", self._state);
+        message.Set("owner", self._currentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
         message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessageOthers(Json.SaveToString(message));
@@ -1114,11 +1114,11 @@ component CaptureZone
     function OnPlayerJoin(player)
     {
         message = Dict();
-        message.Set("state", state);
-        message.Set("owner", owner);
-        message.Set("capturer", capturer);
-        message.Set("progress", progress);
-        message.Set("enabled", Enabled);
+        message.Set("state", self._state);
+        message.Set("owner", self._currentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
         message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessage(player, Json.SaveToString(message));
@@ -1206,7 +1206,7 @@ component CaptureZone
 
         self.HandleStateTransition();
 
-        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
+        self.NetworkSync();
     }
 
     # UI Helpers
