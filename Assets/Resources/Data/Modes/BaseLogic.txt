@@ -2567,8 +2567,34 @@ component WallGateA1
         self._door.LocalPosition = localPosition;
     }
 
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "sync|" + self._open + "|" + self.Interactable);
+        }
+    }
+
     function OnNetworkMessage(sender, message)
     {
+        if (sender == Network.MasterClient && String.StartsWith(message, "sync"))
+        {
+            args = String.Split(message, "|");
+            self._open = Convert.ToBool(args.Get(1));
+            self.Interactable = Convert.ToBool(args.Get(2));
+
+            localPosition = self._door.LocalPosition;
+            if (self._open)
+            {
+                localPosition.Y = 25;
+            }
+            else
+            {
+                localPosition.Y = 0;
+            }
+            self._door.LocalPosition = localPosition;
+        }
+
         if (self.Interactable == false)
         {
             return;
