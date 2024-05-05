@@ -1040,6 +1040,16 @@ component CaptureZone
         return self._state;
     }
 
+    function GetPlayersOfTeamInZone(team)
+    {
+        if (self._teamsInZone.Contains(team))
+        {
+            return self._teamsInZone.Get(team);
+        }
+
+        return null;
+    }
+
     # GameObject Helpers
     function GetTeamColor(team)
     {
