@@ -35,6 +35,7 @@ namespace Controllers
         public Dictionary<string, TitanAttackInfo> AttackInfos;
         protected float _stateTimeLeft;
         protected float _focusTimeLeft;
+        protected float _collisionTimeLeft;
         protected float _attackRange;
         protected BaseCharacter _enemy;
         protected AICharacterDetection _detection;
@@ -45,6 +46,7 @@ namespace Controllers
 
         // pathing
         private bool _wasPreviouslyBlocked = false;
+        private readonly float _collisionAvoidanceCooldown = 0.1f;
         private readonly int _sampleRayCount = 6;
         private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
@@ -142,6 +144,7 @@ namespace Controllers
         {
             _focusTimeLeft -= Time.deltaTime;
             _stateTimeLeft -= Time.deltaTime;
+            _collisionTimeLeft -= Time.deltaTime;
             if (_titan.Dead)
                 return;
             if (_titan.State != TitanState.Attack && _titan.State != TitanState.Eat)
@@ -208,8 +211,8 @@ namespace Controllers
                 }
                 else if (_stateTimeLeft <= 0)
                     MoveToPosition(true);
-                else if (!_wasPreviouslyBlocked)
-                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
+                else
+                    MoveToPosition(true);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
@@ -245,8 +248,8 @@ namespace Controllers
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);
-                        else if (!_wasPreviouslyBlocked)
-                            _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+                        else
+                            MoveToEnemy(true);
                     }
                 }
             }
@@ -321,13 +324,17 @@ namespace Controllers
             var goalDirection = target - _titan.Cache.Transform.position;
             var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
             _wasPreviouslyBlocked = false;
-            if (avoidCollisions && _useCollisionAvoidance)
+            if (_collisionTimeLeft <= 0f)
             {
-                if (IsHeadingForCollision())
+                _collisionTimeLeft = _collisionAvoidanceCooldown;
+                if (avoidCollisions && _useCollisionAvoidance)
                 {
-                    _wasPreviouslyBlocked = true;
-                    _moveAngle = Random.Range(-10f, 10f);
-                    resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
+                    if (IsHeadingForCollision())
+                    {
+                        _wasPreviouslyBlocked = true;
+                        _moveAngle = Random.Range(-10f, 10f);
+                        resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
+                    }
                 }
             }
             resultDirection = resultDirection.normalized;
@@ -468,7 +475,7 @@ namespace Controllers
                 _moveAngle = Random.Range(-45f, 45f);
             else
                 _moveAngle = 0f;
-            _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions);
+            _titan.TargetAngle = Mathf.Lerp(_titan.TargetAngle, GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions), 0.5f);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 

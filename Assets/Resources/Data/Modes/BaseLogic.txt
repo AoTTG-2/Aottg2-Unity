@@ -50,6 +50,12 @@ component WaterPhysics
     SupportDrowning = true;
     TimeToDrown = 10.0;
 
+    WaveDistance = 20;
+    WaveSpeed = 500;
+    NoiseStrength = 5;
+    NoiseWalk = 1;
+    Scale = 2;
+
 
     /*
     Component will apply a force for x% of the map objects y axis this will represent the downward speed limit required to skip instead of breaking the surface.
@@ -243,17 +249,16 @@ component WaterPhysics
 
     function GetWavePosition(position)
     {
-        waveDistance = 20;
-        waveSpeed = 500;
-        noiseStrength = 5;
-        noiseWalk = 1;
-        scale = 2;
-
         deltaY = 0;
-        deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
-        deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
+        deltaY = deltaY + (Math.Sin((Time.GameTime * self.WaveSpeed + position.Z) / self.WaveDistance) - 1) * self.Scale;
+        deltaY = deltaY + Random.PerlinNoise(position.X + self.NoiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * self.NoiseStrength;
         surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
         return surfaceTop + deltaY;
+    }
+
+    function GetMidPoint(v1, v2)
+    {
+        return (v1 + v2).Scale(0.5);
     }
 
     function OnCollisionStay(other)
@@ -309,41 +314,97 @@ component WaterPhysics
             bp7 = Vector3(bp2.X, bp1.Y, bp2.Z);
             bp8 = Vector3(bp2.X, bp2.Y, bp1.Z);
 
-            # Add all to a list
+            /*# there are three planes defined by the bounding box that intersect at the midpoints of the boxes edges, use those to determine the point to add the force to.
+            plane1 = List();
+            plane1.Add(self.GetMidPoint(bp1, bp4));
+            plane1.Add(self.GetMidPoint(bp5, bp8));
+            plane1.Add(self.GetMidPoint(bp3, bp6));
+            plane1.Add(self.GetMidPoint(bp7, bp2));
+            area1 = Vector3.Distance(plane1.Get(0), plane1.Get(1)) * Vector3.Distance(plane1.Get(1), plane1.Get(3));
+
+            plane2 = List();
+            plane2.Add(self.GetMidPoint(bp1, bp3));
+            plane2.Add(self.GetMidPoint(bp4, bp6));
+            plane2.Add(self.GetMidPoint(bp5, bp7));
+            plane2.Add(self.GetMidPoint(bp8, bp2));
+            area2 = Vector3.Distance(plane2.Get(0), plane2.Get(1)) * Vector3.Distance(plane2.Get(1), plane2.Get(3));
+
+            plane3 = List();
+            plane3.Add(self.GetMidPoint(bp1, bp5)); # min to a,y,z
+            plane3.Add(self.GetMidPoint(bp3, bp7)); # x,y,c to a,y,c
+            plane3.Add(self.GetMidPoint(bp4, bp8)); # x,b,z to a,b,z
+            plane3.Add(self.GetMidPoint(bp2, bp6)); # a,b,c to x,b,c
+            area3 = Vector3.Distance(plane3.Get(0), plane3.Get(1)) * Vector3.Distance(plane3.Get(1), plane3.Get(3));
+
+            # find the smallest value
+            largest = Math.Max(area1, area2);
+            largest = Math.Max(largest, area3);
             boundPoints = List();
-            boundPoints.Add(bp1);
+            if (largest == area1)
+            {
+                boundPoints = plane1;
+                depthBeforeFloating = Vector3.Distance(bp1, bp4) * 0.5;
+                Game.Print("Plane 1");
+            }
+            elif (largest == area2)
+            {
+                boundPoints = plane2;
+                depthBeforeFloating = Vector3.Distance(bp1, bp3) * 0.5;
+                Game.Print("Plane 2");
+            }
+            else
+            {
+                boundPoints = plane3;
+                depthBeforeFloating = Vector3.Distance(bp1, bp5) * 0.5;
+                Game.Print("Plane 3");
+            }*/
+            
+
+            # Add all to a list
+            boundPoints = other.GetCorners();
+            /*boundPoints.Add(bp1);
             boundPoints.Add(bp2);
             boundPoints.Add(bp3);
             boundPoints.Add(bp4);
             boundPoints.Add(bp5);
             boundPoints.Add(bp6);
             boundPoints.Add(bp7);
-            boundPoints.Add(bp8);
+            boundPoints.Add(bp8);*/
 
-            depthBeforeFloating = Vector3.Distance(bp1, bp4) * 0.5;
-            displacementAmount = 1;
+            depthBeforeFloating = 3; # Vector3.Distance(bp1, bp4) * 0.5;
+            displacementAmount = 2;
             numPoints = 8;
-            angularDrag = 0.5;
-            drag = 0.3;
+            angularDrag = 2;
+            drag = 2;
 
             rb = other.GetComponent("Rigidbody");
+            gravity = Vector3(0, -20, 0);
+            rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
+            gScale = 1.0 / boundPoints.Count;
             for (point in boundPoints)
             {
+                rb.AddForceWithModeAtPoint(gravity.Scale(gScale), point, "Acceleration");
+                Game.DrawRay(point, gravity.Scale(gScale), Color(255, 0, 0, 255), 1);
                 surfaceTop = self.GetWavePosition(point);
-                displaced = (surfaceTop - (point.Y + depthBeforeFloating)) / depthBeforeFloating;
-                dMult = Math.Clamp(displaced, 0, 1) * displacementAmount;
 
-                wdForce = velocity.Scale(drag);
+                if (point.Y < surfaceTop)
+                {
+                    displaced = surfaceTop - point.Y / depthBeforeFloating;
+                    dMult = Math.Clamp(displaced, 0, 1) * displacementAmount;
 
-                bForce = Vector3(0, Math.Abs(rb.Gravity.Y) * dMult - wdForce.Y, 0);
-                rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+                    wdForce = velocity.Scale(drag);
 
-                wdForce = velocity.Scale(0.7 * -1 * Time.TickTime);
-                rb.AddForceWithMode(bForce, "VeclocityChange");
+                    bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
+                    Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
+                    rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
 
-                ag = rb.GetAngularVelocity();
-                agdForce = ag.Scale(angularDrag * -1 * Time.TickTime);
-                rb.AddTorque(agdForce, "VelocityChange");
+                    wdForce = velocity.Scale(drag * -1 * Time.TickTime * dMult);
+                    rb.AddForceWithMode(bForce, "VeclocityChange");
+
+                    ag = rb.GetAngularVelocity();
+                    agdForce = ag.Scale(angularDrag * -1 * Time.TickTime * dMult);
+                    rb.AddTorque(agdForce, "VelocityChange");
+                }
             }
 
             

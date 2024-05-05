@@ -376,6 +376,43 @@ namespace CustomLogic
                 }
                 return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.max);
             }
+            if (methodName == "GetCorners")
+            {
+                if (Value.colliderCache.Length == 0)
+                {
+                    return null;
+                }
+                var firstCollider = Value.colliderCache[0];
+                if (firstCollider is BoxCollider == false)
+                {
+                    // Return the bounds corners
+                    var bounds = firstCollider.bounds;
+                    var corners = new Vector3[8];
+                    corners[0] = bounds.min;
+                    corners[1] = new Vector3(bounds.min.x, bounds.min.y, bounds.max.z);
+                    corners[2] = new Vector3(bounds.min.x, bounds.max.y, bounds.min.z);
+                    corners[3] = new Vector3(bounds.min.x, bounds.max.y, bounds.max.z);
+                    corners[4] = new Vector3(bounds.max.x, bounds.min.y, bounds.min.z);
+                    corners[5] = new Vector3(bounds.max.x, bounds.min.y, bounds.max.z);
+                    corners[6] = new Vector3(bounds.max.x, bounds.max.y, bounds.min.z);
+                    corners[7] = bounds.max;
+                    var clCorners = new CustomLogicListBuiltin();
+                    clCorners.List.AddRange(corners.Select(v => new CustomLogicVector3Builtin(v)));
+                    return clCorners;
+                }
+                BoxCollider boxCollider = (BoxCollider)firstCollider;
+                Vector3 size = boxCollider.size;
+                var result = new CustomLogicListBuiltin();
+                List<Vector3> list = new();
+                var signs = new List<int> { -1, 1 };
+                signs.ForEach(signX =>
+                    signs.ForEach(signY =>
+                        signs.ForEach(signZ => {
+                            var vector = new Vector3(size.x * signX, size.y * signY, size.z * signZ);
+                            result.List.Add(new CustomLogicVector3Builtin(boxCollider.transform.TransformPoint(boxCollider.center + vector * 0.5f)));
+                        })));                
+                return result;
+            }
             return base.CallMethod(methodName, parameters);
         }
 

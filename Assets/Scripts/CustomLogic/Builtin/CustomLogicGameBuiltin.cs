@@ -275,6 +275,15 @@ namespace CustomLogic
                 CustomLogicManager.Evaluator.HasSetMusic = true;
                 return null;
             }
+            if (name == "DrawRay")
+            {
+                Vector3 start = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                Vector3 dir = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Color color = ((CustomLogicColorBuiltin)parameters[2]).Value.ToColor();
+                float duration = parameters[3].UnboxToFloat();
+                Debug.DrawRay(start, dir, color, duration);
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 
