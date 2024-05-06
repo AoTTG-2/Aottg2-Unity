@@ -275,6 +275,7 @@
 		"Keybinds.Human.HookBoth": "両アンカー",
 		"Keybinds.Human.Dash": "空中ダッシュ",
 		"Keybinds.Human.DashUpwards": "ダッシュアップ", // added by Ata 2 May 24
+		"Keybinds.Human.LogisticianMenu": "物流業者の供給", // added by zippy 5 May 24
 		"Keybinds.Human.ReelIn": "巻き取り",
 		"Keybinds.Human.ReelOut": "巻き出し",
 		"Keybinds.Human.Dodge": "回避",

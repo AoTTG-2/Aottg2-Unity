@@ -26,7 +26,7 @@ using Weather;
 namespace Characters
 {
     class Human : BaseCharacter
-    {
+    {//Zippy: add drop item on death (100% chance for gas, 50 for blade)
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
@@ -121,6 +121,8 @@ namespace Characters
         private bool _isReelingOut;
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
 
+        [SerializeField]
+        private GameObject LogisticianBackPack;
 
         [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
@@ -656,6 +658,8 @@ namespace Characters
             }
             Weapon.Reset();
             CurrentGas = MaxGas;
+            EmVariables.LogisticianBladeSupply = 4;
+            EmVariables.LogisticianGasSupply = 4;
         }
 
         public override void Emote(string emote)
@@ -1088,6 +1092,11 @@ namespace Characters
 
         protected void FixedUpdate()
         {
+            if (gameObject.GetPhotonView().Owner.CustomProperties.ContainsKey("Logistician"))
+                LogisticianBackPack.SetActive(true);
+            else
+                LogisticianBackPack.SetActive(false);
+
             if (IsMine())
             {
                 FixedUpdateLookTitan();

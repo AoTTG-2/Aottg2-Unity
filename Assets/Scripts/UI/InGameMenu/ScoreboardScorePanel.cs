@@ -106,11 +106,11 @@ namespace UI
             // read player props
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + player.GetStringProperty(PlayerProperty.Name);
 
-            if (player.CustomProperties.ContainsKey("Cannoneer")) { name += " [<color = #74B831>CAN</color>]"; }
-            if (player.CustomProperties.ContainsKey("Carpenter")) { name += " [<color = #2C84DC>CAR</color>]"; }
-            if (player.CustomProperties.ContainsKey("Veteran")) { name += " [<color = #7B31B8>VET</color>]"; }
-            if (player.CustomProperties.ContainsKey("Logistician")) { name += " [<color = #DC2C2C>LOG</color>]"; }
-            if (player.CustomProperties.ContainsKey("Wagon")) { name += " [<color = #DC2C2C>WAG</color>]"; }
+            if (player.CustomProperties.ContainsKey("Cannoneer")) { name += " [<color=#74B831>CAN</color>]"; }
+            if (player.CustomProperties.ContainsKey("Carpenter")) { name += " [<color=#2C84DC>CAR</color>]"; }
+            if (player.CustomProperties.ContainsKey("Veteran")) { name += " [<color=#7B31B8>VET</color>]"; }
+            if (player.CustomProperties.ContainsKey("Logistician")) { name += " [<color=#DC2C2C>LOG</color>]"; }
+            if (player.CustomProperties.ContainsKey("Wagon")) { name += " [<color=#DC2C2C>WAG</color>]"; }
 
             string status = player.GetStringProperty(PlayerProperty.Status);
             string character = player.GetStringProperty(PlayerProperty.Character);

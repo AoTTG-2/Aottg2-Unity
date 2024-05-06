@@ -41,10 +41,10 @@ public class PlayerButton : MonoBehaviour
             $"[{PhotonPlayer.ActorNumber}]" +
             $" {PhotonPlayer.GetStringProperty(PlayerProperty.Name)}";
 
-        if (PhotonPlayer.CustomProperties.ContainsKey("Cannoneer")) { Button_Text.text += " [<color = #74B831>CAN</color>]"; }
-        if (PhotonPlayer.CustomProperties.ContainsKey("Carpenter")) { Button_Text.text += " [<color = #2C84DC>CAR</color>]"; }
-        if (PhotonPlayer.CustomProperties.ContainsKey("Veteran")) { Button_Text.text += " [<color = #7B31B8>VET</color>]"; }
-        if (PhotonPlayer.CustomProperties.ContainsKey("Logistician")) { Button_Text.text += " [<color = #DC2C2C>LOG</color>]"; }
-        if (PhotonPlayer.CustomProperties.ContainsKey("Wagon")) { Button_Text.text += " [<color = #DC2C2C>WAG</color>]"; }
+        if (PhotonPlayer.CustomProperties.ContainsKey("Cannoneer")) { Button_Text.text += " [<color=#74B831>CAN</color>]"; }
+        if (PhotonPlayer.CustomProperties.ContainsKey("Carpenter")) { Button_Text.text += " [<color=#2C84DC>CAR</color>]"; }
+        if (PhotonPlayer.CustomProperties.ContainsKey("Veteran")) { Button_Text.text += " [<color=#7B31B8>VET</color>]"; }
+        if (PhotonPlayer.CustomProperties.ContainsKey("Logistician")) { Button_Text.text += " [<color=#DC2C2C>LOG</color>]"; }
+        if (PhotonPlayer.CustomProperties.ContainsKey("Wagon")) { Button_Text.text += " [<color=#DC2C2C>WAG</color>]"; }
     }
 }

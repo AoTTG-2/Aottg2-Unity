@@ -199,7 +199,7 @@ namespace UI
             var menu = (InGameMenu)UIManager.CurrentMenu;
             foreach (BasePopup popup in menu._popups)
             {
-                if (popup.IsActive)
+                if (popup.IsActive || EmVariables.LogisticianOpen)
                     return true;
             }
             return menu.EmoteHandler.IsActive || menu.ItemHandler.IsActive;
