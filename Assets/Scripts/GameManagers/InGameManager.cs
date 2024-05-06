@@ -890,7 +890,7 @@ namespace GameManagers
         {
             if (ChatManager.IsChatActive())
                 return;
-            if (_generalInputSettings.Pause.GetKeyDown())
+            if (_generalInputSettings.Pause.GetKeyDown() && !InGameMenu.InMenu())
                 _inGameMenu.SetPauseMenu(true);
             if (_generalInputSettings.ChangeCharacter.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {
