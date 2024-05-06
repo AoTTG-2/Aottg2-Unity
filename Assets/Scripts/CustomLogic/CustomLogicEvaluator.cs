@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Characters;
 using GameManagers;
 using Map;
@@ -531,7 +531,7 @@ namespace CustomLogic
                     string className = classInstance.ClassName;
                     if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Cutscene)
                     {
-                        float time = (float)value;
+                        float time = value.UnboxToFloat();
                         while (time > 0f && !CustomLogicManager.SkipCutscene)
                         {
                             yield return new WaitForSeconds(0.1f);
@@ -539,7 +539,7 @@ namespace CustomLogic
                         }
                     }
                     else
-                        yield return new WaitForSeconds((float)value);
+                        yield return new WaitForSeconds(value.UnboxToFloat());
                 }
                 else if (statement is CustomLogicConditionalBlockAst)
                 {
