@@ -123,6 +123,8 @@ class ZippsUIManager : MonoBehaviour
     private TMP_Text BladeSupplyCount;
     [SerializeField]
     private TMP_Text GasSupplyCount;
+    [SerializeField]
+    private AudioSource MenuAudioSource;
 
     private bool GasSelected = false;
     private bool BladeSelected = false;
@@ -131,6 +133,7 @@ class ZippsUIManager : MonoBehaviour
     public void OnHoverGasOption()
     {
         GasSelected = true;
+        MenuAudioSource.Play();
         GasImage.color = new Color(0.525f, 0.164f, 0.227f);
     }
 
@@ -143,6 +146,7 @@ class ZippsUIManager : MonoBehaviour
     public void OnHoverBladeOption()
     {
         BladeSelected = true;
+        MenuAudioSource.Play();
         BladeImage.color = new Color(0.525f, 0.164f, 0.227f);
     }
 
