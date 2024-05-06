@@ -51,7 +51,7 @@ class CollectBlade : MonoBehaviour
                 }
 
             }
-            AudioSource.PlayClipAtPoint(collect, transform.position, 2f);
+            AudioSource.PlayClipAtPoint(collect, transform.position, 4f);
             Destroy(gameObject);
         }
     }

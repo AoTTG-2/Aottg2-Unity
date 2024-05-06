@@ -41,7 +41,7 @@ public class CollectGas : MonoBehaviour
                     HumanComp.CurrentGas = HumanComp.MaxGas;
                 }
             }
-            AudioSource.PlayClipAtPoint(collect, transform.position, 2f);
+            AudioSource.PlayClipAtPoint(collect, transform.position, 4f);
             Destroy(gameObject);
         }
     }
