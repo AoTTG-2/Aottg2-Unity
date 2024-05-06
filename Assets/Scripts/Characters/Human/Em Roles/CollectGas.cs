@@ -8,6 +8,8 @@ public class CollectGas : MonoBehaviour
 
     private float timer = 0f;
     private float delay = 5f * 60f; // 5 minutes in seconds
+    [SerializeField]
+    private AudioClip collect;
 
     private void FixedUpdate()
     {
@@ -39,6 +41,7 @@ public class CollectGas : MonoBehaviour
                     HumanComp.CurrentGas = HumanComp.MaxGas;
                 }
             }
+            AudioSource.PlayClipAtPoint(collect, transform.position, 2f);
             Destroy(gameObject);
         }
     }

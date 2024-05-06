@@ -189,10 +189,10 @@ class ZippsUIManager : MonoBehaviour
         }
     }
 
-    private Color red = new Color(0.78f, 0f, 0.22f);
-    private Color orange = new Color(1f, 0.34f, 0.2f);
-    private Color yellow = new Color(1f, 0.76f, 0f);
-    private Color green = new Color(0.4f, 0.89f, 0.32f);
+    private Color red = new Color(176f / 255f, 43f / 255f, 37f / 255f);
+    private Color orange = new Color(208f / 255f, 119f / 255f, 28f / 255f);
+    private Color yellow = new Color(227f / 255f, 199f / 255f, 36f / 255f);
+    private Color green = new Color(39f / 255f, 116f / 255f, 46f / 255f);
     private void LogisticianUpdate()
     {
         if (PhotonExtensions.GetMyPlayer() == null)
