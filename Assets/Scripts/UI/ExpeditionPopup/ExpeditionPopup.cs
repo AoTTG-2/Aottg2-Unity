@@ -83,7 +83,7 @@ namespace UI
             switch (name)
             {
                 case "Save":
-                    foreach (SaveableSettingsContainer setting in _saveableSettings)
+                    /*foreach (SaveableSettingsContainer setting in _saveableSettings)
                         setting.Save();
                     if (SceneLoader.SceneName == SceneName.InGame)
                     {
@@ -91,7 +91,7 @@ namespace UI
                         Hide();
                     }
                     else
-                        Hide();
+                        Hide();*/
                     break;
                 case "Load":
                     foreach (SaveableSettingsContainer setting in _saveableSettings)
