@@ -1,3 +1,56 @@
+component InteractActionTrigger
+{
+    Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
+
+    Key = "Interact";
+    KeyDropbox = "Interact, Interact2, Interact3";
+
+    _text = null;
+    _actionHandler = null;
+    _currentHuman = null;
+
+    function SetActionHandler(handler, text)
+    {
+        self._actionHandler = handler;
+        self._text = text;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            if (self._text != null)
+            {
+                UI.SetLabelForTime("MiddleCenter", self._text, 0.1);
+            }
+            else
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/" + self.Key) + " to trigger the action.", 0.1);
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null && Input.GetKeyDown("Interaction/" + self.Key))
+        {
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.HandleInteractAction(self);
+            }
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
+        }
+    }
+}
+
 component Animator
 {
     AnimationName = "";
