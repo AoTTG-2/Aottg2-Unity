@@ -6,6 +6,7 @@ using Photon.Pun;
 using Projectiles;
 using Settings;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -385,6 +386,25 @@ namespace CustomLogic
                         list.List.Add(new CustomLogicHumanBuiltin(human));
                 }
                 return list;
+            }
+            if (name == "Loadouts")
+            {
+                var miscSettings = SettingsManager.InGameCurrent.Misc;
+                List<string> loadouts = new List<string>();
+                if (miscSettings.AllowBlades.Value)
+                    loadouts.Add(HumanLoadout.Blades);
+                if (miscSettings.AllowAHSS.Value)
+                    loadouts.Add(HumanLoadout.AHSS);
+                if (miscSettings.AllowAPG.Value)
+                    loadouts.Add(HumanLoadout.APG);
+                if (miscSettings.AllowThunderspears.Value)
+                    loadouts.Add(HumanLoadout.Thunderspears);
+                if (loadouts.Count == 0)
+                    loadouts.Add(HumanLoadout.Blades);
+
+                var result = new CustomLogicListBuiltin();
+                result.List = loadouts.ConvertAll(x => (object)x);
+                return result;
             }
             return base.GetField(name);
         }

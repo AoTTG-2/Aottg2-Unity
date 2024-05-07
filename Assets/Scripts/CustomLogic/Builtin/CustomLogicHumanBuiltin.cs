@@ -1,4 +1,8 @@
-﻿using Characters;
+﻿using ApplicationManagers;
+using Cameras;
+using Characters;
+using GameManagers;
+using Photon.Pun.Demo.PunBasics;
 using Settings;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +71,49 @@ namespace CustomLogic
                 if (methodName == "SetSpecial")
                 {
                     Human.SetSpecial((string)parameters[0]);
+                    return null;
+                }
+                if (methodName == "SetWeapon")
+                {
+                    var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                    string weapon = (string)parameters[0];
+                    if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
+                    {
+                        var miscSettings = SettingsManager.InGameCurrent.Misc;
+                        if (!Human.Dead)
+                        {
+                            List<string> loadouts = new List<string>();
+                            if (miscSettings.AllowBlades.Value)
+                                loadouts.Add(HumanLoadout.Blades);
+                            if (miscSettings.AllowAHSS.Value)
+                                loadouts.Add(HumanLoadout.AHSS);
+                            if (miscSettings.AllowAPG.Value)
+                                loadouts.Add(HumanLoadout.APG);
+                            if (miscSettings.AllowThunderspears.Value)
+                                loadouts.Add(HumanLoadout.Thunderspears);
+                            if (loadouts.Count == 0)
+                                loadouts.Add(HumanLoadout.Blades);
+
+                            if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
+                            {
+                                SettingsManager.InGameCharacterSettings.Loadout.Value = weapon;
+                                var position = Human.Cache.Transform.position;
+                                var rotation = Human.Cache.Transform.rotation;
+                                var velocity = Human.Cache.Rigidbody.velocity;
+                                var camPosition = SceneLoader.CurrentCamera.Cache.Transform.position;
+                                var camRotation = SceneLoader.CurrentCamera.Cache.Transform.rotation;
+                                Human.DieChangeCharacter();
+                                gameManager.SpawnPlayerAt(false, position, rotation.eulerAngles.y);
+                                Human = (Human)gameManager.CurrentCharacter;
+                                Human.Cache.Rigidbody.velocity = velocity;
+                                Human.Cache.Transform.rotation = rotation;
+                                ((InGameCamera)SceneLoader.CurrentCamera)._follow = Human;
+                                SceneLoader.CurrentCamera.Cache.Transform.position = camPosition;
+                                SceneLoader.CurrentCamera.Cache.Transform.rotation = camRotation;
+                                InGameManager.UpdateRoundPlayerProperties();
+                            }
+                        }
+                    }
                     return null;
                 }
                 return base.CallMethod(methodName, parameters);

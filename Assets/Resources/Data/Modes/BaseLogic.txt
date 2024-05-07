@@ -379,12 +379,12 @@ component WaterPhysics
 
             rb = other.GetComponent("Rigidbody");
             gravity = Vector3(0, -20, 0);
-            rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
+            # rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
             gScale = 1.0 / boundPoints.Count;
             for (point in boundPoints)
             {
-                rb.AddForceWithModeAtPoint(gravity.Scale(gScale), point, "Acceleration");
-                Game.DrawRay(point, gravity.Scale(gScale), Color(255, 0, 0, 255), 1);
+                # rb.AddForceWithModeAtPoint(gravity.Scale(gScale), point, "Acceleration");
+                # Game.DrawRay(point, gravity.Scale(gScale), Color(255, 0, 0, 255), 1);
                 surfaceTop = self.GetWavePosition(point);
 
                 if (point.Y < surfaceTop)
@@ -395,7 +395,7 @@ component WaterPhysics
                     wdForce = velocity.Scale(drag);
 
                     bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
-                    Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
+                    # Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
                     rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
 
                     wdForce = velocity.Scale(drag * -1 * Time.TickTime * dMult);
