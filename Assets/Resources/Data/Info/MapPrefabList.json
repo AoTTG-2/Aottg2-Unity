@@ -458,6 +458,7 @@
 	"Interact": {
 		"Info": {"Type": "Scene"},
 		"Prefabs": [
+			{"Name": "Respawn1", "Asset": "Interact/Respawn1", "Components": ["SupplyStation|"]},
 			{"Name": "Supply1", "Asset": "Interact/Supply1", "Components": ["SupplyStation|"]},
 			{"Name": "Supply2", "Asset": "Interact/Supply2", "Components": ["SupplyStation|"]},
 			{"Name": "Cannon2", "Asset": "Interact/Cannon2", "Static": false, "Networked": true, "Components": ["Cannon|"]},
