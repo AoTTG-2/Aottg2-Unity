@@ -2602,7 +2602,7 @@ component WallGateA1
     Description = "Makes WallGateA1 openable by players.";
 
     StartState = "Closed";
-    StartStateDropdown = "Closed, Open";
+    StartStateDropbox = "Closed, Open";
 
     Interactable = true;
 
@@ -2706,11 +2706,7 @@ component WallGateA1
 
     function OnFrame()
     {
-        if (self.Interactable == false)
-        {
-            return;
-        }
-        if (self._currentHuman != null)
+        if (self.Interactable && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
             {
