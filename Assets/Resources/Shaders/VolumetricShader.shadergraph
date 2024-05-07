@@ -152,6 +152,9 @@
         },
         {
             "m_Id": "a1ed2263556541c99574bd12fcc094a5"
+        },
+        {
+            "m_Id": "a3f866d608be4679a59e63cf0f33b5ee"
         }
     ],
     "m_GroupDatas": [],
@@ -653,8 +656,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 1034.0,
-            "y": 178.0
+            "x": 1028.0,
+            "y": 253.0
         },
         "m_Blocks": [
             {
@@ -665,6 +668,9 @@
             },
             {
                 "m_Id": "06202c2a4c7b488ba2089555f424ce3b"
+            },
+            {
+                "m_Id": "a3f866d608be4679a59e63cf0f33b5ee"
             }
         ]
     },
@@ -686,6 +692,21 @@
             "m_Id": "df7c423b055d4c06a02dd606ce51325d"
         }
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "0305944ff7b3418ab2e33f01fcb4a401",
+    "m_Id": 0,
+    "m_DisplayName": "Smoothness",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Smoothness",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.5,
+    "m_Labels": []
 }
 
 {
@@ -3750,6 +3771,40 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "a3f866d608be4679a59e63cf0f33b5ee",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.Smoothness",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0305944ff7b3418ab2e33f01fcb4a401"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.Smoothness"
 }
 
 {
