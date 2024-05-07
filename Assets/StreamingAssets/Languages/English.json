@@ -371,6 +371,7 @@
 		"Keybinds.Shifter.Walk": "Walk",
 		"Keybinds.Interaction.Interact": "Interact",
 		"Keybinds.Interaction.Interact2": "Interact2",
+		"Keybinds.Interaction.Interact3": "Interact3",
 		"Keybinds.Interaction.ItemMenu": "Item menu",
 		"Keybinds.Interaction.EmoteMenu": "Emote menu",
 		"Keybinds.Interaction.MenuNext": "Menu next",
