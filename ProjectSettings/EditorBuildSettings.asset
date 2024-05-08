@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Startup.unity
     guid: c7b37102d87ffcd42af87ed74b5d4777
+  - enabled: 1
+    path: Assets/Scenes/MomoTesting.unity
+    guid: f7497804184676e4abc22c7780317e76
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

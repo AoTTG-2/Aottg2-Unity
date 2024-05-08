@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DroppedByDead: 0
+  collect: {fileID: 8300000, guid: 99ef32357bff10341b1f58c84ddb82a6, type: 3}
 --- !u!1 &8142202789150022795
 GameObject:
   m_ObjectHideFlags: 0

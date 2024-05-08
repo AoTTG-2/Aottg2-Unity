@@ -8,6 +8,8 @@ public class CollectGas : MonoBehaviour
 
     private float timer = 0f;
     private float delay = 5f * 60f; // 5 minutes in seconds
+    [SerializeField]
+    private AudioClip collect;
 
     private float shrinkSpeed = 1f;
 
@@ -55,6 +57,7 @@ public class CollectGas : MonoBehaviour
                 }
             }
             Die = true;
+            AudioSource.PlayClipAtPoint(collect, transform.position, 4f);
         }
     }
 }

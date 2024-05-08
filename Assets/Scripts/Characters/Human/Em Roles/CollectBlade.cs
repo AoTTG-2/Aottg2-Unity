@@ -6,6 +6,8 @@ class CollectBlade : MonoBehaviour
 {
     private float timer = 0f;
     private float delay = 5f * 60f; // 5 minutes in seconds
+    [SerializeField]
+    private AudioClip collect;
 
     public BaseUseable Weapon;
 
@@ -65,6 +67,7 @@ class CollectBlade : MonoBehaviour
 
             }
             Die = true;
+            AudioSource.PlayClipAtPoint(collect, transform.position, 4f);
         }
     }
 }
