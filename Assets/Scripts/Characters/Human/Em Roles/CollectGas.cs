@@ -9,6 +9,10 @@ public class CollectGas : MonoBehaviour
     private float timer = 0f;
     private float delay = 5f * 60f; // 5 minutes in seconds
 
+    private float shrinkSpeed = 1f;
+
+    private bool Die = false;  
+
     private void FixedUpdate()
     {
         timer += Time.fixedDeltaTime;
@@ -19,10 +23,21 @@ public class CollectGas : MonoBehaviour
 
             timer = 0f;
         }
+
+        if (Die)
+            transform.localScale -= Vector3.one * shrinkSpeed * Time.deltaTime;
+
+        // If the GameObject is small enough, destroy it
+        if (transform.localScale.x <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (Die) return;
+
         if (other.CompareTag("Player"))
         {
             if (other.gameObject.GetPhotonView().IsMine)
@@ -39,7 +54,7 @@ public class CollectGas : MonoBehaviour
                     HumanComp.CurrentGas = HumanComp.MaxGas;
                 }
             }
-            Destroy(gameObject);
+            Die = true;
         }
     }
 }

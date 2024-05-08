@@ -9,6 +9,10 @@ class CollectBlade : MonoBehaviour
 
     public BaseUseable Weapon;
 
+    private float shrinkSpeed = 1f;
+
+    private bool Die = false;
+
     private void FixedUpdate()
     {
         timer += Time.fixedDeltaTime;
@@ -19,10 +23,21 @@ class CollectBlade : MonoBehaviour
 
             timer = 0f;
         }
+
+        if (Die)
+            transform.localScale -= Vector3.one * shrinkSpeed * Time.deltaTime;
+
+        // If the GameObject is small enough, destroy it
+        if (transform.localScale.x <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (Die) return;
+
         if (other.CompareTag("Player"))
         {
             if (other.gameObject.GetPhotonView().IsMine)
@@ -49,7 +64,7 @@ class CollectBlade : MonoBehaviour
                 }
 
             }
-            Destroy(gameObject);
+            Die = true;
         }
     }
 }
