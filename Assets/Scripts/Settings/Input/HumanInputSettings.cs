@@ -10,7 +10,8 @@
         public KeybindSetting HookBoth = new KeybindSetting(new string[] { "None", "None" });
         public KeybindSetting Dash = new KeybindSetting(new string[] { "LeftControl", "None" });
         public KeybindSetting DashUpwards = new KeybindSetting(new string[] { "V", "None" }); // Added by Ata 2 May 24 //
-        public KeybindSetting LogisticianMenu = new KeybindSetting(new string[] { "N", "None" }); // Added by Ata 2 May 24 //
+        public KeybindSetting LogisticianMenu = new KeybindSetting(new string[] { "N", "None" }); // Added by Zippy 5 May 24 //
+        public KeybindSetting CannoneerSpawn = new KeybindSetting(new string[] { "N", "None" }); // Added by Zippy 8 May 24 //
         public KeybindSetting ReelIn = new KeybindSetting(new string[] { "WheelDown", "None" });
         public KeybindSetting ReelOut = new KeybindSetting(new string[] { "LeftAlt", "None" });
         public KeybindSetting Dodge = new KeybindSetting(new string[] { "LeftControl", "None" });

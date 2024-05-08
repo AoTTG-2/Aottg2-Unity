@@ -22,6 +22,7 @@ class ZippsUIManager : MonoBehaviour
     private void Update()
     {
         LogisticianUpdate();
+        CannoneerUpdate();
     }
 
     #region EM Menu
@@ -261,4 +262,19 @@ class ZippsUIManager : MonoBehaviour
     }
 
     #endregion
+
+    #region Cannoneer
+
+    private void CannoneerUpdate()
+    {
+        if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Cannoneer"))
+            return;
+
+        if (_humanInput.CannoneerSpawn.GetKeyDown())
+        {
+
+        }
+    }
+
+    #endregion 
 }
