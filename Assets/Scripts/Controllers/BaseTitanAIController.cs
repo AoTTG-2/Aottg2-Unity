@@ -211,8 +211,10 @@ namespace Controllers
                 }
                 else if (_stateTimeLeft <= 0)
                     MoveToPosition(true);
-                else
+                else if (_wasPreviouslyBlocked)
                     MoveToPosition(true);
+                else
+                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
@@ -248,8 +250,11 @@ namespace Controllers
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);
-                        else
+                        else if (_wasPreviouslyBlocked)
                             MoveToEnemy(true);
+                        else
+                            _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+
                     }
                 }
             }
