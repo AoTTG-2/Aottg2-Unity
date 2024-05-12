@@ -30,6 +30,7 @@ namespace Characters
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
+        public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
         public HookUseable HookLeft;
         public HookUseable HookRight;
@@ -1961,7 +1962,11 @@ namespace Characters
             {
                 SetupWeapon(set, humanWeapon);
                 SetupItems();
-                SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
+                //SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
+                SetAllSpecials(SettingsManager.InGameCharacterSettings.Special.Value,
+                               SettingsManager.InGameCharacterSettings.Special_2.Value,
+                               SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
+                SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
             }
             FinishSetup = true;
             CustomAnimationSpeed();
@@ -2050,6 +2055,29 @@ namespace Characters
             Special = HumanSpecials.GetSpecialUseable(this, special);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
+
+        #region Ability Wheel
+        public void SetAllSpecials(string special1, string special2, string special3)
+        {
+            SpecialsArray = new BaseUseable[]
+            {
+                HumanSpecials.GetSpecialUseable(this, special1),
+                HumanSpecials.GetSpecialUseable(this, special2),
+                HumanSpecials.GetSpecialUseable(this, special3)
+            };
+
+            // add the icons for all specials at some point //
+        }
+
+        public void SwitchCurrentSpecial(string special, int newSpecial)
+        {
+            CurrentSpecial = special;
+            Special = SpecialsArray[newSpecial - 1];
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+        }
+
+        #endregion
+
 
         protected void LoadSkin()
         {

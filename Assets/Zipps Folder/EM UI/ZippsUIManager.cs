@@ -9,6 +9,7 @@ using UI;
 
 class ZippsUIManager : MonoBehaviour
 {
+    protected Human _human;
     private void Start()
     {
         _humanInput = SettingsManager.InputSettings.Human;
@@ -23,6 +24,7 @@ class ZippsUIManager : MonoBehaviour
     {
         LogisticianUpdate();
         CannoneerUpdate();
+        AbilityWheelUpdate();
     }
 
     #region EM Menu
@@ -276,5 +278,83 @@ class ZippsUIManager : MonoBehaviour
         }
     }
 
-    #endregion 
+    #endregion
+
+
+    #region Ability Wheel
+    [Header("Ability Wheel")]
+    [SerializeField]
+    private GameObject AbilityWheelMenu;
+    [SerializeField]
+    private GameObject AbilityWheelCanvas;
+    [SerializeField]
+    private AudioSource AbilityWheelAudio;
+
+    private bool Ability1Selected = false;
+    private bool Ability2Selected = false;
+    private bool Ability3Selected = false;
+
+    public void OnHoverAbility1()
+    {
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        Ability1Selected = true;
+        AbilityWheelAudio.Play();
+        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
+        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+    }
+
+    public void OnHoverExitAbility1()
+    {
+        Ability1Selected = false;
+        // some UI events like color change //
+    }
+    public void OnHoverAbility2()
+    {
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        Ability2Selected = true;
+        AbilityWheelAudio.Play();
+        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
+        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+    }
+
+    public void OnHoverExitAbility2()
+    {
+        Ability2Selected = false;
+        // some UI events like color change //
+    }
+    public void OnHoverAbility3()
+    {
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        Ability3Selected = true;
+        AbilityWheelAudio.Play();
+        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
+        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+    }
+
+    public void OnHoverExitAbility3()
+    {
+        Ability3Selected = false;
+        // some UI events like color change //
+    }
+    private void AbilityWheelUpdate()
+    {
+        if (PhotonExtensions.GetMyPlayer() == null)
+            return;
+
+        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
+        {
+            AbilityWheelCanvas.SetActive(true);
+            AbilityWheelMenu.SetActive(true);
+            CanvasObj.SetActive(false);
+            EmVariables.AbilityWheelOpen = true;
+        }
+        if (_humanInput.AbilityWheelMenu.GetKeyUp())
+        {
+            AbilityWheelCanvas.SetActive(true);
+            AbilityWheelMenu.SetActive(false);
+            EmVariables.AbilityWheelOpen = false;
+            Debug.Log("Selection done: " + _human.CurrentSpecial);
+        }
+    }
+    #endregion
 }

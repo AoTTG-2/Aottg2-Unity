@@ -48,6 +48,10 @@ namespace UI
             options = specials.ToArray();
             ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
                 options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+            ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special_2, UIManager.GetLocale(cat, sub, "Special2"), // added by Ata 12 May 2024 for Ability Wheel //
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+            ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special_3, UIManager.GetLocale(cat, sub, "Special3"), // added by Ata 12 May 2024 for Ability Wheel //
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
