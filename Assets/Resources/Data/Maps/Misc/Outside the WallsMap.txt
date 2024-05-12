@@ -984,8 +984,8 @@ class Main
     Difficulty = "Normal";
     RespawnMode = "OnCapture";
     EndlessRespawnTime = 5.0;
-    MaxReinforcementCalls = 13;
-    MaxLivesPerPlayer = 10;
+    MaxReinforcementCalls = 7;
+    MaxLivesPerPlayer = 7;
 
     DifficultyDropbox = "Easy, Normal, Hard";
     RespawnModeDropbox = "OnCapture, Endless, None";
@@ -1004,19 +1004,26 @@ class Main
     {
         ReinforcementZones.Setup(self);
 
-        if (Game.EndlessRespawnEnabled)
+        if (Game.EndlessRespawnEnabled && self.RespawnMode != "None")
         {
+            if (Network.IsMasterClient)
+            {
+                warning = "<b><color=#dea12f>[Warning]: </color></b>";
+                str = "Endless respawn game setting is enabled, ";
+                str += "but RespawnMode is set to <b>" + self.RespawnMode + "</b>, ";
+                str += "switching to None RespawnMode";
+                Game.Print(warning + str);
+            }
             self.RespawnMode = "None";
         }
     
         if (self.RespawnMode != "OnCapture")
         {
+            if (self.RespawnMode == "Endless")
+            {
+                InGameUI.UpdateLives(0, self.MaxLivesPerPlayer);
+            }
             ReinforcementZones.DeactivateAll();
-        }
-
-        if (self.RespawnMode == "Endless")
-        {
-            InGameUI.UpdateLives(0, self.MaxLivesPerPlayer);
         }
 
         if (!Network.IsMasterClient)
@@ -1921,8 +1928,6 @@ class Event4
             t = health / maxHealth;
             if (t <= 0.5)
             {
-                # Shifter should start running away after she lost half her health
-                # but for now we will just kill her
                 self._annie.GetKilled("Server");
                 self._annie = null;
                 if (!self._eventController.TryStartNextEvent())
