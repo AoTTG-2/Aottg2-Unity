@@ -33,6 +33,11 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.InterpolationEnabled, UIManager.GetLocale(cat, sub, "InterpolationEnabled"), tooltip: UIManager.GetLocale(cat, sub, "InterpolationEnabledTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ShowFPS, UIManager.GetLocale(cat, sub, "ShowFPS"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.MipmapEnabled, UIManager.GetLocale(cat, sub, "MipmapEnabled"), tooltip: UIManager.GetLocale(cat, sub, "MipmapEnabledTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.NapeBloodEnabled, UIManager.GetLocale(cat, sub, "NapeBloodEnabled"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponTrailEnabled, UIManager.GetLocale(cat, sub, "WeaponTrailEnabled"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WindEffectEnabled, UIManager.GetLocale(cat, sub, "WindEffectEnabled"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.BloodSplatterEnabled, UIManager.GetLocale(cat, sub, "BloodSplatterEnabled"));
+
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.TextureQuality, UIManager.GetLocale(cat, sub, "TextureQuality"),
                 UIManager.GetLocaleArray(cat, sub, "TextureQualityOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ShadowQuality, UIManager.GetLocale(cat, sub, "ShadowQuality"),
@@ -47,10 +52,20 @@ namespace UI
                UIManager.GetLocaleArray(cat, sub, "AnisotropicOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.WeatherEffects, UIManager.GetLocale(cat, sub, "WeatherEffects"),
                UIManager.GetLocaleArray(cat, sub, "WeatherEffectsOptions"), elementWidth: 200f);
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.NapeBloodEnabled, UIManager.GetLocale(cat, sub, "NapeBloodEnabled"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.WeaponTrailEnabled, UIManager.GetLocale(cat, sub, "WeaponTrailEnabled"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.WindEffectEnabled, UIManager.GetLocale(cat, sub, "WindEffectEnabled"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.BloodSplatterEnabled, UIManager.GetLocale(cat, sub, "BloodSplatterEnabled"));
+
+            // Post Processing
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AmbientOcclusion, UIManager.GetLocale(cat, sub, "AmbientOcclusion"),
+               UIManager.GetLocaleArray(cat, sub, "AmbientOcclusionOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.Bloom, UIManager.GetLocale(cat, sub, "Bloom"),
+               UIManager.GetLocaleArray(cat, sub, "BloomOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ChromaticAberration, UIManager.GetLocale(cat, sub, "ChromaticAberration"),
+               UIManager.GetLocaleArray(cat, sub, "ChromaticAberrationOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ColorGrading, UIManager.GetLocale(cat, sub, "ColorGrading"),
+               UIManager.GetLocaleArray(cat, sub, "ColorGradingOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.DepthOfField, UIManager.GetLocale(cat, sub, "DepthOfField"),
+               UIManager.GetLocaleArray(cat, sub, "DepthOfFieldOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.MotionBlur, UIManager.GetLocale(cat, sub, "MotionBlur"),
+               UIManager.GetLocaleArray(cat, sub, "MotionBlurOptions"), elementWidth: 200f);
         }
 
         protected void OnSelectPreset()
