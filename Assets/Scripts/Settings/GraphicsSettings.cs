@@ -2,7 +2,6 @@
 using Cameras;
 using System;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
 namespace Settings
 {
@@ -75,9 +74,16 @@ namespace Settings
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGraphicsSettings();
             ScreenResolution.Value = FullscreenHandler.SanitizeResolutionSetting(ScreenResolution.Value);
             FullscreenHandler.Apply(ScreenResolution.Value, (FullScreenLevel)FullScreenMode.Value);
-            PostProcessingManager postProcessingManager = GameObject.FindObjectOfType<PostProcessingManager>();
+            PostProcessingManager postProcessingManager = GameObject.FindFirstObjectByType<PostProcessingManager>();
             if (postProcessingManager != null)
-                postProcessingManager.ApplySettings();
+                postProcessingManager.ApplySettings(
+                    (AmbientOcclusionLevel)AmbientOcclusion.Value,
+                    (BloomLevel)Bloom.Value,
+                    (ChromaticAberrationLevel)ChromaticAberration.Value,
+                    (ColorGradingLevel)ColorGrading.Value,
+                    (DepthOfFieldLevel)DepthOfField.Value,
+                    (MotionBlurLevel)MotionBlur.Value
+                );
         }
 
         public void OnSelectPreset()

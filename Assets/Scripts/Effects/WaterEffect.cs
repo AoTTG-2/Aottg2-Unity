@@ -20,15 +20,15 @@ public class WaterEffect : MonoBehaviour
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _colorGrading);
         _volume.profile.TryGetSettings(out _depthOfField);
-
-        ApplySettings();
-    }
-
-    public void ApplySettings()
-    {
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
-        if (settings.ColorGrading.Value == 0 && settings.DepthOfField.Value == 0)
+        if (settings != null)
+            ApplySettings((ColorGradingLevel)settings.ColorGrading.Value, (DepthOfFieldLevel)settings.DepthOfField.Value);
+    }
+
+    public void ApplySettings(ColorGradingLevel cgl, DepthOfFieldLevel dofl)
+    {
+        if (cgl == ColorGradingLevel.Off && dofl == DepthOfFieldLevel.Off)
         {
             PostProcessingVolume.gameObject.SetActive(false);
             this.enabled = false;
@@ -36,8 +36,8 @@ public class WaterEffect : MonoBehaviour
         }
         this.enabled = true;
 
-        _colorGrading.enabled.value = settings.ColorGrading.Value != 0;
-        _depthOfField.enabled.value = settings.DepthOfField.Value != 0;
+        _colorGrading.enabled.value = cgl != ColorGradingLevel.Off;
+        _depthOfField.enabled.value = dofl != DepthOfFieldLevel.Off;
     }
 
     void FixedUpdate()

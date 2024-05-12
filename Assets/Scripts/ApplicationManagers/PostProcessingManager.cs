@@ -27,27 +27,35 @@ public class PostProcessingManager : MonoBehaviour
         _postProcessingVolume.profile.TryGetSettings(out _colorGrading);
         _postProcessingVolume.profile.TryGetSettings(out _depthOfField);
         _postProcessingVolume.profile.TryGetSettings(out _motionBlur);
-    }
 
-    public void ApplySettings()
-    {
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
-        if (settings == null)
-            return;
+        if (settings != null)
+            ApplySettings(
+                (AmbientOcclusionLevel)settings.AmbientOcclusion.Value,
+                (BloomLevel)settings.Bloom.Value,
+                (ChromaticAberrationLevel)settings.ChromaticAberration.Value,
+                (ColorGradingLevel)settings.ColorGrading.Value,
+                (DepthOfFieldLevel)settings.DepthOfField.Value,
+                (MotionBlurLevel)settings.MotionBlur.Value
+            );
 
-        SetAmbientOcclusionQuality((AmbientOcclusionLevel)settings.AmbientOcclusion.Value);
-        SetBloomQuality((BloomLevel)settings.Bloom.Value);
-        SetChromaticAberrationQuality((ChromaticAberrationLevel)settings.ChromaticAberration.Value);
-        SetColorGradingQuality((ColorGradingLevel)settings.ColorGrading.Value);
-        SetDepthOfFieldQuality((DepthOfFieldLevel)settings.DepthOfField.Value);
-        SetMotionBlurQuality((MotionBlurLevel)settings.MotionBlur.Value);
+    }
+
+    public void ApplySettings(AmbientOcclusionLevel aol, BloomLevel bl, ChromaticAberrationLevel cal, ColorGradingLevel cgl, DepthOfFieldLevel dofl, MotionBlurLevel mbl)
+    {
+        SetAmbientOcclusionQuality(aol);
+        SetBloomQuality(bl);
+        SetChromaticAberrationQuality(cal);
+        SetColorGradingQuality(cgl);
+        SetDepthOfFieldQuality(dofl);
+        SetMotionBlurQuality(mbl);
 
         // Find all objects with the WaterEffect script and apply settings
         WaterEffect[] waterEffects = FindObjectsOfType<WaterEffect>();
         foreach (WaterEffect waterEffect in waterEffects)
         {
-            waterEffect.ApplySettings();
+            waterEffect.ApplySettings(cgl, dofl);
         }
 
     }
