@@ -983,6 +983,7 @@ class Main
     DebugMode = false;
     Difficulty = "Normal";
     RespawnMode = "OnCapture";
+    EndlessRespawnTime = 5.0;
     MaxReinforcementCalls = 13;
     MaxLivesPerPlayer = 10;
 
@@ -997,42 +998,37 @@ class Main
 
     _reinformentCalls = 0;
     _deathsMap = Dict(); # how many times each player have died
+    _respawnStartTimeMap = Dict();
 
     function OnGameStart()
     {
         ReinforcementZones.Setup(self);
+
+        if (Game.EndlessRespawnEnabled)
+        {
+            self.RespawnMode = "None";
+        }
+    
+        if (self.RespawnMode != "OnCapture")
+        {
+            ReinforcementZones.DeactivateAll();
+        }
+
+        if (self.RespawnMode == "Endless")
+        {
+            InGameUI.UpdateLives(0, self.MaxLivesPerPlayer);
+        }
 
         if (!Network.IsMasterClient)
         {
             return;
         }
 
-        if (Game.EndlessRespawnEnabled)
-        {
-            key = Input.GetKeyName("General/Pause");
-            help = "(Press <b>" + key + "</b> → Game → Misc → Endless respawn)";
-            error = "<b><color=#f75348>[Error]: </color></b>";
-            msg = "Endless respawn option have to be disabled. ";
-            msg += "Do this by going to the Game setting and disabling it in the Misc tab";
-            Game.Print(UI.WrapStyleTag(error + msg + String.Newline + help, "size", "16"));
+        self.EndlessRespawnTime = Math.Max(1, self.EndlessRespawnTime);
 
-            CaptureZones.Setup(null);
-            CaptureZones.DeactivateAllCaptureZones();
-            return;
-        }
-
-        InGameUI.SetRespawnMode(self.RespawnMode);
-
-        if (self.RespawnMode != "OnCapture")
+        if (self.RespawnMode == "OnCapture")
         {
-            InGameUI.UpdateLives(0, self.MaxReinforcementCalls);
-            # Todo: players probably won't receive this message
-            # because its called from the game start, we should do this another way
-            ReinforcementZones.SendDeactivateAllMessage();
-        }
-        else
-        {
-            InGameUI.UpdateLives(0, self.MaxLivesPerPlayer);
+            InGameUI.UpdateReinforcementCalls(0, self.MaxReinforcementCalls);
         }
 
         self._debug = Debug(self.DebugMode);
@@ -1045,19 +1041,6 @@ class Main
         if (self._enabled && Network.IsMasterClient)
         {
             self._eventController.OnCharacterSpawn(character);
-            if (character != null && character.Type == "Human")
-            {
-                deaths = 0;
-                if (self._deathsMap.Contains(character.Player))
-                {
-                    deaths = self._deathsMap.Get(character.Player)
-                }
-                if (deaths >= self.MaxLivesPerPlayer)
-                {
-                    # Todo: Player ran out of lives
-                    Game.Print("todo");
-                }
-            }
         }
     }
 
@@ -1080,8 +1063,11 @@ class Main
                 if (deaths < self.MaxLivesPerPlayer)
                 {
                     deaths += 1;
-                    InGameUI.UpdateLives(deaths, self.MaxLivesPerPlayer);
                     self._deathsMap.Set(victim.Player.ID, deaths);
+                    if (!self._respawnStartTimeMap.Contains(victim.Player.ID))
+                    {
+                        self._respawnStartTimeMap.Set(victim.Player.ID, Time.GameTime);
+                    }
                 }
             }
 
@@ -1101,6 +1087,14 @@ class Main
     {
         if (self._enabled && Network.IsMasterClient)
         {
+            if (self._deathsMap.Contains(player.ID))
+            {
+                self._deathsMap.Remove(player.ID);
+            }
+            if (self._respawnStartTimeMap.Contains(player.ID))
+            {
+                self._respawnStartTimeMap.Remove(player.ID);
+            }
             self.LoseIfPlayersAreDead();
         }
     }
@@ -1146,19 +1140,25 @@ class Main
                 wallGate.Interactable = interactable;
                 wallGate.SetState(state);
             }
-            elif (msgType == "ReinforcementZone")
+            elif (msgType == "Reinforcement")
+            {
+                pos = data.Get("pos");
+                zone = CaptureZones.GetNearestCaptureZone(pos);
+                self.Reinforcement(zone);
+            }
+            elif (msgType == "UI")
             {
                 msg = data.Get("msg");
-                if (msg == "deactivate")
+                if (msg == "lives")
                 {
-                    Game.Print("deactivate all");
-                    ReinforcementZones.DeactivateAll();
+                    current = data.Get("current");
+                    max = data.Get("max");
+                    InGameUI.UpdateLives(current, max);
                 }
-                elif (msg == "call")
+                else
                 {
-                    pos = data.Get("pos");
-                    zone = CaptureZones.GetNearestCaptureZone(pos);
-                    self.Reinforcement(zone);
+                    current = data.Get("current");
+                    InGameUI.UpdateRespawnTime(current);
                 }
             }
             else
@@ -1172,6 +1172,24 @@ class Main
     {
         if (self._enabled && Network.IsMasterClient)
         {
+            for(id in self._respawnStartTimeMap.Keys)
+            {
+                player = PlayerUtils.GetPlayerById(id);
+                startTime = self._respawnStartTimeMap.Get(id);
+                remaining = Time.GameTime - startTime;
+                
+                # Sending message every frame is probably not a good idea
+                InGameUI.SendUpdateRespawnTimeMessage(player, self.EndlessRespawnTime - remaining);
+
+                if (remaining >= self.EndlessRespawnTime)
+                {
+                    InGameUI.SendUpdateRespawnTimeMessage(player, null);
+                    InGameUI.SendUpdateLivesMessage(player, self._deathsMap.Get(id), self.MaxLivesPerPlayer);
+                    Game.SpawnPlayer(player, false);
+                    self._respawnStartTimeMap.Remove(id);
+                }
+            }
+
             self._debug.OnFrame();
             self._eventController.OnFrame();
         }
@@ -1205,7 +1223,7 @@ class Main
     function HandleInteractAction(trigger)
     {
         position = trigger.MapObject.Position;
-        NetworkMessage().Set("type", "ReinforcementZone").Set("msg", "call").Set("pos", position).Send(Network.MasterClient);
+        NetworkMessage().Set("type", "Reinforcement").Set("pos", position).Send(Network.MasterClient);
     }
 
     function Reinforcement(captureZone)
@@ -1213,8 +1231,8 @@ class Main
         if (self._reinformentCalls < self.MaxReinforcementCalls && PlayerUtils.AnyPlayerDead())
         {
             PlayerUtils.RevivePlayers(captureZone);
+            InGameUI.UpdateReinforcementCalls(self._reinformentCalls, self.MaxReinforcementCalls);
             self._reinformentCalls += 1;
-            InGameUI.UpdateLives(self._reinformentCalls, self.MaxReinforcementCalls);
         }
     }
 
@@ -1222,7 +1240,19 @@ class Main
     {
         alive = false;
 
-        if (self.RespawnMode == "Endless")
+        i = 0;
+        while (i < Network.Players.Count)
+        {
+            p = Network.Players.Get(i);
+            if (p.CharacterType == "Human" && p.Status == "Alive")
+            {
+                alive = true;
+                i = Network.Players.Count;
+            }
+            i += 1;
+        }
+
+        if (!alive && self.RespawnMode == "Endless")
         {
             for(p in Network.Players)
             {
@@ -1236,20 +1266,6 @@ class Main
                 {
                     alive = true;
                 }
-            }
-        }
-        else
-        {
-            i = 0;
-            while (i < Network.Players.Count)
-            {
-                p = Network.Players.Get(i);
-                if (p.CharacterType == "Human" && p.Status == "Alive")
-                {
-                    alive = true;
-                    i = Network.Players.Count;
-                }
-                i += 1;
             }
         }
 
@@ -1380,12 +1396,10 @@ class EventController
 
         self._events.Get(0).OnEventStart();
 
-        InGameUI.UpdateCaptureZoneIndex(self._currentIndex);
     }
 
     function OnCaptured(captureZone, newOwner)
     {
-        InGameUI.UpdateCaptureZoneIndex(self._currentIndex);
 
         for(e in self._events)
         {
@@ -1403,7 +1417,6 @@ class EventController
             if (self._capturedZones.Contains(captureZone))
             {
                 self._capturedZones.Remove(captureZone);
-                InGameUI.UpdateCaptureZoneIndex(self._currentIndex);
             }
         }
         elif (newOwner == "Human")
@@ -1416,7 +1429,7 @@ class EventController
 
                 if (self._main.RespawnMode == "OnCapture")
                 {
-                    self._main.Reinforcement(c);
+                    PlayerUtils.RevivePlayers(c);
                 }
                 
                 self._currentSpawnPointIndex = captureZone.Order;
@@ -1477,7 +1490,6 @@ class EventController
                     # Captured all zones
                     CaptureZones.DisableAllCaptureZones();
                 }
-                InGameUI.UpdateCaptureZoneIndex(self._currentIndex);
                 return true;
             }
         }
@@ -2327,54 +2339,36 @@ extension CaptureZones
 }
 extension InGameUI
 {
-    _humanColor = Color(70, 80, 125, 255);
-    _titanColor = Color(255, 255, 62, 255);
-    _neutralColor = Color(255, 255, 255, 255);
-
-    _casualties = 0;
-    _maxCasualties = 0;
-    _captureZoneIndex = 0;
-
-    _respawnMode = "None";
-
-    function SetRespawnMode(mode)
+    function SendUpdateLivesMessage(player, current, max)
     {
-        self._respawnMode = mode;
+        NetworkMessage().Set("type", "UI").Set("msg", "lives").Set("current", current).Set("max", max).Send(player);
     }
 
-    function UpdateLives(lives, maxLives)
+    function SendUpdateRespawnTimeMessage(player, time)
     {
-        self._lives = lives;
-        self._maxLives = maxLives;
-        self.UpdateUI();
+        NetworkMessage().Set("type", "UI").Set("msg", "respawn").Set("current", time).Send(player);
     }
 
-    function UpdateCaptureZoneIndex(currentIndex)
+    function UpdateLives(current, max)
     {
-        self._captureZoneIndex = currentIndex;
-        self.UpdateUI();
+        UI.SetLabel("TopLeft", "Lives lost: " + current + " / " + max);
     }
-    
-    function UpdateUI()
+
+    function UpdateRespawnTime(current)
     {
-        str = "";
-        t = "";
-        if (self._respawnMode == "Endless")
+        if (current == null)
         {
-            t = "Lives lost";
+            UI.SetLabel("MiddleCenter", "");
+            return;
         }
-        elif (self._respawnMode == "OnCapture")
-        {
-            t = "Reinforcements called";
-        }
+        
+        v = String.FormatFloat(current, 2);
+        UI.SetLabel("MiddleCenter", "Respawning in <b>" + v + " </b>");
+    }
 
-        if (self._respawnMode == "Endless" || self._respawnMode == "OnCapture")
-        {
-            str = t + ": " + self._lives + " / " + self._maxLives + String.Newline;
-        }
-
-        str += "Points captured: " + self._captureZoneIndex + " / " + 8;
-        UI.SetLabelAll("TopLeft", str);
+    function UpdateReinforcementCalls(current, max)
+    {
+        UI.SetLabelAll("TopLeft", "Reinforcements called: " + current + " / " + max);
     }
 }
 extension TitanSpawnPoints
@@ -2444,11 +2438,6 @@ extension ReinforcementZones
             text = "Press " + Input.GetKeyName("Interaction/" + c.Key) + " to call for reinforcement.";
             c.SetActionHandler(callbackReceiver, text);
         }
-    }
-
-    function SendDeactivateAllMessage()
-    {
-        NetworkMessage().Set("type", "ReinforcementZone").Set("msg", "deactivate").SendAll();
     }
 
     function DeactivateAll()
@@ -2614,6 +2603,19 @@ extension PlayerUtils
             position += captureZone.MapObject.Position;
             p.SpawnPoint = position;
         }
+    }
+
+    function GetPlayerById(id)
+    {
+        for(p in Network.Players)
+        {
+            if (p.ID == id)
+            {
+                return p;
+            }
+        }
+
+        return null;
     }
 }
 extension TitanUtils
