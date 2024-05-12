@@ -42,6 +42,12 @@ public class PostProcessingManager : MonoBehaviour
 
     }
 
+    public void SetState(bool state)
+    {
+        // disable volume
+        _postProcessingVolume.enabled = state;
+    }
+
     public void ApplySettings(AmbientOcclusionLevel aol, BloomLevel bl, ChromaticAberrationLevel cal, ColorGradingLevel cgl, DepthOfFieldLevel dofl, MotionBlurLevel mbl)
     {
         SetAmbientOcclusionQuality(aol);

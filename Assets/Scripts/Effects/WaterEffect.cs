@@ -10,12 +10,17 @@ public class WaterEffect : MonoBehaviour
     [SerializeField] GameObject PostProcessingVolume;
     Collider _collider;
 
+    private PostProcessingManager _postProcessingManager;
     private PostProcessVolume _volume;
     private ColorGrading _colorGrading;
     private DepthOfField _depthOfField;
 
     void Start()
     {
+        // Get gameobject with component PostProcessingMananger script
+        if (_postProcessingManager == null)
+            _postProcessingManager = FindObjectOfType<PostProcessingManager>();
+
         _collider = GetComponent<Collider>();
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _colorGrading);
@@ -48,10 +53,12 @@ public class WaterEffect : MonoBehaviour
         if (_collider.bounds.Contains(cam.transform.position))
         {
             PostProcessingVolume.gameObject.SetActive(true);
+            _postProcessingManager.SetState(false);
         }
         else
         {
             PostProcessingVolume.gameObject.SetActive(false);
+            _postProcessingManager.SetState(true);
         }
     }
 }
