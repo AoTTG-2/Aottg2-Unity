@@ -11,7 +11,7 @@ class CollectBlade : MonoBehaviour
 
     public BaseUseable Weapon;
 
-    private float shrinkSpeed = 1f;
+    private float shrinkSpeed = 3f;
 
     private bool Die = false;
 

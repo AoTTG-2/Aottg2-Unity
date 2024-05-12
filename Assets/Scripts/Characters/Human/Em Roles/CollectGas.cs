@@ -11,7 +11,7 @@ public class CollectGas : MonoBehaviour
     [SerializeField]
     private AudioClip collect;
 
-    private float shrinkSpeed = 1f;
+    private float shrinkSpeed = 3f;
 
     private bool Die = false;  
 
