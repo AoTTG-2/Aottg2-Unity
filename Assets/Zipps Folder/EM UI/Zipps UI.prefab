@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1103271309396010901
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3270,7 +3270,7 @@ GameObject:
   - component: {fileID: 3205081420722903920}
   - component: {fileID: 1110306571454187056}
   m_Layer: 0
-  m_Name: Ability 3 Hitbox
+  m_Name: Ability 2 Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3314,7 +3314,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 6032410381880676077}
           m_TargetAssemblyTypeName: ZippsUIManager, Assembly-CSharp
-          m_MethodName: OnHoverAbility3
+          m_MethodName: OnHoverAbility2
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3330,7 +3330,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 6032410381880676077}
           m_TargetAssemblyTypeName: ZippsUIManager, Assembly-CSharp
-          m_MethodName: OnHoverExitAbility3
+          m_MethodName: OnHoverExitAbility2
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4546,7 +4546,7 @@ GameObject:
   - component: {fileID: 5167361311294472732}
   - component: {fileID: 5714142544335608975}
   m_Layer: 0
-  m_Name: Ability 2 Hitbox
+  m_Name: Ability 3 Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4590,7 +4590,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 6032410381880676077}
           m_TargetAssemblyTypeName: ZippsUIManager, Assembly-CSharp
-          m_MethodName: OnHoverAbility2
+          m_MethodName: OnHoverAbility3
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4606,7 +4606,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 6032410381880676077}
           m_TargetAssemblyTypeName: ZippsUIManager, Assembly-CSharp
-          m_MethodName: OnHoverExitAbility2
+          m_MethodName: OnHoverExitAbility3
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6672,7 +6672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &9221640670867112526
 RectTransform:
   m_ObjectHideFlags: 0
