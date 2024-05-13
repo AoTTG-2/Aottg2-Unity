@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
@@ -295,6 +295,10 @@ namespace CustomLogic
                 return gameManager.IsEnding;
             if (name == "PVP")
                 return SettingsManager.InGameCurrent.Misc.PVP.Value;
+            if (name == "EndlessRespawnEnabled")
+                return SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value;
+            if (name == "EndlessRespawnTime")
+                return SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value;
             if (name == "EndTimeLeft")
                 return gameManager.EndTimeLeft;
             if (name == "Titans")

@@ -1,3 +1,56 @@
+component InteractActionTrigger
+{
+    Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
+
+    Key = "Interact";
+    KeyDropbox = "Interact, Interact2, Interact3";
+
+    _text = null;
+    _actionHandler = null;
+    _currentHuman = null;
+
+    function SetActionHandler(handler, text)
+    {
+        self._actionHandler = handler;
+        self._text = text;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            if (self._text != null)
+            {
+                UI.SetLabelForTime("MiddleCenter", self._text, 0.1);
+            }
+            else
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/" + self.Key) + " to trigger the action.", 0.1);
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null && Input.GetKeyDown("Interaction/" + self.Key))
+        {
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.HandleInteractAction(self);
+            }
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
+        }
+    }
+}
+
 component Animator
 {
     AnimationName = "";
@@ -1069,6 +1122,16 @@ component CaptureZone
     function GetState()
     {
         return self._state;
+    }
+
+    function GetPlayersOfTeamInZone(team)
+    {
+        if (self._teamsInZone.Contains(team))
+        {
+            return self._teamsInZone.Get(team);
+        }
+
+        return null;
     }
 
     # GameObject Helpers
@@ -2570,7 +2633,7 @@ component WallGateA1
     Description = "Makes WallGateA1 openable by players.";
 
     StartState = "Closed";
-    StartStateDropdown = "Closed, Open";
+    StartStateDropbox = "Closed, Open";
 
     Interactable = true;
 
@@ -2598,8 +2661,34 @@ component WallGateA1
         self._door.LocalPosition = localPosition;
     }
 
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "sync|" + self._open + "|" + self.Interactable);
+        }
+    }
+
     function OnNetworkMessage(sender, message)
     {
+        if (sender == Network.MasterClient && String.StartsWith(message, "sync"))
+        {
+            args = String.Split(message, "|");
+            self._open = Convert.ToBool(args.Get(1));
+            self.Interactable = Convert.ToBool(args.Get(2));
+
+            localPosition = self._door.LocalPosition;
+            if (self._open)
+            {
+                localPosition.Y = 25;
+            }
+            else
+            {
+                localPosition.Y = 0;
+            }
+            self._door.LocalPosition = localPosition;
+        }
+
         if (self.Interactable == false)
         {
             return;
@@ -2648,11 +2737,7 @@ component WallGateA1
 
     function OnFrame()
     {
-        if (self.Interactable == false)
-        {
-            return;
-        }
-        if (self._currentHuman != null)
+        if (self.Interactable && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
             {
