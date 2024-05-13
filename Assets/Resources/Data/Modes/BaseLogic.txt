@@ -1032,12 +1032,12 @@ component CaptureZone
 
     ShowUI = true;
     UIVisibilityRange = 80.0;
-
+    StartOwner = "null";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
     _lastState = "Captured";
-    _currentOwner = "null";
+    CurrentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
@@ -1080,7 +1080,7 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
-        
+
         # Setup supply station
         if (self.SupplyStationID != "")
         {
@@ -1111,7 +1111,7 @@ component CaptureZone
     # Getters
     function GetCurrentOwner()
     {
-        return self._currentOwner;
+        return self.CurrentOwner;
     }
 
     function GetCaptureProgress()
@@ -1155,18 +1155,18 @@ component CaptureZone
         color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
             
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
-            ownerColor = self.GetTeamColor(self._currentOwner);
+            ownerColor = self.GetTeamColor(self.CurrentOwner);
             color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
 		}
         self.ChangeColorAll(color);
 	}
@@ -1183,7 +1183,7 @@ component CaptureZone
         data = Json.LoadFromString(message);
 
         self._state = data.Get("state");
-        self._currentOwner = data.Get("owner");
+        self.CurrentOwner = data.Get("owner");
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
@@ -1196,7 +1196,7 @@ component CaptureZone
     {
         message = Dict();
         message.Set("state", self._state);
-        message.Set("owner", self._currentOwner);
+        message.Set("owner", self.CurrentOwner);
         message.Set("capturer", self._currentCapturer);
         message.Set("progress", self._captureProgress);
         message.Set("enabled", self.Enabled);
@@ -1209,7 +1209,7 @@ component CaptureZone
     {
         message = Dict();
         message.Set("state", self._state);
-        message.Set("owner", self._currentOwner);
+        message.Set("owner", self.CurrentOwner);
         message.Set("capturer", self._currentCapturer);
         message.Set("progress", self._captureProgress);
         message.Set("enabled", self.Enabled);
@@ -1222,7 +1222,7 @@ component CaptureZone
     {
         if (self._state == "Captured")
         {
-            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentOwner) == false)
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self.CurrentOwner) == false)
             {
                 self._state = "Capturing";
                 self._currentCapturer = self._teamsInZone.Keys.Get(0);
@@ -1243,7 +1243,7 @@ component CaptureZone
                 if (self._captureProgress >= self.CaptureTime)
                 {
                     self._state = "Captured";
-                    self._currentOwner = self._currentCapturer;
+                    self.CurrentOwner = self._currentCapturer;
                     self._currentCapturer = "null";
                     self._captureProgress = 0.0;
                 }
@@ -1364,10 +1364,10 @@ component CaptureZone
 		    {
                 if (self._state == "Captured")
                 {
-                    if (self._lastOwner != self._currentOwner)
+                    if (self._lastOwner != self.CurrentOwner)
                     {
-                        self._callbackReceiver.OnCaptured(self, self._currentOwner);
-                        self._lastOwner = self._currentOwner;
+                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        self._lastOwner = self.CurrentOwner;
                     }
                 }
                 elif (self._state == "Capturing")
@@ -1384,7 +1384,7 @@ component CaptureZone
 		
 		if (self._state == "Captured")
         {
-            if (self._currentOwner == "Human")
+            if (self.CurrentOwner == "Human")
             {
                 if (self._hasSupplyStation && !self._isSupplyStationActive)
                 {
@@ -1420,7 +1420,7 @@ component CaptureZone
 		}
         self._isViewing = true;
 
-        owner = self._currentOwner;
+        owner = self.CurrentOwner;
         if (owner == "null")
         {
             owner = "Neutral";
