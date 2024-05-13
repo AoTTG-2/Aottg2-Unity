@@ -983,7 +983,7 @@ class Main
     DebugMode = false;
     Difficulty = "Normal";
     RespawnMode = "OnCapture";
-    EndlessRespawnTime = 5.0;
+    EndlessRespawnTime = 5;
     MaxReinforcementCalls = 7;
     MaxLivesPerPlayer = 7;
 
@@ -998,7 +998,6 @@ class Main
 
     _reinformentCalls = 0;
     _deathsMap = Dict(); # how many times each player have died
-    _respawnStartTimeMap = Dict();
 
     function OnGameStart()
     {
@@ -1071,14 +1070,30 @@ class Main
                 {
                     deaths += 1;
                     self._deathsMap.Set(victim.Player.ID, deaths);
-                    if (!self._respawnStartTimeMap.Contains(victim.Player.ID))
-                    {
-                        self._respawnStartTimeMap.Set(victim.Player.ID, Time.GameTime);
-                    }
+                    self.WaitAndSpawnPlayer(victim.Player, self.EndlessRespawnTime);
+                    InGameUI.SendUpdateLivesMessage(victim.Player, deaths, self.MaxLivesPerPlayer);
                 }
             }
 
             self._eventController.OnCharacterDie(victim, killer, killerName);
+        }
+    }
+
+    coroutine WaitAndSpawnPlayer(player, time)
+    {
+        i = 0;
+        while (i < time)
+        {
+            InGameUI.SendUpdateRespawnTimeMessage(player, time - i);
+            wait 1.0;
+            i += 1;
+        }
+
+        InGameUI.SendUpdateRespawnTimeMessage(player, null);
+
+        if (player != null)
+        {
+            Game.SpawnPlayer(player, false);
         }
     }
 
@@ -1097,10 +1112,6 @@ class Main
             if (self._deathsMap.Contains(player.ID))
             {
                 self._deathsMap.Remove(player.ID);
-            }
-            if (self._respawnStartTimeMap.Contains(player.ID))
-            {
-                self._respawnStartTimeMap.Remove(player.ID);
             }
             self.LoseIfPlayersAreDead();
         }
@@ -1179,24 +1190,6 @@ class Main
     {
         if (self._enabled && Network.IsMasterClient)
         {
-            for(id in self._respawnStartTimeMap.Keys)
-            {
-                player = PlayerUtils.GetPlayerById(id);
-                startTime = self._respawnStartTimeMap.Get(id);
-                remaining = Time.GameTime - startTime;
-                
-                # Sending message every frame is probably not a good idea
-                InGameUI.SendUpdateRespawnTimeMessage(player, self.EndlessRespawnTime - remaining);
-
-                if (remaining >= self.EndlessRespawnTime)
-                {
-                    InGameUI.SendUpdateRespawnTimeMessage(player, null);
-                    InGameUI.SendUpdateLivesMessage(player, self._deathsMap.Get(id), self.MaxLivesPerPlayer);
-                    Game.SpawnPlayer(player, false);
-                    self._respawnStartTimeMap.Remove(id);
-                }
-            }
-
             self._debug.OnFrame();
             self._eventController.OnFrame();
         }
@@ -2367,8 +2360,7 @@ extension InGameUI
             return;
         }
         
-        v = String.FormatFloat(current, 2);
-        UI.SetLabel("MiddleCenter", "Respawning in <b>" + v + " </b>");
+        UI.SetLabel("MiddleCenter", "Respawning in <b>" + current + " </b>");
     }
 
     function UpdateReinforcementCalls(current, max)
