@@ -211,7 +211,7 @@ namespace Controllers
                 }
                 else if (_stateTimeLeft <= 0)
                     MoveToPosition(true);
-                else if (_wasPreviouslyBlocked)
+                else if (IsHeadingForCollision())
                     MoveToPosition(true);
                 else
                     _titan.TargetAngle = GetChaseAngle(_moveToPosition);
@@ -250,7 +250,7 @@ namespace Controllers
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);
-                        else if (_wasPreviouslyBlocked)
+                        else if (IsHeadingForCollision())
                             MoveToEnemy(true);
                         else
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
