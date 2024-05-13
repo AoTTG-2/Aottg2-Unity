@@ -2062,8 +2062,8 @@ namespace Characters
             SpecialsArray = new BaseUseable[]
             {
                 HumanSpecials.GetSpecialUseable(this, special1),
-                HumanSpecials.GetSpecialUseable(this, special2),
-                HumanSpecials.GetSpecialUseable(this, special3)
+                (special2.Length > 0) ? HumanSpecials.GetSpecialUseable(this, special2) : null,
+                (special3.Length > 0) ? HumanSpecials.GetSpecialUseable(this, special3) : null
             };
 
             // add the icons for all specials at some point //
@@ -2071,9 +2071,13 @@ namespace Characters
 
         public void SwitchCurrentSpecial(string special, int newSpecial)
         {
-            CurrentSpecial = special;
-            Special = SpecialsArray[newSpecial - 1];
-            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+            if (CurrentSpecial != special)
+            {
+                State = HumanState.Idle;
+                CurrentSpecial = special;
+                Special = SpecialsArray[newSpecial - 1];
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+            }
         }
 
         #endregion

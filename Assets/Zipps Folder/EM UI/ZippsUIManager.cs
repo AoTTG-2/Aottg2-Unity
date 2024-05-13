@@ -6,6 +6,8 @@ using Settings;
 using TMPro;
 using UnityEngine.UI;
 using UI;
+using Utility;
+using System.Resources;
 
 class ZippsUIManager : MonoBehaviour
 {
@@ -289,52 +291,148 @@ class ZippsUIManager : MonoBehaviour
     private GameObject AbilityWheelCanvas;
     [SerializeField]
     private AudioSource AbilityWheelAudio;
+    [SerializeField]
+    private Image Ability1Image;
+    [SerializeField]
+    private Image Ability2Image;
+    [SerializeField]
+    private Image Ability3Image;
+    [SerializeField]
+    private RawImage Ability1Selector;
+    [SerializeField]
+    private RawImage Ability2Selector;
+    [SerializeField]
+    private RawImage Ability3Selector;
 
     private bool Ability1Selected = false;
     private bool Ability2Selected = false;
     private bool Ability3Selected = false;
 
+    public void SetWheelImages() // carry this to a different place, might not be too performant here //
+    {
+        Ability1Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special.Value);
+
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length == 0)
+        {
+            Debug.Log("No ability here");
+        }
+        else
+        {
+            Ability2Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_2.Value);
+        }
+
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length == 0)
+        {
+            Debug.Log("No ability here");
+        }
+        else
+        {
+            Ability3Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_3.Value);
+        }
+    }
+
+    private Sprite LoadSprite(string spriteName)
+    {
+        string path = "UI/Icons/Specials/" + spriteName.Replace(" ", "") + "SpecialIcon";
+        Sprite sprite = Resources.Load<Sprite>(path);
+        if (sprite == null)
+        {
+            Debug.LogError("Sprite not found at path: " + path);
+        }
+        return sprite;
+    }
+
     public void OnHoverAbility1()
     {
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-        Ability1Selected = true;
-        AbilityWheelAudio.Play();
-        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
-        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+        if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0)
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = true;
+            Ability2Selected = false;
+            Ability3Selected = false;
+            AbilityWheelAudio.Play();
+            Ability1Selector.color = new Color(0.525f, 0.164f, 0.227f);
+
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+        }
     }
 
     public void OnHoverExitAbility1()
     {
         Ability1Selected = false;
-        // some UI events like color change //
+        Ability1Selector.color = Color.white;
     }
     public void OnHoverAbility2()
     {
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-        Ability2Selected = true;
-        AbilityWheelAudio.Play();
-        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
-        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length > 0)
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = false;
+            Ability2Selected = true;
+            Ability3Selected = false;
+            AbilityWheelAudio.Play();
+            Ability2Selector.color = new Color(0.525f, 0.164f, 0.227f);
+
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+        }
     }
 
     public void OnHoverExitAbility2()
     {
         Ability2Selected = false;
-        // some UI events like color change //
+        Ability2Selector.color = Color.white;
     }
     public void OnHoverAbility3()
     {
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-        Ability3Selected = true;
-        AbilityWheelAudio.Play();
-        GasImage.color = new Color(0.525f, 0.164f, 0.227f);
-        _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length > 0)
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = false;
+            Ability2Selected = false;
+            Ability3Selected = true;
+            AbilityWheelAudio.Play();
+            Ability3Selector.color = new Color(0.525f, 0.164f, 0.227f);
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+        }
     }
 
     public void OnHoverExitAbility3()
     {
         Ability3Selected = false;
-        // some UI events like color change //
+        Ability3Selector.color = Color.white;
+    }
+
+    public void KeepSelectedAbilityColor()
+    {
+        if (Ability1Selected)
+        {
+            Ability1Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability1Image.color = Color.white;
+        }
+
+        if (Ability2Selected)
+        {
+            Ability2Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability2Image.color = Color.white;
+        }
+
+        if (Ability3Selected)
+        {
+            Ability3Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability3Image.color = Color.white;
+        }
     }
     private void AbilityWheelUpdate()
     {
@@ -343,6 +441,8 @@ class ZippsUIManager : MonoBehaviour
 
         if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
         {
+            SetWheelImages();
+            KeepSelectedAbilityColor();
             AbilityWheelCanvas.SetActive(true);
             AbilityWheelMenu.SetActive(true);
             CanvasObj.SetActive(false);
@@ -353,7 +453,9 @@ class ZippsUIManager : MonoBehaviour
             AbilityWheelCanvas.SetActive(true);
             AbilityWheelMenu.SetActive(false);
             EmVariables.AbilityWheelOpen = false;
-            Debug.Log("Selection done: " + _human.CurrentSpecial);
+            Ability1Image.color = Color.white;
+            Ability2Image.color = Color.white;
+            Ability3Image.color = Color.white;
         }
     }
     #endregion
