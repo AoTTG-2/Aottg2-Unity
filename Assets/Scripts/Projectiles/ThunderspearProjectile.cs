@@ -46,6 +46,7 @@ namespace Projectiles
             var trail = transform.Find("Trail").GetComponent<ParticleSystem>();
             var flame = transform.Find("Flame").GetComponent<ParticleSystem>();
             var model = transform.Find("ThunderspearModel").gameObject;
+            tsCharge = GetComponent<AudioSource>(); //added by Sysyfus Jan 4 2024
             _hideObjects.Add(flame.gameObject);
             _hideObjects.Add(model);
             if (SettingsManager.AbilitySettings.ShowBombColors.Value)
