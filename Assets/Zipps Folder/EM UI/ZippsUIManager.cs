@@ -29,6 +29,16 @@ class ZippsUIManager : MonoBehaviour
         AbilityWheelUpdate();
     }
 
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            HideAbilityWheel();
+            LogisticianMenu.SetActive(false);
+            EmVariables.LogisticianOpen = false;
+        }
+    }
+
     #region EM Menu
 
     [SerializeField]
@@ -405,6 +415,20 @@ class ZippsUIManager : MonoBehaviour
         Ability3Selector.color = Color.white;
     }
 
+
+    private void HideAbilityWheel()
+    {
+        AbilityWheelCanvas.SetActive(true);
+        AbilityWheelMenu.SetActive(false);
+        EmVariables.AbilityWheelOpen = false;
+        Ability1Image.color = Color.white;
+        Ability2Image.color = Color.white;
+        Ability3Image.color = Color.white;
+        Ability1Selector.color = Color.white;
+        Ability2Selector.color = Color.white;
+        Ability3Selector.color = Color.white;
+    }
+
     public void KeepSelectedAbilityColor()
     {
         if (Ability1Selected)
@@ -434,6 +458,7 @@ class ZippsUIManager : MonoBehaviour
             Ability3Image.color = Color.white;
         }
     }
+
     private void AbilityWheelUpdate()
     {
         if (PhotonExtensions.GetMyPlayer() == null)
@@ -450,15 +475,7 @@ class ZippsUIManager : MonoBehaviour
         }
         if (_humanInput.AbilityWheelMenu.GetKeyUp())
         {
-            AbilityWheelCanvas.SetActive(true);
-            AbilityWheelMenu.SetActive(false);
-            EmVariables.AbilityWheelOpen = false;
-            Ability1Image.color = Color.white;
-            Ability2Image.color = Color.white;
-            Ability3Image.color = Color.white;
-            Ability1Selector.color = Color.white;
-            Ability2Selector.color = Color.white;
-            Ability3Selector.color = Color.white;
+            HideAbilityWheel();
         }
     }
     #endregion
