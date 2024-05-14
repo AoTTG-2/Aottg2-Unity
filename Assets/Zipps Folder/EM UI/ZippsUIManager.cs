@@ -302,7 +302,7 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private AudioSource AbilityWheelAudio;
     [SerializeField]
-    private Image Ability1Image;
+    private Image Ability1Image; 
     [SerializeField]
     private Image Ability2Image;
     [SerializeField]
@@ -314,11 +314,11 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private RawImage Ability3Selector;
 
-    private bool Ability1Selected = false;
-    private bool Ability2Selected = false;
-    private bool Ability3Selected = false;
+    public bool Ability1Selected = false; // made public so i can set to red on human spawn //
+    public bool Ability2Selected = false; // made public so i can set to white on human spawn //
+    public bool Ability3Selected = false; // made public so i can set to white on human spawn //
 
-    public void SetWheelImages() // carry this to a different place, might not be too performant here //
+    public void SetWheelImages()
     {
         Ability1Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special.Value);
 

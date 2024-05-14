@@ -1968,8 +1968,11 @@ namespace Characters
                                SettingsManager.InGameCharacterSettings.Special_2.Value,
                                SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
                 SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
-                _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
-                _zippsUIManager.SetWheelImages();
+                _zippsUIManager = FindFirstObjectByType<ZippsUIManager>(); // setting up the ability wheel UI //
+                _zippsUIManager.SetWheelImages();                          // setting up the ability wheel UI //
+                _zippsUIManager.Ability1Selected = true;
+                _zippsUIManager.Ability2Selected = false;
+                _zippsUIManager.Ability3Selected = false;
             }
             FinishSetup = true;
             CustomAnimationSpeed();
