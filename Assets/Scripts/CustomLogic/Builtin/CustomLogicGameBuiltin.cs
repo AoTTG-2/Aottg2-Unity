@@ -48,6 +48,24 @@ namespace CustomLogic
                 ChatManager.SendChatAll(message, ChatTextColor.System);
                 return null;
             }
+            if (name == "GetGeneralSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.General.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetTitanSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Titan.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetMiscSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Misc.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
             if (name == "End")
             {
                 if (PhotonNetwork.IsMasterClient)
@@ -293,12 +311,6 @@ namespace CustomLogic
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (name == "IsEnding")
                 return gameManager.IsEnding;
-            if (name == "PVP")
-                return SettingsManager.InGameCurrent.Misc.PVP.Value;
-            if (name == "EndlessRespawnEnabled")
-                return SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value;
-            if (name == "EndlessRespawnTime")
-                return SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value;
             if (name == "EndTimeLeft")
                 return gameManager.EndTimeLeft;
             if (name == "Titans")
