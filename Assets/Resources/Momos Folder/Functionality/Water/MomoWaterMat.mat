@@ -85,7 +85,7 @@ Material:
     - _Lighting_Smoothness: 0.937
     - _Normal_Ambient_Occlusion: 21.5
     - _Normal_Smoothness: 3.3
-    - _Normal_Speed: 31.05
+    - _Normal_Speed: 0.035
     - _Normal_Strength: 0.232
     - _QueueControl: 1
     - _QueueOffset: 50
