@@ -124,6 +124,7 @@ namespace Characters
 
         [SerializeField]
         private GameObject LogisticianBackPack;
+        private ZippsUIManager _zippsUIManager; // added by Ata for setting up special icons in the ability wheel only once, should give optimal performance and memory usage //
 
         [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
@@ -1967,6 +1968,8 @@ namespace Characters
                                SettingsManager.InGameCharacterSettings.Special_2.Value,
                                SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
                 SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+                _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
+                _zippsUIManager.SetWheelImages();
             }
             FinishSetup = true;
             CustomAnimationSpeed();

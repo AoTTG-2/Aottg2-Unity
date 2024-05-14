@@ -457,8 +457,8 @@
 		"General.Costume": "Costume",
 		"General.Loadout": "Loadout",
 		"General.Special": "Special",
-		"General.Special2" "Special 2",
-		"General.Special3" "Special 3"
+		"General.Special2": "Special 2",
+		"General.Special3": "Special 3"
 	},
 	"CharacterEditor": {
 		"Costume.Title": "Costume",

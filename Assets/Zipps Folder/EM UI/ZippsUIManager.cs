@@ -314,7 +314,7 @@ class ZippsUIManager : MonoBehaviour
 
         if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length == 0)
         {
-            Debug.Log("No ability here");
+            Ability2Image.sprite = LoadSprite("No");
         }
         else
         {
@@ -323,7 +323,7 @@ class ZippsUIManager : MonoBehaviour
 
         if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length == 0)
         {
-            Debug.Log("No ability here");
+            Ability3Image.sprite = LoadSprite("No");
         }
         else
         {
@@ -441,7 +441,7 @@ class ZippsUIManager : MonoBehaviour
 
         if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
         {
-            SetWheelImages();
+            //SetWheelImages(); => moved to the human script for performance concerns by ata
             KeepSelectedAbilityColor();
             AbilityWheelCanvas.SetActive(true);
             AbilityWheelMenu.SetActive(true);
@@ -456,6 +456,9 @@ class ZippsUIManager : MonoBehaviour
             Ability1Image.color = Color.white;
             Ability2Image.color = Color.white;
             Ability3Image.color = Color.white;
+            Ability1Selector.color = Color.white;
+            Ability2Selector.color = Color.white;
+            Ability3Selector.color = Color.white;
         }
     }
     #endregion

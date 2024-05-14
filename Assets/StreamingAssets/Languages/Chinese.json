@@ -385,8 +385,8 @@
         "General.Costume": "服装",
         "General.Loadout": "服装",
         "General.Special": "服装",
-        "General.Special2" "服装 - 2",
-        "General.Special3" "服装 - 3"
+        "General.Special2": "服装 - 2",
+        "General.Special3": "服装 - 3"
     },
   "CharacterEditor": {
     "Costume.Title": "服装",

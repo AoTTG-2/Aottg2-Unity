@@ -386,8 +386,8 @@
 		"General.Costume": "衣装",
 		"General.Loadout": "武装",
 		"General.Special": "特殊",
-		"General.Special2" "特殊 - 2",
-		"General.Special3" "特殊 - 3"
+		"General.Special2": "特殊 - 2",
+		"General.Special3": "特殊 - 3"
 	},
 	"CharacterEditor": {
 		"Costume.Title": "衣装",

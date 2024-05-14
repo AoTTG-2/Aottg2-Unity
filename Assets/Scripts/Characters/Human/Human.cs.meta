@@ -3,7 +3,17 @@ guid: 65d92b4fed4bf3b41b3222f4457d158b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Horse: {instanceID: 0}
+  - Setup: {instanceID: 0}
+  - Grabber: {instanceID: 0}
+  - GrabHand: {instanceID: 0}
+  - Carrier: {instanceID: 0}
+  - CarryBack: {instanceID: 0}
+  - BackHuman: {instanceID: 0}
+  - MountedTransform: {instanceID: 0}
+  - LogisticianBackPack: {instanceID: 0}
+  - _zippsUIManager: {fileID: 6032410381880676077, guid: b9429f674f1069841b3d74fe20e8aeb8, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -376,8 +376,8 @@
         "General.Costume": "Kleidung",
         "General.Loadout": "Ausr�stung",
         "General.Special": "F�higkeit",
-        "General.Special2" "F�higkeit - 2",
-        "General.Special3" "F�higkeit - 3"
+        "General.Special2": "F�higkeit - 2",
+        "General.Special3": "F�higkeit - 3"
     },
   "CharacterEditor": {
     "Costume.Title": "Kleidung",
