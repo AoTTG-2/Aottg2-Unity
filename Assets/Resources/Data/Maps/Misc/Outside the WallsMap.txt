@@ -533,7 +533,7 @@ Scene,Buildings/RoofWindow2,779,0,1,1,1,0,RoofWindow2,-161,57.6,-2072,0,172.5,0,
 Scene,Nature/Ivy1,783,0,1,1,1,0,Ivy1,-130,27,-2074,0,270,0,8,8,8,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy1,784,0,1,1,1,0,Ivy1,-239,14.5015,-2005,0,75.00002,0,4.5,10,4,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy2,785,0,1,1,1,0,Ivy2,-145,27,-2061.173,0,170.5388,0,5,5,5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1386,1376,1,1,1,0,Respawn1,1722.351,60,-1618.904,0,33.54229,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1386,28,1,1,1,0,Respawn1,1722.351,60,-1618.904,0,33.54229,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,787,0,1,1,1,0,Box2,1730.096,60,-1601.898,0,60.00003,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tent1,788,0,1,1,1,0,Tent1,1713,60,-1595,0,165,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Interact/Supply2,789,1375,1,0,1,0,Supply2,1713,60,-1671,0,315,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
@@ -961,34 +961,34 @@ Scene,Geometry/Cuboid,1359,0,1,1,0,0,Titan Barrier,-2538.5,27.5,-2910.5,0,0,0,5,
 Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1125.132,20,-2161.5,0,0,0,50,10,50,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:20|DecaySpeed:1|Order:3|SupplyStationID:1369|ShowUI:true|UIVisibilityRange:150|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Geometry/Cuboid,1361,0,1,1,0,0,Titan Barrier,-1116.5,36,-2055.5,0,0,0,17,10,10.1,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,1362,0,1,1,0,0,Titan Barrier,-1011.5,68,-2241,0,30.00001,0,2.1,10.9,9.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,1363,1364,1,0,0,0,ReinforcementZone,-2624.484,4.884339,-3662.033,0,0,0,2,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1363,21,1,0,0,0,ReinforcementZone,-2624.484,4.884339,-3662.033,0,0,0,2,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1364,0,1,0,1,0,P1,-2596,0.7504212,-3662,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,1365,0,1,0,1,0,P2,-2602.5,0,-2783,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1366,1365,1,0,0,0,ReinforcementZone,-2558.5,4.884339,-2718.646,0,0,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1366,1356,1,0,0,0,ReinforcementZone,-2558.5,4.884339,-2718.646,0,0,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1367,0,1,0,1,0,P3,-1940,15,-2315,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1368,1367,1,0,0,0,ReinforcementZone,-1969.5,21.08002,-2285.5,2.237997,315.342,1.740367,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1368,23,1,0,0,0,ReinforcementZone,-1969.5,21.08002,-2285.5,2.237997,315.342,1.740367,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1369,0,1,0,1,0,P4,-1151,20,-2161.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1381,1367,1,1,1,0,Respawn1,-1962.058,16.46177,-2291.507,359.0711,359.9847,0.9457952,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1381,23,1,1,1,0,Respawn1,-1962.058,16.46177,-2291.507,359.0711,359.9847,0.9457952,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,1371,0,1,0,1,0,P5,-204,0,-1902,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1372,1371,1,0,0,0,ReinforcementZone,-209.7749,5,-1857.954,0,342.9997,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1372,26,1,0,0,0,ReinforcementZone,-209.7749,5,-1857.954,0,342.9997,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1373,0,1,0,1,0,P6,897,44,-2022,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1374,1373,1,0,1,0,ReinforcementZone,916,45,-1982.5,0,0,354.0073,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1374,27,1,0,0,0,ReinforcementZone,916,45,-1982.5,0,0,354.0073,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1375,0,1,0,1,0,P7,1713,58,-1671,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1376,1375,1,0,1,0,ReinforcementZone,1718.88,65,-1616.517,0,344.3635,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Geometry/Cuboid,1376,28,1,0,0,0,ReinforcementZone,1718.88,65,-1616.517,0,344.3635,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
 Scene,None,1377,0,1,0,1,0,P8,2442,70,-1395,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1378,1377,1,0,1,0,ReinforcementZone,2413.746,74.73515,-1355.334,0,0,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
-Scene,Interact/Respawn1,1379,1364,1,1,1,0,Respawn1,-2627,0,-3663.5,0,330,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1380,1365,1,1,1,0,Respawn1,-2554.5,0,-2718.5,0,135,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1382,1369,1,1,1,0,Respawn1,-1073.193,19.97181,-2092.394,0,83.40287,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,1383,1369,1,0,0,0,ReinforcementZone,-1075.564,24.85615,-2095.618,0,308.4029,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
-Scene,Interact/Respawn1,1384,1371,1,1,1,0,Respawn1,-206,0,-1856,0,45.00002,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1385,1373,1,1,1,0,Respawn1,914.5386,41.07408,-1986.862,2.968493,33.52782,355.5309,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Respawn1,1387,1377,1,1,1,0,Respawn1,2415.614,72,-1353.975,0,27.65249,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1c,1388,0,1,1,1,0,FlagPole1c,-1951.279,9.648732,-2376.957,5.738666,36.96621,359.2801,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Boulder1,1389,0,1,1,1,0,Boulder1,-1949.726,17.71729,-2376.544,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1c,1392,0,1,1,1,0,FlagPole1c,-2561.5,0,-3542.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1c,1393,0,1,1,1,0,FlagPole1c,-2623,0,-3393,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1c,1394,0,1,1,1,0,FlagPole1c,-2561.5,0,-3246.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1378,29,1,0,0,0,ReinforcementZone,2413.746,74.73515,-1355.334,0,0,0,3,1,3,Region,Entities,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Interact/Respawn1,1379,21,1,1,1,0,Respawn1,-2627,0,-3663.5,0,330,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1380,1356,1,1,1,0,Respawn1,-2554.5,0,-2718.5,0,135,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1382,1360,1,1,1,0,Respawn1,-1073.193,19.97181,-2092.394,0,83.40287,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1383,1360,1,0,0,0,ReinforcementZone,-1075.564,24.85615,-2095.618,0,308.4029,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Interact/Respawn1,1384,26,1,1,1,0,Respawn1,-206,0,-1856,0,45.00002,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1385,27,1,1,1,0,Respawn1,914.5386,41.07408,-1986.862,2.968493,33.52782,355.5309,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1387,29,1,1,1,0,Respawn1,2415.614,72,-1353.975,0,27.65249,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1c,1388,0,1,1,1,0,FlagPole1c,-1950.544,10.6872,-2377.611,5.738666,36.96621,359.2801,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Boulder1,1389,0,1,1,1,0,Boulder1,-1949.726,17.71729,-2376.544,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1c,1392,0,1,1,1,0,FlagPole1c,-2561.5,0,-3542.5,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1c,1393,0,1,1,1,0,FlagPole1c,-2623,0,-3393,0,180,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1c,1394,0,1,1,1,0,FlagPole1c,-2561.5,0,-3246.5,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Village1,1395,0,1,1,1,0,Village1,-4866.148,69.61097,-2945.543,16.42768,81.27251,352.3075,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Windmill1,1396,0,1,1,1,0,Windmill1,-4907.426,92.47419,-2750.363,10.41582,51.15401,1.34189,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House4,1397,0,1,1,1,0,House4,-4815.176,70.90237,-2726.961,6.170474,141.2944,8.962793,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1039,1755 +1039,1672 @@ Scene,Nature/Pine1,1448,0,1,1,1,0,Pine1,-3377,0,-4014,0,0,0,1,1.4,1,Physical,Ent
 /// Logic
 class Main
 {
-    DebugMode = false;
-    RespawnMode = "OnCapture";
-    EndlessRespawnTime = 5;
-    MaxReinforcementCalls = 7;
-    MaxLivesPerPlayer = 7;
+DebugMode = false;
+RespawnMode = "OnCapture";
+ReinforcementCallsEnabled = true;
+MaxReinforcementCalls = 4;
 
-    RespawnModeDropbox = "OnCapture, Endless, None";
-    MaxReinforcementCallsTooltip = "How many times players can call for reinforcement. Works only with 'OnCapture' RespawnMode.";
-    MaxLivesPerPlayerTooltip = "How many times players can be revived. Works only with 'Endless' RespawnMode.";
+RespawnModeDropbox = "OnCapture, None";
 
-    _debug = null;
-    _eventController = null;
-    _enabled = false;
+_debug = null;
+_eventController = null;
+_enabled = false;
 
-    _reinformentCalls = 0;
-    _deathsMap = Dict(); # how many times each player have died
+_reinformentCalls = 0;
 
-    function OnGameStart()
-    {
-        ReinforcementZones.Setup(self);
-        
-        if (Game.GetMiscSetting("EndlessRespawnEnabled") && self.RespawnMode != "None")
-        {
-            if (Network.IsMasterClient)
-            {
-                warning = "<b><color=#dea12f>[Warning]: </color></b>";
-                str = "Endless respawn game setting is enabled, ";
-                str += "but RespawnMode is set to <b>" + self.RespawnMode + "</b>, ";
-                str += "switching to None RespawnMode";
-                Game.Print(warning + str);
-            }
-            self.RespawnMode = "None";
-        }
-    
-        if (self.RespawnMode != "OnCapture")
-        {
-            if (self.RespawnMode == "Endless")
-            {
-                InGameUI.UpdateLives(0, self.MaxLivesPerPlayer);
-            }
-            ReinforcementZones.DeactivateAll();
-        }
+function OnGameStart()
+{
+ReinforcementZones.Setup(self);
 
-        if (!Network.IsMasterClient)
-        {
-            return;
-        }
+if (!self.ReinforcementCallsEnabled)
+{
+ReinforcementZones.DeactivateAll();
+}
 
-        self.EndlessRespawnTime = Math.Max(1, self.EndlessRespawnTime);
+if (!Network.IsMasterClient)
+{
+return;
+}
 
-        if (self.RespawnMode == "OnCapture")
-        {
-            InGameUI.UpdateReinforcementCalls(0, self.MaxReinforcementCalls);
-        }
+if (self.ReinforcementCallsEnabled)
+{
+InGameUI.UpdateReinforcementCalls(0, self.MaxReinforcementCalls);
+}
 
-        self._debug = Debug(self.DebugMode);
-        self._eventController = EventController(self);
-        self._enabled = true;
-    }
+self._debug = Debug(self.DebugMode);
+self._eventController = EventController(self);
+self._enabled = true;
+}
 
-    function OnCharacterSpawn(character)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._eventController.OnCharacterSpawn(character);
-        }
-    }
+function OnCharacterSpawn(character)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._eventController.OnCharacterSpawn(character);
+}
+}
 
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            if (self.RespawnMode == "Endless" && victim != null && victim.Type == "Human" && killer != null)
-            {
-                deaths = 0;
-                if (self._deathsMap.Contains(victim.Player.ID))
-                {
-                    deaths = self._deathsMap.Get(victim.Player.ID);
-                }
-                else
-                {
-                    self._deathsMap.Set(victim.Player.ID, 0);
-                }
+function OnCharacterDie(victim, killer, killerName)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._eventController.OnCharacterDie(victim, killer, killerName);
+}
+}
 
-                if (deaths < self.MaxLivesPerPlayer)
-                {
-                    deaths += 1;
-                    self._deathsMap.Set(victim.Player.ID, deaths);
-                    self.WaitAndSpawnPlayer(victim.Player, self.EndlessRespawnTime);
-                    InGameUI.SendUpdateLivesMessage(victim.Player, deaths, self.MaxLivesPerPlayer);
-                }
-            }
+function OnCharacterDamaged(victim, killer, killerName, damage)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._eventController.OnCharacterDamaged(victim, killer, killerName, damage);
+}
+}
 
-            self._eventController.OnCharacterDie(victim, killer, killerName);
-        }
-    }
+function OnPlayerLeave(player)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self.LoseIfPlayersAreDead();
+}
+}
 
-    coroutine WaitAndSpawnPlayer(player, time)
-    {
-        i = 0;
-        while (i < time)
-        {
-            InGameUI.SendUpdateRespawnTimeMessage(player, time - i);
-            wait 1.0;
-            i += 1;
-        }
+coroutine OnPlayerSpawn(player, character)
+{
+if (self._enabled && Network.IsMasterClient && character.Type == "Titan")
+{
+wait 1.0;
+character.GetKilled("Server");
+Network.SendMessage(player, "pt");
+}
+}
 
-        InGameUI.SendUpdateRespawnTimeMessage(player, null);
+function OnNetworkMessage(sender, message)
+{
+if (message == "pt")
+{
+Game.Print("<size=18>Player titans are not supported</size>");
+}
+else
+{
+data = Json.LoadFromString(message);
+msgType = data.Get("type");
+if (msgType == "Dialogue")
+{
+key = data.Get("key");
+profileIndex = data.Get("profileIndex");
+DialogueUtils.ShowDialogue(key, profileIndex);
+}
+elif (msgType == "RevealTitans")
+{
+duration = data.Get("duration");
+TitanUtils.RevealTitans(duration);
+}
+elif (msgType == "Gate")
+{
+state = data.Get("state");
+interactable = data.Get("interactable");
 
-        if (player != null)
-        {
-            Game.SpawnPlayer(player, false);
-        }
-    }
+wallGateObj = Map.FindMapObjectByTag("StartWallGate");
+wallGate = wallGateObj.GetComponent("WallGateA1");
+wallGate.Interactable = interactable;
+wallGate.SetState(state);
+}
+elif (msgType == "Reinforcement")
+{
+pos = data.Get("pos");
+zone = CaptureZones.GetNearestCaptureZone(pos);
+self.Reinforcement(zone);
+}
+elif (msgType == "UI")
+{
+msg = data.Get("msg");
+if (msg == "lives")
+{
+current = data.Get("current");
+max = data.Get("max");
+InGameUI.UpdateLives(current, max);
+}
+else
+{
+current = data.Get("current");
+InGameUI.UpdateRespawnTime(current);
+}
+}
+else
+{
+Game.Print(data);
+}
+}
+}
 
-    function OnCharacterDamaged(victim, killer, killerName, damage)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._eventController.OnCharacterDamaged(victim, killer, killerName, damage);
-        }
-    }
+function OnFrame()
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._debug.OnFrame();
+self._eventController.OnFrame();
+}
+}
 
-    function OnPlayerLeave(player)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            if (self._deathsMap.Contains(player.ID))
-            {
-                self._deathsMap.Remove(player.ID);
-            }
-            self.LoseIfPlayersAreDead();
-        }
-    }
+function OnSecond()
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._debug.OnSecond();
+self._eventController.OnSecond();
+}
+}
 
-    coroutine OnPlayerSpawn(player, character)
-    {
-        if (self._enabled && Network.IsMasterClient && character.Type == "Titan")
-        {
-            wait 1.0;
-            character.GetKilled("Server");
-            Network.SendMessage(player, "pt");
-        }
-    }
+function OnTick()
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._eventController.OnTick();
+}
+}
 
-    function OnNetworkMessage(sender, message)
-    {
-        if (message == "pt")
-        {
-            Game.Print("<size=18>Player titans are not supported</size>");
-        }
-        else
-        {
-            data = Json.LoadFromString(message);
-            msgType = data.Get("type");
-            if (msgType == "Dialogue")
-            {
-                key = data.Get("key");
-                profileIndex = data.Get("profileIndex");
-                DialogueUtils.ShowDialogue(key, profileIndex);
-            }
-            elif (msgType == "RevealTitans")
-            {
-                duration = data.Get("duration");
-                TitanUtils.RevealTitans(duration);
-            }
-            elif (msgType == "Gate")
-            {
-                state = data.Get("state");
-                interactable = data.Get("interactable");
+function OnChatInput(message)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self._debug.OnChatInput(message);
+}
+}
 
-                wallGateObj = Map.FindMapObjectByTag("StartWallGate");
-                wallGate = wallGateObj.GetComponent("WallGateA1");
-                wallGate.Interactable = interactable;
-                wallGate.SetState(state);
-            }
-            elif (msgType == "Reinforcement")
-            {
-                pos = data.Get("pos");
-                zone = CaptureZones.GetNearestCaptureZone(pos);
-                self.Reinforcement(zone);
-            }
-            elif (msgType == "UI")
-            {
-                msg = data.Get("msg");
-                if (msg == "lives")
-                {
-                    current = data.Get("current");
-                    max = data.Get("max");
-                    InGameUI.UpdateLives(current, max);
-                }
-                else
-                {
-                    current = data.Get("current");
-                    InGameUI.UpdateRespawnTime(current);
-                }
-            }
-            else
-            {
-                Game.Print(data);
-            }
-        }
-    }
+function HandleInteractAction(trigger)
+{
+position = trigger.MapObject.Position;
+NetworkMessage().Set("type", "Reinforcement").Set("pos", position).Send(Network.MasterClient);
+}
 
-    function OnFrame()
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._debug.OnFrame();
-            self._eventController.OnFrame();
-        }
-    }
+function Reinforcement(captureZone)
+{
+if (self._reinformentCalls < self.MaxReinforcementCalls && PlayerUtils.AnyPlayerDead())
+{
+PlayerUtils.RevivePlayers(captureZone);
+InGameUI.UpdateReinforcementCalls(self._reinformentCalls, self.MaxReinforcementCalls);
+self._reinformentCalls += 1;
+}
+}
 
-    function OnSecond()
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._debug.OnSecond();
-            self._eventController.OnSecond();
-        }
-    }
+function LoseIfPlayersAreDead()
+{
+alive = false;
+i = 0;
+while (i < Network.Players.Count)
+{
+p = Network.Players.Get(i);
+if (p.CharacterType == "Human" && p.Status == "Alive")
+{
+alive = true;
+i = Network.Players.Count;
+}
+i += 1;
+}
 
-    function OnTick()
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._eventController.OnTick();
-        }
-    }
-
-    function OnChatInput(message)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._debug.OnChatInput(message);
-        }
-    }
-
-    function HandleInteractAction(trigger)
-    {
-        position = trigger.MapObject.Position;
-        NetworkMessage().Set("type", "Reinforcement").Set("pos", position).Send(Network.MasterClient);
-    }
-
-    function Reinforcement(captureZone)
-    {
-        if (self._reinformentCalls < self.MaxReinforcementCalls && PlayerUtils.AnyPlayerDead())
-        {
-            PlayerUtils.RevivePlayers(captureZone);
-            InGameUI.UpdateReinforcementCalls(self._reinformentCalls, self.MaxReinforcementCalls);
-            self._reinformentCalls += 1;
-        }
-    }
-
-    function LoseIfPlayersAreDead()
-    {
-        alive = false;
-
-        i = 0;
-        while (i < Network.Players.Count)
-        {
-            p = Network.Players.Get(i);
-            if (p.CharacterType == "Human" && p.Status == "Alive")
-            {
-                alive = true;
-                i = Network.Players.Count;
-            }
-            i += 1;
-        }
-
-        if (!alive && self.RespawnMode == "Endless")
-        {
-            for(p in Network.Players)
-            {
-                deaths = 0;
-                if (self._deathsMap.Contains(p.ID))
-                {
-                    deaths = self._deathsMap.Get(p.ID);
-                }
-
-                if (deaths < self.MaxLivesPerPlayer)
-                {
-                    alive = true;
-                }
-            }
-        }
-
-        if (!alive)
-        {
-            UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-			Game.End(10.0);
-        }
-    }
+if (!alive)
+{
+UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+Game.End(10.0);
+}
+}
 }
 class EventController
 {
-    _capturedZones = List();
+_capturedZones = List();
 
-    _events = List();
+_events = List();
 
-    _currentIndex = 0; # Index of the latest capture zone that is unlocked
-    _currentSpawnPointIndex = -1; # Index of the capture zone that players use as spawn point
+_currentIndex = 0; # Index of the latest capture zone that is unlocked
+_currentSpawnPointIndex = -1; # Index of the capture zone that players use as spawn point
 
-    _titans = List();
-    _titansTargetMap = Dict();
-    _humansInCaptureZone = null;
+_titans = List();
+_titansTargetMap = Dict();
+_humansInCaptureZone = null;
 
-    function Init(main)
-    {
-        self._main = main;
+function Init(main)
+{
+self._main = main;
 
-        CaptureZones.Setup(self);
-        CaptureZones.DeactivateAllCaptureZones();
-        CaptureZones.ActivateCaptureZone(0);
-        TitanSpawnPoints.Setup(CaptureZones.GetAll());
+CaptureZones.Setup(self);
+CaptureZones.DeactivateAllCaptureZones();
+CaptureZones.ActivateCaptureZone(0);
+TitanSpawnPoints.Setup(CaptureZones.GetAll());
 
-        event1 = Event1(self, 0);
-        event2 = Event2(self, 1);
-        event3 = Event3(self, 2);
-        event4 = Event4(self, 3);
-        event5 = Event2(self, 4);
-        event6 = Event3(self, 5);
-        event7 = Event2(self, 6);
-        event8 = Event8(self, 7);
+event1 = Event1(self, 0);
+event2 = Event2(self, 1);
+event3 = Event3(self, 2);
+event4 = Event4(self, 3);
+event5 = Event2(self, 4);
+event6 = Event3(self, 5);
+event7 = Event2(self, 6);
+event8 = Event8(self, 7);
 
-        pointSpawn = 5;
-        townSpawn = 4;
-        TownWaveMin = 1;
-        TownWaveMax = 2;
-        townSpawnTime = 20;
-        townMaxTitans = 10;
-        forestSpawnCount = 20;
-        femaleTitanHealth = 2000;
+pointSpawn = 5;
+townSpawn = 4;
+TownWaveMin = 1;
+TownWaveMax = 2;
+townSpawnTime = 20;
+townMaxTitans = 10;
+forestSpawnCount = 20;
+femaleTitanHealth = 2000;
 
-        difficulty = Game.GetGeneralSetting("Difficulty");
-        if (difficulty == 0) # Training
-        {
-            pointSpawn = 5;
-            townSpawn = 2;
-            TownWaveMin = 1;
-            TownWaveMax = 2;
-            townSpawnTime = 25;
-            townMaxTitans = 10;
-            femaleTitanHealth = 2000;
-            forestSpawnCount = 15;
-        }
-        elif (difficulty == 1) # Easy
-        {
-            pointSpawn = 5;
-            townSpawn = 2;
-            TownWaveMin = 1;
-            TownWaveMax = 2;
-            townSpawnTime = 25;
-            townMaxTitans = 10;
-            femaleTitanHealth = 2000;
-            forestSpawnCount = 15;
-        }
-        elif (difficulty == 2) # Normal
-        {
-            pointSpawn = 8;
-            townSpawn = 4;
-            TownWaveMin = 3;
-            TownWaveMax = 4;
-            townSpawnTime = 25;
-            townMaxTitans = 10;
-            femaleTitanHealth = 3500;
-            forestSpawnCount = 20;
-        }
-        elif (difficulty == 3) # Hard
-        {
-            pointSpawn = 11;
-            townSpawn = 5;
-            TownWaveMin = 5;
-            TownWaveMax = 6;
-            townSpawnTime = 20;
-            townMaxTitans = 15;
-            femaleTitanHealth = 3500;
-            forestSpawnCount = 25;
-        }
+difficulty = Game.GetGeneralSetting("Difficulty");
+if (difficulty == 0) # Training
+{
+pointSpawn = 5;
+townSpawn = 2;
+TownWaveMin = 1;
+TownWaveMax = 2;
+townSpawnTime = 25;
+townMaxTitans = 10;
+femaleTitanHealth = 2000;
+forestSpawnCount = 15;
+}
+elif (difficulty == 1) # Easy
+{
+pointSpawn = 5;
+townSpawn = 2;
+TownWaveMin = 1;
+TownWaveMax = 2;
+townSpawnTime = 25;
+townMaxTitans = 10;
+femaleTitanHealth = 2000;
+forestSpawnCount = 15;
+}
+elif (difficulty == 2) # Normal
+{
+pointSpawn = 8;
+townSpawn = 4;
+TownWaveMin = 3;
+TownWaveMax = 4;
+townSpawnTime = 25;
+townMaxTitans = 10;
+femaleTitanHealth = 3500;
+forestSpawnCount = 20;
+}
+elif (difficulty == 3) # Hard
+{
+pointSpawn = 11;
+townSpawn = 5;
+TownWaveMin = 5;
+TownWaveMax = 6;
+townSpawnTime = 20;
+townMaxTitans = 15;
+femaleTitanHealth = 3500;
+forestSpawnCount = 25;
+}
 
-        event1.StartTitans = pointSpawn;
-        event2.StartTitans = townSpawn;
-        event2.MinTitansPerWave = TownWaveMin;
-        event2.MaxTitansPerWave = TownWaveMax;
-        event2.MinTimeBetweenSpawns = townSpawnTime;
-        event2.MaxTimeBetweenSpawns = townSpawnTime;
-        event2.MaxTitans = townMaxTitans;
-        event3.StartTitans = pointSpawn;
-        event4.StartTitans = townSpawn;
-        event4.MinTitansPerWave = TownWaveMin;
-        event4.MaxTitansPerWave = TownWaveMax;
-        event4.MinTimeBetweenSpawns = townSpawnTime;
-        event4.MaxTimeBetweenSpawns = townSpawnTime;
-        event4.MaxTitans = townMaxTitans;
-        event4.AnnieHealth = femaleTitanHealth;
-        event5.StartTitans = townSpawn;
-        event5.MinTitansPerWave = TownWaveMin;
-        event5.MaxTitansPerWave = TownWaveMax;
-        event5.MinTimeBetweenSpawns = townSpawnTime;
-        event5.MaxTimeBetweenSpawns = townSpawnTime;
-        event5.MaxTitans = townMaxTitans;
-        event6.StartTitans = pointSpawn;
-        event7.StartTitans = townSpawn;
-        event7.MinTitansPerWave = TownWaveMin;
-        event7.MaxTitansPerWave = TownWaveMax;
-        event7.MinTimeBetweenSpawns = townSpawnTime;
-        event7.MaxTimeBetweenSpawns = townSpawnTime;
-        event7.MaxTitans = townMaxTitans;
-        event8.TitansCount = forestSpawnCount;
-        event8.AnnieHealth = femaleTitanHealth;
+event1.StartTitans = pointSpawn;
+event2.StartTitans = townSpawn;
+event2.MinTitansPerWave = TownWaveMin;
+event2.MaxTitansPerWave = TownWaveMax;
+event2.MinTimeBetweenSpawns = townSpawnTime;
+event2.MaxTimeBetweenSpawns = townSpawnTime;
+event2.MaxTitans = townMaxTitans;
+event3.StartTitans = pointSpawn;
+event4.StartTitans = townSpawn;
+event4.MinTitansPerWave = TownWaveMin;
+event4.MaxTitansPerWave = TownWaveMax;
+event4.MinTimeBetweenSpawns = townSpawnTime;
+event4.MaxTimeBetweenSpawns = townSpawnTime;
+event4.MaxTitans = townMaxTitans;
+event4.AnnieHealth = femaleTitanHealth;
+event5.StartTitans = townSpawn;
+event5.MinTitansPerWave = TownWaveMin;
+event5.MaxTitansPerWave = TownWaveMax;
+event5.MinTimeBetweenSpawns = townSpawnTime;
+event5.MaxTimeBetweenSpawns = townSpawnTime;
+event5.MaxTitans = townMaxTitans;
+event6.StartTitans = pointSpawn;
+event7.StartTitans = townSpawn;
+event7.MinTitansPerWave = TownWaveMin;
+event7.MaxTitansPerWave = TownWaveMax;
+event7.MinTimeBetweenSpawns = townSpawnTime;
+event7.MaxTimeBetweenSpawns = townSpawnTime;
+event7.MaxTitans = townMaxTitans;
+event8.TitansCount = forestSpawnCount;
+event8.AnnieHealth = femaleTitanHealth;
 
-        self._events.Add(event1);
-        self._events.Add(event2);
-        self._events.Add(event3);
-        self._events.Add(event4);
-        self._events.Add(event5);
-        self._events.Add(event6);
-        self._events.Add(event7);
-        self._events.Add(event8);
+self._events.Add(event1);
+self._events.Add(event2);
+self._events.Add(event3);
+self._events.Add(event4);
+self._events.Add(event5);
+self._events.Add(event6);
+self._events.Add(event7);
+self._events.Add(event8);
 
-        for(event in self._events)
-        {
-            event.OnGameStart();
-        }
+for(event in self._events)
+{
+event.OnGameStart();
+}
 
-        self._events.Get(0).OnEventStart();
+self._events.Get(0).OnEventStart();
 
-    }
+}
 
-    function OnCaptured(captureZone, newOwner)
-    {
+function OnCaptured(captureZone, newOwner)
+{
 
-        for(e in self._events)
-        {
-            e.OnCaptured(captureZone, newOwner);
-        }
+for(e in self._events)
+{
+e.OnCaptured(captureZone, newOwner);
+}
 
-        if (newOwner == "Titan")
-        {
-            if (captureZone.Order == self._currentSpawnPointIndex)
-            {
-                self.MoveSpawnPointsBack();
-            }
+if (newOwner == "Titan")
+{
+if (captureZone.Order == self._currentSpawnPointIndex)
+{
+self.MoveSpawnPointsBack();
+}
 
-            # Titans have captured a zone previously captured by humans
-            if (self._capturedZones.Contains(captureZone))
-            {
-                self._capturedZones.Remove(captureZone);
-            }
-        }
-        elif (newOwner == "Human")
-        {
-            c = CaptureZones.Get(self._currentIndex);
+# Titans have captured a zone previously captured by humans
+if (self._capturedZones.Contains(captureZone))
+{
+self._capturedZones.Remove(captureZone);
+}
+}
+elif (newOwner == "Human")
+{
+c = CaptureZones.Get(self._currentIndex);
 
-            if (captureZone.Order > self._currentSpawnPointIndex)
-            {
-                PlayerUtils.SetSpawnPointInsideCaptureZone(c);
+if (captureZone.Order > self._currentSpawnPointIndex)
+{
+PlayerUtils.SetSpawnPointInsideCaptureZone(c);
 
-                if (self._main.RespawnMode == "OnCapture")
-                {
-                    PlayerUtils.RevivePlayers(c);
-                }
-                
-                self._currentSpawnPointIndex = captureZone.Order;
-            }
+if (self._main.RespawnMode == "OnCapture")
+{
+PlayerUtils.RevivePlayers(c);
+}
 
-            self._capturedZones.Add(c);
-            if (!self.TryStartNextEvent())
-            {
-                # If the zone is captured and the titans are remaining
-                # show the dialogue and "reveal" the titans
-                if (EventUtils.IsTown(self._currentIndex))
-                {
-                    DialogueUtils.SendShowDialogueRandomProfileMessage("TownCapturedTitansRemain");
-                }
-                elif (self._currentIndex == 3)
-                {
-                    DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie1");
-                }
-                else
-                {
-                    DialogueUtils.SendShowDialogueRandomProfileMessage("PointCapturedTitansRemain");
-                }
-                EventUtils.RevealTitans(self._events.Get(self._currentIndex), null);
-            }
-        }
-    }
+self._currentSpawnPointIndex = captureZone.Order;
+}
 
-    function TryStartNextEvent()
-    {
-        inBounds = self._currentIndex < self._events.Count;
+self._capturedZones.Add(c);
+if (!self.TryStartNextEvent())
+{
+# If the zone is captured and the titans are remaining
+# show the dialogue and "reveal" the titans
+if (EventUtils.IsTown(self._currentIndex))
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("TownCapturedTitansRemain");
+}
+elif (self._currentIndex == 3)
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie1");
+}
+else
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("PointCapturedTitansRemain");
+}
+EventUtils.RevealTitans(self._events.Get(self._currentIndex), null);
+}
+}
+}
 
-        if (inBounds && CaptureZones.CheckIfPreviousZonesAreCapturedByHumans(self._currentIndex))
-        {
-            capturedByHumans = CaptureZones.IsZoneCapturedByHumans(self._currentIndex);
-            titansAreDead = Game.Titans.Count == 0;
-            if (capturedByHumans && titansAreDead && self._events.Get(self._currentIndex).CanActivateNextCaptureZone())
-            {
-                prevIndex = self._currentIndex;
-                self._events.Get(self._currentIndex).OnEventEnd();
-                CaptureZones.DisableCaptureZone(self._currentIndex);
-                self._currentIndex = self._currentIndex + 1;
+function TryStartNextEvent()
+{
+inBounds = self._currentIndex < self._events.Count;
 
-                if (self._currentIndex < CaptureZones.Count())
-                {
-                    self._events.Get(self._currentIndex).OnEventStart();
-                    CaptureZones.ActivateCaptureZone(self._currentIndex);
+if (inBounds && CaptureZones.CheckIfPreviousZonesAreCapturedByHumans(self._currentIndex))
+{
+capturedByHumans = CaptureZones.IsZoneCapturedByHumans(self._currentIndex);
+titansAreDead = Game.Titans.Count == 0;
+if (capturedByHumans && titansAreDead && self._events.Get(self._currentIndex).CanActivateNextCaptureZone())
+{
+prevIndex = self._currentIndex;
+self._events.Get(self._currentIndex).OnEventEnd();
+CaptureZones.DisableCaptureZone(self._currentIndex);
+self._currentIndex = self._currentIndex + 1;
 
-                    if (EventUtils.IsTown(prevIndex))
-                    {
-                        DialogueUtils.SendShowDialogueRandomProfileMessage("TownCaptured");
-                    }
-                    else
-                    {
-                        DialogueUtils.SendShowDialogueRandomProfileMessage("PointCaptured");
-                    }
-                }
-                else
-                {
-                    # Captured all zones
-                    CaptureZones.DisableAllCaptureZones();
-                }
-                return true;
-            }
-        }
+if (self._currentIndex < CaptureZones.Count())
+{
+self._events.Get(self._currentIndex).OnEventStart();
+CaptureZones.ActivateCaptureZone(self._currentIndex);
 
-        return false;
-    }
+if (EventUtils.IsTown(prevIndex))
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("TownCaptured");
+}
+else
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("PointCaptured");
+}
+}
+else
+{
+# Captured all zones
+CaptureZones.DisableAllCaptureZones();
+}
+return true;
+}
+}
 
-    function OnCapturing(captureZone, capturer)
-    {
-        for(e in self._events)
-        {
-            e.OnCapturing(captureZone, capturer);
-        }
-    }
+return false;
+}
 
-    function OnContested(captureZone)
-    {
-        if (captureZone.Order == self._currentSpawnPointIndex)
-        {
-            self.MoveSpawnPointsBack();
-        }
-    }
+function OnCapturing(captureZone, capturer)
+{
+for(e in self._events)
+{
+e.OnCapturing(captureZone, capturer);
+}
+}
 
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        for(e in self._events)
-        {
-            e.OnCharacterDie(victim, killer, killerName);
-        }
+function OnContested(captureZone)
+{
+if (captureZone.Order == self._currentSpawnPointIndex)
+{
+self.MoveSpawnPointsBack();
+}
+}
 
-        if (victim.Type == "Human")
-        {
-            self._main.LoseIfPlayersAreDead();
-        }
-        elif (victim.Type == "Titan")
-        {
-            Utils.TryRemoveListElement(self._titans, victim);
-            self.TryStartNextEvent();
-        }
-    }
+function OnCharacterDie(victim, killer, killerName)
+{
+for(e in self._events)
+{
+e.OnCharacterDie(victim, killer, killerName);
+}
 
-    function OnCharacterSpawn(character)
-    {
-        if (character != null && character.Type == "Titan")
-        {
-            self._titans.Add(character);
-        }
-    }
+if (victim.Type == "Human")
+{
+self._main.LoseIfPlayersAreDead();
+}
+elif (victim.Type == "Titan")
+{
+Utils.TryRemoveListElement(self._titans, victim);
+self.TryStartNextEvent();
+}
+}
 
-    function OnCharacterDamaged(victim, killer, killerName, damage)
-    {
-        for(e in self._events)
-        {
-            e.OnCharacterDamaged(victim, killer, killerName, damage);
-        }
-    }
+function OnCharacterSpawn(character)
+{
+if (character != null && character.Type == "Titan")
+{
+self._titans.Add(character);
+}
+}
 
-    function MoveSpawnPointsBack()
-    {
-        foundSpawnPoint = false;
-        i = self._currentSpawnPointIndex;
-        while (i > 0)
-        {
-            prev = CaptureZones.Get(i - 1);
-            if (prev.GetState() == "Captured" && prev.GetCurrentOwner() == "Human")
-            {
-                self._currentSpawnPointIndex = i - 1;
-                PlayerUtils.SetSpawnPointInsideCaptureZone(prev);
-                foundSpawnPoint = true;
-                i = -1;
-            }
-            i -= 1;
-        }
+function OnCharacterDamaged(victim, killer, killerName, damage)
+{
+for(e in self._events)
+{
+e.OnCharacterDamaged(victim, killer, killerName, damage);
+}
+}
 
-        if (!foundSpawnPoint)
-        {
-            PlayerUtils.SetSpawnPointInsideCaptureZone(null);
-            self._currentSpawnPointIndex = -1;
-        }
-    }
+function MoveSpawnPointsBack()
+{
+foundSpawnPoint = false;
+i = self._currentSpawnPointIndex;
+while (i > 0)
+{
+prev = CaptureZones.Get(i - 1);
+if (prev.GetState() == "Captured" && prev.GetCurrentOwner() == "Human")
+{
+self._currentSpawnPointIndex = i - 1;
+PlayerUtils.SetSpawnPointInsideCaptureZone(prev);
+foundSpawnPoint = true;
+i = -1;
+}
+i -= 1;
+}
 
-    function OnFrame()
-    {
-        for(e in self._events)
-        {
-            e.OnFrame();
-        }
+if (!foundSpawnPoint)
+{
+PlayerUtils.SetSpawnPointInsideCaptureZone(null);
+self._currentSpawnPointIndex = -1;
+}
+}
 
-        if (self._currentIndex < CaptureZones.Count())
-        {
-            self._events.Get(self._currentIndex).OnEventUpdate();
-        }
-    }
+function OnFrame()
+{
+for(e in self._events)
+{
+e.OnFrame();
+}
 
-    function OnSecond()
-    {
-        if (self._currentIndex >= CaptureZones.Count())
-        {
-            return;
-        }
+if (self._currentIndex < CaptureZones.Count())
+{
+self._events.Get(self._currentIndex).OnEventUpdate();
+}
+}
 
-        captureZone = CaptureZones.Get(self._currentIndex);
-        self._humansInCaptureZone = captureZone.GetPlayersOfTeamInZone("Human");
-        for(titan in self._titans)
-        {
-            /* 
-             * If the titan doesn't have a target
-             * and if there are human players in the zone
-             * select one randomly and attack him
-             * but if there is no one in the zone, move towards the zone
-             */
+function OnSecond()
+{
+if (self._currentIndex >= CaptureZones.Count())
+{
+return;
+}
 
-            if (self.HasTarget(titan) == false)
-            {
-                if (self._humansInCaptureZone != null)
-                {
-                    target = Utils.GetRandomListElement(self._humansInCaptureZone);
-                    self._titansTargetMap.Set(titan, target);
-                    titan.Target(target, 9999);
-                }
-                else
-                {
-                    pos = captureZone.MapObject.Position;
-                    dist = Vector3.Distance(titan.Position, pos);
-                    if (dist > 150) # allow titan to move a little outside the zone
-                    {
-                        titan.MoveTo(pos, 100, false);
-                    }
-                }
-            }
-            else
-            {
-                /* 
-                 * If the titan has a target
-                 * and if the target is not alive anymore
-                 * or the target is outside the capture zone, remove the target
-                 * so the titan can search for a new one
-                 */
+captureZone = CaptureZones.Get(self._currentIndex);
+self._humansInCaptureZone = captureZone.GetPlayersOfTeamInZone("Human");
+for(titan in self._titans)
+{
+/*
+* If the titan doesn't have a target
+* and if there are human players in the zone
+* select one randomly and attack him
+* but if there is no one in the zone, move towards the zone
+*/
 
-                target = self._titansTargetMap.Get(titan);
-                
-                if (target == null || self._humansInCaptureZone == null || !self._humansInCaptureZone.Contains(target))
-                {
-                    self._titansTargetMap.Remove(titan);
-                }
-            }
-        }
+if (self.HasTarget(titan) == false)
+{
+if (self._humansInCaptureZone != null)
+{
+target = Utils.GetRandomListElement(self._humansInCaptureZone);
+self._titansTargetMap.Set(titan, target);
+titan.Target(target, 9999);
+}
+else
+{
+pos = captureZone.MapObject.Position;
+dist = Vector3.Distance(titan.Position, pos);
+if (dist > 150) # allow titan to move a little outside the zone
+{
+titan.MoveTo(pos, 100, false);
+}
+}
+}
+else
+{
+/*
+* If the titan has a target
+* and if the target is not alive anymore
+* or the target is outside the capture zone, remove the target
+* so the titan can search for a new one
+*/
 
-        for(e in self._events)
-        {
-            e.OnSecond();
-        }
-    }
+target = self._titansTargetMap.Get(titan);
 
-    function HasTarget(titan)
-    {
-        if (self._titansTargetMap.Contains(titan))
-        {
-            target = self._titansTargetMap.Get(titan);
-            return target != null;
-        }
+if (target == null || self._humansInCaptureZone == null || !self._humansInCaptureZone.Contains(target))
+{
+self._titansTargetMap.Remove(titan);
+}
+}
+}
 
-        return false;
-    }
+for(e in self._events)
+{
+e.OnSecond();
+}
+}
 
-    function OnTick()
-    {
-        for(e in self._events)
-        {
-            e.OnTick();
-        }
-    }
+function HasTarget(titan)
+{
+if (self._titansTargetMap.Contains(titan))
+{
+target = self._titansTargetMap.Get(titan);
+return target != null;
+}
+
+return false;
+}
+
+function OnTick()
+{
+for(e in self._events)
+{
+e.OnTick();
+}
+}
 }
 class Event1
 {
-    StartTitans = 1; # Number of titans that will be spawned at the start of the event
-    CaptureZone = null;
+StartTitans = 1; # Number of titans that will be spawned at the start of the event
+CaptureZone = null;
 
-    function Init(eventController, captureZoneIndex)
-    {
-        self._eventController = eventController;
-        self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-    }
-
-    function CanActivateNextCaptureZone()
-    {
-        return true;
-    }
-
-    coroutine OnGameStart()
-    {
-        wait 4.0;
-        DialogueUtils.SendShowDialogueRandomProfileMessage("Start");
-        NetworkMessage()
-            .Set("type", "Gate")
-            .Set("state", "Open")
-            .Set("interactable", false)
-            .SendAll();
-    }
-    
-    function OnFrame() { }
-    function OnTick() { }
-    function OnSecond() { }
-    function OnCharacterDie(victim, killer, killerName) { }
-    function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCaptured(captureZone, newOwner) { }
-    function OnCapturing(captureZone, capturer) { }
-
-    function OnEventStart()
-    {
-        TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
-    }
-
-    function OnEventUpdate() { }
-    function OnEventEnd() { }
+function Init(eventController, captureZoneIndex)
+{
+self._eventController = eventController;
+self.CaptureZone = CaptureZones.Get(captureZoneIndex);
 }
-/* 
- * Titans are spawned at the start of the event.
- * If humans try to capture the zone (they made atleast 10% capture progress)
- * then titans will be continuously spawned around the point.
- */
+
+function CanActivateNextCaptureZone()
+{
+return true;
+}
+
+coroutine OnGameStart()
+{
+wait 4.0;
+DialogueUtils.SendShowDialogueRandomProfileMessage("Start");
+NetworkMessage()
+.Set("type", "Gate")
+.Set("state", "Open")
+.Set("interactable", false)
+.SendAll();
+}
+
+function OnFrame() { }
+function OnTick() { }
+function OnSecond() { }
+function OnCharacterDie(victim, killer, killerName) { }
+function OnCharacterDamaged(victim, killer, killerName, damage) { }
+function OnCaptured(captureZone, newOwner) { }
+function OnCapturing(captureZone, capturer) { }
+
+function OnEventStart()
+{
+TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
+}
+
+function OnEventUpdate() { }
+function OnEventEnd() { }
+}
+/*
+* Titans are spawned at the start of the event.
+* If humans try to capture the zone (they made atleast 10% capture progress)
+* then titans will be continuously spawned around the point.
+*/
 class Event2
 {
-    MaxTitans = 30;
-    StartTitans = 1;
+MaxTitans = 30;
+StartTitans = 1;
 
-    MinTimeBetweenSpawns = 5.0; # In seconds
-    MaxTimeBetweenSpawns = 15.0;
+MinTimeBetweenSpawns = 5.0; # In seconds
+MaxTimeBetweenSpawns = 15.0;
 
-    MinTitansPerWave = 1;
-    MaxTitansPerWave = 5;
+MinTitansPerWave = 1;
+MaxTitansPerWave = 5;
 
-    CaptureZone = null;
+CaptureZone = null;
 
-    _titansTargetMap = Dict();
-    _humansInCaptureZone = null;
-    _spawnContinuously = false;
-    _nextSpawnTime = 0;
+_titansTargetMap = Dict();
+_humansInCaptureZone = null;
+_spawnContinuously = false;
+_nextSpawnTime = 0;
 
-    _previousCaptureZone = null;
+_previousCaptureZone = null;
 
-    _isCapturedByHumans = false;
-    _isHumanCapturing = false;
-    _humanCaptureProgress = 0;
+_isCapturedByHumans = false;
+_isHumanCapturing = false;
+_humanCaptureProgress = 0;
 
-    function Init(eventController, captureZoneIndex)
-    {
-        self._eventController = eventController;
-        self.CaptureZone = CaptureZones.Get(captureZoneIndex);
+function Init(eventController, captureZoneIndex)
+{
+self._eventController = eventController;
+self.CaptureZone = CaptureZones.Get(captureZoneIndex);
 
-        self._nextSpawnTime = self.MaxTimeBetweenSpawns;
-    }
+self._nextSpawnTime = self.MaxTimeBetweenSpawns;
+}
 
-    function CanActivateNextCaptureZone()
-    {
-        return true;
-    }
+function CanActivateNextCaptureZone()
+{
+return true;
+}
 
-    function OnGameStart() { }
-    function OnFrame() { }
-    function OnTick() { }
-    function OnSecond() { }
+function OnGameStart() { }
+function OnFrame() { }
+function OnTick() { }
+function OnSecond() { }
 
-    function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCharacterDie(victim, killer, killerName) { }
+function OnCharacterDamaged(victim, killer, killerName, damage) { }
+function OnCharacterDie(victim, killer, killerName) { }
 
-    function OnCaptured(captureZone, newOwner)
-    {
-        if (captureZone == self.CaptureZone && newOwner == "Human")
-        {
-            self._isCapturedByHumans = true;
-        }
-    }
+function OnCaptured(captureZone, newOwner)
+{
+if (captureZone == self.CaptureZone && newOwner == "Human")
+{
+self._isCapturedByHumans = true;
+}
+}
 
-    function OnCapturing(captureZone, capturer)
-    {
-        if (capturer == "Human")
-        {
-            self._isHumanCapturing = true;
-        }
-        elif (capturer == "Titan")
-        {
-            self._isHumanCapturing = false;
-            self._spawnContinuously = false;
-        }
-    }
+function OnCapturing(captureZone, capturer)
+{
+if (capturer == "Human")
+{
+self._isHumanCapturing = true;
+}
+elif (capturer == "Titan")
+{
+self._isHumanCapturing = false;
+self._spawnContinuously = false;
+}
+}
 
-    function OnEventStart()
-    {
-        self.SpawnTitans(self.StartTitans);
-    }
+function OnEventStart()
+{
+self.SpawnTitans(self.StartTitans);
+}
 
-    function OnEventUpdate()
-    {
-        if (self._isCapturedByHumans)
-        {
-            return;
-        }
+function OnEventUpdate()
+{
+if (self._isCapturedByHumans)
+{
+return;
+}
 
-        if (self._isHumanCapturing)
-        {
-            # If humans made some progress, start spawning titans continuously.
-            # should probably check for how long the humans have been in the zone
-            # instead of checking if they made atleast 10% progress
-            self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
-            if (self._humanCaptureProgress >= 0.1)
-            {
-                self._spawnContinuously = true;
-            }
-        }
-        
-        if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
-        {
-            return;
-        }
+if (self._isHumanCapturing)
+{
+# If humans made some progress, start spawning titans continuously.
+# should probably check for how long the humans have been in the zone
+# instead of checking if they made atleast 10% progress
+self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
+if (self._humanCaptureProgress >= 0.1)
+{
+self._spawnContinuously = true;
+}
+}
 
-        self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
-        if (self._humanCaptureProgress <= 0.01)
-        {
-            self._spawnContinuously = false;
-            self._isHumanCapturing = false;
-            return;
-        }
+if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
+{
+return;
+}
 
-        if (Time.GameTime >= self._nextSpawnTime)
-        {
-            self.SpawnTitans(Random.RandomInt(self.MinTitansPerWave, self.MaxTitansPerWave));
-            self._nextSpawnTime = Time.GameTime + Random.RandomFloat(self.MinTimeBetweenSpawns, self.MaxTimeBetweenSpawns);
-        }
-    }
+self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
+if (self._humanCaptureProgress <= 0.01)
+{
+self._spawnContinuously = false;
+self._isHumanCapturing = false;
+return;
+}
 
-    function OnEventEnd() { }
+if (Time.GameTime >= self._nextSpawnTime)
+{
+self.SpawnTitans(Random.RandomInt(self.MinTitansPerWave, self.MaxTitansPerWave));
+self._nextSpawnTime = Time.GameTime + Random.RandomFloat(self.MinTimeBetweenSpawns, self.MaxTimeBetweenSpawns);
+}
+}
 
-    function SpawnTitans(count)
-    {
-        TitanUtils.SpawnTitans(self.CaptureZone, count);
-    }
+function OnEventEnd() { }
+
+function SpawnTitans(count)
+{
+TitanUtils.SpawnTitans(self.CaptureZone, count);
+}
 }
 class Event3
 {
-    StartTitans = 20;
+StartTitans = 20;
 
-    MinSpawnRadius = 100;
-    MaxSpawnRadius = 300;
+MinSpawnRadius = 100;
+MaxSpawnRadius = 300;
 
-    CaptureZone = null;
+CaptureZone = null;
 
-    _isCaptured = false;
-    _previousCaptureZone = null;
-    _isCapturedByHumans = false;
+_isCaptured = false;
+_previousCaptureZone = null;
+_isCapturedByHumans = false;
 
-    function Init(eventController, captureZoneIndex)
-    {
-        self._eventController = eventController;
-        self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-    }
+function Init(eventController, captureZoneIndex)
+{
+self._eventController = eventController;
+self.CaptureZone = CaptureZones.Get(captureZoneIndex);
+}
 
-    function CanActivateNextCaptureZone()
-    {
-        return true;
-    }
+function CanActivateNextCaptureZone()
+{
+return true;
+}
 
-    function OnGameStart() { }
-    function OnFrame() { }
-    function OnTick() { }
-    function OnSecond() { }
-    function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCharacterDie(victim, killer, killerName) { }
+function OnGameStart() { }
+function OnFrame() { }
+function OnTick() { }
+function OnSecond() { }
+function OnCharacterDamaged(victim, killer, killerName, damage) { }
+function OnCharacterDie(victim, killer, killerName) { }
 
-    function OnCaptured(captureZone, newOwner) { }
-    function OnCapturing(captureZone, capturer) { }
+function OnCaptured(captureZone, newOwner) { }
+function OnCapturing(captureZone, capturer) { }
 
-    function OnEventStart()
-    {
-        TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
-    }
+function OnEventStart()
+{
+TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
+}
 
-    function OnEventUpdate() { }
-    function OnEventEnd() { }
+function OnEventUpdate() { }
+function OnEventEnd() { }
 }
 class Event4
 {
-    MaxTitans = 30;
-    StartTitans = 15;
-    AnnieHealth = 2500;
+MaxTitans = 30;
+StartTitans = 15;
+AnnieHealth = 2500;
 
-    MinTimeBetweenSpawns = 5.0; # In seconds
-    MaxTimeBetweenSpawns = 15.0;
+MinTimeBetweenSpawns = 5.0; # In seconds
+MaxTimeBetweenSpawns = 15.0;
 
-    MinTitansPerWave = 1;
-    MaxTitansPerWave = 5;
+MinTitansPerWave = 1;
+MaxTitansPerWave = 5;
 
-    AnnieDespawnPoint = Vector3(2104, 72, -1744);
+AnnieDespawnPoint = Vector3(2104, 72, -1744);
 
-    CaptureZone = null;
+CaptureZone = null;
 
-    _spawnContinuously = false;
-    _nextSpawnTime = 0;
-    _previousCaptureZone = null;
+_spawnContinuously = false;
+_nextSpawnTime = 0;
+_previousCaptureZone = null;
 
-    _isCapturedByHumans = false;
-    _isHumanCapturing = false;
-    _humanCaptureProgress = 0;
+_isCapturedByHumans = false;
+_isHumanCapturing = false;
+_humanCaptureProgress = 0;
 
-    _annie = null;
+_annie = null;
 
-    function Init(eventController, captureZoneIndex)
-    {
-        self._eventController = eventController;
-        self.CaptureZone = CaptureZones.Get(captureZoneIndex);
+function Init(eventController, captureZoneIndex)
+{
+self._eventController = eventController;
+self.CaptureZone = CaptureZones.Get(captureZoneIndex);
 
-        self._nextSpawnTime = self.MaxTimeBetweenSpawns;
-    }
+self._nextSpawnTime = self.MaxTimeBetweenSpawns;
+}
 
-    function CanActivateNextCaptureZone()
-    {
-        return self._annie == null || self._annie.Health < self.AnnieHealth / 2.0;
-    }
+function CanActivateNextCaptureZone()
+{
+return self._annie == null || self._annie.Health < self.AnnieHealth / 2.0;
+}
 
-    function OnGameStart() { }
-    function OnTick() { }
-    function OnSecond() { }
-    function OnFrame() { }
-    function OnCharacterDie(victim, killer, killerName) { }
+function OnGameStart() { }
+function OnTick() { }
+function OnSecond() { }
+function OnFrame() { }
+function OnCharacterDie(victim, killer, killerName) { }
 
-    function OnCharacterDamaged(victim, killer, killerName, damage)
-    {
-        if (victim == self._annie)
-        {
-            health = self._annie.Health;
-            maxHealth = Convert.ToFloat(self._annie.MaxHealth);
-            t = health / maxHealth;
-            if (t <= 0.5)
-            {
-                self._annie.GetKilled("Server");
-                self._annie = null;
-                if (!self._eventController.TryStartNextEvent())
-                {
-                    DialogueUtils.SendShowDialogueRandomProfileMessage("AfterAnnie1");
-                }
-            }
-        }
-    }
+function OnCharacterDamaged(victim, killer, killerName, damage)
+{
+if (victim == self._annie)
+{
+health = self._annie.Health;
+maxHealth = Convert.ToFloat(self._annie.MaxHealth);
+t = health / maxHealth;
+if (t <= 0.5)
+{
+self._annie.GetKilled("Server");
+self._annie = null;
+if (!self._eventController.TryStartNextEvent())
+{
+DialogueUtils.SendShowDialogueRandomProfileMessage("AfterAnnie1");
+}
+}
+}
+}
 
-    function OnCaptured(captureZone, newOwner)
-    {
-        if (captureZone == self.CaptureZone && newOwner == "Human")
-        {
-            self._isCapturedByHumans = true;
-            self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
-        }
-    }
+function OnCaptured(captureZone, newOwner)
+{
+if (captureZone == self.CaptureZone && newOwner == "Human")
+{
+self._isCapturedByHumans = true;
+self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
+}
+}
 
-    function OnCapturing(captureZone, capturer)
-    {
-        if (capturer == "Human")
-        {
-            self._isHumanCapturing = true;
-        }
-        elif (capturer == "Titan")
-        {
-            self._isHumanCapturing = false;
-            self._spawnContinuously = false;
-        }
-    }
+function OnCapturing(captureZone, capturer)
+{
+if (capturer == "Human")
+{
+self._isHumanCapturing = true;
+}
+elif (capturer == "Titan")
+{
+self._isHumanCapturing = false;
+self._spawnContinuously = false;
+}
+}
 
-    function OnEventStart()
-    {
-        self.SpawnTitans(self.StartTitans);
-    }
+function OnEventStart()
+{
+self.SpawnTitans(self.StartTitans);
+}
 
-    function OnEventUpdate()
-    {
-        if (self._isCapturedByHumans)
-        {
-            return;
-        }
+function OnEventUpdate()
+{
+if (self._isCapturedByHumans)
+{
+return;
+}
 
-        if (self._isHumanCapturing)
-        {
-            self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
-            if (self._humanCaptureProgress >= 0.1)
-            {
-                self._spawnContinuously = true;
-            }
-        }
-        
-        if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
-        {
-            return;
-        }
+if (self._isHumanCapturing)
+{
+self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
+if (self._humanCaptureProgress >= 0.1)
+{
+self._spawnContinuously = true;
+}
+}
 
-        self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
-        if (self._humanCaptureProgress <= 0.01)
-        {
-            self._spawnContinuously = false;
-            self._isHumanCapturing = false;
-            return;
-        }
+if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
+{
+return;
+}
 
-        if (Time.GameTime >= self._nextSpawnTime)
-        {
-            self.SpawnTitans(Random.RandomInt(self.MinTitansPerWave, self.MaxTitansPerWave));
-            self._nextSpawnTime = Time.GameTime + Random.RandomFloat(self.MinTimeBetweenSpawns, self.MaxTimeBetweenSpawns);
-        }
-    }
+self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
+if (self._humanCaptureProgress <= 0.01)
+{
+self._spawnContinuously = false;
+self._isHumanCapturing = false;
+return;
+}
 
-    function OnEventEnd() { }
+if (Time.GameTime >= self._nextSpawnTime)
+{
+self.SpawnTitans(Random.RandomInt(self.MinTitansPerWave, self.MaxTitansPerWave));
+self._nextSpawnTime = Time.GameTime + Random.RandomFloat(self.MinTimeBetweenSpawns, self.MaxTimeBetweenSpawns);
+}
+}
 
-    function SpawnTitans(count)
-    {
-        TitanUtils.SpawnTitans(self.CaptureZone, count);
-    }
+function OnEventEnd() { }
+
+function SpawnTitans(count)
+{
+TitanUtils.SpawnTitans(self.CaptureZone, count);
+}
 }
 class Event8
 {
-    TitansCount = 20;
-    AnnieHealth = 2500;
+TitansCount = 20;
+AnnieHealth = 2500;
 
-    CaptureZone = null;
+CaptureZone = null;
 
-    _annie = null;
-    _annieWasSpawned = false;
-    _annieWasKilled = false;
-    _titans = List();
+_annie = null;
+_annieWasSpawned = false;
+_annieWasKilled = false;
+_titans = List();
 
-    function Init(eventController, captureZoneIndex)
-    {
-        self._eventController = eventController;
-        self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-    }
+function Init(eventController, captureZoneIndex)
+{
+self._eventController = eventController;
+self.CaptureZone = CaptureZones.Get(captureZoneIndex);
+}
 
-    function CanActivateNextCaptureZone()
-    {
-        return true;
-    }
+function CanActivateNextCaptureZone()
+{
+return true;
+}
 
-    function OnGameStart() { }
-    function OnFrame() { }
-    function OnTick() { }
-    function OnSecond() { }
-    function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        if (victim == self._annie)
-        {
-            position = victim.Position;
-            self.SpawnTitans(position);
-            self._annieWasKilled = true;
-        }
-        elif (self._annieWasSpawned && self._annieWasKilled)
-        {
-            if (victim.Type == "Titan")
-            {
-                Utils.TryRemoveListElement(self._titans, victim);
-            }
+function OnGameStart() { }
+function OnFrame() { }
+function OnTick() { }
+function OnSecond() { }
+function OnCharacterDamaged(victim, killer, killerName, damage) { }
+function OnCharacterDie(victim, killer, killerName)
+{
+if (victim == self._annie)
+{
+position = victim.Position;
+self.SpawnTitans(position);
+self._annieWasKilled = true;
+}
+elif (self._annieWasSpawned && self._annieWasKilled)
+{
+if (victim.Type == "Titan")
+{
+Utils.TryRemoveListElement(self._titans, victim);
+}
 
-            if (self._titans.Count == 0)
-            {
-                UI.SetLabelAll("MiddleCenter", "Humanity wins!");
-				Game.End(10.0);
-            }
-        }
-    }
+if (self._titans.Count == 0)
+{
+UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+Game.End(10.0);
+}
+}
+}
 
-    function OnCaptured(captureZone, newOwner) { }
-    function OnCapturing(captureZone, capturer) { }
+function OnCaptured(captureZone, newOwner) { }
+function OnCapturing(captureZone, capturer) { }
 
-    function OnEventStart() { }
-    function OnEventUpdate() { }
-    function OnEventEnd()
-    {
-        self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
-        self._annie.DeathAnimLength = 10;
-        self._annieWasSpawned = true;
+function OnEventStart() { }
+function OnEventUpdate() { }
+function OnEventEnd()
+{
+self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
+self._annie.DeathAnimLength = 10;
+self._annieWasSpawned = true;
 
-        DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie2");
-    }
+DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie2");
+}
 
-    coroutine SpawnTitans(shifterPosition)
-    {
-        i = 0;
-        while (i < self.TitansCount)
-        {
-            position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
-            titan = Game.SpawnTitanAt("Default", position);
-            titan.DetectRange = 0;
-            titan.FocusRange = 0;
-            titan.MoveTo(shifterPosition, 1, true);
+coroutine SpawnTitans(shifterPosition)
+{
+i = 0;
+while (i < self.TitansCount)
+{
+position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
+titan = Game.SpawnTitanAt("Default", position);
+titan.DetectRange = 0;
+titan.FocusRange = 0;
+titan.MoveTo(shifterPosition, 1, true);
 
-            self._titans.Add(titan);
+self._titans.Add(titan);
 
-            if (Math.Mod(i, 10) == 0)
-            {
-                wait 0.2;
-            }
+if (Math.Mod(i, 10) == 0)
+{
+wait 0.2;
+}
 
-            i += 1;
-        }
+i += 1;
+}
 
-        wait 13.0; # Wait for shifter's body to disappear
+wait 13.0; # Wait for shifter's body to disappear
 
-		for(t in self._titans)
-		{
-			if (t != null)
-			{
-				t.Wander();
-				t.DetectRange = 2000;
-				t.FocusRange = 2000;
-			}
-		}
-    }
+for(t in self._titans)
+{
+if (t != null)
+{
+t.Wander();
+t.DetectRange = 2000;
+t.FocusRange = 2000;
+}
+}
+}
 }
 class Debug
 {
-    Enabled = true;
+Enabled = true;
 
-    _timeScale = 10.0;
-    _fastForwarding = false;
+_timeScale = 10.0;
+_fastForwarding = false;
 
-    function Init(enabled)
-    {
-        self.Enabled = enabled;
-    }
+function Init(enabled)
+{
+self.Enabled = enabled;
+}
 
-    function OnFrame()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
+function OnFrame()
+{
+if (!self.Enabled)
+{
+return;
+}
 
-        if (Input.GetKeyDown("Interaction/Interact"))
-        {
-            if (self._fastForwarding)
-            {
-                Time.TimeScale = 1.0;
-                self._fastForwarding = false;
-            }
-            else
-            {
-                Time.TimeScale = self._timeScale;
-                self._fastForwarding = true;
-            }
-        }
-        elif (Input.GetKeyDown("Interaction/Function3"))
-        {
-            if (Network.MyPlayer.Status != "Alive")
-            {
-                return;
-            }
+if (Input.GetKeyDown("Interaction/Interact"))
+{
+if (self._fastForwarding)
+{
+Time.TimeScale = 1.0;
+self._fastForwarding = false;
+}
+else
+{
+Time.TimeScale = self._timeScale;
+self._fastForwarding = true;
+}
+}
+elif (Input.GetKeyDown("Interaction/Function3"))
+{
+if (Network.MyPlayer.Status != "Alive")
+{
+return;
+}
 
-            position = Network.MyPlayer.Character.Position;
-            zone = self.GetNearestCaptureZone(position);
-            sp = TitanSpawnPoints.GetSpawnPoint(zone);
-            titan = Game.SpawnTitanAt("Abnormal", sp);
-            titan.FocusRange = 0;
-            titan.DetectRange = 0;
-            titan.MoveTo(zone.MapObject.Position, 10, true);
-        }
-    }
+position = Network.MyPlayer.Character.Position;
+zone = self.GetNearestCaptureZone(position);
+sp = TitanSpawnPoints.GetSpawnPoint(zone);
+titan = Game.SpawnTitanAt("Abnormal", sp);
+titan.FocusRange = 0;
+titan.DetectRange = 0;
+titan.MoveTo(zone.MapObject.Position, 10, true);
+}
+}
 
-    function GetNearestCaptureZone(position)
-    {
-        nearest = null;
-        nearestDist = 99999.0;
-        for(zone in CaptureZones.GetAll())
-        {
-            dist = Vector3.Distance(position, zone.MapObject.Position);
-            if (dist < nearestDist)
-            {
-                nearest = zone;
-                nearestDist = dist;
-            }
-        }
+function GetNearestCaptureZone(position)
+{
+nearest = null;
+nearestDist = 99999.0;
+for(zone in CaptureZones.GetAll())
+{
+dist = Vector3.Distance(position, zone.MapObject.Position);
+if (dist < nearestDist)
+{
+nearest = zone;
+nearestDist = dist;
+}
+}
 
-        return nearest;
-    }
+return nearest;
+}
 
-    function OnSecond()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
+function OnSecond()
+{
+if (!self.Enabled)
+{
+return;
+}
 
-        player = Network.MyPlayer;
-        if (player.Status == "Alive")
-        {
-            character = player.Character;
-            if (character != null && character.Type == "Human")
-            {
-                character.MaxHealth = 1000;
-                character.Health = 1000;
-                character.RefillImmediate();
-            }
-        }
-    }
+player = Network.MyPlayer;
+if (player.Status == "Alive")
+{
+character = player.Character;
+if (character != null && character.Type == "Human")
+{
+character.MaxHealth = 1000;
+character.Health = 1000;
+character.RefillImmediate();
+}
+}
+}
 
-    function OnChatInput(message)
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
+function OnChatInput(message)
+{
+if (!self.Enabled)
+{
+return;
+}
 
-        if (String.StartsWith(message, "--xyz"))
-        {
-            pos = Network.MyPlayer.Character.Position;
-            Game.Print(pos);
-        }
+if (String.StartsWith(message, "--xyz"))
+{
+pos = Network.MyPlayer.Character.Position;
+Game.Print(pos);
+}
 
-        if (String.StartsWith(message, "--kill"))
-        {
-            for(p in Network.Players)
-            {
-                if (p.Status == "Alive")
-                {
-                    p.Character.GetKilled("Server");
-                }
-            }
-        }
+if (String.StartsWith(message, "--kill"))
+{
+for(p in Network.Players)
+{
+if (p.Status == "Alive")
+{
+p.Character.GetKilled("Server");
+}
+}
+}
 
-        if (String.StartsWith(message, "--tscale"))
-        {
-            str = String.Split(message, " ");
-            self._timeScale = Convert.ToFloat(str.Get(1));
-        }
-    }
+if (String.StartsWith(message, "--tscale"))
+{
+str = String.Split(message, " ");
+self._timeScale = Convert.ToFloat(str.Get(1));
+}
+}
 }
 extension CaptureZones
 {
-    _captureZones = List();
+_captureZones = List();
 
-    function Setup(callbackReceiver)
-    {
-        captureZones = Map.FindMapObjectsByName("CaptureZone1");
-        captureZoneOrderMap = Dict();
-        for(captureZone in captureZones)
-        {
-            captureZoneComponent = captureZone.GetComponent("CaptureZone");
-            captureZoneComponent.SetupCallbackReceiver(callbackReceiver);
-            if (captureZoneOrderMap.Contains(captureZoneComponent.Order) == true)
-            {
-                Game.Print("Capture zone order " + captureZoneComponent.Order + " is already added, please remove duplicate zone!");
-                Game.End(10);
-                return;
-            }
-            captureZoneOrderMap.Set(captureZoneComponent.Order, captureZoneComponent);
-        }
+function Setup(callbackReceiver)
+{
+captureZones = Map.FindMapObjectsByName("CaptureZone1");
+captureZoneOrderMap = Dict();
+for(captureZone in captureZones)
+{
+captureZoneComponent = captureZone.GetComponent("CaptureZone");
+captureZoneComponent.SetupCallbackReceiver(callbackReceiver);
+if (captureZoneOrderMap.Contains(captureZoneComponent.Order) == true)
+{
+Game.Print("Capture zone order " + captureZoneComponent.Order + " is already added, please remove duplicate zone!");
+Game.End(10);
+return;
+}
+captureZoneOrderMap.Set(captureZoneComponent.Order, captureZoneComponent);
+}
 
-        keys = captureZoneOrderMap.Keys;
-        keys.Sort();
-        for(key in keys)
-        {
-            self._captureZones.Add(captureZoneOrderMap.Get(key));
-        }
-    }
+keys = captureZoneOrderMap.Keys;
+keys.Sort();
+for(key in keys)
+{
+self._captureZones.Add(captureZoneOrderMap.Get(key));
+}
+}
 
-    function Count()
-    {
-        return self._captureZones.Count;
-    }
+function Count()
+{
+return self._captureZones.Count;
+}
 
-    function GetAll()
-    {
-        return self._captureZones;
-    }
+function GetAll()
+{
+return self._captureZones;
+}
 
-    function Get(index)
-    {
-        return self._captureZones.Get(index);
-    }
+function Get(index)
+{
+return self._captureZones.Get(index);
+}
 
-    function IsZoneCapturedByHumans(captureZone)
-    {
-        if (Convert.IsInt(captureZone))
-        {
-            return self.Get(captureZone).GetCurrentOwner() == "Human";
-        }
+function IsZoneCapturedByHumans(captureZone)
+{
+if (Convert.IsInt(captureZone))
+{
+return self.Get(captureZone).GetCurrentOwner() == "Human";
+}
 
-        return captureZone.GetCurrentOwner() == "Human";
-    }
+return captureZone.GetCurrentOwner() == "Human";
+}
 
-    function CheckIfPreviousZonesAreCapturedByHumans(currentIndex)
-    {
-        previousZonesAreCaptured = true;
-        if (currentIndex > 0)
-        {
-            i = currentIndex;
-            while (i >= 0)
-            {
-                if (!self.IsZoneCapturedByHumans(i))
-                {
-                    previousZonesAreCaptured = false;
-                    i = -1; # break
-                }
-                i -= 1;
-            }
-        }
-        return previousZonesAreCaptured;
-    }
+function CheckIfPreviousZonesAreCapturedByHumans(currentIndex)
+{
+previousZonesAreCaptured = true;
+if (currentIndex > 0)
+{
+i = currentIndex;
+while (i >= 0)
+{
+if (!self.IsZoneCapturedByHumans(i))
+{
+previousZonesAreCaptured = false;
+i = -1; # break
+}
+i -= 1;
+}
+}
+return previousZonesAreCaptured;
+}
 
-    function GetNearestCaptureZone(position)
-    {
-        nearest = null;
-        nearestDist = 99999.0;
-        for(zone in self._captureZones)
-        {
-            dist = Vector3.Distance(position, zone.MapObject.Position);
-            if (dist < nearestDist)
-            {
-                nearest = zone;
-                nearestDist = dist;
-            }
-        }
+function GetNearestCaptureZone(position)
+{
+nearest = null;
+nearestDist = 99999.0;
+for(zone in self._captureZones)
+{
+dist = Vector3.Distance(position, zone.MapObject.Position);
+if (dist < nearestDist)
+{
+nearest = zone;
+nearestDist = dist;
+}
+}
 
-        return nearest;
-    }
+return nearest;
+}
 
-    function DeactivateAllCaptureZones()
-    {
-        for(cz in self._captureZones)
-        {
-            cz.MapObject.Active = false;
-        }
-    }
+function DeactivateAllCaptureZones()
+{
+for(cz in self._captureZones)
+{
+cz.MapObject.Active = false;
+}
+}
 
-    function ActivateCaptureZone(index)
-    {
-        self.Get(index).MapObject.Active = true;
-    }
+function ActivateCaptureZone(index)
+{
+self.Get(index).MapObject.Active = true;
+}
 
-    function DisableAllCaptureZones()
-    {
-        for(i in Range(0, self.Count(), 1))
-        {
-            self.DisableCaptureZone(i);
-        }
-    }
+function DisableAllCaptureZones()
+{
+for(i in Range(0, self.Count(), 1))
+{
+self.DisableCaptureZone(i);
+}
+}
 
-    function DisableCaptureZone(index)
-    {
-        cz = self.Get(index);
+function DisableCaptureZone(index)
+{
+cz = self.Get(index);
 
-        # UI (top center label) is not cleared
-        # if we use Enabled even if we manually clear it
-        # cz.Enabled = false;
-        cz.AICanCapture = false;
-        cz.HumanCanCapture = false;
-        cz.ShifterCanCapture = false;
-        cz.TitanCanCapture = false;
-        cz.TeamsCanCapture = false;
-    }
+# UI (top center label) is not cleared
+# if we use Enabled even if we manually clear it
+# cz.Enabled = false;
+cz.AICanCapture = false;
+cz.HumanCanCapture = false;
+cz.ShifterCanCapture = false;
+cz.TitanCanCapture = false;
+cz.TeamsCanCapture = false;
+}
 }
 extension InGameUI
 {
-    function SendUpdateLivesMessage(player, current, max)
-    {
-        NetworkMessage().Set("type", "UI").Set("msg", "lives").Set("current", current).Set("max", max).Send(player);
-    }
+function SendUpdateLivesMessage(player, current, max)
+{
+NetworkMessage().Set("type", "UI").Set("msg", "lives").Set("current", current).Set("max", max).Send(player);
+}
 
-    function SendUpdateRespawnTimeMessage(player, time)
-    {
-        NetworkMessage().Set("type", "UI").Set("msg", "respawn").Set("current", time).Send(player);
-    }
+function SendUpdateRespawnTimeMessage(player, time)
+{
+NetworkMessage().Set("type", "UI").Set("msg", "respawn").Set("current", time).Send(player);
+}
 
-    function UpdateLives(current, max)
-    {
-        UI.SetLabel("TopLeft", "Lives lost: " + current + " / " + max);
-    }
+function UpdateLives(current, max)
+{
+UI.SetLabel("TopLeft", "Lives lost: " + current + " / " + max);
+}
 
-    function UpdateRespawnTime(current)
-    {
-        if (current == null)
-        {
-            UI.SetLabel("MiddleCenter", "");
-            return;
-        }
-        
-        UI.SetLabel("MiddleCenter", "Respawning in <b>" + current + " </b>");
-    }
+function UpdateRespawnTime(current)
+{
+if (current == null)
+{
+UI.SetLabel("MiddleCenter", "");
+return;
+}
 
-    function UpdateReinforcementCalls(current, max)
-    {
-        UI.SetLabelAll("TopLeft", "Reinforcements called: " + current + " / " + max);
-    }
+UI.SetLabel("MiddleCenter", "Respawning in <b>" + current + " </b>");
+}
+
+function UpdateReinforcementCalls(current, max)
+{
+UI.SetLabelAll("TopLeft", "Reinforcements called: " + current + " / " + max);
+}
 }
 extension TitanSpawnPoints
 {
-    _spawnPointsMap = Dict();
-    _annieSpawnPoint4 = null;
-    _annieSpawnPoint8 = null;
+_spawnPointsMap = Dict();
+_annieSpawnPoint4 = null;
+_annieSpawnPoint8 = null;
 
-    function Setup(captureZones)
-    {
-        self._spawnPointsMap.Set(captureZones.Get(0), Map.FindMapObjectsByTag("TitanSpawnPoint1"));
-        self._spawnPointsMap.Set(captureZones.Get(1), Map.FindMapObjectsByTag("TitanSpawnPoint2"));
-        self._spawnPointsMap.Set(captureZones.Get(2), Map.FindMapObjectsByTag("TitanSpawnPoint3"));
-        self._spawnPointsMap.Set(captureZones.Get(3), Map.FindMapObjectsByTag("TitanSpawnPoint4"));
-        self._spawnPointsMap.Set(captureZones.Get(4), Map.FindMapObjectsByTag("TitanSpawnPoint5"));
-        self._spawnPointsMap.Set(captureZones.Get(5), Map.FindMapObjectsByTag("TitanSpawnPoint6"));
-        self._spawnPointsMap.Set(captureZones.Get(6), Map.FindMapObjectsByTag("TitanSpawnPoint7"));
-        self._spawnPointsMap.Set(captureZones.Get(7), Map.FindMapObjectsByTag("TitanSpawnPoint8"));
+function Setup(captureZones)
+{
+self._spawnPointsMap.Set(captureZones.Get(0), Map.FindMapObjectsByTag("TitanSpawnPoint1"));
+self._spawnPointsMap.Set(captureZones.Get(1), Map.FindMapObjectsByTag("TitanSpawnPoint2"));
+self._spawnPointsMap.Set(captureZones.Get(2), Map.FindMapObjectsByTag("TitanSpawnPoint3"));
+self._spawnPointsMap.Set(captureZones.Get(3), Map.FindMapObjectsByTag("TitanSpawnPoint4"));
+self._spawnPointsMap.Set(captureZones.Get(4), Map.FindMapObjectsByTag("TitanSpawnPoint5"));
+self._spawnPointsMap.Set(captureZones.Get(5), Map.FindMapObjectsByTag("TitanSpawnPoint6"));
+self._spawnPointsMap.Set(captureZones.Get(6), Map.FindMapObjectsByTag("TitanSpawnPoint7"));
+self._spawnPointsMap.Set(captureZones.Get(7), Map.FindMapObjectsByTag("TitanSpawnPoint8"));
 
-        self._annieSpawnPoint4 = Map.FindMapObjectsByTag("AnnieSpawn1").Get(0);
-        self._annieSpawnPoint8 = Map.FindMapObjectsByTag("AnnieSpawn2").Get(0);
-    }
+self._annieSpawnPoint4 = Map.FindMapObjectsByTag("AnnieSpawn1").Get(0);
+self._annieSpawnPoint8 = Map.FindMapObjectsByTag("AnnieSpawn2").Get(0);
+}
 
-    function GetSpawnPoint(captureZone)
-    {
-        if (self._spawnPointsMap.Contains(captureZone))
-        {
-            sp = Utils.GetRandomListElement(self._spawnPointsMap.Get(captureZone));
-            return sp.Position;
-        }
+function GetSpawnPoint(captureZone)
+{
+if (self._spawnPointsMap.Contains(captureZone))
+{
+sp = Utils.GetRandomListElement(self._spawnPointsMap.Get(captureZone));
+return sp.Position;
+}
 
-        if (captureZone.Order == 0)
-        {
-            pos = self.CaptureZone.MapObject.Position;
-            angle = 90 - Math.Rad2Deg(Random.RandomFloat(0, Math.PI));
-            position = Vector3(Math.Sin(angle), 0, Math.Cos(angle)) * Random.RandomFloat(minRadius, maxRadius);
-            position += pos;
-            return position;
-        }
+if (captureZone.Order == 0)
+{
+pos = self.CaptureZone.MapObject.Position;
+angle = 90 - Math.Rad2Deg(Random.RandomFloat(0, Math.PI));
+position = Vector3(Math.Sin(angle), 0, Math.Cos(angle)) * Random.RandomFloat(minRadius, maxRadius);
+position += pos;
+return position;
+}
 
-        return captureZone.MapObject.Position;
-    }
+return captureZone.MapObject.Position;
+}
 
-    function GetAnnieSpawnPoint(captureZone)
-    {
-        if (captureZone.Order == 3 && self._annieSpawnPoint4 != null)
-        {
-            return self._annieSpawnPoint4.Position;
-        }
+function GetAnnieSpawnPoint(captureZone)
+{
+if (captureZone.Order == 3 && self._annieSpawnPoint4 != null)
+{
+return self._annieSpawnPoint4.Position;
+}
 
-        if (captureZone.Order == 7 && self._annieSpawnPoint8 != null)
-        {
-            return self._annieSpawnPoint8.Position;
-        }
+if (captureZone.Order == 7 && self._annieSpawnPoint8 != null)
+{
+return self._annieSpawnPoint8.Position;
+}
 
-        return captureZone.MapObject.Position;
-    }
+return captureZone.MapObject.Position;
+}
 }
 extension ReinforcementZones
 {
-    function Setup(callbackReceiver)
-    {
-        self._zones = Map.FindMapObjectsByTag("ReinforcementZone");
-        for(z in self._zones)
-        {
-            c = z.GetComponent("InteractActionTrigger");
-            text = "Press " + Input.GetKeyName("Interaction/" + c.Key) + " to call for reinforcement.";
-            c.SetActionHandler(callbackReceiver, text);
-        }
-    }
+function Setup(callbackReceiver)
+{
+self._zones = Map.FindMapObjectsByTag("ReinforcementZone");
+for(z in self._zones)
+{
+c = z.GetComponent("InteractActionTrigger");
+text = "Press " + Input.GetKeyName("Interaction/" + c.Key) + " to call for reinforcement.";
+c.SetActionHandler(callbackReceiver, text);
+}
+}
 
-    function DeactivateAll()
-    {
-        for(z in self._zones)
-        {
-            z.Active = false;
-        }
-    }
+function DeactivateAll()
+{
+for(z in self._zones)
+{
+z.Active = false;
+}
+}
 }
 class NetworkMessage
 {
-    Params = Dict();
+Params = Dict();
 
-    function Set(name, value)
-    {
-        self.Params.Set(name, value);
-        return self;
-    }
+function Set(name, value)
+{
+self.Params.Set(name, value);
+return self;
+}
 
-    function SendAll()
-    {
-        Network.SendMessageAll(self.ToString());
-    }
+function SendAll()
+{
+Network.SendMessageAll(self.ToString());
+}
 
-    function SendOthers()
-    {
-        Network.SendMessageOthers(self.ToString());
-    }
+function SendOthers()
+{
+Network.SendMessageOthers(self.ToString());
+}
 
-    function Send(player)
-    {
-        Network.SendMessage(player, self.ToString());
-    }
+function Send(player)
+{
+Network.SendMessage(player, self.ToString());
+}
 
-    function ToString()
-    {
-        return Json.SaveToString(self.Params);
-    }
+function ToString()
+{
+return Json.SaveToString(self.Params);
+}
 }
 extension DialogueUtils
 {
-    function Init()
-    {
-        self.Profiles = List();
-        self.Profiles.Add(Profile("Eren", "Eren1"));
-        self.Profiles.Add(Profile("Eren", "Eren2"));
-        self.Profiles.Add(Profile("Erwin", "Erwin1"));
-        self.Profiles.Add(Profile("Erwin", "Erwin2"));
-        self.Profiles.Add(Profile("Erwin", "Erwin3"));
-        self.Profiles.Add(Profile("Erwin", "Erwin4"));
-        self.Profiles.Add(Profile("Fenglee", "Fenglee1"));
-        self.Profiles.Add(Profile("Gunther", "Gunther1"));
-        self.Profiles.Add(Profile("Hange", "Hange1"));
-        self.Profiles.Add(Profile("Ian", "Ian1"));
-        self.Profiles.Add(Profile("Jean", "Jean1"));
-        self.Profiles.Add(Profile("Levi", "Levi1"));
-        self.Profiles.Add(Profile("Levi", "Levi2"));
-        self.Profiles.Add(Profile("Levi", "Levi4"));
-        self.Profiles.Add(Profile("Levi", "Levi5"));
-        self.Profiles.Add(Profile("Levi", "Levi6"));
-    }
+function Init()
+{
+self.Profiles = List();
+self.Profiles.Add(Profile("Eren", "Eren1"));
+self.Profiles.Add(Profile("Eren", "Eren2"));
+self.Profiles.Add(Profile("Erwin", "Erwin1"));
+self.Profiles.Add(Profile("Erwin", "Erwin2"));
+self.Profiles.Add(Profile("Erwin", "Erwin3"));
+self.Profiles.Add(Profile("Erwin", "Erwin4"));
+self.Profiles.Add(Profile("Fenglee", "Fenglee1"));
+self.Profiles.Add(Profile("Gunther", "Gunther1"));
+self.Profiles.Add(Profile("Hange", "Hange1"));
+self.Profiles.Add(Profile("Ian", "Ian1"));
+self.Profiles.Add(Profile("Jean", "Jean1"));
+self.Profiles.Add(Profile("Levi", "Levi1"));
+self.Profiles.Add(Profile("Levi", "Levi2"));
+self.Profiles.Add(Profile("Levi", "Levi4"));
+self.Profiles.Add(Profile("Levi", "Levi5"));
+self.Profiles.Add(Profile("Levi", "Levi6"));
+}
 
-    function SendShowDialogueRandomProfileMessage(key)
-    {
-        self.SendShowDialogueMessage(key, self.GetRandomProfileIndex());
-    }
+function SendShowDialogueRandomProfileMessage(key)
+{
+self.SendShowDialogueMessage(key, self.GetRandomProfileIndex());
+}
 
-    function SendShowDialogueMessage(key, profileIndex)
-    {
-        NetworkMessage()
-            .Set("type", "Dialogue")
-            .Set("key", key)
-            .Set("profileIndex", profileIndex)
-            .SendAll();
-    }
+function SendShowDialogueMessage(key, profileIndex)
+{
+NetworkMessage()
+.Set("type", "Dialogue")
+.Set("key", key)
+.Set("profileIndex", profileIndex)
+.SendAll();
+}
 
-    coroutine ShowDialogue(key, profileIndex)
-    {
-        profile = self.Profiles.Get(profileIndex);
-        text = UI.GetLocale("OutsideTheWalls", "Dialogue", key);
-        Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
-        wait 4.0;
-        Cutscene.HideDialogue();
-    }
+coroutine ShowDialogue(key, profileIndex)
+{
+profile = self.Profiles.Get(profileIndex);
+text = UI.GetLocale("OutsideTheWalls", "Dialogue", key);
+Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
+wait 4.0;
+Cutscene.HideDialogue();
+}
 
-    function GetRandomProfileIndex()
-    {
-        return Random.RandomInt(0, self.Profiles.Count);
-    }
+function GetRandomProfileIndex()
+{
+return Random.RandomInt(0, self.Profiles.Count);
+}
 }
 
 class Profile
 {
-    Name = "Eren";
-    Icon = "Eren1";
+Name = "Eren";
+Icon = "Eren1";
 
-    function Init(name, icon)
-    {
-        self.Name = name;
-        self.Icon = icon;
-    }
+function Init(name, icon)
+{
+self.Name = name;
+self.Icon = icon;
+}
 }
 extension EventUtils
 {
-    function IsTown(currentIndex)
-    {
-        # Capture zones 2, 5, 7 are towns
-        # 4 is also a town but it is different
-        return currentIndex == 1 || currentIndex == 4 || currentIndex == 6;
-    }
+function IsTown(currentIndex)
+{
+# Capture zones 2, 5, 7 are towns
+# 4 is also a town but it is different
+return currentIndex == 1 || currentIndex == 4 || currentIndex == 6;
+}
 
-    function RevealTitans(event, seconds)
-    {
-        NetworkMessage()
-            .Set("type", "RevealTitans")
-            .Set("duration", seconds)
-            .SendAll();
-    }
+function RevealTitans(event, seconds)
+{
+NetworkMessage()
+.Set("type", "RevealTitans")
+.Set("duration", seconds)
+.SendAll();
+}
 }
 extension PlayerUtils
 {
-    function AnyPlayerDead()
-    {
-        dead = false;
-        for(p in Network.Players)
-        {
-            if (p.Status != "Alive")
-            {
-                dead = true;
-            }
-        }
+function AnyPlayerDead()
+{
+dead = false;
+for(p in Network.Players)
+{
+if (p.Status != "Alive")
+{
+dead = true;
+}
+}
 
-        return dead;
-    }
+return dead;
+}
 
-    coroutine RevivePlayers(captureZone)
-    {
-        wait 1.0;
-        self.SetSpawnPointInsideCaptureZone(captureZone);
-        Game.SpawnPlayerAll(false);
-    }
+coroutine RevivePlayers(captureZone)
+{
+wait 1.0;
+self.SetSpawnPointInsideCaptureZone(captureZone);
+Game.SpawnPlayerAll(false);
+}
 
-    function SetSpawnPointInsideCaptureZone(captureZone)
-    {
-        if (captureZone == null)
-        {
-            for(p in Network.Players)
-            {
-                p.SpawnPoint = null;
-            }
-            return;
-        }
+function SetSpawnPointInsideCaptureZone(captureZone)
+{
+if (captureZone == null)
+{
+for(p in Network.Players)
+{
+p.SpawnPoint = null;
+}
+return;
+}
 
-        yPos = 10.0;
-        zoneRadius = 10.0;
+yPos = 10.0;
+zoneRadius = 10.0;
 
-        for(p in Network.Players)
-        {
-            position = Utils.RandomPointInsideUnitCircleXZ();
-            position *= zoneRadius;
-            position.Y = yPos;
-            position += captureZone.MapObject.Position;
-            p.SpawnPoint = position;
-        }
-    }
+for(p in Network.Players)
+{
+position = Utils.RandomPointInsideUnitCircleXZ();
+position *= zoneRadius;
+position.Y = yPos;
+position += captureZone.MapObject.Position;
+p.SpawnPoint = position;
+}
+}
 
-    function GetPlayerById(id)
-    {
-        for(p in Network.Players)
-        {
-            if (p.ID == id)
-            {
-                return p;
-            }
-        }
+function GetPlayerById(id)
+{
+for(p in Network.Players)
+{
+if (p.ID == id)
+{
+return p;
+}
+}
 
-        return null;
-    }
+return null;
+}
 }
 extension TitanUtils
 {
-    function RevealTitans(seconds)
-    {
-        for(t in Game.Titans)
-        {
-            if (t != null)
-            {
-                if (seconds == null)
-                {
-                    t.AddOutline();
-                }
-                else
-                {
-                    t.Reveal(seconds);
-                }
-            }
-        }
-    }
+function RevealTitans(seconds)
+{
+for(t in Game.Titans)
+{
+if (t != null)
+{
+if (seconds == null)
+{
+t.AddOutline();
+}
+else
+{
+t.Reveal(seconds);
+}
+}
+}
+}
 
-    function SpawnAnnie(health, captureZone)
-    {
-        position = TitanSpawnPoints.GetAnnieSpawnPoint(captureZone);
+function SpawnAnnie(health, captureZone)
+{
+position = TitanSpawnPoints.GetAnnieSpawnPoint(captureZone);
 
-        shifter = Game.SpawnShifterAt("Annie", position);
-        shifter.MaxHealth = health;
-        shifter.Health = health;
-        
-        return shifter;
-    }
+shifter = Game.SpawnShifterAt("Annie", position);
+shifter.MaxHealth = health;
+shifter.Health = health;
 
-    coroutine SpawnTitans(captureZone, count)
-    {
-        i = 0;
+return shifter;
+}
 
-        while (i < count)
-        {
-            position = TitanSpawnPoints.GetSpawnPoint(captureZone);
-            titan = Game.SpawnTitanAt("Default", position);
+coroutine SpawnTitans(captureZone, count)
+{
+i = 0;
 
-            if (Math.Mod(i, 10) == 0)
-            {
-                wait 0.2;
-            }
+while (i < count)
+{
+position = TitanSpawnPoints.GetSpawnPoint(captureZone);
+titan = Game.SpawnTitanAt("Default", position);
 
-            i += 1;
-        }
-    }
+if (Math.Mod(i, 10) == 0)
+{
+wait 0.2;
+}
+
+i += 1;
+}
+}
 }
 extension Utils
 {
-    function RandomPointInsideUnitCircleXZ()
-    {
-        angle = Math.Rad2Deg(Random.RandomFloat(0.0, 2 * Math.PI));
-        position = Vector3(Math.Sin(angle), 0, Math.Cos(angle));
-        return position;
-    }
-
-    function GetRandomListElement(list)
-    {
-        i = Random.RandomInt(0, list.Count);
-        return list.Get(i);
-    }
-
-    function IndexOfListElement(list, element)
-    {
-        i = 0;
-        while (i < list.Count)
-        {
-            if (list.Get(i) == element)
-            {
-                return i;
-            }
-
-            i += 1;
-        }
-
-        return -1;
-    }
-
-    function TryRemoveListElement(list, element)
-    {
-        index = self.IndexOfListElement(list, element);
-        if (index != -1)
-        {
-            list.RemoveAt(index);
-            return true;
-        }
-
-        return false;
-    }
+function RandomPointInsideUnitCircleXZ()
+{
+angle = Math.Rad2Deg(Random.RandomFloat(0.0, 2 * Math.PI));
+position = Vector3(Math.Sin(angle), 0, Math.Cos(angle));
+return position;
 }
+
+function GetRandomListElement(list)
+{
+i = Random.RandomInt(0, list.Count);
+return list.Get(i);
+}
+
+function IndexOfListElement(list, element)
+{
+i = 0;
+while (i < list.Count)
+{
+if (list.Get(i) == element)
+{
+return i;
+}
+
+i += 1;
+}
+
+return -1;
+}
+
+function TryRemoveListElement(list, element)
+{
+index = self.IndexOfListElement(list, element);
+if (index != -1)
+{
+list.RemoveAt(index);
+return true;
+}
+
+return false;
+}
+}
+
 
 /// Weather
 {
