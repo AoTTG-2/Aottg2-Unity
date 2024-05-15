@@ -237,11 +237,12 @@ namespace GameManagers
         public void LoadSceneRPC(string SceneName, PhotonMessageInfo info)
         {
             if (!info.Sender.IsMasterClient) return;
+            if (!EmVariables.IsSceneInBuild(SceneName)) return;
 
             SceneLoader.CustomSceneLoad = true;
             SceneManager.LoadSceneAsync(SceneName, LoadSceneMode.Additive);
 
-            ChatManager.AddLine($"Scene {SceneName} Loaded!\nSent By {info.Sender.NickName.StripHex()}");
+            ChatManager.AddLine($"Scene {SceneName} Loaded!");
         }
 
         #endregion

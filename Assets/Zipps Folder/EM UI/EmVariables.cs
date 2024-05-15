@@ -10,4 +10,7 @@ public static class EmVariables
 
     public static int LogisticianBladeSupply = 4;
     public static int LogisticianGasSupply = 4;
+
+    public static List<string> sceneNames = new List<string>();
+    public static bool IsSceneInBuild(string sceneName) { return sceneNames.Contains(sceneName); }
 }
