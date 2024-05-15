@@ -223,7 +223,7 @@ class ZippsUIManager : MonoBehaviour
             case 3:
                 BladeSupplyCount.color = yellow;
                 break;
-            case 4:
+            default:
                 BladeSupplyCount.color = green;
                 break;
         }
@@ -241,7 +241,7 @@ class ZippsUIManager : MonoBehaviour
             case 3:
                 GasSupplyCount.color = yellow;
                 break;
-            case 4:
+            default:
                 GasSupplyCount.color = green;
                 break;
         }
