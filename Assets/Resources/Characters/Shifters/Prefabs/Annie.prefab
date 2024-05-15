@@ -1131,6 +1131,7 @@ MonoBehaviour:
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0
+  DeathAnimationLength: 2
 --- !u!54 &561230232209052193
 Rigidbody:
   m_ObjectHideFlags: 0

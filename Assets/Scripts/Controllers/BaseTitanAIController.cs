@@ -210,12 +210,13 @@ namespace Controllers
                     _moveToActive = false;
                     Idle();
                 }
-                else if (_stateTimeLeft <= 0)
-                    MoveToPosition(true);
+                MoveToPosition(true);
+                /*else if (_stateTimeLeft <= 0)
+                    
                 else if (IsHeadingForCollision())
                     MoveToPosition(true);
                 else
-                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
+                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);*/
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
