@@ -1741,8 +1741,14 @@ namespace Characters
                 Weapon.OnFixedUpdate();
                 HookLeft.OnFixedUpdate();
                 HookRight.OnFixedUpdate();
-                if (Special != null)
-                    Special.OnFixedUpdate();
+
+                for (int i = 0; i < SpecialsArray.Length; i++) // changed by ata to update all specials in the ability wheel //
+                {
+                    SpecialsArray[i]?.OnFixedUpdate();
+                }
+
+                /*if (Special != null)
+                    Special.OnFixedUpdate();*/
             }
         }
 
