@@ -216,7 +216,7 @@ namespace Projectiles
                     GetComponent<Rigidbody>().velocity *= 0.94f; //added by Sysyfus Dec 6 2023 to simulate wind resistance
                     //FixedUpdateInWater(); //added by Sysyfus Jan 9 2024
                     if (gravity)
-                        GetComponent<Rigidbody>().velocity -= new Vector3(0f, 3.2f, 0f); //added by Sysyfus Dec 6 2023 to simulate gravity
+                        GetComponent<Rigidbody>().velocity -= new Vector3(0f, 1.7f, 0f); //added by Sysyfus Dec 6 2023 to simulate gravity
 
                     RaycastHit hit;
                     Vector3 direction = (transform.position - _lastPosition);
