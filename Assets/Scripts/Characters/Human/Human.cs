@@ -2085,9 +2085,10 @@ namespace Characters
         {
             if (CurrentSpecial != special)
             {
-                if (State != HumanState.Die || State != HumanState.Grab || State != HumanState.MountingHorse || State != HumanState.Stun || State != HumanState.GroundDodge)
+                bool canAnimationReset = (State != HumanState.Die && State != HumanState.Grab && State != HumanState.MountingHorse && State != HumanState.Stun && State != HumanState.GroundDodge);
+                if (canAnimationReset)
                     State = HumanState.Idle;
-                
+
                 CurrentSpecial = special;
                 Special = SpecialsArray[newSpecial - 1];
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
