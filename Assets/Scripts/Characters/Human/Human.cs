@@ -1969,10 +1969,10 @@ namespace Characters
                                SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
                 SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
                 _zippsUIManager = FindFirstObjectByType<ZippsUIManager>(); // setting up the ability wheel UI //
-                _zippsUIManager.SetWheelImages();                          // setting up the ability wheel UI //
-                _zippsUIManager.Ability1Selected = true;
-                _zippsUIManager.Ability2Selected = false;
-                _zippsUIManager.Ability3Selected = false;
+                _zippsUIManager.SetWheelImages(); // setting up the ability wheel UI //
+                _zippsUIManager.Ability1Selected = true; // setting up the ability wheel UI //
+                _zippsUIManager.Ability2Selected = false; // setting up the ability wheel UI //
+                _zippsUIManager.Ability3Selected = false; // setting up the ability wheel UI //
             }
             FinishSetup = true;
             CustomAnimationSpeed();
@@ -2079,7 +2079,9 @@ namespace Characters
         {
             if (CurrentSpecial != special)
             {
-                State = HumanState.Idle;
+                if (State != HumanState.Die || State != HumanState.Grab || State != HumanState.MountingHorse || State != HumanState.Stun || State != HumanState.GroundDodge)
+                    State = HumanState.Idle;
+                
                 CurrentSpecial = special;
                 Special = SpecialsArray[newSpecial - 1];
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
