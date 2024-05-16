@@ -13,6 +13,7 @@ using System.Collections;
 using Cameras;
 using CustomLogic;
 using Photon.Pun;
+using Photon.Realtime;
 
 namespace UI
 {
@@ -465,6 +466,68 @@ namespace UI
             return str;
         }
 
+        private string GetPlayerListEntry(Player player)
+        {
+            string row = string.Empty;
+            // read player props
+            string status = player.GetStringProperty(PlayerProperty.Status);
+            if (status != PlayerStatus.Alive)
+                status = " <color=red>*dead*</color> ";
+            else
+                status = string.Empty;
+
+            string team = player.GetStringProperty(PlayerProperty.Team);
+            if (team == TeamInfo.None)
+                team = "";
+            else if (team == TeamInfo.Blue)
+                team = " <color=blue>B</color> ";
+            else if (team == TeamInfo.Red)
+                team = " <color=red>R</color> ";
+            else if (team == TeamInfo.Titan)
+                team = " <color=yellow>T</color> ";
+            else if (team == TeamInfo.Human)
+                team = " <color=#a8fffc>H</color> ";
+            else
+                status = string.Empty;
+
+            string loadout = player.GetStringProperty(PlayerProperty.Loadout);
+            if (loadout == HumanLoadout.APG)
+                loadout = " APG ";
+            else if (loadout == HumanLoadout.AHSS)
+                loadout = " AHSS ";
+            else if (loadout == HumanLoadout.Thunderspears)
+                loadout = " TS ";
+            else
+                status = string.Empty;
+
+
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
+            
+
+            // string guild = player.GetStringProperty(PlayerProperty.Guild);
+            string kills = player.GetIntProperty(PlayerProperty.Kills).ToString();
+            string deaths = player.GetIntProperty(PlayerProperty.Deaths).ToString();
+            string highestDamage = player.GetIntProperty(PlayerProperty.HighestDamage).ToString();
+            string totalDamage = player.GetIntProperty(PlayerProperty.TotalDamage).ToString();
+
+            string stats = kills + "/" + deaths + "/" + highestDamage + "/" + totalDamage;
+            
+            // build row
+            row = $"{name}: {stats}";
+
+            return row;
+        }
+
+        private string GetPlayerList()
+        {
+            string list = string.Empty;
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                list += GetPlayerListEntry(player) + "\n";
+            }
+            return list;
+        }
+
         private string GetTelemetricStrings()
         {
             string timeLine = "";
@@ -494,6 +557,7 @@ namespace UI
                 string max = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.HighestDamage).ToString();
                 string total = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage).ToString();
                 kdrLine += "KDR: " + string.Join(" / ", new string[] { kills, deaths, max, total }) + "\n";
+                kdrLine = GetPlayerList();
             }
             string final = timeLine;
             if (timeLine != "")
