@@ -307,6 +307,7 @@
 			"ActionPause": 1.0
 		},
 		"Normal": {
+			"AttackWait": 1.0
 		},
 		"Hard": {
 			"TurnPause": 0.2,

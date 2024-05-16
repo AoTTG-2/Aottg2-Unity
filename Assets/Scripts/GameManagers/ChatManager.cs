@@ -347,6 +347,19 @@ namespace GameManagers
                 ((InGameManager)SceneLoader.CurrentGameManager).StartUnpauseGame();
         }
 
+        [CommandAttribute("resetkd", "/resetkd: Reset your own stats.")]
+        private static void Resetkd(string[] args)
+        {
+            InGameManager.ResetPlayerKD(PhotonNetwork.LocalPlayer);
+        }
+
+        [CommandAttribute("resetkdall", "/resetkdall: Reset all player stats.")]
+        private static void Resetkdall(string[] args)
+        {
+            RPCManager.PhotonView.RPC("ResetKDRPC", RpcTarget.All);
+        }
+
+
         [CommandAttribute("help", "/help [page(optional)]: Displays command usage.")]
         private static void Help(string[] args)
         {

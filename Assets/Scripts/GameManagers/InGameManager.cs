@@ -718,6 +718,17 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
         }
 
+        public static void ResetPlayerKD(Player player)
+        {
+            var kdrProperties = new Dictionary<string, object>
+            {
+                { PlayerProperty.Kills, 0 },
+                { PlayerProperty.Deaths, 0 },
+                { PlayerProperty.HighestDamage, 0 },
+                { PlayerProperty.TotalDamage, 0 }
+            };
+            player.SetCustomProperties(kdrProperties);
+        }
         private static void ResetRoundPlayerProperties()
         {
             if (SettingsManager.InGameCurrent.Misc.ClearKDROnRestart.Value)
