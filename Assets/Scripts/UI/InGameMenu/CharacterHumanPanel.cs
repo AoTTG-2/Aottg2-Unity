@@ -35,9 +35,16 @@ namespace UI
                 loadouts.Add(HumanLoadout.Blades);
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
+
             List<string> specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
-            if (!specials.Contains(charSettings.Special.Value))
+
+            if (!specials.Contains(charSettings.Special.Value) || !specials.Contains(charSettings.Special_2.Value) || !specials.Contains(charSettings.Special_3.Value))
+            {
                 charSettings.Special.Value = specials[0];
+                charSettings.Special_2.Value = specials[1];
+                charSettings.Special_3.Value = specials[2];
+            }
+
             string[] options = GetCharOptions();
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
                 options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
