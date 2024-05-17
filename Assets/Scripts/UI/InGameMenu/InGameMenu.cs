@@ -14,6 +14,9 @@ using Cameras;
 using CustomLogic;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.Rendering;
+using System.Linq;
+using Photon.Pun.UtilityScripts;
 
 namespace UI
 {
@@ -477,18 +480,22 @@ namespace UI
                 status = string.Empty;
 
             string team = player.GetStringProperty(PlayerProperty.Team);
+            string teamColor = TeamInfo.GetTeamColor(team);
             if (team == TeamInfo.None)
-                team = "";
+                team = string.Empty;
             else if (team == TeamInfo.Blue)
-                team = " <color=blue>B</color> ";
+                team = " B ";
             else if (team == TeamInfo.Red)
-                team = " <color=red>R</color> ";
+                team = " R ";
             else if (team == TeamInfo.Titan)
-                team = " <color=yellow>T</color> ";
+                team = " T ";
             else if (team == TeamInfo.Human)
-                team = " <color=#a8fffc>H</color> ";
+                team = " H ";
             else
-                status = string.Empty;
+                team = string.Empty;
+
+            team = Util.ColorText(team, teamColor);
+
 
             string loadout = player.GetStringProperty(PlayerProperty.Loadout);
             if (loadout == HumanLoadout.APG)
@@ -498,7 +505,7 @@ namespace UI
             else if (loadout == HumanLoadout.Thunderspears)
                 loadout = " TS ";
             else
-                status = string.Empty;
+                loadout = string.Empty;
 
 
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
@@ -513,17 +520,57 @@ namespace UI
             string stats = kills + "/" + deaths + "/" + highestDamage + "/" + totalDamage;
             
             // build row
-            row = $"{name}: {stats}";
+            row = Util.SizeText($"{name}: {stats}", 19);
 
             return row;
+        }
+
+        private string GetAggregateStats(IGrouping<string, Player> group)
+        {
+            int kills = 0;
+            int deaths = 0;
+            int highestDmg = 0;
+            int totalDmg = 0;
+
+            foreach (var player in group)
+            {
+                kills += player.GetIntProperty(PlayerProperty.Kills);
+                deaths += player.GetIntProperty(PlayerProperty.Deaths);
+                highestDmg += player.GetIntProperty(PlayerProperty.HighestDamage);
+                totalDmg += player.GetIntProperty(PlayerProperty.TotalDamage);
+            }
+
+            return $"{Util.ColorText(group.Key, TeamInfo.GetTeamColor(group.Key))}: {kills}/{deaths}/{highestDmg}/{totalDmg}\n";
         }
 
         private string GetPlayerList()
         {
             string list = string.Empty;
-            foreach (Player player in PhotonNetwork.PlayerList)
+            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
+            foreach (var player in PhotonNetwork.PlayerList)
             {
                 list += GetPlayerListEntry(player) + "\n";
+            }
+            return list;
+        }
+
+        private string GetPlayerListTeams()
+        {
+            string list = string.Empty;
+            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
+            var grouped = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) != TeamInfo.None).GroupBy(e => e.GetStringProperty(PlayerProperty.Team));
+            foreach (var group in grouped)
+            {
+                list += GetAggregateStats(group);
+                foreach (Player player in group)
+                {
+                    list += "\t" + GetPlayerListEntry(player) + "\n";
+                }
+            }
+            foreach (Player player in individuals)
+            {
+                list += individuals + ":\n";
+                list += "\t" + GetPlayerListEntry(player) + "\n";
             }
             return list;
         }
@@ -557,7 +604,10 @@ namespace UI
                 string max = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.HighestDamage).ToString();
                 string total = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage).ToString();
                 kdrLine += "KDR: " + string.Join(" / ", new string[] { kills, deaths, max, total }) + "\n";
-                kdrLine = GetPlayerList();
+                if (SettingsManager.InGameCurrent.Misc.PVP.Value == 0)
+                    kdrLine = GetPlayerList();
+                else
+                    kdrLine = GetPlayerListTeams();
             }
             string final = timeLine;
             if (timeLine != "")

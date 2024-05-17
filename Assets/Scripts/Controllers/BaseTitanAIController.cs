@@ -52,8 +52,8 @@ namespace Controllers
         private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
         private readonly float _collisionWeight = 140f;
-        private float _collisionAvoidDistance => this._attackRange; // 100f;
-        private float _collisionDetectionDistance => this._attackRange;
+        private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
+        private float _collisionDetectionDistance => this._attackRange * 2;
         private readonly bool _useCollisionAvoidance = true;
 
         protected override void Awake()

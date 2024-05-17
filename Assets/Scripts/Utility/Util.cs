@@ -281,6 +281,21 @@ namespace Utility
 
             return paginatedCommands;
         }
+
+        public static string ColorText(string text, string color)
+        {
+            return $"<color={color}>{text}</color>";
+        }
+
+        public static string SizeText(string text, int size)
+        {
+            return $"<size={size}>{text}</size>";
+        }
+
+        public static string RichTextTag(string text, string tag, string value)
+        {
+            return $"<{tag}={value}>{text}</{tag}>";
+        }
         
         public static Quaternion ConstrainedToX(Quaternion rotation) =>
             Quaternion.Euler(rotation.eulerAngles.x, 0f,  0f);
