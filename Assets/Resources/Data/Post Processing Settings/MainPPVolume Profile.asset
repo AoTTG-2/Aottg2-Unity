@@ -84,7 +84,7 @@ MonoBehaviour:
     value: 360
   sampleCount:
     overrideState: 1
-    value: 16
+    value: 4
 --- !u!114 &-4625510297898506084
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb84e30e02715445aeb9959894e3b4d, type: 3}
   m_Name: ColorGrading
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -1498,10 +1498,10 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 10
+    value: 8
   threshold:
     overrideState: 1
-    value: 1.15
+    value: 1.6
   softKnee:
     overrideState: 1
     value: 0.3
@@ -1567,7 +1567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cb7e9e120078f43bce4f0b1be547a7, type: 3}
   m_Name: AmbientOcclusion
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -1576,7 +1576,7 @@ MonoBehaviour:
     value: 0
   intensity:
     overrideState: 1
-    value: 0.63
+    value: 0.09
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
