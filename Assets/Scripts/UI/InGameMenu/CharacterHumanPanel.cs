@@ -45,6 +45,11 @@ namespace UI
                 charSettings.Special_3.Value = specials[2];
             }
 
+            if (charSettings.Loadout.Value == "Blades") // added by Ata 17 May 2024 
+                specials.Remove("Stock");
+
+            specials = FilterAbilities(specials, charSettings); // added by Ata 17 May 2024 
+
             string[] options = GetCharOptions();
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
                 options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
@@ -54,17 +59,45 @@ namespace UI
                 loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
             options = specials.ToArray();
             ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
-                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => parent.RebuildCategoryPanel()); // Rebuild added by ata 17 May 2024 for Ability Wheel Filtering //
             ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special_2, UIManager.GetLocale(cat, sub, "Special2"), // added by Ata 12 May 2024 for Ability Wheel //
-                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => parent.RebuildCategoryPanel()); // Rebuild added by ata 17 May 2024 for Ability Wheel Filtering //
             ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special_3, UIManager.GetLocale(cat, sub, "Special3"), // added by Ata 12 May 2024 for Ability Wheel //
-                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => parent.RebuildCategoryPanel()); // Rebuild added by ata 17 May 2024 for Ability Wheel Filtering //
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
                new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
             }
         }
+
+        #region Special Ability Filter
+        private List<string> FilterAbilities(List<string> specials, InGameCharacterSettings charSettings)
+        {
+            if (specials.Contains(charSettings.Special.Value)) 
+                specials.Remove(charSettings.Special.Value);
+
+            if (specials.Contains(charSettings.Special_2.Value)) 
+                specials.Remove(charSettings.Special_2.Value);
+
+            if (specials.Contains(charSettings.Special_3.Value)) 
+                specials.Remove(charSettings.Special_2.Value);
+
+            bool hasShifterAbility;
+            foreach (var item in HumanSpecials.ShifterSpecials)
+            {
+                if (charSettings.Special.Value == item || charSettings.Special_2.Value == item || charSettings.Special_3.Value == item)
+                {
+                    foreach (var _item in HumanSpecials.ShifterSpecials)
+                    {
+                        specials.Remove(_item);
+                    }
+                }
+            }
+
+            return specials;
+        }
+        #endregion
 
         protected string[] GetCharOptions()
         {
