@@ -494,6 +494,7 @@
 			{"Name": "GroundFog1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "GroundFog2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "LavaHaze", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "Rumbling1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Scifi1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Seaweed", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},

@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:|HasWeather:0
+EditorVersion:1.0|Description:Classic Forest, originally made by Feng, remade 1-1 by Thyme and DesertFalcon.|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -217,10 +217,10 @@ Scene,Decor/Chair1,210,0,1,1,1,0,Chair1,0.341823,-11.86304,48.6939,-5.008956E-06
 Scene,Decor/Book1,211,0,1,1,1,0,Book1,-0.3190949,-15.14989,46.69358,49.85479,180,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,212,0,1,1,1,0,Cuboid,-50.53821,-5,122.4464,0,0,0,600,1,600,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|25/25|0/0,;
 Scene,Interact/Supply2,213,0,1,1,1,0,Supply2,-53,-0.04145937,-511,0,74.26,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Geometry/Cuboid,214,0,1,1,0,0,Barrier,-880,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,219,0,1,1,0,0,Barrier,880,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,216,0,1,1,0,0,Barrier,0,1100,-1000,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,217,0,1,1,0,0,Barrier,0,1100,1000,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,214,0,1,1,0,0,Barrier,-850,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,219,0,1,1,0,0,Barrier,850,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,216,0,1,1,0,0,Barrier,0,1100,-850,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,217,0,1,1,0,0,Barrier,0,1100,850,0,90,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,218,0,1,1,0,0,Barrier,0,2200,0,0,90,90,10,250,250,Physical,Characters,Default,Default|255/255/255/255,
 /// Logic
 
