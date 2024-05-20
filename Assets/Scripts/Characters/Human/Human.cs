@@ -30,6 +30,8 @@ namespace Characters
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
+        public BaseUseable Special_2;
+        public BaseUseable Special_3;
         public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
         public HookUseable HookLeft;
@@ -53,6 +55,8 @@ namespace Characters
         public float GasUsage = 0.2f;
         public float HorseSpeed = 50f;
         public string CurrentSpecial;
+        public string SideSpecial_1;
+        public string SideSpecial_2;
         public BaseTitan Grabber;
         public Transform GrabHand;
         public Human Carrier;
@@ -2092,6 +2096,34 @@ namespace Characters
                 CurrentSpecial = special;
                 Special = SpecialsArray[newSpecial - 1];
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+
+                if (newSpecial == 1)
+                {
+                    Special_2 = SpecialsArray[1];
+                    Special_3 = SpecialsArray[2];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special_2.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_3.Value;
+                }
+                if (newSpecial == 2)
+                {
+                    Special_2 = SpecialsArray[0];
+                    Special_3 = SpecialsArray[2];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_3.Value;
+                }
+                if (newSpecial == 3)
+                {
+                    Special_2 = SpecialsArray[0];
+                    Special_3 = SpecialsArray[1];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_2.Value;
+                }
+
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_2(HumanSpecials.GetSpecialIcon(SideSpecial_1));
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_3(HumanSpecials.GetSpecialIcon(SideSpecial_2));
             }
         }
 
