@@ -313,6 +313,10 @@ class ZippsUIManager : MonoBehaviour
     private RawImage Ability2Selector;
     [SerializeField]
     private RawImage Ability3Selector;
+    [SerializeField]
+    public GameObject AbilitySelectionSound;
+    [SerializeField]
+    public AudioSource ChangeAbilityAudio;
 
     public bool Ability1Selected = false; // made public so i can set to red on human spawn //
     public bool Ability2Selected = false; // made public so i can set to white on human spawn //

@@ -27,13 +27,13 @@ namespace UI
         private Image _specialIconBackground;
         private Image _specialIconFill;
 
-        private Image _specialFill_2;
-        private Image _specialIconBackground_2;
-        private Image _specialIconFill_2;
+        private Image _specialFill_2; // added by ata 20 May 2024 for Ability Wheel //
+        private Image _specialIconBackground_2; // added by ata 20 May 2024 for Ability Wheel //
+        private Image _specialIconFill_2; // added by ata 20 May 2024 for Ability Wheel //
 
-        private Image _specialFill_3;
-        private Image _specialIconBackground_3;
-        private Image _specialIconFill_3;
+        private Image _specialFill_3; // added by ata 20 May 2024 for Ability Wheel //
+        private Image _specialIconBackground_3; // added by ata 20 May 2024 for Ability Wheel //
+        private Image _specialIconFill_3; // added by ata 20 May 2024 for Ability Wheel //
 
         private Image _gasFillLeft;
         private Image _gasFillRight;
@@ -42,11 +42,11 @@ namespace UI
         private string _currentSpecialIcon = "";
         private string _newSpecialIcon = "";
 
-        private string _currentSpecialIcon_2 = "";
-        private string _newSpecialIcon_2 = "";
+        private string _currentSpecialIcon_2 = ""; // added by ata 20 May 2024 for Ability Wheel //
+        private string _newSpecialIcon_2 = ""; // added by ata 20 May 2024 for Ability Wheel //
 
-        private string _currentSpecialIcon_3 = "";
-        private string _newSpecialIcon_3 = "";
+        private string _currentSpecialIcon_3 = ""; // added by ata 20 May 2024 for Ability Wheel //
+        private string _newSpecialIcon_3 = ""; // added by ata 20 May 2024 for Ability Wheel //
 
         private Human _human;
         private float _gasAnimationTimeLeft = 0f;
@@ -188,32 +188,32 @@ namespace UI
             _specialIconBackground = _hudBottom.transform.Find("SpecialIconBackground").GetComponent<Image>();
             _specialIconFill = _hudBottom.transform.Find("SpecialIconFill").GetComponent<Image>();
 
-            _specialFill_2 = _hudBottom.transform.Find("SpecialFill_2").GetComponent<Image>();
-            _specialIconBackground_2 = _hudBottom.transform.Find("SpecialIconBackground_2").GetComponent<Image>();
-            _specialIconFill_2 = _hudBottom.transform.Find("SpecialIconFill_2").GetComponent<Image>();
-
-            _specialFill_3 = _hudBottom.transform.Find("SpecialFill_3").GetComponent<Image>();
-            _specialIconBackground_3 = _hudBottom.transform.Find("SpecialIconBackground_3").GetComponent<Image>();
-            _specialIconFill_3 = _hudBottom.transform.Find("SpecialIconFill_3").GetComponent<Image>();
+            _specialFill_2 = _hudBottom.transform.Find("SpecialFill_2").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
+            _specialIconBackground_2 = _hudBottom.transform.Find("SpecialIconBackground_2").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
+            _specialIconFill_2 = _hudBottom.transform.Find("SpecialIconFill_2").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
+ 
+            _specialFill_3 = _hudBottom.transform.Find("SpecialFill_3").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
+            _specialIconBackground_3 = _hudBottom.transform.Find("SpecialIconBackground_3").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
+            _specialIconFill_3 = _hudBottom.transform.Find("SpecialIconFill_3").GetComponent<Image>(); // added by ata 20 May 2024 for Ability Wheel //
 
             _gasFillLeft = _hudBottom.transform.Find("GasFillLeft").GetComponent<Image>();
             _gasFillRight = _hudBottom.transform.Find("GasFillRight").GetComponent<Image>();
             _gasBackground = _hudBottom.transform.Find("GasBackground").GetComponent<Image>();
             
             _currentSpecialIcon = "";
-            _currentSpecialIcon_2 = "";
-            _currentSpecialIcon_3 = "";
+            _currentSpecialIcon_2 = ""; // added by ata 20 May 2024 for Ability Wheel //
+            _currentSpecialIcon_3 = ""; // added by ata 20 May 2024 for Ability Wheel //
         }
 
         public void SetSpecialIcon(string icon)
         {
             _newSpecialIcon = icon;
         }
-        public void SetSpecialIcon_2(string icon)
+        public void SetSpecialIcon_2(string icon) // added by ata 20 May 2024 for Ability Wheel //
         {
             _newSpecialIcon_2 = icon;
         }
-        public void SetSpecialIcon_3(string icon)
+        public void SetSpecialIcon_3(string icon) // added by ata 20 May 2024 for Ability Wheel //
         {
             _newSpecialIcon_3 = icon;
         }
@@ -340,8 +340,8 @@ namespace UI
             _gasAnimationTimeLeft -= Time.deltaTime;
             _shootAnimationTimeLeft -= Time.deltaTime;
             UpdateHumanSpecial();
-            UpdateHumanSpecial_2();
-            UpdateHumanSpecial_3();
+            UpdateHumanSpecial_2(); // added by ata 20 May 2024 for Ability Wheel //
+            UpdateHumanSpecial_3(); // added by ata 20 May 2024 for Ability Wheel //
             UpdateGas();
             if (_human.Weapon is BladeWeapon)
                 UpdateBlade();
@@ -398,7 +398,7 @@ namespace UI
             _specialIconFill.gameObject.SetActive(_human.Special != null && _currentSpecialIcon != "");
         }
 
-        private void UpdateHumanSpecial_2()
+        private void UpdateHumanSpecial_2() // added by ata 20 May 2024 for Ability Wheel // 
         {
             if (_human.Special_2 == null)
             {
@@ -425,7 +425,7 @@ namespace UI
             _specialIconBackground_2.gameObject.SetActive(_human.Special_2 != null && _currentSpecialIcon_2 != "");
             _specialIconFill_2.gameObject.SetActive(_human.Special_2 != null && _currentSpecialIcon_2 != "");
         }
-        private void UpdateHumanSpecial_3()
+        private void UpdateHumanSpecial_3() // added by ata 20 May 2024 for Ability Wheel //
         {
             if (_human.Special_3 == null)
             {

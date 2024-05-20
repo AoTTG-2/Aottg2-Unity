@@ -2124,6 +2124,17 @@ namespace Characters
 
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_2(HumanSpecials.GetSpecialIcon(SideSpecial_1));
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_3(HumanSpecials.GetSpecialIcon(SideSpecial_2));
+
+                _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
+                if (EmVariables.AbilityWheelInitialUse == true)
+                {
+                    _zippsUIManager.AbilitySelectionSound.SetActive(true);
+                    _zippsUIManager.ChangeAbilityAudio.Play();
+                }
+                else
+                {
+                    EmVariables.AbilityWheelInitialUse = true;
+                }
             }
         }
 
