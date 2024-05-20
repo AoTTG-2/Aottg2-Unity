@@ -207,11 +207,9 @@ namespace Controllers
                     Idle();
                 }
                 else if (_stateTimeLeft <= 0)
-                    MoveToPosition();
-                else if (IsHeadingForCollision())
-                    _titan.TargetAngle = GetMoveToAngle(_moveToPosition);
+                    MoveToPosition(true);                    
                 else
-                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
+                    _titan.TargetAngle = GetMoveToAngle(_moveToPosition, true);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
@@ -262,6 +260,7 @@ namespace Controllers
                         else
                         {
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
                         }
                     }
                 }
@@ -343,7 +342,7 @@ namespace Controllers
             {
                 if (IsHeadingForCollision())
                 {
-                    _moveAngle = Random.Range(-10f, 10f);
+                    _moveAngle = 0; // Random.Range(-10f, 10f);
                     resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
                 }
             }
@@ -398,7 +397,7 @@ namespace Controllers
                 }
                 else
                 {
-                    Debug.DrawRay(start, direction * hit.distance, Color.magenta);
+                    Debug.DrawRay(start, direction * hit.distance, Color.gray);
                     return false;
                 }
                     
