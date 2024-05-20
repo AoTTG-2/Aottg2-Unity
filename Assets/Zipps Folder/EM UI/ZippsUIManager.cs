@@ -320,9 +320,16 @@ class ZippsUIManager : MonoBehaviour
 
     public void SetWheelImages()
     {
-        Ability1Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special.Value);
+        if (SettingsManager.InGameCharacterSettings.Special.Value.Length == 0 || SettingsManager.InGameCharacterSettings.Special.Value == "None")
+        {
+            Ability1Image.sprite = LoadSprite("No");
+        }
+        else
+        {
+            Ability1Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special.Value);
+        }
 
-        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length == 0)
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length == 0 || SettingsManager.InGameCharacterSettings.Special_2.Value == "None")
         {
             Ability2Image.sprite = LoadSprite("No");
         }
@@ -331,7 +338,7 @@ class ZippsUIManager : MonoBehaviour
             Ability2Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_2.Value);
         }
 
-        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length == 0)
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length == 0  || SettingsManager.InGameCharacterSettings.Special_3.Value == "None")
         {
             Ability3Image.sprite = LoadSprite("No");
         }
@@ -354,7 +361,7 @@ class ZippsUIManager : MonoBehaviour
 
     public void OnHoverAbility1()
     {
-        if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0)
+        if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special.Value != "None")
         {
             _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = true;
@@ -375,7 +382,7 @@ class ZippsUIManager : MonoBehaviour
     }
     public void OnHoverAbility2()
     {
-        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length > 0)
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_2.Value != "None")
         {
             _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = false;
@@ -396,7 +403,7 @@ class ZippsUIManager : MonoBehaviour
     }
     public void OnHoverAbility3()
     {
-        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length > 0)
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_3.Value != "None")
         {
             _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = false;

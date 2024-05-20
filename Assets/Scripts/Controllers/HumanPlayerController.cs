@@ -268,9 +268,15 @@ namespace Controllers
             }
             else
                 _human.Weapon.SetInput(false);
+
             if (_human.Special != null)
             {
-                bool canSpecial = _human.MountState == HumanMountState.None && 
+                if (_humanInput.Ability1.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value && SettingsManager.InGameCharacterSettings.Special.Value != "None") // added by Ata 20 May 2024 for Ability Wheel//
+                {
+                    _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+                }
+
+                    bool canSpecial = _human.MountState == HumanMountState.None && 
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab)
                     && _human.CarryState != HumanCarryState.Carry && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
                 if (canSpecial)
@@ -278,6 +284,17 @@ namespace Controllers
                 else
                     _human.Special.SetInput(false);
             }
+            
+            if (_human.Special_2 != null && _humanInput.Ability2.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value && SettingsManager.InGameCharacterSettings.Special_2.Value != "None")
+            {
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+            }
+
+            if (_human.Special_3 != null && _humanInput.Ability3.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value && SettingsManager.InGameCharacterSettings.Special_3.Value != "None")
+            {
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+            }
+
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
                 return;
             if (_human.MountState == HumanMountState.None)

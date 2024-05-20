@@ -74,14 +74,14 @@ namespace UI
         #region Special Ability Filter
         private List<string> FilterAbilities(List<string> specials, InGameCharacterSettings charSettings)
         {
-            if (specials.Contains(charSettings.Special.Value)) 
+            if (specials.Contains(charSettings.Special.Value) && charSettings.Special.Value != "None") 
                 specials.Remove(charSettings.Special.Value);
 
-            if (specials.Contains(charSettings.Special_2.Value)) 
+            if (specials.Contains(charSettings.Special_2.Value) && charSettings.Special_2.Value != "None") 
                 specials.Remove(charSettings.Special_2.Value);
 
-            if (specials.Contains(charSettings.Special_3.Value)) 
-                specials.Remove(charSettings.Special_2.Value);
+            if (specials.Contains(charSettings.Special_3.Value) && charSettings.Special_3.Value != "None") 
+                specials.Remove(charSettings.Special_3.Value);
 
             bool hasShifterAbility;
             foreach (var item in HumanSpecials.ShifterSpecials)
