@@ -51,7 +51,7 @@ namespace Controllers
         private readonly int _sampleRayCount = 6;
         private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 140f;
+        private readonly float _collisionWeight = 1f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
         private readonly bool _useCollisionAvoidance = true;
@@ -253,7 +253,7 @@ namespace Controllers
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);
                         else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false)
-                            MoveToEnemy(true, false);
+                            MoveToEnemy(true);
                         else
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
 
@@ -327,7 +327,7 @@ namespace Controllers
             return angle;
         }
 
-        protected float GetMoveToAngle(Vector3 target, bool avoidCollisions = false, bool doNothingIfTimer = false)
+        protected float GetMoveToAngle(Vector3 target, bool avoidCollisions = false)
         {
             var goalDirection = target - _titan.Cache.Transform.position;
             var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
@@ -378,7 +378,7 @@ namespace Controllers
             var direction = target - start;
 
             if (direction.magnitude > 100)
-                return true;
+                return false;
 
             direction = direction.normalized;
 
@@ -507,7 +507,7 @@ namespace Controllers
             _stateTimeLeft = Random.Range(6f, 12f);
         }
 
-        protected void MoveToEnemy(bool avoidCollisions = false, bool doNothingIfTimer = false)
+        protected void MoveToEnemy(bool avoidCollisions = false)
         {
             AIState = TitanAIState.MoveToEnemy;
             _titan.HasDirection = true;
@@ -518,18 +518,18 @@ namespace Controllers
                 _moveAngle = Random.Range(-45f, 45f);
             else
                 _moveAngle = 0f;
-            _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions, doNothingIfTimer);
+            _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
-        protected void MoveToPosition(bool avoidCollisions = false, bool doNothingIfTimer = false)
+        protected void MoveToPosition(bool avoidCollisions = false)
         {
             AIState = TitanAIState.MoveToPosition;
             _titan.HasDirection = true;
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
-            _titan.TargetAngle = GetMoveToAngle(_moveToPosition, avoidCollisions, doNothingIfTimer);
+            _titan.TargetAngle = GetMoveToAngle(_moveToPosition, avoidCollisions);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
