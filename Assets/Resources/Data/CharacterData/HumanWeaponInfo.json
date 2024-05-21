@@ -17,7 +17,7 @@
 		"CD": 0.8,
 		"Delay": 0.12,
 		"AmmoRound": 2,
-		"AmmoTotal": 24,
+		"AmmoTotal": 10,
 		"DamageMultiplier": 0.7,
 		"RestrictAngle": 100,
 		"Ricochet": false,
