@@ -13,11 +13,11 @@ Contributing: join our discord server for more details on how to contribute. We 
 
 ### Downloading the project
 1. Open command prompt and [navigate](https://www.howtogeek.com/659411/how-to-change-directories-in-command-prompt-on-windows-10/) to your preferred installation folder
-2. Enter `git clone https://github.com/AoTTG-2/Aottg2-Unity.git`
+2. Enter `[git clone https://github.com/AoTTG-2/Aottg2-Unity.git](https://github.com/ZippyStew45/Aottg2-EM.git)`
 3. Open Unity Hub, click Project -> Add, and select your git folder
 
 ### Keeping project updated
-1. Navigate your command prompt to the project folder (Aottg2-Unity folder)
+1. Navigate your command prompt to the project folder (Aottg2-EM folder)
 2. Switch to your assigned branch by using `git checkout branch_name`
 3. Enter `git pull` to update the project to the latest version
 
