@@ -50,7 +50,7 @@ MonoBehaviour:
   _emit: 0
   _emitTime: 0
   _material: {fileID: 2100000, guid: 028420798998def4895eff21192d1ae3, type: 2}
-  _lifeTime: 0.2
+  _lifeTime: 1
   _colors: []
   _sizes: []
   _minVertexDistance: 0

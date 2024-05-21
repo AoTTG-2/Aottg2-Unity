@@ -6,9 +6,12 @@ using Settings;
 using TMPro;
 using UnityEngine.UI;
 using UI;
+using Utility;
+using System.Resources;
 
 class ZippsUIManager : MonoBehaviour
 {
+    protected Human _human;
     private void Start()
     {
         _humanInput = SettingsManager.InputSettings.Human;
@@ -23,6 +26,17 @@ class ZippsUIManager : MonoBehaviour
     {
         LogisticianUpdate();
         CannoneerUpdate();
+        AbilityWheelUpdate();
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus)
+        {
+            HideAbilityWheel();
+            LogisticianMenu.SetActive(false);
+            EmVariables.LogisticianOpen = false;
+        }
     }
 
     #region EM Menu
@@ -276,5 +290,221 @@ class ZippsUIManager : MonoBehaviour
         }
     }
 
-    #endregion 
+    #endregion
+
+
+    #region Ability Wheel
+    [Header("Ability Wheel")]
+    [SerializeField]
+    private GameObject AbilityWheelMenu;
+    [SerializeField]
+    private GameObject AbilityWheelCanvas;
+    [SerializeField]
+    private AudioSource AbilityWheelAudio;
+    [SerializeField]
+    private Image Ability1Image; 
+    [SerializeField]
+    private Image Ability2Image;
+    [SerializeField]
+    private Image Ability3Image;
+    [SerializeField]
+    private RawImage Ability1Selector;
+    [SerializeField]
+    private RawImage Ability2Selector;
+    [SerializeField]
+    private RawImage Ability3Selector;
+    [SerializeField]
+    public GameObject AbilitySelectionSound;
+    [SerializeField]
+    public AudioSource ChangeAbilityAudio;
+
+    public bool Ability1Selected = false; // made public so i can set to red on human spawn //
+    public bool Ability2Selected = false; // made public so i can set to white on human spawn //
+    public bool Ability3Selected = false; // made public so i can set to white on human spawn //
+
+    public void SetWheelImages()
+    {
+        if (SettingsManager.InGameCharacterSettings.Special.Value.Length == 0 || SettingsManager.InGameCharacterSettings.Special.Value == "None")
+        {
+            Ability1Image.sprite = LoadSprite("No");
+        }
+        else
+        {
+            Ability1Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special.Value);
+        }
+
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length == 0 || SettingsManager.InGameCharacterSettings.Special_2.Value == "None")
+        {
+            Ability2Image.sprite = LoadSprite("No");
+        }
+        else
+        {
+            Ability2Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_2.Value);
+        }
+
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length == 0  || SettingsManager.InGameCharacterSettings.Special_3.Value == "None")
+        {
+            Ability3Image.sprite = LoadSprite("No");
+        }
+        else
+        {
+            Ability3Image.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_3.Value);
+        }
+    }
+
+    private Sprite LoadSprite(string spriteName)
+    {
+        string path = "UI/Icons/Specials/" + spriteName.Replace(" ", "") + "SpecialIcon";
+        Sprite sprite = Resources.Load<Sprite>(path);
+        if (sprite == null)
+        {
+            Debug.LogError("Sprite not found at path: " + path);
+        }
+        return sprite;
+    }
+
+    public void OnHoverAbility1()
+    {
+        if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special.Value != "None")
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = true;
+            Ability2Selected = false;
+            Ability3Selected = false;
+            AbilityWheelAudio.Play();
+            Ability1Selector.color = new Color(0.525f, 0.164f, 0.227f);
+
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+        }
+    }
+
+    public void OnHoverExitAbility1()
+    {
+        Ability1Selected = false;
+        Ability1Selector.color = Color.white;
+    }
+    public void OnHoverAbility2()
+    {
+        if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_2.Value != "None")
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = false;
+            Ability2Selected = true;
+            Ability3Selected = false;
+            AbilityWheelAudio.Play();
+            Ability2Selector.color = new Color(0.525f, 0.164f, 0.227f);
+
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+        }
+    }
+
+    public void OnHoverExitAbility2()
+    {
+        Ability2Selected = false;
+        Ability2Selector.color = Color.white;
+    }
+    public void OnHoverAbility3()
+    {
+        if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_3.Value != "None")
+        {
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+            Ability1Selected = false;
+            Ability2Selected = false;
+            Ability3Selected = true;
+            AbilityWheelAudio.Play();
+            Ability3Selector.color = new Color(0.525f, 0.164f, 0.227f);
+            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value)
+                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+        }
+    }
+
+    public void OnHoverExitAbility3()
+    {
+        Ability3Selected = false;
+        Ability3Selector.color = Color.white;
+    }
+
+
+    private void HideAbilityWheel()
+    {
+        AbilityWheelCanvas.SetActive(true);
+        AbilityWheelMenu.SetActive(false);
+        EmVariables.AbilityWheelOpen = false;
+        Ability1Image.color = Color.white;
+        Ability2Image.color = Color.white;
+        Ability3Image.color = Color.white;
+        Ability1Selector.color = Color.white;
+        Ability2Selector.color = Color.white;
+        Ability3Selector.color = Color.white;
+    }
+
+    public void PlayAbilitySelectSoundFromKeybind()
+    {
+        AbilitySelectionSound.SetActive(true);
+        ChangeAbilityAudio.Play();
+        StartCoroutine(WaitForSelectAudioToFinish());
+    }
+
+    private IEnumerator WaitForSelectAudioToFinish()
+    {
+        while (ChangeAbilityAudio.isPlaying)
+        {
+            yield return null;
+        }
+
+        AbilitySelectionSound.SetActive(false);
+    }
+
+    public void KeepSelectedAbilityColor()
+    {
+        if (Ability1Selected)
+        {
+            Ability1Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability1Image.color = Color.white;
+        }
+
+        if (Ability2Selected)
+        {
+            Ability2Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability2Image.color = Color.white;
+        }
+
+        if (Ability3Selected)
+        {
+            Ability3Image.color = new Color(0.525f, 0.164f, 0.227f);
+        }
+        else
+        {
+            Ability3Image.color = Color.white;
+        }
+    }
+
+    private void AbilityWheelUpdate()
+    {
+        if (PhotonExtensions.GetMyPlayer() == null)
+            return;
+
+        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
+        {
+            //SetWheelImages(); => moved to the human script for performance concerns by ata
+            KeepSelectedAbilityColor();
+            AbilityWheelCanvas.SetActive(true);
+            AbilityWheelMenu.SetActive(true);
+            CanvasObj.SetActive(false);
+            EmVariables.AbilityWheelOpen = true;
+        }
+        if (_humanInput.AbilityWheelMenu.GetKeyUp())
+        {
+            HideAbilityWheel();
+        }
+    }
+    #endregion
 }
