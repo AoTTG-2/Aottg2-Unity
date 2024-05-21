@@ -55,13 +55,13 @@ class CollectBlade : MonoBehaviour
                 else if (Weapon is AHSSWeapon || Weapon is APGWeapon)
                 {
                     var weaponahss = (AHSSWeapon)Weapon;
-                    if (weaponahss.AmmoLeft < weaponahss.MaxAmmo)
+                    if (weaponahss.AmmoLeft < weaponahss.MaxAmmo - 2f)
                         weaponahss.AmmoLeft++;
                 }
                 else if (Weapon is ThunderspearWeapon)
                 {
                     var weaponts = (ThunderspearWeapon)Weapon;
-                    if (weaponts.AmmoLeft < weaponts.MaxAmmo)
+                    if (weaponts.AmmoLeft < weaponts.MaxAmmo - 2f)
                         weaponts.AmmoLeft++;
                 }
 
