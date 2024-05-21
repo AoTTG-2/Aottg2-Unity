@@ -11,6 +11,4 @@ public static class EmVariables
 
     public static int LogisticianBladeSupply = 4;
     public static int LogisticianGasSupply = 4;
-
-    public static bool AbilityWheelInitialUse = false;
 }

@@ -727,7 +727,6 @@ namespace GameManagers
                 { PlayerProperty.TotalDamage, 0 },
                 { PlayerProperty.SpawnPoint, "null" }
             };
-            EmVariables.AbilityWheelInitialUse = false; // Added by Ata 20 May 2024 for Ability Wheel SFX //
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
         }
 

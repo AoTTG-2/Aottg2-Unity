@@ -440,6 +440,23 @@ class ZippsUIManager : MonoBehaviour
         Ability3Selector.color = Color.white;
     }
 
+    public void PlayAbilitySelectSoundFromKeybind()
+    {
+        AbilitySelectionSound.SetActive(true);
+        ChangeAbilityAudio.Play();
+        StartCoroutine(WaitForSelectAudioToFinish());
+    }
+
+    private IEnumerator WaitForSelectAudioToFinish()
+    {
+        while (ChangeAbilityAudio.isPlaying)
+        {
+            yield return null;
+        }
+
+        AbilitySelectionSound.SetActive(false);
+    }
+
     public void KeepSelectedAbilityColor()
     {
         if (Ability1Selected)

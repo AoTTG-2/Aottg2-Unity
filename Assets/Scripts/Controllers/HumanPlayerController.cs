@@ -22,6 +22,8 @@ namespace Controllers
         protected static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.TitanPushbox,
             PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectAll);
 
+        private ZippsUIManager _zippsUIManager;
+
         protected override void Awake()
         {
             base.Awake();
@@ -274,6 +276,7 @@ namespace Controllers
                 if (_humanInput.Ability1.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value && SettingsManager.InGameCharacterSettings.Special.Value != "None") // added by Ata 20 May 2024 for Ability Wheel//
                 {
                     _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+                    PlayAbilitySelectSound();
                 }
 
                     bool canSpecial = _human.MountState == HumanMountState.None && 
@@ -288,11 +291,13 @@ namespace Controllers
             if (_human.Special_2 != null && _humanInput.Ability2.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value && SettingsManager.InGameCharacterSettings.Special_2.Value != "None")
             {
                 _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+                PlayAbilitySelectSound();
             }
 
             if (_human.Special_3 != null && _humanInput.Ability3.GetKeyDown() && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value && SettingsManager.InGameCharacterSettings.Special_3.Value != "None")
             {
                 _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+                PlayAbilitySelectSound();
             }
 
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
@@ -332,6 +337,16 @@ namespace Controllers
                 else if (_humanInput.HorseJump.GetKeyDown())
                     _human.Horse.Jump();
             }
+        }
+
+        private void PlayAbilitySelectSound()
+        {
+            _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
+            if ( _zippsUIManager != null )
+            {
+                _zippsUIManager.PlayAbilitySelectSoundFromKeybind();
+            }
+
         }
 
         private void ToggleUI()
