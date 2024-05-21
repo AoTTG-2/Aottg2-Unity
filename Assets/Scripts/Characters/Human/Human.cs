@@ -30,6 +30,9 @@ namespace Characters
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
+        public BaseUseable Special_2;
+        public BaseUseable Special_3;
+        public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
         public HookUseable HookLeft;
         public HookUseable HookRight;
@@ -52,6 +55,8 @@ namespace Characters
         public float GasUsage = 0.2f;
         public float HorseSpeed = 50f;
         public string CurrentSpecial;
+        public string SideSpecial_1;
+        public string SideSpecial_2;
         public BaseTitan Grabber;
         public Transform GrabHand;
         public Human Carrier;
@@ -123,6 +128,7 @@ namespace Characters
 
         [SerializeField]
         private GameObject LogisticianBackPack;
+        private ZippsUIManager _zippsUIManager; // added by Ata for setting up special icons in the ability wheel only once, should give optimal performance and memory usage //
 
         [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
@@ -1739,8 +1745,14 @@ namespace Characters
                 Weapon.OnFixedUpdate();
                 HookLeft.OnFixedUpdate();
                 HookRight.OnFixedUpdate();
-                if (Special != null)
-                    Special.OnFixedUpdate();
+
+                for (int i = 0; i < SpecialsArray.Length; i++) // changed by ata to update all specials in the ability wheel //
+                {
+                    SpecialsArray[i]?.OnFixedUpdate();
+                }
+
+                /*if (Special != null)
+                    Special.OnFixedUpdate();*/
             }
         }
 
@@ -1961,7 +1973,16 @@ namespace Characters
             {
                 SetupWeapon(set, humanWeapon);
                 SetupItems();
-                SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
+                //SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
+                SetAllSpecials(SettingsManager.InGameCharacterSettings.Special.Value,
+                               SettingsManager.InGameCharacterSettings.Special_2.Value,
+                               SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
+                SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+                _zippsUIManager = FindFirstObjectByType<ZippsUIManager>(); // setting up the ability wheel UI //
+                _zippsUIManager.SetWheelImages(); // setting up the ability wheel UI //
+                _zippsUIManager.Ability1Selected = true; // setting up the ability wheel UI //
+                _zippsUIManager.Ability2Selected = false; // setting up the ability wheel UI //
+                _zippsUIManager.Ability3Selected = false; // setting up the ability wheel UI //
             }
             FinishSetup = true;
             CustomAnimationSpeed();
@@ -2050,6 +2071,64 @@ namespace Characters
             Special = HumanSpecials.GetSpecialUseable(this, special);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
+
+        #region Ability Wheel
+        public void SetAllSpecials(string special1, string special2, string special3)
+        {
+            SpecialsArray = new BaseUseable[]
+            {
+                HumanSpecials.GetSpecialUseable(this, special1),
+                (special2.Length > 0) ? HumanSpecials.GetSpecialUseable(this, special2) : null,
+                (special3.Length > 0) ? HumanSpecials.GetSpecialUseable(this, special3) : null
+            };
+
+            // add the icons for all specials at some point //
+        }
+
+        public void SwitchCurrentSpecial(string special, int newSpecial)
+        {
+            if (CurrentSpecial != special)
+            {
+                bool canAnimationReset = (State != HumanState.Die && State != HumanState.Grab && State != HumanState.MountingHorse && State != HumanState.Stun && State != HumanState.GroundDodge);
+                if (canAnimationReset)
+                    State = HumanState.Idle;
+
+                CurrentSpecial = special;
+                Special = SpecialsArray[newSpecial - 1];
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
+
+                if (newSpecial == 1)
+                {
+                    Special_2 = SpecialsArray[1];
+                    Special_3 = SpecialsArray[2];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special_2.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_3.Value;
+                }
+                if (newSpecial == 2)
+                {
+                    Special_2 = SpecialsArray[0];
+                    Special_3 = SpecialsArray[2];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_3.Value;
+                }
+                if (newSpecial == 3)
+                {
+                    Special_2 = SpecialsArray[0];
+                    Special_3 = SpecialsArray[1];
+
+                    SideSpecial_1 = SettingsManager.InGameCharacterSettings.Special.Value;
+                    SideSpecial_2 = SettingsManager.InGameCharacterSettings.Special_2.Value;
+                }
+
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_2(HumanSpecials.GetSpecialIcon(SideSpecial_1));
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_3(HumanSpecials.GetSpecialIcon(SideSpecial_2));
+            }
+        }
+
+        #endregion
+
 
         protected void LoadSkin()
         {

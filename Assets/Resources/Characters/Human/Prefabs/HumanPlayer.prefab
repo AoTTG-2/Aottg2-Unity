@@ -16567,6 +16567,8 @@ MonoBehaviour:
   GasUsage: 0.2
   HorseSpeed: 50
   CurrentSpecial: 
+  SideSpecial_1: 
+  SideSpecial_2: 
   Grabber: {fileID: 0}
   GrabHand: {fileID: 0}
   Carrier: {fileID: 0}

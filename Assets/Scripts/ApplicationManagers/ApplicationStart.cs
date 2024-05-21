@@ -16,6 +16,8 @@ using Photon;
 using Photon.Pun;
 using System.Threading;
 using System.Globalization;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace ApplicationManagers
 {
@@ -31,9 +33,11 @@ namespace ApplicationManagers
             if (_firstLaunch)
             {
                 _firstLaunch = false;
-                Init();
+                Init();  
+                ListAllScenes();
             }
         }
+
 
         private static void Init()
         {
@@ -75,6 +79,18 @@ namespace ApplicationManagers
             EventManager.InvokeFinishInit();
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
+        }
+
+        void ListAllScenes()
+        {
+            int sceneCount = SceneManager.sceneCountInBuildSettings;
+
+            for (int i = 0; i < sceneCount; i++)
+            {
+                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+                EmVariables.sceneNames.Add(sceneName);
+            }
         }
     }
 }

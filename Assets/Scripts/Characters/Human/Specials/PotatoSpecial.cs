@@ -5,7 +5,7 @@ namespace Characters
 {
     class PotatoSpecial : BaseEmoteSpecial
     {
-        protected override float ActiveTime => 10f;
+        protected override float ActiveTime => 20f;
         private float _oldSpeed;
 
         public PotatoSpecial(BaseCharacter owner): base(owner)

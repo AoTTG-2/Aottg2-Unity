@@ -209,8 +209,9 @@ namespace UI
                 ToggleSnap();
             else if (name == "Scene")
             {
-                SceneLoader.CustomSceneLoad = true;
                 MapEditorSettings settings = SettingsManager.MapEditorSettings;
+                if (!EmVariables.IsSceneInBuild(settings.SceneName.Value)) return;
+                SceneLoader.CustomSceneLoad = true;
                 SceneManager.LoadSceneAsync(settings.SceneName.Value, LoadSceneMode.Additive);
             }
         }

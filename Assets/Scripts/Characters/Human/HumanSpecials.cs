@@ -1,16 +1,19 @@
 ﻿using GameManagers;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry"};
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry", "Stock" };
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie", "Armored" };
 
-        public static List<string> GetSpecialNames(string loadout, bool includeShifters)
+        public static List<string> GetSpecialNames(string loadout, bool includeShifters) // add abilities to specific loadouts from here //
         {
             List<string> names = new List<string>();
             foreach (string special in AnySpecials)
@@ -30,8 +33,6 @@ namespace Characters
                 foreach (string special in ShifterSpecials)
                     names.Add(special);
             }
-            if (loadout == HumanLoadout.Thunderspears)
-                names.Add("Stock");
             names.Add("None");
             return names;
         }
