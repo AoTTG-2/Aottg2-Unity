@@ -34,6 +34,7 @@ namespace Characters
         public BaseUseable Special_3;
         public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
+        public BaseUseable Weapon_2; // added by Ata 22 May 2024 for Veteran Role //
         public HookUseable HookLeft;
         public HookUseable HookRight;
         public HumanMountState MountState = HumanMountState.None;
@@ -938,6 +939,8 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
+                SetupVeteran(); // added by Ata 22 May 2024 for Veteran Role //
+
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
@@ -1116,6 +1119,10 @@ namespace Characters
                     if (Carrier != null && Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 7f)
                         Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
+            }
+            if (Dead)
+            {
+                EmVariables.isVeteranSet = false;
             }
         }
 
@@ -2025,7 +2032,7 @@ namespace Characters
 
         protected void SetupWeapon(HumanCustomSet set, int humanWeapon)
         {
-            if (humanWeapon == (int)HumanWeapon.Blade)
+            if (humanWeapon == (int)HumanWeapon.Blade) // HERE //
             {
                 var bladeInfo = CharacterData.HumanWeaponInfo["Blade"];
                 Weapon = new BladeWeapon(this, set.Blade.Value * bladeInfo["DurabilityMultiplier"].AsFloat, bladeInfo["Blades"].AsInt);
@@ -2148,6 +2155,74 @@ namespace Characters
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_2(HumanSpecials.GetSpecialIcon(SideSpecial_1));
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_3(HumanSpecials.GetSpecialIcon(SideSpecial_2));
             }
+        }
+
+        #endregion
+
+        #region Veteran
+
+        public void SetupVeteran()
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran") && !EmVariables.isVeteranSet)
+            {
+                EmVariables.isVeteranSet = true; // for only setting up once
+
+                if (Setup.Weapon == HumanWeapon.Blade || Setup.Weapon == HumanWeapon.AHSS)
+                {
+                    Setup.Weapon_2 = HumanWeapon.Thunderspear;
+
+                    if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                    {
+                        int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
+                        int cdStat = SettingsManager.AbilitySettings.BombCooldown.Value;
+                        int speedStat = SettingsManager.AbilitySettings.BombSpeed.Value;
+                        int rangeStat = SettingsManager.AbilitySettings.BombRange.Value;
+                        if (radiusStat + cdStat + speedStat + rangeStat > 16)
+                        {
+                            radiusStat = speedStat = 6;
+                            rangeStat = 3;
+                            cdStat = 1;
+                        }
+                        float travelTime = ((rangeStat * 60f) + 200f) / ((speedStat * 60f) + 200f);
+                        float radius = (radiusStat * 4f) + 20f;
+                        float cd = ((cdStat + 4) * -0.4f) + 5f;
+                        float speed = (speedStat * 60f) + 200f;
+                        Weapon_2 = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f);
+                        if (CustomLogicManager.Evaluator.CurrentTime > 10f)
+                            Weapon_2.SetCooldownLeft(5f);
+                        else
+                            Weapon_2.SetCooldownLeft(10f);
+                    }
+                    else
+                    {
+                        var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
+                        float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
+                        Weapon_2 = new ThunderspearWeapon(this, tsInfo["AmmoTotal"].AsInt, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
+                            tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
+                    }
+                }
+                if (Setup.Weapon == HumanWeapon.Thunderspear)
+                {
+                    Setup.Weapon_2 = HumanWeapon.Blade;
+
+                    HumanCustomSet set = new HumanCustomSet();
+
+                    var bladeInfo = CharacterData.HumanWeaponInfo["Blade"];
+                    Weapon_2 = new BladeWeapon(this, set.Blade.Value * bladeInfo["DurabilityMultiplier"].AsFloat, bladeInfo["Blades"].AsInt);
+                }
+            }
+        }
+
+        public void SwitchVeteranLoadout()
+        {
+            BaseUseable _tempHumanWeaponCache = Weapon;
+            HumanWeapon _tempSetupWeaponCache = Setup.Weapon;
+
+            Weapon = Weapon_2;
+            Weapon_2 = _tempHumanWeaponCache;
+
+            Setup.Weapon = Setup.Weapon_2;
+            Setup.Weapon_2 = _tempSetupWeaponCache;
         }
 
         #endregion

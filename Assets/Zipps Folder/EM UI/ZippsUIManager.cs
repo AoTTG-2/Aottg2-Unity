@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UI;
 using Utility;
 using System.Resources;
+using GameManagers;
 
 class ZippsUIManager : MonoBehaviour
 {
@@ -300,6 +301,8 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private GameObject AbilityWheelCanvas;
     [SerializeField]
+    private GameObject LoadoutParent;
+    [SerializeField]
     private AudioSource AbilityWheelAudio;
     [SerializeField]
     private Image Ability1Image; 
@@ -308,15 +311,22 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private Image Ability3Image;
     [SerializeField]
+    private Image LoadoutImage;
+    [SerializeField]
     private RawImage Ability1Selector;
     [SerializeField]
     private RawImage Ability2Selector;
     [SerializeField]
     private RawImage Ability3Selector;
     [SerializeField]
+    private RawImage LoadoutSelector;
+    [SerializeField]
     public GameObject AbilitySelectionSound;
     [SerializeField]
     public AudioSource ChangeAbilityAudio;
+    public string Loadout;
+    public string NewLoadout;
+    private bool LastHoveredLoadout = false;
 
     public bool Ability1Selected = false; // made public so i can set to red on human spawn //
     public bool Ability2Selected = false; // made public so i can set to white on human spawn //
@@ -370,6 +380,7 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = true;
             Ability2Selected = false;
             Ability3Selected = false;
+            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability1Selector.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -387,6 +398,7 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = false;
             Ability2Selected = true;
             Ability3Selected = false;
+            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability2Selector.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -404,6 +416,7 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = false;
             Ability2Selected = false;
             Ability3Selected = true;
+            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability3Selector.color = new Color(0.525f, 0.164f, 0.227f);
             
@@ -413,6 +426,21 @@ class ZippsUIManager : MonoBehaviour
     public void OnHoverExitAbility3()
     {
         Ability3Selected = false;
+        Ability3Selector.color = Color.white;
+    }
+
+    public void OnHoverLoadout()
+    {
+        Ability1Selected = false;
+        Ability2Selected = false;
+        Ability3Selected = false;
+        LastHoveredLoadout = true; 
+        LoadoutSelector.color = new Color(0.525f, 0.164f, 0.227f);
+        AbilityWheelAudio.Play();
+    }
+
+    public void OnHoverExitLoadout()
+    {
         Ability3Selector.color = Color.white;
     }
 
@@ -431,6 +459,10 @@ class ZippsUIManager : MonoBehaviour
         else if (Ability3Selected && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value)
         {
             _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+        }
+        else if (LastHoveredLoadout)
+        {
+            _human.SwitchVeteranLoadout();
         }
 
         AbilityWheelCanvas.SetActive(true);
@@ -491,6 +523,19 @@ class ZippsUIManager : MonoBehaviour
         }
     }
 
+    private void UpdateLoadoutVisibility()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran"))
+        {
+            LoadoutParent.SetActive(true);
+            LoadoutImage.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_3.Value);
+        }
+        else
+        {
+            LoadoutParent.SetActive(false);
+        }
+    }
+
     private void AbilityWheelUpdate()
     {
         if (PhotonExtensions.GetMyPlayer() == null)
@@ -509,6 +554,8 @@ class ZippsUIManager : MonoBehaviour
         {
             HideAbilityWheel();
         }
+
+        UpdateLoadoutVisibility();
     }
     #endregion
 }
