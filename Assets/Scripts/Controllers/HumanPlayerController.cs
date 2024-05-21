@@ -19,6 +19,7 @@ namespace Controllers
         protected HumanInputSettings _humanInput;
         protected Dictionary<HumanDashDirection, KeybindSetting> _dashKeys;
         protected Dictionary<HumanDashDirection, float> _dashTimes;
+        protected float _dashUpwardsTime = -1f; // added by Ata 21 May 24 for Double Tap Dash Upwards //
         protected static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.TitanPushbox,
             PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectAll);
 
@@ -222,6 +223,7 @@ namespace Controllers
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
             UpdateDashUpwardsInput(inMenu);
+            UpdateDashDownwardsInput(inMenu);
             if (!inMenu)
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
@@ -339,7 +341,7 @@ namespace Controllers
             }
         }
 
-        private void PlayAbilitySelectSound()
+        private void PlayAbilitySelectSound() // added by Ata 20 May 2024 for Ability Wheel //
         {
             _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
             if ( _zippsUIManager != null )
@@ -471,6 +473,37 @@ namespace Controllers
                 if (_humanInput.DashUpwards.GetKeyDown())
                 {
                     _human.DashUpwards();
+                }
+                if (SettingsManager.InputSettings.Human.DashUpwardsDoubleTap.Value)
+                {
+                    if (_dashUpwardsTime >= 0f)
+                    {
+                        _dashUpwardsTime += Time.deltaTime;
+                        if (_dashUpwardsTime > 0.2f)
+                            _dashUpwardsTime = -1f;
+                    }
+                    if (_humanInput.Jump.GetKeyDown())
+                    {
+                        if (_dashUpwardsTime == -1f)
+                            _dashUpwardsTime = 0f;
+                        else if (_dashUpwardsTime > 0f)
+                            _human.DashUpwards();
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Dashing Downwards by Ata 2 May 2024
+        void UpdateDashDownwardsInput(bool inMenu)
+        {
+            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
+                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAction
+                && !inMenu && !_human.Dead)
+            {
+                if (_humanInput.DashDownwards.GetKeyDown())
+                {
+                    _human.DashDownwards();
                 }
             }
         }

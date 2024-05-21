@@ -334,6 +334,9 @@
 		"Keybinds.Human.HookBoth": "Hook both",
 		"Keybinds.Human.Dash": "Dash",
 		"Keybinds.Human.DashUpwards": "Dash up", // added by Ata 2 May 24
+		"Keybinds.Human.DashDownwards": "Dash down", // added by Ata 21 May 24
+		"Keybinds.Human.DashUpwardsDoubleTap": "Double-tap to dash upwards", // added by Ata 21 May 24
+		"Keybinds.Human.DashUpwardsTooltip": "Double tap your jump button to dash upwards.", // Added by Ata 21 May 2024 //
 		"Keybinds.Human.LogisticianMenu": "Logistician Supply", // added by zippy 5 May 24
 		"Keybinds.Human.AbilityWheelMenu": "Ability Wheel", // added by Ata 13 May 24
 		"Keybinds.Human.Ability1": "Ability 1", // added by Ata 20 May 24
