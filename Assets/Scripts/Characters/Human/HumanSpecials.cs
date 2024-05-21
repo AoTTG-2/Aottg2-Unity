@@ -8,7 +8,7 @@ namespace Characters
 {
     class HumanSpecials
     {
-        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry", "Stock" };
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Supply", "SmokeBomb", "Carry" };
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie", "Armored" };
@@ -33,6 +33,8 @@ namespace Characters
                 foreach (string special in ShifterSpecials)
                     names.Add(special);
             }
+            if (loadout != HumanLoadout.Blades)
+                names.Add("Stock");
             names.Add("None");
             return names;
         }

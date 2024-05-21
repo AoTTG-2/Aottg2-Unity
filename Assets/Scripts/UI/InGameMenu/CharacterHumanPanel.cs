@@ -45,9 +45,6 @@ namespace UI
                 charSettings.Special_3.Value = specials[2];
             }
 
-            if (charSettings.Loadout.Value == "Blades") // added by Ata 17 May 2024 
-                specials.Remove("Stock");
-
             specials = FilterAbilities(specials, charSettings); // added by Ata 17 May 2024 
 
             string[] options = GetCharOptions();
@@ -82,6 +79,9 @@ namespace UI
 
             if (specials.Contains(charSettings.Special_3.Value) && charSettings.Special_3.Value != "None") 
                 specials.Remove(charSettings.Special_3.Value);
+
+            if (charSettings.Loadout.Value == "Blades") // added by Ata 17 May 2024 
+                specials.Remove("Stock");
 
             bool hasShifterAbility;
             foreach (var item in HumanSpecials.ShifterSpecials)
