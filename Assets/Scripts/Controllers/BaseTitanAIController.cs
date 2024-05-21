@@ -45,10 +45,11 @@ namespace Controllers
         private CapsuleCollider _mainCollider;
 
         // pathing
+        private bool _collidedLastFrame = false;
         private readonly int _sampleRayCount = 6;
         private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 1f;
+        private readonly float _collisionWeight = 140f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
         private readonly bool _useCollisionAvoidance = true;
@@ -234,12 +235,12 @@ namespace Controllers
                                 _moveAngle = 0f;
                                 _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                                 _titan.Turn(_titan.GetTargetDirection());
-                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.black);
+                                //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.black);
                             }
                             else
                             {
                                 MoveToEnemy(true);
-                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.white);
+                                //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.white);
                             }
                                 
                         }
@@ -255,12 +256,12 @@ namespace Controllers
                         else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false)
                         {
                             _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, true);
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.magenta);
+                            // Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.magenta);
                         }
                         else
                         {
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
+                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
                         }
                     }
                 }
@@ -289,7 +290,7 @@ namespace Controllers
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                             _titan.Turn(_titan.GetTargetDirection());
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.red);
+                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.red);
                         }
                         else
                         {
@@ -297,7 +298,7 @@ namespace Controllers
                             _titan.IsWalk = !IsRun;
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.cyan);
+                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.cyan);
                         }
                     }
                 }
@@ -338,16 +339,28 @@ namespace Controllers
         {
             var goalDirection = target - _titan.Cache.Transform.position;
             var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
+            bool col = false;
             if (avoidCollisions && _useCollisionAvoidance)
             {
                 if (IsHeadingForCollision())
                 {
+                    col = true;
+                    _collidedLastFrame = true;
                     _moveAngle = 0; // Random.Range(-10f, 10f);
                     resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
                 }
+                else
+                    _collidedLastFrame = false;
             }
+            resultDirection = new Vector3(resultDirection.x, 0, resultDirection.z);
             resultDirection = resultDirection.normalized;
             var result =  GetChaseAngleGivenDirection(resultDirection);
+
+            if (col)
+                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.magenta);
+            else
+                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);
+
             return result;
         }
 
@@ -402,8 +415,12 @@ namespace Controllers
                 }
                     
             }
-            Debug.DrawRay(start, direction * 100, Color.white);
             return true;
+        }
+
+        private bool Approximately(float a, float b, float precision)
+        {
+            return (a - b) < precision;
         }
 
         protected Vector3 GetFreeDirection(Vector3 goalDirection)
@@ -414,9 +431,9 @@ namespace Controllers
             float bestDirAlignment = 0;
             float bestPreviousAlignment = 0;
 
-            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x;
+            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 1f;
             Vector3 colliderCenter = _titan.Cache.Transform.TransformPoint(_mainCollider.center);
-            var start = colliderCenter + _titan.Cache.Transform.forward * -1 * colliderRadius;
+            var start = colliderCenter + _titan.Cache.Transform.forward * -1.3f * colliderRadius;
 
             for (int i = 0; i < _sampleRayCount; i++)
             {
@@ -428,11 +445,11 @@ namespace Controllers
                     float alignment = Vector3.Dot(rayActualDirection, goalDirection.normalized);
                     float prevAlignment = Vector3.Dot(_titan.GetTargetDirection(), rayActualDirection.normalized);
 
-                    if (Mathf.Approximately(hit.distance, bestDirScore))
+                    if (Approximately(hit.distance, bestDirScore, 0.001f))
                     {
-                        if (Mathf.Approximately(alignment, bestDirAlignment))
+                        if (Approximately(alignment, bestDirAlignment, 0.001f))
                         {
-                            if (Mathf.Approximately(prevAlignment, bestPreviousAlignment) && prevAlignment > bestPreviousAlignment)
+                            if (Approximately(prevAlignment, bestPreviousAlignment, 0.001f) && prevAlignment > bestPreviousAlignment)
                             {
                                 bestDirection = rayActualDirection;
                                 bestDirScore = hit.distance;
@@ -457,13 +474,15 @@ namespace Controllers
                     }
 
                     // Draw the ray to the hit point
-                    Debug.DrawRay(start, rayDirection * hit.distance, Color.red);
+                    //Debug.DrawRay(start, rayDirection * hit.distance, Color.red);
 
                 }
                 else
                 {
                     Vector3 rayActualDirection = (start + rayDirection.normalized * _collisionAvoidDistance) - colliderCenter;
-                    float alignment = Vector3.Dot(rayActualDirection, goalDirection.normalized);
+                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
+                    return rayActualDirection;
+                    /*float alignment = Vector3.Dot(rayActualDirection, goalDirection.normalized);
                     float prevAlignment = Vector3.Dot(_titan.GetTargetDirection(), rayActualDirection.normalized);
 
                     if (Mathf.Approximately(_collisionAvoidDistance, bestDirScore))
@@ -492,10 +511,7 @@ namespace Controllers
                         bestDirScore = _collisionAvoidDistance;
                         bestDirAlignment = alignment;
                         bestPreviousAlignment = prevAlignment;
-                    }
-
-                    // Draw the ray to the end of the range
-                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.green);
+                    }*/
                 }
             }
             return bestDirection;
