@@ -367,15 +367,11 @@ class ZippsUIManager : MonoBehaviour
     {
         if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special.Value != "None")
         {
-            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = true;
             Ability2Selected = false;
             Ability3Selected = false;
             AbilityWheelAudio.Play();
             Ability1Selector.color = new Color(0.525f, 0.164f, 0.227f);
-
-            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value)
-                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
         }
     }
 
@@ -388,15 +384,11 @@ class ZippsUIManager : MonoBehaviour
     {
         if (SettingsManager.InGameCharacterSettings.Special_2.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_2.Value != "None")
         {
-            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = false;
             Ability2Selected = true;
             Ability3Selected = false;
             AbilityWheelAudio.Play();
             Ability2Selector.color = new Color(0.525f, 0.164f, 0.227f);
-
-            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value)
-                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
         }
     }
 
@@ -409,14 +401,12 @@ class ZippsUIManager : MonoBehaviour
     {
         if (SettingsManager.InGameCharacterSettings.Special_3.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special_3.Value != "None")
         {
-            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
             Ability1Selected = false;
             Ability2Selected = false;
             Ability3Selected = true;
             AbilityWheelAudio.Play();
             Ability3Selector.color = new Color(0.525f, 0.164f, 0.227f);
-            if (_human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value)
-                _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+            
         }
     }
 
@@ -429,6 +419,20 @@ class ZippsUIManager : MonoBehaviour
 
     private void HideAbilityWheel()
     {
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        if (Ability1Selected && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special.Value)
+        {
+            _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+        }
+        else if (Ability2Selected && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_2.Value)
+        {
+            _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_2.Value, 2);
+        }
+        else if (Ability3Selected && _human.CurrentSpecial != SettingsManager.InGameCharacterSettings.Special_3.Value)
+        {
+            _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
+        }
+
         AbilityWheelCanvas.SetActive(true);
         AbilityWheelMenu.SetActive(false);
         EmVariables.AbilityWheelOpen = false;

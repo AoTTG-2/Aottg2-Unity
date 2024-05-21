@@ -357,9 +357,10 @@ namespace Characters
             if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None && 
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
             {
-                UseGas(Mathf.Min(MaxGas * 0.08f, 10));
+                UseGas(Mathf.Min(MaxGas * 0.06f, 10));
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
+                _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
                 _dashTimeLeft = 0.5f;
                 CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 State = HumanState.AirDodge;
@@ -370,6 +371,28 @@ namespace Characters
             }
         }
 
+        #endregion
+
+        #region Downward Dash by Ata - 21 May 24
+
+        public void DashDownwards()
+        {
+            if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None &&
+                State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
+            {
+                UseGas(Mathf.Min(MaxGas * 0.04f, 10));
+                EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
+                PlaySound(HumanSounds.GasBurst);
+                _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
+                _dashTimeLeft = 0.5f;
+                CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
+                State = HumanState.AirDodge;
+                FalseAttack();
+                Cache.Rigidbody.AddForce(Vector3.down * 40f, ForceMode.VelocityChange);
+                _dashCooldownLeft = 0.5f;
+                ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShakeGas();
+            }
+        }
 
         #endregion
 
