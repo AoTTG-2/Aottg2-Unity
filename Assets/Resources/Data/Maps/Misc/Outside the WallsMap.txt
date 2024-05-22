@@ -1514,7 +1514,7 @@ class EventController
             e.OnCharacterDie(victim, killer, killerName);
         }
 
-        if (victim.Type == "Human" || victim.Type == "Shifter")
+        if (victim.Type == "Human" || (victim.Type == "Shifter" && victim.IsAI == false))
         {
             self._main.LoseIfPlayersAreDead();
         }
