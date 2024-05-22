@@ -9,6 +9,7 @@ using UI;
 using Utility;
 using System.Resources;
 using GameManagers;
+using CustomLogic;
 
 class ZippsUIManager : MonoBehaviour
 {
@@ -212,7 +213,34 @@ class ZippsUIManager : MonoBehaviour
     private void LogisticianUpdate()
     {
         if (PhotonExtensions.GetMyPlayer() == null)
+        {
+            EmVariables.LogisticianBladeSupply = EmVariables.LogisticianMaxSupply;
+            EmVariables.LogisticianGasSupply = EmVariables.LogisticianMaxSupply;
+            LogisticianCanvas.SetActive(false);
+            LogisticianMenu.SetActive(false);
+            EmVariables.LogisticianOpen = false;
             return;
+        }
+
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        if (_human.Dead)
+        {
+            _human.MaxOutLogisticianSupplies();
+            LogisticianCanvas.SetActive(false);
+            LogisticianMenu.SetActive(false);
+            EmVariables.LogisticianOpen = false;
+            return;
+        }
+
+        if (_human == null)
+        {
+            _human.MaxOutLogisticianSupplies();
+            LogisticianCanvas.SetActive(false);
+            LogisticianMenu.SetActive(false);
+            EmVariables.LogisticianOpen = false;
+            return;
+        }
+
         if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Logistician"))
         {
             LogisticianCanvas.SetActive(false);
@@ -538,10 +566,24 @@ class ZippsUIManager : MonoBehaviour
 
     private void AbilityWheelUpdate()
     {
+        bool isAbilityWheelActive = AbilityWheelMenu.activeInHierarchy;
         if (PhotonExtensions.GetMyPlayer() == null)
-            return;
+        {
+            if (AbilityWheelMenu.activeInHierarchy || isAbilityWheelActive)
+                HideAbilityWheel();
 
-        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
+            return;
+        }
+
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+        if ((_human == null || _human.Dead) && isAbilityWheelActive)
+        {
+            HideAbilityWheel();
+            return;
+        }
+
+        bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
+        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !inMenu)
         {
             //SetWheelImages(); => moved to the human script for performance concerns by ata
             KeepSelectedAbilityColor();

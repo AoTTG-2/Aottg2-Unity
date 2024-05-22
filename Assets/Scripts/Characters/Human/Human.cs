@@ -665,6 +665,10 @@ namespace Characters
             {
                 return true;
             }
+            if (EmVariables.LogisticianBladeSupply < EmVariables.LogisticianMaxSupply || EmVariables.LogisticianGasSupply < EmVariables.LogisticianMaxSupply)
+            {
+                return true;
+            }
             if (Weapon is BladeWeapon)
             {
                 var weapon = (BladeWeapon)Weapon;
@@ -688,8 +692,13 @@ namespace Characters
             }
             Weapon.Reset();
             CurrentGas = MaxGas;
-            EmVariables.LogisticianBladeSupply = 4;
-            EmVariables.LogisticianGasSupply = 4;
+            MaxOutLogisticianSupplies(); // added (modified) by Ata for reusability on different scripts //
+        }
+
+        public void MaxOutLogisticianSupplies() // added (modified) by Ata for reusability on different scripts //
+        {
+            EmVariables.LogisticianBladeSupply = EmVariables.LogisticianMaxSupply;
+            EmVariables.LogisticianGasSupply = EmVariables.LogisticianMaxSupply;
         }
 
         public override void Emote(string emote)
