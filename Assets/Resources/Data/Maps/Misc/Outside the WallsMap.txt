@@ -1039,22 +1039,27 @@ Scene,Nature/Pine1,1448,0,1,1,1,0,Pine1,-3377,0,-4014,0,0,0,1,1.4,1,Physical,Ent
 /// Logic
 class Main
 {
-    DebugMode = false;
     RespawnMode = "OnCapture";
     ReinforcementCallsEnabled = true;
     MaxReinforcementCalls = 4;
 
     RespawnModeDropbox = "OnCapture, None";
 
-    _debug = null;
     _eventController = null;
     _enabled = false;
 
     _reinformentCalls = 0;
 
+    /* 
+     * List of players who just joined
+     * Need this for updating the UI for those players
+     * (Send a message to them after they spawned so that they can update their UI)
+     */
+    _playersJustJoined = List();
+
     function OnGameStart()
     {
-        ReinforcementZones.Setup(self);
+        ReinforcementZones.Setup(self, self.MaxReinforcementCalls);
         
         if (!self.ReinforcementCallsEnabled)
         {
@@ -1066,12 +1071,6 @@ class Main
             return;
         }
 
-        if (self.ReinforcementCallsEnabled)
-        {
-            InGameUI.UpdateReinforcementCalls(0, self.MaxReinforcementCalls);
-        }
-
-        self._debug = Debug(self.DebugMode);
         self._eventController = EventController(self);
         self._enabled = true;
     }
@@ -1108,72 +1107,81 @@ class Main
         }
     }
 
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self._playersJustJoined.Add(player.ID);
+        }
+    }
+
     coroutine OnPlayerSpawn(player, character)
     {
-        if (self._enabled && Network.IsMasterClient && character.Type == "Titan")
+        if (self._enabled && Network.IsMasterClient)
         {
-            wait 1.0;
-            character.GetKilled("Server");
-            Network.SendMessage(player, "pt");
+            if (character.Type == "Titan" || character.Type == "Shifter")
+            {
+                wait 1.0;
+                character.GetKilled("Server");
+                NetworkMessage().Set("Type", "PlayerTitan").Send(player);
+            }
+
+            if (Utils.ListContains(self._playersJustJoined, player.ID))
+            {
+                NetworkMessage()
+                    .Set("Type", "Reinforcement")
+                    .Set("Action", "UpdateText")
+                    .Set("Remaining", self.MaxReinforcementCalls - (self._reinformentCalls + 1))
+                    .Send(player);
+
+                Utils.TryRemoveListElement(self._playersJustJoined, player.ID);
+            }
         }
     }
 
     function OnNetworkMessage(sender, message)
     {
-        if (message == "pt")
+        data = Json.LoadFromString(message);
+        msgType = data.Get("Type");
+        if (msgType == "Dialogue")
         {
-            Game.Print("<size=18>Player titans are not supported</size>");
+            key = data.Get("LocaleKey");
+            profileIndex = data.Get("ProfileIndex");
+            DialogueUtils.ShowDialogue(key, profileIndex);
         }
-        else
+        elif (msgType == "RevealTitans")
         {
-            data = Json.LoadFromString(message);
-            msgType = data.Get("type");
-            if (msgType == "Dialogue")
-            {
-                key = data.Get("key");
-                profileIndex = data.Get("profileIndex");
-                DialogueUtils.ShowDialogue(key, profileIndex);
-            }
-            elif (msgType == "RevealTitans")
-            {
-                duration = data.Get("duration");
-                TitanUtils.RevealTitans(duration);
-            }
-            elif (msgType == "Gate")
-            {
-                state = data.Get("state");
-                interactable = data.Get("interactable");
+            duration = data.Get("Duration");
+            TitanUtils.RevealTitans(duration);
+        }
+        elif (msgType == "Gate")
+        {
+            state = data.Get("State");
+            interactable = data.Get("Interactable");
 
-                wallGateObj = Map.FindMapObjectByTag("StartWallGate");
-                wallGate = wallGateObj.GetComponent("WallGateA1");
-                wallGate.Interactable = interactable;
-                wallGate.SetState(state);
-            }
-            elif (msgType == "Reinforcement")
+            wallGateObj = Map.FindMapObjectByTag("StartWallGate");
+            wallGate = wallGateObj.GetComponent("WallGateA1");
+            wallGate.Interactable = interactable;
+            wallGate.SetState(state);
+        }
+        elif (msgType == "Reinforcement")
+        {
+            action = data.Get("Action");
+            if (action == "Call")
             {
-                pos = data.Get("pos");
+                pos = data.Get("Position");
                 zone = CaptureZones.GetNearestCaptureZone(pos);
                 self.Reinforcement(zone);
             }
-            elif (msgType == "UI")
+            elif (action == "UpdateText")
             {
-                msg = data.Get("msg");
-                if (msg == "lives")
-                {
-                    current = data.Get("current");
-                    max = data.Get("max");
-                    InGameUI.UpdateLives(current, max);
-                }
-                else
-                {
-                    current = data.Get("current");
-                    InGameUI.UpdateRespawnTime(current);
-                }
+                remaining = data.Get("Remaining");
+                ReinforcementZones.UpdateText(remaining);
             }
-            else
-            {
-                Game.Print(data);
-            }
+        }
+        elif (msgType == "PlayerTitan")
+        {
+            Game.Print("<size=18>Player titans are not supported</size>");
         }
     }
 
@@ -1181,7 +1189,6 @@ class Main
     {
         if (self._enabled && Network.IsMasterClient)
         {
-            self._debug.OnFrame();
             self._eventController.OnFrame();
         }
     }
@@ -1190,7 +1197,6 @@ class Main
     {
         if (self._enabled && Network.IsMasterClient)
         {
-            self._debug.OnSecond();
             self._eventController.OnSecond();
         }
     }
@@ -1203,18 +1209,14 @@ class Main
         }
     }
 
-    function OnChatInput(message)
-    {
-        if (self._enabled && Network.IsMasterClient)
-        {
-            self._debug.OnChatInput(message);
-        }
-    }
-
     function HandleInteractAction(trigger)
     {
         position = trigger.MapObject.Position;
-        NetworkMessage().Set("type", "Reinforcement").Set("pos", position).Send(Network.MasterClient);
+        NetworkMessage()
+            .Set("Type", "Reinforcement")
+            .Set("Action", "Call")
+            .Set("Position", position)
+            .Send(Network.MasterClient);
     }
 
     function Reinforcement(captureZone)
@@ -1222,7 +1224,12 @@ class Main
         if (self._reinformentCalls < self.MaxReinforcementCalls && PlayerUtils.AnyPlayerDead())
         {
             PlayerUtils.RevivePlayers(captureZone);
-            InGameUI.UpdateReinforcementCalls(self._reinformentCalls, self.MaxReinforcementCalls);
+            NetworkMessage()
+                .Set("Type", "Reinforcement")
+                .Set("Action", "UpdateText")
+                .Set("Remaining", self.MaxReinforcementCalls - (self._reinformentCalls + 1))
+                .SendAll();
+
             self._reinformentCalls += 1;
         }
     }
@@ -1292,7 +1299,7 @@ class EventController
         difficulty = Game.GetGeneralSetting("Difficulty");
         if (difficulty == 0) # Training
         {
-            pointSpawn = 5;
+            pointSpawn = 2;
             townSpawn = 2;
             TownWaveMin = 1;
             TownWaveMax = 2;
@@ -1408,6 +1415,7 @@ class EventController
         elif (newOwner == "Human")
         {
             c = CaptureZones.Get(self._currentIndex);
+            CaptureZones.DisableCaptureZone(self._currentIndex);
 
             if (captureZone.Order > self._currentSpawnPointIndex)
             {
@@ -1455,7 +1463,6 @@ class EventController
             {
                 prevIndex = self._currentIndex;
                 self._events.Get(self._currentIndex).OnEventEnd();
-                CaptureZones.DisableCaptureZone(self._currentIndex);
                 self._currentIndex = self._currentIndex + 1;
 
                 if (self._currentIndex < CaptureZones.Count())
@@ -1507,7 +1514,7 @@ class EventController
             e.OnCharacterDie(victim, killer, killerName);
         }
 
-        if (victim.Type == "Human")
+        if (victim.Type == "Human" || victim.Type == "Shifter")
         {
             self._main.LoseIfPlayersAreDead();
         }
@@ -1671,9 +1678,9 @@ class Event1
         wait 4.0;
         DialogueUtils.SendShowDialogueRandomProfileMessage("Start");
         NetworkMessage()
-            .Set("type", "Gate")
-            .Set("state", "Open")
-            .Set("interactable", false)
+            .Set("Type", "Gate")
+            .Set("State", "Open")
+            .Set("Interactable", false)
             .SendAll();
     }
     
@@ -2090,123 +2097,6 @@ class Event8
 		}
     }
 }
-class Debug
-{
-    Enabled = true;
-
-    _timeScale = 10.0;
-    _fastForwarding = false;
-
-    function Init(enabled)
-    {
-        self.Enabled = enabled;
-    }
-
-    function OnFrame()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-
-        if (Input.GetKeyDown("Interaction/Interact"))
-        {
-            if (self._fastForwarding)
-            {
-                Time.TimeScale = 1.0;
-                self._fastForwarding = false;
-            }
-            else
-            {
-                Time.TimeScale = self._timeScale;
-                self._fastForwarding = true;
-            }
-        }
-        elif (Input.GetKeyDown("Interaction/Function3"))
-        {
-            if (Network.MyPlayer.Status != "Alive")
-            {
-                return;
-            }
-
-            position = Network.MyPlayer.Character.Position;
-            zone = self.GetNearestCaptureZone(position);
-            sp = TitanSpawnPoints.GetSpawnPoint(zone);
-            titan = Game.SpawnTitanAt("Abnormal", sp);
-            titan.FocusRange = 0;
-            titan.DetectRange = 0;
-            titan.MoveTo(zone.MapObject.Position, 10, false);
-        }
-    }
-
-    function GetNearestCaptureZone(position)
-    {
-        nearest = null;
-        nearestDist = 99999.0;
-        for(zone in CaptureZones.GetAll())
-        {
-            dist = Vector3.Distance(position, zone.MapObject.Position);
-            if (dist < nearestDist)
-            {
-                nearest = zone;
-                nearestDist = dist;
-            }
-        }
-
-        return nearest;
-    }
-
-    function OnSecond()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-
-        player = Network.MyPlayer;
-        if (player.Status == "Alive")
-        {
-            character = player.Character;
-            if (character != null && character.Type == "Human")
-            {
-                character.MaxHealth = 1000;
-                character.Health = 1000;
-                character.RefillImmediate();
-            }
-        }
-    }
-
-    function OnChatInput(message)
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-
-        if (String.StartsWith(message, "--xyz"))
-        {
-            pos = Network.MyPlayer.Character.Position;
-            Game.Print(pos);
-        }
-
-        if (String.StartsWith(message, "--kill"))
-        {
-            for(p in Network.Players)
-            {
-                if (p.Status == "Alive")
-                {
-                    p.Character.GetKilled("Server");
-                }
-            }
-        }
-
-        if (String.StartsWith(message, "--tscale"))
-        {
-            str = String.Split(message, " ");
-            self._timeScale = Convert.ToFloat(str.Get(1));
-        }
-    }
-}
 extension CaptureZones
 {
     _captureZones = List();
@@ -2219,6 +2109,7 @@ extension CaptureZones
         {
             captureZoneComponent = captureZone.GetComponent("CaptureZone");
             captureZoneComponent.SetupCallbackReceiver(callbackReceiver);
+            captureZoneComponent.ShifterCanCapture = false;
             if (captureZoneOrderMap.Contains(captureZoneComponent.Order) == true)
             {
                 Game.Print("Capture zone order " + captureZoneComponent.Order + " is already added, please remove duplicate zone!");
@@ -2332,39 +2223,6 @@ extension CaptureZones
         cz.TeamsCanCapture = false;
     }
 }
-extension InGameUI
-{
-    function SendUpdateLivesMessage(player, current, max)
-    {
-        NetworkMessage().Set("type", "UI").Set("msg", "lives").Set("current", current).Set("max", max).Send(player);
-    }
-
-    function SendUpdateRespawnTimeMessage(player, time)
-    {
-        NetworkMessage().Set("type", "UI").Set("msg", "respawn").Set("current", time).Send(player);
-    }
-
-    function UpdateLives(current, max)
-    {
-        UI.SetLabel("TopLeft", "Lives lost: " + current + " / " + max);
-    }
-
-    function UpdateRespawnTime(current)
-    {
-        if (current == null)
-        {
-            UI.SetLabel("MiddleCenter", "");
-            return;
-        }
-        
-        UI.SetLabel("MiddleCenter", "Respawning in <b>" + current + " </b>");
-    }
-
-    function UpdateReinforcementCalls(current, max)
-    {
-        UI.SetLabelAll("TopLeft", "Reinforcements called: " + current + " / " + max);
-    }
-}
 extension TitanSpawnPoints
 {
     _spawnPointsMap = Dict();
@@ -2423,14 +2281,42 @@ extension TitanSpawnPoints
 }
 extension ReinforcementZones
 {
-    function Setup(callbackReceiver)
+    function Setup(callbackReceiver, remaining)
     {
-        self._zones = Map.FindMapObjectsByTag("ReinforcementZone");
-        for(z in self._zones)
+        self._zones = List();
+        self._callbackReceiver = callbackReceiver;
+
+        for(z in Map.FindMapObjectsByTag("ReinforcementZone"))
         {
             c = z.GetComponent("InteractActionTrigger");
-            text = "Press " + Input.GetKeyName("Interaction/" + c.Key) + " to call for reinforcement.";
-            c.SetActionHandler(callbackReceiver, text);
+            self._zones.Add(c);
+        }
+
+        self.UpdateText(remaining);
+    }
+
+    function UpdateText(remaining)
+    {
+        if (remaining <= 0)
+        {
+            for(z in self._zones)
+            {
+                z.SetActionHandler(self._callbackReceiver, "No revives left.");
+            }
+        }
+        else
+        {
+            for(z in self._zones)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/" + z.Key) + " to revive teammates." + String.Newline;
+                text += "<b><size=18>" + remaining + "</size></b>" + " revive";
+                if (remaining >= 2)
+                {
+                    text += "s";
+                }
+                text += " left.";
+                z.SetActionHandler(self._callbackReceiver, text);
+            }
         }
     }
 
@@ -2438,7 +2324,7 @@ extension ReinforcementZones
     {
         for(z in self._zones)
         {
-            z.Active = false;
+            z.MapObject.Active = false;
         }
     }
 }
@@ -2503,9 +2389,9 @@ extension DialogueUtils
     function SendShowDialogueMessage(key, profileIndex)
     {
         NetworkMessage()
-            .Set("type", "Dialogue")
-            .Set("key", key)
-            .Set("profileIndex", profileIndex)
+            .Set("Type", "Dialogue")
+            .Set("LocaleKey", key)
+            .Set("ProfileIndex", profileIndex)
             .SendAll();
     }
 
@@ -2547,8 +2433,8 @@ extension EventUtils
     function RevealTitans(event, seconds)
     {
         NetworkMessage()
-            .Set("type", "RevealTitans")
-            .Set("duration", seconds)
+            .Set("Type", "RevealTitans")
+            .Set("Duration", seconds)
             .SendAll();
     }
 }
@@ -2586,7 +2472,7 @@ extension PlayerUtils
             return;
         }
 
-        yPos = 10.0;
+        yPos = 20.0;
         zoneRadius = 10.0;
 
         for(p in Network.Players)
@@ -2703,8 +2589,12 @@ extension Utils
 
         return false;
     }
-}
 
+    function ListContains(list, element)
+    {
+        return self.IndexOfListElement(list, element) >= 0;
+    }
+}
 
 /// Weather
 {
