@@ -352,10 +352,8 @@ class ZippsUIManager : MonoBehaviour
     public GameObject AbilitySelectionSound;
     [SerializeField]
     public AudioSource ChangeAbilityAudio;
-    public string Loadout;
-    public string NewLoadout;
-    private bool LastHoveredLoadout = false;
 
+    public bool LastHoveredLoadout = false;
     public bool Ability1Selected = false; // made public so i can set to red on human spawn //
     public bool Ability2Selected = false; // made public so i can set to white on human spawn //
     public bool Ability3Selected = false; // made public so i can set to white on human spawn //
@@ -469,7 +467,7 @@ class ZippsUIManager : MonoBehaviour
 
     public void OnHoverExitLoadout()
     {
-        Ability3Selector.color = Color.white;
+        LoadoutSelector.color = Color.white;
     }
 
 
@@ -491,6 +489,7 @@ class ZippsUIManager : MonoBehaviour
         else if (LastHoveredLoadout)
         {
             _human.SwitchVeteranLoadout();
+            LastHoveredLoadout = false;
         }
 
         AbilityWheelCanvas.SetActive(true);
@@ -550,6 +549,11 @@ class ZippsUIManager : MonoBehaviour
         else
         {
             Ability3Image.color = Color.white;
+        }
+
+        if (LastHoveredLoadout == false)
+        {
+            LoadoutSelector.color = Color.white;
         }
     }
 
