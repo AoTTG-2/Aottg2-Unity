@@ -30,11 +30,11 @@ namespace Characters
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
-        public BaseUseable Special_2;
-        public BaseUseable Special_3;
+        public BaseUseable Special_2; // added by Ata 21 May 2024 for Ability Wheel //
+        public BaseUseable Special_3; // added by Ata 21 May 2024 for Ability Wheel //
         public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
-        public BaseUseable Weapon_2; // added by Ata 22 May 2024 for Veteran Role //
+        public BaseUseable Weapon_2 = null; // added by Ata 22 May 2024 for Veteran Role //
         public HookUseable HookLeft;
         public HookUseable HookRight;
         public HumanMountState MountState = HumanMountState.None;
@@ -672,12 +672,34 @@ namespace Characters
             if (Weapon is BladeWeapon)
             {
                 var weapon = (BladeWeapon)Weapon;
-                return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability;
+
+                ThunderspearWeapon weapon2;
+
+                if (Weapon_2 != null) // conditions added by Ata 23 May 2024 for Veteran Role //
+                {
+                    weapon2 = (ThunderspearWeapon)Weapon_2; ;
+                    return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability || weapon2.NeedRefill();
+                } 
+                else
+                {
+                    return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability;
+                }
             }
             else if (Weapon is AmmoWeapon)
             {
                 var weapon = (AmmoWeapon)Weapon;
-                return weapon.NeedRefill();
+                BladeWeapon weapon2; // the object class cannot be fixed to BladeWeapon only since APG and AHHS could be Veterans as well. Doesn't break the game but creates some avoidable console errors //
+
+                if (Weapon_2 != null) // conditions added by Ata 23 May 2024 for Veteran Role //
+                {
+                    weapon2 = (BladeWeapon)Weapon_2;
+                    return weapon.NeedRefill() || weapon2.BladesLeft < weapon2.MaxBlades || weapon2.CurrentDurability < weapon2.MaxDurability;
+                }
+                else
+                {
+                    return weapon.NeedRefill();
+                }
+
             }
             return false;
         }
@@ -691,6 +713,7 @@ namespace Characters
                 ToggleBlades(true);
             }
             Weapon.Reset();
+            Weapon_2.Reset(); // conditions added by Ata 23 May 2024 for Veteran Role //
             CurrentGas = MaxGas;
             MaxOutLogisticianSupplies(); // added (modified) by Ata for reusability on different scripts //
         }
@@ -2179,36 +2202,8 @@ namespace Characters
                 if (Setup.Weapon == HumanWeapon.Blade || Setup.Weapon == HumanWeapon.AHSS)
                 {
                     Setup.Weapon_2 = HumanWeapon.Thunderspear;
-
-                    if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
-                    {
-                        int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
-                        int cdStat = SettingsManager.AbilitySettings.BombCooldown.Value;
-                        int speedStat = SettingsManager.AbilitySettings.BombSpeed.Value;
-                        int rangeStat = SettingsManager.AbilitySettings.BombRange.Value;
-                        if (radiusStat + cdStat + speedStat + rangeStat > 16)
-                        {
-                            radiusStat = speedStat = 6;
-                            rangeStat = 3;
-                            cdStat = 1;
-                        }
-                        float travelTime = ((rangeStat * 60f) + 200f) / ((speedStat * 60f) + 200f);
-                        float radius = (radiusStat * 4f) + 20f;
-                        float cd = ((cdStat + 4) * -0.4f) + 5f;
-                        float speed = (speedStat * 60f) + 200f;
-                        Weapon_2 = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f);
-                        if (CustomLogicManager.Evaluator.CurrentTime > 10f)
-                            Weapon_2.SetCooldownLeft(5f);
-                        else
-                            Weapon_2.SetCooldownLeft(10f);
-                    }
-                    else
-                    {
-                        var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
-                        float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
-                        Weapon_2 = new ThunderspearWeapon(this, tsInfo["AmmoTotal"].AsInt, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
-                            tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
-                    }
+                    Weapon_2 = new ThunderspearWeapon(this, 12, 2, 1.5f, 7f,
+                        500f, 0.5f, 0.12f);
                 }
                 if (Setup.Weapon == HumanWeapon.Thunderspear)
                 {
@@ -2232,6 +2227,12 @@ namespace Characters
 
             Setup.Weapon = Setup.Weapon_2;
             Setup.Weapon_2 = _tempSetupWeaponCache;
+
+            HUDBottomHandler _hudBottomHandler = FindFirstObjectByType<HUDBottomHandler>();
+            if (_hudBottomHandler != null)
+            {
+                _hudBottomHandler.SetBottomHUD(this);
+            }
         }
 
         #endregion
