@@ -210,7 +210,9 @@
 				{
 					"Name": "Outside The Walls",
 					"MiscSettings": {
-						"Horses": true
+						"Horses": true,
+						"AllowPlayerTitans": false,
+						"AllowShifters": false
 					}
 				}
 			]
