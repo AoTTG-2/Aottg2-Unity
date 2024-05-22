@@ -2228,6 +2228,8 @@ namespace Characters
             Setup.Weapon = Setup.Weapon_2;
             Setup.Weapon_2 = _tempSetupWeaponCache;
 
+            Setup.CreateWeapon();
+
             HUDBottomHandler _hudBottomHandler = FindFirstObjectByType<HUDBottomHandler>();
             if (_hudBottomHandler != null)
             {
