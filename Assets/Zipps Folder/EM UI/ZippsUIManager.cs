@@ -289,8 +289,8 @@ class ZippsUIManager : MonoBehaviour
                 break;
         }
 
-
-        if (_humanInput.LogisticianMenu.GetKeyDown() && !InGameMenu.InMenu())
+        bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
+        if (_humanInput.LogisticianMenu.GetKeyDown() && !inMenu)
         {
             LogisticianMenu.SetActive(true);
             CanvasObj.SetActive(false);
