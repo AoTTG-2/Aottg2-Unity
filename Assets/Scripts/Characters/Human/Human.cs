@@ -2111,7 +2111,7 @@ namespace Characters
                 {
                     var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                     float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
-                    Weapon = new ThunderspearWeapon(this, tsInfo["AmmoTotal"].AsInt, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
+                    Weapon = new ThunderspearWeapon(this, 10, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
                         tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
                 }
             }
@@ -2229,6 +2229,19 @@ namespace Characters
             Setup.Weapon_2 = _tempSetupWeaponCache;
 
             Setup.CreateParts();
+
+            if (Weapon is BladeWeapon)
+            {
+                if (((BladeWeapon)Weapon).CurrentDurability <= 0)
+                    ToggleBlades(false, false);
+            }
+            if (Weapon is AmmoWeapon)
+            {
+                if (((AmmoWeapon)Weapon).RoundLeft <= 0)
+                {
+                    ToggleBlades(false, false);
+                }
+            }
 
             HUDBottomHandler _hudBottomHandler = FindFirstObjectByType<HUDBottomHandler>();
             if (_hudBottomHandler != null)
@@ -2816,14 +2829,14 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle)
+        private void ToggleBlades(bool toggle, bool regular = true) // regular added by Ata for Veteran Role distinction //
         {
             if (IsMine())
-                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });
+                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle, regular });
         }
 
         [PunRPC]
-        protected void ToggleBladesRPC(bool toggle, PhotonMessageInfo info)
+        protected void ToggleBladesRPC(bool toggle, bool regular, PhotonMessageInfo info) // regular added by Ata for Veteran Role distinction //
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
@@ -2834,7 +2847,7 @@ namespace Characters
             }
             else
             {
-                if (Setup.LeftTrail != null && Setup.RightTrail != null)
+                if (Setup.LeftTrail != null && Setup.RightTrail != null && regular == true) // regular added by Ata for Veteran Role distinction //
                 {
                     Setup.LeftTrail.StopImmediate();
                     Setup.RightTrail.StopImmediate();
