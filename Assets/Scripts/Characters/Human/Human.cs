@@ -713,7 +713,10 @@ namespace Characters
                 ToggleBlades(true);
             }
             Weapon.Reset();
-            Weapon_2.Reset(); // conditions added by Ata 23 May 2024 for Veteran Role //
+
+            if (Weapon_2 != null)
+                Weapon_2.Reset(); // conditions added by Ata 23 May 2024 for Veteran Role //
+
             CurrentGas = MaxGas;
             MaxOutLogisticianSupplies(); // added (modified) by Ata for reusability on different scripts //
         }
