@@ -2198,24 +2198,19 @@ namespace Characters
 
         public void SetupVeteran()
         {
-            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran") && !EmVariables.isVeteranSet)
+            if (!EmVariables.isVeteranSet)
             {
                 EmVariables.isVeteranSet = true; // for only setting up once
 
-                if (Setup.Weapon == HumanWeapon.Blade || Setup.Weapon == HumanWeapon.AHSS)
+                if (Setup.Weapon == HumanWeapon.Blade || Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
                 {
                     Setup.Weapon_2 = HumanWeapon.Thunderspear;
-                    Weapon_2 = new ThunderspearWeapon(this, 12, 2, 1.5f, 7f,
-                        500f, 0.5f, 0.12f);
+                    Weapon_2 = new ThunderspearWeapon(this, 12, 2, 1.5f, 7f, 500f, 0.5f, 0.12f);
                 }
                 if (Setup.Weapon == HumanWeapon.Thunderspear)
                 {
                     Setup.Weapon_2 = HumanWeapon.Blade;
-
-                    HumanCustomSet set = new HumanCustomSet();
-
-                    var bladeInfo = CharacterData.HumanWeaponInfo["Blade"];
-                    Weapon_2 = new BladeWeapon(this, set.Blade.Value * bladeInfo["DurabilityMultiplier"].AsFloat, bladeInfo["Blades"].AsInt);
+                    Weapon_2 = new BladeWeapon(this, 175f, 4); // give more if need be
                 }
             }
         }
@@ -2236,13 +2231,13 @@ namespace Characters
             if (Weapon is BladeWeapon)
             {
                 if (((BladeWeapon)Weapon).CurrentDurability <= 0)
-                    ToggleBlades(false, false);
+                    ToggleBlades(false);
             }
-            if (Weapon is AmmoWeapon)
+            if (Weapon is ThunderspearWeapon)
             {
-                if (((AmmoWeapon)Weapon).RoundLeft <= 0)
+                if (((ThunderspearWeapon)Weapon).RoundLeft <= 0)
                 {
-                    ToggleBlades(false, false);
+                    SetThunderspears(false, false);
                 }
             }
 
@@ -2832,14 +2827,14 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle, bool regular = true) // regular added by Ata for Veteran Role distinction //
+        private void ToggleBlades(bool toggle)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle, regular });
+                Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });
         }
 
         [PunRPC]
-        protected void ToggleBladesRPC(bool toggle, bool regular, PhotonMessageInfo info) // regular added by Ata for Veteran Role distinction //
+        protected void ToggleBladesRPC(bool toggle, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
@@ -2850,7 +2845,7 @@ namespace Characters
             }
             else
             {
-                if (Setup.LeftTrail != null && Setup.RightTrail != null && regular == true) // regular added by Ata for Veteran Role distinction //
+                if (Setup.LeftTrail != null && Setup.RightTrail != null)
                 {
                     Setup.LeftTrail.StopImmediate();
                     Setup.RightTrail.StopImmediate();
