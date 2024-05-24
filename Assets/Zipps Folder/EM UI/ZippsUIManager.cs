@@ -400,7 +400,7 @@ class ZippsUIManager : MonoBehaviour
     }
 
     private Sprite LoadSpriteForLoadout(string spriteName) {
-        string path = "UI/Icons/EM Icons/" + spriteName;
+        string path = "UI/Icons/EM Icons/Vet" + spriteName;
         Sprite sprite = Resources.Load<Sprite>(path);
         if (sprite == null)
         {

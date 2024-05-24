@@ -2044,6 +2044,11 @@ namespace Characters
                                SettingsManager.InGameCharacterSettings.Special_2.Value,
                                SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
                 SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+
+                EmVariables.isVeteranSet = false;
+                if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran"))
+                    SetupVeteran();
+
                 _zippsUIManager = FindFirstObjectByType<ZippsUIManager>(); // setting up the ability wheel UI //
                 _zippsUIManager.SetWheelImages(); // setting up the ability wheel UI //
                 _zippsUIManager.Ability1Selected = true; // setting up the ability wheel UI //
