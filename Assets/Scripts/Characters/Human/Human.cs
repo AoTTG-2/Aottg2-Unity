@@ -1807,7 +1807,8 @@ namespace Characters
         {
             if (FinishSetup)
             {
-                Weapon.OnFixedUpdate();
+                if (Weapon != null) // null check added by Ata 25 May 2024 because it broke loadout swapping //
+                    Weapon.OnFixedUpdate();
                 HookLeft.OnFixedUpdate();
                 HookRight.OnFixedUpdate();
 

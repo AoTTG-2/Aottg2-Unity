@@ -267,7 +267,7 @@ namespace Controllers
                         _human._gunArmAim = attackInput.GetKey() || _human.Weapon.IsActive;
                     }
                     else
-                        _human.Weapon.ReadInput(attackInput);
+                        _human.Weapon?.ReadInput(attackInput); // null check added by Ata 25 May 2024 because it broke loadout swapping //
                 }
             }
             else
