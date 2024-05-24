@@ -399,6 +399,16 @@ class ZippsUIManager : MonoBehaviour
         return sprite;
     }
 
+    private Sprite LoadSpriteForLoadout(string spriteName) {
+        string path = "UI/Icons/EM Icons/" + spriteName;
+        Sprite sprite = Resources.Load<Sprite>(path);
+        if (sprite == null)
+        {
+            Debug.LogError("Sprite not found at path: " + path);
+        }
+        return sprite;
+    }
+ 
     public void OnHoverAbility1()
     {
         if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special.Value != "None")
@@ -461,13 +471,13 @@ class ZippsUIManager : MonoBehaviour
         Ability2Selected = false;
         Ability3Selected = false;
         LastHoveredLoadout = true; 
-        LoadoutSelector.color = new Color(0.525f, 0.164f, 0.227f);
+        LoadoutImage.color = new Color(0.525f, 0.164f, 0.227f);
         AbilityWheelAudio.Play();
     }
 
     public void OnHoverExitLoadout()
     {
-        LoadoutSelector.color = Color.white;
+        LoadoutImage.color = Color.white;
     }
 
 
@@ -550,19 +560,25 @@ class ZippsUIManager : MonoBehaviour
         {
             Ability3Image.color = Color.white;
         }
-
-        if (LastHoveredLoadout == false)
-        {
-            LoadoutSelector.color = Color.white;
-        }
     }
 
     private void UpdateLoadoutVisibility()
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran"))
         {
-            LoadoutParent.SetActive(true);
-            LoadoutImage.sprite = LoadSprite(SettingsManager.InGameCharacterSettings.Special_3.Value);
+            if (LoadoutParent.activeInHierarchy == false)
+                LoadoutParent.SetActive(true);
+
+            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+
+            if(_human.Setup.Weapon_2 == HumanWeapon.Blade)
+                LoadoutImage.sprite = LoadSpriteForLoadout("Blades");
+            if(_human.Setup.Weapon_2 == HumanWeapon.AHSS)
+                LoadoutImage.sprite = LoadSpriteForLoadout("AHSS");
+            if(_human.Setup.Weapon_2 == HumanWeapon.APG)
+                LoadoutImage.sprite = LoadSpriteForLoadout("APG");
+            if(_human.Setup.Weapon_2 == HumanWeapon.Thunderspear)
+                LoadoutImage.sprite = LoadSpriteForLoadout("TS");
         }
         else
         {
