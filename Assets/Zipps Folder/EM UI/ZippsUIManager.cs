@@ -511,7 +511,7 @@ class ZippsUIManager : MonoBehaviour
         Ability1Selector.color = Color.white;
         Ability2Selector.color = Color.white;
         Ability3Selector.color = Color.white;
-        LoadoutSelector.color = Color.white;
+        LoadoutSelector.color = new Color(184f/255f, 184f/255f, 184f/255f);
         LoadoutImage.color = Color.white;
     }
 
