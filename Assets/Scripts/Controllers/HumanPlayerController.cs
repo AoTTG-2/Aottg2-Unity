@@ -271,7 +271,7 @@ namespace Controllers
                 }
             }
             else
-                _human.Weapon.SetInput(false);
+                _human.Weapon?.SetInput(false); // null check added by Ata 25 May 2024 because it broke loadout swapping //
 
             if (_human.Special != null)
             {
