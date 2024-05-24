@@ -15,6 +15,7 @@ class ZippsUIManager : MonoBehaviour
     private void Start()
     {
         _humanInput = SettingsManager.InputSettings.Human;
+        previousHorseAutorunState = EmVariables.HorseAutorun;
     }
 
     private void FixedUpdate()
@@ -27,6 +28,8 @@ class ZippsUIManager : MonoBehaviour
         LogisticianUpdate();
         CannoneerUpdate();
         AbilityWheelUpdate();
+        EmHUDUpdate();
+        
     }
 
     private void OnApplicationFocus(bool focus)
@@ -292,7 +295,6 @@ class ZippsUIManager : MonoBehaviour
 
     #endregion
 
-
     #region Ability Wheel
     [Header("Ability Wheel")]
     [SerializeField]
@@ -508,6 +510,56 @@ class ZippsUIManager : MonoBehaviour
         if (_humanInput.AbilityWheelMenu.GetKeyUp())
         {
             HideAbilityWheel();
+        }
+    }
+    #endregion
+
+    #region EM HUD
+    [SerializeField]
+    private GameObject EmHUD;
+    [SerializeField]
+    private RawImage HorseAutoRunImage ;
+    private bool previousHorseAutorunState;
+
+    public void OpenEmHUD()
+    {
+        if (EmHUD.activeInHierarchy)return;
+        EmHUD.SetActive(true);
+    }
+
+    public void CloseEmHUD()
+    {
+        if (!EmHUD.activeInHierarchy) return;
+        EmHUD.SetActive(false);
+    }
+
+    private void EmHUDUpdate()
+    {
+        if (PhotonExtensions.GetMyPlayer() == null)
+        {
+            CloseEmHUD();
+            return;
+        } 
+        else OpenEmHUD();
+        HorseAutoRunUpdate();
+    }
+
+    private void HorseAutoRunUpdate()
+    {
+
+        if (EmVariables.HorseAutorun != previousHorseAutorunState)
+        {
+            if (EmVariables.HorseAutorun)
+            {
+                HorseAutoRunImage.color = new Color(0.525f, 0.164f, 0.227f);
+            }
+            else
+            {
+                HorseAutoRunImage.color = new Color(1f, 1f, 1f, 1f);
+            }
+
+            // Update the previous state to the current state
+            previousHorseAutorunState = EmVariables.HorseAutorun;
         }
     }
     #endregion

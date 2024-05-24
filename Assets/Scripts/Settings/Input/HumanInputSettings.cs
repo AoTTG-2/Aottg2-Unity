@@ -25,6 +25,7 @@
         public KeybindSetting HorseMount = new KeybindSetting(new string[] { "LeftControl", "None" });
         public KeybindSetting HorseWalk = new KeybindSetting(new string[] { "LeftShift", "None" });
         public KeybindSetting HorseJump = new KeybindSetting(new string[] { "Space", "None" });
+        public KeybindSetting HorseAutorun = new KeybindSetting(new string[] { "Equals", "None" }); // Added by Snake 22 May 24 //
         public KeybindSetting NapeLock = new KeybindSetting(new string[] { "None", "None" });
         public BoolSetting DashDoubleTap = new BoolSetting(true);
         public BoolSetting DashUpwardsDoubleTap = new BoolSetting(true); // Added by Ata 21 May 24 //
