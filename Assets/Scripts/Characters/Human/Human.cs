@@ -30,10 +30,11 @@ namespace Characters
         // setup
         public HumanComponentCache HumanCache;
         public BaseUseable Special;
-        public BaseUseable Special_2;
-        public BaseUseable Special_3;
+        public BaseUseable Special_2; // added by Ata 21 May 2024 for Ability Wheel //
+        public BaseUseable Special_3; // added by Ata 21 May 2024 for Ability Wheel //
         public BaseUseable[] SpecialsArray; // added by Ata 12 May 2024 for Ability Wheel //
         public BaseUseable Weapon;
+        public BaseUseable Weapon_2 = null; // added by Ata 22 May 2024 for Veteran Role //
         public HookUseable HookLeft;
         public HookUseable HookRight;
         public HumanMountState MountState = HumanMountState.None;
@@ -357,7 +358,7 @@ namespace Characters
             if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None && 
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
             {
-                UseGas(Mathf.Min(MaxGas * 0.06f, 10));
+                UseGas(Mathf.Min(MaxGas * 0.04f, 10));
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
                 _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
@@ -664,15 +665,41 @@ namespace Characters
             {
                 return true;
             }
+            if (EmVariables.LogisticianBladeSupply < EmVariables.LogisticianMaxSupply || EmVariables.LogisticianGasSupply < EmVariables.LogisticianMaxSupply)
+            {
+                return true;
+            }
             if (Weapon is BladeWeapon)
             {
                 var weapon = (BladeWeapon)Weapon;
-                return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability;
+
+                ThunderspearWeapon weapon2;
+
+                if (Weapon_2 != null) // conditions added by Ata 23 May 2024 for Veteran Role //
+                {
+                    weapon2 = (ThunderspearWeapon)Weapon_2; ;
+                    return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability || weapon2.NeedRefill();
+                } 
+                else
+                {
+                    return weapon.BladesLeft < weapon.MaxBlades || weapon.CurrentDurability < weapon.MaxDurability;
+                }
             }
             else if (Weapon is AmmoWeapon)
             {
                 var weapon = (AmmoWeapon)Weapon;
-                return weapon.NeedRefill();
+                BladeWeapon weapon2; // the object class cannot be fixed to BladeWeapon only since APG and AHHS could be Veterans as well. Doesn't break the game but creates some avoidable console errors //
+
+                if (Weapon_2 != null) // conditions added by Ata 23 May 2024 for Veteran Role //
+                {
+                    weapon2 = (BladeWeapon)Weapon_2;
+                    return weapon.NeedRefill() || weapon2.BladesLeft < weapon2.MaxBlades || weapon2.CurrentDurability < weapon2.MaxDurability;
+                }
+                else
+                {
+                    return weapon.NeedRefill();
+                }
+
             }
             return false;
         }
@@ -686,9 +713,18 @@ namespace Characters
                 ToggleBlades(true);
             }
             Weapon.Reset();
+
+            if (Weapon_2 != null)
+                Weapon_2.Reset(); // conditions added by Ata 23 May 2024 for Veteran Role //
+
             CurrentGas = MaxGas;
-            EmVariables.LogisticianBladeSupply = 4;
-            EmVariables.LogisticianGasSupply = 4;
+            MaxOutLogisticianSupplies(); // added (modified) by Ata for reusability on different scripts //
+        }
+
+        public void MaxOutLogisticianSupplies() // added (modified) by Ata for reusability on different scripts //
+        {
+            EmVariables.LogisticianBladeSupply = EmVariables.LogisticianMaxSupply;
+            EmVariables.LogisticianGasSupply = EmVariables.LogisticianMaxSupply;
         }
 
         public override void Emote(string emote)
@@ -938,6 +974,8 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
+                SetupVeteran(); // added by Ata 22 May 2024 for Veteran Role //
+
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
@@ -1116,6 +1154,10 @@ namespace Characters
                     if (Carrier != null && Vector3.Distance(Carrier.Cache.Transform.position, Cache.Transform.position) > 7f)
                         Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
+            }
+            if (Dead)
+            {
+                EmVariables.isVeteranSet = false;
             }
         }
 
@@ -1765,7 +1807,8 @@ namespace Characters
         {
             if (FinishSetup)
             {
-                Weapon.OnFixedUpdate();
+                if (Weapon != null) // null check added by Ata 25 May 2024 because it broke loadout swapping //
+                    Weapon.OnFixedUpdate();
                 HookLeft.OnFixedUpdate();
                 HookRight.OnFixedUpdate();
 
@@ -2001,6 +2044,11 @@ namespace Characters
                                SettingsManager.InGameCharacterSettings.Special_2.Value,
                                SettingsManager.InGameCharacterSettings.Special_3.Value); // added by Ata 12 May 2024 for Ability Wheel //
                 SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special.Value, 1);
+
+                EmVariables.isVeteranSet = false;
+                if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran"))
+                    SetupVeteran();
+
                 _zippsUIManager = FindFirstObjectByType<ZippsUIManager>(); // setting up the ability wheel UI //
                 _zippsUIManager.SetWheelImages(); // setting up the ability wheel UI //
                 _zippsUIManager.Ability1Selected = true; // setting up the ability wheel UI //
@@ -2025,7 +2073,7 @@ namespace Characters
 
         protected void SetupWeapon(HumanCustomSet set, int humanWeapon)
         {
-            if (humanWeapon == (int)HumanWeapon.Blade)
+            if (humanWeapon == (int)HumanWeapon.Blade) // HERE //
             {
                 var bladeInfo = CharacterData.HumanWeaponInfo["Blade"];
                 Weapon = new BladeWeapon(this, set.Blade.Value * bladeInfo["DurabilityMultiplier"].AsFloat, bladeInfo["Blades"].AsInt);
@@ -2072,7 +2120,7 @@ namespace Characters
                 {
                     var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                     float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
-                    Weapon = new ThunderspearWeapon(this, tsInfo["AmmoTotal"].AsInt, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
+                    Weapon = new ThunderspearWeapon(this, 10, tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
                         tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
                 }
             }
@@ -2147,6 +2195,62 @@ namespace Characters
 
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_2(HumanSpecials.GetSpecialIcon(SideSpecial_1));
                 ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon_3(HumanSpecials.GetSpecialIcon(SideSpecial_2));
+            }
+        }
+
+        #endregion
+
+        #region Veteran
+
+        public void SetupVeteran()
+        {
+            if (!EmVariables.isVeteranSet)
+            {
+                EmVariables.isVeteranSet = true; // for only setting up once
+
+                if (Setup.Weapon == HumanWeapon.Blade || Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
+                {
+                    Setup.Weapon_2 = HumanWeapon.Thunderspear;
+                    Weapon_2 = new ThunderspearWeapon(this, 12, 2, 1.5f, 7f, 500f, 0.5f, 0.12f);
+                }
+                if (Setup.Weapon == HumanWeapon.Thunderspear)
+                {
+                    Setup.Weapon_2 = HumanWeapon.Blade;
+                    Weapon_2 = new BladeWeapon(this, 175f, 4); // give more if need be
+                }
+            }
+        }
+
+        public void SwitchVeteranLoadout()
+        {
+            BaseUseable _tempHumanWeaponCache = Weapon;
+            HumanWeapon _tempSetupWeaponCache = Setup.Weapon;
+
+            Weapon = Weapon_2;
+            Weapon_2 = _tempHumanWeaponCache;
+
+            Setup.Weapon = Setup.Weapon_2;
+            Setup.Weapon_2 = _tempSetupWeaponCache;
+
+            Setup.CreateParts();
+
+            if (Weapon is BladeWeapon)
+            {
+                if (((BladeWeapon)Weapon).CurrentDurability <= 0)
+                    ToggleBlades(false);
+            }
+            if (Weapon is ThunderspearWeapon)
+            {
+                if (((ThunderspearWeapon)Weapon).RoundLeft <= 0)
+                {
+                    SetThunderspears(false, false);
+                }
+            }
+
+            HUDBottomHandler _hudBottomHandler = FindFirstObjectByType<HUDBottomHandler>();
+            if (_hudBottomHandler != null)
+            {
+                _hudBottomHandler.SetBottomHUD(this);
             }
         }
 
