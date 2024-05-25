@@ -17,6 +17,7 @@
         public KeybindSetting Ability1 = new KeybindSetting(new string[] { "Alpha1", "None" }); // Added by Ata 12 May 24 for Ability Wheel//
         public KeybindSetting Ability2 = new KeybindSetting(new string[] { "Alpha2", "None" }); // Added by Ata 20 May 24 for Ability Wheel//
         public KeybindSetting Ability3 = new KeybindSetting(new string[] { "Alpha3", "None" }); // Added by Ata 20 May 24 for Ability Wheel//
+        public KeybindSetting LoadoutSwap = new KeybindSetting(new string[] { "None", "None" }); // Added by Ata 25 May 24 for Veteran Role //
         public KeybindSetting ReelIn = new KeybindSetting(new string[] { "WheelDown", "None" });
         public KeybindSetting ReelOut = new KeybindSetting(new string[] { "LeftAlt", "None" });
         public KeybindSetting Dodge = new KeybindSetting(new string[] { "LeftControl", "None" });

@@ -224,6 +224,7 @@ namespace Controllers
             UpdateDashInput(inMenu);
             UpdateDashUpwardsInput(inMenu);
             UpdateDashDownwardsInput(inMenu);
+            UpdateLoadoutSwap(inMenu);
             if (!inMenu)
             {
                 if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
@@ -507,6 +508,18 @@ namespace Controllers
                 }
             }
         }
+        #endregion
+
+        #region Veteran Loadout Swap
+
+        void UpdateLoadoutSwap(bool inMenu)
+        {
+            if (!inMenu && _human.Weapon != null && _human.Weapon_2 != null && PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran")) 
+            {
+                _human.SwitchVeteranLoadout();
+            }
+        }
+
         #endregion
     }
 }
