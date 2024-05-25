@@ -16,6 +16,7 @@ class ZippsUIManager : MonoBehaviour
     {
         _humanInput = SettingsManager.InputSettings.Human;
         previousHorseAutorunState = EmVariables.HorseAutorun;
+        horseAutoRunAnimator =  EmHUD.GetComponentInChildren<Animator>();
     }
 
     private void FixedUpdate()
@@ -520,6 +521,7 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private RawImage HorseAutoRunImage ;
     private bool previousHorseAutorunState;
+    private Animator horseAutoRunAnimator;
 
     public void OpenEmHUD()
     {
@@ -552,10 +554,12 @@ class ZippsUIManager : MonoBehaviour
             if (EmVariables.HorseAutorun)
             {
                 HorseAutoRunImage.color = new Color(0.525f, 0.164f, 0.227f);
+                horseAutoRunAnimator.SetBool("HorseSway", true);
             }
             else
             {
-                HorseAutoRunImage.color = new Color(1f, 1f, 1f, 1f);
+                HorseAutoRunImage.color = Color.white;
+                horseAutoRunAnimator.SetBool("HorseSway", false);
             }
 
             // Update the previous state to the current state
