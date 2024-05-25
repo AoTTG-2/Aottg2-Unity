@@ -516,7 +516,8 @@ namespace Controllers
         {
             if (!inMenu && _human.Weapon != null && _human.Weapon_2 != null && PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran")) 
             {
-                _human.SwitchVeteranLoadout();
+                if (_humanInput.LoadoutSwap.GetKeyDown())
+                    _human.SwitchVeteranLoadout();
             }
         }
 
