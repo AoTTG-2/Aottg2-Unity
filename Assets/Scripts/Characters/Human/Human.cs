@@ -2128,12 +2128,12 @@ namespace Characters
 
         protected void SetupItems()
         {
-            Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Black", new Color(0f, 0f, 0f, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Purple", new Color(153f / 255, 0f, 204f / 255, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Blue", new Color(0f, 102f / 255, 204f / 255, 0.7f), 10f));
-            Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Green", new Color(118f / 255f, 182 / 255f, 31 / 255f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Red", new Color(246 / 255f, 24 / 255f, 12 / 255f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Black", new Color(6f / 255f, 9f / 255f, 17f / 255f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Purple", new Color(195f / 255f, 69f / 255f, 1f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Blue", new Color(27 / 255f, 96 / 255f, 1f, 0.7f), 10f));
+            Items.Add(new FlareItem(this, "Yellow", new Color(1f, 158 / 255f, 23 / 255f, 0.7f), 10f));
         }
 
         public void SetSpecial(string special)
