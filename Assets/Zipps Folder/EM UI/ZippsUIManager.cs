@@ -477,6 +477,7 @@ class ZippsUIManager : MonoBehaviour
 
     public void OnHoverExitLoadout()
     {
+        LastHoveredLoadout = false; 
         LoadoutImage.color = Color.white;
     }
 
