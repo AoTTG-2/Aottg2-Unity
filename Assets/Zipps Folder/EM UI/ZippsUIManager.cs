@@ -16,7 +16,7 @@ class ZippsUIManager : MonoBehaviour
     {
         _humanInput = SettingsManager.InputSettings.Human;
         previousHorseAutorunState = EmVariables.HorseAutorun;
-        horseAutoRunAnimator =  EmHUD.GetComponentInChildren<Animator>();
+        horseAutoRunAnimator =  HorseAutoRunObject.GetComponentInChildren<Animator>();
     }
 
     private void FixedUpdate()
@@ -520,6 +520,8 @@ class ZippsUIManager : MonoBehaviour
     private GameObject EmHUD;
     [SerializeField]
     private RawImage HorseAutoRunImage ;
+    [SerializeField]
+    private GameObject HorseAutoRunObject;
     private bool previousHorseAutorunState;
     private Animator horseAutoRunAnimator;
 
@@ -537,13 +539,21 @@ class ZippsUIManager : MonoBehaviour
 
     private void EmHUDUpdate()
     {
-        if (PhotonExtensions.GetMyPlayer() == null)
-        {
-            CloseEmHUD();
-            return;
-        } 
+        if (PhotonExtensions.GetMyPlayer() == null) CloseEmHUD();
         else OpenEmHUD();
-        HorseAutoRunUpdate();
+        
+        Horse _horse =  FindFirstObjectByType<Horse>();
+        if (_horse == null) 
+        {
+            if (!HorseAutoRunObject.activeInHierarchy) return;
+            HorseAutoRunObject.SetActive(false);    
+        } 
+        else
+        {
+            HorseAutoRunUpdate();
+            if (HorseAutoRunObject.activeInHierarchy) return;
+            HorseAutoRunObject.SetActive(true);
+        }
     }
 
     private void HorseAutoRunUpdate()
