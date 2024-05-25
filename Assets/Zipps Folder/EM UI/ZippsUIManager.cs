@@ -535,7 +535,10 @@ class ZippsUIManager : MonoBehaviour
 
     public void KeepSelectedAbilityColor()
     {
-        if (Ability1Selected)
+
+        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
+
+        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special.Value)
         {
             Ability1Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -544,7 +547,7 @@ class ZippsUIManager : MonoBehaviour
             Ability1Image.color = Color.white;
         }
 
-        if (Ability2Selected)
+        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special_2.Value)
         {
             Ability2Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -553,7 +556,7 @@ class ZippsUIManager : MonoBehaviour
             Ability2Image.color = Color.white;
         }
 
-        if (Ability3Selected)
+        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special_3.Value)
         {
             Ability3Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
