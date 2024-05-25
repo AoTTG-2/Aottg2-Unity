@@ -358,7 +358,7 @@ namespace Characters
             if (_dashTimeLeft <= 0f && CurrentGas > 0 && MountState == HumanMountState.None && 
                 State != HumanState.Grab && CarryState != HumanCarryState.Carry && _dashCooldownLeft <= 0f)
             {
-                UseGas(Mathf.Min(MaxGas * 0.04f, 10));
+                UseGas(Mathf.Min(MaxGas * 0.06f, 10));
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
                 _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
