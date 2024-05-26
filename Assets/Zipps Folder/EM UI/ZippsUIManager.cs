@@ -626,4 +626,94 @@ class ZippsUIManager : MonoBehaviour
         UpdateLoadoutVisibility();
     }
     #endregion
+
+    #region EM HUD
+    [Header("EM HUD")]
+    [SerializeField]
+    private GameObject EmHUD;
+    [SerializeField]
+    private RawImage HorseAutoRunImage;
+    [SerializeField]
+    private GameObject HorseAutoRunObject;
+    [SerializeField]
+    private GameObject HorseAutoRunAudioObject;
+    [SerializeField]
+    private AudioSource HorseAutoRunAudioSource;
+    [SerializeField]
+    private bool previousHorseAutorunState;
+    private Animator horseAutoRunAnimator;
+
+    public void OpenEmHUD()
+    {
+        if (EmHUD.activeInHierarchy) return;
+        EmHUD.SetActive(true);
+    }
+
+    public void CloseEmHUD()
+    {
+        if (!EmHUD.activeInHierarchy) return;
+        EmHUD.SetActive(false);
+    }
+
+    private void EmHUDUpdate()
+    {
+        if (PhotonExtensions.GetMyPlayer() == null)
+        {
+            if (HorseAutoRunAudioObject.activeInHierarchy)
+                CloseEmHUD();
+        }
+        else OpenEmHUD();
+
+        Horse _horse = FindFirstObjectByType<Horse>();
+        if (_horse == null)
+        {
+            if (!HorseAutoRunObject.activeInHierarchy) return;
+            HorseAutoRunObject.SetActive(false);
+        }
+        else
+        {
+            HorseAutoRunUpdate();
+            if (HorseAutoRunObject.activeInHierarchy) return;
+            HorseAutoRunObject.SetActive(true);
+        }
+    }
+
+    private void HorseAutoRunUpdate()
+    {
+        if (EmVariables.HorseAutorun != previousHorseAutorunState)
+        {
+            //PlayHorseAutoSwitchSoundFromKeybind();
+
+            if (EmVariables.HorseAutorun)
+            {
+                HorseAutoRunImage.color = new Color(0.525f, 0.164f, 0.227f);
+                horseAutoRunAnimator.SetBool("HorseSway", true);
+            }
+            else
+            {
+                HorseAutoRunImage.color = Color.white;
+                horseAutoRunAnimator.SetBool("HorseSway", false);
+            }
+
+            previousHorseAutorunState = EmVariables.HorseAutorun;
+        }
+    }
+
+    public void PlayHorseAutoSwitchSoundFromKeybind()
+    {
+        HorseAutoRunAudioObject.SetActive(true);
+        HorseAutoRunAudioSource.Play();
+        StartCoroutine(WaitForSwitchAudioToFinish());
+    }
+
+    private IEnumerator WaitForSwitchAudioToFinish()
+    {
+        while (HorseAutoRunAudioSource.isPlaying)
+        {
+            yield return null;
+        }
+        HorseAutoRunAudioObject.SetActive(false);
+        //atas mom
+    }
+    #endregion
 }
