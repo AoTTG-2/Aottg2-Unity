@@ -17,6 +17,8 @@ class ZippsUIManager : MonoBehaviour
     private void Start()
     {
         _humanInput = SettingsManager.InputSettings.Human;
+        previousHorseAutorunState = EmVariables.HorseAutorun;
+        horseAutoRunAnimator =  HorseAutoRunObject.GetComponentInChildren<Animator>();
     }
 
     private void FixedUpdate()
@@ -29,6 +31,7 @@ class ZippsUIManager : MonoBehaviour
         LogisticianUpdate();
         CannoneerUpdate();
         AbilityWheelUpdate();
+        EmHUDUpdate();
     }
 
     private void OnApplicationFocus(bool focus)
@@ -640,7 +643,7 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private AudioSource HorseAutoRunAudioSource;
     [SerializeField]
-    private bool previousHorseAutorunState;
+    private bool previousHorseAutorunState ;
     private Animator horseAutoRunAnimator;
 
     public void OpenEmHUD()
@@ -657,13 +660,13 @@ class ZippsUIManager : MonoBehaviour
 
     private void EmHUDUpdate()
     {
-        if (PhotonExtensions.GetMyPlayer() == null)
+        if (PhotonExtensions.GetMyPlayer() == null && EmVariables.EmHUD)
         {
             if (HorseAutoRunAudioObject.activeInHierarchy)
                 CloseEmHUD();
         }
         else OpenEmHUD();
-
+        
         Horse _horse = FindFirstObjectByType<Horse>();
         if (_horse == null)
         {
@@ -671,7 +674,7 @@ class ZippsUIManager : MonoBehaviour
             HorseAutoRunObject.SetActive(false);
         }
         else
-        {
+        {   
             HorseAutoRunUpdate();
             if (HorseAutoRunObject.activeInHierarchy) return;
             HorseAutoRunObject.SetActive(true);
@@ -682,8 +685,6 @@ class ZippsUIManager : MonoBehaviour
     {
         if (EmVariables.HorseAutorun != previousHorseAutorunState)
         {
-            //PlayHorseAutoSwitchSoundFromKeybind();
-
             if (EmVariables.HorseAutorun)
             {
                 HorseAutoRunImage.color = new Color(0.525f, 0.164f, 0.227f);

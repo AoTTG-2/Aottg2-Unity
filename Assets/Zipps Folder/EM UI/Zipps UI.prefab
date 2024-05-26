@@ -147,7 +147,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185583798371188614}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -4724,7 +4724,7 @@ MonoBehaviour:
   Ability1Selector: {fileID: 8287579861683833164}
   Ability2Selector: {fileID: 4983081181347406781}
   Ability3Selector: {fileID: 4300326262174170109}
-  LoadoutSelector: {fileID: 5116916343924649540}
+  LoadoutSelector: {fileID: 0}
   AbilitySelectionSound: {fileID: 5490419852439088066}
   ChangeAbilityAudio: {fileID: 8927297827050685152}
   LastHoveredLoadout: 0

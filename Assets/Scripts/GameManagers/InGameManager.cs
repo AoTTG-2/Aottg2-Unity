@@ -46,6 +46,7 @@ namespace GameManagers
         public bool GlobalPause = false;
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
+        
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -133,6 +134,8 @@ namespace GameManagers
             if (!PhotonNetwork.IsMasterClient)
                 return;
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
+            //added by Snake for EM HUD 26 May 24
+            EmVariables.EmHUD = false;
             RPCManager.PhotonView.RPC("PreRestartGameRPC", RpcTarget.All, new object[] { !SettingsManager.UISettings.FadeLoadscreen.Value });
             Time.timeScale = 1f;
             manager.StartCoroutine(manager.FinishRestartGame());
@@ -146,6 +149,8 @@ namespace GameManagers
                 yield return new WaitForEndOfFrame();
             PhotonNetwork.DestroyAll();
             RPCManager.PhotonView.RPC("RestartGameRPC", RpcTarget.All, new object[0]);
+            //added by Snake for EM HUD 26 May 24
+            EmVariables.EmHUD = true;
         }
 
         public static void OnRestartGameRPC(PhotonMessageInfo info)
