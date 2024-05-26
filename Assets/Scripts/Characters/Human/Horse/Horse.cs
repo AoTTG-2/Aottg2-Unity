@@ -166,7 +166,7 @@ namespace Characters
                 }
                 
                 //Handling Horse Auto Running, Snake 24 May 24      
-                if (EmVariables.HorseAutorun)
+                if (EmVariables.HorseAutorun&& _owner.MountState == HumanMountState.Horse )
                 {
                     State = HorseState.ControlledRun;
                 }
