@@ -355,6 +355,7 @@
 		"Keybinds.Human.HorseMount": "Horse mount",
 		"Keybinds.Human.HorseWalk": "Horse walk",
 		"Keybinds.Human.HorseJump": "Horse jump",
+		"Keybinds.Human.HorseAutorun": "Horse autorun", // added by Snake 26 May 24
 		"Keybinds.Human.NapeLock": "Nape lock",
 		"Keybinds.Human.DashDoubleTap": "Double-tap to dash",
 		"Keybinds.Human.AutoUseGas": "Auto use gas",

@@ -20,11 +20,12 @@ namespace Characters
         private float _idleTimeLeft;
         private float _teleportTimeLeft;
         private float _jumpCooldownLeft;
-        
+
         public void Init(Human human)
         {
             base.Init(true, human.Team);
             _owner = human;
+            EmVariables.HorseAutorun= false;
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -162,6 +163,12 @@ namespace Characters
                         direction.y = 0f;
                         Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(direction.normalized), 10f * Time.deltaTime);
                     }
+                }
+                
+                //Handling Horse Auto Running, Snake 24 May 24      
+                if (EmVariables.HorseAutorun&& _owner.MountState == HumanMountState.Horse )
+                {
+                    State = HorseState.ControlledRun;
                 }
             }
         }

@@ -295,6 +295,7 @@
         "Keybinds.Human.HorseMount": "上马",
         "Keybinds.Human.HorseWalk": "前进（马）",
         "Keybinds.Human.HorseJump": "跳跃（马）",
+        "Keybinds.Human.HorseAutorun": "自动奔跑", // added by Snake 26 May 24
         "Keybinds.Human.NapeLock": "锁定后颈",
         "Keybinds.Human.DashDoubleTap": "双击方向键以爆气",
         "Keybinds.Human.ReelOutScrollSmoothing": "放绳顺滑度",
