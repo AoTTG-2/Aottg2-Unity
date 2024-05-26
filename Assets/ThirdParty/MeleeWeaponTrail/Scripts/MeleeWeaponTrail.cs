@@ -269,14 +269,14 @@ public class MeleeWeaponTrail : MonoBehaviour
 
 
 		RemoveOldPoints(_points);
-		if (_points.Count == 0 && _trailMesh != null) // null check added by Ata 25 May 2024 because it broke loadout swapping //
+		if (_points.Count == 0)
 		{
 			_trailMesh.Clear();
 		}
 
 #if USE_INTERPOLATION
 		RemoveOldPoints(_smoothedPoints);
-		if (_smoothedPoints.Count == 0 && _trailMesh != null) // null check added by Ata 25 May 2024 because it broke loadout swapping //
+		if (_smoothedPoints.Count == 0)
 		{
 			_trailMesh.Clear();
 		}
@@ -289,7 +289,7 @@ public class MeleeWeaponTrail : MonoBehaviour
 		List<Point> pointsToUse = _points;
 #endif
 
-		if (pointsToUse.Count > 1  && _trailMesh != null) // null check added by Ata 25 May 2024 because it broke loadout swapping //
+		if (pointsToUse.Count > 1)
 		{
 			Vector3[] newVertices = new Vector3[pointsToUse.Count * 2];
 			Vector2[] newUV = new Vector2[pointsToUse.Count * 2];

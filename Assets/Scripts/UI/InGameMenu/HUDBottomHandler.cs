@@ -343,9 +343,7 @@ namespace UI
             UpdateHumanSpecial_2(); // added by ata 20 May 2024 for Ability Wheel //
             UpdateHumanSpecial_3(); // added by ata 20 May 2024 for Ability Wheel //
             UpdateGas();
-
-            bool isExist = _bladeFillLeft != null && _bladeFillRight != null && _bladeBackground != null && _bladeReload != null && _bladeOut != null;
-            if (_human.Weapon is BladeWeapon && isExist) // exists check added by Ata 25 May 2024 because it broke loadout swapping //
+            if (_human.Weapon is BladeWeapon)
                 UpdateBlade();
             else if (_human.Weapon is APGWeapon)
                 UpdateAPG();

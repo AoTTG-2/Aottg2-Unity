@@ -8,8 +8,6 @@ using UnityEngine.UI;
 using UI;
 using Utility;
 using System.Resources;
-using GameManagers;
-using CustomLogic;
 
 class ZippsUIManager : MonoBehaviour
 {
@@ -213,34 +211,7 @@ class ZippsUIManager : MonoBehaviour
     private void LogisticianUpdate()
     {
         if (PhotonExtensions.GetMyPlayer() == null)
-        {
-            EmVariables.LogisticianBladeSupply = EmVariables.LogisticianMaxSupply;
-            EmVariables.LogisticianGasSupply = EmVariables.LogisticianMaxSupply;
-            LogisticianCanvas.SetActive(false);
-            LogisticianMenu.SetActive(false);
-            EmVariables.LogisticianOpen = false;
             return;
-        }
-
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-        if (_human.Dead)
-        {
-            _human.MaxOutLogisticianSupplies();
-            LogisticianCanvas.SetActive(false);
-            LogisticianMenu.SetActive(false);
-            EmVariables.LogisticianOpen = false;
-            return;
-        }
-
-        if (_human == null)
-        {
-            _human.MaxOutLogisticianSupplies();
-            LogisticianCanvas.SetActive(false);
-            LogisticianMenu.SetActive(false);
-            EmVariables.LogisticianOpen = false;
-            return;
-        }
-
         if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Logistician"))
         {
             LogisticianCanvas.SetActive(false);
@@ -289,8 +260,8 @@ class ZippsUIManager : MonoBehaviour
                 break;
         }
 
-        bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
-        if (_humanInput.LogisticianMenu.GetKeyDown() && !inMenu)
+
+        if (_humanInput.LogisticianMenu.GetKeyDown() && !InGameMenu.InMenu())
         {
             LogisticianMenu.SetActive(true);
             CanvasObj.SetActive(false);
@@ -329,8 +300,6 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private GameObject AbilityWheelCanvas;
     [SerializeField]
-    private GameObject LoadoutParent;
-    [SerializeField]
     private AudioSource AbilityWheelAudio;
     [SerializeField]
     private Image Ability1Image; 
@@ -339,21 +308,16 @@ class ZippsUIManager : MonoBehaviour
     [SerializeField]
     private Image Ability3Image;
     [SerializeField]
-    private Image LoadoutImage;
-    [SerializeField]
     private RawImage Ability1Selector;
     [SerializeField]
     private RawImage Ability2Selector;
     [SerializeField]
     private RawImage Ability3Selector;
     [SerializeField]
-    private RawImage LoadoutSelector;
-    [SerializeField]
     public GameObject AbilitySelectionSound;
     [SerializeField]
     public AudioSource ChangeAbilityAudio;
 
-    public bool LastHoveredLoadout = false;
     public bool Ability1Selected = false; // made public so i can set to red on human spawn //
     public bool Ability2Selected = false; // made public so i can set to white on human spawn //
     public bool Ability3Selected = false; // made public so i can set to white on human spawn //
@@ -399,16 +363,6 @@ class ZippsUIManager : MonoBehaviour
         return sprite;
     }
 
-    private Sprite LoadSpriteForLoadout(string spriteName) {
-        string path = "UI/Icons/EM Icons/Vet" + spriteName;
-        Sprite sprite = Resources.Load<Sprite>(path);
-        if (sprite == null)
-        {
-            Debug.LogError("Sprite not found at path: " + path);
-        }
-        return sprite;
-    }
- 
     public void OnHoverAbility1()
     {
         if (SettingsManager.InGameCharacterSettings.Special.Value.Length > 0 && SettingsManager.InGameCharacterSettings.Special.Value != "None")
@@ -416,7 +370,6 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = true;
             Ability2Selected = false;
             Ability3Selected = false;
-            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability1Selector.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -434,7 +387,6 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = false;
             Ability2Selected = true;
             Ability3Selected = false;
-            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability2Selector.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -452,7 +404,6 @@ class ZippsUIManager : MonoBehaviour
             Ability1Selected = false;
             Ability2Selected = false;
             Ability3Selected = true;
-            LastHoveredLoadout = false;
             AbilityWheelAudio.Play();
             Ability3Selector.color = new Color(0.525f, 0.164f, 0.227f);
             
@@ -463,22 +414,6 @@ class ZippsUIManager : MonoBehaviour
     {
         Ability3Selected = false;
         Ability3Selector.color = Color.white;
-    }
-
-    public void OnHoverLoadout()
-    {
-        Ability1Selected = false;
-        Ability2Selected = false;
-        Ability3Selected = false;
-        LastHoveredLoadout = true; 
-        LoadoutImage.color = new Color(0.525f, 0.164f, 0.227f);
-        AbilityWheelAudio.Play();
-    }
-
-    public void OnHoverExitLoadout()
-    {
-        LastHoveredLoadout = false; 
-        LoadoutImage.color = Color.white;
     }
 
 
@@ -497,11 +432,6 @@ class ZippsUIManager : MonoBehaviour
         {
             _human.SwitchCurrentSpecial(SettingsManager.InGameCharacterSettings.Special_3.Value, 3);
         }
-        else if (LastHoveredLoadout)
-        {
-            _human.SwitchVeteranLoadout();
-            LastHoveredLoadout = false;
-        }
 
         AbilityWheelCanvas.SetActive(true);
         AbilityWheelMenu.SetActive(false);
@@ -512,8 +442,6 @@ class ZippsUIManager : MonoBehaviour
         Ability1Selector.color = Color.white;
         Ability2Selector.color = Color.white;
         Ability3Selector.color = Color.white;
-        LoadoutSelector.color = new Color(184f/255f, 184f/255f, 184f/255f);
-        LoadoutImage.color = Color.white;
     }
 
     public void PlayAbilitySelectSoundFromKeybind()
@@ -535,10 +463,7 @@ class ZippsUIManager : MonoBehaviour
 
     public void KeepSelectedAbilityColor()
     {
-
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-
-        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special.Value)
+        if (Ability1Selected)
         {
             Ability1Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -547,7 +472,7 @@ class ZippsUIManager : MonoBehaviour
             Ability1Image.color = Color.white;
         }
 
-        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special_2.Value)
+        if (Ability2Selected)
         {
             Ability2Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -556,7 +481,7 @@ class ZippsUIManager : MonoBehaviour
             Ability2Image.color = Color.white;
         }
 
-        if (_human.CurrentSpecial == SettingsManager.InGameCharacterSettings.Special_3.Value)
+        if (Ability3Selected)
         {
             Ability3Image.color = new Color(0.525f, 0.164f, 0.227f);
         }
@@ -566,50 +491,12 @@ class ZippsUIManager : MonoBehaviour
         }
     }
 
-    private void UpdateLoadoutVisibility()
-    {
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Veteran"))
-        {
-            if (LoadoutParent.activeInHierarchy == false)
-                LoadoutParent.SetActive(true);
-
-            _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-
-            if(_human.Setup.Weapon_2 == HumanWeapon.Blade)
-                LoadoutImage.sprite = LoadSpriteForLoadout("Blades");
-            if(_human.Setup.Weapon_2 == HumanWeapon.AHSS)
-                LoadoutImage.sprite = LoadSpriteForLoadout("AHSS");
-            if(_human.Setup.Weapon_2 == HumanWeapon.APG)
-                LoadoutImage.sprite = LoadSpriteForLoadout("APG");
-            if(_human.Setup.Weapon_2 == HumanWeapon.Thunderspear)
-                LoadoutImage.sprite = LoadSpriteForLoadout("TS");
-        }
-        else
-        {
-            LoadoutParent.SetActive(false);
-        }
-    }
-
     private void AbilityWheelUpdate()
     {
-        bool isAbilityWheelActive = AbilityWheelMenu.activeInHierarchy;
         if (PhotonExtensions.GetMyPlayer() == null)
-        {
-            if (AbilityWheelMenu.activeInHierarchy || isAbilityWheelActive)
-                HideAbilityWheel();
-
             return;
-        }
 
-        _human = PhotonExtensions.GetMyHuman().gameObject.GetComponent<Human>();
-        if ((_human == null || _human.Dead) && isAbilityWheelActive)
-        {
-            HideAbilityWheel();
-            return;
-        }
-
-        bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
-        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !inMenu)
+        if (_humanInput.AbilityWheelMenu.GetKeyDown() && !InGameMenu.InMenu())
         {
             //SetWheelImages(); => moved to the human script for performance concerns by ata
             KeepSelectedAbilityColor();
@@ -622,8 +509,6 @@ class ZippsUIManager : MonoBehaviour
         {
             HideAbilityWheel();
         }
-
-        UpdateLoadoutVisibility();
     }
     #endregion
 }
