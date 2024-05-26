@@ -342,6 +342,15 @@ namespace Controllers
             }
         }
 
+        private void PlayHorseAutoSwitchSoundFromKeybind() // added by Snake May 25 2024 for Horse Auto //
+        {
+            _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
+            if (_zippsUIManager != null)
+            {
+                _zippsUIManager.PlayHorseAutoSwitchSoundFromKeybind();
+            }
+
+        }
         private void PlayAbilitySelectSound() // added by Ata 20 May 2024 for Ability Wheel //
         {
             _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
