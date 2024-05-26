@@ -4724,7 +4724,7 @@ MonoBehaviour:
   Ability1Selector: {fileID: 8287579861683833164}
   Ability2Selector: {fileID: 4983081181347406781}
   Ability3Selector: {fileID: 4300326262174170109}
-  LoadoutSelector: {fileID: 0}
+  LoadoutSelector: {fileID: 5116916343924649540}
   AbilitySelectionSound: {fileID: 5490419852439088066}
   ChangeAbilityAudio: {fileID: 8927297827050685152}
   LastHoveredLoadout: 0
