@@ -7,7 +7,6 @@ namespace Characters
     {
         protected override float ActiveTime => 20f;
         private float _oldSpeed;
-        protected override bool GroundedOnly => false;
 
         public PotatoSpecial(BaseCharacter owner): base(owner)
         {

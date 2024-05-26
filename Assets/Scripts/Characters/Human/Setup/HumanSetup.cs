@@ -60,7 +60,6 @@ namespace Characters
         // loaded settings from player spawning
         public HumanCustomSet CustomSet;
         public HumanWeapon Weapon;
-        public HumanWeapon Weapon_2; // Added by Ata 22 May 2024 for Veteran Role //
         public JSONNode CurrentCostume;
         public JSONNode CurrentHair;
         public bool IsDeadBody;
