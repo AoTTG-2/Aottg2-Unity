@@ -282,6 +282,7 @@
         "Keybinds.Human.Ability1": "能力 1", // added by Ata 20 May 24
         "Keybinds.Human.Ability2": "能力 2", // added by Ata 20 May 24
         "Keybinds.Human.Ability3": "能力 3", // added by Ata 20 May 24
+        "Keybinds.Human.LoadoutSwap": "更换装备",
         "Keybinds.Human.ReelIn": "收绳",
         "Keybinds.Human.ReelOut": "放绳",
         "Keybinds.Human.Dodge": "闪避",
