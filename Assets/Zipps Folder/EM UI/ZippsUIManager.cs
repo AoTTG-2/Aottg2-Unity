@@ -516,12 +516,18 @@ class ZippsUIManager : MonoBehaviour
     #endregion
 
     #region EM HUD
+    [Header("EM HUD")]
     [SerializeField]
     private GameObject EmHUD;
     [SerializeField]
     private RawImage HorseAutoRunImage ;
     [SerializeField]
     private GameObject HorseAutoRunObject;
+    [SerializeField]
+    private GameObject HorseAutoRunAudioObject;
+    [SerializeField]
+    private AudioSource HorseAutoRunAudioSource; 
+    [SerializeField]
     private bool previousHorseAutorunState;
     private Animator horseAutoRunAnimator;
 
@@ -539,7 +545,11 @@ class ZippsUIManager : MonoBehaviour
 
     private void EmHUDUpdate()
     {
-        if (PhotonExtensions.GetMyPlayer() == null) CloseEmHUD();
+        if (PhotonExtensions.GetMyPlayer() == null)
+        {
+            if (HorseAutoRunAudioObject.activeInHierarchy) 
+            CloseEmHUD();
+        } 
         else OpenEmHUD();
         
         Horse _horse =  FindFirstObjectByType<Horse>();
@@ -558,9 +568,10 @@ class ZippsUIManager : MonoBehaviour
 
     private void HorseAutoRunUpdate()
     {
-
         if (EmVariables.HorseAutorun != previousHorseAutorunState)
         {
+            //PlayHorseAutoSwitchSoundFromKeybind();
+            
             if (EmVariables.HorseAutorun)
             {
                 HorseAutoRunImage.color = new Color(0.525f, 0.164f, 0.227f);
@@ -572,9 +583,24 @@ class ZippsUIManager : MonoBehaviour
                 horseAutoRunAnimator.SetBool("HorseSway", false);
             }
 
-            // Update the previous state to the current state
             previousHorseAutorunState = EmVariables.HorseAutorun;
         }
+    }
+
+    public void PlayHorseAutoSwitchSoundFromKeybind()
+    {
+        HorseAutoRunAudioObject.SetActive(true);
+        HorseAutoRunAudioSource.Play();
+        StartCoroutine(WaitForSwitchAudioToFinish());
+    }
+
+    private IEnumerator WaitForSwitchAudioToFinish()
+    {
+        while (HorseAutoRunAudioSource.isPlaying)
+        {
+            yield return null;
+        }
+         HorseAutoRunAudioObject.SetActive(false);
     }
     #endregion
 }

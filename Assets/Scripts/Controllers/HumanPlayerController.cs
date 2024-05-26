@@ -305,7 +305,12 @@ namespace Controllers
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
                 return;
             if (_human.MountState == HumanMountState.None)
-            {
+            {   
+                if (_humanInput.HorseAutorun.GetKeyDown())
+                {
+                    PlayHorseAutoSwitchSoundFromKeybind();
+                    EmVariables.HorseAutorun = !EmVariables.HorseAutorun; // added by Snake 26 May 2024 for Horse Auto Running Bug Fixing //
+                } 
                 if (_human.CanJump())
                 {
                     if (_humanInput.Jump.GetKeyDown())
@@ -319,7 +324,7 @@ namespace Controllers
                             _human.Dodge(_human.TargetAngle + 180f);
                         else
                             _human.Dodge(_human.TargetAngle);
-                    }
+                    } 
                 }
                 if (_human.State == HumanState.Idle)
                 {
@@ -334,14 +339,27 @@ namespace Controllers
             }
             else if (_human.MountState == HumanMountState.Horse)
             {
-                if (_humanInput.HorseAutorun.GetKeyDown()){
+                if (_humanInput.HorseAutorun.GetKeyDown())
+                {
+                    PlayHorseAutoSwitchSoundFromKeybind();
                     EmVariables.HorseAutorun = !EmVariables.HorseAutorun; // added by Snake 24 May 2024 for Horse Auto Running Key Input //
-                }   
+                } 
+                else  
                 if (_humanInput.HorseMount.GetKeyDown())
                     _human.Unmount(false);
                 else if (_humanInput.HorseJump.GetKeyDown())
                     _human.Horse.Jump();
             }
+        }
+        
+        private void PlayHorseAutoSwitchSoundFromKeybind() // added by Ata 20 May 2024 for Ability Wheel //
+        {
+            _zippsUIManager = FindFirstObjectByType<ZippsUIManager>();
+            if ( _zippsUIManager != null )
+            {
+                _zippsUIManager.PlayHorseAutoSwitchSoundFromKeybind();
+            }
+
         }
 
         private void PlayAbilitySelectSound() // added by Ata 20 May 2024 for Ability Wheel //

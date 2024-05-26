@@ -295,6 +295,7 @@
 		"Keybinds.Human.HorseMount": "乗馬",
 		"Keybinds.Human.HorseWalk": "馬 歩き",
 		"Keybinds.Human.HorseJump": "馬 ジャンプ",
+		"Keybinds.Human.HorseAutorun": "自動馬走行", // added by Snake 26 May 24
 		"Keybinds.Human.NapeLock": "うなじロックオン", // NEW
 		"Keybinds.Human.DashDoubleTap": "ダブルタップで空中ダッシュ",
 		"Keybinds.Human.ReelOutScrollSmoothing": "スクロールでの巻き出しの滑らかさ",
