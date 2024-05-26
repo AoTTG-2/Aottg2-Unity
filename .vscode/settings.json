@@ -56,15 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Aottg2-EM.sln",
-    "cSpell.words": [
-        "Autorun",
-        "Cooldown",
-        "emsission",
-        "Keybind",
-        "Lerp",
-        "Mathf",
-        "Raycast",
-        "Rigidbody"
-    ]
+    "dotnet.defaultSolution": "Aottg2-EM.sln"
 }

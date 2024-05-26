@@ -286,7 +286,6 @@
         "Keybinds.Human.HorseMount": "Pferd besteigen",
         "Keybinds.Human.HorseWalk": "Pferd traben",
         "Keybinds.Human.HorseJump": "Pferd springen",
-        "Keybinds.Human.HorseAutorun": "Pferd-Autolauf", // added by Snake 26 May 24
         "Keybinds.Human.NapeLock": "Titanenfokus",
         "Keybinds.Human.DashDoubleTap": "Bewegungstaste doppelt dr�cken f�r Gasburst",
         "Keybinds.Human.ReelOutScrollSmoothing": "Seil verl�ngern Scrollempfindlichkeit",
