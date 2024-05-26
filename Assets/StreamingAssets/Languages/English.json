@@ -252,6 +252,7 @@
 		"Graphics.ShadowQualityOptions": [ "Off", "Low", "Medium", "High" ],
 		"Graphics.ShadowDistance": "Shadow distance",
 		"Graphics.LightDistance": "Light distance",
+		"Graphics.DetailDistance": "Detail distance", // Added by Snake for Terrain Detail Slider 26 may 24
 		"Graphics.AntiAliasing": "Anti-aliasing",
 		"Graphics.AntiAliasingOptions": [ "Off", "Low", "Medium", "High" ],
 		"Graphics.Anisotropic": "Anisotropic filtering",

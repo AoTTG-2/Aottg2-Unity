@@ -22,6 +22,7 @@ namespace Settings
         public IntSetting ShadowQuality = new IntSetting((int)ShadowQualityLevel.High);
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
+        public IntSetting DetailDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);  // Added by Snake for Terrain Detail Slider 26 may 24
         public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);

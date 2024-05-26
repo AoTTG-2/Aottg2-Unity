@@ -209,6 +209,7 @@
         "Graphics.ShadowQuality": "阴影质量",
         "Graphics.ShadowQualityOptions": [ "关", "低", "中", "高" ],
         "Graphics.ShadowDistance": "阴影距离",
+        "Graphics.DetailDistance": "细节距离", // Added by Snake for Terrain Detail Slider 26 may 24
         "Graphics.AntiAliasing": "抗锯齿",
         "Graphics.AntiAliasingOptions": [ "关", "低", "中", "高" ],
         "Graphics.Anisotropic": "各向异性过滤",

@@ -41,6 +41,8 @@ namespace UI
                elementWidth: 130f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.LightDistance, UIManager.GetLocale(cat, sub, "LightDistance"),
                elementWidth: 130f);
+            ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.DetailDistance, UIManager.GetLocale(cat, sub, "DetailDistance"),
+               elementWidth: 130f);   
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AntiAliasing, UIManager.GetLocale(cat, sub, "AntiAliasing"),
                UIManager.GetLocaleArray(cat, sub, "AntiAliasingOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AnisotropicFiltering, UIManager.GetLocale(cat, sub, "Anisotropic"),
