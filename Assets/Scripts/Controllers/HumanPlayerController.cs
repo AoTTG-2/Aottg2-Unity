@@ -335,6 +335,12 @@ namespace Controllers
             }
             else if (_human.MountState == HumanMountState.Horse)
             {
+                if (_humanInput.HorseAutorun.GetKeyDown())
+                {
+                    PlayHorseAutoSwitchSoundFromKeybind();
+                    EmVariables.HorseAutorun = !EmVariables.HorseAutorun; // added by Snake 24 May 2024 for Horse Auto Running Key Input //
+                }
+                else
                 if (_humanInput.HorseMount.GetKeyDown())
                     _human.Unmount(false);
                 else if (_humanInput.HorseJump.GetKeyDown())
