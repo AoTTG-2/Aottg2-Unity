@@ -4731,11 +4731,11 @@ MonoBehaviour:
   Ability1Selected: 0
   Ability2Selected: 0
   Ability3Selected: 0
-  EmHUD: {fileID: 0}
-  HorseAutoRunImage: {fileID: 0}
-  HorseAutoRunObject: {fileID: 0}
-  HorseAutoRunAudioObject: {fileID: 0}
-  HorseAutoRunAudioSource: {fileID: 0}
+  EmHUD: {fileID: 185583798371188614}
+  HorseAutoRunImage: {fileID: 1264840472515759614}
+  HorseAutoRunObject: {fileID: 7147711211543023369}
+  HorseAutoRunAudioObject: {fileID: 7826870103794006452}
+  HorseAutoRunAudioSource: {fileID: 6601321923693182990}
   previousHorseAutorunState: 0
 --- !u!114 &5227596819372636690
 MonoBehaviour:
@@ -6489,7 +6489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5488601385125317239
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6520,7 +6520,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 27b08da425b809045b5890514670f519, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
