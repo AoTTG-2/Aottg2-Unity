@@ -34,6 +34,9 @@ namespace Settings
 
         public override void Apply()
         {
+            EmVariables.DetailDistance = DetailDistance.Value;
+            Debug.Log("Detail Distance is :" + EmVariables.DetailDistance);
+
             if (ShadowQuality.Value == (int)ShadowQualityLevel.Off)
                 QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
             else if (ShadowQuality.Value == (int)ShadowQualityLevel.Low)
