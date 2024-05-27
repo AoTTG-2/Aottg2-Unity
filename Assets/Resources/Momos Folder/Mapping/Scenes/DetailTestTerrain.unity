@@ -1858,8 +1858,8 @@ Terrain:
   m_TreeBillboardDistance: 410
   m_TreeCrossFadeLength: 23.8
   m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 1000
-  m_DetailObjectDensity: 0.557
+  m_DetailObjectDistance: 230
+  m_DetailObjectDensity: 0.7
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
   m_HeightmapMinimumLODSimplification: 0
