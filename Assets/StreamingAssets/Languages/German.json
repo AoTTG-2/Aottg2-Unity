@@ -201,6 +201,7 @@
         "Graphics.ShadowQualityOptions": [ "Aus", "Niedrig", "Mittel", "Hoch" ],
         "Graphics.ShadowDistance": "Schattendistanz",
         "Graphics.DetailDistance": "Detailendistanz", // Added by Snake for Terrain Detail Slider 26 may 24
+        "Graphics.DetailDensity": "Detaildichte", // Added by Snake for Terrain Detail Slider 27 may 24
         "Graphics.AntiAliasing": "Anti-Aliasing",
         "Graphics.AntiAliasingOptions": [ "Aus", "Niedrig", "Mittel", "Hoch" ],
         "Graphics.Anisotropic": "Anisotropische Filterung",

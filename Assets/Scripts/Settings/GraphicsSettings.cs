@@ -23,6 +23,7 @@ namespace Settings
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting DetailDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);  // Added by Snake for Terrain Detail Slider 26 may 24
+        public IntSetting DetailDensity = new IntSetting(1000, minValue: 0, maxValue: 3000);  // Added by Snake for Terrain Detail Slider 27 may 24
         public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
@@ -34,8 +35,12 @@ namespace Settings
 
         public override void Apply()
         {
+            // Added by Snake for Terrain Detail Slider 27 may 24
             EmVariables.DetailDistance = DetailDistance.Value;
             Debug.Log("Detail Distance is :" + EmVariables.DetailDistance);
+
+            EmVariables.DetailDensity = DetailDensity.Value;
+            Debug.Log("Detail Density is :" + EmVariables.DetailDensity);
 
             if (ShadowQuality.Value == (int)ShadowQualityLevel.Off)
                 QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;

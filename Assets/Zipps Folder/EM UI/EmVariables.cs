@@ -15,7 +15,8 @@ public static class EmVariables
     public static bool isVeteranSet = false;
     public static bool HorseAutorun = false;
     public static bool EmHUD = false ; //added by Snake for EM HUD 26 May 24
-    public static int DetailDistance; 
+    public static int DetailDistance;  // Added by Snake for Terrain Detail Slider 26 may 24
+    public static int DetailDensity;  // Added by Snake for Terrain Detail Slider 27 may 24
 
 
     public static List<string> sceneNames = new List<string>();
