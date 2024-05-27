@@ -337,7 +337,6 @@ GameObject:
   - component: {fileID: 1406771704}
   - component: {fileID: 1406771705}
   - component: {fileID: 1406771706}
-  - component: {fileID: 1406771707}
   m_Layer: 0
   m_Name: ApplicationStart
   m_TagString: Untagged
@@ -385,18 +384,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EMUIPrefab: {fileID: 5546037500275061286, guid: b9429f674f1069841b3d74fe20e8aeb8, type: 3}
---- !u!114 &1406771707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1406771702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 791859d28b19c284795bad8266407319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -42,7 +42,7 @@ namespace Cameras
 
         public void ApplyGraphicsSettings()
         {
-            SetTerrainDetails(SettingsManager.GraphicsSettings.DetailDistance.Value, SettingsManager.GraphicsSettings.DetailDensity.Value);
+            SetTerrainDetails(SettingsManager.GraphicsSettings.DetailDistance.Value, SettingsManager.GraphicsSettings.DetailDensity.Value, SettingsManager.GraphicsSettings.TreeDistance.Value);
             Camera.farClipPlane = SettingsManager.GraphicsSettings.RenderDistance.Value;
         }
 
@@ -468,13 +468,14 @@ namespace Cameras
         }
 
         // Added by Snake for Terrain Detail Slider 28 may 24 
-        public void SetTerrainDetails(int DetailDistance, int DetailDensity)
+        public void SetTerrainDetails(int DetailDistance, int DetailDensity, int TreeDistance)
         {
             Terrain[] terrains = GameObject.FindObjectsOfType<Terrain>();
             foreach (Terrain terrain in terrains)
             {
                 terrain.detailObjectDistance = DetailDistance;
-                terrain.detailObjectDensity = DetailDensity; 
+                terrain.detailObjectDensity = DetailDensity /1000f; 
+                terrain.treeDistance = TreeDistance;
             }
         }
     }

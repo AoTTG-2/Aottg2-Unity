@@ -24,6 +24,7 @@ namespace Settings
         public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting DetailDistance = new IntSetting(500, minValue: 0, maxValue: 1000);  // Added by Snake for Terrain Detail Slider 26 may 24
         public IntSetting DetailDensity = new IntSetting(500, minValue: 0, maxValue: 1000);  // Added by Snake for Terrain Detail Slider 27 may 24
+        public IntSetting TreeDistance = new IntSetting(5000, minValue: 0, maxValue: 5000);  // Added by Snake for Terrain Detail Slider 28 may 24
         public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
@@ -33,19 +34,11 @@ namespace Settings
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
         public BoolSetting MipmapEnabled = new BoolSetting(true);
 
+        
         public override void Apply()
         {
-            // Added by Snake for Terrain Detail Slider 27 may 24 
-            Terrain[] terrains = GameObject.FindObjectsOfType<Terrain>();
-            foreach (Terrain terrain in terrains)
-            {
-                terrain.detailObjectDistance = DetailDistance.Value ;
-                terrain.detailObjectDensity = DetailDensity.Value /1000f  ; 
-                Debug.Log("Set Details for terrain: " + terrain.name);
-                Debug.Log("Detail Distance is :" + terrain.detailObjectDistance);
-                Debug.Log("Detail Density is :" + terrain.detailObjectDensity);
-            }
-              
+            // Added by Snake for Terrain Detail Slider 28 may 24 
+            SetTerrainDetails(DetailDistance.Value, DetailDensity.Value, TreeDistance.Value);
 
             if (ShadowQuality.Value == (int)ShadowQualityLevel.Off)
                 QualitySettings.shadows = UnityEngine.ShadowQuality.Disable;
@@ -82,6 +75,18 @@ namespace Settings
             FullscreenHandler.Apply(ScreenResolution.Value, (FullScreenLevel)FullScreenMode.Value);
         }
 
+        // Added by Snake for Terrain Detail Slider 28 may 24 
+        public void SetTerrainDetails(int DetailDistance, int DetailDensity, int TreeDistance)
+        {
+            Terrain[] terrains = GameObject.FindObjectsOfType<Terrain>();
+            foreach (Terrain terrain in terrains)
+            {
+                terrain.detailObjectDistance = DetailDistance;
+                terrain.detailObjectDensity = DetailDensity /1000f; 
+                terrain.treeDistance = TreeDistance;
+            }
+        }
+
         public void OnSelectPreset()
         {
             if (PresetQuality.Value == (int)PresetQualityLevel.VeryLow)
@@ -93,6 +98,9 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.Off;
                 ShadowDistance.Value = 500;
                 LightDistance.Value = 250;
+                DetailDistance.Value = 0;
+                DetailDensity.Value = 0;
+                TreeDistance.Value = 400;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -103,6 +111,9 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.Low;
                 ShadowDistance.Value = 500;
                 LightDistance.Value = 250;
+                DetailDistance.Value = 200;
+                DetailDensity.Value = 100;
+                TreeDistance.Value = 400;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -113,6 +124,9 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.Medium;
                 ShadowDistance.Value = 500;
                 LightDistance.Value = 500;
+                DetailDistance.Value = 500;
+                DetailDensity.Value = 250;
+                TreeDistance.Value = 1000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -123,6 +137,9 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 500;
+                DetailDistance.Value = 800;
+                DetailDensity.Value = 380;
+                TreeDistance.Value = 2500;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -133,6 +150,9 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 1000;
+                DetailDistance.Value = 1000;
+                DetailDensity.Value = 500;
+                TreeDistance.Value = 5000;
             }
         }
     }

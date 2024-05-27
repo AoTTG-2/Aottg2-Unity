@@ -41,10 +41,14 @@ namespace UI
                elementWidth: 130f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.LightDistance, UIManager.GetLocale(cat, sub, "LightDistance"),
                elementWidth: 130f);
+            // Added by Snake for Terrain Detail Slider 28 may 24   
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.DetailDistance, UIManager.GetLocale(cat, sub, "DetailDistance"),
                elementWidth: 130f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.DetailDensity, UIManager.GetLocale(cat, sub, "DetailDensity"),
-               elementWidth: 130f);         
+               elementWidth: 130f);
+            ElementFactory.CreateSliderSetting(DoublePanelRight, style, settings.TreeDistance, UIManager.GetLocale(cat, sub, "TreeDistance"),
+               elementWidth: 130f);    
+            //           
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AntiAliasing, UIManager.GetLocale(cat, sub, "AntiAliasing"),
                UIManager.GetLocaleArray(cat, sub, "AntiAliasingOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AnisotropicFiltering, UIManager.GetLocale(cat, sub, "Anisotropic"),
