@@ -7,7 +7,7 @@ using UnityEngine.Experimental.GlobalIllumination;
 namespace Settings
 {
     class GraphicsSettings : SaveableSettingsContainer
-    {   
+    {
         protected override string FileName { get { return "Graphics.json"; } }
         public IntSetting PresetQuality = new IntSetting((int)PresetQualityLevel.VeryHigh);
         public IntSetting FullScreenMode = new IntSetting((int)FullScreenLevel.Borderless);

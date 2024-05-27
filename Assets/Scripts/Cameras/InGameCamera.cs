@@ -13,6 +13,7 @@ using Characters;
 using System.Linq;
 using System.Collections.Generic;
 using CustomLogic;
+using NUnit.Framework.Internal.Commands;
 
 namespace Cameras
 {
@@ -41,6 +42,7 @@ namespace Cameras
 
         public void ApplyGraphicsSettings()
         {
+            SetTerrainDetails(SettingsManager.GraphicsSettings.DetailDistance.Value, SettingsManager.GraphicsSettings.DetailDensity.Value);
             Camera.farClipPlane = SettingsManager.GraphicsSettings.RenderDistance.Value;
         }
 
@@ -462,6 +464,17 @@ namespace Cameras
                 _shakeFlip = !_shakeFlip;
                 float decay = ShakeDecay * Time.deltaTime * 60f;
                 _currentShakeDistance *= (1 - decay);
+            }
+        }
+
+        // Added by Snake for Terrain Detail Slider 28 may 24 
+        public void SetTerrainDetails(int DetailDistance, int DetailDensity)
+        {
+            Terrain[] terrains = GameObject.FindObjectsOfType<Terrain>();
+            foreach (Terrain terrain in terrains)
+            {
+                terrain.detailObjectDistance = DetailDistance;
+                terrain.detailObjectDensity = DetailDensity; 
             }
         }
     }
