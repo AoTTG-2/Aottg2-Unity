@@ -1,0 +1,74 @@
+/// Options
+EditorVersion:1.0|Description:|HasWeather:0
+/// CustomAssets
+
+/// Objects
+Scene,Interact/Supply2,12,0,1,1,1,0,Supply2,22.78477,96.99209,393.3343,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,General/EditorDaylight,13,0,1,1,0,0,Daylight,-2.526176,121.4986,382.4678,18.48578,68.88084,9.327711,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/255/255/255|Intensity:1|WeatherControlled:true;
+Scene,General/EditorTitanSpawnPoint,14,0,1,1,0,0,Titan SpawnPoint,414.4257,100.2755,414.7022,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,18,0,1,1,0,0,Titan SpawnPoint,764.2357,81.27335,459.2222,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,20,0,1,1,0,0,Titan SpawnPoint,929.7137,82.3765,252.8702,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,19,0,1,1,0,0,Titan SpawnPoint,394.8392,148.9704,846.7124,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,21,0,1,1,0,0,Titan SpawnPoint,764.2357,207.0033,717.2896,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,22,0,1,1,0,0,Titan SpawnPoint,390.2215,203.7224,170.1073,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorHumanSpawnPoint,11,0,1,1,0,0,Human SpawnPoint,23.09961,101.4482,408.0052,0,77.48511,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint
+/// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

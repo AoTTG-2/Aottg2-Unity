@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 200b41587e8b0764483f76478c98e1b6
+NativeFormatImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/2DTools/Materials/PhysicMaterials/Sticky.physicsMaterial2D
+  uploadId: 107545

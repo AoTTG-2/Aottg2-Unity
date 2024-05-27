@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9d2f79ae6f5ab4a458516e3bdc5c1ff6
+timeCreated: 1442176630
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/Example Data/Materials/TTTExampleSkyBox.mat
+  uploadId: 107545
