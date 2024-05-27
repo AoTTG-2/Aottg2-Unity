@@ -31,7 +31,7 @@ namespace UI
             TooltipPopup popup = UIManager.CurrentMenu.TooltipPopup;
             if (state == SelectionState.Pressed || state == SelectionState.Highlighted)
             {
-                popup.Show(_tooltipMessage, this);
+                popup.Show(_tooltipMessage, this, 40f);
             }
             else if (state == SelectionState.Normal && popup.Caller == this)
             {

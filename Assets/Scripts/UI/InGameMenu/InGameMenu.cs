@@ -226,11 +226,11 @@ namespace UI
 
         public void ToggleScoreboardMenu()
         {
-            SetScoreboardMenu(!_scoreboardPopup.gameObject.activeSelf);
+            SetScoreboardMenu(!_scoreboardPopup.gameObject.activeSelf, false);
             ToggleUI(true);
         }
 
-        public void SetScoreboardMenu(bool enabled)
+        public void SetScoreboardMenu(bool enabled, bool fromClick)
         {
             if (enabled && !InMenu())
             {
@@ -240,7 +240,8 @@ namespace UI
             else if (!enabled)
             {
                 _scoreboardPopup.Hide();
-                SkipAHSSInput = true;
+                if (fromClick)
+                    SkipAHSSInput = true;
             }
         }
 

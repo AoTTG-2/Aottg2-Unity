@@ -856,55 +856,6 @@ namespace GameManagers
             EndTimeLeft = Mathf.Max(EndTimeLeft, 0f);
         }
 
-        private void FixedUpdate()
-        {
-            if (State == GameState.Playing && PhotonNetwork.IsMasterClient)
-            {
-                UpdateSmartTitans();
-            }
-        }
-
-        private void UpdateSmartTitans()
-        {
-            var mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
-            foreach (var human in Humans)
-            {
-                if (human == null || human.Dead)
-                    continue;
-                EnableFirstSmartTitan(human, mask);
-            }
-        }
-
-        private void EnableFirstSmartTitan(Human human, LayerMask mask)
-        {
-            foreach (var titan in Titans)
-            {
-                if (titan == null || titan.Dead || !titan.IsMine() || !titan.AI)
-                    continue;
-                if (Vector3.Distance(human.Cache.Transform.position, titan.Cache.Transform.position) < 20f)
-                {
-                    titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
-                    return;
-                }
-            }
-            Vector3 velocity;
-            if (human.IsMine())
-                velocity = human.Cache.Rigidbody.velocity;
-            else
-                velocity = human.GetComponent<HumanMovementSync>()._correctVelocity;
-            RaycastHit hit;
-            if (Physics.Raycast(human.Cache.Transform.position, velocity.normalized, out hit, velocity.magnitude, mask.value))
-            {
-                if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
-                {
-                    var titan = hit.collider.gameObject.GetComponent<BaseTitan>();
-                    if (titan == null || titan.Dead || !titan.IsMine() || !titan.AI)
-                        return;
-                    titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
-                }
-            }
-        }
-
         protected override void OnFinishLoading()
         {
             base.OnFinishLoading();
@@ -957,9 +908,9 @@ namespace GameManagers
             else
             {
                 if (_generalInputSettings.ToggleScoreboard.GetKey())
-                    _inGameMenu.SetScoreboardMenu(true);
+                    _inGameMenu.SetScoreboardMenu(true, false);
                 else
-                    _inGameMenu.SetScoreboardMenu(false);
+                    _inGameMenu.SetScoreboardMenu(false, false);
             }
             if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {

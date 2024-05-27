@@ -1,5 +1,8 @@
 /// Options
-EditorVersion:1.0|Description:Created by BLuR.
+EditorVersion:1.0|Description:The serene scenery removes any obstruction from the battle of the two factions.
+Made by BLuR|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,8,0,1,1,1,0,ArenaFloor,0,0,0,0,0,0,30,1,20,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood8|2/2|0/0,;
 Scene,None,9,0,1,1,1,0,Camera SpawnPoint,-46.82951,105.82,-204.8136,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:CameraSpawnPoint;
@@ -71,9 +74,6 @@ Scene,Nature/Boulder6,82,0,1,1,1,0,Boulder6,176.8378,4.397694,20.24466,0,0,0,0.5
 Scene,Nature/Boulder8,83,0,1,1,1,0,Boulder8,200.8987,4.71899,16.27081,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf1,84,0,1,1,1,0,Leaf1,175.8173,5.873749,19.71831,346.2299,21.89394,20.06721,0.1360604,0.2,0.1606929,Physical,Entities,Default,Default|170/255/255/255,;
 Scene,Geometry/Cuboid,85,0,1,1,1,0,Cuboid,181,0,25.1,0,0,0,6,1,0.02,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
-Scene,Geometry/Cuboid,86,0,1,1,1,0,Water,0,-9.897162,0,0,0,0,1000,1,1000,Physical,Entities,Default,Basic|198/255/248/255|Misc/Ice2|2/2|0/0,;
-Scene,Geometry/Plane,87,0,1,1,1,0,Plane,0,-4.409566,0,0,0,0,1000,1,1000,None,MapObjects,Default,Transparent|34/177/255/127|Misc/Diamond1|1/1|0/0,;
-Scene,Geometry/Plane,88,0,1,1,1,0,Plane,0,-3.96162,0,0,0,0,1000,1,1000,None,MapObjects,Default,Transparent|0/191/255/65|Misc/Diamond1|5/5|0/0,;
 Scene,None,89,0,1,1,1,0,PointLight,0,20,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,PointLight|Color:255/255/255/255|Intensity:3|Range:500;
 Scene,Nature/Field3,90,0,1,1,1,0,Field3,156.6792,5.036611,-19.96995,0,37.50245,0,0.15,0.15,0.15,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,91,0,1,1,1,0,Cuboid,181,0,-20,0,0,0,6,1,1,Physical,Entities,Default,Basic|182/255/193/255|Nature/Grass3|6/1|0/0,;
@@ -153,10 +153,10 @@ Scene,Geometry/Cuboid,164,0,1,1,1,0,Cuboid,154.8991,29.47837,-0.3004886,0,0,0,0.
 Scene,Geometry/Cuboid,165,0,1,1,1,0,Racing Checkpoint Region,175,6.639193,0,0,0,0,4,4.7,2,Region,Characters,Default,Transparent|0/0/0/0|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,None,166,0,1,1,1,0,PointLight,150.0876,33.22212,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,PointLight|Color:142/70/255/255|Intensity:5|Range:50;
 Scene,Buildings/House19,167,0,1,1,1,0,House19,245.475,-18.525,0,0,90,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cylinder,168,0,1,1,1,0,Cylinder,-155.0437,17,-10.7244,0,180.079,0,0.4,1.2,0.4,Physical,Entities,Default,Basic|192/0/26/255|Misc/None|1/1|0/0,;
-Scene,Geometry/Cuboid,169,0,1,1,1,0,Cuboid,-181.0284,0,0.3114684,0,270.0793,0,3,1,6,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood8|0.2/0.7|0/0,;
+Scene,Geometry/Cylinder,168,0,1,1,1,0,Cylinder,-155,17,-10.7244,0,180.079,0,0.4,1.2,0.4,Physical,Entities,Default,Basic|192/0/26/255|Misc/None|1/1|0/0,;
+Scene,Geometry/Cuboid,169,0,1,1,1,0,Cuboid,-181,0,0,0,270,0,3,1,6,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood8|0.2/0.7|0/0,;
 Scene,Nature/Field3,170,0,1,1,1,0,Field3,-156.7354,5.036611,-19.76677,0,217.5816,0,0.15,0.15,0.15,Physical,Entities,Default,Default|255/255/40/255,;
-Scene,Geometry/Cuboid,171,0,1,1,1,0,Cuboid,-181.0561,0,-19.68864,0,180.079,0,6,1,1,Physical,Entities,Default,Basic|182/255/193/255|Nature/Grass3|6/1|0/0,;
+Scene,Geometry/Cuboid,171,0,1,1,1,0,Cuboid,-181,0,-20,0,180,0,6,1,1,Physical,Entities,Default,Basic|182/255/193/255|Nature/Grass3|6/1|0/0,;
 Scene,Nature/Boulder9,172,0,1,1,1,0,Boulder9,-163.8628,4.901723,-23.10318,0,180.079,0,1.5,3,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf2,173,0,1,1,1,0,Leaf2,-163.7963,6.290911,-23.10407,349.4238,307.7196,351.9432,0.06,0.27,0.08,Physical,MapObjects,Default,Default|118/255/255/255,;
 Scene,Nature/Field2,174,0,1,1,1,0,Field2,-162.6173,4.893638,-19.96125,0,180.079,0,0.05,0.05,0.05,Physical,Entities,Default,Default|148/255/127/255,;
@@ -179,7 +179,7 @@ Scene,Nature/Field2,190,0,1,1,1,0,Field2,-203.4348,4.893638,-23.40524,0,311.711,
 Scene,Nature/Field2,191,0,1,1,1,0,Field2,-203.8366,4.893638,-21.18202,0,347.7785,0,0.04695095,0.05033338,0.05,Physical,Entities,Default,Default|174/255/226/255,;
 Scene,Nature/Field2,192,0,1,1,1,0,Field2,-205.8329,4.893638,-21.65128,0,353.558,0,0.05,0.05,0.05,Physical,Entities,Default,Default|148/255/127/255,;
 Scene,Nature/Field2,193,0,1,1,1,0,Field2,-205.1437,4.893638,-17.83787,0,311.711,0,0.04695095,0.06190333,0.05,Physical,Entities,Default,Default|195/255/203/255,;
-Scene,Nature/Field2,194,0,1,1,1,0,Field2,-205.5455,4.893638,-15.61455,0,347.7785,0,0.04695095,0.05033338,0.05,Physical,Entities,Default,Default|174/255/226/255,;
+Scene,Nature/Field2,194,0,1,1,1,0,Field2,-203.8343,4.893638,-16.8509,0,347.7785,0,0.04695095,0.05033338,0.05,Physical,Entities,Default,Default|174/255/226/255,;
 Scene,Nature/Field2,195,0,1,1,1,0,Field2,-207.5416,4.893638,-16.08373,0,353.558,0,0.05,0.05,0.05,Physical,Entities,Default,Default|148/255/127/255,;
 Scene,Nature/Field2,196,0,1,1,1,0,Field2,-201.9156,4.893638,-18.11966,0,76.61868,0,0.04695095,0.06190333,0.05,Physical,Entities,Default,Default|195/255/203/255,;
 Scene,Nature/Field2,197,0,1,1,1,0,Field2,-199.8627,4.893638,-19.06226,0,112.6859,0,0.04695095,0.05033338,0.05,Physical,Entities,Default,Default|174/255/226/255,;
@@ -215,9 +215,9 @@ Scene,Nature/Field2,226,0,1,1,1,0,Field2,-193.1466,4.893638,-22.62029,0,180.079,
 Scene,Nature/Boulder6,227,0,1,1,1,0,Boulder6,-176.8942,4.397694,-19.9389,0,180.079,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder8,228,0,1,1,1,0,Boulder8,-200.9495,4.71899,-15.93191,0,180.079,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf1,229,0,1,1,1,0,Leaf1,-175.8729,5.873749,-19.41403,346.2299,201.973,20.06723,0.1360604,0.2,0.1606929,Physical,Entities,Default,Default|170/255/255/255,;
-Scene,Geometry/Cuboid,230,0,1,1,1,0,Cuboid,-181.0631,0,-24.78855,0,180.079,0,6,1,0.02,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
+Scene,Geometry/Cuboid,230,0,1,1,1,0,Cuboid,-181,0,-25.1,0,180,0,6,1,0.02,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
 Scene,Nature/Field3,231,0,1,1,1,0,Field3,-156.6799,5.036611,20.24772,0,217.5816,0,0.15,0.15,0.15,Physical,Entities,Default,Default|255/255/40/255,;
-Scene,Geometry/Cuboid,232,0,1,1,1,0,Cuboid,-181.0008,0,20.31139,0,180.079,0,6,1,1,Physical,Entities,Default,Basic|182/255/193/255|Nature/Grass3|6/1|0/0,;
+Scene,Geometry/Cuboid,232,0,1,1,1,0,Cuboid,-181,0,20,0,180,0,6,1,1,Physical,Entities,Default,Basic|182/255/193/255|Nature/Grass3|6/1|0/0,;
 Scene,Nature/Boulder9,233,0,1,1,1,0,Boulder9,-160.9032,4.901723,20.53961,0,251.8471,0,1.664429,3,1.621216,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf2,234,0,1,1,1,0,Leaf2,-160.8831,6.290911,20.47586,349.4237,19.48757,351.9431,0.06,0.27,0.07598773,Physical,MapObjects,Default,Default|118/255/255/255,;
 Scene,Nature/Field2,235,0,1,1,1,0,Field2,-162.5618,4.893638,20.05311,0,180.079,0,0.05,0.05,0.05,Physical,Entities,Default,Default|148/255/127/255,;
@@ -276,9 +276,9 @@ Scene,Nature/Field2,287,0,1,1,1,0,Field2,-193.0914,4.893638,17.39437,0,180.079,0
 Scene,Nature/Boulder6,288,0,1,1,1,0,Boulder6,-185.1246,4.397694,20.91184,0,309.3578,0,0.5,0.3505391,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder8,289,0,1,1,1,0,Boulder8,-206.5296,4.71899,23.11971,0,283.798,0,1.532706,1.818442,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Leaf1,290,0,1,1,1,0,Leaf1,-185.3648,5.012535,19.78889,346.2299,331.2519,20.06716,0.1360604,0.2,0.1606929,Physical,Entities,Default,Default|170/255/255/255,;
-Scene,Geometry/Cuboid,291,0,1,1,1,0,Cuboid,-180.9937,0,25.41144,0,180.079,0,6,1,0.02,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
-Scene,Geometry/Sphere,292,0,1,1,1,0,Sphere,-154.8913,4.868269,-10.98044,0,180.079,0,0.5,0.3,0.5,Physical,Entities,Default,Basic|170/170/170/255|Stone/Stone14|1/1|0/0,;
-Scene,Geometry/Tube,293,0,1,1,1,0,Tube,-155.0759,6.864628,-10.79661,0,180.079,0,0.35,0.2,0.35,Physical,Entities,Default,Default|20/20/20/255,;
+Scene,Geometry/Cuboid,291,0,1,1,1,0,Cuboid,-181,0,25.1,0,180,0,6,1,0.02,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
+Scene,Geometry/Sphere,292,0,1,1,1,0,Sphere,-154.8,4.868269,-10.98044,0,180.079,0,0.5,0.3,0.5,Physical,Entities,Default,Basic|170/170/170/255|Stone/Stone14|1/1|0/0,;
+Scene,Geometry/Tube,293,0,1,1,1,0,Tube,-155,6.864628,-10.79661,0,180.079,0,0.35,0.2,0.35,Physical,Entities,Default,Default|20/20/20/255,;
 Scene,Geometry/Tube,294,0,1,1,1,0,Tube,-155.0454,6.864628,11.20379,0,180.079,0,0.35,0.2,0.35,Physical,Entities,Default,Default|20/20/20/255,;
 Scene,Geometry/Sphere,295,0,1,1,1,0,Sphere,-154.8612,4.868269,11.02814,0,180.079,0,0.5,0.3,0.5,Physical,Entities,Default,Basic|170/170/170/255|Stone/Stone14|1/1|0/0,;
 Scene,Geometry/Cylinder,296,0,1,1,1,0,Cylinder,-155.0133,17,11.27546,0,180.079,0,0.4,1.2,0.4,Physical,Entities,Default,Basic|192/0/26/255|Misc/None|1/1|0/0,;
@@ -337,7 +337,7 @@ Scene,Nature/Boulder1,350,0,1,1,1,0,Boulder1,1837.5,140,-40,0,0,0,50,50,50,Physi
 Scene,Nature/Boulder13,351,0,1,1,1,0,Boulder13,22.5,2.5,769,0,0,0,50,50,50,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone14|1/1|0/0,;
 Scene,Decor/Tarp1,353,0,1,1,1,0,Tarp1,153.8716,25.5,0,0,90,0,0.1,0.1,0.1,Physical,Entities,Default,Default|168/0/255/255,;
 Scene,Decor/Tarp1,354,0,1,1,1,0,Tarp1,-153.8805,25.5,0.2627488,0,90,0,0.1,0.1,0.1,Physical,Entities,Default,Default|255/92/0/255,;
-Scene,Buildings/House15,355,0,1,1,1,0,House15,-237.4311,-17.8837,0,0,180,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House15,355,0,1,1,1,0,House15,-237.375,-17.8837,0,0,180,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder9,356,0,1,1,1,0,Boulder9,-1278.719,-5.63802,-155.6887,0,0,0,500,500,500,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone18|4/4|0/0,;
 Scene,Nature/Boulder7,357,0,1,1,1,0,Boulder7,-1556.203,-487.6257,224.1277,0,0,0,100,300,200,Physical,Entities,Default,Basic|209/211/214/255|Stone/Stone18|4/4|0/0,;
 Scene,Nature/Boulder6,358,0,1,1,1,0,Boulder6,-1251.058,-384.5472,-769.5764,0,0,0,200,100,100,Physical,Entities,Default,Basic|200/202/222/255|Stone/Stone18|4/4|0/0,;
@@ -364,9 +364,8 @@ Scene,Geometry/Cuboid,379,0,1,1,0,0,Barrier,350,900,0,0,90,0,50,200,2,Physical,C
 Scene,Geometry/Cuboid,380,0,1,1,0,0,Barrier,0,1500,0,90,0,0,100,100,2,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,381,0,1,1,1,0,Human SpawnPoint,180,7,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
 Scene,None,382,0,1,1,1,0,Human SpawnPoint,-180,7,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
-Scene,Geometry/Plane,383,0,1,1,1,0,Plane,0,-4.694232,0,0,0,0,1000,1,1000,None,MapObjects,Default,Transparent|202/199/255/132|Misc/None|5/5|0/0,;
+Scene,Geometry/Cuboid,416,0,1,1,1,0,Cuboid,0,-5.476096,0,0,0,0,500,0.1,500,Physical,Entities,Default,Basic|108/95/61/255|Nature/Dirt1|150/150|0/0,;
 Scene,Geometry/Cuboid,384,0,1,1,1,0,Cuboid,211.03,0,0,0,90,0,5.04,1,0.005,Physical,Entities,Default,Basic|192/192/190/255|Stone/Stone18|3/0.4|0/0,;
-Scene,Geometry/Plane,385,0,1,1,1,0,Plane,0,-3.411391,0,0,0,0,1000,1,1000,None,MapObjects,Default,Transparent|0/148/255/81|Misc/Diamond1|5/5|0/0,;
 Scene,Nature/Boulder12,386,0,1,1,1,0,Boulder12,-194.0281,-5.399431,71.10109,-5.008956E-06,180,180,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder9,387,0,1,1,1,0,Boulder9,-178.1784,-4.785936,-121.8322,0,0,0,10,15,10,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder1,388,0,1,1,1,0,Boulder1,121.1691,-3.244562,162.9197,0,0,0,0.8,0.8,0.8,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone16|1/1|0/0,;
@@ -387,5 +386,69 @@ Scene,Decor/Barrel4,403,0,1,1,1,0,Barrel4,128.4825,-8.610825,-169.1413,10.55288,
 Scene,Decor/Bonfire1,404,0,1,1,1,0,Bonfire1,195.0861,5.04128,-17.59076,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,407,0,1,1,1,0,Box2,-206.4278,5.279748,-19.68826,0,65.91914,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Brickpile1,408,0,1,1,1,0,Brickpile1,-183.0101,5.177525,-20.41132,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Remains2,409,0,1,1,1,0,Remains2,-25.94785,35.16338,501.5617,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,
+Scene,Decor/Remains1b,409,0,1,1,1,0,Remains1b,-25.94785,35.16338,501.5617,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/WaterFall1,411,0,1,0,1,0,WaterFall1,1193.945,298.2115,102.1542,0,85.62479,0,1,2.186788,1,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Nature/Boulder1,412,0,1,1,1,0,Boulder1,1837.5,140,571.983,285.5772,0,0,57.77744,55.55006,61.41719,Physical,Entities,Default,Basic|229/229/230/255|Stone/Stone16|3/3|0/0,;
+Scene,Nature/Boulder1,413,0,1,1,1,0,Boulder1,3697.705,140,1504.442,285.5771,78.31213,6.994579,315.8379,142.8721,111.3392,Physical,Entities,Default,Basic|229/229/230/255|Stone/Stone16|9/9|0/0,;
+Scene,Nature/Boulder7,414,0,1,1,1,0,Boulder7,-2701.792,-703.816,-784.3638,0,0,0,446.6427,410.1931,584.9247,Physical,Entities,Default,Basic|209/211/214/255|Stone/Stone18|4/4|0/0,;
+Scene,FX/WaterCube1,415,0,1,0,1,0,WaterCube1,0,-2.716274,0,0,0,180,500,0.5,500,Region,Characters,Default,DefaultTiled|255/255/255/255|5/5,
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

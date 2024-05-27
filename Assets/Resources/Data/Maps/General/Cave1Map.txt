@@ -1,0 +1,89 @@
+/// Options
+EditorVersion:1.0|Description:|HasWeather:0
+/// CustomAssets
+
+/// Objects
+Scene,General/EditorHumanSpawnPointRed,3,0,1,1,0,0,Human SpawnPoint (red),72.68314,146.2971,-133.8104,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,0,0,53.13011,126.8699,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/255/255/255|Intensity:1|WeatherControlled:true;
+Scene,Arenas/CaveMap1,2,0,1,1,1,0,CaveMap1,0,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,General/EditorHumanSpawnPointRed,4,0,1,1,0,0,Human SpawnPoint (red),100.7379,146.2971,-133.8104,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointRed,5,0,1,1,0,0,Human SpawnPoint (red),290.3212,75.43957,11.67744,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointRed,6,0,1,1,0,0,Human SpawnPoint (red),273.7992,75.43957,28.23005,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointBlue,7,0,1,1,0,0,Human SpawnPoint (blue),-178.881,150.2174,-6.85237,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,8,0,1,1,0,0,Human SpawnPoint (blue),-197.3051,150.2174,-16.58072,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,9,0,1,1,0,0,Human SpawnPoint (blue),-7.937209,141.2194,-26.02073,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,10,0,1,1,0,0,Human SpawnPoint (blue),109.7242,211.5482,-1.726036,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,Interact/Supply2,11,0,1,1,1,0,Supply2,16.48746,0.144266,810.4379,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,13,0,1,1,1,0,Supply2,86.25368,145.2243,-145.0057,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,14,0,1,1,1,0,Supply2,-191.1048,149.7281,-25.20931,0,20.97457,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,General/EditorTitanSpawnPoint,15,0,1,1,0,0,Titan SpawnPoint,-13.45825,1.731605,65.33524,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,16,0,1,1,0,0,Titan SpawnPoint,-13.45825,1.731605,142.8017,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,17,0,1,1,0,0,Titan SpawnPoint,-39.63636,1.731605,329.0698,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,18,0,1,1,0,0,Titan SpawnPoint,-102.6811,1.731605,543.4577,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,19,0,1,1,0,0,Titan SpawnPoint,8.591904,1.731605,543.4577,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,20,0,1,1,0,0,Titan SpawnPoint,268.8698,1.731605,491.4954,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,21,0,1,1,0,0,Titan SpawnPoint,312.1446,1.731605,136.4868,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,22,0,1,1,0,0,Titan SpawnPoint,204.5405,1.731605,-2.075379,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,23,0,1,1,0,0,Titan SpawnPoint,-178.1086,1.731605,84.39546,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,24,0,1,1,0,0,Titan SpawnPoint,-214.98,1.731605,445.2968,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,25,0,1,1,0,0,Titan SpawnPoint,217.1133,1.731605,421.704,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+/// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

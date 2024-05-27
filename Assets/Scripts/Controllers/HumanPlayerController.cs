@@ -287,7 +287,7 @@ namespace Controllers
                     if (_humanInput.Jump.GetKeyDown())
                         _human.Jump();
                     else if (_humanInput.HorseMount.GetKeyDown() && _human.Horse != null && _human.MountState == HumanMountState.None &&
-                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f)
+                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f && !_human.HasDirection)
                         _human.MountHorse();
                     else if (_humanInput.Dodge.GetKeyDown())
                     {

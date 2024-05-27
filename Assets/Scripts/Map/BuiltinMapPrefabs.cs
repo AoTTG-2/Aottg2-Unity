@@ -19,6 +19,9 @@ namespace Map
         public static Dictionary<string, List<MapScriptBaseObject>> PrefabCategories = new Dictionary<string, List<MapScriptBaseObject>>();
         public static Dictionary<string, MapScriptBaseObject> AllPrefabsLower = new Dictionary<string, MapScriptBaseObject>();
         public static Dictionary<string, string> PrefabPreviews = new Dictionary<string, string>();
+        public static Dictionary<string, List<string>> PrefabVariants = new Dictionary<string, List<string>>();
+        public static Dictionary<string, string> VariantToBasePrefab = new Dictionary<string, string>();
+
 
         public static void Init()
         {
@@ -72,6 +75,17 @@ namespace Map
                         sceneObject.ScaleX = prefabNode["ScaleZ"].AsFloat;
                     if (prefabNode.HasKey("Preview"))
                         PrefabPreviews.Add(sceneObject.Name, prefabNode["Preview"].Value);
+                    if (prefabNode.HasKey("Variant"))
+                    {
+                        var variantBase = prefabNode["Variant"].Value;
+                        if (variantBase != sceneObject.Name)
+                        {
+                            if (!PrefabVariants.ContainsKey(variantBase))
+                                PrefabVariants.Add(variantBase, new List<string>());
+                            PrefabVariants[variantBase].Add(sceneObject.Name);
+                            VariantToBasePrefab[sceneObject.Name] = variantBase;
+                        }
+                    }
                     AllPrefabs.Add(sceneObject.Name, sceneObject);
                     AllPrefabsLower.Add(sceneObject.Name.ToLower(), sceneObject);
                     PrefabCategories[category].Add(sceneObject);

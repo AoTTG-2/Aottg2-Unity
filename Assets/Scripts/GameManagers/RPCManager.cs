@@ -186,7 +186,8 @@ namespace GameManagers
         [PunRPC]
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
-            CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message);
+            if (CustomLogicManager.Evaluator != null)
+                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message);
         }
 
         [PunRPC]

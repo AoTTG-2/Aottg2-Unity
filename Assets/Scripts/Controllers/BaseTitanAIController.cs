@@ -202,7 +202,12 @@ namespace Controllers
             else if (AIState == TitanAIState.MoveToPosition)
             {
                 float distance = Vector3.Distance(_character.Cache.Transform.position, _moveToPosition);
-                if (distance < _moveToRange || !_moveToActive)
+                if (_enemy != null)
+                {
+                    _attackRange = CloseAttackRange * _titan.Size;
+                    MoveToEnemy(true);
+                }
+                else if (distance < _moveToRange || !_moveToActive)
                 {
                     _moveToActive = false;
                     Idle();
@@ -245,7 +250,13 @@ namespace Controllers
                                 
                         }
                         else
-                            WaitAttack();
+                        {
+                            var validAttacks = GetValidAttacks();
+                            if (validAttacks.Count > 0)
+                                WaitAttack();
+                            else if (_stateTimeLeft <= 0f)
+                                MoveToEnemy(false);
+                        }
                     }
                     else
                     {
@@ -294,11 +305,14 @@ namespace Controllers
                         }
                         else
                         {
+                            MoveToEnemy();
+                            /*
                             _titan.HasDirection = true;
                             _titan.IsWalk = !IsRun;
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                             //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.cyan);
+                            */
                         }
                     }
                 }
@@ -669,7 +683,7 @@ namespace Controllers
         protected virtual List<string> GetValidAttacks(bool farOnly = false)
         {
             var validAttacks = new List<string>();
-            if (_enemy == null)
+            if (_enemy == null || !_titan.CanAttack())
                 return validAttacks;
             Vector3 worldPosition = _enemy.Cache.Transform.position;
             Vector3 velocity = Vector3.zero;

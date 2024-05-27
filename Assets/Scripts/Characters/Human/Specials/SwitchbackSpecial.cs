@@ -11,7 +11,7 @@ namespace Characters
 
         public SwitchbackSpecial(BaseCharacter owner): base(owner)
         {
-            Cooldown = 5f;
+            Cooldown = 2f;
         }
 
         public bool RegisterCollision(Human human, Collision collision, float speed)
@@ -21,6 +21,7 @@ namespace Characters
                 human.Cache.Rigidbody.velocity = collision.contacts[0].normal.normalized * Mathf.Max(speed, 20f);
                 _activeTimeLeft = 0f;
                 IsActive = false;
+                human.PlaySound(HumanSounds.Switchback);
                 Deactivate();
                 return true;
             }

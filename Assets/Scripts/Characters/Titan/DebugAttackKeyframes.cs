@@ -21,6 +21,7 @@ namespace Controllers
         {
             _titan = GetComponent<BaseTitan>();
             _titan.AttackSpeedMultiplier = 1f;
+            _titan.AttackSpeeds.Clear();
             if (_titan is BasicTitan)
                 _name = "Titan";
             else if (_titan is BaseShifter)
@@ -56,7 +57,7 @@ namespace Controllers
                 {
                     float currTime = Time.fixedTime;
                     int frame = (int)((currTime - startTime) * 50f);
-                    if (frame > currFrame + 1)
+                    if (frame > currFrame)
                     {
                         currFrame = frame;
                         if (_titan.BaseTitanCache.HandLHitbox.IsActive())
