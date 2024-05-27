@@ -1163,7 +1163,6 @@ namespace Characters
                                 TargetAngle = Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg;
                                 _targetRotation = GetTargetRotation();
                                 HasDirection = true;
-                                ToggleSparks(true);
                                 if (!IsPlayingSound(HumanSounds.CrashLand) && SettingsManager.SoundSettings.CrashLandEffect.Value)
                                     PlaySound(HumanSounds.CrashLand);
                             }
@@ -1208,7 +1207,6 @@ namespace Characters
                         if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
-                            ToggleSparks(false);
                         }
                     }
                     Vector3 force = newVelocity - _currentVelocity;
@@ -1217,7 +1215,7 @@ namespace Characters
                     force.y = 0f;
                     if (Cache.Animation.IsPlaying(HumanAnimations.Jump) && Cache.Animation[HumanAnimations.Jump].normalizedTime > 0.18f)
                     {
-                        float jumpSpeed = ((0.3f * Stats.Speed) - 8f);
+                        float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
                         if (_currentVelocity.y > 0f)
                             jumpSpeed -= _currentVelocity.y;
                         force.y += Mathf.Max(jumpSpeed, 0f);
@@ -1235,6 +1233,7 @@ namespace Characters
                         Cache.Rigidbody.velocity = _currentVelocity;
                     }
                     Cache.Rigidbody.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.Euler(0f, TargetAngle, 0f), Time.deltaTime * 10f);
+                    ToggleSparks(State == HumanState.Slide);
                 }
                 else
                 {
@@ -1374,7 +1373,7 @@ namespace Characters
                     }
                     else if (!Cache.Animation.IsPlaying(HumanAnimations.Dash) && !Cache.Animation.IsPlaying(HumanAnimations.Jump) && !IsFiringThunderspear())
                     {
-                        Vector3 targetDirection = GetTargetDirection() * TargetMagnitude * Stats.Acceleration / 5f;
+                        Vector3 targetDirection = GetTargetDirection() * TargetMagnitude * ((float)Stats.Acceleration * 2f - 50f) / 5f;
                         if (!HasDirection)
                         {
                             if (State == HumanState.Attack)
@@ -1485,7 +1484,7 @@ namespace Characters
                 FixedUpdateClippingCheck();
                 ReelInAxis = 0f;
             }
-            EnableFirstSmartTitan();
+            EnableSmartTitans();
         }
 
         protected override void LateUpdate()
@@ -1521,7 +1520,7 @@ namespace Characters
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f)
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Cache.Animation.IsPlaying(HumanAnimations.WallRun))
             {
                 _wallSlide = true;
                 _wallSlideGround = collision.contacts[0].normal.normalized;
@@ -2071,11 +2070,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 15f;
-            if (Stats.Perks["FlareCD"].CurrPoints == 2)
-                cooldown = 5f;
-            else if (Stats.Perks["FlareCD"].CurrPoints == 1)
-                cooldown = 10f;
+            float cooldown = 10f;
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Black", new Color(0f, 0f, 0f, 0.7f), cooldown));
@@ -2733,8 +2728,10 @@ namespace Characters
                 Setup.DeleteDie();
         }
 
-        protected void EnableFirstSmartTitan()
+        protected void EnableSmartTitans()
         {
+            int maxSmartTitans = 2;
+            int currSmartTitans = 0;
             if (PhotonNetwork.IsMasterClient)
             {
                 foreach (var titan in _inGameManager.Titans)
@@ -2742,7 +2739,9 @@ namespace Characters
                     if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
-                        return;
+                        currSmartTitans += 1;
+                        if (currSmartTitans >= maxSmartTitans)
+                            return;
                     }
                 }
                 foreach (var titan in _inGameManager.Shifters)
@@ -2750,9 +2749,12 @@ namespace Characters
                     if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
-                        return;
+                        currSmartTitans += 1;
+                        if (currSmartTitans >= maxSmartTitans)
+                            return;
                     }
                 }
+                /*
                 RaycastHit hit;
                 Vector3 velocity = GetVelocity();
                 if (Physics.Raycast(Cache.Transform.position, velocity.normalized, out hit, velocity.magnitude, TitanDetectionMask.value))
@@ -2764,6 +2766,7 @@ namespace Characters
                             titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
                     }
                 }
+                */
             }
         }
 

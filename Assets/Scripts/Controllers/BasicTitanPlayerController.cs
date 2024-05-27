@@ -43,6 +43,7 @@ namespace Controllers
                 return;
             _titan.IsWalk = _titanInput.Walk.GetKey();
             _titan.IsSit = _titanInput.Sit.GetKey();
+            _titan.IsSprint = _titanInput.Sprint.GetKey();
             _enemyTimeLeft -= Time.deltaTime;
             if (_titan.CanAction())
             {

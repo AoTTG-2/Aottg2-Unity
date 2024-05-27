@@ -16,6 +16,7 @@ namespace Characters
         public int Ammunition = 80;
         public int Acceleration = 80;
         public Dictionary<string, BasePerk> Perks = new Dictionary<string, BasePerk>();
+        public static int MaxPerkPoints = 3;
 
         // in-game
         public float CurrentGas = -1f;
@@ -30,10 +31,6 @@ namespace Characters
             _human = human;
             Perks.Add("AdvancedAlloy", new AdvancedAlloyPerk());
             Perks.Add("DurableBlades", new DurableBladesPerk());
-            Perks.Add("FlareCD", new FlareCDPerk());
-            Perks.Add("FlareSize", new FlareSizePerk());
-            Perks.Add("HookLength", new HookLengthPerk());
-            Perks.Add("HookSpeed", new HookSpeedPerk());
             Perks.Add("RefillTime", new RefillTimePerk());
             Perks.Add("VerticalDash", new VerticalDashPerk());
             Perks.Add("OmniDash", new OmniDashPerk());
@@ -62,8 +59,8 @@ namespace Characters
         public void UpdateStats()
         {
             if (_human != null)
-                _human.Cache.Rigidbody.mass = 0.5f - (Acceleration * 2f - 150f) * 0.001f;
-            RunSpeed = (0.3f * (float)Speed) - 12.5f;
+                _human.Cache.Rigidbody.mass = 0.5f - ((float)Acceleration * 2f - 150f) * 0.001f;
+            RunSpeed = (0.4f * (float)Speed) - 16f;
         }
 
         public void ResetGas()
@@ -165,7 +162,7 @@ namespace Characters
                 if (!perk.Validate(Perks))
                     return false;
             }
-            if (GetPerkPoints() > GameProgressManager.GameProgress.GameStat.Level.Value)
+            if (GetPerkPoints() > MaxPerkPoints)
                 return false;
             return true;
         }

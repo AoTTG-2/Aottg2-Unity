@@ -17,7 +17,7 @@ namespace UI
     {
         protected override string Title => UIManager.GetLocale("CharacterEditor", "Stats", "Title");
         protected override float Width => 330f;
-        protected override float Height => 350f;
+        protected override float Height => 360f;
         protected override float VerticalSpacing => 20f;
         protected override int HorizontalPadding => 25;
         protected override int VerticalPadding => 25;

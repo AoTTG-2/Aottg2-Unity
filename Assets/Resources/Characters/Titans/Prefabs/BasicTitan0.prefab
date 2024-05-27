@@ -51,7 +51,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
+  m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: -0.02}
 --- !u!1 &101008
 GameObject:
@@ -104,7 +104,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
+  m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: -0.02}
 --- !u!1 &101010
 GameObject:
@@ -197,6 +197,7 @@ MonoBehaviour:
   State: 0
   TitanColliderToggler: {fileID: 0}
   IsWalk: 0
+  IsSprint: 0
   IsSit: 0
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
@@ -205,6 +206,10 @@ MonoBehaviour:
   ActionPause: 0.2
   AttackPause: 0.2
   TurnPause: 0.2
+  MaxSprintStamina: 3
+  SprintStaminaRecover: 0.3
+  SprintStaminaConsumption: 1
+  CurrentSprintStamina: 3
   TargetEnemy: {fileID: 0}
   AttackSpeedMultiplier: 1
   RunSpeedBase: 0
@@ -4074,7 +4079,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
+  m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &113996
 GameObject:
@@ -4127,7 +4132,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
+  m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &176276
 GameObject:
