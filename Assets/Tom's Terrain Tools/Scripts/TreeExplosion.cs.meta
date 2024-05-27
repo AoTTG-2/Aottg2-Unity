@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 477348cb63ecc4983abccaa515285fb0
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/Scripts/TreeExplosion.cs
+  uploadId: 107545

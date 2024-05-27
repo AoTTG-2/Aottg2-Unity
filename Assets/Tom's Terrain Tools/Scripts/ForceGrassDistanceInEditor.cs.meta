@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3004f4094e984eb46b847e9ba18ed492
+timeCreated: 1442868850
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/Scripts/ForceGrassDistanceInEditor.cs
+  uploadId: 107545

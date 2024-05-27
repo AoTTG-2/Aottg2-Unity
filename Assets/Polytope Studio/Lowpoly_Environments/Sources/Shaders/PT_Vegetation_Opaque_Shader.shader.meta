@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 270965b004462ae41bd125bc783c0fa6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 187052
+  packageName: Lowpoly Environment - Nature Free - MEDIEVAL FANTASY SERIES
+  packageVersion: 1.1
+  assetPath: Assets/Polytope Studio/Lowpoly_Environments/Sources/Shaders/PT_Vegetation_Opaque_Shader.shader
+  uploadId: 633845

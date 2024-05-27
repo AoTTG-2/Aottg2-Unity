@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: aae57fdffe9d7634badd8076e8e76435
+timeCreated: 1443382966
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/Example Data/TerrainExample1.asset
+  uploadId: 107545

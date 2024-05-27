@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 46ad5d7be0e8aa249a525cf73ae9dd5c
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 527
+  packageName: Tom's Terrain Tools
+  packageVersion: 2.6
+  assetPath: Assets/Tom's Terrain Tools/2DTools/Scripts/CircleMoverSample.cs
+  uploadId: 107545

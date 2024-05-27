@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3e336216065dbd84f94c41015a5d29ef
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 187052
+  packageName: Lowpoly Environment - Nature Free - MEDIEVAL FANTASY SERIES
+  packageVersion: 1.1
+  assetPath: Assets/Polytope Studio/Lowpoly_Environments/Sources/Shaders/VS_indirect.cginc
+  uploadId: 633845
