@@ -323,10 +323,10 @@ class ZippsUIManager : MonoBehaviour
             Vector3 Pos = hero.transform.position + (hero.transform.forward * 5f) + new Vector3(0, 1.5f, 0);
             if (CannonObj != null)
             {
-                PhotonNetwork.Destroy(CannonObj);
+                CannonObj.GetComponent<Cannon>().UnMount();
             }
             if (CannonObj == null)
-                CannonObj = PhotonNetwork.Instantiate("Map/Interact/Prefabs/Cannon3", Pos, hero.transform.rotation);
+                CannonObj = PhotonNetwork.Instantiate("Map/Interact/Prefabs/CannoneerCannon", Pos, hero.transform.rotation);
         }
     }
 

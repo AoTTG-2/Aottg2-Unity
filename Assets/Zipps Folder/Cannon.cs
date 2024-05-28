@@ -37,9 +37,9 @@ public class Cannon : MonoBehaviourPun
 
     }
 
-    void UnMount() //Gotta make this a RPC
+    public void UnMount() //Gotta Send RPC Here
     {
-        Hero.transform.parent.parent = null;
+        Hero.transform.parent.parent = null; //RPC
         PhotonNetwork.Destroy(gameObject);
     }
 
