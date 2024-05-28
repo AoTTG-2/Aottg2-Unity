@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cannon : MonoBehaviourPun
+public class CannoneerCannon : MonoBehaviourPun
 {
     [Header("Cannon Parts")]
     [SerializeField] private Transform CanBase;
