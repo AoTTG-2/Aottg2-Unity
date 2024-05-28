@@ -373,7 +373,8 @@ namespace Controllers
             resultDirection = resultDirection.normalized;
             var result =  GetChaseAngleGivenDirection(resultDirection);
 
-            result = Mathf.LerpAngle(_titan.TargetAngle, result, Time.fixedDeltaTime);
+            if (_useCollisionAvoidance == true)
+                result = Mathf.LerpAngle(_titan.TargetAngle, result, Time.fixedDeltaTime);
 
             /*if (col)
                 Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.magenta);
