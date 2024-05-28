@@ -74,7 +74,9 @@
 				{
 					"Name": "Outside The Walls",
 					"MiscSettings": {
-						"Horses": true
+						"Horses": true,
+						"AllowPlayerTitans": false,
+						"AllowShifters": false
 					}
 				}
 			]
@@ -226,27 +228,6 @@
 				},
 				{
 					"Name": "Inferno I"
-				}
-			]
-		},
-		{
-			"Name": "Misc",
-			"IncludedModes": ["Map Logic"],
-			"Maps": [
-				{
-					"Name": "Annie",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowShifterSpecials": false
-					}
-				},
-				{
-					"Name": "Outside The Walls",
-					"MiscSettings": {
-						"Horses": true,
-						"AllowPlayerTitans": false,
-						"AllowShifters": false
-					}
 				}
 			]
 		}

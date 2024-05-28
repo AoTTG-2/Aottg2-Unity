@@ -370,10 +370,12 @@ namespace Controllers
             resultDirection = resultDirection.normalized;
             var result =  GetChaseAngleGivenDirection(resultDirection);
 
-            if (col)
+            result = Mathf.LerpAngle(_titan.TargetAngle, result, Time.fixedDeltaTime);
+
+            /*if (col)
                 Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.magenta);
             else
-                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);
+                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);*/
 
             return result;
         }
@@ -385,13 +387,18 @@ namespace Controllers
             var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
 
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
-            if (Physics.SphereCast(start, colliderRadius, _titan.Cache.Transform.forward, out hit, _collisionDetectionDistance, mask))
+            if (Physics.CheckSphere(start, colliderRadius, mask))
             {
-                // display the ray
-                Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
+                //Debug.DrawRay(start, _titan.Cache.Transform.forward * colliderRadius, Color.red, 1);
                 return true;
             }
-            Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
+            else if (Physics.SphereCast(start, colliderRadius, _titan.Cache.Transform.forward, out hit, _collisionDetectionDistance, mask))
+            {
+                // display the ray
+                //Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
+                return true;
+            }
+            //Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
             return false;
         }
 
@@ -447,7 +454,7 @@ namespace Controllers
 
             float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 1f;
             Vector3 colliderCenter = _titan.Cache.Transform.TransformPoint(_mainCollider.center);
-            var start = colliderCenter + _titan.Cache.Transform.forward * -1.3f * colliderRadius;
+            var start = colliderCenter + _titan.Cache.Transform.forward * -1 * colliderRadius;
 
             for (int i = 0; i < _sampleRayCount; i++)
             {
@@ -456,14 +463,14 @@ namespace Controllers
                 if (Physics.SphereCast(start, colliderRadius, rayDirection, out hit, _collisionAvoidDistance, PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities)))
                 {
                     Vector3 rayActualDirection = (start + rayDirection.normalized * hit.distance) - colliderCenter;
-                    float alignment = Vector3.Dot(rayActualDirection, goalDirection.normalized);
-                    float prevAlignment = Vector3.Dot(_titan.GetTargetDirection(), rayActualDirection.normalized);
+                    float alignment = Vector3.Angle(rayActualDirection.normalized, goalDirection.normalized);
+                    float prevAlignment = Vector3.Angle(_titan.GetTargetDirection(), rayActualDirection.normalized);
 
                     if (Approximately(hit.distance, bestDirScore, 0.001f))
                     {
                         if (Approximately(alignment, bestDirAlignment, 0.001f))
                         {
-                            if (Approximately(prevAlignment, bestPreviousAlignment, 0.001f) && prevAlignment > bestPreviousAlignment)
+                            if (Approximately(prevAlignment, bestPreviousAlignment, 0.001f) && prevAlignment < bestPreviousAlignment)
                             {
                                 bestDirection = rayActualDirection;
                                 bestDirScore = hit.distance;
@@ -471,7 +478,7 @@ namespace Controllers
                                 bestPreviousAlignment = prevAlignment;
                             }
                         }
-                        else if (alignment > bestPreviousAlignment)
+                        else if (alignment < bestPreviousAlignment)
                         {
                             bestDirection = rayActualDirection;
                             bestDirScore = hit.distance;
@@ -494,38 +501,8 @@ namespace Controllers
                 else
                 {
                     Vector3 rayActualDirection = (start + rayDirection.normalized * _collisionAvoidDistance) - colliderCenter;
-                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
+                    //Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
                     return rayActualDirection;
-                    /*float alignment = Vector3.Dot(rayActualDirection, goalDirection.normalized);
-                    float prevAlignment = Vector3.Dot(_titan.GetTargetDirection(), rayActualDirection.normalized);
-
-                    if (Mathf.Approximately(_collisionAvoidDistance, bestDirScore))
-                    {
-                        if (Mathf.Approximately(alignment, bestDirAlignment))
-                        {
-                            if (Mathf.Approximately(prevAlignment, bestPreviousAlignment) && prevAlignment > bestPreviousAlignment)
-                            {
-                                bestDirection = rayActualDirection;
-                                bestDirScore = _collisionAvoidDistance;
-                                bestDirAlignment = alignment;
-                                bestPreviousAlignment = prevAlignment;
-                            }
-                        }
-                        else if (alignment > bestPreviousAlignment)
-                        {
-                            bestDirection = rayActualDirection;
-                            bestDirScore = _collisionAvoidDistance;
-                            bestDirAlignment = alignment;
-                            bestPreviousAlignment = prevAlignment;
-                        }
-                    }
-                    else if (_collisionAvoidDistance > bestDirScore)
-                    {
-                        bestDirection = rayActualDirection;
-                        bestDirScore = _collisionAvoidDistance;
-                        bestDirAlignment = alignment;
-                        bestPreviousAlignment = prevAlignment;
-                    }*/
                 }
             }
             return bestDirection;
