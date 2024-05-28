@@ -60,9 +60,9 @@ namespace UI
                 var manager = (InGameManager)SceneLoader.CurrentGameManager;
                 if (InGameMenu.InMenu() || !manager.IsFinishedLoading() || manager.GlobalPause || manager.Restarting)
                     SetPointer();
-                else if (manager.CurrentCharacter != null && manager.CurrentCharacter is Human && !manager.CurrentCharacter.Dead && !CustomLogicManager.Cutscene)
+                else if (manager.CurrentCharacter != null && (manager.CurrentCharacter is Human || manager.CurrentCharacter is BasicTitan) && !manager.CurrentCharacter.Dead && !CustomLogicManager.Cutscene)
                 {
-                    var controller = manager.CurrentCharacter.GetComponent<HumanPlayerController>();
+                    var controller = manager.CurrentCharacter.GetComponent<BasePlayerController>();
                     if (controller != null && !controller.HideCursor)
                         SetCrosshair();
                     else
@@ -161,7 +161,8 @@ namespace UI
                         hookArrowRight.gameObject.SetActive(false);
                     return;
                 }
-                if (SettingsManager.UISettings.ShowCrosshairArrows.Value)
+                var manager = (InGameManager)SceneLoader.CurrentGameManager;
+                if (SettingsManager.UISettings.ShowCrosshairArrows.Value && manager.CurrentCharacter != null && manager.CurrentCharacter is Human)
                 {
                     if (!hookArrowLeft.gameObject.activeSelf)
                         hookArrowLeft.gameObject.SetActive(true);

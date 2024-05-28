@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Utility;
+using ApplicationManagers;
 
 namespace Controllers
 {
@@ -34,6 +35,12 @@ namespace Controllers
             _titan.AttackPause = 0.1f;
             _titan.ActionPause = 0.1f;
             _titan.RockThrow1Speed = 500f;
+        }
+
+        protected override void UpdateUI(bool inMenu)
+        {
+            CursorManager.SetCrosshairText(string.Empty);
+            CursorManager.SetCrosshairColor(true);
         }
 
         protected override void UpdateActionInput(bool inMenu)

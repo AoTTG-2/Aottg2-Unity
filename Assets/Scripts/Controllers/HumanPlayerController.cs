@@ -11,7 +11,6 @@ namespace Controllers
 {
     class HumanPlayerController : BasePlayerController
     {
-        public bool HideCursor;
         protected Human _human;
         protected float _reelOutScrollTimeLeft;
         protected float _reelInScrollCooldownLeft = 0f;
@@ -220,13 +219,6 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            if (!inMenu)
-            {
-                if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
-                    HideCursor = !HideCursor;
-            }
-
-
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;

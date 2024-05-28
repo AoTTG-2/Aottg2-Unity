@@ -16,6 +16,7 @@ namespace Controllers
         public float DetectRange;
         public float CloseAttackRange;
         public float FarAttackRange;
+        public float FarAttackCooldown;
         public float FocusRange;
         public float FocusTime;
         public float AttackWait;
@@ -35,6 +36,7 @@ namespace Controllers
         public Dictionary<string, TitanAttackInfo> AttackInfos;
         protected float _stateTimeLeft;
         protected float _focusTimeLeft;
+        protected float _rangedCooldownLeft;
         protected float _attackRange;
         protected BaseCharacter _enemy;
         protected AICharacterDetection _detection;
@@ -93,6 +95,7 @@ namespace Controllers
             DetectRange = data["DetectRange"].AsFloat;
             CloseAttackRange = data["CloseAttackRange"].AsFloat;
             FarAttackRange = data["FarAttackRange"].AsFloat;
+            FarAttackCooldown = data["FarAttackCooldown"].AsFloat;
             FocusRange = data["FocusRange"].AsFloat;
             FocusTime = data["FocusTime"].AsFloat;
             AttackWait = data["AttackWait"].AsFloat;
@@ -145,7 +148,10 @@ namespace Controllers
             if (_titan.Dead)
                 return;
             if (_titan.State != TitanState.Attack && _titan.State != TitanState.Eat)
+            {
+                _rangedCooldownLeft -= Time.deltaTime;
                 _attackCooldownLeft -= Time.deltaTime;
+            }
             if (AIState == TitanAIState.ForcedIdle)
             {
                 if (_stateTimeLeft <= 0f)
@@ -508,6 +514,8 @@ namespace Controllers
                 _attack = attack;
                 AIState = TitanAIState.Action;
                 _titan.Attack(_attack);
+                if (AttackInfos[attack].FarOnly)
+                    _rangedCooldownLeft = FarAttackCooldown;
             }
         }
 
@@ -605,6 +613,8 @@ namespace Controllers
                 if (attackInfo.HumanOnly && !isHuman)
                     continue;
                 if (farOnly && !attackInfo.FarOnly)
+                    continue;
+                if (attackInfo.FarOnly && _rangedCooldownLeft > 0f)
                     continue;
                 if (!SmartAttack || attackInfo.FarOnly || !isHuman)
                 {

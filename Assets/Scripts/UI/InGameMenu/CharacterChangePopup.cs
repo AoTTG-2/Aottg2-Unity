@@ -41,20 +41,20 @@ namespace UI
                     if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human)
                     {
                         var human = (Human)gameManager.CurrentCharacter;
-                        if (!human.Dead)
+                        if (!human.Dead && human.State != HumanState.Grab)
                         {
                             var position = human.Cache.Transform.position;
                             var rotation = human.Cache.Transform.rotation;
                             human.DieChangeCharacter();
                             manager.SpawnPlayerAt(false, position, rotation.eulerAngles.y);
-                            InGameManager.UpdateRoundPlayerProperties();
-                            Hide();
-                            return;
                         }
                     }
-                    bool canJoin = PhotonNetwork.IsMasterClient || CustomLogicManager.Evaluator.CurrentTime < SettingsManager.InGameCurrent.Misc.AllowSpawnTime.Value;
-                    if (canJoin && !manager.HasSpawned)
-                        manager.SpawnPlayer(false);
+                    else
+                    {
+                        bool canJoin = PhotonNetwork.IsMasterClient || CustomLogicManager.Evaluator.CurrentTime < SettingsManager.InGameCurrent.Misc.AllowSpawnTime.Value;
+                        if (canJoin && !manager.HasSpawned)
+                            manager.SpawnPlayer(false);
+                    }
                     InGameManager.UpdateRoundPlayerProperties();
                     Hide();
                     break;

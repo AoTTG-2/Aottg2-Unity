@@ -17,6 +17,7 @@ namespace Controllers
         protected InGameMenu _inGameMenu;
         protected BaseCharacter _character;
         protected InGameManager _gameManager;
+        public bool HideCursor;
 
         protected virtual void Awake()
         {
@@ -55,6 +56,8 @@ namespace Controllers
                             _character.UseItem(i);
                     }
                 }
+                if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
+                    HideCursor = !HideCursor;
             }
         }
 

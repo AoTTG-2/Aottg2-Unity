@@ -110,7 +110,7 @@ namespace Characters
         {
             if (Dead)
                 return;
-            if (type == "CannonBall")
+            if (type == "CannonBall" || type == "Rock")
             {
                 base.GetHitRPC(viewId, name, damage, type, collider);
                 return;

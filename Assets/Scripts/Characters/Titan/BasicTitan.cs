@@ -161,6 +161,11 @@ namespace Characters
             }
         }
 
+        public override Transform GetCameraAnchor()
+        {
+            return Cache.Transform;
+        }
+
         protected override void Start()
         {
             _inGameManager.Titans.Add(this);
@@ -473,7 +478,7 @@ namespace Characters
             if (Dead)
                 return;
             var settings = SettingsManager.InGameCurrent.Titan;
-            if (type == "CannonBall")
+            if (type == "CannonBall" || type == "Rock")
             {
                 base.GetHitRPC(viewId, name, damage, type, collider);
                 return;
