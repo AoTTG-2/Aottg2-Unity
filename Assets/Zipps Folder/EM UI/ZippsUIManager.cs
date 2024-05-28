@@ -311,6 +311,7 @@ class ZippsUIManager : MonoBehaviour
 
     #region Cannoneer
 
+    GameObject CannonObj = null;
     private void CannoneerUpdate()
     {
         if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Cannoneer"))
@@ -318,7 +319,14 @@ class ZippsUIManager : MonoBehaviour
 
         if (_humanInput.CannoneerSpawn.GetKeyDown())
         {
-
+            GameObject hero = PhotonExtensions.GetMyHuman();
+            Vector3 Pos = hero.transform.position + (hero.transform.forward * 5f) + new Vector3(0, 1.5f, 0);
+            if (CannonObj != null)
+            {
+                PhotonNetwork.Destroy(CannonObj);
+            }
+            if (CannonObj == null)
+                CannonObj = PhotonNetwork.Instantiate("Map/Interact/Prefabs/Cannon3", Pos, hero.transform.rotation);
         }
     }
 
