@@ -110,6 +110,8 @@
 		"General.RoomName": "Room name",
 		"Titans.StandardModels": "Standard models",
 		"Titans.StandardModelsTooltip": "Use only standard titan models (body0 and head0).",
+		"Titans.SmartMovement": "Smart Movement",
+		"Titans.SmartMovementTooltip": "Titans will avoid obstacles when chasing players.",
 		"Titans.SpawnEnabled": "Custom spawns",
 		"Titans.SpawnEnabledTooltip": "Spawn rates must add up to 100.",
 		"Titans.Normal": "Normal",

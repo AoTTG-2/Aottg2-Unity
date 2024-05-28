@@ -47,20 +47,20 @@ namespace Controllers
         private CapsuleCollider _mainCollider;
 
         // pathing
-        private bool _collidedLastFrame = false;
         private readonly int _sampleRayCount = 6;
         private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
         private readonly float _collisionWeight = 140f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
-        private readonly bool _useCollisionAvoidance = true;
+        private bool _useCollisionAvoidance = true;
 
         protected override void Awake()
         {
             base.Awake();
             _titan = GetComponent<BaseTitan>();
             _mainCollider = _titan.GetComponent<CapsuleCollider>();
+            _useCollisionAvoidance = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
         }
 
         protected override void Start()
@@ -359,18 +359,15 @@ namespace Controllers
         {
             var goalDirection = target - _titan.Cache.Transform.position;
             var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
-            bool col = false;
+            //bool col = false;
             if (avoidCollisions && _useCollisionAvoidance)
             {
                 if (IsHeadingForCollision())
                 {
-                    col = true;
-                    _collidedLastFrame = true;
+                    //col = true;
                     _moveAngle = 0; // Random.Range(-10f, 10f);
                     resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
                 }
-                else
-                    _collidedLastFrame = false;
             }
             resultDirection = new Vector3(resultDirection.x, 0, resultDirection.z);
             resultDirection = resultDirection.normalized;
@@ -410,6 +407,9 @@ namespace Controllers
 
         protected bool HasClearLineOfSight(Vector3 target)
         {
+            if (_useCollisionAvoidance == false)
+                return true;
+                
             float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 0.5f;
             var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
             var left = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * -1 * colliderRadius;
