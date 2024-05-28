@@ -28,6 +28,7 @@ namespace Characters
         protected Vector3 _lastWorldHookPosition = Vector3.zero;
         protected float _currentLiveTime = 0f;
         protected ParticleSystem _particles;
+        protected GameObject _endSprite;
         private static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.TitanPushbox, PhysicsLayer.EntityDetection,
             PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         protected float _tiling;
@@ -68,6 +69,7 @@ namespace Characters
             _renderer.positionCount = 0;
             _particles = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Particles/Prefabs/HookParticle", true)
                 .GetComponent<ParticleSystem>();
+            _endSprite = _particles.transform.Find("HookEnd").gameObject;
         }
 
         public void SetSkin(float tiling)
@@ -101,6 +103,7 @@ namespace Characters
                 else
                     _owner.PlaySoundRPC(HumanSounds.HookRetractRight, Util.CreateLocalPhotonInfo());
             }
+            _endSprite.SetActive(false);
         }
 
         public void OnSetHooking(Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
@@ -121,8 +124,10 @@ namespace Characters
             else
                 _owner.PlaySoundRPC(HumanSounds.HookLaunch, Util.CreateLocalPhotonInfo());
             _particles.transform.position = GetHookPosition();
+            _particles.transform.forward = -(_baseVelocity * 50f + _relativeVelocity).normalized;
             _particles.Stop();
             _particles.Play();
+            _endSprite.SetActive(false);
         }
 
         public void OnSetHooked(Vector3 position, int photonViewId, int objectId, PhotonMessageInfo info)
@@ -161,6 +166,7 @@ namespace Characters
                 else
                     _owner.PlaySoundRPC(HumanSounds.HookImpact, Util.CreateLocalPhotonInfo());
             }
+            _endSprite.SetActive(true);
         }
 
         public void SetHookState(HookState state)
@@ -186,6 +192,7 @@ namespace Characters
         {
             _renderer.positionCount = 0;
             State = HookState.Disabled;
+            _endSprite.SetActive(false);
         }
 
         protected void UpdateHooking()
@@ -223,6 +230,8 @@ namespace Characters
                 _renderer.SetPosition(i, noisePosition);
             }
             _renderer.SetPosition(vertex - 1, position);
+            _endSprite.transform.position = position + v1.normalized * 0.1f;
+            _endSprite.transform.rotation = Quaternion.LookRotation(v1.normalized, (SceneLoader.CurrentCamera.Cache.Transform.position - _endSprite.transform.position).normalized);
         }
 
         protected void UpdateDisablingHooking()

@@ -32,6 +32,7 @@
 		"TurnPause": 0.2,
 		"CloseAttackRange": 25,
 		"FarAttackRange": 0,
+		"FarAttackCooldown": 5,
 		"AttackWait": 0,
 		"AttackPause": 0.5,
 		"ActionPause": 0.5,

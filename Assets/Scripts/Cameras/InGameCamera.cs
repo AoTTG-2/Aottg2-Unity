@@ -26,6 +26,7 @@ namespace Cameras
         public float _cameraDistance;
         private float _heightDistance;
         private float _anchorDistance;
+        private float _headOffset;
         private const float DistanceMultiplier = 10f;
         private bool _napeLock;
         private BaseTitan _napeLockTitan;
@@ -85,11 +86,18 @@ namespace Cameras
             if (character is Human)
             {
                 _anchorDistance = _heightDistance = 0.64f;
+                _headOffset = 0f;
             }
-            else if (character is BaseTitan || character is BaseShifter)
+            else if (character is BaseShifter)
             {
                 _anchorDistance = Vector3.Distance(character.GetCameraAnchor().position, character.Cache.Transform.position) * 0.25f;
                 _heightDistance = Vector3.Distance(character.GetCameraAnchor().position, character.Cache.Transform.position) * 0.35f;
+            }
+            else if (character is BasicTitan)
+            {
+                Transform head = ((BasicTitan)character).BasicCache.Head;
+                _anchorDistance = Vector3.Distance(head.position, character.Cache.Transform.position) * 0.25f;
+                _heightDistance = Vector3.Distance(head.position, character.Cache.Transform.position) * 1.39f;
             }
             else
                 _anchorDistance = _heightDistance = 1f;
@@ -97,8 +105,8 @@ namespace Cameras
                 Cache.Transform.rotation = character.IsMine()
                     ? Util.ConstrainedToY(_follow.Cache.Transform.rotation)
                     : Quaternion.Euler(0f, 0f, 0f);
-            if (character is Human && character.IsMine())
-                _menu.HUDBottomHandler.SetBottomHUD((Human)character);
+            if (character.IsMine())
+                _menu.HUDBottomHandler.SetBottomHUD(character);
             else
                 _menu.HUDBottomHandler.SetBottomHUD();
         }
