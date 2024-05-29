@@ -4,6 +4,7 @@
     {
         public override string Idle => "Amarture_VER2|idle";
         public string[] Runs = new string[] {"Amarture_VER2|run.abnormal", "Amarture_VER2|run.abnormal.1" };
+        public override string Sprint => "Amarture_VER2|run.abnormal.1";
         public string RunCrawler = "Amarture_VER2|crawler.run";
         public string IdleCrawler = "Amarture_VER2|crawler.idle";
         public string JumpCrawler = "Amarture_VER2|attack.crawler.jump.0";

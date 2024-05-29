@@ -43,6 +43,7 @@ namespace UI
             string cat = "MapEditor";
             ElementStyle style = new ElementStyle(titleWidth: 0f, themePanel: ThemePanel);
             float dropdownWidth = 100f;
+            float dropdownHeight = 40f;
             Transform group = ElementFactory.CreateHorizontalGroup(SinglePanel, 10f, TextAnchor.MiddleLeft).transform;
 
             // file dropdown
@@ -78,10 +79,10 @@ namespace UI
             _dropdowns.Add(optionsDropdown.GetComponent<DropdownSelectElement>());
 
             // gizmos
-            ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MapEditorSettings", "Keybinds", "AddObject"), onClick: () => OnButtonClick("AddObject"));
-            _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", onClick: () => OnButtonClick("Gizmo"));
-            _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", onClick: () => OnButtonClick("Snap"));
-            ElementFactory.CreateDefaultButton(group, style, "Camera", onClick: () => OnButtonClick("Camera"));
+            ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MapEditorSettings", "Keybinds", "AddObject"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("AddObject"));
+            _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Gizmo"));
+            _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Snap"));
+            ElementFactory.CreateDefaultButton(group, style, "Camera", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Camera"));
         }
 
         public bool IsDropdownOpen()

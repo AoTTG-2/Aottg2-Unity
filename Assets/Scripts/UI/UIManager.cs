@@ -337,7 +337,7 @@ namespace UI
                 NeedResizeText = false;
                 foreach (Text text in CurrentMenu.GetComponentsInChildren<Text>())
                 {
-                    if (text.cachedTextGenerator.characterCountVisible < text.text.Length)
+                    if (text.gameObject.activeSelf && text.fontSize > 2 && text.cachedTextGenerator.characterCountVisible < text.text.Length)
                     {
                         if (NeedResizeTextSecondFrame)
                             text.fontSize = Math.Max(text.fontSize - 1, 1);

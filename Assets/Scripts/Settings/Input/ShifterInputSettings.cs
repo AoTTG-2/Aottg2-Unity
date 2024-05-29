@@ -6,6 +6,6 @@
         public KeybindSetting Attack = new KeybindSetting(new string[] { "Mouse0", "None" });
         public KeybindSetting Jump = new KeybindSetting(new string[] { "Space", "None" });
         public KeybindSetting Kick = new KeybindSetting(new string[] { "LeftControl", "None" });
-        public KeybindSetting Walk = new KeybindSetting(new string[] { "LeftShift", "None" });
+        public KeybindSetting Walk = new KeybindSetting(new string[] { "LeftAlt", "None" });
     }
 }

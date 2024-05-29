@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Utility;
+using ApplicationManagers;
 
 namespace Controllers
 {
@@ -36,6 +37,12 @@ namespace Controllers
             _titan.RockThrow1Speed = 500f;
         }
 
+        protected override void UpdateUI(bool inMenu)
+        {
+            CursorManager.SetCrosshairText(string.Empty);
+            CursorManager.SetCrosshairColor(true);
+        }
+
         protected override void UpdateActionInput(bool inMenu)
         {
             base.UpdateActionInput(inMenu);
@@ -43,6 +50,7 @@ namespace Controllers
                 return;
             _titan.IsWalk = _titanInput.Walk.GetKey();
             _titan.IsSit = _titanInput.Sit.GetKey();
+            _titan.IsSprint = _titanInput.Sprint.GetKey();
             _enemyTimeLeft -= Time.deltaTime;
             if (_titan.CanAction())
             {

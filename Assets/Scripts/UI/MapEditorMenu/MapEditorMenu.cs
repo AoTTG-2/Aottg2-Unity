@@ -20,6 +20,7 @@ namespace UI
         public MapEditorHierarchyPanel HierarchyPanel;
         public MapEditorTopPanel _topPanel;
         public MapEditorAddObjectPopup AddObjectPopup;
+        public MapEditorAddVariantPopup AddVariantPopup;
         public MapEditorTexturePopup TexturePopup;
         public MapEditorCameraPopup CameraPopup;
         public MapEditorInfoPopup InfoPopup;
@@ -47,6 +48,7 @@ namespace UI
         {
             base.SetupPopups();
             AddObjectPopup = ElementFactory.CreateDefaultPopup<MapEditorAddObjectPopup>(transform);
+            AddVariantPopup = ElementFactory.CreateDefaultPopup<MapEditorAddVariantPopup>(transform);
             TexturePopup = ElementFactory.CreateDefaultPopup<MapEditorTexturePopup>(transform);
             ElementFactory.SetAnchor(AddObjectPopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
             ElementFactory.SetAnchor(TexturePopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
@@ -59,6 +61,7 @@ namespace UI
             CustomAssetsPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomAssetPopup>(transform);
             WeatherPopup = ElementFactory.CreateDefaultPopup<MapEditorWeatherPopup>(transform);
             _popups.Add(AddObjectPopup);
+            _popups.Add(AddVariantPopup);
             _popups.Add(TexturePopup);
             _popups.Add(CameraPopup);
             _popups.Add(InfoPopup);

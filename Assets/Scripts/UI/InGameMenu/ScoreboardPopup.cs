@@ -74,7 +74,7 @@ namespace UI
             switch (name)
             {
                 case "Back":
-                    ((InGameMenu)UIManager.CurrentMenu).SetScoreboardMenu(false);
+                    ((InGameMenu)UIManager.CurrentMenu).SetScoreboardMenu(false, true);
                     break;
             }
         }

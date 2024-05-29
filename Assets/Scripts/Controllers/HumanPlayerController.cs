@@ -11,7 +11,6 @@ namespace Controllers
 {
     class HumanPlayerController : BasePlayerController
     {
-        public bool HideCursor;
         protected Human _human;
         protected float _reelOutScrollTimeLeft;
         protected float _reelInScrollCooldownLeft = 0f;
@@ -220,13 +219,6 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            if (!inMenu)
-            {
-                if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
-                    HideCursor = !HideCursor;
-            }
-
-
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
@@ -287,7 +279,7 @@ namespace Controllers
                     if (_humanInput.Jump.GetKeyDown())
                         _human.Jump();
                     else if (_humanInput.HorseMount.GetKeyDown() && _human.Horse != null && _human.MountState == HumanMountState.None &&
-                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f)
+                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f && !_human.HasDirection)
                         _human.MountHorse();
                     else if (_humanInput.Dodge.GetKeyDown())
                     {

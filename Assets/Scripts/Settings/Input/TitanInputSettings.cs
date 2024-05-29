@@ -10,7 +10,8 @@
         public KeybindSetting AttackRockThrow = new KeybindSetting(new string[] { "R", "None" });
         public KeybindSetting Kick = new KeybindSetting(new string[] { "LeftControl", "None" });
         public KeybindSetting Jump = new KeybindSetting(new string[] { "Space", "None" });
-        public KeybindSetting Sit = new KeybindSetting(new string[] { "X", "None" });
-        public KeybindSetting Walk = new KeybindSetting(new string[] { "LeftShift", "None" });
+        public KeybindSetting Sit = new KeybindSetting(new string[] { "Z", "None" });
+        public KeybindSetting Walk = new KeybindSetting(new string[] { "LeftAlt", "None" });
+        public KeybindSetting Sprint = new KeybindSetting(new string[] { "LeftShift", "None" });
     }
 }
