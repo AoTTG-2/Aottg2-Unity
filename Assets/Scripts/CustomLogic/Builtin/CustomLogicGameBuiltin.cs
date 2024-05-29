@@ -232,8 +232,9 @@ namespace CustomLogic
                 return null;
             }
             if (name == "SpawnPlayerAll")
-            {
-                bool force = (bool)parameters[0];
+            {//Zippy: CL spawn error
+                //bool force = (bool)parameters[0]; //Idk this is the old code, seems to cause error
+                bool force = false; //new code for temp fix prolly 
                 if (PhotonNetwork.IsMasterClient)
                     RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new { force });
                 return null;

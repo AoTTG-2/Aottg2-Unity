@@ -11,8 +11,6 @@ namespace CustomLogic
         List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
         private float _lastEnterTime;
 
-        public bool Cannoneer = false;
-
         public void RegisterInstance(CustomLogicComponentInstance classInstance)
         {
             _classInstances.Add(classInstance);
