@@ -600,11 +600,6 @@ namespace UI
             }
             if (SettingsManager.UISettings.ShowKDR.Value)
             {
-                string kills = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills).ToString();
-                string deaths = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths).ToString();
-                string max = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.HighestDamage).ToString();
-                string total = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage).ToString();
-                kdrLine += "KDR: " + string.Join(" / ", new string[] { kills, deaths, max, total }) + "\n";
                 if (SettingsManager.InGameCurrent.Misc.PVP.Value == 0)
                     kdrLine = GetPlayerList();
                 else

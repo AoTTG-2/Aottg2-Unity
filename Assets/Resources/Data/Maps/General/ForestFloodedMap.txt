@@ -254,7 +254,7 @@ Scene,FX/FoliageGenerator2,254,0,1,0,1,0,FoliageGenerator2,-226.3953,84.59486,19
 Scene,FX/FoliageGenerator2,255,0,1,0,1,0,FoliageGenerator2,-312.7801,73.75196,1935.957,1.266688,264.349,12.59351,10,10,10,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/FoliageGenerator2,256,0,1,0,1,0,FoliageGenerator2,-320.5735,90.58949,2010.939,1.266688,264.349,12.59351,10,10,10,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Buildings/Windmill2,257,0,1,1,1,0,Windmill2,221.6416,62.61974,2434.693,2.701173,85.59598,359.7921,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown2,258,0,1,1,1,0,Overgrown2,146.1648,66.92981,2388.295,5.294913,206.8313,2.672534,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1b,258,0,1,1,1,0,Overgrown2,146.1648,66.92981,2388.295,5.294913,206.8313,2.672534,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/FoliageGenerator2,259,0,1,0,1,0,FoliageGenerator2,300.6588,54.50497,2466.385,358.8168,345.8228,355.327,11,11,11,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/FoliageGenerator2,260,0,1,0,1,0,FoliageGenerator2,408.7737,35.23985,2355.775,352.8102,249.326,10.44295,10,10,10,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/FoliageGenerator2,261,0,1,0,1,0,FoliageGenerator2,99.21082,52.8378,2358.27,7.621312,161.1262,1.163056,10,8,8,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
