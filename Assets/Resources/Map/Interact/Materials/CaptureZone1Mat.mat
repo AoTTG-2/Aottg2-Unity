@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _TeamSwitcher
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -84,6 +84,7 @@ Material:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _BumpScale: 1
+    - _Cam_Fade: 75
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0

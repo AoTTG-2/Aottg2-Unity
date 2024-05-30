@@ -4,6 +4,7 @@
     {
         public virtual string Idle => "";
         public virtual string Run => "";
+        public virtual string Sprint => "";
         public virtual string Walk => "";
         public virtual string Jump => "";
         public virtual string Fall => "";

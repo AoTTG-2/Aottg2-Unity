@@ -8,16 +8,37 @@
 					"Name": "Forest"
 				},
 				{
-					"Name": "ForestFlooded"
-				},
-				{
-					"Name": "ForestLava"
+					"Name": "Forest2"
 				},
 				{
 					"Name": "City"
 				},
 				{
-					"Name": "Utgard"
+					"Name": "City2"
+				},
+				{
+					"Name": "Utgard1"
+				},
+				{
+					"Name": "Utgard2"
+				},
+				{
+					"Name": "Cave1"
+				},
+				{
+					"Name": "Lake"
+				},
+				{
+					"Name": "Plaza"
+				},
+				{
+					"Name": "ChessBoard"
+				},
+				{
+					"Name": "ForestFlooded"
+				},
+				{
+					"Name": "ForestLava"
 				},
 				{
 					"Name": "Birth of Levi"
@@ -35,10 +56,26 @@
 					"Name": "Trost"
 				},
 				{
-					"Name": "Dany's Outside"
+					"Name": "Futuristic Forest"
+				}
+			]
+		},
+		{
+			"Name": "Mission",
+			"IncludedModes": ["Map Logic"],
+			"Maps": [
+				{
+					"Name": "Annie",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowShifterSpecials": false
+					}
 				},
 				{
-					"Name": "Futuristic Forest"
+					"Name": "Outside The Walls",
+					"MiscSettings": {
+						"Horses": true
+					}
 				}
 			]
 		},
@@ -52,15 +89,11 @@
 				},
 				{
 					"Category": "General",
-					"Name": "ForestFlooded"
-				},
-				{
-					"Category": "General",
-					"Name": "ForestLava"
-				},
-				{
-					"Category": "General",
 					"Name": "City"
+				},
+				{
+					"Category": "General",
+					"Name": "Cave1"
 				},
 				{
 					"Name": "House"
@@ -193,25 +226,6 @@
 				},
 				{
 					"Name": "Inferno I"
-				}
-			]
-		},
-		{
-			"Name": "Misc",
-			"IncludedModes": ["Map Logic"],
-			"Maps": [
-				{
-					"Name": "Annie",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowShifterSpecials": false
-					}
-				},
-				{
-					"Name": "Outside The Walls",
-					"MiscSettings": {
-						"Horses": true
-					}
 				}
 			]
 		}

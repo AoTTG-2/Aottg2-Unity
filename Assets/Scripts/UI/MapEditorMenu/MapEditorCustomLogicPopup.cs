@@ -68,6 +68,7 @@ namespace UI
                 {
                     _gameManager.MapScript.Logic = _logic.Value;
                     _gameManager.LogicEvaluator = CustomLogicManager.GetEditorEvaluator(_logic.Value);
+                    ((MapEditorMenu)UIManager.CurrentMenu)._topPanel.Save();
                     Hide();
                 }
             }

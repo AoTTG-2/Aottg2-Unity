@@ -1510,12 +1510,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 22404802}
   - {fileID: 22404796}
   - {fileID: 22404790}
   - {fileID: 22404784}
   - {fileID: 22404778}
   - {fileID: 22404772}
+  - {fileID: 22404802}
   - {fileID: 22404766}
   m_Father: {fileID: 22404808}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1584,7 +1584,7 @@ GameObject:
   - component: {fileID: 22204802}
   - component: {fileID: 11404804}
   m_Layer: 5
-  m_Name: TutorialButton
+  m_Name: CreditsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1717,7 +1717,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tutorial
+  m_Text: Credits
 --- !u!1 &104806
 GameObject:
   m_ObjectHideFlags: 0

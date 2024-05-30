@@ -94,17 +94,20 @@ namespace Characters
             else if (choose < 0.5f)
             {
                 IdleOneShot(HorseAnimations.Idle2);
-                PlaySound(HorseSounds.Idle1);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle1);
             }
             else if (choose < 0.75f)
             {
                 IdleOneShot(HorseAnimations.Idle3);
-                PlaySound(HorseSounds.Idle2);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle2);
             }
             else
             {
-                IdleOneShot(HorseAnimations.Crazy);
-                PlaySound(HorseSounds.Idle3);
+                IdleOneShot(HorseAnimations.Crazy); // <--- Me after listening to these sounds for an hour when testing OTW.
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle3);
             }
         }
 
@@ -238,12 +241,14 @@ namespace Characters
             if (Cache.Animation.IsPlaying(HorseAnimations.Run) && Grounded)
             {
                 ToggleDust(true);
-                ToggleSound(HorseSounds.Run, true);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    ToggleSound(HorseSounds.Run, true);
             }
             else
             {
                 ToggleDust(false);
-                ToggleSound(HorseSounds.Run, false);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    ToggleSound(HorseSounds.Run, false);
             }
         }
 

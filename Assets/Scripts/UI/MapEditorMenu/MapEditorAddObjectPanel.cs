@@ -10,6 +10,8 @@ using ApplicationManagers;
 using GameManagers;
 using Map;
 using Utility;
+using Photon.Pun.Demo.Asteroids;
+using UnityEditor.Rendering;
 
 namespace UI
 {
@@ -44,14 +46,25 @@ namespace UI
         {
             if (category == "All")
             {
-                var all = BuiltinMapPrefabs.AllPrefabs.Keys.ToList();
+                var all = GetItemsNoVariants(BuiltinMapPrefabs.AllPrefabs.Keys.ToList());
                 all.AddRange(AssetBundleManager.GetAssetList());
                 return all;
             }
             else if (category == "Custom")
                 return AssetBundleManager.GetAssetList();
             else
-                return BuiltinMapPrefabs.PrefabCategories[category].Select(x => x.Name).ToList();
+                return GetItemsNoVariants(BuiltinMapPrefabs.PrefabCategories[category].Select(x => x.Name).ToList());
+        }
+
+        protected List<string> GetItemsNoVariants(List<string> items)
+        {
+            var result = new List<string>();
+            foreach (var item in items)
+            {
+                if (!BuiltinMapPrefabs.VariantToBasePrefab.ContainsKey(item))
+                    result.Add(item);
+            }
+            return result;
         }
 
         protected List<string> Filter(List<string> original, string search)
@@ -95,8 +108,16 @@ namespace UI
 
         protected virtual void OnSelectObject(string name)
         {
-            ((MapEditorGameManager)SceneLoader.CurrentGameManager).AddObject(name);
-            Parent.Hide();
+            if (BuiltinMapPrefabs.PrefabVariants.ContainsKey(name))
+            {
+                ((MapEditorMenu)UIManager.CurrentMenu).AddVariantPopup.Show(name);
+                Parent.Hide();
+            }
+            else
+            {
+                ((MapEditorGameManager)SceneLoader.CurrentGameManager).AddObject(name);
+                Parent.Hide();
+            }
         }
     }
 }

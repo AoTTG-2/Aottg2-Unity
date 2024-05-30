@@ -61,6 +61,7 @@
 		"Intro.SingleplayerButton": "Singleplayer",
 		"Intro.MultiplayerButton": "Multiplayer",
 		"Intro.ToolsButton": "Tools",
+		"Intro.CreditsButton": "Credits",
 		"LeaderboardPopup.Title": "Leaderboard",
 		"MultiplayerMapPopup.Title": "Multiplayer",
 		"MultiplayerMapPopup.ServerButton": "Server",
@@ -90,7 +91,6 @@
 		"TutorialPopup.BasicButton": "Basic",
 		"TutorialPopup.AdvancedButton": "Advanced",
 		"AboutPopup.Changelog": "Changelog",
-		"AboutPopup.Credits": "Credits",
 		"AboutPopup.Help": "Help"
 	},
 	"CreateGamePopup": {
@@ -225,6 +225,7 @@
 		"Sound.OldHookEffect": "Old hook sound",
 		"Sound.OldBladeEffect": "Old blade sound",
 		"Sound.OldNapeEffect": "Old nape sound",
+		"Sound.HorseSoundEffect": "Horse sound effects",
 		"Sound.ForcePlaylist": "Force playlist",
 		"Sound.CurrentSong": "Current song",
 		"Sound.CustomPlaylist": "Custom playlist",
@@ -362,6 +363,7 @@
 		"Keybinds.Titan.Jump": "Jump",
 		"Keybinds.Titan.Sit": "Sit",
 		"Keybinds.Titan.Walk": "Walk",
+		"Keybinds.Titan.Sprint": "Sprint",
 		"Keybinds.Shifter.Attack": "Normal attack",
 		"Keybinds.Shifter.Special": "Special attack",
 		"Keybinds.Shifter.Kick": "Kick",

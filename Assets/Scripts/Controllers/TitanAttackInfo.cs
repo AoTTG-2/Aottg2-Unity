@@ -47,14 +47,10 @@ namespace Characters
 
         public bool CheckSmartAttack(Transform titan, Vector3 worldPosition, Vector3 velocity, float attackSpeed, float size)
         {
-            int count = 0;
             foreach (var keyframe in Keyframes)
             {
-                count++;
                 if (keyframe.CheckCollision(titan, worldPosition, velocity, attackSpeed, size))
                     return true;
-                if (count >= 10)
-                    return false;
             }
             return false;
         }
