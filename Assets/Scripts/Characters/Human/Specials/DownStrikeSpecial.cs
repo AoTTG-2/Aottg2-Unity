@@ -52,7 +52,7 @@ namespace Characters
 
         public override bool CanUse()
         {
-            return base.CanUse();
+            return base.CanUse() && _human.CanBladeAttack();
         }
     }
 }

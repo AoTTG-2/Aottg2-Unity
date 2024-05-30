@@ -16,7 +16,7 @@ namespace Characters
 
         public override bool CanUse()
         {
-            return base.CanUse() && _human.CanBladeAttack();
+            return base.CanUse();
         }
 
         protected override void Deactivate()
