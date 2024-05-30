@@ -265,7 +265,7 @@ namespace Controllers
                 bool canSpecial = _human.MountState == HumanMountState.None &&
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab) && _human.CarryState != HumanCarryState.Carry
                     && _human.State != HumanState.EmoteAction && _human.State != HumanState.Attack && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
-                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Attack &&
+                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.State != HumanState.Attack &&
                     _human.State != HumanState.EmoteAction && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry && !inMenu && !_human.Dead;
                 if (canSpecial || canSpecialHold)
                     _human.Special.ReadInput(specialInput);
