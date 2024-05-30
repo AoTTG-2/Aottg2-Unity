@@ -16,14 +16,22 @@ namespace Characters
         protected override void Activate()
         {
             _needActivate = true;
+            _human.HookLeft.DisableAnyHook();
+            _human.HookRight.DisableAnyHook();
+            _human.CancelHookLeftKey = true;
+            _human.CancelHookRightKey = true;
+            _human.CancelHookBothKey = true;
             _human.StartSpecialAttack(HumanAnimations.SpecialMikasa1);
         }
 
         protected override void ActiveFixedUpdate()
         {
             base.ActiveFixedUpdate();
+            bool firstFrame = _needActivate;
             if (_needActivate)
             {
+                // Impulse force allows people to use this to quickly stop their momentum
+                _human.Cache.Rigidbody.AddForce(Vector3.up * 10f, ForceMode.Impulse);
                 _needActivate = false;
                 _human.Cache.Rigidbody.velocity = Vector3.zero;
                 _human.ActivateBlades();
@@ -33,9 +41,9 @@ namespace Characters
                     _human.PlaySound(HumanSounds.BladeSwing4);
             }
 
-            _human.Cache.Rigidbody.AddForce(Vector3.down * 10f, ForceMode.VelocityChange);
+            _human.Cache.Rigidbody.AddForce(Vector3.down * 3f, ForceMode.VelocityChange);
 
-            if (_human.Grounded || _human.HookLeft.IsActive || _human.HookRight.IsActive)
+            if ((!firstFrame && _human.Grounded) || _human.HookLeft.IsActive || _human.HookRight.IsActive)
             {
                 IsActive = false;
                 Deactivate();
@@ -44,7 +52,7 @@ namespace Characters
 
         public override bool CanUse()
         {
-            return base.CanUse() && !_human.Grounded && !_human.HookLeft.IsActive && !_human.HookRight.IsActive;
+            return base.CanUse();
         }
     }
 }
