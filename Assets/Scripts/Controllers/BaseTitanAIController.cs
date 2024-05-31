@@ -48,9 +48,9 @@ namespace Controllers
 
         // pathing
         private readonly int _sampleRayCount = 6;
-        private readonly float _sampleRayRange = 270f;
+        private readonly float _sampleRayRange = 120f;
         private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 4f;
+        private readonly float _collisionWeight = 140f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
         private bool _useCollisionAvoidance = true;
