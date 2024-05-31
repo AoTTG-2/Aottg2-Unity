@@ -48,9 +48,9 @@ namespace Controllers
 
         // pathing
         private readonly int _sampleRayCount = 6;
-        private readonly float _sampleRayRange = 120f;
+        private readonly float _sampleRayRange = 270f;
         private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 140f;
+        private readonly float _collisionWeight = 4f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
         private bool _useCollisionAvoidance = true;
@@ -246,12 +246,12 @@ namespace Controllers
                                 _moveAngle = 0f;
                                 _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                                 _titan.Turn(_titan.GetTargetDirection());
-                                //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.black);
+                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.black);
                             }
                             else
                             {
                                 MoveToEnemy(true);
-                                //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.white);
+                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.white);
                             }
                                 
                         }
@@ -273,12 +273,12 @@ namespace Controllers
                         else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false)
                         {
                             _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, true);
-                            // Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.magenta);
+                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.magenta);
                         }
                         else
                         {
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
+                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
                         }
                     }
                 }
@@ -307,7 +307,7 @@ namespace Controllers
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                             _titan.Turn(_titan.GetTargetDirection());
-                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.red);
+                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.red);
                         }
                         else
                         {
@@ -359,7 +359,7 @@ namespace Controllers
         {
             var goalDirection = target - _titan.Cache.Transform.position;
             var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
-            //bool col = false;
+            bool col = false;
             if (avoidCollisions && _useCollisionAvoidance)
             {
                 if (IsHeadingForCollision())
@@ -376,10 +376,10 @@ namespace Controllers
             if (_useCollisionAvoidance == true)
                 result = Mathf.LerpAngle(_titan.TargetAngle, result, Time.fixedDeltaTime);
 
-            /*if (col)
+            if (col)
                 Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.magenta);
             else
-                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);*/
+                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);
 
             return result;
         }
@@ -393,16 +393,16 @@ namespace Controllers
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
             if (Physics.CheckSphere(start, colliderRadius, mask))
             {
-                //Debug.DrawRay(start, _titan.Cache.Transform.forward * colliderRadius, Color.red, 1);
+                Debug.DrawRay(start, _titan.Cache.Transform.forward * colliderRadius, Color.red, 1);
                 return true;
             }
             else if (Physics.SphereCast(start, colliderRadius, _titan.Cache.Transform.forward, out hit, _collisionDetectionDistance, mask))
             {
                 // display the ray
-                //Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
+                Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
                 return true;
             }
-            //Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
+            Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
             return false;
         }
 
@@ -423,13 +423,13 @@ namespace Controllers
             RaycastHit hit;
             var direction = target - start;
 
-            if (direction.magnitude > 100)
+            if (direction.magnitude > 1000)
                 return false;
 
             direction = direction.normalized;
 
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.Human);
-            if (Physics.Raycast(start, direction, out hit, 100, mask))
+            if (Physics.Raycast(start, direction, out hit, 1000, mask))
             {
                 if (hit.collider.gameObject.layer == PhysicsLayer.Human)
                 {
@@ -502,13 +502,13 @@ namespace Controllers
                     }
 
                     // Draw the ray to the hit point
-                    //Debug.DrawRay(start, rayDirection * hit.distance, Color.red);
+                    Debug.DrawRay(start, rayDirection * hit.distance, Color.red);
 
                 }
                 else
                 {
                     Vector3 rayActualDirection = (start + rayDirection.normalized * _collisionAvoidDistance) - colliderCenter;
-                    //Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
+                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
                     return rayActualDirection;
                 }
             }
