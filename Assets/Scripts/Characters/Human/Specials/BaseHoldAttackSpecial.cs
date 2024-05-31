@@ -8,10 +8,31 @@ namespace Characters
     {
         protected Human _human;
         protected override float ActiveTime => Mathf.Infinity;
+        protected bool _keyIsReset = true;
 
         public BaseHoldAttackSpecial(BaseCharacter owner) : base(owner)
         {
             _human = (Human)owner;
+        }
+
+        public override void SetInput(bool key)
+        {
+            if (key)
+            {
+                if (!IsActive && CanUse() && _keyIsReset)
+                {
+                    IsActive = true;
+                    _activeTimeLeft = ActiveTime;
+                    Activate();
+                    OnUse();
+                }
+            }
+            else if (IsActive)
+            {
+                IsActive = false;
+                Deactivate();
+            }
+            _keyIsReset = !key;
         }
 
         public override bool CanUse()

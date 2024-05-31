@@ -66,7 +66,7 @@ namespace Controllers
             {
                 if (_human.Grounded && _human.State != HumanState.Idle)
                     return;
-                if (!_human.Grounded && (_human.State == HumanState.EmoteAction || _human.State == HumanState.SpecialAttack ||
+                if (!_human.Grounded && (_human.State == HumanState.EmoteAction || (_human.State == HumanState.SpecialAttack && _human.Special is not DownStrikeSpecial && _human.Special is not StockSpecial) ||
                     _human.Cache.Animation.IsPlaying("dash") || _human.Cache.Animation.IsPlaying("jump") || _human.IsFiringThunderspear()))
                     return;
             }
@@ -265,7 +265,7 @@ namespace Controllers
                 bool canSpecial = _human.MountState == HumanMountState.None &&
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab) && _human.CarryState != HumanCarryState.Carry
                     && _human.State != HumanState.EmoteAction && _human.State != HumanState.Attack && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
-                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.State != HumanState.Attack &&
+                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && (_human.State != HumanState.Attack || _human.Special is StockSpecial) &&
                     _human.State != HumanState.EmoteAction && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry && !inMenu && !_human.Dead;
                 if (canSpecial || canSpecialHold)
                     _human.Special.ReadInput(specialInput);
