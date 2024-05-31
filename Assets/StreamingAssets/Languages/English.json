@@ -566,8 +566,8 @@
 	"OutsideTheWalls": {
 		"Dialogue.Start": "Before we can leave, we need to secure the city. Clear out the titans and recapture the gate!",
 		"Dialogue.PointCaptured": "Great work. Advance to the next point!",
-		"Dialogue.TownCaptured": "(TODO) Advance to the next point!",
-		"Dialogue.PointCapturedTitansRemain": "(TODO) Clear out the remaining titans and advance to the next point!",
+		"Dialogue.TownCaptured": "Advance to the next point!",
+		"Dialogue.PointCapturedTitansRemain": "Clear out the remaining titans and advance to the next point!",
 		"Dialogue.TownCapturedTitansRemain": "We've secured the town! Clear out the remaining titans so we can advance!",
 		"Dialogue.BeforeAnnie1": "Get rid of the Female Titan and all titans she's attracted to us!",
 		"Dialogue.AfterAnnie1": "The Female Titan's escaped! Defeat the leftover titans!",

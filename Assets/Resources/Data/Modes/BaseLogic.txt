@@ -1029,15 +1029,13 @@ component CaptureZone
     Order = 0;
     SupplyStationID = "";
     SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
-
     ShowUI = true;
     UIVisibilityRange = 80.0;
-    StartOwner = "null";
+    CurrentOwner = "null";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
     _lastState = "Captured";
-    CurrentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
