@@ -1345,7 +1345,7 @@ class EventController
             townSpawn = 4;
             TownWaveMin = 3;
             TownWaveMax = 4;
-            townSpawnTime = 10;
+            townSpawnTime = 15;
             townMaxTitans = 10;
             femaleTitanHealth = 3500;
             forestSpawnCount = 20;
@@ -1356,7 +1356,7 @@ class EventController
             townSpawn = 5;
             TownWaveMin = 5;
             TownWaveMax = 8;
-            townSpawnTime = 5;
+            townSpawnTime = 10;
             townMaxTitans = 15;
             femaleTitanHealth = 3500;
             forestSpawnCount = 25;
