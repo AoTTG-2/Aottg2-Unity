@@ -365,7 +365,7 @@ namespace Controllers
                 if (IsHeadingForCollision())
                 {
                     //col = true;
-                    _moveAngle = 0; // Random.Range(-10f, 10f);
+                    _moveAngle = Random.Range(-10f, 10f);
                     resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
                 }
             }
