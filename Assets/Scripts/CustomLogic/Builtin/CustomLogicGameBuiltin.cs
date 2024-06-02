@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
@@ -6,6 +6,7 @@ using Photon.Pun;
 using Projectiles;
 using Settings;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -46,6 +47,24 @@ namespace CustomLogic
                     message = parameters[0].ToString();
                 ChatManager.SendChatAll(message, ChatTextColor.System);
                 return null;
+            }
+            if (name == "GetGeneralSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.General.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetTitanSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Titan.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetMiscSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Misc.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
             }
             if (name == "End")
             {
@@ -275,6 +294,15 @@ namespace CustomLogic
                 CustomLogicManager.Evaluator.HasSetMusic = true;
                 return null;
             }
+            if (name == "DrawRay")
+            {
+                Vector3 start = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                Vector3 dir = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Color color = ((CustomLogicColorBuiltin)parameters[2]).Value.ToColor();
+                float duration = parameters[3].UnboxToFloat();
+                Debug.DrawRay(start, dir, color, duration);
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 
@@ -283,8 +311,6 @@ namespace CustomLogic
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (name == "IsEnding")
                 return gameManager.IsEnding;
-            if (name == "PVP")
-                return SettingsManager.InGameCurrent.Misc.PVP.Value;
             if (name == "EndTimeLeft")
                 return gameManager.EndTimeLeft;
             if (name == "Titans")
@@ -376,6 +402,25 @@ namespace CustomLogic
                         list.List.Add(new CustomLogicHumanBuiltin(human));
                 }
                 return list;
+            }
+            if (name == "Loadouts")
+            {
+                var miscSettings = SettingsManager.InGameCurrent.Misc;
+                List<string> loadouts = new List<string>();
+                if (miscSettings.AllowBlades.Value)
+                    loadouts.Add(HumanLoadout.Blades);
+                if (miscSettings.AllowAHSS.Value)
+                    loadouts.Add(HumanLoadout.AHSS);
+                if (miscSettings.AllowAPG.Value)
+                    loadouts.Add(HumanLoadout.APG);
+                if (miscSettings.AllowThunderspears.Value)
+                    loadouts.Add(HumanLoadout.Thunderspears);
+                if (loadouts.Count == 0)
+                    loadouts.Add(HumanLoadout.Blades);
+
+                var result = new CustomLogicListBuiltin();
+                result.List = loadouts.ConvertAll(x => (object)x);
+                return result;
             }
             return base.GetField(name);
         }

@@ -45,7 +45,7 @@ class Main
 		{
 			Game.SpawnPlayer(Network.MyPlayer, false);
 		}
-		if (Game.PVP == 2)
+		if (Game.GetMiscSetting("PVP") == 2)
 		{
 			redKills = 0;
 			blueKills = 0;
