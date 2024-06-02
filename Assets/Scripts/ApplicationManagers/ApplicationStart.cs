@@ -41,6 +41,7 @@ namespace ApplicationManagers
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
             DebugConsole.Init();
             ApplicationConfig.Init();
             AnticheatManager.Init();
