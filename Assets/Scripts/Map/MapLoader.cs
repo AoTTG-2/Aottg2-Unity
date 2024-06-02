@@ -1,9 +1,11 @@
 ﻿using ApplicationManagers;
 using Events;
+using Photon.Pun;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.AI.Navigation;
 using UnityEngine;
 using Utility;
 using Weather;
@@ -29,6 +31,7 @@ namespace Map
         public static bool HasWeather;
         public static WeatherSet Weather;
         private static GameObject _background;
+        private List<NavMeshSurface> _navMeshSurfaces;
 
         public static void Init()
         {
@@ -231,7 +234,73 @@ namespace Map
             }
             if (!editor)
                 Batch();
+
+            // if _navMeshSurfaces is not null, destroy all the navmeshsurfaces
+            if (_navMeshSurfaces != null)
+            {
+                foreach (NavMeshSurface nms in _navMeshSurfaces)
+                {
+                    if (nms != null)
+                        Destroy(nms.gameObject);
+                }
+            }
+
+            if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
+                GenerateNavMesh();
+
             MapManager.MapLoaded = true;
+        }
+
+        private void GenerateNavMesh()
+        {
+            // Create a new navmeshsurface object and add it to the list
+            _navMeshSurfaces = new List<NavMeshSurface>();
+
+            // Get the titan sizes from the settings
+            float titanMinSize = 0.1f;
+            float titanMaxSize = 3f;
+            if (SettingsManager.InGameCurrent.Titan.TitanSizeEnabled.Value)
+            {
+                titanMinSize = SettingsManager.InGameCurrent.Titan.TitanSizeMin.Value;
+                titanMaxSize = SettingsManager.InGameCurrent.Titan.TitanSizeMax.Value;
+            }
+
+            // Convert that to capsule information for agent
+            float colliderRadius = 3.5f;
+            float colliderHeight = 18f;
+
+            // Create a new navmeshsurface object
+            GameObject navMeshSurfaceObject = new GameObject($"NavMeshSurface{0}");
+            navMeshSurfaceObject.transform.SetParent(transform);
+
+            // Add the navmeshsurface component to the object
+            NavMeshSurface navMeshSurface = navMeshSurfaceObject.AddComponent<NavMeshSurface>();
+
+            // Define the agnent size
+            // create a int agent id for each size
+            navMeshSurface.agentTypeID = 0;
+
+            // Create an agent for this surface given the size of the titan times the collider information
+            navMeshSurface.layerMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            navMeshSurface.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+            navMeshSurface.collectObjects = CollectObjects.All;
+            navMeshSurface.defaultArea = 0;
+            navMeshSurface.ignoreNavMeshAgent = true;
+            navMeshSurface.ignoreNavMeshObstacle = true;
+            navMeshSurface.overrideTileSize = true;
+            navMeshSurface.tileSize = 256;
+            navMeshSurface.overrideVoxelSize = true;
+            navMeshSurface.voxelSize = 2.4f;
+            navMeshSurface.minRegionArea = 2;
+            navMeshSurface.BuildNavMesh();
+            _navMeshSurfaces.Add(navMeshSurface);
+
+            /*// For each 1f in the titan size, add a new navmeshsurface
+            int agentId = 0;
+            for (float i = titanMinSize; i <= titanMaxSize; i += 1f)
+            {
+                
+            }*/
         }
 
         private void Batch()
