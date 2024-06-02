@@ -2541,7 +2541,7 @@ namespace Characters
             }
         }
 
-        private void ContinueAnimation()
+        public void ContinueAnimation()
         {
             if (!_animationStopped)
                 return;
@@ -2564,7 +2564,7 @@ namespace Characters
                 PlayAnimation(animationName);
         }
 
-        private void PauseAnimation()
+        public void PauseAnimation()
         {
             if (_animationStopped)
                 return;
