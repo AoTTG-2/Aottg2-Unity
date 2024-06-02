@@ -452,6 +452,9 @@
 		"Info": {"Type": "Scene", "AssetPrefix": "FX/", "AssetSameAsName": true},
 		"Prefabs": [
 			{"Name": "AshArea1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "AuroraFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "AuroraFX1a", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "AuroraFX1"},
+			{"Name": "AuroraFX1b", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "AuroraFX1"},
 			{"Name": "BGCannon1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "BirdsFX1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Blood1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
