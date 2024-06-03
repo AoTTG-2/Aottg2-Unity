@@ -1,9 +1,39 @@
 fileFormatVersion: 2
-guid: 8824f5022bd532143a5d67872222841c
+guid: 095b7aa70b0ad164cb636c76edc858e9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #110
+    second: {fileID: 2100000, guid: f43d1db846ef2c24595648311b189ef6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #111
+    second: {fileID: 2100000, guid: b54aebc600f5bb240a134dfae0cb7c7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material #112
+    second: {fileID: 2100000, guid: e81ffe2965d60314e92d1c5645ee2f40, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: untitled_Material__105
+    second: {fileID: 2100000, guid: 1c9b9997c5ed6f74699312192a78465f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: untitled_None
+    second: {fileID: 2100000, guid: 2bf6009e92f0d7d44bb8577d2f032a31, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: untitled_Skin
+    second: {fileID: 2100000, guid: 4aa14fd3d9e56ef45a240328af010572, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -76,7 +106,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 0
+  importAnimation: 1
   humanDescription:
     serializedVersion: 3
     human: []
