@@ -432,7 +432,6 @@ MonoBehaviour:
   RotateSpeed: 0
   TurnSpeed: 0
   _stateTimeLeft: 0
-  _titanObstacle: {fileID: 0}
   IsCrawler: 0
   Setup: {fileID: 0}
   _oldHeadRotation: {x: 0, y: 0, z: 0, w: 0}

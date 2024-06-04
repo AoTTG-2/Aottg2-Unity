@@ -82,9 +82,6 @@ namespace Characters
         protected Dictionary<string, float> _rootMotionAnimations = new Dictionary<string, float>();
         public Dictionary<string, string> AttackAnimations = new Dictionary<string, string>();
 
-        // Nav
-        public NavMeshObstacle _titanObstacle;
-
         public virtual void Init(bool ai, string team, JSONNode data)
         {
             base.Init(ai, team);
@@ -429,14 +426,6 @@ namespace Characters
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
             SetAnimationUpdateMode(false);
-            // add navmesh obstacle
-            _titanObstacle = gameObject.AddComponent<NavMeshObstacle>();
-            var collider = GetComponent<CapsuleCollider>();
-            // size obstacle to match collider
-            _titanObstacle.shape = NavMeshObstacleShape.Capsule;
-            _titanObstacle.center = collider.center;
-            _titanObstacle.radius = collider.radius;
-            _titanObstacle.height = collider.height;
         }
 
         protected override void CreateCache(BaseComponentCache cache)

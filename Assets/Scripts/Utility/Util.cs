@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Globalization;
+using UnityEngine.AI;
+using System.Collections.Specialized;
 
 namespace Utility
 {
@@ -305,5 +307,34 @@ namespace Utility
         
         public static Quaternion ConstrainedToZ(Quaternion rotation) =>
             Quaternion.Euler(0f, 0f,  rotation.eulerAngles.z);
+
+        public static int GetNavMeshAgentIDBySize(float size)
+        {
+            List<float> titanSizes = new List<float>() { 0.1f, 1f, 2f, 3f };
+            List<string> titanNames = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
+
+            // determine the size to use based on if the size is greater than the current size but less than the next
+            string name = "minTitan";
+            for (int i = 0; i < titanSizes.Count; i++)
+            {
+                if (size > titanSizes[i])
+                    name = titanNames[i];
+            }
+
+            return GetNavMeshAgentID(name) ?? 0;
+        }
+
+        public static int? GetNavMeshAgentID(string name)
+        {
+            for (int i = 0; i < NavMesh.GetSettingsCount(); i++)
+            {
+                NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(index: i);
+                if (name == NavMesh.GetSettingsNameFromID(agentTypeID: settings.agentTypeID))
+                {
+                    return settings.agentTypeID;
+                }
+            }
+            return null;
+        }
     }
 }
