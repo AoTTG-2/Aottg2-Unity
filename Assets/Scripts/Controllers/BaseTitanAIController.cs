@@ -55,7 +55,7 @@ namespace Controllers
         private readonly float _collisionWeight = 10f;
         private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
         private float _collisionDetectionDistance => this._attackRange * 2;
-        private bool _useCollisionAvoidance = true;
+        private bool _usePathfinding = true;
 
         private NavMeshAgent _agent;
 
@@ -64,25 +64,28 @@ namespace Controllers
             base.Awake();
             _titan = GetComponent<BaseTitan>();
             _mainCollider = _titan.GetComponent<CapsuleCollider>();
-            _useCollisionAvoidance = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
 
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+            if (_usePathfinding)
             {
-                _titan.Cache.Transform.position = hit.position;
-            }
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _titan.Cache.Transform.position = hit.position;
+                }
 
-            // Add the navmesh agent
-            _agent = gameObject.AddComponent<NavMeshAgent>();
-            _agent.agentTypeID = Util.GetNavMeshAgentIDBySize(_titan.Size);
-            _agent.speed = _titan.GetCurrentSpeed();
-            _agent.angularSpeed = 10;
-            _agent.acceleration = 10;
-            _agent.autoRepath = true;
-            _agent.radius = _mainCollider.radius * _titan.Cache.Transform.localScale.x;
-            _agent.height = _mainCollider.height * _titan.Cache.Transform.localScale.y;
-            _agent.updatePosition = false;
-            _agent.updateRotation = false;
+                // Add the navmesh agent
+                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent.agentTypeID = Util.GetNavMeshAgentIDBySize(_titan.Size);
+                _agent.speed = _titan.GetCurrentSpeed();
+                _agent.angularSpeed = 10;
+                _agent.acceleration = 10;
+                _agent.autoRepath = true;
+                _agent.radius = _mainCollider.radius * _titan.Cache.Transform.localScale.x;
+                _agent.height = _mainCollider.height * _titan.Cache.Transform.localScale.y;
+                _agent.updatePosition = false;
+                _agent.updateRotation = false;
+            }
         }
 
         protected override void Start()
@@ -204,7 +207,7 @@ namespace Controllers
                         _enemy = null;
                 }
 
-                if (_enemy != null)
+                if (_enemy != null && _usePathfinding)
                     if (_agent.isOnNavMesh)
                         _agent.SetDestination(_enemy.Cache.Transform.position);
                 _focusTimeLeft = FocusTime;
@@ -300,7 +303,7 @@ namespace Controllers
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);                            
-                        else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false)
+                        else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false && _usePathfinding)
                         {
                             _titan.TargetAngle = GetMoveToAngle2(_enemy.Cache.Transform.position, true);
                         }
@@ -457,9 +460,9 @@ namespace Controllers
 
         protected bool HasClearLineOfSight(Vector3 target)
         {
-            if (_useCollisionAvoidance == false)
+            if (_usePathfinding == false)
                 return true;
-                
+
             float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 0.5f;
             var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
             var left = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * -1 * colliderRadius;
@@ -547,7 +550,7 @@ namespace Controllers
                 _moveAngle = Random.Range(-45f, 45f);
             else
                 _moveAngle = 0f;
-            if (SettingsManager.InGameUI.Titan.TitanSmartMovement.Value)
+            if (_usePathfinding)
                 _titan.TargetAngle = GetMoveToAngle2(_enemy.Cache.Transform.position, avoidCollisions);
             else
                 _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions);
@@ -561,7 +564,7 @@ namespace Controllers
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
-            if (SettingsManager.InGameUI.Titan.TitanSmartMovement.Value)
+            if (_usePathfinding)
                 _titan.TargetAngle = GetMoveToAngle2(_moveToPosition, avoidCollisions);
             else
                 _titan.TargetAngle = GetMoveToAngle(_moveToPosition, avoidCollisions);

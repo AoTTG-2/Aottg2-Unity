@@ -258,16 +258,6 @@ namespace Map
         {
             // Create a new navmeshsurface object and add it to the list
             _navMeshSurfaces = new List<NavMeshSurface>();
-
-            // Get the titan sizes from the settings
-            float titanMinSize = 0.1f;
-            float titanMaxSize = 3f;
-            if (SettingsManager.InGameCurrent.Titan.TitanSizeEnabled.Value)
-            {
-                titanMinSize = SettingsManager.InGameCurrent.Titan.TitanSizeMin.Value;
-                titanMaxSize = SettingsManager.InGameCurrent.Titan.TitanSizeMax.Value;
-            }
-
             List<string> titanSizes = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
 
             // For each size, create a new navmeshsurface
