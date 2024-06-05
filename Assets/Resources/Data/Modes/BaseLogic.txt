@@ -1028,10 +1028,9 @@ component CaptureZone
     DecaySpeed = 1.0;
     Order = 0;
     SupplyStationID = "";
-    SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
     ShowUI = true;
     UIVisibilityRange = 80.0;
-    CurrentOwner = "null";
+    CurrentOwnerOfPoint = "Neutral";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
@@ -1107,9 +1106,9 @@ component CaptureZone
     }
 
     # Getters
-    function GetCurrentOwner()
+    function GetCurrentOwnerOfPoint()
     {
-        return self.CurrentOwner;
+        return self.CurrentOwnerOfPoint;
     }
 
     function GetCaptureProgress()
@@ -1153,18 +1152,18 @@ component CaptureZone
         color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-            color = self.GetTeamColor(self.CurrentOwner);
+            color = self.GetTeamColor(self.CurrentOwnerOfPoint);
             
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
-            ownerColor = self.GetTeamColor(self.CurrentOwner);
+            ownerColor = self.GetTeamColor(self.CurrentOwnerOfPoint);
             color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-            color = self.GetTeamColor(self.CurrentOwner);
+            color = self.GetTeamColor(self.CurrentOwnerOfPoint);
 		}
         self.ChangeColorAll(color);
 	}
@@ -1180,8 +1179,30 @@ component CaptureZone
         # Message will be state, owner, capturer, and progress
         data = Json.LoadFromString(message);
 
+        # If current owner changes,
+        # if current owner was you, play PointLose sound
+        # if current owner was someone else and new owner is you, play PointCapture sound
+
+        newOwner = data.Get("owner");
+        myTeam = Network.MyPlayer.Team;
+
+        if (self.CurrentOwnerOfPoint == myTeam && newOwner != myTeam)
+        {
+            self.MapObject.GetTransform("PointLoss").PlaySound();
+        }
+        elif (self.CurrentOwnerOfPoint != myTeam && newOwner == myTeam)
+        {
+            Game.Print("Playing Sound");
+            self.MapObject.GetTransform("PointCapture").PlaySound();
+        }
+        elif (self._currentCapturer == myTeam && self._captureProgress < data.Get("progress"))
+        {
+            self.MapObject.GetTransform("PointProgress").PlaySound();
+        }
+
+
         self._state = data.Get("state");
-        self.CurrentOwner = data.Get("owner");
+        self.CurrentOwnerOfPoint = data.Get("owner");
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
@@ -1194,7 +1215,7 @@ component CaptureZone
     {
         message = Dict();
         message.Set("state", self._state);
-        message.Set("owner", self.CurrentOwner);
+        message.Set("owner", self.CurrentOwnerOfPoint);
         message.Set("capturer", self._currentCapturer);
         message.Set("progress", self._captureProgress);
         message.Set("enabled", self.Enabled);
@@ -1207,7 +1228,7 @@ component CaptureZone
     {
         message = Dict();
         message.Set("state", self._state);
-        message.Set("owner", self.CurrentOwner);
+        message.Set("owner", self.CurrentOwnerOfPoint);
         message.Set("capturer", self._currentCapturer);
         message.Set("progress", self._captureProgress);
         message.Set("enabled", self.Enabled);
@@ -1220,7 +1241,7 @@ component CaptureZone
     {
         if (self._state == "Captured")
         {
-            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self.CurrentOwner) == false)
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self.CurrentOwnerOfPoint) == false)
             {
                 self._state = "Capturing";
                 self._currentCapturer = self._teamsInZone.Keys.Get(0);
@@ -1241,7 +1262,7 @@ component CaptureZone
                 if (self._captureProgress >= self.CaptureTime)
                 {
                     self._state = "Captured";
-                    self.CurrentOwner = self._currentCapturer;
+                    self.CurrentOwnerOfPoint = self._currentCapturer;
                     self._currentCapturer = "null";
                     self._captureProgress = 0.0;
                 }
@@ -1304,6 +1325,10 @@ component CaptureZone
     # UI Helpers
     function GetTeamHex(team)
     {
+        if (team == null)
+        {
+            return "#FFFFFF";
+        }
         color = self.GetTeamColor(team);
         teamColor = Color(color.R, color.G, color.B, 255);
         return "#" + teamColor.ToHexString();
@@ -1362,10 +1387,10 @@ component CaptureZone
 		    {
                 if (self._state == "Captured")
                 {
-                    if (self._lastOwner != self.CurrentOwner)
+                    if (self._lastOwner != self.CurrentOwnerOfPoint)
                     {
-                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
-                        self._lastOwner = self.CurrentOwner;
+                        self._callbackReceiver.OnCaptured(self, self.CurrentOwnerOfPoint);
+                        self._lastOwner = self.CurrentOwnerOfPoint;
                     }
                 }
                 elif (self._state == "Capturing")
@@ -1382,7 +1407,7 @@ component CaptureZone
 		
 		if (self._state == "Captured")
         {
-            if (self.CurrentOwner == "Human")
+            if (self.CurrentOwnerOfPoint == "Human")
             {
                 if (self._hasSupplyStation && !self._isSupplyStationActive)
                 {
@@ -1418,7 +1443,7 @@ component CaptureZone
 		}
         self._isViewing = true;
 
-        owner = self.CurrentOwner;
+        owner = self.CurrentOwnerOfPoint;
         if (owner == "null")
         {
             owner = "Neutral";
@@ -2708,6 +2733,16 @@ component WallGateA1
     {
         self._open = !self._open;
         self._moving = true;
+
+        # if opening, play Open sound effect, otherwise play Close sound effect
+        if (self._open)
+        {
+            self.MapObject.GetTransform("GateOpen").PlaySound();
+        }
+        else
+        {
+            self.MapObject.GetTransform("GateClose").PlaySound();
+        }
     }
 
     function SetState(state)
@@ -2717,6 +2752,16 @@ component WallGateA1
         {
             self._open = isOpen;
             self._moving = true;
+
+            if (self._open)
+            {
+                self.MapObject.GetTransform("GateOpen").PlaySound();
+            }
+            else
+            {
+                self.MapObject.GetTransform("GateClose").PlaySound();
+            }
+
         }
     }
 

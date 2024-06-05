@@ -17,6 +17,7 @@ namespace Map
         public static bool MapLoaded;
         public static MapScript MapScript;
         private static MapManager _instance;
+        public static bool NeedsNavMeshUpdate = true;
 
         public static void Init()
         {
@@ -181,6 +182,7 @@ namespace Map
 
         public static void LoadMap()
         {
+            NeedsNavMeshUpdate = PhotonNetwork.IsMasterClient && PhotonNetwork.LocalPlayer.CustomProperties["CustomMapHash"] as string != MapTransfer.MapHash;
             PhotonNetwork.LocalPlayer.SetCustomProperty("CustomMapHash", MapTransfer.MapHash);
             MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options, MapScript.Weather);
         }

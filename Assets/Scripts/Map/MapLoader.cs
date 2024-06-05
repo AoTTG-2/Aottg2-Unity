@@ -236,18 +236,22 @@ namespace Map
             if (!editor)
                 Batch();
 
-            // if _navMeshSurfaces is not null, destroy all the navmeshsurfaces
-            if (_navMeshSurfaces != null)
+            bool navmeshNotLoadedAndNeeded = (_navMeshSurfaces == null || _navMeshSurfaces.Count == 0) && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value;
+            if (MapManager.NeedsNavMeshUpdate || navmeshNotLoadedAndNeeded)
             {
-                foreach (NavMeshSurface nms in _navMeshSurfaces)
+                // if _navMeshSurfaces is not null, destroy all the navmeshsurfaces
+                if (_navMeshSurfaces != null)
                 {
-                    if (nms != null)
-                        Destroy(nms.gameObject);
+                    foreach (NavMeshSurface nms in _navMeshSurfaces)
+                    {
+                        if (nms != null)
+                            Destroy(nms.gameObject);
+                    }
                 }
-            }
 
-            if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
-                GenerateNavMesh();
+                if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
+                    GenerateNavMesh();
+            }
 
             MapManager.MapLoaded = true;
         }

@@ -169,12 +169,14 @@ namespace Controllers
 
         public void Update()
         {
-            StartCoroutine(DrawPath(_agent.path));
+            if (_usePathfinding)
+                StartCoroutine(DrawPath(_agent.path));
         }
 
         protected override void FixedUpdate()
         {
-            _agent.speed = _titan.GetCurrentSpeed();
+            if (_usePathfinding)
+                _agent.speed = _titan.GetCurrentSpeed();
             _focusTimeLeft -= Time.deltaTime;
             _stateTimeLeft -= Time.deltaTime;
             if (_titan.Dead)
