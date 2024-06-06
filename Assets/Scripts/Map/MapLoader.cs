@@ -4,12 +4,14 @@ using Photon.Pun;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UI;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using Utility;
 using Weather;
+using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 
 namespace Map
 {
@@ -32,7 +34,6 @@ namespace Map
         public static bool HasWeather;
         public static WeatherSet Weather;
         private static GameObject _background;
-        private List<NavMeshSurface> _navMeshSurfaces;
 
         public static void Init()
         {
@@ -236,72 +237,117 @@ namespace Map
             if (!editor)
                 Batch();
 
-            bool navmeshNotLoadedAndNeeded = (_navMeshSurfaces == null || _navMeshSurfaces.Count == 0) && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value;
-            if (MapManager.NeedsNavMeshUpdate || navmeshNotLoadedAndNeeded)
+            if (MapManager.NeedsNavMeshUpdate)
             {
-                // if _navMeshSurfaces is not null, destroy all the navmeshsurfaces
-                if (_navMeshSurfaces != null)
-                {
-                    foreach (NavMeshSurface nms in _navMeshSurfaces)
-                    {
-                        if (nms != null)
-                            Destroy(nms.gameObject);
-                    }
-                }
-
+                NavMesh.RemoveAllNavMeshData();
                 if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
-                    GenerateNavMesh();
+                {
+                    Task task = GenerateNavMesh();
+                    while (!task.IsCompleted)
+                        yield return new WaitForEndOfFrame();
+                }
             }
 
             MapManager.MapLoaded = true;
         }
 
-        
+        static Bounds GetWorldBounds(Matrix4x4 mat, Bounds bounds)
+        {
+            var absAxisX = Util.Abs(mat.MultiplyVector(Vector3.right));
+            var absAxisY = Util.Abs(mat.MultiplyVector(Vector3.up));
+            var absAxisZ = Util.Abs(mat.MultiplyVector(Vector3.forward));
+            var worldPosition = mat.MultiplyPoint(bounds.center);
+            var worldSize = absAxisX * bounds.size.x + absAxisY * bounds.size.y + absAxisZ * bounds.size.z;
+            return new Bounds(worldPosition, worldSize);
+        }
 
-        private void GenerateNavMesh()
+        Bounds CalculateWorldBounds(List<NavMeshBuildSource> sources)
+        {
+            // Use the unscaled matrix for the NavMeshSurface
+            Matrix4x4 worldToLocal = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+            worldToLocal = worldToLocal.inverse;
+
+            var result = new Bounds();
+            foreach (var src in sources)
+            {
+                switch (src.shape)
+                {
+                    case NavMeshBuildSourceShape.Mesh:
+                        {
+                            var m = src.sourceObject as Mesh;
+                            result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, m.bounds));
+                            break;
+                        }
+                    case NavMeshBuildSourceShape.Terrain:
+                        {
+                            var t = src.sourceObject as TerrainData;
+                            result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(0.5f * t.size, t.size)));
+                            break;
+/*#if NMC_CAN_ACCESS_TERRAIN
+                            // Terrain pivot is lower/left corner - shift bounds accordingly
+                            var t = src.sourceObject as TerrainData;
+                            result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(0.5f * t.size, t.size)));
+#else
+                            Debug.LogWarning("The NavMesh cannot be properly baked for the terrain because the necessary functionality is missing. Add the com.unity.modules.terrain package through the Package Manager.");
+#endif
+                            break;*/
+                        }
+                    case NavMeshBuildSourceShape.Box:
+                    case NavMeshBuildSourceShape.Sphere:
+                    case NavMeshBuildSourceShape.Capsule:
+                    case NavMeshBuildSourceShape.ModifierBox:
+                        result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(Vector3.zero, src.size)));
+                        break;
+                }
+            }
+            // Inflate the bounds a bit to avoid clipping co-planar sources
+            result.Expand(0.1f);
+            return result;
+        }
+
+        /// <summary>
+        /// Use NavMeshBuilder to create a navmesh surface for the given agent id.
+        /// This should be called asynchronously and sync progress back to the main thread.
+        /// </summary>
+        /// <param name="agentID">An integer representing the agent.</param>
+        private async Task CreateNavMeshSurfaceAsync(int agentID, List<NavMeshBuildSource> sources, Bounds bounds)
+        {
+            // Create a new navmeshsurface object
+            NavMeshData data = new NavMeshData();
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
+            settings.overrideTileSize = true;
+            settings.tileSize = 256;
+            settings.overrideVoxelSize = true;
+            settings.voxelSize = 2.4f;
+            settings.minRegionArea = 2;
+
+
+            await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
+            NavMesh.AddNavMeshData(data);
+        }
+
+        private async Task GenerateNavMesh()
         {
             // Create a new navmeshsurface object and add it to the list
-            _navMeshSurfaces = new List<NavMeshSurface>();
             List<string> titanSizes = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
 
-            // For each size, create a new navmeshsurface
-            for (int i = 0; i < titanSizes.Count; i++)
+            // Create sources and bounds
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
+            List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
+            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, sources);            
+            Bounds bounds = CalculateWorldBounds(sources);
+
+            List<int> agentIDs = titanSizes.ConvertAll(size => Util.GetNavMeshAgentID(size) ?? 0);
+            agentIDs = new List<int>(new HashSet<int>(agentIDs));
+
+            // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
+            List<Task> tasks = new List<Task>();
+            foreach (int agentID in agentIDs)
             {
-                // Create a new navmeshsurface object
-                GameObject navMeshSurfaceObject = new GameObject($"NavMeshSurface{i}");
-                navMeshSurfaceObject.transform.SetParent(transform);
-
-                // Add the navmeshsurface component to the object
-                NavMeshSurface navMeshSurface = navMeshSurfaceObject.AddComponent<NavMeshSurface>();
-
-                // Define the agnent size
-                // create a int agent id for each size
-                navMeshSurface.agentTypeID = Util.GetNavMeshAgentID(titanSizes[i]) ?? 0;
-
-                // Create an agent for this surface given the size of the titan times the collider information
-                navMeshSurface.layerMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
-                navMeshSurface.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
-                navMeshSurface.collectObjects = CollectObjects.All;
-                navMeshSurface.defaultArea = 0;
-                navMeshSurface.ignoreNavMeshAgent = true;
-                navMeshSurface.ignoreNavMeshObstacle = true;
-                navMeshSurface.overrideTileSize = true;
-                navMeshSurface.tileSize = 256;
-                navMeshSurface.overrideVoxelSize = true;
-                navMeshSurface.voxelSize = 2.4f;
-                navMeshSurface.minRegionArea = 2;
-                navMeshSurface.BuildNavMesh();
-                _navMeshSurfaces.Add(navMeshSurface);
-            }            
-
-            
-
-            /*// For each 1f in the titan size, add a new navmeshsurface
-            int agentId = 0;
-            for (float i = titanMinSize; i <= titanMaxSize; i += 1f)
-            {
-                
-            }*/
+                tasks.Add(CreateNavMeshSurfaceAsync(agentID, sources, bounds));
+            }
+            await Task.WhenAll(tasks);
         }
 
         private void Batch()
