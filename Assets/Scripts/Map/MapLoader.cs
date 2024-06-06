@@ -315,15 +315,16 @@ namespace Map
             // Create a new navmeshsurface object
             NavMeshData data = new NavMeshData();
             NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
+            settings.maxJobWorkers = 4;
             settings.overrideTileSize = true;
             settings.tileSize = 256;
             settings.overrideVoxelSize = true;
             settings.voxelSize = 2.4f;
             settings.minRegionArea = 2;
-
+            NavMesh.AddNavMeshData(data);
 
             await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
-            NavMesh.AddNavMeshData(data);
+            
         }
 
         private async Task GenerateNavMesh()
