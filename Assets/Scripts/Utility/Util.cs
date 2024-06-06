@@ -311,7 +311,7 @@ namespace Utility
         public static int GetNavMeshAgentIDBySize(float size)
         {
             List<float> titanSizes = new List<float>() { 0.1f, 1f, 2f, 3f };
-            List<string> titanNames = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
+            List<string> titanNames = new List<string>() { "smallTitan", "maxTitan" };
 
             // determine the size to use based on if the size is greater than the current size but less than the next
             string name = "minTitan";

@@ -169,7 +169,7 @@ namespace Map
             string source = BuiltinLevels.LoadMap(category, name);
             MapScript = new MapScript();
             MapScript.Deserialize(source);
-            MapTransfer.MapHash = string.Empty;
+            MapTransfer.MapHash = category + name;
             LoadMap();
         }
 

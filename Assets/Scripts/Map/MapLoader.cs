@@ -329,7 +329,7 @@ namespace Map
         private async Task GenerateNavMesh()
         {
             // Create a new navmeshsurface object and add it to the list
-            List<string> titanSizes = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
+            List<string> titanSizes = new List<string>() { "smallTitan", "maxTitan" };
 
             // Create sources and bounds
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
