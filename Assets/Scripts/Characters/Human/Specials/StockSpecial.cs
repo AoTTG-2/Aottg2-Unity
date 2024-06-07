@@ -1,6 +1,6 @@
 ﻿using Effects;
 using System.Collections;
-using TMPro.EditorUtilities;
+using TMPro;
 using UnityEngine;
 
 namespace Characters

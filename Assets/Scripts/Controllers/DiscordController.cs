@@ -5,6 +5,8 @@ using Characters;
 using Settings;
 using Photon.Pun;
 using GameManagers;
+using Unity.VisualScripting;
+using ApplicationManagers;
 
 public class DiscordController : MonoBehaviour
 {
@@ -14,7 +16,12 @@ public class DiscordController : MonoBehaviour
     private static bool instanceExists;
     private string largeImage = "aottg2-logo1";
     private long time;
-    private GameObject player;
+    private string roomName;
+    private string activityInfo;
+    private int playerCount;
+    private int maxPlayerCount;
+
+
     private void Awake()
     {
         if (!instanceExists)
@@ -60,26 +67,69 @@ public class DiscordController : MonoBehaviour
         try
         {
             var activityManager = discord.GetActivityManager();
-            var activity = new Discord.Activity
+            if (PhotonNetwork.CurrentRoom != null)
             {
-                Details = "Name: " + SettingsManager.ProfileSettings.Name.Value,
-                State = "Playing Aottg2!",
-                Assets =
+                playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+                maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers;
+                var activity = new Discord.Activity
                 {
+                    State = "Playing Aottg2!",
+                    Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                    Assets =
+                    {
                     LargeImage = largeImage,
-                },
-                Timestamps =
-                {
+                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value,
+                    },
+                    Timestamps =
+                    {
                     Start = time,
-                }
-            };
-            activityManager.UpdateActivity(activity, (res) =>
-            {
-                if (res != Discord.Result.Ok)
+                    },
+                    Party =
+                    {
+                        Size =
+                        {
+                            CurrentSize = playerCount,
+                            MaxSize = maxPlayerCount,
+                        },
+                    }
+                };
+                activityManager.UpdateActivity(activity, (res) =>
                 {
-                    Debug.Log("Discord is not connected!");
-                }
-            });
+                    if (res != Discord.Result.Ok)
+                    {
+                        Debug.Log("Discord is not connected!");
+                    }
+                });
+            }
+            else
+            {
+                var activity = new Discord.Activity
+                {
+                    State = "Playing Aottg2!",
+                    Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                    Assets =
+                    {
+                    LargeImage = largeImage,
+                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value,
+                    },
+                    Timestamps =
+                    {
+                    Start = time,
+                    }
+                };
+                activityManager.UpdateActivity(activity, (res) =>
+                {
+                    if (res != Discord.Result.Ok)
+                    {
+                        Debug.Log("Discord is not connected!");
+                    }
+                });
+            }
+
+
+
+
+
         }
         catch
         {
