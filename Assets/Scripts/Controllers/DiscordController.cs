@@ -110,7 +110,7 @@ public class DiscordController : MonoBehaviour
                     Assets =
                     {
                     LargeImage = largeImage,
-                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value,
+                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                     },
                     Timestamps =
                     {
