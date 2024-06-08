@@ -7,6 +7,7 @@ using Photon.Pun;
 using GameManagers;
 using Unity.VisualScripting;
 using ApplicationManagers;
+using Photon.Realtime;
 
 public class DiscordController : MonoBehaviour
 {
@@ -17,9 +18,10 @@ public class DiscordController : MonoBehaviour
     private string largeImage = "aottg2-logo1";
     private long time;
     private string roomName;
-    private string activityInfo;
     private int playerCount;
     private int maxPlayerCount;
+    private RoomInfo roomInfo;
+
 
 
     private void Awake()
@@ -67,18 +69,23 @@ public class DiscordController : MonoBehaviour
         try
         {
             var activityManager = discord.GetActivityManager();
+
+            //in game activity
             if (PhotonNetwork.CurrentRoom != null)
             {
                 playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
                 maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers;
+                InGameSet settings = SettingsManager.InGameCurrent;
+                roomName = settings.General.RoomName.Value;
+
                 var activity = new Discord.Activity
                 {
-                    State = "Playing Aottg2!",
+                    State = roomName,
                     Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
                     Assets =
                     {
                     LargeImage = largeImage,
-                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value,
+                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                     },
                     Timestamps =
                     {
@@ -101,11 +108,12 @@ public class DiscordController : MonoBehaviour
                     }
                 });
             }
+            //main menu activity
             else
             {
                 var activity = new Discord.Activity
                 {
-                    State = "Playing Aottg2!",
+                    State = "Creating a room!",
                     Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
                     Assets =
                     {
