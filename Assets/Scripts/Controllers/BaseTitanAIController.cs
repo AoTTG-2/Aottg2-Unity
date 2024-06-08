@@ -249,10 +249,10 @@ namespace Controllers
                     _moveToActive = false;
                     Idle();
                 }
-                else if (_stateTimeLeft <= 0)
-                    MoveToPosition(true);                    
-                else
-                    _titan.TargetAngle = GetMoveToAngle(_moveToPosition, true);
+                else if (_stateTimeLeft <= 0 || _usePathfinding)
+                    MoveToPosition(true);
+                else if (_usePathfinding == false)
+                    _titan.TargetAngle = GetLookDirectionToTarget(_moveToPosition);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
@@ -301,7 +301,7 @@ namespace Controllers
                             Attack(validAttacks);                            
                         else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false && _usePathfinding)
                         {
-                            _titan.TargetAngle = GetMoveToAngle2(_enemy.Cache.Transform.position, true);
+                            _titan.TargetAngle = GetAgentNavAngle(_enemy.Cache.Transform.position);
                         }
                         else
                         {
@@ -422,7 +422,7 @@ namespace Controllers
 
         }
 
-        protected float GetMoveToAngle2(Vector3 target, bool avoidCollisions = false)
+        protected float GetAgentNavAngle(Vector3 target)
         {
             Vector3 resultDirection = (target - _titan.Cache.Transform.position).normalized;
             if (_agent.hasPath)
@@ -447,7 +447,7 @@ namespace Controllers
             return GetChaseAngleGivenDirection(resultDirection);
         }
 
-        protected float GetMoveToAngle(Vector3 target, bool avoidCollisions = false)
+        protected float GetLookDirectionToTarget(Vector3 target)
         {
             var resultDirection = target - _titan.Cache.Transform.position;
             resultDirection = new Vector3(resultDirection.x, 0, resultDirection.z);
@@ -550,9 +550,9 @@ namespace Controllers
             else
                 _moveAngle = 0f;
             if (_usePathfinding)
-                _titan.TargetAngle = GetMoveToAngle2(_enemy.Cache.Transform.position, avoidCollisions);
+                _titan.TargetAngle = GetAgentNavAngle(_enemy.Cache.Transform.position);
             else
-                _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions);
+                _titan.TargetAngle = GetLookDirectionToTarget(_enemy.Cache.Transform.position);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
@@ -564,9 +564,9 @@ namespace Controllers
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
             if (_usePathfinding)
-                _titan.TargetAngle = GetMoveToAngle2(_moveToPosition, avoidCollisions);
+                _titan.TargetAngle = GetAgentNavAngle(_moveToPosition);
             else
-                _titan.TargetAngle = GetMoveToAngle(_moveToPosition, avoidCollisions);
+                _titan.TargetAngle = GetLookDirectionToTarget(_moveToPosition);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 

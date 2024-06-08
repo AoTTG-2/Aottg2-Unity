@@ -308,17 +308,28 @@ namespace Utility
         public static Quaternion ConstrainedToZ(Quaternion rotation) =>
             Quaternion.Euler(0f, 0f,  rotation.eulerAngles.z);
 
+        public static List<KeyValuePair<float, string>> _titanSizes = new List<KeyValuePair<float, string>>()
+        {
+            new KeyValuePair<float, string>(0.1f, "minTitan"),
+            new KeyValuePair<float, string>(1f, "smallTitan"),
+            new KeyValuePair<float, string>(2f, "avgTitan"),
+            new KeyValuePair<float, string>(3f, "maxTitan")
+        };
+        
+        public static List<int> GetAllTitanAgentIds()
+        {
+            // for each _titanSize in _titanSizes, return GetNavMeshAgentID(_titanSize.Value), if its null, remove
+            return _titanSizes.Select(titanSize => GetNavMeshAgentID(titanSize.Value)).Where(agentId => agentId != null).Select(agentId => agentId.Value).ToList();
+        }
+
         public static int GetNavMeshAgentIDBySize(float size)
         {
-            List<float> titanSizes = new List<float>() { 0.1f, 1f, 2f, 3f };
-            List<string> titanNames = new List<string>() { "smallTitan", "maxTitan" };
-
             // determine the size to use based on if the size is greater than the current size but less than the next
             string name = "minTitan";
-            for (int i = 0; i < titanSizes.Count; i++)
+            for (int i = 0; i < _titanSizes.Count; i++)
             {
-                if (size > titanSizes[i])
-                    name = titanNames[i];
+                if (size > _titanSizes[i].Key)
+                    name = _titanSizes[i].Value;
             }
 
             return GetNavMeshAgentID(name) ?? 0;

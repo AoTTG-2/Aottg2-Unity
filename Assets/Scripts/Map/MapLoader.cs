@@ -4,6 +4,7 @@ using Photon.Pun;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UI;
 using Unity.AI.Navigation;
@@ -35,6 +36,9 @@ namespace Map
         public static WeatherSet Weather;
         private static GameObject _background;
         private static bool _hasNavMeshData;
+        private static List<NavMeshBuildSource> _navMeshSources = new List<NavMeshBuildSource>();
+        private static Bounds _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
+        private static Dictionary<int, NavMeshData> _navMeshData = new Dictionary<int, NavMeshData>();
 
         public static void Init()
         {
@@ -324,42 +328,67 @@ namespace Map
             settings.overrideVoxelSize = true;
             settings.voxelSize = 4f;
             settings.minRegionArea = 2;
+            _navMeshData.Add(agentID, data);
             NavMesh.AddNavMeshData(data);
-
             await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
             
         }
 
+        public static async Task UpdateNavMesh()
+        {
+            await _instance.UpdateAllNavMeshes();
+        }
+
+        public async Task UpdateAllNavMeshes()
+        {
+            Debug.Log("Updating NavMesh");
+            // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
+            List<Task> tasks = new List<Task>();
+            foreach (KeyValuePair<int, NavMeshData> nv in _navMeshData)
+            {
+                tasks.Add(UpdateNavMeshSurfaceAsync(nv.Key, nv.Value, _navMeshSources, _navMeshBounds));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task UpdateNavMeshSurfaceAsync(int agentID, NavMeshData data, List<NavMeshBuildSource> sources, Bounds bounds)
+        {
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
+            settings.maxJobWorkers = 6;
+            settings.overrideTileSize = true;
+            settings.tileSize = 256;
+            settings.overrideVoxelSize = true;
+            settings.voxelSize = 4f;
+            settings.minRegionArea = 2;
+
+            await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
+        }
+
         private async Task GenerateNavMesh()
         {
-            // Create a new navmeshsurface object and add it to the list
-            List<string> titanSizes = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
+            // Clear previous sources and bounds
+            _navMeshSources.Clear();
+            _navMeshData.Clear();
+            _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
 
             // Create sources and bounds
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
-            List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
-            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, sources);
+            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
 
-            // Remove all sources with layer MapObjectCharacters that dont contain the tag TitanBarrier
-            //UnityEngine.Debug.Log($"Found {sources.Count} sources");
-            //sources.RemoveAll(source => source.component != null && source.component.gameObject.layer == PhysicsLayer.MapObjectCharacters && source.component.gameObject.name != "TitanBarrier");
-
-            Bounds bounds = CalculateWorldBounds(sources);
+            _navMeshBounds = CalculateWorldBounds(_navMeshSources);
 
             // Clamp bounds to 5000x5000x5000
-            bounds.size = Vector3.Min(bounds.size, new Vector3(15000, 15000, 15000));
+            _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
 
-            List<int> agentIDs = titanSizes.ConvertAll(size => Util.GetNavMeshAgentID(size) ?? 0);
-            agentIDs = new List<int>(new HashSet<int>(agentIDs));
+            List<int> agentIDs = Util.GetAllTitanAgentIds();
 
             Debug.Log("Loading NavMesh");
-
             // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
             List<Task> tasks = new List<Task>();
             foreach (int agentID in agentIDs)
             {
-                tasks.Add(CreateNavMeshSurfaceAsync(agentID, sources, bounds));
+                tasks.Add(CreateNavMeshSurfaceAsync(agentID, _navMeshSources, _navMeshBounds));
             }
             await Task.WhenAll(tasks);
         }
