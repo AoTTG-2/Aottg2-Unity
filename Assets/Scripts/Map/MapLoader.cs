@@ -322,7 +322,7 @@ namespace Map
             settings.overrideTileSize = true;
             settings.tileSize = 256;
             settings.overrideVoxelSize = true;
-            settings.voxelSize = 10f;
+            settings.voxelSize = 4f;
             settings.minRegionArea = 2;
             NavMesh.AddNavMeshData(data);
 

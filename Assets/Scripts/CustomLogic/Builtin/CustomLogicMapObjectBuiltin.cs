@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using UnityEngine.AI;
 
 namespace CustomLogic
 {
@@ -76,6 +77,32 @@ namespace CustomLogic
                 {
                     var customPhysicsMaterial = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
                     customPhysicsMaterial.Setup((bool)parameters[1]);
+                }
+                else if (name == "NavMeshObstacle")
+                {
+                    // Add a navmesh obstacle and size to the objects bounds
+                    // Params are carveOnlyStationary bool
+                    // read param
+                    bool carveOnlyStationary = (bool)parameters[1];
+                    var navMeshObstacle = Value.GameObject.AddComponent<NavMeshObstacle>();
+                    navMeshObstacle.carving = true;
+                    navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
+                    
+                    // Value.ColliderCache contains the colliders of the object, merge all colliders to find the bounds
+                    Bounds bounds = new Bounds();
+                    foreach (var collider in Value.colliderCache)
+                    {
+                        bounds.Encapsulate(collider.bounds);
+                    }
+
+                    // Set size and center based on bounds
+                    navMeshObstacle.size = bounds.size;
+                    navMeshObstacle.center = bounds.center;
+                }
+                else if (name == "NavMeshModifier")
+                {
+                    // Add a navmesh modifier and size to the objects bounds
+
                 }
                 return null;
             }
