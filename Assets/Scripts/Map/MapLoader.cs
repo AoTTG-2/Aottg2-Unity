@@ -336,7 +336,12 @@ namespace Map
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
             List<NavMeshBuildSource> sources = new List<NavMeshBuildSource>();
-            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, sources);            
+            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, sources);
+
+            // Remove all sources with layer MapObjectCharacters that dont contain the tag TitanBarrier
+            //UnityEngine.Debug.Log($"Found {sources.Count} sources");
+            //sources.RemoveAll(source => source.component != null && source.component.gameObject.layer == PhysicsLayer.MapObjectCharacters && source.component.gameObject.name != "TitanBarrier");
+
             Bounds bounds = CalculateWorldBounds(sources);
 
             List<int> agentIDs = titanSizes.ConvertAll(size => Util.GetNavMeshAgentID(size) ?? 0);
