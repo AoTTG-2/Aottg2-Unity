@@ -2,6 +2,7 @@ using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
+using Map;
 using Photon.Pun;
 using Projectiles;
 using Settings;
@@ -301,6 +302,16 @@ namespace CustomLogic
                 Color color = ((CustomLogicColorBuiltin)parameters[2]).Value.ToColor();
                 float duration = parameters[3].UnboxToFloat();
                 Debug.DrawRay(start, dir, color, duration);
+                return null;
+            }
+            if (name == "UpdateNavMesh")
+            {
+                MapLoader.UpdateNavMesh().Wait();
+                return null;
+            }
+            if (name == "UpdateNavMeshAsync")
+            {
+                _ = MapLoader.UpdateNavMesh();
                 return null;
             }
             return base.CallMethod(name, parameters);

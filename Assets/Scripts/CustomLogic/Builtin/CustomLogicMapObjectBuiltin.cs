@@ -81,8 +81,6 @@ namespace CustomLogic
                 else if (name == "NavMeshObstacle")
                 {
                     // Add a navmesh obstacle and size to the objects bounds
-                    // Params are carveOnlyStationary bool
-                    // read param
                     bool carveOnlyStationary = (bool)parameters[1];
                     var navMeshObstacle = Value.GameObject.AddComponent<NavMeshObstacle>();
                     navMeshObstacle.carving = true;
@@ -98,11 +96,6 @@ namespace CustomLogic
                     // Set size and center based on bounds
                     navMeshObstacle.size = bounds.size;
                     navMeshObstacle.center = bounds.center;
-                }
-                else if (name == "NavMeshModifier")
-                {
-                    // Add a navmesh modifier and size to the objects bounds
-
                 }
                 return null;
             }
