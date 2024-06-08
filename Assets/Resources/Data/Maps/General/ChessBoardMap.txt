@@ -204,7 +204,7 @@ Scene,Decor/Pillar1,507,0,1,1,1,0,Pillar1,-850.2592,70.33829,232.0872,304.2765,2
 Scene,Buildings/Tent3,523,0,1,1,1,0,Tent3,739.738,40.91347,174.651,17.94322,17.95159,53.81118,1.5,1,1.5,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;
 Scene,Geometry/Cylinder,524,0,1,1,1,0,Cylinder,696.7184,74.86599,200.146,17.94322,17.95159,53.81118,7,5,7,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|0.5/0.5|0/0,;
 Scene,Buildings/Tent3,525,0,1,1,1,0,Tent3,646.7819,114.2793,229.7408,17.9432,17.95156,233.8112,1.5,1,1.5,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;
-Scene,Geometry/Cuboid,539,0,1,1,1,0,Cuboid,0,-40,0,0,0,0,10000,1,10000,Physical,Entities,Default,Basic|150/150/150/255|Misc/Sand1|1000/1000|0/0,;
+Scene,Geometry/Cuboid,539,0,1,1,1,0,Cuboid,0,-40,0,0,0,0,10000,1,10000,None,Entities,Default,Basic|150/150/150/255|Misc/Sand1|1000/1000|0/0,;
 Scene,Buildings/Tent3,540,0,1,1,1,0,Tent3,2444.535,93.57403,208.2517,7.385405,193.713,175.1226,1.5,1,1.5,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;
 Scene,Buildings/Tent3,541,0,1,1,1,0,Tent3,2459.289,-35.48071,221.8709,7.385406,193.713,355.1226,1.5,1,1.5,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;
 Scene,Buildings/Tent3,542,0,1,1,1,0,Tent3,2459.289,-35.48071,221.8709,352.6146,13.71301,4.877367,1.5,1,1.5,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;

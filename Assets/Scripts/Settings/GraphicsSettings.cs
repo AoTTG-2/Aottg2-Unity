@@ -145,12 +145,12 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 500;
-                Bloom.Value = (int)BloomLevel.High;
+                Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.On;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.High;
-                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Medium;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -161,12 +161,12 @@ namespace Settings
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 1000;
-                Bloom.Value = (int)BloomLevel.High;
+                Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.On;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
-                ChromaticAberration.Value = (int)ChromaticAberrationLevel.High;
-                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.High;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
             }
         }
     }
