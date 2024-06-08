@@ -252,7 +252,7 @@ namespace Controllers
                 else if (_stateTimeLeft <= 0 || _usePathfinding)
                     MoveToPosition(true);
                 else if (_usePathfinding == false)
-                    _titan.TargetAngle = GetLookDirectionToTarget(_moveToPosition);
+                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
