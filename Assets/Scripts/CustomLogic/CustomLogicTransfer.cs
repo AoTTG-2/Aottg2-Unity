@@ -101,6 +101,7 @@ namespace Map
             {
                 CustomLogicManager.Logic = StringCompression.Decompress(_logicScriptCompressed.ToArray());
                 LogicHash = Encoding.UTF8.GetString(byteArr[2]);
+                CustomLogicManager.LogicHash = LogicHash;
                 CustomLogicManager.FinishLoadLogic();
             }
         }

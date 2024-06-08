@@ -21,6 +21,7 @@ namespace CustomLogic
         public static CustomLogicEvaluator Evaluator;
         public static bool LogicLoaded;
         public static string Logic;
+        public static string LogicHash;
         public static string BaseLogic;
         public static bool Cutscene;
         public static bool ManualCamera;
@@ -96,6 +97,7 @@ namespace CustomLogic
                 else
                 {
                     Logic = BuiltinLevels.LoadLogic(settings.GameMode.Value);
+                    LogicHash = Util.CreateMD5(Logic);
                     CustomLogicTransfer.Start();
                     OnLoadCachedLogicRPC(Util.CreateLocalPhotonInfo());
                 }
@@ -107,6 +109,7 @@ namespace CustomLogic
             if (!info.Sender.IsMasterClient)
                 return;
             Logic = BuiltinLevels.LoadLogic(name);
+            LogicHash = Util.CreateMD5(Logic);
             CustomLogicTransfer.LogicHash = string.Empty;
             FinishLoadLogic();
         }
