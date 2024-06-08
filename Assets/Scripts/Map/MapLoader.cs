@@ -315,11 +315,11 @@ namespace Map
             // Create a new navmeshsurface object
             NavMeshData data = new NavMeshData();
             NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
-            settings.maxJobWorkers = 4;
+            settings.maxJobWorkers = 6;
             settings.overrideTileSize = true;
             settings.tileSize = 256;
             settings.overrideVoxelSize = true;
-            settings.voxelSize = 2.4f;
+            settings.voxelSize = 10f;
             settings.minRegionArea = 2;
             NavMesh.AddNavMeshData(data);
 
@@ -330,7 +330,7 @@ namespace Map
         private async Task GenerateNavMesh()
         {
             // Create a new navmeshsurface object and add it to the list
-            List<string> titanSizes = new List<string>() { "smallTitan", "maxTitan" };
+            List<string> titanSizes = new List<string>() { "minTitan", "smallTitan", "avgTitan", "maxTitan" };
 
             // Create sources and bounds
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
@@ -341,6 +341,8 @@ namespace Map
 
             List<int> agentIDs = titanSizes.ConvertAll(size => Util.GetNavMeshAgentID(size) ?? 0);
             agentIDs = new List<int>(new HashSet<int>(agentIDs));
+
+            Debug.Log("Loading NavMesh");
 
             // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
             List<Task> tasks = new List<Task>();

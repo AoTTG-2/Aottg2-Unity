@@ -58,7 +58,7 @@ public class PostProcessingManager : MonoBehaviour
         SetMotionBlurQuality(mbl);
 
         // Find all objects with the WaterEffect script and apply settings
-        WaterEffect[] waterEffects = FindObjectsOfType<WaterEffect>();
+        WaterEffect[] waterEffects = FindObjectsByType<WaterEffect>(sortMode: FindObjectsSortMode.None);
         foreach (WaterEffect waterEffect in waterEffects)
         {
             waterEffect.ApplySettings(cgl, dofl);

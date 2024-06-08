@@ -18,6 +18,7 @@ namespace Map
         public static MapScript MapScript;
         private static MapManager _instance;
         public static bool NeedsNavMeshUpdate = true;
+        public static string LastMapHash = string.Empty;
 
         public static void Init()
         {
@@ -169,20 +170,24 @@ namespace Map
             string source = BuiltinLevels.LoadMap(category, name);
             MapScript = new MapScript();
             MapScript.Deserialize(source);
-            MapTransfer.MapHash = category + name;
-            LoadMap();
+            MapTransfer.MapHash = string.Empty;
+            bool mapChanged = LastMapHash != MapScript.MapHash;
+            LastMapHash = MapScript.MapHash;
+            LoadMap(mapChanged);
         }
 
         public static void OnLoadCachedMapRPC(PhotonMessageInfo info)
         {
             if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
-            LoadMap();
+            bool mapChanged = LastMapHash != MapScript.MapHash;
+            LastMapHash = MapScript.MapHash;
+            LoadMap(mapChanged);
         }
 
-        public static void LoadMap()
+        public static void LoadMap(bool mapChanged)
         {
-            NeedsNavMeshUpdate = PhotonNetwork.IsMasterClient && PhotonNetwork.LocalPlayer.CustomProperties["CustomMapHash"] as string != MapTransfer.MapHash;
+            NeedsNavMeshUpdate = PhotonNetwork.IsMasterClient && mapChanged;
             PhotonNetwork.LocalPlayer.SetCustomProperty("CustomMapHash", MapTransfer.MapHash);
             MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options, MapScript.Weather);
         }

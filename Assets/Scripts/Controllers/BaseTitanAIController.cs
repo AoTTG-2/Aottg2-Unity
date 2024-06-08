@@ -46,18 +46,11 @@ namespace Controllers
         protected string _attack;
         protected float _attackCooldownLeft;
         protected float _waitAttackTime;
-        private CapsuleCollider _mainCollider;
 
         // pathing
-        private readonly int _sampleRayCount = 6;
-        private readonly float _sampleRayRange = 120f;
-        private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 10f;
-        private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
-        private float _collisionDetectionDistance => this._attackRange * 2;
         private bool _usePathfinding = true;
-
         private NavMeshAgent _agent;
+        private CapsuleCollider _mainCollider;
 
         protected override void Awake()
         {
@@ -85,6 +78,7 @@ namespace Controllers
                 _agent.height = _mainCollider.height * _titan.Cache.Transform.localScale.y;
                 _agent.updatePosition = false;
                 _agent.updateRotation = false;
+                _agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
             }
         }
 
@@ -386,7 +380,7 @@ namespace Controllers
 
         protected Vector3 GetDirectionTowardsNavMesh()
         {
-            Debug.Log("Agent is not on navmesh, trying to get back");
+            //Debug.Log("Agent is not on navmesh, trying to get back");
             // Find a point on the navmesh closest to the titan
             NavMeshHit hit;
             if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
@@ -444,15 +438,18 @@ namespace Controllers
             else
             {
                 resultDirection = GetDirectionTowardsNavMesh();
-                Debug.Log("Trying to get back on navmesh");
+                //Debug.Log("Trying to get back on navmesh");
             }
+
+            if (resultDirection == Vector3.zero)
+                return _titan.TargetAngle;
 
             return GetChaseAngleGivenDirection(resultDirection);
         }
 
         protected float GetMoveToAngle(Vector3 target, bool avoidCollisions = false)
         {
-            var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
+            var resultDirection = target - _titan.Cache.Transform.position;
             resultDirection = new Vector3(resultDirection.x, 0, resultDirection.z);
             resultDirection = resultDirection.normalized;
             var result =  GetChaseAngleGivenDirection(resultDirection);
