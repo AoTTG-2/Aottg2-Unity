@@ -347,6 +347,9 @@ namespace Map
 
             Bounds bounds = CalculateWorldBounds(sources);
 
+            // Clamp bounds to 5000x5000x5000
+            bounds.size = Vector3.Min(bounds.size, new Vector3(15000, 15000, 15000));
+
             List<int> agentIDs = titanSizes.ConvertAll(size => Util.GetNavMeshAgentID(size) ?? 0);
             agentIDs = new List<int>(new HashSet<int>(agentIDs));
 
