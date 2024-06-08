@@ -34,6 +34,7 @@ namespace Map
         public static bool HasWeather;
         public static WeatherSet Weather;
         private static GameObject _background;
+        private static bool _hasNavMeshData;
 
         public static void Init()
         {
@@ -237,15 +238,17 @@ namespace Map
             if (!editor)
                 Batch();
 
-            if (MapManager.NeedsNavMeshUpdate)
+            if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
                 NavMesh.RemoveAllNavMeshData();
+                _hasNavMeshData = false;
                 if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
                 {
                     Task task = GenerateNavMesh();
                     while (!task.IsCompleted)
                         yield return new WaitForEndOfFrame();
                 }
+                _hasNavMeshData = true;
             }
 
             MapManager.MapLoaded = true;

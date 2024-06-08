@@ -187,7 +187,7 @@ namespace Map
 
         public static void LoadMap(bool mapChanged)
         {
-            NeedsNavMeshUpdate = PhotonNetwork.IsMasterClient && mapChanged;
+            NeedsNavMeshUpdate = mapChanged;
             PhotonNetwork.LocalPlayer.SetCustomProperty("CustomMapHash", MapTransfer.MapHash);
             MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options, MapScript.Weather);
         }
