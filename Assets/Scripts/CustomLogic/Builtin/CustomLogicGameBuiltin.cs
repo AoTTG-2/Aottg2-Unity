@@ -304,16 +304,6 @@ namespace CustomLogic
                 Debug.DrawRay(start, dir, color, duration);
                 return null;
             }
-            if (name == "UpdateNavMesh")
-            {
-                MapLoader.UpdateNavMesh().Wait();
-                return null;
-            }
-            if (name == "UpdateNavMeshAsync")
-            {
-                _ = MapLoader.UpdateNavMesh();
-                return null;
-            }
             return base.CallMethod(name, parameters);
         }
 
