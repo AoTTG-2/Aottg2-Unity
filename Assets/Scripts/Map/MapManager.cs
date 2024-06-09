@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using CustomLogic;
 
 namespace Map
 {
@@ -19,6 +20,8 @@ namespace Map
         private static MapManager _instance;
         public static bool NeedsNavMeshUpdate = true;
         public static string LastMapHash = string.Empty;
+        public static string LastGameMode = string.Empty;
+        public static string LastLogicHash = string.Empty;
 
         public static void Init()
         {
@@ -171,8 +174,10 @@ namespace Map
             MapScript = new MapScript();
             MapScript.Deserialize(source);
             MapTransfer.MapHash = string.Empty;
-            bool mapChanged = LastMapHash != MapScript.MapHash;
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastLogicHash != CustomLogicManager.LogicHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
             LastMapHash = MapScript.MapHash;
+            LastLogicHash = CustomLogicManager.LogicHash;
+            LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
             LoadMap(mapChanged);
         }
 
@@ -180,8 +185,10 @@ namespace Map
         {
             if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
-            bool mapChanged = LastMapHash != MapScript.MapHash;
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastLogicHash != CustomLogicManager.LogicHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
             LastMapHash = MapScript.MapHash;
+            LastLogicHash = CustomLogicManager.LogicHash;
+            LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
             LoadMap(mapChanged);
         }
 

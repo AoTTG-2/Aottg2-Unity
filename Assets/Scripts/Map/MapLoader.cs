@@ -246,8 +246,7 @@ namespace Map
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "None";
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
 
             if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
@@ -381,6 +380,8 @@ namespace Map
             // Create sources and bounds
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
+            
+            // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
 
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);

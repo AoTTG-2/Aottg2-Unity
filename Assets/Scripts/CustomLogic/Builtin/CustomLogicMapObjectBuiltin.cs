@@ -82,7 +82,10 @@ namespace CustomLogic
                 {
                     // Add a navmesh obstacle and size to the objects bounds
                     bool carveOnlyStationary = (bool)parameters[1];
-                    var navMeshObstacle = Value.GameObject.AddComponent<NavMeshObstacle>();
+                    var navMeshObstacleGo = new GameObject("NavMeshObstacle");
+                    navMeshObstacleGo.transform.parent = Value.GameObject.transform;
+
+                    var navMeshObstacle = navMeshObstacleGo.AddComponent<NavMeshObstacle>();
                     navMeshObstacle.carving = true;
                     navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
 
