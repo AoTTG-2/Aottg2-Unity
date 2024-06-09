@@ -1,3 +1,15 @@
+component NavMeshObstacle
+{
+    Description = "Adds a navMeshObstacle to the object";
+    _nav = null;
+
+    function Init()
+    {
+        # Add the component like how we add Rigidbody
+        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle", false);
+    }
+}
+
 component InteractActionTrigger
 {
     Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
