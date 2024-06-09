@@ -10,6 +10,7 @@ using ApplicationManagers;
 using Photon.Realtime;
 using UI;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 public class DiscordController : MonoBehaviour
 {
@@ -78,13 +79,22 @@ public class DiscordController : MonoBehaviour
                 maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers;
                 InGameSet settings = SettingsManager.InGameCurrent;
                 roomName = settings.General.RoomName.Value;
+                Player player = PhotonNetwork.LocalPlayer;
+                List<string> scoreList = new List<string>();
+                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                {
+                    object value = player.GetCustomProperty(property);
+                    string str = value != null ? value.ToString() : string.Empty;
+                    scoreList.Add(str);
+                }
+                string score = string.Join(" / ", scoreList.ToArray());
 
                 if (PhotonNetwork.OfflineMode) 
                 {
                     var activity = new Discord.Activity
                     {
                         State = "SinglePlayer",
-                        Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + score,
                         Assets =
                     {
                     LargeImage = largeImage,
@@ -116,7 +126,7 @@ public class DiscordController : MonoBehaviour
                     var activity = new Discord.Activity
                     {
                         State = roomName,
-                        Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + score,
                         Assets =
                     {
                     LargeImage = largeImage,
@@ -150,7 +160,7 @@ public class DiscordController : MonoBehaviour
                 var activity = new Discord.Activity
                 {
                     State = "Creating a room!",
-                    Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                    Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value,
                     Assets =
                     {
                     LargeImage = largeImage,
