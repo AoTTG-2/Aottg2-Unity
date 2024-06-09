@@ -242,11 +242,18 @@ namespace Map
             if (!editor)
                 Batch();
 
+            bool gamemodeNeedsNav = SettingsManager.InGameCurrent.General.GameMode.Value != "Racing"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "None";
+
             if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
                 NavMesh.RemoveAllNavMeshData();
                 _hasNavMeshData = false;
-                if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value)
+                if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value && gamemodeNeedsNav)
                 {
                     Task task = GenerateNavMesh();
                     while (!task.IsCompleted)
