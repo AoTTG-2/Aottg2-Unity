@@ -1,7 +1,9 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Settings
 {
@@ -11,6 +13,7 @@ namespace Settings
         public IntSetting PresetQuality = new IntSetting((int)PresetQualityLevel.VeryHigh);
         public IntSetting FullScreenMode = new IntSetting((int)FullScreenLevel.Borderless);
         public IntSetting ScreenResolution = new IntSetting(0);
+        public IntSetting MonitorLength = new IntSetting(0);
         public IntSetting FPSCap = new IntSetting(144, minValue: 0);
         public IntSetting MenuFPSCap = new IntSetting(60, minValue: 0);
         public BoolSetting VSync = new BoolSetting(false);
@@ -84,6 +87,18 @@ namespace Settings
                     (DepthOfFieldLevel)DepthOfField.Value,
                     (MotionBlurLevel)MotionBlur.Value
                 );
+            if(MonitorLength.Value == 0)
+            {
+                Display.displays[0].Activate();
+            }
+            else if(MonitorLength.Value == 1)
+            {
+                Display.displays[1].Activate();
+            }
+            else if (MonitorLength.Value == 2)
+            {
+                Display.displays[2].Activate();
+            }
         }
 
         public void OnSelectPreset()

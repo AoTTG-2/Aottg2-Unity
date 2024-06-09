@@ -238,6 +238,8 @@
 		"Graphics.FullscreenOptions": ["Windowed", "Borderless", "Exclusive"],
 		"Graphics.FullscreenTooltip": "Exclusive fullscreen can improve performance but might have bugs. Requires save and game relaunch.",
 		"Graphics.Resolution": "Resolution",
+		"Graphics.Display": "Display",
+		"Graphics.DisplayOptions":  ["0", "1", "2"],
 		"Graphics.FPSCap": "FPS cap (0 for off)",
 		"Graphics.MenuFPSCap": "Menu FPS cap",
 		"Graphics.VSync": "VSync",

@@ -26,6 +26,8 @@ namespace UI
                 UIManager.GetLocaleArray(cat, sub, "FullscreenOptions"), tooltip: UIManager.GetLocale(cat, sub, "FullscreenTooltip"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.ScreenResolution, UIManager.GetLocale(cat, sub, "Resolution"),
                 FullscreenHandler.GetResolutionOptions(), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.MonitorLength, UIManager.GetLocale(cat, sub, "Display"),
+                UIManager.GetLocaleArray(cat, sub, "DisplayOptions"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RenderDistance, UIManager.GetLocale(cat, sub, "RenderDistance"), elementWidth: 100f, tooltip: UIManager.GetLocale(cat, sub, "RenderDistanceTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.FPSCap, UIManager.GetLocale(cat, sub, "FPSCap"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.MenuFPSCap, UIManager.GetLocale(cat, sub, "MenuFPSCap"), elementWidth: 100f);
