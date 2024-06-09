@@ -1,16 +1,48 @@
 using ApplicationManagers;
+using Settings;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class WaterEffect : MonoBehaviour
 {
     [SerializeField] GameObject PostProcessingVolume;
     Collider _collider;
 
+    private PostProcessingManager _postProcessingManager;
+    private PostProcessVolume _volume;
+    private ColorGrading _colorGrading;
+    private DepthOfField _depthOfField;
+
     void Start()
     {
+        // Get gameobject with component PostProcessingMananger script
+        if (_postProcessingManager == null)
+            _postProcessingManager = FindObjectOfType<PostProcessingManager>();
+
         _collider = GetComponent<Collider>();
+        _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
+        _volume.profile.TryGetSettings(out _colorGrading);
+        _volume.profile.TryGetSettings(out _depthOfField);
+        Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
+
+        if (settings != null)
+            ApplySettings((ColorGradingLevel)settings.ColorGrading.Value, (DepthOfFieldLevel)settings.DepthOfField.Value);
+    }
+
+    public void ApplySettings(ColorGradingLevel cgl, DepthOfFieldLevel dofl)
+    {
+        if (cgl == ColorGradingLevel.Off && dofl == DepthOfFieldLevel.Off)
+        {
+            PostProcessingVolume.gameObject.SetActive(false);
+            this.enabled = false;
+            return;
+        }
+        this.enabled = true;
+
+        _colorGrading.enabled.value = cgl != ColorGradingLevel.Off;
+        _depthOfField.enabled.value = dofl != DepthOfFieldLevel.Off;
     }
 
     void FixedUpdate()
@@ -21,10 +53,12 @@ public class WaterEffect : MonoBehaviour
         if (_collider.bounds.Contains(cam.transform.position))
         {
             PostProcessingVolume.gameObject.SetActive(true);
+            _postProcessingManager.SetState(false);
         }
         else
         {
             PostProcessingVolume.gameObject.SetActive(false);
+            _postProcessingManager.SetState(true);
         }
     }
 }

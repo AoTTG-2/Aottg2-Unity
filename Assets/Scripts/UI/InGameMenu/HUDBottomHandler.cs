@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -570,7 +570,7 @@ namespace UI
             }
             else if (weapon.RoundLeft == 1)
             {
-                _ahssEmptyLeft.color = BackgroundLowColor;
+                _ahssEmptyLeft.color = weapon.AmmoLeft > 0 ? BackgroundLowColor : BackgroundVeryLowColor;
                 _ahssEmptyRight.color = BackgroundLowColor;
                 _ahssBackgroundLeft.color = BackgroundLowColor;
                 _ahssBackgroundRight.color = BackgroundLowColor;
@@ -614,8 +614,10 @@ namespace UI
                 {
                     _ahssReloadLeft.gameObject.SetActive(false);
                     _ahssReloadRight.gameObject.SetActive(false);
-                    _ahssBackgroundLeft.gameObject.SetActive(true);
-                    _ahssBackgroundRight.gameObject.SetActive(true);
+                    _ahssBackgroundRight.gameObject.SetActive(weapon.RoundLeft >= 1);
+                    _ahssBackgroundLeft.gameObject.SetActive(weapon.RoundLeft >= 2);
+                    _ahssEmptyRight.gameObject.SetActive(!(weapon.RoundLeft >= 1));
+                    _ahssEmptyLeft.gameObject.SetActive(!(weapon.RoundLeft >= 2));
                 }
             }
         }

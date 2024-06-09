@@ -110,6 +110,8 @@
 		"General.RoomName": "Room name",
 		"Titans.StandardModels": "Standard models",
 		"Titans.StandardModelsTooltip": "Use only standard titan models (body0 and head0).",
+		"Titans.SmartMovement": "Smart Movement",
+		"Titans.SmartMovementTooltip": "Titans will avoid obstacles when chasing players.",
 		"Titans.SpawnEnabled": "Custom spawns",
 		"Titans.SpawnEnabledTooltip": "Spawn rates must add up to 100.",
 		"Titans.Normal": "Normal",
@@ -256,6 +258,20 @@
 		"Graphics.AnisotropicOptions": ["Off", "Low", "High"],
 		"Graphics.WeatherEffects": "Weather effects",
 		"Graphics.WeatherEffectsOptions": ["Off", "Low", "Medium", "High"],
+
+		"Graphics.AmbientOcclusion": "Ambient Occlusion",
+		"Graphics.AmbientOcclusionOptions": ["Off", "Lowest", "Low", "Medium", "High", "Ultra"],
+		"Graphics.Bloom": "Bloom",
+		"Graphics.BloomOptions": ["Off", "Low", "High"],
+		"Graphics.ChromaticAberration": "Chromatic Aberration",
+		"Graphics.ChromaticAberrationOptions": ["Off", "Low", "High"],
+		"Graphics.ColorGrading": "Color Grading",
+		"Graphics.ColorGradingOptions": ["Off", "On"],
+		"Graphics.DepthOfField": "Depth of Field",
+		"Graphics.DepthOfFieldOptions": ["Off", "Low", "Medium", "High"],
+		"Graphics.MotionBlur": "Motion Blur",
+		"Graphics.MotionBlurOptions": ["Off", "Low", "Medium", "High"],
+		
 		"Graphics.WeaponTrailEnabled": "Weapon trail",
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",
@@ -372,6 +388,7 @@
 		"Keybinds.Shifter.Walk": "Walk",
 		"Keybinds.Interaction.Interact": "Interact",
 		"Keybinds.Interaction.Interact2": "Interact2",
+		"Keybinds.Interaction.Interact3": "Interact3",
 		"Keybinds.Interaction.ItemMenu": "Item menu",
 		"Keybinds.Interaction.EmoteMenu": "Emote menu",
 		"Keybinds.Interaction.MenuNext": "Menu next",
@@ -545,5 +562,15 @@
 		"Basic.Dialogue1P1": "Move with the",
     "Basic.Dialogue1P2": "keys.",
     "Basic.Dialogue1P3": "Go to the Checkpoint."
+	},
+	"OutsideTheWalls": {
+		"Dialogue.Start": "Before we can leave, we need to secure the city. Clear out the titans and recapture the gate!",
+		"Dialogue.PointCaptured": "Great work. Advance to the next point!",
+		"Dialogue.TownCaptured": "Advance to the next point!",
+		"Dialogue.PointCapturedTitansRemain": "Clear out the remaining titans and advance to the next point!",
+		"Dialogue.TownCapturedTitansRemain": "We've secured the town! Clear out the remaining titans so we can advance!",
+		"Dialogue.BeforeAnnie1": "Get rid of the Female Titan and all titans she's attracted to us!",
+		"Dialogue.AfterAnnie1": "The Female Titan's escaped! Defeat the leftover titans!",
+		"Dialogue.BeforeAnnie2": "We've got her now. Defeat the Female Titan!"
 	}
 }

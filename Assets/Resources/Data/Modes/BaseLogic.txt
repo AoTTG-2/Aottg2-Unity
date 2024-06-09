@@ -1,3 +1,56 @@
+component InteractActionTrigger
+{
+    Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
+
+    Key = "Interact";
+    KeyDropbox = "Interact, Interact2, Interact3";
+
+    _text = null;
+    _actionHandler = null;
+    _currentHuman = null;
+
+    function SetActionHandler(handler, text)
+    {
+        self._actionHandler = handler;
+        self._text = text;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            if (self._text != null)
+            {
+                UI.SetLabelForTime("MiddleCenter", self._text, 0.1);
+            }
+            else
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/" + self.Key) + " to trigger the action.", 0.1);
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null && Input.GetKeyDown("Interaction/" + self.Key))
+        {
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.HandleInteractAction(self);
+            }
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
+        }
+    }
+}
+
 component Animator
 {
     AnimationName = "";
@@ -32,6 +85,94 @@ component Animator
     }
 }
 
+component Floater
+{
+    Description = "Makes the object float on water.";
+    Enabled = true;
+    DepthBeforeFloating = 3.0;
+    DisplacementAmount = 2.0;
+    Drag = 0.7;
+    AngularDrag = 1.0;
+
+    _surfaceHeight = 0.0;
+    _isInWater = false;
+    _rb = null;
+    _waveDistance = 2.00;
+    _waveSpeed = 500.0;
+    _scale = 2.0;
+    _noiseStrength = 5.0;
+    _noiseWalk = 1.0;
+
+    function Init()
+    {
+        self._rb = self.MapObject.GetComponent("Rigidbody");
+    }
+
+    function SetState(surfaceHeight, isInWater, waveDistance, waveSpeed, scale, noiseStrength, noiseWalk)
+    {
+        self._surfaceHeight = surfaceHeight;
+        self._isInWater = isInWater;
+        self._waveDistance = waveDistance;
+        self._waveSpeed = waveSpeed;
+        self._scale = scale;
+        self._noiseStrength = noiseStrength;
+        self._noiseWalk = noiseWalk;
+    }
+
+    function GetWavePosition(surfaceTop, position)
+    {
+        deltaY = 0;
+        deltaY = deltaY + (Math.Sin((Time.GameTime * self._waveSpeed + position.Z) / self._waveDistance) - 1) * self._scale;
+        deltaY = deltaY + Random.PerlinNoise(position.X + self._noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * self._noiseStrength;
+        return surfaceTop + deltaY;
+    }
+
+    function OnTick()
+    {
+        if (self._rb == null || self.Enabled == false)
+        {
+            return;
+        }
+
+        if (self._isInWater)
+        {
+            # self._isInWater  = false;
+            boundPoints = self.MapObject.GetCorners();
+            velocity = self._rb.GetVelocity();
+            gravity = Vector3(0, -20, 0);
+            # rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
+            gScale = 1.0 / boundPoints.Count;
+            for (point in boundPoints)
+            {
+                # rb.AddForceWithModeAtPoint(gravity.Scale(gScale), point, "Acceleration");
+                # Game.DrawRay(point, gravity.Scale(gScale), Color(255, 0, 0, 255), 1);
+                surfaceTop = self.GetWavePosition(self._surfaceHeight, point);
+
+                if (point.Y < surfaceTop)
+                {
+                    displaced = (surfaceTop - point.Y) / self.DepthBeforeFloating;
+                    dMult = Math.Clamp(displaced, 0, 1) * self.DisplacementAmount;
+
+                    wdForce = velocity.Scale(self.Drag);
+
+                    bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
+                    #Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
+                    self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+
+                    wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
+                    self._rb.AddForceWithMode(bForce, "VeclocityChange");
+
+                    ag = self._rb.GetAngularVelocity();
+                    agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
+                    self._rb.AddTorque(agdForce, "VelocityChange");
+                }
+            }
+        }
+    
+    }
+
+}
+
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
@@ -49,6 +190,12 @@ component WaterPhysics
     # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled.
     SupportDrowning = true;
     TimeToDrown = 10.0;
+
+    WaveDistance = 20;
+    WaveSpeed = 500;
+    NoiseStrength = 5;
+    NoiseWalk = 1;
+    Scale = 2;
 
 
     /*
@@ -241,19 +388,9 @@ component WaterPhysics
         }
     }
 
-    function GetWavePosition(position)
+    function GetMidPoint(v1, v2)
     {
-        waveDistance = 20;
-        waveSpeed = 500;
-        noiseStrength = 5;
-        noiseWalk = 1;
-        scale = 2;
-
-        deltaY = 0;
-        deltaY = deltaY + (Math.Sin((Time.GameTime * waveSpeed + position.Z) / waveDistance) - 1) * scale;
-        deltaY = deltaY + Random.PerlinNoise(position.X + noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * noiseStrength;
-        surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
-        return surfaceTop + deltaY;
+        return (v1 + v2).Scale(0.5);
     }
 
     function OnCollisionStay(other)
@@ -288,76 +425,14 @@ component WaterPhysics
                 }
             }
         }
-
         elif (other.Type == "MapObject")
         {
-            /*xzVelocity = Vector3(velocity.X, 0, velocity.Z);
-            drag = 1 - self.SunkenDrag;
-            force = xzVelocity.Scale(-1 * drag);
-            maxDisplacement = other.Scale.Y * 10;*/
-
-            minPoint = other.GetBoundsMin();
-            maxPoint = other.GetBoundsMax();
-            center = other.GetBoundsCenter();
-
-            bp1 = minPoint;
-            bp2 = maxPoint;
-            bp3 = Vector3(bp1.X, bp1.Y, bp2.Z);
-            bp4 = Vector3(bp1.X, bp2.Y, bp1.Z);
-            bp5 = Vector3(bp2.X, bp1.Y, bp1.Z);
-            bp6 = Vector3(bp1.X, bp2.Y, bp2.Z);
-            bp7 = Vector3(bp2.X, bp1.Y, bp2.Z);
-            bp8 = Vector3(bp2.X, bp2.Y, bp1.Z);
-
-            # Add all to a list
-            boundPoints = List();
-            boundPoints.Add(bp1);
-            boundPoints.Add(bp2);
-            boundPoints.Add(bp3);
-            boundPoints.Add(bp4);
-            boundPoints.Add(bp5);
-            boundPoints.Add(bp6);
-            boundPoints.Add(bp7);
-            boundPoints.Add(bp8);
-
-            depthBeforeFloating = Vector3.Distance(bp1, bp4) * 0.5;
-            displacementAmount = 1;
-            numPoints = 8;
-            angularDrag = 0.5;
-            drag = 0.3;
-
-            rb = other.GetComponent("Rigidbody");
-            for (point in boundPoints)
+            floater = other.GetComponent("Floater");
+            if (floater != null)
             {
-                surfaceTop = self.GetWavePosition(point);
-                displaced = (surfaceTop - (point.Y + depthBeforeFloating)) / depthBeforeFloating;
-                dMult = Math.Clamp(displaced, 0, 1) * displacementAmount;
-
-                wdForce = velocity.Scale(drag);
-
-                bForce = Vector3(0, Math.Abs(rb.Gravity.Y) * dMult - wdForce.Y, 0);
-                rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
-
-                wdForce = velocity.Scale(0.7 * -1 * Time.TickTime);
-                rb.AddForceWithMode(bForce, "VeclocityChange");
-
-                ag = rb.GetAngularVelocity();
-                agdForce = ag.Scale(angularDrag * -1 * Time.TickTime);
-                rb.AddTorque(agdForce, "VelocityChange");
+                sHeight = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+                floater.SetState(sHeight, true, self.WaveDistance, self.WaveSpeed, self.Scale, self.NoiseStrength, self.NoiseWalk);
             }
-
-            
-
-
-            /*objectBottom = center.Y - other.Scale.Y * 2.5;
-            surfaceTop = self.GetWavePosition(center);
-
-            displaced = surfaceTop - objectBottom;
-            displaced = Math.Clamp(displaced, 0, maxDisplacement);
-            displaced = displaced / maxDisplacement;
-
-            force = force + Vector3(0, -2 * other.GetComponent("Rigidbody").Gravity.Y * displaced - self.DampingForce * velocity.Y, 0);
-            self.HandleForce(other, force, self._forceMode);*/
         }
     }
 
@@ -366,6 +441,15 @@ component WaterPhysics
         if (self.Enabled == false || self.IsOwnedByMe(other) == false)
         {
             return;
+        }
+        if (other.Type == "MapObject")
+        {
+            floater = other.GetComponent("Floater");
+            if (floater != null)
+            {
+                sHeight = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+                floater.SetState(sHeight, false, self.WaveDistance, self.WaveSpeed, self.Scale, self.NoiseStrength, self.NoiseWalk);
+            }
         }
         self._isMyPlayerUnderwater = false;
         self._myPlayerTimer = 0.0;
@@ -945,15 +1029,13 @@ component CaptureZone
     Order = 0;
     SupplyStationID = "";
     SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
-
     ShowUI = true;
     UIVisibilityRange = 80.0;
-
+    CurrentOwner = "null";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
     _lastState = "Captured";
-    _currentOwner = "null";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
@@ -996,7 +1078,7 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
-        
+
         # Setup supply station
         if (self.SupplyStationID != "")
         {
@@ -1027,7 +1109,7 @@ component CaptureZone
     # Getters
     function GetCurrentOwner()
     {
-        return self._currentOwner;
+        return self.CurrentOwner;
     }
 
     function GetCaptureProgress()
@@ -1038,6 +1120,16 @@ component CaptureZone
     function GetState()
     {
         return self._state;
+    }
+
+    function GetPlayersOfTeamInZone(team)
+    {
+        if (self._teamsInZone.Contains(team))
+        {
+            return self._teamsInZone.Get(team);
+        }
+
+        return null;
     }
 
     # GameObject Helpers
@@ -1061,18 +1153,18 @@ component CaptureZone
         color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
             
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
-            ownerColor = self.GetTeamColor(self._currentOwner);
+            ownerColor = self.GetTeamColor(self.CurrentOwner);
             color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
 		}
         self.ChangeColorAll(color);
 	}
@@ -1089,7 +1181,7 @@ component CaptureZone
         data = Json.LoadFromString(message);
 
         self._state = data.Get("state");
-        self._currentOwner = data.Get("owner");
+        self.CurrentOwner = data.Get("owner");
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
@@ -1098,14 +1190,14 @@ component CaptureZone
         self.ChangeColor();
     }
 
-    function NetworkSync(state, owner, capturer, progress, Enabled)
+    function NetworkSync()
     {
         message = Dict();
-        message.Set("state", state);
-        message.Set("owner", owner);
-        message.Set("capturer", capturer);
-        message.Set("progress", progress);
-        message.Set("enabled", Enabled);
+        message.Set("state", self._state);
+        message.Set("owner", self.CurrentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
         message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessageOthers(Json.SaveToString(message));
@@ -1114,11 +1206,11 @@ component CaptureZone
     function OnPlayerJoin(player)
     {
         message = Dict();
-        message.Set("state", state);
-        message.Set("owner", owner);
-        message.Set("capturer", capturer);
-        message.Set("progress", progress);
-        message.Set("enabled", Enabled);
+        message.Set("state", self._state);
+        message.Set("owner", self.CurrentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
         message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessage(player, Json.SaveToString(message));
@@ -1128,7 +1220,7 @@ component CaptureZone
     {
         if (self._state == "Captured")
         {
-            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentOwner) == false)
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self.CurrentOwner) == false)
             {
                 self._state = "Capturing";
                 self._currentCapturer = self._teamsInZone.Keys.Get(0);
@@ -1149,7 +1241,7 @@ component CaptureZone
                 if (self._captureProgress >= self.CaptureTime)
                 {
                     self._state = "Captured";
-                    self._currentOwner = self._currentCapturer;
+                    self.CurrentOwner = self._currentCapturer;
                     self._currentCapturer = "null";
                     self._captureProgress = 0.0;
                 }
@@ -1206,7 +1298,7 @@ component CaptureZone
 
         self.HandleStateTransition();
 
-        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
+        self.NetworkSync();
     }
 
     # UI Helpers
@@ -1270,10 +1362,10 @@ component CaptureZone
 		    {
                 if (self._state == "Captured")
                 {
-                    if (self._lastOwner != self._currentOwner)
+                    if (self._lastOwner != self.CurrentOwner)
                     {
-                        self._callbackReceiver.OnCaptured(self, self._currentOwner);
-                        self._lastOwner = self._currentOwner;
+                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        self._lastOwner = self.CurrentOwner;
                     }
                 }
                 elif (self._state == "Capturing")
@@ -1290,7 +1382,7 @@ component CaptureZone
 		
 		if (self._state == "Captured")
         {
-            if (self._currentOwner == "Human")
+            if (self.CurrentOwner == "Human")
             {
                 if (self._hasSupplyStation && !self._isSupplyStationActive)
                 {
@@ -1326,7 +1418,7 @@ component CaptureZone
 		}
         self._isViewing = true;
 
-        owner = self._currentOwner;
+        owner = self.CurrentOwner;
         if (owner == "null")
         {
             owner = "Neutral";
@@ -2539,7 +2631,7 @@ component WallGateA1
     Description = "Makes WallGateA1 openable by players.";
 
     StartState = "Closed";
-    StartStateDropdown = "Closed, Open";
+    StartStateDropbox = "Closed, Open";
 
     Interactable = true;
 
@@ -2567,8 +2659,34 @@ component WallGateA1
         self._door.LocalPosition = localPosition;
     }
 
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "sync|" + self._open + "|" + self.Interactable);
+        }
+    }
+
     function OnNetworkMessage(sender, message)
     {
+        if (sender == Network.MasterClient && String.StartsWith(message, "sync"))
+        {
+            args = String.Split(message, "|");
+            self._open = Convert.ToBool(args.Get(1));
+            self.Interactable = Convert.ToBool(args.Get(2));
+
+            localPosition = self._door.LocalPosition;
+            if (self._open)
+            {
+                localPosition.Y = 25;
+            }
+            else
+            {
+                localPosition.Y = 0;
+            }
+            self._door.LocalPosition = localPosition;
+        }
+
         if (self.Interactable == false)
         {
             return;
@@ -2617,11 +2735,7 @@ component WallGateA1
 
     function OnFrame()
     {
-        if (self.Interactable == false)
-        {
-            return;
-        }
-        if (self._currentHuman != null)
+        if (self.Interactable && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
             {

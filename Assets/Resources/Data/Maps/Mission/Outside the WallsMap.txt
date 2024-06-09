@@ -6,21 +6,21 @@ EditorVersion:1.0|Description:A progressive capture point gamemode made by O & T
 Scene,Terrain/OutsideTerrain1,2,0,1,1,1,0,OutsideTerrain1,0,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,20,0,53.13011,126.8699,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/255/255/255|Intensity:1|WeatherControlled:true;
 Scene,General/EditorHumanSpawnPoint,3,0,1,1,0,0,Human SpawnPoint,-2596,1,-4622,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
-Scene,Buildings/WallGateA1,9,0,1,0,1,1,WallGateA1,-2600,-38,-3755,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Closed|StartStateDropdown:Closed  Open|Interactable:false,Tag|Name:StartWallGate;
-Scene,Interact/CaptureZone1,21,0,1,0,1,1,CaptureZone1,-2596,0,-3662,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:0|SupplyStationID:941|ShowUI:true|UIVisibilityRange:80;
+Scene,Buildings/WallGateA1,9,0,1,0,1,1,WallGateA1,-2600,-38,-3755,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Closed|Interactable:false|StartStateDropdown:Closed  Open,Tag|Name:StartWallGate;
+Scene,Interact/CaptureZone1,21,0,1,0,1,1,CaptureZone1,-2596,0,-3639.5,0,0,0,20,7,20,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:0|SupplyStationID:1364|ShowUI:true|UIVisibilityRange:100|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Geometry/Cuboid,1357,0,1,1,0,0,Titan Barrier,-2543,27.5,-2827.5,0,0,0,3.3,6.4,3.2,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Interact/CaptureZone1,23,0,1,0,1,1,CaptureZone1,-1940,15,-2315,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:2|SupplyStationID:943|ShowUI:true|UIVisibilityRange:80;
+Scene,Interact/CaptureZone1,23,0,1,0,1,1,CaptureZone1,-1940,0,-2315,0,0,0,35,5,35,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:2|SupplyStationID:1367|ShowUI:true|UIVisibilityRange:180|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Buildings/Church1,575,0,1,1,1,0,Church1,-1125.133,36.07217,-2049,0,270,4.244037,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/CaptureZone1,26,0,1,0,1,1,CaptureZone1,-204,-0.7070895,-1902,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:30|DecaySpeed:0.1|Order:4|SupplyStationID:945|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,27,0,1,0,1,1,CaptureZone1,897,44,-2022,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:5|SupplyStationID:946|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,28,0,1,0,1,1,CaptureZone1,1713,58,-1671,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:0.1|Order:6|SupplyStationID:789|ShowUI:true|UIVisibilityRange:80;
-Scene,Interact/CaptureZone1,29,0,1,0,1,1,CaptureZone1,2442,70,-1395,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:false|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:1|DecaySpeed:1|Order:7|SupplyStationID:947|ShowUI:true|UIVisibilityRange:80;
+Scene,Interact/CaptureZone1,26,0,1,0,1,1,CaptureZone1,-204,-0.7070895,-1902,0,0,0,35,5,35,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:false|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:false|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:0.1|Order:4|SupplyStationID:1371|ShowUI:true|UIVisibilityRange:180|CurrentOwner:Titan|StartOwner:null;
+Scene,Interact/CaptureZone1,27,0,1,0,1,1,CaptureZone1,897,38.12181,-2022,0,0,0,20,10,20,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:10|DecaySpeed:1|Order:5|SupplyStationID:1373|ShowUI:true|UIVisibilityRange:100|StartOwner:Titan|CurrentOwner:Titan;
+Scene,Interact/CaptureZone1,28,0,1,0,1,1,CaptureZone1,1713,58,-1671,0,0,0,30,5,30,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:false|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:false|TeamsCanCapture:true|CaptureTime:30|DecaySpeed:0.1|Order:6|SupplyStationID:1375|ShowUI:true|UIVisibilityRange:160|CurrentOwner:Titan|StartOwner:null;
+Scene,Interact/CaptureZone1,29,0,1,0,1,1,CaptureZone1,2442,70,-1395,0,0,0,5,5,5,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:false|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:1|DecaySpeed:1|Order:7|SupplyStationID:1377|ShowUI:true|UIVisibilityRange:80|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Nature/Tree12,30,0,1,1,1,0,Tree12,2374.913,76,-1286.769,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,31,0,1,1,1,0,Tree12,2169.248,76,-1388.022,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,32,0,1,1,1,0,Tree12,2264,76,-1583,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,33,0,1,1,1,0,Tree12,2460,76,-1502,0,169.3643,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower6,34,0,1,1,1,0,Tower6,-2499,0,-2633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bell2,35,0,1,0,1,1,Bell2,-2499,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
+Scene,Decor/Bell1b,35,0,1,0,1,1,Bell1b,-2499,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
 Scene,Buildings/Windmill2,36,0,1,0,1,0,Windmill2,-2631,50,-2483,0,40.00001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Village2,37,0,1,1,1,0,Village2,-2665.787,6,-3322.394,0,120,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,38,0,1,1,1,0,Tree21,-2684.787,-1,-3209.394,0,45.00002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
@@ -100,7 +100,7 @@ Scene,Buildings/WallBrace,139,0,1,1,1,0,WallBrace,-2387.324,-38,-4970,0,0,0,3,2,
 Scene,Buildings/WallColumn,140,0,1,1,1,0,WallColumn,-2203.499,-38,-4970,0,0,0,10,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallBrace,141,0,1,1,1,0,WallBrace,-2012.574,-38,-4970,0,0,0,3,2,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallBrace,142,0,1,1,1,0,WallBrace,-2794,-38,-4970,0,0,0,3,2,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/WallGateA1,146,0,1,0,1,1,WallGateA1,-2596,-38,-4970,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Closed|StartStateDropdown:Closed  Open|Interactable:true;
+Scene,Buildings/WallGateA1,146,0,1,0,1,1,WallGateA1,-2596,-38,-4970,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Closed|Interactable:true|StartStateDropdown:Closed  Open;
 Scene,Buildings/WallBrace,144,0,1,1,1,0,WallBrace,-3178.589,-38,-4970,0,0,0,3,2,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallColumn,145,0,1,1,1,0,WallColumn,-2992,-38,-4970,0,0,0,10,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Canal1,172,0,1,1,1,0,Canal1,-3004.5,-2,-4649,0,0,0,2.28,3,3,Physical,Entities,Default,Default|255/255/255/255,;
@@ -128,8 +128,8 @@ Scene,Buildings/House15,180,0,1,1,1,0,House15,-2860,26,-4313,0,180,0,0.8000001,0
 Scene,Buildings/House15,181,0,1,1,1,0,House15,-2860,26,-4357,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House15,182,0,1,1,1,0,House15,-2860,32,-4526,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Building3,183,0,1,1,1,0,Building3,-2872,14,-4892,0,90,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Building4,184,0,1,1,1,0,Building4,-2924.5,11,-4899.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Windmill1,185,0,1,1,1,0,Windmill1,-2934,58,-4892.5,-5.088888E-14,15,180,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Building4,184,0,1,1,1,0,Building4,-2924.5,5.431443,-4899.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/WaterWheel1,1449,0,1,1,1,0,WaterWheel1,-2942.667,21.54236,-4887.766,0,270,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,293,0,1,1,1,0,Cuboid,-2719,-30,-4096,0,0,0,5,10,10,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone16|1/2|0/0,;
 Scene,Geometry/Plane,187,0,1,1,1,0,Plane,-2734.5,15,-3896,0,0,0,1.9,1,30,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone13|1/10|0/0,;
 Scene,Geometry/Plane,188,0,1,1,1,0,Plane,-2744,5,-3896,0,0,90,2,1,30,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone13|1/10|0/0,;
@@ -265,7 +265,7 @@ Scene,General/EditorTitanSpawnPoint,355,0,1,1,0,0,Titan SpawnPoint,-2291.042,30.
 Scene,Buildings/WallColumn,357,0,1,1,1,0,WallColumn,-2693,-80,-4909,0,90,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallColumn,358,0,1,1,1,0,WallColumn,-2693,-80,-4823,0,90,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallBrace,359,0,1,1,1,0,WallBrace,-2692,-22,-4866,0,90,0,1,0.5,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Arenas/HQ4,379,0,1,1,1,0,HQ4,-2259,16,-4333,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Arenas/HQ1d,379,0,1,1,1,0,HQ1d,-2259,16,-4333,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Building1,380,0,1,1,1,0,Building1,-2411,17,-4130,0,180,0,1.6,1.6,1.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Building1,381,0,1,1,1,0,Building1,-2335,17,-4055,0,270,0,1.6,1.6,1.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower11,382,0,1,1,1,0,Tower11,-2410.268,15,-4056,0,0,0,3,2,3,Physical,Entities,Default,Default|255/255/255/255,;
@@ -312,7 +312,7 @@ Scene,Buildings/Building4,426,0,1,1,1,0,Building4,-2255,0,-4910,0,0,0,1,1,1,Phys
 Scene,Buildings/House19,427,0,1,1,1,0,House19,-2275,0,-3979,0,180,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House24,428,0,1,1,1,0,House24,-2335,0,-3969,0,180,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House24,429,0,1,1,1,0,House24,-2398,0,-3969,0,180,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Arch2a,431,0,1,1,1,0,Arch2a,-2465,45,-3885,0,0,0,2,2,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Arch2,431,0,1,1,1,0,Arch2,-2465,45,-3885,0,0,0,2,2,1.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tent1,432,0,1,1,1,0,Tent1,-2661,0,-3843,0,90,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tent1,433,0,1,1,1,0,Tent1,-2655,0,-3878,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tent1,434,0,1,1,1,0,Tent1,-2655,0,-3907,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -333,12 +333,12 @@ Scene,Buildings/Building1,459,0,1,1,1,0,Building1,-2405,17,-4336.517,0,180,0,1.6
 Scene,Buildings/House20,453,0,1,1,1,0,House20,-2505,0,-4927,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Flag2,462,0,1,1,1,0,Flag2,-2597,26,-4442,0,0,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Flag2,463,0,1,1,1,0,Flag2,-2597,26,-4682,0,0,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1a,464,0,1,1,1,0,FlagPole1a,-2642,0,-4226,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1a,465,0,1,1,1,0,FlagPole1a,-2533,0,-4226,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1a,466,0,1,1,1,0,FlagPole1a,-2533,0,-4122,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1a,467,0,1,1,1,0,FlagPole1a,-2642,0,-4122,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole1a,468,0,1,1,1,0,FlagPole1a,-2533,0,-4008,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Stall2a,473,0,1,1,1,0,Stall2a,-2859,14,-3859,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1,464,0,1,1,1,0,FlagPole1,-2642,0,-4226,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1,465,0,1,1,1,0,FlagPole1,-2533,0,-4226,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1,466,0,1,1,1,0,FlagPole1,-2533,0,-4122,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1,467,0,1,1,1,0,FlagPole1,-2642,0,-4122,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1,468,0,1,1,1,0,FlagPole1,-2533,0,-4008,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Stall2,473,0,1,1,1,0,Stall2,-2859,14,-3859,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box3,474,0,1,1,1,0,Box3,-2859,14,-3843,0,112.5,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallBrace,481,0,1,1,1,0,WallBrace,-2712,-2,-4027,22.50002,90,0,0.2,0.15,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,477,0,1,1,1,0,Lantern3,-2840,21,-4123,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -357,7 +357,7 @@ Scene,Buildings/House15,496,0,1,1,1,0,House15,-2413,0,-4849,0,90,0,1,1,1,Physica
 Scene,Buildings/House15,497,0,1,1,1,0,House15,-2356,0,-4877,0,142.5,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower6,498,0,1,1,1,0,Tower6,-2735,15,-3841,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower6,499,0,1,1,1,0,Tower6,-2735,15,-4015,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bell2,500,0,1,0,1,1,Bell2,-2642.936,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
+Scene,Decor/Bell1b,500,0,1,0,1,1,Bell1b,-2642.936,85,-2633,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,Bell|ResetDelay:0.3|LureTitans:false|LureRadius:100|LureDuration:5|VelocityHitThreshold:30;
 Scene,Buildings/Tower6,501,0,1,1,1,0,Tower6,-2642,0,-2633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Plane,517,0,1,1,1,0,Plane,-3070,5,-2921,0,0,270,2,1,150,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone13|1/45|0/0,;
 Scene,Geometry/Plane,518,0,1,1,1,0,Plane,-3080,15,-2921,0,0,0,2,1,150,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone13|1/45|0/0,;
@@ -373,14 +373,14 @@ Scene,Buildings/WallColumn,525,0,1,1,1,0,WallColumn,-2693,-80,-4368,0,90,0,2,1,1
 Scene,Buildings/WallColumn,526,0,1,1,1,0,WallColumn,-2693,-80,-4293,0,90,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallColumn,527,0,1,1,1,0,WallColumn,-2693,-80,-4218,0,90,0,2,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallColumn,528,0,1,1,1,0,WallColumn,-2693,-80,-4162,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,533,0,1,1,1,0,FlagPole3a,-2541,52,-4537,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,534,0,1,1,1,0,FlagPole3a,-2541,52,-4587,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,535,0,1,1,1,0,FlagPole3a,-2541,52,-4349,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,536,0,1,1,1,0,FlagPole3a,-2541,52,-4299,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,537,0,1,1,1,0,FlagPole3a,-2646,52,-4299,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,538,0,1,1,1,0,FlagPole3a,-2646,52,-4349,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,539,0,1,1,1,0,FlagPole3a,-2646,52,-4587,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/FlagPole3a,540,0,1,1,1,0,FlagPole3a,-2646,52,-4537,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,533,0,1,1,1,0,FlagPole3,-2541,52,-4537,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,534,0,1,1,1,0,FlagPole3,-2541,52,-4587,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,535,0,1,1,1,0,FlagPole3,-2541,52,-4349,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,536,0,1,1,1,0,FlagPole3,-2541,52,-4299,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,537,0,1,1,1,0,FlagPole3,-2646,52,-4299,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,538,0,1,1,1,0,FlagPole3,-2646,52,-4349,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,539,0,1,1,1,0,FlagPole3,-2646,52,-4587,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole3,540,0,1,1,1,0,FlagPole3,-2646,52,-4537,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Arch2b,547,0,1,1,1,0,Arch2b,-2587.42,44.30782,-4174.937,0,90,0,2,2,2.4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Arch4,549,0,1,1,1,0,Arch4,-2594,0,-4441,0,0,0,1.6,1.6,1.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree13,551,0,1,1,1,0,Tree13,-2054.097,16.49696,-4815.356,12.90343,3.284594E-07,2.573303,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
@@ -404,17 +404,17 @@ Scene,Buildings/House27,598,0,1,1,1,0,House27,-2537,0,-2721,0,270,0,1,1,1,Physic
 Scene,General/EditorCameraSpawnPoint,572,0,1,1,0,0,Camera SpawnPoint,-3383.605,900.6809,-4343.56,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:CameraSpawnPoint;
 Scene,Decor/Scaffold4,669,0,1,1,1,0,Scaffold4,-227,0,-2014,0,75.00002,0,1.8,1,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House25,694,0,1,1,1,0,House25,-227.2375,14.53327,-2013.374,0,255.0001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown2,796,0,1,1,1,0,Overgrown2,-1293,33.3102,-2275.018,0,97.50005,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1b,796,0,1,1,1,0,Overgrown1b,-1293,33.3102,-2275.018,0,97.50005,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy4,798,0,1,1,1,0,Ivy4,-1270.181,19.1869,-2061.673,0,333.2171,0,5,5,5,None,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House15,797,0,1,1,1,0,House15,-1294.5,16.07396,-2052.03,354.8423,248.527,2.025297,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown3,794,0,1,1,1,0,Overgrown3,-1215.174,15.8382,-2275.507,354.2869,113.4192,359.2453,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown3,790,0,1,1,1,0,Overgrown3,-1132,15.8382,-2265,0,60.00007,0,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1c,794,0,1,1,1,0,Overgrown1c,-1215.174,15.8382,-2275.507,354.2869,113.4192,359.2453,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1c,790,0,1,1,1,0,Overgrown1c,-1132,15.8382,-2265,0,60.00007,0,4,4,4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Bridge1,582,0,1,1,1,0,Bridge1,-1597,-4.4,-2093,0,5.401592,0,2,1,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence1,589,0,1,1,1,0,Fence1,-1209.133,19.21517,-2085,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House32,777,0,1,1,1,0,House32,-122,29,-1972,0,165.0001,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence1,588,0,1,1,1,0,Fence1,-1209.133,19.21517,-2011,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,594,0,1,1,1,0,Lantern3,-1314.133,20.8449,-2235,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown3,792,0,1,1,1,0,Overgrown3,-1141,15.8382,-2273,346.1655,336.7891,5.85463,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1c,792,0,1,1,1,0,Overgrown1c,-1141,15.8382,-2273,346.1655,336.7891,5.85463,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,596,0,1,1,1,0,Lantern3,-1225.133,19,-2235,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,597,0,1,1,1,0,Lantern3,-1118.133,19.8382,-2235,-2.203221E-05,277.5,1.307604E-05,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Building1,604,0,1,1,1,0,Building1,-2405,17,-4431.363,0,180,0,1.6,1.6,1.6,Physical,Entities,Default,Default|255/255/255/255,;
@@ -437,10 +437,10 @@ Scene,Buildings/House27,620,0,1,1,1,0,House27,-2814,0,-2784.439,0,270,0,1,0.7,1,
 Scene,Buildings/House27,621,0,1,1,1,0,House27,-2792,0,-2912,0,240,0,1,0.7,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House27,622,0,1,1,1,0,House27,-2746,0,-2963,0,217.5,0,1,0.7,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House21,643,0,1,1,1,0,House21,-2641,0,-2996,0,180,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown2,791,0,1,1,1,0,Overgrown2,-1293,20.8449,-2270,0,97.50005,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Overgrown3,793,0,1,1,1,0,Overgrown3,-1201.826,13.8382,-2298.02,354.6881,7.097216,12.23818,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1b,791,0,1,1,1,0,Overgrown1b,-1293,20.8449,-2270,0,97.50005,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Overgrown1c,793,0,1,1,1,0,Overgrown1c,-1201.826,13.8382,-2298.02,354.6881,7.097216,12.23818,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Windmill1,630,0,1,0,1,0,Windmill1,-992.7642,18,-2249.781,2.663395,210.0357,1.538999,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,FX/WaterCube1,631,0,1,0,1,0,WaterCube1,-1598.943,6,-2148,0,0,0,75,1.5,130.2532,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10;
+Scene,FX/WaterCube1,631,0,1,0,1,0,WaterCube1,-1598.943,6,-2148,0,0,0,75,1.5,130.2532,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|DampingForce:0.3|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10|WaveDistance:20|WaveSpeed:500|NoiseStrength:5|NoiseWalk:1|Scale:2;
 Scene,Buildings/House21,637,0,1,1,1,0,House21,-2700,0,-2989,0,195,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House23,636,0,1,1,1,0,House23,-2603,50,-2449,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House21,644,0,1,1,1,0,House21,-2535,0,-2996,0,180,0,1,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -460,18 +460,18 @@ Scene,Decor/RopeFence2,693,0,1,1,1,0,RopeFence2,-139.4425,11.63347,-1999.748,346
 Scene,Buildings/Tower12,696,0,1,1,1,0,Tower12,-233.1622,14.53327,-2003.873,0,255.0001,0,0.57,0.57,0.57,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower8,780,0,1,1,1,0,Tower8,-224,18,-2097,0,0,7.500003,1,1,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone15|1/1|0/0,;
 Scene,Decor/Planks2,698,0,1,1,1,0,Planks2,-226.2235,35.87819,-2011.979,54.78925,74.96815,0.9642118,0.6,0.6,0.6,Physical,Entities,Default,Default|255/183/97/255,;
-Scene,Buildings/House34,699,0,1,1,1,0,House34,-222.3973,32.81383,-2018.543,0,163.9446,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House32c,699,0,1,1,1,0,House32c,-222.3973,32.81383,-2018.543,0,163.9446,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy5,781,0,1,1,1,0,Ivy5,-159,37,-2064,0,0,0,6,6,6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,704,0,1,1,1,0,Lantern3,-217.1296,2.006644,-1994.954,357.9044,253.863,352.7971,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold4,705,0,1,1,1,0,Scaffold4,-164.5,11.93333,-2080,0,172.5,0,4,1,4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,709,0,1,1,1,0,Lantern3,-186,26.93334,-2064,0,261.2311,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House16,708,0,1,1,1,0,House16,-158,25.93334,-2078,0,82.49995,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,895,0,1,1,1,0,Pine1,-54.64275,21.29149,-2109.909,-6.670107E-08,348.7652,358.0935,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,897,0,1,1,1,0,Pine2,-371,5,-2198,2.560169,345,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,897,0,1,1,1,0,Pine1b,-371,5,-2198,2.560169,345,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,901,0,1,1,1,0,Pine1,-57.73449,21.29149,-2159.38,353.3299,348.7652,358.0935,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,902,0,1,1,1,0,Pine2,-6.24243,20.93336,-2170.287,4.127362,0,0,1.3,1.3,1.3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,899,0,1,1,1,0,Pine2,-45.74363,20.93336,-2031.64,4.127362,0,0,1.3,1.3,1.3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,896,0,1,1,1,0,Pine2,-171.8989,20.93336,-2143.135,0.2966695,350.2772,1.730906,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,902,0,1,1,1,0,Pine1b,-6.24243,20.93336,-2170.287,4.127362,0,0,1.3,1.3,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,899,0,1,1,1,0,Pine1b,-45.74363,20.93336,-2031.64,4.127362,0,0,1.3,1.3,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,896,0,1,1,1,0,Pine1b,-171.8989,20.93336,-2143.135,0.2966695,350.2772,1.730906,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,898,0,1,1,1,0,Pine1,-201.4176,21.29149,-2173.125,358.4104,9.757223,9.163641,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,900,0,1,1,1,0,Pine1,0.003261089,21.29149,-2093.468,353.3299,348.7652,358.0935,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,718,0,1,1,1,0,Tree12,2372.994,76,-1527.676,0,315,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -526,17 +526,17 @@ Scene,Nature/Tree12,767,0,1,1,1,0,Tree12,2263.959,76,-1851.497,0,0,0,1,1,1,Physi
 Scene,Nature/Tree12,768,0,1,1,1,0,Tree12,2307.361,76,-1694.002,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown1,769,0,1,1,1,0,Overgrown1,1702,60.41668,-1770,0,60.00003,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree20,770,0,1,1,1,0,Tree20,1737,56,-1773,0,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House34,771,0,1,1,1,0,House34,1686,58,-1780,351.2778,343.2632,354.4511,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House32c,771,0,1,1,1,0,House32c,1686,58,-1780,351.2778,343.2632,354.4511,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Overgrown1,773,0,1,1,1,0,Overgrown1,1791,60.41668,-1746,0,352.5,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/RoofWindow2,778,0,1,1,1,0,RoofWindow2,-177,57.6,-2074,0,172.5,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/RoofWindow2,779,0,1,1,1,0,RoofWindow2,-161,57.6,-2072,0,172.5,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/RoofWindow1b,778,0,1,1,1,0,RoofWindow1b,-177,57.6,-2074,0,172.5,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/RoofWindow1b,779,0,1,1,1,0,RoofWindow1b,-161,57.6,-2072,0,172.5,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy1,783,0,1,1,1,0,Ivy1,-130,27,-2074,0,270,0,8,8,8,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy1,784,0,1,1,1,0,Ivy1,-239,14.5015,-2005,0,75.00002,0,4.5,10,4,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy2,785,0,1,1,1,0,Ivy2,-145,27,-2061.173,0,170.5388,0,5,5,5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bonfire2,786,0,1,1,1,0,Bonfire2,1718.345,59.6552,-1627.113,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Box2,787,0,1,1,1,0,Box2,1736,60,-1626,0,60.00003,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1386,1376,1,1,1,0,Respawn1,1722.351,60,-1618.904,0,33.54229,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Box2,787,0,1,1,1,0,Box2,1730.096,60,-1601.898,0,60.00003,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tent1,788,0,1,1,1,0,Tent1,1713,60,-1595,0,165,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply2,789,0,1,0,1,0,Supply2,1713,60,-1671,0,315,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,789,1375,1,0,1,0,Supply2,1713,60,-1671,0,315,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Nature/Ivy2,800,0,1,1,1,0,Ivy2,-1319.025,19.66949,-2060.509,0,72.33002,0,6,6,6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy2,801,0,1,1,1,0,Ivy2,-1318.286,32.0932,-2063.685,0,72.33002,0,6,6,6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy2,802,0,1,1,1,0,Ivy2,-1303.01,17.97646,-2070.527,0,342.5325,0,6,6,6,None,Entities,Default,Default|255/255/255/255,;
@@ -549,21 +549,21 @@ Scene,Nature/Ivy2,811,0,1,1,1,0,Ivy2,-979.9841,16.61465,-2066.702,0.8291676,28.4
 Scene,Nature/Ivy2,812,0,1,1,1,0,Ivy2,-987.4969,28.32058,-2049.793,350.5455,118.1326,0.8743182,6,6,6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Ivy2,813,0,1,1,1,0,Ivy2,-984.021,16.06077,-2048.18,350.5455,118.1326,0.8743182,6,6,6,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Trunk1,815,0,1,1,1,0,Trunk1,-923.5419,-0.9973037,-2071.448,0,0,0,0.4,0.4,0.4,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree21,816,0,1,1,1,0,Tree21,-946.4857,12.82641,-2028.738,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree21,816,0,1,1,1,0,Tree21,-946.4857,3.37628,-2028.738,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,817,0,1,1,1,0,Tree21,-1176.736,13.85248,-2326.77,0,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,818,0,1,1,1,0,Tree21,-1022.776,17,-2389.965,3.647597,55.21354,357.4695,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,819,0,1,1,1,0,Tree21,-949.5286,17,-2389.965,5.837139,345.77,356.9133,0.8,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,820,0,1,1,1,0,Tree21,-991.2357,18,-2360.332,5.837133,256.5808,356.9133,0.8,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,904,0,1,1,1,0,Pine2,-26,16,-1976,12.06309,315.3619,9.069214,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,903,0,1,1,1,0,Pine2,-155.0454,20.93336,-2191.851,0.2966687,77.22267,1.730906,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,904,0,1,1,1,0,Pine1b,-26,16,-1976,12.06309,315.3619,9.069214,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,903,0,1,1,1,0,Pine1b,-155.0454,20.93336,-2191.851,0.2966687,77.22267,1.730906,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,909,0,1,1,1,0,Pine1,-498,9,-2229,0,337.5,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,911,0,1,1,1,0,Pine1,-383,7,-1901,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,908,0,1,1,1,0,Pine2,-425,9,-2330,2.560169,315,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,908,0,1,1,1,0,Pine1b,-425,9,-2330,2.560169,315,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,910,0,1,1,1,0,Pine1,-498,10,-1948,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,906,0,1,1,1,0,Pine1,-80,16,-1979,353.3299,348.7652,358.0935,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,907,0,1,1,1,0,Pine2,-117.2444,20.93336,-2146.271,2.560169,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,905,0,1,1,1,0,Pine2,-74,7,-1946,12.06309,30.36194,9.069219,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,FX/Fish,831,0,1,0,1,0,Fish,-1597,8,-2453,0,4.210992,0,6,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Nature/Pine1b,907,0,1,1,1,0,Pine1b,-117.2444,20.93336,-2146.271,2.560169,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,905,0,1,1,1,0,Pine1b,-74,7,-1946,12.06309,30.36194,9.069219,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/Fish1,831,0,1,0,1,0,Fish1,-1597,8,-2453,0,4.210992,0,6,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Nature/Tree18,832,0,1,1,1,0,Tree18,-1429,16,-1992,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree18,833,0,1,1,1,0,Tree18,-1910,17,-2159,0,0,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree18,834,0,1,1,1,0,Tree18,-2105,6,-2586,0,0,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
@@ -592,24 +592,24 @@ Scene,Buildings/House26,876,0,1,1,1,0,House26,-2415,-3,-2676,0,307.5,0,1,1,1,Phy
 Scene,Buildings/Chimney4,879,0,1,1,1,0,Chimney4,-2395,7,-2650,0,127.5,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel2,881,0,1,1,1,0,Barrel2,-2624,-1,-2694,0,0,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel2,882,0,1,1,1,0,Barrel2,-2627,-2,-2689,358.6701,321.8854,333.0085,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Box2,884,0,1,1,1,0,Box2,-2552,0,-2699,0,82.50004,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,FX/Fish,940,0,1,0,1,0,Fish,-1597,8,-2004.296,0,4.210992,0,6,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,FX/Fish,939,0,1,0,1,0,Fish,-1597,8,-2213.511,0,4.210992,0,4,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,FX/Seaweed,887,0,1,0,1,0,Seaweed,-1612,-26,-2415,270,0,0,2,2,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,FX/Seaweed,888,0,1,0,1,0,Seaweed,-1643,-25,-2142,270,0,0,2,2,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,FX/Seaweed,889,0,1,0,1,0,Seaweed,-1596,-25,-1947,270,0,0,3.099999,3.899998,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,Nature/Cattail1,890,0,1,1,1,0,Cattail1,-1688.925,13.36774,-2027.283,3.888684,330.9185,352.5824,20,20,20,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Cattail1,893,0,1,1,1,0,Cattail1,-1688.925,13.90661,-2019.945,3.888684,330.9185,352.5824,20,20,20,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Cattail1,894,0,1,1,1,0,Cattail1,-1685.663,12.15411,-2030.695,3.888684,330.9185,352.5824,20,20,20,None,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine1,912,0,1,1,1,0,Pine1,-185,-3,-1758,352.5,30.00001,2.152852E-07,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,913,0,1,1,1,0,Pine2,-298,-1,-1778,2.560169,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,914,0,1,1,1,0,Pine2,-447,7,-1967,2.560169,330,-5.341416E-08,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,915,0,1,1,1,0,Pine2,-311,2,-2292,2.560169,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,916,0,1,1,1,0,Pine2,-297,-2,-1866,2.560177,37.50001,8.012124E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine1,917,0,1,1,1,0,Pine1,-272,9,-2369,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Box2,884,0,1,1,1,0,Box2,-2552,0,-2699,0,82.50004,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/Fish1,940,0,1,0,1,0,Fish1,-1597,8,-2004.296,0,4.210992,0,6,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/Fish1,939,0,1,0,1,0,Fish1,-1597,8,-2213.511,0,4.210992,0,4,1,3,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/Seaweed1,887,0,1,0,1,0,Seaweed1,-1612,-26,-2415,270,0,0,2,2,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/Seaweed1,888,0,1,0,1,0,Seaweed1,-1643,-25,-2142,270,0,0,2,2,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/Seaweed1,889,0,1,0,1,0,Seaweed1,-1596,-25,-1947,270,0,0,3.099999,3.899998,2,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Nature/Cattail1,890,0,1,1,1,0,Cattail1,-1691.5,15,-2023.5,3.888684,330.9185,352.5824,20,20,20,None,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Cattail1,893,0,1,1,1,0,Cattail1,-1694,13.90661,-2017.5,0,285.9185,0,20,20,20,None,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Cattail1,894,0,1,1,1,0,Cattail1,-1687.5,12.15411,-2030.695,3.888685,353.4185,352.5824,20,20,20,None,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,912,0,1,1,1,0,Pine1,-185,-0.5,-1758,352.5,30.00001,2.152852E-07,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,913,0,1,1,1,0,Pine1b,-298,-1,-1778,2.560169,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,914,0,1,1,1,0,Pine1b,-447,7,-1967,2.560169,330,-5.341416E-08,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,915,0,1,1,1,0,Pine1b,-311,2,-2292,2.560169,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,916,0,1,1,1,0,Pine1b,-297,-2,-1866,2.560177,37.50001,8.012124E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,917,0,1,1,1,0,Pine1,-272,4,-2369,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,918,0,1,1,1,0,Pine1,-617,13,-2391,2.20973E-07,330,8.24682E-07,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,919,0,1,1,1,0,Pine2,-348,5,-2394,2.560169,97.50005,4.273133E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,920,0,1,1,1,0,Pine2,-576,13,-2323,2.560169,67.50003,1.068283E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,919,0,1,1,1,0,Pine1b,-348,5,-2394,2.560169,97.50005,4.273133E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,920,0,1,1,1,0,Pine1b,-576,13,-2323,2.560169,67.50003,1.068283E-07,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree22,921,0,1,1,1,0,Tree22,-643,17,-2031,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree22,922,0,1,1,1,0,Tree22,-697,17,-2009,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree22,923,0,1,1,1,0,Tree22,-710,17,-2332,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -625,13 +625,13 @@ Scene,Nature/Aspen1,932,0,1,1,1,0,Aspen1,-2572,49,-2378,0,60.00003,0,0.5,0.5,0.5
 Scene,Nature/Boulder9,935,0,1,1,1,0,Boulder9,-2641,49,-2464,0,0,0,11,11,11,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Planter1,936,0,1,1,1,0,Planter1,-2602.838,50.93203,-2458.902,0,0,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box3,938,0,1,1,1,0,Box3,-2589.646,49.89522,-2452.835,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply2,941,0,1,0,1,0,Supply2,-2596,-9.250644E-05,-3662,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,942,0,1,0,1,0,Supply2,-2589,0,-2761,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,943,0,1,0,1,0,Supply2,-1940,17.30987,-2315,0,0,2.559279,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,944,0,1,0,1,0,Supply2,-1151,20,-2161,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,945,0,1,0,1,0,Supply2,-204,-0.1743857,-1902,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,946,0,1,0,1,0,Supply2,897,47.29805,-2022,11.20849,359.6843,357.5855,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
-Scene,Interact/Supply2,947,0,1,0,1,0,Supply2,2442,72,-1395,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,941,1364,1,0,1,0,Supply2,-2596,-9.250644E-05,-3662,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,942,1365,1,0,1,0,Supply2,-2589,0,-2761,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,943,1367,1,0,1,0,Supply2,-1940,17.82124,-2315,0,0,4.455922,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,944,1369,1,0,1,0,Supply2,-1120.775,20,-2161,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,945,1371,1,0,1,0,Supply2,-204,-0.1743857,-1902,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,946,1373,1,0,1,0,Supply2,897,47.29805,-2022,11.20849,359.6843,357.5855,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,947,1377,1,0,1,0,Supply2,2442,72,-1395,0,0,0,0.7,0.7,0.7,None,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,General/EditorTitanSpawnPoint,948,0,1,1,0,0,Titan SpawnPoint,-2429,0,-3643,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint1;
 Scene,General/EditorTitanSpawnPoint,949,0,1,1,0,0,Titan SpawnPoint,-2756.314,0,-3629.5,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint1;
 Scene,General/EditorTitanSpawnPoint,950,0,1,1,0,0,Titan SpawnPoint,-2780.385,0,-3526,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint1;
@@ -645,14 +645,14 @@ Scene,General/EditorTitanSpawnPoint,959,0,1,1,0,0,Titan SpawnPoint,-2650.552,3,-
 Scene,General/EditorTitanSpawnPoint,960,0,1,1,0,0,Titan SpawnPoint,-2776,3,-2714.795,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint2;
 Scene,General/EditorTitanSpawnPoint,961,0,1,1,0,0,Titan SpawnPoint,-2776,3,-2588.341,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint2;
 Scene,General/EditorTitanSpawnPoint,962,0,1,1,0,0,Titan SpawnPoint,-2467.819,3,-2588.341,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint2;
-Scene,General/EditorTitanSpawnPoint,963,0,1,1,0,0,Titan SpawnPoint,-2045.735,26.60124,-2436.914,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
-Scene,General/EditorTitanSpawnPoint,964,0,1,1,0,0,Titan SpawnPoint,-2028.881,26.60124,-2306.769,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
-Scene,General/EditorTitanSpawnPoint,965,0,1,1,0,0,Titan SpawnPoint,-1891.01,26.60124,-2195.103,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
+Scene,General/EditorTitanSpawnPoint,963,0,1,1,0,0,Titan SpawnPoint,-2109.247,26.60124,-2470.021,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
+Scene,General/EditorTitanSpawnPoint,964,0,1,1,0,0,Titan SpawnPoint,-1804.924,26.60124,-2324.485,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
+Scene,General/EditorTitanSpawnPoint,965,0,1,1,0,0,Titan SpawnPoint,-1870.451,26.60124,-2120.98,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
 Scene,General/EditorTitanSpawnPoint,966,0,1,1,0,0,Titan SpawnPoint,-1894.749,26.60124,-2433.998,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint3;
 Scene,General/EditorTitanSpawnPoint,967,0,1,1,0,0,Titan SpawnPoint,-1307,31,-1983,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
 Scene,General/EditorTitanSpawnPoint,968,0,1,1,0,0,Titan SpawnPoint,-1302,31,-2352,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
 Scene,General/EditorTitanSpawnPoint,969,0,1,1,0,0,Titan SpawnPoint,-1354,31,-2055,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
-Scene,General/EditorTitanSpawnPoint,970,0,1,1,0,0,Titan SpawnPoint,-1103,31,-1983,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
+Scene,General/EditorTitanSpawnPoint,970,0,1,1,0,0,Titan SpawnPoint,-1103,31,-1976.077,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
 Scene,General/EditorTitanSpawnPoint,971,0,1,1,0,0,Titan SpawnPoint,-971,31,-1983,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
 Scene,General/EditorTitanSpawnPoint,972,0,1,1,0,0,Titan SpawnPoint,-880,31,-2290.366,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
 Scene,General/EditorTitanSpawnPoint,973,0,1,1,0,0,Titan SpawnPoint,-1051,31,-2329,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint4;
@@ -727,21 +727,21 @@ Scene,Nature/Tree12,1051,0,1,1,1,0,Tree12,2775.968,76,-1174.992,0,330,0,0.9,0.9,
 Scene,Nature/Tree12,1052,0,1,1,1,0,Tree12,2884.962,76,-1119.669,0,127.5001,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1053,0,1,1,1,0,Tree12,2981.633,76,-1073.739,0,37.50002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1054,0,1,1,1,0,Tree12,2628,76,-1233,0,122.5719,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine1,1055,0,1,1,1,0,Pine1,-1833,17.5,-2376.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1055,0,1,1,1,0,Pine1,-1861.435,17.5,-2328.76,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1056,0,1,1,1,0,Pine1,-1850,17.5,-2464.5,0,37.50002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1057,0,1,1,1,0,Pine1,-1940,15,-2479.5,0,22.50002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1059,0,1,1,1,0,Pine2,-1986,14.5,-2109.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1060,0,1,1,1,0,Pine2,-2058.5,8.5,-2208.5,356.258,29.78731,6.504459,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1061,0,1,1,1,0,Pine2,-2051.5,9,-2128,0,-4.268868E-06,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1059,0,1,1,1,0,Pine1b,-1986,14.5,-2109.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1060,0,1,1,1,0,Pine1b,-2058.5,8.5,-2280.64,356.258,29.78731,6.504459,1.3,1,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1061,0,1,1,1,0,Pine1b,-2062.941,9,-2153.364,0,-4.268868E-06,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold3,1063,0,1,1,1,0,Scaffold3,-2508.5,0,-3721.5,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Scaffold4,1066,0,1,1,1,0,Scaffold4,-2719.5,0,-3677.5,0,0,0,1,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Scaffold4,1067,0,1,1,1,0,Scaffold4,-2719.5,22,-3677.5,0,0,0,1,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Tarp1,1068,0,1,1,1,0,Tarp1,-2719.5,2.5,-3664.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Tarp1,1069,0,1,1,1,0,Tarp1,-2719.5,2.5,-3690,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Tarp1,1070,0,1,1,1,0,Tarp1,-2707,2.5,-3677,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Tarp1,1071,0,1,1,1,0,Tarp1,-2732,2.5,-3677,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/Tower9,1072,0,1,1,1,0,Tower9,-2510.5,-7,-3658.5,0,0,0,1,1,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone19|1/1|0/0,;
-Scene,Decor/Scaffold7,1073,0,1,1,1,0,Scaffold7,-2519,0,-3665,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Scaffold4,1066,0,1,1,1,0,Scaffold4,-2716,0,-3599.75,0,0,0,1,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Scaffold4,1067,0,1,1,1,0,Scaffold4,-2716,22,-3599.75,0,0,0,1,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Tarp1,1068,0,1,1,1,0,Tarp1,-2716,2.5,-3586.75,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Tarp1,1069,0,1,1,1,0,Tarp1,-2716,2.5,-3612.25,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Tarp1,1070,0,1,1,1,0,Tarp1,-2703.5,2.5,-3599.25,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Tarp1,1071,0,1,1,1,0,Tarp1,-2728.5,2.5,-3599.25,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Tower9,1072,0,1,1,1,0,Tower9,-2505.25,-7,-3628.75,0,0,0,1,1,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone19|1/1|0/0,;
+Scene,Decor/Scaffold7,1073,0,1,1,1,0,Scaffold7,-2513.75,0,-3635.25,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Tarp1,1076,0,1,1,1,0,Tarp1,-2496.627,-6.496953,-3722.025,0,90,0,0.5,0.4999999,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Tarp1,1075,0,1,1,1,0,Tarp1,-2509,-6.496953,-3715.322,0,0,0,1,0.4999999,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Tarp1,1077,0,1,1,1,0,Tarp1,-2520.197,-6.496953,-3722.025,0,270,0,0.5,0.4999999,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -775,21 +775,21 @@ Scene,Geometry/Cuboid,1252,0,1,1,0,0,Barrier,-15.5555,3514.571,-1224.824,90,0,0,
 Scene,Geometry/Cuboid,1255,0,1,1,0,0,Barrier,-15.5555,-1581.452,-1224.824,90,0,0,2000,1000,1,Physical,Characters,Default,Default|255/255/255/255,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Fell through the map;
 Scene,Nature/Tree12,1112,0,1,1,1,0,Tree12,2986.956,76,-909.1288,0,37.50002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1113,0,1,1,1,0,Tree12,3113.106,76,-1292.202,0,37.50002,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1114,0,1,1,1,0,Pine2,2238.663,68.34312,-1340.714,354.7814,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1115,0,1,1,1,0,Pine2,2083.936,70.74417,-1383.103,3.73223,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1116,0,1,1,1,0,Pine2,2032.351,70.09176,-1235.682,358.5351,51.46974,1.166241,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1114,0,1,1,1,0,Pine1b,2238.663,68.34312,-1340.714,354.7814,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1115,0,1,1,1,0,Pine1b,2083.936,70.74417,-1383.103,3.73223,0,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1116,0,1,1,1,0,Pine1b,2032.351,70.09176,-1235.682,358.5351,51.46974,1.166241,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1117,0,1,1,1,0,Pine1,2833.007,70.31243,-976.0925,0.8601446,38.61204,0.6868951,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1118,0,1,1,1,0,Pine1,3094.804,70.63774,-1417.555,1.210757,38.61711,0.9669051,1,1.1,1.1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1119,0,1,1,1,0,Pine1,3094.804,70.63774,-1486.136,353.6612,12.63935,358.3679,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1120,0,1,1,1,0,Pine1,3135.469,70.63774,-1452.052,359.7337,88.24931,359.7002,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1121,0,1,1,1,0,Pine2,2199.065,72,-1311.531,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1122,0,1,1,1,0,Pine2,2221.653,69.78613,-1399.822,358.5585,334.4384,0.6893547,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1121,0,1,1,1,0,Pine1b,2199.065,72,-1311.531,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1122,0,1,1,1,0,Pine1b,2221.653,69.78613,-1399.822,358.5585,334.4384,0.6893547,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1123,0,1,1,1,0,Pine1,2454.663,70.89631,-996.1479,357.8716,38.63847,358.2995,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1124,0,1,1,1,0,Pine1,2500.314,70.35915,-996.1479,357.8716,8.531308,358.2995,1.1,1.1,1.1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1125,0,1,1,1,0,Pine1,2500.314,70.29416,-934.4167,356.3032,299.8201,357.1596,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1126,0,1,1,1,0,Pine2,2622.173,69.2382,-1447.749,3.405957,338.7253,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1127,0,1,1,1,0,Pine2,2654.973,69.2382,-1447.749,1.659118,34.06456,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1128,0,1,1,1,0,Pine2,2652.103,69.16206,-1469.583,3.087572,119.6691,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1126,0,1,1,1,0,Pine1b,2622.173,69.2382,-1447.749,3.405957,338.7253,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1127,0,1,1,1,0,Pine1b,2654.973,69.2382,-1447.749,1.659118,34.06456,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1128,0,1,1,1,0,Pine1b,2652.103,69.16206,-1469.583,3.087572,119.6691,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1129,0,1,1,1,0,Pine1,2602.676,71.37729,-1462.356,358.9328,339.4373,2.803433,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1130,0,1,1,1,0,Pine1,2625.09,71.37729,-1492.818,358.9328,313.9256,2.80344,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Mushroom1,1131,0,1,1,1,0,Mushroom1,2605.81,72,-1463.042,0,0,0,2,2,2,None,Entities,Default,Default|255/255/255/255,;
@@ -824,9 +824,9 @@ Scene,Nature/Mushroom1,1159,0,1,1,1,0,Mushroom1,2366.438,72,-1870.473,0,24.1821,
 Scene,Nature/Mushroom1,1160,0,1,1,1,0,Mushroom1,2364.247,72,-1872.02,0,353.1691,0,3,3,3,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Aspen1,1196,0,1,1,1,0,Aspen1,2674.087,72,-737.4327,0,324.4411,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1162,0,1,1,1,0,Pine1,2363.859,71.37729,-1868.563,358.9328,3.619388,2.803457,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1163,0,1,1,1,0,Pine2,2387.628,69.2382,-1863.225,3.405975,2.907402,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1164,0,1,1,1,0,Pine2,2417.551,69.2382,-1876.661,1.659127,58.24667,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1165,0,1,1,1,0,Pine2,2405.988,69.16206,-1895.403,3.087575,143.8512,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1163,0,1,1,1,0,Pine1b,2387.628,69.2382,-1863.225,3.405975,2.907402,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1164,0,1,1,1,0,Pine1b,2417.551,69.2382,-1876.661,1.659127,58.24667,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1165,0,1,1,1,0,Pine1b,2405.988,69.16206,-1895.403,3.087575,143.8512,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1166,0,1,1,1,0,Pine1,2371.828,71.37729,-1905.534,358.9328,338.1077,2.803461,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,1250,0,1,1,0,0,Barrier,-15.5555,1514.363,-4954.164,0,0,0,1500,500,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder1,1195,0,1,1,1,0,Boulder1,3045.17,72.14842,-1024.715,0,0,0,0.05,0.02,0.05,Physical,Entities,Default,Default|255/255/255/255,;
@@ -844,9 +844,9 @@ Scene,Nature/Mushroom1,1179,0,1,1,1,0,Mushroom1,3052.514,72,-1053.046,0,235.5146
 Scene,Nature/Mushroom1,1180,0,1,1,1,0,Mushroom1,3055.188,72,-1052.865,0,204.5015,0,3,3,3,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Boulder1,1190,0,1,1,1,0,Boulder1,2642.628,72.88174,-1465.312,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1182,0,1,1,1,0,Pine1,3053.722,71.37729,-1056.019,358.9328,214.9519,2.803447,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1183,0,1,1,1,0,Pine2,3030.645,69.2382,-1048.22,3.40598,214.2399,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1184,0,1,1,1,0,Pine2,3012.071,69.2382,-1021.18,1.659134,269.579,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Pine2,1185,0,1,1,1,0,Pine2,3031.694,69.16206,-1011.188,3.087579,355.1836,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1183,0,1,1,1,0,Pine1b,3030.645,69.2382,-1048.22,3.40598,214.2399,358.6748,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1184,0,1,1,1,0,Pine1b,3012.071,69.2382,-1021.18,1.659134,269.579,357.4914,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1185,0,1,1,1,0,Pine1b,3031.694,69.16206,-1011.188,3.087579,355.1836,354.9875,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1,1186,0,1,1,1,0,Pine1,3066.141,71.37729,-1020.296,358.9328,189.4401,2.803478,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,1253,0,1,1,0,0,Barrier,-3638.292,1514.363,2478.262,0,90,0,1500,500,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Nature/Tree8,1188,0,1,1,1,0,Tree8,2518.75,64.71473,-773.6415,0,0,357.5493,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -871,8 +871,8 @@ Scene,Terrain/MountainRange1a,1243,0,1,1,1,0,MountainRange1a,-5453.877,0,-74.132
 Scene,Terrain/MountainRange1a,1242,0,1,1,1,0,MountainRange1a,-5679.126,0,-3153.16,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Terrain/Hill1,1241,0,1,1,1,0,Hill1,-5482.866,0,-3138.924,0,0,0,2,1,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Terrain/MountainRange2a,1247,0,1,1,1,0,MountainRange2a,5340.294,-9.327795,-3899.558,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Terrain/MountainRange2a,1248,0,1,1,1,0,MountainRange2a,6637.539,72,-3896.659,0,93.43973,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Terrain/MountainRange2a,1249,0,1,1,1,0,MountainRange2a,6830.679,72,-683.3369,0,272.0986,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Terrain/MountainRange2a,1248,0,1,1,1,0,MountainRange2a,6582.656,72,-623.2708,0,90,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Terrain/MountainRange1a,1450,0,1,1,1,0,MountainRange1a,-6800.065,0,-927.4089,0,90,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree23,1257,0,1,1,1,0,Tree23,-3619.098,0,-4107.662,0,89.86922,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree23,1258,0,1,1,1,0,Tree23,-4083.703,0,-3839.342,0,132.0765,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree23,1259,0,1,1,1,0,Tree23,-4234.673,0,-3071.923,0,132.0765,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
@@ -955,39 +955,157 @@ Scene,Decor/Barrel3,1352,0,1,1,1,0,Barrel3,-2748,1,-2827,0,75.00004,90.00005,0.7
 Scene,Decor/Stall2c,1353,0,1,1,1,0,Stall2c,-2521.5,0,-2823.5,0,270,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,1354,0,1,1,1,0,Tree21,-2330.5,-1,-3344,0,150,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree21,1355,0,1,1,1,0,Tree21,-2192.5,-4.5,-3556,0.9762015,187.4366,352.5634,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/CaptureZone2,1356,0,1,0,1,1,CaptureZone1,-2602.5,0,-2783,0,0,0,45,10,45,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:1|Order:1|SupplyStationID:942|ShowUI:true|UIVisibilityRange:250;
+Scene,Interact/CaptureZone2,1356,0,1,0,1,1,CaptureZone1,-2602.5,0,-2783,0,0,0,45,10,45,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:false|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:false|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:1|Order:1|SupplyStationID:1365|ShowUI:true|UIVisibilityRange:250|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Geometry/Cuboid,1358,0,1,1,0,0,Titan Barrier,-2639,27.5,-2909.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,1359,0,1,1,0,0,Titan Barrier,-2538.5,27.5,-2910.5,0,0,0,5,6.4,3.7,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1151,20,-2161.5,0,0,0,23,10,23,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:true|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:true|TeamsCanCapture:true|CaptureTime:25|DecaySpeed:1|Order:3|SupplyStationID:944|ShowUI:true|UIVisibilityRange:150;
+Scene,Interact/CaptureZone2,1360,0,1,0,1,1,CaptureZone1,-1125.132,20,-2161.5,0,0,0,50,10,50,Region,Characters,Default,Default|255/255/255/255,CaptureZone|Enabled:true|AICanCapture:false|HumanCanCapture:true|ShifterCanCapture:true|TitanCanCapture:false|TeamsCanCapture:true|CaptureTime:40|DecaySpeed:1|Order:3|SupplyStationID:1369|ShowUI:true|UIVisibilityRange:250|StartOwner:Titan|CurrentOwner:Titan;
 Scene,Geometry/Cuboid,1361,0,1,1,0,0,Titan Barrier,-1116.5,36,-2055.5,0,0,0,17,10,10.1,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,1362,0,1,1,0,0,Titan Barrier,-1011.5,68,-2241,0,30.00001,0,2.1,10.9,9.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|
+Scene,Geometry/Cuboid,1362,0,1,1,0,0,Titan Barrier,-1011.5,68,-2241,0,30.00001,0,2.1,10.9,9.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
+Scene,Geometry/Cuboid,1363,1364,1,0,0,0,ReinforcementZone,-2624.484,4.884339,-3662.033,0,0,0,2,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1364,0,1,0,1,0,P1,-2596,0.7504212,-3662,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,None,1365,0,1,0,1,0,P2,-2602.5,0,-2783,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1366,1365,1,0,0,0,ReinforcementZone,-2558.5,4.884339,-2718.646,0,0,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1367,0,1,0,1,0,P3,-1940,15,-2315,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1368,1367,1,0,0,0,ReinforcementZone,-1969.5,21.08002,-2285.5,2.237997,315.342,1.740367,3,1,3,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1369,0,1,0,1,0,P4,-1151,20,-2161.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1381,1368,1,1,1,0,Respawn1,-1962.058,16.46177,-2291.507,359.0711,359.9847,0.9457952,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,None,1371,0,1,0,1,0,P5,-204,0,-1902,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1372,1371,1,0,0,0,ReinforcementZone,-209.7749,5,-1857.954,0,342.9997,0,3,1,3,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1373,0,1,0,1,0,P6,897,44,-2022,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1374,1373,1,0,0,0,ReinforcementZone,916,45,-1982.5,0,0,354.0073,3,1,3,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1375,0,1,0,1,0,P7,1713,58,-1671,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1376,1375,1,0,0,0,ReinforcementZone,1718.88,65,-1616.517,0,344.3635,0,3,1,3,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,None,1377,0,1,0,1,0,P8,2442,70,-1395,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1378,1377,1,0,0,0,ReinforcementZone,2413.746,74.73515,-1355.334,0,0,0,3,1,3,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Interact/Respawn1,1379,1363,1,1,1,0,Respawn1,-2627,0,-3663.5,0,330,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1380,1366,1,1,1,0,Respawn1,-2554.5,0,-2718.5,0,135,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1382,1383,1,1,1,0,Respawn1,-1073.193,19.97181,-2092.394,0,83.40287,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,1383,1369,1,0,0,0,ReinforcementZone,-1075.564,24.85615,-2095.618,0,308.4029,0,1.5,1,2,Region,Characters,Default,Transparent|131/103/255/109|Misc/None|1/1|0/0,InteractActionTrigger|Key:Interact2,Tag|Name:ReinforcementZone;
+Scene,Interact/Respawn1,1384,1372,1,1,1,0,Respawn1,-206,0,-1856,0,45.00002,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1385,1374,1,1,1,0,Respawn1,914.5386,41.07408,-1986.862,2.968493,33.52782,355.5309,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/Respawn1,1387,1378,1,1,1,0,Respawn1,2415.614,72,-1353.975,0,27.65249,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/FlagPole1c,1388,0,1,1,1,0,FlagPole1c,-1951.279,12.39375,-2376.957,5.738666,36.96621,359.2801,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Boulder1,1389,0,1,1,1,0,Boulder1,-1949.726,17.24324,-2376.544,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Village1,1395,0,1,1,1,0,Village1,-4866.148,69.61097,-2945.543,16.42768,81.27251,352.3075,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill1,1396,0,1,1,1,0,Windmill1,-4907.426,92.47419,-2750.363,10.41582,51.15401,1.34189,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1397,0,1,1,1,0,House4,-4815.176,70.90237,-2726.961,6.170474,141.2944,8.962793,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1398,0,1,1,1,0,House4,-4730.533,50.92506,-2658.794,357.4317,170.7761,13.41932,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1399,0,1,1,1,0,House4,-4667.635,37.57147,-2668.673,358.8738,224.7449,13.32166,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree19,1400,0,1,1,1,0,Tree19,-4693.556,41.94706,-2623.043,10.41582,51.15401,1.34189,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree19,1401,0,1,1,1,0,Tree19,-4902.027,70.56889,-3048.124,10.41583,51.15401,350.365,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Village1,1402,0,1,1,1,0,Village1,-5009.557,88.5,-4186.09,354.1725,81.58762,355.6537,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Windmill1,1403,0,1,1,1,0,Windmill1,-5056.442,89,-3990.91,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House6,1404,0,1,1,1,0,House6,-4278.588,-5.451124,-2651.781,0,36.10471,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree23,1405,0,1,1,1,0,Tree23,-4233.048,0,-2645.219,0,147.0765,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House6,1406,0,1,1,1,0,House6,-3912.64,-5.451124,-2657.044,0,246.1046,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree23,1407,0,1,1,1,0,Tree23,-3955.36,0,-2639.956,0,357.0764,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1421,0,1,1,1,0,Pine1,-4231.5,-1,-3734,0,322.5,0,1,1.3,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1420,0,1,1,1,0,Pine1,-4331,-1,-3529,0,0,0,1,0.9,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Stable1,1419,0,1,1,1,0,Stable1,-4079,0.1,-2587,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Stable1,1418,0,1,1,1,0,Stable1,-4045.5,0.1,-2499.5,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Stable1,1417,0,1,1,1,0,Stable1,-4045.5,0.1,-3409.5,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Stable1,1416,0,1,1,1,0,Stable1,-4043.5,0.1,-3325.5,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/Village1,1415,0,1,1,1,0,Village1,-3939.5,-1,-3666,0,45.00002,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1422,0,1,1,1,0,Pine1,-4135,-1,-3604,0,2.049057E-05,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1423,0,1,1,1,0,Pine1,-4135,-1,-4308,0,2.049057E-05,0,1,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1424,0,1,1,1,0,Pine1,-3961,-1,-4480.5,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1425,0,1,1,1,0,Pine1,-3875.5,-1,-4764,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1426,0,1,1,1,0,Pine1,-4200.5,-1,-4764,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1427,0,1,1,1,0,Pine1,-4073.5,-1,-4631.5,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1428,0,1,1,1,0,Pine1,-4295.5,-1,-4535.5,0,2.049057E-05,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1429,0,1,1,1,0,Pine1,-3927.5,-1,-4247,0,2.049057E-05,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1430,0,1,1,1,0,Pine1,-4160.572,-1,-4006.071,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1431,0,1,1,1,0,Pine1,-4075.072,-1,-4289.571,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1432,0,1,1,1,0,Pine1,-4273.072,-1,-4157.071,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1433,0,1,1,1,0,Pine1,-4400.072,-1,-4289.571,0,2.049057E-05,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1434,0,1,1,1,0,Pine1,-4495.072,-1,-4061.071,0,2.049057E-05,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1435,0,1,1,1,0,Pine1,-4334.572,-1,-3833.571,0,2.049057E-05,0,1,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1436,0,1,1,1,0,Pine1,-4127.072,-1,-3772.571,0,2.049057E-05,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1437,0,1,1,1,0,Pine1,-4228.347,-1,-2736.365,0,97.50007,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1438,0,1,1,1,0,Pine1,-4520.581,-1,-2784.129,0,97.50007,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1439,0,1,1,1,0,Pine1,-4363.371,-1,-2605.119,0,97.50007,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1440,0,1,1,1,0,Pine1,-4478.16,-1,-2461.911,0,97.50007,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1441,0,1,1,1,0,Pine1,-4239.216,-1,-2397.548,0,97.50007,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1442,0,1,1,1,0,Pine1,-3997.5,-1,-2586.37,0,97.50007,0,1,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1443,0,1,1,1,0,Pine1,-4001.217,-1,-2800.057,0,97.50007,0,1,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1444,0,1,1,1,0,Pine1,-3479.5,0,-3943,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1445,0,1,1,1,0,Pine1,-3479.5,0,-3650,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1446,0,1,1,1,0,Pine1,-3308.5,0,-3650,0,0,0,1.3,1.6,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1447,0,1,1,1,0,Pine1,-3271.5,0,-3883,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1448,0,1,1,1,0,Pine1,-3377,0,-4014,0,0,0,1,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/FoliageGenerator2,1452,0,1,0,1,0,FoliageGenerator2,-2579.848,50.68363,-2398.144,0,25.19009,0,4,4,4,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/FallingLeavesFX1,1456,0,1,0,1,0,FallingLeavesFX1,-2593.088,75.52089,-2400.261,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/FoliageGenerator7,1457,0,1,0,1,0,FoliageGenerator7,-1213.019,20.85096,-2049.317,0,77.88251,0,3,3,3,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Nature/Pine1,1458,0,1,1,1,0,Pine1,-3779.02,0,-3791.333,0,0,0,1.3,1.6,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1459,0,1,1,1,0,Pine1,-3564.717,0,-3764.518,0,27.8989,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1,1460,0,1,1,1,0,Pine1,-3480.78,0,-4417.435,0,27.8989,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1461,0,1,1,1,0,Pine1b,-3335.809,0,-3876.359,0,0,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1462,0,1,1,1,0,Pine1b,-3482.704,0,-4070.777,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1463,0,1,1,1,0,Pine1b,-3686.364,0,-3824.733,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1464,0,1,1,1,0,Pine1b,-3718.412,0,-4357.807,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1465,0,1,1,1,0,Pine1b,-3579.354,0,-4545.638,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1466,0,1,1,1,0,Pine1b,-3392.829,0,-4240.6,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1467,0,1,1,1,0,Pine1b,-3879.887,0,-4611.244,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1468,0,1,1,1,0,Pine1b,-4157.211,0,-4458.528,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1469,0,1,1,1,0,Pine1b,-4355.726,0,-4688.551,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1470,0,1,1,1,0,Pine1b,-4355.726,0,-3989.289,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1471,0,1,1,1,0,Pine1b,-4159.318,0,-3265.924,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1472,0,1,1,1,0,Pine1b,-4042.507,0,-2933.776,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pine1b,1473,0,1,1,1,0,Pine1b,-4422.256,0,-3072.657,0,0,0,0.9,0.9,0.9,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1474,0,1,1,1,0,House4,-4796.294,62.9554,-3185.908,344.0193,259.8982,17.92773,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1475,0,1,1,1,0,House4,-4750.474,62.9554,-3257.033,344.0193,259.8982,17.92773,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House4,1476,0,1,1,1,0,House4,-4731.913,62.9554,-3346.597,344.0193,259.8982,17.92773,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/FoliageGenerator3,1477,0,1,0,1,0,FoliageGenerator3,-1178.595,20,-2268.158,0,0,0,3,3,3,Physical,Entities,Default,DefaultNoTint|255/255/255/255,
 /// Logic
 class Main
 {
-    DebugMode = false;
-    Difficulty = "Normal";
     RespawnMode = "OnCapture";
+    ReinforcementCallsEnabled = true;
+    MaxReinforcementCalls = 4;
 
-    DifficultyDropbox = "Easy, Normal, Hard";
-    RespawnModeDropbox = "None, OnCapture";
+    RespawnModeDropbox = "OnCapture, None";
 
-    _debug = null;
     _eventController = null;
+    _enabled = false;
+
+    _reinformentCalls = 0;
+
+    /* 
+     * List of players who just joined
+     * Need this for updating the UI for those players
+     * (Send a message to them after they spawned so that they can update their UI)
+     */
+    _playersJustJoined = List();
 
     function OnGameStart()
     {
+        ReinforcementZones.Setup(self, self.MaxReinforcementCalls);
+        
+        if (!self.ReinforcementCallsEnabled)
+        {
+            ReinforcementZones.DeactivateAll();
+        }
+
         if (!Network.IsMasterClient)
         {
             return;
         }
 
-        self._debug = Debug(self.DebugMode);
         self._eventController = EventController(self);
+        self._enabled = true;
+    }
+
+    function OnCharacterSpawn(character)
+    {
+        if (self._enabled && Network.IsMasterClient)
+        {
+            self._eventController.OnCharacterSpawn(character);
+        }
     }
 
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
             self._eventController.OnCharacterDie(victim, killer, killerName);
         }
@@ -995,7 +1113,7 @@ class Main
 
     function OnCharacterDamaged(victim, killer, killerName, damage)
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
             self._eventController.OnCharacterDamaged(victim, killer, killerName, damage);
         }
@@ -1003,52 +1121,143 @@ class Main
 
     function OnPlayerLeave(player)
     {
+        if (self._enabled && Network.IsMasterClient)
+        {
+            self.LoseIfPlayersAreDead();
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
         if (Network.IsMasterClient)
         {
-            self.CheckIfHumansAreAlive();
+            self._playersJustJoined.Add(player.ID);
+        }
+    }
+
+    coroutine OnPlayerSpawn(player, character)
+    {
+        if (self._enabled && Network.IsMasterClient)
+        {
+            if (character.Type == "Titan" || character.Type == "Shifter")
+            {
+                wait 1.0;
+                character.GetKilled("Server");
+                NetworkMessage().Set("Type", "PlayerTitan").Send(player);
+            }
+
+            if (Utils.ListContains(self._playersJustJoined, player.ID))
+            {
+                NetworkMessage()
+                    .Set("Type", "Reinforcement")
+                    .Set("Action", "UpdateText")
+                    .Set("Remaining", self.MaxReinforcementCalls - (self._reinformentCalls + 1))
+                    .Send(player);
+
+                Utils.TryRemoveListElement(self._playersJustJoined, player.ID);
+            }
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        data = Json.LoadFromString(message);
+        msgType = data.Get("Type");
+        if (msgType == "Dialogue")
+        {
+            key = data.Get("LocaleKey");
+            profileIndex = data.Get("ProfileIndex");
+            DialogueUtils.ShowDialogue(key, profileIndex);
+        }
+        elif (msgType == "RevealTitans")
+        {
+            duration = data.Get("Duration");
+            TitanUtils.RevealTitans(duration);
+        }
+        elif (msgType == "Gate")
+        {
+            state = data.Get("State");
+            interactable = data.Get("Interactable");
+
+            wallGateObj = Map.FindMapObjectByTag("StartWallGate");
+            wallGate = wallGateObj.GetComponent("WallGateA1");
+            wallGate.Interactable = interactable;
+            wallGate.SetState(state);
+        }
+        elif (msgType == "Reinforcement")
+        {
+            action = data.Get("Action");
+            if (action == "Call")
+            {
+                pos = data.Get("Position");
+                zone = CaptureZones.GetNearestCaptureZone(pos);
+                self.Reinforcement(zone);
+            }
+            elif (action == "UpdateText")
+            {
+                remaining = data.Get("Remaining");
+                ReinforcementZones.UpdateText(remaining);
+            }
+        }
+        elif (msgType == "PlayerTitan")
+        {
+            Game.Print("<size=18>Player titans are not supported</size>");
         }
     }
 
     function OnFrame()
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
-            self._debug.OnFrame();
             self._eventController.OnFrame();
         }
     }
 
     function OnSecond()
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
-            self._debug.OnSecond();
             self._eventController.OnSecond();
         }
     }
 
     function OnTick()
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
             self._eventController.OnTick();
         }
     }
 
-    function OnChatInput(message)
+    function HandleInteractAction(trigger)
     {
-        if (Network.IsMasterClient)
+        position = trigger.MapObject.Position;
+        NetworkMessage()
+            .Set("Type", "Reinforcement")
+            .Set("Action", "Call")
+            .Set("Position", position)
+            .Send(Network.MasterClient);
+    }
+
+    function Reinforcement(captureZone)
+    {
+        if (self._reinformentCalls < self.MaxReinforcementCalls && PlayerUtils.AnyPlayerDead())
         {
-            self._debug.OnChatInput(message);
+            PlayerUtils.RevivePlayers(captureZone);
+            NetworkMessage()
+                .Set("Type", "Reinforcement")
+                .Set("Action", "UpdateText")
+                .Set("Remaining", self.MaxReinforcementCalls - (self._reinformentCalls + 1))
+                .SendAll();
+
+            self._reinformentCalls += 1;
         }
     }
 
-    function CheckIfHumansAreAlive()
+    function LoseIfPlayersAreDead()
     {
-        # Check if atleast 1 human is alive
-        # otherwise they lose the game
-        i = 0;
         alive = false;
+        i = 0;
         while (i < Network.Players.Count)
         {
             p = Network.Players.Get(i);
@@ -1076,11 +1285,9 @@ class EventController
     _currentIndex = 0; # Index of the latest capture zone that is unlocked
     _currentSpawnPointIndex = -1; # Index of the capture zone that players use as spawn point
 
-    # I don't know what to name this variable
-    # Everytime the titans capture a zone, that was captured by
-    # humans previously, this variable is decreased
-    # Once it reached 0, Humans will lose
-    _remaining = 2;
+    _titans = List();
+    _titansTargetMap = Dict();
+    _humansInCaptureZone = null;
 
     function Init(main)
     {
@@ -1108,35 +1315,48 @@ class EventController
         townMaxTitans = 10;
         forestSpawnCount = 20;
         femaleTitanHealth = 2000;
-        if (main.Difficulty == "Easy")
+
+        difficulty = Game.GetGeneralSetting("Difficulty");
+        if (difficulty == 0) # Training
         {
-            pointSpawn = 5;
+            pointSpawn = 2;
             townSpawn = 2;
             TownWaveMin = 1;
             TownWaveMax = 2;
-            townSpawnTime = 25;
+            townSpawnTime = 20;
             townMaxTitans = 10;
             femaleTitanHealth = 2000;
             forestSpawnCount = 15;
         }
-        elif (main.Difficulty == "Normal")
+        elif (difficulty == 1) # Easy
+        {
+            pointSpawn = 4;
+            townSpawn = 2;
+            TownWaveMin = 1;
+            TownWaveMax = 2;
+            townSpawnTime = 15;
+            townMaxTitans = 10;
+            femaleTitanHealth = 2000;
+            forestSpawnCount = 15;
+        }
+        elif (difficulty == 2) # Normal
         {
             pointSpawn = 8;
             townSpawn = 4;
             TownWaveMin = 3;
             TownWaveMax = 4;
-            townSpawnTime = 25;
+            townSpawnTime = 15;
             townMaxTitans = 10;
             femaleTitanHealth = 3500;
             forestSpawnCount = 20;
         }
-        elif (main.Difficulty == "Hard")
+        elif (difficulty == 3) # Hard
         {
             pointSpawn = 11;
             townSpawn = 5;
             TownWaveMin = 5;
-            TownWaveMax = 6;
-            townSpawnTime = 20;
+            TownWaveMax = 8;
+            townSpawnTime = 10;
             townMaxTitans = 15;
             femaleTitanHealth = 3500;
             forestSpawnCount = 25;
@@ -1156,7 +1376,7 @@ class EventController
         event4.MinTimeBetweenSpawns = townSpawnTime;
         event4.MaxTimeBetweenSpawns = townSpawnTime;
         event4.MaxTitans = townMaxTitans;
-        event4.ShifterHealth = femaleTitanHealth;
+        event4.AnnieHealth = femaleTitanHealth;
         event5.StartTitans = townSpawn;
         event5.MinTitansPerWave = TownWaveMin;
         event5.MaxTitansPerWave = TownWaveMax;
@@ -1171,7 +1391,7 @@ class EventController
         event7.MaxTimeBetweenSpawns = townSpawnTime;
         event7.MaxTitans = townMaxTitans;
         event8.TitansCount = forestSpawnCount;
-        event8.ShifterHealth = femaleTitanHealth;
+        event8.AnnieHealth = femaleTitanHealth;
 
         self._events.Add(event1);
         self._events.Add(event2);
@@ -1189,12 +1409,10 @@ class EventController
 
         self._events.Get(0).OnEventStart();
 
-        InGameUI.UpdateUI(self._remaining, self._currentIndex);
     }
 
     function OnCaptured(captureZone, newOwner)
     {
-        InGameUI.UpdateUI(self._remaining, self._currentIndex);
 
         for(e in self._events)
         {
@@ -1212,26 +1430,22 @@ class EventController
             if (self._capturedZones.Contains(captureZone))
             {
                 self._capturedZones.Remove(captureZone);
-                self._remaining -= 1;
-                if (self._remaining <= 0)
-                {
-                    Game.Print("Titans won");
-                    UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-				    Game.End(10.0);
-                }
-                InGameUI.UpdateUI(self._remaining, self._currentIndex);
-                # Game.Print("Previous point " + captureZone.Order + " is captured by " + newOwner + "! Take it back!!");
             }
         }
         elif (newOwner == "Human")
         {
             c = CaptureZones.Get(self._currentIndex);
+            CaptureZones.DisableCaptureZone(self._currentIndex);
 
-            # If it is the target zone, 
-            # change the players spawn point
             if (captureZone.Order > self._currentSpawnPointIndex)
             {
                 PlayerUtils.SetSpawnPointInsideCaptureZone(c);
+
+                if (self._main.RespawnMode == "OnCapture")
+                {
+                    PlayerUtils.RevivePlayers(c);
+                }
+                
                 self._currentSpawnPointIndex = captureZone.Order;
             }
 
@@ -1240,12 +1454,18 @@ class EventController
             {
                 # If the zone is captured and the titans are remaining
                 # show the dialogue and "reveal" the titans
-                text = "Clear out the remaining titans";
-                if (self._currentIndex == 3)
+                if (EventUtils.IsTown(self._currentIndex))
                 {
-                    text = "Defeat the female titan and kill any remaining titan";
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("TownCapturedTitansRemain");
                 }
-                DialogueUtils.ShowDialogue(text);
+                elif (self._currentIndex == 3)
+                {
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie1");
+                }
+                else
+                {
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("PointCapturedTitansRemain");
+                }
                 EventUtils.RevealTitans(self._events.Get(self._currentIndex), null);
             }
         }
@@ -1257,8 +1477,11 @@ class EventController
 
         if (inBounds && CaptureZones.CheckIfPreviousZonesAreCapturedByHumans(self._currentIndex))
         {
-            if (self._events.Get(self._currentIndex).CanActivateNextCaptureZone())
+            capturedByHumans = CaptureZones.IsZoneCapturedByHumans(self._currentIndex);
+            titansAreDead = Game.Titans.Count == 0;
+            if (capturedByHumans && titansAreDead && self._events.Get(self._currentIndex).CanActivateNextCaptureZone())
             {
+                prevIndex = self._currentIndex;
                 self._events.Get(self._currentIndex).OnEventEnd();
                 self._currentIndex = self._currentIndex + 1;
 
@@ -1266,14 +1489,21 @@ class EventController
                 {
                     self._events.Get(self._currentIndex).OnEventStart();
                     CaptureZones.ActivateCaptureZone(self._currentIndex);
-                    DialogueUtils.ShowDialogue("Advance to the next point");
+
+                    if (EventUtils.IsTown(prevIndex))
+                    {
+                        DialogueUtils.SendShowDialogueRandomProfileMessage("TownCaptured");
+                    }
+                    else
+                    {
+                        DialogueUtils.SendShowDialogueRandomProfileMessage("PointCaptured");
+                    }
                 }
                 else
                 {
                     # Captured all zones
                     CaptureZones.DisableAllCaptureZones();
                 }
-                InGameUI.UpdateUI(self._remaining, self._currentIndex);
                 return true;
             }
         }
@@ -1304,13 +1534,22 @@ class EventController
             e.OnCharacterDie(victim, killer, killerName);
         }
 
-        if (victim.Type == "Human")
+        if (victim.Type == "Human" || (victim.Type == "Shifter" && victim.IsAI == false))
         {
-            self._main.CheckIfHumansAreAlive();
+            self._main.LoseIfPlayersAreDead();
         }
         elif (victim.Type == "Titan")
         {
+            Utils.TryRemoveListElement(self._titans, victim);
             self.TryStartNextEvent();
+        }
+    }
+
+    function OnCharacterSpawn(character)
+    {
+        if (character != null && character.Type == "Titan")
+        {
+            self._titans.Add(character);
         }
     }
 
@@ -1361,10 +1600,73 @@ class EventController
 
     function OnSecond()
     {
+        if (self._currentIndex >= CaptureZones.Count())
+        {
+            return;
+        }
+
+        captureZone = CaptureZones.Get(self._currentIndex);
+        self._humansInCaptureZone = captureZone.GetPlayersOfTeamInZone("Human");
+        for(titan in self._titans)
+        {
+            /* 
+             * If the titan doesn't have a target
+             * and if there are human players in the zone
+             * select one randomly and attack him
+             * but if there is no one in the zone, move towards the zone
+             */
+
+            if (self.HasTarget(titan) == false)
+            {
+                if (self._humansInCaptureZone != null)
+                {
+                    target = Utils.GetRandomListElement(self._humansInCaptureZone);
+                    self._titansTargetMap.Set(titan, target);
+                    titan.Target(target, 9999);
+                }
+                else
+                {
+                    pos = captureZone.MapObject.Position;
+                    dist = Vector3.Distance(titan.Position, pos);
+                    if (dist > 150) # allow titan to move a little outside the zone
+                    {
+                        titan.MoveTo(pos, 100, false);
+                    }
+                }
+            }
+            else
+            {
+                /* 
+                 * If the titan has a target
+                 * and if the target is not alive anymore
+                 * or the target is outside the capture zone, remove the target
+                 * so the titan can search for a new one
+                 */
+
+                target = self._titansTargetMap.Get(titan);
+                
+                if (target == null || self._humansInCaptureZone == null || !self._humansInCaptureZone.Contains(target))
+                {
+                    self._titansTargetMap.Remove(titan);
+                }
+            }
+        }
+
         for(e in self._events)
         {
             e.OnSecond();
         }
+    }
+
+    function HasTarget(titan)
+    {
+        if (self._titansTargetMap.Contains(titan))
+        {
+            target = self._titansTargetMap.Get(titan);
+            return target != null;
+        }
+
+        return false;
     }
 
     function OnTick()
@@ -1378,19 +1680,7 @@ class EventController
 class Event1
 {
     StartTitans = 1; # Number of titans that will be spawned at the start of the event
-
-    # Titans are spawned around the point in a circular shape
-    # These 2 variables determine the minimum and maximum 
-    # distance that a titan's spawn point can be from the point
-    MinSpawnRadius = 100;
-    MaxSpawnRadius = 300;
-
     CaptureZone = null;
-    CaptureTime = 10.0;
-    DecaySpeed = 1.0;
-
-    _titans = List();
-    _isCapturedByHumans = false;
 
     function Init(eventController, captureZoneIndex)
     {
@@ -1398,62 +1688,33 @@ class Event1
         self.CaptureZone = CaptureZones.Get(captureZoneIndex);
     }
 
-    function SetCaptureZoneProps(captureTime, decaySpeed)
-    {
-        self.CaptureTime = captureTime;
-        self.DecaySpeed = decaySpeed;
-        self.CaptureZone.CaptureTime = captureTime;
-        self.CaptureZone.DecaySpeed = decaySpeed;
-    }
-
     function CanActivateNextCaptureZone()
     {
-        return self.CaptureZone.GetCurrentOwner() == "Human" && self._titans.Count == 0;
+        return true;
     }
 
     coroutine OnGameStart()
     {
         wait 4.0;
-        DialogueUtils.ShowDialogue("Secure the wall gate");
-        wallGateObj = Map.FindMapObjectByTag("StartWallGate");
-        wallGate = wallGateObj.GetComponent("WallGateA1");
-        wallGate.Interactable = true;
-        wallGate.SetState("Open");
+        DialogueUtils.SendShowDialogueRandomProfileMessage("Start");
+        NetworkMessage()
+            .Set("Type", "Gate")
+            .Set("State", "Open")
+            .Set("Interactable", false)
+            .SendAll();
     }
     
     function OnFrame() { }
     function OnTick() { }
     function OnSecond() { }
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        EventUtils.TryRemoveTitanFromList(self._titans, victim);
-    }
+    function OnCharacterDie(victim, killer, killerName) { }
     function OnCharacterDamaged(victim, killer, killerName, damage) { }
-
-    function OnCaptured(captureZone, newOwner)
-    {
-        if (captureZone == self.CaptureZone)
-        {
-            if (newOwner == "Human")
-            {
-                self._isCapturedByHumans = true;
-            }
-        }
-    }
-
+    function OnCaptured(captureZone, newOwner) { }
     function OnCapturing(captureZone, capturer) { }
 
     function OnEventStart()
     {
-        i = 0;
-        while (i < self.StartTitans)
-        {
-            position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
-            titan = Game.SpawnTitanAt("Normal", position);
-            self._titans.Add(titan);
-            TitanUtils.AttackCaptureZone(titan, self.CaptureZone);
-            i += 1;
-        }
+        TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
     }
 
     function OnEventUpdate() { }
@@ -1463,8 +1724,6 @@ class Event1
  * Titans are spawned at the start of the event.
  * If humans try to capture the zone (they made atleast 10% capture progress)
  * then titans will be continuously spawned around the point.
- * This event assumes that there is a previous capture zone, 
- * so can only be used for 2nd and other capture zones after that.
  */
 class Event2
 {
@@ -1474,27 +1733,13 @@ class Event2
     MinTimeBetweenSpawns = 5.0; # In seconds
     MaxTimeBetweenSpawns = 15.0;
 
-    # If humans are capturing the point, a random amount of
-    # titans will be selected based on these 2 variables
-    # and will be continuously spawned around the point
-    # after some delay between each spawn
     MinTitansPerWave = 1;
     MaxTitansPerWave = 5;
 
-    MinSpawnRadius = 100;
-    MaxSpawnRadius = 300;
-
-    # Chance of attacking the previous point after capturing the current zone
-    # Because we don't want all the titans to attack the previous zone, 
-    # We want some of them to protect this zone
-    AttackPreviousCaptureZoneChance = 0.5;
-
     CaptureZone = null;
-    CaptureTime = 10.0;
-    DecaySpeed = 1.0;
 
-    _titans = List();
-    _isCaptured = false; # By titans
+    _titansTargetMap = Dict();
+    _humansInCaptureZone = null;
     _spawnContinuously = false;
     _nextSpawnTime = 0;
 
@@ -1508,61 +1753,28 @@ class Event2
     {
         self._eventController = eventController;
         self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-        self._previousCaptureZone = CaptureZones.GetPreviousCaptureZone(captureZoneIndex);
 
         self._nextSpawnTime = self.MaxTimeBetweenSpawns;
     }
 
-    function SetCaptureZoneProps(captureTime, decaySpeed)
-    {
-        self.CaptureTime = captureTime;
-        self.DecaySpeed = decaySpeed;
-        self.CaptureZone.CaptureTime = captureTime;
-        self.CaptureZone.DecaySpeed = decaySpeed;
-    }
-
     function CanActivateNextCaptureZone()
     {
-        return self.CaptureZone.GetCurrentOwner() == "Human" && self._titans.Count == 0;
+        return true;
     }
 
     function OnGameStart() { }
     function OnFrame() { }
     function OnTick() { }
     function OnSecond() { }
+
     function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        EventUtils.TryRemoveTitanFromList(self._titans, victim);
-    }
+    function OnCharacterDie(victim, killer, killerName) { }
 
     function OnCaptured(captureZone, newOwner)
     {
-        if (captureZone == self.CaptureZone)
+        if (captureZone == self.CaptureZone && newOwner == "Human")
         {
-            if (newOwner == "Titan")
-            {
-                self._isCaptured = true;
-
-                # Zone is captured by titans, attack prev zone
-                if (self._previousCaptureZone.GetCurrentOwner() != "Titan")
-                {
-                    EventUtils.AttackPreviousCaptureZone(self);
-                }
-            }
-            elif (newOwner == "Human")
-            {
-                self._isCapturedByHumans = true;
-            }
-        }
-        elif (captureZone == self._previousCaptureZone && newOwner != "Titan")
-        {
-            # Previous zone is captured by non-titans
-            # and this zone is captured by titans, attack previous zone or wander
-            if (self._isCaptured)
-            {
-                EventUtils.AttackPreviousCaptureZone(self);
-            }
+            self._isCapturedByHumans = true;
         }
     }
 
@@ -1599,15 +1811,11 @@ class Event2
             self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
             if (self._humanCaptureProgress >= 0.1)
             {
-                if (!self._spawnContinuously)
-                {
-                    self.DefendCaptureZone();
-                    self._spawnContinuously = true;
-                }
+                self._spawnContinuously = true;
             }
         }
         
-        if (!self._spawnContinuously || self._titans.Count >= self.MaxTitans)
+        if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
         {
             return;
         }
@@ -1631,24 +1839,7 @@ class Event2
 
     function SpawnTitans(count)
     {
-        TitanUtils.SpawnTitansAroundCaptureZone(self.CaptureZone, count, self.MinSpawnRadius, self.MaxSpawnRadius, self._titans);
-    }
-
-    # Titans that are not too far away
-    # will start moving towards the capture zone
-    function DefendCaptureZone()
-    {
-        for(t in self._titans)
-        {
-            titanPosition = t.Position;
-            zonePosition = self.CaptureZone.MapObject.Position;
-
-            dst = Vector3.Distance(titanPosition, zonePosition);
-            if (dst < self.MaxSpawnRadius)
-            {
-                TitanUtils.AttackCaptureZone(t, self.CaptureZone);
-            }
-        }
+        TitanUtils.SpawnTitans(self.CaptureZone, count);
     }
 }
 class Event3
@@ -1658,13 +1849,8 @@ class Event3
     MinSpawnRadius = 100;
     MaxSpawnRadius = 300;
 
-    AttackPreviousCaptureZoneChance = 0.5;
-
     CaptureZone = null;
-    CaptureTime = 10.0;
-    DecaySpeed = 1.0;
 
-    _titans = List();
     _isCaptured = false;
     _previousCaptureZone = null;
     _isCapturedByHumans = false;
@@ -1673,20 +1859,11 @@ class Event3
     {
         self._eventController = eventController;
         self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-        self._previousCaptureZone = CaptureZones.GetPreviousCaptureZone(captureZoneIndex);
-    }
-
-    function SetCaptureZoneProps(captureTime, decaySpeed)
-    {
-        self.CaptureTime = captureTime;
-        self.DecaySpeed = decaySpeed;
-        self.CaptureZone.CaptureTime = captureTime;
-        self.CaptureZone.DecaySpeed = decaySpeed;
     }
 
     function CanActivateNextCaptureZone()
     {
-        return self.CaptureZone.GetCurrentOwner() == "Human" && self._titans.Count == 0;
+        return true;
     }
 
     function OnGameStart() { }
@@ -1694,61 +1871,24 @@ class Event3
     function OnTick() { }
     function OnSecond() { }
     function OnCharacterDamaged(victim, killer, killerName, damage) { }
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        EventUtils.TryRemoveTitanFromList(self._titans, victim);
-    }
+    function OnCharacterDie(victim, killer, killerName) { }
 
-    function OnCaptured(captureZone, newOwner)
-    {
-        if (captureZone == self.CaptureZone)
-        {
-            if (newOwner == "Titan")
-            {
-                self._isCaptured = true;
-
-                if (self._previousCaptureZone.GetCurrentOwner() != "Titan")
-                {
-                    EventUtils.AttackPreviousCaptureZone(self);
-                }
-            }
-            elif (newOwner == "Human")
-            {
-                self._isCapturedByHumans = true;
-            }
-        }
-        elif (captureZone == self._previousCaptureZone && newOwner != "Titan")
-        {
-            if (self._isCaptured)
-            {
-                EventUtils.AttackPreviousCaptureZone(self);
-            }
-        }
-    }
-
+    function OnCaptured(captureZone, newOwner) { }
     function OnCapturing(captureZone, capturer) { }
 
     function OnEventStart()
     {
-        TitanUtils.SpawnTitansAroundCaptureZone(self.CaptureZone, self.StartTitans, self.MinSpawnRadius, self.MaxSpawnRadius, self._titans);
+        TitanUtils.SpawnTitans(self.CaptureZone, self.StartTitans);
     }
 
     function OnEventUpdate() { }
     function OnEventEnd() { }
 }
-/* 
- * Event for the 4th capture zone. This events work the same as Event2, 
- * except that at the end of the event (when the players captured the 4th zone) 
- * the female titan is spawned and players have to make her lose half her health.
- */
 class Event4
 {
     MaxTitans = 30;
     StartTitans = 15;
-    ShifterHealth = 2500;
-
-    MinSpawnRadius = 100;
-    MaxSpawnRadius = 170;
+    AnnieHealth = 2500;
 
     MinTimeBetweenSpawns = 5.0; # In seconds
     MaxTimeBetweenSpawns = 15.0;
@@ -1756,17 +1896,10 @@ class Event4
     MinTitansPerWave = 1;
     MaxTitansPerWave = 5;
 
-    AttackPreviousCaptureZoneChance = 0.5;
-
-    # ShifterDespawnPoint = Vector3(-150, 232, 2243);
-    ShifterDespawnPoint = Vector3(2104, 72, -1744);
+    AnnieDespawnPoint = Vector3(2104, 72, -1744);
 
     CaptureZone = null;
-    CaptureTime = 10.0;
-    DecaySpeed = 1.0;
 
-    _titans = List();
-    _isCaptured = false;
     _spawnContinuously = false;
     _nextSpawnTime = 0;
     _previousCaptureZone = null;
@@ -1775,70 +1908,41 @@ class Event4
     _isHumanCapturing = false;
     _humanCaptureProgress = 0;
 
-    _shifter = null;
-    
-    # To make sure that we only spawn female titan once
-    # If the humans lose the zone and recapture it, no female titan will be spawned
-    _shifterWasSpawnedOnce = false;
-    
+    _annie = null;
+
     function Init(eventController, captureZoneIndex)
     {
         self._eventController = eventController;
         self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-        self._previousCaptureZone = CaptureZones.GetPreviousCaptureZone(captureZoneIndex);
 
         self._nextSpawnTime = self.MaxTimeBetweenSpawns;
     }
 
-    function SetCaptureZoneProps(captureTime, decaySpeed)
-    {
-        self.CaptureTime = captureTime;
-        self.DecaySpeed = decaySpeed;
-        self.CaptureZone.CaptureTime = captureTime;
-        self.CaptureZone.DecaySpeed = decaySpeed;
-    }
-
     function CanActivateNextCaptureZone()
     {
-        return self.CaptureZone.GetCurrentOwner() == "Human" && self._titans.Count == 0 && (self._shifter == null || self._shifter.Health < self.ShifterHealth / 2.0);
+        return self._annie == null || self._annie.Health < self.AnnieHealth / 2.0;
     }
 
     function OnGameStart() { }
     function OnTick() { }
     function OnSecond() { }
-    function OnFrame()
-    {
-        if (Input.GetKeyDown("Interaction/Function2"))
-        {
-            if (self._shifter != null)
-            {
-                dmg = Random.RandomInt(100, 500);
-                self._shifter.GetDamaged("Server", dmg);
-            }
-        }
-    }
-
-    function OnCharacterDie(victim, killer, killerName)
-    {
-        EventUtils.TryRemoveTitanFromList(self._titans, victim);
-    }
+    function OnFrame() { }
+    function OnCharacterDie(victim, killer, killerName) { }
 
     function OnCharacterDamaged(victim, killer, killerName, damage)
     {
-        if (victim == self._shifter)
+        if (victim == self._annie)
         {
-            health = self._shifter.Health;
-            maxHealth = Convert.ToFloat(self._shifter.MaxHealth);
+            health = self._annie.Health;
+            maxHealth = Convert.ToFloat(self._annie.MaxHealth);
             t = health / maxHealth;
             if (t <= 0.5)
             {
-                # Shifter should start running away after she lost half her health
-                # but for now we will just kill her
-                self._shifter.GetKilled("Server");
-                self._shifter = null;
+                self._annie.GetKilled("Server");
+                self._annie = null;
                 if (!self._eventController.TryStartNextEvent())
                 {
-                    DialogueUtils.ShowDialogue("The female titan is running away. Clear out the remaining titans");
+                    DialogueUtils.SendShowDialogueRandomProfileMessage("AfterAnnie1");
                 }
             }
         }
@@ -1846,33 +1950,10 @@ class Event4
 
     function OnCaptured(captureZone, newOwner)
     {
-        if (captureZone == self.CaptureZone)
+        if (captureZone == self.CaptureZone && newOwner == "Human")
         {
-            if (newOwner == "Titan")
-            {
-                self._isCaptured = true;
-
-                if (self._previousCaptureZone.GetCurrentOwner() != "Titan")
-                {
-                    EventUtils.AttackPreviousCaptureZone(self);
-                }
-            }
-            elif (newOwner == "Human")
-            {
-                self._isCapturedByHumans = true;
-                if (!self._shifterWasSpawnedOnce)
-                {
-                    self._shifter = TitanUtils.SpawnShifterAroundCaptureZone(self.ShifterHealth, self.CaptureZone, self.MinSpawnRadius, self.MaxSpawnRadius);
-                    self._shifterWasSpawnedOnce = true;
-                }
-            }
-        }
-        elif (captureZone == self._previousCaptureZone && newOwner != "Titan")
-        {
-            if (self._isCaptured)
-            {
-                EventUtils.AttackPreviousCaptureZone(self);
-            }
+            self._isCapturedByHumans = true;
+            self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
         }
     }
 
@@ -1906,15 +1987,11 @@ class Event4
             self._humanCaptureProgress = self.CaptureZone.GetCaptureProgress();
             if (self._humanCaptureProgress >= 0.1)
             {
-                if (!self._spawnContinuously)
-                {
-                    self.DefendCaptureZone();
-                    self._spawnContinuously = true;
-                }
+                self._spawnContinuously = true;
             }
         }
         
-        if (!self._spawnContinuously || self._titans.Count >= self.MaxTitans)
+        if (!self._spawnContinuously || Game.Titans.Count >= self.MaxTitans)
         {
             return;
         }
@@ -1938,54 +2015,25 @@ class Event4
 
     function SpawnTitans(count)
     {
-        TitanUtils.SpawnTitansAroundCaptureZone(self.CaptureZone, count, self.MinSpawnRadius, self.MaxSpawnRadius, self._titans);
-    }
-
-    function DefendCaptureZone()
-    {
-        for(t in self._titans)
-        {
-            titanPosition = t.Position;
-            zonePosition = self.CaptureZone.MapObject.Position;
-
-            dst = Vector3.Distance(titanPosition, zonePosition);
-            if (dst < self.MaxSpawnRadius)
-            {
-                TitanUtils.AttackCaptureZone(t, self.CaptureZone);
-            }
-        }
+        TitanUtils.SpawnTitans(self.CaptureZone, count);
     }
 }
 class Event8
 {
     TitansCount = 20;
-    ShifterHealth = 2500;
-
-    MinSpawnRadius = 100;
-    MaxSpawnRadius = 300;
+    AnnieHealth = 2500;
 
     CaptureZone = null;
-    CaptureTime = 10.0;
-    DecaySpeed = 1.0;
 
-    _shifter = null;
-    _shifterWasSpawned = false;
-    _shifterWasKilled = false;
+    _annie = null;
+    _annieWasSpawned = false;
+    _annieWasKilled = false;
     _titans = List();
 
     function Init(eventController, captureZoneIndex)
     {
         self._eventController = eventController;
         self.CaptureZone = CaptureZones.Get(captureZoneIndex);
-        self._previousCaptureZone = CaptureZones.GetPreviousCaptureZone(captureZoneIndex);
-    }
-
-    function SetCaptureZoneProps(captureTime, decaySpeed)
-    {
-        self.CaptureTime = captureTime;
-        self.DecaySpeed = decaySpeed;
-        self.CaptureZone.CaptureTime = captureTime;
-        self.CaptureZone.DecaySpeed = decaySpeed;
     }
 
     function CanActivateNextCaptureZone()
@@ -1994,34 +2042,27 @@ class Event8
     }
 
     function OnGameStart() { }
-    function OnFrame()
-    {
-        if (Input.GetKeyDown("Interaction/Function2"))
-        {
-            if (self._shifter != null)
-            {
-                dmg = Random.RandomInt(100, 500);
-                self._shifter.GetDamaged("Server", dmg);
-            }
-        }
-    }
+    function OnFrame() { }
     function OnTick() { }
     function OnSecond() { }
     function OnCharacterDamaged(victim, killer, killerName, damage) { }
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (victim == self._shifter)
+        if (victim == self._annie)
         {
             position = victim.Position;
             self.SpawnTitans(position);
-            self._shifterWasKilled = true;
+            self._annieWasKilled = true;
         }
-        elif (self._shifterWasSpawned && self._shifterWasKilled)
+        elif (self._annieWasSpawned && self._annieWasKilled)
         {
-            EventUtils.TryRemoveTitanFromList(self._titans, victim);
+            if (victim.Type == "Titan")
+            {
+                Utils.TryRemoveListElement(self._titans, victim);
+            }
+
             if (self._titans.Count == 0)
             {
-                Game.Print("Humans won");
                 UI.SetLabelAll("MiddleCenter", "Humanity wins!");
 				Game.End(10.0);
             }
@@ -2035,11 +2076,11 @@ class Event8
     function OnEventUpdate() { }
     function OnEventEnd()
     {
-        self._shifter = TitanUtils.SpawnShifterAroundCaptureZone(self.ShifterHealth, self.CaptureZone, self.MinSpawnRadius, self.MaxSpawnRadius);
-        self._shifter.DeathAnimLength = 10;
-        self._shifterWasSpawned = true;
+        self._annie = TitanUtils.SpawnAnnie(self.AnnieHealth, self.CaptureZone);
+        self._annie.DeathAnimLength = 10;
+        self._annieWasSpawned = true;
 
-        DialogueUtils.ShowDialogue("Defeat the female titan");
+        DialogueUtils.SendShowDialogueRandomProfileMessage("BeforeAnnie2");
     }
 
     coroutine SpawnTitans(shifterPosition)
@@ -2047,11 +2088,11 @@ class Event8
         i = 0;
         while (i < self.TitansCount)
         {
-            position = TitanSpawnPoints.GetSpawnPointAroundCaptureZone(self.CaptureZone, self.MinSpawnRadius, self.MaxSpawnRadius);
+            position = TitanSpawnPoints.GetSpawnPoint(self.CaptureZone);
             titan = Game.SpawnTitanAt("Default", position);
             titan.DetectRange = 0;
             titan.FocusRange = 0;
-            titan.MoveTo(shifterPosition, 1, true);
+            titan.MoveTo(shifterPosition, 1, false);
 
             self._titans.Add(titan);
 
@@ -2076,149 +2117,6 @@ class Event8
 		}
     }
 }
-cutscene DialogueCutscene
-{
-    coroutine Start()
-    {
-        p = DialogueCutsceneProps.DialogueProfile;
-        if (p == null)
-        {
-            p = DialogueUtils.GetRandomProfile();
-        }
-        text = DialogueCutsceneProps.DialogueText;
-        Cutscene.ShowDialogue(p.Icon, p.Name, text);
-        wait 4.0;
-    }
-}
-
-class Profile
-{
-    Name = "Eren";
-    Icon = "Eren1";
-
-    function Init(name, icon)
-    {
-        self.Name = name;
-        self.Icon = icon;
-    }
-}
-extension DialogueCutsceneProps
-{
-    DialogueText = "Empty";
-    DialogueProfile = null;   
-}
-class Debug
-{
-    Enabled = true;
-
-    _timeScale = 10.0;
-    _fastForwarding = false;
-
-    function Init(enabled)
-    {
-        self.Enabled = enabled;
-    }
-
-    function OnFrame()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-
-        if (Input.GetKeyDown("Interaction/Interact"))
-        {
-            if (self._fastForwarding)
-            {
-                Time.TimeScale = 1.0;
-                self._fastForwarding = false;
-            }
-            else
-            {
-                Time.TimeScale = self._timeScale;
-                self._fastForwarding = true;
-            }
-        }
-        elif (Input.GetKeyDown("Interaction/Function3"))
-        {
-            if (Network.MyPlayer.Status != "Alive")
-            {
-                return;
-            }
-
-            position = Network.MyPlayer.Character.Position;
-            zone = self.GetNearestCaptureZone(position);
-            sp = TitanSpawnPoints.GetSpawnPointAroundCaptureZone(zone, 70, 160);
-            titan = Game.SpawnTitanAt("Abnormal", sp);
-            titan.FocusRange = 0;
-            titan.DetectRange = 0;
-            titan.MoveTo(zone.MapObject.Position, 10, true);
-        }
-    }
-
-    function GetNearestCaptureZone(position)
-    {
-        nearest = null;
-        nearestDist = 99999.0;
-        for(zone in CaptureZones.GetAll())
-        {
-            dist = Vector3.Distance(position, zone.MapObject.Position);
-            if (dist < nearestDist)
-            {
-                nearest = zone;
-                nearestDist = dist;
-            }
-        }
-
-        return nearest;
-    }
-
-    function OnSecond()
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-        
-        if (Network.MyPlayer.Status == "Alive")
-        {
-            Network.MyPlayer.Character.MaxHealth = 1000;
-            Network.MyPlayer.Character.Health = 1000;
-            Network.MyPlayer.Character.RefillImmediate();
-        }
-    }
-
-    function OnChatInput(message)
-    {
-        if (!self.Enabled)
-        {
-            return;
-        }
-
-        if (String.StartsWith(message, "--xyz"))
-        {
-            pos = Network.MyPlayer.Character.Position;
-            Game.Print(pos);
-        }
-
-        if (String.StartsWith(message, "--kill"))
-        {
-            for(p in Network.Players)
-            {
-                if (p.Status == "Alive")
-                {
-                    p.Character.GetKilled("Server");
-                }
-            }
-        }
-
-        if (String.StartsWith(message, "--tscale"))
-        {
-            str = String.Split(message, " ");
-            self._timeScale = Convert.ToFloat(str.Get(1));
-        }
-    }
-}
 extension CaptureZones
 {
     _captureZones = List();
@@ -2231,6 +2129,7 @@ extension CaptureZones
         {
             captureZoneComponent = captureZone.GetComponent("CaptureZone");
             captureZoneComponent.SetupCallbackReceiver(callbackReceiver);
+            captureZoneComponent.ShifterCanCapture = false;
             if (captureZoneOrderMap.Contains(captureZoneComponent.Order) == true)
             {
                 Game.Print("Capture zone order " + captureZoneComponent.Order + " is already added, please remove duplicate zone!");
@@ -2265,6 +2164,11 @@ extension CaptureZones
 
     function IsZoneCapturedByHumans(captureZone)
     {
+        if (Convert.IsInt(captureZone))
+        {
+            return self.Get(captureZone).GetCurrentOwner() == "Human";
+        }
+
         return captureZone.GetCurrentOwner() == "Human";
     }
 
@@ -2276,10 +2180,10 @@ extension CaptureZones
             i = currentIndex;
             while (i >= 0)
             {
-                if (!self.IsZoneCapturedByHumans(self.Get(i)))
+                if (!self.IsZoneCapturedByHumans(i))
                 {
                     previousZonesAreCaptured = false;
-                    i = -1; # Break
+                    i = -1; # break
                 }
                 i -= 1;
             }
@@ -2287,16 +2191,21 @@ extension CaptureZones
         return previousZonesAreCaptured;
     }
 
-    function GetPreviousCaptureZone(currentCaptureZoneIndex)
+    function GetNearestCaptureZone(position)
     {
-        indexOfPreviousPoint = currentCaptureZoneIndex - 1;
-        if (indexOfPreviousPoint >= 0)
+        nearest = null;
+        nearestDist = 99999.0;
+        for(zone in self._captureZones)
         {
-            previousCaptureZone = self._captureZones.Get(indexOfPreviousPoint);
-            return previousCaptureZone;
+            dist = Vector3.Distance(position, zone.MapObject.Position);
+            if (dist < nearestDist)
+            {
+                nearest = zone;
+                nearestDist = dist;
+            }
         }
 
-        return null;
+        return nearest;
     }
 
     function DeactivateAllCaptureZones()
@@ -2304,73 +2213,41 @@ extension CaptureZones
         for(cz in self._captureZones)
         {
             cz.MapObject.Active = false;
-            cz.Enabled = false;
         }
     }
 
     function ActivateCaptureZone(index)
     {
-        self.Get(index).Enabled = true;
         self.Get(index).MapObject.Active = true;
     }
 
     function DisableAllCaptureZones()
     {
-        for(cz in self._captureZones)
+        for(i in Range(0, self.Count(), 1))
         {
-            # UI (top center label) is not cleared
-            # if we use Enabled even if we manually clear it
-            # cz.Enabled = false;
-            cz.AICanCapture = false;
-            cz.HumanCanCapture = false;
-            cz.ShifterCanCapture = false;
-            cz.TitanCanCapture = false;
-            cz.TeamsCanCapture = false;
+            self.DisableCaptureZone(i);
         }
     }
-}
-extension InGameUI
-{
-    _humanColor = Color(255, 255, 62, 255);
-    _titanColor = Color(70, 80, 125, 255);
-    _neutralColor = Color(255, 255, 255, 255);
-    
-    function UpdateUI(remaining, currentIndex)
-    {
-        str = remaining + String.Newline;
-        i = 0;
-        for(cp in CaptureZones.GetAll())
-        {
-            if (i != 0)
-            {
-                str += String.Newline;
-            }
 
-            if (cp.GetCurrentOwner() == "Human")
-            {
-                str += UI.WrapStyleTag("H", "color", "#" + self._humanColor.ToHexString());
-            }
-            elif (cp.GetCurrentOwner() == "Titan")
-            {
-                str += UI.WrapStyleTag("T", "color", "#" + self._titanColor.ToHexString());
-            }
-            else
-            {
-                if (cp.Order == currentIndex)
-                {
-                    str += UI.WrapStyleTag("N", "color", "#" + self._neutralColor.ToHexString());
-                }
-            }
-            i += 1;
-        }
-        UI.SetLabelAll("TopLeft", str);
+    function DisableCaptureZone(index)
+    {
+        cz = self.Get(index);
+
+        # UI (top center label) is not cleared
+        # if we use Enabled even if we manually clear it
+        # cz.Enabled = false;
+        cz.AICanCapture = false;
+        cz.HumanCanCapture = false;
+        cz.ShifterCanCapture = false;
+        cz.TitanCanCapture = false;
+        cz.TeamsCanCapture = false;
     }
 }
 extension TitanSpawnPoints
 {
     _spawnPointsMap = Dict();
-    _shifterSpawnPoint4 = null;
-    _shifterSpawnPoint8 = null;
+    _annieSpawnPoint4 = null;
+    _annieSpawnPoint8 = null;
 
     function Setup(captureZones)
     {
@@ -2383,19 +2260,16 @@ extension TitanSpawnPoints
         self._spawnPointsMap.Set(captureZones.Get(6), Map.FindMapObjectsByTag("TitanSpawnPoint7"));
         self._spawnPointsMap.Set(captureZones.Get(7), Map.FindMapObjectsByTag("TitanSpawnPoint8"));
 
-        self._shifterSpawnPoint4 = Map.FindMapObjectsByTag("AnnieSpawn1").Get(0);
-        self._shifterSpawnPoint8 = Map.FindMapObjectsByTag("AnnieSpawn2").Get(0);
+        self._annieSpawnPoint4 = Map.FindMapObjectsByTag("AnnieSpawn1").Get(0);
+        self._annieSpawnPoint8 = Map.FindMapObjectsByTag("AnnieSpawn2").Get(0);
     }
 
-    /* 
-     * Returns a random spawn point from the spawn points list for the capture zone,
-     * if it exists, Otherwise returns a random point around the capture zone
-     */
-    function GetSpawnPoint(captureZone, minRadius, maxRadius)
+    function GetSpawnPoint(captureZone)
     {
         if (self._spawnPointsMap.Contains(captureZone))
         {
-            return self._GetRandomSpawnPointFromList(self._spawnPointsMap.Get(captureZone));
+            sp = Utils.GetRandomListElement(self._spawnPointsMap.Get(captureZone));
+            return sp.Position;
         }
 
         if (captureZone.Order == 0)
@@ -2407,54 +2281,101 @@ extension TitanSpawnPoints
             return position;
         }
 
-        return self.GetSpawnPointAroundCaptureZone(captureZone, minRadius, maxRadius);
+        return captureZone.MapObject.Position;
     }
 
-    function GetShifterSpawnPoint(captureZone, minRadius, maxRadius)
+    function GetAnnieSpawnPoint(captureZone)
     {
-        if (captureZone.Order == 3 && self._shifterSpawnPoint4 != null)
+        if (captureZone.Order == 3 && self._annieSpawnPoint4 != null)
         {
-            return self._shifterSpawnPoint4.Position;
+            return self._annieSpawnPoint4.Position;
         }
 
-        if (captureZone.Order == 7 && self._shifterSpawnPoint8 != null)
+        if (captureZone.Order == 7 && self._annieSpawnPoint8 != null)
         {
-            return self._shifterSpawnPoint8.Position;
+            return self._annieSpawnPoint8.Position;
         }
 
-        return self.GetSpawnPointAroundCaptureZone(captureZone, minRadius, maxRadius);
+        return captureZone.MapObject.Position;
+    }
+}
+extension ReinforcementZones
+{
+    function Setup(callbackReceiver, remaining)
+    {
+        self._zones = List();
+        self._callbackReceiver = callbackReceiver;
+
+        for(z in Map.FindMapObjectsByTag("ReinforcementZone"))
+        {
+            c = z.GetComponent("InteractActionTrigger");
+            self._zones.Add(c);
+        }
+
+        self.UpdateText(remaining);
     }
 
-    /* 
-     * Makes a circular shape around the capture zone on the XZ plane
-     * with the min and max radius variables, and then
-     * returns a random point inside that circle. Also uses
-     * Physics.LineCast to make sure that the point is not inside an object
-     */
-    function GetSpawnPointAroundCaptureZone(captureZone, minRadius, maxRadius)
+    function UpdateText(remaining)
     {
-        center = captureZone.MapObject.Position;
-        position = Utils.RandomPointInsideUnitCircleXZ();
-        position *= Random.RandomFloat(minRadius, maxRadius);
-        position += center;
-
-        startPos = Vector3(position.X, 1000, position.Z);
-        endPos = Vector3(position.X, -1000, position.Z);
-
-        hit = Physics.LineCast(startPos, endPos, "MapObjects");
-        if (hit != null && hit.IsMapObject)
+        if (remaining <= 0)
         {
-            position = hit.Point;
+            for(z in self._zones)
+            {
+                z.SetActionHandler(self._callbackReceiver, "No revives left.");
+            }
         }
-
-        return position;
+        else
+        {
+            for(z in self._zones)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/" + z.Key) + " to revive teammates." + String.Newline;
+                text += "<b><size=18>" + remaining + "</size></b>" + " revive";
+                if (remaining >= 2)
+                {
+                    text += "s";
+                }
+                text += " left.";
+                z.SetActionHandler(self._callbackReceiver, text);
+            }
+        }
     }
 
-    # Selects a random MapObject from the list and returns its position
-    function _GetRandomSpawnPointFromList(spawnPoints)
+    function DeactivateAll()
     {
-        sp = Utils.GetRandomListElement(spawnPoints);
-        return sp.Position;
+        for(z in self._zones)
+        {
+            z.MapObject.Active = false;
+        }
+    }
+}
+class NetworkMessage
+{
+    Params = Dict();
+
+    function Set(name, value)
+    {
+        self.Params.Set(name, value);
+        return self;
+    }
+
+    function SendAll()
+    {
+        Network.SendMessageAll(self.ToString());
+    }
+
+    function SendOthers()
+    {
+        Network.SendMessageOthers(self.ToString());
+    }
+
+    function Send(player)
+    {
+        Network.SendMessage(player, self.ToString());
+    }
+
+    function ToString()
+    {
+        return Json.SaveToString(self.Params);
     }
 }
 extension DialogueUtils
@@ -2480,64 +2401,128 @@ extension DialogueUtils
         self.Profiles.Add(Profile("Levi", "Levi6"));
     }
 
-    function ShowDialogue(text)
+    function SendShowDialogueRandomProfileMessage(key)
     {
-        # Todo: get text from locale
-        DialogueCutsceneProps.DialogueText = text;
-        DialogueCutsceneProps.DialogueProfile = DialogueCutsceneProps.GetRandomProfile();
-        self.StartDialogueCutscene();
+        self.SendShowDialogueMessage(key, self.GetRandomProfileIndex());
     }
 
-    function ShowDialogueWithProfile(text, profile)
+    function SendShowDialogueMessage(key, profileIndex)
     {
-        DialogueCutsceneProps.DialogueText = text;
-        DialogueCutsceneProps.DialogueProfile = profile;
-        self.StartDialogueCutscene();
+        NetworkMessage()
+            .Set("Type", "Dialogue")
+            .Set("LocaleKey", key)
+            .Set("ProfileIndex", profileIndex)
+            .SendAll();
     }
 
-    function StartDialogueCutscene()
+    coroutine ShowDialogue(key, profileIndex)
     {
-        Cutscene.Start("DialogueCutscene", false);
+        profile = self.Profiles.Get(profileIndex);
+        text = UI.GetLocale("OutsideTheWalls", "Dialogue", key);
+        Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
+        wait 4.0;
+        Cutscene.HideDialogue();
     }
 
-    function GetRandomProfile()
+    function GetRandomProfileIndex()
     {
-        return Utils.GetRandomListElement(self.Profiles);
+        return Random.RandomInt(0, self.Profiles.Count);
+    }
+}
+
+class Profile
+{
+    Name = "Eren";
+    Icon = "Eren1";
+
+    function Init(name, icon)
+    {
+        self.Name = name;
+        self.Icon = icon;
     }
 }
 extension EventUtils
 {
-    /* 
-     * Makes the titans either attack the previous zone
-     * or wander around the current capture zone
-     */
-    function AttackPreviousCaptureZone(event)
+    function IsTown(currentIndex)
     {
-        for(t in event._titans)
-        {
-            r = Random.RandomFloat(0, 1);
-            if (r < event.AttackPreviousCaptureZoneChance)
-            {
-                TitanUtils.AttackCaptureZone(t, event._previousCaptureZone);
-            }
-            else
-            {
-                t.Wander();
-            }
-        }
-    }
-
-    function TryRemoveTitanFromList(list, character)
-    {
-        if (character.Type == "Titan")
-        {
-            Utils.TryRemoveListElement(list, character);
-        }
+        # Capture zones 2, 5, 7 are towns
+        # 4 is also a town but it is different
+        return currentIndex == 1 || currentIndex == 4 || currentIndex == 6;
     }
 
     function RevealTitans(event, seconds)
     {
-        for(t in event._titans)
+        NetworkMessage()
+            .Set("Type", "RevealTitans")
+            .Set("Duration", seconds)
+            .SendAll();
+    }
+}
+extension PlayerUtils
+{
+    function AnyPlayerDead()
+    {
+        dead = false;
+        for(p in Network.Players)
+        {
+            if (p.Status != "Alive")
+            {
+                dead = true;
+            }
+        }
+
+        return dead;
+    }
+
+    coroutine RevivePlayers(captureZone)
+    {
+        wait 1.0;
+        self.SetSpawnPointInsideCaptureZone(captureZone);
+        Game.SpawnPlayerAll(false);
+    }
+
+    function SetSpawnPointInsideCaptureZone(captureZone)
+    {
+        if (captureZone == null)
+        {
+            for(p in Network.Players)
+            {
+                p.SpawnPoint = null;
+            }
+            return;
+        }
+
+        yPos = 20.0;
+        zoneRadius = 10.0;
+
+        for(p in Network.Players)
+        {
+            position = Utils.RandomPointInsideUnitCircleXZ();
+            position *= zoneRadius;
+            position.Y = yPos;
+            position += captureZone.MapObject.Position;
+            p.SpawnPoint = position;
+        }
+    }
+
+    function GetPlayerById(id)
+    {
+        for(p in Network.Players)
+        {
+            if (p.ID == id)
+            {
+                return p;
+            }
+        }
+
+        return null;
+    }
+}
+extension TitanUtils
+{
+    function RevealTitans(seconds)
+    {
+        for(t in Game.Titans)
         {
             if (t != null)
             {
@@ -2552,81 +2537,26 @@ extension EventUtils
             }
         }
     }
-}
-extension PlayerUtils
-{
-    function GetAlivePlayers()
+
+    function SpawnAnnie(health, captureZone)
     {
-        players = List();
-        for(p in Network.Players)
-        {
-            if (p.Status == "Alive")
-            {
-                players.Add(p);
-            }
-        }
-
-        return players;
-    }
-
-    function SetSpawnPointInsideCaptureZone(captureZone)
-    {
-        if (captureZone == null)
-        {
-            for(p in Network.Players)
-            {
-                p.SpawnPoint = null;
-            }
-            return;
-        }
-
-        yPos = 10.0;
-        zoneRadius = 10.0;
-
-        for(p in Network.Players)
-        {
-            position = Utils.RandomPointInsideUnitCircleXZ();
-            position *= zoneRadius;
-            position.Y = yPos;
-            position += captureZone.MapObject.Position;
-            p.SpawnPoint = position;
-        }
-    }
-}
-extension TitanUtils
-{
-    function AttackCaptureZone(titan, captureZone)
-    {
-        pos = captureZone.MapObject.Position;
-        titan.MoveTo(pos, 10, false);
-    }
-
-    function SpawnShifterAroundCaptureZone(health, captureZone, minRadius, maxRadius)
-    {
-        position = TitanSpawnPoints.GetShifterSpawnPoint(captureZone, minRadius, maxRadius);
+        position = TitanSpawnPoints.GetAnnieSpawnPoint(captureZone);
 
         shifter = Game.SpawnShifterAt("Annie", position);
         shifter.MaxHealth = health;
         shifter.Health = health;
         
-        self.AttackCaptureZone(shifter, captureZone);
         return shifter;
     }
 
-    coroutine SpawnTitansAroundCaptureZone(captureZone, count, minRadius, maxRadius, titansList)
+    coroutine SpawnTitans(captureZone, count)
     {
         i = 0;
 
         while (i < count)
         {
-            position = TitanSpawnPoints.GetSpawnPoint(captureZone, minRadius, maxRadius);
+            position = TitanSpawnPoints.GetSpawnPoint(captureZone);
             titan = Game.SpawnTitanAt("Default", position);
-            self.AttackCaptureZone(titan, captureZone);
-
-            if (titansList != null)
-            {
-                titansList.Add(titan);
-            }
 
             if (Math.Mod(i, 10) == 0)
             {
@@ -2678,6 +2608,11 @@ extension Utils
         }
 
         return false;
+    }
+
+    function ListContains(list, element)
+    {
+        return self.IndexOfListElement(list, element) >= 0;
     }
 }
 
