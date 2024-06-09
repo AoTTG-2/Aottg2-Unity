@@ -85,9 +85,9 @@ namespace CustomLogic
                     var navMeshObstacle = Value.GameObject.AddComponent<NavMeshObstacle>();
                     navMeshObstacle.carving = true;
                     navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
-                    
+
                     // Value.ColliderCache contains the colliders of the object, merge all colliders to find the bounds
-                    Bounds bounds = new Bounds();
+                    Bounds bounds = Value.colliderCache[0].bounds;
                     foreach (var collider in Value.colliderCache)
                     {
                         bounds.Encapsulate(collider.bounds);
