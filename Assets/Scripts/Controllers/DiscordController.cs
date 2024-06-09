@@ -8,21 +8,22 @@ using GameManagers;
 using Unity.VisualScripting;
 using ApplicationManagers;
 using Photon.Realtime;
+using UI;
+using System.Runtime.CompilerServices;
 
 public class DiscordController : MonoBehaviour
 {
 
     public Discord.Discord discord;
 
+    private long appID = 1247921316913483888;
     private static bool instanceExists;
-    private string largeImage = "aottg2-logo1";
+    private string largeImage = "aottg2-logo2";
     private long time;
     private string roomName;
     private int playerCount;
     private int maxPlayerCount;
     private RoomInfo roomInfo;
-
-
 
     private void Awake()
     {
@@ -40,7 +41,7 @@ public class DiscordController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        discord = new Discord.Discord(1247921316913483888, (UInt64)Discord.CreateFlags.NoRequireDiscord);
+        discord = new Discord.Discord(appID, (UInt64)Discord.CreateFlags.NoRequireDiscord);
         time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
         UpdateStatus();
@@ -78,20 +79,54 @@ public class DiscordController : MonoBehaviour
                 InGameSet settings = SettingsManager.InGameCurrent;
                 roomName = settings.General.RoomName.Value;
 
-                var activity = new Discord.Activity
+                if (PhotonNetwork.OfflineMode) 
                 {
-                    State = roomName,
-                    Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
-                    Assets =
+                    var activity = new Discord.Activity
+                    {
+                        State = "SinglePlayer",
+                        Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                        Assets =
                     {
                     LargeImage = largeImage,
                     SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                     },
-                    Timestamps =
+                        Timestamps =
                     {
                     Start = time,
                     },
-                    Party =
+                        Party =
+                    {
+                        Size =
+                        {
+                            CurrentSize = playerCount,
+                            MaxSize = 1,
+                        },
+                    }
+                    };
+                    activityManager.UpdateActivity(activity, (res) =>
+                    {
+                        if (res != Discord.Result.Ok)
+                        {
+                            Debug.Log("Discord is not connected!");
+                        }
+                    });
+                }
+                else
+                {
+                    var activity = new Discord.Activity
+                    {
+                        State = roomName,
+                        Details = "Name: " + SettingsManager.ProfileSettings.Name.Value + " Guild: " + SettingsManager.ProfileSettings.Guild.Value,
+                        Assets =
+                    {
+                    LargeImage = largeImage,
+                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
+                    },
+                        Timestamps =
+                    {
+                    Start = time,
+                    },
+                        Party =
                     {
                         Size =
                         {
@@ -99,14 +134,15 @@ public class DiscordController : MonoBehaviour
                             MaxSize = maxPlayerCount,
                         },
                     }
-                };
-                activityManager.UpdateActivity(activity, (res) =>
-                {
-                    if (res != Discord.Result.Ok)
+                    };
+                    activityManager.UpdateActivity(activity, (res) =>
                     {
-                        Debug.Log("Discord is not connected!");
-                    }
-                });
+                        if (res != Discord.Result.Ok)
+                        {
+                            Debug.Log("Discord is not connected!");
+                        }
+                    });
+                }
             }
             //main menu activity
             else
@@ -133,11 +169,6 @@ public class DiscordController : MonoBehaviour
                     }
                 });
             }
-
-
-
-
-
         }
         catch
         {
