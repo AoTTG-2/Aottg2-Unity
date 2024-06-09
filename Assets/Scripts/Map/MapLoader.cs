@@ -257,8 +257,8 @@ namespace Map
                     Task task = GenerateNavMesh();
                     while (!task.IsCompleted)
                         yield return new WaitForEndOfFrame();
+                    _hasNavMeshData = true;
                 }
-                _hasNavMeshData = true;
             }
 
             MapManager.MapLoaded = true;

@@ -21,7 +21,6 @@ namespace Map
         public static bool NeedsNavMeshUpdate = true;
         public static string LastMapHash = string.Empty;
         public static string LastGameMode = string.Empty;
-        public static string LastLogicHash = string.Empty;
 
         public static void Init()
         {
@@ -174,9 +173,8 @@ namespace Map
             MapScript = new MapScript();
             MapScript.Deserialize(source);
             MapTransfer.MapHash = string.Empty;
-            bool mapChanged = LastMapHash != MapScript.MapHash || LastLogicHash != CustomLogicManager.LogicHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
             LastMapHash = MapScript.MapHash;
-            LastLogicHash = CustomLogicManager.LogicHash;
             LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
             LoadMap(mapChanged);
         }
@@ -185,9 +183,8 @@ namespace Map
         {
             if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
-            bool mapChanged = LastMapHash != MapScript.MapHash || LastLogicHash != CustomLogicManager.LogicHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
             LastMapHash = MapScript.MapHash;
-            LastLogicHash = CustomLogicManager.LogicHash;
             LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
             LoadMap(mapChanged);
         }
