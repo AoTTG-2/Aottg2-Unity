@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8102099057879648995}
   - component: {fileID: 4642948006009779913}
   m_Layer: 23
-  m_Name: TitanBarrier
+  m_Name: NavMeshObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
