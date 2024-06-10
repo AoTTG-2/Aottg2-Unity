@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d9f2f7c8778fe6542bceb35a43d41150
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185662
+  packageName: AutoLOD - Mesh Decimator
+  packageVersion: 5.2.1
+  assetPath: Assets/AutoLOD/Scripts/Tools/AutoLODProperties.cs
+  uploadId: 655275

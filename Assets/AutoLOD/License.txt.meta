@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: def7ecf53cad49444a343f8761f5b398
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185662
+  packageName: AutoLOD - Mesh Decimator
+  packageVersion: 5.2.1
+  assetPath: Assets/AutoLOD/License.txt
+  uploadId: 655275

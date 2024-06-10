@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 65848f6b24af64f40a188630f7de1b8e
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185662
+  packageName: AutoLOD - Mesh Decimator
+  packageVersion: 5.2.1
+  assetPath: Assets/AutoLOD/Resources/Shaders/AutoLODWireframe.shader
+  uploadId: 655275

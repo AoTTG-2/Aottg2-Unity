@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3346418}
   - component: {fileID: 2346418}
   - component: {fileID: 6446418}
+  - component: {fileID: 3161189994653696792}
   m_Layer: 23
   m_Name: MassiveTree2
   m_TagString: Untagged
@@ -106,6 +107,30 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 8a8047dffc60df545b3bf2721ac7f5c0, type: 3}
+--- !u!205 &3161189994653696792
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146418}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.3
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.1
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &146420
 GameObject:
   m_ObjectHideFlags: 0

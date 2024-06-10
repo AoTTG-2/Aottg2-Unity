@@ -1,0 +1,1 @@
+﻿// This file is no longer required since AutoLOD 5.0
