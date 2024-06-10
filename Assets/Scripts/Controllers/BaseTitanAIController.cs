@@ -161,12 +161,6 @@ namespace Controllers
             _focusTimeLeft = focusTime;
         }
 
-        public void Update()
-        {
-            if (_usePathfinding)
-                StartCoroutine(DrawPath(_agent.path));
-        }
-
         protected override void FixedUpdate()
         {
             if (_usePathfinding)
@@ -394,7 +388,7 @@ namespace Controllers
             return randDir.normalized;
         }
 
-        public LineRenderer lineRenderer;
+        /*public LineRenderer lineRenderer;
 
         IEnumerator DrawPath(NavMeshPath path)
         {
@@ -420,7 +414,7 @@ namespace Controllers
                 lineRenderer.SetPosition(i, path.corners[i]);
             }
 
-        }
+        }*/
 
         protected float GetAgentNavAngle(Vector3 target)
         {
