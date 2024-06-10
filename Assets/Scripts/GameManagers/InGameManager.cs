@@ -1012,8 +1012,20 @@ namespace GameManagers
         {
             while (true)
             {
-                yield return new WaitForSeconds(delay);
-                SpawnPlayer(false);
+                foreach (var player in Humans)
+                {
+                    if (player.Dead)
+                    {
+                        Debug.Log("Respawing");
+                        yield return new WaitForSeconds(delay);
+                        SpawnPlayer(false);
+                    }
+                    
+                }
+                yield return new WaitForFixedUpdate();
+                //yield return new WaitForSeconds(delay);
+                //SpawnPlayer(false);
+
             }
         }
 
