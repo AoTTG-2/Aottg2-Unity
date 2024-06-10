@@ -333,7 +333,8 @@ namespace Map
             settings.tileSize = 256;
             settings.overrideVoxelSize = true;
             settings.voxelSize = 4f;
-            settings.minRegionArea = 2;
+            settings.minRegionArea = 100;
+            settings.buildHeightMesh = true;
             _navMeshData.Add(agentID, data);
             NavMesh.AddNavMeshData(data);
             await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
@@ -348,13 +349,13 @@ namespace Map
         public async Task UpdateAllNavMeshes()
         {
             Debug.Log("Updating NavMesh");
-            // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
-            List<Task> tasks = new List<Task>();
-            foreach (KeyValuePair<int, NavMeshData> nv in _navMeshData)
+            NavMesh.RemoveAllNavMeshData();
+            _hasNavMeshData = false;
+            if (PhotonNetwork.IsMasterClient)
             {
-                tasks.Add(UpdateNavMeshSurfaceAsync(nv.Key, nv.Value, _navMeshSources, _navMeshBounds));
+                await GenerateNavMesh();
+                _hasNavMeshData = true;
             }
-            await Task.WhenAll(tasks);
         }
 
         private async Task UpdateNavMeshSurfaceAsync(int agentID, NavMeshData data, List<NavMeshBuildSource> sources, Bounds bounds)
