@@ -1016,16 +1016,27 @@ namespace GameManagers
                 {
                     if (player.Dead)
                     {
-                        Debug.Log("Respawing");
+                        yield return new WaitForSeconds(delay);
+                        SpawnPlayer(false);
+                    }                    
+                }
+                foreach(var titan in Titans)
+                {
+                    if (titan.Dead)
+                    {
                         yield return new WaitForSeconds(delay);
                         SpawnPlayer(false);
                     }
-                    
+                }
+                foreach(var shifter in Shifters)
+                {
+                    if (shifter.Dead)
+                    {
+                        yield return new WaitForSeconds(delay);
+                        SpawnPlayer(false);
+                    }
                 }
                 yield return new WaitForFixedUpdate();
-                //yield return new WaitForSeconds(delay);
-                //SpawnPlayer(false);
-
             }
         }
 
