@@ -49,6 +49,7 @@ namespace Controllers
 
         // pathing
         private bool _usePathfinding = true;
+        private GameObject _agentObj;
         private NavMeshAgent _agent;
         private CapsuleCollider _mainCollider;
 
@@ -67,12 +68,19 @@ namespace Controllers
                     _titan.Cache.Transform.position = hit.position;
                 }
 
+                // Create a new gameobject for the navmesh agent, make it a child of this object
+                _agentObj = new GameObject("NavMeshAgent");
+                _agentObj.transform.parent = transform;
+                _agentObj.transform.localPosition = Vector3.zero;
+
+
+
                 // Add the navmesh agent
                 int agentId = Util.GetNavMeshAgentIDBySize(_titan.Size);
                 // log titan size
                 //Debug.Log("Titan size: " + _titan.Size);
                 var agentSettings = NavMesh.GetSettingsByID(agentId);
-                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent = _agentObj.AddComponent<NavMeshAgent>();
                 _agent.agentTypeID = agentId;
                 _agent.speed = _titan.GetCurrentSpeed();
                 _agent.angularSpeed = 10;
@@ -340,7 +348,7 @@ namespace Controllers
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
                             Attack(validAttacks);                            
-                        else if (_usePathfinding)
+                        else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false && _usePathfinding)
                         {
                             _titan.TargetAngle = GetAgentNavAngle(_enemy.Cache.Transform.position);
                         }
@@ -393,6 +401,16 @@ namespace Controllers
                     Idle();
             }
             SmartAttack = false;
+            _agent.nextPosition = _titan.Cache.Transform.position;
+            
+            // Good ol' power cycle fix
+            // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+            if (_usePathfinding && Vector3.Distance(_agent.nextPosition, _titan.Cache.Transform.position) > 0.1f)
+            {
+                _agent.enabled = false;
+                _agent.enabled = true;
+            }
+
         }
 
         protected float GetEnemyAngle(BaseCharacter enemy)
@@ -478,7 +496,6 @@ namespace Controllers
         {
             Vector3 resultDirection = (target - _titan.Cache.Transform.position).normalized;
             resultDirection = _agent.velocity.normalized;
-            _agent.nextPosition = _titan.Cache.Transform.position;
             /*if (_agent.hasPath)
             {
                :/ ? 
