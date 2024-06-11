@@ -49,7 +49,7 @@ namespace Controllers
 
         // pathing
         private bool _usePathfinding = true;
-        private GameObject _agentObj;
+        //private GameObject _agentObj;
         private NavMeshAgent _agent;
         private CapsuleCollider _mainCollider;
 
@@ -68,10 +68,10 @@ namespace Controllers
                     _titan.Cache.Transform.position = hit.position;
                 }
 
-                // Create a new gameobject for the navmesh agent, make it a child of this object
-                _agentObj = new GameObject("NavMeshAgent");
-                _agentObj.transform.parent = transform;
-                _agentObj.transform.localPosition = Vector3.zero;
+                /*// Create a new gameobject for the navmesh agent, make it a child of this object
+                //_agentObj = new GameObject("NavMeshAgent");
+                //_agentObj.transform.parent = transform;
+                //_agentObj.transform.localPosition = Vector3.zero;
 
 
 
@@ -80,7 +80,7 @@ namespace Controllers
                 // log titan size
                 //Debug.Log("Titan size: " + _titan.Size);
                 var agentSettings = NavMesh.GetSettingsByID(agentId);
-                _agent = _agentObj.AddComponent<NavMeshAgent>();
+                _agent = gameObject.AddComponent<NavMeshAgent>();
                 _agent.agentTypeID = agentId;
                 _agent.speed = _titan.GetCurrentSpeed();
                 _agent.angularSpeed = 10;
@@ -95,7 +95,7 @@ namespace Controllers
                 _agent.updatePosition = false;
                 _agent.updateRotation = false;
                 _agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
-                _agent.avoidancePriority = 0;
+                _agent.avoidancePriority = 0;*/
             }
         }
 
@@ -113,23 +113,24 @@ namespace Controllers
                 }
 
                 // Add the navmesh agent
-                int agentId = Util.GetNavMeshAgentIDBySize(_titan.Size);
+                NavMeshBuildSettings agentSettings = Util.GetAgentSettingsCorrected(_titan.Size);
+                // int agentId = Util.GetNavMeshAgentIDBySize(_titan.Size);
                 // log titan size
                 Debug.Log("Titan size: " + _titan.Size);
-                var agentSettings = NavMesh.GetSettingsByID(agentId);
-                _agent.agentTypeID = agentId;
+                //var agentSettings = NavMesh.GetSettingsByID(agentId);
+                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent.agentTypeID = agentSettings.agentTypeID;
                 _agent.speed = _titan.GetCurrentSpeed();
                 _agent.angularSpeed = 10;
                 _agent.acceleration = 10;
                 _agent.autoRepath = true;
                 _agent.stoppingDistance = 1.1f;
-                
+
                 // Log values of autobreak and autorepath
-                Debug.Log("AutoBreak: " + _agent.autoBraking + " AutoRepath: " + _agent.autoRepath);
                 _agent.autoBraking = false;
 
-                _agent.radius = agentSettings.agentRadius; // _mainCollider.radius * _titan.Cache.Transform.localScale.x;
-                _agent.height = agentSettings.agentHeight; // _mainCollider.height * _titan.Cache.Transform.localScale.y;
+                _agent.radius = agentSettings.agentRadius;
+                _agent.height = agentSettings.agentHeight;
 
                 // Log radius and height
                 Debug.Log("Radius: " + _agent.radius + " Height: " + _agent.height);
