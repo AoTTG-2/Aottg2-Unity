@@ -310,7 +310,7 @@ namespace Utility
 
         public static List<KeyValuePair<float, string>> _titanSizes = new List<KeyValuePair<float, string>>()
         {
-            new KeyValuePair<float, string>(0.1f, "minTitan"),
+            new KeyValuePair<float, string>(0.5f, "minTitan"),
             new KeyValuePair<float, string>(1f, "smallTitan"),
             new KeyValuePair<float, string>(2f, "avgTitan"),
             new KeyValuePair<float, string>(3f, "maxTitan")
@@ -328,11 +328,34 @@ namespace Utility
             string name = "minTitan";
             for (int i = 0; i < _titanSizes.Count; i++)
             {
-                if (size > _titanSizes[i].Key)
+                if (size >= _titanSizes[i].Key)
                     name = _titanSizes[i].Value;
             }
 
             return GetNavMeshAgentID(name) ?? 0;
+        }
+
+        public static NavMeshBuildSettings GetAgentSettingsCorrected(float size)
+        {
+            string name = "minTitan";
+            float sizeToUse = 0.5f;
+            for (int i = 0; i < _titanSizes.Count; i++)
+            {
+                if (size >= _titanSizes[i].Key)
+                {
+                    sizeToUse = _titanSizes[i].Key;
+                    name = _titanSizes[i].Value;
+                }
+                    
+            }
+
+            int agentId = GetNavMeshAgentID(name).Value;
+
+            // log titan size
+            var agentSettings = NavMesh.GetSettingsByID(agentId);
+            agentSettings.agentRadius /= sizeToUse;
+            agentSettings.agentHeight /= sizeToUse;
+            return agentSettings;
         }
 
         public static int? GetNavMeshAgentID(string name)
