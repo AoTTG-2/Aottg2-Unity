@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5214428384111646832}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: TreePaths1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5214428384111646832
 Transform:
@@ -99,6 +99,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d296ed534e0328a44b1bd5a9342cee95, type: 3}
       propertyPath: m_Name
       value: Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d296ed534e0328a44b1bd5a9342cee95, type: 3}
+      propertyPath: m_Layer
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d296ed534e0328a44b1bd5a9342cee95, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
