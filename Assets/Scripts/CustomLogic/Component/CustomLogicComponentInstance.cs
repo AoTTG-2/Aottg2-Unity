@@ -1,4 +1,4 @@
-﻿using Map;
+using Map;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
