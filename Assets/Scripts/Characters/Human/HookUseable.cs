@@ -7,6 +7,7 @@ namespace Characters
 {
     class HookUseable : HoldUseable
     {
+        public bool Enabled = true;
         public List<Hook> Hooks = new List<Hook>();
         public bool HookBoth;
         private Hook _activeHook = null;
@@ -98,7 +99,7 @@ namespace Characters
         {
             if (_activeHook != null && _activeHook.State == HookState.Disabled)
                 _activeHook = null;
-            if (_activeHook == null)
+            if (Enabled && _activeHook == null)
             {
                 _activeHook = FindAvailableHook();
                 Vector3 target = ((Human)_owner).GetAimPoint();
