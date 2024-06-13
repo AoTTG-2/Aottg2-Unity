@@ -51,7 +51,8 @@
 		{"Name": "Wood7", "TilingX": 5, "TilingY": 5},
 		{"Name": "Wood8", "TilingX": 5, "TilingY": 5},
 		{"Name": "Wood9", "TilingX": 5, "TilingY": 5},
-		{"Name": "Wood10", "TilingX": 1, "TilingY": 1}
+		{"Name": "Wood10", "TilingX": 1, "TilingY": 1},
+		{"Name": "Wood11", "TilingX": 1, "TilingY": 1}
 	],
 	"Stone": [
 		{"Name": "Earth1", "TilingX": 5, "TilingY": 5},
