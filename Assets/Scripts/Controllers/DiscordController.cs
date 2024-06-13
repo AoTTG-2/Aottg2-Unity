@@ -94,7 +94,7 @@ public class DiscordController : MonoBehaviour
                     var activity = new Discord.Activity
                     {
                         State = "SinglePlayer",
-                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + score,
+                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
                         Assets =
                     {
                     LargeImage = largeImage,
@@ -126,7 +126,7 @@ public class DiscordController : MonoBehaviour
                     var activity = new Discord.Activity
                     {
                         State = roomName,
-                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + score,
+                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
                         Assets =
                     {
                     LargeImage = largeImage,
