@@ -1,4 +1,4 @@
-﻿using Map;
+using Map;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
@@ -71,7 +71,7 @@ namespace CustomLogic
 
         public static object DeserializeValue(object obj, string value)
         {
-            if (value == "null")
+            if (obj is not string && value == "null")
                 return null;
             if (obj is int)
                 return int.Parse(value);

@@ -92,6 +92,16 @@ namespace CustomLogic
                 var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
                 return new CustomLogicMapObjectBuiltin(copy);
             }
+            if (name == "UpdateNavMesh")
+            {
+                MapLoader.UpdateNavMesh().Wait();
+                return null;
+            }
+            if (name == "UpdateNavMeshAsync")
+            {
+                _ = MapLoader.UpdateNavMesh();
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 

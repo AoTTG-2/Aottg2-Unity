@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using CustomLogic;
 
 namespace Map
 {
@@ -17,6 +18,9 @@ namespace Map
         public static bool MapLoaded;
         public static MapScript MapScript;
         private static MapManager _instance;
+        public static bool NeedsNavMeshUpdate = true;
+        public static string LastMapHash = string.Empty;
+        public static string LastGameMode = string.Empty;
 
         public static void Init()
         {
@@ -169,18 +173,25 @@ namespace Map
             MapScript = new MapScript();
             MapScript.Deserialize(source);
             MapTransfer.MapHash = string.Empty;
-            LoadMap();
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
+            LastMapHash = MapScript.MapHash;
+            LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
+            LoadMap(mapChanged);
         }
 
         public static void OnLoadCachedMapRPC(PhotonMessageInfo info)
         {
             if (info.Sender != null && !info.Sender.IsMasterClient)
                 return;
-            LoadMap();
+            bool mapChanged = LastMapHash != MapScript.MapHash || LastGameMode != SettingsManager.InGameCurrent.General.GameMode.Value;
+            LastMapHash = MapScript.MapHash;
+            LastGameMode = SettingsManager.InGameCurrent.General.GameMode.Value;
+            LoadMap(mapChanged);
         }
 
-        public static void LoadMap()
+        public static void LoadMap(bool mapChanged)
         {
+            NeedsNavMeshUpdate = mapChanged;
             PhotonNetwork.LocalPlayer.SetCustomProperty("CustomMapHash", MapTransfer.MapHash);
             MapLoader.StartLoadObjects(MapScript.CustomAssets.CustomAssets, MapScript.Objects.Objects, MapScript.Options, MapScript.Weather);
         }
