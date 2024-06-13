@@ -341,7 +341,7 @@ namespace CustomLogic
                 else if (className == "String")
                     instance = new CustomLogicStringBuiltin();
                 else if (className == "Random")
-                    instance = new CustomLogicRandomBuiltin();
+                    instance = new CustomLogicRandomBuiltin(new List<object>());
                 else if (className == "Camera")
                     instance = new CustomLogicCameraBuiltin();
                 else if (className == "RoomData")
@@ -423,6 +423,8 @@ namespace CustomLogic
                 classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
             else if (className == "Range")
                 classInstance = new CustomLogicRangeBuiltin(parameterValues);
+            else if (className == "Random")
+                classInstance = new CustomLogicRandomBuiltin(parameterValues);
             else
             {
                 classInstance = new CustomLogicClassInstance(className);

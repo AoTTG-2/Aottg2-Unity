@@ -11,6 +11,8 @@ using System.Collections;
 using Utility;
 using System.Collections.Specialized;
 using Photon.Pun;
+using static UnityEngine.Rendering.DebugUI;
+using CustomLogic;
 
 namespace UI
 {
@@ -27,6 +29,8 @@ namespace UI
             InGameSet settings = SettingsManager.InGameCurrent;
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, "General", fontStyle: FontStyle.Bold, alignment: TextAnchor.MiddleLeft);
             CreateLabels(style, DoublePanelLeft, "General", settings.General);
+            ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, "Map Hash: " + MapManager.MapScript.MapHash.ToLower(), alignment: TextAnchor.MiddleLeft);
+            ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, "Logic Hash: " + CustomLogicManager.LogicHash.ToLower(), alignment: TextAnchor.MiddleLeft);
             if (!PhotonNetwork.OfflineMode)
             {
                 ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, "Room name: " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name), alignment: TextAnchor.MiddleLeft);

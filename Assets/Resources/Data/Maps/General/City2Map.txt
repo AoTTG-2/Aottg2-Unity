@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:Confusion's remake of city
+EditorVersion:1.0|Description:Confusion's remake of city|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -955,19 +955,11 @@ Scene,Nature/Leaf1,3405,0,1,1,1,0,Leaf1,-197.3086,127.8041,-404.1664,0,180,0,1,1
 Scene,Geometry/Cuboid,3409,0,1,1,0,0,Titan Barrier,-478.0169,32.3813,-243.0849,0,0,0,14,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3410,0,1,1,0,0,Titan Barrier,-124.6861,48.58201,-254.572,0,0,0,17.5,5,1,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3411,0,1,1,0,0,Titan Barrier,120.1258,48.58201,-254.572,0,0,0,18.5,5,1,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3412,0,1,1,0,0,Titan Barrier,-178.6685,32.3813,-213.3826,0,0,0,7,5,3.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
+Scene,Geometry/Cuboid,3412,0,1,1,0,0,Titan Barrier,-153.7911,32.3813,-222.8071,0,0,0,3.015123,5,5.105377,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3414,0,1,1,0,0,Titan Barrier,590.9107,36.04795,226.1842,0,0,0,2.5,5,16,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3415,0,1,1,0,0,Titan Barrier,571.1887,21.91715,7.443396,0,0,0,8,5,16,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3416,0,1,1,0,0,Titan Barrier,-403.6404,32.3813,175.4034,0,0,0,16,5,4,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3417,0,1,1,0,0,Titan Barrier,-105.6441,32.3813,-206.8528,0,0,0,7,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3418,0,1,1,0,0,Titan Barrier,-538.5353,32.3813,173.6846,0,0,0,5.5,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3419,0,1,1,0,0,Titan Barrier,-363.2059,32.3813,-253.7589,0,0,0,5.5,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3420,0,1,1,0,0,Titan Barrier,-425.3176,65.32791,113.2687,0,0,0,27,5,5.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3421,0,1,1,0,0,Titan Barrier,-425.3176,65.32791,-75.76797,0,0,0,27,5,5.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3422,0,1,1,0,0,Titan Barrier,-391.0449,65.32791,-186.0382,0,0,0,20,5,5.5,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3423,0,1,1,0,0,Titan Barrier,-531.4957,65.59402,22.49726,0,0,0,8,5,6,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3426,0,1,1,0,0,Titan Barrier,465.2822,32.3813,-206.8528,0,0,0,16,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
-Scene,Geometry/Cuboid,3425,0,1,1,0,0,Titan Barrier,-325.9975,65.59402,22.49726,0,0,0,8,5,6,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Cuboid,3427,0,1,1,0,0,Titan Barrier,580.01,32.3813,-109.3762,0,0,0,10,5,3,Region,Characters,Default,Default|255/255/255/255,TitanBarrier|;
 Scene,Geometry/Plane,3428,0,1,1,1,0,Plane,-417.1,32.90354,-228.26,270,0,0,32,1,1.5425,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|5/0.4|0/0,;
 Scene,Geometry/Plane,3429,0,1,1,1,0,Plane,-417.1,25.3655,156.82,90,0,0,32,1,3.05,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|5/0.6|0/0,;
@@ -983,3 +975,62 @@ Scene,Decor/Sign1,3442,0,1,1,1,0,Sign1,28.57103,29.91343,-536.7679,0,180,0,0.8,0
 Scene,Buildings/House19,3443,0,1,1,1,0,House19,-619.1511,25.16958,-386.7481,0,270,0,1,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Sign1,3444,0,1,1,1,0,Sign1,387.8021,22.17301,288.1013,0,0,0,0.8,0.8,1,Physical,Entities,Default,Default|200/175/175/255,
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

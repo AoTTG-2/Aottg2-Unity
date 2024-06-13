@@ -6,6 +6,8 @@ using SimpleJSONFixed;
 using Utility;
 using GameManagers;
 using UnityEngine.UIElements;
+using UnityEngine.AI;
+using System.Collections;
 
 namespace Controllers
 {
@@ -44,28 +46,60 @@ namespace Controllers
         protected string _attack;
         protected float _attackCooldownLeft;
         protected float _waitAttackTime;
-        private CapsuleCollider _mainCollider;
 
         // pathing
-        private readonly int _sampleRayCount = 6;
-        private readonly float _sampleRayRange = 120f;
-        private readonly float _targetWeight = 1f;
-        private readonly float _collisionWeight = 140f;
-        private float _collisionAvoidDistance => this._attackRange * 2; // 100f;
-        private float _collisionDetectionDistance => this._attackRange * 2;
-        private bool _useCollisionAvoidance = true;
+        private bool _usePathfinding = true;
+        private NavMeshAgent _agent;
+        private CapsuleCollider _mainCollider;
 
         protected override void Awake()
         {
             base.Awake();
             _titan = GetComponent<BaseTitan>();
             _mainCollider = _titan.GetComponent<CapsuleCollider>();
-            _useCollisionAvoidance = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+
+            if (_usePathfinding)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _titan.Cache.Transform.position = hit.position;
+                }
+            }
         }
 
         protected override void Start()
         {
             Idle();
+
+            // set agent size
+            if (_usePathfinding)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _titan.Cache.Transform.position = hit.position;
+                }
+
+                // Add the navmesh agent
+                NavMeshBuildSettings agentSettings = Util.GetAgentSettingsCorrected(_titan.Size);
+                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent.agentTypeID = agentSettings.agentTypeID;
+                _agent.speed = _titan.GetCurrentSpeed();
+                _agent.angularSpeed = 10;
+                _agent.acceleration = 10;
+                _agent.autoRepath = true;
+                _agent.stoppingDistance = 1.1f;
+                _agent.autoBraking = false;
+                _agent.radius = agentSettings.agentRadius;
+                _agent.height = agentSettings.agentHeight;
+                _agent.updatePosition = false;
+                _agent.updateRotation = false;
+                _agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+                _agent.avoidancePriority = 0;
+            }
+
         }
 
         public void MoveTo(Vector3 position, float range, bool ignore)
@@ -144,6 +178,8 @@ namespace Controllers
 
         protected override void FixedUpdate()
         {
+            if (_usePathfinding)
+                _agent.speed = _titan.GetCurrentSpeed();
             _focusTimeLeft -= Time.deltaTime;
             _stateTimeLeft -= Time.deltaTime;
             if (_titan.Dead)
@@ -175,6 +211,9 @@ namespace Controllers
                     if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.Cache.Transform.position) > FocusRange)
                         _enemy = null;
                 }
+
+                if (_enemy != null && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false)
+                    _agent.SetDestination(_enemy.Cache.Transform.position);
                 _focusTimeLeft = FocusTime;
             }
             _titan.TargetEnemy = _enemy;
@@ -218,10 +257,10 @@ namespace Controllers
                     _moveToActive = false;
                     Idle();
                 }
-                else if (_stateTimeLeft <= 0)
-                    MoveToPosition(true);                    
-                else
-                    _titan.TargetAngle = GetMoveToAngle(_moveToPosition, true);
+                else if (_stateTimeLeft <= 0 || _usePathfinding)
+                    MoveToPosition(true);
+                else if (_usePathfinding == false)
+                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
@@ -246,12 +285,10 @@ namespace Controllers
                                 _moveAngle = 0f;
                                 _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                                 _titan.Turn(_titan.GetTargetDirection());
-                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.black);
                             }
                             else
                             {
                                 MoveToEnemy(true);
-                                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.white);
                             }
                                 
                         }
@@ -269,16 +306,14 @@ namespace Controllers
                         inRange = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) <= FarAttackRange;
                         var validAttacks = GetValidAttacks(true);
                         if (inRange && validAttacks.Count > 0)
-                            Attack(validAttacks);
-                        else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false)
+                            Attack(validAttacks);                            
+                        else if (HasClearLineOfSight(_enemy.Cache.Transform.position) == false && _usePathfinding)
                         {
-                            _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, true);
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.magenta);
+                            _titan.TargetAngle = GetAgentNavAngle(_enemy.Cache.Transform.position);
                         }
                         else
                         {
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.yellow);
                         }
                     }
                 }
@@ -307,18 +342,14 @@ namespace Controllers
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
                             _titan.Turn(_titan.GetTargetDirection());
-                            Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.red);
                         }
                         else
                         {
-                            MoveToEnemy();
-                            /*
+                            //MoveToEnemy();
                             _titan.HasDirection = true;
                             _titan.IsWalk = !IsRun;
                             _moveAngle = 0f;
                             _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                            //Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), _titan.GetTargetDirection() * 100, Color.cyan);
-                            */
                         }
                     }
                 }
@@ -329,6 +360,17 @@ namespace Controllers
                     Idle();
             }
             SmartAttack = false;
+            if (_usePathfinding)
+            {
+                _agent.nextPosition = _titan.Cache.Transform.position;
+                // Good ol' power cycle fix
+                // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+                if (_usePathfinding && Vector3.Distance(_agent.nextPosition, _titan.Cache.Transform.position) > 0.1f)
+                {
+                    _agent.enabled = false;
+                    _agent.enabled = true;
+                }
+            }
         }
 
         protected float GetEnemyAngle(BaseCharacter enemy)
@@ -345,9 +387,12 @@ namespace Controllers
 
         protected float GetChaseAngleGivenDirection(Vector3 direction)
         {
-            float angle = GetTargetAngle(direction);
+            float angle;
+            if (direction == Vector3.zero)
+                angle = _titan.TargetAngle;
+            else
+                angle = GetTargetAngle(direction);
             angle += _moveAngle;
-            // angle = Mathf.LerpAngle(_titan.TargetAngle, angle, Time.fixedDeltaTime);
             if (angle > 360f)
                 angle -= 360f;
             if (angle < 0f)
@@ -355,66 +400,95 @@ namespace Controllers
             return angle;
         }
 
-        protected float GetMoveToAngle(Vector3 target, bool avoidCollisions = false)
+        protected Vector3 GetDirectionTowardsNavMesh()
         {
-            var goalDirection = target - _titan.Cache.Transform.position;
-            var resultDirection = (target - _titan.Cache.Transform.position).normalized * _targetWeight;
-            bool col = false;
-            if (avoidCollisions && _useCollisionAvoidance)
+            Debug.Log("Agent is not on navmesh, trying to get back");
+            // Find a point on the navmesh closest to the titan
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
             {
-                if (IsHeadingForCollision())
-                {
-                    //col = true;
-                    _moveAngle = Random.Range(-10f, 10f);
-                    resultDirection += GetFreeDirection(goalDirection).normalized * _collisionWeight;
-                }
+                return (hit.position - _titan.Cache.Transform.position).normalized;
             }
+            
+            // Return a random direction if the navmesh is not found
+            Vector3 randDir = Random.onUnitSphere;
+            randDir.y = 0;
+            return randDir.normalized;
+        }
+
+        /*public void Update()
+        {
+            // draw path
+            if (_usePathfinding && _agent.hasPath)
+            {
+                StartCoroutine(DrawPath(_agent.path));
+            }
+        }
+
+        public LineRenderer lineRenderer;
+        IEnumerator DrawPath(NavMeshPath path)
+        {
+            // draw the agents path using line renderers
+            if (path.corners.Length < 2)
+                yield break;
+
+            if (lineRenderer == null)
+            {
+                lineRenderer = gameObject.AddComponent<LineRenderer>();
+                lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+                lineRenderer.startColor = Color.green;
+                lineRenderer.endColor = Color.green;
+                lineRenderer.startWidth = 0.1f;
+                lineRenderer.endWidth = 0.1f;
+                lineRenderer.positionCount = path.corners.Length;
+            }
+
+            lineRenderer.positionCount = path.corners.Length;
+
+            for (int i = 0; i < path.corners.Length; i++)
+            {
+                lineRenderer.SetPosition(i, path.corners[i]);
+            }
+
+        }*/
+
+        protected float GetAgentNavAngle(Vector3 target)
+        {
+            Vector3 resultDirection = _agent.velocity.normalized;
+            if (_agent.isOnNavMesh && _agent.pathPending == false)
+            {
+                _agent.SetDestination(target);
+            }
+            else if (_agent.isOnNavMesh == false)
+            {
+                resultDirection = GetDirectionTowardsNavMesh();
+            }
+
+            if (resultDirection == Vector3.zero)
+                return _titan.TargetAngle;
+
+            return GetChaseAngleGivenDirection(resultDirection);
+        }
+
+        protected float GetLookDirectionToTarget(Vector3 target)
+        {
+            var resultDirection = target - _titan.Cache.Transform.position;
             resultDirection = new Vector3(resultDirection.x, 0, resultDirection.z);
             resultDirection = resultDirection.normalized;
             var result =  GetChaseAngleGivenDirection(resultDirection);
 
-            if (_useCollisionAvoidance == true)
-                result = Mathf.LerpAngle(_titan.TargetAngle, result, Time.fixedDeltaTime);
-
-            if (col)
-                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.magenta);
-            else
-                Debug.DrawRay(_titan.Cache.Transform.TransformPoint(_mainCollider.center), resultDirection * 100, Color.white);
-
             return result;
-        }
-
-        protected bool IsHeadingForCollision()
-        {
-            RaycastHit hit;
-            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x;
-            var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
-
-            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
-            if (Physics.CheckSphere(start, colliderRadius, mask))
-            {
-                Debug.DrawRay(start, _titan.Cache.Transform.forward * colliderRadius, Color.red, 1);
-                return true;
-            }
-            else if (Physics.SphereCast(start, colliderRadius, _titan.Cache.Transform.forward, out hit, _collisionDetectionDistance, mask))
-            {
-                // display the ray
-                Debug.DrawRay(start, _titan.Cache.Transform.forward * hit.distance, Color.red, 1);
-                return true;
-            }
-            Debug.DrawRay(start, _titan.Cache.Transform.forward * _collisionDetectionDistance, Color.green, 1);
-            return false;
         }
 
         protected bool HasClearLineOfSight(Vector3 target)
         {
-            if (_useCollisionAvoidance == false)
+            if (_usePathfinding == false)
                 return true;
-                
+
             float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 0.5f;
             var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
-            var left = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * -1 * colliderRadius;
-            var right = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * colliderRadius;
+            var left = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * -1.1f * colliderRadius;
+            var right = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * 1.1f * colliderRadius;
             return HasLineOfSight(left, target) && HasLineOfSight(right, target);
         }
 
@@ -427,92 +501,24 @@ namespace Controllers
                 return false;
 
             direction = direction.normalized;
+            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x;
 
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.Human);
             if (Physics.Raycast(start, direction, out hit, 1000, mask))
             {
                 if (hit.collider.gameObject.layer == PhysicsLayer.Human)
                 {
-                    Debug.DrawRay(start, direction * hit.distance, Color.cyan);
+                    //Debug.DrawRay(start, direction * hit.distance, Color.cyan);
                     return true;
                 }
                 else
                 {
-                    Debug.DrawRay(start, direction * hit.distance, Color.gray);
+                    //Debug.DrawRay(start, direction * hit.distance, Color.gray);
                     return false;
                 }
                     
             }
             return true;
-        }
-
-        private bool Approximately(float a, float b, float precision)
-        {
-            return (a - b) < precision;
-        }
-
-        protected Vector3 GetFreeDirection(Vector3 goalDirection)
-        {
-            float rayDelta = _sampleRayRange / _sampleRayCount;
-            Vector3 bestDirection = _titan.Cache.Transform.forward;
-            float bestDirScore = 0;
-            float bestDirAlignment = 0;
-            float bestPreviousAlignment = 0;
-
-            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 1f;
-            Vector3 colliderCenter = _titan.Cache.Transform.TransformPoint(_mainCollider.center);
-            var start = colliderCenter + _titan.Cache.Transform.forward * -1 * colliderRadius;
-
-            for (int i = 0; i < _sampleRayCount; i++)
-            {
-                Vector3 rayDirection = Quaternion.AngleAxis(i * rayDelta - _sampleRayRange / 2, _titan.Cache.Transform.up) * _titan.Cache.Transform.forward;
-                RaycastHit hit;
-                if (Physics.SphereCast(start, colliderRadius, rayDirection, out hit, _collisionAvoidDistance, PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities)))
-                {
-                    Vector3 rayActualDirection = (start + rayDirection.normalized * hit.distance) - colliderCenter;
-                    float alignment = Vector3.Angle(rayActualDirection.normalized, goalDirection.normalized);
-                    float prevAlignment = Vector3.Angle(_titan.GetTargetDirection(), rayActualDirection.normalized);
-
-                    if (Approximately(hit.distance, bestDirScore, 0.001f))
-                    {
-                        if (Approximately(alignment, bestDirAlignment, 0.001f))
-                        {
-                            if (Approximately(prevAlignment, bestPreviousAlignment, 0.001f) && prevAlignment < bestPreviousAlignment)
-                            {
-                                bestDirection = rayActualDirection;
-                                bestDirScore = hit.distance;
-                                bestDirAlignment = alignment;
-                                bestPreviousAlignment = prevAlignment;
-                            }
-                        }
-                        else if (alignment < bestPreviousAlignment)
-                        {
-                            bestDirection = rayActualDirection;
-                            bestDirScore = hit.distance;
-                            bestDirAlignment = alignment;
-                            bestPreviousAlignment = prevAlignment;
-                        }
-                    }
-                    else if (hit.distance > bestDirScore)
-                    {
-                        bestDirection = rayActualDirection;
-                        bestDirScore = hit.distance;
-                        bestDirAlignment = alignment;
-                        bestPreviousAlignment = prevAlignment;
-                    }
-
-                    // Draw the ray to the hit point
-                    Debug.DrawRay(start, rayDirection * hit.distance, Color.red);
-
-                }
-                else
-                {
-                    Vector3 rayActualDirection = (start + rayDirection.normalized * _collisionAvoidDistance) - colliderCenter;
-                    Debug.DrawRay(start, rayDirection * _collisionAvoidDistance, Color.blue);
-                    return rayActualDirection;
-                }
-            }
-            return bestDirection;
         }
 
         protected bool IsCrawler()
@@ -566,7 +572,10 @@ namespace Controllers
                 _moveAngle = Random.Range(-45f, 45f);
             else
                 _moveAngle = 0f;
-            _titan.TargetAngle = GetMoveToAngle(_enemy.Cache.Transform.position, avoidCollisions);
+            if (_usePathfinding)
+                _titan.TargetAngle = GetAgentNavAngle(_enemy.Cache.Transform.position);
+            else
+                _titan.TargetAngle = GetLookDirectionToTarget(_enemy.Cache.Transform.position);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
@@ -577,7 +586,10 @@ namespace Controllers
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
-            _titan.TargetAngle = GetMoveToAngle(_moveToPosition, avoidCollisions);
+            if (_usePathfinding)
+                _titan.TargetAngle = GetAgentNavAngle(_moveToPosition);
+            else
+                _titan.TargetAngle = GetLookDirectionToTarget(_moveToPosition);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 

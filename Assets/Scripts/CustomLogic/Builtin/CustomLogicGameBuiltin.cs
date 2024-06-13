@@ -2,6 +2,7 @@ using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
+using Map;
 using Photon.Pun;
 using Projectiles;
 using Settings;

@@ -1,3 +1,15 @@
+component NavMeshObstacle
+{
+    Description = "Adds a navMeshObstacle to the object";
+    _nav = null;
+
+    function Init()
+    {
+        # Add the component like how we add Rigidbody
+        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle", false);
+    }
+}
+
 component InteractActionTrigger
 {
     Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
@@ -1028,10 +1040,9 @@ component CaptureZone
     DecaySpeed = 1.0;
     Order = 0;
     SupplyStationID = "";
-    SupplyStationIDTooltip = "The id of the supply station map object for this capture zone. Leave empty if there is no supply station.";
     ShowUI = true;
     UIVisibilityRange = 80.0;
-    CurrentOwner = "null";
+    CurrentOwner = "Neutral";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
@@ -1180,6 +1191,28 @@ component CaptureZone
         # Message will be state, owner, capturer, and progress
         data = Json.LoadFromString(message);
 
+        # If current owner changes,
+        # if current owner was you, play PointLose sound
+        # if current owner was someone else and new owner is you, play PointCapture sound
+
+        newOwner = data.Get("owner");
+        myTeam = Network.MyPlayer.Team;
+
+        if (self.CurrentOwner == myTeam && newOwner != myTeam)
+        {
+            self.MapObject.GetTransform("PointLoss").PlaySound();
+        }
+        elif (self.CurrentOwner != myTeam && newOwner == myTeam)
+        {
+            Game.Print("Playing Sound");
+            self.MapObject.GetTransform("PointCapture").PlaySound();
+        }
+        elif (self._currentCapturer == myTeam && self._captureProgress < data.Get("progress"))
+        {
+            self.MapObject.GetTransform("PointProgress").PlaySound();
+        }
+
+
         self._state = data.Get("state");
         self.CurrentOwner = data.Get("owner");
         self._currentCapturer = data.Get("capturer");
@@ -1304,6 +1337,10 @@ component CaptureZone
     # UI Helpers
     function GetTeamHex(team)
     {
+        if (team == null)
+        {
+            return "#FFFFFF";
+        }
         color = self.GetTeamColor(team);
         teamColor = Color(color.R, color.G, color.B, 255);
         return "#" + teamColor.ToHexString();
@@ -2708,6 +2745,16 @@ component WallGateA1
     {
         self._open = !self._open;
         self._moving = true;
+
+        # if opening, play Open sound effect, otherwise play Close sound effect
+        if (self._open)
+        {
+            self.MapObject.GetTransform("GateOpen").PlaySound();
+        }
+        else
+        {
+            self.MapObject.GetTransform("GateClose").PlaySound();
+        }
     }
 
     function SetState(state)
@@ -2717,6 +2764,16 @@ component WallGateA1
         {
             self._open = isOpen;
             self._moving = true;
+
+            if (self._open)
+            {
+                self.MapObject.GetTransform("GateOpen").PlaySound();
+            }
+            else
+            {
+                self.MapObject.GetTransform("GateClose").PlaySound();
+            }
+
         }
     }
 

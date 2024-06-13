@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Settings;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.AI;
 
 namespace Characters
 {

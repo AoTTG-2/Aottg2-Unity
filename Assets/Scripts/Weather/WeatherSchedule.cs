@@ -67,7 +67,7 @@ namespace Weather
                     if (trim != string.Empty && !trim.StartsWith("//"))
                         Events.Add(DeserializeLine(trim));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return string.Format("Import failed at line {0}", lineCount);
                 }

@@ -19,6 +19,7 @@ namespace Map
     {
         public static bool MapTransferReady;
         public static string MapHash;
+        public static string MapName;
         private static MapTransfer _instance;
         private static readonly byte MsgMapStart = 0;
         private static readonly byte MsgMapBody = 1;
@@ -148,7 +149,7 @@ namespace Map
                     MapManager.MapScript.Logic = decompress;
                 }
                 MapHash = Encoding.UTF8.GetString(byteArr[1]);
-                MapManager.LoadMap();
+                MapManager.LoadMap(true);
             }
         }
 

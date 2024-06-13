@@ -14,6 +14,7 @@ using Photon.Pun;
 using System;
 using System.Reflection;
 using System.Linq;
+using Map;
 
 
 namespace GameManagers
@@ -338,6 +339,13 @@ namespace GameManagers
         {
             if (CheckMC())
                 ((InGameManager)SceneLoader.CurrentGameManager).PauseGame();
+        }
+
+        [CommandAttribute("nav", "/nav: Regenerate the navmesh.")]
+        private static void Nav(string[] args)
+        {
+            if (CheckMC())
+                MapLoader.UpdateNavMesh();
         }
 
         [CommandAttribute("unpause", "/unpause: Unpause the multiplayer game.")]
