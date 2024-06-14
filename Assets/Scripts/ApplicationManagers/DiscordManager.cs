@@ -1,54 +1,36 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using System;
-using Characters;
-using Settings;
+using Discord;
 using Photon.Pun;
-using GameManagers;
-using Unity.VisualScripting;
-using ApplicationManagers;
 using Photon.Realtime;
-using UI;
-using System.Runtime.CompilerServices;
+using Settings;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
-public class DiscordController : MonoBehaviour
+public class DiscordManager : MonoBehaviour
 {
+    private static DiscordManager _instance;
+    public static Discord.Discord discord;
 
-    public Discord.Discord discord;
-
-    private long appID = 1247921316913483888;
+    private static long appID = 1247921316913483888;
     private static bool instanceExists;
     private string largeImage = "aottg2-logo2";
-    private long time;
+    private static long time;
     private string roomName;
     private int playerCount;
     private int maxPlayerCount;
     private RoomInfo roomInfo;
 
-    private void Awake()
+    public static void Init()
     {
-        if (!instanceExists)
-        {
-            instanceExists = true;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (FindObjectsOfType(GetType()).Length > 1)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // Use this for initialization
-    void Start()
-    {
+        _instance = SingletonFactory.CreateSingleton(_instance);
         discord = new Discord.Discord(appID, (UInt64)Discord.CreateFlags.NoRequireDiscord);
         time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        _instance.StartCoroutine(_instance.Activity());
 
-        UpdateStatus();
     }
 
-    // Update is called once per frame
     void Update()
     {
         try
@@ -61,12 +43,16 @@ public class DiscordController : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private IEnumerator Activity()
     {
-        UpdateStatus();
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            UpdateStatus();
+        }
     }
 
-    void UpdateStatus()
+    private void UpdateStatus()
     {
         try
         {
@@ -89,7 +75,7 @@ public class DiscordController : MonoBehaviour
                 }
                 string score = string.Join(" / ", scoreList.ToArray());
 
-                if (PhotonNetwork.OfflineMode) 
+                if (PhotonNetwork.OfflineMode)
                 {
                     var activity = new Discord.Activity
                     {
@@ -185,10 +171,5 @@ public class DiscordController : MonoBehaviour
             Debug.Log("Discord activity update Failed");
             Destroy(gameObject);
         }
-    }
-
-    private void OnApplicationQuit()
-    {
-        discord.Dispose();
     }
 }
