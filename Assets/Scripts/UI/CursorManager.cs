@@ -51,7 +51,8 @@ namespace UI
         private void Update()
         {
             if (SceneLoader.SceneName == SceneName.Startup || SceneLoader.SceneName == SceneName.MainMenu || 
-                SceneLoader.SceneName == SceneName.CharacterEditor || SceneLoader.SceneName == SceneName.SnapshotViewer)
+                SceneLoader.SceneName == SceneName.CharacterEditor || SceneLoader.SceneName == SceneName.SnapshotViewer || 
+                SceneLoader.SceneName == SceneName.Gallery || SceneLoader.SceneName == SceneName.Credits)
                 SetPointer();
             else
             {

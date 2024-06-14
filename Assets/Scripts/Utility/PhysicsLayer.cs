@@ -25,6 +25,7 @@ namespace Utility
         public static int MapEditorGizmo = 26;
         public static int MinimapIcon = 27;
         public static int Background = 28;
+        public static int MapObjectNonConvexMeshCollider = 29;
         private static Dictionary<int, LayerMask> _masks = new Dictionary<int, LayerMask>();
 
         public static void Init()
@@ -50,6 +51,7 @@ namespace Utility
             SetLayerCollisions(MapEditorGizmo, new int[0]);
             SetLayerCollisions(MinimapIcon, new int[0]);
             SetLayerCollisions(Background, new int[0]);
+            SetLayerCollisions(MapObjectNonConvexMeshCollider, new int[0]);
         }
 
         public static LayerMask GetMask(params int[] layers)

@@ -17,6 +17,11 @@
                     255
                 ],
                 "DaylightIntensity" : 1.68259847164154,
+                "DaylightDirection" : [
+                    45,
+                    45,
+                    0
+                ],
                 "AmbientLight" : [
                     115,
                     123,
@@ -40,10 +45,76 @@
                 "Thunder" : 0,
                 "Snow" : 0,
                 "Wind" : 0,
-                "UseSchedule" : false,
+                "WindDirection" : [
+                    1,
+                    0,
+                    0
+                ],
+                "RainForce" : 0,
+                "SnowForce" : 0,
+                "WindForce" : 0,
+                "UseSchedule" : true,
                 "ScheduleLoop" : false,
-                "Schedule" : "",
-                "Name" : "Map Default*"
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nGoto,Constant,Day;\r\nWait,Constant,120;\r\nGoto,Constant,Dawn1;\r\nWait,Constant,90;\r\nGoto,RandomFromList,Night1,Night2;\r\nWait,Constant,90;\r\nGoto,Constant,Dawn2;\r\nWait,Constant,90;\r\nGoto,Constant,Start;\r\n\r\nLabel,Day;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,0-164-255-255;\r\nSetTargetValue,Daylight,Constant,255-250-250-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.68;\r\nSetTargetValue,AmbientLight,Constant,115-123-157-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.008;\r\nSetTargetValue,FogColor,Constant,157-178-200-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Dawn1;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,255-155-117-255;\r\nSetTargetValue,Daylight,Constant,234-168-128-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,166-117-117-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.012;\r\nSetTargetValue,FogColor,Constant,161-142-119-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Dawn2;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,172-164-139-255;\r\nSetTargetValue,Daylight,Constant,232-151-115-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,124-114-113-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.0088;\r\nSetTargetValue,FogColor,Constant,238-155-126-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Night1;\r\nSetTargetValue,Skybox,Constant,Night3;\r\nSetTargetValue,SkyboxColor,Constant,0-0-0-255;\r\nSetTargetValue,Daylight,Constant,68-88-119-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.03;\r\nSetTargetValue,AmbientLight,Constant,40-55-82-255;\r\nSetTargetValue,Flashlight,Constant,152-177-159-255;\r\nSetTargetValue,FogDensity,Constant,0.0066;\r\nSetTargetValue,FogColor,Constant,40-51-65-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Night2;\r\nSetTargetValue,Skybox,Constant,Night2;\r\nSetTargetValue,SkyboxColor,Constant,0-0-0-255;\r\nSetTargetValue,Daylight,Constant,40-59-108-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,34-42-93-217;\r\nSetTargetValue,Flashlight,Constant,152-153-159-255;\r\nSetTargetValue,FogDensity,Constant,0.0082;\r\nSetTargetValue,FogColor,Constant,55-96-136-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,FinishLighting;\r\nSetTargetTime,Skybox,Constant,8;\r\nSetTargetTime,SkyboxColor,Constant,8;\r\nSetTargetTime,Daylight,Constant,8;\r\nSetTargetTime,DaylightIntensity,Constant,8;\r\nSetTargetTime,AmbientLight,Constant,8;\r\nSetTargetTime,Flashlight,Constant,8;\r\nSetTargetTime,FogDensity,Constant,8;\r\nSetTargetTime,FogColor,Constant,8;\r\nReturn;\r\n\r\nEndSchedule;",
+                "Name" : "Map Default*",
+                "Preset" : true
+            },
+            {
+                "Skybox" : "Dawn1",
+                "SkyboxColor" : [
+                    0,
+                    164,
+                    255,
+                    255
+                ],
+                "Daylight" : [
+                    255,
+                    250,
+                    250,
+                    255
+                ],
+                "DaylightIntensity" : 1.68259847164154,
+                "DaylightDirection" : [
+                    45,
+                    45,
+                    0
+                ],
+                "AmbientLight" : [
+                    115,
+                    123,
+                    157,
+                    255
+                ],
+                "Flashlight" : [
+                    255,
+                    255,
+                    255,
+                    0
+                ],
+                "FogDensity" : 0.00806512497365475,
+                "FogColor" : [
+                    157,
+                    178,
+                    200,
+                    255
+                ],
+                "Rain" : 0,
+                "Thunder" : 0,
+                "Snow" : 0,
+                "Wind" : 0,
+                "WindDirection" : [
+                    1,
+                    0,
+                    0
+                ],
+                "RainForce" : 0,
+                "SnowForce" : 0,
+                "WindForce" : 0,
+                "UseSchedule" : true,
+                "ScheduleLoop" : false,
+                "Schedule" : "BeginSchedule;\r\nLabel,Start;\r\nGoto,Constant,Day;\r\nWait,Constant,120;\r\nGoto,Constant,Dawn1;\r\nWait,Constant,90;\r\nGoto,RandomFromList,Night1,Night2;\r\nWait,Constant,90;\r\nGoto,Constant,Dawn2;\r\nWait,Constant,90;\r\nGoto,Constant,Start;\r\n\r\nLabel,Day;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,0-164-255-255;\r\nSetTargetValue,Daylight,Constant,255-250-250-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.68;\r\nSetTargetValue,AmbientLight,Constant,115-123-157-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.008;\r\nSetTargetValue,FogColor,Constant,157-178-200-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Dawn1;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,255-155-117-255;\r\nSetTargetValue,Daylight,Constant,234-168-128-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,166-117-117-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.012;\r\nSetTargetValue,FogColor,Constant,161-142-119-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Dawn2;\r\nSetTargetValue,Skybox,Constant,Dawn1;\r\nSetTargetValue,SkyboxColor,Constant,172-164-139-255;\r\nSetTargetValue,Daylight,Constant,232-151-115-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,124-114-113-255;\r\nSetTargetValue,Flashlight,Constant,255-255-255-0;\r\nSetTargetValue,FogDensity,Constant,0.0088;\r\nSetTargetValue,FogColor,Constant,238-155-126-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Night1;\r\nSetTargetValue,Skybox,Constant,Night3;\r\nSetTargetValue,SkyboxColor,Constant,0-0-0-255;\r\nSetTargetValue,Daylight,Constant,68-88-119-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.03;\r\nSetTargetValue,AmbientLight,Constant,40-55-82-255;\r\nSetTargetValue,Flashlight,Constant,152-177-159-255;\r\nSetTargetValue,FogDensity,Constant,0.0066;\r\nSetTargetValue,FogColor,Constant,40-51-65-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,Night2;\r\nSetTargetValue,Skybox,Constant,Night2;\r\nSetTargetValue,SkyboxColor,Constant,0-0-0-255;\r\nSetTargetValue,Daylight,Constant,40-59-108-255;\r\nSetTargetValue,DaylightIntensity,Constant,1.0;\r\nSetTargetValue,AmbientLight,Constant,34-42-93-217;\r\nSetTargetValue,Flashlight,Constant,152-153-159-255;\r\nSetTargetValue,FogDensity,Constant,0.0082;\r\nSetTargetValue,FogColor,Constant,55-96-136-255;\r\nGoto,Constant,FinishLighting;\r\nReturn;\r\n\r\nLabel,FinishLighting;\r\nSetTargetTime,Skybox,Constant,8;\r\nSetTargetTime,SkyboxColor,Constant,8;\r\nSetTargetTime,Daylight,Constant,8;\r\nSetTargetTime,DaylightIntensity,Constant,8;\r\nSetTargetTime,AmbientLight,Constant,8;\r\nSetTargetTime,Flashlight,Constant,8;\r\nSetTargetTime,FogDensity,Constant,8;\r\nSetTargetTime,FogColor,Constant,8;\r\nReturn;\r\n\r\nEndSchedule;",
+                "Name" : "DayNightCycle*",
+                "Preset" : true
             },
             {
                 "Skybox" : "Dawn1",

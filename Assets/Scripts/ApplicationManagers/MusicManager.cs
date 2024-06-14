@@ -46,7 +46,9 @@ namespace ApplicationManagers
 
         private static void OnLoadScene(SceneName sceneName)
         {
-            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor || sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer)
+            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor || 
+                sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer || sceneName == SceneName.Gallery || 
+                sceneName == SceneName.Credits)
                 SetPlaylist(MusicPlaylist.Menu);
         }
 

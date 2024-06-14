@@ -27,7 +27,6 @@ namespace UI
         public BasePopup _aboutPopup;
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
-        public BasePopup _creditsPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
         protected Text _multiplayerStatusLabel;
@@ -85,7 +84,6 @@ namespace UI
             _aboutPopup = ElementFactory.CreateHeadedPanel<AboutPopup>(transform).GetComponent<BasePopup>();
             _questPopup = ElementFactory.CreateHeadedPanel<QuestPopup>(transform).GetComponent<BasePopup>();
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
-            _creditsPopup = ElementFactory.CreateHeadedPanel<CreditsPopup>(transform).GetComponent<BasePopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -98,7 +96,6 @@ namespace UI
             _popups.Add(_questPopup);
             _popups.Add(_tutorialPopup);
             _popups.Add(_selectMapPopup);
-            _popups.Add(_creditsPopup);
         }
 
         private void SetupIntroPanel()
@@ -222,7 +219,7 @@ namespace UI
                     _tutorialPopup.Show();
                     break;
                 case "CreditsButton":
-                    _creditsPopup.Show();
+                    SceneLoader.LoadScene(SceneName.Credits);
                     break;
                 case "SingleplayerButton":
                     ((CreateGamePopup)_createGamePopup).Show(false);
