@@ -35,7 +35,7 @@ namespace Characters
         public float AttackPause = 0.2f;
         public float TurnPause = 0.2f;
         public float MaxSprintStamina = 5f;
-        public float SprintStaminaRecover = 0.5f;
+        public float SprintStaminaRecover = 0.7f;
         public float SprintStaminaConsumption = 1f;
         public float CurrentSprintStamina = 5f;
         public BaseCharacter TargetEnemy = null;

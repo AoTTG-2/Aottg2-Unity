@@ -348,7 +348,7 @@ namespace Map
 
         public async Task UpdateAllNavMeshes()
         {
-            Debug.Log("Updating NavMesh");
+            // Debug.Log("Updating NavMesh");
             NavMesh.RemoveAllNavMeshData();
             _hasNavMeshData = false;
             if (PhotonNetwork.IsMasterClient)
@@ -392,7 +392,7 @@ namespace Map
 
             List<int> agentIDs = Util.GetAllTitanAgentIds();
 
-            Debug.Log("Loading NavMesh");
+            // Debug.Log("Loading NavMesh");
             // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
             List<Task> tasks = new List<Task>();
             foreach (int agentID in agentIDs)
@@ -664,15 +664,30 @@ namespace Map
                 material = (PhysicMaterial)LoadAssetCached("Physics", physicsMaterial);
             int layer = GetColliderLayer(collideWith);
             Collider[] colliders = go.GetComponentsInChildren<Collider>();
+            go.layer = layer;
             foreach (Collider c in colliders)
             {
-                c.isTrigger = collideMode == MapObjectCollideMode.Region;
-                c.enabled = collideMode != MapObjectCollideMode.None;
+                c.gameObject.layer = layer;
+                if (c.name == "ConvexTriggerCollider")
+                {
+                    c.isTrigger = true;
+                    c.enabled = collideMode == MapObjectCollideMode.Region;
+                }
+                else if (c.name == "NonConvexMeshCollider")
+                {
+                    c.isTrigger = false;
+                    c.enabled = collideMode != MapObjectCollideMode.None;
+                    if (collideMode == MapObjectCollideMode.Region)
+                        c.gameObject.layer = PhysicsLayer.MapObjectNonConvexMeshCollider;
+                }
+                else
+                {
+                    c.isTrigger = collideMode == MapObjectCollideMode.Region;
+                    c.enabled = collideMode != MapObjectCollideMode.None;
+                }
                 if (material != null)
                     c.material = material;
-                c.gameObject.layer = layer;
             }
-            go.layer = layer;
             return colliders.Length;
         }
 
