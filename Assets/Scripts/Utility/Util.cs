@@ -312,7 +312,7 @@ namespace Utility
         {
             //new KeyValuePair<float, string>(0.5f, "minTitan"),
             new KeyValuePair<float, string>(1f, "smallTitan"),
-            //new KeyValuePair<float, string>(2f, "avgTitan"),
+            new KeyValuePair<float, string>(2f, "avgTitan"),
             new KeyValuePair<float, string>(3f, "maxTitan")
         };
         
