@@ -278,7 +278,6 @@ namespace Map
                             else
                                 minProgress = Mathf.Min(minProgress, operations[i].progress);
                         }
-                        Debug.Log(minProgress);
                         UIManager.LoadingMenu.UpdateLoading(0.75f + 0.25f * minProgress);
                         yield return new WaitForEndOfFrame();
                     }
