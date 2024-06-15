@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
-public class DiscordManager : MonoBehaviour
+class DiscordManager : MonoBehaviour
 {
     private static DiscordManager _instance;
     public static Discord.Discord discord;
@@ -27,11 +27,9 @@ public class DiscordManager : MonoBehaviour
         _instance = SingletonFactory.CreateSingleton(_instance);
         discord = new Discord.Discord(appID, (UInt64)Discord.CreateFlags.NoRequireDiscord);
         time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        _instance.StartCoroutine(_instance.Activity());
-
     }
 
-    void Update()
+    private void Update()
     {
         try
         {
@@ -43,13 +41,9 @@ public class DiscordManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Activity()
+    private void LateUpdate()
     {
-        while (true)
-        {
-            yield return new WaitForEndOfFrame();
-            UpdateStatus();
-        }
+        UpdateStatus();
     }
 
     private void UpdateStatus()
@@ -82,22 +76,22 @@ public class DiscordManager : MonoBehaviour
                         State = "SinglePlayer",
                         Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
                         Assets =
-                    {
-                    LargeImage = largeImage,
-                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
-                    },
-                        Timestamps =
-                    {
-                    Start = time,
-                    },
-                        Party =
-                    {
-                        Size =
                         {
-                            CurrentSize = playerCount,
-                            MaxSize = 1,
+                            LargeImage = largeImage,
+                            SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                         },
-                    }
+                        Timestamps =
+                        {
+                            Start = time,
+                        },
+                        Party =
+                        {
+                            Size =
+                            {
+                                CurrentSize = playerCount,
+                                MaxSize = 1,
+                            },
+                        }
                     };
                     activityManager.UpdateActivity(activity, (res) =>
                     {
@@ -114,22 +108,22 @@ public class DiscordManager : MonoBehaviour
                         State = roomName,
                         Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
                         Assets =
-                    {
-                    LargeImage = largeImage,
-                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
-                    },
-                        Timestamps =
-                    {
-                    Start = time,
-                    },
-                        Party =
-                    {
-                        Size =
                         {
-                            CurrentSize = playerCount,
-                            MaxSize = maxPlayerCount,
+                            LargeImage = largeImage,
+                            SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                         },
-                    }
+                        Timestamps =
+                        {
+                            Start = time,
+                        },
+                        Party =
+                        {
+                            Size =
+                            {
+                                CurrentSize = playerCount,
+                                MaxSize = maxPlayerCount,
+                            },
+                        }
                     };
                     activityManager.UpdateActivity(activity, (res) =>
                     {
@@ -149,12 +143,12 @@ public class DiscordManager : MonoBehaviour
                     Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value,
                     Assets =
                     {
-                    LargeImage = largeImage,
-                    SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
+                        LargeImage = largeImage,
+                        SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
                     },
                     Timestamps =
                     {
-                    Start = time,
+                        Start = time,
                     }
                 };
                 activityManager.UpdateActivity(activity, (res) =>
