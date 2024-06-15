@@ -369,7 +369,7 @@ namespace Controllers
                 if (_usePathfinding && Vector3.Distance(agentPositionXY, titanPositionXY) > 0.1f)
                 {
                     // debug log
-                    Debug.Log("Agent is desynced, disabling and re-enabling");
+                    //Debug.Log("Agent is desynced, disabling and re-enabling");
                     _agent.enabled = false;
                     _agent.enabled = true;
                 }
@@ -421,7 +421,7 @@ namespace Controllers
             return randDir.normalized;
         }
 
-        public void Update()
+        /*public void Update()
         {
             // draw path
             if (_usePathfinding && _agent.hasPath)
@@ -455,7 +455,7 @@ namespace Controllers
                 lineRenderer.SetPosition(i, path.corners[i]);
             }
 
-        }
+        }*/
 
         protected float GetAgentNavAngle(Vector3 target)
         {
@@ -467,7 +467,7 @@ namespace Controllers
             if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
             {
                 // debug log
-                Debug.Log("Agent is desynced in nav angle, moving back toward agent");
+                //Debug.Log("Agent is desynced in nav angle, moving back toward agent");
 
                 // get direction twards agent
                 resultDirection = (_agent.transform.position - _titan.Cache.Transform.position).normalized;
@@ -479,7 +479,7 @@ namespace Controllers
             else if (_agent.isOnNavMesh == false)
             {
                 // debug log
-                Debug.Log("Agent off navmesh");
+                //Debug.Log("Agent off navmesh");
 
                 resultDirection = GetDirectionTowardsNavMesh();
             }
