@@ -37,7 +37,8 @@ public class PostProcessingManager : MonoBehaviour
                 (ChromaticAberrationLevel)settings.ChromaticAberration.Value,
                 (ColorGradingLevel)settings.ColorGrading.Value,
                 (DepthOfFieldLevel)settings.DepthOfField.Value,
-                (MotionBlurLevel)settings.MotionBlur.Value
+                (MotionBlurLevel)settings.MotionBlur.Value,
+                (WaterFXLevel)settings.WaterFX.Value
             );
 
     }
@@ -48,7 +49,14 @@ public class PostProcessingManager : MonoBehaviour
         _postProcessingVolume.enabled = state;
     }
 
-    public void ApplySettings(AmbientOcclusionLevel aol, BloomLevel bl, ChromaticAberrationLevel cal, ColorGradingLevel cgl, DepthOfFieldLevel dofl, MotionBlurLevel mbl)
+    public void ApplySettings(
+        AmbientOcclusionLevel aol,
+        BloomLevel bl,
+        ChromaticAberrationLevel cal,
+        ColorGradingLevel cgl,
+        DepthOfFieldLevel dofl,
+        MotionBlurLevel mbl,
+        WaterFXLevel wfxl)
     {
         SetAmbientOcclusionQuality(aol);
         SetBloomQuality(bl);
@@ -61,7 +69,7 @@ public class PostProcessingManager : MonoBehaviour
         WaterEffect[] waterEffects = FindObjectsByType<WaterEffect>(sortMode: FindObjectsSortMode.None);
         foreach (WaterEffect waterEffect in waterEffects)
         {
-            waterEffect.ApplySettings(cgl, dofl);
+            waterEffect.ApplySettings(wfxl);
         }
 
     }

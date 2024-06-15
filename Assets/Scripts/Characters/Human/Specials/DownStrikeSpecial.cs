@@ -43,7 +43,7 @@ namespace Characters
 
             _human.Cache.Rigidbody.AddForce(Vector3.down * 3f, ForceMode.VelocityChange);
 
-            if ((!firstFrame && _human.Grounded) || _human.HookLeft.IsActive || _human.HookRight.IsActive)
+            if ((!firstFrame && _human.Grounded) || _human.HookLeft.IsActive || _human.HookRight.IsActive || _human.State == HumanState.Grab)
             {
                 IsActive = false;
                 Deactivate();

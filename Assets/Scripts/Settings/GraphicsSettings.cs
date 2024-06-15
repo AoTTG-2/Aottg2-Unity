@@ -37,6 +37,7 @@ namespace Settings
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.On);
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off);
         public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off);
+        public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High);
         
 
         public override void Apply()
@@ -82,7 +83,8 @@ namespace Settings
                     (ChromaticAberrationLevel)ChromaticAberration.Value,
                     (ColorGradingLevel)ColorGrading.Value,
                     (DepthOfFieldLevel)DepthOfField.Value,
-                    (MotionBlurLevel)MotionBlur.Value
+                    (MotionBlurLevel)MotionBlur.Value,
+                    (WaterFXLevel)WaterFX.Value
                 );
         }
 
@@ -250,6 +252,14 @@ namespace Settings
     }
 
     public enum MotionBlurLevel
+    {
+        Off,
+        Low,
+        Medium,
+        High
+    }
+
+    public enum WaterFXLevel
     {
         Off,
         Low,

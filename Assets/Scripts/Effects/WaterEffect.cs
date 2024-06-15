@@ -28,21 +28,42 @@ public class WaterEffect : MonoBehaviour
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
         if (settings != null)
-            ApplySettings((ColorGradingLevel)settings.ColorGrading.Value, (DepthOfFieldLevel)settings.DepthOfField.Value);
+            ApplySettings((WaterFXLevel)settings.WaterFX.Value);
     }
 
-    public void ApplySettings(ColorGradingLevel cgl, DepthOfFieldLevel dofl)
+    public void ApplySettings(WaterFXLevel wfxl)
     {
-        if (cgl == ColorGradingLevel.Off && dofl == DepthOfFieldLevel.Off)
+        if (wfxl == WaterFXLevel.Off)
         {
             PostProcessingVolume.gameObject.SetActive(false);
             this.enabled = false;
-            return;
+        } 
+        else {
+            PostProcessingVolume.gameObject.SetActive(true);
+            this.enabled = true;
         }
-        this.enabled = true;
 
-        _colorGrading.enabled.value = cgl != ColorGradingLevel.Off;
-        _depthOfField.enabled.value = dofl != DepthOfFieldLevel.Off;
+
+
+        switch (wfxl)
+        {
+            case WaterFXLevel.Off:
+                _colorGrading.enabled.value = false;
+                _depthOfField.enabled.value = false;
+                break;
+            case WaterFXLevel.Low:
+                _colorGrading.enabled.value = true;
+                _depthOfField.enabled.value = false;
+                break;
+            case WaterFXLevel.Medium:
+                _colorGrading.enabled.value = true;
+                _depthOfField.enabled.value = true;
+                break;
+            case WaterFXLevel.High:
+                _colorGrading.enabled.value = true;
+                _depthOfField.enabled.value = true;
+                break;
+        }
     }
 
     void FixedUpdate()

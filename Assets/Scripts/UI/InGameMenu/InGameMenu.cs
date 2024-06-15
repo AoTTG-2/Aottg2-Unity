@@ -482,18 +482,45 @@ namespace UI
 
             string team = player.GetStringProperty(PlayerProperty.Team);
             string teamColor = TeamInfo.GetTeamColor(team);
+            bool teamsEnabled = SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team;
+            string character = player.GetStringProperty(PlayerProperty.Character);
             if (team == TeamInfo.None)
                 team = string.Empty;
-            else if (team == TeamInfo.Blue)
-                team = " B ";
-            else if (team == TeamInfo.Red)
-                team = " R ";
-            else if (team == TeamInfo.Titan)
-                team = " T ";
-            else if (team == TeamInfo.Human)
-                team = " H ";
+            if (teamsEnabled)
+            {
+                if (team == TeamInfo.Blue)
+                    team = " B ";
+                else if (team == TeamInfo.Red)
+                    team = " R ";
+                else if (team == TeamInfo.Titan)
+                    team = " T ";
+                else if (team == TeamInfo.Human)
+                    team = " H ";
+                else
+                    team = string.Empty;
+            }
             else
-                team = string.Empty;
+            {
+                if (team == TeamInfo.Blue || team == TeamInfo.Red)
+                {
+                    if (character == PlayerCharacter.Human || character == PlayerCharacter.Shifter)
+                    {
+                        team = " H ";
+                        teamColor = TeamInfo.GetTeamColor(TeamInfo.Human);
+                    }
+                    else if (character == PlayerCharacter.Titan)
+                    {
+                        team = " T ";
+                        teamColor = TeamInfo.GetTeamColor(TeamInfo.Titan);
+                    }
+                }
+                else if (team == TeamInfo.Titan)
+                    team = " T ";
+                else if (team == TeamInfo.Human)
+                    team = " H ";
+                else
+                    team = string.Empty;
+            }
 
             team = Util.ColorText(team, teamColor);
 
@@ -600,7 +627,7 @@ namespace UI
             }
             if (SettingsManager.UISettings.ShowKDR.Value)
             {
-                if (SettingsManager.InGameCurrent.Misc.PVP.Value == 0)
+                if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
                     kdrLine = GetPlayerList();
                 else
                     kdrLine = GetPlayerListTeams();
