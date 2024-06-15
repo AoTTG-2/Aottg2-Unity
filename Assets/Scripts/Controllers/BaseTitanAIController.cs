@@ -258,7 +258,7 @@ namespace Controllers
                     Idle();
                 }
                 else if (_stateTimeLeft <= 0 || _usePathfinding)
-                    MoveToPosition(true);
+                    MoveToPosition();
                 else if (_usePathfinding == false)
                     _titan.TargetAngle = GetChaseAngle(_moveToPosition);
             }
@@ -362,14 +362,19 @@ namespace Controllers
             SmartAttack = false;
             if (_usePathfinding)
             {
-                _agent.nextPosition = _titan.Cache.Transform.position;
                 // Good ol' power cycle fix
                 // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
-                if (_usePathfinding && Vector3.Distance(_agent.nextPosition, _titan.Cache.Transform.position) > 0.1f)
+                Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
+                Vector3 titanPositionXY = new Vector3(_titan.Cache.Transform.position.x, 0, _titan.Cache.Transform.position.z);
+                if (_usePathfinding && Vector3.Distance(agentPositionXY, titanPositionXY) > 0.1f)
                 {
+                    // debug log
+                    Debug.Log("Agent is desynced, disabling and re-enabling");
                     _agent.enabled = false;
                     _agent.enabled = true;
                 }
+
+                _agent.nextPosition = _titan.Cache.Transform.position;
             }
         }
 
@@ -416,7 +421,7 @@ namespace Controllers
             return randDir.normalized;
         }
 
-        /*public void Update()
+        public void Update()
         {
             // draw path
             if (_usePathfinding && _agent.hasPath)
@@ -450,17 +455,32 @@ namespace Controllers
                 lineRenderer.SetPosition(i, path.corners[i]);
             }
 
-        }*/
+        }
 
         protected float GetAgentNavAngle(Vector3 target)
         {
             Vector3 resultDirection = _agent.velocity.normalized;
-            if (_agent.isOnNavMesh && _agent.pathPending == false)
+            // Good ol' power cycle fix
+            // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+            Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
+            Vector3 titanPositionXY = new Vector3(_titan.Cache.Transform.position.x, 0, _titan.Cache.Transform.position.z);
+            if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
+            {
+                // debug log
+                Debug.Log("Agent is desynced in nav angle, moving back toward agent");
+
+                // get direction twards agent
+                resultDirection = (_agent.transform.position - _titan.Cache.Transform.position).normalized;
+            }
+            else if (_agent.isOnNavMesh && _agent.pathPending == false)
             {
                 _agent.SetDestination(target);
             }
             else if (_agent.isOnNavMesh == false)
             {
+                // debug log
+                Debug.Log("Agent off navmesh");
+
                 resultDirection = GetDirectionTowardsNavMesh();
             }
 
@@ -579,7 +599,7 @@ namespace Controllers
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
-        protected void MoveToPosition(bool avoidCollisions = false)
+        protected void MoveToPosition()
         {
             AIState = TitanAIState.MoveToPosition;
             _titan.HasDirection = true;
@@ -587,7 +607,10 @@ namespace Controllers
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
             if (_usePathfinding)
+            {
+                _moveAngle = Random.Range(-5f, 5f);
                 _titan.TargetAngle = GetAgentNavAngle(_moveToPosition);
+            }
             else
                 _titan.TargetAngle = GetLookDirectionToTarget(_moveToPosition);
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
