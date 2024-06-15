@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:A subterranean lava temple built by Appolina, and filled with hidden secrets, ELOR 3 tests your speed control and momentum conservation. Adjust how you fly as the environment changes!
+EditorVersion:1.0|Description:A subterranean lava temple built by Appolina, and filled with hidden secrets, ELOR 3 tests your speed control and momentum conservation. Adjust how you fly as the environment changes!|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -1791,7 +1793,7 @@ Scene,Geometry/Cuboid,1787,0,1,1,1,0,Kill Region Cuboid,852.3179,71.96301,2447.1
 Scene,Geometry/Cuboid,1788,0,1,1,1,0,Kill Region Cuboid,1027.318,146.426,2447.195,0,0,0,36.5,1.5,15,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1789,0,1,1,1,0,Racing Finish Region Cuboid,899.8179,71.96301,2529.695,0,0,0,6.5,13.3926,1.5,Region,Characters,Default,Transparent|209/255/0/128|Misc/None|1/1|0/0,RacingFinishRegion|;
 Scene,Geometry/Cuboid,1790,0,1,1,1,0,Kill Region Cuboid,899.8179,71.96301,3114.695,0,0,0,6.5,13.3926,1.5,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Sphere,1791,0,1,1,1,0,Racing Checkpoint Region Sphere,899.8878,29.16071,3084.14,0,200,0,0.9090909,0.9090909,0.9090909,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true;
+Scene,Geometry/Sphere,1791,0,1,1,1,0,Racing Checkpoint Region Sphere,899.8878,29.16071,3084.14,0,200,0,0.9090909,0.9090909,0.9090909,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true,TeleportRegion|RelativePosition:false|Position:1585.2/30/2076.3|TeleportHumans:true|TeleportTitans:true|TeleportShifters:true;
 Scene,Geometry/Cylinder,1793,0,1,1,1,0,Cylinder,1585,17.5,2076,0,0,0,3,1.25,3,Physical,Entities,Default,Basic|255/255/255/255|Stone/Rock3|0.6/0.5|0/0,;
 Scene,Geometry/Cuboid,1794,0,1,1,1,0,Cuboid,1485,67.5,2076,0,0,0,1.5,12.5,3,Physical,Entities,Default,Basic|255/255/255/255|Stone/Rock3|0.3/2.5|0/0,;
 Scene,Geometry/Cuboid,1795,0,1,1,1,0,Cuboid,1585,67.5,2176,0,90.00001,0,1.5,12.5,3,Physical,Entities,Default,Basic|255/255/255/255|Stone/Rock3|0.3/2.5|0/0,;
@@ -1933,3 +1935,62 @@ Scene,Geometry/Cuboid,1930,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,
 Scene,Geometry/Cuboid,1931,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,1932,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

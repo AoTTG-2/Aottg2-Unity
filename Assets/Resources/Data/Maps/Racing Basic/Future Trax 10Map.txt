@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:Totally unlike every map before, Future Trax 10 is an awe-inspiring race through a futuristic city and its internal machinery. Much of it is very dangerous, requiring caution and skill to survive, but those who can run this race will not easily forget it.
+EditorVersion:1.0|Description:Totally unlike every map before, Future Trax 10 is an an extended race through a futuristic city and its internal machinery. Much of it is very dangerous, requiring caution and skill to survive, but those who can complete this race will certainly remember it.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -14,8 +16,7 @@ Scene,Geometry/Cuboid,10,0,1,1,1,0,Racing Checkpoint Region Cuboid,-1259.961,141
 Scene,None,11,0,1,1,1,0,Human SpawnPoint (blue),-1650.277,853.186,-444.2007,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
 Scene,None,12,0,1,1,1,0,Human SpawnPoint (red),-1650.277,853.186,-444.2007,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointRed;
 Scene,Geometry/Cuboid,13,0,1,1,1,0,Racing Finish Region Cuboid,-731.016,1318.128,2913.877,0,315.0004,0,8.75,8.75,3.5,Region,Characters,Default,Transparent|209/255/0/128|Misc/None|1/1|0/0,RacingFinishRegion|;
-Scene,Geometry/Sphere,14,0,1,1,1,0,Kill Region Sphere,-838.3734,1314.466,3025.375,5.078962,199.3698,345.8677,3.8,3.8,3.8,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Sphere,15,0,1,1,1,0,Racing Checkpoint Region Sphere,-838.3734,1314.466,3025.375,5.078962,199.3698,345.8677,3.8,3.8,3.8,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Sphere,15,0,1,1,1,0,Racing Checkpoint Region Sphere,-838.3734,1314.466,3025.014,5.078962,199.3698,345.8677,3.8,3.8,3.8,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true,TeleportRegion|RelativePosition:false|Position:1931/2057/-1189|TeleportHumans:true|TeleportTitans:false|TeleportShifters:false;
 Scene,Geometry/Sphere,16,0,1,1,1,0,Sphere,-856.9282,1698.982,1397.711,0,0,0,1.304538,1.304538,1.304538,Physical,Entities,Default,Basic|0/127/255/255|Legacy/Arena2Tex|2/1|0/0,;
 Scene,Geometry/Torus,17,0,1,1,1,0,Torus,-856.5617,1700.379,1397.725,0,0,270,1.346135,1.346153,1.346135,Physical,Entities,Default,Basic|127/216/255/255|Metal/Metal4|0.4/0.8|0/0,;
 Scene,Geometry/Torus,18,0,1,1,1,0,Torus,-855.8339,1700.379,1396.997,0,90,270,1.346135,1.346153,1.346135,Physical,Entities,Default,Basic|127/216/255/255|Metal/Metal4|0.4/0.8|0/0,;
@@ -10011,3 +10012,62 @@ Scene,Geometry/Cuboid,10007,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150
 Scene,Geometry/Cuboid,10008,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,10009,0,1,1,1,0,Titan SpawnPoint,10000,-9975,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:A colossal monument to despair and cruelty, built collaboratively by Eliope and Riblei to torment racers, and now serving as the final test of a racer's endurance. Machina II is a hollow pyramid hidden deep within a barren desert. The mechanical heart at its core is now dead and nonfunctional, and many checkpoints have been installed in the form of small cones... but Machina II is still a literal deathtrap.
+EditorVersion:1.0|Description:A colossal monument to despair and cruelty, built collaboratively by Eliope and Riblei to torment racers, and now serving as the final test of a racer's endurance. Machina II is a hollow pyramid hidden deep within a barren desert. The mechanical heart at its core is now dead and nonfunctional, and many checkpoints have been installed in the form of small cones... but Machina II is still a literal deathtrap.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -766,7 +768,7 @@ Scene,Geometry/Cylinder,762,0,1,1,1,0,Kill Region Cylinder,960,50,0,90,0,0,0.1,4
 Scene,Geometry/Cylinder,763,0,1,1,1,0,Kill Region Cylinder,880,50,-380,90,44.97911,0,0.1,16,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,764,0,1,1,1,0,Kill Region Cylinder,880,50,380,270,315.0209,0,0.1,16,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,765,0,1,1,1,0,Kill Region Cylinder,800,50,-460,0,0,0,0.1,3,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cylinder,766,0,1,1,1,0,Kill Region Cylinder,960,50,-300,0,0,0,0.1,3,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,766,0,1,1,1,0,Kill Region Cylinder,960,50,-300,0,0,0,0.1,3,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cylinder,767,0,1,1,1,0,Kill Region Cylinder,800,50,460,0,0,0,0.1,3,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,768,0,1,1,1,0,Kill Region Cylinder,960,50,300,0,0,0,0.1,3,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,769,0,1,1,1,0,Kill Region Cuboid,0,90,0,0,0,0,6,2,6,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -841,7 +843,7 @@ Scene,Geometry/Cuboid,837,0,1,1,1,0,Kill Region Cuboid,-20,130,1195,0,315.0209,0
 Scene,Geometry/Cuboid,838,0,1,1,1,0,Kill Region Cuboid,871,130,790.5,0,102.6804,0,1.1,0.5,86,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,839,0,1,1,1,0,Kill Region Cuboid,965,130,890,0,102.6804,0,1.1,0.5,86,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,840,0,1,1,1,0,Kill Region Cuboid,1380,130,380,0,0,0,1.1,0.5,84,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cuboid,841,0,1,1,1,0,Kill Region Cuboid,1162.5,130,-45,0,90,0,1.1,0.5,44.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cuboid,841,0,1,1,1,0,Kill Region Cuboid,1162.5,130,-45,0,90,0,1.1,0.5,44.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cuboid,842,0,1,1,1,0,Kill Region Cuboid,1065,130,45,0,90,0,1.1,0.5,25,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,843,0,1,1,1,0,Kill Region Cuboid,1286.5,130,422,0,0,0,1.1,0.5,56,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,844,0,1,1,1,0,Kill Region Cuboid,1236.5,130,94,0,224.9791,0,1.1,0.5,14.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -1051,7 +1053,7 @@ Scene,Geometry/Cuboid,1047,0,1,1,0,0,Barrier,-185,170,2320,0,315.0209,0,1,14,38,
 Scene,Geometry/Cuboid,1048,0,1,1,1,0,Kill Region Cuboid,306,100,2284,0,255.1925,0,1.2,0.5,34.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1049,0,1,1,1,0,Kill Region Cuboid,11.5,100,2205.5,0,75.19254,0,1.2,0.5,14.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1050,0,1,1,1,0,Kill Region Cuboid,-185,100,2320,0,315.0209,0,1.2,0.5,38.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cuboid,1051,0,1,1,1,0,Kill Region Cuboid,110.5,100,2232,0,75.19254,0,1.2,0.5,6.6,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cuboid,1051,0,1,1,1,0,Kill Region Cuboid,110.5,100,2232,0,75.19254,0,1.2,0.5,6.6,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cuboid,1052,0,1,1,1,0,Kill Region Cuboid,306,115,2284,0,255.1925,0,1.2,0.5,34.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1053,0,1,1,1,0,Kill Region Cuboid,11.5,115,2205.5,0,75.19254,0,1.2,0.5,14.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1054,0,1,1,1,0,Kill Region Cuboid,-185,115,2320,0,315.0209,0,1.2,0.5,38.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -1176,7 +1178,7 @@ Scene,Geometry/Sphere,1172,0,1,1,1,0,Sphere,559.85,152.5,2765.25,0,0,0,0.3,0.3,0
 Scene,Decor/Pillar1,1173,0,1,1,1,0,Pillar1,560,128.5,2785,0,0,0,0.25,0.4,0.25,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Pillar2Tex|1/1|0/0,;
 Scene,Decor/Pillar1,1174,0,1,1,1,0,Pillar1,560,128.5,2785,0,44.97911,0,0.25,0.4,0.25,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Pillar2Tex|1/1|0/0,;
 Scene,Geometry/Sphere,1175,0,1,1,1,0,Sphere,559.85,152.5,2785.25,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
-Scene,Geometry/Cylinder,1176,0,1,1,1,0,Cylinder,600,107.5,2775,0,0,0,9.3,2.35,9.3,Physical,Entities,Default,Basic|0/0/255/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1176,0,1,1,1,0,Cylinder,600,107.5,2775,0,0,0,9.3,2.35,9.3,Physical,Entities,Default,Basic|0/0/255/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1177,0,1,1,1,0,Racing Checkpoint Region Cylinder,600,130.8,2775,0,0,0,9.35,0.01,9.35,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,1178,0,1,1,1,0,Cuboid,37.25,303.75,37.25,0,315.0209,0,0.2,40.75,0.8,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
 Scene,Geometry/Cuboid,1179,0,1,1,1,0,Cuboid,-37.25,303.75,37.25,0,44.97911,0,0.2,40.75,0.8,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
@@ -1302,9 +1304,9 @@ Scene,Geometry/Cylinder,1298,0,1,1,1,0,Cylinder,70,250,-177.5,0,0,0,1.5,0.5,1.5,
 Scene,Geometry/Cylinder,1299,0,1,1,1,0,Cylinder,70,220,-177.5,0,0,0,1,0.5,1,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|2/2|0/0,;
 Scene,Geometry/Cylinder,1300,0,1,1,1,0,Cylinder,70,240,-177.5,0,0,0,1,0.5,1,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|2/2|0/0,;
 Scene,Geometry/Cylinder,1301,0,1,1,1,0,Racing Checkpoint Region Cylinder,70,230,-177.5,0,0,0,1,0.01,1,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
-Scene,Geometry/Cylinder,1302,0,1,1,1,0,Racing Checkpoint Region Cylinder,70,230,-177.5,0,0,0,1,0.01,1,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Cylinder,1302,0,1,1,1,0,Racing Checkpoint Region Cylinder,70,230,-177.5,0,0,0,1,0.01,1,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1303,0,1,1,1,0,Kill Region Cylinder,70,230,-177.5,0,0,0,12,4,12,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cylinder,1304,0,1,1,1,0,Kill Region Cylinder,70,230,-177.5,0,44.97911,0,12,4,12,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,1304,0,1,1,1,0,Kill Region Cylinder,70,230,-177.5,0,44.97911,0,12,4,12,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cuboid,1305,0,1,1,1,0,Kill Region Cuboid,102.5,230,-255.5,0,337.3802,0,0.5,8,16.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1306,0,1,1,1,0,Kill Region Cuboid,102.5,230,-255.5,0,337.3802,0,0.45,3,16,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,1307,0,1,1,1,0,Cylinder,70,230,-281,0,0,0,1,4,1,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|1/24|0/0,;
@@ -1371,15 +1373,15 @@ Scene,Nature/Field2,1367,0,1,1,1,0,Field2,320,190,-30,0,90,0,0.5,2.5,0.5,Physica
 Scene,Nature/Boulder1,1368,0,1,1,1,0,Boulder1,222,201,106,0,225.0378,0,3,1,4,Physical,Entities,Default,Default|127/0/0/255,;
 Scene,Geometry/Pyramid,1369,0,1,1,1,0,Pyramid,-237.5,216.5,322.5,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
 Scene,Geometry/Pyramid,1370,0,1,1,1,0,Pyramid,-237.5,216.49,322.5,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
-Scene,Geometry/Cylinder,1371,0,1,1,1,0,Cylinder,-237.5,221.75,322.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1371,0,1,1,1,0,Cylinder,-237.5,221.75,322.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1372,0,1,1,1,0,Racing Checkpoint Region Cylinder,-237.5,221.75,322.5,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,1373,0,1,1,1,0,Pyramid,-322.5,216.5,25,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
 Scene,Geometry/Pyramid,1374,0,1,1,1,0,Pyramid,-322.5,216.49,25,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
-Scene,Geometry/Cylinder,1375,0,1,1,1,0,Cylinder,-322.5,221.75,25,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1375,0,1,1,1,0,Cylinder,-322.5,221.75,25,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1376,0,1,1,1,0,Racing Checkpoint Region Cylinder,-322.5,221.75,25,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,1377,0,1,1,1,0,Pyramid,80,197.5,0,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
 Scene,Geometry/Pyramid,1378,0,1,1,1,0,Pyramid,80,197.49,0,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|16/16|0/0,;
-Scene,Geometry/Cylinder,1379,0,1,1,1,0,Cylinder,80,202.75,0,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1379,0,1,1,1,0,Cylinder,80,202.75,0,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1380,0,1,1,1,0,Racing Checkpoint Region Cylinder,80,202.75,0,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,1381,0,1,1,1,0,Kill Region Cuboid,-170,230,200,0,135.0209,0,0.1,8,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,1382,0,1,1,1,0,Kill Region Cuboid,-168,230,202,0,135.0209,0,0.1,8,0.1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -1576,15 +1578,15 @@ Scene,Geometry/Cuboid,1572,0,1,1,1,0,Cuboid,-37.25,420,-37.25,0,315.0209,0,0.2,6
 Scene,Geometry/Cuboid,1573,0,1,1,1,0,Cuboid,37.25,420,-37.25,0,44.97911,0,0.2,6.5,0.8,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,1574,0,1,1,1,0,Pyramid,55,393.5,-25,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
 Scene,Geometry/Pyramid,1575,0,1,1,1,0,Pyramid,55,393.49,-25,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
-Scene,Geometry/Cylinder,1576,0,1,1,1,0,Cylinder,55,398.75,-25,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1576,0,1,1,1,0,Cylinder,55,398.75,-25,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1577,0,1,1,1,0,Racing Checkpoint Region Cylinder,55,398.75,-25,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,1578,0,1,1,1,0,Pyramid,-220,375,20,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
 Scene,Geometry/Pyramid,1579,0,1,1,1,0,Pyramid,-220,374.99,20,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
-Scene,Geometry/Cylinder,1580,0,1,1,1,0,Cylinder,-220,380.25,20,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1580,0,1,1,1,0,Cylinder,-220,380.25,20,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1581,0,1,1,1,0,Racing Checkpoint Region Cylinder,-220,380.25,20,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,1582,0,1,1,1,0,Pyramid,-220,375,-20,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
 Scene,Geometry/Pyramid,1583,0,1,1,1,0,Pyramid,-220,374.99,-20,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|8/8|0/0,;
-Scene,Geometry/Cylinder,1584,0,1,1,1,0,Cylinder,-220,380.25,-20,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1584,0,1,1,1,0,Cylinder,-220,380.25,-20,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|25/178/178/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1585,0,1,1,1,0,Racing Checkpoint Region Cylinder,-220,380.25,-20,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Decor/Elevator1,1586,0,1,1,1,0,Elevator1,-90,385,-98,0,135.0209,0,0.1,1,0.1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Capsule,1587,0,1,1,1,0,Capsule,-90.05,390.5,-97.95,0,315.0209,0,0.16,0.4,0.16,Physical,Entities,Default,Default|255/255/0/255,;
@@ -1787,7 +1789,7 @@ Scene,Geometry/Cuboid,1783,0,1,1,1,0,Cuboid,125,470,3510,0,90,0,1,0.25,4,Physica
 Scene,Geometry/Cuboid,1784,0,1,1,1,0,Cuboid,0,535,3510,0,90,0,1,4,0.25,Physical,Entities,Default,BombTexMat|127/127/127/127|1.01/1.01,;
 Scene,Geometry/Cuboid,1785,0,1,1,1,0,Cuboid,0,315,3510,0,90,0,1,4,0.25,Physical,Entities,Default,BombTexMat|127/127/127/127|1.01/1.01,;
 Scene,Geometry/Cylinder,1786,0,1,1,1,0,Kill Region Cylinder,-497.5,50,0,0,0,0,30,1,30,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cylinder,1787,0,1,1,1,0,Kill Region Cylinder,-497.5,50,0,0,0,0,30,1,30,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,1787,0,1,1,1,0,Kill Region Cylinder,-497.5,50,0,0,0,0,30,1,30,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cylinder,1788,0,1,1,1,0,Cylinder,-497.5,30,0,0,0,0,30,1,30,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|-0.75/-0.5|0/0,;
 Scene,Geometry/Cylinder,1789,0,1,1,1,0,Kill Region Cylinder,-497.5,30,0,0,0,0,37,0.4,37,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,1790,0,1,1,1,0,Cylinder,-497.5,30,0,0,0,0,24.95,1.05,24.95,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal2|2.9/2.9|0/0,;
@@ -1880,7 +1882,7 @@ Scene,Geometry/Cylinder,1876,0,1,1,1,0,Kill Region Cylinder,-750,50,-270,0,270,0
 Scene,Geometry/Prism,1877,0,1,1,1,0,Prism,-750,50,-290,0,180,90.00001,3,0.5,3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|2.5/15|0/0,;
 Scene,Geometry/Prism,1878,0,1,1,1,0,Prism,-750,50,-290,0,180,90.00001,2.75,0.55,2.75,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|2.5/15|0/0|255/255/255/255,;
 Scene,Geometry/Cuboid,1879,0,1,1,1,0,Kill Region Cuboid,-650,50,-345,0,270,0,22,6,1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cylinder,1880,0,1,1,1,0,Kill Region Cylinder,-650,50,-455,0,270,0,1,3,1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,1880,0,1,1,1,0,Kill Region Cylinder,-650,50,-455,0,270,0,1,3,1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Prism,1881,0,1,1,1,0,Prism,-650,50,-435,0,0,270,3,0.5,3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|2.5/15|0/0,;
 Scene,Geometry/Prism,1882,0,1,1,1,0,Prism,-650,50,-435,0,0,270,2.75,0.55,2.75,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|2.5/15|0/0|255/255/255/255,;
 Scene,Geometry/Cylinder,1883,0,1,1,1,0,Kill Region Cylinder,-600,50,270,0,270,0,1,3,1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -1933,7 +1935,7 @@ Scene,Geometry/Cuboid,1929,0,1,1,1,0,Cuboid,-775,50,185,0,0,315,1.825,1.825,0.62
 Scene,Geometry/Cuboid,1930,0,1,1,1,0,Cuboid,-775,50,185,0,0,315,1.75,1.75,0.75,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,1931,0,1,1,1,0,Pyramid,-775,25,192.5,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|8/8|0/0,;
 Scene,Geometry/Pyramid,1932,0,1,1,1,0,Pyramid,-775,24.975,192.5,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|8/8|0/0,;
-Scene,Geometry/Cylinder,1933,0,1,1,1,0,Cylinder,-775,30.25,192.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|63/216/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,1933,0,1,1,1,0,Cylinder,-775,30.25,192.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|63/216/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,1934,0,1,1,1,0,Racing Checkpoint Region Cylinder,-775,30.25,192.5,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,1935,0,1,1,1,0,Cuboid,0,50,-82.5,0,0,0,99.5,6,1,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|150/17.5|0/0,;
 Scene,Geometry/Cuboid,1936,0,1,1,1,0,Cuboid,-266.25,50,82.5,0,0,0,46.25,6,1,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|50/17.5|0/0,;
@@ -2147,7 +2149,7 @@ Scene,Geometry/Cuboid,2143,0,1,1,1,0,Kill Region Cuboid,165,71.25,-350,0,90,180,
 Scene,Geometry/Cuboid,2144,0,1,1,1,0,Kill Region Cuboid,165,28.75,-350,0,90,180,-14,-1.75,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,2145,0,1,1,1,0,Cylinder,80,50,-275,0,90,180,-1,-1.25,-1,Physical,Entities,Default,Basic|255/255/255/255|Nature/Bark4|2/5|0/0,;
 Scene,Geometry/Cylinder,2146,0,1,1,1,0,Kill Region Cylinder,80,71.25,-275,0,90,180,-1,-0.875,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cylinder,2147,0,1,1,1,0,Kill Region Cylinder,80,28.75,-275,0,90,180,-1,-0.875,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,2147,0,1,1,1,0,Kill Region Cylinder,80,28.75,-275,0,90,180,-1,-0.875,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cylinder,2148,0,1,1,1,0,Cylinder,680,50,-275,0,90,180,-1,-1.25,-1,Physical,Entities,Default,Basic|255/255/255/255|Nature/Bark4|2/5|0/0,;
 Scene,Geometry/Cylinder,2149,0,1,1,1,0,Kill Region Cylinder,680,71.25,-275,0,90,180,-1,-0.875,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,2150,0,1,1,1,0,Kill Region Cylinder,680,28.75,-275,0,90,180,-1,-0.875,-1,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
@@ -2197,7 +2199,7 @@ Scene,Geometry/Cylinder,2193,0,1,1,1,0,Cylinder,830,15,60,90,0,0,5,0.5,5,Physica
 Scene,Geometry/Cylinder,2194,0,1,1,1,0,Cylinder,830,15,60,90,0,0,4.5,0.55,4.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|2.5/-2.25|0/0,;
 Scene,Geometry/Cylinder,2195,0,1,1,1,0,Cylinder,830,15,90,90,0,0,4.5,0.55,4.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|2.5/-2.25|0/0,;
 Scene,Geometry/Cylinder,2196,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,75,90,0,0,0.5,2.1,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
-Scene,Geometry/Cylinder,2197,0,1,1,1,0,Kill Region Cylinder,830,15,75,90,0,0,7,2.5,7,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cylinder,2197,0,1,1,1,0,Kill Region Cylinder,830,15,75,90,0,0,7,2.5,7,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cylinder,2198,0,1,1,1,0,Cylinder,830,15,60,90,0,0,5,0.5,5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|0.5/-0.25|0/0,;
 Scene,Geometry/Cylinder,2199,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,60,90,0,0,6.5,0.2,6.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,2200,0,1,1,1,0,Cuboid,830,15,60,90,0,0,6.5,0.5,0.75,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|5/-0.25|0/0,;
@@ -2213,10 +2215,10 @@ Scene,Geometry/Cuboid,2209,0,1,1,1,0,Cuboid,830,15,90,0,0,45,6.5,0.75,0.5,Physic
 Scene,Geometry/Cylinder,2210,0,1,1,1,0,Cylinder,830,15,-90,90,0,0,5,0.5,5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|0.5/-0.25|0/0,;
 Scene,Geometry/Cylinder,2211,0,1,1,1,0,Cylinder,830,15,-90,90,0,0,4.5,0.55,4.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|2.5/-2.25|0/0,;
 Scene,Geometry/Cylinder,2212,0,1,1,1,0,Cylinder,830,15,-60,90,0,0,4.5,0.55,4.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/medievalartilleryassets_texture-psd|2.5/-2.25|0/0,;
-Scene,Geometry/Cylinder,2213,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,-75,90,0,0,0.5,2.1,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Cylinder,2213,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,-75,90,0,0,0.5,2.1,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,2214,0,1,1,1,0,Kill Region Cylinder,830,15,-75,90,0,0,7,2.5,7,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,2215,0,1,1,1,0,Cylinder,830,15,-90,90,0,0,5,0.5,5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|0.5/-0.25|0/0,;
-Scene,Geometry/Cylinder,2216,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,-90,90,0,0,6.5,0.2,6.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Cylinder,2216,0,1,1,1,0,Racing Checkpoint Region Cylinder,830,15,-90,90,0,0,6.5,0.2,6.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cuboid,2217,0,1,1,1,0,Cuboid,830,15,-90,90,0,0,6.5,0.5,0.75,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|5/-0.25|0/0,;
 Scene,Geometry/Cuboid,2218,0,1,1,1,0,Cuboid,830,15,-90,0,0,90,6.5,0.75,0.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|5/-0.25|0/0,;
 Scene,Geometry/Cuboid,2219,0,1,1,1,0,Cuboid,830,15,-90,0,0,135,6.5,0.75,0.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|5/-0.25|0/0,;
@@ -2274,7 +2276,7 @@ Scene,Geometry/Cuboid,2270,0,1,1,1,0,Cuboid,185,50,205,315,0,0,0.625,1.825,1.825
 Scene,Geometry/Cuboid,2271,0,1,1,1,0,Cuboid,185,50,205,315,0,0,0.75,1.75,1.75,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|1/1|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,2272,0,1,1,1,0,Pyramid,192.5,25,205,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|8/8|0/0,;
 Scene,Geometry/Pyramid,2273,0,1,1,1,0,Pyramid,192.5,24.975,205,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/CanalTex|8/8|0/0,;
-Scene,Geometry/Cylinder,2274,0,1,1,1,0,Cylinder,192.5,30.25,205,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|63/216/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,2274,0,1,1,1,0,Cylinder,192.5,30.25,205,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|63/216/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,2275,0,1,1,1,0,Racing Checkpoint Region Cylinder,192.5,30.25,205,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,2276,0,1,1,1,0,Cuboid,-37.5,125,-372.5,0,0,0,0.1,5.1,11.6,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|15/15|0/0|255/255/255/255,;
 Scene,Geometry/Cuboid,2277,0,1,1,1,0,Cuboid,37.5,125,-372.5,0,0,0,0.1,5.1,11.6,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|15/15|0/0|255/255/255/255,;
@@ -2743,7 +2745,7 @@ Scene,Geometry/Pyramid,2739,0,1,1,1,0,Pyramid,-55,109.25,-15,0,0,0,0.3125,-0.1,0
 Scene,Geometry/Pyramid,2740,0,1,1,1,0,Pyramid,-55,109.18,-15,0,44.97911,0,0.3125,-0.1,0.3125,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|8/8|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,2741,0,1,1,1,0,Pyramid,-55,105,-15,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
 Scene,Geometry/Pyramid,2742,0,1,1,1,0,Pyramid,-55,104.975,-15,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
-Scene,Geometry/Cylinder,2743,0,1,1,1,0,Cylinder,-55,110.25,-15,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,2743,0,1,1,1,0,Cylinder,-55,110.25,-15,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,2744,0,1,1,1,0,Racing Checkpoint Region Cylinder,-55,110.25,-15,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,2745,0,1,1,1,0,Cuboid,-55,127.5,-15,0,0,0,2.5,0.5,0.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
 Scene,Geometry/Cuboid,2746,0,1,1,1,0,Cuboid,-55,127.5,-15,44.9791,0,0,2.55,0.5,0.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
@@ -2757,7 +2759,7 @@ Scene,Geometry/Pyramid,2753,0,1,1,1,0,Pyramid,-130,109.25,72.5,0,0,0,0.3125,-0.1
 Scene,Geometry/Pyramid,2754,0,1,1,1,0,Pyramid,-130,109.18,72.5,0,44.97911,0,0.3125,-0.1,0.3125,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|8/8|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,2755,0,1,1,1,0,Pyramid,-130,105,72.5,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
 Scene,Geometry/Pyramid,2756,0,1,1,1,0,Pyramid,-130,104.975,72.5,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
-Scene,Geometry/Cylinder,2757,0,1,1,1,0,Cylinder,-130,110.25,72.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,2757,0,1,1,1,0,Cylinder,-130,110.25,72.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,2758,0,1,1,1,0,Racing Checkpoint Region Cylinder,-130,110.25,72.5,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,2759,0,1,1,1,0,Cuboid,-130,127.5,72.5,0,0,0,0.5,0.5,2.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
 Scene,Geometry/Cuboid,2760,0,1,1,1,0,Cuboid,-130,127.5,72.5,0,0,44.97911,0.5,0.5,2.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
@@ -2771,7 +2773,7 @@ Scene,Geometry/Pyramid,2767,0,1,1,1,0,Pyramid,120,109.25,77.5,0,0,0,0.3125,-0.1,
 Scene,Geometry/Pyramid,2768,0,1,1,1,0,Pyramid,120,109.18,77.5,0,44.97911,0,0.3125,-0.1,0.3125,Physical,Entities,Default,Reflective|178/227/255/255|Misc/Ice1|8/8|0/0|255/255/255/255,;
 Scene,Geometry/Pyramid,2769,0,1,1,1,0,Pyramid,120,105,77.5,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
 Scene,Geometry/Pyramid,2770,0,1,1,1,0,Pyramid,120,104.975,77.5,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|8/8|0/0,;
-Scene,Geometry/Cylinder,2771,0,1,1,1,0,Cylinder,120,110.25,77.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,2771,0,1,1,1,0,Cylinder,120,110.25,77.5,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/216/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,2772,0,1,1,1,0,Racing Checkpoint Region Cylinder,120,110.25,77.5,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cuboid,2773,0,1,1,1,0,Cuboid,120,127.5,77.5,0,0,0,0.5,0.5,2.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
 Scene,Geometry/Cuboid,2774,0,1,1,1,0,Cuboid,120,127.5,77.5,0,0,44.97911,0.5,0.5,2.55,Physical,Entities,Default,Basic|255/255/255/255|Legacy/ElevatorTex|7.5/7.5|0/0,;
@@ -2961,7 +2963,7 @@ Scene,Geometry/Cuboid,2957,0,1,1,1,0,Kill Region Cuboid,-12.5,335,-85,44.9791,0,
 Scene,Geometry/Cylinder,2958,0,1,1,1,0,Cylinder,205,336,-84,315.0209,0,0,1,2.5,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone10|0.5/1.5|0/0,;
 Scene,Geometry/Cuboid,2959,0,1,1,1,0,Kill Region Cuboid,20,320,-82.5,0,0,0,1,8,8.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,2960,0,1,1,1,0,Kill Region Cuboid,20,320,-202.5,0,0,0,1,8,5.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
-Scene,Geometry/Cuboid,2961,0,1,1,1,0,Kill Region Cuboid,-20,320,-82.5,0,0,0,1,8,8.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
+Scene,Geometry/Cuboid,2961,0,1,1,1,0,Kill Region Cuboid,-20,320,-82.5,0,0,0,1,8,8.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Server;
 Scene,Geometry/Cuboid,2962,0,1,1,1,0,Kill Region Cuboid,-20,320,-202.5,0,0,0,1,8,5.5,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,2963,0,1,1,1,0,Cylinder,20,320,-125,0,180,0,1,4,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone10|0.5/1.5|0/0,;
 Scene,Geometry/Cylinder,2964,0,1,1,1,0,Cylinder,-20,320,-125,0,180,0,1,4,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone10|0.5/1.5|0/0,;
@@ -3027,7 +3029,7 @@ Scene,Geometry/Cylinder,3023,0,1,1,1,0,Racing Finish Region Cylinder,-60,297.5,-
 Scene,Geometry/Cuboid,3024,0,1,1,1,0,Kill Region Cuboid,-60,297.5,-32.5,0,180,180,0.25,-3.5,3.25,Region,Characters,Default,Transparent|255/0/0/130|None|1/1|0/0,KillRegion|;
 Scene,Geometry/Pyramid,3025,0,1,1,1,0,Pyramid,237.5,335,0,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/OutsidePillars|5/10|0/0,;
 Scene,Geometry/Pyramid,3026,0,1,1,1,0,Pyramid,237.5,334.975,0,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/OutsidePillars|5/10|0/0,;
-Scene,Geometry/Cylinder,3027,0,1,1,1,0,Cylinder,237.5,340.25,0,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/63/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,3027,0,1,1,1,0,Cylinder,237.5,340.25,0,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/63/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,3028,0,1,1,1,0,Racing Checkpoint Region Cylinder,237.5,340.25,0,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,3029,0,1,1,1,0,Pyramid,237.5,332.5,0,0,0,0,0.2,-0.4,0.2,Physical,Entities,Default,BombTexMat|127/127/127/127|99999/99999,;
 Scene,Geometry/Pyramid,3030,0,1,1,1,0,Pyramid,237.5,332.5,0,0,44.97911,0,0.2,-0.4,0.2,Physical,Entities,Default,BombTexMat|127/127/127/127|99999/99999,;
@@ -3035,7 +3037,7 @@ Scene,Geometry/Pyramid,3031,0,1,1,1,0,Pyramid,232.5,331.25,0,0,0,90,0.1,-0.6,0.1
 Scene,Geometry/Pyramid,3032,0,1,1,1,0,Pyramid,232.5,338.75,0,0,0,90,0.1,-0.6,0.1,Physical,Entities,Default,BombTexMat|127/127/127/127|99999/99999,;
 Scene,Geometry/Pyramid,3033,0,1,1,1,0,Pyramid,-35,285,-75,0,0,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/OutsidePillars|5/10|0/0,;
 Scene,Geometry/Pyramid,3034,0,1,1,1,0,Pyramid,-35,284.975,-75,0,44.97911,0,0.3,-0.6,0.3,Physical,Entities,Default,Basic|255/255/255/255|Legacy/OutsidePillars|5/10|0/0,;
-Scene,Geometry/Cylinder,3035,0,1,1,1,0,Cylinder,-35,290.25,-75,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/63/63/255|Legacy/Arena2Tex|1/1|0/0,;
+Scene,Geometry/Cylinder,3035,0,1,1,1,0,Cylinder,-35,290.25,-75,0,0,0,0.55,-0.03,0.55,Physical,Entities,Default,Basic|216/63/63/255|Legacy/Arena2Tex|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,3036,0,1,1,1,0,Racing Checkpoint Region Cylinder,-35,290.25,-75,0,0,0,0.5,-0.025,0.5,Region,Characters,Default,Transparent|51/255/0/130|None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Pyramid,3037,0,1,1,1,0,Pyramid,-35,282.5,-75,0,0,0,0.2,-0.4,0.2,Physical,Entities,Default,BombTexMat|127/127/127/127|99999/99999,;
 Scene,Geometry/Pyramid,3038,0,1,1,1,0,Pyramid,-35,282.5,-75,0,44.97911,0,0.2,-0.4,0.2,Physical,Entities,Default,BombTexMat|127/127/127/127|99999/99999,;
@@ -3076,3 +3078,62 @@ Scene,Geometry/Cuboid,3072,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,
 Scene,Geometry/Cuboid,3073,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,3074,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}
