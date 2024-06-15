@@ -87,6 +87,7 @@ namespace Characters
         private bool _almostSingleHook;
         private bool _leanLeft;
         private bool _isTrigger;
+        private bool _useFixedUpdateClipping = true;
         private Vector3 _lastPosition;
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
@@ -123,6 +124,10 @@ namespace Characters
             PhotonNetwork.Destroy(gameObject);
         }
 
+        public void IsChangingPosition()
+        {
+            _useFixedUpdateClipping = false;
+        }
 
         [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
@@ -1481,7 +1486,18 @@ namespace Characters
                     windEmission.enabled = false;
                 FixedUpdateSetHookedDirection();
                 FixedUpdateBodyLean();
-                FixedUpdateClippingCheck();
+                if (_useFixedUpdateClipping)
+                {
+                    FixedUpdateClippingCheck();
+                }
+                else
+                {
+                    _useFixedUpdateClipping = true;
+                    _lastPosition = Cache.Rigidbody.position;
+                    _lastVelocity = _currentVelocity;
+  
+                }
+                
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();

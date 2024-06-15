@@ -282,6 +282,11 @@ namespace CustomLogic
                 Human.HookLeft.Enabled = (bool)value;
             else if (name == "RightHookEnabled")
                 Human.HookRight.Enabled = (bool)value;
+            else if (name == "Position")
+            {
+                Human.IsChangingPosition();
+                base.SetField(name, value);
+            }
             else
                 base.SetField(name, value);
             Human.Stats.UpdateStats();

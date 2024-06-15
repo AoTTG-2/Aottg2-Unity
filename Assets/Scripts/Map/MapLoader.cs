@@ -220,13 +220,27 @@ namespace Map
                     Errors.Add("Failed to load bundle: " + customAsset);
                 }
             }
+
+            bool gamemodeNeedsNav = SettingsManager.InGameCurrent.General.GameMode.Value != "Racing"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
+
+            bool willLoadNavMesh = (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
+                && PhotonNetwork.IsMasterClient
+                && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value
+                && gamemodeNeedsNav;
+
             int count = 0;
+
+            float multiplier = willLoadNavMesh ? 0.25f : 0.5f;
             foreach (MapScriptBaseObject obj in objects)
             {
                 LoadObject(obj, editor);
                 if (count % 100 == 0 && SceneLoader.SceneName == SceneName.InGame)
                 {
-                    UIManager.LoadingMenu.UpdateLoading(0.5f + 0.25f * (0.1f * ((float)count / (float)objects.Count)));
+                    UIManager.LoadingMenu.UpdateLoading(0.5f + multiplier * (0.1f * ((float)count / (float)objects.Count)));
                     yield return new WaitForEndOfFrame();
                 }
                 count++;
@@ -242,11 +256,7 @@ namespace Map
             if (!editor)
                 Batch();
 
-            bool gamemodeNeedsNav = SettingsManager.InGameCurrent.General.GameMode.Value != "Racing"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
+            
 
             if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
