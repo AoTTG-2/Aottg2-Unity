@@ -48,7 +48,7 @@ namespace Controllers
         protected float _waitAttackTime;
 
         // pathing
-        private bool _usePathfinding = true;
+        public bool _usePathfinding = true;
         private NavMeshAgent _agent;
         private CapsuleCollider _mainCollider;
 
