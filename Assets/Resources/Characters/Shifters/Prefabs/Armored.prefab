@@ -862,6 +862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0
+  _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &2767080267070775775
 MonoBehaviour:
@@ -891,6 +892,7 @@ MonoBehaviour:
   State: 0
   TitanColliderToggler: {fileID: 0}
   IsWalk: 0
+  IsSprint: 0
   IsSit: 0
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
@@ -899,6 +901,10 @@ MonoBehaviour:
   ActionPause: 0.2
   AttackPause: 0.2
   TurnPause: 0.2
+  MaxSprintStamina: 5
+  SprintStaminaRecover: 0.5
+  SprintStaminaConsumption: 1
+  CurrentSprintStamina: 5
   TargetEnemy: {fileID: 0}
   AttackSpeedMultiplier: 1
   RunSpeedBase: 0
@@ -911,6 +917,7 @@ MonoBehaviour:
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0
+  DeathAnimationLength: 2
 --- !u!4 &2966318119998481425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8295196210911060813, guid: de6d54cbe52572144bcfda101e107db1, type: 3}
