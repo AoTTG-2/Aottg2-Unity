@@ -5,6 +5,7 @@
 			{"Name": "Empty Object"},
 			{"Name": "Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideWith": "Characters"},
 			{"Name": "Titan Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideMode": "Region", "CollideWith": "Characters", "Components": ["TitanBarrier|"]},
+			{"Name": "NavMeshObstacle", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "None", "CollideWith": "Characters"},
 			{"Name": "Daylight", "Asset": "General/EditorDaylight", "Visible": false, "CollideMode": "None", "Components": ["Daylight|"], "Preview": "EditorDaylight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PointLight", "Asset": "General/EditorPointLight", "Visible": false, "CollideMode": "None", "Components": ["PointLight|"], "Preview": "EditorPointLight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Camera SpawnPoint", "Asset": "General/EditorCameraSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:CameraSpawnPoint"], "Preview": "EditorCameraSpawnPoint"},
@@ -30,8 +31,7 @@
 			{"Name": "Sphere"},
 			{"Name": "SquareTorus"},
 			{"Name": "Torus"},
-			{"Name": "Tube"},
-			{"Name": "NavMeshObstacle", "Variant": "Cuboid"}
+			{"Name": "Tube"}
 		]
 	},
 	"Buildings": {
@@ -115,6 +115,10 @@
 			{"Name": "RoofWindow1c", "Variant": "RoofWindow1"},
 			{"Name": "Stairs1"},
 			{"Name": "Stairs2"},
+			{"Name": "ShiganHouse1"},
+			{"Name": "ShiganHouse2"},
+			{"Name": "ShiganHouse3"},
+			{"Name": "ShiganHouse4"},
 			{"Name": "Tent1"},
 			{"Name": "Tent2"},
 			{"Name": "Tent3"},
@@ -275,6 +279,11 @@
 			{"Name": "Lantern3"},
 			{"Name": "Lantern4"},
 			{"Name": "Lantern5"},
+			{"Name": "Lantern1a", "Variant": "Lantern1"},
+			{"Name": "Lantern2a", "Variant": "Lantern2"},
+			{"Name": "Lantern3a", "Variant": "Lantern3"},
+			{"Name": "Lantern4a", "Variant": "Lantern4"},
+			{"Name": "Lantern5a", "Variant": "Lantern5"},
 			{"Name": "Lift1"},
 			{"Name": "Memorial1"},
 			{"Name": "Memorial1a", "Variant": "Memorial1"},
@@ -282,6 +291,7 @@
 			{"Name": "Monkey1"},
 			{"Name": "ODMHandle1"},
 			{"Name": "ODMHandle2"},
+			{"Name": "Paddle1"},
 			{"Name": "Pillar1"},
 			{"Name": "Pillar2"},
 			{"Name": "Platform1"},
@@ -347,7 +357,12 @@
 			{"Name": "Window2"},
 			{"Name": "Window3"},
 			{"Name": "Window4"},
-			{"Name": "Window5"}
+			{"Name": "Window5"},
+			{"Name": "Window1a", "Variant": "Window1"},
+			{"Name": "Window2a", "Variant": "Window2"},
+			{"Name": "Window3a", "Variant": "Window3"},
+			{"Name": "Window4a", "Variant": "Window4"},
+			{"Name": "Window5a", "Variant": "Window5"}
 		]
 	},
 	"Nature": {
@@ -536,6 +551,7 @@
 			{"Name": "GroundFog2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "HazeFX1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "LavaCube1", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
+			{"Name": "LavaHaze", "Static": false, "CollideMode": "Region", "CollideWith": "Characters", "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "Lightning1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Lightning1a", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "Lightning1"},
 			{"Name": "Lightning1b", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "Lightning1"},
