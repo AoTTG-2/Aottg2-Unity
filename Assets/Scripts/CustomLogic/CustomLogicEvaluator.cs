@@ -341,7 +341,7 @@ namespace CustomLogic
                 else if (className == "String")
                     instance = new CustomLogicStringBuiltin();
                 else if (className == "Random")
-                    instance = new CustomLogicRandomBuiltin();
+                    instance = new CustomLogicRandomBuiltin(new List<object>());
                 else if (className == "Camera")
                     instance = new CustomLogicCameraBuiltin();
                 else if (className == "RoomData")
@@ -384,6 +384,11 @@ namespace CustomLogic
                     var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                     if (collisionHandler == null)
                         collisionHandler = go.AddComponent<CustomLogicCollisionHandler>();
+                    if (go.name == "ConvexTriggerCollider")
+                    {
+                        var nonConvexMeshCollider = go.transform.parent.Find("NonConvexMeshCollider").GetComponent<MeshCollider>();
+                        collisionHandler.SetConvexTrigger(nonConvexMeshCollider);
+                    }
                     collisionHandler.RegisterInstance(classInstance);
                 }
             }
@@ -423,6 +428,8 @@ namespace CustomLogic
                 classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
             else if (className == "Range")
                 classInstance = new CustomLogicRangeBuiltin(parameterValues);
+            else if (className == "Random")
+                classInstance = new CustomLogicRandomBuiltin(parameterValues);
             else
             {
                 classInstance = new CustomLogicClassInstance(className);

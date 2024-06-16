@@ -1816,9 +1816,12 @@ namespace Characters
                     {
                         if (hit.collider.isTrigger)
                         {
-                            var collisionHandler = hit.collider.GetComponent<CustomLogicCollisionHandler>();
-                            if (collisionHandler != null)
-                                collisionHandler.OnTriggerEnter(GetComponent<CapsuleCollider>());
+                            if (hit.collider.name != "ConvexTriggerCollider")
+                            {
+                                var collisionHandler = hit.collider.GetComponent<CustomLogicCollisionHandler>();
+                                if (collisionHandler != null)
+                                    collisionHandler.OnTriggerEnter(GetComponent<CapsuleCollider>());
+                            }
                             continue;
                         }
                         if (!foundHit)

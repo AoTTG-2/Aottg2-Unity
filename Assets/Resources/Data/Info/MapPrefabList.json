@@ -4,8 +4,8 @@
 		"Prefabs": [
 			{"Name": "Empty Object"},
 			{"Name": "Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideWith": "Characters"},
-			{"Name": "Titan Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideMode": "Region", "CollideWith": "Characters", "Components": ["TitanBarrier|"]},
-			{"Name": "NavMeshObstacle", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "None", "CollideWith": "Characters"},
+      {"Name": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "Region", "CollideWith": "Characters", "Components": ["TitanBarrier|"]},
+			{"Name": "NavMeshObstacle", "Variant": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "None", "CollideWith": "Characters"},
 			{"Name": "Daylight", "Asset": "General/EditorDaylight", "Visible": false, "CollideMode": "None", "Components": ["Daylight|"], "Preview": "EditorDaylight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PointLight", "Asset": "General/EditorPointLight", "Visible": false, "CollideMode": "None", "Components": ["PointLight|"], "Preview": "EditorPointLight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Camera SpawnPoint", "Asset": "General/EditorCameraSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:CameraSpawnPoint"], "Preview": "EditorCameraSpawnPoint"},
@@ -31,7 +31,8 @@
 			{"Name": "Sphere"},
 			{"Name": "SquareTorus"},
 			{"Name": "Torus"},
-			{"Name": "Tube"}
+			{"Name": "Tube"},
+			{"Name": "NavMeshObstacle", "Variant": "Cuboid"}
 		]
 	},
 	"Buildings": {

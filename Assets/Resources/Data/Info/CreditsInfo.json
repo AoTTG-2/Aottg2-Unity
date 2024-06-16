@@ -2,22 +2,27 @@
     {
         "Category": "Lead Developers",
         "Names": [
+            "Ricecake",
             "Lithrun",
-            "Mr.Titan",
-            "Ricecake"
+            "Mr.Titan"
         ]
     },
     {
-        "Category": "Managers",
+        "Category": "Senior Managers",
         "Names": [
-            "Acros (Testing)",
-            "Thyme (Custom Logic)",
-            "Confusion (Mapping)",
-            "Hao (China Liaison)",
-            "BLuR (Media)",
-            "Dakros (Sound)",
-            "Tony Twohands (3D Art)",
-            "Koro Sensei (Moderator)"
+            "Acros",
+            "Confusion",
+            "Hao",
+            "Tony Twohands"
+        ]
+    },
+    {
+        "Category": "Junior Managers",
+        "Names": [
+            "BLuR",
+            "Dakros",
+            "Thyme",
+            "Koro Sensei"
         ]
     },
     {
@@ -130,7 +135,8 @@
             "Neri",
             "Sinser",
             "Enderamon",
-            "ArgenRt"
+            "ArgenRt",
+            "Crimson"
         ]
     },
     {
@@ -173,7 +179,8 @@
             "Artur Volosin",
             "Gwyn Dales",
             "Han",
-            "ilAlecs"
+            "ilAlecs",
+            "Raivaru"
         ]
     },
     {
@@ -206,7 +213,8 @@
             "leiting",
             "MuYu",
             "zombie",
-            "XjApg"
+            "XjApg",
+            "Dakros"
         ]
     },
     {
@@ -227,7 +235,13 @@
         "Category": "Sound",
         "Names": [
             "Blood God",
-            "Teyo"
+            "Teyo",
+            "Mikko",
+            "Meownist",
+            "NadimD",
+            "Dakros",
+            "Néonin",
+            "Raivaru"
         ]
     },
     {
@@ -243,8 +257,10 @@
             "Samtroulfion",
             "Dr. Eisenlocke",
             "lmstitch18",
-            "kukong",
-            "ilAlecs"
+            "kukong", 
+            "ilAlecs",
+            "Aliya",
+            "desu"
         ]
     },
     {
@@ -263,7 +279,8 @@
             "kukong",
             "Sinser",
             "lumi",
-            "Magma Heart"
+            "Magma Heart",
+            "Dakros"
         ]
     }
 ]

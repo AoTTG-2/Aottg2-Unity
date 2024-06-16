@@ -191,6 +191,10 @@ namespace CustomLogic
                     return ammoWeapon.MaxAmmo;
                 return 0;
             }
+            if (name == "LeftHookEnabled")
+                return Human.HookLeft.Enabled;
+            if (name == "RightHookEnabled")
+                return Human.HookRight.Enabled;
             if (name == "IsMounted")
                 return Human.MountState == HumanMountState.MapObject;
             if (name == "MountedMapObject")
@@ -274,6 +278,10 @@ namespace CustomLogic
                 if (ammoWeapon != null)
                     ammoWeapon.MaxAmmo = value.UnboxToInt();
             }
+            else if (name == "LeftHookEnabled")
+                Human.HookLeft.Enabled = (bool)value;
+            else if (name == "RightHookEnabled")
+                Human.HookRight.Enabled = (bool)value;
             else
                 base.SetField(name, value);
             Human.Stats.UpdateStats();

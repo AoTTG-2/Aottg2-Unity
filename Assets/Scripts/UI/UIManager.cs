@@ -118,6 +118,8 @@ namespace UI
                 CurrentMenu = ElementFactory.CreateDefaultMenu<SnapshotViewerMenu>();
             else if (sceneName == SceneName.Gallery)
                 CurrentMenu = ElementFactory.CreateDefaultMenu<GalleryMenu>();
+            else if (sceneName == SceneName.Credits)
+                CurrentMenu = ElementFactory.CreateDefaultMenu<CreditsMenu>();
             if (CurrentMenu != null)
             {
                 CurrentMenu.Setup();

@@ -65,7 +65,7 @@ namespace Characters
 
         public void ResetGas()
         {
-            CurrentGas = MaxGas = ((float)Gas * 2f) - 50f;
+            CurrentGas = MaxGas = ((float)Gas * 2f) - 35f;
         }
 
         public void UseDashGas()

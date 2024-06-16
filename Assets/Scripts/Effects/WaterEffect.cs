@@ -19,7 +19,7 @@ public class WaterEffect : MonoBehaviour
     {
         // Get gameobject with component PostProcessingMananger script
         if (_postProcessingManager == null)
-            _postProcessingManager = FindObjectOfType<PostProcessingManager>();
+            _postProcessingManager = FindFirstObjectByType<PostProcessingManager>();
 
         _collider = GetComponent<Collider>();
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
