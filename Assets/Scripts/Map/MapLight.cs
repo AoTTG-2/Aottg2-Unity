@@ -31,6 +31,25 @@ namespace Map
             }
         }
 
+        public bool MinimapDisableLight()
+        {
+            if (_transform == null || Light == null)
+                return false;
+            if (Light.enabled)
+            {
+                Light.enabled = false;
+                return true;
+            }
+            return false;
+        }
+
+        public void MinimapEnableLight()
+        {
+            if (_transform == null || Light == null)
+                return;
+            Light.enabled = true;
+        }
+
         private void UpdateIntensity(float intensity)
         {
             if (intensity == 0f)

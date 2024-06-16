@@ -8,6 +8,7 @@ using GameManagers;
 using ApplicationManagers;
 using Utility;
 using Cameras;
+using UnityEngine.Rendering;
 
 namespace UI
 {
@@ -29,6 +30,7 @@ namespace UI
             _height = SettingsManager.GeneralSettings.MinimapHeight.Value;
             go.GetComponent<Camera>().orthographicSize = _height;
             go.GetComponent<Camera>().farClipPlane = _height + 1000f;
+            go.AddComponent<MinimapCameraComponent>();
         }
 
         public void Disable()
