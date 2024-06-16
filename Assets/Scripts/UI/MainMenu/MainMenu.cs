@@ -27,6 +27,7 @@ namespace UI
         public BasePopup _aboutPopup;
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
+        public OutdatedPopup _outdatedPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
         protected Text _multiplayerStatusLabel;
@@ -34,6 +35,7 @@ namespace UI
         protected Image _introPanelBackground;
         public static JSONNode MainBackgroundInfo = null;
         protected const float ChangeBackgroundTime = 20f;
+        private static bool ShowedOutdated = false;
 
         public override void Setup()
         {
@@ -84,6 +86,7 @@ namespace UI
             _aboutPopup = ElementFactory.CreateHeadedPanel<AboutPopup>(transform).GetComponent<BasePopup>();
             _questPopup = ElementFactory.CreateHeadedPanel<QuestPopup>(transform).GetComponent<BasePopup>();
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
+            _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -96,6 +99,7 @@ namespace UI
             _popups.Add(_questPopup);
             _popups.Add(_tutorialPopup);
             _popups.Add(_selectMapPopup);
+            _popups.Add(_outdatedPopup);
         }
 
         private void SetupIntroPanel()
@@ -188,6 +192,15 @@ namespace UI
             }
             else
                 _introPanelBackground.color = Color.white;
+            if (!ShowedOutdated)
+            {
+                if (PastebinLoader.Status == PastebinStatus.Loaded)
+                {
+                    ShowedOutdated = true;
+                    if (PastebinLoader.Version["Version"].Value != ApplicationConfig.GameVersion)
+                        _outdatedPopup.Show("Your game version is outdated, download the latest from https://aottg2.itch.io or the official Discord.");
+                }
+            }
         }
 
         private bool IsPopupActive()

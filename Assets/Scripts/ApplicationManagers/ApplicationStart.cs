@@ -76,7 +76,7 @@ namespace ApplicationManagers
             EventManager.InvokeFinishInit();
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
-            DiscordManager.Init();
+            // DiscordManager.Init();
         }
     }
 }

@@ -112,7 +112,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Low;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 250;
+                LightDistance.Value = 100;
                 Bloom.Value = (int)BloomLevel.Off;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.On;
@@ -128,7 +128,7 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Low;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Medium;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 500;
+                LightDistance.Value = 250;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
                 ColorGrading.Value = (int)ColorGradingLevel.On;

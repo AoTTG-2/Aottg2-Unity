@@ -26,7 +26,7 @@ namespace Map
                 UpdateIntensity(0f);
             else
             {
-                float intensity = Mathf.Clamp(1f - (distance / lightDistance), 0f, 1f) * MaxIntensity;
+                float intensity = Mathf.Clamp(2f - (2 * distance / lightDistance), 0f, 1f) * MaxIntensity;
                 UpdateIntensity(intensity);
             }
         }
