@@ -14,7 +14,6 @@ public class WaterEffect : MonoBehaviour
     private PostProcessingManager _postProcessingManager;
     private PostProcessVolume _volume;
     private ColorGrading _colorGrading;
-    //private DepthOfField _depthOfField;
     private GlobalFog _globalFog;
     private bool _fogEnabled;
 
@@ -57,23 +56,19 @@ public class WaterEffect : MonoBehaviour
                 _fogEnabled = false;
                 _globalFog.enabled = false;
                 _colorGrading.enabled.value = false;
-                //_depthOfField.enabled.value = false;
                 break;
             case WaterFXLevel.Low:
                 _fogEnabled = false;
                 _globalFog.enabled = false;
                 _colorGrading.enabled.value = true;
-                //_depthOfField.enabled.value = false;
                 break;
             case WaterFXLevel.Medium:
                 _fogEnabled = true;
                 _colorGrading.enabled.value = true;
-                //_depthOfField.enabled.value = true;
                 break;
             case WaterFXLevel.High:
                 _fogEnabled = true;
                 _colorGrading.enabled.value = true;
-                //_depthOfField.enabled.value = true;
                 break;
         }
     }

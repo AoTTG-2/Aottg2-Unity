@@ -117,7 +117,7 @@ namespace Settings
                 LightDistance.Value = 250;
                 Bloom.Value = (int)BloomLevel.Off;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
@@ -133,7 +133,7 @@ namespace Settings
                 LightDistance.Value = 500;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
@@ -149,7 +149,7 @@ namespace Settings
                 LightDistance.Value = 500;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
@@ -165,7 +165,7 @@ namespace Settings
                 LightDistance.Value = 1000;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
