@@ -1084,7 +1084,7 @@ Scene,Nature/Tree12,1511,0,1,1,1,0,Tree12,2315.5,112,-454.5,352.757,15.12354,358
 Scene,Nature/Tree12,1512,0,1,1,1,0,Tree12,1796,76,-1016.5,0,322.5,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1513,0,1,1,1,0,Tree12,1734,76,-1100,0,15.00003,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1514,0,1,1,1,0,Tree12,1697,76,-1012.5,0,15.00003,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Tree12,1515,0,1,1,1,0,Tree12,1899,85.5,-912.5,1.935973,112.3774,352.7528,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree12,1515,0,1,1,1,0,Tree12,1899,72.24658,-912.5,1.935973,112.3774,352.7528,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,1516,0,1,1,1,0,Tree12,2012.5,78.5,-768,0,120,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/FoliageGenerator2,1518,0,1,0,1,0,FoliageGenerator2,1757.5,73,-1061.5,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/FoliageGenerator2,1519,0,1,0,1,0,FoliageGenerator2,1757.5,73,-997.5,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
