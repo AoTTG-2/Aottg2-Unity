@@ -49,5 +49,21 @@
         public static string GunExplodeLoud = "GunExplodeLoud";
         public static string WaterSplash = "WaterSplash";
         public static string Switchback = "Switchback";
+        public static string APGShot1 = "APGShot1";
+        public static string APGShot2 = "APGShot2";
+        public static string APGShot3 = "APGShot3";
+        public static string APGShot4 = "APGShot4";
+
+        // Get random sound effect from list
+        public static string GetRandom(params string[] sounds)
+        {
+            return sounds[UnityEngine.Random.Range(0, sounds.Length)];
+        }
+
+        // Get random apg shot
+        public static string GetRandomAPGShot()
+        {
+            return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);
+        }
     }
 }

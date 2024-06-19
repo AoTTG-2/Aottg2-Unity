@@ -5,13 +5,13 @@
 			"ExcludedModes": ["Racing"],
 			"Maps": [
 				{
-					"Name": "Forest"
+					"Name": "Forest1"
 				},
 				{
 					"Name": "Forest2"
 				},
 				{
-					"Name": "City"
+					"Name": "City1"
 				},
 				{
 					"Name": "City2"
@@ -32,7 +32,7 @@
 					"Name": "Plaza"
 				},
 				{
-					"Name": "ChessBoard"
+					"Name": "Grandmaster"
 				},
 				{
 					"Name": "ForestFlooded"
@@ -87,11 +87,11 @@
 			"Maps": [
 				{
 					"Category": "General",
-					"Name": "Forest"
+					"Name": "Forest1"
 				},
 				{
 					"Category": "General",
-					"Name": "City"
+					"Name": "City1"
 				},
 				{
 					"Category": "General",
@@ -165,6 +165,9 @@
 				},
 				{
 					"Name": "Another Brick in the Wall"
+				},
+				{
+					"Name": "Racing City"
 				},
 				{
 					"Name": "Winter Speed"

@@ -121,6 +121,8 @@ namespace UI
                     InGameManager.RestartGame();
                     break;
                 case "Start":
+                    MusicManager.PlayEffect();
+                    MusicManager.PlayTransition();
                     SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                     if (!IsMultiplayer)
                         SettingsManager.MultiplayerSettings.ConnectOffline();

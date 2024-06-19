@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityStandardAssets.ImageEffects;
 
 public class WaterEffect : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class WaterEffect : MonoBehaviour
     private PostProcessingManager _postProcessingManager;
     private PostProcessVolume _volume;
     private ColorGrading _colorGrading;
-    private DepthOfField _depthOfField;
+    private GlobalFog _globalFog;
+    private bool _fogEnabled;
 
     void Start()
     {
@@ -21,28 +23,54 @@ public class WaterEffect : MonoBehaviour
         if (_postProcessingManager == null)
             _postProcessingManager = FindFirstObjectByType<PostProcessingManager>();
 
+        Camera cam = SceneLoader.CurrentCamera.Camera;
+        _globalFog = cam.GetComponent<GlobalFog>();
+
         _collider = GetComponent<Collider>();
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _colorGrading);
-        _volume.profile.TryGetSettings(out _depthOfField);
+        //_volume.profile.TryGetSettings(out _depthOfField);
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
         if (settings != null)
-            ApplySettings((ColorGradingLevel)settings.ColorGrading.Value, (DepthOfFieldLevel)settings.DepthOfField.Value);
+            ApplySettings((WaterFXLevel)settings.WaterFX.Value);
     }
 
-    public void ApplySettings(ColorGradingLevel cgl, DepthOfFieldLevel dofl)
+    public void ApplySettings(WaterFXLevel wfxl)
     {
-        if (cgl == ColorGradingLevel.Off && dofl == DepthOfFieldLevel.Off)
+        if (wfxl == WaterFXLevel.Off)
         {
             PostProcessingVolume.gameObject.SetActive(false);
             this.enabled = false;
-            return;
+        } 
+        else {
+            PostProcessingVolume.gameObject.SetActive(true);
+            this.enabled = true;
         }
-        this.enabled = true;
 
-        _colorGrading.enabled.value = cgl != ColorGradingLevel.Off;
-        _depthOfField.enabled.value = dofl != DepthOfFieldLevel.Off;
+
+
+        switch (wfxl)
+        {
+            case WaterFXLevel.Off:
+                _fogEnabled = false;
+                _globalFog.enabled = false;
+                _colorGrading.enabled.value = false;
+                break;
+            case WaterFXLevel.Low:
+                _fogEnabled = false;
+                _globalFog.enabled = false;
+                _colorGrading.enabled.value = true;
+                break;
+            case WaterFXLevel.Medium:
+                _fogEnabled = true;
+                _colorGrading.enabled.value = true;
+                break;
+            case WaterFXLevel.High:
+                _fogEnabled = true;
+                _colorGrading.enabled.value = true;
+                break;
+        }
     }
 
     void FixedUpdate()
@@ -54,11 +82,16 @@ public class WaterEffect : MonoBehaviour
         {
             PostProcessingVolume.gameObject.SetActive(true);
             _postProcessingManager.SetState(false);
+            if (_fogEnabled)
+            {
+                _globalFog.enabled = true;
+            }
         }
         else
         {
             PostProcessingVolume.gameObject.SetActive(false);
             _postProcessingManager.SetState(true);
+            _globalFog.enabled = false;
         }
     }
 }
