@@ -341,13 +341,6 @@ namespace GameManagers
                 ((InGameManager)SceneLoader.CurrentGameManager).PauseGame();
         }
 
-        [CommandAttribute("nav", "/nav: Regenerate the navmesh.")]
-        private static void Nav(string[] args)
-        {
-            if (CheckMC())
-                MapLoader.UpdateNavMesh();
-        }
-
         [CommandAttribute("unpause", "/unpause: Unpause the multiplayer game.")]
         private static void Unpause(string[] args)
         {

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8128344}
   - component: {fileID: 6809822480523761963}
   - component: {fileID: 3647327310203594099}
+  - component: {fileID: 5578204792425208200}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -172,3 +173,23 @@ Skybox:
   m_GameObject: {fileID: 128344}
   m_Enabled: 1
   m_CustomSkybox: {fileID: 0}
+--- !u!114 &5578204792425208200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128344}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFog: 1
+  excludeFarPixels: 1
+  useRadialDistance: 0
+  heightFog: 1
+  height: 10
+  heightDensity: 5
+  startDistance: -200
+  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}

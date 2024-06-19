@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Controllers;
+using System.Reflection;
 
 namespace CustomLogic
 {
@@ -116,6 +117,12 @@ namespace CustomLogic
             {
                 return Titan.IsCrawler;
             }
+            if (name == "UsePathfinding")
+            {
+                if (Titan.IsMine() && Titan.AI)
+                    return Titan.GetComponent<BaseTitanAIController>()._usePathfinding;
+                return null;
+            }
             return base.GetField(name);
         }
 
@@ -134,6 +141,11 @@ namespace CustomLogic
             {
                 if (Titan.AI)
                     Titan.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
+            }
+            else if (name == "UsePathfinding")
+            {
+                if (Titan.AI)
+                    Titan.GetComponent<BaseTitanAIController>()._usePathfinding = (bool)value;
             }
             else
                 base.SetField(name, value);

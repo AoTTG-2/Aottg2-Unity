@@ -220,13 +220,27 @@ namespace Map
                     Errors.Add("Failed to load bundle: " + customAsset);
                 }
             }
+
+            bool gamemodeNeedsNav = SettingsManager.InGameCurrent.General.GameMode.Value != "Racing"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
+
+            bool willLoadNavMesh = (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
+                && PhotonNetwork.IsMasterClient
+                && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value
+                && gamemodeNeedsNav;
+
             int count = 0;
+
+            float multiplier = willLoadNavMesh ? 0.25f : 0.5f;
             foreach (MapScriptBaseObject obj in objects)
             {
                 LoadObject(obj, editor);
                 if (count % 100 == 0 && SceneLoader.SceneName == SceneName.InGame)
                 {
-                    UIManager.LoadingMenu.UpdateLoading(0.9f + 0.1f * ((float)count / (float)objects.Count));
+                    UIManager.LoadingMenu.UpdateLoading(0.5f + multiplier * (0.1f * ((float)count / (float)objects.Count)));
                     yield return new WaitForEndOfFrame();
                 }
                 count++;
@@ -242,11 +256,7 @@ namespace Map
             if (!editor)
                 Batch();
 
-            bool gamemodeNeedsNav = SettingsManager.InGameCurrent.General.GameMode.Value != "Racing"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
+            
 
             if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
@@ -254,9 +264,34 @@ namespace Map
                 _hasNavMeshData = false;
                 if (PhotonNetwork.IsMasterClient && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value && gamemodeNeedsNav)
                 {
-                    Task task = GenerateNavMesh();
-                    while (!task.IsCompleted)
+                    ResetSources();
+
+                    List<int> agentIDs = Util.GetAllTitanAgentIds();
+                    List<AsyncOperation> operations = new List<AsyncOperation>();
+                    foreach (int agentID in agentIDs)
+                    {
+                        AsyncOperation createOp = CreateNavMeshSurfaceAsyncOperation(agentID, _navMeshSources, _navMeshBounds);
+                        operations.Add(createOp);
+                    }
+
+                    // Check progress of the operations and use the min progress
+                    while (operations.Count > 0)
+                    {
+                        float minProgress = 1f;
+                        for (int i = 0; i < operations.Count; i++)
+                        {
+                            if (operations[i].isDone)
+                            {
+                                operations.RemoveAt(i);
+                                i--;
+                            }
+                            else
+                                minProgress = Mathf.Min(minProgress, operations[i].progress);
+                        }
+                        UIManager.LoadingMenu.UpdateLoading(0.75f + 0.25f * minProgress);
                         yield return new WaitForEndOfFrame();
+                    }
+
                     _hasNavMeshData = true;
                 }
             }
@@ -318,11 +353,45 @@ namespace Map
             return result;
         }
 
+        private void ResetSources()
+        {
+            // Clear previous sources and bounds
+            _navMeshSources.Clear();
+            _navMeshData.Clear();
+            _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
+
+            // Create sources and bounds
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
+
+            // Collect sources of physics colliders, exclude components with NavMeshObstacles
+            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
+            _navMeshBounds = CalculateWorldBounds(_navMeshSources);
+            _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
+        }
+
         /// <summary>
         /// Use NavMeshBuilder to create a navmesh surface for the given agent id.
         /// This should be called asynchronously and sync progress back to the main thread.
         /// </summary>
         /// <param name="agentID">An integer representing the agent.</param>
+        private AsyncOperation CreateNavMeshSurfaceAsyncOperation(int agentID, List<NavMeshBuildSource> sources, Bounds bounds)
+        {
+            // Create a new navmeshsurface object
+            NavMeshData data = new NavMeshData();
+            NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
+            settings.maxJobWorkers = 6;
+            settings.overrideTileSize = true;
+            settings.tileSize = 256;
+            settings.overrideVoxelSize = true;
+            settings.voxelSize = 4f;
+            settings.minRegionArea = 100;
+            settings.buildHeightMesh = true;
+            _navMeshData.Add(agentID, data);
+            NavMesh.AddNavMeshData(data);
+            return NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
+        }
+
         private async Task CreateNavMeshSurfaceAsync(int agentID, List<NavMeshBuildSource> sources, Bounds bounds)
         {
             // Create a new navmeshsurface object
@@ -338,7 +407,6 @@ namespace Map
             _navMeshData.Add(agentID, data);
             NavMesh.AddNavMeshData(data);
             await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
-            
         }
 
         public static async Task UpdateNavMesh()
@@ -348,7 +416,6 @@ namespace Map
 
         public async Task UpdateAllNavMeshes()
         {
-            // Debug.Log("Updating NavMesh");
             NavMesh.RemoveAllNavMeshData();
             _hasNavMeshData = false;
             if (PhotonNetwork.IsMasterClient)
@@ -358,42 +425,10 @@ namespace Map
             }
         }
 
-        private async Task UpdateNavMeshSurfaceAsync(int agentID, NavMeshData data, List<NavMeshBuildSource> sources, Bounds bounds)
-        {
-            NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
-            settings.maxJobWorkers = 6;
-            settings.overrideTileSize = true;
-            settings.tileSize = 256;
-            settings.overrideVoxelSize = true;
-            settings.voxelSize = 4f;
-            settings.minRegionArea = 2;
-
-            await NavMeshBuilder.UpdateNavMeshDataAsync(data, settings, sources, bounds);
-        }
-
         private async Task GenerateNavMesh()
         {
-            // Clear previous sources and bounds
-            _navMeshSources.Clear();
-            _navMeshData.Clear();
-            _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
-
-            // Create sources and bounds
-            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
-            List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
-            
-            // Collect sources of physics colliders, exclude components with NavMeshObstacles
-            NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
-
-            _navMeshBounds = CalculateWorldBounds(_navMeshSources);
-
-            // Clamp bounds to 5000x5000x5000
-            _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
-
+            ResetSources();
             List<int> agentIDs = Util.GetAllTitanAgentIds();
-
-            // Debug.Log("Loading NavMesh");
-            // Prep calls to CreateNavMeshSurfaceAsync, run concurrently and await all
             List<Task> tasks = new List<Task>();
             foreach (int agentID in agentIDs)
             {

@@ -105,7 +105,7 @@
 		"General.GameMode": "Game mode",
 		"General.Weather": "Weather",
 		"General.Difficulty": "Difficulty",
-		"General.DifficultyOptions": ["Training", "Easy", "Normal", "Hard"],
+		"General.DifficultyOptions": ["Training", "Easy", "Normal", "Hard", "Abnormal"],
 		"General.MaxPlayers": "Max players",
 		"General.RoomName": "Room name",
 		"Titans.StandardModels": "Standard models",

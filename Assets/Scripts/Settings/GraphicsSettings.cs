@@ -37,6 +37,7 @@ namespace Settings
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.On);
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off);
         public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off);
+        public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High);
         
 
         public override void Apply()
@@ -82,7 +83,8 @@ namespace Settings
                     (ChromaticAberrationLevel)ChromaticAberration.Value,
                     (ColorGradingLevel)ColorGrading.Value,
                     (DepthOfFieldLevel)DepthOfField.Value,
-                    (MotionBlurLevel)MotionBlur.Value
+                    (MotionBlurLevel)MotionBlur.Value,
+                    (WaterFXLevel)WaterFX.Value
                 );
         }
 
@@ -115,7 +117,7 @@ namespace Settings
                 LightDistance.Value = 100;
                 Bloom.Value = (int)BloomLevel.Off;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
@@ -131,7 +133,7 @@ namespace Settings
                 LightDistance.Value = 250;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
@@ -147,7 +149,7 @@ namespace Settings
                 LightDistance.Value = 500;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
@@ -163,7 +165,7 @@ namespace Settings
                 LightDistance.Value = 1000;
                 Bloom.Value = (int)BloomLevel.Low;
                 MotionBlur.Value = (int)MotionBlurLevel.Off;
-                ColorGrading.Value = (int)ColorGradingLevel.On;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
@@ -250,6 +252,14 @@ namespace Settings
     }
 
     public enum MotionBlurLevel
+    {
+        Off,
+        Low,
+        Medium,
+        High
+    }
+
+    public enum WaterFXLevel
     {
         Off,
         Low,

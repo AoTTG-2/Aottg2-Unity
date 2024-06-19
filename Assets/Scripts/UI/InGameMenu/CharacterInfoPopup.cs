@@ -1,6 +1,5 @@
 ﻿using ApplicationManagers;
 using Characters;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +9,7 @@ namespace UI
     {
         protected override float AnimationTime => 0.25f;
         protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
-        protected TextMeshProUGUI _nameLabel;
+        protected Text _nameLabel;
         protected GameObject _healthbar;
         protected Image _healthbarFill;
         protected Text _healthbarLabel;
@@ -20,7 +19,7 @@ namespace UI
 
         public override void Setup(BasePanel parent = null)
         {
-            _nameLabel = transform.Find("NameLabel").GetComponent<TextMeshProUGUI>();
+            _nameLabel = transform.Find("NameLabel").GetComponent<Text>();
             _healthbar = transform.Find("Healthbar").gameObject;
             _healthbarFill = _healthbar.transform.Find("Fill").GetComponent<Image>();
             _healthbarLabel = _healthbar.transform.Find("Label").GetComponent<Text>();
