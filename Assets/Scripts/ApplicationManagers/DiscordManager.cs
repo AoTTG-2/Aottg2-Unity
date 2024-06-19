@@ -76,7 +76,7 @@ namespace ApplicationManagers
                         var activity = new Activity
                         {
                             State = "SinglePlayer",
-                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
+                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex() + " " + score,
                             Assets =
                         {
                             LargeImage = largeImage,
@@ -108,7 +108,7 @@ namespace ApplicationManagers
                         var activity = new Activity
                         {
                             State = roomName,
-                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value + " " + score,
+                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex() + " " + score,
                             Assets =
                         {
                             LargeImage = largeImage,
@@ -142,7 +142,7 @@ namespace ApplicationManagers
                     var activity = new Activity
                     {
                         State = "Creating a room!",
-                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value,
+                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex(),
                         Assets =
                     {
                         LargeImage = largeImage,
