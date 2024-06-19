@@ -66,6 +66,8 @@ namespace UI
                UIManager.GetLocaleArray(cat, sub, "DepthOfFieldOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.MotionBlur, UIManager.GetLocale(cat, sub, "MotionBlur"),
                UIManager.GetLocaleArray(cat, sub, "MotionBlurOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.WaterFX, UIManager.GetLocale(cat, sub, "WaterFX"),
+               UIManager.GetLocaleArray(cat, sub, "WaterFXOptions"), elementWidth: 200f);
         }
 
         protected void OnSelectPreset()

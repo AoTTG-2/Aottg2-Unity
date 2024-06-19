@@ -31,7 +31,7 @@ namespace Settings
         public BoolSetting MipmapEnabled = new BoolSetting(true);
 
         // Post Processing
-        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Low);
+        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off);
         public IntSetting Bloom = new IntSetting((int)BloomLevel.Low);
         public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low);
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off);
@@ -105,6 +105,7 @@ namespace Settings
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Low;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -121,6 +122,7 @@ namespace Settings
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Low;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -136,7 +138,8 @@ namespace Settings
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
-                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Medium;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -152,7 +155,8 @@ namespace Settings
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
-                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.High;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -168,7 +172,8 @@ namespace Settings
                 ColorGrading.Value = (int)ColorGradingLevel.Off;
                 DepthOfField.Value = (int)DepthOfFieldLevel.Off;
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
-                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.High;
             }
         }
     }
