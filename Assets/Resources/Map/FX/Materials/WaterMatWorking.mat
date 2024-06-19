@@ -140,6 +140,8 @@ Material:
     - _Use_Debris: 0
     - _Use_Debris_Tiling: 0
     - _ZWrite: 1
+    - _temp: 0.61
+    - _temp2: 0.96
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Depths_Color: {r: 0.21622464, g: 0.24274567, b: 0.4056604, a: 1}

@@ -26,9 +26,28 @@ namespace Map
                 UpdateIntensity(0f);
             else
             {
-                float intensity = Mathf.Clamp(1f - (distance / lightDistance), 0f, 1f) * MaxIntensity;
+                float intensity = Mathf.Clamp(2f - (2 * distance / lightDistance), 0f, 1f) * MaxIntensity;
                 UpdateIntensity(intensity);
             }
+        }
+
+        public bool MinimapDisableLight()
+        {
+            if (_transform == null || Light == null)
+                return false;
+            if (Light.enabled)
+            {
+                Light.enabled = false;
+                return true;
+            }
+            return false;
+        }
+
+        public void MinimapEnableLight()
+        {
+            if (_transform == null || Light == null)
+                return;
+            Light.enabled = true;
         }
 
         private void UpdateIntensity(float intensity)
