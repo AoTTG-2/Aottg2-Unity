@@ -27,8 +27,16 @@ namespace ApplicationManagers
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
-            discord = new Discord.Discord(appID, (ulong)CreateFlags.NoRequireDiscord);
-            time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            try
+            {
+                discord = new Discord.Discord(appID, (ulong)CreateFlags.NoRequireDiscord);
+                time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            }
+            catch
+            {
+                Debug.Log("Unable to initialize discord manager.");
+                Destroy(_instance);
+            }
         }
 
         private void Update()

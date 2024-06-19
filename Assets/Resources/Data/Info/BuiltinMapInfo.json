@@ -5,13 +5,13 @@
 			"ExcludedModes": ["Racing"],
 			"Maps": [
 				{
-					"Name": "Forest"
+					"Name": "Forest1"
 				},
 				{
 					"Name": "Forest2"
 				},
 				{
-					"Name": "City"
+					"Name": "City1"
 				},
 				{
 					"Name": "City2"
@@ -87,11 +87,11 @@
 			"Maps": [
 				{
 					"Category": "General",
-					"Name": "Forest"
+					"Name": "Forest1"
 				},
 				{
 					"Category": "General",
-					"Name": "City"
+					"Name": "City1"
 				},
 				{
 					"Category": "General",

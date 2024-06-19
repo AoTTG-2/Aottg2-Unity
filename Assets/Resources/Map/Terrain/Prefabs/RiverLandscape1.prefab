@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8843661525551116890}
   m_Layer: 25
-  m_Name: RiverLandscape
+  m_Name: RiverLandscape1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

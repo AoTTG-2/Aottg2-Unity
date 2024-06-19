@@ -17,5 +17,6 @@
         public static string Grunt8 = "Grunt8";
         public static string Grunt9 = "Grunt9";
         public static string HitSound = "HitSound";
+        public static string Roar = "Roar";
     }
 }

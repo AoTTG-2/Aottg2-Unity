@@ -210,7 +210,10 @@ namespace Characters
                 else if (emote == "Shake")
                     anim = BasicAnimations.EmoteShake;
                 else if (emote == "Roar")
+                {
                     anim = BasicAnimations.EmoteRoar;
+                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 0.8f));
+                }
                 StateAction(TitanState.Emote, anim);
             }
         }

@@ -63,6 +63,11 @@
 			{"Name": "Chimney6"},
 			{"Name": "Chimney7"},
 			{"Name": "Church1"},
+			{"Name": "Foundation1"},
+			{"Name": "Foundation1a", "Variant": "Foundation1"},
+			{"Name": "Foundation1b", "Variant": "Foundation1"},
+			{"Name": "Foundation1c", "Variant": "Foundation1"},
+			{"Name": "Foundation1d", "Variant": "Foundation1"},
 			{"Name": "Harbor1"},
 			{"Name": "House1"},
 			{"Name": "House2"},
@@ -184,7 +189,7 @@
 			{"Name": "Brickpile1"},
 			{"Name": "Cabinet1"},
 			{"Name": "Cannon1"},
-			{"Name": "Cannon2"},
+			{"Name": "Cannon6"},
 			{"Name": "Canopy1"},
 			{"Name": "Canopy1b", "Variant": "Canopy1"},
 			{"Name": "Canopy1c", "Variant": "Canopy1"},
@@ -357,6 +362,7 @@
 			{"Name": "Veranda2"},
 			{"Name": "WallFacade1"},
 			{"Name": "Wagon1"},
+			{"Name": "WindmillBG1"},
 			{"Name": "Window1"},
 			{"Name": "Window2"},
 			{"Name": "Window3"},
@@ -516,7 +522,7 @@
 			{"Name": "MountainRange2b", "Variant": "MountainRange2"},
 			{"Name": "MountainRange3"},
 			{"Name": "MountainRange3b", "Variant": "MountainRange3"},
-			{"Name": "RiverLandscape"}
+			{"Name": "RiverLandscape1"}
 		]
 	},
 	"FX": {
