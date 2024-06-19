@@ -31,10 +31,10 @@ namespace Settings
         public BoolSetting MipmapEnabled = new BoolSetting(true);
 
         // Post Processing
-        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.High);
-        public IntSetting Bloom = new IntSetting((int)BloomLevel.High);
-        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.High);
-        public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.On);
+        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Low);
+        public IntSetting Bloom = new IntSetting((int)BloomLevel.Low);
+        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low);
+        public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off);
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off);
         public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off);
         public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High);
