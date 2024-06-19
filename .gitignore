@@ -67,7 +67,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
-*.dll
 Assets/Photon/PhotonVoice.meta
 Assets/Photon/PhotonVoice/PhotonVoiceLibs.meta
 Assets/Photon/PhotonVoice/PhotonVoiceLibs/x86_64.meta
