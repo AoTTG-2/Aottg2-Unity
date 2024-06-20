@@ -384,11 +384,6 @@ namespace CustomLogic
                     var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                     if (collisionHandler == null)
                         collisionHandler = go.AddComponent<CustomLogicCollisionHandler>();
-                    if (go.name == "ConvexTriggerCollider")
-                    {
-                        var nonConvexMeshCollider = go.transform.parent.Find("NonConvexMeshCollider").GetComponent<MeshCollider>();
-                        collisionHandler.SetConvexTrigger(nonConvexMeshCollider);
-                    }
                     collisionHandler.RegisterInstance(classInstance);
                 }
             }

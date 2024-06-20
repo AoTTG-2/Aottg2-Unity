@@ -73,7 +73,7 @@ namespace UI
         {
             foreach (Collider c in mapObject.GameObject.GetComponentsInChildren<Collider>())
             {
-                if (c is MeshCollider && !((MeshCollider)c).convex && c.name != "NonConvexMeshCollider")
+                if (c is MeshCollider && !((MeshCollider)c).convex)
                     return true;
             }
             return false;

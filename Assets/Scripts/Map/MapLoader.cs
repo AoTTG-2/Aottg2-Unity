@@ -240,7 +240,7 @@ namespace Map
                 LoadObject(obj, editor);
                 if (count % 100 == 0 && SceneLoader.SceneName == SceneName.InGame)
                 {
-                    UIManager.LoadingMenu.UpdateLoading(0.5f + multiplier * (0.1f * ((float)count / (float)objects.Count)));
+                    UIManager.LoadingMenu.UpdateLoading(0.5f + multiplier * ((float)count / (float)objects.Count));
                     yield return new WaitForEndOfFrame();
                 }
                 count++;
@@ -380,7 +380,7 @@ namespace Map
             // Create a new navmeshsurface object
             NavMeshData data = new NavMeshData();
             NavMeshBuildSettings settings = NavMesh.GetSettingsByID(agentID);
-            settings.maxJobWorkers = 6;
+            settings.maxJobWorkers = 3;
             settings.overrideTileSize = true;
             settings.tileSize = 256;
             settings.overrideVoxelSize = true;
@@ -703,23 +703,8 @@ namespace Map
             foreach (Collider c in colliders)
             {
                 c.gameObject.layer = layer;
-                if (c.name == "ConvexTriggerCollider")
-                {
-                    c.isTrigger = true;
-                    c.enabled = collideMode == MapObjectCollideMode.Region;
-                }
-                else if (c.name == "NonConvexMeshCollider")
-                {
-                    c.isTrigger = false;
-                    c.enabled = collideMode != MapObjectCollideMode.None;
-                    if (collideMode == MapObjectCollideMode.Region)
-                        c.gameObject.layer = PhysicsLayer.MapObjectNonConvexMeshCollider;
-                }
-                else
-                {
-                    c.isTrigger = collideMode == MapObjectCollideMode.Region;
-                    c.enabled = collideMode != MapObjectCollideMode.None;
-                }
+                c.isTrigger = collideMode == MapObjectCollideMode.Region;
+                c.enabled = collideMode != MapObjectCollideMode.None;
                 if (material != null)
                     c.material = material;
             }

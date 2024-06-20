@@ -135,7 +135,12 @@ namespace UI
             if (_currentEmoteWheelState != EmoteWheelState.Action)
             {
                 if (_currentEmoteCooldown > 0f)
+                {
+                    _emoteWheelPopup.Hide();
+                    IsActive = false;
+                    ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
                     return;
+                }
                 _currentEmoteCooldown = EmoteCooldown;
             }
             BaseCharacter character = _inGameManager.CurrentCharacter;

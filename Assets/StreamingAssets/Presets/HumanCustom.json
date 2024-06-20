@@ -120,7 +120,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM5",
-                "Costume" : 0,
+                "Costume" : 8,
                 "Boots" : 0,
                 "Cape" : 1,
                 "Logo" : 1,
@@ -232,7 +232,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM6",
-                "Costume" : 2,
+                "Costume" : 6,
                 "Boots" : 0,
                 "Cape" : 1,
                 "Logo" : 1,
@@ -249,9 +249,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    161,
+                    156,
+                    133,
                     255
                 ],
                 "StrapsColor" : [
@@ -305,9 +305,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    221,
+                    208,
+                    176,
                     255
                 ],
                 "StrapsColor" : [
@@ -417,9 +417,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    199,
+                    189,
+                    179,
                     255
                 ],
                 "StrapsColor" : [
@@ -529,9 +529,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    246,
+                    220,
+                    153,
                     255
                 ],
                 "StrapsColor" : [
@@ -568,7 +568,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "Glass0",
                 "Hair" : "HairF9",
-                "Costume" : 7,
+                "Costume" : 5,
                 "Boots" : 0,
                 "Cape" : 1,
                 "Logo" : 2,
@@ -624,7 +624,7 @@
                 "Face" : "Face0",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM9",
-                "Costume" : 8,
+                "Costume" : 0,
                 "Boots" : 0,
                 "Cape" : 1,
                 "Logo" : 1,
@@ -641,9 +641,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    141,
+                    132,
+                    115,
                     255
                 ],
                 "StrapsColor" : [
@@ -697,9 +697,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    212,
+                    198,
+                    141,
                     255
                 ],
                 "StrapsColor" : [
@@ -729,7 +729,7 @@
                 "Stats" : "{\"Speed\":\"85\",\"Gas\":\"75\",\"Ammunition\":\"70\",\"Acceleration\":\"90\",\"Perks\":{}}",
                 "Name" : "Connie",
                 "Preset" : true
-            },
+            }
         ]
     },
     "Costume2Sets" : {
@@ -853,7 +853,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM5",
-                "Costume" : 1,
+                "Costume" : 9,
                 "Boots" : 0,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -965,7 +965,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM6",
-                "Costume" : 3,
+                "Costume" : 7,
                 "Boots" : 0,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -982,9 +982,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    161,
+                    156,
+                    133,
                     255
                 ],
                 "StrapsColor" : [
@@ -1038,9 +1038,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    221,
+                    208,
+                    176,
                     255
                 ],
                 "StrapsColor" : [
@@ -1150,9 +1150,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    199,
+                    189,
+                    179,
                     255
                 ],
                 "StrapsColor" : [
@@ -1262,9 +1262,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    246,
+                    220,
+                    153,
                     255
                 ],
                 "StrapsColor" : [
@@ -1301,7 +1301,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "Glass0",
                 "Hair" : "HairF9",
-                "Costume" : 8,
+                "Costume" : 6,
                 "Boots" : 0,
                 "Cape" : 0,
                 "Logo" : 2,
@@ -1357,7 +1357,7 @@
                 "Face" : "Face0",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM9",
-                "Costume" : 9,
+                "Costume" : 1,
                 "Boots" : 0,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -1374,9 +1374,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    141,
+                    132,
+                    115,
                     255
                 ],
                 "StrapsColor" : [
@@ -1430,9 +1430,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    212,
+                    198,
+                    141,
                     255
                 ],
                 "StrapsColor" : [
@@ -1462,7 +1462,7 @@
                 "Stats" : "{\"Speed\":\"85\",\"Gas\":\"75\",\"Ammunition\":\"70\",\"Acceleration\":\"90\",\"Perks\":{}}",
                 "Name" : "Connie",
                 "Preset" : true
-            },
+            }
         ]
     },
     "Costume3Sets" : {
@@ -1586,7 +1586,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM5",
-                "Costume" : 1,
+                "Costume" : 9,
                 "Boots" : 1,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -1698,7 +1698,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM6",
-                "Costume" : 3,
+                "Costume" : 7,
                 "Boots" : 1,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -1715,9 +1715,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    161,
+                    156,
+                    133,
                     255
                 ],
                 "StrapsColor" : [
@@ -1771,9 +1771,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    221,
+                    208,
+                    176,
                     255
                 ],
                 "StrapsColor" : [
@@ -1883,9 +1883,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    199,
+                    189,
+                    179,
                     255
                 ],
                 "StrapsColor" : [
@@ -1995,9 +1995,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    246,
+                    220,
+                    153,
                     255
                 ],
                 "StrapsColor" : [
@@ -2034,7 +2034,7 @@
                 "Face" : "FaceNone",
                 "Glass" : "Glass0",
                 "Hair" : "HairF9",
-                "Costume" : 8,
+                "Costume" : 6,
                 "Boots" : 1,
                 "Cape" : 0,
                 "Logo" : 2,
@@ -2090,7 +2090,7 @@
                 "Face" : "Face0",
                 "Glass" : "GlassNone",
                 "Hair" : "HairM9",
-                "Costume" : 9,
+                "Costume" : 1,
                 "Boots" : 1,
                 "Cape" : 0,
                 "Logo" : 1,
@@ -2107,9 +2107,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    141,
+                    132,
+                    115,
                     255
                 ],
                 "StrapsColor" : [
@@ -2163,9 +2163,9 @@
                     255
                 ],
                 "ShirtColor" : [
-                    255,
-                    255,
-                    255,
+                    212,
+                    198,
+                    141,
                     255
                 ],
                 "StrapsColor" : [
@@ -2195,7 +2195,7 @@
                 "Stats" : "{\"Speed\":\"85\",\"Gas\":\"75\",\"Ammunition\":\"70\",\"Acceleration\":\"90\",\"Perks\":{}}",
                 "Name" : "Connie",
                 "Preset" : true
-            },
+            }
         ]
     }
 }

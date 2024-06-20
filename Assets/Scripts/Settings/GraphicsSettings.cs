@@ -68,7 +68,7 @@ namespace Settings
             else
                 Application.targetFrameRate = MenuFPSCap.Value > 0 ? MenuFPSCap.Value : -1;
             QualitySettings.globalTextureMipmapLimit = 3 - TextureQuality.Value;
-            QualitySettings.antiAliasing = AntiAliasing.Value == 0 ? 0 : (int)Mathf.Pow(2, AntiAliasing.Value);
+            QualitySettings.antiAliasing = AntiAliasing.Value == 0 ? 0 : (int)Mathf.Pow(2, Mathf.Min(AntiAliasing.Value, 2));
             QualitySettings.anisotropicFiltering = (AnisotropicFiltering)AnisotropicFiltering.Value;
             QualitySettings.shadowDistance = ShadowDistance.Value;
             if (SceneLoader.CurrentCamera is InGameCamera)

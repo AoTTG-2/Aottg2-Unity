@@ -1832,12 +1832,9 @@ namespace Characters
                     {
                         if (hit.collider.isTrigger)
                         {
-                            if (hit.collider.name != "ConvexTriggerCollider")
-                            {
-                                var collisionHandler = hit.collider.GetComponent<CustomLogicCollisionHandler>();
-                                if (collisionHandler != null)
-                                    collisionHandler.OnTriggerEnter(GetComponent<CapsuleCollider>());
-                            }
+                            var collisionHandler = hit.collider.GetComponent<CustomLogicCollisionHandler>();
+                            if (collisionHandler != null)
+                                collisionHandler.OnTriggerEnter(GetComponent<CapsuleCollider>());
                             continue;
                         }
                         if (!foundHit)
