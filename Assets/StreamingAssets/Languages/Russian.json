@@ -61,6 +61,7 @@
 		"Intro.SingleplayerButton": "Одиночный",
 		"Intro.MultiplayerButton": "Мультиплеер",
 		"Intro.ToolsButton": "Инструменты",
+		"Intro.CreditsButton": "Благодарности",
 		"LeaderboardPopup.Title": "Таблица лидеров",
 		"MultiplayerMapPopup.Title": "Мультиплеер",
 		"MultiplayerMapPopup.ServerButton": "Сервер",
@@ -90,7 +91,6 @@
 		"TutorialPopup.BasicButton": "Средний",
 		"TutorialPopup.AdvancedButton": "Сложный",
 		"AboutPopup.Changelog": "Список обновлений",
-		"AboutPopup.Credits": "Титры",
 		"AboutPopup.Help": "Помощь"
 	},
 	"CreateGamePopup": {
@@ -110,6 +110,8 @@
 		"General.RoomName": "Название комнаты",
 		"Titans.StandardModels": "Стандартные модели",
 		"Titans.StandardModelsTooltip": "Используйте только стандартные модельки титанво (body0 и head0).",
+		"Titans.SmartMovement": "Умные движения",
+		"Titans.SmartMovementTooltip": "Титаны будут обходить преграды при преследовании игроков.",
 		"Titans.SpawnEnabled": "Пользовательские спавны",
 		"Titans.SpawnEnabledTooltip": "Спавн рейты можно добавить до 100.",
 		"Titans.Normal": "Нормальный",
@@ -225,6 +227,7 @@
 		"Sound.OldHookEffect": "Старый звук крюков",
 		"Sound.OldBladeEffect": "Старый звук мечей",
 		"Sound.OldNapeEffect": "Старый звук при убийстве титана",
+		"Sound.HorseSoundEffect": "Звуковые эффекты лошади",
 		"Sound.ForcePlaylist": "Принудительный список воспроизведения",
 		"Sound.CurrentSong": "Текущая песня",
 		"Sound.CustomPlaylist": "Пользовательский плейлист",
@@ -249,13 +252,26 @@
 		"Graphics.ShadowQualityOptions": ["Выключить", "Низкая", "Средняя", "Высокая"],
 		"Graphics.ShadowDistance": "Дистанция теней",
                 "Graphics.LightDistance": "Дистанция света",
-		"Graphics.AntiAliasing": "Сглаживание",
 		"Graphics.AntiAliasing": "Anti-aliasing",
 		"Graphics.AntiAliasingOptions": ["Выключить", "Низкая", "Средняя", "Высокая"],
 		"Graphics.Anisotropic": "Анизотропная фильтрация",
 		"Graphics.AnisotropicOptions": ["Выключить", "Низкая", "Высокая"],
 		"Graphics.WeatherEffects": "Погодные эффекты",
 		"Graphics.WeatherEffectsOptions": ["Выключить", "Низкая", "Средняя", "Высокая"],
+
+		"Graphics.AmbientOcclusion": "Окружающая среда",
+		"Graphics.AmbientOcclusionOptions": ["Выкл.", "Очень низкая", "Низкая", "Средняя", "Высокая", "Ультра"],
+		"Graphics.Bloom": "Цветение",
+		"Graphics.BloomOptions": ["Выкл.", "Низкое", "Высокое"],
+		"Graphics.ChromaticAberration": "Хроматические Аберрации",
+		"Graphics.ChromaticAberrationOptions": ["Выкл.", "Низкая", "Высокая"],
+		"Graphics.ColorGrading": "Цветокоррекция",
+		"Graphics.ColorGradingOptions": ["Выкл.", "Вкл."],
+		"Graphics.DepthOfField": "Глубина резкости",
+		"Graphics.DepthOfFieldOptions": ["Выкл.", "Низкая", "Средняя", "Высокая"],
+		"Graphics.MotionBlur": "Размытие движений",
+		"Graphics.MotionBlurOptions": ["Выкл.", "Низкая", "Средняя", "Высокая"],
+		
 		"Graphics.WeaponTrailEnabled": "След от оружия",
 		"Graphics.WindEffectEnabled": "Эффекты воздуха",
 		"Graphics.BloodSplatterEnabled": "Размазка крови",
@@ -363,6 +379,7 @@
 		"Keybinds.Titan.Jump": "Прыжок",
 		"Keybinds.Titan.Sit": "Сесть",
 		"Keybinds.Titan.Walk": "Хождение",
+		"Keybinds.Titan.Sprint": "Спринт",
 		"Keybinds.Shifter.Attack": "Обычная атака",
 		"Keybinds.Shifter.Special": "Специальная атака",
 		"Keybinds.Shifter.Kick": "Пинок",
@@ -371,6 +388,7 @@
 		"Keybinds.Shifter.Walk": "Ходить",
 		"Keybinds.Interaction.Interact": "Взаимодействие",
                 "Keybinds.Interaction.Interact2": "Взаимодействие2",
+		"Keybinds.Interaction.Interact3": "Взаимодействие3",
 		"Keybinds.Interaction.ItemMenu": "Меню предметов",
 		"Keybinds.Interaction.EmoteMenu": "Меню эмоций",
 		"Keybinds.Interaction.MenuNext": "Следующее меню",
@@ -490,7 +508,7 @@
 		"Top.MapInfo": "Информация о карте",
 		"Top.CustomLogic": "Пользовательская логика",
 		"Top.CustomAssets": "Пользовательские средства",
-		"Top.Editor": "Редактор"
+		"Top.Editor": "Редактор",
 		"Top.Weather": "Погода"
 	},
 	"MapEditorSettings": {
@@ -544,5 +562,15 @@
 		"Basic.Dialogue1P1": "Двигайся с",
     "Basic.Dialogue1P2": "Ключи.",
     "Basic.Dialogue1P3": "Идите к чекпоинту"
+	},
+	"OutsideTheWalls": {
+		"Dialogue.Start": "Перед тем как уйти, нам нужно защитить город. Убейте титанов и захватите ворота!",
+		"Dialogue.PointCaptured": "Отличная работа! Переходим к следующему пункту!",
+		"Dialogue.TownCaptured": "Переходим к следующему пункту!",
+		"Dialogue.PointCapturedTitansRemain": "Уничтожьте оставшихся титанов и переходите к следующему пункту!",
+		"Dialogue.TownCapturedTitansRemain": "Мы захватили город! Уничтожьте оставшихся титанов, чтобы мы могли продвигаться вперёд!",
+		"Dialogue.BeforeAnnie1": "Избавьтес от Женщины - титана и от титанов, которых она направила на нас!",
+		"Dialogue.AfterAnnie1": "Женщина - титан сбежала! Убейте оставшихся титанов!",
+		"Dialogue.BeforeAnnie2": "Теперь она на у нас на мушке. Убейте Женщину-титана!"
 	}
 }

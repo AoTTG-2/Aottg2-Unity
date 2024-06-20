@@ -90,7 +90,7 @@
     "TutorialPopup.BasicButton": "Grundlegend",
     "TutorialPopup.AdvancedButton": "Grundlegend",
     "AboutPopup.Changelog": "Changelog",
-    "AboutPopup.Credits": "Mitwirkende",
+    "Intro.CreditsButton": "Mitwirkende",
     "AboutPopup.Help": "Hilfe"
   },
   "CreateGamePopup": {
@@ -127,6 +127,8 @@
     "Titans.MaxHealth": "Max. Lebenspunkte",
     "Titans.ArmorEnabled": "Panzerung",
     "Titans.Armor": "Panzerungswert",
+    "Titans.SmartMovement": "Intelligente Bewegung",
+    "Titans.SmartMovementTooltip": "Titanen werden Objekte vermeiden, wärend sie den Spieler jagen",
     "Misc.PVP": "PvP",
     "Misc.PVPOptions": [ "Aus", "FFA", "Team" ],
     "Misc.AllowSpawnTime": "Spawn nach Beitritt",
@@ -243,6 +245,18 @@
     "Graphics.LightDistance": "Lichtentfernung",
     "Graphics.MenuFPSCap": "Menü FPS Limiter",
     "Graphics.NapeBloodEnabled": "Nacken-Blut",
+    "Graphics.AmbientOcclusion": "Umgebungs-Occlusion",
+    "Graphics.AmbientOcclusionOptions": [ "Aus", "Niedrigstes", "Niedrig", "Mittel", "Hoch", "Ultra" ],
+    "Graphics.Bloom": "Glanz",
+    "Graphics.BloomOptions": [ "Aus", "Niedrig", "Hoch" ],
+    "Graphics.ChromaticAberration": "Chromatische Abweichung",
+    "Graphics.ChromaticAberrationOptions": [ "Aus", "Niedrig", "Hoch" ],
+    "Graphics.ColorGrading": "Farbkorrektur",
+    "Graphics.ColorGradingOptions": [ "Aus", "An" ],
+    "Graphics.DepthOfField": "Tiefe des Sichtfeldes",
+    "Graphics.DepthOfFieldOptions": [ "Aus", "Niedrig", "Mittel", "Hoch" ],
+    "Graphics.MotionBlur": "Bewegungsunschärfe",
+    "Graphics.MotionBlurOptions": [ "Aus", "Niedrig", "Mittel", "Hoch" ],
     "UI.UIScale": "UI Skalierung",
     "UI.Theme": "UI Thema",
     "UI.GameFeed": "Spielverlauf",
@@ -344,6 +358,7 @@
     "Keybinds.Titan.Sit": "Sitzen",
     "Keybinds.Titan.Walk": "Gehen",
     "Keybinds.Titan.AttackRockThrow": "Stein-Angriff",
+    "Keybinds.Titan.Sprint": "Sprinten",
     "Keybinds.Shifter.Attack": "Normaler Angriff",
     "Keybinds.Shifter.Special": "Fähigkeit nutzen",
     "Keybinds.Shifter.Kick": "Treten",
@@ -368,6 +383,7 @@
     "Keybinds.Interaction.Function3": "Funktion 3",    
     "Keybinds.Interaction.Function4": "Funktion 4",
     "Keybinds.Interaction.Interact2": "Interagieren2",
+    "Keybinds.Interaction.Interact3": "Interagieren3",
     "Skins.Common.Set": "Skin Set",
     "Skins.Common.SkinsEnabled": "Skins an",
     "Skins.Common.SkinsLocal": "Skins lokal",
@@ -435,7 +451,8 @@
     "Sound.ReelOutEffect": "Reel-out",
     "Sound.TitanGrabMusic": "Musik bei Greifen eines Titanen",
     "Sound.TitanVocalEffect": "Titanenstimmen",
-    "Sound.Volume": "Lautstärke"
+    "Sound.Volume": "Lautstärke",
+    "Sound.HorseSoundEffect": "Pferdegeräusche"
   },
   "ScoreboardPopup": {
     "Top.ScoreboardButton": "Scoreboard",
@@ -543,5 +560,15 @@
     "Basic.Dialogue1P1": "Bewege dich mit",
     "Basic.Dialogue1P2": "Knöpfen",
     "Basic.Dialogue1P3": "Gehe zum Checkpoint"
-  }
+  },
+  "OutsideTheWalls": {
+        "Dialogue.AfterAnnie1": "Der Weibliche Titan ist entkommen! Besiege alle verbliebenen Titanen!",
+        "Dialogue.BeforeAnnie1": "Vernichte den Weiblichen Titanen und alle Titanen, die sie zu uns gezogen hat!",
+        "Dialogue.BeforeAnnie2": "Jetzt haben wir sie! Besiege den Weiblichen Titan!",
+        "Dialogue.PointCaptured": "Gute Arbeit. Rücke zum nächsten Punk vor!",
+        "Dialogue.PointCapturedTitansRemain": "Beseitige die übrig gebliebenen Titanen und rücke zum nächsten Punkt vor!",
+        "Dialogue.Start": "Bevor wir hier weg können, müssen wir die Stadt sichern. Beseitige die verbleibenden Titanen und erobere das Tor zurück!",
+        "Dialogue.TownCaptured": "Rücke zum nächsten Punkt vor!",
+        "Dialogue.TownCapturedTitansRemain": "Wir haben die Stadt gesichert! Beseitige die restlichen Titanen, damit wir vorrücken können"
+    }
 }
