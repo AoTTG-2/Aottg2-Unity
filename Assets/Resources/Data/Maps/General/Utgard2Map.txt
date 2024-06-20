@@ -912,14 +912,7 @@ Scene,Nature/LogFence3,1454,0,1,1,1,0,LogFence3,-456.9518,-2.438429,-166.2134,35
 Scene,Nature/LogFence3,1457,0,1,1,1,0,LogFence3,326.9357,-6.957084,-64.59571,345.651,331.5617,338.8572,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/LogFence3,1458,0,1,1,1,0,LogFence3,327.1209,-6.957084,-60.33659,330.1883,337.3184,327.3131,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
-class Main
-{
-function OnGameStart()
-{
-titan = Game.SpawnTitanAt("Default", pos);
-titan.MoveTo(Vector3(0, -50, 0), 250, false);
-}
-}
+
 /// Weather
 {
     "Skybox" : "Day1",

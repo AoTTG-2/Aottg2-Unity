@@ -1170,14 +1170,7 @@ Scene,Terrain/Hill1,1407,0,1,1,1,0,Hill1,6922.112,-303.5704,-1444.775,0,140,0,4,
 Scene,Terrain/Hill1,1408,0,1,1,1,0,Hill1,-253.5208,-126.2886,6640.32,0,160,0,4,5,4,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|80/80|0/0,;
 Scene,Decor/Goober1,1409,0,1,1,1,0,Goober1,-1113.202,-0.0401383,-660.4369,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
-class Main
-{
-function OnGameStart()
-{
-titan = Game.SpawnTitanAt("Default", pos);
-titan.MoveTo(Vector3(0, -50, 0), 250, false);
-}
-}
+
 /// Weather
 {
     "Skybox" : "Day1",
