@@ -158,7 +158,7 @@ namespace ApplicationManagers
                     var activity = new Activity
                     {
                         State = "Creating a room!",
-                        Details = guild + name + " " + score,
+                        Details = guild + name,
                         Assets =
                     {
                         LargeImage = largeImage,
