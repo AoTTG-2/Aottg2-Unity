@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using Utility;
 
 namespace ApplicationManagers
@@ -62,6 +63,13 @@ namespace ApplicationManagers
             {
                 var activityManager = discord.GetActivityManager();
 
+                string name = SettingsManager.ProfileSettings.Name.Value.StripHex();
+                string guild = "";
+                if(SettingsManager.ProfileSettings.Guild.Value != "")
+                {
+                    guild += "[" + SettingsManager.ProfileSettings.Guild.Value.StripHex() + "] ";
+                }
+
                 //in game activity
                 if (PhotonNetwork.CurrentRoom != null)
                 {
@@ -84,7 +92,7 @@ namespace ApplicationManagers
                         var activity = new Activity
                         {
                             State = "SinglePlayer",
-                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex() + " " + score,
+                            Details = guild + name + " " + score,
                             Assets =
                         {
                             LargeImage = largeImage,
@@ -116,7 +124,7 @@ namespace ApplicationManagers
                         var activity = new Activity
                         {
                             State = roomName,
-                            Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex() + " " + score,
+                            Details = guild + name + " " + score,
                             Assets =
                         {
                             LargeImage = largeImage,
@@ -150,7 +158,7 @@ namespace ApplicationManagers
                     var activity = new Activity
                     {
                         State = "Creating a room!",
-                        Details = "[" + SettingsManager.ProfileSettings.Guild.Value + "] " + SettingsManager.ProfileSettings.Name.Value.StripHex(),
+                        Details = guild + name + " " + score,
                         Assets =
                     {
                         LargeImage = largeImage,
