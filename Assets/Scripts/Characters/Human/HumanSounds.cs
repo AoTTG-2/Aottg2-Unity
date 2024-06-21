@@ -53,6 +53,12 @@
         public static string APGShot2 = "APGShot2";
         public static string APGShot3 = "APGShot3";
         public static string APGShot4 = "APGShot4";
+        public static string BladeNape1 = "BladeNape1";
+        public static string BladeNape2 = "BladeNape2";
+        public static string BladeNape3 = "BladeNape2";
+        public static string BladeNapeCrit1 = "BladeNapeCrit1";
+        public static string BladeNapeCrit2 = "BladeNapeCrit2";
+        public static string BladeNapeCrit3 = "BladeNapeCrit3";
 
         // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
@@ -64,6 +70,16 @@
         public static string GetRandomAPGShot()
         {
             return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);
+        }
+
+        public static string GetRandomBladeNape()
+        {
+            return GetRandom(BladeNape1, BladeNape2, BladeNape3);
+        }
+
+        public static string GetRandomBladeNapeCrit()
+        {
+            return GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
         }
     }
 }

@@ -880,7 +880,13 @@ namespace Characters
                             if (SettingsManager.SoundSettings.OldNapeEffect.Value)
                                 PlaySound(HumanSounds.OldNapeHit);
                             else
-                                PlaySound(HumanSounds.NapeHit);
+                            {
+                                if (damage < 2000)
+                                    PlaySound(HumanSounds.GetRandomBladeNape());
+                                else
+                                    PlaySound(HumanSounds.GetRandomBladeNapeCrit());
+                            }
+                                
                         }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
