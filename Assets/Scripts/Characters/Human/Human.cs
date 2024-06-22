@@ -881,7 +881,9 @@ namespace Characters
                                 PlaySound(HumanSounds.OldNapeHit);
                             else
                             {
-                                if (damage < 2000)
+                                if (type == "AHSS" || type == "APG")
+                                    PlaySound(HumanSounds.NapeHit);
+                                else if (damage < 2000)
                                     PlaySound(HumanSounds.GetRandomBladeNape());
                                 else
                                     PlaySound(HumanSounds.GetRandomBladeNapeCrit());

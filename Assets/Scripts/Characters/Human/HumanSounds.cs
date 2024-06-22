@@ -59,6 +59,12 @@
         public static string BladeNapeCrit1 = "BladeNapeCrit1";
         public static string BladeNapeCrit2 = "BladeNapeCrit2";
         public static string BladeNapeCrit3 = "BladeNapeCrit3";
+        public static string AHSSGunShot1Sound = "AHSSGunShot1Sound";
+        public static string AHSSGunShot2Sound = "AHSSGunShot2Sound";
+        public static string AHSSGunShot3Sound = "AHSSGunShot3Sound";
+        public static string AHSSGunShot4Sound = "AHSSGunShot4Sound";
+        public static string AHSSGunShotDouble1Sound = "AHSSGunShotDouble1Sound";
+        public static string AHSSGunShotDouble2Sound = "AHSSGunShotDouble2Sound";
 
         // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
@@ -80,6 +86,16 @@
         public static string GetRandomBladeNapeCrit()
         {
             return GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
+        }
+
+        public static string GetRandomAHSSGunShot()
+        {
+            return GetRandom(AHSSGunShot1Sound, AHSSGunShot2Sound, AHSSGunShot3Sound, AHSSGunShot4Sound);
+        }
+
+        public static string GetRandomAHSSGunShotDouble()
+        {
+            return GetRandom(AHSSGunShotDouble1Sound, AHSSGunShotDouble2Sound);
         }
     }
 }
