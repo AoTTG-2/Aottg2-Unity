@@ -1,7 +1,10 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
+using System.Linq;
 using UnityEngine;
+using UnityStandardAssets.ImageEffects;
+using Utility;
 
 namespace Settings
 {
@@ -21,7 +24,7 @@ namespace Settings
         public IntSetting ShadowQuality = new IntSetting((int)ShadowQualityLevel.High);
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
-        public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
+        public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AntiAliasingLevel>());
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
         public BoolSetting WeaponTrailEnabled = new BoolSetting(true);
@@ -31,13 +34,13 @@ namespace Settings
         public BoolSetting MipmapEnabled = new BoolSetting(true);
 
         // Post Processing
-        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off);
-        public IntSetting Bloom = new IntSetting((int)BloomLevel.Low);
-        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low);
-        public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off);
-        public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off);
-        public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off);
-        public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High);
+        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<AmbientOcclusionLevel>());
+        public IntSetting Bloom = new IntSetting((int)BloomLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<BloomLevel>());
+        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
+        public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ColorGradingLevel>());
+        public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());
+        public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<MotionBlurLevel>());
+        public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High, minValue: 0, maxValue: (int)Util.EnumMaxValue<WaterFXLevel>());
         
 
         public override void Apply()
@@ -68,8 +71,8 @@ namespace Settings
             else
                 Application.targetFrameRate = MenuFPSCap.Value > 0 ? MenuFPSCap.Value : -1;
             QualitySettings.globalTextureMipmapLimit = 3 - TextureQuality.Value;
-            QualitySettings.antiAliasing = AntiAliasing.Value == 0 ? 0 : (int)Mathf.Pow(2, Mathf.Min(AntiAliasing.Value, 2));
             QualitySettings.anisotropicFiltering = (AnisotropicFiltering)AnisotropicFiltering.Value;
+            QualitySettings.antiAliasing = 0;
             QualitySettings.shadowDistance = ShadowDistance.Value;
             if (SceneLoader.CurrentCamera is InGameCamera)
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGraphicsSettings();
@@ -128,7 +131,7 @@ namespace Settings
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.Low;
-                AntiAliasing.Value = (int)AntiAliasingLevel.Low;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Low;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Medium;
                 ShadowDistance.Value = 500;
@@ -145,7 +148,7 @@ namespace Settings
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.Medium;
-                AntiAliasing.Value = (int)AntiAliasingLevel.Medium;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
@@ -162,7 +165,7 @@ namespace Settings
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.High;
-                AntiAliasing.Value = (int)AntiAliasingLevel.High;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
@@ -206,9 +209,7 @@ namespace Settings
     public enum AntiAliasingLevel
     {
         Off,
-        Low,
-        Medium,
-        High
+        On
     }
 
     public enum AnisotropicLevel

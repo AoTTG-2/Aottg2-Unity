@@ -13,6 +13,7 @@ using Characters;
 using System.Linq;
 using System.Collections.Generic;
 using CustomLogic;
+using UnityStandardAssets.ImageEffects;
 
 namespace Cameras
 {
@@ -43,6 +44,9 @@ namespace Cameras
         public void ApplyGraphicsSettings()
         {
             Camera.farClipPlane = SettingsManager.GraphicsSettings.RenderDistance.Value;
+            var antiAliasing = Camera.GetComponent<Antialiasing>();
+            antiAliasing.enabled = SettingsManager.GraphicsSettings.AntiAliasing.Value == 0;
+
         }
 
         public void ApplyGeneralSettings()

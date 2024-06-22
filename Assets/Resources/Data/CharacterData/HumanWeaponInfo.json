@@ -46,7 +46,7 @@
 		"CD": 0.5,
 		"AmmoRound": 6,
 		"AmmoTotal": 24,
-		"DamageMultiplier": 0.5,
+		"DamageMultiplier": 0.8,
 		"RestrictAngle": 80
 	},
 	"APGPVP": {
@@ -61,7 +61,7 @@
 		"CD": 0.5,
 		"AmmoRound": 6,
 		"AmmoTotal": 24,
-		"DamageMultiplier": 0.5,
+		"DamageMultiplier": 0.8,
 		"RestrictAngle": 80
 	},
 	"Hook": {

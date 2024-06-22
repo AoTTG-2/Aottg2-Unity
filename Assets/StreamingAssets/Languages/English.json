@@ -253,7 +253,7 @@
 		"Graphics.ShadowDistance": "Shadow distance",
 		"Graphics.LightDistance": "Light distance",
 		"Graphics.AntiAliasing": "Anti-aliasing",
-		"Graphics.AntiAliasingOptions": ["Off", "Low", "Medium", "High"],
+		"Graphics.AntiAliasingOptions": ["Off", "On"],
 		"Graphics.Anisotropic": "Anisotropic filtering",
 		"Graphics.AnisotropicOptions": ["Off", "Low", "High"],
 		"Graphics.WeatherEffects": "Weather effects",

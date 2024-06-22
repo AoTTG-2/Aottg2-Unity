@@ -807,12 +807,21 @@ namespace Characters
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
+
+            // log type
             if (hitbox != null)
             {
                 if (hitbox == HumanCache.BladeHitLeft || hitbox == HumanCache.BladeHitRight)
                     type = "Blade";
                 else if (hitbox == HumanCache.AHSSHit)
+                {
                     type = "AHSS";
+                    if (((CapsuleCollider)HumanCache.AHSSHit._collider).radius == CharacterData.HumanWeaponInfo["AHSS"]["Radius"].AsFloat * 2f)
+                    {
+                        type = "AHSSDouble";
+                    }
+                }
+                    
                 else if (hitbox == HumanCache.APGHit)
                     type = "APG";
             }
@@ -842,9 +851,14 @@ namespace Characters
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["Blade"]["DamageMultiplier"].AsFloat);
             }
             else if (type == "AHSS")
+            {
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
+            }
+            else if (type == "AHSSDouble")
+                type = "AHSS";
             else if (type == "APG")
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+            damage = Mathf.Max(damage, 10);
             if (CustomDamageEnabled)
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
