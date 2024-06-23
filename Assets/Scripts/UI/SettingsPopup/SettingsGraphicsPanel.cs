@@ -62,6 +62,8 @@ namespace UI
                UIManager.GetLocaleArray(cat, sub, "ChromaticAberrationOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ColorGrading, UIManager.GetLocale(cat, sub, "ColorGrading"),
                UIManager.GetLocaleArray(cat, sub, "ColorGradingOptions"), elementWidth: 200f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.AutoExposure, UIManager.GetLocale(cat, sub, "AutoExposure"),
+               UIManager.GetLocaleArray(cat, sub, "AutoExposureOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.DepthOfField, UIManager.GetLocale(cat, sub, "DepthOfField"),
                UIManager.GetLocaleArray(cat, sub, "DepthOfFieldOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.MotionBlur, UIManager.GetLocale(cat, sub, "MotionBlur"),

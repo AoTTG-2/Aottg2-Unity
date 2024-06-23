@@ -38,10 +38,10 @@ namespace Settings
         public IntSetting Bloom = new IntSetting((int)BloomLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<BloomLevel>());
         public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ColorGradingLevel>());
+        public IntSetting AutoExposure = new IntSetting((int)AutoExposureLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AutoExposureLevel>());
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());
         public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<MotionBlurLevel>());
         public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High, minValue: 0, maxValue: (int)Util.EnumMaxValue<WaterFXLevel>());
-        
 
         public override void Apply()
         {
@@ -85,6 +85,7 @@ namespace Settings
                     (BloomLevel)Bloom.Value,
                     (ChromaticAberrationLevel)ChromaticAberration.Value,
                     (ColorGradingLevel)ColorGrading.Value,
+                    (AutoExposureLevel)AutoExposure.Value,
                     (DepthOfFieldLevel)DepthOfField.Value,
                     (MotionBlurLevel)MotionBlur.Value,
                     (WaterFXLevel)WaterFX.Value
@@ -109,6 +110,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
+                AutoExposure.Value = (int)AutoExposureLevel.Off;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -126,6 +128,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -143,6 +146,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Medium;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -160,6 +164,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -177,6 +182,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
             }
         }
     }
@@ -263,6 +269,12 @@ namespace Settings
         Low,
         Medium,
         High
+    }
+
+    public enum AutoExposureLevel
+    {
+        Off,
+        On
     }
 
     public enum WaterFXLevel

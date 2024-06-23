@@ -267,6 +267,8 @@
 		"Graphics.ChromaticAberrationOptions": ["Off", "Low", "High"],
 		"Graphics.ColorGrading": "Color Grading",
 		"Graphics.ColorGradingOptions": ["Off", "On"],
+		"Graphics.AutoExposure": "Auto Exposure",
+		"Graphics.AutoExposureOptions": ["Off", "On"],
 		"Graphics.DepthOfField": "Depth of Field",
 		"Graphics.DepthOfFieldOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.MotionBlur": "Motion Blur",

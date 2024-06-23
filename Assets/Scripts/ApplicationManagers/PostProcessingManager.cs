@@ -17,6 +17,7 @@ public class PostProcessingManager : MonoBehaviour
     private ColorGrading _colorGrading;
     private DepthOfField _depthOfField;
     private MotionBlur _motionBlur;
+    private AutoExposure _autoExposure;
 
     public void Awake()
     {
@@ -27,6 +28,7 @@ public class PostProcessingManager : MonoBehaviour
         _postProcessingVolume.profile.TryGetSettings(out _colorGrading);
         _postProcessingVolume.profile.TryGetSettings(out _depthOfField);
         _postProcessingVolume.profile.TryGetSettings(out _motionBlur);
+        _postProcessingVolume.profile.TryGetSettings(out _autoExposure);
 
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
@@ -36,6 +38,7 @@ public class PostProcessingManager : MonoBehaviour
                 (BloomLevel)settings.Bloom.Value,
                 (ChromaticAberrationLevel)settings.ChromaticAberration.Value,
                 (ColorGradingLevel)settings.ColorGrading.Value,
+                (AutoExposureLevel)settings.AutoExposure.Value,
                 (DepthOfFieldLevel)settings.DepthOfField.Value,
                 (MotionBlurLevel)settings.MotionBlur.Value,
                 (WaterFXLevel)settings.WaterFX.Value
@@ -54,6 +57,7 @@ public class PostProcessingManager : MonoBehaviour
         BloomLevel bl,
         ChromaticAberrationLevel cal,
         ColorGradingLevel cgl,
+        AutoExposureLevel ael,
         DepthOfFieldLevel dofl,
         MotionBlurLevel mbl,
         WaterFXLevel wfxl)
@@ -62,6 +66,7 @@ public class PostProcessingManager : MonoBehaviour
         SetBloomQuality(bl);
         SetChromaticAberrationQuality(cal);
         SetColorGradingQuality(cgl);
+        SetAutoExposureQuality(ael);
         SetDepthOfFieldQuality(dofl);
         SetMotionBlurQuality(mbl);
 
@@ -127,6 +132,11 @@ public class PostProcessingManager : MonoBehaviour
         _colorGrading.enabled.value = quality != ColorGradingLevel.Off;
     }
 
+    public void SetAutoExposureQuality(AutoExposureLevel quality)
+    {
+        _autoExposure.enabled.value = quality != AutoExposureLevel.Off;
+    }
+    
     public void SetDepthOfFieldQuality(DepthOfFieldLevel quality)
     {
         switch (quality)
