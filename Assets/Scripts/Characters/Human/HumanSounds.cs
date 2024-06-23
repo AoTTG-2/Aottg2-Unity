@@ -53,6 +53,18 @@
         public static string APGShot2 = "APGShot2";
         public static string APGShot3 = "APGShot3";
         public static string APGShot4 = "APGShot4";
+        public static string BladeNape1 = "BladeNape1";
+        public static string BladeNape2 = "BladeNape2";
+        public static string BladeNape3 = "BladeNape2";
+        public static string BladeNapeCrit1 = "BladeNapeCrit1";
+        public static string BladeNapeCrit2 = "BladeNapeCrit2";
+        public static string BladeNapeCrit3 = "BladeNapeCrit3";
+        public static string AHSSGunShot1Sound = "AHSSGunShot1Sound";
+        public static string AHSSGunShot2Sound = "AHSSGunShot2Sound";
+        public static string AHSSGunShot3Sound = "AHSSGunShot3Sound";
+        public static string AHSSGunShot4Sound = "AHSSGunShot4Sound";
+        public static string AHSSGunShotDouble1Sound = "AHSSGunShotDouble1Sound";
+        public static string AHSSGunShotDouble2Sound = "AHSSGunShotDouble2Sound";
 
         // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
@@ -64,6 +76,26 @@
         public static string GetRandomAPGShot()
         {
             return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);
+        }
+
+        public static string GetRandomBladeNape()
+        {
+            return NapeHit; // GetRandom(BladeNape1, BladeNape2, BladeNape3);
+        }
+
+        public static string GetRandomBladeNapeCrit()
+        {
+            return NapeHit; //GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
+        }
+
+        public static string GetRandomAHSSGunShot()
+        {
+            return GetRandom(AHSSGunShot1Sound, AHSSGunShot2Sound, AHSSGunShot3Sound, AHSSGunShot4Sound);
+        }
+
+        public static string GetRandomAHSSGunShotDouble()
+        {
+            return GetRandom(AHSSGunShotDouble1Sound, AHSSGunShotDouble2Sound);
         }
     }
 }
