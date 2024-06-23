@@ -80,12 +80,12 @@
 
         public static string GetRandomBladeNape()
         {
-            return GetRandom(BladeNape1, BladeNape2, BladeNape3);
+            return NapeHit; // GetRandom(BladeNape1, BladeNape2, BladeNape3);
         }
 
         public static string GetRandomBladeNapeCrit()
         {
-            return GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
+            return NapeHit; //GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
         }
 
         public static string GetRandomAHSSGunShot()
