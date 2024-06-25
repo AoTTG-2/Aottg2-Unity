@@ -895,12 +895,35 @@ namespace Characters
                                 PlaySound(HumanSounds.OldNapeHit);
                             else
                             {
-                                if (type == "AHSS" || type == "APG")
+                                if (type == "APG")
                                     PlaySound(HumanSounds.NapeHit);
-                                else if (damage < 2000)
-                                    PlaySound(HumanSounds.GetRandomBladeNape());
-                                else
-                                    PlaySound(HumanSounds.GetRandomBladeNapeCrit());
+                                if (type == "Blade")
+                                {
+                                    if (damage < 1000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar1());
+                                    else if (damage < 2000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar2());
+                                    else if (damage < 3000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar3());
+                                    else
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar4());
+                                }
+                                else if (type == "AHSS")
+                                {
+                                    if (damage < 1000)
+                                    {
+                                        PlaySound(HumanSounds.NapeHit);
+                                    }
+                                    else if (damage < 2000)
+                                    {
+                                        PlaySound(HumanSounds.GetRandomAHSSNapeHitVar1());
+                                    }
+                                    else
+                                    {
+                                        PlaySound(HumanSounds.GetRandomAHSSNapeHitVar2());
+                                    }
+                                }
+                                
                             }
                                 
                         }

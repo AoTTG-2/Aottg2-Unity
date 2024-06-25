@@ -53,18 +53,30 @@
         public static string APGShot2 = "APGShot2";
         public static string APGShot3 = "APGShot3";
         public static string APGShot4 = "APGShot4";
-        public static string BladeNape1 = "BladeNape1";
-        public static string BladeNape2 = "BladeNape2";
-        public static string BladeNape3 = "BladeNape2";
-        public static string BladeNapeCrit1 = "BladeNapeCrit1";
-        public static string BladeNapeCrit2 = "BladeNapeCrit2";
-        public static string BladeNapeCrit3 = "BladeNapeCrit3";
-        public static string AHSSGunShot1Sound = "AHSSGunShot1Sound";
-        public static string AHSSGunShot2Sound = "AHSSGunShot2Sound";
-        public static string AHSSGunShot3Sound = "AHSSGunShot3Sound";
-        public static string AHSSGunShot4Sound = "AHSSGunShot4Sound";
-        public static string AHSSGunShotDouble1Sound = "AHSSGunShotDouble1Sound";
-        public static string AHSSGunShotDouble2Sound = "AHSSGunShotDouble2Sound";
+        public static string BladeNape1Var1 = "BladeNape1Var1";
+        public static string BladeNape1Var2 = "BladeNape1Var2";
+        public static string BladeNape1Var3 = "BladeNape1Var3";
+        public static string BladeNape1Var4 = "BladeNape1Var4";
+        public static string BladeNape2Var1 = "BladeNape2Var1";
+        public static string BladeNape2Var2 = "BladeNape2Var2";
+        public static string BladeNape2Var3 = "BladeNape2Var3";
+        public static string BladeNape2Var4 = "BladeNape2Var4";
+        public static string BladeNape3Var1 = "BladeNape3Var1";
+        public static string BladeNape3Var2 = "BladeNape3Var2";
+        public static string BladeNape3Var3 = "BladeNape3Var3";
+        public static string BladeNape3Var4 = "BladeNape3Var4";
+        public static string AHSSGunShot1 = "AHSSGunShot1";
+        public static string AHSSGunShot2 = "AHSSGunShot2";
+        public static string AHSSGunShot3 = "AHSSGunShot3";
+        public static string AHSSGunShot4 = "AHSSGunShot4";
+        public static string AHSSGunShotDouble1 = "AHSSGunShotDouble1";
+        public static string AHSSGunShotDouble2 = "AHSSGunShotDouble2";
+        public static string AHSSNape1Var1 = "AHSSNape1Var1";
+        public static string AHSSNape1Var2 = "AHSSNape1Var2";
+        public static string AHSSNape2Var1 = "AHSSNape2Var1";
+        public static string AHSSNape2Var2 = "AHSSNape2Var2";
+        public static string AHSSNape3Var1 = "AHSSNape3Var1";
+        public static string AHSSNape3Var2 = "AHSSNape3Var2";
 
         // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
@@ -83,6 +95,36 @@
             return NapeHit; // GetRandom(BladeNape1, BladeNape2, BladeNape3);
         }
 
+        public static string GetRandomAHSSNapeHitVar1()
+        {
+            return GetRandom(AHSSNape1Var1, AHSSNape2Var1, AHSSNape3Var1);
+        }
+
+        public static string GetRandomAHSSNapeHitVar2()
+        {
+            return GetRandom(AHSSNape1Var2, AHSSNape2Var2, AHSSNape3Var2);
+        }
+
+        public static string GetRandomBladeNapeVar1()
+        {
+            return GetRandom(BladeNape1Var1, BladeNape2Var1, BladeNape3Var1);
+        }
+
+        public static string GetRandomBladeNapeVar2()
+        {
+            return GetRandom(BladeNape1Var2, BladeNape2Var2, BladeNape3Var2);
+        }
+
+        public static string GetRandomBladeNapeVar3()
+        {
+            return GetRandom(BladeNape1Var3, BladeNape2Var3, BladeNape3Var3);
+        }
+
+        public static string GetRandomBladeNapeVar4()
+        {
+            return GetRandom(BladeNape1Var4, BladeNape2Var4, BladeNape3Var4);
+        }
+
         public static string GetRandomBladeNapeCrit()
         {
             return NapeHit; //GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
@@ -90,12 +132,12 @@
 
         public static string GetRandomAHSSGunShot()
         {
-            return GetRandom(AHSSGunShot1Sound, AHSSGunShot2Sound, AHSSGunShot3Sound, AHSSGunShot4Sound);
+            return GetRandom(AHSSGunShot1, AHSSGunShot2, AHSSGunShot3, AHSSGunShot4);
         }
 
         public static string GetRandomAHSSGunShotDouble()
         {
-            return GetRandom(AHSSGunShotDouble1Sound, AHSSGunShotDouble2Sound);
+            return GetRandom(AHSSGunShotDouble1, AHSSGunShotDouble2);
         }
     }
 }
