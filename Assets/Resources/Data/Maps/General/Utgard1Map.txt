@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:Castle Utgard.|HasWeather:1
+EditorVersion:1.0|Description:Castle Utgard.|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -186,7 +186,7 @@ Scene,Decor/Rubble8,564,0,1,1,1,0,Rubble8,407.601,-1.06392,-344.0598,0,0,0,1,1,1
 Scene,Decor/Rubble5,565,0,1,1,1,0,Rubble5,428.1733,-1.250837,-358.8688,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Rubble7,566,0,1,1,1,0,Rubble7,-241.46,-1.405073,-350.5269,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold1,904,0,1,1,1,0,Scaffold1,561.5001,19.18595,-493.7106,0,195,0,0.5,1.4,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Log5,605,0,1,1,1,0,Log5,115.8002,0.6399634,114.4144,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Log5,605,0,1,1,1,0,Log5,115.8002,1.731281,114.4144,0,0,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree9,610,0,1,1,1,0,Tree9,372.4705,3.146122,73.76995,0,0,347.5029,1,1,1,Physical,Entities,Default,Default|200/225/200/255,;
 Scene,Nature/Tree9,612,0,1,1,1,0,Tree9,-73.58619,33.62415,-186.0355,355.9298,85.35907,318.8345,1,1,1,Physical,Entities,Default,Default|200/225/200/255,;
 Scene,Arenas/Utgard1,613,0,1,1,1,0,Utgard1,71.14029,-71.1994,742.1241,0,63.02492,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -265,8 +265,8 @@ Scene,Decor/RubblePile1,1168,0,1,1,1,0,RubblePile1,450.0645,-0.4403982,587.1842,
 Scene,Decor/Gas1,793,0,1,1,1,0,Gas1,13.57634,85.66962,626.0797,323.8263,252.2502,20.24809,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:false|MaxRefills:1;
 Scene,Arenas/Utgard2,827,0,1,1,1,0,Utgard2,6.822503,-4.37073,41.90918,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/LogFence3,829,0,1,1,1,0,LogFence3,70.21722,-1.85345,46.69804,4.268868,313.826,347.731,1.3,1,1.3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Log5,830,0,1,1,1,0,Log5,115.8002,0.6399634,102.956,0,180,0,0.22,0.22,0.22,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Log5,831,0,1,1,1,0,Log5,114.974,0.6399634,87.40854,0,180,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Log5,830,0,1,1,1,0,Log5,115.8002,1.731281,102.956,0,180,0,0.22,0.22,0.22,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Log5,831,0,1,1,1,0,Log5,114.974,1.731281,87.40854,0,180,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Rubble5,832,0,1,1,1,0,Rubble5,-584.3572,-0.2678794,-481.2159,0,0,0,0.5,0.75,0.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Rubble5,834,0,1,1,1,0,Rubble5,-577.1003,-0.2678794,-476.2057,0,0,0,1.45,0.1,1.45,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Rubble5,835,0,1,1,1,0,Rubble5,5.989659,-0.2678794,613.787,0,0,0,1.75,0.1,1.75,Physical,Entities,Default,Default|255/255/255/255,;
@@ -680,7 +680,7 @@ Scene,Nature/Tree10,688,0,1,1,1,0,Tree10,309.0401,-1.011983,426.839,0,102.3329,0
 Scene,Nature/Tree10,637,0,1,1,1,0,Tree10,-281.618,-1.824186,270.4405,0,0,0,0.7,1,0.7,Physical,Entities,Default,Default|100/125/100/255,;
 Scene,Nature/Tree10,625,0,1,1,1,0,Tree10,348.3538,-1.329543,-391.4545,0,0,0,1,1,1,Physical,Entities,Default,Default|100/125/100/255,;
 Scene,Nature/Tree10,630,0,1,1,1,0,Tree10,472.5273,-1.089742,-44.81495,0,0,0,0.8,1,0.8,Physical,Entities,Default,Default|100/125/100/255,;
-Scene,Nature/Tree10,631,0,1,1,1,0,Tree10,-349.2807,-0.8319213,-400.5337,0,0,0,0.6,0.6,0.6,Physical,Entities,Default,Default|100/125/100/255,;
+Scene,Nature/Tree10,631,0,1,1,1,0,Tree10,-349.2807,1.527722,-400.5337,0,0,0,0.6,0.6,0.6,Physical,Entities,Default,Default|100/125/100/255,;
 Scene,Nature/Tree10,618,0,1,1,1,0,Tree10,21.23246,-2.987937,657.1871,20.22495,203.5594,3.222273,0.6,0.7,0.6,Physical,Entities,Default,Default|100/125/100/255,;
 Scene,Nature/Tree10,619,0,1,1,1,0,Tree10,82.5244,-3.55596,637.5599,327.4046,94.80751,346.7475,0.8,1,0.8,Physical,Entities,Default,Default|100/125/100/255,;
 Scene,Nature/Tree10,606,0,1,1,1,0,Tree10,-191.8684,-6.205334,144.7602,359.7137,39.88786,309.4493,0.75,0.75,0.75,Physical,Entities,Default,Default|100/125/100/255,;
@@ -1243,42 +1243,42 @@ titan.MoveTo(Vector3(0, -50, 0), 250, false);
 }
 /// Weather
 {
-    "Skybox" : "Night3",
+    "Skybox" : "Day1",
     "SkyboxColor" : [
-        0,
-        0,
-        0,
+        128,
+        128,
+        128,
         255
     ],
     "Daylight" : [
-        68,
-        88,
-        119,
+        255,
+        255,
+        255,
         255
     ],
-    "DaylightIntensity" : 1.0533332824707,
+    "DaylightIntensity" : 1,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        40,
-        55,
-        82,
+        126,
+        122,
+        114,
         255
     ],
     "Flashlight" : [
-        152,
-        177,
-        159,
-        255
+        255,
+        255,
+        255,
+        0
     ],
-    "FogDensity" : 0.00666666682809591,
+    "FogDensity" : 0,
     "FogColor" : [
-        40,
-        51,
-        65,
+        128,
+        128,
+        128,
         255
     ],
     "Rain" : 0,
