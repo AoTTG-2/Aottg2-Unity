@@ -77,6 +77,9 @@
         public static string AHSSNape2Var2 = "AHSSNape2Var2";
         public static string AHSSNape3Var1 = "AHSSNape3Var1";
         public static string AHSSNape3Var2 = "AHSSNape3Var2";
+        public static string TSLaunch1 = "TSLaunch1";
+        public static string TSLaunch2 = "TSLaunch2";
+
 
         // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
@@ -84,15 +87,16 @@
             return sounds[UnityEngine.Random.Range(0, sounds.Length)];
         }
 
+        public static string GetRandomTSLaunch()
+        {
+            return GetRandom(TSLaunch1, TSLaunch2);
+        }
+
+
         // Get random apg shot
         public static string GetRandomAPGShot()
         {
             return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);
-        }
-
-        public static string GetRandomBladeNape()
-        {
-            return NapeHit; // GetRandom(BladeNape1, BladeNape2, BladeNape3);
         }
 
         public static string GetRandomAHSSNapeHitVar1()
@@ -123,11 +127,6 @@
         public static string GetRandomBladeNapeVar4()
         {
             return GetRandom(BladeNape1Var4, BladeNape2Var4, BladeNape3Var4);
-        }
-
-        public static string GetRandomBladeNapeCrit()
-        {
-            return NapeHit; //GetRandom(BladeNapeCrit1, BladeNapeCrit2, BladeNapeCrit3);
         }
 
         public static string GetRandomAHSSGunShot()
