@@ -229,8 +229,8 @@ Scene,Buildings/Chimney4,561,0,1,1,1,0,Chimney4,-1509.76,-39.35323,816.6564,1.23
 Scene,Decor/Statue1,562,0,1,1,1,0,Statue1,-1512.133,57.50223,797.4,10.92938,193.5195,1.258454,2.2,2.2,2.2,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|0.2/0.2|0/0,;
 Scene,Geometry/Sphere,563,0,1,1,1,0,Sphere,-1281.592,17.94271,2354.911,334.3306,341.0451,4.907714,2.5,2.5,2.5,Physical,Entities,Default,Basic|25/50/50/91|Misc/Ice2|0.7/0.7|0/0,;
 Scene,Decor/Pillar1,564,0,1,1,1,0,Pillar1,-1285.128,-39.65701,2381.855,334.3306,341.0451,4.907714,2,1,2,Physical,Entities,Default,Basic|25/50/50/255|Misc/Ice2|1/1|0/0,;
-Scene,Decor/ColossalPaths1,565,0,1,1,1,0,ColossalPaths1,0,-75,4000,0,0,0,5,5,5,None,Entities,Default,Basic|150/150/150/255|Misc/Sand1|5/5|0/0,;
-Scene,Decor/ColossalPaths1,566,0,1,1,1,0,ColossalPaths1,0,-75,-4000,0,180,0,5,5,5,None,Entities,Default,Basic|150/150/150/255|Misc/Sand1|5/5|0/0,
+Scene,Decor/ColossalPaths1b,565,0,1,1,1,0,ColossalPaths1b,0,-38.31913,4000,0,0,0,5,5,5,Physical,Entities,Default,Basic|150/150/150/255|Misc/Sand1|5/5|0/0,;
+Scene,Decor/ColossalPaths1b,566,0,1,1,1,0,ColossalPaths1b,0,-38.31913,-4000,0,180,0,5,5,5,Physical,Entities,Default,Basic|150/150/150/255|Misc/Sand1|5/5|0/0,
 /// Logic
 
 /// Weather
