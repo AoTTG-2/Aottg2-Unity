@@ -58,6 +58,9 @@ namespace Effects
                 case TSKillType.MaxRangeShot:
                     transform.Find($"TSArmor{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
                     break;
+                default:
+                    transform.Find($"TSAir{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
             }
         }
     }
