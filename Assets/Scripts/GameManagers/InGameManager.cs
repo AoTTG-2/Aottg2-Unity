@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UI;
 using Utility;
@@ -325,12 +325,28 @@ namespace GameManagers
             string original = SettingsManager.InGameCurrent.Misc.Motd.Value;
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
-            if (SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
-            {
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
-            }
             PrintMOTD(original);
+        }
+
+        public static void OnLocalPlayerDied(Player player)
+            {
+            if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
+                return;
+
+                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.StartCoroutine(gameManager.WaitAndSpawnPlayer(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
+            }
+
+        private IEnumerator WaitAndSpawnPlayer(float delay)
+        {
+            yield return new WaitForEndOfFrame();
+            while (SettingsManager.InGameCharacterSettings.ChooseStatus.Value != (int)ChooseCharacterStatus.Chosen)
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(delay);
+            SpawnPlayer(false);
         }
 
         public void SpawnPlayer(bool force)
@@ -1005,15 +1021,6 @@ namespace GameManagers
                 if (send)
                     RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
                 */
-            }
-        }
-
-        private IEnumerator RespawnForever(float delay)
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(delay);
-                SpawnPlayer(false);
             }
         }
 
