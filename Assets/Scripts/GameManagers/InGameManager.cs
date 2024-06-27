@@ -199,7 +199,7 @@ namespace GameManagers
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
             else
-                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim() + ". \nType /help for a list of commands.", 
+                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor() + ". \nType /help for a list of commands.",
                     ChatTextColor.System);
             SceneLoader.LoadScene(SceneName.InGame);
         }
