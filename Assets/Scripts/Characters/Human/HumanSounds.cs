@@ -56,15 +56,15 @@
         public static string BladeNape1Var1 = "BladeNape1Var1";
         public static string BladeNape1Var2 = "BladeNape1Var2";
         public static string BladeNape1Var3 = "BladeNape1Var3";
-        public static string BladeNape1Var4 = "BladeNape1Var4";
         public static string BladeNape2Var1 = "BladeNape2Var1";
         public static string BladeNape2Var2 = "BladeNape2Var2";
         public static string BladeNape2Var3 = "BladeNape2Var3";
-        public static string BladeNape2Var4 = "BladeNape2Var4";
         public static string BladeNape3Var1 = "BladeNape3Var1";
         public static string BladeNape3Var2 = "BladeNape3Var2";
         public static string BladeNape3Var3 = "BladeNape3Var3";
-        public static string BladeNape3Var4 = "BladeNape3Var4";
+        public static string BladeNape4Var1 = "BladeNape4Var1";
+        public static string BladeNape4Var2 = "BladeNape4Var2";
+        public static string BladeNape4Var3 = "BladeNape4Var3";
         public static string AHSSGunShot1 = "AHSSGunShot1";
         public static string AHSSGunShot2 = "AHSSGunShot2";
         public static string AHSSGunShot3 = "AHSSGunShot3";
@@ -111,22 +111,22 @@
 
         public static string GetRandomBladeNapeVar1()
         {
-            return GetRandom(BladeNape1Var1, BladeNape2Var1, BladeNape3Var1);
+            return GetRandom(BladeNape1Var1, BladeNape1Var2, BladeNape1Var3);
         }
 
         public static string GetRandomBladeNapeVar2()
         {
-            return GetRandom(BladeNape1Var2, BladeNape2Var2, BladeNape3Var2);
+            return GetRandom(BladeNape2Var1, BladeNape2Var2, BladeNape2Var3);
         }
 
         public static string GetRandomBladeNapeVar3()
         {
-            return GetRandom(BladeNape1Var3, BladeNape2Var3, BladeNape3Var3);
+            return GetRandom(BladeNape3Var1, BladeNape3Var3, BladeNape3Var3);
         }
 
         public static string GetRandomBladeNapeVar4()
         {
-            return GetRandom(BladeNape1Var4, BladeNape2Var4, BladeNape3Var4);
+            return GetRandom(BladeNape4Var1, BladeNape4Var3, BladeNape4Var3);
         }
 
         public static string GetRandomAHSSGunShot()
