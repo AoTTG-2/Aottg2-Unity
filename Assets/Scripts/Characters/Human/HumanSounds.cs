@@ -111,7 +111,7 @@
 
         public static string GetRandomBladeNapeVar1()
         {
-            return GetRandom(BladeNape1Var1, BladeNape1Var2, BladeNape1Var3);
+            return GetRandom(BladeNape1Var1, BladeNape1Var3);
         }
 
         public static string GetRandomBladeNapeVar2()
