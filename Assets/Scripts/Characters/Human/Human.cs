@@ -14,11 +14,8 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UI;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.XR;
 using Utility;
 using Weather;
 
@@ -745,6 +742,13 @@ namespace Characters
             Setup = gameObject.GetComponent<HumanSetup>();
             Stats = new HumanStats(this);
             _customSkinLoader = gameObject.AddComponent<HumanCustomSkinLoader>();
+
+            if (IsMine())
+            {
+                Cache.AudioSources[HumanSounds.GasStart].spatialBlend = 0;
+                Cache.AudioSources[HumanSounds.GasLoop].spatialBlend = 0;
+                Cache.AudioSources[HumanSounds.GasEnd].spatialBlend = 0;
+            }
         }
 
         protected override void Start()
@@ -899,6 +903,8 @@ namespace Characters
                                     PlaySound(HumanSounds.NapeHit);
                                 if (type == "Blade")
                                 {
+                                    if (damage < 500)
+                                        PlaySound(HumanSounds.NapeHit);
                                     if (damage < 1000)
                                         PlaySound(HumanSounds.GetRandomBladeNapeVar1());
                                     else if (damage < 2000)
