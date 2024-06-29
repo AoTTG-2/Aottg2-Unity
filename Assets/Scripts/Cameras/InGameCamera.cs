@@ -45,7 +45,7 @@ namespace Cameras
         {
             Camera.farClipPlane = SettingsManager.GraphicsSettings.RenderDistance.Value;
             var antiAliasing = Camera.GetComponent<Antialiasing>();
-            antiAliasing.enabled = SettingsManager.GraphicsSettings.AntiAliasing.Value == 0;
+            antiAliasing.enabled = SettingsManager.GraphicsSettings.AntiAliasing.Value == 1;
 
         }
 
