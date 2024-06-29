@@ -81,7 +81,6 @@
         public static string TSLaunch2 = "TSLaunch2";
 
 
-        // Get random sound effect from list
         public static string GetRandom(params string[] sounds)
         {
             return sounds[UnityEngine.Random.Range(0, sounds.Length)];
@@ -92,8 +91,6 @@
             return GetRandom(TSLaunch1, TSLaunch2);
         }
 
-
-        // Get random apg shot
         public static string GetRandomAPGShot()
         {
             return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);

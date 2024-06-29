@@ -105,7 +105,7 @@
 		"General.GameMode": "遊戲模式",
 		"General.Weather": "天氣",
 		"General.Difficulty": "難度",
-		"General.DifficultyOptions": ["練習", "簡單", "普通", "困難"],
+		"General.DifficultyOptions": ["練習", "簡單", "普通", "困難", "奇行種"],
 		"General.MaxPlayers": "玩家数量上限",
 		"General.RoomName": "房間名稱",
 		"Titans.StandardModels": "標準模型",
@@ -271,6 +271,8 @@
 		"Graphics.DepthOfFieldOptions": ["關閉", "低", "中等", "高"],
 		"Graphics.MotionBlur": "動態模糊",
 		"Graphics.MotionBlurOptions": ["關閉", "低", "中等", "高"],
+		"Graphics.WaterFX": "水體效果",
+		"Graphics.WaterFXOptions": ["關閉", "低", "中等", "高"],
 
 		"Graphics.WeaponTrailEnabled": "武器拖尾效果",
 		"Graphics.WindEffectEnabled": "風效果",

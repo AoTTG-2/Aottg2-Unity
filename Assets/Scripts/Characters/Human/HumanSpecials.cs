@@ -8,7 +8,7 @@ namespace Characters
         public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback"};
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
-        public static string[] ShifterSpecials = new string[] { "Eren", "Annie", "Armored" };
+        public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
 
         public static List<string> GetSpecialNames(string loadout, bool includeShifters)
         {

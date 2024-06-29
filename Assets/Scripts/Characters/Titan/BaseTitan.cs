@@ -834,8 +834,7 @@ namespace Characters
         {
             if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
             {
-                var grunts = new List<string>() { "Grunt3", "Grunt5" };
-                PlaySound(grunts.GetRandomItem());
+                PlaySound(TitanSounds.GetRandomHurt());
             }
         }
 
@@ -893,7 +892,7 @@ namespace Characters
 
         protected override string GetFootstepAudio(int phase)
         {
-            return phase == 0 ? TitanSounds.Footstep1 : TitanSounds.Footstep2;
+            return TitanSounds.GetRandomFootstep();
         }
 
         protected override int GetFootstepPhase()

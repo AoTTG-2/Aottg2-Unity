@@ -204,7 +204,10 @@ namespace Characters
             {
                 string anim = string.Empty;
                 if (emote == "Laugh")
+                {
                     anim = BasicAnimations.EmoteLaugh;
+                    StartCoroutine(WaitAndPlaySound(TitanSounds.GetRandomLaugh(), 0.5f));
+                }
                 else if (emote == "Nod")
                     anim = BasicAnimations.EmoteNod;
                 else if (emote == "Shake")
@@ -212,7 +215,7 @@ namespace Characters
                 else if (emote == "Roar")
                 {
                     anim = BasicAnimations.EmoteRoar;
-                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 0.8f));
+                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 1.4f));
                 }
                 StateAction(TitanState.Emote, anim);
             }
@@ -450,6 +453,10 @@ namespace Characters
 
         protected override IEnumerator WaitAndDie()
         {
+            if (SettingsManager.SoundSettings.TitanVocalEffect.Value)
+            {
+                PlaySound(TitanSounds.GetRandomDie());
+            }
             string dieAnimation = BasicAnimations.DieFront;
             if (State == TitanState.Stun)
                 dieAnimation = BasicAnimations.DieBack;
@@ -461,9 +468,12 @@ namespace Characters
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
             StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.4f);
+            PlaySound(TitanSounds.Fall);
+            yield return new WaitForSeconds(1f);
             EffectSpawner.Spawn(EffectPrefabs.TitanDie1, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(2f);
             EffectSpawner.Spawn(EffectPrefabs.TitanDie2, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
             PhotonNetwork.Destroy(gameObject);
         }
@@ -794,6 +804,7 @@ namespace Characters
                     var transform = BasicCache.MouthHitbox.transform;
                     var position = transform.position + transform.up * Size;
                     EffectSpawner.Spawn(EffectPrefabs.TitanBite, position, rotation, Size);
+                    PlaySound(TitanSounds.GetRandomBite());
                     _currentAttackStage = 2;
                 }
             }
@@ -988,7 +999,7 @@ namespace Characters
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);
-                    PlaySound(TitanSounds.HitSound);
+                    PlaySound(TitanSounds.Hit);
                     if (!victimChar.Dead)
                     {
                         if (IsMainCharacter())

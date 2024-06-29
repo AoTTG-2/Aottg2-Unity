@@ -242,5 +242,13 @@ namespace Characters
                 }
             }
         }
+
+        protected override void DamagedGrunt(float chance = 1f)
+        {
+            if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
+            {
+                PlaySound(ShifterSounds.AnnieHurt);
+            }
+        }
     }
 }

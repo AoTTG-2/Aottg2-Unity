@@ -105,7 +105,7 @@
 		"General.GameMode": "게임 모드",
 		"General.Weather": "날씨",
 		"General.Difficulty": "난이도",
-		"General.DifficultyOptions": ["훈련", "쉬움", "보통", "하드"],
+		"General.DifficultyOptions": ["훈련", "쉬움", "보통", "하드", "기행종"],
 		"General.MaxPlayers": "최대 인원",
 		"General.RoomName": "방 이름",
 		"Titans.StandardModels": "기본 모델",
@@ -271,6 +271,8 @@
 		"Graphics.DepthOfFieldOptions": ["끄기", "낮음", "중간", "높음"],
 		"Graphics.MotionBlur": "모션 블러",
 		"Graphics.MotionBlurOptions": ["끄기", "낮음", "중간", "높음"],
+		"Graphics.WaterFX": "워터 이펙트",
+		"Graphics.WaterFXOptions": ["끄기", "낮음", "중간", "높음"],
 
 		"Graphics.WeaponTrailEnabled": "웨폰 트레일",
 		"Graphics.WindEffectEnabled": "바람 효과",

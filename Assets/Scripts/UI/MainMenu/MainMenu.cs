@@ -198,7 +198,8 @@ namespace UI
                 {
                     ShowedOutdated = true;
                     if (PastebinLoader.Version["Version"].Value != ApplicationConfig.GameVersion)
-                        _outdatedPopup.Show("Your game version is outdated, download the latest from https://aottg2.itch.io or the official Discord.");
+                        _outdatedPopup.Show("Your game version is outdated. \nIf using the launcher, try restarting and repairing." +
+                            "\nFor standalone, download the latest version from https://aottg2.itch.io/aottg2.");
                 }
             }
         }

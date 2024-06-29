@@ -105,7 +105,7 @@
 		"General.GameMode": "Modo de juego",
 		"General.Weather": "Clima",
 		"General.Difficulty": "Dificultad",
-		"General.DifficultyOptions": ["Entrenamiento", "Facil", "Normal", "Dificil"],
+		"General.DifficultyOptions": ["Entrenamiento", "Facil", "Normal", "Dificil", "Anormal"],
 		"General.MaxPlayers": "Jugadores máximos",
 		"General.RoomName": "Nombre de sala",
 		"Titans.StandardModels": "Modelos Comunes",
@@ -271,6 +271,8 @@
 		"Graphics.DepthOfFieldOptions": ["Apagado", "Bajo", "Medio", "Alto"],
 		"Graphics.MotionBlur": "Motion Blur",
 		"Graphics.MotionBlurOptions": ["Apagado", "Bajo", "Medio", "Alto"],
+		"Graphics.WaterFX": "Efectos de Agua",
+		"Graphics.WaterFXOptions": ["Apagado", "Bajo", "Medio", "Alto"],
 		
 		"Graphics.WeaponTrailEnabled": "Estela de arma",
 		"Graphics.WindEffectEnabled": "Efecto de viento",
@@ -367,7 +369,6 @@
 		"Keybinds.Human.ReelOutScrollSmoothingTooltip": "Determina la potencia al extender la cuerda cuando el botón está asignado a la rueda del mouse.",
 		"Keybinds.Human.SwapTSAttackSpecial": "Intercambiar ataques de la Lanza Relámpago",
 		"Keybinds.Human.SwapTSAttackSpecialTooltip": "Intercambia el boton de ataque y de especial cuando usas la Lanza Relámpago.",
-
 		"Keybinds.Human.AutoRefillGas": "Auto recargar gas",
 		"Keybinds.Human.ReelInHolding": "Mantener Retraer cuerda",
 		"Keybinds.Human.ReelInHoldingTooltip": "Si está activado, continuará retrayendo la cuerda mientras el botón se mantenga presionado.",
