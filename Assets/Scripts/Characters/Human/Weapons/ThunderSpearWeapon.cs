@@ -40,7 +40,7 @@ namespace Characters
             if ((hasLeft && cross < 0f && human.State != HumanState.Land) || !hasRight)
             {
                 spawnPosition = human.Setup._part_blade_l.transform.position;
-                human.PlaySound(HumanSounds.ThunderspearLaunch);
+                human.PlaySound(HumanSounds.GetRandomTSLaunch());
                 human.SetThunderspears(false, hasRight || !twoShot);
                 if (human.Grounded)
                     human.AttackAnimation = HumanAnimations.TSShootL;
@@ -50,7 +50,7 @@ namespace Characters
             else
             {
                 spawnPosition = human.Setup._part_blade_r.transform.position;
-                human.PlaySound(HumanSounds.ThunderspearLaunch);
+                human.PlaySound(HumanSounds.GetRandomTSLaunch());
                 human.SetThunderspears(hasLeft || !twoShot, false);
                 if (human.Grounded)
                     human.AttackAnimation = HumanAnimations.TSShootR;

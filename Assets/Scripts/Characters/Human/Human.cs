@@ -14,11 +14,8 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UI;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.XR;
 using Utility;
 using Weather;
 
@@ -745,6 +742,13 @@ namespace Characters
             Setup = gameObject.GetComponent<HumanSetup>();
             Stats = new HumanStats(this);
             _customSkinLoader = gameObject.AddComponent<HumanCustomSkinLoader>();
+
+            if (IsMine())
+            {
+                Cache.AudioSources[HumanSounds.GasStart].spatialBlend = 0;
+                Cache.AudioSources[HumanSounds.GasLoop].spatialBlend = 0;
+                Cache.AudioSources[HumanSounds.GasEnd].spatialBlend = 0;
+            }
         }
 
         protected override void Start()
@@ -807,12 +811,21 @@ namespace Characters
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
+
+            // log type
             if (hitbox != null)
             {
                 if (hitbox == HumanCache.BladeHitLeft || hitbox == HumanCache.BladeHitRight)
                     type = "Blade";
                 else if (hitbox == HumanCache.AHSSHit)
+                {
                     type = "AHSS";
+                    if (((CapsuleCollider)HumanCache.AHSSHit._collider).radius == CharacterData.HumanWeaponInfo["AHSS"]["Radius"].AsFloat * 2f)
+                    {
+                        type = "AHSSDouble";
+                    }
+                }
+                    
                 else if (hitbox == HumanCache.APGHit)
                     type = "APG";
             }
@@ -842,9 +855,14 @@ namespace Characters
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["Blade"]["DamageMultiplier"].AsFloat);
             }
             else if (type == "AHSS")
+            {
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
+            }
+            else if (type == "AHSSDouble")
+                type = "AHSS";
             else if (type == "APG")
                 damage = (int)(damage * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+            damage = Mathf.Max(damage, 10);
             if (CustomDamageEnabled)
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
@@ -880,7 +898,40 @@ namespace Characters
                             if (SettingsManager.SoundSettings.OldNapeEffect.Value)
                                 PlaySound(HumanSounds.OldNapeHit);
                             else
-                                PlaySound(HumanSounds.NapeHit);
+                            {
+                                if (type == "APG")
+                                    PlaySound(HumanSounds.NapeHit);
+                                if (type == "Blade")
+                                {
+                                    if (damage < 500)
+                                        PlaySound(HumanSounds.NapeHit);
+                                    if (damage < 1000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar1());
+                                    else if (damage < 2000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar2());
+                                    else if (damage < 3000)
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar3());
+                                    else
+                                        PlaySound(HumanSounds.GetRandomBladeNapeVar4());
+                                }
+                                else if (type == "AHSS")
+                                {
+                                    if (damage < 1000)
+                                    {
+                                        PlaySound(HumanSounds.NapeHit);
+                                    }
+                                    else if (damage < 2000)
+                                    {
+                                        PlaySound(HumanSounds.GetRandomAHSSNapeHitVar1());
+                                    }
+                                    else
+                                    {
+                                        PlaySound(HumanSounds.GetRandomAHSSNapeHitVar2());
+                                    }
+                                }
+                                
+                            }
+                                
                         }
                         _lastNapeHitTimes[titan] = Time.time;
                     }

@@ -48,7 +48,7 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction), 2f);
-            human.PlaySound(HumanSounds.GunExplodeLoud);
+            human.PlaySound(HumanSounds.GetRandomAHSSGunShotDouble());
             var ahssInfo = CharacterData.HumanWeaponInfo["AHSS"];
             var capsule = (CapsuleCollider)human.HumanCache.AHSSHit._collider;
             capsule.radius = ahssInfo["Radius"].AsFloat * 2f;

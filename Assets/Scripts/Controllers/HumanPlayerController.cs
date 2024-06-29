@@ -122,8 +122,26 @@ namespace Controllers
             {
                 if (str != string.Empty)
                     str += "\n";
-                str += ((speed / 100f)).ToString("F1") + "K";
+                float originalSpeed = speed;
+                if (_human.Weapon is BladeWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["Blade"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is AHSSWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is APGWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+                speed = Mathf.Max(speed, 10f);
+                speed /= 100f;
+                str += speed.ToString("F1") + "K";
+
+                if (_human.Special is AHSSTwinShot)
+                {
+                    originalSpeed = Mathf.Max((int)originalSpeed, 10f);
+                    originalSpeed /= 100f;
+                    str += " | " + originalSpeed.ToString("F1") + "K";
+                }
+
             }
+
             CursorManager.SetCrosshairText(str);
             if (magnitude > 120f)
                 CursorManager.SetCrosshairColor(false);

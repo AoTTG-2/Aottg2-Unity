@@ -11,6 +11,9 @@
 					"Name": "Forest2"
 				},
 				{
+					"Name": "Forest3"
+				},
+				{
 					"Name": "City1"
 				},
 				{
@@ -39,6 +42,9 @@
 				},
 				{
 					"Name": "ForestLava"
+				},
+				{
+					"Name": "Deforest1"
 				},
 				{
 					"Name": "Birth of Levi"
@@ -88,6 +94,14 @@
 				{
 					"Category": "General",
 					"Name": "Forest1"
+				},
+				{
+					"Category": "General",
+					"Name": "Deforest1"
+				},
+				{
+					"Category": "General",
+					"Name": "Forest2"
 				},
 				{
 					"Category": "General",

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6809822480523761963}
   - component: {fileID: 3647327310203594099}
   - component: {fileID: 5578204792425208200}
-  - component: {fileID: 5453607824116258853}
+  - component: {fileID: 4180297297722145861}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: Untagged
@@ -194,14 +194,14 @@ MonoBehaviour:
   heightDensity: 5
   startDistance: -200
   fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
---- !u!114 &5453607824116258853
+--- !u!114 &4180297297722145861
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128344}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b5bc27a658f447b1d929fd5ffbd70, type: 3}
   m_Name: 

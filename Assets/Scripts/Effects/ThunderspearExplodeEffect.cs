@@ -4,8 +4,10 @@ using UnityEngine;
 using System.Collections;
 using Settings;
 using Photon.Realtime;
+using Projectiles;
 
-namespace Effects {
+namespace Effects
+{
     class ThunderspearExplodeEffect : BaseEffect
     {
         public static float SizeMultiplier = 1.1f;
@@ -32,12 +34,34 @@ namespace Effects {
                 var main = particle.main;
                 main.startColor = new Color(c.r, c.g, c.b, Mathf.Max(c.a, 0.5f));
             }
-           
-            bool kill = (bool)(settings[1]);
-            if (kill)
-                transform.Find("KillSound").GetComponent<AudioSource>().Play();
-            else
-                transform.Find("ExplodeSound").GetComponent<AudioSource>().Play();
+
+            TSKillType killType = (TSKillType)(settings[1]);
+            bool impact = (bool)(settings[2]);
+
+            switch (killType)
+            {
+                case TSKillType.Air:
+                    transform.Find($"TSAir{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                case TSKillType.Ground:
+                    transform.Find($"TSHitTitan{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                case TSKillType.Kill:
+                    transform.Find($"TSKill{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                case TSKillType.ArmorHit:
+                    transform.Find($"TSArmor{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                case TSKillType.CloseShot:
+                    transform.Find($"TSKill{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                case TSKillType.MaxRangeShot:
+                    transform.Find($"TSArmor{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+                default:
+                    transform.Find($"TSAir{UnityEngine.Random.Range(1, 2)}").GetComponent<AudioSource>().Play();
+                    break;
+            }
         }
     }
 }
