@@ -16,7 +16,7 @@ namespace Settings
         public BoolSetting VSync = new BoolSetting(false);
         public BoolSetting InterpolationEnabled = new BoolSetting(true);
         public BoolSetting ShowFPS = new BoolSetting(false);
-        public IntSetting RenderDistance = new IntSetting(1500, minValue: 10, maxValue: 1000000);
+        public IntSetting RenderDistance = new IntSetting(10000, minValue: 10, maxValue: 1000000);
         public IntSetting TextureQuality = new IntSetting((int)TextureQualityLevel.High);
         public IntSetting ShadowQuality = new IntSetting((int)ShadowQualityLevel.High);
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
@@ -106,6 +106,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
+                RenderDistance.Value = 1000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -123,6 +124,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
+                RenderDistance.Value = 2000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
@@ -140,6 +142,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Medium;
+                RenderDistance.Value = 5000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
@@ -157,6 +160,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
+                RenderDistance.Value = 10000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
@@ -174,6 +178,7 @@ namespace Settings
                 ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
+                RenderDistance.Value = 10000;
             }
         }
     }

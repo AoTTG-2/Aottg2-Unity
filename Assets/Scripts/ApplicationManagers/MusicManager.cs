@@ -67,8 +67,7 @@ namespace ApplicationManagers
             if (!SettingsManager.SoundSettings.TitanGrabMusic.Value)
                 return;
             var songInfo = _musicInfo["Death"][0];
-            SetSong(songInfo);
-            _instance._deathSongTimeLeft = 15f;
+            PlayImmediateTransition(songInfo);
         }
 
         public static void PlayEffect()

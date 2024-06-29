@@ -157,7 +157,7 @@ namespace Characters
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);
-                    PlaySound(TitanSounds.HitSound);
+                    PlaySound(TitanSounds.Hit);
                     if (!victimChar.Dead)
                     {
                         if (IsMainCharacter())

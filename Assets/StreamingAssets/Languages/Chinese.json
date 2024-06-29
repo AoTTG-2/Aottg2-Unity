@@ -105,7 +105,7 @@
     "General.GameMode": "游戏模式",
     "General.Weather": "天气",
     "General.Difficulty": "难度",
-    "General.DifficultyOptions": [ "练习", "简单", "普通", "困难","血战" ],
+    "General.DifficultyOptions": [ "练习", "简单", "普通", "困难","异常" ],
     "General.MaxPlayers": "最大游戏人数",
     "General.RoomName": "房间名称",
     "Titans.StandardModels": "标准模型",
