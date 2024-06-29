@@ -1182,9 +1182,6 @@ Scene,Nature/Tree10,3962,0,1,1,1,0,Tree10,-1734.215,8.141899,-2642.077,0,83.2516
 Scene,Nature/Tree10,3961,0,1,1,1,0,Tree10,-2986.667,8.141899,-2294.456,0,83.25165,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
 Scene,Nature/Tree10,3960,0,1,1,1,0,Tree10,-1406.82,8.141899,-3138.281,0,83.25165,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
 Scene,Nature/Tree10,3959,0,1,1,1,0,Tree10,-1489.768,8.141899,-1364.173,0,356.6,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
-Scene,Terrain/OutsideTerrain1,3956,0,1,1,1,0,OutsideTerrain1,2684.649,-306.6204,-10547.03,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Terrain/OutsideTerrain1,3955,0,1,1,1,0,OutsideTerrain1,1862.211,-290.4674,13323.21,0,356.6375,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Terrain/OutsideTerrain1,3954,0,1,1,1,0,OutsideTerrain1,-6883.435,-387.2692,12386.24,0,356.6375,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree10,3953,0,1,1,1,0,Tree10,-3126.259,8.141899,1806.766,0,83.25165,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
 Scene,Nature/Tree10,3952,0,1,1,1,0,Tree10,1964.725,8.141899,2654.079,0,155.8179,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
 Scene,Nature/Tree10,3951,0,1,1,1,0,Tree10,2901.075,8.141899,2392.321,0,155.8179,0,1,1,1,None,Entities,Default,Default|200/255/200/255,;
