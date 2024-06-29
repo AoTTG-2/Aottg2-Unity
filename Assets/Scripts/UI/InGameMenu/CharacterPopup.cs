@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
@@ -89,6 +89,7 @@ namespace UI
                     if (canJoin && !manager.HasSpawned)
                         manager.SpawnPlayer(false);
                     InGameManager.UpdateRoundPlayerProperties();
+                    InGameManager.OnCharacterChosen();
                     Hide();
                     break;
             }

@@ -47,6 +47,7 @@ namespace GameManagers
         public bool GlobalPause = false;
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
+        public float RespawnTimeLeft;
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -326,27 +327,42 @@ namespace GameManagers
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
             PrintMOTD(original);
-        }
 
-        public static void OnLocalPlayerDied(Player player)
-            {
             if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
                 return;
 
                 var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            gameManager.StartCoroutine(gameManager.WaitAndSpawnPlayer(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
+            gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
             }
 
-        private IEnumerator WaitAndSpawnPlayer(float delay)
+        public static void OnCharacterChosen()
         {
-            yield return new WaitForEndOfFrame();
-            while (SettingsManager.InGameCharacterSettings.ChooseStatus.Value != (int)ChooseCharacterStatus.Chosen)
-            {
-                yield return null;
-            }
+            ResetRespawnTimeLeft();
+        }
 
-            yield return new WaitForSeconds(delay);
+        public static void OnLocalPlayerDied(Player player)
+        {
+            ResetRespawnTimeLeft();
+        }
+
+        private static void ResetRespawnTimeLeft()
+        {
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.RespawnTimeLeft = SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value;
+        }
+
+        private IEnumerator RespawnForever(float delay)
+        {
+            while (true)
+            {
+                RespawnTimeLeft -= 1;
+                if (RespawnTimeLeft <= 0)
+                {
             SpawnPlayer(false);
+                    RespawnTimeLeft = delay;
+                }
+                yield return new WaitForSeconds(1);
+            }
         }
 
         public void SpawnPlayer(bool force)
