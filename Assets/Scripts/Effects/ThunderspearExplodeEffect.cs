@@ -36,7 +36,11 @@ namespace Effects
             }
 
             TSKillType killType = (TSKillType)(settings[1]);
-            bool impact = (bool)(settings[2]);
+            bool impact = false;
+            if (settings.Length > 2)
+            {
+                impact = (bool)(settings[2]);
+            }
 
             switch (killType)
             {
