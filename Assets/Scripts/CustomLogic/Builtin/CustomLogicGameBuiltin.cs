@@ -233,10 +233,22 @@ namespace CustomLogic
                 if (effectName == EffectPrefabs.ThunderspearExplode)
                 {
                     Color color = ((CustomLogicColorBuiltin)parameters[4]).Value.ToColor();
-                    bool kill = false;
+                    TSKillType killSound = TSKillType.Kill;
                     if (parameters.Count > 5)
-                        kill = (bool)(parameters[5]);
-                    settings = new object[] { color, kill };
+                    {
+                        string killSoundName = (string)(parameters[5]);
+                        killSound = killSoundName switch
+                        {
+                            "Air" => TSKillType.Air,
+                            "Ground" => TSKillType.Ground,
+                            "ArmorHit" => TSKillType.ArmorHit,
+                            "CloseShot" => TSKillType.CloseShot,
+                            "MaxRangeShot" => TSKillType.MaxRangeShot,
+                            _ => TSKillType.Kill
+                        };
+
+                    }
+                    settings = new object[] { color, killSound };
                 }
                 EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
                 return null;
