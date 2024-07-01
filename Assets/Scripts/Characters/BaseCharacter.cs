@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
@@ -372,6 +372,9 @@ namespace Characters
                     _inGameManager.RegisterMainCharacterKill(this);
             }
             CustomLogicManager.Evaluator.OnCharacterDie(this, killer, name);
+
+            if (_inGameManager.CurrentCharacter == this)
+                InGameManager.OnLocalPlayerDied(Cache.PhotonView.Owner);
         }
 
         [PunRPC]

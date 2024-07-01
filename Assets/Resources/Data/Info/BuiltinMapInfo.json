@@ -84,6 +84,15 @@
 						"AllowPlayerTitans": false,
 						"AllowShifters": false
 					}
+				},
+				{
+					"Name": "Trost Defense",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"EndlessRespawnEnabled": true
+					}
 				}
 			]
 		},

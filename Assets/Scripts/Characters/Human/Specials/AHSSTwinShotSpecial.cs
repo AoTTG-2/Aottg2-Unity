@@ -1,4 +1,4 @@
-﻿using Effects;
+using Effects;
 using Settings;
 using System.Collections;
 using UI;
@@ -6,11 +6,16 @@ using UnityEngine;
 
 namespace Characters
 {
-    class AHSSTwinShot : SimpleUseable
+    class AHSSTwinShot : ExtendedUseable
     {
         public AHSSTwinShot(BaseCharacter owner): base(owner)
         {
             Cooldown = 10f;
+        }
+
+        protected override float GetActiveTime()
+        {
+            return CharacterData.HumanWeaponInfo["AHSS"]["FireDelay"].AsFloat;
         }
 
         public override bool CanUse()
@@ -24,7 +29,7 @@ namespace Characters
             return false;
         }
 
-        protected override void Activate()
+        protected override void Deactivate()
         {
             var human = (Human)_owner;
             Vector3 target = human.GetAimPoint();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UI;
 using Utility;
@@ -47,6 +47,7 @@ namespace GameManagers
         public bool GlobalPause = false;
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
+        public float RespawnTimeLeft;
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -199,7 +200,7 @@ namespace GameManagers
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
             else
-                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim() + ". \nType /help for a list of commands.", 
+                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor() + ". \nType /help for a list of commands.",
                     ChatTextColor.System);
             SceneLoader.LoadScene(SceneName.InGame);
         }
@@ -325,12 +326,43 @@ namespace GameManagers
             string original = SettingsManager.InGameCurrent.Misc.Motd.Value;
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
-            if (SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
-            {
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
-            }
             PrintMOTD(original);
+
+            if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
+                return;
+
+                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
+            }
+
+        public static void OnCharacterChosen()
+        {
+            ResetRespawnTimeLeft();
+        }
+
+        public static void OnLocalPlayerDied(Player player)
+        {
+            ResetRespawnTimeLeft();
+        }
+
+        private static void ResetRespawnTimeLeft()
+        {
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.RespawnTimeLeft = SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value;
+        }
+
+        private IEnumerator RespawnForever(float delay)
+        {
+            while (true)
+            {
+                RespawnTimeLeft -= 1;
+                if (RespawnTimeLeft <= 0)
+                {
+            SpawnPlayer(false);
+                    RespawnTimeLeft = delay;
+                }
+                yield return new WaitForSeconds(1);
+            }
         }
 
         public void SpawnPlayer(bool force)
@@ -1005,15 +1037,6 @@ namespace GameManagers
                 if (send)
                     RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
                 */
-            }
-        }
-
-        private IEnumerator RespawnForever(float delay)
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(delay);
-                SpawnPlayer(false);
             }
         }
 

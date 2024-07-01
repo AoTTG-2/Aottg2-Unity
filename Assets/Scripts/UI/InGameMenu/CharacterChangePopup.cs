@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
@@ -56,6 +56,7 @@ namespace UI
                             manager.SpawnPlayer(false);
                     }
                     InGameManager.UpdateRoundPlayerProperties();
+                    InGameManager.OnCharacterChosen();
                     Hide();
                     break;
             }

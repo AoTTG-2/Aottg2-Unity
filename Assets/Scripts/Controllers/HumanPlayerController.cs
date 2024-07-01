@@ -286,7 +286,13 @@ namespace Controllers
                 bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && (_human.State != HumanState.Attack || _human.Special is StockSpecial) &&
                     _human.State != HumanState.EmoteAction && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry && !inMenu && !_human.Dead;
                 if (canSpecial || canSpecialHold)
+                {
+                    // Makes AHSSTwinShot activate on key up instead of key down
+                    if (_human.Special is AHSSTwinShot)
+                        _human.Special.SetInput(specialInput.GetKeyUp());
+                    else
                     _human.Special.ReadInput(specialInput);
+                }
                 else
                     _human.Special.SetInput(false);
             }
