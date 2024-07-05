@@ -191,7 +191,9 @@ namespace GameManagers
                     {
                         Vector3 center = renderer.bounds.center;
                         Vector2 screenPosition = camera.Camera.WorldToScreenPoint(center);
-                        if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane && Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition))
+                        if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane && 
+                            Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition) &&
+                            renderer.isVisible)
                         {
                             if (!SelectedObjects.Contains(mapObject))
                                 SelectObject(mapObject);

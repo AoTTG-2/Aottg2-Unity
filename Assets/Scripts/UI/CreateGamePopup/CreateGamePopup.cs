@@ -237,6 +237,7 @@ namespace UI
                     else
                     {
                         set.Copy(SettingsManager.InGameUI);
+                        set.Name.Value = name;
                         SettingsManager.InGameSettings.Save();
                     }
                     return;

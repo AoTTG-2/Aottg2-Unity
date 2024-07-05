@@ -16,6 +16,16 @@
         public static string Hurt6 = "Hurt6";
         public static string Hurt7 = "Hurt7";
         public static string Hurt8 = "Hurt8";
+        public static string Grunt1 = "Grunt1";
+        public static string Grunt2 = "Grunt2";
+        public static string Grunt3 = "Grunt3";
+        public static string Grunt4 = "Grunt4";
+        public static string Grunt5 = "Grunt5";
+        public static string Grunt6 = "Grunt6";
+        public static string Grunt7 = "Grunt7";
+        public static string Grunt8 = "Grunt8";
+        public static string Grunt9 = "Grunt9";
+        public static string Grunt10 = "Grunt10";
         public static string Hit = "Hit";
         public static string Roar = "Roar";
         public static string Fall = "Fall";
@@ -39,9 +49,9 @@
             return GetRandom(Hurt1, Hurt2, Hurt3, Hurt4, Hurt5, Hurt6, Hurt7, Hurt8);
         }
 
-        public static string GetRandomDie()
+        public static string GetRandomGrabGrunt()
         {
-            return GetRandom(Hurt1, Hurt2, Hurt3, Hurt4, Hurt5);
+            return GetRandom(Grunt1, Grunt2, Grunt3, Grunt4, Grunt5, Grunt6, Grunt7, Grunt8, Grunt9, Grunt10);
         }
 
         public static string GetRandomLaugh()

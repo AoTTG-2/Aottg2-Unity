@@ -27,7 +27,7 @@ namespace UI
             base.Setup(parent);
             SetupBottomButtons();
             _saveableSettings.Add(SettingsManager.MapEditorSettings);
-            _saveableSettings.Add(SettingsManager.InputSettings.MapEditor);
+            _saveableSettings.Add(SettingsManager.InputSettings);
         }
 
         protected override void SetupTopButtons()
@@ -62,7 +62,10 @@ namespace UI
         {
             foreach (SaveableSettingsContainer setting in _saveableSettings)
             {
-                setting.SetDefault();
+                if (setting is InputSettings)
+                    ((InputSettings)setting).MapEditor.SetDefault();
+                else
+                    setting.SetDefault();
                 setting.Save();
             }
             RebuildCategoryPanel();

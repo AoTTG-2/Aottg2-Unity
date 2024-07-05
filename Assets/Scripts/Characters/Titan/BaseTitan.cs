@@ -426,6 +426,7 @@ namespace Characters
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
             SetAnimationUpdateMode(false);
+            ScaleSounds(1f);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -803,6 +804,18 @@ namespace Characters
             transform.localScale = new Vector3(size, size, size);
             Size = size;
             SetSizeParticles(size);
+            ScaleSounds(size);
+        }
+
+        protected virtual void ScaleSounds(float size)
+        {
+            if (this is BaseShifter)
+                size *= 3.5f;
+            float stepVolume = Mathf.Clamp(size * 0.125f, 0.1f, 0.5f);
+            Cache.AudioSources[TitanSounds.Fall].volume = Mathf.Clamp(size * 0.3f, 0.1f, 1f);
+            Cache.AudioSources[TitanSounds.Footstep1].volume = stepVolume;
+            Cache.AudioSources[TitanSounds.Footstep2].volume = stepVolume;
+            Cache.AudioSources[TitanSounds.Footstep3].volume = stepVolume;
         }
 
         protected virtual void SetSizeParticles(float size)
@@ -838,12 +851,11 @@ namespace Characters
             }
         }
 
-        protected virtual void NormalGrunt(float chance = 1f)
+        protected virtual void GrabGrunt(float chance = 1f)
         {
             if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
             {
-                var grunts = new List<string>() { "Grunt1", "Grunt2", "Grunt4", "Grunt6", "Grunt7", "Grunt8", "Grunt9" };
-                PlaySound(grunts.GetRandomItem());
+                PlaySound(TitanSounds.GetRandomGrabGrunt());
             }
         }
 

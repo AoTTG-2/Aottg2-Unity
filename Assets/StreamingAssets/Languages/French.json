@@ -105,7 +105,7 @@
 		"General.GameMode": "Mode de jeu",
 		"General.Weather": "Météo",
 		"General.Difficulty": "Difficultée",
-		"General.DifficultyOptions": ["Entrainement", "Facile", "Normal", "Difficile"],
+		"General.DifficultyOptions": ["Entrainement", "Facile", "Normal", "Difficile", "Anormale"],
 		"General.MaxPlayers": "Joueurs Max",
 		"General.RoomName": "Nom du salon",
 		"Titans.StandardModels": "Modèles standards",
@@ -271,6 +271,8 @@
 		"Graphics.DepthOfFieldOptions": ["Off", "Bas", "Moyen", "Haut"],
 		"Graphics.MotionBlur": "Flou de mouvement",
 		"Graphics.MotionBlurOptions": ["Off", "Bas", "Moyen", "Haut"],
+		"Graphics.WaterFX": "Effets de l'eau",
+		"Graphics.WaterFXOptions": ["Off", "Bas", "Moyen", "Haut"],
 		
 		"Graphics.WeaponTrailEnabled": "Trainée des armes",
 		"Graphics.WindEffectEnabled": "Effet du vent",

@@ -384,7 +384,7 @@ namespace Characters
                 StateAction(TitanState.Eat, BasicAnimations.AttackEatL);
             else
                 StateAction(TitanState.Eat, BasicAnimations.AttackEatR);
-            NormalGrunt();
+            GrabGrunt();
         }
 
         public override void Land()
@@ -453,10 +453,6 @@ namespace Characters
 
         protected override IEnumerator WaitAndDie()
         {
-            if (SettingsManager.SoundSettings.TitanVocalEffect.Value)
-            {
-                PlaySound(TitanSounds.GetRandomDie());
-            }
             string dieAnimation = BasicAnimations.DieFront;
             if (State == TitanState.Stun)
                 dieAnimation = BasicAnimations.DieBack;
