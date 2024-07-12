@@ -811,8 +811,6 @@ namespace Characters
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
-
-            // log type
             if (hitbox != null)
             {
                 if (hitbox == HumanCache.BladeHitLeft || hitbox == HumanCache.BladeHitRight)
@@ -834,7 +832,8 @@ namespace Characters
                 : Mathf.Max((int)(Cache.Rigidbody.velocity.magnitude * 10f), 10);
             if (type == "Blade")
             {
-                EffectSpawner.Spawn(EffectPrefabs.Blood1, hitbox.transform.position, Quaternion.Euler(270f, 0f, 0f));
+                if (!(victim is CustomLogicCollisionHandler))
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, hitbox.transform.position, Quaternion.Euler(270f, 0f, 0f));
                 if (SettingsManager.SoundSettings.OldBladeEffect.Value)
                     PlaySound(HumanSounds.OldBladeHit);
                 else
@@ -867,7 +866,10 @@ namespace Characters
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
             {
-                (victim as CustomLogicCollisionHandler).GetHit(this, Name, damage, type);
+                Vector3 position = Vector3.zero;
+                if (hitbox != null)
+                    position = hitbox.transform.position;
+                (victim as CustomLogicCollisionHandler).GetHit(this, Name, damage, type, position);
                 return;
             }
             var victimChar = (BaseCharacter)victim;

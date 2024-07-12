@@ -38,7 +38,7 @@ namespace Characters
         public float SprintStaminaRecover = 0.7f;
         public float SprintStaminaConsumption = 1f;
         public float CurrentSprintStamina = 5f;
-        public BaseCharacter TargetEnemy = null;
+        public ITargetable TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
         protected override float GroundDistance => 1f;
         protected virtual float DefaultRunSpeed => 15f;

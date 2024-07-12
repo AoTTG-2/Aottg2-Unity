@@ -26,7 +26,7 @@ namespace CustomLogic
                 string icon = (string)parameters[0];
                 string title = (string)parameters[1];
                 string content = (string)parameters[2];
-                ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content);
+                ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content, CustomLogicManager.Cutscene);
                 return null;
             }
             if (methodName == "HideDialogue")

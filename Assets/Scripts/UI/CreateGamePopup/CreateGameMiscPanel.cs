@@ -25,13 +25,13 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomPerks, UIManager.GetLocale(cat, sub, "CustomPerks"), UIManager.GetLocale(cat, sub, "CustomPerksTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismMode, UIManager.GetLocale(cat, sub, "RealismMode"), UIManager.GetLocale(cat, sub, "RealismModeTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.EndlessRespawnEnabled, UIManager.GetLocale(cat, sub, "EndlessRespawnEnabled"));
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), 
-                elementWidth: inputWidth);
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"),
-                elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ThunderspearPVP, UIManager.GetLocale(cat, sub, "ThunderspearPVP"), UIManager.GetLocale(cat, sub, "ThunderspearPVPTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.APGPVP, UIManager.GetLocale(cat, sub, "APGPVP"), UIManager.GetLocale(cat, sub, "APGPVPTooltip"));
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.HumanHealth, UIManager.GetLocale(cat, sub, "HumanHealth"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.ShifterHealth, UIManager.GetLocale(cat, sub, "ShifterHealth"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowBlades, UIManager.GetLocale(cat, sub, "AllowBlades"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowAHSS, UIManager.GetLocale(cat, sub, "AllowAHSS"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowThunderspears, UIManager.GetLocale(cat, sub, "AllowThunderspears"));

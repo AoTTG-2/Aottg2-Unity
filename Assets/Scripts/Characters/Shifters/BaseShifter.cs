@@ -148,7 +148,7 @@ namespace Characters
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
             {
-                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type);
+                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type, hitbox.transform.position);
                 return;
             }
             var victimChar = (BaseCharacter)victim;
@@ -168,7 +168,7 @@ namespace Characters
             }
             else
             {
-                if (!victimChar.Dead)
+                if (firstHit && !victimChar.Dead)
                 {
                     if (IsMainCharacter())
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);

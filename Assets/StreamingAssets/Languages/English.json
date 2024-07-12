@@ -144,6 +144,8 @@
 		"Misc.ThunderspearPVPTooltip": "Thunderspear weapon uses PVP stats.",
 		"Misc.APGPVP": "APG PVP",
 		"Misc.APGPVPTooltip": "APG weapon uses PVP stats.",
+		"Misc.HumanHealth": "Human health",
+		"Misc.ShifterHealth": "Shifter health",
 		"Misc.AllowBlades": "Allow blades",
 		"Misc.AllowAHSS": "Allow ahss",
 		"Misc.AllowAPG": "Allow apg",

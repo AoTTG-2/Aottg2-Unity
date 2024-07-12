@@ -172,6 +172,24 @@ namespace UI
                     label += PhotonNetwork.NetworkClientState.ToString();
                     if (PhotonNetwork.IsConnected)
                         label += " Ping:" + PhotonNetwork.GetPing().ToString();
+                    if (PhotonNetwork.IsConnected)
+                    {
+                        label += "\n";
+                        var settings = SettingsManager.MultiplayerSettings;
+                        if (settings.CurrentMultiplayerServerType == MultiplayerServerType.Public)
+                            label += "Public server";
+                        else if (settings.CurrentMultiplayerServerType == MultiplayerServerType.Cloud)
+                            label += "Custom server";
+                        else if (settings.CurrentMultiplayerServerType == MultiplayerServerType.LAN)
+                            label += "LAN server";
+                        label += " | ";
+                        if (settings.LobbyMode.Value == (int)LobbyModeType.Public)
+                            label += "Public lobby";
+                        else if (settings.LobbyMode.Value == (int)LobbyModeType.Private)
+                            label += "Private lobby";
+                        else if (settings.LobbyMode.Value == (int)LobbyModeType.Custom)
+                            label += "Custom lobby";
+                    }
                 }
                 _multiplayerStatusLabel.text = label;
             }

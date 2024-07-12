@@ -779,7 +779,8 @@ namespace CustomLogic
                 if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     return null;
                 CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
-                for (int i = 0; i < parameterValues.Count; i++)
+                int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
+                for (int i = 0; i < maxValues; i++)
                     localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
                 if (methodAst.Coroutine)
                 {

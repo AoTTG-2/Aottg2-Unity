@@ -281,6 +281,62 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (methodName == "AddSphereTarget")
+            {
+                string collideMode = "Region";
+                string collideWith = "Hitboxes";
+                string team = (string)parameters[0];
+                Vector3 center = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                float radius = (float)parameters[2];
+                Vector3 scale = Value.BaseScale;
+                center = Util.DivideVectors(center, scale);
+                radius = radius / scale.MaxComponent();
+                var go = new GameObject();
+                go.transform.SetParent(Value.GameObject.transform);
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+                SphereCollider c = go.AddComponent<SphereCollider>();
+                MapLoader.SetCollider(c, collideMode, collideWith);
+                c.radius = radius;
+                c.center = center;
+                var handler = go.AddComponent<CustomLogicCollisionHandler>();
+                foreach (var instance in Value.ComponentInstances)
+                {
+                    if (instance.UsesCollider())
+                        handler.RegisterInstance(instance);
+                }
+                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
+                return null;
+            }
+            if (methodName == "AddBoxTarget")
+            {
+                string collideMode = "Region";
+                string collideWith = "Hitboxes";
+                string team = (string)parameters[0];
+                Vector3 center = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Vector3 size = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                Vector3 scale = Value.BaseScale;
+                center = Util.DivideVectors(center, scale);
+                size = Util.DivideVectors(size, scale);
+                var go = new GameObject();
+                go.transform.SetParent(Value.GameObject.transform);
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+                BoxCollider c = go.AddComponent<BoxCollider>();
+                MapLoader.SetCollider(c, collideMode, collideWith);
+                c.size = size;
+                c.center = center;
+                var handler = go.AddComponent<CustomLogicCollisionHandler>();
+                foreach (var instance in Value.ComponentInstances)
+                {
+                    if (instance.UsesCollider())
+                        handler.RegisterInstance(instance);
+                }
+                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
+                return null;
+            }
             if (methodName == "GetComponent")
             {
                 string name = (string)parameters[0];
