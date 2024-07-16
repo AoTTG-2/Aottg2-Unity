@@ -393,6 +393,8 @@ namespace Characters
             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
             PlayAnimation(HumanAnimations.Grabbed);
             ToggleSparks(false);
+            var windEmission = HumanCache.Wind.emission;
+            windEmission.enabled = false;
             if (IsMainCharacter())
                 MusicManager.PlayDeathSong();
         }
