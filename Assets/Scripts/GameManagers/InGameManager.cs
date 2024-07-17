@@ -408,6 +408,31 @@ namespace GameManagers
             }
         }
 
+        public InGameCharacterSettings GetSetHumanSettings()
+        {
+            var settings = SettingsManager.InGameCharacterSettings;
+            var miscSettings = SettingsManager.InGameCurrent.Misc;
+
+            List<string> loadouts = new List<string>();
+            if (miscSettings.AllowBlades.Value)
+                loadouts.Add(HumanLoadout.Blades);
+            if (miscSettings.AllowAHSS.Value)
+                loadouts.Add(HumanLoadout.AHSS);
+            if (miscSettings.AllowAPG.Value)
+                loadouts.Add(HumanLoadout.APG);
+            if (miscSettings.AllowThunderspears.Value)
+                loadouts.Add(HumanLoadout.Thunderspears);
+            if (loadouts.Count == 0)
+                loadouts.Add(HumanLoadout.Blades);
+            if (!loadouts.Contains(settings.Loadout.Value))
+                settings.Loadout.Value = loadouts[0];
+            List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+            if (!specials.Contains(settings.Special.Value))
+                settings.Special.Value = specials[0];
+
+            return SettingsManager.InGameCharacterSettings;
+        }
+
         public void SpawnPlayerAt(bool force, Vector3 position, float rotationY)
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);

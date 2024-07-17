@@ -727,6 +727,19 @@ namespace Characters
                 gameObject.AddComponent<HumanPlayerController>();
         }
 
+        public void ReloadHuman(InGameCharacterSettings settings)
+        {
+            //Setup.DeleteDie();
+            FinishSetup = false;
+            Setup.Copy(settings);
+            if (IsMine())
+            {
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                LoadSkin();
+            }
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
+        }
+
         protected override void Awake()
         {
             if (SceneLoader.SceneName == SceneName.CharacterEditor)

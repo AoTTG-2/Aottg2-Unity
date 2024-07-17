@@ -45,8 +45,7 @@ namespace UI
                         {
                             var position = human.Cache.Transform.position;
                             var rotation = human.Cache.Transform.rotation;
-                            human.DieChangeCharacter();
-                            manager.SpawnPlayerAt(false, position, rotation.eulerAngles.y);
+                            human.ReloadHuman(manager.GetSetHumanSettings());
                         }
                     }
                     else
