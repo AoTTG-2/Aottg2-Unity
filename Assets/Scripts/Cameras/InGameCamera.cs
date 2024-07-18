@@ -247,8 +247,9 @@ namespace Cameras
                     if (_napeLock)
                     {
                         var titan = GetNearestTitan();
-                        float distance = Vector3.Distance(_follow.Cache.Transform.position, titan.Cache.Transform.position);
-                        if (distance >= 150f)
+                        if (titan == null)
+                            _napeLock = false;
+                        else if (Vector3.Distance(_follow.Cache.Transform.position, titan.Cache.Transform.position) >= 150f)
                             _napeLock = false;
                         else
                             _napeLockTitan = titan;
