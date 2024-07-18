@@ -15,7 +15,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
-using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 using Weather;
@@ -92,6 +91,7 @@ namespace Characters
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
         public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
+        private Quaternion _oldHeadRotation = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -205,6 +205,28 @@ namespace Characters
             if (Physics.Raycast(origin, direction, out hit, 1000f, AimMask.value))
                 target = hit.point;
             return target;
+        }
+
+        protected void LateUpdateHeadPosition(Vector3 position)
+        {
+            if (position != null)
+            {
+                Vector3 targetPosition = position;
+                Vector3 vector = position - Cache.Transform.position;
+                float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
+                float horizontalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
+                horizontalAngle = Mathf.Clamp(horizontalAngle, -40f, 40f);
+                float y = HumanCache.Neck.position.y - targetPosition.y;
+                float distance = Util.DistanceIgnoreY(position, HumanCache.Transform.position);
+                float verticalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
+                verticalAngle = Mathf.Clamp(verticalAngle, -40f, 30f);
+                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - verticalAngle,
+                    HumanCache.Head.rotation.eulerAngles.y + horizontalAngle, HumanCache.Head.rotation.eulerAngles.z);
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+            }
+            else
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+            _oldHeadRotation = HumanCache.Head.localRotation;
         }
 
         public bool CanJump()
@@ -1619,6 +1641,8 @@ namespace Characters
                 LateUpdateTilt();
                 LateUpdateGun();
                 LateUpdateReelOut();
+                if (Grounded)
+                    LateUpdateHeadPosition(GetAimPoint());
             }
             base.LateUpdate();
         }
