@@ -15,6 +15,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 using Weather;
@@ -149,10 +150,48 @@ namespace Characters
             Ungrab(false, true);
         }
 
+        public Ray GetAimRayAfterHuman()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+
+            // Define a plane at the characters position facing towards the camera's forward direction
+            Plane plane = new Plane(ray.direction, Cache.Transform.position);
+
+            // Visualize this plane by drawing 4 lines and a 5th normal line
+            Debug.DrawRay(Cache.Transform.position, ray.direction * 1000f, Color.red);
+            Debug.DrawRay(Cache.Transform.position, plane.normal * 1000f, Color.green);
+            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(ray.direction, plane.normal) * 1000f, Color.blue);
+            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(Vector3.Cross(ray.direction, plane.normal), ray.direction) * 1000f, Color.yellow);
+
+
+            // Find the distance from the ray origin to the plane along its direction
+            float distance;
+            plane.Raycast(ray, out distance);
+
+            // Get the point on the plane that is distance units away from the ray origin
+
+            Vector3 target = ray.GetPoint(distance);
+
+            // Set the ray origin to the new found point on the plane
+            ray.origin = target;
+
+            return ray;
+        }
+
+        public Ray GetAimPointAfterHuman()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+
+            // Move the ray origin along its direction by the distance between the ray origin and the character
+            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, Cache.Transform.position));
+
+            return ray;
+        }
+
         public override Vector3 GetAimPoint()
         {
             RaycastHit hit;
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = GetAimRayAfterHuman(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
             Vector3 target = ray.origin + ray.direction * 1000f;
             if (Physics.Raycast(ray, out hit, 1000f, AimMask.value))
                 target = hit.point;
