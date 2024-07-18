@@ -30,6 +30,7 @@ namespace Characters
         protected string _runAnimation;
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
+        public Vector2 _lastGoodAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
         protected bool _rightArmDisabled;
@@ -1018,6 +1019,57 @@ namespace Characters
             }
         }
 
+        private Vector2 GetLookAngle(Vector3 target)
+        {
+            Vector3 vector = target - Cache.Transform.position;
+            float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
+            float verticalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
+            float y = BasicCache.Neck.position.y - target.y;
+            float distance = Util.DistanceIgnoreY(target, BasicCache.Transform.position);
+            float horizontalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
+            return new Vector2(horizontalAngle, verticalAngle);
+        }
+
+        protected void LateUpdateHeadPosition(Vector3 position)
+        {
+            if (position != null)
+            {
+                Vector3 vector = position - Cache.Transform.position;
+                Vector2 angle = GetLookAngle(position);
+
+                // maintain horizontal angle if within buffer zone on left or right.
+                bool isInLeftRange = angle.y > -120 && angle.y < -50;
+                bool isInRightRange = angle.y > 50 && angle.y < 120;
+
+                if (isInLeftRange || isInRightRange)
+                {
+                    angle.y = _lastGoodAngle.y;
+                }
+                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
+                {
+                    // set angle to look at the camera
+                    position = SceneLoader.CurrentCamera.Camera.transform.position;
+                    angle = GetLookAngle(position);
+                    _lastGoodAngle = angle;
+                }
+                else
+                {
+                    _lastGoodAngle = angle;
+                }
+
+                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
+                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
+
+                BasicCache.Head.rotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + angle.x,
+                    BasicCache.Head.rotation.eulerAngles.y + angle.y, BasicCache.Head.rotation.eulerAngles.z);
+                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+            }
+            else
+                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+            _oldHeadRotation = BasicCache.Head.localRotation;
+        }
+
+
         protected void LateUpdateHead(BaseCharacter target)
         {
             if (target != null)
@@ -1031,28 +1083,6 @@ namespace Characters
                 num = Mathf.Clamp(num, -40f, 40f);
                 float y = (BasicCache.Neck.position.y + (Size * 2f)) - targetPosition.y;
                 float distance = Util.DistanceIgnoreY(target.Cache.Transform.position, BasicCache.Transform.position);
-                float num2 = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
-                num2 = Mathf.Clamp(num2, -40f, 30f);
-                BasicCache.Head.rotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + num2,
-                    BasicCache.Head.rotation.eulerAngles.y + num, BasicCache.Head.rotation.eulerAngles.z);
-                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
-            }
-            else
-                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
-            _oldHeadRotation = BasicCache.Head.localRotation;
-        }
-
-        protected void LateUpdateHeadPosition(Vector3 position)
-        {
-            if (position != null)
-            {
-                Vector3 targetPosition = position;
-                Vector3 vector = position - Cache.Transform.position;
-                float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
-                float num = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
-                num = Mathf.Clamp(num, -40f, 40f);
-                float y = (BasicCache.Neck.position.y + (Size * 2f)) - targetPosition.y;
-                float distance = Util.DistanceIgnoreY(position, BasicCache.Transform.position);
                 float num2 = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
                 num2 = Mathf.Clamp(num2, -40f, 30f);
                 BasicCache.Head.rotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + num2,

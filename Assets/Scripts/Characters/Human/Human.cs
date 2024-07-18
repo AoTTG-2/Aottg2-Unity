@@ -94,6 +94,7 @@ namespace Characters
         public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
         private Quaternion _oldHeadRotation = Quaternion.identity;
+        private Vector2 _lastGoodAngle = Vector2.zero;
 
         // actions
         public string StandAnimation;
@@ -220,7 +221,7 @@ namespace Characters
             return new Vector2(horizontalAngle, verticalAngle);
         }
 
-        private Vector2 _lastGoodAngle = Vector2.zero;
+        
         protected void LateUpdateHeadPosition(Vector3 position)
         {
             if (position != null)
