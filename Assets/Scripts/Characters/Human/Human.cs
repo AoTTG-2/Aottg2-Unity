@@ -15,7 +15,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Utility;
 using Weather;
 
@@ -207,21 +209,50 @@ namespace Characters
             return target;
         }
 
+        private Vector2 GetLookAngle(Vector3 target)
+        {
+            Vector3 vector = target - Cache.Transform.position;
+            float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
+            float verticalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
+            float y = HumanCache.Neck.position.y - target.y;
+            float distance = Util.DistanceIgnoreY(target, HumanCache.Transform.position);
+            float horizontalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
+            return new Vector2(horizontalAngle, verticalAngle);
+        }
+
+        private Vector2 _lastGoodAngle = Vector2.zero;
         protected void LateUpdateHeadPosition(Vector3 position)
         {
             if (position != null)
             {
-                Vector3 targetPosition = position;
                 Vector3 vector = position - Cache.Transform.position;
-                float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
-                float horizontalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
-                horizontalAngle = Mathf.Clamp(horizontalAngle, -40f, 40f);
-                float y = HumanCache.Neck.position.y - targetPosition.y;
-                float distance = Util.DistanceIgnoreY(position, HumanCache.Transform.position);
-                float verticalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
-                verticalAngle = Mathf.Clamp(verticalAngle, -40f, 30f);
-                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - verticalAngle,
-                    HumanCache.Head.rotation.eulerAngles.y + horizontalAngle, HumanCache.Head.rotation.eulerAngles.z);
+                Vector2 angle = GetLookAngle(position);
+
+                // maintain horizontal angle if within buffer zone on left or right.
+                bool isInLeftRange = angle.y > -120 && angle.y < -50;
+                bool isInRightRange = angle.y > 50 && angle.y < 120;
+
+                if (isInLeftRange || isInRightRange)
+                {
+                    angle.y = _lastGoodAngle.y;
+                }
+                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
+                {
+                    // set angle to look at the camera
+                    position = SceneLoader.CurrentCamera.Camera.transform.position;
+                    angle = GetLookAngle(position);
+                    _lastGoodAngle = angle;
+                }
+                else
+                {
+                    _lastGoodAngle = angle;
+                }
+
+                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
+                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
+
+                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - angle.x,
+                    HumanCache.Head.rotation.eulerAngles.y + angle.y, HumanCache.Head.rotation.eulerAngles.z);
                 HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
             }
             else
