@@ -181,7 +181,7 @@ namespace Characters
             return ray;
         }
 
-        public Ray GetAimPointAfterHuman()
+        public Ray GetAimRayAfterHumanCheap()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
 
@@ -194,7 +194,7 @@ namespace Characters
         public override Vector3 GetAimPoint()
         {
             RaycastHit hit;
-            Ray ray = GetAimRayAfterHuman(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = GetAimRayAfterHumanCheap(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
             Vector3 target = ray.origin + ray.direction * 1000f;
             if (Physics.Raycast(ray, out hit, 1000f, AimMask.value))
                 target = hit.point;
