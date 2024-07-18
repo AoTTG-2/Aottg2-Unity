@@ -101,21 +101,6 @@ namespace CustomLogic
                                 var manager = (InGameManager)SceneLoader.CurrentGameManager;
                                 Human = (Human)gameManager.CurrentCharacter;
                                 Human.ReloadHuman(manager.GetSetHumanSettings());
-
-                                /*var position = Human.Cache.Transform.position;
-                                var rotation = Human.Cache.Transform.rotation;
-                                var velocity = Human.Cache.Rigidbody.velocity;
-                                var camPosition = SceneLoader.CurrentCamera.Cache.Transform.position;
-                                var camRotation = SceneLoader.CurrentCamera.Cache.Transform.rotation;
-                                Human.DieChangeCharacter();
-                                gameManager.SpawnPlayerAt(false, position, rotation.eulerAngles.y);
-                                Human = (Human)gameManager.CurrentCharacter;
-                                Human.Cache.Rigidbody.velocity = velocity;
-                                Human.Cache.Transform.rotation = rotation;
-                                ((InGameCamera)SceneLoader.CurrentCamera)._follow = Human;
-                                SceneLoader.CurrentCamera.Cache.Transform.position = camPosition;
-                                SceneLoader.CurrentCamera.Cache.Transform.rotation = camRotation;
-                                InGameManager.UpdateRoundPlayerProperties();*/
                             }
                         }
                     }

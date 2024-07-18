@@ -729,9 +729,11 @@ namespace Characters
 
         public void ReloadHuman(InGameCharacterSettings settings)
         {
-            //Setup.DeleteDie();
             FinishSetup = false;
             Setup.Copy(settings);
+            HookLeft.DisableAnyHook();
+            HookRight.DisableAnyHook();
+
             if (IsMine())
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
