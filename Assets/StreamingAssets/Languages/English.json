@@ -562,7 +562,7 @@
 		"DealDamage": "Deal damage[ with {Weapon}]",
 		"ReachSpeed": "Reach {Speed} speed"
 	},
-	"BasicTutorial": {
+	"BasicTutorialMap": {
 		"Name.Game": "AOTTG 2",
 		"Name.Tutorial": "Basic Training",
 		"Stage.Introduction": "Introduction",
@@ -612,7 +612,7 @@
 		"Attack.Instruction4": "Cut one of the titan's arms",
 		"Attack.Instruction5": "Now try fighting an actual titan"
 	},
-	"OutsideTheWalls": {
+	"OutsideTheWallsMap": {
 		"Dialogue.Start": "Before we can leave, we need to secure the city. Clear out the titans and recapture the gate!",
 		"Dialogue.PointCaptured": "Great work. Advance to the next point!",
 		"Dialogue.TownCaptured": "Advance to the next point!",
