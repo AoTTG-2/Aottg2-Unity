@@ -15,6 +15,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -94,7 +95,9 @@ namespace Characters
         public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
         private Quaternion _oldHeadRotation = Quaternion.identity;
-        private Vector2 _lastGoodAngle = Vector2.zero;
+        public Vector2 LastGoodHeadAngle = Vector2.zero;
+        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadLocalRotation = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -222,44 +225,7 @@ namespace Characters
         }
 
         
-        protected void LateUpdateHeadPosition(Vector3 position)
-        {
-            if (position != null)
-            {
-                Vector3 vector = position - Cache.Transform.position;
-                Vector2 angle = GetLookAngle(position);
-
-                // maintain horizontal angle if within buffer zone on left or right.
-                bool isInLeftRange = angle.y > -120 && angle.y < -50;
-                bool isInRightRange = angle.y > 50 && angle.y < 120;
-
-                if (isInLeftRange || isInRightRange)
-                {
-                    angle.y = _lastGoodAngle.y;
-                }
-                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
-                {
-                    // set angle to look at the camera
-                    position = SceneLoader.CurrentCamera.Camera.transform.position;
-                    angle = GetLookAngle(position);
-                    _lastGoodAngle = angle;
-                }
-                else
-                {
-                    _lastGoodAngle = angle;
-                }
-
-                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
-                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
-
-                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - angle.x,
-                    HumanCache.Head.rotation.eulerAngles.y + angle.y, HumanCache.Head.rotation.eulerAngles.z);
-                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
-            }
-            else
-                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
-            _oldHeadRotation = HumanCache.Head.localRotation;
-        }
+        
 
         public bool CanJump()
         {
@@ -1666,6 +1632,52 @@ namespace Characters
             EnableSmartTitans();
         }
 
+        protected void LateUpdateHeadPosition(Vector3 position)
+        {
+            if (position != null)
+            {
+                Vector3 vector = position - Cache.Transform.position;
+                Vector2 angle = GetLookAngle(position);
+
+                // maintain horizontal angle if within buffer zone on left or right.
+                bool isInLeftRange = angle.y > -120 && angle.y < -50;
+                bool isInRightRange = angle.y > 50 && angle.y < 120;
+
+                if (isInLeftRange || isInRightRange)
+                {
+                    angle.y = LastGoodHeadAngle.y;
+                }
+                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
+                {
+                    // set angle to look at the camera
+                    position = SceneLoader.CurrentCamera.Camera.transform.position;
+                    angle = GetLookAngle(position);
+                    LastGoodHeadAngle = angle;
+                }
+                else
+                {
+                    LastGoodHeadAngle = angle;
+                }
+
+                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
+                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
+
+                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - angle.x,
+                    HumanCache.Head.rotation.eulerAngles.y + angle.y, HumanCache.Head.rotation.eulerAngles.z);
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+            }
+            else
+            {
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                LastGoodHeadAngle = Vector2.zero;
+            }
+            _oldHeadRotation = HumanCache.Head.localRotation;
+
+            LateUpdateHeadRotation = HumanCache.Head.rotation;
+            LateUpdateHeadLocalRotation = HumanCache.Head.localRotation;
+
+        }
+
         protected override void LateUpdate()
         {
             if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab)
@@ -1675,6 +1687,19 @@ namespace Characters
                 LateUpdateReelOut();
                 if (Grounded)
                     LateUpdateHeadPosition(GetAimPoint());
+                else
+                {
+                    LastGoodHeadAngle = Vector2.zero;
+                    LateUpdateHeadRotation = Quaternion.identity;
+                    LateUpdateHeadLocalRotation = Quaternion.identity;
+                }
+                    
+            }
+            else if (!IsMine())
+            {
+                HumanCache.Head.rotation = MovementSync._correctHeadRotation;
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                _oldHeadRotation = HumanCache.Head.localRotation;
             }
             base.LateUpdate();
         }

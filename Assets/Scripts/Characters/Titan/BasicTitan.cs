@@ -30,7 +30,11 @@ namespace Characters
         protected string _runAnimation;
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
-        public Vector2 _lastGoodAngle = Vector2.zero;
+        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadLocalRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Quaternion LateUpdateHeadLocalRotationRecv = Quaternion.identity;
+        public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
         protected bool _rightArmDisabled;
@@ -1043,18 +1047,19 @@ namespace Characters
 
                 if (isInLeftRange || isInRightRange)
                 {
-                    angle.y = _lastGoodAngle.y;
+                    angle.y = LastGoodHeadAngle.y;
+                    LastGoodHeadAngle.x = angle.x;
                 }
                 else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
                 {
                     // set angle to look at the camera
                     position = SceneLoader.CurrentCamera.Camera.transform.position;
                     angle = GetLookAngle(position);
-                    _lastGoodAngle = angle;
+                    LastGoodHeadAngle = angle;
                 }
                 else
                 {
-                    _lastGoodAngle = angle;
+                    LastGoodHeadAngle = angle;
                 }
 
                 angle.x = Mathf.Clamp(angle.x, -80f, 30f);
@@ -1065,8 +1070,13 @@ namespace Characters
                 BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
             }
             else
+            {
                 BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                LastGoodHeadAngle = new Vector2(0, 0);
+            }
             _oldHeadRotation = BasicCache.Head.localRotation;
+            LateUpdateHeadRotation = BasicCache.Head.rotation;
+            LateUpdateHeadLocalRotation = BasicCache.Head.localRotation;
         }
 
 
@@ -1121,8 +1131,18 @@ namespace Characters
             }
             else
             {
-                var character = Util.FindCharacterByViewId(TargetViewId);
-                LateUpdateHead(character);
+                if (AI)
+                {
+                    var character = Util.FindCharacterByViewId(TargetViewId);
+                    LateUpdateHead(character);
+                }
+                else
+                {
+                    BasicCache.Head.rotation = LateUpdateHeadRotationRecv;
+                    BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                    _oldHeadRotation = BasicCache.Head.localRotation;
+                }
+                
             }
             if (_leftArmDisabled)
             {

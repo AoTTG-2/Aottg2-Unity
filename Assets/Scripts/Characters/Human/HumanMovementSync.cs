@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,11 +8,25 @@ namespace Characters
     class HumanMovementSync : BaseMovementSync
     {
         protected Human _human;
-
+        public Quaternion _correctHeadRotation = Quaternion.identity;
+        public Quaternion _correctHeadLocalRotation = Quaternion.identity;
         protected override void Awake()
         {
             base.Awake();
             _human = GetComponent<Human>();
+        }
+
+        protected override void SendCustomStream(PhotonStream stream)
+        {
+            stream.SendNext(_human.HumanCache.Head.rotation);
+            stream.SendNext(_human.HumanCache.Head.localRotation);
+        }
+
+        protected override void ReceiveCustomStream(PhotonStream stream)
+        {
+            _correctHeadRotation = (Quaternion)stream.ReceiveNext();
+            _correctHeadLocalRotation = (Quaternion)stream.ReceiveNext();
+            Debug.Log(_correctHeadRotation);
         }
 
         protected override void Update()
