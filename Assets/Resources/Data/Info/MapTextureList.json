@@ -128,7 +128,7 @@
 		{"Name": "Castle1Tex", "Texture": "Buildings/Textures/Castle1Tex"},
 		{"Name": "House9Mat2", "Texture": "Buildings/Textures/House8Tex2"},
 		{"Name": "House8Mat2", "Texture": "Buildings/Textures/House8Tex2"},
-		{"Name": "Pillar_Col", "Texture": "Buildings/Textures/Pillar1Tex"},
+		{"Name": "Pillar_Col", "Texture": "Decor/Textures/Pillar1Tex"},
 		{"Name": "House4Tex", "Texture": "Buildings/Textures/House4Tex"},
 		{"Name": "CannonWallMat", "Texture": "Interact/Textures/Cannon3Tex"},
 		{"Name": "Pillar2Tex", "Texture": "Decor/Textures/Pillar2Tex"},
