@@ -97,7 +97,7 @@ namespace Characters
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadLocalRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -1674,7 +1674,6 @@ namespace Characters
             _oldHeadRotation = HumanCache.Head.localRotation;
 
             LateUpdateHeadRotation = HumanCache.Head.rotation;
-            LateUpdateHeadLocalRotation = HumanCache.Head.localRotation;
 
         }
 
@@ -1691,13 +1690,14 @@ namespace Characters
                 {
                     LastGoodHeadAngle = Vector2.zero;
                     LateUpdateHeadRotation = Quaternion.identity;
-                    LateUpdateHeadLocalRotation = Quaternion.identity;
                 }
                     
             }
             else if (!IsMine())
             {
-                HumanCache.Head.rotation = MovementSync._correctHeadRotation;
+
+
+                HumanCache.Head.rotation = LateUpdateHeadRotationRecv;
                 HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
                 _oldHeadRotation = HumanCache.Head.localRotation;
             }

@@ -8,8 +8,6 @@ namespace Characters
     class HumanMovementSync : BaseMovementSync
     {
         protected Human _human;
-        public Quaternion _correctHeadRotation = Quaternion.identity;
-        public Quaternion _correctHeadLocalRotation = Quaternion.identity;
         protected override void Awake()
         {
             base.Awake();
@@ -18,15 +16,12 @@ namespace Characters
 
         protected override void SendCustomStream(PhotonStream stream)
         {
-            stream.SendNext(_human.HumanCache.Head.rotation);
-            stream.SendNext(_human.HumanCache.Head.localRotation);
+            stream.SendNext(_human.LateUpdateHeadRotation);
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
         {
-            _correctHeadRotation = (Quaternion)stream.ReceiveNext();
-            _correctHeadLocalRotation = (Quaternion)stream.ReceiveNext();
-            Debug.Log(_correctHeadRotation);
+            _human.LateUpdateHeadRotationRecv = (Quaternion)stream.ReceiveNext();
         }
 
         protected override void Update()

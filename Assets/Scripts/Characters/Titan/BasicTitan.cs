@@ -31,9 +31,7 @@ namespace Characters
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
         public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadLocalRotation = Quaternion.identity;
         public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
-        public Quaternion LateUpdateHeadLocalRotationRecv = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
@@ -1076,7 +1074,6 @@ namespace Characters
             }
             _oldHeadRotation = BasicCache.Head.localRotation;
             LateUpdateHeadRotation = BasicCache.Head.rotation;
-            LateUpdateHeadLocalRotation = BasicCache.Head.localRotation;
         }
 
 

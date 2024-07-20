@@ -3888,6 +3888,10 @@ MonoBehaviour:
   IsCrawler: 0
   Setup: {fileID: 0}
   _oldHeadRotation: {x: 0, y: 0, z: 0, w: 0}
+  LateUpdateHeadRotation: {x: 0, y: 0, z: 0, w: 1}
+  LateUpdateHeadLocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  LateUpdateHeadRotationRecv: {x: 0, y: 0, z: 0, w: 1}
+  LateUpdateHeadLocalRotationRecv: {x: 0, y: 0, z: 0, w: 1}
   LastGoodHeadAngle: {x: 0, y: 0}
   BellyFlopTime: 5.5
   RockThrow1Speed: 200
