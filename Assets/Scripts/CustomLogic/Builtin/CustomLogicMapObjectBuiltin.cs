@@ -565,6 +565,38 @@ namespace CustomLogic
                 var color = Value.renderCache[0].material.color;
                 return new CustomLogicColorBuiltin(new Color255(color));
             }
+            if (name == "TextureTilingX")
+            {
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                return Value.renderCache[0].material.mainTextureScale.x;
+            }
+            if (name == "TextureTilingY")
+            {
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                return Value.renderCache[0].material.mainTextureScale.y;
+            }
+            if (name == "TextureOffsetX")
+            {
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                return Value.renderCache[0].material.mainTextureOffset.x;
+            }
+            if (name == "TextureOffsetY")
+            {
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                return Value.renderCache[0].material.mainTextureOffset.y;
+            }
             if (name == "ID")
             {
                 return Value.ScriptObject.Id;
@@ -633,6 +665,66 @@ namespace CustomLogic
 
                 var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
                 Value.renderCache[0].material.color = color;
+            }
+            else if (name == "TextureTilingX")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                var x = value.UnboxToFloat();
+                var tiling = Value.renderCache[0].material.mainTextureScale;
+                Value.renderCache[0].material.mainTextureScale = new Vector2(x, tiling.y);
+            }
+            else if (name == "TextureTilingY")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                var y = value.UnboxToFloat();
+                var tiling = Value.renderCache[0].material.mainTextureScale;
+                Value.renderCache[0].material.mainTextureScale = new Vector2(tiling.x, y);
+            }
+            else if (name == "TextureOffsetX")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                var x = value.UnboxToFloat();
+                var offset = Value.renderCache[0].material.mainTextureOffset;
+                Value.renderCache[0].material.mainTextureOffset = new Vector2(x, offset.y);
+            }
+            else if (name == "TextureOffsetY")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception(name + " cannot be set on a static MapObject.");
+                }
+                
+                if (Value.renderCache.Length == 0)
+                {
+                    throw new System.Exception("MapObject has no renderer.");
+                }
+                var y = value.UnboxToFloat();
+                var offset = Value.renderCache[0].material.mainTextureOffset;
+                Value.renderCache[0].material.mainTextureOffset = new Vector2(offset.x, y);
             }
             else
             {
