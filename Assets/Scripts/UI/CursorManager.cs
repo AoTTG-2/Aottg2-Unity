@@ -96,7 +96,8 @@ namespace UI
                 Cursor.visible = false;
                 State = CursorState.Hidden;
             }
-            if (((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode == CameraInputMode.TPS)
+            var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
+            if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
             {
                 if (Cursor.lockState != CursorLockMode.Locked)
                     Cursor.lockState = CursorLockMode.Locked;
@@ -112,7 +113,8 @@ namespace UI
                 Cursor.visible = false;
                 State = CursorState.Crosshair;
             }
-            if (((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode == CameraInputMode.TPS)
+            var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
+            if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
             {
                 if (Cursor.lockState != CursorLockMode.Locked)
                     Cursor.lockState = CursorLockMode.Locked;
@@ -229,7 +231,8 @@ namespace UI
                 Transform crosshairTransform = crosshairImage.transform;
                 if (crosshairTransform.position != mousePosition)
                 {
-                    if (((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode == CameraInputMode.TPS)
+                    var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
+                    if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
                     {
                         if (Math.Abs(crosshairTransform.position.x - mousePosition.x) > 1f || Math.Abs(crosshairTransform.position.y - mousePosition.y) > 1f)
                         {

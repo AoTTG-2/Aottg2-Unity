@@ -24,6 +24,8 @@
         public BoolSetting CustomStats = new BoolSetting(true);
         public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
+        public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
+        public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
     }
 
     public enum PVPMode

@@ -144,6 +144,8 @@
 		"Misc.ThunderspearPVPTooltip": "Thunderspear weapon uses PVP stats.",
 		"Misc.APGPVP": "APG PVP",
 		"Misc.APGPVPTooltip": "APG weapon uses PVP stats.",
+		"Misc.HumanHealth": "Human health",
+		"Misc.ShifterHealth": "Shifter health",
 		"Misc.AllowBlades": "Allow blades",
 		"Misc.AllowAHSS": "Allow ahss",
 		"Misc.AllowAPG": "Allow apg",
@@ -258,7 +260,6 @@
 		"Graphics.AnisotropicOptions": ["Off", "Low", "High"],
 		"Graphics.WeatherEffects": "Weather effects",
 		"Graphics.WeatherEffectsOptions": ["Off", "Low", "Medium", "High"],
-
 		"Graphics.AmbientOcclusion": "Ambient Occlusion",
 		"Graphics.AmbientOcclusionOptions": ["Off", "Lowest", "Low", "Medium", "High", "Ultra"],
 		"Graphics.Bloom": "Bloom",
@@ -275,7 +276,6 @@
 		"Graphics.MotionBlurOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.WaterFX": "Water FX",
 		"Graphics.WaterFXOptions": ["Off", "Low", "Medium", "High"],
-		
 		"Graphics.WeaponTrailEnabled": "Weapon trail",
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",

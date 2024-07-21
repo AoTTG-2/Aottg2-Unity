@@ -57,6 +57,13 @@ namespace Cameras
             CurrentCameraMode = (CameraInputMode)SettingsManager.GeneralSettings.CameraMode.Value;
         }
 
+        public float GetCameraDistance()
+        {
+            if (CurrentCameraMode == CameraInputMode.FPS)
+                return 0f;
+            return _cameraDistance;
+        }
+
         public void StartShake()
         {
             _shakeTimeLeft = ShakeDuration;
@@ -192,7 +199,7 @@ namespace Cameras
                     }
                     else
                         UpdateSpectate();
-                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human && _cameraDistance > 0f)
+                    if (!SettingsManager.GeneralSettings.CameraClipping.Value && _follow is Human && GetCameraDistance() > 0f)
                         UpdateObstacles();
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
@@ -230,6 +237,8 @@ namespace Cameras
                     if (CurrentCameraMode == CameraInputMode.TPS)
                         CurrentCameraMode = CameraInputMode.Original;
                     else if (CurrentCameraMode == CameraInputMode.Original)
+                        CurrentCameraMode = CameraInputMode.FPS;
+                    else
                         CurrentCameraMode = CameraInputMode.TPS;
                 }
                 if (SettingsManager.InputSettings.Human.NapeLock.GetKeyDown())
@@ -246,12 +255,13 @@ namespace Cameras
                     }
                 }
             }
-            float offset = _cameraDistance * (200f - Camera.fieldOfView) / 150f;
-            if (_cameraDistance == 0f)
+            var cameraDistance = GetCameraDistance();
+            float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
+            if (cameraDistance == 0f)
                 offset = 0.1f;
             Cache.Transform.position = _follow.GetCameraAnchor().position;
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
-            float height = _cameraDistance == 0f ? 0.6f : _cameraDistance;
+            float height = cameraDistance == 0f ? 0.6f : cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
             float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
@@ -285,7 +295,7 @@ namespace Cameras
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
-            else if (CurrentCameraMode == CameraInputMode.TPS)
+            else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
             {
                 float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
                 float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
@@ -304,12 +314,13 @@ namespace Cameras
 
         private void UpdateSpectate()
         {
-            float offset = Mathf.Max(_cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
+            var cameraDistance = GetCameraDistance();
+            float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
             Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _follow.GetComponent<BaseMovementSync>()._correctCamera,
                 Time.deltaTime * 10f);
             Cache.Transform.position = _follow.GetCameraAnchor().position;
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
-            float height = _cameraDistance;
+            float height = cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
             Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             if (_inGameManager.Humans.Count > 0 && !InGameMenu.InMenu() && !ChatManager.IsChatActive())
@@ -363,7 +374,7 @@ namespace Cameras
 
         private float GetHeightDistance()
         {
-            if (_cameraDistance == 0f && _follow != null && _follow is Human)
+            if (GetCameraDistance() == 0f && _follow != null && _follow is Human)
                 return 0.3f;
             return _heightDistance;
         }
@@ -385,7 +396,7 @@ namespace Cameras
             {
                 float fovMin = SettingsManager.GeneralSettings.FOVMin.Value;
                 float fovMax = SettingsManager.GeneralSettings.FOVMax.Value;
-                if (_cameraDistance <= 0f)
+                if (GetCameraDistance() <= 0f)
                 {
                     fovMin = SettingsManager.GeneralSettings.FPSFOVMin.Value;
                     fovMax = SettingsManager.GeneralSettings.FPSFOVMax.Value;

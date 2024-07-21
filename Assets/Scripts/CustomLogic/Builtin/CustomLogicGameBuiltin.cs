@@ -246,7 +246,6 @@ namespace CustomLogic
                             "MaxRangeShot" => TSKillType.MaxRangeShot,
                             _ => TSKillType.Kill
                         };
-
                     }
                     settings = new object[] { color, killSound };
                 }

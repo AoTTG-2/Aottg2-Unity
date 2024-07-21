@@ -392,24 +392,19 @@ namespace GameManagers
         public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position, float rotationY)
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            
+            BaseShifter shifter = null;
             if (shifterName == "Annie")
-            {
-                var shifter = (AnnieShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
-                shifter.Init(false, GetPlayerTeam(false), null, liveTime);
-                CurrentCharacter = shifter;
-            }
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
             else if (shifterName == "Eren")
-            {
-                var shifter = (ErenShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
-                shifter.Init(false, GetPlayerTeam(false), null, liveTime);
-                CurrentCharacter = shifter;
-            }
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
             else if (shifterName == "Armored")
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
+            if (shifter != null)
             {
-                var shifter = (ArmoredShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
                 shifter.Init(false, GetPlayerTeam(false), null, liveTime);
                 CurrentCharacter = shifter;
+                if (SettingsManager.InGameCurrent.Misc.ShifterHealth.Value > 0)
+                    shifter.SetHealth(SettingsManager.InGameCurrent.Misc.ShifterHealth.Value);
             }
         }
 
@@ -461,6 +456,8 @@ namespace GameManagers
                 var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
                 human.Init(false, GetPlayerTeam(false), SettingsManager.InGameCharacterSettings);
                 CurrentCharacter = human;
+                if (SettingsManager.InGameCurrent.Misc.HumanHealth.Value > 1)
+                    human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
             }
             else if (character == PlayerCharacter.Shifter)
                 SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);

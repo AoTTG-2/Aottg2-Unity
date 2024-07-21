@@ -16,7 +16,7 @@ using GameProgress;
 
 namespace Characters
 {
-    class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks
+    class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks, ITargetable
     {
         protected virtual int DefaultMaxHealth => 1;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
@@ -46,6 +46,21 @@ namespace Characters
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
+
+        public virtual string GetTeam()
+        {
+            return Team;
+        }
+
+        public virtual Vector3 GetPosition()
+        {
+            return Cache.Transform.position;
+        }
+
+        public virtual bool ValidTarget()
+        {
+            return !Dead;
+        }
 
         public bool IsMine()
         {
@@ -553,7 +568,7 @@ namespace Characters
             if (!IsMine())
                 return;
             var camera = ((InGameCamera)SceneLoader.CurrentCamera);
-            if (camera._follow == this && camera._cameraDistance == 0f)
+            if (camera._follow == this && camera.GetCameraDistance() == 0f)
             {
                 if (!_cameraFPS)
                 {

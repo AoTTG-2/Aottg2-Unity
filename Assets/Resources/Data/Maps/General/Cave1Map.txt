@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:|HasWeather:0
+EditorVersion:1.0|Description:|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -26,7 +26,10 @@ Scene,General/EditorTitanSpawnPoint,21,0,1,1,0,0,Titan SpawnPoint,312.1446,1.731
 Scene,General/EditorTitanSpawnPoint,22,0,1,1,0,0,Titan SpawnPoint,204.5405,1.731605,-2.075379,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,23,0,1,1,0,0,Titan SpawnPoint,-178.1086,1.731605,84.39546,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,24,0,1,1,0,0,Titan SpawnPoint,-214.98,1.731605,445.2968,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,25,0,1,1,0,0,Titan SpawnPoint,217.1133,1.731605,421.704,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+Scene,General/EditorTitanSpawnPoint,25,0,1,1,0,0,Titan SpawnPoint,217.1133,1.731605,421.704,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,Nature/Boulder6,26,0,1,1,1,0,Boulder6,-183.9586,-8.04708,-17.07831,0.1863471,19.65662,357.6791,9.946554,2.561944,7.520327,Physical,Entities,Default,Reflective|185/232/232/255|Misc/Ice2|1/1|0/0|214/255/255/255,;
+Scene,Nature/Boulder6,27,0,1,1,1,0,Boulder6,73.2135,-14.40907,114.4278,358.7956,47.40139,357.1823,12.17927,4.716381,10.16744,Physical,Entities,Default,Reflective|144/232/232/255|Misc/Diamond1|1/1|0/0|214/255/255/255,;
+Scene,Nature/Boulder6,28,0,1,1,1,0,Boulder6,80.31346,4.24935,175.1944,358.7755,84.17967,190.3603,6.358873,4.002993,6.535879,Physical,Entities,Default,Reflective|166/232/232/255|Misc/Diamond1|1/1|0/0|214/255/255/255,
 /// Logic
 
 /// Weather
@@ -39,21 +42,21 @@ Scene,General/EditorTitanSpawnPoint,25,0,1,1,0,0,Titan SpawnPoint,217.1133,1.731
         255
     ],
     "Daylight" : [
-        255,
-        255,
-        255,
+        0,
+        0,
+        0,
         255
     ],
-    "DaylightIntensity" : 1,
+    "DaylightIntensity" : 0,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        126,
-        122,
-        114,
+        0,
+        0,
+        0,
         255
     ],
     "Flashlight" : [

@@ -276,9 +276,9 @@ namespace UI
             }
         }
 
-        public void ShowCutsceneMenu(string icon, string title, string content)
+        public void ShowCutsceneMenu(string icon, string title, string content, bool full)
         {
-            _cutsceneDialoguePanel.Show(icon, title, content);
+            _cutsceneDialoguePanel.Show(icon, title, content, full);
         }
 
         public void HideCutsceneMenu()

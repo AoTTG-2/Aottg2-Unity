@@ -24,6 +24,7 @@ namespace Map
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
         public static List<Light> Daylight = new List<Light>();
         public static List<MapLight> MapLights = new List<MapLight>();
+        public static List<MapTargetable> MapTargetables = new List<MapTargetable>();
         private static Dictionary<string, Object> _assetCache = new Dictionary<string, Object>();
         private static Dictionary<string, List<Material>> _assetMaterialCache = new Dictionary<string, List<Material>>();
         private static Dictionary<string, List<Material>> _defaultMaterialCache = new Dictionary<string, List<Material>>();
@@ -75,6 +76,7 @@ namespace Map
             GoToMapObject.Clear();
             Daylight.Clear();
             MapLights.Clear();
+            MapTargetables.Clear();
             _assetCache.Clear();
             Tags.Clear();
             HighestObjectId = 1;

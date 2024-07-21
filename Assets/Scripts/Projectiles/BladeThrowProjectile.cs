@@ -91,7 +91,7 @@ namespace Projectiles
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Blade", 100, "BladeThrow");
+                    handler.GetHit(_owner, "Blade", 100, "BladeThrow", transform.position);
                     continue;
                 }
                 if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)

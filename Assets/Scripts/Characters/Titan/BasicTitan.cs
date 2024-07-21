@@ -335,8 +335,8 @@ namespace Characters
         {
             _stepPhase = 0;
             StateActionWithTime(TitanState.Run, _runAnimation, 0f, 0.5f);
-            if (IsCrawler && !BasicCache.BodyHitbox.IsActive())
-                BasicCache.BodyHitbox.Activate();
+            if (IsCrawler && !BasicCache.CrawlerHitbox.IsActive())
+                BasicCache.CrawlerHitbox.Activate();
         }
 
         public override void WallClimb()
@@ -560,9 +560,9 @@ namespace Characters
             {
                 if (AI)
                 {
-                    if (TargetEnemy != null)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
                     {
-                        Vector3 to = TargetEnemy.Cache.Transform.position - BasicCache.Head.position;
+                        Vector3 to = TargetEnemy.GetPosition() - BasicCache.Head.position;
                         float time = to.magnitude / JumpForce;
                         float down = 0.5f * Gravity.magnitude * time * time;
                         to.y += down;
@@ -584,7 +584,7 @@ namespace Characters
             {
                 if (TargetEnemy != null)
                 {
-                    Vector3 to = TargetEnemy.Cache.Transform.position - BasicCache.Head.position;
+                    Vector3 to = TargetEnemy.GetPosition() - BasicCache.Head.position;
                     float time = to.magnitude / JumpForce;
                     float down = 0.5f * Gravity.magnitude * time * time;
                     to.y += down;
@@ -870,9 +870,11 @@ namespace Characters
                 {
                     if (TargetEnemy != null)
                     {
-                        float distance = Vector3.Distance(hand, TargetEnemy.Cache.Transform.position);
+                        float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
-                        _rockThrowTarget = TargetEnemy.Cache.Transform.position + TargetEnemy.Cache.Rigidbody.velocity * time;
+                        _rockThrowTarget = TargetEnemy.GetPosition();
+                        if (TargetEnemy is BaseCharacter)
+                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
                     }
                     else
                         _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
@@ -974,7 +976,7 @@ namespace Characters
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
             {
-                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type);
+                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type, hitbox.transform.position);
                 return;
             }
             var victimChar = (BaseCharacter)victim;
@@ -1006,7 +1008,7 @@ namespace Characters
             }
             else
             {
-                if (!victimChar.Dead)
+                if (firstHit && !victimChar.Dead)
                 {
                     if (IsMainCharacter())
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
@@ -1044,11 +1046,12 @@ namespace Characters
             base.LateUpdate();
             if (IsMine())
             {
-                if (TargetEnemy != null && !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.Cache.Transform.position, BasicCache.Transform.position) < 100f &&
+                if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f &&
                 (State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn))
                 {
-                    TargetViewId = TargetEnemy.Cache.PhotonView.ViewID;
-                    LateUpdateHead(TargetEnemy);
+                    var character = (BaseCharacter)TargetEnemy;
+                    TargetViewId = character.Cache.PhotonView.ViewID;
+                    LateUpdateHead(character);
                 }
                 else
                 {

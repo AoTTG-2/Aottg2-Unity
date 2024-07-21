@@ -11,7 +11,7 @@
 		"AttackPunchCombo": {"HumanOnly": false},
 		"AttackPunch": {"HumanOnly": false},
 		"AttackSlam": {"HumanOnly": true},
-		"AttackBellyFlop": {"Ranges": [{"X": [-5, 5], "Y": [-3, 7], "Z": [0, 14]}], "HumanOnly": true},
+		"AttackBellyFlop": {"Ranges": {"X": [-5, 5], "Y": [-3, 7], "Z": [0, 14]}, "HumanOnly": true},
 		"AttackSlapL": {"HumanOnly": false},
 		"AttackSlapR": {"HumanOnly": false},
 		"AttackSlapHighL": {"HumanOnly": false},

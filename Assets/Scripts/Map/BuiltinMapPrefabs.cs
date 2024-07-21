@@ -88,7 +88,8 @@ namespace Map
                     }
                     AllPrefabs.Add(sceneObject.Name, sceneObject);
                     AllPrefabsLower.Add(sceneObject.Name.ToLower(), sceneObject);
-                    PrefabCategories[category].Add(sceneObject);
+                    if (!prefabNode.HasKey("Hidden") || !prefabNode["Hidden"].AsBool)
+                        PrefabCategories[category].Add(sceneObject);
                 }
             }
         }
