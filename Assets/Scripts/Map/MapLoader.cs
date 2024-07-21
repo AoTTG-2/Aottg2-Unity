@@ -10,6 +10,7 @@ using UI;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using Utility;
 using Weather;
 using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
@@ -227,7 +228,9 @@ namespace Map
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "Thunderspear PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "Blade PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
-                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP";
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP"
+                && SettingsManager.InGameCurrent.General.GameMode.Value != "None"
+                && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Startup";
 
             bool willLoadNavMesh = (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
                 && PhotonNetwork.IsMasterClient
