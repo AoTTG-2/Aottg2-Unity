@@ -795,8 +795,7 @@ namespace Characters
 
             if (IsMine())
             {
-                PhotonNetwork.RemoveBufferedRPCs(methodName: "SetupRPC");
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
             }
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
@@ -836,7 +835,7 @@ namespace Characters
             if (IsMine())
             {
                 TargetAngle = Cache.Transform.eulerAngles.y;
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
@@ -858,6 +857,9 @@ namespace Characters
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
                 if (BackHuman != null && BackHuman.CarryState == HumanCarryState.Carry)
                     BackHuman.Cache.PhotonView.RPC("CarryRPC", player, new object[] { Cache.PhotonView.ViewID });
+
+                Cache.PhotonView.RPC("SetupRPC", player, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                LoadSkin(player);
             }
         }
 
@@ -2294,7 +2296,7 @@ namespace Characters
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
 
-        protected void LoadSkin()
+        protected void LoadSkin(Player player = null)
         {
             if (IsMine())
             {
@@ -2310,8 +2312,10 @@ namespace Characters
                     {
                         viewID = Horse.gameObject.GetPhotonView().ViewID;
                     }
-                    PhotonNetwork.RemoveBufferedRPCs(methodName: "LoadSkinRPC");
-                    Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.AllBuffered, new object[] { viewID, url });
+                    if (player == null)
+                        Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                    else
+                        Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                 }
             }
         }
