@@ -795,6 +795,7 @@ namespace Characters
 
             if (IsMine())
             {
+                PhotonNetwork.RemoveBufferedRPCs(methodName: "SetupRPC");
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
             }
@@ -2309,6 +2310,7 @@ namespace Characters
                     {
                         viewID = Horse.gameObject.GetPhotonView().ViewID;
                     }
+                    PhotonNetwork.RemoveBufferedRPCs(methodName: "LoadSkinRPC");
                     Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.AllBuffered, new object[] { viewID, url });
                 }
             }
