@@ -18,7 +18,7 @@
         public BoolSetting Horses = new BoolSetting(false);
         public BoolSetting GunsAirReload = new BoolSetting(true);
         public BoolSetting AllowStock = new BoolSetting(true);
-        public BoolSetting ClearKDROnRestart = new BoolSetting(false);
+        public BoolSetting ClearKDROnRestart = new BoolSetting(true);
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
         public BoolSetting RealismMode = new BoolSetting(false);
         public BoolSetting CustomStats = new BoolSetting(true);

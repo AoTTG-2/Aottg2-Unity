@@ -159,15 +159,6 @@ namespace Characters
             return target;
         }
 
-        public Vector3 GetAimPoint(Vector3 origin, Vector3 direction)
-        {
-            RaycastHit hit;
-            Vector3 target = origin + direction * 1000f;
-            if (Physics.Raycast(origin, direction, out hit, 1000f, AimMask.value))
-                target = hit.point;
-            return target;
-        }
-
         public bool CanJump()
         {
             return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
