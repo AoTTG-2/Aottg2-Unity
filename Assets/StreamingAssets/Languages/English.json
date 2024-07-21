@@ -260,7 +260,6 @@
 		"Graphics.AnisotropicOptions": ["Off", "Low", "High"],
 		"Graphics.WeatherEffects": "Weather effects",
 		"Graphics.WeatherEffectsOptions": ["Off", "Low", "Medium", "High"],
-
 		"Graphics.AmbientOcclusion": "Ambient Occlusion",
 		"Graphics.AmbientOcclusionOptions": ["Off", "Lowest", "Low", "Medium", "High", "Ultra"],
 		"Graphics.Bloom": "Bloom",
@@ -277,7 +276,6 @@
 		"Graphics.MotionBlurOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.WaterFX": "Water FX",
 		"Graphics.WaterFXOptions": ["Off", "Low", "Medium", "High"],
-		
 		"Graphics.WeaponTrailEnabled": "Weapon trail",
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",
@@ -566,8 +564,8 @@
 	},
 	"Tutorial": {
 		"Basic.Dialogue1P1": "Move with the",
-    "Basic.Dialogue1P2": "keys.",
-    "Basic.Dialogue1P3": "Go to the Checkpoint."
+    	"Basic.Dialogue1P2": "keys.",
+    	"Basic.Dialogue1P3": "Go to the Checkpoint."
 	},
 	"OutsideTheWalls": {
 		"Dialogue.Start": "Before we can leave, we need to secure the city. Clear out the titans and recapture the gate!",
