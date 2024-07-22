@@ -42,6 +42,7 @@ namespace Settings
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());
         public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<MotionBlurLevel>());
         public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High, minValue: 0, maxValue: (int)Util.EnumMaxValue<WaterFXLevel>());
+        public BoolSetting HDR = new BoolSetting(false);
 
         public override void Apply()
         {
@@ -111,6 +112,7 @@ namespace Settings
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
                 AutoExposure.Value = (int)AutoExposureLevel.Off;
+                HDR.Value = false;
                 RenderDistance.Value = 1000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
@@ -130,6 +132,7 @@ namespace Settings
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Low;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
                 RenderDistance.Value = 2000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
@@ -149,6 +152,7 @@ namespace Settings
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.Medium;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
                 RenderDistance.Value = 5000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
@@ -168,6 +172,7 @@ namespace Settings
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
                 RenderDistance.Value = 10000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
@@ -187,6 +192,7 @@ namespace Settings
                 AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
                 WaterFX.Value = (int)WaterFXLevel.High;
                 AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
                 RenderDistance.Value = 10000;
             }
         }

@@ -276,6 +276,8 @@
 		"Graphics.MotionBlurOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.WaterFX": "Water FX",
 		"Graphics.WaterFXOptions": ["Off", "Low", "Medium", "High"],
+		"Graphics.HDR": "HDR",
+		"Graphics.HDRTooltip": "HDR lighting for high dynamic range monitors.",
 		"Graphics.WeaponTrailEnabled": "Weapon trail",
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",

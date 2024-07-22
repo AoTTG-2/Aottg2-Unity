@@ -156,7 +156,7 @@ namespace UI
             SettingsManager.WeatherSettings.Load();
         }
 
-        private void StartRoom()
+        public static void StartRoom()
         {
             InGameSet settings = SettingsManager.InGameCurrent;
             string roomName = settings.General.RoomName.Value;
