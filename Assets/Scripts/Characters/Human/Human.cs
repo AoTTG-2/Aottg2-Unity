@@ -225,8 +225,6 @@ namespace Characters
         }
 
         
-        
-
         public bool CanJump()
         {
             return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&

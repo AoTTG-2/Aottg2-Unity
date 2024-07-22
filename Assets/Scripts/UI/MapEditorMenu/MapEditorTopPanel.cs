@@ -259,7 +259,8 @@ namespace UI
             _currentMap.Value = _menu.SelectListPopup.FinishSetting.Value;
             BuiltinLevels.SaveCustomMap(_currentMap.Value, _gameManager.MapScript);
             SettingsManager.MapEditorSettings.Save();
-            BuiltinLevels.DeleteCustomMap(oldMap);
+            if (oldMap != _currentMap.Value)
+                BuiltinLevels.DeleteCustomMap(oldMap);
         }
 
         protected void OnOpenFinish()

@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 760056131571800565}
   - component: {fileID: 6490874969531944402}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Collider1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &760056131571800565
 Transform:
@@ -63,12 +63,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6818537467702751197}
   - component: {fileID: 5481391607473129787}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Collider1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6818537467702751197
 Transform:
@@ -116,12 +116,12 @@ GameObject:
   m_Component:
   - component: {fileID: 252677184065521237}
   - component: {fileID: 6274069184961714013}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Collider1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &252677184065521237
 Transform:
@@ -169,12 +169,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5445395076864768548}
   - component: {fileID: 6863905781261499072}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: Collider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5445395076864768548
 Transform:
@@ -275,6 +275,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 00a8bcef13f5b424f9913b5f1695563d, type: 3}
       propertyPath: m_Name
       value: SquareTorus
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 00a8bcef13f5b424f9913b5f1695563d, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 00a8bcef13f5b424f9913b5f1695563d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
