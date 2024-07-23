@@ -647,12 +647,12 @@
 			{"Name": "HQ2"},
 			{"Name": "PathsMap"},
 			{"Name": "Utgard1"},
-			{"Name": "Utgard2", "Variant": "Utgard1"},
-			{"Name": "Utgard3", "Variant": "Utgard1"},
-			{"Name": "Utgard4", "Variant": "Utgard1"},
-			{"Name": "Utgard5", "Variant": "Utgard1"},
-			{"Name": "Utgard6", "Variant": "Utgard1"},
-			{"Name": "Utgard7", "Variant": "Utgard1"}
+			{"Name": "Utgard1b", "Variant": "Utgard1"},
+			{"Name": "Utgard1c", "Variant": "Utgard1"},
+			{"Name": "Utgard1d", "Variant": "Utgard1"},
+			{"Name": "Utgard1e", "Variant": "Utgard1"},
+			{"Name": "Utgard1f", "Variant": "Utgard1"},
+			{"Name": "Utgard2"}
 		]
 	},
 	"Terrain": {
