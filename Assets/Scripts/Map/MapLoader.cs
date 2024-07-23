@@ -230,7 +230,7 @@ namespace Map
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "APG PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "AHSS PVP"
                 && SettingsManager.InGameCurrent.General.GameMode.Value != "None"
-                && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Startup";
+                && (customAssets.Count != 0 || objects.Count != 0);
 
             bool willLoadNavMesh = (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
                 && PhotonNetwork.IsMasterClient
