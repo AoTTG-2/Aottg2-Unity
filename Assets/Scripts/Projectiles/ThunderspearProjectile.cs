@@ -121,11 +121,21 @@ namespace Projectiles
             RaycastHit hit;
             if (Vector3.Distance(_owner.Cache.Transform.position, transform.position) < range)
             {
-
-                if (Physics.Raycast(transform.position + direction.normalized * 0.1f, direction.normalized, out hit, range, _blockMask))
+                if (((Human)_owner).Grounded)
                 {
-                    if (hit.collider.transform.root.gameObject == _owner.gameObject)
-                        ((Human)_owner).GetStunnedByTS(transform.position);
+                    if (Physics.Raycast(transform.position + direction.normalized * 0.1f, direction.normalized, out hit, range, _blockMask))
+                    {
+                        if (hit.collider.transform.root.gameObject == _owner.gameObject)
+                            ((Human)_owner).GetStunnedByTS(transform.position);
+                    }
+                }
+                else
+                {
+                    if (Physics.SphereCast(transform.position, radius, direction.normalized, out hit, range, _blockMask))
+                    {
+                        if (hit.collider.transform.root.gameObject == _owner.gameObject)
+                            ((Human)_owner).GetStunnedByTS(transform.position);
+                    }
                 }
             }
         }
