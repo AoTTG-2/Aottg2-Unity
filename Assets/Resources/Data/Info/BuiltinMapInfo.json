@@ -256,6 +256,15 @@
 					"Name": "Inferno I"
 				}
 			]
+		},
+		{
+			"Name": "Tutorial",
+			"IncludedModes": ["Map Logic"],
+			"Maps": [
+				{
+					"Name": "Basic Tutorial"
+				}
+			]
 		}
 	],
 	"GameModes": [

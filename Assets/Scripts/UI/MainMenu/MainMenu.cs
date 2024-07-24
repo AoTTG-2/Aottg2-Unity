@@ -248,7 +248,17 @@ namespace UI
             switch (name)
             {
                 case "TutorialButton":
-                    _tutorialPopup.Show();
+                    // _tutorialPopup.Show();
+                    MusicManager.PlayEffect();
+                    MusicManager.PlayTransition();
+                    SettingsManager.InGameUI.SetDefault();
+                    SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
+                    SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
+                    SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
+                    SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
+                    SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
+                    SettingsManager.MultiplayerSettings.ConnectOffline();
+                    CreateGamePopup.StartRoom();
                     break;
                 case "CreditsButton":
                     SceneLoader.LoadScene(SceneName.Credits);

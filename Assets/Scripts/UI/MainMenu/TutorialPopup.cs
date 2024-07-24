@@ -24,22 +24,14 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Back"), onClick: () => OnButtonClick("Back"));
             ElementFactory.CreateTextButton(SinglePanel, style, UIManager.GetLocale(cat, sub, "BasicButton"), width, onClick: () => OnButtonClick("Basic"));
-            ElementFactory.CreateTextButton(SinglePanel, style, UIManager.GetLocale(cat, sub, "AdvancedButton"), width, onClick: () => OnButtonClick("Advanced"));
+            // ElementFactory.CreateTextButton(SinglePanel, style, UIManager.GetLocale(cat, sub, "AdvancedButton"), width, onClick: () => OnButtonClick("Advanced"));
         }
 
         protected void OnButtonClick(string name)
         {
-            if (name == "MapEditor")
+            if (name == "Basic")
             {
-                Application.LoadLevel(2);
-            }
-            else if (name == "CharacterEditor")
-            {
-                Application.LoadLevel("characterCreation");
-            }
-            else if (name == "SnapshotViewer")
-            {
-                Application.LoadLevel("SnapShot");
+
             }
             else if (name == "Back")
                 Hide();
