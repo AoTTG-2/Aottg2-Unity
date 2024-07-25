@@ -10,7 +10,7 @@ namespace Characters
     {
         public AHSSTwinShot(BaseCharacter owner): base(owner)
         {
-            Cooldown = 10f;
+            Cooldown = 1f;
         }
 
         protected override float GetActiveTime()

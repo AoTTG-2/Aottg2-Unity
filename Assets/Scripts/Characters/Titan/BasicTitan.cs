@@ -18,6 +18,7 @@ using Projectiles;
 using Spawnables;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace Characters
 {
@@ -29,6 +30,9 @@ namespace Characters
         protected string _runAnimation;
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
+        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
         protected bool _rightArmDisabled;
@@ -1017,6 +1021,62 @@ namespace Characters
             }
         }
 
+        private Vector2 GetLookAngle(Vector3 target)
+        {
+            Vector3 vector = target - Cache.Transform.position;
+            float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
+            float verticalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
+            float y = BasicCache.Neck.position.y - target.y;
+            float distance = Util.DistanceIgnoreY(target, BasicCache.Transform.position);
+            float horizontalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
+            return new Vector2(horizontalAngle, verticalAngle);
+        }
+
+        protected void LateUpdateHeadPosition(Vector3 position)
+        {
+            if (position != null)
+            {
+                Vector3 vector = position - Cache.Transform.position;
+                Vector2 angle = GetLookAngle(position);
+
+                // maintain horizontal angle if within buffer zone on left or right.
+                bool isInLeftRange = angle.y > -120 && angle.y < -50;
+                bool isInRightRange = angle.y > 50 && angle.y < 120;
+
+                if (isInLeftRange || isInRightRange)
+                {
+                    angle.y = LastGoodHeadAngle.y;
+                    LastGoodHeadAngle.x = angle.x;
+                }
+                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
+                {
+                    // set angle to look at the camera
+                    position = SceneLoader.CurrentCamera.Camera.transform.position;
+                    angle = GetLookAngle(position);
+                    LastGoodHeadAngle = angle;
+                }
+                else
+                {
+                    LastGoodHeadAngle = angle;
+                }
+
+                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
+                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
+
+                BasicCache.Head.rotation = Quaternion.Euler(BasicCache.Head.rotation.eulerAngles.x + angle.x,
+                    BasicCache.Head.rotation.eulerAngles.y + angle.y, BasicCache.Head.rotation.eulerAngles.z);
+                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+            }
+            else
+            {
+                BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                LastGoodHeadAngle = new Vector2(0, 0);
+            }
+            _oldHeadRotation = BasicCache.Head.localRotation;
+            LateUpdateHeadRotation = BasicCache.Head.rotation;
+        }
+
+
         protected void LateUpdateHead(BaseCharacter target)
         {
             if (target != null)
@@ -1046,8 +1106,13 @@ namespace Characters
             base.LateUpdate();
             if (IsMine())
             {
-                if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f &&
-                (State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn))
+                bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
+                if (AI == false && canLook)
+                {
+                    LateUpdateHeadPosition(GetAimPoint());
+                }
+                else if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
+                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook)
                 {
                     var character = (BaseCharacter)TargetEnemy;
                     TargetViewId = character.Cache.PhotonView.ViewID;
@@ -1063,8 +1128,18 @@ namespace Characters
             }
             else
             {
-                var character = Util.FindCharacterByViewId(TargetViewId);
-                LateUpdateHead(character);
+                if (AI)
+                {
+                    var character = Util.FindCharacterByViewId(TargetViewId);
+                    LateUpdateHead(character);
+                }
+                else
+                {
+                    BasicCache.Head.rotation = LateUpdateHeadRotationRecv;
+                    BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                    _oldHeadRotation = BasicCache.Head.localRotation;
+                }
+                
             }
             if (_leftArmDisabled)
             {

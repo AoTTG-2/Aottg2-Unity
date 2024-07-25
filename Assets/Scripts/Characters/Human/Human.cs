@@ -15,7 +15,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Utility;
 using Weather;
 
@@ -91,6 +94,10 @@ namespace Characters
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
         public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
+        private Quaternion _oldHeadRotation = Quaternion.identity;
+        public Vector2 LastGoodHeadAngle = Vector2.zero;
+        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -149,16 +156,75 @@ namespace Characters
             Ungrab(false, true);
         }
 
+        public Ray GetAimRayAfterHuman()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+
+            // Define a plane at the characters position facing towards the camera's forward direction
+            Plane plane = new Plane(ray.direction, Cache.Transform.position);
+
+            // Visualize this plane by drawing 4 lines and a 5th normal line
+            Debug.DrawRay(Cache.Transform.position, ray.direction * 1000f, Color.red);
+            Debug.DrawRay(Cache.Transform.position, plane.normal * 1000f, Color.green);
+            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(ray.direction, plane.normal) * 1000f, Color.blue);
+            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(Vector3.Cross(ray.direction, plane.normal), ray.direction) * 1000f, Color.yellow);
+
+
+            // Find the distance from the ray origin to the plane along its direction
+            float distance;
+            plane.Raycast(ray, out distance);
+
+            // Get the point on the plane that is distance units away from the ray origin
+
+            Vector3 target = ray.GetPoint(distance);
+
+            // Set the ray origin to the new found point on the plane
+            ray.origin = target;
+
+            return ray;
+        }
+
+        public Ray GetAimRayAfterHumanCheap()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+
+            // Move the ray origin along its direction by the distance between the ray origin and the character
+            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, Cache.Transform.position));
+
+            return ray;
+        }
+
         public override Vector3 GetAimPoint()
         {
             RaycastHit hit;
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = GetAimRayAfterHumanCheap(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
             Vector3 target = ray.origin + ray.direction * 1000f;
             if (Physics.Raycast(ray, out hit, 1000f, AimMask.value))
                 target = hit.point;
             return target;
         }
 
+        public Vector3 GetAimPoint(Vector3 origin, Vector3 direction)
+        {
+            RaycastHit hit;
+            Vector3 target = origin + direction * 1000f;
+            if (Physics.Raycast(origin, direction, out hit, 1000f, AimMask.value))
+                target = hit.point;
+            return target;
+        }
+
+        private Vector2 GetLookAngle(Vector3 target)
+        {
+            Vector3 vector = target - Cache.Transform.position;
+            float angle = -Mathf.Atan2(vector.z, vector.x) * Mathf.Rad2Deg;
+            float verticalAngle = -Mathf.DeltaAngle(angle, Cache.Transform.rotation.eulerAngles.y - 90f);
+            float y = HumanCache.Neck.position.y - target.y;
+            float distance = Util.DistanceIgnoreY(target, HumanCache.Transform.position);
+            float horizontalAngle = Mathf.Atan2(y, distance) * Mathf.Rad2Deg;
+            return new Vector2(horizontalAngle, verticalAngle);
+        }
+
+        
         public bool CanJump()
         {
             return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
@@ -384,6 +450,8 @@ namespace Characters
             Cache.PhotonView.RPC("SetSmokeRPC", RpcTarget.All, new object[] { false });
             PlayAnimation(HumanAnimations.Grabbed);
             ToggleSparks(false);
+            var windEmission = HumanCache.Wind.emission;
+            windEmission.enabled = false;
             if (IsMainCharacter())
                 MusicManager.PlayDeathSong();
         }
@@ -716,6 +784,21 @@ namespace Characters
                 gameObject.AddComponent<HumanPlayerController>();
         }
 
+        public void ReloadHuman(InGameCharacterSettings settings)
+        {
+            FinishSetup = false;
+            Setup.Copy(settings);
+            HookLeft.DisableAnyHook();
+            HookRight.DisableAnyHook();
+
+            if (IsMine())
+            {
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                LoadSkin();
+            }
+            ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
+        }
+
         protected override void Awake()
         {
             if (SceneLoader.SceneName == SceneName.CharacterEditor)
@@ -750,7 +833,7 @@ namespace Characters
             if (IsMine())
             {
                 TargetAngle = Cache.Transform.eulerAngles.y;
-                Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
@@ -772,6 +855,9 @@ namespace Characters
                     Cache.PhotonView.RPC("MountRPC", player, _lastMountMessage);
                 if (BackHuman != null && BackHuman.CarryState == HumanCarryState.Carry)
                     BackHuman.Cache.PhotonView.RPC("CarryRPC", player, new object[] { Cache.PhotonView.ViewID });
+
+                Cache.PhotonView.RPC("SetupRPC", player, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                LoadSkin(player);
             }
         }
 
@@ -1547,6 +1633,51 @@ namespace Characters
             EnableSmartTitans();
         }
 
+        protected void LateUpdateHeadPosition(Vector3 position)
+        {
+            if (position != null)
+            {
+                Vector3 vector = position - Cache.Transform.position;
+                Vector2 angle = GetLookAngle(position);
+
+                // maintain horizontal angle if within buffer zone on left or right.
+                bool isInLeftRange = angle.y > -120 && angle.y < -50;
+                bool isInRightRange = angle.y > 50 && angle.y < 120;
+
+                if (isInLeftRange || isInRightRange)
+                {
+                    angle.y = LastGoodHeadAngle.y;
+                }
+                else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
+                {
+                    // set angle to look at the camera
+                    position = SceneLoader.CurrentCamera.Camera.transform.position;
+                    angle = GetLookAngle(position);
+                    LastGoodHeadAngle = angle;
+                }
+                else
+                {
+                    LastGoodHeadAngle = angle;
+                }
+
+                angle.x = Mathf.Clamp(angle.x, -80f, 30f);
+                angle.y = Mathf.Clamp(angle.y, -80f, 80f);
+
+                HumanCache.Head.rotation = Quaternion.Euler(HumanCache.Head.rotation.eulerAngles.x - angle.x,
+                    HumanCache.Head.rotation.eulerAngles.y + angle.y, HumanCache.Head.rotation.eulerAngles.z);
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+            }
+            else
+            {
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                LastGoodHeadAngle = Vector2.zero;
+            }
+            _oldHeadRotation = HumanCache.Head.localRotation;
+
+            LateUpdateHeadRotation = HumanCache.Head.rotation;
+
+        }
+
         protected override void LateUpdate()
         {
             if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab)
@@ -1554,6 +1685,22 @@ namespace Characters
                 LateUpdateTilt();
                 LateUpdateGun();
                 LateUpdateReelOut();
+                if (Grounded)
+                    LateUpdateHeadPosition(GetAimPoint());
+                else
+                {
+                    LastGoodHeadAngle = Vector2.zero;
+                    LateUpdateHeadRotation = Quaternion.identity;
+                }
+                    
+            }
+            else if (!IsMine())
+            {
+
+
+                HumanCache.Head.rotation = LateUpdateHeadRotationRecv;
+                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                _oldHeadRotation = HumanCache.Head.localRotation;
             }
             base.LateUpdate();
         }
@@ -2131,6 +2278,7 @@ namespace Characters
         protected void SetupItems()
         {
             float cooldown = 10f;
+            Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Black", new Color(0f, 0f, 0f, 0.7f), cooldown));
@@ -2146,7 +2294,7 @@ namespace Characters
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
 
-        protected void LoadSkin()
+        protected void LoadSkin(Player player = null)
         {
             if (IsMine())
             {
@@ -2162,7 +2310,10 @@ namespace Characters
                     {
                         viewID = Horse.gameObject.GetPhotonView().ViewID;
                     }
-                    Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.AllBuffered, new object[] { viewID, url });
+                    if (player == null)
+                        Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                    else
+                        Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                 }
             }
         }

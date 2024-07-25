@@ -84,10 +84,10 @@ namespace UI
         {
             Transform row = ElementFactory.CreateHorizontalGroup(SinglePanel, 0f, TextAnchor.MiddleCenter).transform;
             // player
-            Transform playerRow = ElementFactory.CreateHorizontalGroup(row, 5f, TextAnchor.MiddleCenter).transform;
+            Transform playerRow = ElementFactory.CreateHorizontalGroup(row, 30f, TextAnchor.MiddleCenter).transform;
             ElementFactory.CreateRawImage(playerRow, style, "Icons/Quests/Skull1Icon");
             ElementFactory.CreateRawImage(playerRow, style, "Icons/Game/BladeIcon");
-            ElementFactory.CreateDefaultLabel(playerRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter);
+            ElementFactory.CreateDefaultLabel(playerRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft);
             // score
             ElementFactory.CreateDefaultLabel(row, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter);
             // action
@@ -103,8 +103,11 @@ namespace UI
 
         private void SetRow(Transform row, Player player)
         {
-            // read player props
-            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + player.GetStringProperty(PlayerProperty.Name);
+            string playerName = player.GetStringProperty(PlayerProperty.Name);
+            if (playerName.Length > 15)
+                playerName = playerName.Substring(0, 15) + "...";
+
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + playerName;
             string status = player.GetStringProperty(PlayerProperty.Status);
             string character = player.GetStringProperty(PlayerProperty.Character);
             string loadout = player.GetStringProperty(PlayerProperty.Loadout);

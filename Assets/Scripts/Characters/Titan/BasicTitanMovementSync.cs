@@ -15,12 +15,22 @@ namespace Characters
 
         protected override void SendCustomStream(PhotonStream stream)
         {
-            stream.SendNext(_titan.TargetViewId);
+            if (_titan.AI)
+                stream.SendNext(_titan.TargetViewId);
+            else
+            {
+                stream.SendNext(_titan.LateUpdateHeadRotation);
+            }
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
         {
-            _titan.TargetViewId = (int)stream.ReceiveNext();
+            if (_titan.AI)
+                _titan.TargetViewId = (int)stream.ReceiveNext();
+            else
+            {
+                _titan.LateUpdateHeadRotationRecv = (Quaternion)stream.ReceiveNext();
+            }
         }
     }
 }

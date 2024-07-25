@@ -269,6 +269,7 @@
 			{"Name": "ShiganHouse3"},
 			{"Name": "ShiganHouse4"},
 			{"Name": "Stable1"},
+			{"Name": "Stable2"},
 			{"Name": "Stairs1"},
 			{"Name": "Stairs2"},
 			{"Name": "Tent1"},
@@ -647,8 +648,12 @@
 			{"Name": "HQ2"},
 			{"Name": "PathsMap"},
 			{"Name": "Utgard1"},
-			{"Name": "Utgard2"},
-			{"Name": "Utgard3"}
+			{"Name": "Utgard1b", "Variant": "Utgard1"},
+			{"Name": "Utgard1c", "Variant": "Utgard1"},
+			{"Name": "Utgard1d", "Variant": "Utgard1"},
+			{"Name": "Utgard1e", "Variant": "Utgard1"},
+			{"Name": "Utgard1f", "Variant": "Utgard1"},
+			{"Name": "Utgard2"}
 		]
 	},
 	"Terrain": {

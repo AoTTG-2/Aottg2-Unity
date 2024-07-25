@@ -22,6 +22,11 @@ public class PostProcessingManager : MonoBehaviour
     public void Awake()
     {
         _postProcessingVolume = GetComponent<PostProcessVolume>();
+        if (_postProcessingVolume == null)
+        {
+            Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
+            return;
+        }
         _postProcessingVolume.profile.TryGetSettings(out _ambientOcclusion);
         _postProcessingVolume.profile.TryGetSettings(out _bloom);
         _postProcessingVolume.profile.TryGetSettings(out _chromaticAberration);
@@ -49,6 +54,11 @@ public class PostProcessingManager : MonoBehaviour
     public void SetState(bool state)
     {
         // disable volume
+        if (_postProcessingVolume == null)
+        {
+            Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
+            return;
+        }
         _postProcessingVolume.enabled = state;
     }
 
@@ -62,6 +72,11 @@ public class PostProcessingManager : MonoBehaviour
         MotionBlurLevel mbl,
         WaterFXLevel wfxl)
     {
+        if (_postProcessingVolume == null)
+        {
+            Debug.LogError("PostProcessingManager: No PostProcessVolume component found on this object.");
+            return;
+        }
         SetAmbientOcclusionQuality(aol);
         SetBloomQuality(bl);
         SetChromaticAberrationQuality(cal);

@@ -43,10 +43,7 @@ namespace UI
                         var human = (Human)gameManager.CurrentCharacter;
                         if (!human.Dead && human.State != HumanState.Grab)
                         {
-                            var position = human.Cache.Transform.position;
-                            var rotation = human.Cache.Transform.rotation;
-                            human.DieChangeCharacter();
-                            manager.SpawnPlayerAt(false, position, rotation.eulerAngles.y);
+                            human.ReloadHuman(manager.GetSetHumanSettings());
                         }
                     }
                     else
