@@ -59,7 +59,7 @@ namespace UI
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.AmbientLight, "Ambient light", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.Flashlight, "Flashlight", colorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, set.FogColor, "Fog color", colorPickPopup);
-            ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.FogDensity, "Fog density");
+            ElementFactory.CreateSliderInputSetting(DoublePanelRight, style, set.FogDensity, "Fog density", sliderWidth: 130f, decimalPlaces:3);
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Rain, "Rain");
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Thunder, "Thunder");
             ElementFactory.CreateSliderSetting(DoublePanelRight, style, set.Snow, "Snow");

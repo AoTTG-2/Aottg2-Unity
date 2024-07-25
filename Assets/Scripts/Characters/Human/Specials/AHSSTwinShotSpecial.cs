@@ -29,6 +29,15 @@ namespace Characters
             return false;
         }
 
+        protected override void OnUse()
+        {
+            base.OnUse();
+            var human = (Human)_owner;
+            var weapon = (AmmoWeapon)human.Weapon;
+            if (weapon.RoundLeft >= 0)
+                weapon.RoundLeft = Mathf.Max(0, weapon.RoundLeft - 2);
+        }
+
         protected override void Deactivate()
         {
             var human = (Human)_owner;
@@ -62,7 +71,6 @@ namespace Characters
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);
             human.Cache.Rigidbody.AddForce(-direction * ahssInfo["KnockbackForce"].AsFloat * 2f, ForceMode.VelocityChange);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(true, true);
-            ((AmmoWeapon)human.Weapon).RoundLeft -= 2;
         }
     }
 }

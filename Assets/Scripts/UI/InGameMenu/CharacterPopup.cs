@@ -90,8 +90,24 @@ namespace UI
                         manager.SpawnPlayer(false);
                     InGameManager.UpdateRoundPlayerProperties();
                     InGameManager.OnCharacterChosen();
+                    SaveLastCharacter();
                     Hide();
                     break;
+            }
+        }
+
+        protected void SaveLastCharacter()
+        {
+            var current = SettingsManager.InGameCharacterSettings;
+            var last = SettingsManager.InGameSettings.LastCharacter;
+            if (current.CharacterType.Value == PlayerCharacter.Human)
+            {
+                last.CharacterType.Value = PlayerCharacter.Human;
+                last.Costume.Value = current.Costume.Value;
+                last.CustomSet.Value = current.CustomSet.Value;
+                last.Loadout.Value = current.Loadout.Value;
+                last.Special.Value = current.Special.Value;
+                SettingsManager.InGameSettings.Save();
             }
         }
     }

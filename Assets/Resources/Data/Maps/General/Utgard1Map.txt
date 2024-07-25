@@ -5,7 +5,7 @@ EditorVersion:1.0|Description:Castle Utgard.|HasWeather:1
 /// Objects
 Scene,Geometry/Cuboid,0,0,1,1,1,0,Unnamed,6.330092,-25,0,0,0,0,500,5,500,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|125/125|0/0,;
 Scene,None,1,0,1,1,1,0,Daylight,0,0,0,53.13011,126.8699,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
-Scene,Geometry/Cuboid,1453,0,1,1,1,0,Unnamed,6.330092,-25.1,0,0,0,0,2000,5,2000,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|500/500|0/0,;
+Scene,Geometry/Cuboid,1453,0,1,1,1,0,Unnamed,6.330092,-25.1,0,0,0,0,2000,5,2000,None,Entities,Default,Basic|255/255/255/255|Nature/Grass6|500/500|0/0,;
 Scene,Interact/Supply2,749,0,1,1,1,0,Supply2,6.389218,-0.2607045,-31.26427,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Decor/Gas1,649,0,1,1,1,0,Gas1,125.1736,229.3178,-148.1052,327.6889,4.14334,352.282,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,35,0,1,1,1,0,Human SpawnPoint,-2.371063,1.258487,29.53702,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;

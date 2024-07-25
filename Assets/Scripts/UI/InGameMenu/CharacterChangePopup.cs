@@ -57,6 +57,7 @@ namespace UI
                     }
                     InGameManager.UpdateRoundPlayerProperties();
                     InGameManager.OnCharacterChosen();
+                    SaveLastCharacter();
                     Hide();
                     break;
             }

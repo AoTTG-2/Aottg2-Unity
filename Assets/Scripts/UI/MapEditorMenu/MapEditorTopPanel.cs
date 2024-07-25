@@ -163,6 +163,8 @@ namespace UI
 
         protected void OnEditClick()
         {
+            if (_menu.IsPopupActive())
+                return;
             int index = _dropdownSelection.Value;
             if (index == 0) // undo
                 _gameManager.Undo();
@@ -180,6 +182,8 @@ namespace UI
 
         protected void OnOptionsClick()
         {
+            if (_menu.IsPopupActive())
+                return;
             int index = _dropdownSelection.Value;
             if (index == 0) // editor options
                 _menu.SettingsPopup.Show();
@@ -195,6 +199,8 @@ namespace UI
 
         protected void OnButtonClick(string name)
         {
+            if (_menu.IsPopupActive())
+                return;
             if (name == "AddObject")
                 _menu.AddObjectPopup.Show();
             else if (name == "Camera")

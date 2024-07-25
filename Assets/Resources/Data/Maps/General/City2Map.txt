@@ -126,7 +126,6 @@ Scene,None,2683,0,1,1,1,0,Titan SpawnPoint,491.1699,47.17522,-553.917,0,0,0,1,1,
 Scene,Buildings/House17,2579,0,1,1,1,0,House17,-378.9594,39.85997,112.288,0,0,0,0.8,2.2,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2554,0,1,1,1,0,House20,-364.8167,40.58681,-64.07191,0,179.9651,0,0.95,1.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Stairs2,2930,0,1,1,1,0,Stairs2,-2.938385,10.403,-215.1667,0,180,0,11.53674,7.399996,2.899999,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|2/1|0/0,;
-Scene,General/EditorPointLight,3298,0,1,1,0,0,PointLight,-19.3091,47.53289,-498.5424,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
 Scene,Geometry/Cuboid,1711,0,1,1,1,0,Cuboid,-150.3835,22.26322,-446.3176,0,0,0,14.08051,1,20.2442,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick5|1/0.1|0/0,;
 Scene,Buildings/Stairs2,2933,0,1,1,1,0,Stairs2,-600.779,25.21633,-240.4788,0,0,0,9.8,7.708,2.899999,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|2/1|0/0,;
 Scene,Nature/Tree11,3371,0,1,1,1,0,Tree11,-202.7269,28.59377,-405.7204,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|200/200/100/255,;
@@ -757,7 +756,6 @@ Scene,Geometry/Cylinder,3173,0,1,1,1,0,Cylinder,-377.3289,31.50323,-162.8754,0,0
 Scene,Geometry/Cylinder,3174,0,1,1,1,0,Cylinder,-375.3847,31.50323,-152.9832,0,0,0,0.5,1,0.5,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|0.15/0.15|0/0,;
 Scene,Geometry/Cylinder,3175,0,1,1,1,0,Cylinder,-378.1798,31.50323,-144.6401,0,0,0,0.5,1,0.5,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|0.15/0.15|0/0,;
 Scene,Decor/Flag1,3176,0,1,1,1,0,Flag1,533.2704,57.84776,-4.675601,0,90,0,2,4,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorPointLight,3297,0,1,1,0,0,PointLight,13.16308,47.53289,-498.5424,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
 Scene,Decor/Lantern5,3198,0,1,1,1,0,Lantern5,415.6625,10.33425,-120.1057,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3273,0,1,1,1,0,House20,-261.7776,10.16118,609.3328,0,345,0,1.5,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3274,0,1,1,1,0,House20,-362.056,9.902321,562.512,0,330,0,0.5,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -772,58 +770,14 @@ Scene,Decor/Lantern3,3286,0,1,1,1,0,Lantern3,-498.4291,25.59702,-510.1408,0,315,
 Scene,Decor/Lantern3,3287,0,1,1,1,0,Lantern3,-447.0175,41.00599,-101.8779,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3288,0,1,1,1,0,Lantern3,-447.0175,41.00599,-51.23034,0,270,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3289,0,1,1,1,0,Lantern3,-391.8122,41.00599,99.10932,0,90,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorPointLight,3290,0,1,1,0,0,PointLight,70.2508,47.49399,-446.1453,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3294,0,1,1,0,0,PointLight,217.8895,47.49399,-361.2418,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3296,0,1,1,0,0,PointLight,217.9154,47.49399,-535.288,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
 Scene,Decor/Lantern3,3182,0,1,1,1,0,Lantern3,19.51591,25.59702,-498.7387,0,180,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3185,0,1,1,1,0,Lantern3,-25.48948,25.59702,-498.7387,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorPointLight,3301,0,1,1,0,0,PointLight,-19.3091,47.53289,-319.4474,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3302,0,1,1,0,0,PointLight,13.16308,47.53289,-318.7117,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3305,0,1,1,0,0,PointLight,-77.78275,47.49399,-445.7597,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3306,0,1,1,0,0,PointLight,-225.4239,47.25193,-535.9144,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3309,0,1,1,0,0,PointLight,-225.5826,47.25193,-361.9415,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3311,0,1,1,0,0,PointLight,453.4639,54.70042,-482.5255,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3312,0,1,1,0,0,PointLight,527.0803,54.70042,-484.8799,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3313,0,1,1,0,0,PointLight,527.0803,54.70042,-525.368,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3314,0,1,1,0,0,PointLight,453.9907,54.81952,-527.5356,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3315,0,1,1,0,0,PointLight,609.0567,47.50594,-252.5752,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3316,0,1,1,0,0,PointLight,453.5359,47.48376,-263.108,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3317,0,1,1,0,0,PointLight,-494.1024,47.48376,-505.5264,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3318,0,1,1,0,0,PointLight,-604.8093,62.80713,-126.7484,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3320,0,1,1,0,0,PointLight,-604.8093,62.96646,67.65253,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3321,0,1,1,0,0,PointLight,-391.94,62.92152,93.10162,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3322,0,1,1,0,0,PointLight,-447.1893,62.93967,-44.70882,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3323,0,1,1,0,0,PointLight,-447.1893,62.93967,-107.9268,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3324,0,1,1,0,0,PointLight,-610.0716,32.62679,229.3546,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3326,0,1,1,0,0,PointLight,-297.7922,32.62679,241.8078,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3327,0,1,1,0,0,PointLight,-60.56208,32.62679,301.0926,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3328,0,1,1,0,0,PointLight,57.56137,32.62679,302.4773,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3329,0,1,1,0,0,PointLight,38.824,39.43359,494.5191,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3330,0,1,1,0,0,PointLight,-37.7701,39.43359,494.5191,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3331,0,1,1,0,0,PointLight,415.5931,39.43359,142.4748,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3332,0,1,1,0,0,PointLight,415.5931,39.43359,-119.8639,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3333,0,1,1,0,0,PointLight,115.4118,39.43359,140.7984,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3334,0,1,1,0,0,PointLight,-115.737,39.43359,140.7984,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3335,0,1,1,0,0,PointLight,-145.1781,39.43359,-128.2045,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3336,0,1,1,0,0,PointLight,136.2524,39.43359,-128.3014,0,0,0,2.5,2,2.5,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
 Scene,Buildings/House20,3338,0,1,1,1,0,House20,605.272,10.16118,223.8205,0,75,0,0.6,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,3339,0,1,1,1,0,Barrel4,607.7386,12.80368,312.6742,334.838,298.7407,92.26942,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box2,3340,0,1,1,1,0,Box2,615.4288,10.40578,133.505,0,83.18136,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box1,3341,0,1,1,1,0,Box1,612.2966,10.45856,123.4727,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box1,3342,0,1,1,1,0,Box1,608.6636,10.45856,137.5714,0,251.185,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Barrel4,3343,0,1,1,1,0,Barrel4,602.3456,12.62389,121.3587,292.0136,30.23338,274.1263,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorPointLight,3344,0,1,1,0,0,PointLight,571.4586,32.62679,131.9398,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3345,0,1,1,0,0,PointLight,576.1646,32.62679,0.5724679,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3346,0,1,1,0,0,PointLight,449.7689,32.62679,22.36412,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3347,0,1,1,0,0,PointLight,449.7689,32.62679,-35.21939,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3348,0,1,1,0,0,PointLight,345.4161,32.62679,-155.3534,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3349,0,1,1,0,0,PointLight,436.3954,32.62679,276.0997,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3350,0,1,1,0,0,PointLight,476.2751,32.62679,276.0997,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3351,0,1,1,0,0,PointLight,476.2751,32.62679,207.3211,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3352,0,1,1,0,0,PointLight,275.0804,32.62679,32.90111,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3354,0,1,1,0,0,PointLight,-20.23643,32.62679,-33.95357,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3356,0,1,1,0,0,PointLight,-208.6047,32.62679,38.71468,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
-Scene,General/EditorPointLight,3357,0,1,1,0,0,PointLight,-208.6268,32.62679,-50.27759,0,0,0,2,1.5,2,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/200/100/255|Intensity:2|Range:0;
 Scene,Geometry/SquareTorus,3358,0,1,1,1,0,SquareTorus,-421.2558,39.01694,111.6913,0,0,0,5,1,4,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/1.5|0/0,;
 Scene,Geometry/Cuboid,3359,0,1,1,1,0,Cuboid,-420.9631,36.00102,112.6632,0,0,0,4.8,1,3.8,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal7|1/1|0/0,;
 Scene,FX/WaterCube1,3360,0,1,0,1,0,WaterCube1,-421.3975,38.50496,111.9871,0,0,0,4.8,1,3.8,Region,Characters,Default,DefaultTiled|255/255/255/255|2/2,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10;
@@ -1226,7 +1180,7 @@ Scene,General/EditorDaylight,4024,0,1,1,0,0,Daylight,0,412.5718,0,0,0,0,1,1,1,No
 
 /// Weather
 {
-    "Skybox" : "Dawn1",
+    "Skybox" : "Day1",
     "SkyboxColor" : [
         128,
         128,
@@ -1234,9 +1188,9 @@ Scene,General/EditorDaylight,4024,0,1,1,0,0,Daylight,0,412.5718,0,0,0,0,1,1,1,No
         255
     ],
     "Daylight" : [
-        200,
-        140,
-        0,
+        255,
+        255,
+        255,
         255
     ],
     "DaylightIntensity" : 1,

@@ -234,13 +234,13 @@ namespace UI
 
         private void OnButtonClick(string name)
         {
+            if (_menu.IsPopupActive())
+                return;
             if (name == "Texture")
                 _menu.TexturePopup.Show();
             else if (name == "AddComponent")
             {
-                var components = _gameManager.LogicEvaluator.GetComponentNames();
-                components.Sort();
-                _menu.SelectComponentPopup.ShowLoad(components, "Component", onLoad: () => OnAddComponent());
+                _menu.AddComponentPopup.Show(onLoad: () => OnAddComponent());
             }
             else if (name.StartsWith("DeleteComponent"))
             {
@@ -251,7 +251,7 @@ namespace UI
 
         private void OnAddComponent()
         {
-            string component = _menu.SelectComponentPopup.FinishSetting.Value;
+            string component = _menu.AddComponentPopup.FinishSetting.Value;
             if (!_componentNames.Contains(component))
             {
                 _components.Add(_gameManager.LogicEvaluator.GetComponentSettings(component, new List<string>()));

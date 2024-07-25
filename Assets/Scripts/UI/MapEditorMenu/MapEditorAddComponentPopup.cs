@@ -9,20 +9,23 @@ using System.Collections;
 using ApplicationManagers;
 using GameManagers;
 using Utility;
+using UnityEngine.Events;
 
 namespace UI
 {
     class MapEditorAddComponentPopup : BasePopup
     {
         protected override string Title => string.Empty;
-        protected override float Width => 1155f;
-        protected override float Height => 865f;
+        protected override float Width => 500f;
+        protected override float Height => 600f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
         protected override float TopBarHeight => 65f;
         protected override string DefaultCategoryPanel => "General";
         public StringSetting Search = new StringSetting(string.Empty);
         private InputSettingElement _searchInput;
+        public StringSetting FinishSetting = new StringSetting(string.Empty);
+        private UnityAction _onLoad;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -64,7 +67,21 @@ namespace UI
         protected override void RegisterCategoryPanels()
         {
             foreach (string buttonName in _topButtons.Keys)
-                _categoryPanelTypes.Add(buttonName, typeof(MapEditorAddObjectPanel));
+                _categoryPanelTypes.Add(buttonName, typeof(MapEditorAddComponentPanel));
+        }
+
+        public void Show(UnityAction onLoad)
+        {
+            base.Show();
+            _onLoad = onLoad;
+            RebuildCategoryPanel();
+        }
+
+        public void OnSelectItem(string name)
+        {
+            FinishSetting.Value = name;
+            _onLoad.Invoke();
+            Hide();
         }
 
         private void OnBottomBarButtonClick(string name)

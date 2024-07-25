@@ -22,6 +22,7 @@ namespace UI
             string sub = "General";
             InGameMiscSettings miscSettings = SettingsManager.InGameCurrent.Misc;
             InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
+            InGameCharacterSettings lastCharSettings = SettingsManager.InGameSettings.LastCharacter;
             charSettings.CharacterType.Value = PlayerCharacter.Human;
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
             List<string> loadouts = new List<string>();
@@ -35,18 +36,29 @@ namespace UI
                 loadouts.Add(HumanLoadout.Thunderspears);
             if (loadouts.Count == 0)
                 loadouts.Add(HumanLoadout.Blades);
+            if (lastCharSettings.CharacterType.Value == PlayerCharacter.Human)
+            {
+                charSettings.Special.Value = lastCharSettings.Special.Value;
+                charSettings.Costume.Value = lastCharSettings.Costume.Value;
+                charSettings.CustomSet.Value = lastCharSettings.CustomSet.Value;
+                charSettings.Loadout.Value = lastCharSettings.Loadout.Value;
+            }
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
             List<string> specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(charSettings.Special.Value))
                 charSettings.Special.Value = specials[0];
             string[] options = GetCharOptions();
+            if (charSettings.CustomSet.Value >= options.Length)
+            {
+                charSettings.CustomSet.Value = 0;
+            }
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
                 options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => SyncStatBars());
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(cat, sub, "Costume"),
                 new string[] {"Costume1", "Costume2", "Costume3"}, elementWidth: 180f, optionsWidth: 180f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Loadout"),
-                loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
+                loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => OnLoadoutClick());
             options = specials.ToArray();
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
                 options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
@@ -56,6 +68,17 @@ namespace UI
                new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
             }
             SyncStatBars();
+        }
+
+        protected void OnLoadoutClick()
+        {
+            InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
+            InGameCharacterSettings lastCharSettings = SettingsManager.InGameSettings.LastCharacter;
+            lastCharSettings.Special.Value = charSettings.Special.Value;
+            lastCharSettings.Costume.Value = charSettings.Costume.Value;
+            lastCharSettings.CustomSet.Value = charSettings.CustomSet.Value;
+            lastCharSettings.Loadout.Value = charSettings.Loadout.Value;
+            Parent.RebuildCategoryPanel();
         }
 
         protected void SyncStatBars()

@@ -256,6 +256,8 @@ namespace UI
                     SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
                     SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
                     SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
+                    SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
+                    SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
                     SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                     SettingsManager.MultiplayerSettings.ConnectOffline();
                     CreateGamePopup.StartRoom();

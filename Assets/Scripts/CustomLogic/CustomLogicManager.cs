@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using Cameras;
 using Events;
 using GameManagers;
 using Map;
@@ -32,6 +33,8 @@ namespace CustomLogic
         public static Vector3 CameraVelocity;
         public static Dictionary<string, object> RoomData = new Dictionary<string, object>();
         public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
+        public static HashSet<string> GeneralComponents = new HashSet<string>();
+        public static HashSet<string> InternalComponents = new HashSet<string>();
 
         public override void OnJoinedRoom()
         {
@@ -47,6 +50,21 @@ namespace CustomLogic
             EventManager.OnLoadScene += OnLoadScene;
             EventManager.OnPreLoadScene += OnPreLoadScene;
             BaseLogic = ResourceManager.TryLoadText(ResourcePaths.Modes, "BaseLogic");
+            string[] lines = BaseLogic.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].StartsWith("# general") || lines[i].StartsWith("# internal"))
+                {
+                    if (i < lines.Length - 1 && lines[i + 1].StartsWith("component"))
+                    {
+                        string component = lines[i + 1].Substring("component ".Length).Trim();
+                        if (lines[i].StartsWith("# general"))
+                            GeneralComponents.Add(component);
+                        else if (lines[i].StartsWith("# internal"))
+                            InternalComponents.Add(component);
+                    }
+                }
+            }
         }
 
         private static void OnPreLoadScene(SceneName sceneName)

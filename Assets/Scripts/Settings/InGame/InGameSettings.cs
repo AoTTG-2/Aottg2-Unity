@@ -7,5 +7,6 @@ namespace Settings
     {
         protected override string FileName { get { return "InGame.json"; } }
         public SetSettingsContainer<InGameSet> InGameSets = new SetSettingsContainer<InGameSet>();
+        public InGameCharacterSettings LastCharacter = new InGameCharacterSettings();
     }
 }

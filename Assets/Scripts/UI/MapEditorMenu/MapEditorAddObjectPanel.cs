@@ -30,13 +30,9 @@ namespace UI
             string category = popup.GetCurrentCategoryName();
             string search = popup.Search.Value;
             List<string> prefabs;
-            if (search == string.Empty)
-                prefabs = GetItems(category);
-            else
-            {
-                prefabs = GetItems("All");
+            prefabs = GetItems(category);
+            if (search != string.Empty)
                 prefabs = Filter(prefabs, search);
-            }
             var rows = Util.GroupItems(prefabs, Columns);
             foreach (var row in rows)
                 CreateRow(row);
