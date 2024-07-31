@@ -1045,6 +1045,14 @@ namespace Characters
 
                 if (isInLeftRange || isInRightRange)
                 {
+                    // if we were in front of the character before hitting the buffer zone, use the camera for the yaw, otherwise it will use the the ray.
+                    if (LastGoodHeadAngle.y < -50 || LastGoodHeadAngle.y > 50)
+                    {
+                        // set angle to look at the camera
+                        position = SceneLoader.CurrentCamera.Camera.transform.position;
+                        angle = GetLookAngle(position);
+                    }
+
                     angle.y = LastGoodHeadAngle.y;
                     LastGoodHeadAngle.x = angle.x;
                 }
