@@ -30,8 +30,8 @@ namespace Characters
         protected string _runAnimation;
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
-        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
@@ -1135,11 +1135,13 @@ namespace Characters
                 }
                 else
                 {
-                    BasicCache.Head.rotation = LateUpdateHeadRotationRecv;
-                    BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
-                    _oldHeadRotation = BasicCache.Head.localRotation;
+                    if (LateUpdateHeadRotationRecv != null)
+                    {
+                        BasicCache.Head.rotation = (Quaternion)LateUpdateHeadRotationRecv;
+                        BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                        _oldHeadRotation = BasicCache.Head.localRotation;
+                    }
                 }
-                
             }
             if (_leftArmDisabled)
             {

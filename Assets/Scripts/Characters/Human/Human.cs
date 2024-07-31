@@ -96,8 +96,8 @@ namespace Characters
             PhysicsLayer.MapObjectAll);
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
-        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -162,13 +162,6 @@ namespace Characters
 
             // Define a plane at the characters position facing towards the camera's forward direction
             Plane plane = new Plane(ray.direction, Cache.Transform.position);
-
-            // Visualize this plane by drawing 4 lines and a 5th normal line
-            Debug.DrawRay(Cache.Transform.position, ray.direction * 1000f, Color.red);
-            Debug.DrawRay(Cache.Transform.position, plane.normal * 1000f, Color.green);
-            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(ray.direction, plane.normal) * 1000f, Color.blue);
-            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(Vector3.Cross(ray.direction, plane.normal), ray.direction) * 1000f, Color.yellow);
-
 
             // Find the distance from the ray origin to the plane along its direction
             float distance;
@@ -1690,17 +1683,18 @@ namespace Characters
                 else
                 {
                     LastGoodHeadAngle = Vector2.zero;
-                    LateUpdateHeadRotation = Quaternion.identity;
+                    LateUpdateHeadRotation = null;
                 }
                     
             }
             else if (!IsMine())
             {
-
-
-                HumanCache.Head.rotation = LateUpdateHeadRotationRecv;
-                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
-                _oldHeadRotation = HumanCache.Head.localRotation;
+                if (LateUpdateHeadRotationRecv != null)
+                {
+                    HumanCache.Head.rotation = (Quaternion)LateUpdateHeadRotationRecv;
+                    HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                    _oldHeadRotation = HumanCache.Head.localRotation;
+                }
             }
             base.LateUpdate();
         }
