@@ -1107,27 +1107,35 @@ namespace Characters
             if (IsMine())
             {
                 bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
-                if (AI == false && canLook)
+                if (AI)
                 {
-                    LateUpdateHeadPosition(GetAimPoint());
-                }
-                else if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
+                    if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
                     && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook)
-                {
-                    var character = (BaseCharacter)TargetEnemy;
-                    TargetViewId = character.Cache.PhotonView.ViewID;
-                    LateUpdateHead(character);
+                    {
+                        var character = (BaseCharacter)TargetEnemy;
+                        TargetViewId = character.Cache.PhotonView.ViewID;
+                        LateUpdateHead(character);
+                    }
+                    else
+                    {
+                        TargetViewId = -1;
+                        LateUpdateHead(null);
+                    }
                 }
                 else
                 {
-                    TargetViewId = -1;
-                    LateUpdateHead(null);
+                    if (canLook)
+                        LateUpdateHeadPosition(GetAimPoint());
+                    else
+                        LateUpdateHeadRotation = null;
                 }
+
                 if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
             }
             else
             {
+                bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
                 if (AI)
                 {
                     var character = Util.FindCharacterByViewId(TargetViewId);
@@ -1135,7 +1143,7 @@ namespace Characters
                 }
                 else
                 {
-                    if (LateUpdateHeadRotationRecv != null)
+                    if (LateUpdateHeadRotationRecv != null && canLook)
                     {
                         BasicCache.Head.rotation = (Quaternion)LateUpdateHeadRotationRecv;
                         BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);

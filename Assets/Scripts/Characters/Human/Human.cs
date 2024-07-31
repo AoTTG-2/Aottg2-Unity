@@ -1626,6 +1626,28 @@ namespace Characters
             EnableSmartTitans();
         }
 
+        private void lookAtTarget(Vector3 target)
+        {
+            Transform chestT = HumanCache.Chest;
+            Transform spineT = HumanCache.Spine;
+
+            float dx = target.x - base.transform.position.x;
+            float dz = target.z - base.transform.position.z;
+            float xAngle = Mathf.Sqrt(dx * dx + dz * dz);
+
+            HumanCache.Head.rotation = chestT.rotation;
+            Vector3 targetRay = target - base.transform.position;
+            float yaw = 0f - Mathf.DeltaAngle((0f - Mathf.Atan2(targetRay.z, targetRay.x)) * 57.29578f, base.transform.rotation.eulerAngles.y - 90f);
+            float pitch = Mathf.Atan2(spineT.position.y - target.y, yaw) * 57.29578f;
+
+            yaw = Mathf.Clamp(yaw, -40f, 40f);
+            pitch = Mathf.Clamp(pitch, -40f, 30f);
+
+            HumanCache.Head.rotation = Quaternion.Euler(chestT.rotation.eulerAngles.x + pitch, chestT.rotation.eulerAngles.y + yaw, chestT.rotation.eulerAngles.z);
+            HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 12);
+            chestT.rotation = HumanCache.Head.localRotation;
+        }
+
         protected void LateUpdateHeadPosition(Vector3 position)
         {
             if (position != null)
@@ -1679,7 +1701,10 @@ namespace Characters
                 LateUpdateGun();
                 LateUpdateReelOut();
                 if (Grounded)
-                    LateUpdateHeadPosition(GetAimPoint());
+                {
+                    var aimPoint = GetAimPoint();
+                    LateUpdateHeadPosition(aimPoint);
+                }
                 else
                 {
                     LastGoodHeadAngle = Vector2.zero;
