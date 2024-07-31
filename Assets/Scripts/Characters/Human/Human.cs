@@ -1718,6 +1718,7 @@ namespace Characters
                 {
                     LastGoodHeadAngle = Vector2.zero;
                     LateUpdateHeadRotation = null;
+                    _oldHeadRotation = HumanCache.Head.localRotation;
                 }
                     
             }

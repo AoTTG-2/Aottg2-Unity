@@ -1135,7 +1135,10 @@ namespace Characters
                     if (canLook)
                         LateUpdateHeadPosition(GetAimPoint());
                     else
+                    {
                         LateUpdateHeadRotation = null;
+                        _oldHeadRotation = BasicCache.Head.localRotation;
+                    }
                 }
 
                 if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
