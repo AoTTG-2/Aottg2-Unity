@@ -4,7 +4,8 @@
 		{"Name": "david_moses", "Volume": 1},
 		{"Name": "meownist_settings", "Volume": 1},
 		{"Name": "blood_god_dakros_departure", "Volume": 1},
-		{"Name": "ertinos_up_there", "Volume": 1}
+		{"Name": "ertinos_up_there", "Volume": 1},
+		{"Name": "raivaru_missing", "Volume": 1}
 
 	],
 	"Default.Ordered": [
@@ -18,7 +19,15 @@
 		{"Name": "dakros_origin", "Volume": 1},
 		{"Name": "ertinos_wandering", "Volume": 1},
 		{"Name": "meownist_forest", "Volume": 1},
-		{"Name": "nadimd_flying", "Volume": 1}
+		{"Name": "nadimd_flying", "Volume": 1},
+		{"Name": "ertinos_up_there", "Volume": 1},
+		{"Name": "green_another_dawn", "Volume": 1},
+		{"Name": "green_foul_omens", "Volume": 1},
+		{"Name": "green_sorrowful_plight", "Volume": 1},
+		{"Name": "green_uneasy_respite", "Volume": 1},
+		{"Name": "raivaru_warm_breeze", "Volume": 1},
+		{"Name": "warmmoistbeans_the_stillness_between", "Volume": 1}
+
 	],
 	"Battle": [
 		{"Name": "big_bobby_battle", "Volume": 1},
