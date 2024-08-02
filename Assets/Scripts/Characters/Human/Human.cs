@@ -1709,7 +1709,7 @@ namespace Characters
                 LateUpdateTilt();
                 LateUpdateGun();
                 LateUpdateReelOut();
-                if (Grounded)
+                if (Grounded && State != HumanState.Attack && State != HumanState.SpecialAttack)
                 {
                     var aimPoint = GetAimPoint();
                     LateUpdateHeadPosition(aimPoint);

@@ -1117,8 +1117,14 @@ namespace Characters
                 bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
                 if (AI)
                 {
-                    if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
-                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook)
+                    var canTarget = false;
+                    if (TargetEnemy != null)
+                    {
+                        canTarget = TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
+                                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f
+                                    && canLook;
+                    }
+                    if (canTarget)
                     {
                         var character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;

@@ -11,7 +11,7 @@ namespace Characters
 
         public ShifterTransformSpecial(BaseCharacter owner, string shifter): base(owner)
         {
-            Cooldown = 60f;
+            Cooldown = 5f;
             _shifter = shifter;
             SetCooldownLeft(Cooldown);
         }

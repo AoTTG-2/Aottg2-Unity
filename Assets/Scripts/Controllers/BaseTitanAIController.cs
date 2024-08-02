@@ -11,6 +11,7 @@ using System.Collections;
 using Map;
 using UnityEngine.TextCore.Text;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 
 namespace Controllers
 {
@@ -366,7 +367,11 @@ namespace Controllers
 
         protected float GetEnemyAngle(ITargetable enemy)
         {
-            Vector3 direction = (enemy.GetPosition() - _character.Cache.Transform.position);
+            Vector3 direction;
+            if (enemy == null)
+                direction = _character.Cache.Transform.forward;
+            else
+                direction = (enemy.GetPosition() - _character.Cache.Transform.position);
             direction.y = 0f;
             return Mathf.Abs(Vector3.Angle(_character.Cache.Transform.forward, direction.normalized));
         }
@@ -549,7 +554,7 @@ namespace Controllers
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
             _moveAngle = Random.Range(-45f, 45f);
-            if (_usePathfinding && avoidCollisions)
+            if (_usePathfinding && avoidCollisions && _enemy != null)
                 _titan.TargetAngle = GetAgentNavAngle(_enemy.GetPosition());
             else
                 TargetEnemy();
