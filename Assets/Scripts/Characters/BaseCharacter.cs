@@ -54,12 +54,14 @@ namespace Characters
 
         public virtual Vector3 GetPosition()
         {
-            return Cache.Transform.position;
+            if (Cache != null && Cache.Transform != null)
+                return Cache.Transform.position;
+            return Vector3.zero;
         }
 
         public virtual bool ValidTarget()
         {
-            return !Dead;
+            return this?.Dead ?? false == false;
         }
 
         public bool IsMine()

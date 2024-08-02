@@ -586,7 +586,7 @@ namespace Characters
             }
             else if (_currentAttackAnimation == BasicAnimations.JumpCrawler)
             {
-                if (TargetEnemy != null)
+                if (TargetEnemy != null && TargetEnemy.ValidTarget())
                 {
                     Vector3 to = TargetEnemy.GetPosition() - BasicCache.Head.position;
                     float time = to.magnitude / JumpForce;
@@ -872,7 +872,7 @@ namespace Characters
                 Vector3 hand = BasicCache.HandRHitbox.transform.position;
                 if (AI)
                 {
-                    if (TargetEnemy != null)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
                     {
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
@@ -1118,9 +1118,9 @@ namespace Characters
                 if (AI)
                 {
                     var canTarget = false;
-                    if (TargetEnemy != null)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
                     {
-                        canTarget = TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
+                        canTarget = TargetEnemy is BaseCharacter && !IsCrawler
                                     && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f
                                     && canLook;
                     }
