@@ -1662,7 +1662,7 @@ component Bell
                 {
                     difference = titan.Position - self.MapObject.Position;
                     if (difference.Magnitude < self.LureRadius) {
-                        titan.Target(sender.character, self.LureDuration);
+                        titan.Target(sender.Character, self.LureDuration);
                     }
                 }
             }
