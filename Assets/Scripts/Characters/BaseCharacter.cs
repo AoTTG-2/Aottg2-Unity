@@ -61,7 +61,9 @@ namespace Characters
 
         public virtual bool ValidTarget()
         {
-            return this?.Dead ?? false == false;
+            if (this == null)
+                return false;
+            return !Dead;
         }
 
         public bool IsMine()

@@ -557,11 +557,6 @@ namespace Controllers
 
         protected void TargetEnemy()
         {
-            if (_enemy == null || _enemy.ValidTarget() == false)
-            {
-                Idle();
-                return;
-            }
             _titan.TargetAngle = GetChaseAngle(_enemy.GetPosition(), _enemyDistance > ChaseAngleMinRange);
         }
 
@@ -614,7 +609,7 @@ namespace Controllers
             ITargetable nearestCharacter = null;
             foreach (BaseCharacter character in _detection.Enemies)
             {
-                if (character == null || !character.ValidTarget())
+                if (character == null || character.Dead)
                     continue;
                 float distance = Vector3.Distance(character.Cache.Transform.position, position);
                 if (distance < nearestDistance)
