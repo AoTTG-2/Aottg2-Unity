@@ -1656,7 +1656,7 @@ component Bell
             self._soundTransform.StopSound();
             self._soundTransform.PlaySound();
             self._currentResetTime = self.ResetDelay;
-            if (self.LureTitans && Network.IsMasterClient)
+            if (self.LureTitans && Network.IsMasterClient && sender.Character.Type == "Human")
             {
                 for (titan in Game.Titans)
                 {
