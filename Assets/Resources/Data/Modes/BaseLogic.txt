@@ -2129,12 +2129,16 @@ component Wagon
     _collidingRide = false;
     _collidingGas = false;
     _rigidbody = null;
+    _leftWheel = null;
+    _rightWheel = null;
 
     function Init()
     {
         self._horse = self.MapObject.GetTransform("Horse");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
+        self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
+        self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
     }
 
     function OnNetworkMessage(sender, message)
@@ -2205,6 +2209,28 @@ component Wagon
         self._collidingDrive = false;
         self._collidingRide = false;
         self._collidingGas = false;
+
+        if (self._leftWheel != null && self._rightWheel != null)
+        {
+            L = Vector3.Distance(self._leftWheel.Position, self._rightWheel.Position);
+            r = self._leftWheel.Scale.Y / 2;
+
+            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.GetVelocity());
+            angularVelocity = self._rigidbody.GetAngularVelocity();
+            
+            v_x = localVelocity.Z;
+            omega = angularVelocity.Y;
+
+            leftWheelRotationSpeed = (v_x - (L / 2) * omega) / r;
+            rightWheelRotationSpeed = (v_x + (L / 2) * omega) / r;
+
+            leftWheelRotation = leftWheelRotationSpeed * Time.TickTime * Math.Rad2Deg * 0.5; # Character moves too fast for irl physics
+            rightWheelRotation = rightWheelRotationSpeed * Time.TickTime * Math.Rad2Deg * 0.5;
+
+            self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
+            self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
+
+        }
     }
 
     function OnFrame()
