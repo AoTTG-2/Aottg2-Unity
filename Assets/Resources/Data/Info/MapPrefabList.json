@@ -518,6 +518,7 @@
 			{"Name": "Veranda2"},
 			{"Name": "WallFacade1"},
 			{"Name": "Wagon1"},
+			{"Name": "Wagon1a", "Variant":"Wagon1"},
 			{"Name": "WindmillBG1"},
 			{"Name": "Window1"},
 			{"Name": "Window2"},
