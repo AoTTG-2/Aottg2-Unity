@@ -84,6 +84,11 @@ namespace CustomLogic
                 var direction = (CustomLogicVector3Builtin)parameters[0];
                 return new CustomLogicVector3Builtin(Value.InverseTransformDirection(direction.Value));
             }
+            if (methodName == "InverseTransformPoint")
+            {
+                var point = (CustomLogicVector3Builtin)parameters[0];
+                return new CustomLogicVector3Builtin(Value.InverseTransformPoint(point.Value));
+            }
             if (methodName == "Rotate")
             {
                 var rotation = (CustomLogicVector3Builtin)parameters[0];

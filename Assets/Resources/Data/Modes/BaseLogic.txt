@@ -2131,6 +2131,8 @@ component Wagon
     _rigidbody = null;
     _leftWheel = null;
     _rightWheel = null;
+    _leftSitTransform = null;
+    _rightSitTransform = null;
 
     function Init()
     {
@@ -2139,6 +2141,8 @@ component Wagon
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
         self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
+        self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
+        self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
     }
 
     function OnNetworkMessage(sender, message)
@@ -2335,8 +2339,8 @@ component Wagon
                 {
                     self._riding = true;
                     self._human = self._collidingHuman;
-                    posA = Vector3(-1.0, 1.78, -3.5);
-                    posB = Vector3(1.0, 1.78, 1.0);
+                    posA = self._leftSitTransform.LocalPosition; # Vector3(-1.0, 1.78, -3.5);
+                    posB = self._rightSitTransform.LocalPosition; # Vector3(1.0, 1.78, 1.0);
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
                 }
             }
