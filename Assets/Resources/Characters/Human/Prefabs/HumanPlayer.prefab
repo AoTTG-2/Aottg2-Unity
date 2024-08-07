@@ -16579,8 +16579,6 @@ MonoBehaviour:
   IsWalk: 0
   _targetRotation: {x: 0, y: 0, z: 0, w: 0}
   LastGoodHeadAngle: {x: 0, y: 0}
-  LateUpdateHeadRotation: {x: 0, y: 0, z: 0, w: 1}
-  LateUpdateHeadLocalRotation: {x: 0, y: 0, z: 0, w: 1}
   StandAnimation: 
   AttackAnimation: 
   _gunArmAim: 0
@@ -16603,8 +16601,6 @@ MonoBehaviour:
   Disabled: 0
   _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
-  _correctHeadRotation: {x: 0, y: 0, z: 0, w: 1}
-  _correctHeadLocalRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &3902152229338984631
 MonoBehaviour:
   m_ObjectHideFlags: 0

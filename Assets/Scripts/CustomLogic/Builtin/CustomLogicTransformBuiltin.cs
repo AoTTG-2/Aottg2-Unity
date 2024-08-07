@@ -79,6 +79,22 @@ namespace CustomLogic
                 emission.enabled = (bool)parameters[0];
                 return null;
             }
+            if (methodName == "InverseTransformDirection")
+            {
+                var direction = (CustomLogicVector3Builtin)parameters[0];
+                return new CustomLogicVector3Builtin(Value.InverseTransformDirection(direction.Value));
+            }
+            if (methodName == "InverseTransformPoint")
+            {
+                var point = (CustomLogicVector3Builtin)parameters[0];
+                return new CustomLogicVector3Builtin(Value.InverseTransformPoint(point.Value));
+            }
+            if (methodName == "Rotate")
+            {
+                var rotation = (CustomLogicVector3Builtin)parameters[0];
+                Value.Rotate(rotation.Value);
+                return null;
+            }
             return base.CallMethod(methodName, parameters);
         }
 
@@ -105,6 +121,11 @@ namespace CustomLogic
                     _needSetLocalRotation = false;
                 }
                 return new CustomLogicVector3Builtin(_internalLocalRotation);
+            }
+            if (name == "Scale")
+            {
+                var scale = Value.localScale;
+                return new CustomLogicVector3Builtin(scale);
             }
             if (name == "Forward")
                 return new CustomLogicVector3Builtin(Value.forward.normalized);
@@ -133,6 +154,8 @@ namespace CustomLogic
                 _needSetLocalRotation = false;
                 Value.localRotation = Quaternion.Euler(_internalLocalRotation);
             }
+            else if (name == "Scale")
+                Value.localScale = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Forward")
                 Value.forward = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Up")

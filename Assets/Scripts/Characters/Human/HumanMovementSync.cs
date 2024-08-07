@@ -21,7 +21,7 @@ namespace Characters
 
         protected override void ReceiveCustomStream(PhotonStream stream)
         {
-            _human.LateUpdateHeadRotationRecv = (Quaternion)stream.ReceiveNext();
+            _human.LateUpdateHeadRotationRecv = (Quaternion?)stream.ReceiveNext();
         }
 
         protected override void Update()

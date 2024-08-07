@@ -29,7 +29,7 @@ namespace Characters
                 _titan.TargetViewId = (int)stream.ReceiveNext();
             else
             {
-                _titan.LateUpdateHeadRotationRecv = (Quaternion)stream.ReceiveNext();
+                _titan.LateUpdateHeadRotationRecv = (Quaternion?)stream.ReceiveNext();
             }
         }
     }

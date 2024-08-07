@@ -1012,7 +1012,6 @@ MonoBehaviour:
   SprintStaminaRecover: 0.7
   SprintStaminaConsumption: 1
   CurrentSprintStamina: 5
-  TargetEnemy: {fileID: 0}
   AttackSpeedMultiplier: 1
   RunSpeedBase: 0
   WalkSpeedBase: 0
