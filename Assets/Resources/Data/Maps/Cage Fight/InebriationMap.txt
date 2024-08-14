@@ -1,0 +1,421 @@
+/// Options
+EditorVersion:1.0|Description:Rival groups begin to party too hard.|HasWeather:0
+/// CustomAssets
+
+/// Objects
+Scene,Geometry/Cuboid,0,0,1,1,1,0,Unnamed,0,-25,0,0,0,0,200,5,150,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|25/25|0/0,;
+Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,250,0,53.13011,126.8699,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:255/255/255/255|Intensity:1|WeatherControlled:true;
+Scene,Geometry/Cylinder,2,0,1,1,1,0,Cylinder,362,0,0,0,0,0,60,1,60,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick5|5/5|0/0,;
+Scene,Geometry/Tube,3,0,1,1,1,0,Tube,362,0,0,0,0,0,60,10,60,Physical,Entities,Default,Basic|200/200/255/255|Brick/Brick8|1/10|0/0,;
+Scene,FX/WaterCube1,6,0,1,0,1,0,WaterCube1,355.4323,15,-14.39082,0,0,0,50.5,2,51,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|DampingForce:0.3|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10|WaveDistance:20|WaveSpeed:500|NoiseStrength:5|NoiseWalk:1|Scale:2;
+Scene,Geometry/Tube,10,0,1,1,1,0,Tube,-362,0,0,0,0,0,60,10,60,Physical,Entities,Default,Basic|255/200/200/255|Brick/Brick8|1/10|0/0,;
+Scene,Geometry/Cylinder,11,0,1,1,1,0,Cylinder,-362,0,0,0,0,0,60,1,60,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick5|5/5|0/0,;
+Scene,FX/WaterCube1,12,0,1,0,1,0,WaterCube1,-368.4633,15,-14.39082,0,0,0,50.5,2,51,Region,Characters,Default,DefaultTiled|255/255/255/255|1/1,WaterPhysics|Enabled:true|MinSkipSpeed:100|SurfaceHeight:0.2|SurfaceVerticalDrag:0.7|SurfaceHorizontalDrag:0.85|SunkenDrag:0.5|DampingForce:0.3|SunkenGravity:18|DisableHooks:true|SupportDrowning:true|TimeToDrown:10|WaveDistance:20|WaveSpeed:500|NoiseStrength:5|NoiseWalk:1|Scale:2;
+Scene,Decor/Fountain1a,13,0,1,1,1,0,Fountain1a,362,12,-10,0,0,0,6,7,6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fountain1a,14,0,1,1,1,0,Fountain1a,-362,12,-10,0,0,0,6,7,6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree23,17,0,1,1,1,0,Tree23,-580,0,-350,0,0,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Tree23,18,0,1,1,1,0,Tree23,480,0,340,0,0,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Goober1,20,0,1,1,1,0,Goober1,480,20.95875,-170,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Torus,21,0,1,1,1,0,Torus,480,25.55239,-168.9314,0,0,0,1,1,1,Physical,Entities,Default,Basic|100/255/100/255|Metal/Metal2|1/1|0/0,;
+Scene,Geometry/Torus,22,0,1,1,1,0,Torus,-480,25.55239,-168.9314,0,0,0,1,1,1,Physical,Entities,Default,Basic|100/255/100/255|Metal/Metal2|1/1|0/0,;
+Scene,Decor/Goober1,23,0,1,1,1,0,Goober1,-480,20.95875,-170,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Torus,24,0,1,1,1,0,Torus,260.7564,25.55239,69.62219,0,135,0,1,1,1,Physical,Entities,Default,Basic|100/255/100/255|Metal/Metal2|1/1|0/0,;
+Scene,Decor/Goober1,25,0,1,1,1,0,Goober1,260,20.95875,70.37781,0,135,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Torus,26,0,1,1,1,0,Torus,-260,25.55239,69.62219,0,135,0,1,1,1,Physical,Entities,Default,Basic|100/255/100/255|Metal/Metal2|1/1|0/0,;
+Scene,Decor/Goober1,27,0,1,1,1,0,Goober1,-260,20.95875,70.37781,0,225,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/WaterBarrel1,28,0,1,0,1,1,WaterBarrel1,270,22,-130,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBarrel1,29,0,1,0,1,1,WaterBarrel1,-270,22,-130,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,30,0,1,0,1,1,WaterBox1,440,24,40,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,31,0,1,0,1,1,WaterBox1,-440,24,40,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,32,0,1,0,1,1,WaterBox1,190,24,-50,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,33,0,1,0,1,1,WaterBox1,-190,24,-50,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBarrel1,34,0,1,0,1,1,WaterBarrel1,510,22,-70,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBarrel1,35,0,1,0,1,1,WaterBarrel1,-510,22,-70,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBarrel1,36,0,1,0,1,1,WaterBarrel1,360,22,130,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBarrel1,37,0,1,0,1,1,WaterBarrel1,-360,22,130,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,38,0,1,0,1,1,WaterBox1,340,24,-180,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,FX/WaterBox1,39,0,1,0,1,1,WaterBox1,-340,24,-180,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false,Floater|Enabled:true|DepthBeforeFloating:3|DisplacementAmount:2|Drag:0.7|AngularDrag:1;
+Scene,Geometry/Tube,40,0,1,1,0,0,Tube,362,100,0,0,0,0,68,20,68,Physical,Characters,Default,Basic|200/200/255/255|Brick/Brick8|1/10|0/0,;
+Scene,Geometry/Cylinder,41,0,1,1,0,0,Cylinder,362,180,0,0,0,0,62,1,62,Physical,Characters,Default,Basic|255/255/255/255|Brick/Brick5|5/5|0/0,;
+Scene,Geometry/Tube,42,0,1,1,0,0,Tube,-362,100,0,0,0,0,68,20,68,Physical,Characters,Default,Basic|200/200/255/255|Brick/Brick8|1/10|0/0,;
+Scene,Geometry/Cylinder,43,0,1,1,0,0,Cylinder,-362,180,0,0,0,0,62,1,62,Physical,Characters,Default,Basic|255/255/255/255|Brick/Brick5|5/5|0/0,;
+Scene,General/EditorHumanSpawnPointBlue,44,0,1,1,0,0,Human SpawnPoint (blue),361.3539,54.83071,-16.19711,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,45,0,1,1,0,0,Human SpawnPoint (blue),361.1581,55.30634,-1.381378,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,46,0,1,1,0,0,Human SpawnPoint (blue),368.8014,54.83071,-8.116233,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointBlue,47,0,1,1,0,0,Human SpawnPoint (blue),353.4033,54.83071,-8.116233,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
+Scene,General/EditorHumanSpawnPointRed,48,0,1,1,0,0,Human SpawnPoint (red),-363.0161,54.64323,-16.09174,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointRed,49,0,1,1,0,0,Human SpawnPoint (red),-354.8131,54.64323,-8.210936,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointRed,50,0,1,1,0,0,Human SpawnPoint (red),-370.4717,54.64323,-8.210936,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,General/EditorHumanSpawnPointRed,51,0,1,1,0,0,Human SpawnPoint (red),-363.489,54.64323,-1.101125,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Tag|Name:HumanSpawnPointRed;
+Scene,Interact/Supply2,53,0,1,1,1,0,Supply2,-100,37.5,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Interact/Supply2,54,0,1,1,1,0,Supply2,100,37.5,-8.162543E-06,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,General/EditorTitanSpawnPoint,55,0,1,1,0,0,Titan A,370,30,-210,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,56,0,1,1,0,0,Titan B,-370,30,-210,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,57,0,1,1,0,0,Titan A,430,30,-140,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,58,0,1,1,0,0,Titan B,-430,30,-140,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,59,0,1,1,0,0,Titan A,290,30,-180,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,60,0,1,1,0,0,Titan B,-290,30,-180,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,61,0,1,1,0,0,Titan A,340,30,-120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,62,0,1,1,0,0,Titan B,-340,30,-120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,63,0,1,1,0,0,Titan A,400,30,-90,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,64,0,1,1,0,0,Titan B,-400,30,-90,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,65,0,1,1,0,0,Titan A,500,30,-120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,66,0,1,1,0,0,Titan B,-500,30,-120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,67,0,1,1,0,0,Titan A,460,30,-50,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,68,0,1,1,0,0,Titan B,-460,30,-50,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,69,0,1,1,0,0,Titan A,560,30,-70,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,70,0,1,1,0,0,Titan B,-560,30,-70,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,71,0,1,1,0,0,Titan A,220,30,-150,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,72,0,1,1,0,0,Titan B,-220,30,-150,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,73,0,1,1,0,0,Titan A,170,30,-90,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,74,0,1,1,0,0,Titan B,-170,30,-90,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,75,0,1,1,0,0,Titan A,240,30,-70,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,76,0,1,1,0,0,Titan B,-240,30,-70,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,77,0,1,1,0,0,Titan A,300,30,-100,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,78,0,1,1,0,0,Titan B,-300,30,-100,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,79,0,1,1,0,0,Titan A,210,30,-10,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,80,0,1,1,0,0,Titan B,-210,30,-10,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,81,0,1,1,0,0,Titan A,180,30,50,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,82,0,1,1,0,0,Titan B,-180,30,50,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,83,0,1,1,0,0,Titan A,270,30,20,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,84,0,1,1,0,0,Titan B,-270,30,20,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,85,0,1,1,0,0,Titan A,530,30,10,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,86,0,1,1,0,0,Titan B,-530,30,10,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,87,0,1,1,0,0,Titan A,500,30,-20,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,88,0,1,1,0,0,Titan B,-500,30,-20,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,89,0,1,1,0,0,Titan A,550,30,60,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,90,0,1,1,0,0,Titan B,-550,30,60,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,91,0,1,1,0,0,Titan A,470,30,60,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,92,0,1,1,0,0,Titan B,-470,30,60,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,93,0,1,1,0,0,Titan A,500,30,110,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,94,0,1,1,0,0,Titan B,-500,30,110,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,95,0,1,1,0,0,Titan A,230,30,120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,96,0,1,1,0,0,Titan B,-230,30,120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,97,0,1,1,0,0,Titan A,330,30,80,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,98,0,1,1,0,0,Titan B,-330,30,80,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,99,0,1,1,0,0,Titan A,400,30,120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,100,0,1,1,0,0,Titan B,-400,30,120,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,101,0,1,1,0,0,Titan A,450,30,140,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,102,0,1,1,0,0,Titan B,-450,30,140,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,103,0,1,1,0,0,Titan A,300,30,170,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,104,0,1,1,0,0,Titan B,-300,30,170,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,105,0,1,1,0,0,Titan A,380,30,180,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,106,0,1,1,0,0,Titan B,-380,30,180,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,Buildings/Building3,107,0,1,1,1,0,Building3,470,-100.05,800,0,270,0,10,8,17,Physical,Entities,Default,Default|255/200/200/255,;
+Scene,Buildings/Building3,108,0,1,1,1,0,Building3,-470,-99.95,800,0,270,0,10,8,17,Physical,Entities,Default,Default|200/200/255/255,;
+Scene,Buildings/Building3,109,0,1,1,1,0,Building3,-470,-99.95,-800,0,89.99988,0,10,8,17,Physical,Entities,Default,Default|255/200/200/255,;
+Scene,Buildings/Building3,110,0,1,1,1,0,Building3,470,-100.05,-800,0,90,0,10,8,17,Physical,Entities,Default,Default|200/200/255/255,;
+Scene,Buildings/Building3,111,0,1,1,1,0,Building3,950,-100.05,-450,0,0,0,10,8,17,Physical,Entities,Default,Default|200/200/255/255,;
+Scene,Buildings/Building3,112,0,1,1,1,0,Building3,950.1,-99.95,450,0,0,0,10,8,17,Physical,Entities,Default,Default|255/200/200/255,;
+Scene,Buildings/Building3,113,0,1,1,1,0,Building3,-950.1,-99.95,450,0,0,0,10,8,17,Physical,Entities,Default,Default|200/200/255/255,;
+Scene,Buildings/Building3,114,0,1,1,1,0,Building3,-950,-100.05,-450,0,0,0,10,8,17,Physical,Entities,Default,Default|255/200/200/255,;
+Scene,Buildings/Bridge2,115,0,1,1,1,0,Bridge2,-6,20,0,0,90,0,22,4,10,Physical,Entities,Default,Default|255/255/255/255,
+/// Logic
+class Main
+{
+StartTitans = 3;
+StartTitansTooltip = "The amount of titans in each cage.";
+
+_redTitans = List();
+_blueTitans = List();
+
+_enabled = false;
+_gameEnded = false;
+
+function OnGameStart()
+{
+if (Network.IsMasterClient)
+{
+if (Game.PVP != 2)
+{
+key = Input.GetKeyName("General/Pause");
+help = "(<b>" + key + "</b> → Game → Misc → PVP)";
+error = "<b><color=#f75348>[Error]: </color></b>";
+str = "CageFight game mode requires Team PVP. ";
+str += "To enable it go to the game setting and under the Misc tab, set the PVP to Team. ";
+Game.Print(error + str + String.Newline + help);
+return;
+}
+
+self._enabled = true;
+self._titanSpawnPointsA = Map.FindMapObjectsByName("Titan A");
+self._titanSpawnPointsB = Map.FindMapObjectsByName("Titan B");
+self.SpawnTitans(self._redTitans, self._titanSpawnPointsA);
+self.SpawnTitans(self._blueTitans, self._titanSpawnPointsB);
+
+UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+}
+}
+
+function OnCharacterDie(victim, killer, killerName)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+if (victim.Type == "Titan")
+{
+if (killer.Team == "Red")
+{
+self._redTitans.Remove(victim);
+self.SpawnTitan(self._blueTitans, self._titanSpawnPointsB);
+self.CheckIfTitansAreDead();
+}
+elif (killer.Team == "Blue")
+{
+self._blueTitans.Remove(victim);
+self.SpawnTitan(self._redTitans, self._titanSpawnPointsA);
+self.CheckIfTitansAreDead();
+}
+
+UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+}
+elif (victim.Type == "Human")
+{
+self.CheckIfTeamPlayersAreDead();
+}
+}
+}
+
+function OnPlayerLeave(player)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self.CheckIfTeamPlayersAreDead();
+}
+}
+
+function OnSecond()
+{
+if (!self._enabled || !Network.IsMasterClient || self._gameEnded)
+{
+return;
+}
+
+redPlayers = self.GetPlayersOfTeam("Red");
+bluePlayers = self.GetPlayersOfTeam("Blue");
+
+for(bt in self._blueTitans)
+{
+target = self.GetNearestPlayer(bluePlayers, bt.Position);
+if (target != null)
+{
+bt.Target(target, 999);
+}
+}
+
+for(rt in self._redTitans)
+{
+target = self.GetNearestPlayer(redPlayers, rt.Position);
+if (target != null)
+{
+rt.Target(target, 999);
+}
+}
+}
+
+function CheckIfTitansAreDead()
+{
+if (self._redTitans.Count <= 0)
+{
+self.AnnounceWinner("Red");
+}
+elif (self._blueTitans.Count <= 0)
+{
+self.AnnounceWinner("Blue");
+}
+}
+
+coroutine CheckIfTeamPlayersAreDead(team)
+{
+wait 0.3;
+
+redAlive = false;
+blueAlive = false;
+
+for (p in Network.Players)
+{
+if (p.Status == "Alive")
+{
+if (p.Team == "Red")
+{
+redAlive = true;
+}
+elif (p.Team == "Blue")
+{
+blueAlive = true;
+}
+}
+}
+
+if (!redAlive)
+{
+self.AnnounceWinner("Blue");
+}
+elif (!blueAlive)
+{
+self.AnnounceWinner("Red");
+}
+}
+
+function AnnounceWinner(team)
+{
+if (self._gameEnded)
+{
+return;
+}
+
+if (team == "Red")
+{
+UI.SetLabelAll("MiddleCenter", "<color=#f06464>Red</color> team won!");
+Game.End(15);
+}
+else
+{
+UI.SetLabelAll("MiddleCenter", "<color=#62b7f0>Blue</color> team won!");
+Game.End(15);
+}
+
+self._gameEnded = true;
+}
+
+function SpawnTitan(list, spawnPoints)
+{
+position = self.GetRandomListElement(spawnPoints).Position;
+titan = self.SpawnTitanAt(position);
+list.Add(titan);
+}
+
+function SpawnTitans(list, spawnPoints)
+{
+randomSpawnPoint = false;
+if (self.StartTitans > spawnPoints.Count)
+{
+randomSpawnPoint = true;
+}
+
+for(i in Range(0, self.StartTitans, 1))
+{
+position = Vector3.Zero;
+if (randomSpawnPoint)
+{
+position = self.GetRandomListElement(spawnPoints).Position;
+}
+else
+{
+position = spawnPoints.Get(i).Position;
+}
+
+titan = self.SpawnTitanAt(position);
+list.Add(titan);
+}
+}
+
+function SpawnTitanAt(position)
+{
+titan = Game.SpawnTitanAt("Default", position);
+titan.DetectRange = 10;
+return titan;
+}
+
+function GetPlayersOfTeam(team)
+{
+players = List();
+for(p in Network.Players)
+{
+if (p.Status == "Alive" && p.Team == team)
+{
+players.Add(p.Character);
+}
+}
+
+return players;
+}
+
+function GetNearestPlayer(players, position)
+{
+n = null;
+nn = 99999.0;
+for(p in players)
+{
+dist = Vector3.Distance(p.Position, position);
+if (dist < nn)
+{
+n = p;
+nn = dist;
+}
+}
+
+return n;
+}
+
+function GetRemainingTitansLabel()
+{
+redStr = Convert.ToString(self._redTitans.Count);
+blueStr = Convert.ToString(self._blueTitans.Count);
+
+return "<color=#f06464>" + redStr + "</color> | " + "<color=#62b7f0>" + blueStr + "</color>";
+}
+
+function GetRandomListElement(list)
+{
+index = Random.RandomInt(0, list.Count);
+return list.Get(index);
+}
+}
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

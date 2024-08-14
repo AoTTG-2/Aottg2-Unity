@@ -170,6 +170,12 @@
 				},
 				{
 					"Name": "En Passant"
+				},
+				{
+					"Name": "Fortification"
+				},
+				{
+					"Name": "Inebriation"
 				}
 			]
 		},

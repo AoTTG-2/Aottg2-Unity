@@ -788,6 +788,7 @@ namespace Characters
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
+                _cameraFPS = false;
             }
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
         }
@@ -1709,7 +1710,7 @@ namespace Characters
                 LateUpdateTilt();
                 LateUpdateGun();
                 LateUpdateReelOut();
-                if (Grounded && State != HumanState.Attack && State != HumanState.SpecialAttack)
+                if (Grounded && State != HumanState.Attack && State != HumanState.SpecialAttack && !_cameraFPS)
                 {
                     var aimPoint = GetAimPoint();
                     LateUpdateHeadPosition(aimPoint);
