@@ -114,7 +114,7 @@ namespace UI
             if (!_finishedSetup)
                 return;
             if (_settingType == SettingType.Float)
-                _inputField.text = ((FloatSetting)_setting).Value.ToString();
+                _inputField.text = ((FloatSetting)_setting).Value.ToString("0.##################");
             else if (_settingType == SettingType.Int)
                 _inputField.text = ((IntSetting)_setting).Value.ToString();
             else if (_settingType == SettingType.String)
