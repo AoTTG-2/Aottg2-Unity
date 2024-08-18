@@ -180,9 +180,8 @@ namespace Characters
         public Ray GetAimRayAfterHumanCheap()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
-
             // Move the ray origin along its direction by the distance between the ray origin and the character
-            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, Cache.Transform.position));
+            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, HumanCache.Head.transform.position));
 
             return ray;
         }

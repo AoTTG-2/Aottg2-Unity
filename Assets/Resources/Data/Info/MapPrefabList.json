@@ -12,7 +12,10 @@
 			{"Name": "Human SpawnPoint", "Asset": "General/EditorHumanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPoint"], "Preview": "EditorHumanSpawnPoint"},
 			{"Name": "Human SpawnPoint (blue)", "Asset": "General/EditorHumanSpawnPointBlue", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointBlue"], "Preview": "EditorHumanSpawnPointBlue", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Human SpawnPoint (red)", "Asset": "General/EditorHumanSpawnPointRed", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointRed"], "Preview": "EditorHumanSpawnPointRed", "Material": "DefaultNoTint|255/255/255/255|"},
-			{"Name": "Titan SpawnPoint", "Asset": "General/EditorTitanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:TitanSpawnPoint"], "Preview": "EditorTitanSpawnPoint"}
+			{"Name": "Titan SpawnPoint", "Asset": "General/EditorTitanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:TitanSpawnPoint"], "Preview": "EditorTitanSpawnPoint"},
+			{"Name": "Human Reference", "Asset": "General/HumanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorHumanSpawnPoint"},
+			{"Name": "Min Titan Reference", "Asset": "General/MinTitanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorTitanSpawnPoint"},
+			{"Name": "Max Titan Reference", "Asset": "General/MaxTitanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorTitanSpawnPoint"}
 		]
 	},
 	"Geometry": {
