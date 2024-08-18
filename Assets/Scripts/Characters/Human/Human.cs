@@ -1231,6 +1231,11 @@ namespace Characters
                 if (State == HumanState.Grab || Dead)
                 {
                     Cache.Rigidbody.velocity = Vector3.zero;
+                    if (IsPlayingSound(HumanSounds.GasLoop))
+                    {
+                        StopSound(HumanSounds.GasLoop);
+                        ToggleSound(HumanSounds.GasEnd, true);
+                    }                     
                     return;
                 }
                 if (CarryState == HumanCarryState.Carry)
