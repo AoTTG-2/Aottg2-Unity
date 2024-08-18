@@ -1,6 +1,9 @@
 /// Options
 EditorVersion:1.0|Description:地图作者：木鱼巛；模式作者：O
-Map and logic by Muyu & O|HasWeather:1
+Map and logic by Muyu & O
+
+让等人耗尽气体后终于到达中心补给站却发现地下补给也被巨人占领，他们需要清空地下室的巨人后再一步一步夺回城市控制权……
+A mission about the defense of Trost HQ after the city is overrun by titans. Complete the mission by recapturing the city.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -5968,9 +5971,11 @@ Scene,Decor/Box3,8700,0,1,1,1,0,Box3,-28.15884,51.21006,61.61061,0,0,0,0.4,0.4,0
 class Main
 {
     MaxTitans = 50;
+    TitanSpawnRate = 50;
     TimeLimit = 1200;
 
     TimeLimitTooltip = "In seconds. Set to 0 if you don't want time limit.";
+    TitanSpawnRateTooltip = "A value between 0 and 100. Higher means titans will spawn faster";
 
     _DefenseOnly = false; # For Debugging. Skips HQ part, also causes some issues with MP
 
@@ -6015,9 +6020,8 @@ class Main
 
             TitanSpawnPoints.Setup();
             
-            Titans.MaxTitans = Math.Max(10, self.MaxTitans);
+            Titans.Setup(self.MaxTitans, self.TitanSpawnRate);
             GameState.TimeLimit = self.TimeLimit;
-            Titans.UpdateMinMaxSpawnInterval(Game.PlayerHumans.Count);
 
             GameState.Setup(self._difficulty);
             GameState.Start(self._DefenseOnly);
@@ -6091,20 +6095,10 @@ class Main
         }
     }
 
-    function OnPlayerLeave(player)
-    {
-        if (Network.IsMasterClient)
-        {
-            Titans.UpdateMinMaxSpawnInterval(Game.PlayerHumans.Count);
-        }
-    }
-
     coroutine OnPlayerJoin(player)
     {
         if (Network.IsMasterClient)
         {
-            Titans.UpdateMinMaxSpawnInterval(Game.PlayerHumans.Count);
-            
             wait 0.3;
             NetworkMessage()
                 .Set("Type", "Sync")
@@ -6632,6 +6626,15 @@ extension Titans
     _titans = List();
     _headquarterTitans = List();
 
+    function Setup(maxTitans, spawnRatePercentage)
+    {
+        self.MaxTitans = Math.Max(10, maxTitans);
+
+        t = Math.Clamp(Convert.ToFloat(spawnRatePercentage), 0.0, 100.0) / 100.0;
+        self.MinSpawnInterval = Math.Lerp(1, 13, 1.0 - t);
+        self.MaxSpawnInterval = Math.Lerp(5, 26, 1.0 - t);
+    }
+
     function SpawnHeadquarterTitans()
     {
         spawnPoints = Map.FindMapObjectsByTag("TitanSpawnPointHeadquarter");
@@ -6704,16 +6707,6 @@ extension Titans
     function CheckForWin()
     {
         return CaptureZones.AreZonesCapturedByHumans() && self._titans.Count == 0;
-    }
-
-    function UpdateMinMaxSpawnInterval(playersCount)
-    {
-        t = Convert.ToFloat(playersCount) / 16.0;
-        min = Math.Lerp(13.0, 1.0, t);
-        max = min + Math.Lerp(23.0, 6.0, t);
-
-        self.MinSpawnInterval = min;
-        self.MaxSpawnInterval = max;
     }
 
     function _GetSpawnInterval()

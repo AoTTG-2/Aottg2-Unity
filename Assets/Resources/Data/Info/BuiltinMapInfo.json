@@ -38,6 +38,9 @@
 					"Name": "Grandmaster"
 				},
 				{
+					"Name": "Casino"
+				},
+				{
 					"Name": "ForestFlooded"
 				},
 				{
@@ -119,6 +122,9 @@
 				{
 					"Category": "General",
 					"Name": "Cave1"
+				},
+				{
+					"Name": "Headquarters"
 				},
 				{
 					"Name": "House"
