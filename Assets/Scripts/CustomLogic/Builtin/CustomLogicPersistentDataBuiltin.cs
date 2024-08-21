@@ -45,7 +45,7 @@ namespace CustomLogic
                 if (!Util.IsValidFileName(fileName))
                     throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
 
-                string path = FolderPaths.PersistentData + "/" + fileName;
+                string path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
                 if (File.Exists(path))
                 {
                     string text = File.ReadAllText(path);
@@ -77,7 +77,7 @@ namespace CustomLogic
                 if (!Util.IsValidFileName(fileName))
                     throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
 
-                string path = FolderPaths.PersistentData + "/" + fileName;
+                string path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
                 JSONNode node = new JSONObject();
                 foreach (string key in CustomLogicManager.PersistentData.Keys)
                 {
