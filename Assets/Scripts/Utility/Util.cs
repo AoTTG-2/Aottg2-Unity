@@ -13,6 +13,7 @@ using Photon.Realtime;
 using System.Globalization;
 using UnityEngine.AI;
 using System.Collections.Specialized;
+using System.IO;
 
 namespace Utility
 {
@@ -384,6 +385,13 @@ namespace Utility
         public static int EnumMaxValue<T>()
         {
             return Enum.GetValues(typeof(T)).Cast<int>().Max();
+        }
+
+        public static bool IsValidFileName(string fileName)
+        {
+            // filter out invalid file characters based on windows AND ., /, and \\ characters don't use regex
+            char[] invalidCharacters = new char[] { '<', '>', ':', '"', '/', '\\', '|', '?', '*', '.', '\b', '\0', '\t', '\r', '\n' };
+            return fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) == -1 && fileName.IndexOfAny(invalidCharacters) == -1;
         }
     }
 }

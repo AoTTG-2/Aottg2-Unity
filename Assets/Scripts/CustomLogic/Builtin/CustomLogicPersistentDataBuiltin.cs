@@ -40,6 +40,11 @@ namespace CustomLogic
                 CustomLogicManager.PersistentData.Clear();
                 string fileName = (string)parameters[0];
                 bool encrypted = (bool)parameters[1];
+
+                // Check if fileName contains anything but alphanumeric characters
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+
                 string path = FolderPaths.PersistentData + "/" + fileName;
                 if (File.Exists(path))
                 {
@@ -68,6 +73,10 @@ namespace CustomLogic
                 Directory.CreateDirectory(FolderPaths.PersistentData);
                 string fileName = (string)parameters[0];
                 bool encrypted = (bool)parameters[1];
+
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+
                 string path = FolderPaths.PersistentData + "/" + fileName;
                 JSONNode node = new JSONObject();
                 foreach (string key in CustomLogicManager.PersistentData.Keys)
