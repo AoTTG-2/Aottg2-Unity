@@ -390,8 +390,11 @@ namespace Utility
         public static bool IsValidFileName(string fileName)
         {
             // filter out invalid file characters based on windows AND ., /, and \\ characters don't use regex
-            char[] invalidCharacters = new char[] { '<', '>', ':', '"', '/', '\\', '|', '?', '*', '.', '\b', '\0', '\t', '\r', '\n' };
-            return fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) == -1 && fileName.IndexOfAny(invalidCharacters) == -1;
+            char[] invalidCharacters = new char[] { '<', '>', ':', '"', '/', '\\', '|', '?', '*', '.', '\b', '\0', '\t', '\r', '\n', '^' };
+            return fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) == -1
+                && fileName.IndexOfAny(invalidCharacters) == -1
+                && fileName.Trim() != fileName
+                && fileName.Length < 50;
         }
     }
 }

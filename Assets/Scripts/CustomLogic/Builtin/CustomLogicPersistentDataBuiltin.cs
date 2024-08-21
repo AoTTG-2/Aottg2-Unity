@@ -108,6 +108,11 @@ namespace CustomLogic
                 CustomLogicManager.PersistentData.Clear();
                 return null;
             }
+            if (name == "IsValidFileName")
+            {
+                string fileName = (string)parameters[0];
+                return Util.IsValidFileName(fileName);
+            }
             return base.CallMethod(name, parameters);
         }
     }
