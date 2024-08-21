@@ -390,9 +390,12 @@ namespace Utility
         public static bool IsValidFileName(string fileName)
         {
             // filter out invalid file characters based on windows AND ., /, and \\ characters don't use regex
-            char[] invalidCharacters = new char[] { '<', '>', ':', '"', '/', '\\', '|', '?', '*', '.', '\b', '\0', '\t', '\r', '\n', '^' };
+            char[] invalidCharacters = new char[] { '<', '>', ':', '"', '/', '\\', '|', '?', '*', '.', '\b', '\0', '\t', '\r', '\n', '^', '!', '@', '#', '$', '%', '&', '(', ')', '=', '+' };
+            // CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9
+            string[] invalidFileNames = new string[] { "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };
             return fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) == -1
                 && fileName.IndexOfAny(invalidCharacters) == -1
+                && !invalidFileNames.Contains(fileName)
                 && fileName.Trim() != fileName
                 && fileName.Length < 50;
         }
