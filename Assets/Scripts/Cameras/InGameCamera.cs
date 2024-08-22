@@ -41,6 +41,11 @@ namespace Cameras
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
 
+        public void SetCameraDistance(float distance)
+        {
+            _cameraDistance = distance;
+        }
+
         public void ApplyGraphicsSettings()
         {
             Camera.farClipPlane = SettingsManager.GraphicsSettings.RenderDistance.Value;

@@ -62,6 +62,7 @@ namespace Characters
         public bool CancelHookLeftKey;
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
+        public bool CanDodge = true;
         private object[] _lastMountMessage = null;
 
         // physics
@@ -365,12 +366,15 @@ namespace Characters
 
         public void Dodge(float targetAngle)
         {
-            State = HumanState.GroundDodge;
-            TargetAngle = targetAngle;
-            _targetRotation = GetTargetRotation();
-            CrossFade(HumanAnimations.Dodge, 0.1f);
-            PlaySound(HumanSounds.Dodge);
-            ToggleSparks(false);
+            if (CanDodge)
+            {
+                State = HumanState.GroundDodge;
+                TargetAngle = targetAngle;
+                _targetRotation = GetTargetRotation();
+                CrossFade(HumanAnimations.Dodge, 0.1f);
+                PlaySound(HumanSounds.Dodge);
+                ToggleSparks(false);
+            }
         }
 
         public void DodgeWall()
