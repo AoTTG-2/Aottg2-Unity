@@ -396,7 +396,7 @@ namespace Utility
             return fileName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) == -1
                 && fileName.IndexOfAny(invalidCharacters) == -1
                 && !invalidFileNames.Contains(fileName)
-                && fileName.Trim() != fileName
+                && fileName.Trim() == fileName
                 && fileName.Length < 50;
         }
     }
