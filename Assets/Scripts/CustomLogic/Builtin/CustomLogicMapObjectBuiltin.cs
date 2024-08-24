@@ -266,6 +266,8 @@ namespace CustomLogic
                 {
                     center = ((CustomLogicVector3Builtin)parameters[2]).Value;
                     size = ((CustomLogicVector3Builtin)parameters[3]).Value;
+                    center = Util.DivideVectors(center, scale);
+                    size = Util.DivideVectors(size, scale);
                 }
                 else
                 {
@@ -291,10 +293,10 @@ namespace CustomLogic
 
                     center = bounds.center - Value.GameObject.transform.position;
                     size = bounds.size;
-                }
 
-                center = Util.DivideVectors(center, scale);
-                size = Util.DivideVectors(size, scale);
+                    // resize based on localscale
+                    size = new Vector3(size.x / Value.GameObject.transform.localScale.x, size.y / Value.GameObject.transform.localScale.y, size.z / Value.GameObject.transform.localScale.z);
+                }
 
                 var go = new GameObject();
                 go.transform.SetParent(Value.GameObject.transform);
