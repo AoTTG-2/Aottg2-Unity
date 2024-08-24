@@ -9,9 +9,9 @@ namespace GameProgress
         public IntSetting Level = new IntSetting(1);
         public IntSetting Exp = new IntSetting(0);
         public FloatSetting PlayTime = new FloatSetting(0f);
-        public FloatSetting HighestSpeed = new FloatSetting(0f, minValue: 0f, maxValue: 10000f);
+        public FloatSetting HighestSpeed = new FloatSetting(0f, minValue: 0f, maxValue: 100000f);
         public IntSetting DamageHighestOverall = new IntSetting(0, minValue: 0, maxValue: 100000);
-        public IntSetting DamageHighestBlade = new IntSetting(0, minValue: 0, maxValue: 10000);
+        public IntSetting DamageHighestBlade = new IntSetting(0, minValue: 0, maxValue: 100000);
         public IntSetting DamageHighestAHSS = new IntSetting(0, minValue: 0, maxValue: 100000);
         public IntSetting DamageHighestThunderspear = new IntSetting(0, minValue: 0, maxValue: 100000);
         public IntSetting DamageHighestAPG = new IntSetting(0, minValue: 0, maxValue: 100000);
