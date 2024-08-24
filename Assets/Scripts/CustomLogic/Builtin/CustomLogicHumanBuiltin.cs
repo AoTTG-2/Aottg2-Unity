@@ -205,6 +205,10 @@ namespace CustomLogic
                     return SettingsManager.InputSettings.Human.AutoRefillGas.Value;
                 return false;
             }
+            if (name == "State")
+                return Human.State.ToString();
+            if (name == "CanDodge")
+                return Human.CanDodge;
             return base.GetField(name);
         }
 
@@ -277,6 +281,8 @@ namespace CustomLogic
                 Human.IsChangingPosition();
                 base.SetField(name, value);
             }
+            else if (name == "CanDodge")
+                Human.CanDodge = (bool)value;
             else
                 base.SetField(name, value);
             Human.Stats.UpdateStats();

@@ -96,6 +96,21 @@
 						"AllowShifters": false,
 						"EndlessRespawnEnabled": true
 					}
+				},
+				{
+					"Name": "Crawler Escape",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowThunderspears": false,
+						"RealismMode": true
+					}
+				},
+				{
+					"Name": "Rising Flood"
 				}
 			]
 		},
