@@ -35,6 +35,23 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
+            if (name == "FindMapObjectsByComponent")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                string className = (string)parameters[0];
+                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                {
+                    foreach (CustomLogicComponentInstance component in mapObject.ComponentInstances)
+                    {
+                        if (component.ClassName == className)
+                        {
+                            listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                            break;
+                        }
+                    }
+                }
+                return listBuiltin;
+            }
             if (name == "FindMapObjectByID")
             {
                 int id = (int)parameters[0];
