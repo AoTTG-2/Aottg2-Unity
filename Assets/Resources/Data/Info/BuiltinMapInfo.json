@@ -110,6 +110,15 @@
 					}
 				},
 				{
+					"Name": "Target Practice",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"APGPVP": true
+					}
+				},
+				{
 					"Name": "Rising Flood"
 				}
 			]
