@@ -115,6 +115,10 @@
 						"AllowPlayerTitans": false,
 						"AllowShifterSpecials": false,
 						"AllowShifters": false,
+						"AllowBlades": false,
+						"AllowAHSS": false,
+						"AllowThunderspears": false,
+						"AllowAPG": true,
 						"APGPVP": true
 					}
 				},
