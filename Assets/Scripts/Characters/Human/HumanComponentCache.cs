@@ -10,6 +10,8 @@ namespace Characters
         public Transform HandR;
         public Transform Head;
         public Transform Neck;
+        public Transform Spine;
+        public Transform Chest;
         public Transform ForearmL;
         public Transform ForearmR;
         public Transform UpperarmL;
@@ -31,13 +33,14 @@ namespace Characters
         
         public HumanComponentCache(GameObject owner): base(owner)
         {
-            var chest = Transform.Find("Armature/Core/Controller_Body/hip/spine/chest");
+            Spine = Transform.Find("Armature/Core/Controller_Body/hip/spine");
+            Chest = Spine.Find("chest");
             GroundLeft = Transform.Find("GroundLeft");
             GroundRight = Transform.Find("GroundRight");
-            Neck = chest.Find("neck");
+            Neck = Chest.Find("neck");
             Head = Neck.Find("head");
-            UpperarmL = chest.Find("shoulder_L/upper_arm_L");
-            UpperarmR = chest.Find("shoulder_R/upper_arm_R");
+            UpperarmL = Chest.Find("shoulder_L/upper_arm_L");
+            UpperarmR = Chest.Find("shoulder_R/upper_arm_R");
             ForearmL = UpperarmL.Find("forearm_L");
             ForearmR = UpperarmR.Find("forearm_R");
             HandL = ForearmL.Find("hand_L");
@@ -52,8 +55,8 @@ namespace Characters
             emission = Wind.emission;
             emission.enabled = false;
             WindTransform = Transform.Find("speedFX");
-            HookLeftAnchorDefault = chest.Find("hookRefL1");
-            HookRightAnchorDefault = chest.Find("hookRefR1");
+            HookLeftAnchorDefault = Chest.Find("hookRefL1");
+            HookRightAnchorDefault = Chest.Find("hookRefR1");
             HookLeftAnchorGun = HandL.Find("hookRef");
             HookRightAnchorGun = HandR.Find("hookRef");
             var human = owner.GetComponent<BaseCharacter>();

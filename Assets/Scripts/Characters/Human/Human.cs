@@ -97,8 +97,8 @@ namespace Characters
             PhysicsLayer.MapObjectAll);
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
-        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
 
         // actions
         public string StandAnimation;
@@ -164,13 +164,6 @@ namespace Characters
             // Define a plane at the characters position facing towards the camera's forward direction
             Plane plane = new Plane(ray.direction, Cache.Transform.position);
 
-            // Visualize this plane by drawing 4 lines and a 5th normal line
-            Debug.DrawRay(Cache.Transform.position, ray.direction * 1000f, Color.red);
-            Debug.DrawRay(Cache.Transform.position, plane.normal * 1000f, Color.green);
-            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(ray.direction, plane.normal) * 1000f, Color.blue);
-            Debug.DrawRay(Cache.Transform.position, Vector3.Cross(Vector3.Cross(ray.direction, plane.normal), ray.direction) * 1000f, Color.yellow);
-
-
             // Find the distance from the ray origin to the plane along its direction
             float distance;
             plane.Raycast(ray, out distance);
@@ -188,9 +181,8 @@ namespace Characters
         public Ray GetAimRayAfterHumanCheap()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
-
             // Move the ray origin along its direction by the distance between the ray origin and the character
-            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, Cache.Transform.position));
+            ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, HumanCache.Head.transform.position));
 
             return ray;
         }
@@ -808,6 +800,7 @@ namespace Characters
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
+                _cameraFPS = false;
             }
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
         }
@@ -1651,6 +1644,28 @@ namespace Characters
             EnableSmartTitans();
         }
 
+        private void lookAtTarget(Vector3 target)
+        {
+            Transform chestT = HumanCache.Chest;
+            Transform spineT = HumanCache.Spine;
+
+            float dx = target.x - base.transform.position.x;
+            float dz = target.z - base.transform.position.z;
+            float xAngle = Mathf.Sqrt(dx * dx + dz * dz);
+
+            HumanCache.Head.rotation = chestT.rotation;
+            Vector3 targetRay = target - base.transform.position;
+            float yaw = 0f - Mathf.DeltaAngle((0f - Mathf.Atan2(targetRay.z, targetRay.x)) * 57.29578f, base.transform.rotation.eulerAngles.y - 90f);
+            float pitch = Mathf.Atan2(spineT.position.y - target.y, yaw) * 57.29578f;
+
+            yaw = Mathf.Clamp(yaw, -40f, 40f);
+            pitch = Mathf.Clamp(pitch, -40f, 30f);
+
+            HumanCache.Head.rotation = Quaternion.Euler(chestT.rotation.eulerAngles.x + pitch, chestT.rotation.eulerAngles.y + yaw, chestT.rotation.eulerAngles.z);
+            HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 12);
+            chestT.rotation = HumanCache.Head.localRotation;
+        }
+
         protected void LateUpdateHeadPosition(Vector3 position)
         {
             if (position != null)
@@ -1664,7 +1679,16 @@ namespace Characters
 
                 if (isInLeftRange || isInRightRange)
                 {
+                    // if we were in front of the character before hitting the buffer zone, use the camera for the yaw, otherwise it will use the the ray.
+                    if (LastGoodHeadAngle.y < -50 || LastGoodHeadAngle.y > 50)
+                    {
+                        // set angle to look at the camera
+                        position = SceneLoader.CurrentCamera.Camera.transform.position;
+                        angle = GetLookAngle(position);
+                    }
+
                     angle.y = LastGoodHeadAngle.y;
+                    LastGoodHeadAngle.x = angle.x;
                 }
                 else if (Vector3.Dot(Cache.Transform.forward, vector.normalized) < 0)
                 {
@@ -1703,22 +1727,29 @@ namespace Characters
                 LateUpdateTilt();
                 LateUpdateGun();
                 LateUpdateReelOut();
-                if (Grounded)
-                    LateUpdateHeadPosition(GetAimPoint());
+
+                bool validState = State == HumanState.Idle || State == HumanState.Run || State == HumanState.Slide;
+                if (Grounded && validState && !_cameraFPS)
+                {
+                    var aimPoint = GetAimPoint();
+                    LateUpdateHeadPosition(aimPoint);
+                }
                 else
                 {
                     LastGoodHeadAngle = Vector2.zero;
-                    LateUpdateHeadRotation = Quaternion.identity;
+                    LateUpdateHeadRotation = null;
+                    _oldHeadRotation = HumanCache.Head.localRotation;
                 }
                     
             }
             else if (!IsMine())
             {
-
-
-                HumanCache.Head.rotation = LateUpdateHeadRotationRecv;
-                HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
-                _oldHeadRotation = HumanCache.Head.localRotation;
+                if (LateUpdateHeadRotationRecv != null)
+                {
+                    HumanCache.Head.rotation = (Quaternion)LateUpdateHeadRotationRecv;
+                    HumanCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, HumanCache.Head.localRotation, Time.deltaTime * 10f);
+                    _oldHeadRotation = HumanCache.Head.localRotation;
+                }
             }
             base.LateUpdate();
         }

@@ -38,6 +38,9 @@
 					"Name": "Grandmaster"
 				},
 				{
+					"Name": "Casino"
+				},
+				{
 					"Name": "ForestFlooded"
 				},
 				{
@@ -107,6 +110,19 @@
 					}
 				},
 				{
+					"Name": "Target Practice",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"AllowBlades": false,
+						"AllowAHSS": false,
+						"AllowThunderspears": false,
+						"AllowAPG": true,
+						"APGPVP": true
+					}
+				},
+				{
 					"Name": "Rising Flood"
 				}
 			]
@@ -134,6 +150,9 @@
 				{
 					"Category": "General",
 					"Name": "Cave1"
+				},
+				{
+					"Name": "Headquarters"
 				},
 				{
 					"Name": "House"
@@ -185,6 +204,12 @@
 				},
 				{
 					"Name": "En Passant"
+				},
+				{
+					"Name": "Fortification"
+				},
+				{
+					"Name": "Inebriation"
 				}
 			]
 		},

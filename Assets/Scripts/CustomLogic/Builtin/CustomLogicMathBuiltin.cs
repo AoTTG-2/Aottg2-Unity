@@ -21,6 +21,14 @@ namespace CustomLogic
             {
                 return Mathf.Infinity;
             }
+            if (name == "Rad2DegConstant")
+            {
+                return Mathf.Rad2Deg;
+            }
+            if (name == "Deg2RadConstant")
+            {
+                return Mathf.Deg2Rad;
+            }
             
             return base.GetField(name);
         }

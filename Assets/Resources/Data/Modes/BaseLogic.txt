@@ -1656,6 +1656,16 @@ component Bell
             self._soundTransform.StopSound();
             self._soundTransform.PlaySound();
             self._currentResetTime = self.ResetDelay;
+            if (self.LureTitans && Network.IsMasterClient && sender.Character.Type == "Human")
+            {
+                for (titan in Game.Titans)
+                {
+                    difference = titan.Position - self.MapObject.Position;
+                    if (difference.Magnitude < self.LureRadius) {
+                        titan.Target(sender.Character, self.LureDuration);
+                    }
+                }
+            }
         }
     }
 
@@ -1677,16 +1687,6 @@ component Bell
 
         if (character.Velocity.Magnitude > self.VelocityHitThreshold)
         {
-            if (self.LureTitans)
-            {
-                for (titan in Game.Titans)
-                {
-                    difference = titan.Position - self.MapObject.Position;
-                    if (difference.Magnitude < self.LureRadius) {
-                        titan.Target(character, self.LureDuration);
-                    }
-                }
-            }
             self.NetworkView.SendMessageAll("hit");
         }
     }
@@ -2129,12 +2129,20 @@ component Wagon
     _collidingRide = false;
     _collidingGas = false;
     _rigidbody = null;
+    _leftWheel = null;
+    _rightWheel = null;
+    _leftSitTransform = null;
+    _rightSitTransform = null;
 
     function Init()
     {
         self._horse = self.MapObject.GetTransform("Horse");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
+        self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
+        self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
+        self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
+        self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
     }
 
     function OnNetworkMessage(sender, message)
@@ -2205,6 +2213,28 @@ component Wagon
         self._collidingDrive = false;
         self._collidingRide = false;
         self._collidingGas = false;
+
+        if (self._leftWheel != null && self._rightWheel != null)
+        {
+            L = Vector3.Distance(self._leftWheel.Position, self._rightWheel.Position);
+            r = self._leftWheel.Scale.Y / 2;
+
+            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.GetVelocity());
+            angularVelocity = self._rigidbody.GetAngularVelocity();
+            
+            v_x = localVelocity.Z;
+            omega = angularVelocity.Y;
+
+            leftWheelRotationSpeed = (v_x - (L / 2) * omega) / r;
+            rightWheelRotationSpeed = (v_x + (L / 2) * omega) / r;
+
+            leftWheelRotation = leftWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3; # Character moves too fast for irl physics
+            rightWheelRotation = rightWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3;
+
+            self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
+            self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
+
+        }
     }
 
     function OnFrame()
@@ -2309,8 +2339,8 @@ component Wagon
                 {
                     self._riding = true;
                     self._human = self._collidingHuman;
-                    posA = Vector3(-1.0, 1.78, -3.5);
-                    posB = Vector3(1.0, 1.78, 1.0);
+                    posA = self._leftSitTransform.LocalPosition; # Vector3(-1.0, 1.78, -3.5);
+                    posB = self._rightSitTransform.LocalPosition; # Vector3(1.0, 1.78, 1.0);
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
                 }
             }
@@ -3032,7 +3062,10 @@ component SignalMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3098,6 +3131,10 @@ component SignalMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3133,6 +3170,10 @@ component SignalMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3245,7 +3286,10 @@ component SignalArcMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3325,6 +3369,10 @@ component SignalArcMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3370,6 +3418,10 @@ component SignalArcMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3473,7 +3525,10 @@ component SignalRotator
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3538,6 +3593,10 @@ component SignalRotator
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3572,7 +3631,11 @@ component SignalRotator
     return Easing;
     }
     function Calculate(XTime)
-    {    
+    {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3678,6 +3741,10 @@ component SignalScaler
     }
     function OnTick()
     {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3746,6 +3813,10 @@ component SignalScaler
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3781,6 +3852,10 @@ component SignalScaler
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;

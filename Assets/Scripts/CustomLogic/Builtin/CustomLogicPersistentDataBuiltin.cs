@@ -40,7 +40,12 @@ namespace CustomLogic
                 CustomLogicManager.PersistentData.Clear();
                 string fileName = (string)parameters[0];
                 bool encrypted = (bool)parameters[1];
-                string path = FolderPaths.PersistentData + "/" + fileName;
+
+                // Check if fileName contains anything but alphanumeric characters
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+
+                string path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
                 if (File.Exists(path))
                 {
                     string text = File.ReadAllText(path);
@@ -68,7 +73,11 @@ namespace CustomLogic
                 Directory.CreateDirectory(FolderPaths.PersistentData);
                 string fileName = (string)parameters[0];
                 bool encrypted = (bool)parameters[1];
-                string path = FolderPaths.PersistentData + "/" + fileName;
+
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.LoadFromFile only supports legal fileName characters.");
+
+                string path = Path.Combine(FolderPaths.PersistentData, fileName + ".txt");
                 JSONNode node = new JSONObject();
                 foreach (string key in CustomLogicManager.PersistentData.Keys)
                 {
@@ -98,6 +107,18 @@ namespace CustomLogic
             {
                 CustomLogicManager.PersistentData.Clear();
                 return null;
+            }
+            if (name == "IsValidFileName")
+            {
+                string fileName = (string)parameters[0];
+                return Util.IsValidFileName(fileName);
+            }
+            if (name == "FileExists")
+            {
+                string fileName = (string)parameters[0];
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.FileExists only supports legal fileName characters.");
+                return File.Exists(Path.Combine(FolderPaths.PersistentData, fileName + ".txt"));
             }
             return base.CallMethod(name, parameters);
         }

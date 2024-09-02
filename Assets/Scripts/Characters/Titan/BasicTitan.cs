@@ -30,8 +30,8 @@ namespace Characters
         protected string _runAnimation;
         public BasicTitanSetup Setup;
         public Quaternion _oldHeadRotation;
-        public Quaternion LateUpdateHeadRotation = Quaternion.identity;
-        public Quaternion LateUpdateHeadRotationRecv = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
+        public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
         protected bool _leftArmDisabled;
@@ -586,7 +586,7 @@ namespace Characters
             }
             else if (_currentAttackAnimation == BasicAnimations.JumpCrawler)
             {
-                if (TargetEnemy != null)
+                if (TargetEnemy != null && TargetEnemy.ValidTarget())
                 {
                     Vector3 to = TargetEnemy.GetPosition() - BasicCache.Head.position;
                     float time = to.magnitude / JumpForce;
@@ -872,7 +872,7 @@ namespace Characters
                 Vector3 hand = BasicCache.HandRHitbox.transform.position;
                 if (AI)
                 {
-                    if (TargetEnemy != null)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
                     {
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
@@ -1045,6 +1045,14 @@ namespace Characters
 
                 if (isInLeftRange || isInRightRange)
                 {
+                    // if we were in front of the character before hitting the buffer zone, use the camera for the yaw, otherwise it will use the the ray.
+                    if (LastGoodHeadAngle.y < -50 || LastGoodHeadAngle.y > 50)
+                    {
+                        // set angle to look at the camera
+                        position = SceneLoader.CurrentCamera.Camera.transform.position;
+                        angle = GetLookAngle(position);
+                    }
+
                     angle.y = LastGoodHeadAngle.y;
                     LastGoodHeadAngle.x = angle.x;
                 }
@@ -1107,27 +1115,44 @@ namespace Characters
             if (IsMine())
             {
                 bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
-                if (AI == false && canLook)
+                if (AI)
                 {
-                    LateUpdateHeadPosition(GetAimPoint());
-                }
-                else if (TargetEnemy != null && TargetEnemy is BaseCharacter && TargetEnemy.ValidTarget() && !IsCrawler
-                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook)
-                {
-                    var character = (BaseCharacter)TargetEnemy;
-                    TargetViewId = character.Cache.PhotonView.ViewID;
-                    LateUpdateHead(character);
+                    var canTarget = false;
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
+                    {
+                        canTarget = TargetEnemy is BaseCharacter && !IsCrawler
+                                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f
+                                    && canLook;
+                    }
+                    if (canTarget)
+                    {
+                        var character = (BaseCharacter)TargetEnemy;
+                        TargetViewId = character.Cache.PhotonView.ViewID;
+                        LateUpdateHead(character);
+                    }
+                    else
+                    {
+                        TargetViewId = -1;
+                        LateUpdateHead(null);
+                    }
                 }
                 else
                 {
-                    TargetViewId = -1;
-                    LateUpdateHead(null);
+                    if (canLook)
+                        LateUpdateHeadPosition(GetAimPoint());
+                    else
+                    {
+                        LateUpdateHeadRotation = null;
+                        _oldHeadRotation = BasicCache.Head.localRotation;
+                    }
                 }
+
                 if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
             }
             else
             {
+                bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
                 if (AI)
                 {
                     var character = Util.FindCharacterByViewId(TargetViewId);
@@ -1135,11 +1160,13 @@ namespace Characters
                 }
                 else
                 {
-                    BasicCache.Head.rotation = LateUpdateHeadRotationRecv;
-                    BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
-                    _oldHeadRotation = BasicCache.Head.localRotation;
+                    if (LateUpdateHeadRotationRecv != null && canLook)
+                    {
+                        BasicCache.Head.rotation = (Quaternion)LateUpdateHeadRotationRecv;
+                        BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
+                        _oldHeadRotation = BasicCache.Head.localRotation;
+                    }
                 }
-                
             }
             if (_leftArmDisabled)
             {

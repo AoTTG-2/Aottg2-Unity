@@ -544,7 +544,7 @@ Scene,Terrain/Hill1,565,0,1,1,1,0,Hill1,-3610.328,-88.90915,7038.127,0,96.9348,0
 Scene,Terrain/Hill1,564,0,1,1,1,0,Hill1,-89.18671,-88.90915,6820.853,0,0,0,5,1,5,None,Entities,Default,Default|255/255/255/255,;
 Scene,FX/Crystal1,562,0,1,0,1,0,Crystal1,-1728.709,-0.4567988,7483.658,0,0,0,150,0.1,270.3469,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Nature/Ivy1c,561,0,1,1,1,0,Ivy1c,16.82012,-0.8527473,433.9053,3.633139,90,0,5,5,5,None,Entities,Default,Default|255/255/255/255,;
-Scene,Arenas/Utgard3,570,0,1,1,1,0,Utgard3,-80.82992,-191.7627,-1946.39,0,0,348.7053,3,3,3,None,Entities,Default,Default|255/255/255/255,;
+Scene,Arenas/Utgard1b,570,0,1,1,1,0,Utgard1b,-80.82992,-191.7627,-1946.39,0,0,348.7053,3,3,3,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1b,571,0,1,1,1,0,Pine1b,261.9589,0,-2154.899,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1b,572,0,1,1,1,0,Pine1b,162.7787,0,-2230.951,0,91.06464,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pine1b,573,0,1,1,1,0,Pine1b,55.74108,0,-2459.026,0,45.12526,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;

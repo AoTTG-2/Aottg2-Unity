@@ -12,7 +12,10 @@
 			{"Name": "Human SpawnPoint", "Asset": "General/EditorHumanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPoint"], "Preview": "EditorHumanSpawnPoint"},
 			{"Name": "Human SpawnPoint (blue)", "Asset": "General/EditorHumanSpawnPointBlue", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointBlue"], "Preview": "EditorHumanSpawnPointBlue", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Human SpawnPoint (red)", "Asset": "General/EditorHumanSpawnPointRed", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:HumanSpawnPointRed"], "Preview": "EditorHumanSpawnPointRed", "Material": "DefaultNoTint|255/255/255/255|"},
-			{"Name": "Titan SpawnPoint", "Asset": "General/EditorTitanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:TitanSpawnPoint"], "Preview": "EditorTitanSpawnPoint"}
+			{"Name": "Titan SpawnPoint", "Asset": "General/EditorTitanSpawnPoint", "Visible": false, "CollideMode": "None", "Components": ["Tag|Name:TitanSpawnPoint"], "Preview": "EditorTitanSpawnPoint"},
+			{"Name": "Human Reference", "Asset": "General/HumanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorHumanSpawnPoint"},
+			{"Name": "Min Titan Reference", "Asset": "General/MinTitanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorTitanSpawnPoint"},
+			{"Name": "Max Titan Reference", "Asset": "General/MaxTitanReference", "Visible": true, "CollideMode": "None", "Preview": "EditorTitanSpawnPoint"}
 		]
 	},
 	"Geometry": {
@@ -518,6 +521,7 @@
 			{"Name": "Veranda2"},
 			{"Name": "WallFacade1"},
 			{"Name": "Wagon1"},
+			{"Name": "Wagon1a", "Variant":"Wagon1"},
 			{"Name": "WindmillBG1"},
 			{"Name": "Window1"},
 			{"Name": "Window2"},
@@ -785,6 +789,7 @@
 			{"Name": "Cannon4", "Asset": "Interact/Cannon4", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Cannon5", "Asset": "Interact/Cannon5", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
+			{"Name": "Wagon2a", "Asset": "Interact/Wagon2a", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dummy2", "Asset": "Interact/Dummy2", "Static": false, "Networked": true, "Components": ["Dummy|"]},
 			{"Name": "Executioner1", "Asset": "Interact/Executioner1",  "Static": false, "Networked": true, "Components": ["Executioner|"]},
 			{"Name": "Executioner2", "Asset": "Interact/Executioner2",  "Static": false, "Networked": true, "Components": ["Executioner|"]},

@@ -259,11 +259,45 @@ namespace CustomLogic
             {
                 string collideMode = (string)parameters[0];
                 string collideWith = (string)parameters[1];
-                Vector3 center = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                Vector3 size = ((CustomLogicVector3Builtin)parameters[3]).Value;
+                Vector3 center;
+                Vector3 size;
                 Vector3 scale = Value.BaseScale;
-                center = Util.DivideVectors(center, scale);
-                size = Util.DivideVectors(size, scale);
+                if (parameters.Count > 2)
+                {
+                    center = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                    size = ((CustomLogicVector3Builtin)parameters[3]).Value;
+                    center = Util.DivideVectors(center, scale);
+                    size = Util.DivideVectors(size, scale);
+                }
+                else
+                {
+                    // size based on all renderers
+                    Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
+                    bool hasBounds = false;
+                    foreach (var renderer in Value.renderCache)
+                    {
+                        if (renderer != null)
+                        {
+                            if (hasBounds)
+                            {
+                                bounds.Encapsulate(renderer.bounds);
+                            }
+                            else
+                            {
+                                var rendererBounds = renderer.bounds;
+                                bounds = renderer.bounds;
+                                hasBounds = true;
+                            }
+                        }
+                    }
+
+                    center = bounds.center - Value.GameObject.transform.position;
+                    size = bounds.size;
+
+                    // resize based on localscale
+                    size = new Vector3(size.x / Value.GameObject.transform.localScale.x, size.y / Value.GameObject.transform.localScale.y, size.z / Value.GameObject.transform.localScale.z);
+                }
+
                 var go = new GameObject();
                 go.transform.SetParent(Value.GameObject.transform);
                 go.transform.localPosition = Vector3.zero;
@@ -439,6 +473,14 @@ namespace CustomLogic
                     return null;
                 }
                 return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.center);
+            }
+            if (methodName == "GetBoundsSize")
+            {
+                if (Value.colliderCache.Length == 0)
+                {
+                    return null;
+                }
+                return new CustomLogicVector3Builtin(Value.colliderCache[0].bounds.size);
             }
             if (methodName == "GetBoundsMin")
             {
