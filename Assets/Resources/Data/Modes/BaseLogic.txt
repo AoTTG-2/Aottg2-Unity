@@ -3062,7 +3062,10 @@ component SignalMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3128,6 +3131,10 @@ component SignalMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3163,6 +3170,10 @@ component SignalMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3275,7 +3286,10 @@ component SignalArcMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3355,6 +3369,10 @@ component SignalArcMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3400,6 +3418,10 @@ component SignalArcMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3503,7 +3525,10 @@ component SignalRotator
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3568,6 +3593,10 @@ component SignalRotator
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3602,7 +3631,11 @@ component SignalRotator
     return Easing;
     }
     function Calculate(XTime)
-    {    
+    {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3708,6 +3741,10 @@ component SignalScaler
     }
     function OnTick()
     {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3776,6 +3813,10 @@ component SignalScaler
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3811,6 +3852,10 @@ component SignalScaler
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
