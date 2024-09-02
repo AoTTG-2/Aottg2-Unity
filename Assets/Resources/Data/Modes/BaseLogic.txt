@@ -2228,8 +2228,8 @@ component Wagon
             leftWheelRotationSpeed = (v_x - (L / 2) * omega) / r;
             rightWheelRotationSpeed = (v_x + (L / 2) * omega) / r;
 
-            leftWheelRotation = leftWheelRotationSpeed * Time.TickTime * Math.Rad2Deg * 0.3; # Character moves too fast for irl physics
-            rightWheelRotation = rightWheelRotationSpeed * Time.TickTime * Math.Rad2Deg * 0.3;
+            leftWheelRotation = leftWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3; # Character moves too fast for irl physics
+            rightWheelRotation = rightWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3;
 
             self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
             self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
