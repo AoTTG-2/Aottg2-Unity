@@ -743,101 +743,97 @@ component RefuelGasDrop
 
     _cd = 3.0;
     _cdTimer = 0.0;
+    _usesLeft = 1;
 
 
     function Init()
     {
         self.MapObject.AddBoxCollider("Region", "Characters");
+        self._usesLeft = self.Uses;
     }
 
     function OnNetworkMessage(sender, message)
     {
-        if (Network.IsMasterClient && sender.Character != null && self.MapObject.Active)
+        data = Json.LoadFromString(message);
+        uses = data.Get("uses");
+
+        if (uses != null)
         {
-            if (sender.Character.Type == "Human")
+            self._usesLeft = uses;
+
+            if (self._usesLeft <= 0)
             {
-                used = false;
-                if (String.Contains(message, "Gas"))
-                {
-                    if (sender.Character.CurrentGas < sender.Character.MaxGas)
-                    {
-                        sender.Character.CurrentGas = sender.Character.MaxGas;
-                        used = true;
-                    }
-                }
-                if (String.Contains(message, "Ammo"))
-                {
-                    if (sender.Character.Weapon == "Blade")
-                    {
-                        if (sender.Character.CurrentBladeDurability < sender.Character.MaxBladeDurability || sender.Character.currentBlade < sender.Character.MaxBlade)
-                        {
-                            sender.Character.CurrentBladeDurability = sender.Character.MaxBladeDurability;
-                            sender.Character.currentBlade = sender.Character.MaxBlade;
-                            used = true;
-                        }
-                    }
-                    else
-                    {
-                        if (sender.Character.CurrentAmmoRound < sender.Character.MaxAmmoRound || sender.Character.CurrentAmmoLeft < sender.Character.MaxAmmoTotal - sender.Character.MaxAmmoRound)
-                        {
-                            sender.Character.CurrentAmmoRound = sender.Character.MaxAmmoRound;
-                            sender.Character.CurrentAmmoLeft = sender.Character.MaxAmmoTotal - sender.Character.MaxAmmoRound;
-                            used = true;
-                        }
-                    }
-                }
-                if (String.Contains(message, "Health"))
-                {
-                    if (sender.Character.Health < sender.Character.MaxHealth)
-                    {
-                        sender.Character.Health = sender.Character.MaxHealth;
-                        used = true;
-                    }
-                }
-
-                if (self.PlaySound && used)
-                {
-                    sender.Character.PlaySound("Checkpoint");
-                }
-
-                if (self.Unlimited || !used)
-                {
-                    return;
-                }
-
-                self.Uses = self.Uses - 1;
-
-                if (self.Uses <= 0)
-                {
-                    self.MapObject.Active = false;
-                }
+                self.MapObject.Active = false;
             }
         }
+        
     }
 
     function OnCollisionEnter(other)
     {
-        if (other.Type == "Human" && other.IsMine && self.MapObject.Active)
+        if (other.Type != "Human" || !other.IsMine || !self.MapObject.Active || self._usesLeft <= 0)
         {
+            return;
+        }
 
-            if (self._cdTimer <= 0.0)
+        if (self._cdTimer <= 0.0)
+        {
+            self._cdTimer = self._cd;
+            used = false;
+
+            if (self.RefillGas)
             {
-                self._cdTimer = self._cd;
-                message = "";
-                if (self.RefillGas)
+                if (other.CurrentGas < other.MaxGas)
                 {
-                    message += "Gas,";
+                    other.CurrentGas = other.MaxGas;
+                    used = true;
                 }
-                if (self.RefillAmmo)
-                {
-                    message += "Ammo,";
-                }
-                if (self.RefillHealth)
-                {
-                    message += "Health,";
-                }
-                self.NetworkView.SendMessage(Network.MasterClient, message);
             }
+
+            if (self.RefillAmmo)
+            {
+                if (other.Weapon == "Blade")
+                {
+                    if (other.CurrentBladeDurability < other.MaxBladeDurability || other.currentBlade < other.MaxBlade)
+                    {
+                        other.CurrentBladeDurability = other.MaxBladeDurability;
+                        other.currentBlade = other.MaxBlade;
+                        used = true;
+                    }
+                }
+                else
+                {
+                    if (other.CurrentAmmoRound < other.MaxAmmoRound || other.CurrentAmmoLeft < other.MaxAmmoTotal - other.MaxAmmoRound)
+                    {
+                        other.CurrentAmmoRound = other.MaxAmmoRound;
+                        other.CurrentAmmoLeft = other.MaxAmmoTotal - other.MaxAmmoRound;
+                        used = true;
+                    }
+                }
+            }
+
+            if (self.RefillHealth)
+            {
+                if (other.Health < other.MaxHealth)
+                {
+                    other.Health = other.MaxHealth;
+                    used = true;
+                }
+            }
+
+            if (self.Unlimited || !used)
+            {
+                return;
+            }
+
+            if (self.PlaySound && used)
+            {
+                other.PlaySound("Checkpoint");
+            }
+
+            data = Dict();
+            data.Set("uses", self._usesLeft - 1);
+            self.NetworkView.SendMessageAll(Json.SaveToString(data));
         }
     }
 
