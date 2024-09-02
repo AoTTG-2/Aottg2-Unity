@@ -1,26 +1,34 @@
 class Main
 {
-    Description = "Cage fight. Make sure to enable team mode. (Pause -> Game -> Misc -> PVP Team)";
-
     StartTitans = 3;
     StartTitansTooltip = "The amount of titans in each cage.";
 
-    _aliveRedTitans = 0;
-    _aliveBlueTitans = 0;
+    _redTitans = List();
+    _blueTitans = List();
 
+    _enabled = false;
     _gameEnded = false;
 
     function OnGameStart()
     {
         if (Network.IsMasterClient)
         {
+            if (Game.GetMiscSetting("PVP") != 2)
+            {
+                key = Input.GetKeyName("General/Pause");
+                help = "(<b>" + key + "</b> → Game → Misc → PVP)";
+                error = "<b><color=#f75348>[Error]: </color></b>";
+                str = "CageFight game mode requires Team PVP. ";
+                str += "To enable it go to the game setting and under the Misc tab, set the PVP to Team. ";
+                Game.Print(error + str + String.Newline + help);
+                return;
+            }
+
+            self._enabled = true;
             self._titanSpawnPointsA = Map.FindMapObjectsByName("Titan A");
             self._titanSpawnPointsB = Map.FindMapObjectsByName("Titan B");
-            self.SpawnTitans(self._titanSpawnPointsA);
-            self.SpawnTitans(self._titanSpawnPointsB);
-
-            self._aliveRedTitans = self.StartTitans;
-            self._aliveBlueTitans = self.StartTitans;
+            self.SpawnTitans(self._redTitans, self._titanSpawnPointsA);
+            self.SpawnTitans(self._blueTitans, self._titanSpawnPointsB);
 
             UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
         }
@@ -28,29 +36,26 @@ class Main
 
     function OnCharacterDie(victim, killer, killerName)
     {
-        if (victim.Type == "Titan")
+        if (self._enabled && Network.IsMasterClient)
         {
-            if (Network.IsMasterClient)
+            if (victim.Type == "Titan")
             {
                 if (killer.Team == "Red")
                 {
-                    self._aliveRedTitans = self._aliveRedTitans - 1;
-                    self._aliveBlueTitans = self._aliveBlueTitans + 1;
-                    self.SpawnTitan(self._titanSpawnPointsB);
+                    self._redTitans.Remove(victim);
+                    self.SpawnTitan(self._blueTitans, self._titanSpawnPointsB);
+                    self.CheckIfTitansAreDead();
                 }
                 elif (killer.Team == "Blue")
                 {
-                    self._aliveBlueTitans = self._aliveBlueTitans - 1;
-                    self._aliveRedTitans = self._aliveRedTitans + 1;
-                    self.SpawnTitan(self._titanSpawnPointsA);
+                    self._blueTitans.Remove(victim);
+                    self.SpawnTitan(self._redTitans, self._titanSpawnPointsA);
+                    self.CheckIfTitansAreDead();
                 }
 
                 UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
             }
-        }
-        elif (victim.Type == "Human")
-        {
-            if (Network.IsMasterClient)
+            elif (victim.Type == "Human")
             {
                 self.CheckIfTeamPlayersAreDead();
             }
@@ -59,30 +64,56 @@ class Main
 
     function OnPlayerLeave(player)
     {
-        if (Network.IsMasterClient)
+        if (self._enabled && Network.IsMasterClient)
         {
             self.CheckIfTeamPlayersAreDead();
         }
     }
 
-    function OnFrame()
+    function OnSecond()
     {
-        if (Network.IsMasterClient)
+        if (!self._enabled || !Network.IsMasterClient || self._gameEnded)
         {
-            if (self._aliveRedTitans <= 0)
+            return;
+        }
+
+        redPlayers = self.GetPlayersOfTeam("Red");
+        bluePlayers = self.GetPlayersOfTeam("Blue");
+
+        for(bt in self._blueTitans)
+        {
+            target = self.GetNearestPlayer(bluePlayers, bt.Position);
+            if (target != null)
             {
-                self.AnnounceWinner("Red");
+                bt.Target(target, 999);
             }
-            elif (self._aliveBlueTitans <= 0)
+        }
+
+        for(rt in self._redTitans)
+        {
+            target = self.GetNearestPlayer(redPlayers, rt.Position);
+            if (target != null)
             {
-                self.AnnounceWinner("Blue");
+                rt.Target(target, 999);
             }
+        }
+    }
+
+    function CheckIfTitansAreDead()
+    {
+        if (self._redTitans.Count <= 0)
+        {
+            self.AnnounceWinner("Red");
+        }
+        elif (self._blueTitans.Count <= 0)
+        {
+            self.AnnounceWinner("Blue");
         }
     }
 
     coroutine CheckIfTeamPlayersAreDead(team)
     {
-        wait 1.0;
+        wait 0.3;
 
         redAlive = false;
         blueAlive = false;
@@ -133,13 +164,14 @@ class Main
         self._gameEnded = true;
     }
 
-    function SpawnTitan(spawnPoints)
+    function SpawnTitan(list, spawnPoints)
     {
         position = self.GetRandomListElement(spawnPoints).Position;
-        Game.SpawnTitanAt("Default", position);
+        titan = self.SpawnTitanAt(position);
+        list.Add(titan);
     }
 
-    function SpawnTitans(spawnPoints)
+    function SpawnTitans(list, spawnPoints)
     {
         randomSpawnPoint = false;
         if (self.StartTitans > spawnPoints.Count)
@@ -159,14 +191,53 @@ class Main
                 position = spawnPoints.Get(i).Position;
             }
 
-            Game.SpawnTitanAt("Default", position);
+            titan = self.SpawnTitanAt(position);
+            list.Add(titan);
         }
+    }
+
+    function SpawnTitanAt(position)
+    {
+        titan = Game.SpawnTitanAt("Default", position);
+        titan.DetectRange = 10;
+        return titan;
+    }
+
+    function GetPlayersOfTeam(team)
+    {
+        players = List();
+        for(p in Network.Players)
+        {
+            if (p.Status == "Alive" && p.Team == team)
+            {
+                players.Add(p.Character);
+            }
+        }
+
+        return players;
+    }
+
+    function GetNearestPlayer(players, position)
+    {
+        n = null;
+        nn = 99999.0;
+        for(p in players)
+        {
+            dist = Vector3.Distance(p.Position, position);
+            if (dist < nn)
+            {
+                n = p;
+                nn = dist;
+            }
+        }
+
+        return n;
     }
 
     function GetRemainingTitansLabel()
     {
-        redStr = Convert.ToString(self._aliveRedTitans);
-        blueStr = Convert.ToString(self._aliveBlueTitans);
+        redStr = Convert.ToString(self._redTitans.Count);
+        blueStr = Convert.ToString(self._blueTitans.Count);
 
         return "<color=#f06464>" + redStr + "</color> | " + "<color=#62b7f0>" + blueStr + "</color>";
     }
