@@ -113,6 +113,13 @@ namespace CustomLogic
                 string fileName = (string)parameters[0];
                 return Util.IsValidFileName(fileName);
             }
+            if (name == "FileExists")
+            {
+                string fileName = (string)parameters[0];
+                if (!Util.IsValidFileName(fileName))
+                    throw new System.Exception("PersistentData.FileExists only supports legal fileName characters.");
+                return File.Exists(Path.Combine(FolderPaths.PersistentData, fileName + ".txt"));
+            }
             return base.CallMethod(name, parameters);
         }
     }
