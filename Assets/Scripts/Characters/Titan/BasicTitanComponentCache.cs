@@ -7,6 +7,7 @@ namespace Characters
     class BasicTitanComponentCache: BaseTitanComponentCache
     {
         public BaseHitbox BodyHitbox;
+        public BaseHitbox CrawlerHitbox;
         public Transform ForearmL;
         public Transform ForearmR;
         public Collider ForearmLHurtbox;
@@ -37,6 +38,11 @@ namespace Characters
                 {
                     BodyHitbox = BaseHitbox.Create(character, collider.gameObject, collider);
                     Hitboxes.Add(BodyHitbox);
+                }
+                else if (name == "CrawlerHitbox")
+                {
+                    CrawlerHitbox = BaseHitbox.Create(character, collider.gameObject, collider);
+                    Hitboxes.Add(CrawlerHitbox);
                 }
             }
             SetupParticles();

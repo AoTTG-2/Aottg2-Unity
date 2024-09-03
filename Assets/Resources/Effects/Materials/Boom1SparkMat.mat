@@ -32,7 +32,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses: []
@@ -40,8 +40,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Alpha_Map:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Basecolor:
-        m_Texture: {fileID: 2800000, guid: 37e1728552c4ead4b8d90c3ea5ed82ea, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4a4fe709f891a6c448e685f968bdeb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -53,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emit_Texture:
-        m_Texture: {fileID: 2800000, guid: 37e1728552c4ead4b8d90c3ea5ed82ea, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4a4fe709f891a6c448e685f968bdeb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -62,6 +66,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClamp1: 0
+    - _AlphaClamp2: 1
     - _Alpha_Clip: 0
     - _BUILTIN_AlphaClip: 1
     - _BUILTIN_Blend: 0
@@ -97,11 +103,13 @@ Material:
     - _SoftParticlesFarFadeDistance: 1
     - _SoftParticlesNearFadeDistance: 0
     - _SrcBlend: 1
+    - _Use_Alpha_Map: 0
     - _Use_Emit_Texture: 1
     - _ZWrite: 1
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.6406769, b: 0.12735844, a: 1}
+    - _Color2: {r: 1, g: 0.43673247, b: 0, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}

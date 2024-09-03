@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SimpleJSONFixed;
@@ -9,6 +9,7 @@ namespace Settings
     abstract class BaseSettingsContainer: BaseSetting
     {
         public OrderedDictionary Settings = new OrderedDictionary();
+        public Dictionary<string, BaseSetting> TypedSettings = new Dictionary<string, BaseSetting>();
 
         public BaseSettingsContainer()
         {
@@ -25,7 +26,19 @@ namespace Settings
         {
             foreach (FieldInfo field in GetType().GetFields().Where(field => field.FieldType.IsSubclassOf(typeof(BaseSetting))))
             {
-                Settings.Add(field.Name, (BaseSetting)field.GetValue(this));
+                var setting = (BaseSetting)field.GetValue(this);
+                Settings.Add(field.Name, setting);
+
+                if (IsTypedSetting(field.FieldType))
+                {
+                    TypedSettings.Add(field.Name, setting);
+                }
+            }
+
+            static bool IsTypedSetting(System.Type settingType)
+            {
+                var generic = typeof(TypedSetting<>);
+                return settingType.BaseType.IsGenericType && settingType.BaseType.GetGenericTypeDefinition() == generic;
             }
         }
 

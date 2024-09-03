@@ -14,6 +14,7 @@ namespace Map
         public MapScriptObjects Objects = new MapScriptObjects();
         public WeatherSet Weather = new WeatherSet();
         public string Logic = string.Empty;
+        public string MapHash = string.Empty;
 
         public static MapScript CreateDefault()
         {
@@ -62,6 +63,7 @@ namespace Map
 
         public virtual void Deserialize(string csv)
         {
+            MapHash = Util.CreateMD5(csv);
             if (MapConverter.IsLegacy(csv))
             {
                 Objects = MapConverter.Convert(csv).Objects;

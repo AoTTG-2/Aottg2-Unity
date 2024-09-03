@@ -62,7 +62,7 @@ MonoBehaviour:
     value: 0.255
   fastMode:
     overrideState: 1
-    value: 0
+    value: 1
 --- !u!114 &-4831445404502534398
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -189,7 +189,7 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 1
-    value: {x: 0.50082076, y: 0.9130094, z: 1, w: 0}
+    value: {x: 1, y: 0.88455427, z: 0.9689015, w: 0}
   gamma:
     overrideState: 1
     value: {x: 0, y: 0.46667194, z: 1, w: 0}
@@ -1408,7 +1408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1cb7e9e120078f43bce4f0b1be547a7, type: 3}
   m_Name: AmbientOcclusion
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -1417,10 +1417,10 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.18
+    value: 2.16
   color:
-    overrideState: 0
-    value: {r: 0, g: 0, b: 0, a: 1}
+    overrideState: 1
+    value: {r: 0, g: 0.021957027, b: 0.16981131, a: 1}
   ambientOnly:
     overrideState: 0
     value: 1
@@ -1636,10 +1636,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   focusDistance:
     overrideState: 1
     value: 10

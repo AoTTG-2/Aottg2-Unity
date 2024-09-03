@@ -44,7 +44,7 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction), 0.2f);
-            human.PlaySound(HumanSounds.GunExplode);
+            human.PlaySound(HumanSounds.GetRandomAPGShot());
             human.HumanCache.APGHit.transform.position = start;
             human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];

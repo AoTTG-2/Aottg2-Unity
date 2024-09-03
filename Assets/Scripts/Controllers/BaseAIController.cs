@@ -22,13 +22,16 @@ namespace Controllers
         {
         }
 
-        protected virtual void Update()
+        protected virtual void FixedUpdate()
         {
         }
 
         protected float GetTargetAngle(Vector3 direction)
         {
             direction = new Vector3(direction.x, 0f, direction.z).normalized;
+            if (direction == Vector3.zero)
+                return _character.transform.eulerAngles.y;
+
             return Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
         }
 

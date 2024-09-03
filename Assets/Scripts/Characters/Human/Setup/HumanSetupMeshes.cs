@@ -1,6 +1,7 @@
 using Settings;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Characters
@@ -16,6 +17,11 @@ namespace Characters
         public HumanSetupMeshes(HumanSetup setup)
         {
             _setup = setup;
+        }
+
+        public string GetBootsMesh(int boots)
+        {
+            return CostumesPath + "character_leg_" + boots.ToString();
         }
 
         public string GetHandMesh(bool left)
@@ -76,7 +82,7 @@ namespace Characters
             string type = _setup.CurrentCostume["Type"].Value;
             mesh += type.StartsWith("Uniform") ? "_uniform" : "_casual";
             mesh += _setup.CustomSet.Sex.Value == (int)HumanSex.Male ? "_M" : "_F";
-            mesh += type.EndsWith("A") ? "A" : "B";
+            mesh += type.Last().ToString();
             return CostumesPath + mesh;
         }
 

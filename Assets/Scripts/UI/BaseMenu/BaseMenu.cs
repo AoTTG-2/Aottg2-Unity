@@ -37,7 +37,8 @@ namespace UI
         protected IEnumerator WaitAndApplyScale(SceneName sceneName)
         {
             float scaleFactor = 1f / SettingsManager.UISettings.UIMasterScale.Value;
-            if (sceneName == SceneName.CharacterEditor || sceneName == SceneName.MapEditor || sceneName == SceneName.SnapshotViewer)
+            if (sceneName == SceneName.CharacterEditor || sceneName == SceneName.MapEditor 
+                || sceneName == SceneName.SnapshotViewer || sceneName == SceneName.Gallery || sceneName == SceneName.Credits)
                 scaleFactor = 1f;
             GetComponent<CanvasScaler>().referenceResolution = new Vector2(1920 * scaleFactor, 1080 * scaleFactor);
             yield return new WaitForEndOfFrame();

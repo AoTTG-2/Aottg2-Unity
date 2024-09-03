@@ -1,9 +1,11 @@
-﻿namespace Settings
+namespace Settings
 {
     class InteractionInputSettings: SaveableSettingsContainer
     {
         protected override string FileName { get { return "InteractionInput.json"; } }
         public KeybindSetting Interact = new KeybindSetting(new string[] { "G", "None" });
+        public KeybindSetting Interact2 = new KeybindSetting(new string[] { "H", "None" });
+        public KeybindSetting Interact3 = new KeybindSetting(new string[] { "J", "None" });
         public KeybindSetting ItemMenu = new KeybindSetting(new string[] { "F", "None" });
         public KeybindSetting EmoteMenu = new KeybindSetting(new string[] { "N", "None" });
         public KeybindSetting MenuNext = new KeybindSetting(new string[] { "Space", "None" });

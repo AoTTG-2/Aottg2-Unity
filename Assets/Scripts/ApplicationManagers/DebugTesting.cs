@@ -10,6 +10,8 @@ using Events;
 using Map;
 using Effects;
 using GameManagers;
+using Controllers;
+using Unity.VisualScripting;
 
 namespace ApplicationManagers
 {
@@ -78,6 +80,10 @@ namespace ApplicationManagers
                     break;
                 case "generate_char_previews":
                     ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).GeneratePreviews();
+                    break;
+                case "generate_titan_keyframes":
+                    var titan = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
+                    titan.AddComponent<DebugAttackKeyframes>();
                     break;
                 default:
                     Debug.Log("Invalid debug command.");

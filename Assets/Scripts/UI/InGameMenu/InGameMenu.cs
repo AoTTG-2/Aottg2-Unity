@@ -13,6 +13,10 @@ using System.Collections;
 using Cameras;
 using CustomLogic;
 using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine.Rendering;
+using System.Linq;
+using Photon.Pun.UtilityScripts;
 
 namespace UI
 {
@@ -31,6 +35,7 @@ namespace UI
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
         public BasePopup _characterPopup;
+        public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
         public BasePopup _selectMapPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
@@ -227,11 +232,11 @@ namespace UI
 
         public void ToggleScoreboardMenu()
         {
-            SetScoreboardMenu(!_scoreboardPopup.gameObject.activeSelf);
+            SetScoreboardMenu(!_scoreboardPopup.gameObject.activeSelf, false);
             ToggleUI(true);
         }
 
-        public void SetScoreboardMenu(bool enabled)
+        public void SetScoreboardMenu(bool enabled, bool fromClick)
         {
             if (enabled && !InMenu())
             {
@@ -241,7 +246,8 @@ namespace UI
             else if (!enabled)
             {
                 _scoreboardPopup.Hide();
-                SkipAHSSInput = true;
+                if (fromClick)
+                    SkipAHSSInput = true;
             }
         }
 
@@ -254,13 +260,31 @@ namespace UI
                 InGameManager.UpdateRoundPlayerProperties();
             }
             else if (!enabled)
+            {
                 _characterPopup.Hide();
+                if (_characterChangePopup != null)
+                    _characterChangePopup.Hide();
+            }
             ToggleUI(true);
         }
 
-        public void ShowCutsceneMenu(string icon, string title, string content)
+        public void ShowCharacterChangeMenu()
         {
-            _cutsceneDialoguePanel.Show(icon, title, content);
+            if (!InMenu())
+            {
+                HideAllMenus();
+                if (_characterChangePopup == null)
+                {
+                    _characterChangePopup = ElementFactory.CreateDefaultPopup<CharacterChangePopup>(transform);
+                    _popups.Add(_characterChangePopup);
+                }
+                _characterChangePopup.Show();
+            }
+        }
+
+        public void ShowCutsceneMenu(string icon, string title, string content, bool full)
+        {
+            _cutsceneDialoguePanel.Show(icon, title, content, full);
         }
 
         public void HideCutsceneMenu()
@@ -452,6 +476,139 @@ namespace UI
             return str;
         }
 
+        private string GetPlayerListEntry(Player player)
+        {
+            string row = string.Empty;
+            // read player props
+            string status = player.GetStringProperty(PlayerProperty.Status);
+            if (status != PlayerStatus.Alive)
+                status = " <color=red>*dead*</color> ";
+            else
+                status = string.Empty;
+
+            string team = player.GetStringProperty(PlayerProperty.Team);
+            string teamColor = TeamInfo.GetTeamColor(team);
+            bool teamsEnabled = SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team;
+            string character = player.GetStringProperty(PlayerProperty.Character);
+            if (team == TeamInfo.None)
+                team = string.Empty;
+            if (teamsEnabled)
+            {
+                if (team == TeamInfo.Blue)
+                    team = " B ";
+                else if (team == TeamInfo.Red)
+                    team = " R ";
+                else if (team == TeamInfo.Titan)
+                    team = " T ";
+                else if (team == TeamInfo.Human)
+                    team = " H ";
+                else
+                    team = string.Empty;
+            }
+            else
+            {
+                if (team == TeamInfo.Blue || team == TeamInfo.Red)
+                {
+                    if (character == PlayerCharacter.Human || character == PlayerCharacter.Shifter)
+                    {
+                        team = " H ";
+                        teamColor = TeamInfo.GetTeamColor(TeamInfo.Human);
+                    }
+                    else if (character == PlayerCharacter.Titan)
+                    {
+                        team = " T ";
+                        teamColor = TeamInfo.GetTeamColor(TeamInfo.Titan);
+                    }
+                }
+                else if (team == TeamInfo.Titan)
+                    team = " T ";
+                else if (team == TeamInfo.Human)
+                    team = " H ";
+                else
+                    team = string.Empty;
+            }
+
+            team = Util.ColorText(team, teamColor);
+
+
+            string loadout = player.GetStringProperty(PlayerProperty.Loadout);
+            if (loadout == HumanLoadout.APG)
+                loadout = " APG ";
+            else if (loadout == HumanLoadout.AHSS)
+                loadout = " AHSS ";
+            else if (loadout == HumanLoadout.Thunderspears)
+                loadout = " TS ";
+            else
+                loadout = string.Empty;
+
+
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
+            
+
+            // string guild = player.GetStringProperty(PlayerProperty.Guild);
+            string kills = player.GetIntProperty(PlayerProperty.Kills).ToString();
+            string deaths = player.GetIntProperty(PlayerProperty.Deaths).ToString();
+            string highestDamage = player.GetIntProperty(PlayerProperty.HighestDamage).ToString();
+            string totalDamage = player.GetIntProperty(PlayerProperty.TotalDamage).ToString();
+
+            string stats = kills + "/" + deaths + "/" + highestDamage + "/" + totalDamage;
+            
+            // build row
+            row = Util.SizeText($"{name}: {stats}", 19);
+
+            return row;
+        }
+
+        private string GetAggregateStats(IGrouping<string, Player> group)
+        {
+            int kills = 0;
+            int deaths = 0;
+            int highestDmg = 0;
+            int totalDmg = 0;
+
+            foreach (var player in group)
+            {
+                kills += player.GetIntProperty(PlayerProperty.Kills);
+                deaths += player.GetIntProperty(PlayerProperty.Deaths);
+                highestDmg += player.GetIntProperty(PlayerProperty.HighestDamage);
+                totalDmg += player.GetIntProperty(PlayerProperty.TotalDamage);
+            }
+
+            return $"{Util.ColorText(group.Key, TeamInfo.GetTeamColor(group.Key))}: {kills}/{deaths}/{highestDmg}/{totalDmg}\n";
+        }
+
+        private string GetPlayerList()
+        {
+            string list = string.Empty;
+            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                list += GetPlayerListEntry(player) + "\n";
+            }
+            return list;
+        }
+
+        private string GetPlayerListTeams()
+        {
+            string list = string.Empty;
+            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
+            var grouped = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) != TeamInfo.None).GroupBy(e => e.GetStringProperty(PlayerProperty.Team));
+            foreach (var group in grouped)
+            {
+                list += GetAggregateStats(group);
+                foreach (Player player in group)
+                {
+                    list += "\t" + GetPlayerListEntry(player) + "\n";
+                }
+            }
+            foreach (Player player in individuals)
+            {
+                list += individuals + ":\n";
+                list += "\t" + GetPlayerListEntry(player) + "\n";
+            }
+            return list;
+        }
+
         private string GetTelemetricStrings()
         {
             string timeLine = "";
@@ -476,11 +633,10 @@ namespace UI
             }
             if (SettingsManager.UISettings.ShowKDR.Value)
             {
-                string kills = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills).ToString();
-                string deaths = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths).ToString();
-                string max = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.HighestDamage).ToString();
-                string total = PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage).ToString();
-                kdrLine += "KDR: " + string.Join(" / ", new string[] { kills, deaths, max, total }) + "\n";
+                if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
+                    kdrLine = GetPlayerList();
+                else
+                    kdrLine = GetPlayerListTeams();
             }
             string final = timeLine;
             if (timeLine != "")

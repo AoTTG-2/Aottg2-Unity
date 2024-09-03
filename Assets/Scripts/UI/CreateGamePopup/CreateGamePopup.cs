@@ -121,6 +121,8 @@ namespace UI
                     InGameManager.RestartGame();
                     break;
                 case "Start":
+                    MusicManager.PlayEffect();
+                    MusicManager.PlayTransition();
                     SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                     if (!IsMultiplayer)
                         SettingsManager.MultiplayerSettings.ConnectOffline();
@@ -154,7 +156,7 @@ namespace UI
             SettingsManager.WeatherSettings.Load();
         }
 
-        private void StartRoom()
+        public static void StartRoom()
         {
             InGameSet settings = SettingsManager.InGameCurrent;
             string roomName = settings.General.RoomName.Value;
@@ -235,6 +237,7 @@ namespace UI
                     else
                     {
                         set.Copy(SettingsManager.InGameUI);
+                        set.Name.Value = name;
                         SettingsManager.InGameSettings.Save();
                     }
                     return;

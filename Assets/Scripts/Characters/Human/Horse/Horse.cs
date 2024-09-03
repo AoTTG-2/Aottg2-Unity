@@ -85,7 +85,7 @@ namespace Characters
             if (!Cache.Animation.IsPlaying(HorseAnimations.Idle0))
             {
                 CrossFade(HorseAnimations.Idle0, 0.1f);
-                _idleTimeLeft = UnityEngine.Random.Range(3f, 6f);
+                _idleTimeLeft = UnityEngine.Random.Range(6f, 9f);
                 return;
             }
             float choose = UnityEngine.Random.Range(0f, 1f);
@@ -94,17 +94,20 @@ namespace Characters
             else if (choose < 0.5f)
             {
                 IdleOneShot(HorseAnimations.Idle2);
-                PlaySound(HorseSounds.Idle1);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle1);
             }
             else if (choose < 0.75f)
             {
                 IdleOneShot(HorseAnimations.Idle3);
-                PlaySound(HorseSounds.Idle2);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle2);
             }
             else
             {
-                IdleOneShot(HorseAnimations.Crazy);
-                PlaySound(HorseSounds.Idle3);
+                IdleOneShot(HorseAnimations.Crazy); // <--- Me after listening to these sounds for an hour when testing OTW.
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    PlaySound(HorseSounds.Idle3);
             }
         }
 
@@ -181,22 +184,22 @@ namespace Characters
                             Cache.Rigidbody.velocity = Vector3.up * Cache.Rigidbody.velocity.y;
                         else
                         {
-                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(_owner.HorseSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
+                            Cache.Rigidbody.AddForce(-Cache.Rigidbody.velocity.normalized * Mathf.Min(_owner.Stats.HorseSpeed, Cache.Rigidbody.velocity.magnitude * 0.5f),
                                 ForceMode.Acceleration);
                         }
                     }
                     else if (State == HorseState.WalkToPoint || State == HorseState.RunToPoint  || 
                         State == HorseState.ControlledWalk || State == HorseState.ControlledRun)
                     {
-                        float speed = _owner.HorseSpeed;
+                        float speed = _owner.Stats.HorseSpeed;
                         if (State == HorseState.ControlledWalk)
                             speed = WalkSpeed;
                         else if (State == HorseState.WalkToPoint)
                             speed = RunCloseSpeed;
-                        Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.HorseSpeed, ForceMode.Acceleration);
+                        Cache.Rigidbody.AddForce(Cache.Transform.forward * _owner.Stats.HorseSpeed, ForceMode.Acceleration);
                         if (Cache.Rigidbody.velocity.magnitude >= speed)
                         {
-                            if (speed == _owner.HorseSpeed)
+                            if (speed == _owner.Stats.HorseSpeed)
                                 Cache.Rigidbody.AddForce((speed - Cache.Rigidbody.velocity.magnitude) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);
                             else
                                 Cache.Rigidbody.AddForce((Mathf.Max(speed - Cache.Rigidbody.velocity.magnitude, -1f)) * Cache.Rigidbody.velocity.normalized, ForceMode.VelocityChange);
@@ -238,12 +241,14 @@ namespace Characters
             if (Cache.Animation.IsPlaying(HorseAnimations.Run) && Grounded)
             {
                 ToggleDust(true);
-                ToggleSound(HorseSounds.Run, true);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    ToggleSound(HorseSounds.Run, true);
             }
             else
             {
                 ToggleDust(false);
-                ToggleSound(HorseSounds.Run, false);
+                if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
+                    ToggleSound(HorseSounds.Run, false);
             }
         }
 

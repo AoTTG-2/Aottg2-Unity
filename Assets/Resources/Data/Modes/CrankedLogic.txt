@@ -7,6 +7,7 @@ class Main
     TitanAddTime = 6.0;
     _CrankedTimeDangerZone = 10.0;
     _hasSpawned = false;
+    _hasMyPlayerSpawned = false;
     _spawnTimeLeft = 0.0;
     _startTime = -1.0;
     _endTime = -1.0;
@@ -29,6 +30,7 @@ class Main
         {
             self._endTime = Time.GameTime;
             self.StartTimeLimit = 0.0;
+            self._hasMyPlayerSpawned = false;
         }
     }
 
@@ -37,6 +39,7 @@ class Main
         if (player == Network.MyPlayer)
         {
             self._startTime = Time.GameTime;
+            self._hasMyPlayerSpawned = true;
         }
     }
 
@@ -51,7 +54,7 @@ class Main
             {
                 position = character.NapePosition;
             }
-            Game.SpawnEffect("ThunderspearExplode", position, Vector3.Zero, 50.0, Color(255, 255, 255, 255));
+            Game.SpawnEffect("ThunderspearExplode", position, Vector3.Zero, 50.0, Color(255, 255, 255, 255), "Air");
         }
     }
 
@@ -86,6 +89,11 @@ class Main
                 return;
             }
         }
+        if (!self._hasMyPlayerSpawned)
+        {
+            return;
+        }
+
         self.StartTimeLimit = self.StartTimeLimit - Time.TickTime;
         if (Game.IsEnding)
         {

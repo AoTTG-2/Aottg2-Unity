@@ -86,6 +86,26 @@ namespace UI
             return button;
         }
 
+        public static GameObject CreatePerkButton(Transform parent, ElementStyle style, string title, string tooltip, 
+            float elementWidth = 0f, float elementHeight = 0f, float offset = 0f, UnityAction onClick = null)
+        {
+            GameObject button = InstantiateAndBind(parent, "Prefabs/Misc/PerkButton");
+            Text text = button.transform.Find("Text").GetComponent<Text>();
+            text.text = title;
+            text.fontSize = style.FontSize;
+            LayoutElement layout = button.GetComponent<LayoutElement>();
+            if (elementWidth > 0f)
+                layout.preferredWidth = elementWidth;
+            if (elementHeight > 0f)
+                layout.preferredHeight = elementHeight;
+            PerkButton perkButton = button.AddComponent<PerkButton>();
+            perkButton.Setup(tooltip, style, offset);
+            if (onClick != null)
+                button.GetComponent<Button>().onClick.AddListener(onClick);
+            text.color = UIManager.GetThemeColor(style.ThemePanel, "DefaultButton", "TextColor");
+            return button;
+        }
+
         public static GameObject CreateIconButton(Transform parent, ElementStyle style, string icon, float elementWidth = 32f, float elementHeight = 32f, 
             UnityAction onClick = null)
         {
@@ -261,6 +281,14 @@ namespace UI
                 text.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             if (parent.GetComponent<HorizontalLayoutGroup>() != null)
                 text.GetComponent<LayoutElement>().flexibleWidth = 0f;
+            return label;
+        }
+
+        public static GameObject CreateEmptySpace(Transform parent)
+        {
+            GameObject label = InstantiateAndBind(parent, "Prefabs/Elements/DefaultLabel");
+            Text text = label.GetComponent<Text>();
+            text.text = "";
             return label;
         }
 

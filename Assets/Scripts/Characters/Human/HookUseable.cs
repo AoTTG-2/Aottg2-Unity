@@ -7,16 +7,20 @@ namespace Characters
 {
     class HookUseable : HoldUseable
     {
+        public bool Enabled = true;
         public List<Hook> Hooks = new List<Hook>();
         public bool HookBoth;
         private Hook _activeHook = null;
         private bool _left;
+        private float _hookSpeed;
 
         public HookUseable(BaseCharacter owner, bool left, bool gun) : base(owner)
         {
             _left = left;
+            _hookSpeed = 3f;
+            float maxLiveTime = 2.4f / _hookSpeed;
             for (int i = 0; i < 3; i++)
-                Hooks.Add(Hook.CreateHook((Human)owner, left, i, gun));
+                Hooks.Add(Hook.CreateHook((Human)owner, left, i, maxLiveTime, gun));
         }
 
         public List<Renderer> GetRenderers()
@@ -95,7 +99,7 @@ namespace Characters
         {
             if (_activeHook != null && _activeHook.State == HookState.Disabled)
                 _activeHook = null;
-            if (_activeHook == null)
+            if (Enabled && _activeHook == null)
             {
                 _activeHook = FindAvailableHook();
                 Vector3 target = ((Human)_owner).GetAimPoint();
@@ -107,7 +111,7 @@ namespace Characters
                         offset *= -1f;
                     target += offset * _owner.Cache.Transform.right;
                 }
-                Vector3 baseVel = (target - _activeHook.Anchor.position).normalized * 3f;
+                Vector3 baseVel = (target - _activeHook.Anchor.position).normalized * _hookSpeed;
                 Vector3 playerVel = _owner.Cache.Rigidbody.velocity;
                 Vector3 relativeVel = Vector3.zero;
                 float f = Mathf.Acos(Vector3.Dot(baseVel.normalized, playerVel.normalized)) * Mathf.Rad2Deg;
@@ -115,7 +119,7 @@ namespace Characters
                     relativeVel = Vector3.Project(playerVel, baseVel);
                 _activeHook.SetHooking(baseVel, relativeVel);
                 var human = (Human)_owner;
-                human.UseGas(human.GasUsage);
+                human.Stats.UseHookGas();
             }
         }
 

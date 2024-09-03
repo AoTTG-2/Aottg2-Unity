@@ -38,6 +38,7 @@ namespace Settings
     public enum CameraInputMode
     {
         TPS,
-        Original
+        Original,
+        FPS
     }
 }

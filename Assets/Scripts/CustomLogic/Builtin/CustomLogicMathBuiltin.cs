@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using GameManagers;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +9,28 @@ namespace CustomLogic
     {
         public CustomLogicMathBuiltin(): base("Math")
         {
+        }
+
+        public override object GetField(string name)
+        {
+            if (name == "PI")
+            {
+                return Mathf.PI;
+            }
+            if (name == "Infinity")
+            {
+                return Mathf.Infinity;
+            }
+            if (name == "Rad2DegConstant")
+            {
+                return Mathf.Rad2Deg;
+            }
+            if (name == "Deg2RadConstant")
+            {
+                return Mathf.Deg2Rad;
+            }
+            
+            return base.GetField(name);
         }
 
         public override object CallMethod(string name, List<object> parameters)
@@ -107,6 +129,36 @@ namespace CustomLogic
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.RoundToInt(a);
             }
+            if (name == "Deg2Rad")
+            {
+                float a = parameters[0].UnboxToFloat();
+                return a * Mathf.Deg2Rad;
+            }
+            if (name == "Rad2Deg")
+            {
+                float a = parameters[0].UnboxToFloat();
+                return a * Mathf.Rad2Deg;
+            }
+            if (name == "Lerp")
+            {
+                float a = parameters[0].UnboxToFloat();
+                float b = parameters[1].UnboxToFloat();
+                float t = parameters[2].UnboxToFloat();
+                return Mathf.Lerp(a, b, t);
+            }
+            if (name == "LerpUnclamped")
+            {
+                float a = parameters[0].UnboxToFloat();
+                float b = parameters[1].UnboxToFloat();
+                float t = parameters[2].UnboxToFloat();
+                return Mathf.LerpUnclamped(a, b, t);
+            }
+            if (name == "Sign")
+            {
+                float a = parameters[0].UnboxToFloat();
+                return Mathf.Sign(a);
+            }
+
             return base.CallMethod(name, parameters);
         }
     }

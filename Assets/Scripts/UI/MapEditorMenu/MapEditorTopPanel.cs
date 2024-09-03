@@ -43,6 +43,7 @@ namespace UI
             string cat = "MapEditor";
             ElementStyle style = new ElementStyle(titleWidth: 0f, themePanel: ThemePanel);
             float dropdownWidth = 100f;
+            float dropdownHeight = 40f;
             Transform group = ElementFactory.CreateHorizontalGroup(SinglePanel, 10f, TextAnchor.MiddleLeft).transform;
 
             // file dropdown
@@ -78,10 +79,10 @@ namespace UI
             _dropdowns.Add(optionsDropdown.GetComponent<DropdownSelectElement>());
 
             // gizmos
-            ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MapEditorSettings", "Keybinds", "AddObject"), onClick: () => OnButtonClick("AddObject"));
-            _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", onClick: () => OnButtonClick("Gizmo"));
-            _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", onClick: () => OnButtonClick("Snap"));
-            ElementFactory.CreateDefaultButton(group, style, "Camera", onClick: () => OnButtonClick("Camera"));
+            ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MapEditorSettings", "Keybinds", "AddObject"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("AddObject"));
+            _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Gizmo"));
+            _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Snap"));
+            ElementFactory.CreateDefaultButton(group, style, "Camera", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Camera"));
         }
 
         public bool IsDropdownOpen()
@@ -162,6 +163,8 @@ namespace UI
 
         protected void OnEditClick()
         {
+            if (_menu.IsPopupActive())
+                return;
             int index = _dropdownSelection.Value;
             if (index == 0) // undo
                 _gameManager.Undo();
@@ -179,6 +182,8 @@ namespace UI
 
         protected void OnOptionsClick()
         {
+            if (_menu.IsPopupActive())
+                return;
             int index = _dropdownSelection.Value;
             if (index == 0) // editor options
                 _menu.SettingsPopup.Show();
@@ -194,6 +199,8 @@ namespace UI
 
         protected void OnButtonClick(string name)
         {
+            if (_menu.IsPopupActive())
+                return;
             if (name == "AddObject")
                 _menu.AddObjectPopup.Show();
             else if (name == "Camera")
@@ -258,7 +265,8 @@ namespace UI
             _currentMap.Value = _menu.SelectListPopup.FinishSetting.Value;
             BuiltinLevels.SaveCustomMap(_currentMap.Value, _gameManager.MapScript);
             SettingsManager.MapEditorSettings.Save();
-            BuiltinLevels.DeleteCustomMap(oldMap);
+            if (oldMap != _currentMap.Value)
+                BuiltinLevels.DeleteCustomMap(oldMap);
         }
 
         protected void OnOpenFinish()

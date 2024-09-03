@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace CustomLogic
             {
                 object param = parameters[0];
                 if (param is string)
-                    return (string)param == "true";
+                    return ((string)param).ToLower() == "true";
                 if (param is float)
                     return (float)param != 0f;
                 if (param is int)

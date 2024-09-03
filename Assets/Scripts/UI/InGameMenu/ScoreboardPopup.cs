@@ -10,7 +10,7 @@ namespace UI
         protected override string Title => string.Empty;
         protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
         protected override float MinFadeAlpha => 0.5f;
-        protected override float Width => 1010f;
+        protected override float Width => 1400f;
         protected override float Height => 800f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
@@ -74,7 +74,7 @@ namespace UI
             switch (name)
             {
                 case "Back":
-                    ((InGameMenu)UIManager.CurrentMenu).SetScoreboardMenu(false);
+                    ((InGameMenu)UIManager.CurrentMenu).SetScoreboardMenu(false, true);
                     break;
             }
         }

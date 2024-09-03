@@ -26,6 +26,7 @@ namespace UI
         private Text _contentLabel;
         private Text _titleLabel;
         private RawImage _image;
+        private GameObject _labelRight;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -38,6 +39,7 @@ namespace UI
             ElementFactory.CreateHorizontalGroup(group, 0f);
             labelLeft.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 2f - 30f;
             labelRight.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 2f - 30f;
+            _labelRight = labelRight;
             _titleLabel = labelLeft.GetComponent<Text>();
             CreateHorizontalDivider(SinglePanel);
             ElementFactory.CreateHorizontalGroup(SinglePanel, 0f);
@@ -49,7 +51,7 @@ namespace UI
             _contentLabel.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() - HorizontalPadding * 2f - 128f - 10f;
         }
 
-        public void Show(string icon, string title, string content)
+        public void Show(string icon, string title, string content, bool full)
         {
             SetTitle(title);
             icon = UIManager.GetProfileIcon(icon);
@@ -57,6 +59,7 @@ namespace UI
             _titleLabel.text = title;
             _contentLabel.text = content;
             base.Show();
+            _labelRight.SetActive(full);
         }
     }
 }

@@ -12,6 +12,7 @@ using CustomLogic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
+using Photon.Pun.Demo.PunBasics;
 
 namespace GameManagers
 {
@@ -57,7 +58,17 @@ namespace GameManagers
             }
             else
                 prefab = (MapScriptSceneObject)BuiltinMapPrefabs.AllPrefabs[name];
-            prefab.SetPosition(SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * 50f);
+            var position = SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * 50f;
+            // if snap is enabled, round the position to the nearest snap distance
+            if (((MapEditorGameManager)SceneLoader.CurrentGameManager).Snap)
+            {
+                float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
+                float x = Mathf.Round(position.x / snap) * snap;
+                float y = Mathf.Round(position.y / snap) * snap;
+                float z = Mathf.Round(position.z / snap) * snap;
+                position = new Vector3(x, y, z);
+            }
+            prefab.SetPosition(position);
             mapScriptObjects.Objects.Add(prefab);
             NewCommand(new AddObjectCommand(mapScriptObjects.Objects));
             DeselectAll();
@@ -180,7 +191,9 @@ namespace GameManagers
                     {
                         Vector3 center = renderer.bounds.center;
                         Vector2 screenPosition = camera.Camera.WorldToScreenPoint(center);
-                        if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane && Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition))
+                        if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane && 
+                            Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition) &&
+                            renderer.isVisible)
                         {
                             if (!SelectedObjects.Contains(mapObject))
                                 SelectObject(mapObject);

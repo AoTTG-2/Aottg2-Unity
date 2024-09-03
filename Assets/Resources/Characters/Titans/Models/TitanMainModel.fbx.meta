@@ -11507,7 +11507,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 166
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -11688,7 +11688,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 130
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -11869,7 +11869,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 140
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12050,7 +12050,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 140
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12231,7 +12231,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 160
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12412,7 +12412,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 160
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12593,7 +12593,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 130
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12774,7 +12774,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 130
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -12955,7 +12955,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 132
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -13136,7 +13136,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 132
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -13317,7 +13317,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 159
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -13498,7 +13498,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 159
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -13679,7 +13679,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 171
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -13860,7 +13860,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 171
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -14041,7 +14041,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 130
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -14222,7 +14222,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 0
       lastFrame: 130
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0

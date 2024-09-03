@@ -1,8 +1,10 @@
 ﻿using ApplicationManagers;
 using Cameras;
 using System;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
+using UnityStandardAssets.ImageEffects;
+using Utility;
 
 namespace Settings
 {
@@ -17,12 +19,12 @@ namespace Settings
         public BoolSetting VSync = new BoolSetting(false);
         public BoolSetting InterpolationEnabled = new BoolSetting(true);
         public BoolSetting ShowFPS = new BoolSetting(false);
-        public IntSetting RenderDistance = new IntSetting(1500, minValue: 10, maxValue: 1000000);
+        public IntSetting RenderDistance = new IntSetting(10000, minValue: 10, maxValue: 1000000);
         public IntSetting TextureQuality = new IntSetting((int)TextureQualityLevel.High);
         public IntSetting ShadowQuality = new IntSetting((int)ShadowQualityLevel.High);
         public IntSetting ShadowDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
         public IntSetting LightDistance = new IntSetting(1000, minValue: 0, maxValue: 3000);
-        public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.High);
+        public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AntiAliasingLevel>());
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
         public BoolSetting WeaponTrailEnabled = new BoolSetting(true);
@@ -30,6 +32,17 @@ namespace Settings
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
         public BoolSetting MipmapEnabled = new BoolSetting(true);
+
+        // Post Processing
+        public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<AmbientOcclusionLevel>());
+        public IntSetting Bloom = new IntSetting((int)BloomLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<BloomLevel>());
+        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
+        public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ColorGradingLevel>());
+        public IntSetting AutoExposure = new IntSetting((int)AutoExposureLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AutoExposureLevel>());
+        public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());
+        public IntSetting MotionBlur = new IntSetting((int)MotionBlurLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<MotionBlurLevel>());
+        public IntSetting WaterFX = new IntSetting((int)WaterFXLevel.High, minValue: 0, maxValue: (int)Util.EnumMaxValue<WaterFXLevel>());
+        public BoolSetting HDR = new BoolSetting(false);
 
         public override void Apply()
         {
@@ -59,13 +72,25 @@ namespace Settings
             else
                 Application.targetFrameRate = MenuFPSCap.Value > 0 ? MenuFPSCap.Value : -1;
             QualitySettings.globalTextureMipmapLimit = 3 - TextureQuality.Value;
-            QualitySettings.antiAliasing = AntiAliasing.Value == 0 ? 0 : (int)Mathf.Pow(2, AntiAliasing.Value);
             QualitySettings.anisotropicFiltering = (AnisotropicFiltering)AnisotropicFiltering.Value;
+            QualitySettings.antiAliasing = 0;
             QualitySettings.shadowDistance = ShadowDistance.Value;
             if (SceneLoader.CurrentCamera is InGameCamera)
                 ((InGameCamera)SceneLoader.CurrentCamera).ApplyGraphicsSettings();
             ScreenResolution.Value = FullscreenHandler.SanitizeResolutionSetting(ScreenResolution.Value);
             FullscreenHandler.Apply(ScreenResolution.Value, (FullScreenLevel)FullScreenMode.Value);
+            PostProcessingManager postProcessingManager = GameObject.FindFirstObjectByType<PostProcessingManager>();
+            if (postProcessingManager != null)
+                postProcessingManager.ApplySettings(
+                    (AmbientOcclusionLevel)AmbientOcclusion.Value,
+                    (BloomLevel)Bloom.Value,
+                    (ChromaticAberrationLevel)ChromaticAberration.Value,
+                    (ColorGradingLevel)ColorGrading.Value,
+                    (AutoExposureLevel)AutoExposure.Value,
+                    (DepthOfFieldLevel)DepthOfField.Value,
+                    (MotionBlurLevel)MotionBlur.Value,
+                    (WaterFXLevel)WaterFX.Value
+                );
         }
 
         public void OnSelectPreset()
@@ -78,7 +103,17 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Off;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 250;
+                LightDistance.Value = 0;
+                Bloom.Value = (int)BloomLevel.Off;
+                MotionBlur.Value = (int)MotionBlurLevel.Off;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
+                DepthOfField.Value = (int)DepthOfFieldLevel.Off;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Low;
+                AutoExposure.Value = (int)AutoExposureLevel.Off;
+                HDR.Value = false;
+                RenderDistance.Value = 1000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Low)
             {
@@ -88,37 +123,77 @@ namespace Settings
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Off;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Low;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 250;
+                LightDistance.Value = 100;
+                Bloom.Value = (int)BloomLevel.Off;
+                MotionBlur.Value = (int)MotionBlurLevel.Off;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
+                DepthOfField.Value = (int)DepthOfFieldLevel.Off;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Off;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Low;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
+                RenderDistance.Value = 2000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.Medium)
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.Low;
-                AntiAliasing.Value = (int)AntiAliasingLevel.Low;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.Low;
                 WeatherEffects.Value = (int)WeatherEffectLevel.Medium;
                 ShadowDistance.Value = 500;
-                LightDistance.Value = 500;
+                LightDistance.Value = 250;
+                Bloom.Value = (int)BloomLevel.Low;
+                MotionBlur.Value = (int)MotionBlurLevel.Off;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
+                DepthOfField.Value = (int)DepthOfFieldLevel.Off;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.Medium;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
+                RenderDistance.Value = 5000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.High)
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.Medium;
-                AntiAliasing.Value = (int)AntiAliasingLevel.Medium;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 500;
+                Bloom.Value = (int)BloomLevel.Low;
+                MotionBlur.Value = (int)MotionBlurLevel.Off;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
+                DepthOfField.Value = (int)DepthOfFieldLevel.Off;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.High;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
+                RenderDistance.Value = 10000;
             }
             else if (PresetQuality.Value == (int)PresetQualityLevel.VeryHigh)
             {
                 TextureQuality.Value = (int)TextureQualityLevel.High;
                 ShadowQuality.Value = (int)ShadowQualityLevel.High;
-                AntiAliasing.Value = (int)AntiAliasingLevel.High;
+                AntiAliasing.Value = (int)AntiAliasingLevel.On;
                 AnisotropicFiltering.Value = (int)AnisotropicLevel.High;
                 WeatherEffects.Value = (int)WeatherEffectLevel.High;
                 ShadowDistance.Value = 1000;
                 LightDistance.Value = 1000;
+                Bloom.Value = (int)BloomLevel.Low;
+                MotionBlur.Value = (int)MotionBlurLevel.Off;
+                ColorGrading.Value = (int)ColorGradingLevel.Off;
+                DepthOfField.Value = (int)DepthOfFieldLevel.Off;
+                ChromaticAberration.Value = (int)ChromaticAberrationLevel.Low;
+                AmbientOcclusion.Value = (int)AmbientOcclusionLevel.Off;
+                WaterFX.Value = (int)WaterFXLevel.High;
+                AutoExposure.Value = (int)AutoExposureLevel.On;
+                HDR.Value = false;
+                RenderDistance.Value = 10000;
             }
         }
     }
@@ -151,15 +226,73 @@ namespace Settings
     public enum AntiAliasingLevel
     {
         Off,
-        Low,
-        Medium,
-        High
+        On
     }
 
     public enum AnisotropicLevel
     {
         Off,
         Low,
+        High
+    }
+
+    public enum AmbientOcclusionLevel
+    {
+        Off,
+        Lowest,
+        Low,
+        Medium,
+        High,
+        Ultra
+    }
+
+    public enum BloomLevel
+    {
+        Off,
+        Low,
+        High
+    }
+
+    public enum ChromaticAberrationLevel
+    {
+        Off,
+        Low,
+        High
+    }
+
+    public enum ColorGradingLevel
+    {
+        Off,
+        On
+    }
+
+    public enum DepthOfFieldLevel
+    {
+        Off,
+        Low,
+        Medium,
+        High,
+    }
+
+    public enum MotionBlurLevel
+    {
+        Off,
+        Low,
+        Medium,
+        High
+    }
+
+    public enum AutoExposureLevel
+    {
+        Off,
+        On
+    }
+
+    public enum WaterFXLevel
+    {
+        Off,
+        Low,
+        Medium,
         High
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UI;
 using Utility;
@@ -15,6 +15,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
 using System.Linq;
+using Controllers;
 
 namespace GameManagers
 {
@@ -48,6 +49,7 @@ namespace GameManagers
         public bool GlobalPause = false;
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
+        public float RespawnTimeLeft;
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -205,7 +207,7 @@ namespace GameManagers
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
             else
-                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim() + ". \nType /help for a list of commands.", 
+                ChatManager.AddLine("Welcome to " + PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name).Trim().HexColor() + ". \nType /help for a list of commands.",
                     ChatTextColor.System);
             SceneLoader.LoadScene(SceneName.InGame);
         }
@@ -342,12 +344,43 @@ namespace GameManagers
             string original = SettingsManager.InGameCurrent.Misc.Motd.Value;
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
-            if (SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
-            {
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
-            }
             PrintMOTD(original);
+
+            if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
+                return;
+
+                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
+            }
+
+        public static void OnCharacterChosen()
+        {
+            ResetRespawnTimeLeft();
+        }
+
+        public static void OnLocalPlayerDied(Player player)
+        {
+            ResetRespawnTimeLeft();
+        }
+
+        private static void ResetRespawnTimeLeft()
+        {
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            gameManager.RespawnTimeLeft = SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value;
+        }
+
+        private IEnumerator RespawnForever(float delay)
+        {
+            while (true)
+            {
+                RespawnTimeLeft -= 1;
+                if (RespawnTimeLeft <= 0)
+                {
+            SpawnPlayer(false);
+                    RespawnTimeLeft = delay;
+                }
+                yield return new WaitForSeconds(1);
+            }
         }
 
         public void SpawnPlayer(bool force)
@@ -377,25 +410,45 @@ namespace GameManagers
         public void SpawnPlayerShifterAt(string shifterName, float liveTime, Vector3 position, float rotationY)
         {
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            
+            BaseShifter shifter = null;
             if (shifterName == "Annie")
-            {
-                var shifter = (AnnieShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
-                shifter.Init(false, GetPlayerTeam(false), null, liveTime);
-                CurrentCharacter = shifter;
-            }
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.AnnieShifter, position, rotation);
             else if (shifterName == "Eren")
-            {
-                var shifter = (ErenShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
-                shifter.Init(false, GetPlayerTeam(false), null, liveTime);
-                CurrentCharacter = shifter;
-            }
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ErenShifter, position, rotation);
             else if (shifterName == "Armored")
+                shifter = (BaseShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
+            if (shifter != null)
             {
-                var shifter = (ArmoredShifter)CharacterSpawner.Spawn(CharacterPrefabs.ArmoredShifter, position, rotation);
                 shifter.Init(false, GetPlayerTeam(false), null, liveTime);
                 CurrentCharacter = shifter;
+                if (SettingsManager.InGameCurrent.Misc.ShifterHealth.Value > 0)
+                    shifter.SetHealth(SettingsManager.InGameCurrent.Misc.ShifterHealth.Value);
             }
+        }
+
+        public InGameCharacterSettings GetSetHumanSettings()
+        {
+            var settings = SettingsManager.InGameCharacterSettings;
+            var miscSettings = SettingsManager.InGameCurrent.Misc;
+
+            List<string> loadouts = new List<string>();
+            if (miscSettings.AllowBlades.Value)
+                loadouts.Add(HumanLoadout.Blades);
+            if (miscSettings.AllowAHSS.Value)
+                loadouts.Add(HumanLoadout.AHSS);
+            if (miscSettings.AllowAPG.Value)
+                loadouts.Add(HumanLoadout.APG);
+            if (miscSettings.AllowThunderspears.Value)
+                loadouts.Add(HumanLoadout.Thunderspears);
+            if (loadouts.Count == 0)
+                loadouts.Add(HumanLoadout.Blades);
+            if (!loadouts.Contains(settings.Loadout.Value))
+                settings.Loadout.Value = loadouts[0];
+            List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+            if (!specials.Contains(settings.Special.Value))
+                settings.Special.Value = specials[0];
+
+            return SettingsManager.InGameCharacterSettings;
         }
 
         public void SpawnPlayerAt(bool force, Vector3 position, float rotationY)
@@ -446,6 +499,8 @@ namespace GameManagers
                 var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
                 human.Init(false, GetPlayerTeam(false), SettingsManager.InGameCharacterSettings);
                 CurrentCharacter = human;
+                if (SettingsManager.InGameCurrent.Misc.HumanHealth.Value > 1)
+                    human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
             }
             else if (character == PlayerCharacter.Shifter)
                 SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);
@@ -735,6 +790,17 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
         }
 
+        public static void ResetPlayerKD(Player player)
+        {
+            var kdrProperties = new Dictionary<string, object>
+            {
+                { PlayerProperty.Kills, 0 },
+                { PlayerProperty.Deaths, 0 },
+                { PlayerProperty.HighestDamage, 0 },
+                { PlayerProperty.TotalDamage, 0 }
+            };
+            player.SetCustomProperties(kdrProperties);
+        }
         private static void ResetRoundPlayerProperties()
         {
             if (SettingsManager.InGameCurrent.Misc.ClearKDROnRestart.Value)
@@ -914,9 +980,9 @@ namespace GameManagers
             else
             {
                 if (_generalInputSettings.ToggleScoreboard.GetKey())
-                    _inGameMenu.SetScoreboardMenu(true);
+                    _inGameMenu.SetScoreboardMenu(true, false);
                 else
-                    _inGameMenu.SetScoreboardMenu(false);
+                    _inGameMenu.SetScoreboardMenu(false, false);
             }
             if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {
@@ -1011,15 +1077,6 @@ namespace GameManagers
                 if (send)
                     RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
                 */
-            }
-        }
-
-        private IEnumerator RespawnForever(float delay)
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(delay);
-                SpawnPlayer(false);
             }
         }
 

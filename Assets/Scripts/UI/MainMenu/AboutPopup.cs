@@ -12,8 +12,8 @@ namespace UI
     class AboutPopup: BasePopup
     {
         protected override string Title => string.Empty;
-        protected override float Width => 730f;
-        protected override float Height => 400f;
+        protected override float Width => 800f;
+        protected override float Height => 600f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "Help";
@@ -28,7 +28,7 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Help", "Changelog", "Credits" })
+            foreach (string buttonName in new string[] { "Help", "Changelog" })
             {
                 GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale("MainMenu", "AboutPopup", buttonName),
                     onClick: () => SetCategoryPanel(buttonName));
@@ -41,7 +41,6 @@ namespace UI
         {
             _categoryPanelTypes.Add("Help", typeof(AboutHelpPanel));
             _categoryPanelTypes.Add("Changelog", typeof(AboutChangelogPanel));
-            _categoryPanelTypes.Add("Credits", typeof(AboutCreditsPanel));
         }
 
         private void SetupBottomButtons()

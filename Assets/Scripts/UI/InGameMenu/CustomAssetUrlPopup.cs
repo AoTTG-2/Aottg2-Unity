@@ -38,6 +38,7 @@ namespace UI
             base.Show();
             Done = false;
             Confirmed = false;
+            _label.supportRichText = false;
             _label.text = "You are about to download a file: " + url;
         }
 

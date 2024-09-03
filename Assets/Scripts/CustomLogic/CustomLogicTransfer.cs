@@ -9,6 +9,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UI;
 using UnityEngine;
@@ -100,6 +101,7 @@ namespace Map
             {
                 CustomLogicManager.Logic = StringCompression.Decompress(_logicScriptCompressed.ToArray());
                 LogicHash = Encoding.UTF8.GetString(byteArr[2]);
+                CustomLogicManager.LogicHash = LogicHash;
                 CustomLogicManager.FinishLoadLogic();
             }
         }

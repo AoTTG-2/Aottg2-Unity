@@ -125,6 +125,7 @@ MonoBehaviour:
   - StopVoiceRPC
   - ToggleBladeTrailsRPC
   - ToggleBladesRPC
+  - ResetKDRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

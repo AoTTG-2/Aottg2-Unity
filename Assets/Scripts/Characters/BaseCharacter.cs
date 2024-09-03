@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
@@ -19,10 +19,9 @@ using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
-    class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks
+    class BaseCharacter: Photon.Pun.MonoBehaviourPunCallbacks, ITargetable
     {
         protected virtual int DefaultMaxHealth => 1;
-        protected virtual bool HasMovement => true;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
         public virtual List<string> EmoteActions => new List<string>();
         public string Name = "";
@@ -60,6 +59,25 @@ namespace Characters
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
+
+        public virtual string GetTeam()
+        {
+            return Team;
+        }
+
+        public virtual Vector3 GetPosition()
+        {
+            if (Cache != null && Cache.Transform != null)
+                return Cache.Transform.position;
+            return Vector3.zero;
+        }
+
+        public virtual bool ValidTarget()
+        {
+            if (this == null)
+                return false;
+            return !Dead;
+        }
 
         public bool IsMine()
         {
@@ -389,6 +407,9 @@ namespace Characters
                     _inGameManager.RegisterMainCharacterKill(this);
             }
             CustomLogicManager.Evaluator.OnCharacterDie(this, killer, name);
+
+            if (_inGameManager.CurrentCharacter == this)
+                InGameManager.OnLocalPlayerDied(Cache.PhotonView.Owner);
         }
 
         [PunRPC]
@@ -541,7 +562,7 @@ namespace Characters
                 Grounded = false;
         }
 
-        protected virtual bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
+        public virtual bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
         {
             return RaycastIgnoreTriggers(origin, direction, distance, layerMask).HasValue;
         }
@@ -604,7 +625,7 @@ namespace Characters
             if (!IsMine())
                 return;
             var camera = ((InGameCamera)SceneLoader.CurrentCamera);
-            if (camera._follow == this && camera._cameraDistance == 0f)
+            if (camera._follow == this && camera.GetCameraDistance() == 0f)
             {
                 if (!_cameraFPS)
                 {

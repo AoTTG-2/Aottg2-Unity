@@ -49,7 +49,6 @@ namespace ApplicationManagers
             else
                 SceneManager.LoadScene(0);
             FullscreenHandler.UpdateFPS();
-            CharacterData.Init();
         }
 
         private static void CreateGameManager()
@@ -67,7 +66,7 @@ namespace ApplicationManagers
                 CurrentGameManager = Util.CreateObj<CharacterEditorGameManager>();
             else if (SceneName == SceneName.MapEditor)
                 CurrentGameManager = Util.CreateObj<MapEditorGameManager>();
-            else if (SceneName == SceneName.SnapshotViewer || SceneName == SceneName.Gallery)
+            else if (SceneName == SceneName.SnapshotViewer || SceneName == SceneName.Gallery || SceneName == SceneName.Credits)
                 CurrentGameManager = Util.CreateObj<BaseGameManager>();
         }
 
@@ -114,6 +113,7 @@ namespace ApplicationManagers
         CharacterEditor,
         SnapshotViewer,
         Gallery,
+        Credits,
         DebugTest
     }
 }

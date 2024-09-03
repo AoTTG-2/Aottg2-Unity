@@ -60,48 +60,39 @@ namespace Characters
 
         protected override Dictionary<string, float> GetRootMotionAnimations()
         {
-            return new Dictionary<string, float>() { {ErenAnimations.Attack, 1f }, { ErenAnimations.Kick, 1f } };
-        }
-
-        public override void Attack(string attack)
-        {
-            ResetAttackState(attack);
-            if (_currentAttack == ShifterAttacks.AttackDefault)
-                StateAttack(ErenAnimations.Attack);
-            else if (_currentAttack == ShifterAttacks.AttackKick)
-                StateAttack(ErenAnimations.Kick);
+            return new Dictionary<string, float>() { {ErenAnimations.AttackCombo, 1f }, { ErenAnimations.AttackKick, 1f } };
         }
 
         protected override void UpdateAttack()
         {
             float animationTime = GetAnimationTime();
-            if (_currentStateAnimation == ErenAnimations.Attack)
+            if (_currentStateAnimation == ErenAnimations.AttackCombo)
             {
                 if (_currentAttackStage == 0 && animationTime > 0.15f)
                 {
                     _currentAttackStage = 1;
-                    ErenCache.HandRHitbox.Activate(0f, 0.045f / _currentAttackSpeed);
+                    ErenCache.HandRHitbox.Activate(0f, 0.16f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
-                else if (_currentAttackStage == 1 && animationTime > 0.28f)
+                else if (_currentAttackStage == 1 && animationTime > 0.27f)
                 {
                     _currentAttackStage = 2;
-                    ErenCache.HandLHitbox.Activate(0f, 0.09f / _currentAttackSpeed);
+                    ErenCache.HandLHitbox.Activate(0f, 0.23f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing2);
                 }
-                else if (_currentAttackStage == 2 && animationTime > 0.565f)
+                else if (_currentAttackStage == 2 && animationTime > 0.56f)
                 {
                     _currentAttackStage = 3;
-                    ErenCache.HandRHitbox.Activate(0f, 0.09f / _currentAttackSpeed);
+                    ErenCache.HandRHitbox.Activate(0f, 0.25f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing3);
                 }
             }
-            else if (_currentStateAnimation == ErenAnimations.Kick)
+            else if (_currentStateAnimation == ErenAnimations.AttackKick)
             {
-                if (_currentAttackStage == 0 && animationTime > 0.3f)
+                if (_currentAttackStage == 0 && animationTime > 0.28f)
                 {
                     _currentAttackStage = 1;
-                    ErenCache.FootRHitbox.Activate(0f, 0.22f / _currentAttackSpeed);
+                    ErenCache.FootRHitbox.Activate(0f, 0.5f / _currentAttackSpeed);
                     PlaySound(TitanSounds.Swing1);
                 }
             }

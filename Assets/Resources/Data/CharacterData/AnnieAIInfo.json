@@ -1,0 +1,81 @@
+{
+	"Type": "Annie",
+	"AttackInfo": {
+		"AttackCombo": {"HumanOnly": false},
+		"AttackKick": {"HumanOnly": false},
+		"AttackSwing": {"HumanOnly": false},
+		"AttackBrushBack": {"HumanOnly": true},
+		"AttackBrushFrontL": {"HumanOnly": true},
+		"AttackBrushFrontR": {"HumanOnly": true},
+		"AttackBrushHeadL": {"HumanOnly": true},
+		"AttackBrushHeadR": {"HumanOnly": true},
+		"AttackStomp": {"HumanOnly": true},
+		"AttackHead": {"HumanOnly": true},
+		"AttackBite": {"HumanOnly": true},
+		"AttackGrabBottomLeft": {"HumanOnly": true},
+		"AttackGrabBottomRight": {"HumanOnly": true},
+		"AttackGrabMidLeft": {"HumanOnly": true},
+		"AttackGrabMidRight": {"HumanOnly": true},
+		"AttackGrabUp": {"HumanOnly": true},
+		"AttackGrabUpLeft": {"HumanOnly": true},
+		"AttackGrabUpRight": {"HumanOnly": true}
+	},
+	"Default": {
+		"Name": "Annie",
+		"Health": 1000,
+		"IsCrawler": false,
+		"DetectRange": 1000,
+		"FocusRange": 1000,
+		"FocusTime": 0.5,
+		"TurnAngle": 110,
+		"TurnSpeed": 1.0,
+		"TurnPause": 0.2,
+		"CloseAttackRange": 25,
+		"FarAttackRange": 0,
+		"FarAttackCooldown": 5,
+		"AttackWait": 0,
+		"AttackPause": 0.5,
+		"ActionPause": 0.5,
+		"ChaseAngleTimeMin": 0.5,
+		"ChaseAngleTimeMax": 1.5,
+		"ChaseAngleMinRange": 50,
+		"IsTurn": false,
+		"IsRun": true,
+		"WalkSpeedBase": 20,
+		"RunSpeedBase": 40,
+		"JumpForce": 150,
+		"RotateSpeed": 3,
+		"Attacks": {
+			"AttackCombo": 0.1,
+			"AttackSwing": 0.1,
+			"AttackKick": 0.1,
+			"AttackBrush*": 0.1,
+			"AttackStomp": 0.1,
+			"AttackHead": 0.1,
+			"AttackBite": 0.1,
+			"AttackGrab*": 0.1
+		},
+	},
+	"Training": {
+		"DetectRange": 0,
+		"FocusRange": 0
+	},
+	"Easy": {
+		"Health": 1000,
+		"AttackSpeedMultiplier": 0.7,
+		"RunSpeedBase": 40,
+		"RotateSpeed": 4
+	},
+	"Normal": {
+		"Health": 2500,
+		"AttackSpeedMultiplier": 0.9,
+		"RunSpeedBase": 50,
+		"RotateSpeed": 5
+	},
+	"Hard": {
+		"Health": 5000,
+		"AttackSpeedMultiplier": 1.0,
+		"RunSpeedBase": 70,
+		"RotateSpeed": 7
+	}
+}

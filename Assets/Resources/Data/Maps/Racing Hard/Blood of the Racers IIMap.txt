@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:Eliope's sequel to the first Blood of the Racers, intended to be even more excessively challenging. BOTR II is still not the most difficult race there is, but few exceed it, and even fewer require the same breadth of skill as it.
+EditorVersion:1.0|Description:Eliope's sequel to the first Blood of the Racers, intended to be even more excessively challenging. BOTR II is still not the most difficult race there is, but few exceed it, and even fewer require the same breadth of skill as it.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -639,8 +641,8 @@ Scene,Geometry/Cuboid,635,0,1,1,1,0,Kill Region Cuboid,-3895,90,1230,0,0,0,1,6,8
 Scene,Geometry/Cuboid,636,0,1,1,1,0,Kill Region Cuboid,-3895,65,1300,0,0,0,1,1,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,637,0,1,1,1,0,Kill Region Cuboid,-4105,65,1300,0,0,0,1,1,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,638,0,1,1,1,0,Cylinder,-4000,65,1300,0,0,0,4,6.4,4,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal1|0.01/0.01|0/0,;
-Scene,Geometry/Tube,639,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,35,1300,0,0,0,8,8,8,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
-Scene,Geometry/Tube,640,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,95,1300,0,0,0,8,8,8,Region,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Tube,639,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,35,1300,0,0,0,8,8,8,Physical,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Tube,640,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,95,1300,0,0,0,8,8,8,Physical,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
 Scene,Geometry/Cylinder,641,0,1,1,1,0,Cylinder,-4120,96.5,1300,90,0,0,1.2,10.5,1.2,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone8|0.25/2|0/0,;
 Scene,Geometry/Cuboid,642,0,1,1,1,0,Kill Region Cuboid,-4875,750,1240,0,0,315.0209,1,13,8,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,643,0,1,1,1,0,Kill Region Cuboid,-4875,750,1360,0,0,315.0209,1,13,8,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
@@ -755,22 +757,22 @@ Scene,Geometry/Tube,751,0,1,1,1,0,Tube,1275,450,1300,90,90,0,3,20,3,Physical,Ent
 Scene,Geometry/Tube,752,0,1,1,1,0,Tube,1325,450,1300,90,90,0,2,10,2,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone5|1/1|0/0,;
 Scene,Geometry/Tube,753,0,1,1,1,0,Tube,1360,450,1300,90,90,0,1.5,1,1.5,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone5|1/1|0/0,;
 Scene,Geometry/Tube,754,0,1,1,1,0,Tube,1365,450,1300,90,90,0,1,0.9,1,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone5|1/1|0/0,;
-Scene,Geometry/Tube,755,0,1,1,1,0,Kill Region Tube,1150,450,1300,90,90,0,9.9,50.1,9.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,756,0,1,1,1,0,Kill Region Tube,1175,450,1300,90,90,0,7.9,40.1,7.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,757,0,1,1,1,0,Kill Region Tube,1200,450,1300,90,90,0,5.9,30.1,5.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,758,0,1,1,1,0,Kill Region Tube,1250,450,1300,90,90,0,3.9,20.1,3.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,759,0,1,1,1,0,Kill Region Tube,1275,450,1300,90,90,0,2.9,20.1,2.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,760,0,1,1,1,0,Kill Region Tube,1325,450,1300,90,90,0,1.9,10.1,1.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,761,0,1,1,1,0,Kill Region Tube,1360,450,1300,90,90,0,1.4,1.1,1.4,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,762,0,1,1,1,0,Kill Region Tube,1365,450,1300,90,90,0,0.9,1,0.9,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,763,0,1,1,1,0,Kill Region Tube,1150,450,1300,90,90,0,10.1,50.1,10.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,764,0,1,1,1,0,Kill Region Tube,1175,450,1300,90,90,0,8.1,40.1,8.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,765,0,1,1,1,0,Kill Region Tube,1200,450,1300,90,90,0,6.1,30.1,6.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,766,0,1,1,1,0,Kill Region Tube,1250,450,1300,90,90,0,4.1,20.1,4.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,767,0,1,1,1,0,Kill Region Tube,1275,450,1300,90,90,0,3.1,20.1,3.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,768,0,1,1,1,0,Kill Region Tube,1325,450,1300,90,90,0,2.1,10.1,2.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,769,0,1,1,1,0,Kill Region Tube,1360,450,1300,90,90,0,1.6,1.1,1.6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,770,0,1,1,1,0,Kill Region Tube,1365,450,1300,90,90,0,1.1,1,1.1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,755,0,1,1,1,0,Kill Region Tube,1150,450,1300,90,90,0,9.9,50.1,9.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,756,0,1,1,1,0,Kill Region Tube,1175,450,1300,90,90,0,7.9,40.1,7.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,757,0,1,1,1,0,Kill Region Tube,1200,450,1300,90,90,0,5.9,30.1,5.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,758,0,1,1,1,0,Kill Region Tube,1250,450,1300,90,90,0,3.9,20.1,3.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,759,0,1,1,1,0,Kill Region Tube,1275,450,1300,90,90,0,2.9,20.1,2.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,760,0,1,1,1,0,Kill Region Tube,1325,450,1300,90,90,0,1.9,10.1,1.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,761,0,1,1,1,0,Kill Region Tube,1360,450,1300,90,90,0,1.4,1.1,1.4,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,762,0,1,1,1,0,Kill Region Tube,1365,450,1300,90,90,0,0.9,1,0.9,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,763,0,1,1,1,0,Kill Region Tube,1150,450,1300,90,90,0,10.1,50.1,10.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,764,0,1,1,1,0,Kill Region Tube,1175,450,1300,90,90,0,8.1,40.1,8.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,765,0,1,1,1,0,Kill Region Tube,1200,450,1300,90,90,0,6.1,30.1,6.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,766,0,1,1,1,0,Kill Region Tube,1250,450,1300,90,90,0,4.1,20.1,4.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,767,0,1,1,1,0,Kill Region Tube,1275,450,1300,90,90,0,3.1,20.1,3.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,768,0,1,1,1,0,Kill Region Tube,1325,450,1300,90,90,0,2.1,10.1,2.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,769,0,1,1,1,0,Kill Region Tube,1360,450,1300,90,90,0,1.6,1.1,1.6,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,770,0,1,1,1,0,Kill Region Tube,1365,450,1300,90,90,0,1.1,1,1.1,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,771,0,1,1,1,0,Kill Region Cuboid,-1800,40,1350,0,90,0,2,8,1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,772,0,1,1,1,0,Kill Region Cuboid,-1850,40,1350,0,90,0,2,8,1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,773,0,1,1,1,0,Kill Region Cuboid,-1900,40,1350,0,90,0,2,8,1,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
@@ -981,8 +983,8 @@ Scene,Geometry/Cylinder,977,0,1,1,1,0,Cylinder,-75,30,3375,0,0,0,2,3,2,Physical,
 Scene,Geometry/Cylinder,978,0,1,1,1,0,Cylinder,-275,30,3475,0,0,0,2,3,2,Physical,Entities,Default,Basic|255/255/0/255|Metal/Metal3|1/1|0/0,;
 Scene,Geometry/Cylinder,979,0,1,1,1,0,Cylinder,-75,30,3575,0,0,0,2,3,2,Physical,Entities,Default,Basic|255/255/0/255|Metal/Metal3|1/1|0/0,;
 Scene,Geometry/Cylinder,980,0,1,1,1,0,Cylinder,-275,30,3675,0,0,0,2,3,2,Physical,Entities,Default,Basic|255/255/0/255|Metal/Metal3|1/1|0/0,;
-Scene,Geometry/Arc180,981,0,1,1,1,0,Kill Region Arc180,-280,30,3820,0,270,0,-19,13,19,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Arc180,982,0,1,1,1,0,Kill Region Arc180,-280,30,3755,0,270,0,-7,13,11.5,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Arc180,981,0,1,1,1,0,Kill Region Arc180,-280,30,3820,0,270,0,-19,13,19,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Arc180,982,0,1,1,1,0,Kill Region Arc180,-280,30,3755,0,270,0,-7,13,11.5,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,983,0,1,1,1,0,Kill Region Cuboid,-380,30,3625,0,0,0,2,6,20,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,984,0,1,1,1,0,Kill Region Cuboid,-440,30,3625,0,0,0,2,6,20,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,985,0,1,1,1,0,Cuboid,-435,30,3425,0,0,0,1,6,20,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal2|2/1|0/0,;
@@ -1157,3 +1159,62 @@ Scene,Geometry/Cuboid,1153,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,
 Scene,Geometry/Cuboid,1154,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,1155,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

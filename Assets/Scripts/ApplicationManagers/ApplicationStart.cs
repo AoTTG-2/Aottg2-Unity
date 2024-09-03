@@ -34,13 +34,14 @@ namespace ApplicationManagers
                 Init();
             }
         }
-
+       
         private static void Init()
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
             DebugConsole.Init();
             ApplicationConfig.Init();
             AnticheatManager.Init();
@@ -76,6 +77,7 @@ namespace ApplicationManagers
             EventManager.InvokeFinishInit();
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
+            DiscordManager.Init();
         }
     }
 }

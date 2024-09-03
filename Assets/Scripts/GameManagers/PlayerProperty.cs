@@ -1,6 +1,7 @@
 ﻿using UI;
 using Settings;
 using Characters;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace GameManagers
 {
@@ -65,6 +66,20 @@ namespace GameManagers
         public static bool SameTeam(BaseCharacter a, string b)
         {
             return a.Team == b && a.Team != None && b != None;
+        }
+
+        public static string GetTeamColor(string team)
+        {
+            if (team == Blue)
+                return "#3399FF";
+            else if (team == Red)
+                return "#9A3334";
+            else if (team == Human)
+                return "#ACD1E9";
+            else if (team == Titan)
+                return "#FFD800";
+            else
+                return "white";
         }
     }
 

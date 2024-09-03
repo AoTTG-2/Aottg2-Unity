@@ -4,12 +4,11 @@
     {
         public virtual string Idle => "";
         public virtual string Run => "";
+        public virtual string Sprint => "";
         public virtual string Walk => "";
         public virtual string Jump => "";
         public virtual string Fall => "";
         public virtual string Land => "";
-        public virtual string Attack => "";
-        public virtual string Kick => "";
         public virtual string Stun => "";
         public virtual string Die => "";
         public virtual string DieSit => "";

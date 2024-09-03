@@ -58,6 +58,10 @@ namespace ApplicationManagers
 
         public static IEnumerator LoadBundle(string bundle, string url, bool editor)
         {
+            bool isValid = Util.IsValidFileName(bundle);
+            if (!isValid)
+                yield break;
+
             if (_bundles.ContainsKey(bundle) && _bundles[bundle] != null)
                 yield break;
             _bundles[bundle] = null;

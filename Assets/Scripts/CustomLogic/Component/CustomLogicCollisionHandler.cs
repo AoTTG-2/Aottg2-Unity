@@ -16,7 +16,7 @@ namespace CustomLogic
             _classInstances.Add(classInstance);
         }
 
-        public void GetHit(BaseCharacter character, string name, int damage, string type)
+        public void GetHit(BaseCharacter character, string name, int damage, string type, Vector3 position)
         {
             CustomLogicCharacterBuiltin builtin = null;
             if (character is Human)
@@ -26,7 +26,7 @@ namespace CustomLogic
             else if (character is BaseShifter)
                 builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
             foreach (var classInstance in _classInstances)
-                classInstance.OnGetHit(builtin, name, damage, type);
+                classInstance.OnGetHit(builtin, name, damage, type, position);
         }
 
         public void GetHooked(Human human, Vector3 position, bool left)
@@ -93,6 +93,7 @@ namespace CustomLogic
                 classInstance.OnCollisionExit(builtin);
         }
 
+
         public static CustomLogicBaseBuiltin GetBuiltin(Collider other)
         {
             if (other == null || other.transform == null)
@@ -112,9 +113,9 @@ namespace CustomLogic
                     builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
                 return builtin;
             }
-            else if (MapLoader.GoToMapObject.ContainsKey(other.gameObject))
+            else if (MapLoader.GoToMapObject.ContainsKey(root.gameObject))
             {
-                var mapObject = MapLoader.GoToMapObject[other.gameObject];
+                var mapObject = MapLoader.GoToMapObject[root.gameObject];
                 var builtin = new CustomLogicMapObjectBuiltin(mapObject);
                 return builtin;
             }

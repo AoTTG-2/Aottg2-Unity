@@ -20,6 +20,7 @@ namespace Settings
         public BoolSetting HookRetractEffect = new BoolSetting(true);
         public BoolSetting HookImpactEffect = new BoolSetting(true);
         public BoolSetting CrashLandEffect = new BoolSetting(true);
+        public BoolSetting HorseSoundEffect = new BoolSetting(true);
         public BoolSetting OldHookEffect = new BoolSetting(false);
         public BoolSetting OldBladeEffect = new BoolSetting(false);
         public BoolSetting OldNapeEffect = new BoolSetting(false);

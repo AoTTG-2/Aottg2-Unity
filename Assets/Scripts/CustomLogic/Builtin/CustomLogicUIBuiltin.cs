@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using Characters;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
@@ -143,6 +144,15 @@ namespace CustomLogic
             if (name == "GetLanguage")
             {
                 return SettingsManager.GeneralSettings.Language.Value;
+            }
+            if (name == "ShowChangeCharacterMenu")
+            {
+                var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                if (inGameManager.CurrentCharacter != null && inGameManager.CurrentCharacter is Human)
+                {
+                    ((InGameMenu)UIManager.CurrentMenu).ShowCharacterChangeMenu();
+                }
+                return null;
             }
             return base.CallMethod(name, parameters);
         }

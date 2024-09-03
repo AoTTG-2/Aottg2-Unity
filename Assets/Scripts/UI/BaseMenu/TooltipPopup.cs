@@ -9,7 +9,8 @@ namespace UI
         protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
         private Text _label;
         private RectTransform _panel;
-        public TooltipButton Caller;
+        public Button Caller;
+        private float _offset;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -20,7 +21,7 @@ namespace UI
             _panel.Find("Background").GetComponent<Image>().color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", "TooltipBackgroundColor");
         }
 
-        public void Show(string message, TooltipButton caller)
+        public void Show(string message, Button caller, float offset)
         {
             if (gameObject.activeSelf)
             {
@@ -29,6 +30,7 @@ namespace UI
             }
             _label.text = message;
             Caller = caller;
+            _offset = offset;
             Canvas.ForceUpdateCanvases();
             SetTooltipPosition();
             base.Show();
@@ -37,7 +39,7 @@ namespace UI
         private void SetTooltipPosition()
         {
             float width = GetComponent<RectTransform>().sizeDelta.x;
-            float offset = (width * 0.5f + 40f) * UIManager.CurrentCanvasScale;
+            float offset = (width * 0.5f + _offset) * UIManager.CurrentCanvasScale;
             Vector3 position = Caller.transform.position;
             if (position.x + offset > Screen.width)
                 position.x -= offset;

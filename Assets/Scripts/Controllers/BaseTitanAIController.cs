@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using SimpleJSONFixed;
 using Utility;
+using UnityEngine.AI;
+using Map;
 
 namespace Controllers
 {
@@ -11,14 +13,14 @@ namespace Controllers
     {
         protected BaseTitan _titan;
         public TitanAIState AIState = TitanAIState.Idle;
+        public bool SmartAttack = false;
         public float DetectRange;
-        public float CloseAttackRangeMin;
-        public float CloseAttackRangeMax;
+        public float CloseAttackRange;
         public float FarAttackRange;
+        public float FarAttackCooldown;
         public float FocusRange;
         public float FocusTime;
-        public float AttackWaitMin;
-        public float AttackWaitMax;
+        public float AttackWait;
         public float ChaseAngleTimeMin;
         public float ChaseAngleTimeMax;
         public float ChaseAngleMinRange;
@@ -30,30 +32,73 @@ namespace Controllers
         protected bool _moveToActive;
         protected float _moveToRange;
         protected bool _moveToIgnoreEnemies;
-        public List<string> AttackNames = new List<string>();
-        public List<bool> AttackHumanOnly = new List<bool>();
-        public List<bool> AttackFarOnly = new List<bool>();
-        public List<float> AttackChances = new List<float>();
-        public Dictionary<string, List<Vector3>> AttackMinRanges = new Dictionary<string, List<Vector3>>();
-        public Dictionary<string, List<Vector3>> AttackMaxRanges = new Dictionary<string, List<Vector3>>();
+        public Dictionary<string, float> AttackChances = new Dictionary<string, float>();
+        public Dictionary<string, string> AttackGroups = new Dictionary<string, string>();
+        public Dictionary<string, TitanAttackInfo> AttackInfos;
         protected float _stateTimeLeft;
         protected float _focusTimeLeft;
+        protected float _rangedCooldownLeft;
         protected float _attackRange;
-        protected BaseCharacter _enemy;
+        protected ITargetable _enemy;
         protected AICharacterDetection _detection;
         protected string _attack;
         protected float _attackCooldownLeft;
-        protected float _waitAttackTime;
+        protected float _waitAttackTimeLeft;
+        protected float _enemyDistance;
+
+        // pathing
+        public bool _usePathfinding = true;
+        private NavMeshAgent _agent;
+        private CapsuleCollider _mainCollider;
 
         protected override void Awake()
         {
             base.Awake();
             _titan = GetComponent<BaseTitan>();
+            _mainCollider = _titan.GetComponent<CapsuleCollider>();
+            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+
+            if (_usePathfinding)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _titan.Cache.Transform.position = hit.position;
+                }
+            }
         }
 
         protected override void Start()
         {
             Idle();
+
+            // set agent size
+            if (_usePathfinding)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _titan.Cache.Transform.position = hit.position;
+                }
+
+                // Add the navmesh agent
+                NavMeshBuildSettings agentSettings = Util.GetAgentSettingsCorrected(_titan.Size);
+                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent.agentTypeID = agentSettings.agentTypeID;
+                _agent.speed = _titan.GetCurrentSpeed();
+                _agent.angularSpeed = 10;
+                _agent.acceleration = 10;
+                _agent.autoRepath = true;
+                _agent.stoppingDistance = 1.1f;
+                _agent.autoBraking = false;
+                _agent.radius = agentSettings.agentRadius;
+                _agent.height = agentSettings.agentHeight;
+                _agent.updatePosition = false;
+                _agent.updateRotation = false;
+                _agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+                _agent.avoidancePriority = 0;
+            }
+
         }
 
         public void MoveTo(Vector3 position, float range, bool ignore)
@@ -82,40 +127,39 @@ namespace Controllers
         public virtual void Init(JSONNode data)
         {
             DetectRange = data["DetectRange"].AsFloat;
-            CloseAttackRangeMin = data["CloseAttackRangeMin"].AsFloat;
-            CloseAttackRangeMax = data["CloseAttackRangeMax"].AsFloat;
+            CloseAttackRange = data["CloseAttackRange"].AsFloat;
             FarAttackRange = data["FarAttackRange"].AsFloat;
+            FarAttackCooldown = data["FarAttackCooldown"].AsFloat;
             FocusRange = data["FocusRange"].AsFloat;
             FocusTime = data["FocusTime"].AsFloat;
-            AttackWaitMin = data["AttackWaitMin"].AsFloat;
-            AttackWaitMax = data["AttackWaitMax"].AsFloat;
+            AttackWait = data["AttackWait"].AsFloat;
             ChaseAngleTimeMin = data["ChaseAngleTimeMin"].AsFloat;
             ChaseAngleTimeMax = data["ChaseAngleTimeMax"].AsFloat;
             ChaseAngleMinRange = data["ChaseAngleMinRange"].AsFloat;
             IsRun = data["IsRun"].AsBool;
             IsTurn = data["IsTurn"].AsBool;
             TurnAngle = data["TurnAngle"].AsFloat;
+            AttackInfos = CharacterData.TitanAttackInfos[data["Type"].Value];
             foreach (string attack in data["Attacks"].Keys)
             {
                 float chance = data["Attacks"][attack];
-                AttackNames.Add(attack);
-                AttackChances.Add(chance);
-                var node = data["AttackRanges"][attack];
-                AttackMinRanges.Add(attack, new List<Vector3>());
-                AttackMaxRanges.Add(attack, new List<Vector3>());
-                for (int i = 0; i < node["Ranges"].Count; i++)
+                if (attack.EndsWith("*"))
                 {
-                    var range = node["Ranges"][i];
-                    AttackMinRanges[attack].Add(new Vector3(range["X"][0].AsFloat, range["Y"][0].AsFloat, range["Z"][0].AsFloat));
-                    AttackMaxRanges[attack].Add(new Vector3(range["X"][1].AsFloat, range["Y"][1].AsFloat, range["Z"][1].AsFloat));
+                    string prefix = attack.Substring(0, attack.Length - 1);
+                    foreach (string anyAttack in AttackInfos.Keys)
+                    {
+                        if (anyAttack.StartsWith(prefix))
+                        {
+                            AttackChances.Add(anyAttack, chance);
+                            AttackGroups.Add(anyAttack, prefix);
+                        }
+                    }
                 }
-                AttackHumanOnly.Add(node["HumanOnly"].AsBool);
-                if (node.HasKey("Far") && node["Far"].AsBool)
-                    AttackFarOnly.Add(true);
                 else
-                    AttackFarOnly.Add(false);
+                    AttackChances.Add(attack, chance);
             }
             _detection = AICharacterDetection.Create(_titan, DetectRange);
+            _waitAttackTimeLeft = AttackWait;
         }
 
         public void SetDetectRange(float range)
@@ -124,7 +168,7 @@ namespace Controllers
             DetectRange = range;
         }
 
-        public void SetEnemy(BaseCharacter enemy, float focusTime = 0f)
+        public void SetEnemy(ITargetable enemy, float focusTime = 0f)
         {
             _enemy = enemy;
             if (focusTime == 0f)
@@ -132,14 +176,19 @@ namespace Controllers
             _focusTimeLeft = focusTime;
         }
 
-        protected override void Update()
+        protected override void FixedUpdate()
         {
+            if (_usePathfinding)
+                _agent.speed = _titan.GetCurrentSpeed();
             _focusTimeLeft -= Time.deltaTime;
             _stateTimeLeft -= Time.deltaTime;
             if (_titan.Dead)
                 return;
             if (_titan.State != TitanState.Attack && _titan.State != TitanState.Eat)
+            {
+                _rangedCooldownLeft -= Time.deltaTime;
                 _attackCooldownLeft -= Time.deltaTime;
+            }
             if (AIState == TitanAIState.ForcedIdle)
             {
                 if (_stateTimeLeft <= 0f)
@@ -149,7 +198,7 @@ namespace Controllers
             }
             if (_enemy != null)
             {
-                if (_enemy.Dead)
+                if (!_enemy.ValidTarget())
                     _enemy = null;
             }
             if (_focusTimeLeft <= 0f || _enemy == null)
@@ -159,17 +208,22 @@ namespace Controllers
                     _enemy = enemy;
                 else if (_enemy != null)
                 {
-                    if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.Cache.Transform.position) > FocusRange)
+                    if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
                         _enemy = null;
                 }
+
+                if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false)
+                    _agent.SetDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
             }
             _titan.TargetEnemy = _enemy;
             if (_moveToActive && _moveToIgnoreEnemies)
                 _enemy = null;
+            if (_enemy != null && _enemy.ValidTarget())
+                _enemyDistance = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.GetPosition());
             if (AIState == TitanAIState.Idle || AIState == TitanAIState.Wander || AIState == TitanAIState.SitIdle)
             {
-                if (_enemy == null)
+                if (_enemy == null || _enemy.ValidTarget() == false)
                 {
                     if (_moveToActive)
                         MoveToPosition();
@@ -188,88 +242,96 @@ namespace Controllers
                 }
                 else
                 {
-                    _attackRange = Random.Range(CloseAttackRangeMin * _titan.Size, CloseAttackRangeMax * _titan.Size);
+                    _attackRange = CloseAttackRange * _titan.Size;
                     MoveToEnemy();
                 }
             }
             else if (AIState == TitanAIState.MoveToPosition)
             {
                 float distance = Vector3.Distance(_character.Cache.Transform.position, _moveToPosition);
-                if (distance < _moveToRange || !_moveToActive)
+                if (_enemy != null)
+                {
+                    _attackRange = CloseAttackRange * _titan.Size;
+                    MoveToEnemy();
+                }
+                else if (distance < _moveToRange || !_moveToActive)
                 {
                     _moveToActive = false;
                     Idle();
                 }
-                else if (_stateTimeLeft <= 0)
+                else if (_stateTimeLeft <= 0 || _usePathfinding)
                     MoveToPosition();
-                else
-                    _titan.TargetAngle = GetChaseAngle(_moveToPosition);
+                else if (_usePathfinding == false)
+                    _titan.TargetAngle = GetChaseAngle(_moveToPosition, true);
             }
             else if (AIState == TitanAIState.MoveToEnemy)
             {
-                if (_enemy == null)
+                if (_enemy == null || _enemy.ValidTarget() == false)
                     Idle();
-                else if (_stateTimeLeft <= 0f && Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) > ChaseAngleMinRange)
+                else if (_stateTimeLeft <= 0f && _enemyDistance > ChaseAngleMinRange)
                     MoveToEnemy();
                 else
                 {
-                    bool inRange = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) <= _attackRange;
-                    if (inRange)
+                    if (_enemyDistance <= _attackRange)
                     {
-                        if (AttackWaitMax <= 0f)
+                        var validAttacks = GetValidAttacks();
+                        if (validAttacks.Count > 0)
                         {
-                            if (GetValidAttacks().Count > 0)
-                                Attack();
-                            else if (GetEnemyAngle(_enemy) > TurnAngle)
-                            {
-                                _moveAngle = 0f;
-                                _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                                _titan.Turn(_titan.GetTargetDirection());
-                            }
+                            if (AttackWait <= 0f)
+                                Attack(validAttacks);
                             else
-                                MoveToEnemy();
+                                WaitAttack();
                         }
-                        else
-                            WaitAttack();
+                        else if (HasClearLineOfSight(_enemy.GetPosition()))
+                            TargetEnemy();
+                        else if (_stateTimeLeft <= 0f)
+                            MoveToEnemy();
                     }
                     else
                     {
-                        inRange = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) <= FarAttackRange;
-                        if (inRange && GetValidAttacks(true).Count > 0)
-                            Attack();
-                        else
-                            _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+                        var validAttacks = GetValidAttacks(true);
+                        if (_enemyDistance <= FarAttackRange && validAttacks.Count > 0)
+                            Attack(validAttacks);
+                        else if (HasClearLineOfSight(_enemy.GetPosition()))
+                            TargetEnemy();
+                        else if (_stateTimeLeft <= 0f)
+                            MoveToEnemy();
                     }
                 }
             }
             else if (AIState == TitanAIState.WaitAttack)
             {
-                if (_enemy == null)
+                if (_enemy == null || _enemy.ValidTarget() == false)
                 {
                     Idle();
                     return;
                 }
-                if (_stateTimeLeft <= 0f)
+                _waitAttackTimeLeft -= Time.deltaTime;
+                if (_waitAttackTimeLeft <= 0f)
                 {
-                    _waitAttackTime += Time.deltaTime;
-                    bool inRange = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) <= _attackRange;
                     _titan.HasDirection = false;
-                    if (!inRange)
+                    if (_enemyDistance > _attackRange)
                         MoveToEnemy();
-                    else if (GetValidAttacks().Count > 0)
-                        Attack();
-                    else if (GetEnemyAngle(_enemy) > TurnAngle)
+                    else
                     {
-                        _moveAngle = 0f;
-                        _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
-                        _titan.Turn(_titan.GetTargetDirection());
-                    }
-                    else if (_waitAttackTime > 2f)
-                    {
-                        _titan.HasDirection = true;
-                        _titan.IsWalk = !IsRun;
-                        _moveAngle = 0f;
-                        _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+                        var validAttacks = GetValidAttacks();
+                        if (validAttacks.Count > 0)
+                            Attack(validAttacks);
+                        else if (GetEnemyAngle(_enemy) > TurnAngle)
+                        {
+                            _moveAngle = 0f;
+                            _titan.TargetAngle = GetChaseAngle(_enemy.GetPosition(), false);
+                            _titan.Turn(_titan.GetTargetDirection());
+                        }
+                        else if (HasClearLineOfSight(_enemy.GetPosition()))
+                        {
+                            _titan.HasDirection = true;
+                            _titan.IsWalk = !IsRun;
+                            _moveAngle = 0f;
+                            TargetEnemy();
+                        }
+                        else
+                            MoveToEnemy();
                     }
                 }
             }
@@ -278,24 +340,165 @@ namespace Controllers
                 if (_titan.State == TitanState.Idle)
                     Idle();
             }
+            SmartAttack = false;
+            if (_usePathfinding)
+            {
+                // Good ol' power cycle fix
+                // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+                Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
+                Vector3 titanPositionXY = new Vector3(_titan.Cache.Transform.position.x, 0, _titan.Cache.Transform.position.z);
+                if (_usePathfinding && Vector3.Distance(agentPositionXY, titanPositionXY) > 0.1f)
+                {
+                    // debug log
+                    //Debug.Log("Agent is desynced, disabling and re-enabling");
+                    _agent.enabled = false;
+                    _agent.enabled = true;
+                }
+
+                _agent.nextPosition = _titan.Cache.Transform.position;
+            }
         }
 
-        protected float GetEnemyAngle(BaseCharacter enemy)
+        protected float GetEnemyAngle(ITargetable enemy)
         {
-            Vector3 direction = (enemy.Cache.Transform.position - _character.Cache.Transform.position);
+            Vector3 direction;
+            if (enemy == null || enemy.ValidTarget() == false)
+                direction = _character.Cache.Transform.forward;
+            else
+                direction = (enemy.GetPosition() - _character.Cache.Transform.position);
             direction.y = 0f;
             return Mathf.Abs(Vector3.Angle(_character.Cache.Transform.forward, direction.normalized));
         }
 
-        protected float GetChaseAngle(Vector3 position)
+        protected float GetChaseAngle(Vector3 position, bool useMoveAngle)
         {
-            float angle = GetTargetAngle((position - _character.Cache.Transform.position).normalized);
-            angle += _moveAngle;
+            return GetChaseAngleGivenDirection((position - _character.Cache.Transform.position).normalized, useMoveAngle);
+        }
+
+        protected float GetChaseAngleGivenDirection(Vector3 direction, bool useMoveAngle)
+        {
+            float angle;
+            if (direction == Vector3.zero)
+                angle = _titan.TargetAngle;
+            else
+                angle = GetTargetAngle(direction);
+            if (useMoveAngle)
+                angle += _moveAngle;
             if (angle > 360f)
                 angle -= 360f;
             if (angle < 0f)
                 angle += 360f;
             return angle;
+        }
+
+        protected Vector3 GetDirectionTowardsNavMesh()
+        {
+            Debug.Log("Agent is not on navmesh, trying to get back");
+            // Find a point on the navmesh closest to the titan
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+            {
+                return (hit.position - _titan.Cache.Transform.position).normalized;
+            }
+            
+            // Return a random direction if the navmesh is not found
+            Vector3 randDir = Random.onUnitSphere;
+            randDir.y = 0;
+            return randDir.normalized;
+        }
+
+        /*public void Update()
+        {
+            // draw path
+            if (_usePathfinding && _agent.hasPath)
+            {
+                StartCoroutine(DrawPath(_agent.path));
+            }
+        }
+
+        public LineRenderer lineRenderer;
+        IEnumerator DrawPath(NavMeshPath path)
+        {
+            // draw the agents path using line renderers
+            if (path.corners.Length < 2)
+                yield break;
+
+            if (lineRenderer == null)
+            {
+                lineRenderer = gameObject.AddComponent<LineRenderer>();
+                lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+                lineRenderer.startColor = Color.green;
+                lineRenderer.endColor = Color.green;
+                lineRenderer.startWidth = 0.1f;
+                lineRenderer.endWidth = 0.1f;
+                lineRenderer.positionCount = path.corners.Length;
+            }
+
+            lineRenderer.positionCount = path.corners.Length;
+
+            for (int i = 0; i < path.corners.Length; i++)
+            {
+                lineRenderer.SetPosition(i, path.corners[i]);
+            }
+
+        }*/
+
+        protected float GetAgentNavAngle(Vector3 target)
+        {
+            Vector3 resultDirection = _agent.velocity.normalized;
+            // Good ol' power cycle fix
+            // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+            Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
+            Vector3 titanPositionXY = new Vector3(_titan.Cache.Transform.position.x, 0, _titan.Cache.Transform.position.z);
+            if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
+            {
+                // debug log
+                //Debug.Log("Agent is desynced in nav angle, moving back toward agent");
+
+                // get direction twards agent
+                resultDirection = (_agent.transform.position - _titan.Cache.Transform.position).normalized;
+            }
+            else if (_agent.isOnNavMesh && _agent.pathPending == false)
+            {
+                _agent.SetDestination(target);
+            }
+            else if (_agent.isOnNavMesh == false)
+            {
+                // debug log
+                //Debug.Log("Agent off navmesh");
+
+                resultDirection = GetDirectionTowardsNavMesh();
+            }
+
+            if (resultDirection == Vector3.zero)
+                return _titan.TargetAngle;
+
+            return GetChaseAngleGivenDirection(resultDirection, true);
+        }
+
+        protected bool HasClearLineOfSight(Vector3 target)
+        {
+            if (_usePathfinding == false)
+                return true;
+            float colliderRadius = _mainCollider.radius * _titan.Cache.Transform.localScale.x * 0.5f;
+            // var start = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius;
+            var left = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * -1.1f * colliderRadius;
+            var right = _titan.Cache.Transform.TransformPoint(_mainCollider.center) + _titan.Cache.Transform.forward * -1 * colliderRadius + _titan.Cache.Transform.right * 1.1f * colliderRadius;
+            return HasLineOfSight(left, target) && HasLineOfSight(right, target);
+        }
+
+        protected bool HasLineOfSight(Vector3 start, Vector3 target)
+        {
+            RaycastHit hit;
+            var direction = target - start;
+            var distance = direction.magnitude - 0.2f;
+            if (distance > 1000)
+                return false;
+            direction = direction.normalized;
+            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            if (Physics.Raycast(start, direction, out hit, distance, mask.value))
+                return false;
+            return true;
         }
 
         protected bool IsCrawler()
@@ -338,19 +541,23 @@ namespace Controllers
             _stateTimeLeft = Random.Range(6f, 12f);
         }
 
-        protected void MoveToEnemy()
+        protected void MoveToEnemy(bool avoidCollisions = true)
         {
             AIState = TitanAIState.MoveToEnemy;
             _titan.HasDirection = true;
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
-            bool dodgeRange = Util.DistanceIgnoreY(_character.Cache.Transform.position, _enemy.Cache.Transform.position) > ChaseAngleMinRange;
-            if (dodgeRange)
-                _moveAngle = Random.Range(-45f, 45f);
+            _moveAngle = Random.Range(-45f, 45f);
+            if (_usePathfinding && avoidCollisions && _enemy != null && _enemy.ValidTarget())
+                _titan.TargetAngle = GetAgentNavAngle(_enemy.GetPosition());
             else
-                _moveAngle = 0f;
-            _titan.TargetAngle = GetChaseAngle(_enemy.Cache.Transform.position);
+                TargetEnemy();
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
+        }
+
+        protected void TargetEnemy()
+        {
+            _titan.TargetAngle = GetChaseAngle(_enemy.GetPosition(), _enemyDistance > ChaseAngleMinRange);
         }
 
         protected void MoveToPosition()
@@ -359,16 +566,23 @@ namespace Controllers
             _titan.HasDirection = true;
             _titan.IsSit = false;
             _titan.IsWalk = !IsRun;
-            _moveAngle = Random.Range(-45f, 45f);
-            _titan.TargetAngle = GetChaseAngle(_moveToPosition);
-            float angle = Vector3.Angle(_titan.Cache.Transform.forward, _titan.GetTargetDirection());
+            if (_usePathfinding)
+            {
+                _moveAngle = Random.Range(-5f, 5f);
+                _titan.TargetAngle = GetAgentNavAngle(_moveToPosition);
+            }
+            else
+            {
+                _moveAngle = Random.Range(-45f, 45f);
+                _titan.TargetAngle = GetChaseAngle(_moveToPosition, true);
+            }
             _stateTimeLeft = Random.Range(ChaseAngleTimeMin, ChaseAngleTimeMax);
         }
 
-        protected void Attack()
+        protected void Attack(List<string> validAttacks)
         {
             _titan.HasDirection = false;
-            string attack = GetRandomAttack();
+            string attack = GetRandomAttack(validAttacks);
             if (attack == "" || !_titan.CanAttack())
                 Idle();
             else
@@ -376,24 +590,23 @@ namespace Controllers
                 _attack = attack;
                 AIState = TitanAIState.Action;
                 _titan.Attack(_attack);
+                if (AttackInfos[attack].FarOnly)
+                    _rangedCooldownLeft = FarAttackCooldown;
             }
+            _waitAttackTimeLeft = AttackWait;
         }
 
         protected void WaitAttack()
         {
             AIState = TitanAIState.WaitAttack;
             _titan.HasDirection = false;
-            _stateTimeLeft = Random.Range(AttackWaitMin, AttackWaitMax);
-            _waitAttackTime = 0f;
         }
 
-        protected BaseCharacter FindNearestEnemy()
+        protected ITargetable FindNearestEnemy()
         {
-            if (_detection.Enemies.Count == 0)
-                return null;
             Vector3 position = _titan.Cache.Transform.position;
             float nearestDistance = float.PositiveInfinity;
-            BaseCharacter nearestCharacter = null;
+            ITargetable nearestCharacter = null;
             foreach (BaseCharacter character in _detection.Enemies)
             {
                 if (character == null || character.Dead)
@@ -405,54 +618,102 @@ namespace Controllers
                     nearestCharacter = character;
                 }
             }
+            foreach (MapTargetable targetable in MapLoader.MapTargetables)
+            {
+                if (targetable == null || !targetable.ValidTarget())
+                    continue;
+                float distance = Vector3.Distance(targetable.GetPosition(), position);
+                if (distance < nearestDistance)
+                {
+                    nearestDistance = distance;
+                    nearestCharacter = targetable;
+                }
+            }
             return nearestCharacter;
         }
 
-        private string GetRandomAttack()
+        private string GetRandomAttack(List<string> validAttacks)
         {
             float total = 0f;
-            var validAttacks = GetValidAttacks();
-            foreach (int attack in validAttacks)
-                total += AttackChances[attack];
+            Dictionary<string, int> groupCount = new Dictionary<string, int>();
+            foreach (var attack in validAttacks)
+            {
+                var info = AttackInfos[attack];
+                if (AttackGroups.ContainsKey(attack))
+                {
+                    string group = AttackGroups[attack];
+                    if (!groupCount.ContainsKey(group))
+                    {
+                        groupCount.Add(group, 0);
+                        total += AttackChances[attack];
+                    }
+                    groupCount[group]++;
+                }
+                else
+                    total += AttackChances[attack];
+            }
             if (total == 0f)
                 return string.Empty;
             float r = Random.Range(0f, total);
             float start = 0f;
-            foreach (int attack in validAttacks)
+            foreach (var attack in validAttacks)
             {
-                if (r >= start && r < start + AttackChances[attack])
-                    return AttackNames[attack];
-                start += AttackChances[attack];
+                float chance = AttackChances[attack];
+                if (AttackGroups.ContainsKey(attack))
+                {
+                    string group = AttackGroups[attack];
+                    int count = groupCount[group];
+                    chance = (chance / (float)count);
+                }
+                if (r >= start && r < start + chance)
+                    return attack;
+                start += chance;
             }
-            return AttackNames[validAttacks[0]];
+            return validAttacks[0];
         }
 
-        protected virtual List<int> GetValidAttacks(bool farOnly = false)
+        protected virtual List<string> GetValidAttacks(bool farOnly = false)
         {
-            var attacks = new List<int>();
-            if (_enemy == null)
-                return attacks;
-            Vector3 diff = _character.Cache.Transform.InverseTransformPoint(_enemy.Cache.Transform.position);
+            var validAttacks = new List<string>();
+            if (_enemy == null || _enemy?.ValidTarget() == false || !_titan.CanAttack())
+                return validAttacks;
+            Vector3 worldPosition = _enemy.GetPosition();
+            Vector3 velocity = Vector3.zero;
+            Vector3 relativePosition;
             bool isHuman = _enemy is Human;
-            for (int i = 0; i < AttackNames.Count; i++)
+            if (isHuman)
             {
-                string attack = AttackNames[i];
-                if (AttackHumanOnly[i] && !isHuman)
+                velocity = ((Human)_enemy).GetVelocity();
+                relativePosition = _character.Cache.Transform.InverseTransformPoint(_enemy.GetPosition());
+            }
+            else if (_enemy is BaseTitan)
+            {
+                var titan = (BaseTitan)_enemy;
+                relativePosition = _character.Cache.Transform.InverseTransformPoint(titan.BaseTitanCache.Hip.position);
+            }
+            else
+                relativePosition = _character.Cache.Transform.InverseTransformPoint(_enemy.GetPosition());
+            foreach (string attackName in AttackChances.Keys)
+            {
+                var attackInfo = AttackInfos[attackName];
+                if (attackInfo.HumanOnly && !isHuman)
                     continue;
-                if (farOnly && !AttackFarOnly[i])
+                if (farOnly && !attackInfo.FarOnly)
                     continue;
-                for (int j = 0; j < AttackMinRanges[attack].Count; j++)
+                if (attackInfo.FarOnly && _rangedCooldownLeft > 0f)
+                    continue;
+                if (!SmartAttack || attackInfo.FarOnly || !isHuman || !attackInfo.HasKeyframes)
                 {
-                    var min = AttackMinRanges[attack][j];
-                    var max = AttackMaxRanges[attack][j];
-                    if (diff.x >= min.x && diff.y >= min.y && diff.z >= min.z && diff.x <= max.x && diff.y <= max.y && diff.z <= max.z)
-                    {
-                        attacks.Add(i);
-                        break;
-                    }
+                    if (attackInfo.CheckSimpleAttack(relativePosition))
+                        validAttacks.Add(attackName);
+                }
+                else
+                {
+                    if (attackInfo.CheckSmartAttack(_titan.Cache.Transform, worldPosition, velocity, _titan.GetAttackSpeed(attackName), _titan.Size))
+                        validAttacks.Add(attackName);
                 }
             }
-            return attacks;
+            return validAttacks;
         }
     }
 

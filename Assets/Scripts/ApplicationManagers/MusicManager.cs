@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Events;
 using SimpleJSONFixed;
 using Settings;
+using System.Runtime.CompilerServices;
 
 namespace ApplicationManagers
 {
@@ -14,6 +15,8 @@ namespace ApplicationManagers
         private static JSONNode _musicInfo;
         private string _currentPlaylist;
         private AudioSource _audio;
+        private GameObject _soundEffectObject;
+        private AudioSource _soundEffect;
         private float _songTimeLeft;
         private float _songVolume;
         private bool _autoPlay;
@@ -31,12 +34,21 @@ namespace ApplicationManagers
             EventManager.OnLoadScene += OnLoadScene;
             _instance._audio = _instance.gameObject.AddComponent<AudioSource>();
             _instance._audio.ignoreListenerVolume = true;
+
+            // Add sound effects obj and audiosource
+            _instance._soundEffectObject = new GameObject("SoundEffect");
+            _instance._soundEffectObject.transform.SetParent(_instance.transform);
+            _instance._soundEffect = _instance._soundEffectObject.AddComponent<AudioSource>();
+
+
             _musicInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.Info, "MusicInfo"));
         }
 
         private static void OnLoadScene(SceneName sceneName)
         {
-            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor || sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer)
+            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor || 
+                sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer || sceneName == SceneName.Gallery || 
+                sceneName == SceneName.Credits)
                 SetPlaylist(MusicPlaylist.Menu);
         }
 
@@ -55,8 +67,19 @@ namespace ApplicationManagers
             if (!SettingsManager.SoundSettings.TitanGrabMusic.Value)
                 return;
             var songInfo = _musicInfo["Death"][0];
-            SetSong(songInfo);
-            _instance._deathSongTimeLeft = 15f;
+            PlayImmediateTransition(songInfo);
+        }
+
+        public static void PlayEffect()
+        {
+            var songInfo = _musicInfo["Effect"];
+            PlaySoundEffect(songInfo[Random.Range(0, songInfo.Count)]);
+        }
+
+        public static void PlayTransition()
+        {
+            var songInfo = _musicInfo["Transition"];
+            PlayImmediateTransition(songInfo[Random.Range(0, songInfo.Count)]);
         }
 
         public static void StopPlaylist()
@@ -89,6 +112,47 @@ namespace ApplicationManagers
         {
             var songInfo = FindSong(song);
             SetSong(songInfo);
+        }
+
+        private static void PlaySoundEffect(JSONNode songInfo)
+        {
+            AudioClip clip = null;
+            float volume = 0f;
+            if (songInfo != null)
+            {
+                if (songInfo.HasKey("Name"))
+                {
+                    clip = (AudioClip)ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    volume = songInfo["Volume"];
+
+                    _instance.StartCoroutine(_instance.StartSoundEffect(clip, volume));
+                }
+            }            
+        }
+
+        private static void PlayImmediateTransition(JSONNode songInfo)
+        {
+            AudioClip clip = null;
+            float volume = 0f;
+            if (songInfo != null)
+            {
+                if (songInfo.HasKey("Name"))
+                {
+                    clip = (AudioClip)ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    volume = songInfo["Volume"];
+                    _instance._audio.clip = clip;
+                    _instance._audio.volume = volume * GetMusicVolume();
+                    _instance._audio.Play();
+                    _instance._songTimeLeft = clip.length;
+                }
+            }
+        }
+
+        private IEnumerator StartSoundEffect(AudioClip clip, float volume)
+        {
+            _soundEffect.volume = volume;
+            _soundEffect.PlayOneShot(clip);
+            yield return new WaitForSeconds(clip.length);
         }
 
         public static void SetSong(JSONNode songInfo)
@@ -188,9 +252,9 @@ namespace ApplicationManagers
             }
 
             // set song
-            GetComponent<AudioSource>().clip = nextClip;
-            GetComponent<AudioSource>().volume = 0f;
-            GetComponent<AudioSource>().Play();
+            _audio.clip = nextClip;
+            _audio.volume = 0f;
+            _audio.Play();
             _songTimeLeft = nextClip.length - FadeTime;
             _songVolume = volume;
             _autoPlay = true;
@@ -240,6 +304,20 @@ namespace ApplicationManagers
                 }
             }
             return new List<string>(songs);
+        }
+
+        public static void PlaySoundOneShot(AudioSource source)
+        {
+            if (source == null)
+                return;
+
+            // This gets played when loading into a new scene, mark the source as DoNotDestroy
+            DontDestroyOnLoad(source.gameObject);
+            source.PlayOneShot(source.clip);
+
+            // Destroy the source after the clip has finished playing
+            //Destroy(source.gameObject, source.clip.length);
+
         }
     }
 

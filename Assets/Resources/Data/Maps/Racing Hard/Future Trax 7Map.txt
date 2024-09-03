@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:Future Trax 7 is one of the faster maps created by CowCowTony, with relatively little precise movement being required. Counter intuitively, unlike most difficult lava races, FT7 often becomes easier the faster you fly through it. But be careful; most walls are lava, and many cannot be hooked, seriously limiting your range of movement options.
+EditorVersion:1.0|Description:Future Trax 7 is one of the faster maps created by CowCowTony, with relatively little precise movement being required. Counter intuitively, unlike most difficult lava races, FT7 often becomes easier the faster you fly through it. But be careful; most walls are lava, and many cannot be hooked, seriously limiting your range of movement options.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -2501,11 +2503,11 @@ Scene,Geometry/Cuboid,2497,0,1,1,1,0,KillCuboid,1683.854,759.7913,1935.539,-4.26
 Scene,Geometry/Cuboid,2498,0,1,1,1,0,KillCuboid,1683.854,770.2934,1969.371,0,270,326.25,20,20,1.05,Region,Characters,Default,BombTexMat|255/0/204/127|20/0.4,;
 Scene,Geometry/Cuboid,2499,0,1,1,1,0,KillCuboid,1683.854,767.0493,2004.646,-1.707547E-06,270,303.75,20,20,1.05,Region,Characters,Default,BombTexMat|255/0/153/127|20/0.4,;
 Scene,Geometry/Cuboid,2500,0,1,1,1,0,KillCuboid,1683.854,750.5526,2035.995,-1.707547E-06,270,281.25,20,20,1.05,Region,Characters,Default,BombTexMat|255/0/102/127|20/0.4,;
-Scene,Geometry/Tube,2501,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,20.8,1.688889,20.8,Region,Characters,Default,Basic|255/0/0/130|Misc/None|1/1|0/0,;
-Scene,Geometry/Tube,2502,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,21,1.788889,21,Region,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
-Scene,Geometry/Tube,2503,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,23,1.788889,23,Region,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
-Scene,Geometry/Tube,2504,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,32,1.788889,32,Region,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
-Scene,Geometry/Tube,2505,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,42,1.788889,42,Region,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
+Scene,Geometry/Tube,2501,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,20.8,1.688889,20.8,None,Characters,Default,Basic|255/0/0/130|Misc/None|1/1|0/0,;
+Scene,Geometry/Tube,2502,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,21,1.788889,21,None,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
+Scene,Geometry/Tube,2503,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,23,1.788889,23,None,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
+Scene,Geometry/Tube,2504,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,32,1.788889,32,None,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
+Scene,Geometry/Tube,2505,0,1,1,1,0,KillTube,1683.604,681.7844,1975.206,0,180,90,42,1.788889,42,None,Characters,Default,Basic|0/0/0/130|Legacy/OutsidePillars|0.0001/0.0001|0/0,;
 Scene,Geometry/Cuboid,2506,0,1,1,1,0,Kill Region Cuboid,1683.854,737.1417,1908.301,0,270,11.25,11.95,11.95,0.95,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,2507,0,1,1,1,0,Kill Region Cuboid,1683.854,705.7928,1891.804,0,270,33.75,11.95,11.95,0.95,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,2508,0,1,1,1,0,Kill Region Cuboid,1683.854,670.5172,1888.56,0,270,56.25001,11.95,11.95,0.95,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
@@ -4205,3 +4207,62 @@ Scene,Geometry/Cuboid,4201,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,
 Scene,Geometry/Cuboid,4202,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,4203,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

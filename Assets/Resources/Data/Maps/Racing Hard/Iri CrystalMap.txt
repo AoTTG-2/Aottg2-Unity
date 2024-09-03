@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:A relatively challenging speed-lava race made by Zil, Irí Crystal requires both speed and skill to complete. If you have difficulty with it, practice on easier maps.
+EditorVersion:1.0|Description:A relatively challenging speed-lava race made by Zil, Irí Crystal requires both speed and skill to complete. If you have difficulty with it, practice on easier maps.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -1557,8 +1559,8 @@ Scene,Geometry/Cylinder,1553,0,1,1,1,0,Cylinder,-1550,2385,2500,0,0,0,4.375,0.43
 Scene,Geometry/Cylinder,1554,0,1,1,1,0,Cylinder,-1550,2385,2500,0,0,0,1.75,0.525,1.75,Physical,Entities,Default,Basic|255/229/0/255|Metal/Metal1|0/1|0/0,;
 Scene,Geometry/Sphere,1555,0,1,1,1,0,Sphere,-1550,2393,2500,0,0,0,1,1.5,1,Physical,Entities,Default,Basic|255/229/0/255|Legacy/Rock2Tex|7/7|0/0,;
 Scene,Geometry/Cylinder,1556,0,1,1,1,0,Kill Region Cylinder,-1550,2385,2500,0,0,0,0.35,0.6125,0.35,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,1557,0,1,1,1,0,Kill Region Tube,-1550,2385,2500,0,0,0,7,0.04375,7,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
-Scene,Geometry/Tube,1558,0,1,1,1,0,Kill Region Tube,-1550,2385,2500,0,0,0,5.25,0.04375,5.25,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,1557,0,1,1,1,0,Kill Region Tube,-1550,2385,2500,0,0,0,7,0.04375,7,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
+Scene,Geometry/Tube,1558,0,1,1,1,0,Kill Region Tube,-1550,2385,2500,0,0,0,5.25,0.04375,5.25,Physical,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Arc180,1559,0,1,1,1,0,Arc180,-1543.303,2385,2483.832,0,67.50001,0,3.5,0.385,3.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|2/2|0/0,;
 Scene,Geometry/Arc180,1560,0,1,1,1,0,Arc180,-1566.168,2385,2493.303,0,157.5,0,3.5,0.35,3.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|2/2|0/0,;
 Scene,Geometry/Arc180,1561,0,1,1,1,0,Arc180,-1533.832,2385,2506.697,0,337.5,0,3.5,0.35,3.5,Physical,Entities,Default,Basic|255/255/255/255|Legacy/WagonTex|2/2|0/0,;
@@ -2063,3 +2065,62 @@ Scene,Geometry/Cuboid,2059,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,
 Scene,Geometry/Cuboid,2060,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,2061,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

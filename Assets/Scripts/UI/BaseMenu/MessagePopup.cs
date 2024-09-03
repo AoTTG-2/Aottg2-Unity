@@ -14,7 +14,7 @@ namespace UI
         protected override int HorizontalPadding => 30;
         protected override TextAnchor PanelAlignment => TextAnchor.MiddleCenter;
 
-        protected float LabelHeight = 60f;
+        protected virtual float LabelHeight => 60f;
         private Text _label;
         private GameObject _button;
 

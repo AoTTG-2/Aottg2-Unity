@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:|HasWeather:0
+EditorVersion:1.0|Description:Classic forest IV, originally created by Feng, redesigned by Thyme and DesertFalcon.|HasWeather:0
 /// CustomAssets
 
 /// Objects
@@ -234,22 +234,26 @@ Scene,Geometry/Cuboid,246,0,1,1,1,0,Cuboid,-11.62407,2.5,-205.407,0,0,0,600,1,60
 Scene,Geometry/Cuboid,247,0,1,1,1,0,Cuboid,-11.62407,6,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/5|Misc/Lava2|25/25|0/0,;
 Scene,Geometry/Cuboid,248,0,1,1,1,0,Cuboid,-11.62407,9.867447,-205.407,0,0,0,600,1,600,None,Entities,Default,Transparent|255/255/255/3|Misc/Lava2|25/25|0/0,;
 Scene,Decor/Rubble5,249,0,1,1,1,0,Rubble5,-47.36819,-0.6076031,-512.2612,0,0,0,2,0.8,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Rubble5,250,0,1,1,1,0,Rubble5,1697.649,0.1626013,-1984.656,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Chair1,251,0,1,1,1,0,Chair1,1701.967,11.16595,-1996.196,0,342.9022,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bread1,252,0,1,1,1,0,Bread1,1696.543,15.3207,-2016.518,0,93.66712,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Goober1,253,0,1,1,1,0,Goober1,1702.268,12.59136,-1997.235,318.9916,164.3285,359.064,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Bread1,254,0,1,1,1,0,Bread1,1699.646,15.03253,-1994.054,359.022,71.84758,137.1643,2.067976,1,1.019575,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Fork1,255,0,1,1,1,0,Fork1,1696.872,14.92035,-2011.419,0,183.8692,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Blackboard2,256,0,1,1,1,0,Blackboard2,1710.414,8.73138,-2003.276,1.126297,134.8077,356.1814,2,2,22,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Rubble5,257,0,1,1,1,0,Rubble5,1719.866,0.1626013,-1995.939,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Table1,258,0,1,1,1,0,Table1,1708.054,9.242898,-1993.235,0,0,0,0.6,0.8,0.6,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Teapot1,259,0,1,1,1,0,Teapot1,1707,13.97,-1994,0,195.0348,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/CaptureZone1,260,0,1,1,1,0,CaptureZone1,1707,14.48621,-1994,0,0,0,0.08,0.03,0.08,Region,Characters,Default,Default|255/255/255/255,
+Scene,Decor/Rubble5,250,0,1,1,1,0,Rubble5,1372.825,0.1626013,-1181.952,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Chair1,251,0,1,1,1,0,Chair1,1377.143,11.16595,-1193.492,0,342.9022,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Bread1,252,0,1,1,1,0,Bread1,1371.719,15.3207,-1213.814,0,93.66712,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Goober1,253,0,1,1,1,0,Goober1,1377.444,12.59136,-1194.531,318.9916,164.3285,359.064,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Bread1,254,0,1,1,1,0,Bread1,1374.822,15.03253,-1191.35,359.022,71.84758,137.1643,2.067976,1,1.019575,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,255,0,1,1,1,0,Fork1,1372.048,14.92035,-1208.715,0,183.8692,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Blackboard1b,256,0,1,1,1,0,Blackboard2,1385.59,8.73138,-1200.572,1.126297,134.8077,356.1814,2,2,22,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Rubble5,257,0,1,1,1,0,Rubble5,1395.042,0.1626013,-1193.235,0,0,0,3,1,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Table1,258,0,1,1,1,0,Table1,1383.23,9.242898,-1190.531,0,0,0,0.6,0.8,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Teapot1,259,0,1,1,1,0,Teapot1,1382.176,13.97,-1191.296,0,195.0348,0,0.5,0.5,0.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Interact/CaptureZone1,260,0,1,1,1,0,CaptureZone1,1382.176,14.48621,-1191.296,0,0,0,0.08,0.03,0.08,Region,Characters,Default,Default|255/255/255/255,;
+Scene,Decor/Fork1,261,0,1,1,1,0,Fork1,-51.56157,5.076232,-523.3304,85.96954,180,180,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/WavingFlag1i,263,0,1,0,1,0,WavingFlag9,-56.51233,16.54859,-522.4892,6.692961,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Terrain/Mesa1,264,0,1,1,1,0,Mesa1,0,237.1267,950.4729,0,90,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Terrain/Mesa1,265,0,1,1,1,0,Mesa1,0,263.6793,950.4729,0,90,0,10,10,10,Physical,Entities,Default,Transparent|255/255/255/192|Misc/Lava3|1/1|0/0,
 /// Logic
 
 /// Weather
 {
-    "Skybox" : "Day1",
+    "Skybox" : "Dawn1",
     "SkyboxColor" : [
         128,
         128,

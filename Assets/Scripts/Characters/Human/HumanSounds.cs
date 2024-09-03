@@ -48,5 +48,92 @@
         public static string GunExplode = "GunExplode";
         public static string GunExplodeLoud = "GunExplodeLoud";
         public static string WaterSplash = "WaterSplash";
+        public static string Switchback = "Switchback";
+        public static string APGShot1 = "APGShot1";
+        public static string APGShot2 = "APGShot2";
+        public static string APGShot3 = "APGShot3";
+        public static string APGShot4 = "APGShot4";
+        public static string BladeNape1Var1 = "BladeNape1Var1";
+        public static string BladeNape1Var2 = "BladeNape1Var2";
+        public static string BladeNape1Var3 = "BladeNape1Var3";
+        public static string BladeNape2Var1 = "BladeNape2Var1";
+        public static string BladeNape2Var2 = "BladeNape2Var2";
+        public static string BladeNape2Var3 = "BladeNape2Var3";
+        public static string BladeNape3Var1 = "BladeNape3Var1";
+        public static string BladeNape3Var2 = "BladeNape3Var2";
+        public static string BladeNape3Var3 = "BladeNape3Var3";
+        public static string BladeNape4Var1 = "BladeNape4Var1";
+        public static string BladeNape4Var2 = "BladeNape4Var2";
+        public static string BladeNape4Var3 = "BladeNape4Var3";
+        public static string AHSSGunShot1 = "AHSSGunShot1";
+        public static string AHSSGunShot2 = "AHSSGunShot2";
+        public static string AHSSGunShot3 = "AHSSGunShot3";
+        public static string AHSSGunShot4 = "AHSSGunShot4";
+        public static string AHSSGunShotDouble1 = "AHSSGunShotDouble1";
+        public static string AHSSGunShotDouble2 = "AHSSGunShotDouble2";
+        public static string AHSSNape1Var1 = "AHSSNape1Var1";
+        public static string AHSSNape1Var2 = "AHSSNape1Var2";
+        public static string AHSSNape2Var1 = "AHSSNape2Var1";
+        public static string AHSSNape2Var2 = "AHSSNape2Var2";
+        public static string AHSSNape3Var1 = "AHSSNape3Var1";
+        public static string AHSSNape3Var2 = "AHSSNape3Var2";
+        public static string TSLaunch1 = "TSLaunch1";
+        public static string TSLaunch2 = "TSLaunch2";
+
+
+        public static string GetRandom(params string[] sounds)
+        {
+            return sounds[UnityEngine.Random.Range(0, sounds.Length)];
+        }
+
+        public static string GetRandomTSLaunch()
+        {
+            return GetRandom(TSLaunch1, TSLaunch2);
+        }
+
+        public static string GetRandomAPGShot()
+        {
+            return GetRandom(APGShot1, APGShot2, APGShot3, APGShot4);
+        }
+
+        public static string GetRandomAHSSNapeHitVar1()
+        {
+            return GetRandom(AHSSNape1Var1, AHSSNape2Var1, AHSSNape3Var1);
+        }
+
+        public static string GetRandomAHSSNapeHitVar2()
+        {
+            return GetRandom(AHSSNape1Var2, AHSSNape2Var2, AHSSNape3Var2);
+        }
+
+        public static string GetRandomBladeNapeVar1()
+        {
+            return GetRandom(BladeNape1Var1, BladeNape1Var3);
+        }
+
+        public static string GetRandomBladeNapeVar2()
+        {
+            return GetRandom(BladeNape2Var1, BladeNape2Var2, BladeNape2Var3);
+        }
+
+        public static string GetRandomBladeNapeVar3()
+        {
+            return GetRandom(BladeNape3Var1, BladeNape3Var3, BladeNape3Var3);
+        }
+
+        public static string GetRandomBladeNapeVar4()
+        {
+            return GetRandom(BladeNape4Var1, BladeNape4Var3, BladeNape4Var3);
+        }
+
+        public static string GetRandomAHSSGunShot()
+        {
+            return GetRandom(AHSSGunShot1, AHSSGunShot2, AHSSGunShot3, AHSSGunShot4);
+        }
+
+        public static string GetRandomAHSSGunShotDouble()
+        {
+            return GetRandom(AHSSGunShotDouble1, AHSSGunShotDouble2);
+        }
     }
 }

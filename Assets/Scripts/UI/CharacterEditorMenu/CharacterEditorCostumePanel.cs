@@ -65,15 +65,17 @@ namespace UI
             options = GetHairOptions();
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hair, UIManager.GetLocale(cat, sub, "Hair"), options, GetIcons(options),
                 UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
-            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Skin, UIManager.GetLocale(cat, sub, "Skin"), GetOptions("Skin", 2), 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             options = GetCostumeOptions(set);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Costume, UIManager.GetLocale(cat, sub, "Costume"), options, GetIcons(options),
                 UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Boots, UIManager.GetLocale(cat, sub, "Boots"), GetOptions("Boots", 2),
+                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Cape, UIManager.GetLocale(cat, sub, "Cape"), new string[] {"No cape", "Cape"}, 
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptions("Logo", 4),
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+            ElementFactory.CreateColorSetting(SinglePanel, style, set.SkinColor, UIManager.GetLocale(cat, sub, "SkinColor"), UIManager.CurrentMenu.ColorPickPopup,
+                onChangeColor: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.ShirtColor, UIManager.GetLocale(cat, sub, "ShirtColor"), UIManager.CurrentMenu.ColorPickPopup,

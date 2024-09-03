@@ -1,4 +1,4 @@
-﻿using Map;
+using Map;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
@@ -46,7 +46,7 @@ namespace CustomLogic
 
         public void OnCollisionStay(CustomLogicBaseBuiltin other)
         {
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
+            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
         }
 
         public void OnCollisionEnter(CustomLogicBaseBuiltin other)
@@ -59,9 +59,9 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new List<object>() { other });
         }
 
-        public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type)
+        public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, Vector3 position)
         {
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new List<object>() { character, name, damage, type });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new List<object>() { character, name, damage, type, position });
         }
 
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
@@ -71,7 +71,7 @@ namespace CustomLogic
 
         public static object DeserializeValue(object obj, string value)
         {
-            if (value == "null")
+            if (obj is not string && value == "null")
                 return null;
             if (obj is int)
                 return int.Parse(value);

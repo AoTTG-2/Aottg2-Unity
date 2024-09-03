@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using ApplicationManagers;
 using Settings;
 using Characters;
@@ -11,7 +11,6 @@ namespace Controllers
 {
     class HumanPlayerController : BasePlayerController
     {
-        public bool HideCursor;
         protected Human _human;
         protected float _reelOutScrollTimeLeft;
         protected float _reelInScrollCooldownLeft = 0f;
@@ -67,7 +66,7 @@ namespace Controllers
             {
                 if (_human.Grounded && _human.State != HumanState.Idle)
                     return;
-                if (!_human.Grounded && (_human.State == HumanState.EmoteAction || _human.State == HumanState.SpecialAttack ||
+                if (!_human.Grounded && (_human.State == HumanState.EmoteAction || (_human.State == HumanState.SpecialAttack && _human.Special is not DownStrikeSpecial && _human.Special is not StockSpecial) ||
                     _human.Cache.Animation.IsPlaying("dash") || _human.Cache.Animation.IsPlaying("jump") || _human.IsFiringThunderspear()))
                     return;
             }
@@ -123,8 +122,26 @@ namespace Controllers
             {
                 if (str != string.Empty)
                     str += "\n";
-                str += ((speed / 100f)).ToString("F1") + "K";
+                float originalSpeed = speed;
+                if (_human.Weapon is BladeWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["Blade"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is AHSSWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is APGWeapon)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+                speed = Mathf.Max(speed, 10f);
+                speed /= 100f;
+                str += speed.ToString("F1") + "K";
+
+                if (_human.Special is AHSSTwinShot)
+                {
+                    originalSpeed = Mathf.Max((int)originalSpeed, 10f);
+                    originalSpeed /= 100f;
+                    str += " | " + originalSpeed.ToString("F1") + "K";
+                }
+
             }
+
             CursorManager.SetCrosshairText(str);
             if (magnitude > 120f)
                 CursorManager.SetCrosshairColor(false);
@@ -160,7 +177,7 @@ namespace Controllers
         {
             if (inMenu)
                 return;
-            bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.CurrentGas > 0f 
+            bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.Stats.CurrentGas > 0f
                 && _human.MountState != HumanMountState.MapObject && !_human.Dead;
             bool hookBoth = _humanInput.HookBoth.GetKey();
             bool hookLeft = _humanInput.HookLeft.GetKey();
@@ -189,12 +206,13 @@ namespace Controllers
             }
             _human.HookLeft.HookBoth = hookBoth && !hookLeft;
             _human.HookRight.HookBoth = hookBoth && !hookRight;
-            _human.HookLeft.SetInput(canHook && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
-            _human.HookRight.SetInput(canHook && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
-            if (_human.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
+            _human.HookLeft.SetInput(canHook && !IsSpin3Special() && (hookLeft || (hookBoth && (_human.HookLeft.IsHooked() || !hasHook))));
+            _human.HookRight.SetInput(canHook && !IsSpin3Special() && (hookRight || (hookBoth && (_human.HookRight.IsHooked() || !hasHook))));
+
+            if (_human.Stats.CurrentGas <= 0f && (hookLeft || hookRight || hookBoth))
             {
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
-                _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
+                    _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
             }
             // TestScore();
         }
@@ -219,13 +237,6 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            if (!inMenu)
-            {
-                if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
-                    HideCursor = !HideCursor;
-            }
-
-            
             var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun};
             bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
@@ -239,7 +250,7 @@ namespace Controllers
             _human._gunArmAim = false;
             if (canWeapon)
             {
-                if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 && 
+                if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 &&
                     !(_human.Weapon is ThunderspearWeapon && ((ThunderspearWeapon)_human.Weapon).HasActiveProjectile()))
                 {
                     if (attackInput.GetKeyDown() && _human.State == HumanState.Idle)
@@ -269,11 +280,19 @@ namespace Controllers
                 _human.Weapon.SetInput(false);
             if (_human.Special != null)
             {
-                bool canSpecial = _human.MountState == HumanMountState.None && 
-                    (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab)
-                    && _human.CarryState != HumanCarryState.Carry && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
-                if (canSpecial)
+                bool canSpecial = _human.MountState == HumanMountState.None &&
+                    (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab) && _human.CarryState != HumanCarryState.Carry
+                    && _human.State != HumanState.EmoteAction && _human.State != HumanState.Attack && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
+                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && (_human.State != HumanState.Attack || _human.Special is StockSpecial) &&
+                    _human.State != HumanState.EmoteAction && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry && !inMenu && !_human.Dead;
+                if (canSpecial || canSpecialHold)
+                {
+                    // Makes AHSSTwinShot activate on key up instead of key down
+                    if (_human.Special is AHSSTwinShot)
+                        _human.Special.SetInput(specialInput.GetKeyUp());
+                    else
                     _human.Special.ReadInput(specialInput);
+                }
                 else
                     _human.Special.SetInput(false);
             }
@@ -286,7 +305,7 @@ namespace Controllers
                     if (_humanInput.Jump.GetKeyDown())
                         _human.Jump();
                     else if (_humanInput.HorseMount.GetKeyDown() && _human.Horse != null && _human.MountState == HumanMountState.None &&
-                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f)
+                    Vector3.Distance(_human.Horse.Cache.Transform.position, _human.Cache.Transform.position) < 15f && !_human.HasDirection)
                         _human.MountHorse();
                     else if (_humanInput.Dodge.GetKeyDown())
                     {
@@ -301,7 +320,7 @@ namespace Controllers
                     if (_humanInput.Reload.GetKeyDown())
                         _human.Reload();
                 }
-                if(_human.CarryState == HumanCarryState.Carry)
+                if (_human.CarryState == HumanCarryState.Carry)
                 {
                     if (_humanInput.HorseMount.GetKeyDown())
                         _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
@@ -389,6 +408,27 @@ namespace Controllers
                             break;
                         }
                     }
+                    if (currentDirection == HumanDashDirection.None)
+                    {
+                        if (_human.Stats.Perks["OmniDash"].CurrPoints == 1)
+                        {
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            _human.DashVertical(GetTargetAngle(direction), direction);
+                        }
+                        else if (_human.Stats.Perks["VerticalDash"].CurrPoints == 1)
+                        {
+                            float angle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.x;
+                            if (angle < 0)
+                                angle += 360f;
+                            if (angle >= 360f)
+                                angle -= 360f;
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            if (angle > 0f && angle < 180f)
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.down);
+                            else
+                                _human.DashVertical(GetTargetAngle(direction), Vector3.up);
+                        }
+                    }
                 }
                 if (SettingsManager.InputSettings.Human.DashDoubleTap.Value)
                 {
@@ -426,6 +466,11 @@ namespace Controllers
             else if (direction == HumanDashDirection.Left)
                 angle = GetTargetAngle(0, -1);
             return angle;
+        }
+
+        bool IsSpin3Special()
+        {
+            return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
         }
     }
 }

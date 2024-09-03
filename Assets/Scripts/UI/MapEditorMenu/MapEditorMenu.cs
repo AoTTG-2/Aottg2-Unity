@@ -20,12 +20,13 @@ namespace UI
         public MapEditorHierarchyPanel HierarchyPanel;
         public MapEditorTopPanel _topPanel;
         public MapEditorAddObjectPopup AddObjectPopup;
+        public MapEditorAddVariantPopup AddVariantPopup;
         public MapEditorTexturePopup TexturePopup;
         public MapEditorCameraPopup CameraPopup;
         public MapEditorInfoPopup InfoPopup;
         public MapEditorSettingsPopup SettingsPopup;
         public MapEditorCustomLogicPopup CustomLogicPopup;
-        public MapEditorSelectComponentPopup SelectComponentPopup;
+        public MapEditorAddComponentPopup AddComponentPopup;
         public MapEditorErrorPopup ErrorPopup;
         public MapEditorCustomAssetPopup CustomAssetsPopup;
         public MapEditorWeatherPopup WeatherPopup;
@@ -47,6 +48,7 @@ namespace UI
         {
             base.SetupPopups();
             AddObjectPopup = ElementFactory.CreateDefaultPopup<MapEditorAddObjectPopup>(transform);
+            AddVariantPopup = ElementFactory.CreateDefaultPopup<MapEditorAddVariantPopup>(transform);
             TexturePopup = ElementFactory.CreateDefaultPopup<MapEditorTexturePopup>(transform);
             ElementFactory.SetAnchor(AddObjectPopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
             ElementFactory.SetAnchor(TexturePopup.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(-65f, 0f));
@@ -54,17 +56,18 @@ namespace UI
             InfoPopup = ElementFactory.CreateDefaultPopup<MapEditorInfoPopup>(transform);
             SettingsPopup = ElementFactory.CreateDefaultPopup<MapEditorSettingsPopup>(transform);
             CustomLogicPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomLogicPopup>(transform);
-            SelectComponentPopup = ElementFactory.CreateDefaultPopup<MapEditorSelectComponentPopup>(transform);
+            AddComponentPopup = ElementFactory.CreateDefaultPopup<MapEditorAddComponentPopup>(transform);
             ErrorPopup = ElementFactory.CreateDefaultPopup<MapEditorErrorPopup>(transform);
             CustomAssetsPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomAssetPopup>(transform);
             WeatherPopup = ElementFactory.CreateDefaultPopup<MapEditorWeatherPopup>(transform);
             _popups.Add(AddObjectPopup);
+            _popups.Add(AddVariantPopup);
             _popups.Add(TexturePopup);
             _popups.Add(CameraPopup);
             _popups.Add(InfoPopup);
             _popups.Add(SettingsPopup);
             _popups.Add(CustomLogicPopup);
-            _popups.Add(SelectComponentPopup);
+            _popups.Add(AddComponentPopup);
             _popups.Add(ErrorPopup);
             _popups.Add(CustomAssetsPopup);
             _popups.Add(WeatherPopup);

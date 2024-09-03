@@ -1,11 +1,13 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Characters;
 using Effects;
 using GameManagers;
+using Map;
 using Photon.Pun;
 using Projectiles;
 using Settings;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -46,6 +48,24 @@ namespace CustomLogic
                     message = parameters[0].ToString();
                 ChatManager.SendChatAll(message, ChatTextColor.System);
                 return null;
+            }
+            if (name == "GetGeneralSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.General.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetTitanSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Titan.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
+            }
+            if (name == "GetMiscSetting")
+            {
+                string settingName = (string)parameters[0];
+                var setting = SettingsManager.InGameCurrent.Misc.TypedSettings[settingName];
+                return setting.GetType().GetProperty("Value").GetValue(setting);
             }
             if (name == "End")
             {
@@ -213,10 +233,21 @@ namespace CustomLogic
                 if (effectName == EffectPrefabs.ThunderspearExplode)
                 {
                     Color color = ((CustomLogicColorBuiltin)parameters[4]).Value.ToColor();
-                    bool kill = false;
+                    TSKillType killSound = TSKillType.Kill;
                     if (parameters.Count > 5)
-                        kill = (bool)(parameters[5]);
-                    settings = new object[] { color, kill };
+                    {
+                        string killSoundName = (string)(parameters[5]);
+                        killSound = killSoundName switch
+                        {
+                            "Air" => TSKillType.Air,
+                            "Ground" => TSKillType.Ground,
+                            "ArmorHit" => TSKillType.ArmorHit,
+                            "CloseShot" => TSKillType.CloseShot,
+                            "MaxRangeShot" => TSKillType.MaxRangeShot,
+                            _ => TSKillType.Kill
+                        };
+                    }
+                    settings = new object[] { color, killSound };
                 }
                 EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
                 return null;
@@ -235,7 +266,7 @@ namespace CustomLogic
             {
                 bool force = (bool)parameters[0];
                 if (PhotonNetwork.IsMasterClient)
-                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new { force });
+                    RPCManager.PhotonView.RPC("SpawnPlayerRPC", RpcTarget.All, new object[] { force });
                 return null;
             }
             if (name == "SpawnPlayerAt")
@@ -275,6 +306,15 @@ namespace CustomLogic
                 CustomLogicManager.Evaluator.HasSetMusic = true;
                 return null;
             }
+            if (name == "DrawRay")
+            {
+                Vector3 start = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                Vector3 dir = ((CustomLogicVector3Builtin)parameters[1]).Value;
+                Color color = ((CustomLogicColorBuiltin)parameters[2]).Value.ToColor();
+                float duration = parameters[3].UnboxToFloat();
+                Debug.DrawRay(start, dir, color, duration);
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 
@@ -283,8 +323,6 @@ namespace CustomLogic
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (name == "IsEnding")
                 return gameManager.IsEnding;
-            if (name == "PVP")
-                return SettingsManager.InGameCurrent.Misc.PVP.Value;
             if (name == "EndTimeLeft")
                 return gameManager.EndTimeLeft;
             if (name == "Titans")
@@ -376,6 +414,25 @@ namespace CustomLogic
                         list.List.Add(new CustomLogicHumanBuiltin(human));
                 }
                 return list;
+            }
+            if (name == "Loadouts")
+            {
+                var miscSettings = SettingsManager.InGameCurrent.Misc;
+                List<string> loadouts = new List<string>();
+                if (miscSettings.AllowBlades.Value)
+                    loadouts.Add(HumanLoadout.Blades);
+                if (miscSettings.AllowAHSS.Value)
+                    loadouts.Add(HumanLoadout.AHSS);
+                if (miscSettings.AllowAPG.Value)
+                    loadouts.Add(HumanLoadout.APG);
+                if (miscSettings.AllowThunderspears.Value)
+                    loadouts.Add(HumanLoadout.Thunderspears);
+                if (loadouts.Count == 0)
+                    loadouts.Add(HumanLoadout.Blades);
+
+                var result = new CustomLogicListBuiltin();
+                result.List = loadouts.ConvertAll(x => (object)x);
+                return result;
             }
             return base.GetField(name);
         }

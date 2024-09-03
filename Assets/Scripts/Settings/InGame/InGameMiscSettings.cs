@@ -20,13 +20,17 @@ namespace Settings
         public BoolSetting Horses = new BoolSetting(false);
         public BoolSetting GunsAirReload = new BoolSetting(true);
         public BoolSetting AllowStock = new BoolSetting(true);
-        public BoolSetting ClearKDROnRestart = new BoolSetting(false);
+        public BoolSetting ClearKDROnRestart = new BoolSetting(true);
         public BoolSetting GlobalMinimapDisable = new BoolSetting(false);
         public BoolSetting RealismMode = new BoolSetting(false);
+        public BoolSetting CustomStats = new BoolSetting(true);
+        public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
         public StringSetting VoiceChatMode = new StringSetting(VoiceChatManager.VoiceChatModes[0]);
         public FloatSetting ProximityMaxDistance = new FloatSetting(10f, minValue: 1f);
         public FloatSetting ProximityMinDistance = new FloatSetting(10f, minValue: 1f);
+        public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
+        public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
     }
 
     public enum PVPMode

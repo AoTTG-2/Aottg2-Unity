@@ -13,6 +13,8 @@ namespace UI
 {
     class CharacterHumanPanel : CharacterCategoryPanel
     {
+        protected List<GameObject> _statBars = new List<GameObject>();
+
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
@@ -20,6 +22,7 @@ namespace UI
             string sub = "General";
             InGameMiscSettings miscSettings = SettingsManager.InGameCurrent.Misc;
             InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
+            InGameCharacterSettings lastCharSettings = SettingsManager.InGameSettings.LastCharacter;
             charSettings.CharacterType.Value = PlayerCharacter.Human;
             ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
             List<string> loadouts = new List<string>();
@@ -33,26 +36,92 @@ namespace UI
                 loadouts.Add(HumanLoadout.Thunderspears);
             if (loadouts.Count == 0)
                 loadouts.Add(HumanLoadout.Blades);
+            if (lastCharSettings.CharacterType.Value == PlayerCharacter.Human)
+            {
+                charSettings.Special.Value = lastCharSettings.Special.Value;
+                charSettings.Costume.Value = lastCharSettings.Costume.Value;
+                charSettings.CustomSet.Value = lastCharSettings.CustomSet.Value;
+                charSettings.Loadout.Value = lastCharSettings.Loadout.Value;
+            }
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
             List<string> specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(charSettings.Special.Value))
                 charSettings.Special.Value = specials[0];
             string[] options = GetCharOptions();
+            if (charSettings.CustomSet.Value >= options.Length)
+            {
+                charSettings.CustomSet.Value = 0;
+            }
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
-                options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+                options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => SyncStatBars());
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(cat, sub, "Costume"),
                 new string[] {"Costume1", "Costume2", "Costume3"}, elementWidth: 180f, optionsWidth: 180f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Loadout"),
-                loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
+                loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => OnLoadoutClick());
             options = specials.ToArray();
-            ElementFactory.CreateIconPickSetting(DoublePanelRight, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
+            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
                 options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
-                ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, charSettings.Team, UIManager.GetLocaleCommon("Team"),
+                ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 100f, themePanel: ThemePanel), charSettings.Team, UIManager.GetLocaleCommon("Team"),
                new string[] { "Blue", "Red" }, elementWidth: 180f, optionsWidth: 180f);
             }
+            SyncStatBars();
+        }
+
+        protected void OnLoadoutClick()
+        {
+            InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
+            InGameCharacterSettings lastCharSettings = SettingsManager.InGameSettings.LastCharacter;
+            lastCharSettings.Special.Value = charSettings.Special.Value;
+            lastCharSettings.Costume.Value = charSettings.Costume.Value;
+            lastCharSettings.CustomSet.Value = charSettings.CustomSet.Value;
+            lastCharSettings.Loadout.Value = charSettings.Loadout.Value;
+            Parent.RebuildCategoryPanel();
+        }
+
+        protected void SyncStatBars()
+        {
+            foreach (var go in _statBars)
+                Destroy(go);
+            _statBars.Clear();
+            InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
+            var customSets = SettingsManager.HumanCustomSettings.CustomSets;
+            int setIndex = charSettings.CustomSet.Value;
+            int costumeIndex = charSettings.Costume.Value;
+            int preCount = SettingsManager.HumanCustomSettings.Costume1Sets.Sets.GetCount();
+            HumanCustomSet customSet;
+            if (setIndex < preCount)
+            {
+                if (costumeIndex == 1)
+                    customSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.Costume2Sets.Sets.GetItemAt(setIndex);
+                else if (costumeIndex == 2)
+                    customSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.Costume3Sets.Sets.GetItemAt(setIndex);
+                else
+                    customSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.Costume1Sets.Sets.GetItemAt(setIndex);
+            }
+            else
+                customSet = (HumanCustomSet)customSets.Sets.GetItemAt(setIndex - preCount);
+            var stats = HumanStats.Deserialize(new HumanStats(null), customSet.Stats.Value);
+            string cat = "CharacterEditor";
+            string sub = "Stats";
+            CreateStatBar(UIManager.GetLocale(cat, sub, "Acceleration"), stats.Acceleration);
+            CreateStatBar(UIManager.GetLocale(cat, sub, "Speed"), stats.Speed);
+            CreateStatBar(UIManager.GetLocale(cat, sub, "Gas"), stats.Gas);
+            CreateStatBar(UIManager.GetLocale(cat, sub, "Ammunition"), stats.Ammunition);
+        }
+
+        protected void CreateStatBar(string title, int value)
+        {
+            var statbar = ElementFactory.InstantiateAndBind(DoublePanelRight, "Prefabs/Misc/StatBar").transform;
+            float percentage = Mathf.Clamp((value - 50f) / 50f, 0f, 1f);
+            statbar.Find("Label").GetComponent<Text>().text = title;
+            statbar.Find("Label").GetComponent<Text>().color = UIManager.GetThemeColor("DefaultPanel", "DefaultLabel", "TextColor");
+            statbar.Find("ProgressBar").GetComponent<Slider>().value = percentage;
+            statbar.Find("ProgressBar/Background").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarBackgroundColor");
+            statbar.Find("ProgressBar/Fill Area/Fill").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarFillColor");
+            _statBars.Add(statbar.gameObject);
         }
 
         protected string[] GetCharOptions()

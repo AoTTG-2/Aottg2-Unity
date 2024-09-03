@@ -132,6 +132,8 @@ namespace UI
 
         private void OnButtonClick(int id)
         {
+            if (_menu.IsPopupActive())
+                return;
             bool multi = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
             if (_selected.Contains(id))
             {

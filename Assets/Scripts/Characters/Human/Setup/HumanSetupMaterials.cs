@@ -2,6 +2,7 @@ using ApplicationManagers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using Utility;
 
@@ -66,6 +67,15 @@ namespace Characters
                 HairMaterials[texture] = material;
             }
             return HairMaterials[texture];
+        }
+
+        public static Material GetSkinMaterial(string texture, Color color)
+        {
+            var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Costumes/Materials/HumanSkinMat", true);
+            var mainTexture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, "Human/Parts/Costumes/Textures/" + texture);
+            material.SetTexture("_weapon_tex", mainTexture);
+            material.SetColor("_skin_color", color);
+            return material;
         }
     }
 }

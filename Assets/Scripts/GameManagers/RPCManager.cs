@@ -100,6 +100,15 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void ResetKDRPC(PhotonMessageInfo info)
+        {
+            if (info.Sender.IsMasterClient)
+            {
+                InGameManager.ResetPlayerKD(PhotonNetwork.LocalPlayer);
+            }
+        }
+
+        [PunRPC]
         public void PlayerInfoRPC(byte[] data, PhotonMessageInfo info)
         {
             InGameManager.OnPlayerInfoRPC(data, info);
@@ -189,7 +198,8 @@ namespace GameManagers
         [PunRPC]
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
-            CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message);
+            if (CustomLogicManager.Evaluator != null)
+                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message);
         }
 
         [PunRPC]

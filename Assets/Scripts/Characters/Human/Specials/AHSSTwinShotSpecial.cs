@@ -1,4 +1,4 @@
-﻿using Effects;
+using Effects;
 using Settings;
 using System.Collections;
 using UI;
@@ -6,11 +6,16 @@ using UnityEngine;
 
 namespace Characters
 {
-    class AHSSTwinShot : SimpleUseable
+    class AHSSTwinShot : ExtendedUseable
     {
         public AHSSTwinShot(BaseCharacter owner): base(owner)
         {
-            Cooldown = 10f;
+            Cooldown = 1f;
+        }
+
+        protected override float GetActiveTime()
+        {
+            return CharacterData.HumanWeaponInfo["AHSS"]["FireDelay"].AsFloat;
         }
 
         public override bool CanUse()
@@ -24,7 +29,16 @@ namespace Characters
             return false;
         }
 
-        protected override void Activate()
+        protected override void OnUse()
+        {
+            base.OnUse();
+            var human = (Human)_owner;
+            var weapon = (AmmoWeapon)human.Weapon;
+            if (weapon.RoundLeft >= 0)
+                weapon.RoundLeft = Mathf.Max(0, weapon.RoundLeft - 2);
+        }
+
+        protected override void Deactivate()
         {
             var human = (Human)_owner;
             Vector3 target = human.GetAimPoint();
@@ -48,7 +62,7 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             EffectSpawner.Spawn(EffectPrefabs.GunExplode, start, Quaternion.LookRotation(direction), 2f);
-            human.PlaySound(HumanSounds.GunExplodeLoud);
+            human.PlaySound(HumanSounds.GetRandomAHSSGunShotDouble());
             var ahssInfo = CharacterData.HumanWeaponInfo["AHSS"];
             var capsule = (CapsuleCollider)human.HumanCache.AHSSHit._collider;
             capsule.radius = ahssInfo["Radius"].AsFloat * 2f;
@@ -57,7 +71,6 @@ namespace Characters
             human.HumanCache.AHSSHit.Activate(0f, 0.1f);
             human.Cache.Rigidbody.AddForce(-direction * ahssInfo["KnockbackForce"].AsFloat * 2f, ForceMode.VelocityChange);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAHSS(true, true);
-            ((AmmoWeapon)human.Weapon).RoundLeft -= 2;
         }
     }
 }

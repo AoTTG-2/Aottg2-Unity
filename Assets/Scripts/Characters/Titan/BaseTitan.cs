@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Settings;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.AI;
 
 namespace Characters
 {
@@ -21,16 +22,23 @@ namespace Characters
         public BaseTitanComponentCache BaseTitanCache;
         public TitanColliderToggler TitanColliderToggler;
         public bool IsWalk;
+        public bool IsSprint;
         public bool IsSit;
         public Human HoldHuman = null;
         public bool HoldHumanLeft;
         public float Size = 1f;
         public virtual float DefaultCrippleTime => 8f;
+        public virtual bool CanWallClimb => false;
+        public virtual bool CanSprint => false;
         public float StunTime = 0.3f;
         public float ActionPause = 0.2f;
         public float AttackPause = 0.2f;
         public float TurnPause = 0.2f;
-        public BaseCharacter TargetEnemy = null;
+        public float MaxSprintStamina = 5f;
+        public float SprintStaminaRecover = 0.7f;
+        public float SprintStaminaConsumption = 1f;
+        public float CurrentSprintStamina = 5f;
+        public ITargetable TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
         protected override float GroundDistance => 1f;
         protected virtual float DefaultRunSpeed => 15f;
@@ -58,11 +66,11 @@ namespace Characters
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
         protected float _currentFallTime;
-        protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities,
-                PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+        protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
         public float _stateTimeLeft;
+        protected string _currentAttackAnimation;
         protected string _currentAttack;
         protected string _currentStateAnimation;
         protected float _currentAttackSpeed;
@@ -72,6 +80,7 @@ namespace Characters
         protected Vector3 _previousCoreLocalPosition;
         protected Vector3 _furthestCoreLocalPosition;
         protected Dictionary<string, float> _rootMotionAnimations = new Dictionary<string, float>();
+        public Dictionary<string, string> AttackAnimations = new Dictionary<string, string>();
 
         public virtual void Init(bool ai, string team, JSONNode data)
         {
@@ -105,16 +114,6 @@ namespace Characters
                     foreach (string attack in data["AttackSpeeds"].Keys)
                         AttackSpeeds.Add(attack, data["AttackSpeeds"][attack].AsFloat);
                 }
-                if (data.HasKey("HandHitboxRadius"))
-                {
-                    BaseTitanCache.HandLHitbox.UpdateSphereCollider(data["HandHitboxRadius"].AsFloat);
-                    BaseTitanCache.HandRHitbox.UpdateSphereCollider(data["HandHitboxRadius"].AsFloat);
-                }
-                if (data.HasKey("FootHitboxRadius"))
-                {
-                    BaseTitanCache.FootLHitbox.UpdateSphereCollider(data["FootHitboxRadius"].AsFloat);
-                    BaseTitanCache.FootRHitbox.UpdateSphereCollider(data["FootHitboxRadius"].AsFloat);
-                }
                 if (data.HasKey("TurnSpeed"))
                 {
                     TurnSpeed = data["TurnSpeed"].AsFloat;
@@ -131,9 +130,22 @@ namespace Characters
             return new Dictionary<string, float>();
         }
 
+        public virtual bool IsGrabAttack()
+        {
+            return false;
+        }
+
+        public float GetCurrentSpeed()
+        {
+            if (IsWalk)
+                return WalkSpeedBase + WalkSpeedPerLevel * Size;
+            else
+                return RunSpeedBase + RunSpeedPerLevel * Size;
+        }
+
         public virtual bool CanAction()
         {
-            return !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk;
+            return !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
         }
 
         public virtual bool CanStun()
@@ -158,6 +170,8 @@ namespace Characters
 
         public virtual void Attack(string attack)
         {
+            ResetAttackState(attack);
+            StateAttack(_currentAttackAnimation);
         }
 
         public virtual bool CanAttack()
@@ -169,13 +183,20 @@ namespace Characters
         {
             Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
-            _currentAttackSpeed = 1f;
-            if (AttackSpeeds.ContainsKey(attack))
-                _currentAttackSpeed = AttackSpeeds[attack];
-            _currentAttackSpeed *= AttackSpeedMultiplier;
-            if (_currentAttackSpeed <= 0f)
-                _currentAttackSpeed = 1f;
+            _currentAttackAnimation = AttackAnimations[attack];
+            _currentAttackSpeed = GetAttackSpeed(attack);
             _currentAttackStage = 0;
+        }
+
+        public float GetAttackSpeed(string attack)
+        {
+            float speed = 1f;
+            if (AttackSpeeds.ContainsKey(attack))
+                speed = AttackSpeeds[attack];
+            speed *= AttackSpeedMultiplier;
+            if (speed <= 0f)
+                speed = 1f;
+            return speed;
         }
 
         public virtual void Kick()
@@ -194,8 +215,16 @@ namespace Characters
             StateActionWithTime(TitanState.Run, BaseTitanAnimations.Run, 0f, 0.5f);
         }
 
+        public virtual void Sprint()
+        {
+            _stepPhase = 0;
+            StateActionWithTime(TitanState.Sprint, BaseTitanAnimations.Sprint, 0f, 0.2f);
+        }
+
         public virtual void WallClimb()
         {
+            if (!CanWallClimb)
+                return;
             _stepPhase = 0;
             StateActionWithTime(TitanState.WallClimb, BaseTitanAnimations.Run, 0f, 0.1f);
         }
@@ -225,7 +254,7 @@ namespace Characters
 
         public virtual void IdleWait(float waitTime)
         {
-            Idle(Mathf.Clamp(waitTime, 0.1f, 0.5f));
+            Idle(Mathf.Clamp(waitTime, 0.1f, 2f));
             _stateTimeLeft = waitTime;
         }
 
@@ -397,6 +426,7 @@ namespace Characters
             JumpForce = DefaultJumpForce;
             RotateSpeed = DefaultRotateSpeed;
             SetAnimationUpdateMode(false);
+            ScaleSounds(1f);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -411,6 +441,13 @@ namespace Characters
                 animations = new BaseTitanAnimations();
             BaseTitanAnimations = animations;
             _rootMotionAnimations = GetRootMotionAnimations();
+            foreach (var fieldInfo in BaseTitanAnimations.GetType().GetFields())
+            {
+                if (fieldInfo.Name.StartsWith("Attack"))
+                {
+                    AttackAnimations.Add(fieldInfo.Name, (string)fieldInfo.GetValue(BaseTitanAnimations));
+                }
+            }
         }
 
         public override Transform GetCameraAnchor()
@@ -453,6 +490,27 @@ namespace Characters
             UpdateAnimationColliders();
             if (IsMine())
             {
+                if (State == TitanState.Fall || State == TitanState.Jump)
+                {
+                    if (!AI && HasDirection && IsSprint && CurrentSprintStamina > 1f)
+                    {
+                        RaycastHit hit;
+                        if (Physics.Raycast(Cache.Transform.position + Vector3.up * 3f * Size, Cache.Transform.forward, out hit, Size * 5f, MapObjectMask.value))
+                        {
+                            WallClimb();
+                        }
+                    }
+                }
+                if (State == TitanState.Sprint || State == TitanState.WallClimb)
+                    CurrentSprintStamina -= SprintStaminaConsumption * Time.deltaTime;
+                else
+                    CurrentSprintStamina += SprintStaminaRecover * Time.deltaTime;
+                CurrentSprintStamina = Mathf.Clamp(CurrentSprintStamina, 0f, MaxSprintStamina);
+                if (State == TitanState.WallClimb)
+                {
+                    if (CurrentSprintStamina <= 0f || !IsSprint)
+                        Idle(0.2f);
+                }
                 if (State == TitanState.Fall || State == TitanState.Dead || State == TitanState.Jump || State == TitanState.WallClimb)
                     return;
                 if (State == TitanState.Eat)
@@ -475,10 +533,15 @@ namespace Characters
                 {
                     if (HasDirection)
                     {
-                        if (IsWalk)
+                        if (IsWalk && !IsSprint)
                             Walk();
                         else
-                            Run();
+                        {
+                            if (IsSprint && CurrentSprintStamina > 1f && CanSprint)
+                                Sprint();
+                            else
+                                Run();
+                        }
                     }
                     else if (IsSit && BaseTitanAnimations.SitDown != "")
                         StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);
@@ -498,23 +561,46 @@ namespace Characters
                 {
                     if (!HasDirection)
                         Idle(0.2f);
+                    else if (IsSprint)
+                    {
+                        if (CanSprint && CurrentSprintStamina > 1f)
+                            Sprint();
+                    }
                     else if (IsWalk)
                         Walk();
-                    else if (!AI)
-                    {
-                        RaycastHit hit;
-                        if (Physics.Raycast(Cache.Transform.position + Vector3.up * 3f * Size, Cache.Transform.forward, out hit, Size * 5f, MapObjectMask.value))
-                        {
-                            // _wallClimbForward = -Vector3.Reflect(Cache.Transform.forward, hit.normal);
-                            WallClimb();
-                        }
-                    }
                 }
                 else if (State == TitanState.Walk)
                 {
                     if (!HasDirection)
                         Idle(0.2f);
+                    else if (IsSprint)
+                    {
+                        if (CurrentSprintStamina > 1f && CanSprint)
+                            Sprint();
+                    }
                     else if (!IsWalk)
+                        Run();
+                }
+                else if (State == TitanState.Sprint)
+                {
+                    if (!AI)
+                    {
+                        RaycastHit hit;
+                        if (Physics.Raycast(Cache.Transform.position + Vector3.up * 3f * Size, Cache.Transform.forward, out hit, Size * 5f, MapObjectMask.value))
+                        {
+                            WallClimb();
+                        }
+                    }
+                    if (!HasDirection)
+                        Idle(0.2f);
+                    else if (IsSprint)
+                    {
+                        if (CurrentSprintStamina <= 0f)
+                            Run();
+                    }
+                    else if (IsWalk)
+                        Walk();
+                    else
                         Run();
                 }
                 else if (State == TitanState.PreJump)
@@ -529,6 +615,8 @@ namespace Characters
                     IdleWait(TurnPause);
                 else if (State == TitanState.Blind || State == TitanState.SitUp || State == TitanState.Emote)
                     IdleWait(0.3f);
+                else if (State == TitanState.ArmHurt)
+                    IdleWait(0.2f);
                 else if (State == TitanState.SitBlind)
                     StateActionWithTime(TitanState.SitIdle, BaseTitanAnimations.SitIdle, 0.3f, 0.3f);
                 else
@@ -556,21 +644,27 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     FixedUpdateAttack();
-                    SetDefaultVelocity();
+                    if (Grounded)
+                        SetDefaultVelocity();
                 }
                 else if (State == TitanState.Dead)
-                    SetDefaultVelocity();
+                {
+                    if (Grounded)
+                        SetDefaultVelocity();
+                }
                 else if (Grounded && State != TitanState.Jump && State != TitanState.StartJump && State != TitanState.WallClimb)
                 {
                     SetDefaultVelocity();
                     LastTargetDirection = Vector3.zero;
                     if (State == TitanState.Fall)
                         Land();
-                    else if (HasDirection && (State == TitanState.Run || State == TitanState.Walk))
+                    else if (HasDirection && (State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint))
                     {
                         LastTargetDirection = GetTargetDirection();
                         if (State == TitanState.Run)
                             Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size);
+                        else if (State == TitanState.Sprint)
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size) * 1.7f;
                         else if (State == TitanState.Walk)
                             Cache.Rigidbody.velocity += Cache.Transform.forward * (WalkSpeedBase + WalkSpeedPerLevel * Size);
                     }
@@ -595,7 +689,7 @@ namespace Characters
                         RaycastHit hit;
                         if (Physics.Raycast(Cache.Transform.position + Vector3.up * 3f * Size, Cache.Transform.forward, out hit, 5f * Size, MapObjectMask.value))
                         {
-                            Cache.Rigidbody.velocity += Vector3.up * (RunSpeedBase + RunSpeedPerLevel * Size);
+                            Cache.Rigidbody.velocity += Vector3.up * (RunSpeedBase + RunSpeedPerLevel * Size * 0.5f);
                             if (hit.distance > 3.5f * Size)
                                 Cache.Rigidbody.velocity += Cache.Transform.forward * Mathf.Min((hit.distance - 3.5f * Size) / Time.fixedDeltaTime, 10f);
                         }
@@ -643,7 +737,7 @@ namespace Characters
         {
             if (IsMine())
             {
-                if ((State == TitanState.Run || State == TitanState.Walk) && HasDirection)
+                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
                 }
@@ -710,6 +804,18 @@ namespace Characters
             transform.localScale = new Vector3(size, size, size);
             Size = size;
             SetSizeParticles(size);
+            ScaleSounds(size);
+        }
+
+        protected virtual void ScaleSounds(float size)
+        {
+            if (this is BaseShifter)
+                size *= 3.5f;
+            float stepVolume = Mathf.Clamp(size * 0.125f, 0.1f, 0.5f);
+            Cache.AudioSources[TitanSounds.Fall].volume = Mathf.Clamp(size * 0.3f, 0.1f, 1f);
+            Cache.AudioSources[TitanSounds.Footstep1].volume = stepVolume;
+            Cache.AudioSources[TitanSounds.Footstep2].volume = stepVolume;
+            Cache.AudioSources[TitanSounds.Footstep3].volume = stepVolume;
         }
 
         protected virtual void SetSizeParticles(float size)
@@ -732,21 +838,24 @@ namespace Characters
             return Cache.Animation[_currentStateAnimation].normalizedTime;
         }
 
+        protected virtual float GetHitboxTime(float normalizedLength)
+        {
+            return Cache.Animation[_currentStateAnimation].length * normalizedLength / _currentAttackSpeed;
+        }
+
         protected virtual void DamagedGrunt(float chance = 1f)
         {
             if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
             {
-                var grunts = new List<string>() { "Grunt3", "Grunt5" };
-                PlaySound(grunts.GetRandomItem());
+                PlaySound(TitanSounds.GetRandomHurt());
             }
         }
 
-        protected virtual void NormalGrunt(float chance = 1f)
+        protected virtual void GrabGrunt(float chance = 1f)
         {
             if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
             {
-                var grunts = new List<string>() { "Grunt1", "Grunt2", "Grunt4", "Grunt6", "Grunt7", "Grunt8", "Grunt9" };
-                PlaySound(grunts.GetRandomItem());
+                PlaySound(TitanSounds.GetRandomGrabGrunt());
             }
         }
 
@@ -793,24 +902,9 @@ namespace Characters
                 || IsPlayingClip(BaseTitanAnimations.SitUp) || IsPlayingClip(BaseTitanAnimations.DieSit);
         }
 
-        protected float[] GetNearestHumanAngles()
-        {
-            float angleX = 0f;
-            float angleY = 0f;
-            if (TargetEnemy != null)
-            {
-                Vector3 to = TargetEnemy.Cache.Transform.position - BaseTitanCache.Neck.position;
-                angleY = Mathf.Asin(to.y / to.magnitude) * Mathf.Rad2Deg;
-                to.y = 0f;
-                angleX = -Mathf.Atan2(to.z, to.x) * Mathf.Rad2Deg;
-                angleX = -Mathf.DeltaAngle(angleX, BaseTitanCache.Neck.rotation.eulerAngles.y - 90f);
-            }
-            return new float[] { angleX, angleY };
-        }
-
         protected override string GetFootstepAudio(int phase)
         {
-            return phase == 0 ? TitanSounds.Footstep1 : TitanSounds.Footstep2;
+            return TitanSounds.GetRandomFootstep();
         }
 
         protected override int GetFootstepPhase()
@@ -842,6 +936,7 @@ namespace Characters
     {
         Idle,
         Run,
+        Sprint,
         Walk,
         PreJump,
         StartJump,
@@ -850,6 +945,7 @@ namespace Characters
         Emote,
         Land,
         Attack,
+        ArmHurt,
         Special,
         Stun,
         Block,

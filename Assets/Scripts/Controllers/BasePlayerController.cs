@@ -17,6 +17,7 @@ namespace Controllers
         protected InGameMenu _inGameMenu;
         protected BaseCharacter _character;
         protected InGameManager _gameManager;
+        public bool HideCursor;
 
         protected virtual void Awake()
         {
@@ -55,6 +56,8 @@ namespace Controllers
                             _character.UseItem(i);
                     }
                 }
+                if (SettingsManager.InputSettings.General.HideCursor.GetKeyDown())
+                    HideCursor = !HideCursor;
             }
         }
 
@@ -107,6 +110,24 @@ namespace Controllers
         protected float GetTargetAngle(int forward, int right)
         {
             return SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.y + 90f - Mathf.Atan2(forward, right) * Mathf.Rad2Deg;
+        }
+
+        protected float[] GetAimAngles()
+        {
+            float angleX = 0f;
+            float angleY = 0f;
+            Vector3 aim = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized * 1000f;
+            angleY = Mathf.Asin(aim.y / aim.magnitude) * Mathf.Rad2Deg;
+            aim.y = 0f;
+            angleX = -Mathf.Atan2(aim.z, aim.x) * Mathf.Rad2Deg;
+            angleX = -Mathf.DeltaAngle(angleX, _character.Cache.Transform.eulerAngles.y - 90f);
+            return new float[] { angleX, angleY };
+        }
+
+        protected float GetTargetAngle(Vector3 direction)
+        {
+            direction = new Vector3(direction.x, 0f, direction.z).normalized;
+            return Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
         }
     }
 }

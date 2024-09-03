@@ -3,7 +3,7 @@
 		{"Name": "dakros_main_theme", "Volume": 1},
 		{"Name": "david_moses", "Volume": 1},
 		{"Name": "meownist_settings", "Volume": 1},
-		{"Name": "blood_god_dakros_departure", "Volume": 1}
+		{"Name": "blood_god_dakros_departure", "Volume": 1},
 		{"Name": "ertinos_up_there", "Volume": 1}
 
 	],
@@ -41,5 +41,18 @@
 	],
 	"Death": [
 		{"Name": "grabbed_short", "Volume": 1}
+	],
+	"Effect": [
+		{"Name": "effect_play", "Volume": 1}
+	],
+	"Transition": [
+		{"Name": "transition_amogus1", "Volume": 1},
+		{"Name": "transition_amogus2", "Volume": 1},
+		{"Name": "transition_bells", "Volume": 1},
+		{"Name": "transition_short_drums_mix", "Volume": 1},
+		{"Name": "transition_short_guitar_tamb", "Volume": 1},
+		{"Name": "transition_short_guzheng", "Volume": 1},
+		{"Name": "transition_short_violin_1", "Volume": 1},
+		{"Name": "transition_short_violin_2", "Volume": 1}
 	]
 }

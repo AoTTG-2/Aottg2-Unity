@@ -51,7 +51,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
   m_Height: 0.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0.1}
@@ -161,7 +161,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.7
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0.08, z: 0.06}
 --- !u!1 &6698587286718596861
 GameObject:
@@ -214,7 +214,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.6
   m_Height: 0.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0.1}
@@ -269,7 +269,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.7
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0.08, z: 0.06}
 --- !u!1001 &8190768624280246667
 PrefabInstance:
@@ -999,6 +999,7 @@ MonoBehaviour:
   State: 0
   TitanColliderToggler: {fileID: 0}
   IsWalk: 0
+  IsSprint: 0
   IsSit: 0
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
@@ -1007,7 +1008,10 @@ MonoBehaviour:
   ActionPause: 0.2
   AttackPause: 0.2
   TurnPause: 0.2
-  TargetEnemy: {fileID: 0}
+  MaxSprintStamina: 5
+  SprintStaminaRecover: 0.7
+  SprintStaminaConsumption: 1
+  CurrentSprintStamina: 5
   AttackSpeedMultiplier: 1
   RunSpeedBase: 0
   WalkSpeedBase: 0
@@ -1019,6 +1023,7 @@ MonoBehaviour:
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0
+  DeathAnimationLength: 2
 --- !u!54 &5048477599156722521
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1059,6 +1064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Disabled: 0
+  _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &530015306192811965
 MonoBehaviour:

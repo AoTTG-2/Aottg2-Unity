@@ -1,3 +1,195 @@
+# internal
+component NavMeshObstacle
+{
+    Description = "Adds a navMeshObstacle to the object";
+    _nav = null;
+
+    function Init()
+    {
+        # Add the component like how we add Rigidbody
+        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle", false);
+    }
+}
+
+# general
+component InteractActionTrigger
+{
+    Description = "Makes the object act like a button. Players can stand inside it and press the `Key` interaction key to trigger the action. The action have to be defined by another CL, either the game mode logic or another component.";
+
+    Key = "Interact";
+    KeyDropbox = "Interact, Interact2, Interact3";
+
+    _text = null;
+    _actionHandler = null;
+    _currentHuman = null;
+
+    function SetActionHandler(handler, text)
+    {
+        self._actionHandler = handler;
+        self._text = text;
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = other;
+            if (self._text != null)
+            {
+                UI.SetLabelForTime("MiddleCenter", self._text, 0.1);
+            }
+            else
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/" + self.Key) + " to trigger the action.", 0.1);
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._currentHuman != null && Input.GetKeyDown("Interaction/" + self.Key))
+        {
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.HandleInteractAction(self);
+            }
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self._currentHuman = null;
+        }
+    }
+}
+
+# internal
+component Animator
+{
+    AnimationName = "";
+    PlayOnAwake = true;
+    HasFade = false;
+    Fade = 0;
+
+    function Init()
+    {
+        if (self.PlayOnAwake)
+        {
+            self.PlayAnimation();
+        }
+    }
+
+    function ChangeAnimation(newAnimation)
+    {
+        self.AnimationName = newAnimation;
+        self.PlayAnimation();
+    }
+
+    function PlayAnimation()
+    {
+        if (self.HasFade)
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName, self.Fade);
+        }
+        else
+        {
+            self.MapObject.Transform.PlayAnimation(self.AnimationName);
+        }
+    }
+}
+
+# general
+component Floater
+{
+    Description = "Makes the object float on water.";
+    Enabled = true;
+    DepthBeforeFloating = 3.0;
+    DisplacementAmount = 2.0;
+    Drag = 0.7;
+    AngularDrag = 1.0;
+
+    _surfaceHeight = 0.0;
+    _isInWater = false;
+    _rb = null;
+    _waveDistance = 2.00;
+    _waveSpeed = 500.0;
+    _scale = 2.0;
+    _noiseStrength = 5.0;
+    _noiseWalk = 1.0;
+
+    function Init()
+    {
+        self._rb = self.MapObject.GetComponent("Rigidbody");
+    }
+
+    function SetState(surfaceHeight, isInWater, waveDistance, waveSpeed, scale, noiseStrength, noiseWalk)
+    {
+        self._surfaceHeight = surfaceHeight;
+        self._isInWater = isInWater;
+        self._waveDistance = waveDistance;
+        self._waveSpeed = waveSpeed;
+        self._scale = scale;
+        self._noiseStrength = noiseStrength;
+        self._noiseWalk = noiseWalk;
+    }
+
+    function GetWavePosition(surfaceTop, position)
+    {
+        deltaY = 0;
+        deltaY = deltaY + (Math.Sin((Time.GameTime * self._waveSpeed + position.Z) / self._waveDistance) - 1) * self._scale;
+        deltaY = deltaY + Random.PerlinNoise(position.X + self._noiseWalk, position.Z + Math.Sin(Time.GameTime * 0.1)) * self._noiseStrength;
+        return surfaceTop + deltaY;
+    }
+
+    function OnTick()
+    {
+        if (self._rb == null || self.Enabled == false)
+        {
+            return;
+        }
+
+        if (self._isInWater)
+        {
+            # self._isInWater  = false;
+            boundPoints = self.MapObject.GetCorners();
+            velocity = self._rb.GetVelocity();
+            gravity = Vector3(0, -20, 0);
+            # rb.AddForceWithMode(gravity.Scale(-1), "Acceleration");
+            gScale = 1.0 / boundPoints.Count;
+            for (point in boundPoints)
+            {
+                # rb.AddForceWithModeAtPoint(gravity.Scale(gScale), point, "Acceleration");
+                # Game.DrawRay(point, gravity.Scale(gScale), Color(255, 0, 0, 255), 1);
+                surfaceTop = self.GetWavePosition(self._surfaceHeight, point);
+
+                if (point.Y < surfaceTop)
+                {
+                    displaced = (surfaceTop - point.Y) / self.DepthBeforeFloating;
+                    dMult = Math.Clamp(displaced, 0, 1) * self.DisplacementAmount;
+
+                    wdForce = velocity.Scale(self.Drag);
+
+                    bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
+                    #Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
+                    self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+
+                    wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
+                    self._rb.AddForceWithMode(bForce, "VeclocityChange");
+
+                    ag = self._rb.GetAngularVelocity();
+                    agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
+                    self._rb.AddTorque(agdForce, "VelocityChange");
+                }
+            }
+        }
+    
+    }
+
+}
+
+# general
 component WaterPhysics
 {
     Description = "Enables water physics for the current region.";
@@ -7,6 +199,7 @@ component WaterPhysics
     SurfaceVerticalDrag = 0.7;
     SurfaceHorizontalDrag = 0.85;
     SunkenDrag = 0.5;
+    DampingForce = 0.3;
 
     SunkenGravity = 18.0;
     DisableHooks = true;
@@ -14,6 +207,12 @@ component WaterPhysics
     # if player is beneath the y axis skip limit, start a timer for drowning if SupportDrowning is enabled.
     SupportDrowning = true;
     TimeToDrown = 10.0;
+
+    WaveDistance = 20;
+    WaveSpeed = 500;
+    NoiseStrength = 5;
+    NoiseWalk = 1;
+    Scale = 2;
 
 
     /*
@@ -36,7 +235,7 @@ component WaterPhysics
 
     function Init()
     {
-        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y / 2);
+        self._surfaceTop = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
         self._surfaceBottom = self._surfaceTop - self.SurfaceHeight;
     }
 
@@ -71,6 +270,24 @@ component WaterPhysics
         return Vector3(0, 0, 0);
     }
 
+    function GetMass(other)
+    {
+        if (other.Type == "Human")
+        {
+            return 1;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body == null)
+            {
+                return 1;
+            }
+            return body.Mass;
+        }
+        return 1;
+    }
+
     function SetVelocity(other, velocity)
     {
         if (other.Type == "Human")
@@ -85,6 +302,23 @@ component WaterPhysics
                 body.SetVelocity(velocity);
             }
         }
+    }
+
+    function HasPhysics(other)
+    {
+        if (other.Type == "Human")
+        {
+            return true;
+        }
+        elif (other.Type == "MapObject")
+        {
+            body = other.GetComponent("Rigidbody");
+            if (body != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -127,77 +361,96 @@ component WaterPhysics
             return;
         }
         velocity = self.GetVelocity(other);
-        position = other.Position;
-        # Game.SpawnEffect("Splash", position, Vector3.GetRotationDirection(velocity, other.Forward), 1.0);
-        if (position.Y > self._surfaceBottom)
+        position = other.Position;      
+
+        # Convert velocity to euler angle on just the y axis
+        angle = Vector3.Angle(Vector3(0, 0, 1), velocity.Normalized);  
+
+        effectSize = velocity.Magnitude / 100;
+        effectSize = Math.Clamp(effectSize, 2, 7);
+        Game.SpawnEffect("Splash2", position, Vector3(-90,0,0), effectSize);
+        # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
+        horizontalVector = Vector3(velocity.X, 0, velocity.Z);
+        horizontalVector = horizontalVector.Normalized;
+        velocityNorm = velocity.Normalized;
+        angle = Vector3.Angle(horizontalVector, velocityNorm);
+
+        if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
         {
-            # Apply a force equal to the y velocity flipped and scaled by the buoyancy but only if the angle between the vector and the horizontal plane is 45 degrees and the y velocity is negative
-            horizontalVector = Vector3(velocity.X, 0, velocity.Z);
-            horizontalVector = horizontalVector.Normalized;
-            velocityNorm = velocity.Normalized;
-            angle = Vector3.Angle(horizontalVector, velocityNorm);
+            ratio = (1 - (angle / self._maxAngle));
+            angleRatio = ratio - 0.5;
+            horizontalRatio = angle / self._maxAngle;
 
-            if (angle < self._maxAngle && velocity.Y < 0 && velocity.Magnitude > self.MinSkipSpeed)
+            skipZoneValue = self.RangeToValue(angleRatio);
+            # flip the y
+            flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
+
+            # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
+            force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
+
+            self.SetVelocity(other, force);
+
+            if (other.Type == "Human")
             {
-                ratio = (1 - (angle / self._maxAngle));
-                angleRatio = ratio - 0.5;
-                horizontalRatio = angle / self._maxAngle;
-
-                skipZoneValue = self.RangeToValue(angleRatio);
-                # flip the y
-                flippedY = Vector3.Multiply(velocity, Vector3(1,-1,1));
-
-                # decay the y by the surface drag but scaled by the skip zone value, at 1 skip zone, the drag should be 0, at 0 skip zone, the drag should be 1
-                force = Vector3.Multiply(flippedY, Vector3(self.SurfaceHorizontalDrag * ratio, self.SurfaceVerticalDrag * skipZoneValue, self.SurfaceHorizontalDrag * ratio));
-
-                self.SetVelocity(other, force);
-
-                if (other.Type == "Human")
+                if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
                 {
-                    if (other.CurrentAnimation != "Armature|slide" && !String.Contains(other.CurrentAnimation, "attack") && !String.Contains(other.CurrentAnimation, "special"))
-                    {
-                        other.PlayAnimation("Armature|slide", 0.01);
-                    }
+                    other.PlayAnimation("Armature|slide", 0.01);
                 }
             }
+            return;
         }
+        if (other.Type == "Human")
+        {
+            other.PlaySound("WaterSplash");
+        }
+    }
+
+    function GetMidPoint(v1, v2)
+    {
+        return (v1 + v2).Scale(0.5);
     }
 
     function OnCollisionStay(other)
     {
-        if (self.Enabled == false || self.IsOwnedByMe(other) == false)
+        if (self.Enabled == false || self.IsOwnedByMe(other) == false || self.HasPhysics(other) == false)
         {
             return;
         }
+
         velocity = self.GetVelocity(other);
         position = other.Position;
-        # If the object is below the surface, apply a force equal to gravity - drag.
-        # Game.Print("Hello, I am under the water.");
-        force = Vector3(0, self.SunkenGravity, 0);
-        xzVelocity = Vector3(velocity.X, 0, velocity.Z);
-        drag = 1 - self.SunkenDrag;
-        force = force + xzVelocity.Scale(-1 * drag);
-        self.HandleForce(other, force, self._forceMode);
 
-        /* Requires new logic as this will spam hooks as long as the player is under the water.
-        if (other.Type == "Human" && self.DisableHooks)
+        if (other.Type == "Human")
         {
-            other.ClearHooks();
-        }
-        */
+            # If the object is below the surface, apply a force equal to gravity - drag.
+            # Game.Print("Hello, I am under the water.");
+            force = Vector3(0, self.SunkenGravity, 0);
+            xzVelocity = Vector3(velocity.X, 0, velocity.Z);
+            drag = 1 - self.SunkenDrag;
+            force = force + xzVelocity.Scale(-1 * drag);
+            self.HandleForce(other, force, self._forceMode);
 
-        if (other.Type == "Human" && self.SupportDrowning)
-        {
-            message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
-            UI.SetLabel("MiddleCenter", message);
-            self._isMyPlayerUnderwater = true;
-            self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
-            if (self._myPlayerTimer >= self.TimeToDrown)
+            if (self.SupportDrowning)
             {
-                other.GetKilled("Drowning");
+                message = "Oxygen: " + String.FormatFloat((self.TimeToDrown - self._myPlayerTimer) / self.TimeToDrown * 100, 0) + "%";
+                UI.SetLabel("MiddleCenter", message);
+                self._isMyPlayerUnderwater = true;
+                self._myPlayerTimer = self._myPlayerTimer + Time.TickTime;
+                if (self._myPlayerTimer >= self.TimeToDrown)
+                {
+                    other.GetKilled("Drowning");
+                }
             }
         }
-
+        elif (other.Type == "MapObject")
+        {
+            floater = other.GetComponent("Floater");
+            if (floater != null)
+            {
+                sHeight = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+                floater.SetState(sHeight, true, self.WaveDistance, self.WaveSpeed, self.Scale, self.NoiseStrength, self.NoiseWalk);
+            }
+        }
     }
 
     function OnCollisionExit(other)
@@ -205,6 +458,15 @@ component WaterPhysics
         if (self.Enabled == false || self.IsOwnedByMe(other) == false)
         {
             return;
+        }
+        if (other.Type == "MapObject")
+        {
+            floater = other.GetComponent("Floater");
+            if (floater != null)
+            {
+                sHeight = self.MapObject.Position.Y + (self.MapObject.Scale.Y * 10 / 2);
+                floater.SetState(sHeight, false, self.WaveDistance, self.WaveSpeed, self.Scale, self.NoiseStrength, self.NoiseWalk);
+            }
         }
         self._isMyPlayerUnderwater = false;
         self._myPlayerTimer = 0.0;
@@ -223,6 +485,7 @@ component WaterPhysics
     }
 }
 
+# general
 component VelocityZone
 {
     Description = "Changes the velocity of an object inside this trigger";
@@ -472,6 +735,7 @@ component VelocityZone
 
 }
 
+# general
 component DestructibleTrigger
 {
     Description = "A generic component for destroying, replacing, and recovering objects.";
@@ -717,6 +981,7 @@ component DestructibleTrigger
     }
 }
 
+# general
 component CustomPhysicsMaterial
 {
     IncludeChildren = false;
@@ -771,6 +1036,7 @@ component CustomPhysicsMaterial
     }
 }
 
+# internal
 component CaptureZone
 {
     Enabled = false;
@@ -780,22 +1046,24 @@ component CaptureZone
     TitanCanCapture = true;
     TeamsCanCapture = true;
     CaptureTime = 10.0;
-
+    DecaySpeed = 1.0;
+    Order = 0;
+    SupplyStationID = "";
     ShowUI = true;
     UIVisibilityRange = 80.0;
-
+    CurrentOwner = "Neutral";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
-    _currentOwner = "null";
+    _lastState = "Captured";
     _currentCapturer = "null";
     _captureProgress = 0.0;
     _teamsInZone = Dict();
 
     # Team Colors
-    _humanColor = Color(255, 255, 62, 255);
+    _humanColor = Color(70, 80, 125, 255);
     _shifterColor = Color(115, 222, 255, 255);
-    _titanColor = Color(70, 80, 125, 255);
+    _titanColor = Color(255, 255, 62, 255);
     _neutralColor = Color(255, 255, 255, 255);
     _teamBlueColor = Color(0, 0, 255, 255);
     _teamRedColor = Color(255, 0, 0, 255);
@@ -807,7 +1075,16 @@ component CaptureZone
 
     # UI state
     _isViewing = false;
-
+    
+    # Supply Station
+    _supplyStation = null;
+    _hasSupplyStation = false;
+    _isSupplyStationActive = false;
+    
+    # Callback Receiver
+    _lastOwner = "null"; # Use to avoid calling "OnCaptured" multiple times
+    _callbackReceiver = null;
+    _hasCallbackReceiver = false;
 
     function Init()
     {
@@ -821,6 +1098,58 @@ component CaptureZone
         self._teamToColor.Set("Blue", self._teamBlueColor);
         self._teamToColor.Set("Red", self._teamRedColor);
         self._teamToColor.Set("Unknown", self._unknownTeamColor);
+
+        # Setup supply station
+        if (self.SupplyStationID != "")
+        {
+            id = Convert.ToInt(self.SupplyStationID);
+            self._supplyStation = Map.FindMapObjectByID(id);
+            self._hasSupplyStation = self._supplyStation != null;
+            
+            if (self._hasSupplyStation)
+            {
+                self._supplyStation.Active = false;
+            }
+        }
+    }
+    
+    /*
+     * Callback receiver can be an instance of any class
+     * that have the following functions:
+     *      OnCaptured(captureZone, newOwner),
+     *      OnCapturing(captureZone, capturer),
+     *      OnContested(captureZone),
+     */
+    function SetupCallbackReceiver(callbackReceiver)
+    {
+        self._callbackReceiver = callbackReceiver;
+        self._hasCallbackReceiver = self._callbackReceiver != null;
+    }
+
+    # Getters
+    function GetCurrentOwner()
+    {
+        return self.CurrentOwner;
+    }
+
+    function GetCaptureProgress()
+    {
+        return self._captureProgress / self.CaptureTime;
+    }
+
+    function GetState()
+    {
+        return self._state;
+    }
+
+    function GetPlayersOfTeamInZone(team)
+    {
+        if (self._teamsInZone.Contains(team))
+        {
+            return self._teamsInZone.Get(team);
+        }
+
+        return null;
     }
 
     # GameObject Helpers
@@ -844,18 +1173,18 @@ component CaptureZone
         color = Color(255, 255, 255, 255);
         if (self._state == "Captured")
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
             
 		}
 		if (self._state == "Capturing" || (self._state == "Contested" && self._currentCapturer != "null"))
 		{
 			captureColor = self.GetTeamColor(self._currentCapturer);
-            ownerColor = self.GetTeamColor(self._currentOwner);
+            ownerColor = self.GetTeamColor(self.CurrentOwner);
             color = Color.Gradient(ownerColor, captureColor, self._captureProgress / self.CaptureTime);
 		}
 		else
 		{
-            color = self.GetTeamColor(self._currentOwner);
+            color = self.GetTeamColor(self.CurrentOwner);
 		}
         self.ChangeColorAll(color);
 	}
@@ -871,32 +1200,69 @@ component CaptureZone
         # Message will be state, owner, capturer, and progress
         data = Json.LoadFromString(message);
 
+        # If current owner changes,
+        # if current owner was you, play PointLose sound
+        # if current owner was someone else and new owner is you, play PointCapture sound
+
+        newOwner = data.Get("owner");
+        myTeam = Network.MyPlayer.Team;
+
+        if (self.CurrentOwner == myTeam && newOwner != myTeam)
+        {
+            self.MapObject.GetTransform("PointLoss").PlaySound();
+        }
+        elif (self.CurrentOwner != myTeam && newOwner == myTeam)
+        {
+            Game.Print("Playing Sound");
+            self.MapObject.GetTransform("PointCapture").PlaySound();
+        }
+        elif (self._currentCapturer == myTeam && self._captureProgress < data.Get("progress"))
+        {
+            self.MapObject.GetTransform("PointProgress").PlaySound();
+        }
+
+
         self._state = data.Get("state");
-        self._currentOwner = data.Get("owner");
+        self.CurrentOwner = data.Get("owner");
         self._currentCapturer = data.Get("capturer");
         self._captureProgress = data.Get("progress");
         self.Enabled = data.Get("enabled");
+        self.MapObject.Active = data.Get("active");
 
         self.ChangeColor();
     }
 
-    function NetworkSync(state, owner, capturer, progress, Enabled)
+    function NetworkSync()
     {
         message = Dict();
-        message.Set("state", state);
-        message.Set("owner", owner);
-        message.Set("capturer", capturer);
-        message.Set("progress", progress);
-        message.Set("enabled", Enabled);
+        message.Set("state", self._state);
+        message.Set("owner", self.CurrentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
+        message.Set("active", self.MapObject.Active);
         self.ChangeColor();
         self.NetworkView.SendMessageOthers(Json.SaveToString(message));
+    }
+
+    function OnPlayerJoin(player)
+    {
+        message = Dict();
+        message.Set("state", self._state);
+        message.Set("owner", self.CurrentOwner);
+        message.Set("capturer", self._currentCapturer);
+        message.Set("progress", self._captureProgress);
+        message.Set("enabled", self.Enabled);
+        message.Set("active", self.MapObject.Active);
+        self.ChangeColor();
+        self.NetworkView.SendMessage(player, Json.SaveToString(message));
     }
 
     function HandleStateTransition()
     {
         if (self._state == "Captured")
         {
-            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self._currentOwner) == false)
+            if (self._teamsInZone.Count == 1 && self._teamsInZone.Contains(self.CurrentOwner) == false)
             {
                 self._state = "Capturing";
                 self._currentCapturer = self._teamsInZone.Keys.Get(0);
@@ -917,7 +1283,7 @@ component CaptureZone
                 if (self._captureProgress >= self.CaptureTime)
                 {
                     self._state = "Captured";
-                    self._currentOwner = self._currentCapturer;
+                    self.CurrentOwner = self._currentCapturer;
                     self._currentCapturer = "null";
                     self._captureProgress = 0.0;
                 }
@@ -928,7 +1294,15 @@ component CaptureZone
             }
             elif (self._teamsInZone.Contains(self._currentCapturer) == false)
             {
-                self._captureProgress = self._captureProgress - 1.0;
+                if (self._teamsInZone.Count == 0)
+                {
+                    self._captureProgress = self._captureProgress - self.DecaySpeed;
+                }
+                else
+                {
+                    self._captureProgress = self._captureProgress - 1.0;
+                }
+                
                 if (self._captureProgress <= 0.0)
                 {
                     self._state = "Captured";
@@ -962,17 +1336,63 @@ component CaptureZone
 			return;
 		}
 
+        self.CheckPlayersInZone();
+
         self.HandleStateTransition();
 
-        self.NetworkSync(self._state, self._currentOwner, self._currentCapturer, self._captureProgress, self.Enabled);
+        self.NetworkSync();
     }
 
     # UI Helpers
     function GetTeamHex(team)
     {
+        if (team == null)
+        {
+            return "#FFFFFF";
+        }
         color = self.GetTeamColor(team);
         teamColor = Color(color.R, color.G, color.B, 255);
         return "#" + teamColor.ToHexString();
+    }
+
+    function CheckPlayersInZone()
+    {
+        teamsToRemove = List();
+        for (team in self._teamsInZone.Keys)
+        {
+            playersToRemove = List();
+            players = self._teamsInZone.Get(team);
+            for (player in players)
+            {
+                if (player == null)
+                {
+                    playersToRemove.Add(player);
+                }
+                else {
+                    hPos = Vector3(player.Position.X, 0, player.Position.Z);
+                    hCenter = Vector3(self.MapObject.Position.X, 0, self.MapObject.Position.Z);
+                    if (Vector3.Distance(hPos, hCenter) > self.MapObject.Scale.X * 20)
+                    {
+                        playersToRemove.Add(player);
+                    }
+                }
+            }
+            for (player in playersToRemove)
+            {
+                players.Remove(player);
+            }
+            self._teamsInZone.Set(team, players);
+
+            if (players.Count == 0)
+            {
+                teamsToRemove.Add(team);
+            }
+        }
+
+        for (team in teamsToRemove)
+        {
+            self._teamsInZone.Remove(team);
+        }
     }
 
     function OnTick()
@@ -981,6 +1401,50 @@ component CaptureZone
 		{
 			return;
 		}
+		
+		if (self._lastState != self._state)
+		{
+		    if (self._hasCallbackReceiver)
+		    {
+                if (self._state == "Captured")
+                {
+                    if (self._lastOwner != self.CurrentOwner)
+                    {
+                        self._callbackReceiver.OnCaptured(self, self.CurrentOwner);
+                        self._lastOwner = self.CurrentOwner;
+                    }
+                }
+                elif (self._state == "Capturing")
+                {
+                    self._callbackReceiver.OnCapturing(self, self._currentCapturer);
+                }
+                elif (self._state == "Contested")
+                {
+                    self._callbackReceiver.OnContested(self);
+                }
+		    }
+            self._lastState = self._state;
+		}
+		
+		if (self._state == "Captured")
+        {
+            if (self.CurrentOwner == "Human")
+            {
+                if (self._hasSupplyStation && !self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = true;
+                    self._isSupplyStationActive = true;
+                }
+            }
+            else
+            {
+                if (self._hasSupplyStation && self._isSupplyStationActive)
+                {
+                    self._supplyStation.Active = false;
+                    self._isSupplyStationActive = false;
+                }
+            }
+        }
 
         if (Network.MyPlayer.Character == null)
 		{
@@ -989,7 +1453,7 @@ component CaptureZone
 		}
 
         difference = Network.MyPlayer.Character.Position - self.MapObject.Position;
-        if (difference.Magnitude > self.UIVisibilityRange)
+        if (difference.Magnitude > self.UIVisibilityRange || self.MapObject.Active == false)
         {
             if (self._isViewing == true)
             {
@@ -1000,7 +1464,7 @@ component CaptureZone
 		}
         self._isViewing = true;
 
-        owner = self._currentOwner;
+        owner = self.CurrentOwner;
         if (owner == "null")
         {
             owner = "Neutral";
@@ -1168,7 +1632,7 @@ component CaptureZone
     }
 }
 
-
+# internal
 component Bell
 {
     ResetDelay = 0.3;
@@ -1192,6 +1656,16 @@ component Bell
             self._soundTransform.StopSound();
             self._soundTransform.PlaySound();
             self._currentResetTime = self.ResetDelay;
+            if (self.LureTitans && Network.IsMasterClient && sender.Character.Type == "Human")
+            {
+                for (titan in Game.Titans)
+                {
+                    difference = titan.Position - self.MapObject.Position;
+                    if (difference.Magnitude < self.LureRadius) {
+                        titan.Target(sender.Character, self.LureDuration);
+                    }
+                }
+            }
         }
     }
 
@@ -1213,16 +1687,6 @@ component Bell
 
         if (character.Velocity.Magnitude > self.VelocityHitThreshold)
         {
-            if (self.LureTitans)
-            {
-                for (titan in Game.Titans)
-                {
-                    difference = titan.Position - self.MapObject.Position;
-                    if (difference.Magnitude < self.LureRadius) {
-                        titan.Target(character, self.LureDuration);
-                    }
-                }
-            }
             self.NetworkView.SendMessageAll("hit");
         }
     }
@@ -1247,10 +1711,12 @@ component Bell
     }
 }
 
+# internal
 component SupplyStation
 {
     UnlimitedRefills = true;
     MaxRefills = 0;
+    _currentHumanRefill = null;
     _currentHuman = null;
 
     function Init()
@@ -1264,21 +1730,27 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine && (self.UnlimitedRefills || self._refillsLeft > 0))
         {
             self._currentHuman = other;
-            if (!other.AutoRefillGas)
-            {
-                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
-            }
+            self._currentHumanRefill = other;
+            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.", 0.1);
         }
     }
 
     function OnFrame()
     {
+        if (self._currentHumanRefill != null)
+        {
+            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill(true))
+            {
+                self._currentHumanRefill = null;
+                self._refillsLeft = self._refillsLeft - 1;
+            }
+        }
         if (self._currentHuman != null)
         {
-            if ((self._currentHuman.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHuman.Refill(true))
+            if (Input.GetKeyDown("Interaction/Interact2"))
             {
                 self._currentHuman = null;
-                self._refillsLeft = self._refillsLeft - 1;
+                UI.ShowChangeCharacterMenu();
             }
         }
     }
@@ -1288,10 +1760,12 @@ component SupplyStation
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;
+            self._currentHumanRefill = null;
         }
     }
 }
 
+# internal
 component Daylight
 {
     Color = Color(255, 255, 255, 255);
@@ -1304,6 +1778,7 @@ component Daylight
     }
 }
 
+# internal
 component PointLight
 {
     Color = Color(255, 255, 255, 255);
@@ -1316,6 +1791,7 @@ component PointLight
     }
 }
 
+# general
 component Rigidbody
 {
     Mass = 1.0;
@@ -1343,12 +1819,28 @@ component Rigidbody
         self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
     }
 
+    function AddForceWithModeAtPoint(force, point, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+    }
+
+    function AddTorque(force, mode)
+    {
+        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+    }
+
     function GetVelocity()
     {
         return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
     }
+
+    function GetAngularVelocity()
+    {
+        return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
+    }
 }
 
+# general
 component Tag
 {
     Name = "";
@@ -1359,6 +1851,7 @@ component Tag
     }
 }
 
+# general
 component KillRegion
 {
     Team = "None";
@@ -1392,6 +1885,7 @@ component KillRegion
     }
 }
 
+# general
 component DamageRegion
 {
     Damage = 1;
@@ -1426,6 +1920,7 @@ component DamageRegion
     }
 }
 
+# general
 component MovePingPong
 {
     RelativePositions = true;
@@ -1485,6 +1980,7 @@ component MovePingPong
     }
 }
 
+# general
 component RacingCheckpointRegion
 {
     Refill = true;
@@ -1507,6 +2003,7 @@ component RacingCheckpointRegion
     }
 }
 
+# general
 component RacingFinishRegion
 {
     function OnCollisionEnter(other)
@@ -1518,6 +2015,7 @@ component RacingFinishRegion
     }
 }
 
+# general
 component TeleportRegion
 {
     RelativePosition = false;
@@ -1555,6 +2053,7 @@ component TeleportRegion
     }
 }
 
+# internal
 component Dummy
 {
     ResetCount = 0;
@@ -1615,6 +2114,7 @@ component Dummy
     }
 }
 
+# internal
 component Wagon
 {
     MoveForce = 20.0;
@@ -1629,12 +2129,20 @@ component Wagon
     _collidingRide = false;
     _collidingGas = false;
     _rigidbody = null;
+    _leftWheel = null;
+    _rightWheel = null;
+    _leftSitTransform = null;
+    _rightSitTransform = null;
 
     function Init()
     {
         self._horse = self.MapObject.GetTransform("Horse");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
+        self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
+        self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
+        self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
+        self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
     }
 
     function OnNetworkMessage(sender, message)
@@ -1705,6 +2213,28 @@ component Wagon
         self._collidingDrive = false;
         self._collidingRide = false;
         self._collidingGas = false;
+
+        if (self._leftWheel != null && self._rightWheel != null)
+        {
+            L = Vector3.Distance(self._leftWheel.Position, self._rightWheel.Position);
+            r = self._leftWheel.Scale.Y / 2;
+
+            localVelocity = self.MapObject.Transform.InverseTransformDirection(self._rigidbody.GetVelocity());
+            angularVelocity = self._rigidbody.GetAngularVelocity();
+            
+            v_x = localVelocity.Z;
+            omega = angularVelocity.Y;
+
+            leftWheelRotationSpeed = (v_x - (L / 2) * omega) / r;
+            rightWheelRotationSpeed = (v_x + (L / 2) * omega) / r;
+
+            leftWheelRotation = leftWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3; # Character moves too fast for irl physics
+            rightWheelRotation = rightWheelRotationSpeed * Time.TickTime * Math.Rad2DegConstant * 0.3;
+
+            self._leftWheel.Rotate(Vector3(leftWheelRotation, 0, 0));
+            self._rightWheel.Rotate(Vector3(rightWheelRotation, 0, 0));
+
+        }
     }
 
     function OnFrame()
@@ -1809,8 +2339,8 @@ component Wagon
                 {
                     self._riding = true;
                     self._human = self._collidingHuman;
-                    posA = Vector3(-1.0, 1.78, -3.5);
-                    posB = Vector3(1.0, 1.78, 1.0);
+                    posA = self._leftSitTransform.LocalPosition; # Vector3(-1.0, 1.78, -3.5);
+                    posB = self._rightSitTransform.LocalPosition; # Vector3(1.0, 1.78, 1.0);
                     self._human.MountMapObject(self.MapObject, Random.RandomVector3(posA, posB), Vector3(0, 0, 0));
                 }
             }
@@ -1835,6 +2365,7 @@ component Wagon
     }
 }
 
+# internal
 component Cannon
 {
     UnlimitedAmmo = true;
@@ -1847,6 +2378,7 @@ component Cannon
     _barrelEnd = null;
     _inUse = false;
     _cooldownLeft = 0.0;
+    _ammoLeft = 0;
     _human = null;
     _collidingHuman = null;
 
@@ -1856,12 +2388,14 @@ component Cannon
         self._barrelEnd = self._barrel.GetTransform("End");
         self._humanMount = self.MapObject.GetTransform("HumanMount");
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 15.0);
+        self._ammoLeft = self.MaxAmmo;
     }
 
     function SendNetworkStream()
     {
         self.NetworkView.SendStream(self._barrel.LocalRotation);
         self.NetworkView.SendStream(self._inUse);
+        self.NetworkView.SendStream(self._ammoLeft);
     }
 
     function OnNetworkStream()
@@ -1869,6 +2403,7 @@ component Cannon
         rotation = self.NetworkView.ReceiveStream();
         self._barrel.LocalRotation = rotation;
         self._inUse = self.NetworkView.ReceiveStream();
+        self._ammoLeft = self.NetworkView.ReceiveStream();
     }
 
     function OnNetworkMessage(sender, message)
@@ -1917,6 +2452,12 @@ component Cannon
         if (self._inUse && self.NetworkView.Owner == Network.MyPlayer)
         {
             self._cooldownLeft = self._cooldownLeft - Time.FrameTime;
+            message = "Cooldown: " + Convert.ToString(Convert.ToInt(Math.Clamp(self._cooldownLeft, 0.0, self.Cooldown)));
+            if (!self.UnlimitedAmmo)
+            {
+                message = message + " Ammo: " + Convert.ToString(self._ammoLeft);
+            }
+            UI.SetLabelForTime("MiddleCenter", message, 0.1);
             barrelRotation = self._barrel.LocalRotation;
             baseRotation = self.MapObject.Rotation;
             if (Input.GetKeyHold("General/Left"))
@@ -1938,7 +2479,8 @@ component Cannon
             barrelRotation.X = Math.Clamp(barrelRotation.X, -45.0, 45.0);
             self._barrel.LocalRotation = barrelRotation;
             self.MapObject.Rotation = baseRotation;
-            if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
+            hasAmmo = self._ammoLeft > 0 || self.UnlimitedAmmo;
+            if (self._cooldownLeft <= 0.0 && hasAmmo && Input.GetKeyHold("Human/AttackDefault"))
             {
                 self.Fire();
             }
@@ -1987,6 +2529,7 @@ component Cannon
     function Fire()
     {
         self._cooldownLeft = self.Cooldown;
+        self._ammoLeft = self._ammoLeft - 1;
         if (self._human != null)
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
@@ -1996,6 +2539,7 @@ component Cannon
     }
 }
 
+# internal
 component Animal
 {
     Wanders = true;
@@ -2139,6 +2683,7 @@ component Animal
     }
 }
 
+# general
 component TitanBarrier
 {
     function OnCollisionStay(other)
@@ -2173,9 +2718,16 @@ component TitanBarrier
     }
 }
 
+# internal
 component WallGateA1
 {
     Description = "Makes WallGateA1 openable by players.";
+
+    StartState = "Closed";
+    StartStateDropbox = "Closed, Open";
+
+    Interactable = true;
+
     _currentHuman = null;
     _open = false;
     _moving = false;
@@ -2184,12 +2736,54 @@ component WallGateA1
 
     function Init()
     {
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 100));
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0, 25, 0), Vector3(100, 50, 70));
         self._door = self.MapObject.GetTransform("Door");
+        self._open = self.StartState == "Open";
+
+        localPosition = self._door.LocalPosition;
+        if (self._open)
+        {
+            localPosition.Y = 25;
+        }
+        else
+        {
+            localPosition.Y = 0;
+        }
+        self._door.LocalPosition = localPosition;
+    }
+
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "sync|" + self._open + "|" + self.Interactable);
+        }
     }
 
     function OnNetworkMessage(sender, message)
     {
+        if (sender == Network.MasterClient && String.StartsWith(message, "sync"))
+        {
+            args = String.Split(message, "|");
+            self._open = Convert.ToBool(args.Get(1));
+            self.Interactable = Convert.ToBool(args.Get(2));
+
+            localPosition = self._door.LocalPosition;
+            if (self._open)
+            {
+                localPosition.Y = 25;
+            }
+            else
+            {
+                localPosition.Y = 0;
+            }
+            self._door.LocalPosition = localPosition;
+        }
+
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (message == "request" && Network.IsMasterClient)
         {
             if (!self._moving)
@@ -2207,10 +2801,44 @@ component WallGateA1
     {
         self._open = !self._open;
         self._moving = true;
+
+        # if opening, play Open sound effect, otherwise play Close sound effect
+        if (self._open)
+        {
+            self.MapObject.GetTransform("GateOpen").PlaySound();
+        }
+        else
+        {
+            self.MapObject.GetTransform("GateClose").PlaySound();
+        }
+    }
+
+    function SetState(state)
+    {
+        isOpen = state == "Open";
+        if (self._open != isOpen)
+        {
+            self._open = isOpen;
+            self._moving = true;
+
+            if (self._open)
+            {
+                self.MapObject.GetTransform("GateOpen").PlaySound();
+            }
+            else
+            {
+                self.MapObject.GetTransform("GateClose").PlaySound();
+            }
+
+        }
     }
 
     function OnCollisionStay(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = other;
@@ -2220,7 +2848,7 @@ component WallGateA1
 
     function OnFrame()
     {
-        if (self._currentHuman != null)
+        if (self.Interactable && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact"))
             {
@@ -2255,6 +2883,10 @@ component WallGateA1
 
     function OnCollisionExit(other)
     {
+        if (self.Interactable == false)
+        {
+            return;
+        }
         if (other.Type == "Human" && other.IsMine)
         {
             self._currentHuman = null;
@@ -2262,6 +2894,7 @@ component WallGateA1
     }
 }
 
+# internal
 component Executioner
 {
     Description = "Makes Executioner1 and Executioner2 useable by players.";
@@ -2380,6 +3013,7 @@ component Executioner
     }
 }
 
+# general
 component SignalMover
 {
     Activate = true;
@@ -2428,7 +3062,10 @@ component SignalMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -2494,6 +3131,10 @@ component SignalMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -2529,6 +3170,10 @@ component SignalMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -2582,6 +3227,7 @@ component SignalMover
     }
 }
 
+# general
 component SignalArcMover
 {
     Activate = true;
@@ -2640,7 +3286,10 @@ component SignalArcMover
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -2720,6 +3369,10 @@ component SignalArcMover
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -2765,6 +3418,10 @@ component SignalArcMover
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -2818,6 +3475,8 @@ component SignalArcMover
         self.MapObject.Position = self.MapObject.Position + self._Center;
     }
 }
+
+# general
 component SignalRotator
 {
     Activate = true;
@@ -2866,7 +3525,10 @@ component SignalRotator
     }
     function OnTick()
     {   
-
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -2931,6 +3593,10 @@ component SignalRotator
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -2965,7 +3631,11 @@ component SignalRotator
     return Easing;
     }
     function Calculate(XTime)
-    {    
+    {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3019,6 +3689,7 @@ component SignalRotator
     }
 }
 
+# general
 component SignalScaler
 {
     /*
@@ -3070,6 +3741,10 @@ component SignalScaler
     }
     function OnTick()
     {   
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if ((self.Infinite || self._RepeatTimes > 0 || self._ForwardTimes > 0 || self._ReverseTimes > 0) && self.Activate && !self._Running)
         {
             self._Running = true;
@@ -3138,6 +3813,10 @@ component SignalScaler
     }
     function OnFrame()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         if (self._Running && self.Interpolate && self._FrameTimer < (0.998 / self._TimesPerSecond))
         {
             self._FrameTimer = self._FrameTimer + Time.FrameTime;
@@ -3173,6 +3852,10 @@ component SignalScaler
     }
     function Calculate(XTime)
     {    
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         #Easing handling
         c1 = 1.70158;
         c2 = c1 * 1.525;
@@ -3226,6 +3909,7 @@ component SignalScaler
     }
 }
 
+# general
 component SignalSender
 {
     ReceiverObjectIDs = "0";
@@ -3572,6 +4256,7 @@ component SignalSender
     }  
 }
 
+# general
 component Rope
 {
     Activate = true;

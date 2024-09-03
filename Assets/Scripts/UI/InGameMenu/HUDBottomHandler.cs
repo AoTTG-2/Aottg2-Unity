@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -21,6 +21,8 @@ namespace UI
         private Color BladeFillNormalColor = new Color(1f, 1f, 1f, 0.75f);
         private Color BackgroundNormalColor = Color.white;
         private Color BackgroundEmptyColor = new Color(1f, 0.25f, 0.25f);
+        private Color StaminaFillNormalColor = new Color(0.77f, 0.77f, 0.77f, 1f);
+        private Color StaminaFillLowColor = new Color(0.77f, 0.5f, 0.5f, 1f);
         private GameObject _hudBottom;
         private Image _specialFill;
         private Image _specialIconBackground;
@@ -31,6 +33,8 @@ namespace UI
         private string _currentSpecialIcon = "";
         private string _newSpecialIcon = "";
         private Human _human;
+        private BaseCharacter _character;
+        private BasicTitan _playerTitan;
         private float _gasAnimationTimeLeft = 0f;
         private float _reloadAnimationTimeLeft = 0f;
         private float _shootAnimationTimeLeft = 0f;
@@ -78,100 +82,119 @@ namespace UI
         private Image _bombFillRight;
         private bool _bombInCooldown;
 
-        public void SetBottomHUD(Human myHuman = null)
+        // player titan
+        private Slider _staminaSlider;
+        private Image _staminaFill;
+
+        public void SetBottomHUD(BaseCharacter character = null)
         {
-            _human = myHuman;
+            _character = character;
+            _human = null;
+            _playerTitan = null;
             if (_hudBottom != null)
                 Destroy(_hudBottom);
-            if (_human == null)
+            if (_character == null)
                 return;
-            if (_human.Setup.Weapon == HumanWeapon.APG)
+            if (_character is Human)
             {
-                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAPG");
-                _apgBackground = _hudBottom.transform.Find("GunBackground").GetComponent<Image>();
-                _ammoFillLeft = _hudBottom.transform.Find("GunAmmoFillLeft").GetComponent<Image>();
-                _ammoFillRight = _hudBottom.transform.Find("GunAmmoFillRight").GetComponent<Image>();
-                _apgReload = _hudBottom.transform.Find("GunReload").GetComponent<Image>();
-                _apgShoot = _hudBottom.transform.Find("GunShoot").GetComponent<Image>();
-                _apgAmmoBackground = _hudBottom.transform.Find("GunAmmoBackground").GetComponent<Image>();
-                _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
-                _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
-                _apgReload.color = BackgroundVeryLowColor;
-            }
-            else if (_human.Setup.Weapon == HumanWeapon.AHSS)
-            {
-                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAHSS");
-                _ahssBackgroundLeft = _hudBottom.transform.Find("GunBackgroundLeft").GetComponent<Image>();
-                _ahssBackgroundRight = _hudBottom.transform.Find("GunBackgroundRight").GetComponent<Image>();
-                _ahssEmptyLeft = _hudBottom.transform.Find("GunEmptyLeft").GetComponent<Image>();
-                _ahssEmptyRight = _hudBottom.transform.Find("GunEmptyRight").GetComponent<Image>();
-                _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
-                _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
-                _ahssShootLeft = _hudBottom.transform.Find("GunShootLeft").GetComponent<Image>();
-                _ahssShootRight = _hudBottom.transform.Find("GunShootRight").GetComponent<Image>();
-                _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
-                _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
-                _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
-                _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
-                _ahssEmptyLeft.color = BackgroundVeryLowColor;
-                _ahssEmptyRight.color = BackgroundVeryLowColor;
-                _ahssReloadLeft.color = BackgroundVeryLowColor;
-                _ahssReloadRight.color = BackgroundVeryLowColor;
-                _ahssShootLeft.color = BackgroundLowColor;
-                _ahssShootRight.color = BackgroundLowColor;
-            }
-            else if (_human.Setup.Weapon == HumanWeapon.Thunderspear)
-            {
-                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomTS");
-                _tsBackground = _hudBottom.transform.Find("TSBackground").GetComponent<Image>();
-                _tsBombBackground = _hudBottom.transform.Find("TSBombBackground").GetComponent<Image>();
-                _ammoFillLeft = _hudBottom.transform.Find("AmmoFillLeft").GetComponent<Image>();
-                _ammoFillRight = _hudBottom.transform.Find("AmmoFillRight").GetComponent<Image>();
-                _bombFillLeft = _hudBottom.transform.Find("BombFillLeft").GetComponent<Image>();
-                _bombFillRight = _hudBottom.transform.Find("BombFillRight").GetComponent<Image>();
-                _tsReload = _hudBottom.transform.Find("TSReload").GetComponent<Image>();
-                _tsBombReload = _hudBottom.transform.Find("TSBombReload").GetComponent<Image>();
-                _tsShoot = _hudBottom.transform.Find("TSShoot").GetComponent<Image>();
-                _ammoLabelLeft = _hudBottom.transform.Find("AmmoLabelLeft").GetComponent<Text>();
-                _ammoLabelRight = _hudBottom.transform.Find("AmmoLabelRight").GetComponent<Text>();
-                _tsReload.color = BackgroundVeryLowColor;
-                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                _human = (Human)_character;
+                if (_human.Setup.Weapon == HumanWeapon.APG)
                 {
-                    _tsBackground.gameObject.SetActive(false);
-                    _tsBombBackground.gameObject.SetActive(true);
-                    _ammoFillLeft.gameObject.SetActive(false);
-                    _ammoFillRight.gameObject.SetActive(false);
-                    _bombFillLeft.gameObject.SetActive(true);
-                    _bombFillRight.gameObject.SetActive(true);
-                    _tsReload.gameObject.SetActive(false);
-                    _tsShoot.gameObject.SetActive(false);
-                    _ammoLabelLeft.gameObject.SetActive(false);
-                    _ammoLabelRight.gameObject.SetActive(false);
+                    _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAPG");
+                    _apgBackground = _hudBottom.transform.Find("GunBackground").GetComponent<Image>();
+                    _ammoFillLeft = _hudBottom.transform.Find("GunAmmoFillLeft").GetComponent<Image>();
+                    _ammoFillRight = _hudBottom.transform.Find("GunAmmoFillRight").GetComponent<Image>();
+                    _apgReload = _hudBottom.transform.Find("GunReload").GetComponent<Image>();
+                    _apgShoot = _hudBottom.transform.Find("GunShoot").GetComponent<Image>();
+                    _apgAmmoBackground = _hudBottom.transform.Find("GunAmmoBackground").GetComponent<Image>();
+                    _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
+                    _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
+                    _apgReload.color = BackgroundVeryLowColor;
                 }
+                else if (_human.Setup.Weapon == HumanWeapon.AHSS)
+                {
+                    _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomAHSS");
+                    _ahssBackgroundLeft = _hudBottom.transform.Find("GunBackgroundLeft").GetComponent<Image>();
+                    _ahssBackgroundRight = _hudBottom.transform.Find("GunBackgroundRight").GetComponent<Image>();
+                    _ahssEmptyLeft = _hudBottom.transform.Find("GunEmptyLeft").GetComponent<Image>();
+                    _ahssEmptyRight = _hudBottom.transform.Find("GunEmptyRight").GetComponent<Image>();
+                    _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
+                    _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
+                    _ahssShootLeft = _hudBottom.transform.Find("GunShootLeft").GetComponent<Image>();
+                    _ahssShootRight = _hudBottom.transform.Find("GunShootRight").GetComponent<Image>();
+                    _ahssReloadLeft = _hudBottom.transform.Find("GunReloadLeft").GetComponent<Image>();
+                    _ahssReloadRight = _hudBottom.transform.Find("GunReloadRight").GetComponent<Image>();
+                    _ammoLabelLeft = _hudBottom.transform.Find("GunAmmoLabelLeft").GetComponent<Text>();
+                    _ammoLabelRight = _hudBottom.transform.Find("GunAmmoLabelRight").GetComponent<Text>();
+                    _ahssEmptyLeft.color = BackgroundVeryLowColor;
+                    _ahssEmptyRight.color = BackgroundVeryLowColor;
+                    _ahssReloadLeft.color = BackgroundVeryLowColor;
+                    _ahssReloadRight.color = BackgroundVeryLowColor;
+                    _ahssShootLeft.color = BackgroundLowColor;
+                    _ahssShootRight.color = BackgroundLowColor;
+                }
+                else if (_human.Setup.Weapon == HumanWeapon.Thunderspear)
+                {
+                    _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomTS");
+                    _tsBackground = _hudBottom.transform.Find("TSBackground").GetComponent<Image>();
+                    _tsBombBackground = _hudBottom.transform.Find("TSBombBackground").GetComponent<Image>();
+                    _ammoFillLeft = _hudBottom.transform.Find("AmmoFillLeft").GetComponent<Image>();
+                    _ammoFillRight = _hudBottom.transform.Find("AmmoFillRight").GetComponent<Image>();
+                    _bombFillLeft = _hudBottom.transform.Find("BombFillLeft").GetComponent<Image>();
+                    _bombFillRight = _hudBottom.transform.Find("BombFillRight").GetComponent<Image>();
+                    _tsReload = _hudBottom.transform.Find("TSReload").GetComponent<Image>();
+                    _tsBombReload = _hudBottom.transform.Find("TSBombReload").GetComponent<Image>();
+                    _tsShoot = _hudBottom.transform.Find("TSShoot").GetComponent<Image>();
+                    _ammoLabelLeft = _hudBottom.transform.Find("AmmoLabelLeft").GetComponent<Text>();
+                    _ammoLabelRight = _hudBottom.transform.Find("AmmoLabelRight").GetComponent<Text>();
+                    _tsReload.color = BackgroundVeryLowColor;
+                    if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                    {
+                        _tsBackground.gameObject.SetActive(false);
+                        _tsBombBackground.gameObject.SetActive(true);
+                        _ammoFillLeft.gameObject.SetActive(false);
+                        _ammoFillRight.gameObject.SetActive(false);
+                        _bombFillLeft.gameObject.SetActive(true);
+                        _bombFillRight.gameObject.SetActive(true);
+                        _tsReload.gameObject.SetActive(false);
+                        _tsShoot.gameObject.SetActive(false);
+                        _ammoLabelLeft.gameObject.SetActive(false);
+                        _ammoLabelRight.gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomBlade");
+                    _bladeBackground = _hudBottom.transform.Find("BladeBackground").GetComponent<Image>();
+                    _bladeReload = _hudBottom.transform.Find("BladeReload").GetComponent<Image>();
+                    _bladeOut = _hudBottom.transform.Find("BladeOut").GetComponent<Image>();
+                    _bladeFillLeft = _hudBottom.transform.Find("BladeFillLeft").GetComponent<Image>();
+                    _bladeFillRight = _hudBottom.transform.Find("BladeFillRight").GetComponent<Image>();
+                    _bladeAmmoLeft = new List<GameObject>();
+                    _bladeAmmoRight = new List<GameObject>();
+                    _bladeAmmoGroupLeft = _hudBottom.transform.Find("BladeAmmoGroupLeft").gameObject;
+                    _bladeAmmoGroupRight = _hudBottom.transform.Find("BladeAmmoGroupRight").gameObject;
+                    _bladeOut.color = BackgroundVeryLowColor;
+                }
+                _hudBottom.AddComponent<HUDScaler>();
+                ElementFactory.SetAnchor(_hudBottom, TextAnchor.LowerCenter, TextAnchor.LowerCenter, Vector3.up * 10f);
+                _specialFill = _hudBottom.transform.Find("SpecialFill").GetComponent<Image>();
+                _specialIconBackground = _hudBottom.transform.Find("SpecialIconBackground").GetComponent<Image>();
+                _specialIconFill = _hudBottom.transform.Find("SpecialIconFill").GetComponent<Image>();
+                _gasFillLeft = _hudBottom.transform.Find("GasFillLeft").GetComponent<Image>();
+                _gasFillRight = _hudBottom.transform.Find("GasFillRight").GetComponent<Image>();
+                _gasBackground = _hudBottom.transform.Find("GasBackground").GetComponent<Image>();
+                _currentSpecialIcon = "";
             }
-            else
+            else if (_character is BasicTitan)
             {
-                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomBlade");
-                _bladeBackground = _hudBottom.transform.Find("BladeBackground").GetComponent<Image>();
-                _bladeReload = _hudBottom.transform.Find("BladeReload").GetComponent<Image>();
-                _bladeOut = _hudBottom.transform.Find("BladeOut").GetComponent<Image>();
-                _bladeFillLeft = _hudBottom.transform.Find("BladeFillLeft").GetComponent<Image>();
-                _bladeFillRight = _hudBottom.transform.Find("BladeFillRight").GetComponent<Image>();
-                _bladeAmmoLeft = new List<GameObject>();
-                _bladeAmmoRight = new List<GameObject>();
-                _bladeAmmoGroupLeft = _hudBottom.transform.Find("BladeAmmoGroupLeft").gameObject;
-                _bladeAmmoGroupRight = _hudBottom.transform.Find("BladeAmmoGroupRight").gameObject;
-                _bladeOut.color = BackgroundVeryLowColor;
+                _playerTitan = (BasicTitan)_character;
+                _hudBottom = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/HUDBottomTitan");
+                _staminaSlider = _hudBottom.transform.Find("StaminaBar").GetComponent<Slider>();
+                _staminaFill = _staminaSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
+                _hudBottom.AddComponent<HUDScaler>();
+                ElementFactory.SetAnchor(_hudBottom, TextAnchor.LowerCenter, TextAnchor.LowerCenter, Vector3.up * 10f);
             }
-            _hudBottom.AddComponent<HUDScaler>();
-            ElementFactory.SetAnchor(_hudBottom, TextAnchor.LowerCenter, TextAnchor.LowerCenter, Vector3.up * 10f);
-            _specialFill = _hudBottom.transform.Find("SpecialFill").GetComponent<Image>();
-            _specialIconBackground = _hudBottom.transform.Find("SpecialIconBackground").GetComponent<Image>();
-            _specialIconFill = _hudBottom.transform.Find("SpecialIconFill").GetComponent<Image>();
-            _gasFillLeft = _hudBottom.transform.Find("GasFillLeft").GetComponent<Image>();
-            _gasFillRight = _hudBottom.transform.Find("GasFillRight").GetComponent<Image>();
-            _gasBackground = _hudBottom.transform.Find("GasBackground").GetComponent<Image>();
-            _currentSpecialIcon = "";
         }
 
         public void SetSpecialIcon(string icon)
@@ -295,21 +318,26 @@ namespace UI
 
         private void Update()
         {
-            if (_human == null)
-                return;
-            _reloadAnimationTimeLeft -= Time.deltaTime;
-            _gasAnimationTimeLeft -= Time.deltaTime;
-            _shootAnimationTimeLeft -= Time.deltaTime;
-            UpdateHumanSpecial();
-            UpdateGas();
-            if (_human.Weapon is BladeWeapon)
-                UpdateBlade();
-            else if (_human.Weapon is APGWeapon)
-                UpdateAPG();
-            else if (_human.Weapon is AHSSWeapon)
-                UpdateAHSS();
-            else if (_human.Weapon is ThunderspearWeapon)
-                UpdateTS();
+            if (_human != null)
+            {
+                _reloadAnimationTimeLeft -= Time.deltaTime;
+                _gasAnimationTimeLeft -= Time.deltaTime;
+                _shootAnimationTimeLeft -= Time.deltaTime;
+                UpdateHumanSpecial();
+                UpdateGas();
+                if (_human.Weapon is BladeWeapon)
+                    UpdateBlade();
+                else if (_human.Weapon is APGWeapon)
+                    UpdateAPG();
+                else if (_human.Weapon is AHSSWeapon)
+                    UpdateAHSS();
+                else if (_human.Weapon is ThunderspearWeapon)
+                    UpdateTS();
+            }
+            else if (_playerTitan != null)
+            {
+                UpdatePlayerTitan();
+            }
         }
 
         private void StopAnimator(Image obj)
@@ -346,10 +374,17 @@ namespace UI
                     _currentSpecialIcon = _newSpecialIcon;
                     if (_currentSpecialIcon != "")
                     {
-                        var icon = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/" + _currentSpecialIcon, true);
-                        var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, icon.width, icon.height), new Vector2(0.5f, 0.5f));
-                        _specialIconBackground.sprite = sprite;
-                        _specialIconFill.sprite = sprite;
+                        try
+                        {
+                            var icon = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/" + _currentSpecialIcon, true);
+                            var sprite = UnityEngine.Sprite.Create(icon, new Rect(0f, 0f, icon.width, icon.height), new Vector2(0.5f, 0.5f));
+                            _specialIconBackground.sprite = sprite;
+                            _specialIconFill.sprite = sprite;
+                        }
+                        catch
+                        {
+                            Debug.Log("Error loading special icon " + _currentSpecialIcon);
+                        }
                     }
                 }
             }
@@ -360,10 +395,10 @@ namespace UI
         private void UpdateGas()
         {
             float gasRatio;
-            if (_human.MaxGas <= 0f)
+            if (_human.Stats.MaxGas <= 0f)
                 gasRatio = 0f;
             else
-                gasRatio = _human.CurrentGas / _human.MaxGas;
+                gasRatio = _human.Stats.CurrentGas / _human.Stats.MaxGas;
             _gasFillLeft.fillAmount = gasRatio;
             _gasFillRight.fillAmount = gasRatio;
             bool animate = false;
@@ -535,7 +570,7 @@ namespace UI
             }
             else if (weapon.RoundLeft == 1)
             {
-                _ahssEmptyLeft.color = BackgroundLowColor;
+                _ahssEmptyLeft.color = weapon.AmmoLeft > 0 ? BackgroundLowColor : BackgroundVeryLowColor;
                 _ahssEmptyRight.color = BackgroundLowColor;
                 _ahssBackgroundLeft.color = BackgroundLowColor;
                 _ahssBackgroundRight.color = BackgroundLowColor;
@@ -579,8 +614,10 @@ namespace UI
                 {
                     _ahssReloadLeft.gameObject.SetActive(false);
                     _ahssReloadRight.gameObject.SetActive(false);
-                    _ahssBackgroundLeft.gameObject.SetActive(true);
-                    _ahssBackgroundRight.gameObject.SetActive(true);
+                    _ahssBackgroundRight.gameObject.SetActive(weapon.RoundLeft >= 1);
+                    _ahssBackgroundLeft.gameObject.SetActive(weapon.RoundLeft >= 2);
+                    _ahssEmptyRight.gameObject.SetActive(!(weapon.RoundLeft >= 1));
+                    _ahssEmptyLeft.gameObject.SetActive(!(weapon.RoundLeft >= 2));
                 }
             }
         }
@@ -656,6 +693,17 @@ namespace UI
                     }
                 }
             }
+        }
+
+        private void UpdatePlayerTitan()
+        {
+            float ratio = _playerTitan.CurrentSprintStamina / _playerTitan.MaxSprintStamina;
+            ratio = Mathf.Clamp(ratio, 0f, 1f);
+            _staminaSlider.value = ratio;
+            if (_playerTitan.CurrentSprintStamina > 1f)
+                _staminaFill.color = StaminaFillNormalColor;
+            else
+                _staminaFill.color = StaminaFillLowColor;
         }
     }
 }

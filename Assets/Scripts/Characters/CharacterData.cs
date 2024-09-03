@@ -4,57 +4,67 @@ using Utility;
 using Settings;
 using System.Collections.Generic;
 using ApplicationManagers;
+using UnityEngine;
 
 namespace Characters
 {
     class CharacterData
     {
-        public static JSONNode TitanAIInfo;
-        public static JSONNode ShifterAIInfo;
         public static JSONNode HumanWeaponInfo;
+        public static Dictionary<string, JSONNode> TitanAIInfos = new Dictionary<string, JSONNode>();
+        public static Dictionary<string, Dictionary<string, TitanAttackInfo>> TitanAttackInfos = new Dictionary<string, Dictionary<string, TitanAttackInfo>>();
 
         public static void Init()
         {
-            if (ApplicationConfig.DevelopmentMode)
+            foreach (string name in new string[] {"Titan", "Annie"})
             {
-                TitanAIInfo = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/TitanAIInfo.json"));
-                ShifterAIInfo = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/ShifterAIInfo.json"));
-                HumanWeaponInfo = JSON.Parse(File.ReadAllText(FolderPaths.TesterData + "/HumanWeaponInfo.json"));
+                TitanAIInfos.Add(name, JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, name + "AIInfo")));
+                TitanAttackInfos.Add(name, LoadTitanAttackInfos(TitanAIInfos[name], name + "Keyframes"));
             }
-            else
+            HumanWeaponInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "HumanWeaponInfo"));
+        }
+
+        private static Dictionary<string, TitanAttackInfo> LoadTitanAttackInfos(JSONNode info, string keyframeFile)
+        {
+            var keyframes = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, keyframeFile));
+            var attackInfo = info["AttackInfo"];
+            var attacks = new Dictionary<string, TitanAttackInfo>();
+            foreach (string attackName in attackInfo.Keys)
             {
-                TitanAIInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "TitanAIInfo"));
-                ShifterAIInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "ShifterAIInfo"));
-                HumanWeaponInfo = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "HumanWeaponInfo"));
+                if (keyframes.HasKey(attackName))
+                    attacks[attackName] = new TitanAttackInfo(attackInfo[attackName], keyframes[attackName]);
+                else
+                    attacks[attackName] = new TitanAttackInfo(attackInfo[attackName], null);
             }
+            return attacks;
         }
 
         public static JSONNode GetTitanAI(GameDifficulty difficulty, string titanType)
         {
-            JSONNode spawnRates = TitanAIInfo["SpawnRates"][difficulty.ToString()];
+            JSONNode spawnRates = TitanAIInfos["Titan"]["SpawnRates"][difficulty.ToString()];
             if (titanType == "Default")
                 titanType = (string)Util.GetRandomFromWeightedNode(spawnRates);
-            var titanNode = TitanAIInfo["Default"].Clone();
-            var defaultNode = TitanAIInfo[titanType]["Default"];
+            var titanNode = TitanAIInfos["Titan"]["Default"].Clone();
+            var defaultNode = TitanAIInfos["Titan"][titanType]["Default"];
             CopyNode(titanNode, defaultNode);
-            if (TitanAIInfo[titanType].HasKey(difficulty.ToString()))
+            if (TitanAIInfos["Titan"][titanType].HasKey(difficulty.ToString()))
             {
-                var difficultyNode = TitanAIInfo[titanType][difficulty.ToString()];
+                var difficultyNode = TitanAIInfos["Titan"][titanType][difficulty.ToString()];
                 CopyNode(titanNode, difficultyNode);
             }
-            titanNode["AttackRanges"] = TitanAIInfo["AttackRanges"];
+            titanNode["Type"] = "Titan";
             return titanNode;
         }
 
-        public static JSONNode GetShifterAI(GameDifficulty difficulty, string shifterType)
+        public static JSONNode GetShifterAI(GameDifficulty difficulty, string name)
         {
-            var shifterNode = ShifterAIInfo[shifterType]["Default"].Clone();
-            if (ShifterAIInfo[shifterType].HasKey(difficulty.ToString()))
+            var shifterNode = TitanAIInfos[name]["Default"].Clone();
+            if (TitanAIInfos[name].HasKey(difficulty.ToString()))
             {
-                var difficultyNode = ShifterAIInfo[shifterType][difficulty.ToString()];
+                var difficultyNode = TitanAIInfos[name][difficulty.ToString()];
                 CopyNode(shifterNode, difficultyNode);
             }
-            shifterNode["AttackRanges"] = ShifterAIInfo[shifterType]["AttackRanges"];
+            shifterNode["Type"] = TitanAIInfos[name]["Type"].Value;
             return shifterNode;
         }
 

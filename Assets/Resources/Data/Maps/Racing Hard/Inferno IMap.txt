@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:Incendium's Inferno is a brutal race. It is not the most difficult map, nor the most unfair; it is not here because racers enjoy it, or because there is any glory in surviving it. Indeed, it cannot even be completed without your death. It is included simply to demonstrate how hellish lava racing can be.
+EditorVersion:1.0|Description:Incendium's Inferno is a brutal race. It is not the most difficult map, nor the most unfair; it is not here because racers enjoy it, or because there is any glory in surviving it. Indeed, it cannot even be completed without your death. It is included simply to demonstrate how hellish lava racing can be.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -154,8 +156,8 @@ Scene,Geometry/Cuboid,150,0,1,1,1,0,KillCuboid,-2765,200,390,0,0,0,0.5,5,0.5,Reg
 Scene,Geometry/Cuboid,151,0,1,1,1,0,KillCuboid,-2765,200,370,0,0,0,0.5,5,0.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
 Scene,Geometry/Cuboid,152,0,1,1,1,0,KillCuboid,-2765,200,340,0,0,0,0.5,5,0.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
 Scene,Geometry/Cuboid,153,0,1,1,1,0,KillCuboid,-2765,200,355,35.02239,0,0,0.5,5,0.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
-Scene,Geometry/Arc180,154,0,1,1,1,0,KillArc180,-2765,190,310,314.9224,0,90,2.5,1,2.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
-Scene,Geometry/Arc90,155,0,1,1,1,0,KillArc90,-2765,215,301,45.07764,180,270,2.5,1,2.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
+Scene,Geometry/Arc180,154,0,1,1,1,0,KillArc180,-2765,190,310,314.9224,0,90,2.5,1,2.5,None,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
+Scene,Geometry/Arc90,155,0,1,1,1,0,KillArc90,-2765,215,301,45.07764,180,270,2.5,1,2.5,None,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
 Scene,Geometry/Cuboid,156,0,1,1,1,0,KillCuboid,-2765,200,270,0,0,0,0.5,5,0.5,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
 Scene,Geometry/Cuboid,157,0,1,1,1,0,KillCuboid,-2765,222.5,252.5,0,0,0,0.5,0.5,3,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
 Scene,Geometry/Cuboid,158,0,1,1,1,0,KillCuboid,-2765,200,252.5,0,0,0,0.5,0.5,3,Region,Characters,Default,OldBombExplodeMat|178/255/255/127|99999/99999,;
@@ -515,3 +517,62 @@ Scene,Geometry/Cuboid,511,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,P
 Scene,Geometry/Cuboid,512,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,None,513,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

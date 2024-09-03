@@ -27,6 +27,7 @@ namespace UI
         public BasePopup _aboutPopup;
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
+        public OutdatedPopup _outdatedPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
         protected Text _multiplayerStatusLabel;
@@ -34,6 +35,7 @@ namespace UI
         protected Image _introPanelBackground;
         public static JSONNode MainBackgroundInfo = null;
         protected const float ChangeBackgroundTime = 20f;
+        private static bool ShowedOutdated = false;
 
         public override void Setup()
         {
@@ -84,6 +86,7 @@ namespace UI
             _aboutPopup = ElementFactory.CreateHeadedPanel<AboutPopup>(transform).GetComponent<BasePopup>();
             _questPopup = ElementFactory.CreateHeadedPanel<QuestPopup>(transform).GetComponent<BasePopup>();
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
+            _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -96,6 +99,7 @@ namespace UI
             _popups.Add(_questPopup);
             _popups.Add(_tutorialPopup);
             _popups.Add(_selectMapPopup);
+            _popups.Add(_outdatedPopup);
         }
 
         private void SetupIntroPanel()
@@ -168,6 +172,24 @@ namespace UI
                     label += PhotonNetwork.NetworkClientState.ToString();
                     if (PhotonNetwork.IsConnected)
                         label += " Ping:" + PhotonNetwork.GetPing().ToString();
+                    if (PhotonNetwork.IsConnected)
+                    {
+                        label += "\n";
+                        var settings = SettingsManager.MultiplayerSettings;
+                        if (settings.CurrentMultiplayerServerType == MultiplayerServerType.Public)
+                            label += "Public server";
+                        else if (settings.CurrentMultiplayerServerType == MultiplayerServerType.Cloud)
+                            label += "Custom server";
+                        else if (settings.CurrentMultiplayerServerType == MultiplayerServerType.LAN)
+                            label += "LAN server";
+                        label += " | ";
+                        if (settings.LobbyMode.Value == (int)LobbyModeType.Public)
+                            label += "Public lobby";
+                        else if (settings.LobbyMode.Value == (int)LobbyModeType.Private)
+                            label += "Private lobby";
+                        else if (settings.LobbyMode.Value == (int)LobbyModeType.Custom)
+                            label += "Custom lobby";
+                    }
                 }
                 _multiplayerStatusLabel.text = label;
             }
@@ -188,6 +210,16 @@ namespace UI
             }
             else
                 _introPanelBackground.color = Color.white;
+            if (!ShowedOutdated)
+            {
+                if (PastebinLoader.Status == PastebinStatus.Loaded)
+                {
+                    ShowedOutdated = true;
+                    if (PastebinLoader.Version["Version"].Value != ApplicationConfig.GameVersion)
+                        _outdatedPopup.Show("Your game version is outdated. \nIf using the launcher, try restarting and repairing." +
+                            "\nFor standalone, download the latest version from https://aottg2.itch.io/aottg2.");
+                }
+            }
         }
 
         private bool IsPopupActive()
@@ -216,7 +248,22 @@ namespace UI
             switch (name)
             {
                 case "TutorialButton":
-                    _tutorialPopup.Show();
+                    // _tutorialPopup.Show();
+                    MusicManager.PlayEffect();
+                    MusicManager.PlayTransition();
+                    SettingsManager.InGameUI.SetDefault();
+                    SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
+                    SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
+                    SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
+                    SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
+                    SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
+                    SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
+                    SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
+                    SettingsManager.MultiplayerSettings.ConnectOffline();
+                    CreateGamePopup.StartRoom();
+                    break;
+                case "CreditsButton":
+                    SceneLoader.LoadScene(SceneName.Credits);
                     break;
                 case "SingleplayerButton":
                     ((CreateGamePopup)_createGamePopup).Show(false);

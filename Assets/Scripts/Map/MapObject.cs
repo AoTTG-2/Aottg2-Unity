@@ -14,12 +14,14 @@ namespace Map
         public Vector3 BaseScale;
         public List<CustomLogicComponentInstance> ComponentInstances = new List<CustomLogicComponentInstance>();
         public Renderer[] renderCache;
+        public Collider[] colliderCache;
 
         public MapObject(int parent, GameObject gameObject, MapScriptBaseObject scriptObject)
         {
             Parent = parent;
             GameObject = gameObject;
             ScriptObject = scriptObject;
+            colliderCache = GameObject.GetComponentsInChildren<Collider>();
             if (scriptObject.Static)
             {
                 renderCache = new Renderer[0];

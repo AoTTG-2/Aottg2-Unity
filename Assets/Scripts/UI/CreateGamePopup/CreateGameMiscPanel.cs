@@ -21,18 +21,18 @@ namespace UI
             string sub = "Misc";
             ElementStyle style = new ElementStyle(titleWidth: 240f, themePanel: ThemePanel);
             float inputWidth = 120f;
+            ElementFactory.CreateToggleGroupSetting(DoublePanelLeft, style, settings.PVP, UIManager.GetLocale(cat, sub, "PVP"), UIManager.GetLocaleArray(cat, sub, "PVPOptions"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomStats, UIManager.GetLocale(cat, sub, "CustomStats"), UIManager.GetLocale(cat, sub, "CustomStatsTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomPerks, UIManager.GetLocale(cat, sub, "CustomPerks"), UIManager.GetLocale(cat, sub, "CustomPerksTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismMode, UIManager.GetLocale(cat, sub, "RealismMode"), UIManager.GetLocale(cat, sub, "RealismModeTooltip"));
-            ElementFactory.CreateToggleGroupSetting(DoublePanelLeft, style, settings.PVP, UIManager.GetLocale(cat, sub, "PVP"), UIManager.GetLocaleArray(cat, sub, "PVPOptions" ));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.EndlessRespawnEnabled, UIManager.GetLocale(cat, sub, "EndlessRespawnEnabled"));
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), 
-                elementWidth: inputWidth);
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"),
-                elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ThunderspearPVP, UIManager.GetLocale(cat, sub, "ThunderspearPVP"), UIManager.GetLocale(cat, sub, "ThunderspearPVPTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.APGPVP, UIManager.GetLocale(cat, sub, "APGPVP"), UIManager.GetLocale(cat, sub, "APGPVPTooltip"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.GunsAirReload, UIManager.GetLocale(cat, sub, "GunsAirReload"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.HumanHealth, UIManager.GetLocale(cat, sub, "HumanHealth"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.ShifterHealth, UIManager.GetLocale(cat, sub, "ShifterHealth"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowBlades, UIManager.GetLocale(cat, sub, "AllowBlades"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowAHSS, UIManager.GetLocale(cat, sub, "AllowAHSS"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowThunderspears, UIManager.GetLocale(cat, sub, "AllowThunderspears"));
@@ -46,6 +46,8 @@ namespace UI
                                VoiceChatManager.VoiceChatModes, elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMaxDistance, UIManager.GetLocale(cat, sub, "ProximityMaxDistance"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMinDistance, UIManager.GetLocale(cat, sub, "ProximityMinDistance"), elementWidth: inputWidth);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GunsAirReload, UIManager.GetLocale(cat, sub, "GunsAirReload"));
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Motd, UIManager.GetLocale(cat, sub, "MOTD"), elementWidth: inputWidth);
         }
     }

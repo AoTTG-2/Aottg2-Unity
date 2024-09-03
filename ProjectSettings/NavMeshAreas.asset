@@ -69,23 +69,82 @@ NavMeshProjectSettings:
     cost: 1
   - name: 
     cost: 1
-  m_LastAgentTypeID: -887442657
+  m_LastAgentTypeID: -1923039037
   m_Settings:
-  - serializedVersion: 2
+  - serializedVersion: 3
     agentTypeID: 0
-    agentRadius: 0.5
-    agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.75
-    ledgeDropHeight: 0
+    agentRadius: 1.75
+    agentHeight: 9
+    agentSlope: 60
+    agentClimb: 2
+    ledgeDropHeight: 100
+    maxJumpAcrossDistance: 100
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  - serializedVersion: 3
+    agentTypeID: -334000983
+    agentRadius: 3.5
+    agentHeight: 18
+    agentSlope: 60
+    agentClimb: 4
+    ledgeDropHeight: 100
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  - serializedVersion: 3
+    agentTypeID: 1479372276
+    agentRadius: 7
+    agentHeight: 36
+    agentSlope: 60
+    agentClimb: 4
+    ledgeDropHeight: 100
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  - serializedVersion: 3
+    agentTypeID: -1923039037
+    agentRadius: 10.5
+    agentHeight: 54
+    agentSlope: 60
+    agentClimb: 4
+    ledgeDropHeight: 100
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_SettingNames:
-  - Humanoid
+  - minTitan
+  - smallTitan
+  - avgTitan
+  - maxTitan

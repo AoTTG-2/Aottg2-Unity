@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
@@ -29,6 +29,7 @@ namespace Characters
         public bool TransformingToHuman;
         public float PreviousHumanGas;
         public BaseUseable PreviousHumanWeapon;
+        public float DeathAnimationLength = 2f;
         protected BaseCustomSkinLoader _customSkinLoader;
 
         protected override void Start()
@@ -48,7 +49,7 @@ namespace Characters
 
         public override void Kick()
         {
-            Attack(ShifterAttacks.AttackKick);
+            Attack("AttackKick");
         }
 
         [PunRPC]
@@ -88,6 +89,16 @@ namespace Characters
             currentCharacter.StartCoroutine(currentCharacter.WaitAndTransformFromShifter(PreviousHumanGas, PreviousHumanWeapon));
         }
 
+        protected override IEnumerator WaitAndDie()
+        {
+            StateActionWithTime(TitanState.Dead, BaseTitanAnimations.Die, 0f, 0.1f);
+            yield return new WaitForSeconds(DeathAnimationLength);
+            EffectSpawner.Spawn(EffectPrefabs.TitanDie1, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
+            yield return new WaitForSeconds(3f);
+            EffectSpawner.Spawn(EffectPrefabs.TitanDie2, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
+            PhotonNetwork.Destroy(gameObject);
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -99,7 +110,7 @@ namespace Characters
         {
             if (Dead)
                 return;
-            if (type == "CannonBall")
+            if (type == "CannonBall" || type == "Rock")
             {
                 base.GetHitRPC(viewId, name, damage, type, collider);
                 return;
@@ -137,7 +148,7 @@ namespace Characters
                 damage = CustomDamage;
             if (victim is CustomLogicCollisionHandler)
             {
-                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type);
+                ((CustomLogicCollisionHandler)victim).GetHit(this, Name, damage, type, hitbox.transform.position);
                 return;
             }
             var victimChar = (BaseCharacter)victim;
@@ -146,7 +157,7 @@ namespace Characters
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);
-                    PlaySound(TitanSounds.HitSound);
+                    PlaySound(TitanSounds.Hit);
                     if (!victimChar.Dead)
                     {
                         if (IsMainCharacter())
@@ -157,7 +168,7 @@ namespace Characters
             }
             else
             {
-                if (!victimChar.Dead)
+                if (firstHit && !victimChar.Dead)
                 {
                     if (IsMainCharacter())
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);

@@ -1,0 +1,2070 @@
+/// Options
+EditorVersion:1.0|Description:|HasWeather:1
+/// CustomAssets
+
+/// Objects
+Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,20,0,53.13011,126.8699,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|;
+Scene,General/EditorHumanSpawnPoint,6,0,1,1,0,0,Human SpawnPoint,0,5,-35.56644,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint;
+Scene,Geometry/Cuboid,2,0,1,0,1,0,SinglePlatform,0,0,0,0,0,0,5,0.5,10,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal4|0.5/1|0/0,;
+Scene,Geometry/Cuboid,3,0,1,0,1,0,HalfPlatformA,53,0,-50,0,0,0,5,0.5,5,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal4|1/0.6|0/0,;
+Scene,Geometry/Cuboid,4,0,1,0,1,0,HalfPlatformB,53,0,50,0,0,0,5,0.5,5,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal4|1/0.6|0/0,;
+Scene,Geometry/Cuboid,5,0,1,0,1,0,HookpointA,53,20.04566,0,0,0,0,0.3,0.3,0.3,Physical,Projectiles,Default,Basic|106/157/255/255|Metal/Metal4|0.3/0.3|0/0,;
+Scene,Geometry/Cuboid,9,0,1,0,1,0,HookpointB,64.82286,20.04566,0,0,0,0,0.3,0.3,0.3,Physical,Projectiles,Default,Basic|106/157/255/255|Metal/Metal4|0.3/0.3|0/0,;
+Scene,Geometry/Cuboid,7,0,1,0,1,0,ObstacleA,0,4.133939,-21.26597,0,0,0,1,1,1,Physical,Entities,Default,Basic|180/180/184/255|Metal/Metal4|0.1/0.1|0/0,;
+Scene,Geometry/Cuboid,10,0,1,0,1,0,ObstacleB,15.96354,4.133939,0,0,0,0,1,1,1,Physical,Entities,Default,Basic|180/180/184/255|Metal/Metal4|0.1/0.1|0/0,;
+Scene,Geometry/Cuboid,11,0,1,0,1,0,Checkpoint,0,4,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|42/196/78/67|Misc/None|1/1|0/0,Checkpoint|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0;
+Scene,Interact/Supply2,12,0,1,0,1,0,Supply2,-14.83589,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
+Scene,Geometry/Cuboid,13,0,1,0,1,0,HookpointSolid,71.194,20.04566,0,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Basic|106/157/255/255|Metal/Metal4|0.3/0.3|0/0,;
+Scene,Geometry/Cuboid,14,0,1,0,1,0,Resetpoint,16.25683,4.083771,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|174/41/78/77|Misc/None|1/1|0/0,Checkpoint|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0
+/// Logic
+class Main
+{
+    Character = null;
+    
+    _initialized = false;
+
+    function OnTick()
+    {
+        if (!self._initialized)
+        {
+            return;
+        }
+        StageController.OnTick();
+    }
+
+    function OnFrame()
+    {
+        if (!self._initialized)
+        {
+            return;
+        }
+
+        Tween.Update();
+        StageController.OnFrame();
+    }
+
+    function OnSecond()
+    {
+        if (!self._initialized)
+        {
+            return;
+        }
+        StageController.OnSecond();
+    }
+
+    function OnCharacterDie(victim, killer, killerName)
+    {
+        if (!self._initialized)
+        {
+            return;
+        }
+
+        StageController.OnCharacterDie(victim, killer);
+    }
+
+    function OnPlayerSpawn(player, character)
+    {
+        self.Character = character;
+        if (self.Character == null)
+        {
+            return;
+        }
+
+        self.Setup();
+    }
+
+    coroutine Setup()
+    {
+        wait 0.3;
+
+        if (!self._initialized)
+        {
+            StageController.OnStart();
+        }
+
+        CharacterState.Restore();
+        self._initialized = true;
+    }
+}
+extension CharacterState
+{
+    Gas = 0;
+    BladeDurability = 0;
+    LeftHookEnabled = false;
+    RightHookEnabled = false;
+    Special = "None";
+
+    function Restore()
+    {
+        if (Main.Character == null)
+        {
+            return;
+        }
+
+        Main.Character.CurrentGas = self.Gas;
+        Main.Character.CurrentBladeDurability = self.BladeDurability;
+        Main.Character.LeftHookEnabled = self.LeftHookEnabled;
+        Main.Character.RightHookEnabled = self.RightHookEnabled;
+        Main.Character.SetSpecial(self.Special);
+    }
+
+    function SetGas(value)
+    {
+        self.Gas = value;
+        if (Main.Character != null)
+        {
+            Main.Character.CurrentGas = value;
+        }
+    }
+
+    function SetBladeDurability(value)
+    {
+        self.BladeDurability = value;
+        if (Main.Character != null)
+        {
+            Main.Character.CurrentBladeDurability = value;
+        }
+    }
+
+    function SetLeftHookEnabled(value)
+    {
+        self.LeftHookEnabled = value;
+        if (Main.Character != null)
+        {
+            Main.Character.LeftHookEnabled = value;
+        }
+    }
+
+    function SetRightHookEnabled(value)
+    {
+        self.RightHookEnabled = value;
+        if (Main.Character != null)
+        {
+            Main.Character.RightHookEnabled = value;
+        }
+    }
+
+    function SetSpecial(value)
+    {
+        self.Special = value;
+        if (Main.Character != null)
+        {
+            Main.Character.SetSpecial(value);
+        }
+    }
+}
+class IntroductionStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+
+    function OnStart()
+    {
+        Game.SetSong("dakros_origin");
+
+        str = TextStyle.Line(Locale.GetRaw("Introduction.Welcome"));
+        str += TextStyle.Line(Locale.GetRaw("Introduction.Text"));
+        str += TextStyle.ContinueNextStage("Stage.Movement");
+
+        str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.GetRaw("Name.Tutorial")));
+        str = String.Replace(str, "{Name.Game}", TextStyle.Header(Locale.GetRaw("Name.Game")));
+
+        Dialogue.ShowDelayed("Stage.Introduction", str, 1.1);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(MovementStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+}
+class MovementStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+    RequiredMoveTime = 0.7;
+
+    _currentTime = 0;
+    _forwardCompleted = false;
+    _backCompleted = false;
+    _leftCompleted = false;
+    _rightCompleted = false;
+
+    _started = false;
+
+    function OnStart()
+    {
+        self.SpawnPoint = Main.Character.Position;
+
+        CharacterState.SetGas(0);
+        CharacterState.SetBladeDurability(0);
+        CharacterState.SetLeftHookEnabled(false);
+        CharacterState.SetRightHookEnabled(false);
+        CharacterState.SetSpecial("None");
+
+        str = TextStyle.Line(Locale.GetRaw("Movement.Text"));
+        str += TextStyle.Continue();
+
+        str = String.Replace(str, "{0}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
+        Dialogue.Show("Stage.Movement", str);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (!self._started && (Input.GetKeyDown("Interaction/Interact3") || Input.GetKeyDown("General/Forward") || Input.GetKeyDown("General/Back") || Input.GetKeyDown("General/Left") || Input.GetKeyDown("General/Right")))
+        {
+            str = Locale.GetRaw("Movement.Forward");
+            str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
+            Dialogue.Show("Stage.Movement", str);
+            self._started = true;
+        }
+
+        if (!self._started)
+        {
+            return;
+        }
+
+        if (Input.GetKeyHold("General/Forward") && !self._forwardCompleted)
+        {
+            self._currentTime += Time.FrameTime;
+            if (self._currentTime >= self.RequiredMoveTime)
+            {
+                str = Locale.GetRaw("Movement.Left");
+                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Left"));
+                Dialogue.Show("Stage.Movement", str);
+
+                self._forwardCompleted = true;
+                self._currentTime = 0;
+            }
+        }
+        elif (Input.GetKeyHold("General/Left") && !self._leftCompleted && self._forwardCompleted)
+        {
+            self._currentTime += Time.FrameTime;
+            if (self._currentTime >= self.RequiredMoveTime)
+            {
+                str = Locale.GetRaw("Movement.Back");
+                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Back"));
+                Dialogue.Show("Stage.Movement", str);
+
+                self._leftCompleted = true;
+                self._currentTime = 0;
+            }
+        }
+        elif (Input.GetKeyHold("General/Back") && !self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        {
+            self._currentTime += Time.FrameTime;
+            if (self._currentTime >= self.RequiredMoveTime)
+            {
+                str = Locale.GetRaw("Movement.Right");
+                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Right"));
+                Dialogue.Show("Stage.Movement", str);
+
+                self._backCompleted = true;
+                self._currentTime = 0;
+            }
+        }
+        elif (Input.GetKeyHold("General/Right") && !self._rightCompleted && self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        {
+            self._currentTime += Time.FrameTime;
+            if (self._currentTime >= self.RequiredMoveTime)
+            {
+                StageController.ToStage(CameraSwitchStage(), 0.3);
+                self._rightCompleted = true;
+                self._currentTime = 0;
+            }
+        }
+    }
+    function OnSecond() { }
+}
+class CameraSwitchStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+
+    function OnStart()
+    {
+        str = TextStyle.Line(Locale.GetRaw("Camera.Text"));
+        str += TextStyle.ContinueNextStage("Stage.SupplyStation");
+        str = String.Replace(str, "{0}", TextStyle.KeyName("General/ChangeCamera"));
+        Dialogue.Show("Stage.Camera", str);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(SupplyStationStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+}
+class SupplyStationStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _started = false;
+    _reloaded = false;
+
+    coroutine OnStart()
+    {
+        MapUtils.ResetCheckpoint();
+
+        MapUtils.SupplyStation.Rotation = Vector3(0, 270, 0);
+
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Position(MapUtils.SupplyStation, Vector3(0, 2, 0)).SetDuration(2).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.SupplyStation, MapUtils.SupplyStationInitialScale).SetDuration(2).SetEasing("InOutElastic").Start();
+
+        wait 0.5;
+        Tween.Rotation(MapUtils.SupplyStation, Vector3.Zero).SetDuration(2).SetEasing("InOutElastic").Start();
+
+        wait 0.5;
+        self._started = true;
+
+        str = TextStyle.Line(Locale.GetRaw("SupplyStation.Text"));
+        str += TextStyle.Instruction(Locale.GetRaw("SupplyStation.Instruction1"));
+        str = String.Replace(str, "{0}", TextStyle.KeyName("Human/Reload"));
+        Dialogue.Show("Stage.SupplyStation", str);
+    }
+
+    function OnTick()
+    {
+        if (!self._started)
+        {
+            return;
+        }
+
+        if (!self._reloaded && Main.Character.CurrentBladeDurability > 0)
+        {
+            str = TextStyle.Instruction(Locale.GetRaw("SupplyStation.Instruction2"));
+            Dialogue.ShowDelayed("Stage.SupplyStation", str, 1.0);
+
+            self._reloaded = true;
+        }
+
+        if (Main.Character.MaxGas - Main.Character.CurrentGas <= 1)
+        {
+            CharacterState.SetGas(Main.Character.MaxGas);
+            CharacterState.SetBladeDurability(Main.Character.MaxBladeDurability);
+            
+            StageController.AutoRefill = true;
+            StageController.ToStage(JumpStage(), 0.3);
+        }
+    }
+    
+    function OnFrame() { }
+    function OnSecond() { }
+}
+class JumpStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _count = 0;
+
+    coroutine OnStart()
+    {
+        yScale = 0.7;
+
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Scale(MapUtils.SupplyStation, Vector3.Zero).SetDuration(1.4).SetEasing("InOutElastic").Start();
+        
+        Tween.Scale(MapUtils.ObstacleA, Vector3(4.99, yScale, MapUtils.ObstacleInitialScale.Z)).SetEasing("InOutElastic").Start();
+        Tween.PositionFrom(MapUtils.ObstacleA, Vector3.Up * 50, Vector3(0, MapUtils.SinglePlatformInitialScale.Y * 10 / 2 + yScale * 10 / 2, 0)).SetEasing("InOutBack").Start();
+
+        MapUtils.ObstacleA.TextureTilingX = 10;
+        MapUtils.ObstacleA.TextureTilingY = 2;
+
+        wait 1.1; # wait for player teleport
+
+        sX = MapUtils.SinglePlatform.Scale.X;
+        sZ = MapUtils.SinglePlatform.Scale.Z;
+
+        MapUtils.Checkpoint.Position = Vector3(0, 3, sZ * 5 / 2);
+        MapUtils.Checkpoint.Scale = Vector3(sX - 0.05, 0.1, sZ / 2 - 0.05);
+        MapUtils.ConfigureCheckpoint("CollisionEnter", self);
+
+        str = TextStyle.Line(Locale.GetRaw("Jump.Text"));
+        str += TextStyle.Instruction(Locale.GetRaw("Jump.Instruction1"));
+
+        str = String.Replace(str, "{0}", TextStyle.KeyName("Human/Jump"));
+        str = String.Replace(str, "{1}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
+        Dialogue.Show("Stage.Jump", str);
+    }
+
+    function OnTick() { }
+    function OnFrame() { }
+    function OnSecond() { }
+
+    function HandleCheckpointAction(trigger)
+    {
+        self._count += 1;
+        if (self._count == 1)
+        {
+            str = TextStyle.Instruction(Locale.GetRaw("Jump.Instruction2"));
+            str = String.Replace(str, "{Stage.Praise$}", Locale.GetRandomPraise());
+            Dialogue.Show("Stage.Jump", str);
+
+            Tween.PlayerPosition(self.SpawnPoint).Start();
+            MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+        }
+        if (self._count >= 2)
+        {
+            StageController.ToStage(WallRunningStage(), 0.3);
+        }
+    }
+}
+class WallRunningStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _cleared = false;
+
+    coroutine OnStart()
+    {
+        MapUtils.ResetCheckpoint();
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+        Tween.Scale(MapUtils.ObstacleA, Vector3(4.99, 3.5, 0.1)).SetEasing("InOutElastic").Start();
+        Tween.Position(MapUtils.ObstacleA, Vector3(0, 20, 0)).SetEasing("InOutElastic").Start();
+
+        MapUtils.ObstacleA.TextureTilingX = 10;
+        MapUtils.ObstacleA.TextureTilingY = 10;
+
+        wait 1.1;
+
+        sX = MapUtils.SinglePlatform.Scale.X;
+        sZ = MapUtils.SinglePlatform.Scale.Z;
+
+        MapUtils.Checkpoint.Position = Vector3(0, 3, sZ * 5 / 2);
+        MapUtils.Checkpoint.Scale = Vector3(sX - 0.05, 0.1, sZ / 2 - 0.05);
+        MapUtils.ConfigureCheckpoint("CollisionEnter", self);
+
+        str = TextStyle.Line(Locale.GetRaw("WallRun.Text"));
+        str += TextStyle.Instruction(Locale.GetRaw("WallRun.Instruction"));
+        str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
+        Dialogue.Show("Stage.WallRun", str);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (self._cleared && Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(HookStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+
+    coroutine HandleCheckpointAction(trigger)
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+        MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+
+        if (self._cleared)
+        {
+            return;
+        }
+
+        str = TextStyle.Line(TextStyle.Header(Locale.GetRandomPraise()));
+        str += TextStyle.ContinueNextStage("Stage.Hook");
+        Dialogue.Show(null, str);
+
+        self._cleared = true;
+    }
+}
+class HookStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _count = 0;
+    _spaceBetween = 230;
+    _hookpointHeight = 42;
+
+    coroutine OnStart()
+    {
+        self.SpawnPoint = Vector3.Up * 5;
+
+        # cameraPos = Camera.Position;
+        # cameraRot = Camera.Rotation;
+
+        # Camera.SetManual();
+        # Camera.SetPosition(cameraPos);
+        # Camera.SetRotation(cameraRot);
+
+        MapUtils.ResetCheckpoint();
+        Tween.Scale(MapUtils.ObstacleA, Vector3.Zero).SetDuration(1).SetEasing("InOutElastic").Start();
+
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+        # Tween.CameraPosition(cameraPos, Vector3(20, 50, -70)).SetDuration(2).SetEasing("InOutBack").Start();
+        Tween.Scale(MapUtils.SinglePlatform, MapUtils.HalfPlatformInitialScale).SetDuration(2).SetEasing("InOutBack").Start();
+
+        Tween.Scale(MapUtils.HalfPlatformB, MapUtils.HalfPlatformInitialScale).SetDuration(2).SetEasing("InOutBack").Start();
+        Tween.Position(MapUtils.HalfPlatformB, Vector3(0, 0, self._spaceBetween)).SetEasing("InOutElastic").Start();
+
+        Tween.Scale(MapUtils.HookpointA, MapUtils.HookpointInitialScale).SetEasing("InOutElastic").Start();
+        Tween.Position(MapUtils.HookpointA, Vector3(0, self._hookpointHeight, self._spaceBetween / 2)).SetEasing("InOutElastic").Start();
+
+        MapUtils.SinglePlatform.TextureTilingX = 10;
+        MapUtils.SinglePlatform.TextureTilingY = 10;
+        MapUtils.HalfPlatformB.TextureTilingX = 10;
+        MapUtils.HalfPlatformB.TextureTilingY = 10;
+
+        # wait 2.0; # wait for initial camera tween
+
+        # Tween.CameraPosition(Vector3(20, 50, -70), cameraPos).SetDuration(2).SetEasing("InOutBack").Start();
+
+        # wait 2.0; # wait for the second camera tween
+
+        # Camera.SetManual(false);
+
+        wait 1.1;
+
+        str = TextStyle.Line(Locale.GetRaw("Hook.Text1"));
+        str += TextStyle.Instruction(Locale.GetRaw("Hook.Instruction"));
+        str = String.Replace(str, "{0}", TextStyle.KeyName("Human/HookLeft"));
+        Dialogue.Show("Stage.Hook", str);
+
+        scale = MapUtils.HalfPlatformInitialScale;
+        MapUtils.Checkpoint.Scale = Vector3(scale.X - 0.02, 0.1, scale.Z - 0.02);
+        MapUtils.Checkpoint.Position = Vector3(0, 3, self._spaceBetween);
+        MapUtils.ConfigureCheckpoint("CollisionEnter", self);
+        
+        CharacterState.SetLeftHookEnabled(true);
+        CharacterState.SetRightHookEnabled(false);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    { 
+        if (Camera.IsManual)
+        {
+            pos = Vector3(0, self._hookpointHeight / 2, self._spaceBetween / 2);
+            Camera.LookAt(pos);
+        }
+    }
+    function OnSecond() { }
+
+    function HandleCheckpointAction(trigger)
+    {
+        self._count += 1;
+        if (self._count == 1)
+        {
+            str = TextStyle.Line(Locale.GetRaw("Hook.Text2"));
+            str = String.Replace(str, "{0}", TextStyle.KeyName("Human/HookRight"));
+            Dialogue.Show("Stage.Hook", str);
+
+            Tween.PlayerPosition(self.SpawnPoint).Start();
+            MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+
+            CharacterState.SetLeftHookEnabled(false);
+            CharacterState.SetRightHookEnabled(true);
+        }
+        if (self._count >= 2)
+        {
+            Dialogue.Hide();
+            StageController.ToStage(HookHorizontalStage(), 0.3);
+        }
+    }
+}
+class HookHorizontalStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+
+    _spaceBetween = 230;
+    _hookpointHeight = 75;
+    _completed = false;
+
+    coroutine OnStart()
+    {
+        MapUtils.ResetCheckpoint();
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Scale(MapUtils.HookpointA, Vector3(0)).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.HookpointSolid, Vector3(1, 10, 1)).SetEasing("InOutElastic").Start();
+        Tween.Position(MapUtils.HookpointSolid, Vector3(0, 5, self._spaceBetween / 2)).SetEasing("InOutElastic").Start();
+        
+        wait 1.1;
+
+        MapUtils.Resetpoint.Scale = Vector3(2.5, 10, 2);
+        MapUtils.Resetpoint.Position = Vector3(0, 5, self._spaceBetween / 2 + 0.1);
+
+        MapUtils.ConfigureResetpoint("CollisionEnter", self);
+
+        MapUtils.HookpointSolid.TextureTilingX = 2;
+        MapUtils.HookpointSolid.TextureTilingY = 20;
+
+        scale = MapUtils.HalfPlatformInitialScale;
+        MapUtils.Checkpoint.Scale = Vector3(scale.X - 0.02, 0.1, scale.Z - 0.02);
+        MapUtils.Checkpoint.Position = Vector3(0, 3, self._spaceBetween);
+        MapUtils.ConfigureCheckpoint("CollisionEnter", self);
+        
+        CharacterState.SetLeftHookEnabled(true);
+        CharacterState.SetRightHookEnabled(true);
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (self._completed && Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(DashStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+
+    function HandleCheckpointAction(trigger)
+    {
+        if (trigger.MapObject == MapUtils.Resetpoint)
+        {
+            Tween.PlayerPosition(self.SpawnPoint).Start();
+            MapUtils.ResetScaleAfterDelay(MapUtils.Resetpoint, 1.1);
+            return;
+        }
+
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+        MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+        MapUtils.ResetScaleAfterDelay(MapUtils.Resetpoint, 1.1);
+
+        str = TextStyle.ContinueNextStage("Stage.Dash");
+        Dialogue.Show(null, str);
+
+        self._completed = true;
+    }
+}
+class DashStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+
+    _started = false;
+    _completed = false;
+
+    coroutine OnStart()
+    {
+        self.SpawnPoint = Vector3.Up * 5;
+
+        MapUtils.ResetCheckpoint();
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Scale(MapUtils.HookpointA, Vector3.Zero).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.HookpointB, Vector3.Zero).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.HookpointSolid, Vector3.Zero).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.Resetpoint, Vector3.Zero).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.HalfPlatformB, Vector3.Zero).SetEasing("InOutElastic").Start();
+
+        Tween.Scale(MapUtils.SinglePlatform, MapUtils.SinglePlatformInitialScale).SetDuration(2).SetEasing("InOutBack").Start();
+
+        MapUtils.SinglePlatform.TextureTilingX = 10;
+        MapUtils.SinglePlatform.TextureTilingY = 20;
+
+        str = TextStyle.Line(Locale.GetRaw("Dash.Text"));
+        str += TextStyle.Instruction(Locale.GetRaw("Dash.Instruction"));
+        str = String.Replace(str, "{0}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
+        Dialogue.Show("Stage.Dash", str);
+
+        # Main.Character.LeftHookEnabled = false;
+        # Main.Character.RightHookEnabled = false;
+
+        CharacterState.SetLeftHookEnabled(false);
+        CharacterState.SetRightHookEnabled(false);
+
+        wait 1.2;
+        self._started = true;
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (self._started && !self._completed && Main.Character.CurrentAnimation == "Armature|dash")
+        {
+            str = TextStyle.Line(Locale.GetRandomPraise());
+            str += TextStyle.ContinueNextStage("Stage.Attack");
+            Dialogue.Show(null, str);
+
+            self._completed = true;
+        }
+        if (self._completed && Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(AttackStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+}
+class AttackStage
+{
+    SpawnPoint = Vector3(0, 5, 0);
+
+    coroutine OnStart()
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        str = TextStyle.Line(Locale.GetRaw("Attack.Text1"));
+        str += TextStyle.Continue();
+        str = String.Replace(str, "{0}", TextStyle.KeyName("Human/AttackDefault"));
+        str = String.Replace(str, "{1}", TextStyle.KeyName("Human/AttackSpecial"));
+        Dialogue.Show("Stage.Attack", str);
+
+        wait 1.1;
+
+        CharacterState.SetLeftHookEnabled(true);
+        CharacterState.SetRightHookEnabled(true);
+        CharacterState.SetSpecial("Spin2");
+    }
+
+    function OnTick() { }
+    function OnFrame()
+    {
+        if (Input.GetKeyDown("Interaction/Interact3"))
+        {
+            StageController.ToStage(NapeAttackStage(), 0.3);
+        }
+    }
+    function OnSecond() { }
+}
+class NapeAttackStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _completed = false;
+    _learnedArmCutting = false;
+    _learnedCrippling = false;
+    _learnedBlinding = false;
+
+    coroutine OnStart()
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, 90, 0);
+
+        str = TextStyle.Line(Locale.GetRaw("Attack.Text2"));
+        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction1"));
+        Dialogue.Show("Stage.Attack", str);
+
+        wait 0.3;
+        self._titan.Idle(Math.Infinity);
+    }
+
+    function OnTick() { }
+
+    function OnFrame()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        if (self._titan != null)
+        {
+            if (self._titan.CurrentAnimation == "Amarture_VER2|sit_hunt_down")
+            {
+                self._learnedCrippling = true;
+            }
+            elif (self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_L" || self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_R")
+            {
+                self._learnedArmCutting = true;
+            }
+            elif (self._titan.CurrentAnimation == "Amarture_VER2|hit.eye" || self._titan.CurrentAnimation == "Amarture_VER2|sit_hit_eye")
+            {
+                self._learnedBlinding = true;
+            }
+        }
+    }
+    function OnSecond() { }
+
+    function OnCharacterDie(victim, killer)
+    {
+        if (victim == self._titan)
+        {
+            self._completed = true;
+
+            AttackStageController.LearnedArmCutting = self._learnedArmCutting;
+            AttackStageController.LearnedCrippling = self._learnedCrippling;
+            AttackStageController.LearnedBlinding = self._learnedBlinding;
+
+            AttackStageController.ToNextStage();
+        }
+    }
+}
+class CrippleStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _completed = false;
+    _learnedArmCutting = false;
+    _learnedCrippling = false;
+    _learnedBlinding = false;
+
+    coroutine OnStart()
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, -90, 0);
+
+        str = TextStyle.Line(Locale.GetRaw("Attack.Text3"));
+        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction2"));
+        Dialogue.Show("Stage.Attack", str);
+
+        wait 0.3;
+        self._titan.MaxHealth = 100000;
+        self._titan.Health = 100000;
+        self._titan.Idle(Math.Infinity);
+    }
+
+    function OnTick()
+    {
+        if (self._titan != null)
+        {
+            self._titan.Health = 100000;
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        if (self._titan != null)
+        {
+            if (self._titan.CurrentAnimation == "Amarture_VER2|sit_hunt_down")
+            {
+                if (!self._learnedCrippling)
+                {
+                    self._titan.MaxHealth = 1;
+                    self._titan.Health = 1;
+                    self._learnedCrippling = true;
+
+                    str = TextStyle.Line(Locale.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    Dialogue.Show(null, str);
+                }
+            }
+            elif (self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_L" || self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_R")
+            {
+                self._learnedArmCutting = true;
+            }
+            elif (self._titan.CurrentAnimation == "Amarture_VER2|hit.eye" || self._titan.CurrentAnimation == "Amarture_VER2|sit_hit_eye")
+            {
+                self._learnedBlinding = true;
+            }
+        }
+    }
+    function OnSecond() { }
+
+    function OnCharacterDie(victim, killer)
+    {
+        if (victim == self._titan)
+        {
+            if (!self._learnedCrippling)
+            {
+                return;
+            }
+
+            self._completed = true;
+
+            if (self._learnedArmCutting)
+            {
+                AttackStageController.LearnedArmCutting = self._learnedArmCutting;
+            }
+            if (self._learnedBlinding)
+            {
+                AttackStageController.LearnedBlinding = self._learnedBlinding;
+            }
+            AttackStageController.LearnedCrippling = self._learnedCrippling;
+            AttackStageController.ToNextStage();
+        }
+    }
+}
+class BlindStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _completed = false;
+    _learnedArmCutting = false;
+    _learnedBlinding = false;
+
+    coroutine OnStart()
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, 180, 0);
+
+        str = TextStyle.Line(Locale.GetRaw("Attack.Text4"));
+        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction3"));
+        Dialogue.Show("Stage.Attack", str);
+
+        wait 0.3;
+        self._titan.MaxHealth = 100000;
+        self._titan.Health = 100000;
+        self._titan.Idle(Math.Infinity);
+    }
+
+    function OnTick()
+    {
+        if (self._titan != null)
+        {
+            self._titan.Health = 100000;
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        if (self._titan != null)
+        {
+            if (self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_L" || self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_R")
+            {
+                self._learnedArmCutting = true;
+            }
+            elif (self._titan.CurrentAnimation == "Amarture_VER2|hit.eye" || self._titan.CurrentAnimation == "Amarture_VER2|sit_hit_eye")
+            {
+                if (!self._learnedBlinding)
+                {
+                    self._titan.MaxHealth = 1;
+                    self._titan.Health = 1;
+
+                    str = TextStyle.Line(Locale.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    Dialogue.Show(null, str);
+
+                    self._learnedBlinding = true;
+                }
+            }
+        }
+    }
+    function OnSecond() { }
+
+    function OnCharacterDie(victim, killer)
+    {
+        if (victim == self._titan)
+        {
+            if (!self._learnedBlinding)
+            {
+                return;
+            }
+
+            self._completed = true;
+
+            if (self._learnedArmCutting)
+            {
+                AttackStageController.LearnedArmCutting = self._learnedArmCutting;
+            }
+            AttackStageController.LearnedBlinding = self._learnedBlinding;
+            AttackStageController.ToNextStage();
+        }
+    }
+}
+class ArmCutStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _completed = false;
+    _learnedArmCutting = false;
+
+    coroutine OnStart()
+    {
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, 180, 0);
+
+        str = TextStyle.Line(Locale.GetRaw("Attack.Text5"));
+        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction4"));
+        Dialogue.Show("Stage.Attack", str);
+
+        wait 0.3;
+        self._titan.MaxHealth = 100000;
+        self._titan.Health = 100000;
+        self._titan.Idle(Math.Infinity);
+    }
+
+    function OnTick()
+    {
+        if (self._titan != null)
+        {
+            self._titan.Health = 100000;
+        }
+    }
+
+    function OnFrame()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        if (self._titan != null)
+        {
+            if (self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_L" || self._titan.CurrentAnimation == "Amarture_VER2|arm_hurt_R")
+            {
+                if (!self._learnedArmCutting)
+                {
+                    self._titan.MaxHealth = 1;
+                    self._titan.Health = 1;
+
+                    str = TextStyle.Line(Locale.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    Dialogue.Show(null, str);
+
+                }
+                self._learnedArmCutting = true;
+            }
+        }
+    }
+    function OnSecond() { }
+
+    function OnCharacterDie(victim, killer)
+    {
+        if (victim == self._titan)
+        {
+            if (!self._learnedArmCutting)
+            {
+                return;
+            }
+
+            self._completed = true;
+
+            AttackStageController.LearnedArmCutting = self._learnedArmCutting;
+            AttackStageController.ToNextStage();
+        }
+    }
+}
+class FightStage
+{
+    SpawnPoint = Vector3(0, 5, -40);
+
+    _completed = false;
+
+    function OnStart()
+    {
+        towerHeight = 10;
+
+        Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Scale(MapUtils.SinglePlatform, Vector3(30, MapUtils.SinglePlatformInitialScale.Y, 30)).SetDuration(2).SetEasing("InOutBack").Start();
+
+        Tween.Scale(MapUtils.HalfPlatformA, Vector3(1, towerHeight, 1)).SetDuration(2).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.HalfPlatformB, Vector3(1, towerHeight, 1)).SetDuration(2).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.ObstacleA, Vector3(1, towerHeight, 1)).SetDuration(2).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.ObstacleB, Vector3(1, towerHeight, 1)).SetDuration(2).SetEasing("InOutElastic").Start();
+
+        Tween.Position(MapUtils.HalfPlatformA, Vector3(-55, towerHeight / 2 * 5, -60)).SetDuration(1.5).SetEasing("InOutBack").Start();
+        Tween.Position(MapUtils.HalfPlatformB, Vector3(72, towerHeight / 2 * 5, 70)).SetDuration(1.5).SetEasing("InOutBack").Start();
+        Tween.Position(MapUtils.ObstacleA, Vector3(68, towerHeight / 2 * 5, -20)).SetDuration(1.5).SetEasing("InOutBack").Start();
+        Tween.Position(MapUtils.ObstacleB, Vector3(-95, towerHeight / 2 * 5, 80)).SetDuration(1.5).SetEasing("InOutBack").Start();
+
+        MapUtils.SinglePlatform.TextureTilingX = 20;
+        MapUtils.SinglePlatform.TextureTilingY = 20;
+        MapUtils.HalfPlatformA.TextureTilingX = 2;
+        MapUtils.HalfPlatformA.TextureTilingY = 20;
+        MapUtils.HalfPlatformB.TextureTilingX = 2;
+        MapUtils.HalfPlatformB.TextureTilingY = 20;
+        MapUtils.ObstacleA.TextureTilingX = 2;
+        MapUtils.ObstacleA.TextureTilingY = 20;
+        MapUtils.ObstacleB.TextureTilingX = 2;
+        MapUtils.ObstacleB.TextureTilingY = 20;
+        
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = Random.RandomFloat(1, 2);
+
+        str = TextStyle.Instruction(Locale.GetRaw("Attack.Instruction5"));
+        Dialogue.Show("Stage.Attack", str);
+        self.HideDialogue();
+    }
+
+    coroutine HideDialogue()
+    {
+        wait 2.0;
+        Dialogue.Hide();
+    }
+
+    function OnTick() { }
+    function OnFrame() { }
+    function OnSecond() { }
+
+    coroutine OnCharacterDie(victim, killer)
+    {
+        if (victim == self._titan)
+        {
+            str = TextStyle.Line(Locale.GetRaw("Stage.Completed"));
+            str = String.Replace(str, "{Stage.Praise$}", Locale.GetRandomPraise());
+            str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.GetRaw("Name.Tutorial")));
+            Dialogue.Show(null, str);
+        }
+    }
+}
+extension AttackStageController
+{
+    LearnedArmCutting = false;
+    LearnedCrippling = false;
+    LearnedBlinding = false;
+
+    function ToNextStage()
+    {
+        nextStage = null;
+        if (!self.LearnedCrippling)
+        {
+            nextStage = CrippleStage();
+        }
+        elif (!self.LearnedBlinding)
+        {
+            nextStage = BlindStage();
+        }
+        elif (!self.LearnedArmCutting)
+        {
+            nextStage = ArmCutStage();
+        }
+
+        if (nextStage == null)
+        {
+            nextStage = FightStage();
+        }
+
+        StageController.ToStage(nextStage, 0.3);
+    }
+}
+extension StageController
+{
+    _currentStage = null;
+    _canChangeStage = true;
+    
+    AutoRefill = false;
+
+    function OnStart()
+    {
+        self._currentStage = IntroductionStage();
+        self._currentStage.OnStart();
+    }
+
+    function OnTick()
+    {
+        self._currentStage.OnTick();
+
+        if (Main.Character != null && Main.Character.Position.Y <= -10)
+        {
+            if (self.AutoRefill)
+            {
+                Main.Character.RefillImmediate();
+            }
+            Main.Character.ClearHooks();
+            Main.Character.Velocity = Vector3.Zero;
+            Main.Character.Position = self._currentStage.SpawnPoint;
+        }
+    }
+
+    function OnFrame()
+    {
+        self._currentStage.OnFrame();
+    }
+
+    function OnSecond()
+    {
+        self._currentStage.OnSecond();
+    }
+
+    function OnCharacterDie(victim, killer)
+    {
+        self._currentStage.OnCharacterDie(victim, killer);
+    }
+
+    function ToStage(stage, delay)
+    {
+        if (!self._canChangeStage)
+        {
+            return;
+        }
+
+        self.ChangeStageAfterDelay(stage, delay);
+    }
+
+    coroutine ChangeStageAfterDelay(stage, delay)
+    {
+        self._canChangeStage = false;
+
+        if (self.AutoRefill)
+        {
+            Main.Character.RefillImmediate();
+        }
+
+        wait delay;
+
+        self._currentStage = stage;
+        self._currentStage.OnStart();
+
+        self._canChangeStage = true;
+    }
+}
+extension MapUtils
+{
+    SinglePlatform = null;
+    HalfPlatformA = null;
+    HalfPlatformB = null;
+
+    HookpointA = null;
+    HookpointB = null;
+    HookpointSolid = null;
+
+    ObstacleA = null;
+    ObstacleB = null;
+
+    Checkpoint = null;
+    Resetpoint = null;
+
+    SupplyStation = null;
+
+    SinglePlatformInitialScale = Vector3(1);
+    HalfPlatformInitialScale = Vector3(1);
+    HookpointInitialScale = Vector3(1);
+    ObstacleInitialScale = Vector3(1);
+    SupplyStationInitialScale = Vector3(1);
+
+    function Init()
+    {
+        self.SinglePlatform = Map.FindMapObjectByName("SinglePlatform");
+        self.HalfPlatformA = Map.FindMapObjectByName("HalfPlatformA");
+        self.HalfPlatformB = Map.FindMapObjectByName("HalfPlatformB");
+
+        self.HookpointA = Map.FindMapObjectByName("HookpointA");
+        self.HookpointB = Map.FindMapObjectByName("HookpointB");
+        self.HookpointSolid = Map.FindMapObjectByName("HookpointSolid");
+
+        self.ObstacleA = Map.FindMapObjectByName("ObstacleA");
+        self.ObstacleB = Map.FindMapObjectByName("ObstacleB");
+
+        self.Checkpoint = Map.FindMapObjectByName("Checkpoint");
+        self.Resetpoint = Map.FindMapObjectByName("Resetpoint");
+
+        self.SupplyStation = Map.FindMapObjectByName("Supply2");
+
+        self.SinglePlatformInitialScale = self.SinglePlatform.Scale;
+        self.HalfPlatformInitialScale = self.HalfPlatformA.Scale;
+        self.HookpointInitialScale = self.HookpointA.Scale;
+        self.ObstacleInitialScale = self.ObstacleA.Scale;
+
+        self.HalfPlatformA.Scale = Vector3.Zero;
+        self.HalfPlatformB.Scale = Vector3.Zero;
+        self.HookpointA.Scale = Vector3.Zero;
+        self.HookpointB.Scale = Vector3.Zero;
+        self.HookpointSolid.Scale = Vector3.Zero;
+        self.ObstacleA.Scale = Vector3.Zero;
+        self.ObstacleB.Scale = Vector3.Zero;
+        self.Checkpoint.Scale = Vector3.Zero;
+        self.Resetpoint.Scale = Vector3.Zero;
+        self.SupplyStation.Scale = Vector3.Zero;
+    }
+
+    function ResetCheckpoint()
+    {
+        self.Checkpoint.Scale = Vector3(0);
+        self.ConfigureCheckpoint("CollisionEnter", null);
+    }
+
+    function ConfigureCheckpoint(type, actionHandler)
+    {
+        c = self.Checkpoint.GetComponent("Checkpoint");
+        c.Configure(type, actionHandler);
+    }
+
+    function ConfigureResetpoint(type, actionHandler)
+    {
+        c = self.Resetpoint.GetComponent("Checkpoint");
+        c.Configure(type, actionHandler);
+    }
+
+    /* 
+     * Sets the scale to 0,0,0
+     * waits for delay
+     * then reset the scale back to the initial value
+     */
+    coroutine ResetScaleAfterDelay(obj, delay)
+    {
+        s = obj.Scale;
+        obj.Scale = Vector3.Zero;
+        wait delay;
+        obj.Scale = s;
+    }
+}
+extension TextStyle
+{
+    function Header(str)
+    {
+        return "<b>" + str + "</b>";
+    }
+
+    function Highlight(str)
+    {
+        return "<b><color=#f57316>" + str + "</color></b>";
+    }
+
+    function Instruction(str)
+    {
+        return "<i><color=#c2c2c2>" + str + "</color></i>";
+    }
+
+    function KeyName(key)
+    {
+        str = Input.GetKeyName(key);
+        if (String.Contains(str, "/"))
+        {
+            arr = String.Split(str, "/");
+            str = String.Trim(arr.Get(0));
+        }
+        return self.Highlight(str);
+    }
+
+    function KeyNames(keys)
+    {
+        str = "";
+        names = String.Split(keys, ",");
+        for(n in names)
+        {
+            str += self.KeyName(n);
+        }
+
+        return str;
+    }
+
+    function Line(str)
+    {
+        return str + String.Newline;
+    }
+
+    function Continue()
+    {
+        str = Locale.GetRaw("Stage.Continue");
+        str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
+        return self.Instruction(str);
+    }
+
+    function ContinueNextStage(stageNameSubKey)
+    {
+        str = Locale.GetRaw("Stage.Continue");
+        str += "...({1})";
+        str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
+        str = String.Replace(str, "{1}", Locale.GetRaw(stageNameSubKey));
+        return self.Instruction(str);
+    }
+}
+extension Dialogue
+{
+    function Init()
+    {
+        profiles = List();
+        profiles.Add(Profile("Eren", "Eren1"));
+        profiles.Add(Profile("Eren", "Eren2"));
+        profiles.Add(Profile("Jean", "Jean1"));
+        profiles.Add(Profile("Erwin", "Erwin3"));
+        profiles.Add(Profile("Erwin", "Erwin4"));
+        profiles.Add(Profile("Levi", "Levi4"));
+        profiles.Add(Profile("Levi", "Levi5"));
+        profiles.Add(Profile("Hange", "Hange1"));
+        profiles.Add(Profile("Keith", "Keith1"));
+
+        r = Random.RandomFloat(0, 1);
+        if (r <= 0.5)
+        {
+            self.Profile = profiles.Get(profiles.Count - 1);
+        }
+        else
+        {
+            if (r > 0.995)
+            {
+                self.Profile = Profile("ricecake", "Ricecake1");
+            }
+            else
+            {
+                i = Random.RandomInt(0, profiles.Count - 1);
+                self.Profile = profiles.Get(i);
+            }
+        }
+
+    }
+
+    function Show(header, text)
+    {
+        if (header != null)
+        {
+            header = TextStyle.Header(Locale.GetRaw(header));
+        }
+        else
+        {
+            header = self.Profile.Name;
+        }
+        icon = self.Profile.Icon;
+        if (Random.RandomFloat(0, 1) > 0.995)
+        {
+            icon = "Titan8";
+        }
+        Cutscene.ShowDialogue(icon, header, text);
+    }
+
+    coroutine ShowDelayed(header, text, delay)
+    {
+        wait delay;
+        self.Show(header, text);
+    }
+
+    function Hide()
+    {
+        Cutscene.HideDialogue();
+    }
+}
+
+class Profile
+{
+    Name = "Eren";
+    Icon = "Eren1";
+
+    function Init(name, icon)
+    {
+        self.Name = name;
+        self.Icon = icon;
+    }
+}
+extension Locale
+{
+    function GetRaw(subKey)
+    {
+        arr = String.Split(subKey, ".");
+        sub = arr.Get(0);
+        key = arr.Get(1);
+
+        return UI.GetLocale("BasicTutorialMap", sub, key);
+    }
+
+    function GetRandomPraise()
+    {
+        subKey = "Stage.Praise";
+        return self.GetRaw(subKey + Random.RandomInt(1, 4));
+    }
+}
+# From https:
+extension Easing
+{
+    function Linear(value)
+    {
+        return value;
+    }
+
+    function InOutBack(value)
+    {
+        c1 = 1.70158;
+        c2 = c1 * 1.525;
+
+        if (value < 0.5)
+        {
+            return (Math.Pow(2 * value, 2) * ((c2 + 1) * 2 * value - c2)) / 2;
+        }
+        else
+        {
+            return (Math.Pow(2 * value - 2, 2) * ((c2 + 1) * (value * 2 - 2) + c2) + 2) / 2;
+        }
+    }
+
+    function InOutElastic(value)
+    {
+        c5 = (2.0 * Math.PI) / 4.5;
+
+        if (value == 0.0)
+        {
+            return 0.0;
+        }
+        elif (value == 1.0)
+        {
+            return 1.0;
+        }
+        elif (value < 0.5)
+        {
+            a = (20 * value - 11.125) * c5;
+            return -1 * (Math.Pow(2, 20 * value - 10) * Math.Sin(Math.Rad2Deg(a))) / 2.0;
+        }
+        else
+        {
+            a = (20 * value - 11.125) * c5;
+            return (Math.Pow(2, -20 * value + 10) * Math.Sin(Math.Rad2Deg(a))) / 2.0 + 1;
+        }
+    }
+
+    function Get(value, easing)
+    {
+        if (easing == "Linear")
+        {
+            return self.Linear(value);
+        }
+        elif (easing == "InOutElastic")
+        {
+            return self.InOutElastic(value);
+        }
+        elif (easing == "InOutBack")
+        {
+            return self.InOutBack(value);
+        }
+    }
+}
+extension Tween
+{
+    _activeTweens = List();
+    
+    function Position(obj, targetPosition)
+    {
+        return TweenPosition(obj, targetPosition).SetActionHandler(self);
+    }
+
+    function PositionFrom(obj, startPosition, targetPosition)
+    {
+        obj.Position = startPosition;
+        return TweenPosition(obj, targetPosition).SetActionHandler(self);
+    }
+
+    function Rotation(obj, targetRotation)
+    {
+        return TweenRotation(obj, targetRotation).SetActionHandler(self);
+    }
+
+    function RotationFrom(obj, startRotation, targetRotation)
+    {
+        obj.Rotation = startRotation;
+        return TweenRotation(obj, targetRotation).SetActionHandler(self);
+    }
+
+    function Scale(obj, targetScale)
+    {
+        return TweenScale(obj, targetScale).SetActionHandler(self);
+    }
+
+    function CameraPosition(startPosition, targetPosition)
+    {
+        return TweenCameraPosition(startPosition, targetPosition).SetActionHandler(self);
+    }
+
+    function PlayerPosition(targetPosition)
+    {
+        return TweenPlayerPosition(targetPosition).SetActionHandler(self).SetEasing("InOutElastic");
+    }
+
+    function OnTweenStart(tween)
+    {
+        self._activeTweens.Add(tween);
+    }
+
+    function OnTweenComplete(tween)
+    {
+        if (self._activeTweens.Contains(tween))
+        {
+            self._activeTweens.Remove(tween);
+        }
+        else
+        {
+            Game.Print("Tween not found");
+        }
+    }
+
+    function Update()
+    {
+        i = 0;
+        while (i < self._activeTweens.Count)
+        {
+            self._activeTweens.Get(i).Update();
+            i += 1;
+        }
+    }
+}
+class TweenPlayerPosition
+{
+    _started = false;
+    _completed = false;
+
+    _startValue = Vector3(0);
+    _endValue = Vector3(0);
+
+    _duration = 1.0;
+    _elapsedTime = 0;
+
+    _easing = "Linear";
+
+    _actionHandler = null;
+
+    function Init(targetPosition)
+    {
+        self._startValue = Main.Character.Position;
+        self._endValue = targetPosition;
+    }
+
+    function SetActionHandler(actionHandler)
+    {
+        self._actionHandler = actionHandler;
+        return self;
+    }
+
+    function SetDuration(value)
+    {
+        if (self._started)
+        {
+            return self;
+        }
+
+        self._duration = value;
+        return self;
+    }
+
+    function SetEasing(value)
+    {
+        self._easing = value;
+        return self;
+    }
+
+    function Start()
+    {
+        if (self._started && !self._completed)
+        {
+            return self;
+        }
+
+        self._started = true;
+        self._completed = false;
+        self._elapsedTime = 0.0;
+        
+        if (self._actionHandler != null)
+        {
+            self._actionHandler.OnTweenStart(self);
+        }
+        
+        return self;
+    }
+
+    function Update()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        self._elapsedTime += Time.FrameTime;
+        if (self._elapsedTime >= self._duration)
+        {
+            self._completed = true;
+            self._started false;
+
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.OnTweenComplete(self);
+            }
+        }
+
+        t = self._elapsedTime / self._duration;
+        t = Easing.Get(t, self._easing);
+        Main.Character.Velocity = Vector3.Zero;
+        Main.Character.Position = Vector3.LerpUnclamped(self._startValue, self._endValue, t);
+    }
+}
+class TweenPosition
+{
+    _started = false;
+    _completed = false;
+
+    _startValue = Vector3(0);
+    _endValue = Vector3(0);
+
+    _duration = 1.0;
+    _elapsedTime = 0;
+
+    _easing = "Linear";
+
+    _mapObject = null;
+    _actionHandler = null;
+
+    function Init(mapObject, targetPosition)
+    {
+        self._mapObject = mapObject;
+        self._startValue = mapObject.Position;
+        self._endValue = targetPosition;
+    }
+
+    function SetActionHandler(actionHandler)
+    {
+        self._actionHandler = actionHandler;
+        return self;
+    }
+
+    function SetDuration(value)
+    {
+        if (self._started)
+        {
+            return self;
+        }
+
+        self._duration = value;
+        return self;
+    }
+
+    function SetEasing(value)
+    {
+        self._easing = value;
+        return self;
+    }
+
+    function Start()
+    {
+        if (self._started && !self._completed)
+        {
+            return self;
+        }
+
+        self._started = true;
+        self._completed = false;
+        self._elapsedTime = 0.0;
+        
+        if (self._actionHandler != null)
+        {
+            self._actionHandler.OnTweenStart(self);
+        }
+        
+        return self;
+    }
+
+    function Update()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        self._elapsedTime += Time.FrameTime;
+        if (self._elapsedTime >= self._duration)
+        {
+            self._completed = true;
+            self._started false;
+
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.OnTweenComplete(self);
+            }
+        }
+
+        t = self._elapsedTime / self._duration;
+        t = Easing.Get(t, self._easing);
+        self._mapObject.Position = Vector3.LerpUnclamped(self._startValue, self._endValue, t);
+    }
+}
+class TweenRotation
+{
+    _started = false;
+    _completed = false;
+
+    _startValue = Vector3(0);
+    _endValue = Vector3(0);
+
+    _duration = 1.0;
+    _elapsedTime = 0;
+
+    _easing = "Linear";
+
+    _mapObject = null;
+    _actionHandler = null;
+
+    function Init(mapObject, targetRotation)
+    {
+        self._mapObject = mapObject;
+        self._startValue = mapObject.Rotation;
+        self._endValue = targetRotation;
+    }
+
+    function SetActionHandler(actionHandler)
+    {
+        self._actionHandler = actionHandler;
+        return self;
+    }
+
+    function SetDuration(value)
+    {
+        if (self._started)
+        {
+            return self;
+        }
+
+        self._duration = value;
+        return self;
+    }
+
+    function SetEasing(value)
+    {
+        self._easing = value;
+        return self;
+    }
+
+    function Start()
+    {
+        if (self._started && !self._completed)
+        {
+            return self;
+        }
+
+        self._started = true;
+        self._completed = false;
+        self._elapsedTime = 0.0;
+        
+        if (self._actionHandler != null)
+        {
+            self._actionHandler.OnTweenStart(self);
+        }
+        
+        return self;
+    }
+
+    function Update()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        self._elapsedTime += Time.FrameTime;
+        if (self._elapsedTime >= self._duration)
+        {
+            self._completed = true;
+            self._started false;
+
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.OnTweenComplete(self);
+            }
+        }
+
+        t = self._elapsedTime / self._duration;
+        t = Easing.Get(t, self._easing);
+        self._mapObject.Rotation = Vector3.LerpUnclamped(self._startValue, self._endValue, t);
+    }
+}
+class TweenScale
+{
+    _started = false;
+    _completed = false;
+
+    _startValue = Vector3(0);
+    _endValue = Vector3(0);
+
+    _duration = 1.0;
+    _elapsedTime = 0;
+
+    _easing = "Linear";
+
+    _mapObject = null;
+    _actionHandler = null;
+
+    function Init(mapObject, targetScale)
+    {
+        self._mapObject = mapObject;
+        self._startValue = mapObject.Scale;
+        self._endValue = targetScale;
+    }
+
+    function SetActionHandler(actionHandler)
+    {
+        self._actionHandler = actionHandler;
+        return self;
+    }
+
+    function SetDuration(value)
+    {
+        if (self._started)
+        {
+            return self;
+        }
+
+        self._duration = value;
+        return self;
+    }
+
+    function SetEasing(value)
+    {
+        self._easing = value;
+        return self;
+    }
+
+    function Start()
+    {
+        if (self._started && !self._completed)
+        {
+            return self;
+        }
+
+        self._started = true;
+        self._completed = false;
+        self._elapsedTime = 0.0;
+
+        if (self._actionHandler != null)
+        {
+            self._actionHandler.OnTweenStart(self);
+        }
+        
+        return self;
+    }
+
+    function Update()
+    {
+        if (self._completed)
+        {
+            return;
+        }
+
+        self._elapsedTime += Time.FrameTime;
+        if (self._elapsedTime >= self._duration)
+        {
+            self._completed = true;
+            self._started false;
+
+            if (self._actionHandler != null)
+            {
+                self._actionHandler.OnTweenComplete(self);
+            }
+        }
+
+        t = self._elapsedTime / self._duration;
+        t = Easing.Get(t, self._easing);
+        self._mapObject.Scale = Vector3.LerpUnclamped(self._startValue, self._endValue, t);
+    }
+}
+component Checkpoint
+{
+    Type = "CollisionEnter";
+    TypeDropbox = "CollisionEnter, CollisionStay, CollisionExit";
+
+    _actionHandler = null;
+
+    function Configure(type, actionHandler)
+    {
+        self.Type = type;
+        self._actionHandler = actionHandler;
+    }
+
+    function Invoke(character)
+    {
+        if (self._actionHandler == null)
+        {
+            return;
+        }
+
+        self._actionHandler.HandleCheckpointAction(self);
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (!other.IsCharacter)
+        {
+            return;
+        }
+
+        if (self.Type == "CollisionEnter")
+        {
+            self.Invoke(other);
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (!other.IsCharacter)
+        {
+            return;
+        }
+
+        if (self.Type == "CollisionStay")
+        {
+            self.Invoke(other);
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (!other.IsCharacter)
+        {
+            return;
+        }
+
+        if (self.Type == "CollisionExit")
+        {
+            self.Invoke(other);
+        }
+    }
+}
+
+/// Weather
+{
+    "Skybox" : "Dawn1",
+    "SkyboxColor" : [
+        0,
+        164,
+        255,
+        255
+    ],
+    "Daylight" : [
+        255,
+        250,
+        250,
+        255
+    ],
+    "DaylightIntensity" : 1.68259847164154,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        115,
+        123,
+        157,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0.00806512497365475,
+    "FogColor" : [
+        157,
+        178,
+        200,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}
