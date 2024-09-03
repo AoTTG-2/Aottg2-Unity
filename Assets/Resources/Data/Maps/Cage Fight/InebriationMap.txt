@@ -111,7 +111,256 @@ Scene,Buildings/Building3,113,0,1,1,1,0,Building3,-950.1,-99.95,450,0,0,0,10,8,1
 Scene,Buildings/Building3,114,0,1,1,1,0,Building3,-950,-100.05,-450,0,0,0,10,8,17,Physical,Entities,Default,Default|255/200/200/255,;
 Scene,Buildings/Bridge2,115,0,1,1,1,0,Bridge2,-6,20,0,0,90,0,22,4,10,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
+class Main
+{
+StartTitans = 3;
+StartTitansTooltip = "The amount of titans in each cage.";
 
+_redTitans = List();
+_blueTitans = List();
+
+_enabled = false;
+_gameEnded = false;
+
+function OnGameStart()
+{
+if (Network.IsMasterClient)
+{
+if (Game.PVP != 2)
+{
+key = Input.GetKeyName("General/Pause");
+help = "(<b>" + key + "</b> → Game → Misc → PVP)";
+error = "<b><color=#f75348>[Error]: </color></b>";
+str = "CageFight game mode requires Team PVP. ";
+str += "To enable it go to the game setting and under the Misc tab, set the PVP to Team. ";
+Game.Print(error + str + String.Newline + help);
+return;
+}
+
+self._enabled = true;
+self._titanSpawnPointsA = Map.FindMapObjectsByName("Titan A");
+self._titanSpawnPointsB = Map.FindMapObjectsByName("Titan B");
+self.SpawnTitans(self._redTitans, self._titanSpawnPointsA);
+self.SpawnTitans(self._blueTitans, self._titanSpawnPointsB);
+
+UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+}
+}
+
+function OnCharacterDie(victim, killer, killerName)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+if (victim.Type == "Titan")
+{
+if (killer.Team == "Red")
+{
+self._redTitans.Remove(victim);
+self.SpawnTitan(self._blueTitans, self._titanSpawnPointsB);
+self.CheckIfTitansAreDead();
+}
+elif (killer.Team == "Blue")
+{
+self._blueTitans.Remove(victim);
+self.SpawnTitan(self._redTitans, self._titanSpawnPointsA);
+self.CheckIfTitansAreDead();
+}
+
+UI.SetLabelAll("TopCenter", self.GetRemainingTitansLabel());
+}
+elif (victim.Type == "Human")
+{
+self.CheckIfTeamPlayersAreDead();
+}
+}
+}
+
+function OnPlayerLeave(player)
+{
+if (self._enabled && Network.IsMasterClient)
+{
+self.CheckIfTeamPlayersAreDead();
+}
+}
+
+function OnSecond()
+{
+if (!self._enabled || !Network.IsMasterClient || self._gameEnded)
+{
+return;
+}
+
+redPlayers = self.GetPlayersOfTeam("Red");
+bluePlayers = self.GetPlayersOfTeam("Blue");
+
+for(bt in self._blueTitans)
+{
+target = self.GetNearestPlayer(bluePlayers, bt.Position);
+if (target != null)
+{
+bt.Target(target, 999);
+}
+}
+
+for(rt in self._redTitans)
+{
+target = self.GetNearestPlayer(redPlayers, rt.Position);
+if (target != null)
+{
+rt.Target(target, 999);
+}
+}
+}
+
+function CheckIfTitansAreDead()
+{
+if (self._redTitans.Count <= 0)
+{
+self.AnnounceWinner("Red");
+}
+elif (self._blueTitans.Count <= 0)
+{
+self.AnnounceWinner("Blue");
+}
+}
+
+coroutine CheckIfTeamPlayersAreDead(team)
+{
+wait 0.3;
+
+redAlive = false;
+blueAlive = false;
+
+for (p in Network.Players)
+{
+if (p.Status == "Alive")
+{
+if (p.Team == "Red")
+{
+redAlive = true;
+}
+elif (p.Team == "Blue")
+{
+blueAlive = true;
+}
+}
+}
+
+if (!redAlive)
+{
+self.AnnounceWinner("Blue");
+}
+elif (!blueAlive)
+{
+self.AnnounceWinner("Red");
+}
+}
+
+function AnnounceWinner(team)
+{
+if (self._gameEnded)
+{
+return;
+}
+
+if (team == "Red")
+{
+UI.SetLabelAll("MiddleCenter", "<color=#f06464>Red</color> team won!");
+Game.End(15);
+}
+else
+{
+UI.SetLabelAll("MiddleCenter", "<color=#62b7f0>Blue</color> team won!");
+Game.End(15);
+}
+
+self._gameEnded = true;
+}
+
+function SpawnTitan(list, spawnPoints)
+{
+position = self.GetRandomListElement(spawnPoints).Position;
+titan = self.SpawnTitanAt(position);
+list.Add(titan);
+}
+
+function SpawnTitans(list, spawnPoints)
+{
+randomSpawnPoint = false;
+if (self.StartTitans > spawnPoints.Count)
+{
+randomSpawnPoint = true;
+}
+
+for(i in Range(0, self.StartTitans, 1))
+{
+position = Vector3.Zero;
+if (randomSpawnPoint)
+{
+position = self.GetRandomListElement(spawnPoints).Position;
+}
+else
+{
+position = spawnPoints.Get(i).Position;
+}
+
+titan = self.SpawnTitanAt(position);
+list.Add(titan);
+}
+}
+
+function SpawnTitanAt(position)
+{
+titan = Game.SpawnTitanAt("Default", position);
+titan.DetectRange = 10;
+return titan;
+}
+
+function GetPlayersOfTeam(team)
+{
+players = List();
+for(p in Network.Players)
+{
+if (p.Status == "Alive" && p.Team == team)
+{
+players.Add(p.Character);
+}
+}
+
+return players;
+}
+
+function GetNearestPlayer(players, position)
+{
+n = null;
+nn = 99999.0;
+for(p in players)
+{
+dist = Vector3.Distance(p.Position, position);
+if (dist < nn)
+{
+n = p;
+nn = dist;
+}
+}
+
+return n;
+}
+
+function GetRemainingTitansLabel()
+{
+redStr = Convert.ToString(self._redTitans.Count);
+blueStr = Convert.ToString(self._blueTitans.Count);
+
+return "<color=#f06464>" + redStr + "</color> | " + "<color=#62b7f0>" + blueStr + "</color>";
+}
+
+function GetRandomListElement(list)
+{
+index = Random.RandomInt(0, list.Count);
+return list.Get(index);
+}
+}
 /// Weather
 {
     "Skybox" : "Day1",
