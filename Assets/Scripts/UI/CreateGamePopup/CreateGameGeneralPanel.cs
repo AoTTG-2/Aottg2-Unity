@@ -83,6 +83,7 @@ namespace UI
             misc.AllowShifters.Value = false;
             misc.Horses.Value = false;
             misc.APGPVP.Value = false;
+            misc.RealismMode.Value = false;
         }
     }
 }

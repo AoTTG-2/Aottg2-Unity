@@ -51,9 +51,10 @@
 		"MainBackground46Texture",
 		"MainBackground47Texture",
 		"MainBackground48Texture",
-		"MainBackground49Texture"
+		"MainBackground49Texture",
+		"MainBackground50Texture"
 	],
-	"AllBackgrounds": 49,
+	"AllBackgrounds": 50,
 	"Tips": [
 		"You can attack a titan's legs to cripple them.",
 		"You can blind a titan by attacking the eyes.",

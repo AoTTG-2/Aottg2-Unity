@@ -18,13 +18,30 @@
 		{"Name": "dakros_origin", "Volume": 1},
 		{"Name": "ertinos_wandering", "Volume": 1},
 		{"Name": "meownist_forest", "Volume": 1},
-		{"Name": "nadimd_flying", "Volume": 1}
+		{"Name": "NadimDoueiri_Flying", "Volume": 1},
+		{"Name": "Green - Another Dawn", "Volume": 1},
+		{"Name": "Green - Foul Omens", "Volume": 1},
+		{"Name": "Green - Sorrowful Plight", "Volume": 1},
+		{"Name": "Green - Uneasy Respite", "Volume": 1},
+		{"Name": "Raivaru - Missing", "Volume": 1},
+		{"Name": "Raivaru - Warm Breeze", "Volume": 1},
+		{"Name": "Warm Moist Beans - The Stillness Between", "Volume": 1}
 	],
 	"Battle": [
 		{"Name": "big_bobby_battle", "Volume": 1},
 		{"Name": "dakros_armored_fist", "Volume": 1},
 		{"Name": "dakros_battle_chant", "Volume": 1},
-		{"Name": "dakros_colossal", "Volume": 1}
+		{"Name": "dakros_colossal", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle1", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle2", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle3", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle4", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle5", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle6", "Volume": 1},
+		{"Name": "NadimDoueiri_Battle7", "Volume": 1},
+		{"Name": "NadimDoueiri_Adventure", "Volume": 1},
+		{"Name": "NadimDoueiri_Outside-the-walls-part1", "Volume": 1},
+		{"Name": "NadimDoueiri_Outside-the-walls-part2", "Volume": 1}
 	],
 	"Boss": [
 		{"Name": "dakros_shrill_voices", "Volume": 1},

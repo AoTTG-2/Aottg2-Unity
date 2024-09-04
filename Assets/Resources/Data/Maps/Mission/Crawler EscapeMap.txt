@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:Escape the city using just your legs, but beware of crawlers.|HasWeather:1
+EditorVersion:1.0|Description:Escape the crawlers in a city located near a Forest of Giant Trees.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -1185,7 +1185,42 @@ Scene,Geometry/Cuboid,4034,0,1,1,0,0,Barrier,-2.737625,303.2989,708.5419,0,0,0,1
 Scene,Geometry/Cuboid,4035,0,1,1,0,0,Barrier,51.31012,309.0683,680.3881,0,0,0,1,10,5,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,4036,0,1,1,0,0,Barrier,-50.26921,309.0683,680.3881,0,0,0,1,10,5,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,4037,0,1,1,0,0,Barrier,-3.466547,344.6645,680.3881,0,0,0,20,1,20,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,4040,0,1,1,0,0,Cuboid,3.660149,299.7046,679.6043,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,
+Scene,Geometry/Cuboid,4040,0,1,1,0,0,Cuboid,3.660149,299.7046,679.6043,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4041,0,1,1,1,0,Fence2,-100.3558,10.14356,-84.82416,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4042,0,1,1,1,0,Fence2,-86.84323,10.14356,-84.82416,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4043,0,1,1,1,0,Fence2,86.09721,10.14356,-84.82416,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4044,0,1,1,1,0,Fence2,99.60973,10.14356,-84.82416,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4045,0,1,1,1,0,Fence2,21.89917,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4046,0,1,1,1,0,Fence2,8.433703,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4047,0,1,1,1,0,Fence2,-12.88592,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4048,0,1,1,1,0,Fence2,-26.35138,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,4063,0,1,1,1,0,Kill Region,86.06092,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Decor/Fence2,4066,0,1,1,1,0,Fence2,-137.192,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4051,0,1,1,1,0,Fence2,23.51504,8.321639,531.1163,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4052,0,1,1,1,0,Fence2,-25.28554,8.377203,464.8284,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4053,0,1,1,1,0,Fence2,24.92064,8.321639,396.4071,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4054,0,1,1,1,0,Fence2,-23.19181,8.377203,332.1977,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4064,0,1,1,1,0,Fence2,-164.3538,10.14356,39.55684,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4065,0,1,1,1,0,Fence2,-150.8138,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4067,0,1,1,1,0,Fence2,-123.7223,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,4061,0,1,1,1,0,Kill Region,-0.0271351,20.15604,223.8665,0,0,0,6,2,3,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Decor/Fence2,4068,0,1,1,1,0,Fence2,-123.7223,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,4062,0,1,1,1,0,Kill Region,-85.69246,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Decor/Fence2,4069,0,1,1,1,0,Fence2,-137.192,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4070,0,1,1,1,0,Fence2,-150.8138,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4071,0,1,1,1,0,Fence2,-164.3538,10.14356,23.99119,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4072,0,1,1,1,0,Fence2,167.1264,10.14356,27.70032,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4073,0,1,1,1,0,Fence2,153.6567,10.14356,27.70032,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4074,0,1,1,1,0,Fence2,140.035,10.14356,27.70032,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4075,0,1,1,1,0,Fence2,126.495,10.14356,27.70031,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4076,0,1,1,1,0,Fence2,126.495,10.14356,43.26599,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4077,0,1,1,1,0,Fence2,140.035,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4078,0,1,1,1,0,Fence2,153.6567,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Fence2,4079,0,1,1,1,0,Fence2,167.1264,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,4080,0,1,1,1,0,Kill Region,-1.665074,20.15604,-159.0002,0,0,0,6,2,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Geometry/Cuboid,4081,0,1,1,1,0,Kill Region,233.3344,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Geometry/Cuboid,4082,0,1,1,1,0,Kill Region,-230.2975,20.15604,-18.93531,0,0,0,5,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
+Scene,Geometry/Cuboid,4083,0,1,1,1,0,Kill Region,-0.0271351,20.15604,600.8093,0,0,0,6,2,3,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server
 /// Logic
 class Main
 {   
