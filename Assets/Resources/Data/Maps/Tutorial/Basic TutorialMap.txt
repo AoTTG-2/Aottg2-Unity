@@ -12,10 +12,11 @@ Scene,Geometry/Cuboid,5,0,1,0,1,0,HookpointA,53,20.04566,0,0,0,0,0.3,0.3,0.3,Phy
 Scene,Geometry/Cuboid,9,0,1,0,1,0,HookpointB,64.82286,20.04566,0,0,0,0,0.3,0.3,0.3,Physical,Projectiles,Default,Basic|106/157/255/255|Metal/Metal4|0.3/0.3|0/0,;
 Scene,Geometry/Cuboid,7,0,1,0,1,0,ObstacleA,0,4.133939,-21.26597,0,0,0,1,1,1,Physical,Entities,Default,Basic|180/180/184/255|Metal/Metal4|0.1/0.1|0/0,;
 Scene,Geometry/Cuboid,10,0,1,0,1,0,ObstacleB,15.96354,4.133939,0,0,0,0,1,1,1,Physical,Entities,Default,Basic|180/180/184/255|Metal/Metal4|0.1/0.1|0/0,;
-Scene,Geometry/Cuboid,11,0,1,0,1,0,Checkpoint,0,4,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|42/196/78/67|Misc/None|1/1|0/0,Checkpoint|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0;
+Scene,Geometry/Cuboid,11,0,1,0,1,0,Checkpoint,0,4,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|42/196/78/67|Misc/None|1/1|0/0,Checkpoint|Enabled:true|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0;
 Scene,Interact/Supply2,12,0,1,0,1,0,Supply2,-14.83589,0,0,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Geometry/Cuboid,13,0,1,0,1,0,HookpointSolid,71.194,20.04566,0,0,0,0,0.3,0.3,0.3,Physical,Entities,Default,Basic|106/157/255/255|Metal/Metal4|0.3/0.3|0/0,;
-Scene,Geometry/Cuboid,14,0,1,0,1,0,Resetpoint,16.25683,4.083771,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|174/41/78/77|Misc/None|1/1|0/0,Checkpoint|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0
+Scene,Geometry/Cuboid,14,0,1,0,1,0,Resetpoint,16.25683,4.083771,15.61899,0,0,0,1,1,1,Region,Characters,Default,Transparent|174/41/78/77|Misc/None|1/1|0/0,Checkpoint|Enabled:true|Type:CollisionEnter|InvokeOn:CollisionEnter|MinVelocity:0;
+Scene,Interact/Dummy2,15,0,1,0,1,1,Dummy2,0,2.273054,0,0,-90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Dummy|ResetCount:99|ResetDelay:5
 /// Logic
 class Main
 {
@@ -82,7 +83,7 @@ class Main
             StageController.OnStart();
         }
 
-        CharacterState.Restore();
+        # CharacterState.Restore();
         self._initialized = true;
     }
 }
@@ -205,7 +206,7 @@ class MovementStage
         CharacterState.SetSpecial("None");
 
         str = TextStyle.Line(Locale.GetRaw("Movement.Text"));
-        str += TextStyle.Continue();
+        str += TextStyle.ContinueNextStage("Stage.Camera");
 
         str = String.Replace(str, "{0}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
         Dialogue.Show("Stage.Movement", str);
@@ -214,68 +215,73 @@ class MovementStage
     function OnTick() { }
     function OnFrame()
     {
-        if (!self._started && (Input.GetKeyDown("Interaction/Interact3") || Input.GetKeyDown("General/Forward") || Input.GetKeyDown("General/Back") || Input.GetKeyDown("General/Left") || Input.GetKeyDown("General/Right")))
+        if (Input.GetKeyDown("Interaction/Interact3"))
         {
-            str = Locale.GetRaw("Movement.Forward");
-            str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
-            Dialogue.Show("Stage.Movement", str);
-            self._started = true;
+            StageController.ToStage(CameraSwitchStage(), 0.3);
         }
 
-        if (!self._started)
-        {
-            return;
-        }
+        # if (!self._started && (Input.GetKeyDown("Interaction/Interact3") || Input.GetKeyDown("General/Forward") || Input.GetKeyDown("General/Back") || Input.GetKeyDown("General/Left") || Input.GetKeyDown("General/Right")))
+        # {
+        #     str = Locale.GetRaw("Movement.Forward");
+        #     str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
+        #     Dialogue.Show("Stage.Movement", str);
+        #     self._started = true;
+        # }
 
-        if (Input.GetKeyHold("General/Forward") && !self._forwardCompleted)
-        {
-            self._currentTime += Time.FrameTime;
-            if (self._currentTime >= self.RequiredMoveTime)
-            {
-                str = Locale.GetRaw("Movement.Left");
-                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Left"));
-                Dialogue.Show("Stage.Movement", str);
+        # if (!self._started)
+        # {
+        #     return;
+        # }
 
-                self._forwardCompleted = true;
-                self._currentTime = 0;
-            }
-        }
-        elif (Input.GetKeyHold("General/Left") && !self._leftCompleted && self._forwardCompleted)
-        {
-            self._currentTime += Time.FrameTime;
-            if (self._currentTime >= self.RequiredMoveTime)
-            {
-                str = Locale.GetRaw("Movement.Back");
-                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Back"));
-                Dialogue.Show("Stage.Movement", str);
+        # if (Input.GetKeyHold("General/Forward") && !self._forwardCompleted)
+        # {
+        #     self._currentTime += Time.FrameTime;
+        #     if (self._currentTime >= self.RequiredMoveTime)
+        #     {
+        #         str = Locale.GetRaw("Movement.Left");
+        #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Left"));
+        #         Dialogue.Show("Stage.Movement", str);
 
-                self._leftCompleted = true;
-                self._currentTime = 0;
-            }
-        }
-        elif (Input.GetKeyHold("General/Back") && !self._backCompleted && self._leftCompleted && self._forwardCompleted)
-        {
-            self._currentTime += Time.FrameTime;
-            if (self._currentTime >= self.RequiredMoveTime)
-            {
-                str = Locale.GetRaw("Movement.Right");
-                str = String.Replace(str, "{0}", TextStyle.KeyName("General/Right"));
-                Dialogue.Show("Stage.Movement", str);
+        #         self._forwardCompleted = true;
+        #         self._currentTime = 0;
+        #     }
+        # }
+        # elif (Input.GetKeyHold("General/Left") && !self._leftCompleted && self._forwardCompleted)
+        # {
+        #     self._currentTime += Time.FrameTime;
+        #     if (self._currentTime >= self.RequiredMoveTime)
+        #     {
+        #         str = Locale.GetRaw("Movement.Back");
+        #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Back"));
+        #         Dialogue.Show("Stage.Movement", str);
 
-                self._backCompleted = true;
-                self._currentTime = 0;
-            }
-        }
-        elif (Input.GetKeyHold("General/Right") && !self._rightCompleted && self._backCompleted && self._leftCompleted && self._forwardCompleted)
-        {
-            self._currentTime += Time.FrameTime;
-            if (self._currentTime >= self.RequiredMoveTime)
-            {
-                StageController.ToStage(CameraSwitchStage(), 0.3);
-                self._rightCompleted = true;
-                self._currentTime = 0;
-            }
-        }
+        #         self._leftCompleted = true;
+        #         self._currentTime = 0;
+        #     }
+        # }
+        # elif (Input.GetKeyHold("General/Back") && !self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        # {
+        #     self._currentTime += Time.FrameTime;
+        #     if (self._currentTime >= self.RequiredMoveTime)
+        #     {
+        #         str = Locale.GetRaw("Movement.Right");
+        #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Right"));
+        #         Dialogue.Show("Stage.Movement", str);
+
+        #         self._backCompleted = true;
+        #         self._currentTime = 0;
+        #     }
+        # }
+        # elif (Input.GetKeyHold("General/Right") && !self._rightCompleted && self._backCompleted && self._leftCompleted && self._forwardCompleted)
+        # {
+        #     self._currentTime += Time.FrameTime;
+        #     if (self._currentTime >= self.RequiredMoveTime)
+        #     {
+        #         StageController.ToStage(CameraSwitchStage(), 0.3);
+        #         self._rightCompleted = true;
+        #         self._currentTime = 0;
+        #     }
+        # }
     }
     function OnSecond() { }
 }
@@ -328,6 +334,7 @@ class SupplyStationStage
         str = TextStyle.Line(Locale.GetRaw("SupplyStation.Text"));
         str += TextStyle.Instruction(Locale.GetRaw("SupplyStation.Instruction1"));
         str = String.Replace(str, "{0}", TextStyle.KeyName("Human/Reload"));
+        str = String.Replace(str, "{1}", TextStyle.KeyName("Interaction/Interact"));
         Dialogue.Show("Stage.SupplyStation", str);
     }
 
@@ -410,7 +417,7 @@ class JumpStage
             Dialogue.Show("Stage.Jump", str);
 
             Tween.PlayerPosition(self.SpawnPoint).Start();
-            MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+            MapUtils.DisableCheckpointFor(MapUtils.Checkpoint, 1.1);
         }
         if (self._count >= 2)
         {
@@ -462,7 +469,7 @@ class WallRunningStage
     coroutine HandleCheckpointAction(trigger)
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
-        MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+        MapUtils.DisableCheckpointFor(MapUtils.Checkpoint, 1.1);
 
         if (self._cleared)
         {
@@ -558,7 +565,7 @@ class HookStage
             Dialogue.Show("Stage.Hook", str);
 
             Tween.PlayerPosition(self.SpawnPoint).Start();
-            MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
+            MapUtils.DisableCheckpointFor(MapUtils.Checkpoint, 1.1);
 
             CharacterState.SetLeftHookEnabled(false);
             CharacterState.SetRightHookEnabled(true);
@@ -621,13 +628,13 @@ class HookHorizontalStage
         if (trigger.MapObject == MapUtils.Resetpoint)
         {
             Tween.PlayerPosition(self.SpawnPoint).Start();
-            MapUtils.ResetScaleAfterDelay(MapUtils.Resetpoint, 1.1);
+            MapUtils.DisableCheckpointFor(MapUtils.Resetpoint, 1.1);
             return;
         }
 
         Tween.PlayerPosition(self.SpawnPoint).Start();
-        MapUtils.ResetScaleAfterDelay(MapUtils.Checkpoint, 1.1);
-        MapUtils.ResetScaleAfterDelay(MapUtils.Resetpoint, 1.1);
+        MapUtils.DisableCheckpointFor(MapUtils.Checkpoint, 1.1);
+        MapUtils.DisableCheckpointFor(MapUtils.Resetpoint, 1.1);
 
         str = TextStyle.ContinueNextStage("Stage.Dash");
         Dialogue.Show(null, str);
@@ -695,11 +702,17 @@ class DashStage
 }
 class AttackStage
 {
-    SpawnPoint = Vector3(0, 5, 0);
+    SpawnPoint = Vector3(0, 5, -40);
 
     coroutine OnStart()
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
+
+        Tween.Position(MapUtils.DummyTitan, Vector3(0, 2.3, 20)).SetDuration(2).SetEasing("InOutElastic").Start();
+        Tween.Scale(MapUtils.DummyTitan, Vector3(1)).SetDuration(2).SetEasing("InOutElastic").Start();
+
+        wait 0.5;
+        Tween.Rotation(MapUtils.DummyTitan, Vector3(0, 90, 0)).SetDuration(2).SetEasing("InOutElastic").Start();
 
         str = TextStyle.Line(Locale.GetRaw("Attack.Text1"));
         str += TextStyle.Continue();
@@ -736,6 +749,7 @@ class NapeAttackStage
     coroutine OnStart()
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
+        Tween.Scale(MapUtils.DummyTitan, Vector3.Zero).SetDuration(1.4).SetEasing("InOutElastic").Start();
 
         self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
         self._titan.Size = 1;
@@ -801,23 +815,26 @@ class CrippleStage
     _learnedCrippling = false;
     _learnedBlinding = false;
 
+    _titan = null;
+
     coroutine OnStart()
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
-
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
-        self._titan.Size = 1;
-        self._titan.DetectRange = 0;
-        self._titan.FocusRange = 0;
-        self._titan.Rotation = Vector3(0, -90, 0);
 
         str = TextStyle.Line(Locale.GetRaw("Attack.Text3"));
         str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction2"));
         Dialogue.Show("Stage.Attack", str);
 
-        wait 0.3;
+        wait 0.9;
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, -90, 0);
         self._titan.MaxHealth = 100000;
         self._titan.Health = 100000;
+
+        wait 0.3;
         self._titan.Idle(Math.Infinity);
     }
 
@@ -895,23 +912,26 @@ class BlindStage
     _learnedArmCutting = false;
     _learnedBlinding = false;
 
+    _titan = null;
+
     coroutine OnStart()
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
-
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
-        self._titan.Size = 1;
-        self._titan.DetectRange = 0;
-        self._titan.FocusRange = 0;
-        self._titan.Rotation = Vector3(0, 180, 0);
 
         str = TextStyle.Line(Locale.GetRaw("Attack.Text4"));
         str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction3"));
         Dialogue.Show("Stage.Attack", str);
 
-        wait 0.3;
+        wait 0.9;
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, 180, 0);
         self._titan.MaxHealth = 100000;
         self._titan.Health = 100000;
+
+        wait 0.3;
         self._titan.Idle(Math.Infinity);
     }
 
@@ -981,23 +1001,26 @@ class ArmCutStage
     _completed = false;
     _learnedArmCutting = false;
 
+    _titan = null;
+
     coroutine OnStart()
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
-
-        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
-        self._titan.Size = 1;
-        self._titan.DetectRange = 0;
-        self._titan.FocusRange = 0;
-        self._titan.Rotation = Vector3(0, 180, 0);
 
         str = TextStyle.Line(Locale.GetRaw("Attack.Text5"));
         str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction4"));
         Dialogue.Show("Stage.Attack", str);
 
-        wait 0.3;
+        wait 0.9;
+        self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
+        self._titan.Size = 1;
+        self._titan.DetectRange = 0;
+        self._titan.FocusRange = 0;
+        self._titan.Rotation = Vector3(0, 180, 0);
         self._titan.MaxHealth = 100000;
         self._titan.Health = 100000;
+
+        wait 0.3;
         self._titan.Idle(Math.Infinity);
     }
 
@@ -1234,6 +1257,7 @@ extension MapUtils
     Resetpoint = null;
 
     SupplyStation = null;
+    DummyTitan = null;
 
     SinglePlatformInitialScale = Vector3(1);
     HalfPlatformInitialScale = Vector3(1);
@@ -1258,6 +1282,7 @@ extension MapUtils
         self.Resetpoint = Map.FindMapObjectByName("Resetpoint");
 
         self.SupplyStation = Map.FindMapObjectByName("Supply2");
+        self.DummyTitan = Map.FindMapObjectByName("Dummy2");
 
         self.SinglePlatformInitialScale = self.SinglePlatform.Scale;
         self.HalfPlatformInitialScale = self.HalfPlatformA.Scale;
@@ -1274,6 +1299,7 @@ extension MapUtils
         self.Checkpoint.Scale = Vector3.Zero;
         self.Resetpoint.Scale = Vector3.Zero;
         self.SupplyStation.Scale = Vector3.Zero;
+        self.DummyTitan.Scale = Vector3.Zero;
     }
 
     function ResetCheckpoint()
@@ -1294,17 +1320,12 @@ extension MapUtils
         c.Configure(type, actionHandler);
     }
 
-    /* 
-     * Sets the scale to 0,0,0
-     * waits for delay
-     * then reset the scale back to the initial value
-     */
-    coroutine ResetScaleAfterDelay(obj, delay)
+    coroutine DisableCheckpointFor(checkpoint, time)
     {
-        s = obj.Scale;
-        obj.Scale = Vector3.Zero;
-        wait delay;
-        obj.Scale = s;
+        c = checkpoint.GetComponent("Checkpoint");
+        c.Enabled = false;
+        wait time;
+        c.Enabled = true;
     }
 }
 extension TextStyle
@@ -1949,6 +1970,7 @@ class TweenScale
 }
 component Checkpoint
 {
+    Enabled = true;
     Type = "CollisionEnter";
     TypeDropbox = "CollisionEnter, CollisionStay, CollisionExit";
 
@@ -1972,7 +1994,7 @@ component Checkpoint
 
     function OnCollisionEnter(other)
     {
-        if (!other.IsCharacter)
+        if (!self.Enabled || !other.IsCharacter)
         {
             return;
         }
@@ -1985,7 +2007,7 @@ component Checkpoint
 
     function OnCollisionStay(other)
     {
-        if (!other.IsCharacter)
+        if (!self.Enabled || !other.IsCharacter)
         {
             return;
         }
@@ -1998,7 +2020,7 @@ component Checkpoint
 
     function OnCollisionExit(other)
     {
-        if (!other.IsCharacter)
+        if (!self.Enabled || !other.IsCharacter)
         {
             return;
         }

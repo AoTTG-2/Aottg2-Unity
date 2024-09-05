@@ -1174,12 +1174,12 @@ Scene,FX/NPCFX1,4018,0,1,0,1,0,NPCFX1,511.2346,13.17021,-4.762982,0,0,0,1,1,1,No
 Scene,FX/NPCFX1,4020,0,1,0,1,0,NPCFX1,-1.221117,26.39638,-582.4167,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/NPCFX1,4021,0,1,0,1,0,NPCFX1,-360.4993,10.84813,358.1537,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,General/EditorDaylight,4024,0,1,1,0,0,Daylight,0,412.5718,0,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|Color:200/140/0/255|Intensity:1|WeatherControlled:true;
-Scene,Geometry/Cuboid,4026,0,1,0,1,0,Racing Start Barrier,39.7552,29.73602,-547.6682,0,0,0,1,10,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
-Scene,Geometry/Cuboid,4027,0,1,0,1,0,Racing Start Barrier,-44.88109,29.73602,-547.6682,0,0,0,1,10,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
-Scene,Geometry/Cuboid,4028,0,1,0,1,0,Racing Start Barrier,-0.423757,29.73602,-490.2954,0,0,0,12,10,1,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
-Scene,Geometry/Cuboid,4029,0,1,0,1,0,Racing Start Barrier,-0.423757,78.28906,-547.1113,0,0,0,12,1,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
+Scene,Geometry/Cuboid,4026,0,1,0,0,0,Racing Start Barrier,39.7552,29.73602,-547.6682,0,0,0,1,10,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
+Scene,Geometry/Cuboid,4027,0,1,0,0,0,Racing Start Barrier,-44.88109,29.73602,-547.6682,0,0,0,1,10,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
+Scene,Geometry/Cuboid,4028,0,1,0,0,0,Racing Start Barrier,-0.423757,29.73602,-490.2954,0,0,0,12,10,1,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
+Scene,Geometry/Cuboid,4029,0,1,0,0,0,Racing Start Barrier,-0.423757,78.28906,-547.1113,0,0,0,12,1,12,Physical,Entities,Default,Transparent|0/97/255/122|Misc/None|1/1|0/0,Tag|Name:RacingStartBarrier;
 Scene,Geometry/Cuboid,4030,0,1,1,0,0,Barrier,0.3129518,48.45034,-609.2092,0,0,0,10,10,1,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,Interact/CaptureZone1,4032,0,1,1,1,0,CaptureZone1,-0.1555618,10.99352,653.0071,0,0,0,1,1,1,Region,Characters,Default,Default|255/255/0/255,RacingFinishRegion|;
+Scene,Interact/CaptureZone1,4032,0,1,0,1,0,CaptureZone1,-0.1555618,10.99352,653.0071,0,0,0,1,1,1,Region,Characters,Default,Default|255/255/0/255,RacingFinishRegion|;
 Scene,Geometry/Cuboid,4033,0,1,1,0,0,Barrier,-2.737625,303.2989,654.4992,0,0,0,10,10,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,4034,0,1,1,0,0,Barrier,-2.737625,303.2989,708.5419,0,0,0,10,10,1,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,4035,0,1,1,0,0,Barrier,51.31012,309.0683,680.3881,0,0,0,1,10,5,Physical,Characters,Default,Default|255/255/255/255,;
@@ -1194,7 +1194,6 @@ Scene,Decor/Fence2,4045,0,1,1,1,0,Fence2,21.89917,24.3167,-473.0251,0,90,0,1,2,2
 Scene,Decor/Fence2,4046,0,1,1,1,0,Fence2,8.433703,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4047,0,1,1,1,0,Fence2,-12.88592,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4048,0,1,1,1,0,Fence2,-26.35138,24.3167,-473.0251,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,4063,0,1,1,1,0,Kill Region,86.06092,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
 Scene,Decor/Fence2,4066,0,1,1,1,0,Fence2,-137.192,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4051,0,1,1,1,0,Fence2,23.51504,8.321639,531.1163,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4052,0,1,1,1,0,Fence2,-25.28554,8.377203,464.8284,0,90,0,1,2,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1203,9 +1202,7 @@ Scene,Decor/Fence2,4054,0,1,1,1,0,Fence2,-23.19181,8.377203,332.1977,0,90,0,1,2,
 Scene,Decor/Fence2,4064,0,1,1,1,0,Fence2,-164.3538,10.14356,39.55684,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4065,0,1,1,1,0,Fence2,-150.8138,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4067,0,1,1,1,0,Fence2,-123.7223,10.14356,39.55685,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,4061,0,1,1,1,0,Kill Region,-0.0271351,20.15604,223.8665,0,0,0,6,2,3,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
 Scene,Decor/Fence2,4068,0,1,1,1,0,Fence2,-123.7223,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,4062,0,1,1,1,0,Kill Region,-85.69246,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
 Scene,Decor/Fence2,4069,0,1,1,1,0,Fence2,-137.192,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4070,0,1,1,1,0,Fence2,-150.8138,10.14356,23.9912,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4071,0,1,1,1,0,Fence2,-164.3538,10.14356,23.99119,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1217,149 +1214,146 @@ Scene,Decor/Fence2,4076,0,1,1,1,0,Fence2,126.495,10.14356,43.26599,0,90,0,1,3,2,
 Scene,Decor/Fence2,4077,0,1,1,1,0,Fence2,140.035,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4078,0,1,1,1,0,Fence2,153.6567,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Fence2,4079,0,1,1,1,0,Fence2,167.1264,10.14356,43.266,0,90,0,1,3,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,4080,0,1,1,1,0,Kill Region,-1.665074,20.15604,-159.0002,0,0,0,6,2,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
-Scene,Geometry/Cuboid,4081,0,1,1,1,0,Kill Region,233.3344,20.15604,-18.93531,0,0,0,6,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
-Scene,Geometry/Cuboid,4082,0,1,1,1,0,Kill Region,-230.2975,20.15604,-18.93531,0,0,0,5,2,13,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server;
-Scene,Geometry/Cuboid,4083,0,1,1,1,0,Kill Region,-0.0271351,20.15604,600.8093,0,0,0,6,2,3,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:true|KillMessage:Server
+Scene,Interact/CaptureZone2,4084,0,1,0,1,0,CaptureZone2,-3.151192,25.23802,-548.4913,0,0,0,8,10,11,None,Characters,Default,Default|0/0/255/255,Tag|Name:RacingStartBarrier
 /// Logic
 class Main
-{   
-    Description = "Make your way to the gate to escape.";
-    Titans = 20;
-    StartDelay = 10.0;
-    _started = false;
-    _startBarriers = null;
-    _finished = false;
-    _hasSpawned = false;
-    _currentStamina = 0.0;
-    _maxStamina = 100.0;
-    _staminaRecoverRate = 20.0;
-    _staminaConsumeAmount = 100.0;
-    _isDodging = false;
+{
+Description = "Make your way to the gate to escape.";
+Titans = 20;
+StartDelay = 10.0;
+_started = false;
+_startBarriers = null;
+_finished = false;
+_hasSpawned = false;
+_currentStamina = 0.0;
+_maxStamina = 100.0;
+_staminaRecoverRate = 20.0;
+_staminaConsumeAmount = 100.0;
+_isDodging = false;
 
-    function OnGameStart()
-    {
-        self._startBarriers = Map.FindMapObjectsByTag("RacingStartBarrier");
-        Network.MyPlayer.SetCustomProperty("Finished", false);
-        if (Network.IsMasterClient)
-        {
-        	Game.SpawnTitans("Crawler", self.Titans);
-        }
-    }
+function OnGameStart()
+{
+self._startBarriers = Map.FindMapObjectsByTag("RacingStartBarrier");
+Network.MyPlayer.SetCustomProperty("Finished", false);
+if (Network.IsMasterClient)
+{
+Game.SpawnTitans("Crawler", self.Titans);
+}
+}
 
-    function OnCharacterSpawn(character)
-    {
-    	if (character.IsMine && character.Type == "Human")
-    	{
-    		character.CurrentGas = 0;
-    		character.MaxGas = 0;
-    		character.Speed = 80;
-    		character.SetSpecial("SmokeBomb");
-    	}
-    }
+function OnCharacterSpawn(character)
+{
+if (character.IsMine && character.Type == "Human")
+{
+character.CurrentGas = 0;
+character.MaxGas = 0;
+character.Speed = 80;
+character.SetSpecial("SmokeBomb");
+}
+}
 
-    function FinishRace(human)
-    {
-        if (!self._finished)
-        {
-            Game.PrintAll(human.Player.Name + " finished at " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
-            Network.MyPlayer.SetCustomProperty("Finished", true);
-            self._finished = true;
-            human.Position = Vector3(3.66, 299.7, 679.6);
-        }
-    }
+function FinishRace(human)
+{
+if (!self._finished)
+{
+Game.PrintAll(human.Player.Name + " finished at " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
+Network.MyPlayer.SetCustomProperty("Finished", true);
+self._finished = true;
+human.Position = Vector3(3.66, 299.7, 679.6);
+}
+}
 
-    function OnTick()
-    {
-        Camera.FollowDistance = 0.0;
-		human = Network.MyPlayer.Character;
-    	if (human != null && human.Type == "Human")
-    	{
-	    	self._currentStamina = Math.Min(self._currentStamina + self._staminaRecoverRate * Time.TickTime, self._maxStamina);
-    		if (self._currentStamina >= self._staminaConsumeAmount)
-    		{
-    			human.CanDodge = true;
-    		}
-    		else
-    		{
-    			human.CanDodge = false;
-    		}
-    		if (human.State == "GroundDodge")
-    		{
-    			if (!self._isDodging)
-    			{
-	    			self._isDodging = true;
-	    			self._currentStamina = Math.Max(self._currentStamina - self._staminaConsumeAmount, 0.0);
-    			}
-    		}
-    		else
-    		{
-    			self._isDodging = false;
-    		}
-            text = "Dodge Stamina: " + String.FormatFloat(self._currentStamina, 0) + " / 100";
-            for (i in Range(0, 4, 1))
-            {
-                text = text + String.Newline;
-            }
-    		UI.SetLabel("BottomCenter", text);
-    	}
-        else
-        {
-            UI.SetLabel("BottomCenter", "");
-        }
-        if (!self._started)
-        {
-            Game.SpawnPlayer(Network.MyPlayer, false);
-            UI.SetLabel("TopCenter", "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
-            if (Time.GameTime > self.StartDelay)
-            {
-                self._started = true;
-                for (barrier in self._startBarriers)
-                {
-                    barrier.Active = false;
-                }
-                if (Network.MyPlayer.Status == "Alive")
-                {
-                    self._hasSpawned = true;
-                }
-            }
-        }
-        else
-        {
-            UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
-            if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
-            {
-                Game.SpawnPlayer(Network.MyPlayer, false);
-                self._hasSpawned = true;
-            }
-            elif (Network.MyPlayer.Status == "Dead")
-            {
-            	Network.MyPlayer.SetCustomProperty("Finished", true);
-            }
-            if (Network.IsMasterClient && !Game.IsEnding)
-            {
-                anyPlayerAlive = false;
-                anyPlayerSpawned = false;
-                for (player in Network.Players)
-                {
-                    if (player.Status != "Spectating")
-                    {
-                        anyPlayerSpawned = true;
-                        finished = player.GetCustomProperty("Finished");
-                        if (player.Status == "Alive" && (finished == null || !finished))
-                        {
-                            anyPlayerAlive = true;
-                        }
-                    }
-                }
-                if (anyPlayerSpawned && !anyPlayerAlive)
-                {
-                    UI.SetLabelAll("MiddleCenter", "All players have either escaped or perished.");
-                    Game.End(10);
-                }
-            }
-        }
-    }
+function OnTick()
+{
+Camera.FollowDistance = 0.0;
+human = Network.MyPlayer.Character;
+if (human != null && human.Type == "Human")
+{
+self._currentStamina = Math.Min(self._currentStamina + self._staminaRecoverRate * Time.TickTime, self._maxStamina);
+if (self._currentStamina >= self._staminaConsumeAmount)
+{
+human.CanDodge = true;
+}
+else
+{
+human.CanDodge = false;
+}
+if (human.State == "GroundDodge")
+{
+if (!self._isDodging)
+{
+self._isDodging = true;
+self._currentStamina = Math.Max(self._currentStamina - self._staminaConsumeAmount, 0.0);
+}
+}
+else
+{
+self._isDodging = false;
+}
+text = "Dodge Stamina: " + String.FormatFloat(self._currentStamina, 0) + " / 100";
+for (i in Range(0, 4, 1))
+{
+text = text + String.Newline;
+}
+UI.SetLabel("BottomCenter", text);
+}
+else
+{
+UI.SetLabel("BottomCenter", "");
+}
+if (!self._started)
+{
+Game.SpawnPlayer(Network.MyPlayer, false);
+UI.SetLabel("TopCenter", "Race Starts In: " + String.FormatFloat(self.StartDelay - Time.GameTime, 2));
+if (Time.GameTime > self.StartDelay)
+{
+self._started = true;
+for (barrier in self._startBarriers)
+{
+barrier.Active = false;
+}
+if (Network.MyPlayer.Status == "Alive")
+{
+self._hasSpawned = true;
+}
+}
+}
+else
+{
+UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
+if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
+{
+Game.SpawnPlayer(Network.MyPlayer, false);
+self._hasSpawned = true;
+}
+elif (Network.MyPlayer.Status == "Dead")
+{
+Network.MyPlayer.SetCustomProperty("Finished", true);
+}
+if (Network.IsMasterClient && !Game.IsEnding)
+{
+anyPlayerAlive = false;
+anyPlayerSpawned = false;
+for (player in Network.Players)
+{
+if (player.Status != "Spectating")
+{
+anyPlayerSpawned = true;
+finished = player.GetCustomProperty("Finished");
+if (player.Status == "Alive" && (finished == null || !finished))
+{
+anyPlayerAlive = true;
+}
+}
+}
+if (anyPlayerSpawned && !anyPlayerAlive)
+{
+UI.SetLabelAll("MiddleCenter", "All players have either escaped or perished.");
+Game.End(10);
+}
+}
+}
+}
 }
 
 /// Weather

@@ -804,9 +804,9 @@
 			{"Name": "Damage Region", "Asset": "Geometry/Cuboid", "Material": "Transparent|255/128/128/128|Misc/None|1/1|0/0|", 
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["DamageRegion|"]},
 			{"Name": "CaptureZone1", "Asset": "Interact/CaptureZone1", "Material": "Default|255/255/255/255|", 
-			"CollideMode": "Region", "CollideWith": "Characters"},
+			"CollideMode": "Region", "CollideWith": "Characters", "Static": false},
 			{"Name": "CaptureZone2", "Asset": "Interact/CaptureZone2", "Material": "Default|255/255/255/255|", 
-			"CollideMode": "Region", "CollideWith": "Characters"},
+			"CollideMode": "Region", "CollideWith": "Characters", "Static": false},
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]}
 		]
