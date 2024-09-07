@@ -77,7 +77,10 @@
 		{"Name": "RazenToast_Scout-Flight", "Volume": 1}
 	],
 	"Death": [
-		{"Name": "grabbed_short", "Volume": 1}
+		{"Name": "DeathSudden", "Volume": 1}
+	],
+	"Grabbed": [
+		{"Name": "DeathGrabbed", "Volume": 1}
 	],
 	"Effect": [
 		{"Name": "effect_play", "Volume": 1}

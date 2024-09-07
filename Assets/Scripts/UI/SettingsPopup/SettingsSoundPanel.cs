@@ -37,7 +37,7 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.HorseSoundEffect, UIManager.GetLocale(cat, sub, "HorseSoundEffect"));
             _currentSongLabel = ElementFactory.CreateDefaultLabel(DoublePanelRight, style, "", alignment: TextAnchor.MiddleLeft).GetComponent<Text>();
             ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.ForcePlaylist, UIManager.GetLocale(cat, sub, "ForcePlaylist"),
-                new string[] { "Default", "Custom", "Menu", "Peaceful", "Battle", "Boss", "Racing" }, elementWidth: 160f);
+                new string[] { "Default", "Custom", "Menu", "Ambient", "Peaceful", "Battle", "Racing" }, elementWidth: 160f);
             string custom = settings.CustomPlaylist.Value;
             if (custom == "")
                 custom = "None";

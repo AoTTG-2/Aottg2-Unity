@@ -34,6 +34,7 @@ namespace ApplicationManagers
         public static bool _muted = false;
         public bool _isDefaultPlaylist = false;
         private float _transitionTimeLeft = 0f;
+        private bool _isMenuTransition = false;
         private const float BattleTitanAnyDistance = 200f;
         private const float BattleTitanActiveDistance = 1000f;
         private const float BattleOtherAnyDistance = 500f;
@@ -76,7 +77,10 @@ namespace ApplicationManagers
 
         public static void PlayDeathSong()
         {
+            if (!_instance._isDefaultPlaylist)
+                return;
             var songInfo = _musicInfo["Death"][0];
+            _instance._isMenuTransition = false;
             PlayImmediateTransition(songInfo);
         }
 
@@ -85,12 +89,17 @@ namespace ApplicationManagers
             if (!SettingsManager.SoundSettings.TitanGrabMusic.Value)
                 return;
             var songInfo = _musicInfo["Grabbed"][0];
+            _instance._isMenuTransition = false;
             PlayImmediateTransition(songInfo);
         }
 
         public static void OnEscapeGrab()
         {
-            _instance._transitionTimeLeft = 0f;
+            if (_instance._transitionTimeLeft > 0f)
+            {
+                _instance._transitionTimeLeft = 0f;
+                _instance._songTimeLeft = 0f;
+            }
         }
 
         public static void PlayEffect()
@@ -102,6 +111,7 @@ namespace ApplicationManagers
         public static void PlayTransition()
         {
             var songInfo = _musicInfo["Transition"];
+            _instance._isMenuTransition = true;
             PlayImmediateTransition(songInfo[Random.Range(0, songInfo.Count)]);
         }
 
@@ -117,6 +127,8 @@ namespace ApplicationManagers
                 _instance._isDefaultPlaylist = true;
                 playlist = MusicPlaylist.Ambient;
             }
+            else
+                _instance._isDefaultPlaylist = false;
             FinishSetPlaylist(playlist);
         }
 
@@ -124,7 +136,11 @@ namespace ApplicationManagers
         {
             bool change = _instance._currentPlaylist != playlist;
             _instance._currentPlaylist = playlist;
-            if (change || forceNext)
+            if (_instance._isDefaultPlaylist || (!_instance._isMenuTransition && _instance._transitionTimeLeft > 0f))
+                _instance._songTimeLeft = 0f;
+            if (!_instance._isMenuTransition || playlist == MusicPlaylist.Battle)
+                _instance._transitionTimeLeft = 0f;
+            if (_instance._transitionTimeLeft <= 0f && (change || forceNext))
             {
                 _instance._currentSong = 0;
                 NextSong();
@@ -189,7 +205,9 @@ namespace ApplicationManagers
             {
                 if (songInfo.HasKey("Name"))
                 {
-                    clip = (AudioClip)ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    var asset = ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    if (asset != null)
+                        clip = (AudioClip)asset;
                     volume = songInfo["Volume"];
                     _instance._currentSongName = songInfo["Name"];
                 }
@@ -197,7 +215,9 @@ namespace ApplicationManagers
                 {
                     var playlist = _musicInfo[(string)songInfo["Playlist"]];
                     songInfo = playlist[Random.Range(0, playlist.Count)];
-                    clip = (AudioClip)ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    var asset = ResourceManager.LoadAsset("Music", songInfo["Name"]);
+                    if (asset != null)
+                        clip = (AudioClip)asset;
                     volume = songInfo["Volume"];
                     _instance._currentSongName = songInfo["Name"];
                 }
@@ -209,6 +229,7 @@ namespace ApplicationManagers
         public static void ChatNextSong()
         {
             _instance._songTimeLeft = 0f;
+            _instance._transitionTimeLeft = 0f;
         }
 
         public static void NextSong()
@@ -305,7 +326,7 @@ namespace ApplicationManagers
             {
                 if (_currentPlaylist != MusicPlaylist.Battle)
                 {
-                    if (ShouldPlayBattleMusic())
+                    if ((_transitionTimeLeft <= 0f || _instance._isMenuTransition) && ShouldPlayBattleMusic())
                         FinishSetPlaylist(MusicPlaylist.Battle);
                 }
                 if (_songTimeLeft <= 0f && _autoPlay && _transitionTimeLeft <= 0f)

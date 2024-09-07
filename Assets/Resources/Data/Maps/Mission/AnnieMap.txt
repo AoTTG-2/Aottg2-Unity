@@ -758,6 +758,7 @@ class Main
 
 	function OnGameStart()
 	{
+		Game.SetPlaylist("Battle");
 		Cutscene.Start("MainCutscene", true);
 	}
 
