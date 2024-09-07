@@ -1,52 +1,80 @@
 {
 	"Menu": [
-		{"Name": "dakros_main_theme", "Volume": 1},
-		{"Name": "david_moses", "Volume": 1},
-		{"Name": "meownist_settings", "Volume": 1},
-		{"Name": "blood_god_dakros_departure", "Volume": 1},
-		{"Name": "ertinos_up_there", "Volume": 1},
-		{"Name": "raivaru_missing", "Volume": 1}
+		{"Name": "BloodGod-Dakros_Departure", "Volume": 1},
+		{"Name": "Dakros_Colossal-Titan", "Volume": 1},
+		{"Name": "Dakros_Origin", "Volume": 1},
+		{"Name": "Dakros_Tribute", "Volume": 1},
+		{"Name": "Ertinos_Up-There", "Volume": 1},
+		{"Name": "Ertinos_Wandering", "Volume": 1},
+		{"Name": "Meownist_Settings", "Volume": 1},
+		{"Name": "NadimDoueiri_Adventure", "Volume": 1},
+		{"Name": "NadimDoueiri_Flying", "Volume": 1},
+		{"Name": "Raivaru_Missing", "Volume": 1},
+		{"Name": "RazenToast_Scout-Flight", "Volume": 1},
+		{"Name": "Warm-Moist-Beans_The-Stillness-Between", "Volume": 1}
+	],
 
+	"Ambient": [
+		{"Name": "Dakros_The-Ground-Is-Shaking", "Volume": 1},
+		{"Name": "David_Moses", "Volume": 1},
+		{"Name": "Green_Sorrowful-Plight", "Volume": 1},
+		{"Name": "Green_Uneasy-Respite", "Volume": 1},
+		{"Name": "Mikko_Forgotten-Memory", "Volume": 1},
+		{"Name": "NadimDoueiri_Adventure", "Volume": 1},
+		{"Name": "Raivaru_Warm-Breeze", "Volume": 1},
+		{"Name": "RazenToast_Black-Flares", "Volume": 1},
+		{"Name": "RazenToast_Fog", "Volume": 1},
+		{"Name": "RazenToast-Dakros_Aberrant", "Volume": 1}
 	],
-	"Default.Ordered": [
-		{"Playlist": "Peaceful"},
-		{"Playlist": "Battle"},
-		{"Playlist": "Boss"},
-		{"Playlist": "Battle"}
-	],
+
 	"Peaceful": [
-		{"Name": "dakros_green_plains", "Volume": 1},
-		{"Name": "dakros_origin", "Volume": 1},
-		{"Name": "ertinos_wandering", "Volume": 1},
-		{"Name": "meownist_forest", "Volume": 1},
-		{"Name": "nadimd_flying", "Volume": 1},
-		{"Name": "ertinos_up_there", "Volume": 1},
-		{"Name": "green_another_dawn", "Volume": 1},
-		{"Name": "green_foul_omens", "Volume": 1},
-		{"Name": "green_sorrowful_plight", "Volume": 1},
-		{"Name": "green_uneasy_respite", "Volume": 1},
-		{"Name": "raivaru_warm_breeze", "Volume": 1},
-		{"Name": "warmmoistbeans_the_stillness_between", "Volume": 1}
+		{"Name": "BloodGod-Dakros_Departure", "Volume": 1},
+		{"Name": "Dakros_Green-Plains", "Volume": 1},
+		{"Name": "Dakros_Origin", "Volume": 1},
+		{"Name": "Ertinos_Up-There", "Volume": 1},
+		{"Name": "Ertinos_Wandering", "Volume": 1},
+		{"Name": "Green_Another-Dawn", "Volume": 1},
+		{"Name": "Green_Foul-Omens", "Volume": 1},
+		{"Name": "Meownist_Forest", "Volume": 1},
+		{"Name": "MrLego_City", "Volume": 1},
+		{"Name": "MrLego_Peaceful", "Volume": 1},
+		{"Name": "NadimDoueiri_Flying", "Volume": 1},
+		{"Name": "Raivaru_Missing", "Volume": 1},
+		{"Name": "Warm-Moist-Beans_The-Stillness-Between", "Volume": 1}
 
 	],
 	"Battle": [
-		{"Name": "big_bobby_battle", "Volume": 1},
-		{"Name": "dakros_armored_fist", "Volume": 1},
-		{"Name": "dakros_battle_chant", "Volume": 1},
-		{"Name": "dakros_colossal", "Volume": 1}
+		{"Name": "Big-Bobby_Battle", "Volume": 1},
+		{"Name": "Dakros_Armored-Fist", "Volume": 1},
+		{"Name": "Dakros_Colossal-Titan", "Volume": 1},
+		{"Name": "Dakros_Shrill-Voices", "Volume": 1},
+		{"Name": "FreeFood_Titan-Sighted", "Volume": 1},
+		{"Name": "Meownist_Aleph", "Volume": 1},
+		{"Name": "Meownist_Annie", "Volume": 1},
+		{"Name": "Meownist_Combat", "Volume": 1},
+		{"Name": "Meownist_Finale", "Volume": 1},
+		{"Name": "Meownist_Genesis", "Volume": 1},
+		{"Name": "Meownist_Hesitation", "Volume": 1},
+		{"Name": "Meownist_More-Battle", "Volume": 1},
+		{"Name": "NadimDoueiri_Catch-Me", "Volume": 1},
+		{"Name": "NadimDoueiri_Lets-Fight", "Volume": 1},
+		{"Name": "NadimDoueiri_My-City", "Volume": 1},
+		{"Name": "NadimDoueiri_Noble-Heart", "Volume": 1},
+		{"Name": "NadimDoueiri_Outside-The-Walls-Part1", "Volume": 1},
+		{"Name": "NadimDoueiri_Outside-The-Walls-Part2", "Volume": 1},
+		{"Name": "NadimDoueiri_Soldiers-In-The-Wind", "Volume": 1},
+		{"Name": "NadimDoueiri_Sunset-Squad", "Volume": 1},
+		{"Name": "NadimDoueiri_Surrounded-By-Titans", "Volume": 1},
+		{"Name": "NadimDoueiri_The-Encounter", "Volume": 1},
+		{"Name": "NadimDoueiri_The-Protectors", "Volume": 1},
+		{"Name": "NinfarZ_You-See-Big-Crawler", "Volume": 1}
 	],
-	"Boss": [
-		{"Name": "dakros_shrill_voices", "Volume": 1},
-		{"Name": "meownist_combat", "Volume": 1},
-		{"Name": "meownist_finale", "Volume": 1},
-		{"Name": "meownist_genesis", "Volume": 1},
-		{"Name": "meownist_hesitation", "Volume": 1},
-		{"Name": "meownist_more_battle", "Volume": 1},
-		{"Name": "meownist_annie", "Volume": 1}
-	],
+
 	"Racing": [
-		{"Name": "meownist_ragakou_drift", "Volume": 1},
-		{"Name": "razentoast_scoutflight", "Volume": 1}
+		{"Name": "Meownist_Ragakou-Drift", "Volume": 1},
+		{"Name": "NadimDoueiri_Catch-Me", "Volume": 1},
+		{"Name": "NadimDoueiri_Sunset-Squad", "Volume": 1},
+		{"Name": "RazenToast_Scout-Flight", "Volume": 1}
 	],
 	"Death": [
 		{"Name": "grabbed_short", "Volume": 1}
