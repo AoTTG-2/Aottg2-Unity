@@ -774,10 +774,11 @@ namespace Characters
         {
             if (State == HumanState.Grab)
                 PlaySound(HumanSounds.Death5);
-            else if (Grounded)
-                PlaySound(HumanSounds.Death2);
             else
+            {
                 PlaySound(HumanSounds.Death2);
+                MusicManager.PlayDeathSong();
+            }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
