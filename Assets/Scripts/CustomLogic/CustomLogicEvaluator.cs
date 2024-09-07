@@ -256,7 +256,7 @@ namespace CustomLogic
         private void Init()
         {
             foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics"})
+            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
@@ -344,6 +344,8 @@ namespace CustomLogic
                     instance = new CustomLogicJsonBuiltin();
                 else if (className == "Physics")
                     instance = new CustomLogicPhysicsBuiltin();
+                else if (className == "LineRenderer")
+                    instance = new CustomLogicLineRendererBuiltin(null);
                 else
                     instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);

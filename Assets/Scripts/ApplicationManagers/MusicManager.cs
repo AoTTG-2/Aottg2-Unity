@@ -35,6 +35,10 @@ namespace ApplicationManagers
         public bool _isDefaultPlaylist = false;
         private float _transitionTimeLeft = 0f;
         private bool _isMenuTransition = false;
+        private bool _justPlayedMenuTransition = false;
+        private string _lastSongBeforeGrabbed = string.Empty;
+        private float _lastTimeBeforeGrabbed = 0f;
+        private bool _justEscapedGrab = false;
         private const float BattleTitanAnyDistance = 200f;
         private const float BattleTitanActiveDistance = 1000f;
         private const float BattleOtherAnyDistance = 500f;
@@ -90,6 +94,13 @@ namespace ApplicationManagers
                 return;
             var songInfo = _musicInfo["Grabbed"][0];
             _instance._isMenuTransition = false;
+            if (_instance._currentPlaylist == MusicPlaylist.Battle)
+            {
+                _instance._lastSongBeforeGrabbed = _instance._currentSongName;
+                _instance._lastTimeBeforeGrabbed = _instance._audio.time;
+            }
+            else
+                _instance._lastSongBeforeGrabbed = string.Empty;
             PlayImmediateTransition(songInfo);
         }
 
@@ -99,6 +110,7 @@ namespace ApplicationManagers
             {
                 _instance._transitionTimeLeft = 0f;
                 _instance._songTimeLeft = 0f;
+                _instance._justEscapedGrab = true;
             }
         }
 
@@ -112,11 +124,13 @@ namespace ApplicationManagers
         {
             var songInfo = _musicInfo["Transition"];
             _instance._isMenuTransition = true;
+            _instance._justPlayedMenuTransition = true;
             PlayImmediateTransition(songInfo[Random.Range(0, songInfo.Count)]);
         }
 
         public static void SetPlaylist(string playlist)
         {
+            bool forceNext = false;
             if (SettingsManager.SoundSettings.ForcePlaylist.Value != MusicPlaylist.Default)
             {
                 playlist = SettingsManager.SoundSettings.ForcePlaylist.Value;
@@ -126,10 +140,11 @@ namespace ApplicationManagers
             {
                 _instance._isDefaultPlaylist = true;
                 playlist = MusicPlaylist.Ambient;
+                forceNext = true;
             }
             else
                 _instance._isDefaultPlaylist = false;
-            FinishSetPlaylist(playlist);
+            FinishSetPlaylist(playlist, forceNext);
         }
 
         private static void FinishSetPlaylist(string playlist, bool forceNext = false)
@@ -140,17 +155,22 @@ namespace ApplicationManagers
                 _instance._songTimeLeft = 0f;
             if (!_instance._isMenuTransition || playlist == MusicPlaylist.Battle)
                 _instance._transitionTimeLeft = 0f;
-            if (_instance._transitionTimeLeft <= 0f && (change || forceNext))
+            if (playlist == MusicPlaylist.Battle && _instance._justEscapedGrab && _instance._lastSongBeforeGrabbed != string.Empty)
+            {
+                SetSong(_instance._lastSongBeforeGrabbed, _instance._lastTimeBeforeGrabbed);
+            }
+            else if (_instance._transitionTimeLeft <= 0f && (change || forceNext))
             {
                 _instance._currentSong = 0;
                 NextSong();
             }
+            _instance._justEscapedGrab = false;
         }
 
-        public static void SetSong(string song)
+        public static void SetSong(string song, float startTime = 0f)
         {
             var songInfo = FindSong(song);
-            SetSong(songInfo);
+            SetSong(songInfo, startTime);
         }
 
         private static void PlaySoundEffect(JSONNode songInfo)
@@ -163,7 +183,6 @@ namespace ApplicationManagers
                 {
                     clip = (AudioClip)ResourceManager.LoadAsset("Music", songInfo["Name"]);
                     volume = songInfo["Volume"];
-
                     _instance.StartCoroutine(_instance.StartSoundEffect(clip, volume));
                 }
             }            
@@ -195,7 +214,7 @@ namespace ApplicationManagers
             yield return new WaitForSeconds(clip.length);
         }
 
-        public static void SetSong(JSONNode songInfo)
+        public static void SetSong(JSONNode songInfo, float startTime = 0f)
         {
             _instance._autoPlay = false;
             AudioClip clip = null;
@@ -223,7 +242,7 @@ namespace ApplicationManagers
                 }
             }
             _instance.StopAllCoroutines();
-            _instance.StartCoroutine(_instance.FadeNextSong(clip, volume));
+            _instance.StartCoroutine(_instance.FadeNextSong(clip, volume, startTime));
         }
 
         public static void ChatNextSong()
@@ -269,7 +288,7 @@ namespace ApplicationManagers
             return null;
         }
 
-        private IEnumerator FadeNextSong(AudioClip nextClip, float volume)
+        private IEnumerator FadeNextSong(AudioClip nextClip, float volume, float startTime)
         {
             float fadeInTime = DefaultFadeInTime;
             float fadeOutTime = DefaultFadeOutTime;
@@ -300,8 +319,13 @@ namespace ApplicationManagers
             // set song
             _audio.clip = nextClip;
             _audio.volume = 0f;
-            _audio.Play();
             _songTimeLeft = nextClip.length - fadeOutTime;
+            if (startTime > 0f)
+            {
+                _audio.time = Mathf.Min(startTime, nextClip.length - 0.1f);
+                _songTimeLeft -= startTime;
+            }
+            _audio.Play();
             _songVolume = volume;
             _autoPlay = true;
 
@@ -327,17 +351,19 @@ namespace ApplicationManagers
                 if (_currentPlaylist != MusicPlaylist.Battle)
                 {
                     if ((_transitionTimeLeft <= 0f || _instance._isMenuTransition) && ShouldPlayBattleMusic())
-                        FinishSetPlaylist(MusicPlaylist.Battle);
+                        FinishSetPlaylist(MusicPlaylist.Battle, true);
                 }
                 if (_songTimeLeft <= 0f && _autoPlay && _transitionTimeLeft <= 0f)
                 {
                     if (ShouldPlayBattleMusic())
                         FinishSetPlaylist(MusicPlaylist.Battle, true);
-                    else if (_currentPlaylist == MusicPlaylist.Battle)
+                    else if (_currentPlaylist == MusicPlaylist.Battle || _justPlayedMenuTransition)
                         FinishSetPlaylist(MusicPlaylist.Ambient, true);
                     else
                         FinishSetPlaylist(MusicPlaylist.Peaceful, true);
                 }
+                if (_transitionTimeLeft <= 0f && _justPlayedMenuTransition)
+                    _justPlayedMenuTransition = false;
             }
             else if (_songTimeLeft <= 0f && _autoPlay && _transitionTimeLeft <= 0f)
                 NextSong();
