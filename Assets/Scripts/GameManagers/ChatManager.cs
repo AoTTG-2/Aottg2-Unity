@@ -331,7 +331,7 @@ namespace GameManagers
         [CommandAttribute("nextsong", "/nextsong: Play next song in playlist.")]
         private static void NextSong(string[] args)
         {
-            MusicManager.NextSong();
+            MusicManager.ChatNextSong();
         }
 
         [CommandAttribute("pause", "/pause: Pause the multiplayer game.")]

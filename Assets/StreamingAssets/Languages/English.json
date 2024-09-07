@@ -54,7 +54,8 @@
 		"Join": "Join",
 		"Icon": "Icon",
 		"Clear": "Clear",
-		"ExternalLinkConfirm": "You are about to open an external link"
+		"ExternalLinkConfirm": "You are about to open an external link",
+		"PressAnyKey": "Press any key to continue."
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",

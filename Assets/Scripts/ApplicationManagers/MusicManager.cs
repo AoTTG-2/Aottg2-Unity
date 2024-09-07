@@ -6,6 +6,10 @@ using Events;
 using SimpleJSONFixed;
 using Settings;
 using System.Runtime.CompilerServices;
+using UnityEngine.SceneManagement;
+using GameManagers;
+using Cameras;
+using Characters;
 
 namespace ApplicationManagers
 {
@@ -21,12 +25,18 @@ namespace ApplicationManagers
         private float _songVolume;
         private bool _autoPlay;
         private bool _isFading;
-        private const float FadeTime = 1.5f;
+        private const float BattleFadeInTime = 1f;
+        private const float DefaultFadeOutTime = 1f;
+        private const float DefaultFadeInTime = 5f;
         private int _currentSong;
-        public float _deathSongTimeLeft;
         private List<string> _customPlaylist = new List<string>();
         private string _currentSongName;
         public static bool _muted = false;
+        public bool _isDefaultPlaylist = false;
+        private float _transitionTimeLeft = 0f;
+        private const float BattleTitanAnyDistance = 200f;
+        private const float BattleTitanActiveDistance = 1000f;
+        private const float BattleOtherAnyDistance = 500f;
 
         public static void Init()
         {
@@ -46,10 +56,12 @@ namespace ApplicationManagers
 
         private static void OnLoadScene(SceneName sceneName)
         {
-            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor || 
-                sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer || sceneName == SceneName.Gallery || 
+            if (sceneName == SceneName.MainMenu || sceneName == SceneName.MapEditor ||
+                sceneName == SceneName.CharacterEditor || sceneName == SceneName.SnapshotViewer || sceneName == SceneName.Gallery ||
                 sceneName == SceneName.Credits)
                 SetPlaylist(MusicPlaylist.Menu);
+            else if (sceneName == SceneName.InGame)
+                SetPlaylist(MusicPlaylist.Default);
         }
 
         public static void ApplySoundSettings()
@@ -58,16 +70,27 @@ namespace ApplicationManagers
                 return;
             if (!_instance._isFading)
                 _instance._audio.volume = _instance._songVolume * GetMusicVolume();
-            if (SettingsManager.SoundSettings.ForcePlaylist.Value != "Default")
+            if (SettingsManager.SoundSettings.ForcePlaylist.Value != MusicPlaylist.Default)
                 SetPlaylist(SettingsManager.SoundSettings.ForcePlaylist.Value);
         }
 
         public static void PlayDeathSong()
         {
-            if (!SettingsManager.SoundSettings.TitanGrabMusic.Value)
-                return;
             var songInfo = _musicInfo["Death"][0];
             PlayImmediateTransition(songInfo);
+        }
+
+        public static void PlayGrabbedSong()
+        {
+            if (!SettingsManager.SoundSettings.TitanGrabMusic.Value)
+                return;
+            var songInfo = _musicInfo["Grabbed"][0];
+            PlayImmediateTransition(songInfo);
+        }
+
+        public static void OnEscapeGrab()
+        {
+            _instance._transitionTimeLeft = 0f;
         }
 
         public static void PlayEffect()
@@ -82,26 +105,26 @@ namespace ApplicationManagers
             PlayImmediateTransition(songInfo[Random.Range(0, songInfo.Count)]);
         }
 
-        public static void StopPlaylist()
+        public static void SetPlaylist(string playlist)
         {
-            _instance._currentPlaylist = string.Empty;
-        }
-
-        public static void StopSong()
-        {
-            SetSong(string.Empty);
-        }
-
-        public static void SetPlaylist(string playlist, bool forceNext = false)
-        {
-            if (SettingsManager.SoundSettings.ForcePlaylist.Value != "Default")
+            if (SettingsManager.SoundSettings.ForcePlaylist.Value != MusicPlaylist.Default)
             {
                 playlist = SettingsManager.SoundSettings.ForcePlaylist.Value;
                 _instance._customPlaylist = new List<string>(SettingsManager.SoundSettings.CustomPlaylist.Value.Split(','));
             }
+            if (playlist == MusicPlaylist.Default)
+            {
+                _instance._isDefaultPlaylist = true;
+                playlist = MusicPlaylist.Ambient;
+            }
+            FinishSetPlaylist(playlist);
+        }
+
+        private static void FinishSetPlaylist(string playlist, bool forceNext = false)
+        {
             bool change = _instance._currentPlaylist != playlist;
             _instance._currentPlaylist = playlist;
-            if (forceNext || change)
+            if (change || forceNext)
             {
                 _instance._currentSong = 0;
                 NextSong();
@@ -144,6 +167,7 @@ namespace ApplicationManagers
                     _instance._audio.volume = volume * GetMusicVolume();
                     _instance._audio.Play();
                     _instance._songTimeLeft = clip.length;
+                    _instance._transitionTimeLeft = clip.length;
                 }
             }
         }
@@ -182,6 +206,11 @@ namespace ApplicationManagers
             _instance.StartCoroutine(_instance.FadeNextSong(clip, volume));
         }
 
+        public static void ChatNextSong()
+        {
+            _instance._songTimeLeft = 0f;
+        }
+
         public static void NextSong()
         {
             if (_instance._currentPlaylist == string.Empty)
@@ -199,15 +228,7 @@ namespace ApplicationManagers
             {
                 JSONNode playlist = _musicInfo[_instance._currentPlaylist];
                 JSONNode songInfo;
-                if (_instance._currentPlaylist.EndsWith("Ordered"))
-                {
-                    songInfo = playlist[_instance._currentSong];
-                    _instance._currentSong += 1;
-                    if (_instance._currentSong >= playlist.Count)
-                        _instance._currentSong = 0;
-                }
-                else
-                    songInfo = playlist[Random.Range(0, playlist.Count)];
+                songInfo = playlist[Random.Range(0, playlist.Count)];
                 SetSong(songInfo);
             }
         }
@@ -229,15 +250,19 @@ namespace ApplicationManagers
 
         private IEnumerator FadeNextSong(AudioClip nextClip, float volume)
         {
+            float fadeInTime = DefaultFadeInTime;
+            float fadeOutTime = DefaultFadeOutTime;
+            if (_instance._currentPlaylist == MusicPlaylist.Battle)
+                fadeInTime = BattleFadeInTime;
             // fade out
             _isFading = true;
-            float fadeTimeLeft = FadeTime;
+            float fadeTimeLeft = fadeOutTime;
             if (_audio.isPlaying)
             {
                 _songVolume = _audio.volume;
                 while (fadeTimeLeft > 0f)
                 {
-                    float lerp = fadeTimeLeft / FadeTime;
+                    float lerp = fadeTimeLeft / fadeOutTime;
                     _audio.volume = lerp * _songVolume;
                     fadeTimeLeft -= 0.1f;
                     yield return new WaitForSeconds(0.1f);
@@ -255,15 +280,15 @@ namespace ApplicationManagers
             _audio.clip = nextClip;
             _audio.volume = 0f;
             _audio.Play();
-            _songTimeLeft = nextClip.length - FadeTime;
+            _songTimeLeft = nextClip.length - fadeOutTime;
             _songVolume = volume;
             _autoPlay = true;
 
             // fade in
-            fadeTimeLeft = FadeTime;
+            fadeTimeLeft = fadeInTime;
             while (fadeTimeLeft > 0f)
             {
-                float lerp = 1f - fadeTimeLeft / FadeTime;
+                float lerp = 1f - fadeTimeLeft / fadeInTime;
                 _audio.volume = lerp * _songVolume * GetMusicVolume();
                 fadeTimeLeft -= 0.1f;
                 yield return new WaitForSeconds(0.1f);
@@ -275,9 +300,60 @@ namespace ApplicationManagers
         private void Update()
         {
             _songTimeLeft -= Time.deltaTime;
-            _deathSongTimeLeft -= Time.deltaTime;
-            if (_songTimeLeft <= 0f && _autoPlay && _deathSongTimeLeft <= 0f)
+            _transitionTimeLeft -= Time.deltaTime;
+            if (_isDefaultPlaylist)
+            {
+                if (_currentPlaylist != MusicPlaylist.Battle)
+                {
+                    if (ShouldPlayBattleMusic())
+                        FinishSetPlaylist(MusicPlaylist.Battle);
+                }
+                if (_songTimeLeft <= 0f && _autoPlay && _transitionTimeLeft <= 0f)
+                {
+                    if (ShouldPlayBattleMusic())
+                        FinishSetPlaylist(MusicPlaylist.Battle, true);
+                    else if (_currentPlaylist == MusicPlaylist.Battle)
+                        FinishSetPlaylist(MusicPlaylist.Ambient, true);
+                    else
+                        FinishSetPlaylist(MusicPlaylist.Peaceful, true);
+                }
+            }
+            else if (_songTimeLeft <= 0f && _autoPlay && _transitionTimeLeft <= 0f)
                 NextSong();
+        }
+
+        private bool ShouldPlayBattleMusic()
+        {
+            if (SceneLoader.SceneName == SceneName.InGame && SceneLoader.CurrentCamera != null && SceneLoader.CurrentGameManager != null)
+            {
+                if (SceneLoader.CurrentCamera is InGameCamera && SceneLoader.CurrentGameManager is InGameManager)
+                {
+                    var follow = ((InGameCamera)SceneLoader.CurrentCamera)._follow;
+                    var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                    if (follow == null)
+                        return false;
+                    foreach (var character in inGameManager.GetAllCharacters())
+                    {
+                        if (!TeamInfo.SameTeam(character, follow))
+                        {
+                            var distance = Vector3.Distance(character.Cache.Transform.position, follow.Cache.Transform.position);
+                            if (character is BasicTitan)
+                            {
+                                if (distance < BattleTitanAnyDistance)
+                                    return true;
+                                if (distance < BattleTitanActiveDistance && ((BasicTitan)character).TargetViewId > 0)
+                                    return true;
+                            }
+                            else
+                            {
+                                if (distance < BattleOtherAnyDistance)
+                                    return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         private static float GetMusicVolume()
@@ -324,8 +400,9 @@ namespace ApplicationManagers
     public class MusicPlaylist
     {
         public static string Menu = "Menu";
-        public static string Default = "Default.Ordered";
+        public static string Default = "Default";
         public static string Peaceful = "Peaceful";
+        public static string Ambient = "Ambient";
         public static string Battle = "Battle";
         public static string Boss = "Boss";
         public static string Racing = "Racing";

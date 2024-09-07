@@ -612,7 +612,7 @@ namespace Controllers
                 if (character == null || character.Dead)
                     continue;
                 float distance = Vector3.Distance(character.Cache.Transform.position, position);
-                if (distance < nearestDistance)
+                if (distance < nearestDistance && distance < DetectRange)
                 {
                     nearestDistance = distance;
                     nearestCharacter = character;

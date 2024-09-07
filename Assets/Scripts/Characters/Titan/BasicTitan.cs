@@ -43,6 +43,7 @@ namespace Characters
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
+        public bool LookAtTarget = false;
         public int HeadPrefab;
         private Outline _outline = null;
         public override bool CanSprint => true;
@@ -1118,21 +1119,23 @@ namespace Characters
                 if (AI)
                 {
                     var canTarget = false;
-                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
-                    {
-                        canTarget = TargetEnemy is BaseCharacter && !IsCrawler
-                                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f
-                                    && canLook;
-                    }
-                    if (canTarget)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
                         var character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
+                        canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
+                    }
+                    else
+                        TargetViewId = -1;
+                    if (canTarget)
+                    {
+                        var character = (BaseCharacter)TargetEnemy;
+                        LookAtTarget = true;
                         LateUpdateHead(character);
                     }
                     else
                     {
-                        TargetViewId = -1;
+                        LookAtTarget = false;
                         LateUpdateHead(null);
                     }
                 }
@@ -1155,8 +1158,13 @@ namespace Characters
                 bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
                 if (AI)
                 {
-                    var character = Util.FindCharacterByViewId(TargetViewId);
-                    LateUpdateHead(character);
+                    if (LookAtTarget && TargetViewId >= 0)
+                    {
+                        var character = Util.FindCharacterByViewId(TargetViewId);
+                        LateUpdateHead(character);
+                    }
+                    else
+                        LateUpdateHead(null);
                 }
                 else
                 {

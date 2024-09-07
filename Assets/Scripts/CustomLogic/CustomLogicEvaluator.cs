@@ -136,7 +136,6 @@ namespace CustomLogic
                 foreach (var instance in _callback)
                     EvaluateMethod(instance, "OnGameStart", new List<object>());
                 CustomLogicManager._instance.StartCoroutine(OnSecond());
-                CustomLogicManager._instance.StartCoroutine(WaitAndSetDefaultPlaylist());
             }
             catch (Exception e)
             {
@@ -236,13 +235,6 @@ namespace CustomLogic
             else if (character is BaseShifter)
                 return new CustomLogicShifterBuiltin((BaseShifter)character);
             return null;
-        }
-
-        private IEnumerator WaitAndSetDefaultPlaylist()
-        {
-            yield return new WaitForSeconds(3f);
-            if (!HasSetMusic)
-                MusicManager.SetPlaylist(MusicPlaylist.Default);
         }
 
         private IEnumerator OnSecond()

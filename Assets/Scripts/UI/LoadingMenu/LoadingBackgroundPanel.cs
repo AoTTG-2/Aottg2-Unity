@@ -45,7 +45,10 @@ namespace UI
             RawImage image = _background.transform.Find("Image").GetComponent<RawImage>();
             try
             {
-                image.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Backgrounds/" + backgrounds[backgroundIndex].Value);
+                if (BackgroundIndex < 0)
+                    image.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Backgrounds/MainBackgroundBlankTexture");
+                else
+                    image.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Backgrounds/" + backgrounds[backgroundIndex].Value);
                 float height = (1928f / image.texture.width) * image.texture.height;
                 height = Mathf.Max(height, 1084f);
                 image.GetComponent<RectTransform>().sizeDelta = new Vector2(1928f, height);

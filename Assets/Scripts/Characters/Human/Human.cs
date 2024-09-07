@@ -458,7 +458,7 @@ namespace Characters
             var windEmission = HumanCache.Wind.emission;
             windEmission.enabled = false;
             if (IsMainCharacter())
-                MusicManager.PlayDeathSong();
+                MusicManager.PlayGrabbedSong();
         }
 
         public void Ungrab(bool notifyTitan, bool idle)
@@ -469,6 +469,8 @@ namespace Characters
             SetTriggerCollider(false);
             if (idle)
                 Idle();
+            if (IsMainCharacter())
+                MusicManager.OnEscapeGrab();
         }
 
         public void Carry(Human carrier, Transform back)

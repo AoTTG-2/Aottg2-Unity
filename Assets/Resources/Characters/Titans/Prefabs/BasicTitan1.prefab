@@ -3730,6 +3730,7 @@ MonoBehaviour:
   BellyFlopTime: 5.5
   RockThrow1Speed: 200
   TargetViewId: -1
+  LookAtTarget: 0
   HeadPrefab: 0
 --- !u!111 &11161908
 Animation:

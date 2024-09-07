@@ -9,9 +9,12 @@ static class PhotonExtensions
 {
     public static void SetCustomProperty(this Player player, string key, object value)
     {
-        ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
-        properties.Add(key, value);
-        player.SetCustomProperties(properties);
+        if (player.GetCustomProperty(key) != value)
+        {
+            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+            properties.Add(key, value);
+            player.SetCustomProperties(properties);
+        }
     }
 
     public static void SetCustomProperties(this Player player, Dictionary<string, object> dictionary)
