@@ -81,7 +81,7 @@ namespace Characters
             AI = ai;
             if (!ai)
             {
-                Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
+                Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
                 Guild = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Guild);
             }
             Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });

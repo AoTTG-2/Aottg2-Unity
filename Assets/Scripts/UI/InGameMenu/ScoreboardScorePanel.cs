@@ -104,8 +104,7 @@ namespace UI
         private void SetRow(Transform row, Player player)
         {
             string playerName = player.GetStringProperty(PlayerProperty.Name);
-            if (playerName.Length > 15)
-                playerName = playerName.Substring(0, 15) + "...";
+            playerName = playerName.TruncateRichText(15);
 
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + playerName;
             string status = player.GetStringProperty(PlayerProperty.Status);
