@@ -1282,7 +1282,7 @@ namespace Characters
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
                 GameProgressManager.RegisterSpeed(gameObject, _currentVelocity.magnitude);
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 6f);
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 10f);
                 CheckGround();
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
@@ -1965,6 +1965,8 @@ namespace Characters
                 }
             }
             if (IsFiringThunderspear())
+                TargetAngle = oldTargetAngle;
+            if (Grounded && HasDirection && State != HumanState.Attack && State != HumanState.Slide)
                 TargetAngle = oldTargetAngle;
         }
 
