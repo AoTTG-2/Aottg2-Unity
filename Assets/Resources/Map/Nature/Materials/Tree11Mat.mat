@@ -57,14 +57,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Stain_Texture:
-        m_Texture: {fileID: 2800000, guid: 8aa17744ec938074fa3837101b018c88, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2254dbd13b7a98d499227513c5764b7e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Color_Variation_Scale: 0
+    - _Color_Variation_Scale: 1
     - _Moss_Level: 5
     - _Stain_Intensity: 1
     m_Colors:
