@@ -21,7 +21,7 @@ namespace CustomLogic
             {
                 GameObject obj = new GameObject();
                 var renderer = obj.AddComponent<LineRenderer>();
-                renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/BasicMaterial", true);
+                renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/TransparentMaterial", true);
                 renderer.material.color = Color.black;
                 renderer.startWidth = 1f;
                 renderer.endWidth = 1f;

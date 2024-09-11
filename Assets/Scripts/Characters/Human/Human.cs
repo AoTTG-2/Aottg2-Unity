@@ -1364,7 +1364,8 @@ namespace Characters
                     force.y = 0f;
                     if (Cache.Animation.IsPlaying(HumanAnimations.Jump) && Cache.Animation[HumanAnimations.Jump].normalizedTime > 0.18f)
                     {
-                        float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
+                        // float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
+                        float jumpSpeed = 20f;
                         if (_currentVelocity.y > 0f)
                             jumpSpeed -= _currentVelocity.y;
                         force.y += Mathf.Max(jumpSpeed, 0f);
