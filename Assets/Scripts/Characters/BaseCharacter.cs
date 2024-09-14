@@ -547,6 +547,20 @@ namespace Characters
                 StopSound(sound);
         }
 
+        protected virtual void ToggleSoundLocal(string sound, bool toggle)
+        {
+            if (toggle && !Cache.AudioSources[sound].isPlaying)
+            {
+                if (Cache.AudioSources.ContainsKey(sound))
+                    Cache.AudioSources[sound].Play();
+            }
+            else if (!toggle && Cache.AudioSources[sound].isPlaying)
+            {
+                if (Cache.AudioSources.ContainsKey(sound))
+                    Cache.AudioSources[sound].Stop();
+            }
+        }
+
         protected virtual void OnDestroy()
         {
         }

@@ -2386,6 +2386,8 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
+            if (HookLeft == null || HookRight == null)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHookState(state, info);
             else
@@ -2943,6 +2945,8 @@ namespace Characters
         protected void ToggleBladeTrailsRPC(bool toggle, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (Setup == null)
                 return;
             if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
             {
