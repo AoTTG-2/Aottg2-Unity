@@ -849,8 +849,6 @@ namespace Characters
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
-                if (DebugTesting.DebugPhase)
-                    GetComponent<CapsuleCollider>().isTrigger = true;
             }
         }
 

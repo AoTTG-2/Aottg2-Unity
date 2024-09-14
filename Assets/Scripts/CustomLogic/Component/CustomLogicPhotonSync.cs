@@ -91,7 +91,8 @@ namespace CustomLogic
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
             var player = info.Sender;
-            _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message);
+            if (_networkView != null)
+                _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message);
         }
 
         public void SendMessage(Player player, string message)

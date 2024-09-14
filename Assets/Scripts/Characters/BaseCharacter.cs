@@ -390,8 +390,9 @@ namespace Characters
                 if (killer.IsMainCharacter())
                     _inGameManager.RegisterMainCharacterKill(this);
             }
+            if (CustomLogicManager.Evaluator == null)
+                return;
             CustomLogicManager.Evaluator.OnCharacterDie(this, killer, name);
-
             if (_inGameManager.CurrentCharacter == this)
                 InGameManager.OnLocalPlayerDied(Cache.PhotonView.Owner);
         }
@@ -409,6 +410,8 @@ namespace Characters
                 if (killer.IsMainCharacter())
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
+            if (CustomLogicManager.Evaluator == null)
+                return;
             if (damage > 0)
                 CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
             if (SettingsManager.UISettings.GameFeed.Value)
