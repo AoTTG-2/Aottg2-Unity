@@ -140,7 +140,8 @@ namespace Characters
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             Dead = true;
-            Setup.DeleteDie();
+            if (Setup != null)
+                Setup.DeleteDie();
             GetComponent<CapsuleCollider>().enabled = false;
             if (IsMine())
             {
@@ -2374,7 +2375,7 @@ namespace Characters
         [PunRPC]
         public void LoadSkinRPC(int horse, string url, PhotonMessageInfo info)
         {
-            if (info.Sender != photonView.Owner)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             HumanCustomSkinSettings settings = SettingsManager.CustomSkinSettings.Human;
             if (settings.SkinsEnabled.Value && (!settings.SkinsLocal.Value || photonView.IsMine))
@@ -2386,7 +2387,7 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
-            if (HookLeft == null || HookRight == null)
+            if (!FinishSetup)
                 return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHookState(state, info);
@@ -2397,6 +2398,8 @@ namespace Characters
         [PunRPC]
         public void SetHookingRPC(bool left, int hookId, Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
+            if (!FinishSetup)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooking(baseVelocity, relativeVelocity, info);
             else
@@ -2406,6 +2409,8 @@ namespace Characters
         [PunRPC]
         public void SetHookedRPC(bool left, int hookId, Vector3 position, int viewId, int objectId, PhotonMessageInfo info)
         {
+            if (!FinishSetup)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooked(position, viewId, objectId, info);
             else
@@ -2415,7 +2420,7 @@ namespace Characters
         [PunRPC]
         public void SetSmokeRPC(bool active, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != Cache.PhotonView.Owner || !FinishSetup)
                 return;
             var emission = HumanCache.Smoke.emission;
             emission.enabled = active;
@@ -2431,7 +2436,7 @@ namespace Characters
         [PunRPC]
         protected void ToggleSparksRPC(bool toggle, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != Cache.PhotonView.Owner || !FinishSetup)
                 return;
             var emission = HumanCache.Sparks.emission;
             emission.enabled = toggle;
@@ -2445,7 +2450,7 @@ namespace Characters
         [PunRPC]
         public void SetThunderspearsRPC(bool hasLeft, bool hasRight, PhotonMessageInfo info)
         {
-            if (info.Sender != photonView.Owner)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             if (Setup._part_blade_l != null)
                 Setup._part_blade_l.SetActive(hasLeft);
@@ -2923,6 +2928,8 @@ namespace Characters
         protected void ToggleBladesRPC(bool toggle, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!FinishSetup)
                 return;
             if (toggle)
             {

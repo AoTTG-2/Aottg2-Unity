@@ -124,6 +124,19 @@
 				},
 				{
 					"Name": "Rising Flood"
+				},
+				{
+					"Name": "Hide and Seek",
+					"MiscSettings": {
+						"AllowPlayerTitans": false,
+						"AllowShifterSpecials": false,
+						"AllowShifters": false,
+						"AllowBlades": true,
+						"AllowAHSS": true,
+						"AllowThunderspears": false,
+						"AllowAPG": false,
+						"GlobalMinimapDisable": true
+					}
 				}
 			]
 		},

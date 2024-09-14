@@ -84,6 +84,7 @@ namespace UI
             misc.Horses.Value = false;
             misc.APGPVP.Value = false;
             misc.RealismMode.Value = false;
+            misc.GlobalMinimapDisable.Value = false;
         }
     }
 }

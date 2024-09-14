@@ -1,7 +1,9 @@
 ﻿using ApplicationManagers;
 using Characters;
+using GameManagers;
 using Settings;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -17,6 +19,12 @@ namespace CustomLogic
         {
             if (name == "GetKeyHold" || name == "GetKeyDown" || name == "GetKeyUp")
             {
+                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                if (gameManager.GlobalPause)
+                    return false;
+                bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
+                if (inMenu)
+                    return false;
                 string key = (string)parameters[0];
                 string[] strArr = key.Split('/');
                 KeybindSetting keybind = (KeybindSetting)((SaveableSettingsContainer)SettingsManager.InputSettings.Settings[strArr[0]]).Settings[strArr[1]];
@@ -26,7 +34,7 @@ namespace CustomLogic
                     return keybind.GetKeyUp();
                 if (name == "GetKeyHold")
                     return keybind.GetKey();
-                return null;
+                return false;
             }
             if (name == "GetKeyName")
             {

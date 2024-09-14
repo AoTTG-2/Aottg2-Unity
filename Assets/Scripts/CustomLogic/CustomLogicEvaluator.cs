@@ -172,6 +172,8 @@ namespace CustomLogic
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
             var characterBuiltin = GetCharacterBuiltin(character);
+            if (characterBuiltin == null)
+                return;
             foreach (var instance in _callback)
                 EvaluateMethod(instance, "OnPlayerSpawn", new List<object>() { playerBuiltin, characterBuiltin });
         }
@@ -179,6 +181,8 @@ namespace CustomLogic
         public void OnCharacterSpawn(BaseCharacter character)
         {
             var builtin = GetCharacterBuiltin(character);
+            if (builtin == null)
+                return;
             foreach (var instance in _callback)
                 EvaluateMethod(instance, "OnCharacterSpawn", new List<object>() { builtin });
         }
