@@ -79,25 +79,32 @@ namespace UI
                 conditionToValue.Add(strArray[0], strArray[1]);
             }
             string finalTitle = "";
-            for (int i = 0; i < locale.Length; i++)
+            try
             {
-                if (locale[i] == '{')
+                for (int i = 0; i < locale.Length; i++)
                 {
-                    finalTitle += HandleConditionVariable(locale, i, conditionToValue);
-                    i = locale.IndexOf('}', i);
+                    if (locale[i] == '{')
+                    {
+                        finalTitle += HandleConditionVariable(locale, i, conditionToValue);
+                        i = locale.IndexOf('}', i);
+                    }
+                    else if (locale[i] == '[')
+                    {
+                        int closingPar = locale.IndexOf(']', i);
+                        int openingCurly = locale.IndexOf('{', i);
+                        int closingCurly = locale.IndexOf('}', i);
+                        string condition = HandleConditionVariable(locale, openingCurly, conditionToValue);
+                        if (condition != string.Empty)
+                            finalTitle += locale.Substring(i + 1, openingCurly - i - 1) + condition + locale.Substring(closingCurly + 1, closingPar - closingCurly - 1);
+                        i = closingPar;
+                    }
+                    else
+                        finalTitle += locale[i].ToString();
                 }
-                else if (locale[i] == '[')
-                {
-                    int closingPar = locale.IndexOf(']', i);
-                    int openingCurly = locale.IndexOf('{', i);
-                    int closingCurly = locale.IndexOf('}', i);
-                    string condition = HandleConditionVariable(locale, openingCurly, conditionToValue);
-                    if (condition != string.Empty)
-                        finalTitle += locale.Substring(i + 1, openingCurly - i - 1) + condition + locale.Substring(closingCurly + 1, closingPar - closingCurly - 1);
-                    i = closingPar;
-                }
-                else
-                    finalTitle += locale[i].ToString();
+            }
+            catch
+            {
+                finalTitle = "Locale error.";
             }
             panel.Find("Panel/Title").GetComponent<Text>().text = finalTitle;
         }

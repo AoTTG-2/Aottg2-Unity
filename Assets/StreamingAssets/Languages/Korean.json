@@ -325,7 +325,7 @@
 		"UI.FadeLoadscreen": "페이드 로드화면",
 		"UI.FadeLoadscreenTooltip": "다시 시작할 때 로드 화면이 사라집니다. 이 기능을 비활성화하면 게임이 약간 더 빠르게 로드됩니다.",
 		"UI.ChatWidth": "채팅 넓이",
-		"UI.ChatHeight": "채팅 넓이",
+		"UI.ChatHeight": "채팅 높이",
 		"UI.ChatFontSize": "채팅 폰트 사이즈",
 		"Keybinds.General.Forward": "앞",
 		"Keybinds.General.Back": "뒤",

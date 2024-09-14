@@ -249,4 +249,11 @@ static class MiscExtensions
             return InGameManager.AllPlayerInfo[player.ActorNumber];
         return null;
     }
+
+    public static string ReverseString(this string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
 }
