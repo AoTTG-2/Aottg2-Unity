@@ -274,8 +274,12 @@ namespace GameManagers
             var player = GetPlayer(args);
             if (args.Length > 2 && player != null)
             {
-                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + args[2], player);
-                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + args[2]);
+                string[] msgArgs = new string[args.Length - 2];
+                Array.ConstrainedCopy(args, 2, msgArgs, 0, msgArgs.Length);
+                string message = string.Join(' ', msgArgs);
+
+                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + message, player);
+                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + message);
             }
         }
 
