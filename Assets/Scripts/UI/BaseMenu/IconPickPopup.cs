@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using System.Collections;
 using ApplicationManagers;
-using GameManagers;
-using Map;
 using Utility;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 namespace UI
 {
@@ -40,7 +37,7 @@ namespace UI
                     onClick: () => OnBottomBarButtonClick("Back"));
         }
 
-        public void Show(BaseSetting setting, Text label, string[] options, string[] icons, UnityAction onSelect)
+        public void Show(BaseSetting setting, Text label, string[] options, string[] icons, string[] tooltips, UnityAction onSelect)
         {
             _setting = setting;
             _onSelect = onSelect;
@@ -51,11 +48,16 @@ namespace UI
             _groups.Clear();
             if (options.Length != icons.Length)
                 throw new Exception("Options and icons not equal length");
+            if (tooltips != null && options.Length != tooltips.Length)
+                throw new Exception("Options and tooltips not equal length");
             var itemNames = Util.GroupItems(options.ToList(), Columns);
             var iconNames = Util.GroupItems(icons.ToList(), Columns);
+            var tooltipNames = tooltips != null
+                ? Util.GroupItems(tooltips.ToList(), Columns)
+                : null;
             _currentIndex = 0;
             for (int i = 0; i < itemNames.Count; i++)
-                CreateRow(itemNames[i], iconNames[i]);
+                CreateRow(itemNames[i], iconNames[i], tooltipNames[i]);
             base.Show();
         }
 
@@ -64,7 +66,7 @@ namespace UI
             Hide();
         }
 
-        protected void CreateRow(List<string> items, List<string> icons)
+        protected void CreateRow(List<string> items, List<string> icons, List<string> tooltips)
         {
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, VerticalSpacing, TextAnchor.MiddleLeft);
             _groups.Add(group);
@@ -81,6 +83,8 @@ namespace UI
                     {
                         var texture = (Texture2D)ResourceManager.LoadAsset(string.Empty, icons[i], true);
                         obj.transform.Find("Icon").GetComponent<RawImage>().texture = texture;
+                        if (tooltips?[i] != string.Empty)
+                            obj.GetOrAddComponent<HoverTooltip>().Message = tooltips[i];
                     }
                 }
                 catch

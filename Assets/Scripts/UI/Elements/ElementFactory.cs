@@ -330,12 +330,12 @@ namespace UI
         }
 
         public static GameObject CreateIconPickSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
-            string[] options, string[] icons, IconPickPopup popup, string tooltip = "", float elementWidth = 0f, float elementHeight = 0f, 
+            string[] options, string[] icons, IconPickPopup popup, string tooltip = "", string[] tooltips = null, float elementWidth = 0f, float elementHeight = 0f, 
             UnityAction onSelect = null)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/ButtonSetting");
             var element = buttonSetting.AddComponent<IconPickSettingElement>();
-            element.Setup(setting, style, title, options, icons, popup, tooltip, elementWidth, elementHeight, onSelect);
+            element.Setup(setting, style, title, options, icons, tooltips, popup, tooltip, elementWidth, elementHeight, onSelect);
             return buttonSetting;
         }
 

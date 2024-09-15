@@ -81,6 +81,30 @@ namespace Characters
             return null;
         }
 
+        public static readonly IReadOnlyDictionary<string, string> TooltipBySpecialName = new Dictionary<string, string>
+        {
+            ["Distract"] = "",
+            ["Escape"] = "",
+            ["Dance"] = "",
+            ["Smell"] = "",
+            ["Potato"] = "",
+            ["DownStrike"] = "",
+            ["Spin1"] = "",
+            ["Spin2"] = "",
+            ["Spin3"] = "",
+            ["BladeThrow"] = "",
+            ["Stock"] = "",
+            ["None"] = "",
+            ["Supply"] = "",
+            ["SmokeBomb"] = "",
+            ["Carry"] = "",
+            ["AHSSTwinShot"] = "",
+            ["Eren"] = "",
+            ["Annie"] = "",
+            ["Armored"] = "",
+            ["Switchback"] = "",
+        };
+
         public static string GetSpecialIcon(string special)
         {
             string icon = special.Replace(" ", "") + "SpecialIcon";
