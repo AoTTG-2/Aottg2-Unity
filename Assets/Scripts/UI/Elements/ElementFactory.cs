@@ -53,9 +53,9 @@ namespace UI
             return InstantiateAndSetupPanel<T>(parent, "Prefabs/Panels/HeadedPanel", enabled).GetComponent<T>();
         }
 
-        public static GameObject CreateTooltipPopup(Transform parent, bool enabled = false)
+        public static GameObject CreateTooltipPopup<T>(Transform parent, bool enabled = false) where T : TooltipPopup
         {
-            return InstantiateAndSetupPanel<TooltipPopup>(parent, "Prefabs/Misc/TooltipPopup", enabled);
+            return InstantiateAndSetupPanel<T>(parent, "Prefabs/Misc/TooltipPopup", enabled);
         }
 
         public static TipPanel CreateTipPanel(Transform parent, bool enabled = false)
@@ -331,11 +331,11 @@ namespace UI
 
         public static GameObject CreateIconPickSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
             string[] options, string[] icons, IconPickPopup popup, string tooltip = "", string[] tooltips = null, float elementWidth = 0f, float elementHeight = 0f, 
-            UnityAction onSelect = null)
+            UnityAction onSelect = null, TooltipPopup tooltipPopup = null)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/ButtonSetting");
             var element = buttonSetting.AddComponent<IconPickSettingElement>();
-            element.Setup(setting, style, title, options, icons, tooltips, popup, tooltip, elementWidth, elementHeight, onSelect);
+            element.Setup(setting, style, title, options, icons, tooltips, popup, tooltip, elementWidth, elementHeight, onSelect, tooltipPopup);
             return buttonSetting;
         }
 

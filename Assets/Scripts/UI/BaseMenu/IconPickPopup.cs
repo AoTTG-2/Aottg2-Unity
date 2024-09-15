@@ -37,7 +37,7 @@ namespace UI
                     onClick: () => OnBottomBarButtonClick("Back"));
         }
 
-        public void Show(BaseSetting setting, Text label, string[] options, string[] icons, string[] tooltips, UnityAction onSelect)
+        public void Show(BaseSetting setting, Text label, string[] options, string[] icons, string[] tooltips, UnityAction onSelect, TooltipPopup tooltipPopup)
         {
             _setting = setting;
             _onSelect = onSelect;
@@ -57,7 +57,7 @@ namespace UI
                 : null;
             _currentIndex = 0;
             for (int i = 0; i < itemNames.Count; i++)
-                CreateRow(itemNames[i], iconNames[i], tooltipNames[i]);
+                CreateRow(itemNames[i], iconNames[i], tooltipNames[i], tooltipPopup);
             base.Show();
         }
 
@@ -66,7 +66,7 @@ namespace UI
             Hide();
         }
 
-        protected void CreateRow(List<string> items, List<string> icons, List<string> tooltips)
+        protected void CreateRow(List<string> items, List<string> icons, List<string> tooltips, TooltipPopup tooltipPopup)
         {
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, VerticalSpacing, TextAnchor.MiddleLeft);
             _groups.Add(group);
@@ -84,7 +84,11 @@ namespace UI
                         var texture = (Texture2D)ResourceManager.LoadAsset(string.Empty, icons[i], true);
                         obj.transform.Find("Icon").GetComponent<RawImage>().texture = texture;
                         if (tooltips?[i] != string.Empty)
-                            obj.GetOrAddComponent<HoverTooltip>().Message = tooltips[i];
+                        {
+                            var tooltip = obj.GetOrAddComponent<HoverTooltip>();
+                            tooltip.Message = tooltips[i];
+                            tooltip.PopupOverride = tooltipPopup;
+                        }
                     }
                 }
                 catch

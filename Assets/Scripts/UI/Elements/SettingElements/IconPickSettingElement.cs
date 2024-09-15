@@ -21,7 +21,7 @@ namespace UI
         };
 
         public void Setup(BaseSetting setting, ElementStyle style, string title, string[] options, string[] iconPaths, string[] tooltips, 
-            IconPickPopup iconPickPopup, string tooltip, float elementWidth, float elementHeight, UnityAction onSelect)
+            IconPickPopup iconPickPopup, string tooltip, float elementWidth, float elementHeight, UnityAction onSelect, TooltipPopup tooltipPopup)
         {
             GameObject button = transform.Find("Button").gameObject;
             if (elementWidth > 0f)
@@ -31,7 +31,7 @@ namespace UI
             _options = options;
             button.GetComponent<Button>().onClick.AddListener(() =>
             {
-                iconPickPopup.Show(_setting, _label, options, iconPaths, tooltips, onSelect);
+                iconPickPopup.Show(_setting, _label, options, iconPaths, tooltips, onSelect, tooltipPopup);
             });
             button.GetComponent<Button>().colors = UIManager.GetThemeColorBlock(style.ThemePanel, "DefaultButton", "");
             _label = button.transform.Find("Text").GetComponent<Text>();

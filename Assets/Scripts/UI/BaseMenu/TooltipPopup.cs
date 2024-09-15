@@ -12,13 +12,16 @@ namespace UI
         public Component Caller;
         private float _offset;
 
+        protected virtual string TextColor => "TooltipTextColor";
+        protected virtual string BackgroundColor => "TooltipBackgroundColor";
+
         public override void Setup(BasePanel parent = null)
         {
             _label = transform.Find("Panel/Label").GetComponent<Text>();
             _label.text = string.Empty;
             _panel = transform.Find("Panel").GetComponent<RectTransform>();
-            _label.color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", "TooltipTextColor");
-            _panel.Find("Background").GetComponent<Image>().color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", "TooltipBackgroundColor");
+            _label.color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", TextColor);
+            _panel.Find("Background").GetComponent<Image>().color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", BackgroundColor);
         }
 
         public void Show(string message, Component caller, float offset)
