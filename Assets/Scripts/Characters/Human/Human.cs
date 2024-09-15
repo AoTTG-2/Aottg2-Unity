@@ -2428,6 +2428,8 @@ namespace Characters
 
         protected void ToggleSparks(bool toggle)
         {
+            if (!IsMine())
+                return;
             ToggleSound(HumanSounds.Slide, toggle);
             if (toggle != HumanCache.Sparks.emission.enabled)
                 Cache.PhotonView.RPC("ToggleSparksRPC", RpcTarget.All, new object[] { toggle });
@@ -2444,6 +2446,8 @@ namespace Characters
 
         public void SetThunderspears(bool hasLeft, bool hasRight)
         {
+            if (!IsMine())
+                return;
             photonView.RPC("SetThunderspearsRPC", RpcTarget.All, new object[] { hasLeft, hasRight });
         }
 

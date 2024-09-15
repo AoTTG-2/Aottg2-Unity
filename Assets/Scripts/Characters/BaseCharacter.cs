@@ -202,14 +202,14 @@ namespace Characters
 
         public void PlayAnimation(string animation, float startTime = 0f)
         {
-
-            Cache.PhotonView.RPC("PlayAnimationRPC", RpcTarget.All, new object[] { animation, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlayAnimationRPC", RpcTarget.All, new object[] { animation, startTime });
         }
 
         public void PlayAnimationReset(string animation)
         {
-
-            Cache.PhotonView.RPC("PlayAnimationResetRPC", RpcTarget.All, new object[] { animation });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlayAnimationResetRPC", RpcTarget.All, new object[] { animation });
         }
 
         [PunRPC]
@@ -239,12 +239,14 @@ namespace Characters
 
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
-            Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
         {
-            Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
         }
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
@@ -276,7 +278,8 @@ namespace Characters
 
         public void PlaySound(string sound)
         {
-            Cache.PhotonView.RPC("PlaySoundRPC", RpcTarget.All, new object[] { sound });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlaySoundRPC", RpcTarget.All, new object[] { sound });
         }
 
         public bool IsPlayingSound(string sound)
@@ -301,7 +304,8 @@ namespace Characters
 
         public void StopSound(string sound)
         {
-            Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
+            if (IsMine())
+                Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
         }
 
         [PunRPC]
