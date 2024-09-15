@@ -7,14 +7,17 @@ namespace UI
     {
         public string Message;
         public float Offset = 40f;
+        public TooltipPopup PopupOverride;
 
         private TooltipPopup popup;
 
+        private TooltipPopup GetPopup() => PopupOverride ? PopupOverride : UIManager.CurrentMenu.TooltipPopup;
+
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            if (UIManager.CurrentMenu.TooltipPopup && Message != string.Empty)
+            if (Message != string.Empty && GetPopup())
             {
-                popup = UIManager.CurrentMenu.TooltipPopup;
+                popup = GetPopup();
                 popup.Show(Message, this, Offset);
             }
         }
