@@ -9,7 +9,7 @@ namespace UI
         protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
         private Text _label;
         private RectTransform _panel;
-        public Button Caller;
+        public Component Caller;
         private float _offset;
 
         public override void Setup(BasePanel parent = null)
@@ -21,7 +21,7 @@ namespace UI
             _panel.Find("Background").GetComponent<Image>().color = UIManager.GetThemeColor(ThemePanel, "DefaultSetting", "TooltipBackgroundColor");
         }
 
-        public void Show(string message, Button caller, float offset)
+        public void Show(string message, Component caller, float offset)
         {
             if (gameObject.activeSelf)
             {
