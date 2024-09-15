@@ -1521,25 +1521,37 @@ component CaptureZone
 
     function AddTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
         {
-            self._teamsInZone.Set(player.Team, List());
+            team = player.Type;
         }
-        value = self._teamsInZone.Get(player.Team);
+        
+        if (self._teamsInZone.Contains(team) == false)
+        {
+            self._teamsInZone.Set(team, List());
+        }
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player) == false)
 		{
             value.Add(player);
-            self._teamsInZone.Set(player.Team, value);
+            self._teamsInZone.Set(team, value);
         }
     }
 
     function RemoveTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
+        {
+            team = player.Type;
+        }
+
+        if (self._teamsInZone.Contains(team) == false)
         {
             return;
         }
-        value = self._teamsInZone.Get(player.Team);
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player))
         {
             value.Remove(player);
