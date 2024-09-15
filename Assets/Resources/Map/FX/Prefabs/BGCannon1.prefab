@@ -19833,6 +19833,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rock Kickup (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4533948615119686897, guid: ba2f94d49e4c98c479be7b48d47afc63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6746137188739814633, guid: ba2f94d49e4c98c479be7b48d47afc63, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
