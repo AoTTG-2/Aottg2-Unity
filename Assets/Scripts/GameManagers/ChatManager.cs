@@ -480,11 +480,13 @@ namespace GameManagers
             return ((InGameMenu)UIManager.CurrentMenu).FeedPanel;
         }
 
-        public static string GetIDString(int id, bool includeMC = false)
+        public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)
         {
             string str = "[" + id.ToString() + "] ";
             if (includeMC)
                 str = "[M]" + str;
+            if (myPlayer)
+                return GetColorString(str, ChatTextColor.MyPlayer);
             return GetColorString(str, ChatTextColor.ID);
         }
 
@@ -516,6 +518,7 @@ namespace GameManagers
     {
         Default,
         ID,
+        MyPlayer,
         System,
         Error,
         TeamRed,

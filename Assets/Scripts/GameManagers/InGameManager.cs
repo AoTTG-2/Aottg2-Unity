@@ -291,14 +291,20 @@ namespace GameManagers
         public void OnNotifyPlayerJoined(Player player)
         {
             CustomLogicManager.Evaluator.OnPlayerJoin(player);
-            string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has joined the room.", ChatTextColor.System);
-            ChatManager.AddLine(line);
+            if (SettingsManager.UISettings.JoinNotifications.Value)
+            {
+                string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has joined the room.", ChatTextColor.System);
+                ChatManager.AddLine(line);
+            }
         }
 
         public override void OnPlayerLeftRoom(Player player)
         {
-            string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has left the room.", ChatTextColor.System);
-            ChatManager.AddLine(line);
+            if (SettingsManager.UISettings.JoinNotifications.Value)
+            {
+                string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has left the room.", ChatTextColor.System);
+                ChatManager.AddLine(line);
+            }
             if (CustomLogicManager.Evaluator != null)
                 CustomLogicManager.Evaluator.OnPlayerLeave(player);
         }
@@ -945,7 +951,7 @@ namespace GameManagers
                 return;
             if (_generalInputSettings.Pause.GetKeyDown())
                 _inGameMenu.SetPauseMenu(true);
-            if (_generalInputSettings.ChangeCharacter.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
+            if (_generalInputSettings.ChangeCharacter.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene && !Restarting && IsFinishedLoading())
             {
                 if (CurrentCharacter != null && !CurrentCharacter.Dead)
                     CurrentCharacter.GetKilled("");

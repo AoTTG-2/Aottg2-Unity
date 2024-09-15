@@ -40,7 +40,7 @@ namespace UI
         {
             _lastPlayers = (Player[])PhotonNetwork.PlayerList.Clone();
             ElementStyle style = new ElementStyle(themePanel: ThemePanel);
-            SetHeader(style);
+            SetHeader(style, _lastPlayers.Length, PhotonNetwork.CurrentRoom.MaxPlayers);
             SetRows(style);
             _currentSyncDelay = MaxSyncDelay;
         }
@@ -65,7 +65,7 @@ namespace UI
                 SetRow(_rows[i], _lastPlayers[i]);
         }
 
-        private void SetHeader(ElementStyle style)
+        private void SetHeader(ElementStyle style, int currentPlayers, int maxPlayers)
         {
             if (_header == null)
             {
@@ -77,6 +77,8 @@ namespace UI
                     t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
                 CreateHorizontalDivider(SinglePanel);
             }
+            string playerCount = " (" + currentPlayers.ToString() + "/" + maxPlayers.ToString() + ")";
+            _header.GetChild(0).GetComponent<Text>().text = UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Player") + playerCount;
             _header.GetChild(1).GetComponent<Text>().text = "Kills / Deaths / Max / Total";
         }
 
@@ -106,7 +108,7 @@ namespace UI
             string playerName = player.GetStringProperty(PlayerProperty.Name);
             playerName = playerName.TruncateRichText(15);
 
-            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + playerName;
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + playerName;
             string status = player.GetStringProperty(PlayerProperty.Status);
             string character = player.GetStringProperty(PlayerProperty.Character);
             string loadout = player.GetStringProperty(PlayerProperty.Loadout);

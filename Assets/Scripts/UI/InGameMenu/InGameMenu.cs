@@ -536,7 +536,7 @@ namespace UI
                 loadout = string.Empty;
 
 
-            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
             
 
             // string guild = player.GetStringProperty(PlayerProperty.Guild);

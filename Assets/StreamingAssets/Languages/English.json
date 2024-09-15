@@ -293,6 +293,8 @@
 		"UI.FeedConsoleTooltip": "Show game feed in separate window.",
 		"UI.ShowKDR": "Show KDR",
 		"UI.ShowKDRTooltip": "Show your KDR at the top left.",
+		"UI.JoinNotifications": "Join notifications",
+		"UI.JoinNotificationsTooltip": "Show player join and leave notifications in chat.",
 		"UI.ShowInterpolation": "Show interpolation",
 		"UI.ShowInterpolationTooltip": "Show whether interpolation is in use or not. This is required for some RRC game modes.",
 		"UI.ShowPing": "Show ping",
