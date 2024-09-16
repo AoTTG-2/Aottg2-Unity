@@ -116,7 +116,7 @@ namespace Controllers
         {
             float angleX = 0f;
             float angleY = 0f;
-            Vector3 aim = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized * 1000f;
+            Vector3 aim = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized * 1000f;
             angleY = Mathf.Asin(aim.y / aim.magnitude) * Mathf.Rad2Deg;
             aim.y = 0f;
             angleX = -Mathf.Atan2(aim.z, aim.x) * Mathf.Rad2Deg;

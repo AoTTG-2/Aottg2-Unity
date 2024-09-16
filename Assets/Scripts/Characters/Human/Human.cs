@@ -160,7 +160,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHuman()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
 
             // Define a plane at the characters position facing towards the camera's forward direction
             Plane plane = new Plane(ray.direction, Cache.Transform.position);
@@ -181,7 +181,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHumanCheap()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             // Move the ray origin along its direction by the distance between the ray origin and the character
             ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, HumanCache.Head.transform.position));
 
@@ -2040,7 +2040,7 @@ namespace Characters
 
         public void FixedUpdateLookTitan()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
             RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
             if (hitArr.Length == 0)
@@ -2733,7 +2733,7 @@ namespace Characters
 
         private string GetBladeAnimationMouse()
         {
-            if (Input.mousePosition.x < (Screen.width * 0.5))
+            if (CursorManager.GetInGameMousePosition().x < (Screen.width * 0.5))
                 return HumanAnimations.Attack2;
             else
                 return HumanAnimations.Attack1;

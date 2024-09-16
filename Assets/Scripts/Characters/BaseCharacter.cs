@@ -90,7 +90,7 @@ namespace Characters
 
         public virtual Vector3 GetAimPoint()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             Vector3 target = ray.origin + ray.direction * 1000f;
             return target;
         }
