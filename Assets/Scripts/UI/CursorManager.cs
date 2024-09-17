@@ -227,24 +227,26 @@ namespace UI
                     crosshairImage = crosshairImageRed;
                 }
                 crosshairLabel.text = _instance._crosshairText;
-                Vector3 mousePosition = Input.mousePosition;
                 Transform crosshairTransform = crosshairImage.transform;
-                if (crosshairTransform.position != mousePosition)
+                if (crosshairTransform.position != Input.mousePosition)
                 {
-                    var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
-                    if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
-                    {
-                        if (Math.Abs(crosshairTransform.position.x - mousePosition.x) > 1f || Math.Abs(crosshairTransform.position.y - mousePosition.y) > 1f)
-                        {
-                            crosshairTransform.position = mousePosition;
-                        }
-                    }
-                    else
-                    {
-                        crosshairTransform.position = mousePosition;
-                    }
+                    crosshairTransform.position = GetInGameMousePosition();
                 }
                 _instance._forceNextCrosshairUpdate = false;
+            }
+        }
+
+        public static Vector3 GetInGameMousePosition()
+        {
+            switch (((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode)
+            {
+                case CameraInputMode.TPS:
+                case CameraInputMode.FPS:
+                    return new Vector3(Screen.width * 0.5f, Screen.height * 0.5f);
+
+                case CameraInputMode.Original:
+                default:
+                    return Input.mousePosition;
             }
         }
     }
