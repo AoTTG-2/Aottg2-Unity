@@ -12,9 +12,9 @@ namespace Characters
 
         public static readonly string DefaultSpecial = "Potato";
 
-        public static HashSet<string> GetSpecialNames(string loadout, bool includeShifters)
+        public static List<string> GetSpecialNames(string loadout, bool includeShifters)
         {
-            HashSet<string> names = new HashSet<string>();
+            var names = new List<string>();
             foreach (string special in AnySpecials)
                 names.Add(special);
             if (loadout == HumanLoadout.Blades)
