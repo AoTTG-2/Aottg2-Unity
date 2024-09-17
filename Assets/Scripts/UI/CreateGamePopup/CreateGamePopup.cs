@@ -181,6 +181,7 @@ namespace UI
             roomOptions.IsVisible = true;
             roomOptions.IsOpen = true;
             roomOptions.MaxPlayers = maxPlayers;
+            roomOptions.BroadcastPropsChangeToAll = false;
             PhotonNetwork.CreateRoom(roomId, roomOptions);
         }
 

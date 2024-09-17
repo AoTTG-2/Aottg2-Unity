@@ -20,6 +20,8 @@ namespace CustomLogic
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
         protected List<CustomLogicClassInstance> _callback = new List<CustomLogicClassInstance>();
+        public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
+
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {
