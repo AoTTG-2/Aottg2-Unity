@@ -106,6 +106,11 @@ namespace CustomLogic
                     }
                     return null;
                 }
+                if (methodName == "DisablePerks")
+                {
+                    Human.Stats.DisablePerks();
+                    return null;
+                }
                 return base.CallMethod(methodName, parameters);
             }
             return null;

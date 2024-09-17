@@ -6,6 +6,10 @@ using System.IO;
 using UnityEngine.Networking;
 using System.Threading;
 using UI;
+using UnityEditor.VersionControl;
+using Photon.Realtime;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace ApplicationManagers
 {
@@ -14,6 +18,38 @@ namespace ApplicationManagers
         static AssetBundleManager _instance;
         static Dictionary<string, Dictionary<string, Object>> _cache = new Dictionary<string, Dictionary<string, Object>>();
         static Dictionary<string, AssetBundle> _bundles = new Dictionary<string, AssetBundle>();
+        static System.Type[] AllowedComponents = new System.Type[] {
+            typeof(UnityEngine.Transform),
+            typeof(UnityEngine.Collider),
+            typeof(UnityEngine.MeshFilter),
+            typeof(UnityEngine.Animation),
+            typeof(UnityEngine.Animator),
+            typeof(UnityEngine.AudioSource),
+            typeof(UnityEngine.AudioClip),
+            typeof(UnityEngine.AudioChorusFilter),
+            typeof(UnityEngine.AudioDistortionFilter),
+            typeof(UnityEngine.AudioEchoFilter),
+            typeof(UnityEngine.AudioHighPassFilter),
+            typeof(UnityEngine.AudioListener),
+            typeof(UnityEngine.AudioLowPassFilter),
+            typeof(UnityEngine.AudioReverbFilter),
+            typeof(UnityEngine.AudioReverbZone),
+            typeof(UnityEngine.ParticleSystem),
+            typeof(UnityEngine.LensFlare),
+            typeof(UnityEngine.LineRenderer),
+            typeof(UnityEngine.Projector),
+            typeof(UnityEngine.TrailRenderer),
+            typeof(UnityEngine.Renderer),
+            typeof(UnityEngine.Terrain),
+            typeof(UnityEngine.ArticulationBody),
+            typeof(UnityEngine.CharacterController),
+            typeof(UnityEngine.Cloth),
+            typeof(UnityEngine.ConstantForce),
+            typeof(UnityEngine.Joint),
+            typeof(UnityEngine.Rigidbody),
+            typeof(UnityEngine.Light),
+            typeof(UnityEngine.Video.VideoPlayer)
+        };
 
         public static void Init()
         {
@@ -109,19 +145,6 @@ namespace ApplicationManagers
             }
         }
 
-        public static string TryLoadText(string bundle, string name)
-        {
-            try
-            {
-                return ((TextAsset)LoadAsset(bundle, name)).text;
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log(string.Format("Error loading text from asset bundle: {0}, {1}", bundle, e.Message));
-            }
-            return string.Empty;
-        }
-
         public static List<string> GetAssetListFromBundle(string bundle)
         {
             var list = new List<string>();
@@ -156,31 +179,34 @@ namespace ApplicationManagers
             return _bundles.ContainsKey(bundle) && _bundles[bundle] != null;
         }
 
-        public static Object LoadAsset(string bundle, string name, bool cached = false)
+        public static Object LoadAsset(string bundle, string name)
         {
             if (!_bundles.ContainsKey(bundle) || _bundles[bundle] == null)
                 throw new System.Exception("Custom bundle not loaded: " + bundle);
             var assetBundle = _bundles[bundle];
-            if (cached)
+            var prefab = assetBundle.LoadAsset(name);
+            ValidateCustomPrefab((GameObject)prefab);
+            return prefab;
+        }
+
+        public static void ValidateCustomPrefab(GameObject prefab)
+        {
+            foreach (var component in prefab.GetComponentsInChildren(typeof(Component)))
             {
-                if (!_cache.ContainsKey(bundle))
-                    _cache.Add(bundle, new Dictionary<string, Object>());
-                var bundleCache = _cache[bundle];
-                if (!bundleCache.ContainsKey(name))
-                    bundleCache.Add(name, assetBundle.LoadAsset(name));
-                return bundleCache[name];
+                bool inAllowlist = false;
+                foreach (var type in AllowedComponents)
+                {
+                    if (type.IsAssignableFrom(component.GetType()))
+                    {
+                        inAllowlist = true;
+                        break;
+                    }
+                }
+                if (!inAllowlist)
+                {
+                    throw new System.Exception("Disallowed component (" + component.GetType().Name + ")");
+                }
             }
-            return assetBundle.LoadAsset(name);
-        }
-
-        public static T InstantiateAsset<T>(string bundle, string name, bool cached = false) where T : Object
-        {
-            return (T)Instantiate(LoadAsset(bundle, name, cached));
-        }
-
-        public static T InstantiateAsset<T>(string bundle, string name, Vector3 position, Quaternion rotation, bool cached = false) where T : Object
-        {
-            return (T)Instantiate(LoadAsset(bundle, name, cached), position, rotation);
         }
     }
 }

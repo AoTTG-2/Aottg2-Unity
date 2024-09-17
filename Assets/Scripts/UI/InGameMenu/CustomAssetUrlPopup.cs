@@ -39,7 +39,7 @@ namespace UI
             Done = false;
             Confirmed = false;
             _label.supportRichText = false;
-            _label.text = "You are about to download a file: " + url;
+            _label.text = "You are about to download a required file: " + url;
         }
 
         private void OnButtonClick(string name)
