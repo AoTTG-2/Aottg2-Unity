@@ -135,7 +135,7 @@
 		"Misc.CustomPerks": "Custom perks",
 		"Misc.CustomPerksTooltip": "If disabled, custom characters will not have perks enabled.",
 		"Misc.RealismMode": "Realism mode",
-		"Misc.RealismModeTooltip": "Changes physics and UI to make the game more realistic, such as death on impact, reel out limit, disabling minimap and names.",
+		"Misc.RealismModeTooltip": "Changes physics and UI to make the game more realistic, such as death on impact, hooks kill enemy humans, reel out limit, disabling minimap and names.",
 		"Misc.PVP": "PVP",
 		"Misc.PVPOptions": ["Off", "FFA", "Team"],
 		"Misc.AllowSpawnTime": "Join spawn time",
