@@ -51,6 +51,8 @@ namespace UI
         private Text _topLeftLabel;
         private Text _topRightLabel;
         private Text _middleCenterLabel;
+        private Text _middleLeftLabel;
+        private Text _middleRightLabel;
         private Text _bottomLeftLabel;
         private Text _bottomRightLabel;
         private Text _bottomCenterLabel;
@@ -153,6 +155,10 @@ namespace UI
             ElementFactory.SetAnchor(_topRightLabel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
             _middleCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_middleCenterLabel.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(0f, 100f));
+            _middleRightLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
+            ElementFactory.SetAnchor(_middleRightLabel.gameObject, TextAnchor.MiddleRight, TextAnchor.MiddleRight, new Vector2(-10f, 0f));
+            _middleLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
+            ElementFactory.SetAnchor(_middleLeftLabel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10f, 0f));
             _bottomCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_bottomCenterLabel.gameObject, TextAnchor.LowerCenter, TextAnchor.LowerCenter, new Vector2(0f, 10f));
             _bottomLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
@@ -360,6 +366,10 @@ namespace UI
                 _topRightLabel.text = message;
             else if (label == "MiddleCenter")
                 _middleCenterText = message;
+            else if (label == "MiddleLeft")
+                _middleLeftLabel.text = message;
+            else if (label == "MiddleRight")
+                _middleRightLabel.text = message;
             else if (label == "BottomLeft")
                 _bottomLeftLabel.text = message;
             else if (label == "BottomRight")

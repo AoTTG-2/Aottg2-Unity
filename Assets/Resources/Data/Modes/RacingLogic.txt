@@ -18,14 +18,19 @@ class Main
         self._startBarriers = Map.FindMapObjectsByTag("RacingStartBarrier");
         self._livesLeft = self.Lives;
         Network.MyPlayer.SetCustomProperty("NoLivesLeft", false);
+        Network.MyPlayer.SetCustomProperty("FinishTime", "None");
         Game.SetPlaylist("Racing");
+        UI.SetScoreboardHeader("Finish Time");
+        UI.SetScoreboardProperty("FinishTime");
     }
 
     function FinishRace(human)
     {
         if (!self._finished)
         {
-            Game.PrintAll(human.Player.Name + " finished at " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
+            finishTime = String.FormatFloat(Time.GameTime - self.StartDelay, 2);
+            Game.PrintAll(human.Player.Name + " finished at " + finishTime);
+            Network.MyPlayer.SetCustomProperty("FinishTime", finishTime);
             Network.SendMessage(Network.MasterClient, "Finish");
             self._finished = true;
         }
@@ -35,7 +40,8 @@ class Main
     {
         if (Network.IsMasterClient && message == "Finish" && !Game.IsEnding && self.EndAfterWin)
         {
-            UI.SetLabelAll("MiddleCenter", sender.Name + " has won the race!");
+            finishTime = sender.GetCustomProperty("FinishTime");
+            UI.SetLabelAll("MiddleCenter", sender.Name + " has won the race in " + finishTime + " seconds!");
             Game.End(10);
         }
     }
@@ -47,7 +53,6 @@ class Main
             self._dieTimeLeft = self.RespawnDelay;
         }
     }
-
 
     function OnTick()
     {
