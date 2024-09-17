@@ -1800,10 +1800,14 @@ namespace Characters
                     _wallSlide = false;
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
                     _wallSlide = false;
-                else if (IsPressDirectionAwayFromWall())
+                else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f)) //pressing away from the wall
                 {
                     Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
                     DodgeWall();
+                }
+                else if (IsPressDirectionRelativeToWall(-_wallSlideGround, 0.8f)) //pressing towards the wall
+                {
+                    _wallSlide = false;
                 }
             }
             ToggleSparks(_wallSlide);
@@ -2911,12 +2915,12 @@ namespace Characters
             return (Mathf.Abs(Mathf.DeltaAngle(TargetAngle, Cache.Transform.rotation.eulerAngles.y)) < 45f);
         }
 
-        private bool IsPressDirectionAwayFromWall()
+        private bool IsPressDirectionRelativeToWall(Vector3 wallNormal, float dotValue)
         {
             if (!HasDirection)
                 return false;
-            float dotProduct = Vector3.Dot(GetTargetDirection(), _wallSlideGround);
-            return dotProduct > 0.8f;
+            float dotProduct = Vector3.Dot(GetTargetDirection(), wallNormal);
+            return dotProduct > dotValue;
         }
 
         private bool IsUpFrontGrounded()
