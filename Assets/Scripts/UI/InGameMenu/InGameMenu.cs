@@ -37,6 +37,7 @@ namespace UI
         public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
         public BasePopup _selectMapPopup;
+        public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
         public SnapshotPopup _snapshotPopup;
         public GlobalPauseGamePopup _globalPauseGamePopup;
@@ -665,11 +666,13 @@ namespace UI
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
             _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
             _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
+            SkillTooltipPopup = ElementFactory.CreateTooltipPopup<SkillTooltipPopup>(IconPickPopup.transform).GetComponent<SkillTooltipPopup>();
             _popups.Add(_settingsPopup);
             _popups.Add(_pausePopup);
             _popups.Add(_createGamePopup);
             _popups.Add(_selectMapPopup);
             _popups.Add(_customAssetUrlPopup);
+            _popups.Add(SkillTooltipPopup);
             _allPausePopups.Add(_settingsPopup);
             _allPausePopups.Add(_pausePopup);
             _allPausePopups.Add(_createGamePopup);
