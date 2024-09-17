@@ -1800,6 +1800,11 @@ namespace Characters
                     _wallSlide = false;
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
                     _wallSlide = false;
+                else if (IsPressDirectionAwayFromWall())
+                {
+                    Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
+                    DodgeWall();
+                }
             }
             ToggleSparks(_wallSlide);
         }
@@ -2904,6 +2909,14 @@ namespace Characters
             if (!HasDirection)
                 return false;
             return (Mathf.Abs(Mathf.DeltaAngle(TargetAngle, Cache.Transform.rotation.eulerAngles.y)) < 45f);
+        }
+
+        private bool IsPressDirectionAwayFromWall()
+        {
+            if (!HasDirection)
+                return false;
+            float dotProduct = Vector3.Dot(GetTargetDirection(), _wallSlideGround);
+            return dotProduct > 0.8f;
         }
 
         private bool IsUpFrontGrounded()
