@@ -1521,36 +1521,48 @@ component CaptureZone
 
     function AddTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
         {
-            self._teamsInZone.Set(player.Team, List());
+            team = player.Type;
         }
-        value = self._teamsInZone.Get(player.Team);
+        
+        if (self._teamsInZone.Contains(team) == false)
+        {
+            self._teamsInZone.Set(team, List());
+        }
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player) == false)
 		{
             value.Add(player);
-            self._teamsInZone.Set(player.Team, value);
+            self._teamsInZone.Set(team, value);
         }
     }
 
     function RemoveTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
+        {
+            team = player.Type;
+        }
+
+        if (self._teamsInZone.Contains(team) == false)
         {
             return;
         }
-        value = self._teamsInZone.Get(player.Team);
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player))
         {
             value.Remove(player);
         }
         if (value.Count == 0)
         {
-            self._teamsInZone.Remove(player.Team);
+            self._teamsInZone.Remove(team);
 		}
 		else
 		{
-			self._teamsInZone.Set(player.Team, value);
+			self._teamsInZone.Set(team, value);
         }
     }
 
@@ -1569,7 +1581,7 @@ component CaptureZone
             {
                 self.AddTeamPlayer(other);
             }
-            elif (other.Team == "Human")
+            else
             {
                 self.AddTeamPlayer(other);
             }
@@ -1602,7 +1614,7 @@ component CaptureZone
             {
                 self.RemoveTeamPlayer(other);
             }
-            elif (other.Team == "Human")
+            else
             {
                 self.RemoveTeamPlayer(other);
             }
