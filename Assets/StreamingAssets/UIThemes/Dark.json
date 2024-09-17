@@ -49,6 +49,8 @@
 			"IconNormalColor": [200, 200, 200, 255],
 			"IconHighlightedColor": [150, 150, 150, 255],
 			"IconPressedColor": [100, 100, 100, 255],
+			"SkillTooltipBackgroundColor": [200, 200, 200, 255],
+			"SkillTooltipTextColor": [0, 0, 0, 255],
 			"TooltipBackgroundColor": [200, 200, 200, 255],
 			"TooltipTextColor": [0, 0, 0, 255],
 			"ToggleNormalColor": [64, 64, 70, 255],

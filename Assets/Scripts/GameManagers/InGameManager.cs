@@ -432,9 +432,9 @@ namespace GameManagers
                 loadouts.Add(HumanLoadout.Blades);
             if (!loadouts.Contains(settings.Loadout.Value))
                 settings.Loadout.Value = loadouts[0];
-            List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+            var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(settings.Special.Value))
-                settings.Special.Value = specials[0];
+                settings.Special.Value = HumanSpecials.DefaultSpecial;
 
             return SettingsManager.InGameCharacterSettings;
         }
@@ -481,9 +481,9 @@ namespace GameManagers
                     loadouts.Add(HumanLoadout.Blades);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
-                List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+                var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
-                    settings.Special.Value = specials[0];
+                    settings.Special.Value = HumanSpecials.DefaultSpecial;
                 var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
                 human.Init(false, GetPlayerTeam(false), SettingsManager.InGameCharacterSettings);
                 CurrentCharacter = human;
