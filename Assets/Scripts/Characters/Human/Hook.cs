@@ -1,5 +1,6 @@
 ﻿using ApplicationManagers;
 using CustomLogic;
+using GameManagers;
 using Map;
 using Photon.Pun;
 using Settings;
@@ -156,6 +157,14 @@ namespace Characters
                 _hasHookParent = true;
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
+
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                {
+                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
+                    {
+                        HookCharacter.GetKilled(_owner.Name + "'s hook");
+                    }
+                }
             }
             _currentLiveTime = 0f;
             _renderer.startWidth = _renderer.endWidth = 0.1f;
