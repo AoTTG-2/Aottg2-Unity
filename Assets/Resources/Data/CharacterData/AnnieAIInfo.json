@@ -77,5 +77,11 @@
 		"AttackSpeedMultiplier": 1.0,
 		"RunSpeedBase": 70,
 		"RotateSpeed": 7
+	},
+	"Abnormal": {
+		"Health": 10000,
+		"AttackSpeedMultiplier": 1.2,
+		"RunSpeedBase": 90,
+		"RotateSpeed": 9
 	}
 }

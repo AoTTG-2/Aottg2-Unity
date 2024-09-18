@@ -21,14 +21,14 @@ namespace CustomLogic
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
                 return null;
             if (methodName == "GetCustomProperty")
-                return Player.GetCustomProperty((string)parameters[0]);
+                return Player.GetCustomProperty("CL:" + (string)parameters[0]);
             if (methodName == "SetCustomProperty")
             {
                 object param = parameters[1];
                 if (!(param is float || param is int || param is string || param is bool))
                     throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
-                CheckPropertyRateLimit((string)parameters[0]);
-                Player.SetCustomProperty((string)parameters[0], param);
+                CheckPropertyRateLimit("CL:" + (string)parameters[0]);
+                Player.SetCustomProperty("CL:" + (string)parameters[0], param);
                 return null;
             }
             if (methodName == "ClearKDR")

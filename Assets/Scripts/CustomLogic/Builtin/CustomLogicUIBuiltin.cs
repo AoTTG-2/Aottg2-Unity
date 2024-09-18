@@ -161,7 +161,7 @@ namespace CustomLogic
             }
             if (name == "SetScoreboardProperty")
             {
-                CustomLogicManager.Evaluator.ScoreboardProperty = (string)parameters[0];
+                CustomLogicManager.Evaluator.ScoreboardProperty = "CL:" + (string)parameters[0];
                 return null;
             }
             return base.CallMethod(name, parameters);
