@@ -171,10 +171,13 @@ namespace UI
             List<RoomInfo> filteredRooms = new List<RoomInfo>();
             foreach (RoomInfo room in _rooms)
             {
-                string name = room.GetStringProperty(RoomProperty.Name);
+                string name = room.GetStringProperty(RoomProperty.Name).ToLower();
+                string map = room.GetStringProperty(RoomProperty.Map).ToLower();
+                string mode = room.GetStringProperty(RoomProperty.GameMode).ToLower();
+                string search = _filterQuery.Value.ToLower();
                 if (!IsValidRoom(room))
                     continue;
-                if (_filterQuery.Value != string.Empty && !name.ToLower().Contains(_filterQuery.Value.ToLower()))
+                if (search != string.Empty && !name.Contains(search) && !map.Contains(search) && !mode.Contains(search))
                     continue;
                 if (!_filterShowFull.Value && room.PlayerCount >= room.MaxPlayers)
                     continue;

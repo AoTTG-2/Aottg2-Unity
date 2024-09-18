@@ -548,18 +548,29 @@ namespace UI
 
 
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
-            
 
-            // string guild = player.GetStringProperty(PlayerProperty.Guild);
-            string kills = player.GetIntProperty(PlayerProperty.Kills).ToString();
-            string deaths = player.GetIntProperty(PlayerProperty.Deaths).ToString();
-            string highestDamage = player.GetIntProperty(PlayerProperty.HighestDamage).ToString();
-            string totalDamage = player.GetIntProperty(PlayerProperty.TotalDamage).ToString();
-
-            string stats = kills + "/" + deaths + "/" + highestDamage + "/" + totalDamage;
+            string score = string.Empty;
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
+            {
+                var property = player.GetCustomProperty(CustomLogicManager.Evaluator.ScoreboardProperty);
+                if (property == null)
+                    score = string.Empty;
+                else
+                    score = property.ToString();
+            }
+            else
+            {
+                List<string> scoreList = new List<string>();
+                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                {
+                    object value = player.GetCustomProperty(property);
+                    string str = value != null ? value.ToString() : string.Empty;
+                    scoreList.Add(str);
+                }
+                score = string.Join("/", scoreList.ToArray());
+            }
             
-            // build row
-            row = Util.SizeText($"{name}: {stats}", 19);
+            row = Util.SizeText($"{name}: {score}", 19);
 
             return row;
         }

@@ -237,6 +237,22 @@ namespace GameManagers
                 InGameManager.RestartGame();
         }
 
+        [CommandAttribute("closelobby", "/closelobby: Kicks all players and ends the lobby.")]
+        private static void CloseLobby(string[] args)
+        {
+            if (CheckMC())
+            {
+                foreach (var player in PhotonNetwork.PlayerList)
+                {
+                    if (!player.IsLocal)
+                    {
+                        KickPlayer(player);
+                    }
+                }
+                InGameManager.LeaveRoom();
+            }
+        }
+
         [CommandAttribute("clear", "/clear: Clears the chat window.", Alias = "c")]
         private static void Clear(string[] args)
         {

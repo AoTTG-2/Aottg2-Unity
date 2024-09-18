@@ -738,7 +738,7 @@ component VelocityZone
 # general
 component DestructibleTrigger
 {
-    Description = "A generic component for destroying, replacing, and recovering objects.";
+    Description = "A generic component for destroying, replacing, and recovering objects. Place this on a separate object with the Hitboxes collider, and it will destroy objects in TargetIDs when hit.";
     # Reference object
     TargetIDs = "0";
     TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
@@ -1039,6 +1039,7 @@ component CustomPhysicsMaterial
 # internal
 component CaptureZone
 {
+    Description = "Makes the capture zone interactable. Must enable network flag on the object.";
     Enabled = false;
     AICanCapture = false;
     HumanCanCapture = true;

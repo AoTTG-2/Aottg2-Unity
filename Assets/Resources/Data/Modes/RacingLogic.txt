@@ -38,11 +38,18 @@ class Main
 
     function OnNetworkMessage(sender, message)
     {
-        if (Network.IsMasterClient && message == "Finish" && !Game.IsEnding && self.EndAfterWin)
+        if (Network.IsMasterClient && message == "Finish" && !Game.IsEnding)
         {
             finishTime = sender.GetCustomProperty("FinishTime");
-            UI.SetLabelAll("MiddleCenter", sender.Name + " has won the race in " + finishTime + " seconds!");
-            Game.End(10);
+            if (self.EndAfterWin)
+            {
+                UI.SetLabelAll("MiddleCenter", sender.Name + " has won the race in " + finishTime + " seconds!");
+                Game.End(10);
+            }
+            else
+            {
+                UI.SetLabelForTimeAll("MiddleCenter", sender.Name + " finished in " + finishTime + " seconds!", 5.0);
+            }
         }
     }
 
