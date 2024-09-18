@@ -1386,7 +1386,7 @@ namespace Characters
                 }
                 else
                 {
-                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 0.5f)
+                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 1f)
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
@@ -1762,7 +1762,7 @@ namespace Characters
             var velocity = Cache.Rigidbody.velocity;
             if (Special != null && Special is SwitchbackSpecial)
             {
-                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, velocity.magnitude))
+                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
