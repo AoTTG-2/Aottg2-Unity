@@ -200,9 +200,11 @@ namespace UI
             _gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (_minimapPanel != null)
             {
-                _minimapPanel.SetActive(true);
+                if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                    _minimapPanel.SetActive(true);
+                else
+                    GetComponent<MinimapHandler>().Disable();
             }
-
         }
 
         public static bool InMenu()

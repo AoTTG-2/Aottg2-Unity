@@ -206,6 +206,18 @@ namespace ApplicationManagers
                 {
                     throw new System.Exception("Disallowed component (" + component.GetType().Name + ")");
                 }
+                if (component is Animation)
+                {
+                    var animation = (Animation)component;
+                    foreach (AnimationState state in animation)
+                        state.clip.events = new AnimationEvent[0];
+                }
+                else if (component is Animator)
+                {
+                    var animator = (Animator)component;
+                    foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+                        clip.events = new AnimationEvent[0];
+                }
             }
         }
     }

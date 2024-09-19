@@ -2337,7 +2337,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 10f;
+            float cooldown = 30f;
             Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
