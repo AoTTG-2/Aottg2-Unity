@@ -965,7 +965,7 @@ namespace CustomLogic
                 return left.UnboxToFloat() / right.UnboxToFloat();
         }
 
-        private bool CheckEquals(object left, object right)
+        public bool CheckEquals(object left, object right)
         {
             if (left == null && right == null)
                 return true;

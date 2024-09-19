@@ -14,6 +14,7 @@
         public override string SitIdle => "Armature_FemT|ft_legHurt_loop";
         public override string SitUp => "Armature_FemT|ft_legHurt_getup";
         public string AttackCombo = "Armature_FemT|ft_attack_combo_full";
+        public string AttackComboBlind = "Armature_FemT|ft_attack_combo_blind_full";
         public string AttackSwing = "Armature_FemT|ft_attack_front";
         public string AttackBrushBack = "Armature_FemT|ft_attack_sweep_back";
         public string AttackBrushFrontL = "Armature_FemT|ft_attack_sweep_front_left";

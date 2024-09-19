@@ -2,6 +2,7 @@
 	"Type": "Annie",
 	"AttackInfo": {
 		"AttackCombo": {"HumanOnly": false},
+		"AttackComboBlind": {"HumanOnly": false},
 		"AttackKick": {"HumanOnly": false},
 		"AttackSwing": {"HumanOnly": false},
 		"AttackBrushBack": {"HumanOnly": true},
@@ -45,6 +46,10 @@
 		"RunSpeedBase": 40,
 		"JumpForce": 150,
 		"RotateSpeed": 3,
+		"AttackSpeeds": {
+			"AttackBite": 0.7,
+			"AttackComboBlind": 0.7
+		},
 		"Attacks": {
 			"AttackCombo": 0.1,
 			"AttackSwing": 0.1,
@@ -53,7 +58,8 @@
 			"AttackStomp": 0.1,
 			"AttackHead": 0.1,
 			"AttackBite": 0.1,
-			"AttackGrab*": 0.1
+			"AttackGrab*": 0.1,
+			"AttackComboBlind": 0.0
 		},
 	},
 	"Training": {
@@ -64,24 +70,24 @@
 		"Health": 1000,
 		"AttackSpeedMultiplier": 0.7,
 		"RunSpeedBase": 40,
-		"RotateSpeed": 4
+		"RotateSpeed": 4.0
 	},
 	"Normal": {
 		"Health": 2500,
-		"AttackSpeedMultiplier": 0.9,
+		"AttackSpeedMultiplier": 0.85,
 		"RunSpeedBase": 50,
-		"RotateSpeed": 5
+		"RotateSpeed": 5.0
 	},
 	"Hard": {
 		"Health": 5000,
 		"AttackSpeedMultiplier": 1.0,
-		"RunSpeedBase": 70,
-		"RotateSpeed": 7
+		"RunSpeedBase": 60,
+		"RotateSpeed": 6.0
 	},
 	"Abnormal": {
 		"Health": 10000,
-		"AttackSpeedMultiplier": 1.2,
-		"RunSpeedBase": 90,
-		"RotateSpeed": 9
+		"AttackSpeedMultiplier": 1.15,
+		"RunSpeedBase": 70,
+		"RotateSpeed": 7.0
 	}
 }
