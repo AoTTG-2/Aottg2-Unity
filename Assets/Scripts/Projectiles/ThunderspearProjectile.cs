@@ -157,7 +157,7 @@ namespace Projectiles
                 }
                 if (titan != null && titan != _owner && !TeamInfo.SameTeam(titan, _team) && !titan.Dead)
                 {
-                    if (collider == titan.BaseTitanCache.NapeHurtbox && CheckTitanNapeAngle(position, titan.BaseTitanCache.Head))
+                    if (collider == titan.BaseTitanCache.NapeHurtbox && titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Thunderspear"]["RestrictAngle"].AsFloat))
                     {
                         float titanHealth = titan.CurrentHealth;
                         if (_owner == null || !(_owner is Human))
@@ -232,12 +232,6 @@ namespace Projectiles
                     return human.CustomDamage;
             }
             return damage;
-        }
-
-        bool CheckTitanNapeAngle(Vector3 position, Transform nape)
-        {
-            Vector3 direction = (position - nape.position).normalized;
-            return Vector3.Angle(-nape.forward, direction) < CharacterData.HumanWeaponInfo["Thunderspear"]["RestrictAngle"].AsFloat;
         }
 
         protected override void Update()

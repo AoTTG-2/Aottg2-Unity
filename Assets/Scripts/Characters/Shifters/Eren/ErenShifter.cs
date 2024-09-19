@@ -97,5 +97,13 @@ namespace Characters
                 }
             }
         }
+
+        // for some reason eren's head has its Forward reversed during animations
+        public override bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
+        {
+            var nape = BaseTitanCache.Head.transform;
+            Vector3 direction = (hitPosition - nape.position).normalized;
+            return Vector3.Angle(nape.forward, direction) < maxAngle;
+        }
     }
 }
