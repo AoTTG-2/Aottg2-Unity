@@ -62,34 +62,34 @@ namespace GameProgress
             _gameStatHandler.AddExp(exp);
         }
 
-        public static void RegisterTitanKill(GameObject character, BasicTitan victim, KillWeapon weapon)
+        public static void RegisterTitanKill(BasicTitan victim, KillWeapon weapon)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterTitanKill(character, victim, weapon);
+                handler.RegisterTitanKill(victim, weapon);
         }
 
-        public static void RegisterHumanKill(GameObject character, Human victim, KillWeapon weapon)
+        public static void RegisterHumanKill(Human victim, KillWeapon weapon)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterHumanKill(character, victim, weapon);
+                handler.RegisterHumanKill(victim, weapon);
         }
 
-        public static void RegisterDamage(GameObject character, GameObject victim, KillWeapon weapon, int damage)
+        public static void RegisterDamage(GameObject victim, KillWeapon weapon, int damage)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterDamage(character, victim, weapon, damage);
+                handler.RegisterDamage(victim, weapon, damage);
         }
 
-        public static void RegisterSpeed(GameObject character, float speed)
+        public static void RegisterSpeed(float speed)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterSpeed(character, speed);
+                handler.RegisterSpeed(speed);
         }
 
-        public static void RegisterInteraction(GameObject character, GameObject interact, InteractionType interactionType)
+        public static void RegisterInteraction(GameObject interact, InteractionType interactionType)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterInteraction(character, interact, interactionType);
+                handler.RegisterInteraction(interact, interactionType);
         }
 
         private IEnumerator IncrementPlayTime()

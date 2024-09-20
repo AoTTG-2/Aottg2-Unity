@@ -235,9 +235,9 @@ namespace GameManagers
             else if (CurrentCharacter is BaseShifter)
                 killWeapon = KillWeapon.Shifter;
             if (victim is Human)
-                GameProgressManager.RegisterHumanKill(CurrentCharacter.gameObject, (Human)victim, killWeapon);
+                GameProgressManager.RegisterHumanKill((Human)victim, killWeapon);
             else if (victim is BasicTitan)
-                GameProgressManager.RegisterTitanKill(CurrentCharacter.gameObject, (BasicTitan)victim, killWeapon);
+                GameProgressManager.RegisterTitanKill((BasicTitan)victim, killWeapon);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.Kills, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills) + 1 }
@@ -266,7 +266,7 @@ namespace GameManagers
                 killWeapon = KillWeapon.Titan;
             else if (CurrentCharacter is BaseShifter)
                 killWeapon = KillWeapon.Shifter;
-            GameProgressManager.RegisterDamage(CurrentCharacter.gameObject, victim.gameObject, killWeapon, damage);
+            GameProgressManager.RegisterDamage(victim.gameObject, killWeapon, damage);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.TotalDamage, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage) + damage },

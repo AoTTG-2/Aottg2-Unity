@@ -55,7 +55,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterTitanKill(GameObject character, BasicTitan victim, KillWeapon weapon)
+        public override void RegisterTitanKill(BasicTitan victim, KillWeapon weapon)
         {
             switch (weapon)
             {
@@ -79,7 +79,7 @@ namespace GameProgress
             AddExp(ExpPerKill);
         }
 
-        public override void RegisterHumanKill(GameObject character, Human victim, KillWeapon weapon)
+        public override void RegisterHumanKill(Human victim, KillWeapon weapon)
         {
             switch (weapon)
             {
@@ -106,7 +106,7 @@ namespace GameProgress
             AddExp(ExpPerKill);
         }
 
-        public override void RegisterDamage(GameObject character, GameObject victim, KillWeapon weapon, int damage)
+        public override void RegisterDamage(GameObject victim, KillWeapon weapon, int damage)
         {
             if (weapon == KillWeapon.Blade || weapon == KillWeapon.AHSS || weapon == KillWeapon.Thunderspear || weapon == KillWeapon.APG)
             {
@@ -135,12 +135,12 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterSpeed(GameObject character, float speed)
+        public override void RegisterSpeed(float speed)
         {
             _gameStat.HighestSpeed.Value = Mathf.Max(_gameStat.HighestSpeed.Value, speed);
         }
 
-        public override void RegisterInteraction(GameObject character, GameObject interact, InteractionType type)
+        public override void RegisterInteraction(GameObject interact, InteractionType type)
         {
         }
     }
