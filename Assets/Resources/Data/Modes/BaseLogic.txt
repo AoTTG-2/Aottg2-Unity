@@ -1744,7 +1744,12 @@ component SupplyStation
         {
             self._currentHuman = other;
             self._currentHumanRefill = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.", 0.1);
+            text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            if (!self._currentHumanRefill.AutoRefillGas)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
+            }
+            UI.SetLabelForTime("MiddleCenter", text, 0.1);
         }
     }
 
