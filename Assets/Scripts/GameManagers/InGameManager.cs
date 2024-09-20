@@ -261,6 +261,7 @@ namespace GameManagers
                     killMethod.Weapon = KillWeapon.Thunderspear;
                 else if (human.Setup.Weapon == HumanWeapon.APG)
                     killMethod.Weapon = KillWeapon.APG;
+                killMethod.Special = human.State == HumanState.SpecialAttack ? human.CurrentSpecial : "";
             }
             else if (CurrentCharacter is BasicTitan)
                 killMethod = KillWeapon.Titan;

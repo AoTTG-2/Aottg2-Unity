@@ -29,18 +29,14 @@ namespace UI
             CreateStatLabel(DoublePanelLeft, style, "Bronze", count.FinishedBronze + "/" + count.TotalBronze);
             CreateStatLabel(DoublePanelLeft, style, "Silver", count.FinishedSilver + "/" + count.TotalSilver);
             CreateStatLabel(DoublePanelLeft, style, "Gold", count.FinishedGold + "/" + count.TotalGold);
+
             CreateHorizontalDivider(DoublePanelLeft);
             CreateTitleLabel(DoublePanelLeft, style, "Damage");
-            CreateStatLabel(DoublePanelLeft, style, "Highest overall", stat.DamageHighestOverall.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Highest blade", stat.DamageHighestBlade.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Highest ahss", stat.DamageHighestAHSS.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Highest thunderspear", stat.DamageHighestThunderspear.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Highest apg", stat.DamageHighestAPG.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Total overall", stat.DamageTotalOverall.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Total blade", stat.DamageTotalBlade.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Total ahss", stat.DamageTotalAHSS.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Total thunderspear", stat.DamageTotalThunderspear.Value.ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Total apg", stat.DamageTotalAPG.Value.ToString());
+            foreach (var (title, value) in stat.Damage.GetStatLabels())
+            {
+                CreateStatLabel(DoublePanelLeft, style, title, value);
+            }
+
             CreateTitleLabel(DoublePanelRight, style, "Titans Killed");
             CreateStatLabel(DoublePanelRight, style, "Total", stat.TitansKilledTotal.Value.ToString());
             CreateStatLabel(DoublePanelRight, style, "Blade", stat.TitansKilledBlade.Value.ToString());

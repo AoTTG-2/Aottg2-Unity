@@ -108,32 +108,7 @@ namespace GameProgress
 
         public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
-            var weapon = method.Weapon;
-            if (weapon == KillWeapon.Blade || weapon == KillWeapon.AHSS || weapon == KillWeapon.Thunderspear || weapon == KillWeapon.APG)
-            {
-                _gameStat.DamageHighestOverall.Value = Math.Max(_gameStat.DamageHighestOverall.Value, damage);
-                _gameStat.DamageTotalOverall.Value += damage;
-                if (weapon == KillWeapon.Blade)
-                {
-                    _gameStat.DamageHighestBlade.Value = Math.Max(_gameStat.DamageHighestBlade.Value, damage);
-                    _gameStat.DamageTotalBlade.Value += damage;
-                }
-                else if (weapon == KillWeapon.AHSS)
-                {
-                    _gameStat.DamageHighestAHSS.Value = Math.Max(_gameStat.DamageHighestAHSS.Value, damage);
-                    _gameStat.DamageTotalAHSS.Value += damage;
-                }
-                else if (weapon == KillWeapon.APG)
-                {
-                    _gameStat.DamageHighestAPG.Value = Math.Max(_gameStat.DamageHighestAPG.Value, damage);
-                    _gameStat.DamageTotalAPG.Value += damage;
-                }
-                else if (weapon == KillWeapon.Thunderspear)
-                {
-                    _gameStat.DamageHighestThunderspear.Value = Math.Max(_gameStat.DamageHighestThunderspear.Value, damage);
-                    _gameStat.DamageTotalThunderspear.Value += damage;
-                }
-            }
+            _gameStat.Damage.Register(method, (ulong)damage);
         }
 
         public override void RegisterSpeed(float speed)

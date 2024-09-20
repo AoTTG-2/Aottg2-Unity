@@ -115,6 +115,8 @@ namespace GameProgress
 
     public struct KillMethod
     {
+        public const string NullSpecialKey = "None";
+
         public KillWeapon Weapon;
         public string Special;
 
@@ -125,6 +127,11 @@ namespace GameProgress
         }
 
         public static implicit operator KillMethod(KillWeapon weapon) => new(weapon, "");
+
+        public readonly string WeaponKey => Weapon.ToString();
+        public readonly string SpecialKey => string.IsNullOrEmpty(Special) ? NullSpecialKey : Special;
+
+        public override readonly string ToString() => $"({WeaponKey}, {SpecialKey})";
     }
 
     public enum InteractionType
