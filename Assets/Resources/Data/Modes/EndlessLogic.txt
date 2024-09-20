@@ -5,6 +5,7 @@ class Main
     TitanSpawnEvery = 3.0;
     RespawnDelay = 5.0;
     InfiniteGas = false;
+    InfiniteAmmo = false;
     _spawnTimeLeft = 0.0;
     _dieTimeLeft = 0.0;
 
@@ -16,20 +17,31 @@ class Main
         }
     }
 
-    function OnCharacterSpawn(character)
-    {
-        if (character.IsMainCharacter && character.Type == "Human" && self.InfiniteGas)
-        {
-            character.MaxGas = 100000;
-            character.CurrentGas = 100000;
-        }
-    }
-
     function OnCharacterDie(victim, killer, killerName)
     {
         if (victim.IsMainCharacter)
         {
             self._dieTimeLeft = self.RespawnDelay;
+        }
+    }
+
+    function OnSecond()
+    {
+        if (Network.MyPlayer.Status == "Alive")
+        {
+            character = Network.MyPlayer.Character;
+            if (character.Type == "Human")
+            {
+                if (self.InfiniteGas)
+                {
+                    character.CurrentGas = character.MaxGas;
+                }
+                if (self.InfiniteAmmo)
+                {
+                    character.CurrentBlade = character.MaxBlade;
+                    character.CurrentAmmoLeft = character.MaxAmmoTotal;
+                }
+            }
         }
     }
 
