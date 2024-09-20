@@ -249,24 +249,24 @@ namespace GameManagers
         {
             if (CurrentCharacter == null)
                 return;
-            var killWeapon = KillWeapon.Other;
+            KillMethod killMethod = KillWeapon.Other;
             if (CurrentCharacter is Human)
             {
                 var human = (Human)CurrentCharacter;
                 if (human.Setup.Weapon == HumanWeapon.AHSS)
-                    killWeapon = KillWeapon.AHSS;
+                    killMethod.Weapon = KillWeapon.AHSS;
                 else if (human.Setup.Weapon == HumanWeapon.Blade)
-                    killWeapon = KillWeapon.Blade;
+                    killMethod.Weapon = KillWeapon.Blade;
                 else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
-                    killWeapon = KillWeapon.Thunderspear;
+                    killMethod.Weapon = KillWeapon.Thunderspear;
                 else if (human.Setup.Weapon == HumanWeapon.APG)
-                    killWeapon = KillWeapon.APG;
+                    killMethod.Weapon = KillWeapon.APG;
             }
             else if (CurrentCharacter is BasicTitan)
-                killWeapon = KillWeapon.Titan;
+                killMethod = KillWeapon.Titan;
             else if (CurrentCharacter is BaseShifter)
-                killWeapon = KillWeapon.Shifter;
-            GameProgressManager.RegisterDamage(victim.gameObject, killWeapon, damage);
+                killMethod = KillWeapon.Shifter;
+            GameProgressManager.RegisterDamage(victim.gameObject, killMethod, damage);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.TotalDamage, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage) + damage },

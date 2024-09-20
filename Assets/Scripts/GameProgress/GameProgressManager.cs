@@ -62,22 +62,22 @@ namespace GameProgress
             _gameStatHandler.AddExp(exp);
         }
 
-        public static void RegisterTitanKill(BasicTitan victim, KillWeapon weapon)
+        public static void RegisterTitanKill(BasicTitan victim, KillMethod method)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterTitanKill(victim, weapon);
+                handler.RegisterTitanKill(victim, method);
         }
 
-        public static void RegisterHumanKill(Human victim, KillWeapon weapon)
+        public static void RegisterHumanKill(Human victim, KillMethod method)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterHumanKill(victim, weapon);
+                handler.RegisterHumanKill(victim, method);
         }
 
-        public static void RegisterDamage(GameObject victim, KillWeapon weapon, int damage)
+        public static void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterDamage(victim, weapon, damage);
+                handler.RegisterDamage(victim, method, damage);
         }
 
         public static void RegisterSpeed(float speed)
@@ -111,6 +111,20 @@ namespace GameProgress
         Other,
         Shifter,
         Titan
+    }
+
+    public struct KillMethod
+    {
+        public KillWeapon Weapon;
+        public string Special;
+
+        public KillMethod(KillWeapon weapon, string special)
+        {
+            Weapon = weapon;
+            Special = special;
+        }
+
+        public static implicit operator KillMethod(KillWeapon weapon) => new(weapon, "");
     }
 
     public enum InteractionType

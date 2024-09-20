@@ -171,7 +171,7 @@ namespace GameProgress
             return true;
         }
 
-        public override void RegisterTitanKill(BasicTitan victim, KillWeapon weapon)
+        public override void RegisterTitanKill(BasicTitan victim, KillMethod method)
         {
             foreach (string category in TitanKillCategories)
             {
@@ -179,7 +179,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckKillConditions(item.Conditions.Value, weapon))
+                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
                         continue;
                     if (category == "KillTitan")
                         item.AddProgress();
@@ -187,7 +187,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterHumanKill(Human victim, KillWeapon weapon)
+        public override void RegisterHumanKill(Human victim, KillMethod method)
         {
             foreach (string category in HumanKillCategories)
             {
@@ -195,7 +195,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckKillConditions(item.Conditions.Value, weapon))
+                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
                         continue;
                     if (category == "KillHuman")
                         item.AddProgress();
@@ -203,7 +203,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterDamage(GameObject victim, KillWeapon weapon, int damage)
+        public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
             foreach (string category in DamageCategories)
             {
@@ -211,7 +211,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckDamageConditions(item.Conditions.Value, weapon, damage))
+                    if (!CheckDamageConditions(item.Conditions.Value, method.Weapon, damage))
                         continue;
                     if (category == "HitDamage")
                         item.AddProgress();

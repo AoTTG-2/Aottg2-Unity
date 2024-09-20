@@ -55,9 +55,9 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterTitanKill(BasicTitan victim, KillWeapon weapon)
+        public override void RegisterTitanKill(BasicTitan victim, KillMethod method)
         {
-            switch (weapon)
+            switch (method.Weapon)
             {
                 case KillWeapon.Blade:
                     _gameStat.TitansKilledBlade.Value++;
@@ -79,9 +79,9 @@ namespace GameProgress
             AddExp(ExpPerKill);
         }
 
-        public override void RegisterHumanKill(Human victim, KillWeapon weapon)
+        public override void RegisterHumanKill(Human victim, KillMethod method)
         {
-            switch (weapon)
+            switch (method.Weapon)
             {
                 case KillWeapon.Blade:
                     _gameStat.HumansKilledBlade.Value++;
@@ -106,8 +106,9 @@ namespace GameProgress
             AddExp(ExpPerKill);
         }
 
-        public override void RegisterDamage(GameObject victim, KillWeapon weapon, int damage)
+        public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
+            var weapon = method.Weapon;
             if (weapon == KillWeapon.Blade || weapon == KillWeapon.AHSS || weapon == KillWeapon.Thunderspear || weapon == KillWeapon.APG)
             {
                 _gameStat.DamageHighestOverall.Value = Math.Max(_gameStat.DamageHighestOverall.Value, damage);
