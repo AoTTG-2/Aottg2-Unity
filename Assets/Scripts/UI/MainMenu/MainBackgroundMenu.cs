@@ -28,8 +28,8 @@ namespace UI
             _mainBackgroundPanelBack.ShowImmediate();
             _mainBackgroundPanelFront.BackgroundIndex = _mainBackgroundPanelBack.BackgroundIndex;
 
-            AddParallaxEffect(_mainBackgroundPanelBack.gameObject, 0.7f);
-            AddParallaxEffect(_mainBackgroundPanelFront.gameObject, 0.7f);
+            AddParallaxEffect(_mainBackgroundPanelBack.gameObject, 0.5f);
+            AddParallaxEffect(_mainBackgroundPanelFront.gameObject, 0.5f);
         }
 
         private void AddParallaxEffect(GameObject target, float intensity)
