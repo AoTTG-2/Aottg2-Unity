@@ -79,6 +79,7 @@ namespace Characters
         private float _wallRunTime = 0f;
         private bool _wallJump = false;
         private bool _wallSlide = false;
+        private bool _canWallSlideJump = false;
         private Vector3 _wallSlideGround = Vector3.zero;
         private bool _launchLeft;
         private bool _launchRight;
@@ -1794,23 +1795,39 @@ namespace Characters
         {
             if (_wallSlide)
             {
+                if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
+                    _canWallSlideJump = true;
+                
                 if (Grounded)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
+                    
                 else if (Cache.Rigidbody.velocity.magnitude < 15f)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
-                    _wallSlide = false;
-                else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f)) //pressing away from the wall
+                {
+                    EndWallSlide();
+                }             
+                else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f) && _canWallSlideJump) //pressing away from the wall
                 {
                     Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
                     DodgeWall();
                 }
                 else if (IsPressDirectionRelativeToWall(-_wallSlideGround, 0.8f)) //pressing towards the wall
                 {
-                    _wallSlide = false;
+                    EndWallSlide();
                 }
             }
             ToggleSparks(_wallSlide);
+        }
+
+        private void EndWallSlide()
+        {
+            _wallSlide = false;
+            _canWallSlideJump = false;
         }
 
         private void LateUpdateReelOut()
