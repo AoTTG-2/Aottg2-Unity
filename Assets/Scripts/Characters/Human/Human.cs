@@ -545,7 +545,9 @@ namespace Characters
         {
             Human human = null;
             float minDistance = float.PositiveInfinity;
-            RaycastHit[] hits = Physics.RaycastAll(ray, distance, PhysicsLayer.Human);
+
+            RaycastHit[] hits = Physics.RaycastAll(ray, distance, PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.MapObjectCharacters));
+            Debug.Log(hits.Length);
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.gameObject.GetComponent<Human>() is Human h)
@@ -569,6 +571,11 @@ namespace Characters
         {
             return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null
                 && human.BackHuman == null && TeamInfo.SameTeam(human, Team) && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance;
+        }
+
+        public bool IsCarryable(Human human)
+        {
+            return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null;
         }
 
         /// <summary>
@@ -603,6 +610,7 @@ namespace Characters
             }
             return nearestHuman;
         }
+
 
         public void StartCarrySpecial(Human target)
         {

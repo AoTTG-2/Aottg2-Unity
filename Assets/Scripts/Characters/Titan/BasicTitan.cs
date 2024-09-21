@@ -45,7 +45,6 @@ namespace Characters
         public int TargetViewId = -1;
         public bool LookAtTarget = false;
         public int HeadPrefab;
-        private Outline _outline = null;
         public override bool CanSprint => true;
         public override bool CanWallClimb => true;
 
@@ -100,39 +99,6 @@ namespace Characters
             }
             BasicCache.ForearmSmokeL.transform.localScale = Vector3.one * Size;
             BasicCache.ForearmSmokeR.transform.localScale = Vector3.one * Size;
-        }
-
-        public void Reveal(float startDelay, float activeTime)
-        {
-            if (_outline == null)
-            {
-                StartCoroutine(RevealAndRemove(startDelay, activeTime));
-            }
-        }
-
-        public void AddOutline()
-        {
-            if (_outline == null)
-            {
-                _outline = gameObject.AddComponent<Outline>();
-            }
-        }
-
-        public void RemoveOutline()
-        {
-            if (_outline != null)
-            {
-                Destroy(_outline);
-                _outline = null;
-            }
-        }
-
-        private IEnumerator RevealAndRemove(float startDelay, float seconds)
-        {
-            yield return new WaitForSeconds(startDelay);
-            AddOutline();
-            yield return new WaitForSeconds(seconds);
-            RemoveOutline();
         }
 
         [PunRPC]
