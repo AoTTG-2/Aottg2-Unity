@@ -1,8 +1,8 @@
-﻿using Settings;
-using System;
+﻿using System;
 using UnityEngine.UI;
 using GameProgress;
 using UnityEngine;
+using Utility;
 
 namespace UI
 {
@@ -22,7 +22,7 @@ namespace UI
             CreateTitleLabel(DoublePanelLeft, style, "General");
             CreateStatLabel(DoublePanelLeft, style, "Level", stat.Level.Value.ToString());
             CreateStatLabel(DoublePanelLeft, style, "Exp", stat.Exp.Value.ToString() + "/" + GameProgressManager.GetExpToNext().ToString());
-            CreateStatLabel(DoublePanelLeft, style, "Hours played", (stat.PlayTime.Value / 3600f).ToString("0.00"));
+            CreateStatLabel(DoublePanelLeft, style, "Playtime", Format.GetReadableTimespan(TimeSpan.FromSeconds(stat.PlayTime.Value)));
             CreateStatLabel(DoublePanelLeft, style, "Highest speed", ((int)stat.HighestSpeed.Value).ToString());
             CreateHorizontalDivider(DoublePanelLeft);
             CreateTitleLabel(DoublePanelLeft, style, "Achievements");
