@@ -18,10 +18,10 @@ namespace CustomLogic
 
         public override object CallMethod(string methodName, List<object> parameters)
         {
-            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
-                return null;
             if (methodName == "GetCustomProperty")
                 return Player.GetCustomProperty("CL:" + (string)parameters[0]);
+            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
+                return null;
             if (methodName == "SetCustomProperty")
             {
                 object param = parameters[1];

@@ -18,9 +18,8 @@ namespace GameProgress
         public IntSetting DayCreated = new IntSetting(0);
         public BoolSetting Collected = new BoolSetting(false);
 
-        public string GetQuestName()
+        public virtual string GetQuestName()
         {
-            
             return Category.Value + GetConditionsHash() + Amount.Value.ToString();
         }
 

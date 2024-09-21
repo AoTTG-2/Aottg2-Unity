@@ -15,7 +15,15 @@ namespace Characters
 
         protected override void Activate()
         {
-            ((Human)_owner).StartSpecialCarry();
+            var owner = (Human)_owner;
+            owner.CancelHookBothKey = true;
+            owner.CancelHookLeftKey = true;
+            owner.CancelHookRightKey = true;
+            owner.HookLeft.SetInput(false);
+            owner.HookRight.SetInput(false);
+            owner.HookLeft.DisableAnyHook();
+            owner.HookRight.DisableAnyHook();
+            owner.StartSpecialCarry();
         }
 
         protected override void Deactivate()

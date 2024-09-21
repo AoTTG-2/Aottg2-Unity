@@ -63,6 +63,8 @@ namespace Characters
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
         public bool CanDodge = true;
+        public bool IsInvincible = true;
+        public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
 
         // physics
@@ -842,6 +844,7 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
+                InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
@@ -872,7 +875,7 @@ namespace Characters
         [PunRPC]
         public override void GetHitRPC(int viewId, string name, int damage, string type, string collider)
         {
-            if (Dead)
+            if (Dead || IsInvincible)
                 return;
             if (type == "TitanEat")
             {
@@ -965,14 +968,11 @@ namespace Characters
                     var titan = (BaseTitan)victimChar;
                     if (titan.BaseTitanCache.NapeHurtbox == collider)
                     {
-                        if (type == "Blade" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
+                        if (type == "Blade" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "AHSS" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
+                        if (type == "AHSS" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "APG" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
+                        if (type == "APG" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
                             return;
                         if (type != "APG" && _lastNapeHitTimes.ContainsKey(titan) && (_lastNapeHitTimes[titan] + 0.2f) > Time.time)
                             return;
@@ -1039,12 +1039,6 @@ namespace Characters
             }
         }
 
-        bool CheckTitanNapeAngle(Vector3 position, Transform nape, float angle)
-        {
-            Vector3 direction = (position - nape.position).normalized;
-            return Vector3.Angle(-nape.forward, direction) < angle;
-        }
-
         protected void Update()
         {
             if (IsMine() && !Dead)
@@ -1052,6 +1046,9 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
+                InvincibleTimeLeft -= Time.deltaTime;
+                if (InvincibleTimeLeft <= 0f)
+                    IsInvincible = false;
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -2340,7 +2337,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 10f;
+            float cooldown = 30f;
             Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));

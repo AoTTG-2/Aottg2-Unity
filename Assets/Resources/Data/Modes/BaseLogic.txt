@@ -2133,6 +2133,9 @@ component Wagon
     MoveForce = 20.0;
     MaxMoveSpeed = 50.0;
     RotateSpeed = 3.0;
+    CanSupply = true;
+    InfiniteSupply = true;
+    MaxSupplyTimes = 0;
     _inUse = false;
     _riding = false;
     _horse = null;
@@ -2146,6 +2149,7 @@ component Wagon
     _rightWheel = null;
     _leftSitTransform = null;
     _rightSitTransform = null;
+    _supplyTimesLeft = 0;
 
     function Init()
     {
@@ -2156,6 +2160,7 @@ component Wagon
         self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
         self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
         self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
+        self._supplyTimesLeft = self.MaxSupplyTimes;
     }
 
     function OnNetworkMessage(sender, message)
@@ -2164,6 +2169,24 @@ component Wagon
         {
             self.NetworkView.Transfer(sender);
         }
+        elif (String.StartsWith(message, "s"))
+        {
+            self._supplyTimesLeft = Convert.ToInt(String.Substring(message, 1));
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "s" + Convert.ToString(self._supplyTimesLeft));
+        }
+    }
+
+    function UseSupply()
+    {
+        self._supplyTimesLeft = self._supplyTimesLeft - 1;
+        self.NetworkView.SendMessageOthers("s" + Convert.ToString(self._supplyTimesLeft));
     }
 
     function OnNetworkTransfer(oldOwner, newOwner) 
@@ -2201,20 +2224,33 @@ component Wagon
             }
             elif (project.Magnitude > 4 * self.MapObject.Scale.Z && project.Normalized == self.MapObject.Forward * -1.0)
             {
+                if (!self._inUse && !self._riding && self.CanSupply)
+                {
+                    if (self.InfiniteSupply)
+                    {
+                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+                        self._collidingHuman = other;
+                        self._collidingGas = true;
+                    }
+                    else
+                    {
+                        left = Math.Max(self._supplyTimesLeft, 0);
+                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill (" + Convert.ToString(self._supplyTimesLeft) + " left.)", 0.1);
+                        if (left > 0)
+                        {
+                            self._collidingHuman = other;
+                            self._collidingGas = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
                 if (!self._riding)
                 {
                     UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to ride wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingRide = true;
-                }
-            }
-            else
-            {
-                if (!self._inUse && !self._riding)
-                {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
-                    self._collidingHuman = other;
-                    self._collidingGas = true;
                 }
             }
         }
@@ -2346,7 +2382,10 @@ component Wagon
                 }
                 elif (self._collidingGas && !self._inUse)
                 {
-                    self._collidingHuman.Refill(true);
+                    if (self._collidingHuman.Refill(true))
+                    {
+                        self.UseSupply();
+                    }
                 }
                 elif (self._collidingRide && !self._riding)
                 {

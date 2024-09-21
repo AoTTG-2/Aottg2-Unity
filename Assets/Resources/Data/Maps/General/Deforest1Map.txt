@@ -215,7 +215,7 @@ Scene,Decor/Table1,208,0,1,1,1,0,Table1,0.1518734,-10,41.96515,0,180,180,1,1,1,P
 Scene,Decor/Teapot1,209,0,1,1,1,0,Teapot1,-1.489067,-15.95189,43.36904,0,0,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chair1,210,0,1,1,1,0,Chair1,0.341823,-11.86304,48.6939,-5.008956E-06,5.008956E-06,180,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Book1,211,0,1,1,1,0,Book1,-0.3190949,-15.14989,46.69358,49.85479,180,180,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cuboid,212,0,1,1,1,0,Cuboid,-50.53821,-5,122.4464,0,0,0,600,1,600,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|25/25|0/0,;
+Scene,Geometry/Cuboid,212,0,1,1,1,0,Cuboid,-50.53821,-5,122.4464,0,0,0,600,1,600,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass5|100/100|0/0,;
 Scene,Interact/Supply2,213,0,1,1,1,0,Supply2,-53,-0.04145937,-511,0,74.26,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0;
 Scene,Geometry/Cuboid,214,0,1,1,0,0,Barrier,-850,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,219,0,1,1,0,0,Barrier,850,1100,0,0,0,0,10,225,200,Physical,Characters,Default,Default|255/255/255/255,;

@@ -214,6 +214,10 @@ namespace CustomLogic
                 return Human.State.ToString();
             if (name == "CanDodge")
                 return Human.CanDodge;
+            if (name == "IsInvincible")
+                return Human.IsInvincible;
+            if (name == "InvincibleTimeLeft")
+                return Human.InvincibleTimeLeft;
             return base.GetField(name);
         }
 
@@ -288,6 +292,10 @@ namespace CustomLogic
             }
             else if (name == "CanDodge")
                 Human.CanDodge = (bool)value;
+            else if (name == "IsInvincible")
+                Human.IsInvincible = (bool)value;
+            else if (name == "InvincibleTimeLeft")
+                Human.InvincibleTimeLeft = (float)value;
             else
                 base.SetField(name, value);
             Human.Stats.UpdateStats();

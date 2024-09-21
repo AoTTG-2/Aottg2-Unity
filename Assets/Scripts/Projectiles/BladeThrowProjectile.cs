@@ -104,7 +104,7 @@ namespace Projectiles
                     position -= _velocity * Time.fixedDeltaTime * 2f;
                     if (collider == titan.BaseTitanCache.NapeHurtbox)
                     {
-                        if (!CheckTitanNapeAngle(position, titan.BaseTitanCache.Head))
+                        if (!titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
                             continue;
                         if (_owner != null && _owner is Human)
                         {
@@ -149,12 +149,6 @@ namespace Projectiles
                     return human.CustomDamage;
             }
             return damage;
-        }
-
-        bool CheckTitanNapeAngle(Vector3 position, Transform nape)
-        {
-            Vector3 direction = (position - nape.position).normalized;
-            return Vector3.Angle(-nape.forward, direction) < CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat;
         }
 
         protected override void Update()
