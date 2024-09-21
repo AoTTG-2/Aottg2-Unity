@@ -1,6 +1,9 @@
-﻿using Settings;
+﻿using Characters;
+using Settings;
 using SimpleJSONFixed;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameProgress
 {
@@ -10,7 +13,32 @@ namespace GameProgress
         private const string HighestKey = "Highest";
         private const string TotalKey = "Total";
 
+        private static readonly Comparison<KeyValuePair<string, JSONNode>> Comparison;
+
         private JSONNode root;
+
+        static DamageSetting()
+        {
+            var weaponOrder = (KillWeapon[])Enum.GetValues(typeof(KillWeapon));
+            var stringOrder = weaponOrder.Select(w => w.ToString())
+                .Concat(HumanSpecials.AnySpecials)
+                .Concat(HumanSpecials.AHSSSpecials)
+                .Concat(HumanSpecials.BladeSpecials)
+                .Concat(HumanSpecials.ShifterSpecials)
+                .ToArray();
+            var i = 0;
+            var orderByString = stringOrder.ToDictionary(k => k, v => i++);
+            Comparison = (lhs, rhs) =>
+            {
+                var hasRhs = orderByString.TryGetValue(rhs.Key, out var rhsi);
+                var hasLhs = orderByString.TryGetValue(lhs.Key, out var lhsi);
+                if (hasLhs && hasRhs) return rhsi - lhsi;
+                else if (hasRhs && !hasLhs) return 1;
+                else if (!hasRhs && hasLhs) return -1;
+                else return string.Compare(lhs.Key, rhs.Key);
+            };
+        }
+
 
         private (ulong highest, ulong total) this[KillMethod method]
         {
@@ -81,41 +109,30 @@ namespace GameProgress
 
         public IEnumerable<(string title, string value)> GetStatLabels()
         {
-            foreach (var okvp in root)
+            var rootPairs = root.Linq.Where(kvp => kvp.Key != OverallKey).ToList();
+            rootPairs.Sort(Comparison);
+
+            yield return ($"Highest Overall", Overall.highest.ToString());
+            foreach (var okvp in rootPairs)
             {
                 var weapon = okvp.Key;
-                if (weapon == OverallKey)
+                foreach (var ikvp in okvp.Value)
                 {
-                    var highest = okvp.Value[HighestKey];
-                    yield return ($"Highest Overall", highest);
-                }
-                else
-                {
-                    foreach (var ikvp in okvp.Value)
-                    {
-                        var special = ikvp.Key;
-                        var highest = ikvp.Value[HighestKey];
-                        yield return special == KillMethod.NullSpecialKey ? ($"Highest {weapon}", highest) : ($"Total {weapon} ({special})", highest);
-                    }
+                    var special = ikvp.Key;
+                    var highest = ikvp.Value[HighestKey];
+                    yield return special == KillMethod.NullSpecialKey ? ($"Highest {weapon}", highest) : ($"Highest {weapon} ({special})", highest);
                 }
             }
 
-            foreach (var okvp in root)
+            yield return ($"Total Overall", Overall.total.ToString());
+            foreach (var okvp in rootPairs)
             {
                 var weapon = okvp.Key;
-                if (weapon == OverallKey)
+                foreach (var ikvp in okvp.Value)
                 {
-                    var total = okvp.Value[TotalKey];
-                    yield return ($"Total Overall", total);
-                }
-                else
-                {
-                    foreach (var ikvp in okvp.Value)
-                    {
-                        var special = ikvp.Key;
-                        var total = ikvp.Value[TotalKey];
-                        yield return special == KillMethod.NullSpecialKey ? ($"Total {weapon}", total) : ($"Total {weapon} ({special})", total);
-                    }
+                    var special = ikvp.Key;
+                    var total = ikvp.Value[TotalKey];
+                    yield return special == KillMethod.NullSpecialKey ? ($"Total {weapon}", total) : ($"Total {weapon} ({special})", total);
                 }
             }
         }
