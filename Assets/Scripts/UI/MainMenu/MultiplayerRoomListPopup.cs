@@ -143,7 +143,7 @@ namespace UI
                 _roomButtons.Add(button);
                 button.GetComponent<Button>().onClick.AddListener(() => OnRoomClick(room));
                 button.transform.Find("Text").GetComponent<Text>().text = GetRoomFormattedName(room);
-                if (GetRoomPassword(room) == string.Empty)
+                if (GetPasswordHash(room) == string.Empty)
                 {
                     button.transform.Find("PasswordIcon").gameObject.SetActive(false);
                 }
@@ -181,7 +181,7 @@ namespace UI
                     continue;
                 if (!_filterShowFull.Value && room.PlayerCount >= room.MaxPlayers)
                     continue;
-                if (!_filterShowPassword.Value && GetRoomPassword(room) != string.Empty)
+                if (!_filterShowPassword.Value && GetPasswordHash(room) != string.Empty)
                     continue;
                 filteredRooms.Add(room);
             }
@@ -207,12 +207,12 @@ namespace UI
         protected bool IsValidRoom(RoomInfo info)
         {
             return info.CustomProperties.ContainsKey(RoomProperty.Name) && info.CustomProperties.ContainsKey(RoomProperty.Map)
-                && info.CustomProperties.ContainsKey(RoomProperty.GameMode) && info.CustomProperties.ContainsKey(RoomProperty.Password);
+                && info.CustomProperties.ContainsKey(RoomProperty.GameMode);
         }
 
-        protected string GetRoomPassword(RoomInfo info)
+        protected string GetPasswordHash(RoomInfo info)
         {
-            return info.GetStringProperty(RoomProperty.Password);
+            return info.GetStringProperty(RoomProperty.PasswordHash);
         }
 
         protected string GetRoomFormattedName(RoomInfo room)
@@ -226,15 +226,15 @@ namespace UI
 
         private void OnRoomClick(RoomInfo room)
         {
-            string password = GetRoomPassword(room);
-            if (password != string.Empty)
+            string passwordHash = GetPasswordHash(room);
+            if (passwordHash != string.Empty)
             {
                 HideAllPopups();
-                _multiplayerPasswordPopup.Show(password, room.Name);
+                _multiplayerPasswordPopup.Show(passwordHash, room.Name, room.GetStringProperty(RoomProperty.Name));
             }
             else
             {
-                PhotonNetwork.JoinRoom(room.Name);
+                SettingsManager.MultiplayerSettings.JoinRoom(room.Name, room.GetStringProperty(RoomProperty.Name), string.Empty);
             }
         }
 

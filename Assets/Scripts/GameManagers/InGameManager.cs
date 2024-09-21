@@ -891,10 +891,8 @@ namespace GameManagers
                 string gameMode = settings.General.GameMode.Value;
                 var properties = new ExitGames.Client.Photon.Hashtable
                 {
-                    { RoomProperty.Name, PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name) },
                     { RoomProperty.Map, mapName },
-                    { RoomProperty.GameMode, gameMode },
-                    { RoomProperty.Password, PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Password) }
+                    { RoomProperty.GameMode, gameMode }
                 };
                 PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
                 LoadSkin();

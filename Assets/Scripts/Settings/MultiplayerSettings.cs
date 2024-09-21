@@ -1,7 +1,12 @@
 ﻿using ApplicationManagers;
+using GameManagers;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
+using System.Net;
+using System.Security.Cryptography;
 using UnityEngine;
+using Utility;
 
 namespace Settings
 {
@@ -10,7 +15,7 @@ namespace Settings
         protected override string FileName { get { return "Multiplayer.json"; } }
         public static string PrivateLobbyPrefix = "private343";
         public static string PublicAppId = "28521206-90d0-41b1-93b0-f35460fef0b6";
-        public IntSetting LobbyMode = new IntSetting(0);
+        public IntSetting LobbyMode = new IntSetting(0, minValue: 0, maxValue: 1);
         public IntSetting AppIdMode = new IntSetting(0);
         public StringSetting CustomLobby = new StringSetting(string.Empty);
         public StringSetting CustomAppId = new StringSetting(string.Empty);
@@ -36,6 +41,11 @@ namespace Settings
         };
         public readonly int DefaultPort = 5055;
 
+        public bool IsConnectedToPublic()
+        {
+            return CurrentMultiplayerServerType == MultiplayerServerType.Public && LobbyMode.Value == (int)LobbyModeType.Public;
+        }
+
         public void ConnectServer(MultiplayerRegion region)
         {
             PhotonNetwork.Disconnect();
@@ -45,35 +55,16 @@ namespace Settings
                 address = PublicAddresses[region];
                 CurrentMultiplayerServerType = MultiplayerServerType.Public;
                 PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
-                string lobby = GetCurrentLobby();
-                if (lobby == ApplicationConfig.LobbyVersion)
-                    lobby = ApplicationVersion.GetVersion();
-                PhotonNetwork.GameVersion = lobby;
-                /*
-                address = CloudAddresses[region];
-                CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
-                PhotonNetwork.NetworkingClient.AppId = PublicAppId;
-                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby();
-                PhotonNetwork.ConnectToRegion(address);
-                */
+                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(true);
             }
             else
             {
                 address = CloudAddresses[region];
                 CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
                 PhotonNetwork.NetworkingClient.AppId = CustomAppId.Value;
-                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby();
+                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(false);
                 PhotonNetwork.ConnectToRegion(address);
             }
-        }
-
-        public string GetCurrentLobby()
-        {
-            if (LobbyMode.Value == (int)LobbyModeType.Public)
-                return ApplicationConfig.LobbyVersion;
-            if (LobbyMode.Value == (int)LobbyModeType.Private)
-                return PrivateLobbyPrefix + ApplicationConfig.LobbyVersion;
-            return CustomLobby.Value;
         }
 
         public void ConnectLAN()
@@ -81,7 +72,7 @@ namespace Settings
             PhotonNetwork.Disconnect();
             if (PhotonNetwork.ConnectToMaster(LanIP.Value, LanPort.Value, string.Empty))
             {
-                PhotonNetwork.GameVersion = GetCurrentLobby();
+                PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(false);
                 CurrentMultiplayerServerType = MultiplayerServerType.LAN;
             }
         }
@@ -91,6 +82,62 @@ namespace Settings
             PhotonNetwork.Disconnect();
             PhotonNetwork.OfflineMode = true;
             CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
+        }
+
+        public NetworkCredential GetCurrentLobby(bool isPublic)
+        {
+            if (LobbyMode.Value == (int)LobbyModeType.Public)
+            {
+                if (isPublic)
+                    return ApplicationVersion.GetVersion();
+                return new NetworkCredential("Public", "Public");
+            }
+            var credential = new NetworkCredential(CustomLobby.Value, CustomLobby.Value);
+            return credential;
+        }
+
+        public void StartRoom()
+        {
+            InGameSet settings = SettingsManager.InGameCurrent;
+            string roomName = settings.General.RoomName.Value;
+            string mapName = settings.General.MapName.Value;
+            string gameMode = settings.General.GameMode.Value;
+            int maxPlayers = settings.General.MaxPlayers.Value;
+            string password = settings.General.Password.Value;
+            string passwordHash = string.Empty;
+            if (password.Length > 0)
+                passwordHash = Util.CreateMD5(password);
+            string roomId = UnityEngine.Random.Range(0, 100000).ToString();
+            var properties = new ExitGames.Client.Photon.Hashtable
+            {
+                { RoomProperty.Name, roomName },
+                { RoomProperty.Map, mapName },
+                { RoomProperty.GameMode, gameMode },
+                { RoomProperty.Password, password },
+                { RoomProperty.PasswordHash, passwordHash },
+                { "Hash", GetHashCode(roomName)}
+            };
+            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
+            var roomOptions = new RoomOptions();
+            roomOptions.CustomRoomProperties = properties;
+            roomOptions.CustomRoomPropertiesForLobby = lobbyProperties;
+            roomOptions.IsVisible = true;
+            roomOptions.IsOpen = true;
+            roomOptions.MaxPlayers = maxPlayers;
+            roomOptions.BroadcastPropsChangeToAll = false;
+            PhotonNetwork.CreateRoom(roomId, roomOptions);
+        }
+
+        public void JoinRoom(string roomId, string roomName, string password)
+        {
+            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomName));
+        }
+
+        public string GetHashCode(string str)
+        {
+            if (!IsConnectedToPublic())
+                return string.Empty;
+            return ApplicationVersion.GetVersion().Password;
         }
     }
 
@@ -113,7 +160,6 @@ namespace Settings
     public enum LobbyModeType
     {
         Public,
-        Private,
         Custom
     }
 
