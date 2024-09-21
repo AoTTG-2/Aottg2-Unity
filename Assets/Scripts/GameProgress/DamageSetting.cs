@@ -1,4 +1,5 @@
-﻿using Characters;
+﻿using Utility;
+using Characters;
 using Settings;
 using SimpleJSONFixed;
 using System;
@@ -112,26 +113,26 @@ namespace GameProgress
             var rootPairs = root.Linq.Where(kvp => kvp.Key != OverallKey).ToList();
             rootPairs.Sort(Comparison);
 
-            yield return ($"Highest Overall", Overall.highest.ToString());
+            yield return ($"Highest Overall", Format.Suffix(Overall.highest));
             foreach (var okvp in rootPairs)
             {
                 var weapon = okvp.Key;
                 foreach (var ikvp in okvp.Value)
                 {
                     var special = ikvp.Key;
-                    var highest = ikvp.Value[HighestKey];
+                    var highest = Format.Suffix(ikvp.Value[HighestKey].AsULong);
                     yield return special == KillMethod.NullSpecialKey ? ($"Highest {weapon}", highest) : ($"Highest {weapon} ({special})", highest);
                 }
             }
 
-            yield return ($"Total Overall", Overall.total.ToString());
+            yield return ($"Total Overall", Format.Suffix(Overall.total));
             foreach (var okvp in rootPairs)
             {
                 var weapon = okvp.Key;
                 foreach (var ikvp in okvp.Value)
                 {
                     var special = ikvp.Key;
-                    var total = ikvp.Value[TotalKey];
+                    var total = Format.Suffix(ikvp.Value[TotalKey].AsULong);
                     yield return special == KillMethod.NullSpecialKey ? ($"Total {weapon}", total) : ($"Total {weapon} ({special})", total);
                 }
             }
