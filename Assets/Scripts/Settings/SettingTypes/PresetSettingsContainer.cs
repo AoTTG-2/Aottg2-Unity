@@ -10,26 +10,33 @@ namespace Settings
 
         public override void Load()
         {
-            string path = GetPresetFilePath();
-            Dictionary<string, string> presets = new Dictionary<string, string>();
-            if (File.Exists(path))
+            try
             {
-                DeserializeFromJsonString(File.ReadAllText(path));
-                foreach (string key in Settings.Keys)
+                string path = GetPresetFilePath();
+                Dictionary<string, string> presets = new Dictionary<string, string>();
+                if (File.Exists(path))
                 {
-                    presets.Add(key, ((BaseSetting)Settings[key]).SerializeToJsonString());
+                    DeserializeFromJsonString(File.ReadAllText(path));
+                    foreach (string key in Settings.Keys)
+                    {
+                        presets.Add(key, ((BaseSetting)Settings[key]).SerializeToJsonString());
+                    }
+                }
+                SetDefault();
+                base.Load();
+                foreach (KeyValuePair<string, string> entry in presets)
+                {
+                    BaseSetting setting = (BaseSetting)Settings[entry.Key];
+                    if (setting is ISetSettingsContainer)
+                    {
+                        ISetSettingsContainer setSetting = (ISetSettingsContainer)setting;
+                        setSetting.SetPresetsFromJsonString(entry.Value);
+                    }
                 }
             }
-            SetDefault();
-            base.Load();
-            foreach (KeyValuePair<string, string> entry in presets)
+            catch
             {
-                BaseSetting setting = (BaseSetting)Settings[entry.Key];
-                if (setting is ISetSettingsContainer)
-                {
-                    ISetSettingsContainer setSetting = (ISetSettingsContainer)setting;
-                    setSetting.SetPresetsFromJsonString(entry.Value);
-                }
+                Debug.Log("Failed to load preset container: " + FileName);
             }
         }
 
