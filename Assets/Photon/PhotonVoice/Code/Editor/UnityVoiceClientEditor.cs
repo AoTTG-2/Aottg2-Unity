@@ -172,10 +172,6 @@
                 {
                     this.DrawLabel("AppId", client.AppId);
                 }
-                if (!string.IsNullOrEmpty(client.AppVersion))
-                {
-                    this.DrawLabel("AppVersion", client.AppVersion);
-                }
                 if (!string.IsNullOrEmpty(client.CloudRegion))
                 {
                     this.DrawLabel("Current Cloud Region", client.CloudRegion);
