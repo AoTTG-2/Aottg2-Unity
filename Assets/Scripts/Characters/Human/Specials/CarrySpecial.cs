@@ -53,14 +53,6 @@ namespace Characters
             RaycastHit hit;
             Human target = owner.GetHumanAlongRay(owner.GetAimRayAfterHumanCheap(), distance);
             bool hasTarget = owner.IsValidCarryTarget(target, distance);
-            if (hasTarget)
-            {
-                target.AddVisibleOutlineWithColor(Color.green);
-            }
-            else if (target != null && target != owner)
-            {
-                target.AddVisibleOutlineWithColor(Color.red);
-            }
 
             float nearestDistance = float.PositiveInfinity;
             Human nearestHuman = null;
@@ -69,6 +61,7 @@ namespace Characters
             {
                 if (!owner.IsCarryable(carryTarget) || carryTarget == target)
                 {
+                    carryTarget.RemoveOutline();
                     continue;
                 }
                 if (Vector3.Distance(owner.Cache.Transform.position, carryTarget.Cache.Transform.position) > distance)
@@ -91,9 +84,16 @@ namespace Characters
                 }
             }
 
-            if (nearestHuman != null & !hasTarget)
+            if (hasTarget)
             {
-                nearestHuman.AddVisibleOutlineWithColor(Color.green);
+                target.AddVisibleOutlineWithColor(Color.green);
+            }
+            else
+            {
+                if (target != null)
+                    target.AddVisibleOutlineWithColor(Color.red);
+                if (nearestHuman != null)
+                    nearestHuman.AddVisibleOutlineWithColor(Color.green);
             }
 
         }
