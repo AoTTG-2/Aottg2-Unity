@@ -13,9 +13,7 @@ namespace Anticheat
     {
         private static AnticheatManager _instance;
         private static readonly Dictionary<int, Dictionary<PhotonEventType, BaseEventFilter>> _IdToEventFilters = new();
-        private static readonly Dictionary<Player, HashSet<Vote>> VotesByTargetPlayer = new();
-        private static readonly List<Player> removals = new();
-        private static readonly TimeSpan VoteTimeout = TimeSpan.FromMinutes(5.0);
+        private static readonly BallotBox kicks = new();
 
         public static void Init()
         {
@@ -55,53 +53,14 @@ namespace Anticheat
             }
         }
 
-
         public static bool TryVoteKickPlayer(Player voter, Player target, out (int submitted, int required) progress)
         {
-            RemoveOldVotes();
-
-            HashSet<Vote> votes = null;
-            if (target != PhotonNetwork.LocalPlayer)
-            {
-                if (VotesByTargetPlayer.TryGetValue(target, out votes))
-                    votes.Add(voter);
-                else
-                    VotesByTargetPlayer.Add(target, votes = new HashSet<Vote> { voter });
-            }
-
-            progress.submitted = votes != null ? votes.Count : 0;
-            progress.required = PhotonNetwork.CurrentRoom.PlayerCount / 2 + 1;
-            if (progress.submitted >= progress.required)
-            {
-                KickPlayer(target);
-                VotesByTargetPlayer.Remove(target);
-                return true;
-            }
-
-            return false;
+            var kick = kicks.CastBallot(voter, target, out progress);
+            if (kick) KickPlayer(target);
+            return kick;
         }
 
-        public static void ResetVoteKicks(Player player)
-        {
-            foreach (var voters in VotesByTargetPlayer.Values)
-                voters.Remove(player);
-        }
-
-        private static void RemoveOldVotes()
-        {
-            foreach (var kvp in VotesByTargetPlayer)
-            {
-                var target = kvp.Key;
-                var votes = kvp.Value;
-                votes.RemoveWhere(vote => DateTime.UtcNow - vote.Timestamp > VoteTimeout);
-                if (votes.Count == 0) removals.Add(target);
-            }
-
-            foreach (var target in removals)
-                VotesByTargetPlayer.Remove(target);
-
-            removals.Clear();
-        }
+        public static void ResetVoteKicks(Player voter) => kicks.ResetBallots(voter);
     }
 
     public enum PhotonEventType
@@ -110,27 +69,78 @@ namespace Anticheat
         RPC
     }
 
-    readonly struct Vote
+    class BallotBox
     {
-        public readonly Player Voter;
-        public readonly DateTime Timestamp;
+        private static readonly List<Player> removals = new();
 
-        public Vote(Player player)
+        private readonly Dictionary<Player, HashSet<Ballot>> BallotsByTargetPlayer = new();
+        private readonly TimeSpan BallotTimeout = TimeSpan.FromMinutes(5.0);
+
+        public bool CastBallot(Player voter, Player target, out (int submitted, int required) progress)
         {
-            Voter = player;
-            Timestamp = DateTime.UtcNow;
+            RemoveOldBallots();
+
+            HashSet<Ballot> ballots = null;
+            if (target != PhotonNetwork.LocalPlayer)
+            {
+                if (BallotsByTargetPlayer.TryGetValue(target, out ballots))
+                    ballots.Add(voter);
+                else
+                    BallotsByTargetPlayer.Add(target, ballots = new HashSet<Ballot> { voter });
+            }
+
+            progress.submitted = ballots != null ? ballots.Count : 0;
+            progress.required = PhotonNetwork.CurrentRoom.PlayerCount / 2 + 1;
+
+            var votePassed = progress.submitted >= progress.required;
+            if (votePassed) BallotsByTargetPlayer.Remove(target);
+            return votePassed;
         }
 
-        public override int GetHashCode() => Voter.GetHashCode();
-
-        public override bool Equals(object obj)
+        public void ResetBallots(Player player)
         {
-            if (obj is not Vote other) return false;
-            return Voter.Equals(other.Voter);
+            foreach (var ballots in BallotsByTargetPlayer.Values)
+                ballots.Remove(player);
         }
 
-        public override string ToString() => $"{Voter} ({Timestamp})";
+        private void RemoveOldBallots()
+        {
+            removals.Clear();
 
-        public static implicit operator Vote(Player voter) => new(voter);
+            foreach (var kvp in BallotsByTargetPlayer)
+            {
+                var target = kvp.Key;
+                var ballots = kvp.Value;
+                ballots.RemoveWhere(ballot => DateTime.UtcNow - ballot.Timestamp > BallotTimeout);
+                if (ballots.Count == 0) removals.Add(target);
+            }
+
+            foreach (var target in removals)
+                BallotsByTargetPlayer.Remove(target);
+        }
+
+        readonly struct Ballot
+        {
+            public readonly Player Voter;
+            public readonly DateTime Timestamp;
+
+            public Ballot(Player player)
+            {
+                Voter = player;
+                Timestamp = DateTime.UtcNow;
+            }
+
+            public override int GetHashCode() => Voter.GetHashCode();
+
+            public override bool Equals(object obj)
+            {
+                if (obj is not Ballot other) return false;
+                return Voter.Equals(other.Voter);
+            }
+
+            public override string ToString() => $"{Voter} ({Timestamp})";
+
+            public static implicit operator Ballot(Player voter) => new(voter);
+        }
     }
 }
