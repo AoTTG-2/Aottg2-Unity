@@ -71,6 +71,7 @@ namespace Anticheat
 
     class BallotBox
     {
+        private const int ConcurrentVoteLimit = 1;
         private static readonly List<Player> removals = new();
 
         private readonly Dictionary<Player, HashSet<Ballot>> BallotsByTargetPlayer = new();
@@ -81,11 +82,11 @@ namespace Anticheat
             RemoveOldBallots();
 
             HashSet<Ballot> ballots = null;
-            if (target != PhotonNetwork.LocalPlayer)
+            if (target != PhotonNetwork.LocalPlayer && CountBallotsCast(voter) < ConcurrentVoteLimit)
             {
                 if (BallotsByTargetPlayer.TryGetValue(target, out ballots))
                     ballots.Add(voter);
-                else
+                else 
                     BallotsByTargetPlayer.Add(target, ballots = new HashSet<Ballot> { voter });
             }
 
@@ -117,6 +118,18 @@ namespace Anticheat
 
             foreach (var target in removals)
                 BallotsByTargetPlayer.Remove(target);
+        }
+
+        private int CountBallotsCast(Player player)
+        {
+            int count = 0;
+
+            foreach (var ballots in BallotsByTargetPlayer.Values)
+            {
+                if (ballots.Contains(player)) ++count;
+            }
+
+            return count;
         }
 
         readonly struct Ballot
