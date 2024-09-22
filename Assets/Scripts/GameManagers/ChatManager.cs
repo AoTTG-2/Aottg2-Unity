@@ -324,9 +324,14 @@ namespace GameManagers
             else if (CanVoteKick(player))
                 RPCManager.PhotonView.RPC(nameof(RPCManager.VoteKickRPC), RpcTarget.MasterClient, new object[] { player.ActorNumber });
         }
-        
+
         private static bool CanVoteKick(Player player)
         {
+            if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value)
+            {
+                AddLine("Server does not allow vote kicking.", ChatTextColor.Error);
+                return false;
+            }
             if (player == PhotonNetwork.LocalPlayer)
             {
                 AddLine("Cannot vote to kick yourself.", ChatTextColor.Error);
@@ -460,14 +465,16 @@ namespace GameManagers
 
         public static void VoteKickPlayer(Player voter, Player target)
         {
-            if (PhotonNetwork.IsMasterClient && target != null && !target.IsMasterClient)
-            {
-                var success = AnticheatManager.TryVoteKickPlayer(voter, target, out var progress);
-                var msg = GetColorString($"Voted to kick {target.GetStringProperty(PlayerProperty.Name)} {progress.submitted}/{progress.required}.", ChatTextColor.System);
-                RPCManager.PhotonView.RPC(nameof(RPCManager.AnnounceRPC), voter, new object[] { msg });
-                if (success)
-                    SendChatAll(target.GetStringProperty(PlayerProperty.Name) + " has been vote kicked.", ChatTextColor.System);
-            }
+            if (target == null) return;
+            if (target.IsMasterClient) return;
+            if (!PhotonNetwork.IsMasterClient) return;
+            if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value) return;
+
+            var success = AnticheatManager.TryVoteKickPlayer(voter, target, out var progress);
+            var msg = GetColorString($"Voted to kick {target.GetStringProperty(PlayerProperty.Name)} {progress.submitted}/{progress.required}.", ChatTextColor.System);
+            RPCManager.PhotonView.RPC(nameof(RPCManager.AnnounceRPC), voter, new object[] { msg });
+            if (success)
+                SendChatAll(target.GetStringProperty(PlayerProperty.Name) + " has been vote kicked.", ChatTextColor.System);
         }
 
         public static void MutePlayer(Player player, string muteType)
