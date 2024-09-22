@@ -371,12 +371,12 @@ namespace Characters
         [PunRPC]
         public virtual void DecreaseAttackSpeedRPC(PhotonMessageInfo info)
         {
-            if(confusedTime <= 0)
+            if(ConfusedTime <= 0)
             {
                 PreviousAttackSpeedMultiplier = AttackSpeedMultiplier;
                 AttackSpeedMultiplier = AttackSpeedMultiplier * 0.67f;
             }
-            confusedTime = 10;
+            ConfusedTime = 10;
         }
 
         public virtual void Confuse()
@@ -747,9 +747,9 @@ namespace Characters
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
-                if(confusedTime > 0)
+                if(ConfusedTime > 0)
                 {
-                    confusedTime -= Time.fixedDeltaTime;
+                    ConfusedTime -= Time.fixedDeltaTime;
                 }
                 else
                 {
