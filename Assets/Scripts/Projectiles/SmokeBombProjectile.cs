@@ -1,12 +1,6 @@
-﻿using Settings;
-using UnityEngine;
-using Photon;
+﻿using UnityEngine;
 using Characters;
-using System.Collections.Generic;
-using System.Collections;
 using Effects;
-using ApplicationManagers;
-using GameManagers;
 using Utility;
 
 namespace Projectiles
@@ -19,11 +13,11 @@ namespace Projectiles
         {
             if (photonView.IsMine && !Disabled)
             {
-                foreach (var collider in Physics.OverlapSphere(transform.position, 4f, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox)))
+                PhysicsUtils.OverlapSphere(transform.position, 4f, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox));
+                foreach (var collider in PhysicsUtils.GetColliders())
                 {
                     var root = collider.transform.root.gameObject;
-                    var titan = root.GetComponent<BasicTitan>();
-                    if (titan != null)
+                    if (root.TryGetComponent<BasicTitan>(out var titan))
                     {
                         if (collider == titan.BaseTitanCache.EyesHurtbox)
                         {

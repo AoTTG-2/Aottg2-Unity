@@ -81,60 +81,65 @@ namespace Projectiles
         void CheckHurtboxes(Collider firstCollider)
         {
             var radius = GetComponent<SphereCollider>().radius * transform.lossyScale.x * 1.3f;
-            var overlap = Physics.OverlapSphere(transform.position, radius, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox, PhysicsLayer.Human));
-            List<Collider> colliders = new List<Collider>(overlap);
-            if (!colliders.Contains(firstCollider))
-                colliders.Add(firstCollider);
-            foreach (var collider in colliders)
+            var count = PhysicsUtils.OverlapSphere(transform.position, radius, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox, PhysicsLayer.Human));
+            var hasFirstCollider = false;
+            foreach (var collider in PhysicsUtils.GetColliders())
             {
-                var character = collider.transform.root.gameObject.GetComponent<BaseCharacter>();
-                var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
-                if (handler != null)
+                if (collider == firstCollider) hasFirstCollider = true;
+                CheckHurtbox(collider);
+            }
+            if (!hasFirstCollider) CheckHurtbox(firstCollider);
+        }
+
+        void CheckHurtbox(Collider collider)
+        {
+            var character = collider.transform.root.gameObject.GetComponent<BaseCharacter>();
+            var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
+            if (handler != null)
+            {
+                handler.GetHit(_owner, "Blade", 100, "BladeThrow", transform.position);
+                return;
+            }
+            if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)
+                return;
+            var damage = CalculateDamage();
+            if (character is BaseTitan)
+            {
+                var titan = (BaseTitan)character;
+                Vector3 position = transform.position;
+                position -= _velocity * Time.fixedDeltaTime * 2f;
+                if (collider == titan.BaseTitanCache.NapeHurtbox)
                 {
-                    handler.GetHit(_owner, "Blade", 100, "BladeThrow", transform.position);
-                    continue;
-                }
-                if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)
-                    continue;
-                var damage = CalculateDamage();
-                if (character is BaseTitan)
-                {
-                    var titan = (BaseTitan)character;
-                    Vector3 position = transform.position;
-                    position -= _velocity * Time.fixedDeltaTime * 2f;
-                    if (collider == titan.BaseTitanCache.NapeHurtbox)
-                    {
-                        if (!titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
-                            continue;
-                        if (_owner != null && _owner is Human)
-                        {
-                            ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                            ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
-                        }
-                        transform.Find("BladeHitNape").GetComponent<AudioSource>().Play();
-                    }
-                    if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
-                    {
-                        EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
-                        if (_owner == null || !(_owner is Human))
-                            titan.GetHit("Blade", 100, "BladeThrow", collider.name);
-                        else
-                        {
-                            titan.GetHit(_owner, damage, "BladeThrow", collider.name);
-                        }
-                    }
-                }
-                else
-                {
+                    if (!titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
+                        return;
                     if (_owner != null && _owner is Human)
                     {
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                        character.GetHit(_owner, damage, "BladeThrow", collider.name);
-                        ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(character.Cache.Transform.position, damage);
+                        ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
                     }
-                    else
-                        character.GetHit("Blade", 100, "BladeThrow", collider.name);
+                    transform.Find("BladeHitNape").GetComponent<AudioSource>().Play();
                 }
+                if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
+                {
+                    EffectSpawner.Spawn(EffectPrefabs.CriticalHit, transform.position, Quaternion.Euler(270f, 0f, 0f));
+                    if (_owner == null || !(_owner is Human))
+                        titan.GetHit("Blade", 100, "BladeThrow", collider.name);
+                    else
+                    {
+                        titan.GetHit(_owner, damage, "BladeThrow", collider.name);
+                    }
+                }
+            }
+            else
+            {
+                if (_owner != null && _owner is Human)
+                {
+                    ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                    character.GetHit(_owner, damage, "BladeThrow", collider.name);
+                    ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(character.Cache.Transform.position, damage);
+                }
+                else
+                    character.GetHit("Blade", 100, "BladeThrow", collider.name);
             }
         }
 

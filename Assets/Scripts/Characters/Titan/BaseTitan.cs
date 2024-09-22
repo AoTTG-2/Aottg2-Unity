@@ -1,18 +1,13 @@
-﻿using System;
-using UnityEngine;
-using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using Utility;
 using System.Collections;
 using SimpleJSONFixed;
 using Effects;
-using UI;
 using System.Collections.Generic;
 using Settings;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.AI;
+using UnityEngine.Profiling;
 
 namespace Characters
 {

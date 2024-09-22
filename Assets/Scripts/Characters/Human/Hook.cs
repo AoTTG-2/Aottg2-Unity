@@ -4,7 +4,6 @@ using GameManagers;
 using Map;
 using Photon.Pun;
 using Settings;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -286,13 +285,13 @@ namespace Characters
                 if (_nodes.Count > 1)
                     start = _nodes[_nodes.Count - 2];
                 Vector3 v = _hookPosition - start;
-                RaycastHit[] hitArr = Physics.RaycastAll(start, v.normalized, v.magnitude, HookMask.value);
-                System.Array.Sort(hitArr, (x, y) => x.distance.CompareTo(y.distance));
-                if (hitArr.Length > 0)
+                var hits = PhysicsUtils.RaycastAll(start, v.normalized, v.magnitude, HookMask.value);
+                if (hits > 0)
                 {
+                    PhysicsUtils.SortByDistanceAsc();
                     bool foundHit = false;
-                    RaycastHit finalHit = hitArr[0];
-                    foreach (RaycastHit hit in hitArr)
+                    RaycastHit finalHit = PhysicsUtils.Raycasts[0];
+                    foreach (RaycastHit hit in PhysicsUtils.GetRaycasts())
                     {
                         if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
                         {

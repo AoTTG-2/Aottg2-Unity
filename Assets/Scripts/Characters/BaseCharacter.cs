@@ -534,8 +534,8 @@ namespace Characters
 
         protected virtual RaycastHit? RaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
         {
-            var hits = Physics.RaycastAll(origin, direction, distance, GroundMask.value);
-            foreach (var hit in hits)
+            PhysicsUtils.RaycastAll(origin, direction, distance, GroundMask.value);
+            foreach (var hit in PhysicsUtils.GetRaycasts())
             {
                 if (!hit.collider.isTrigger)
                     return hit;

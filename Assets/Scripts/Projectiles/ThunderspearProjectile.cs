@@ -143,10 +143,10 @@ namespace Projectiles
         int KillTitansInRadius(float radius)
         {
             var position = transform.position;
-            var colliders = Physics.OverlapSphere(position, radius, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox));
+            PhysicsUtils.OverlapSphere(position, radius, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox));
             int soundPriority = (int)TSKillType.Air;
 
-            foreach (var collider in colliders)
+            foreach (var collider in PhysicsUtils.GetColliders())
             {
                 var titan = collider.transform.root.gameObject.GetComponent<BaseTitan>();
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();

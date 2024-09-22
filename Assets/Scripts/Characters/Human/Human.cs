@@ -2065,15 +2065,12 @@ namespace Characters
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
-            RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
-            if (hitArr.Length == 0)
-                return;
-            List<RaycastHit> hitList = new List<RaycastHit>(hitArr);
-            hitList.Sort((x, y) => x.distance.CompareTo(y.distance));
-            int maxCount = Math.Min(hitList.Count, 3);
-            for (int i = 0; i < maxCount; i++)
+            var hits = PhysicsUtils.RaycastAll(ray, 200f, mask.value);
+            if (hits == 0) return;
+            PhysicsUtils.SortByDistanceAsc();
+            foreach (var hit in PhysicsUtils.GetRaycasts(Mathf.Min(hits, 3)))
             {
-                var entity = hitList[i].collider.GetComponent<TitanEntityDetection>();
+                var entity = hit.collider.GetComponent<TitanEntityDetection>();
                 entity.Owner.TitanColliderToggler.RegisterLook();
             }
         }
@@ -2090,13 +2087,13 @@ namespace Characters
                 if (v.magnitude > maxDistance)
                     start = end + v.normalized * maxDistance;
                 v = end - start;
-                var hitArr = Physics.RaycastAll(start, v.normalized, v.magnitude, ClipMask.value);
-                System.Array.Sort(hitArr, (x, y) => x.distance.CompareTo(y.distance));
-                if (hitArr.Length > 0)
+                var hits = PhysicsUtils.RaycastAll(start, v.normalized, v.magnitude, ClipMask.value);
+                PhysicsUtils.SortByDistanceAsc();
+                if (hits > 0)
                 {
                     bool foundHit = false;
-                    RaycastHit firstHit = hitArr[0];
-                    foreach (RaycastHit hit in hitArr)
+                    RaycastHit firstHit = PhysicsUtils.Raycasts[0];
+                    foreach (var hit in PhysicsUtils.GetRaycasts())
                     {
                         if (hit.collider.isTrigger)
                         {
