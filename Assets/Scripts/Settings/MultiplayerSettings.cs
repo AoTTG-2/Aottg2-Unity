@@ -137,7 +137,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return ApplicationVersion.GetVersion().Password;
+            return string.Empty;
         }
     }
 
