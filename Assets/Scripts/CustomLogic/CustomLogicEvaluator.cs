@@ -20,6 +20,9 @@ namespace CustomLogic
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
         protected List<CustomLogicClassInstance> _callback = new List<CustomLogicClassInstance>();
+        public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
+        public string ScoreboardHeader = "Kills / Deaths / Max / Total";
+        public string ScoreboardProperty = "";
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {
@@ -136,7 +139,6 @@ namespace CustomLogic
                 foreach (var instance in _callback)
                     EvaluateMethod(instance, "OnGameStart", new List<object>());
                 CustomLogicManager._instance.StartCoroutine(OnSecond());
-                CustomLogicManager._instance.StartCoroutine(WaitAndSetDefaultPlaylist());
             }
             catch (Exception e)
             {
@@ -173,6 +175,8 @@ namespace CustomLogic
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
             var characterBuiltin = GetCharacterBuiltin(character);
+            if (characterBuiltin == null)
+                return;
             foreach (var instance in _callback)
                 EvaluateMethod(instance, "OnPlayerSpawn", new List<object>() { playerBuiltin, characterBuiltin });
         }
@@ -180,6 +184,8 @@ namespace CustomLogic
         public void OnCharacterSpawn(BaseCharacter character)
         {
             var builtin = GetCharacterBuiltin(character);
+            if (builtin == null)
+                return;
             foreach (var instance in _callback)
                 EvaluateMethod(instance, "OnCharacterSpawn", new List<object>() { builtin });
         }
@@ -238,13 +244,6 @@ namespace CustomLogic
             return null;
         }
 
-        private IEnumerator WaitAndSetDefaultPlaylist()
-        {
-            yield return new WaitForSeconds(3f);
-            if (!HasSetMusic)
-                MusicManager.SetPlaylist(MusicPlaylist.Default);
-        }
-
         private IEnumerator OnSecond()
         {
             while (true)
@@ -264,7 +263,7 @@ namespace CustomLogic
         private void Init()
         {
             foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics"})
+            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
@@ -352,6 +351,8 @@ namespace CustomLogic
                     instance = new CustomLogicJsonBuiltin();
                 else if (className == "Physics")
                     instance = new CustomLogicPhysicsBuiltin();
+                else if (className == "LineRenderer")
+                    instance = new CustomLogicLineRendererBuiltin(null);
                 else
                     instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);
@@ -964,7 +965,7 @@ namespace CustomLogic
                 return left.UnboxToFloat() / right.UnboxToFloat();
         }
 
-        private bool CheckEquals(object left, object right)
+        public bool CheckEquals(object left, object right)
         {
             if (left == null && right == null)
                 return true;

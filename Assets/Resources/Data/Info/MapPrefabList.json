@@ -4,7 +4,7 @@
 		"Prefabs": [
 			{"Name": "Empty Object"},
 			{"Name": "Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideWith": "Characters"},
-      		{"Name": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "Region", "CollideWith": "Characters", "Components": ["TitanBarrier|"]},
+      		{"Name": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "Physical", "CollideWith": "Titans"},
 			{"Name": "NavMeshObstacle", "Variant": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "None", "CollideWith": "Characters"},
 			{"Name": "Daylight", "Asset": "General/EditorDaylight", "Visible": false, "CollideMode": "None", "Components": ["Daylight|"], "Preview": "EditorDaylight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PointLight", "Asset": "General/EditorPointLight", "Visible": false, "CollideMode": "None", "Components": ["PointLight|"], "Preview": "EditorPointLight", "Material": "DefaultNoTint|255/255/255/255|"},
@@ -788,8 +788,10 @@
 			{"Name": "Cannon3", "Asset": "Interact/Cannon3", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Cannon4", "Asset": "Interact/Cannon4", "Static": false, "Networked": true, "Components": ["Cannon|"]},
 			{"Name": "Cannon5", "Asset": "Interact/Cannon5", "Static": false, "Networked": true, "Components": ["Cannon|"]},
-			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
-			{"Name": "Wagon2a", "Asset": "Interact/Wagon2a", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
+			{"Name": "Wagon2", "Asset": "Interact/Wagon2", "CollideWith": "All", "Static": false, "Networked": true, "Components": ["Wagon|CanSupply:false,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
+			{"Name": "Wagon2a", "Asset": "Interact/Wagon2a", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Wagon|CanSupply:false,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
+			{"Name": "Wagon2b", "Asset": "Interact/Wagon2b", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
+			{"Name": "Wagon2c", "Asset": "Interact/Wagon2c", "CollideWith": "All", "Static": false, "Networked": true, "Variant": "Wagon2", "Components": ["Wagon|,Rigidbody|Mass:20.0|Gravity:0.0/-100.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dummy2", "Asset": "Interact/Dummy2", "Static": false, "Networked": true, "Components": ["Dummy|"]},
 			{"Name": "Executioner1", "Asset": "Interact/Executioner1",  "Static": false, "Networked": true, "Components": ["Executioner|"]},
 			{"Name": "Executioner2", "Asset": "Interact/Executioner2",  "Static": false, "Networked": true, "Components": ["Executioner|"]},
@@ -804,9 +806,9 @@
 			{"Name": "Damage Region", "Asset": "Geometry/Cuboid", "Material": "Transparent|255/128/128/128|Misc/None|1/1|0/0|", 
 			"CollideMode": "Region", "CollideWith": "Characters", "Components": ["DamageRegion|"]},
 			{"Name": "CaptureZone1", "Asset": "Interact/CaptureZone1", "Material": "Default|255/255/255/255|", 
-			"CollideMode": "Region", "CollideWith": "Characters"},
+			"CollideMode": "Region", "CollideWith": "Characters", "Static": false, "Networked": true, "Components": ["CaptureZone|"]},
 			{"Name": "CaptureZone2", "Asset": "Interact/CaptureZone2", "Material": "Default|255/255/255/255|", 
-			"CollideMode": "Region", "CollideWith": "Characters"},
+			"CollideMode": "Region", "CollideWith": "Characters", "Static": false, "Networked": true, "Components": ["CaptureZone|"]},
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]}
 		]

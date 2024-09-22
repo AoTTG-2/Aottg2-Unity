@@ -79,6 +79,11 @@ namespace UI
                     else if (name == "AllowAPG")
                         name = "Allow apg";
                 }
+                else if (category == "Mode")
+                {
+                    if (name.EndsWith("Tooltip"))
+                        continue;
+                }
                 string label = Util.PascalToSentence(name) + ": " + value;
                 ElementFactory.CreateDefaultLabel(panel, style, label, alignment: TextAnchor.MiddleLeft);
             }

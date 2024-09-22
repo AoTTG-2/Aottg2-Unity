@@ -1,12 +1,15 @@
-﻿using Utility;
+﻿using System;
+using System.Net;
+using System.Text;
+using Utility;
 
 namespace ApplicationManagers
 {
     class ApplicationVersion
     {
-        public static string GetVersion()
+        public static NetworkCredential GetVersion()
         {
-            return "TestVersion";
+            return new NetworkCredential("TestVersion", "TestVersion");
         }
     }
 }

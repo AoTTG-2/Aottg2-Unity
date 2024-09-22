@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Utility;
 
 namespace UI
 {
@@ -17,8 +18,9 @@ namespace UI
         protected override float Height => 250f;
         protected override TextAnchor PanelAlignment => TextAnchor.MiddleCenter;
         protected StringSetting _enteredPassword = new StringSetting(string.Empty);
-        protected string _actualPassword;
+        protected string _actualPasswordHash;
         protected string _roomName;
+        protected string _roomId;
         protected GameObject _incorrectPasswordLabel;
 
         public override void Setup(BasePanel parent = null)
@@ -37,10 +39,11 @@ namespace UI
             _incorrectPasswordLabel.GetComponent<Text>().color = Color.red;
         }
 
-        public void Show(string actualPassword, string roomName)
+        public void Show(string actualPasswordHash, string roomId, string roomName)
         {
-            _actualPassword = actualPassword;
+            _actualPasswordHash = actualPasswordHash;
             _roomName = roomName;
+            _roomId = roomId;
             _incorrectPasswordLabel.SetActive(false);
             base.Show();
         }
@@ -51,9 +54,9 @@ namespace UI
             {
                 try
                 {
-                    if (_enteredPassword.Value == new SimpleAES().Decrypt(_actualPassword))
+                    if (Util.CreateMD5(_enteredPassword.Value) == _actualPasswordHash)
                     {
-                        PhotonNetwork.JoinRoom(_roomName);
+                        SettingsManager.MultiplayerSettings.JoinRoom(_roomId, _roomName, _enteredPassword.Value);
                         Hide();
                     }
                     else

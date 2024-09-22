@@ -12,6 +12,8 @@ using Effects;
 using GameManagers;
 using Controllers;
 using Unity.VisualScripting;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 namespace ApplicationManagers
 {
@@ -22,7 +24,6 @@ namespace ApplicationManagers
     {
         static DebugTesting _instance;
         public static bool DebugColliders = false;
-        public static bool DebugPhase = false;
 
         public static void Init()
         {
@@ -74,9 +75,8 @@ namespace ApplicationManagers
                     DebugColliders = !DebugColliders;
                     Debug.Log("Debug colliders enabled: " + DebugColliders.ToString());
                     break;
-                case "phase":
-                    DebugPhase = !DebugPhase;
-                    Debug.Log("Debug phase enabled: " + DebugPhase.ToString());
+                case "network":
+                    _instance.AddComponent<PhotonStatsGui>();
                     break;
                 case "generate_char_previews":
                     ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).GeneratePreviews();

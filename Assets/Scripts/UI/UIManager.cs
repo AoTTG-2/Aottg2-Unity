@@ -10,12 +10,14 @@ using System.Collections;
 using System;
 using GameManagers;
 using Events;
+using System.Linq;
 
 namespace UI
 {
     class UIManager : MonoBehaviour
     {
         private static Dictionary<string, JSONObject> _languages = new Dictionary<string, JSONObject>();
+        private string _arabicLanguageName;
         private static Dictionary<string, JSONObject> _uiThemes = new Dictionary<string, JSONObject>();
         private static Dictionary<Type, string> _lastCategories = new Dictionary<Type, string>();
         private static string _currentUITheme;
@@ -156,6 +158,8 @@ namespace UI
                 }
                 return GetLocale(category, subCategory, item, "English", defaultValue);
             }
+            if (languageName == _instance._arabicLanguageName)
+                return language[category][finalItem].Value.ReverseString();
             return language[category][finalItem].Value;
         }
 
@@ -176,7 +180,12 @@ namespace UI
             }
             List<string> array = new List<string>();
             foreach (JSONString data in (JSONArray)language[category][finalItem])
-                array.Add(data.Value);
+            {
+                if (languageName == _instance._arabicLanguageName)
+                    array.Add(data.Value.ReverseString());
+                else
+                    array.Add(data.Value);
+            }
             return array.ToArray();
         }
 
@@ -215,7 +224,12 @@ namespace UI
             {
                 JSONObject json = (JSONObject)JSON.Parse(File.ReadAllText(file));
                 if (!_languages.ContainsKey(json["Name"]))
-                    _languages.Add(json["Name"].Value, json);
+                {
+                    string name = json["Name"].Value;
+                    _languages.Add(name, json);
+                    if (file.Contains("Arabic"))
+                        _instance._arabicLanguageName = name;
+                }
             }
             if (!_languages.ContainsKey(SettingsManager.GeneralSettings.Language.Value))
             {

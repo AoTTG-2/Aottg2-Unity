@@ -43,6 +43,7 @@ namespace Characters
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
+        public bool LookAtTarget = false;
         public int HeadPrefab;
         private Outline _outline = null;
         public override bool CanSprint => true;
@@ -236,9 +237,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtL);
                 DamagedGrunt();
             }
@@ -249,9 +251,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtR);
                 DamagedGrunt();
             }
@@ -970,7 +973,11 @@ namespace Characters
                 }
             }
             else
-                base.Cripple(time);
+            {
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
+                if (!isBellyFlop)
+                    base.Cripple(time);
+            }
         }
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
@@ -1118,21 +1125,23 @@ namespace Characters
                 if (AI)
                 {
                     var canTarget = false;
-                    if (TargetEnemy != null && TargetEnemy.ValidTarget())
-                    {
-                        canTarget = TargetEnemy is BaseCharacter && !IsCrawler
-                                    && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f
-                                    && canLook;
-                    }
-                    if (canTarget)
+                    if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
                         var character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
+                        canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
+                    }
+                    else
+                        TargetViewId = -1;
+                    if (canTarget)
+                    {
+                        var character = (BaseCharacter)TargetEnemy;
+                        LookAtTarget = true;
                         LateUpdateHead(character);
                     }
                     else
                     {
-                        TargetViewId = -1;
+                        LookAtTarget = false;
                         LateUpdateHead(null);
                     }
                 }
@@ -1155,8 +1164,13 @@ namespace Characters
                 bool canLook = State == TitanState.Idle || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Turn;
                 if (AI)
                 {
-                    var character = Util.FindCharacterByViewId(TargetViewId);
-                    LateUpdateHead(character);
+                    if (LookAtTarget && TargetViewId >= 0)
+                    {
+                        var character = Util.FindCharacterByViewId(TargetViewId);
+                        LateUpdateHead(character);
+                    }
+                    else
+                        LateUpdateHead(null);
                 }
                 else
                 {

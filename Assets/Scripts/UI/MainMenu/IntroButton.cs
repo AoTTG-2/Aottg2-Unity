@@ -20,9 +20,9 @@ namespace UI
             transition = Transition.ColorTint;
             targetGraphic = transform.Find("Label").GetComponent<Graphic>();
             if (gameObject.name.StartsWith("Settings") || gameObject.name.StartsWith("Quit") || gameObject.name.StartsWith("Profile"))
-                targetGraphic.GetComponent<Text>().text = UIManager.GetLocaleCommon(gameObject.name.Replace("Button", string.Empty));
+                targetGraphic.GetComponent<Text>().text = UIManager.GetLocaleCommon(gameObject.name.Replace("Button", string.Empty)).ToUpper();
             else
-                targetGraphic.GetComponent<Text>().text = UIManager.GetLocale("MainMenu", "Intro", gameObject.name);
+                targetGraphic.GetComponent<Text>().text = UIManager.GetLocale("MainMenu", "Intro", gameObject.name).ToUpper();
             ColorBlock block = new ColorBlock
             {
                 colorMultiplier = 1f,

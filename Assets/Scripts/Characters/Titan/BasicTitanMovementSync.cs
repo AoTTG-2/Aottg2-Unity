@@ -16,7 +16,10 @@ namespace Characters
         protected override void SendCustomStream(PhotonStream stream)
         {
             if (_titan.AI)
+            {
                 stream.SendNext(_titan.TargetViewId);
+                stream.SendNext(_titan.LookAtTarget);
+            }
             else
             {
                 stream.SendNext(_titan.LateUpdateHeadRotation);
@@ -26,7 +29,10 @@ namespace Characters
         protected override void ReceiveCustomStream(PhotonStream stream)
         {
             if (_titan.AI)
+            {
                 _titan.TargetViewId = (int)stream.ReceiveNext();
+                _titan.LookAtTarget = (bool)stream.ReceiveNext();
+            }
             else
             {
                 _titan.LateUpdateHeadRotationRecv = (Quaternion?)stream.ReceiveNext();

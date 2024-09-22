@@ -14,8 +14,14 @@ static class MiscExtensions
 {
     static readonly string HexPattern = @"(\[)[\w]{6}(\])";
     static readonly string ColorTagPattern = @"(<color=#)[\w]{6}(\>)";
+    static readonly string TagPattern = @"<\/?[^>]+>";
+    static readonly string SizePattern = @"<\/?size.*?>";
+    static readonly string MaterialPattern = @"<\/?material.*?>";
+    static readonly string QuadPattern = @"<\/?quad.*?>";
     static readonly Regex HexRegex = new Regex(HexPattern);
     static readonly Regex ColorTagRegex = new Regex(ColorTagPattern);
+    static readonly Regex TagRegex = new Regex(TagPattern);
+    static readonly Regex IllegalStyleRegex = new Regex(SizePattern + "|" + MaterialPattern + "|" + QuadPattern);
 
     public static bool GetActive(this GameObject target)
     {
@@ -60,13 +66,112 @@ static class MiscExtensions
         return HexRegex.Replace(text, "");
     }
 
+    public static List<string> Tokenize(string input)
+    {
+        List<string> tokens = new List<string>();
+        int lastIndex = 0;
+
+        foreach (Match match in TagRegex.Matches(input))
+        {
+            // Add text before the tag as individual characters
+            for (int i = lastIndex; i < match.Index; i++)
+            {
+                tokens.Add(input[i].ToString());
+            }
+
+            // Add the tag itself
+            tokens.Add(match.Value);
+            lastIndex = match.Index + match.Length;
+        }
+
+        // Add any remaining text after the last tag as individual characters
+        for (int i = lastIndex; i < input.Length; i++)
+        {
+            tokens.Add(input[i].ToString());
+        }
+
+        return tokens;
+    }
+
+    public static string StripRichText(this string text)
+    {
+        // Remove all tags
+        return TagRegex.Replace(text, "");
+    }
+
+    public static string StripIllegalRichText(this string text)
+    {
+        // Remove all tags that are not i, b, or color
+        return IllegalStyleRegex.Replace(text, "");
+    }
+
     public static string ForceWhiteColorTag(this string text)
     {
         return ColorTagRegex.Replace(text, "<color=#FFFFFF>");
     }
 
+    public static string TruncateRichText(this string text, int length)
+    {
+        text = text.StripIllegalRichText();
+
+        // Tokenize the text to preserve tags
+        List<string> tokens = Tokenize(text);
+
+        // Create stacks for <i>, <b>, and <color> tags
+        Stack<string> openTags = new Stack<string>();
+
+        // Iterate over the tokens, only counting the character tokens (length = 1) towards the length limit.
+        int charCount = 0;
+        string result = string.Empty;
+
+        foreach (string token in tokens)
+        {
+            if (token.Length == 1)
+            {
+                charCount++;
+                if (charCount > length)
+                {
+                    // If the length limit is reached, break out of the loop
+                    break;
+                }
+                result += token;
+            }
+            else
+            {
+                // If the token is a tag, push its name onto the stack <i> = i, <b> = b, <color=...> = color
+                if (token.StartsWith("</"))
+                {
+                    // If the token is a closing tag, peek at the top of the stack an check if it matches
+                    string closeTag = token.Substring(2, token.Length - 3);
+                    if (openTags.Count > 0 && openTags.Peek() == closeTag)
+                    {
+                        openTags.Pop();
+                        result += token;
+                    }
+                }
+                else if (token.StartsWith("<"))
+                {
+                    string openTag = token.Substring(1, token.IndexOfAny(new char[] { '=', '>' }) - 1);
+                    openTags.Push(openTag);
+                    result += token;
+                }
+            }
+        }
+
+        // Add closing tags for any open tags
+        while (openTags.Count > 0)
+        {
+            result += "</" + openTags.Pop() + ">";
+        }
+
+        return result;
+    }
+
     public static string HexColor(this string text)
     {
+        // strip existing html
+        text = text.StripRichText();
+
         if (text.Contains("]"))
         {
             text = text.Replace("]", ">");
@@ -143,5 +248,12 @@ static class MiscExtensions
         if (InGameManager.AllPlayerInfo.ContainsKey(player.ActorNumber))
             return InGameManager.AllPlayerInfo[player.ActorNumber];
         return null;
+    }
+
+    public static string ReverseString(this string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
     }
 }

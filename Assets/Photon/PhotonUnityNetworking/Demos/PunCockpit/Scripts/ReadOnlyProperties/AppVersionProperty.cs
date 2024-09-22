@@ -20,6 +20,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         string _cache;
 
+        /*
         void Update()
         {
             if (PhotonNetwork.AppVersion != _cache)
@@ -28,5 +29,6 @@ namespace Photon.Pun.Demo.Cockpit
                 Text.text = _cache;
             }
         }
+        */
     }
 }

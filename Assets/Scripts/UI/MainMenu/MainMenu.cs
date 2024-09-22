@@ -185,8 +185,6 @@ namespace UI
                         label += " | ";
                         if (settings.LobbyMode.Value == (int)LobbyModeType.Public)
                             label += "Public lobby";
-                        else if (settings.LobbyMode.Value == (int)LobbyModeType.Private)
-                            label += "Private lobby";
                         else if (settings.LobbyMode.Value == (int)LobbyModeType.Custom)
                             label += "Custom lobby";
                     }
@@ -260,7 +258,7 @@ namespace UI
                     SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
                     SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                     SettingsManager.MultiplayerSettings.ConnectOffline();
-                    CreateGamePopup.StartRoom();
+                    SettingsManager.MultiplayerSettings.StartRoom();
                     break;
                 case "CreditsButton":
                     SceneLoader.LoadScene(SceneName.Credits);

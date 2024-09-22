@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using SimpleJSONFixed;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace Settings
 {
@@ -62,14 +63,22 @@ namespace Settings
 
         public override void DeserializeFromJsonObject(JSONNode json)
         {
-            JSONObject root = (JSONObject)json;
-            foreach (string name in Settings.Keys)
+            try
             {
-                if (root[name] != null)
-                    ((BaseSetting)Settings[name]).DeserializeFromJsonObject(root[name]);
+                JSONObject root = (JSONObject)json;
+                foreach (string name in Settings.Keys)
+                {
+                    if (root[name] != null)
+                        ((BaseSetting)Settings[name]).DeserializeFromJsonObject(root[name]);
+                }
+                if (!Validate())
+                    SetDefault();
             }
-            if (!Validate())
+            catch
+            {
+                UnityEngine.Debug.Log("Failed to deserialize json.");
                 SetDefault();
+            }
         }
 
         protected virtual bool Validate()

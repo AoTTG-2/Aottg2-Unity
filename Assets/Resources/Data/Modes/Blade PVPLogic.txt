@@ -24,6 +24,7 @@ class Main
 
     function OnGameStart()
     {
+        Game.SetPlaylist("Battle");
         if (self.PointMode)
         {
             Network.MyPlayer.ClearKDR();
