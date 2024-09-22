@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
+using Anticheat;
 
 namespace GameManagers
 {
@@ -327,6 +328,7 @@ namespace GameManagers
             if (VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
                 VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
 
+            AnticheatManager.ResetVoteKicks(player);
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
