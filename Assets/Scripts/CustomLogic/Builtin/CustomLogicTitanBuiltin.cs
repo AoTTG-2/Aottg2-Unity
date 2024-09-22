@@ -72,22 +72,6 @@ namespace CustomLogic
                         return null;
                     }
                 }
-
-                if (methodName == "Reveal")
-                {
-                    Titan.Reveal(0, parameters[0].UnboxToFloat());
-                    return null;
-                }
-                if (methodName == "AddOutline")
-                {
-                    Titan.AddOutline();
-                    return null;
-                }
-                else if (methodName == "RemoveOutline")
-                {
-                    Titan.RemoveOutline();
-                    return null;
-                }
                 return base.CallMethod(methodName, parameters);
             }
             return null;

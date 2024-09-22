@@ -47,6 +47,54 @@ namespace Characters
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
 
+        // Visuals
+        private Outline _outline = null;
+
+        public void Reveal(float startDelay, float activeTime)
+        {
+            if (_outline == null)
+            {
+                StartCoroutine(RevealAndRemove(startDelay, activeTime));
+            }
+        }
+
+        public void AddOutline()
+        {
+            AddOutlineWithColor(Color.white, Outline.Mode.OutlineAll);
+        }
+
+        public void AddVisibleOutlineWithColor(Color color)
+        {
+            AddOutlineWithColor(color, Outline.Mode.OutlineVisible);
+        }
+
+        public void AddOutlineWithColor(Color color, Outline.Mode mode)
+        {
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+                _outline.OutlineMode = mode;
+            }
+            _outline.OutlineColor = color;
+        }
+
+        public void RemoveOutline()
+        {
+            if (_outline != null)
+            {
+                Destroy(_outline);
+                _outline = null;
+            }
+        }
+
+        private IEnumerator RevealAndRemove(float startDelay, float seconds)
+        {
+            yield return new WaitForSeconds(startDelay);
+            AddOutline();
+            yield return new WaitForSeconds(seconds);
+            RemoveOutline();
+        }
+
         public virtual string GetTeam()
         {
             return Team;

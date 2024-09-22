@@ -18,6 +18,7 @@ using UI;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Utility;
 using Weather;
@@ -541,7 +542,103 @@ namespace Characters
                 Cache.Rigidbody.velocity = Carrier.CarryVelocity;
         }
 
-        public void StartSpecialCarry()
+        public Human GetHumanAlongRay(Ray ray, float distance)
+        {
+            Human human = null;
+            float minDistance = float.PositiveInfinity;
+
+            RaycastHit[] hits = Physics.RaycastAll(ray, distance, PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.MapObjectCharacters));
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider.gameObject.GetComponent<Human>() is Human h)
+                {
+                    if (IsValidCarryTarget(h, distance))
+                    {
+                        float d = Vector3.Distance(Cache.Transform.position, h.Cache.Transform.position);
+                        if (d < minDistance)
+                        {
+                            human = h;
+                            minDistance = d;
+                        }
+                    }
+                }
+            }
+
+            return human;
+        }
+
+        public bool IsValidCarryTarget(Human human, float distance)
+        {
+            return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null
+                && human.BackHuman == null && TeamInfo.SameTeam(human, Team) && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance;
+        }
+
+        public bool IsCarryable(Human human)
+        {
+            return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null;
+        }
+
+        /// <summary>
+        /// Gets the carry target first by aimpoint, then by distance if that fails.
+        /// </summary>
+        /// <param name="distance">Max range allowed for carry target.</param>
+        /// <returns>Human carry option or null if none exists.</returns>
+        public Human GetCarryOption(float distance)
+        {
+            RaycastHit hit;
+            Human target = GetHumanAlongRay(GetAimRayAfterHumanCheap(), distance);
+            if (IsValidCarryTarget(target, distance))
+            {
+                return target;
+            }
+
+            // Otherwise, find the nearest valid carry target within the distance.
+            float nearestDistance = float.PositiveInfinity;
+            Human nearestHuman = null;
+            foreach (Human carryTarget in _inGameManager.Humans)
+            {
+                if (!IsValidCarryTarget(carryTarget, distance))
+                {
+                    continue;
+                }
+                float targetDistance = Vector3.Distance(Cache.Transform.position, carryTarget.Cache.Transform.position);
+                if (targetDistance < nearestDistance)
+                {
+                    nearestHuman = carryTarget;
+                    nearestDistance = targetDistance;
+                }
+            }
+            return nearestHuman;
+        }
+
+
+        public void StartCarrySpecial(Human target)
+        {
+            ClearAllActionsForSpecial();
+            target.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+        }
+
+        public void StopCarrySpecial()
+        {
+            ClearAllActionsForSpecial();
+            if (BackHuman != null)
+            {
+                BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+            }
+        }
+
+        public void ClearAllActionsForSpecial()
+        {
+            this.CancelHookBothKey = true;
+            this.CancelHookLeftKey = true;
+            this.CancelHookRightKey = true;
+            this.HookLeft.SetInput(false);
+            this.HookRight.SetInput(false);
+            this.HookLeft.DisableAnyHook();
+            this.HookRight.DisableAnyHook();
+        }
+
+        /*public void StartSpecialCarry(float distance)
         {
             Human human = FindNearestHuman();
             if (BackHuman != null)
@@ -549,11 +646,11 @@ namespace Characters
                 BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
             }
             else if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null
-                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 7f)
+                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance)
             {
                 human.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
-        }
+        }*/
 
         public void SpecialActionState(float time)
         {

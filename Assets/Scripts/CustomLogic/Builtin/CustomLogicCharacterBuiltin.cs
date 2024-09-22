@@ -1,5 +1,7 @@
 ﻿using Characters;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CustomLogic
@@ -95,6 +97,28 @@ namespace CustomLogic
                         break;
                 }   
                 Character.Cache.Rigidbody.AddForce(force, mode);
+                return null;
+            }
+            if (name == "Reveal")
+            {
+                Character.Reveal(0, parameters[0].UnboxToFloat());
+                return null;
+            }
+            if (name == "AddOutline")
+            {
+                Color color = Color.white;
+                Outline.Mode mode = Outline.Mode.OutlineAll;
+                if (parameters.Count > 0)
+                    color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+                if (parameters.Count > 1)
+                    mode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), (string)parameters[1]);
+
+                Character.AddOutlineWithColor(color, mode);
+                return null;
+            }
+            if (name == "RemoveOutline")
+            {
+                Character.RemoveOutline();
                 return null;
             }
             return base.CallMethod(name, parameters);
