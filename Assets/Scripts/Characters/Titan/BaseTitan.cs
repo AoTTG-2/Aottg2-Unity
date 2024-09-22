@@ -47,8 +47,8 @@ namespace Characters
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
         public float AttackSpeedMultiplier = 1f;
-        public float confusedTime = 0;
-        public float defaultAttackSpeedMultiplier = 1f;
+        public float ConfusedTime = 0;
+        public float PreviousAttackSpeedMultiplier = -1f;
         public Dictionary<string, float> AttackSpeeds = new Dictionary<string, float>();
         public float RunSpeedBase;
         public float WalkSpeedBase;
@@ -373,7 +373,7 @@ namespace Characters
         {
             if(confusedTime <= 0)
             {
-                defaultAttackSpeedMultiplier = AttackSpeedMultiplier;
+                PreviousAttackSpeedMultiplier = AttackSpeedMultiplier;
                 AttackSpeedMultiplier = AttackSpeedMultiplier * 0.67f;
             }
             confusedTime = 10;
@@ -386,7 +386,10 @@ namespace Characters
 
         protected void ResetAttackSpeed()
         {
-            AttackSpeedMultiplier = defaultAttackSpeedMultiplier;
+            if(PreviousAttackSpeedMultiplier >= 0)
+            {
+                AttackSpeedMultiplier = PreviousAttackSpeedMultiplier;
+            }
         }
 
         public override void OnPlayerEnteredRoom(Player player)
