@@ -100,7 +100,7 @@ namespace CustomLogic
             {
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
                 bool incldueChildren = (bool)parameters[1];
-                DestroyMapObject(mapObject.Value, incldueChildren);
+                DestroyMapObject(mapObject, incldueChildren);
                 return null;
             }
             if (name == "CopyMapObject")
@@ -145,13 +145,32 @@ namespace CustomLogic
             return copy;
         }
 
-        protected void DestroyMapObject(MapObject obj, bool recursive)
+        // obj is CustomLogicMapObjectBuiltin or MapObject
+        protected void DestroyMapObject(object obj, bool recursive)
         {
-            var id = obj.ScriptObject.Id;
+            if (obj is not CustomLogicMapObjectBuiltin or MapObject)
+            {
+                return;
+            }
+
+            MapObject mapObject;
+            if (obj is CustomLogicMapObjectBuiltin mapObjectBuiltin)
+        {
+                mapObject = mapObjectBuiltin.Value;
+                mapObjectBuiltin.Value = null;
+            }
+            else
+                mapObject = obj as MapObject;
+
+            var id = mapObject.ScriptObject.Id;
             HashSet<int> children = new HashSet<int>();
             if (MapLoader.IdToChildren.ContainsKey(id))
-                children = MapLoader.IdToChildren[obj.ScriptObject.Id];
-            MapLoader.DeleteObject(obj);
+                children = MapLoader.IdToChildren[mapObject.ScriptObject.Id];
+            foreach (var component in mapObject.ComponentInstances)
+            {
+                CustomLogicManager.Evaluator.RemoveComponent(component);
+            }
+            MapLoader.DeleteObject(mapObject);
             if (recursive)
             {
                 foreach (int child in children)
