@@ -250,6 +250,22 @@ namespace GameManagers
                 InGameManager.RestartGame();
         }
 
+        [CommandAttribute("closelobby", "/closelobby: Kicks all players and ends the lobby.")]
+        private static void CloseLobby(string[] args)
+        {
+            if (CheckMC())
+            {
+                foreach (var player in PhotonNetwork.PlayerList)
+                {
+                    if (!player.IsLocal)
+                    {
+                        KickPlayer(player);
+                    }
+                }
+                InGameManager.LeaveRoom();
+            }
+        }
+
         [CommandAttribute("clear", "/clear: Clears the chat window.", Alias = "c")]
         private static void Clear(string[] args)
         {
@@ -287,8 +303,12 @@ namespace GameManagers
             var player = GetPlayer(args);
             if (args.Length > 2 && player != null)
             {
-                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + args[2], player);
-                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + args[2]);
+                string[] msgArgs = new string[args.Length - 2];
+                Array.ConstrainedCopy(args, 2, msgArgs, 0, msgArgs.Length);
+                string message = string.Join(' ', msgArgs);
+
+                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + message, player);
+                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + message);
             }
         }
 
@@ -346,7 +366,7 @@ namespace GameManagers
         [CommandAttribute("nextsong", "/nextsong: Play next song in playlist.")]
         private static void NextSong(string[] args)
         {
-            MusicManager.NextSong();
+            MusicManager.ChatNextSong();
         }
 
         [CommandAttribute("pause", "/pause: Pause the multiplayer game.")]
@@ -518,11 +538,13 @@ namespace GameManagers
             return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
-        public static string GetIDString(int id, bool includeMC = false)
+        public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)
         {
             string str = "[" + id.ToString() + "] ";
             if (includeMC)
                 str = "[M]" + str;
+            if (myPlayer)
+                return GetColorString(str, ChatTextColor.MyPlayer);
             return GetColorString(str, ChatTextColor.ID);
         }
 
@@ -554,6 +576,7 @@ namespace GameManagers
     {
         Default,
         ID,
+        MyPlayer,
         System,
         Error,
         TeamRed,

@@ -242,13 +242,13 @@ namespace Characters
             {
                 ToggleDust(true);
                 if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
-                    ToggleSound(HorseSounds.Run, true);
+                    ToggleSoundLocal(HorseSounds.Run, true);
             }
             else
             {
                 ToggleDust(false);
                 if (SettingsManager.SoundSettings.HorseSoundEffect.Value)
-                    ToggleSound(HorseSounds.Run, false);
+                    ToggleSoundLocal(HorseSounds.Run, false);
             }
         }
 

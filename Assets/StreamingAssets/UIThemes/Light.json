@@ -49,6 +49,8 @@
 			"IconNormalColor": [120, 120, 120, 255],
 			"IconHighlightedColor": [90, 90, 90, 255],
 			"IconPressedColor": [60, 60, 60, 255],
+			"SkillTooltipBackgroundColor": [170, 170, 170, 255],
+			"SkillTooltipTextColor": [70, 70, 70, 255],
 			"TooltipBackgroundColor": [170, 170, 170, 255],
 			"TooltipTextColor": [70, 70, 70, 255],
 			"ToggleNormalColor": [170, 170, 170, 255],
@@ -170,6 +172,7 @@
 		"TextColor": {
 			"Default": [255, 255, 255, 255],
 			"ID": [255, 200, 0, 255],
+			"MyPlayer": [0, 255, 0, 255],
 			"System": [255, 200, 0, 255],
 			"Error": [200, 0, 0, 255],
 			"TeamRed": [240, 100, 100, 255],

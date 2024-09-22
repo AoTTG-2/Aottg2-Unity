@@ -39,6 +39,7 @@ namespace Settings
         public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
+        public BoolSetting JoinNotifications = new BoolSetting(true);
 
         public override void Apply()
         {

@@ -52,7 +52,7 @@ namespace UI
 
         protected virtual void SetupPopups()
         {
-            TooltipPopup = ElementFactory.CreateTooltipPopup(transform).GetComponent<TooltipPopup>();
+            TooltipPopup = ElementFactory.CreateTooltipPopup<TooltipPopup>(transform).GetComponent<TooltipPopup>();
             MessagePopup = ElementFactory.CreateDefaultPopup<MessagePopup>(transform).GetComponent<MessagePopup>();
             ConfirmPopup = ElementFactory.CreateDefaultPopup<ConfirmPopup>(transform).GetComponent<ConfirmPopup>();
             ExternalLinkPopup = ElementFactory.CreateDefaultPopup<ExternalLinkPopup>(transform).GetComponent<ExternalLinkPopup>();

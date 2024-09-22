@@ -15,10 +15,11 @@ namespace UI
     {
         protected List<GameObject> _statBars = new List<GameObject>();
 
+        private readonly string LocaleCategory = "CharacterPopup";
+
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
-            string cat = "CharacterPopup";
             string sub = "General";
             InGameMiscSettings miscSettings = SettingsManager.InGameCurrent.Misc;
             InGameCharacterSettings charSettings = SettingsManager.InGameCharacterSettings;
@@ -45,23 +46,25 @@ namespace UI
             }
             if (!loadouts.Contains(charSettings.Loadout.Value))
                 charSettings.Loadout.Value = loadouts[0];
-            List<string> specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+            var specials = HumanSpecials.GetSpecialNames(charSettings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(charSettings.Special.Value))
-                charSettings.Special.Value = specials[0];
+                charSettings.Special.Value = HumanSpecials.DefaultSpecial;
             string[] options = GetCharOptions();
             if (charSettings.CustomSet.Value >= options.Length)
             {
                 charSettings.CustomSet.Value = 0;
             }
-            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(cat, sub, "Character"),
+            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(LocaleCategory, sub, "Character"),
                 options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => SyncStatBars());
-            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(cat, sub, "Costume"),
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(LocaleCategory, sub, "Costume"),
                 new string[] {"Costume1", "Costume2", "Costume3"}, elementWidth: 180f, optionsWidth: 180f);
-            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(cat, sub, "Loadout"),
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(LocaleCategory, sub, "Loadout"),
                 loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => OnLoadoutClick());
             options = specials.ToArray();
-            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.Special, UIManager.GetLocale(cat, sub, "Special"),
-                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f);
+            var maybeTooltip = UIManager.CurrentMenu is InGameMenu menu ? menu.SkillTooltipPopup : null;
+            ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.Special, UIManager.GetLocale(LocaleCategory, sub, "Special"),
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, tooltips: GetSpecialTooltips(options), elementWidth: 180f, elementHeight: 40f, tooltipPopup: maybeTooltip);
+
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 100f, themePanel: ThemePanel), charSettings.Team, UIManager.GetLocaleCommon("Team"),
@@ -152,5 +155,8 @@ namespace UI
                 icons.Add(ResourcePaths.UI + "/Icons/Specials/" + HumanSpecials.GetSpecialIcon(option));
             return icons.ToArray();
         }
+
+        protected string[] GetSpecialTooltips(string[] options) =>
+            options.Select(option => UIManager.GetLocale(LocaleCategory, "SpecialTooltip", option)).ToArray();
     }
 }

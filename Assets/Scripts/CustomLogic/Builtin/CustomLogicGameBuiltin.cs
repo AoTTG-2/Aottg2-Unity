@@ -293,8 +293,6 @@ namespace CustomLogic
             if (name == "SetPlaylist")
             {
                 string playlist = (string)parameters[0];
-                if (playlist == "Default")
-                    playlist = "Default.Ordered";
                 MusicManager.SetPlaylist(playlist);
                 CustomLogicManager.Evaluator.HasSetMusic = true;
                 return null;

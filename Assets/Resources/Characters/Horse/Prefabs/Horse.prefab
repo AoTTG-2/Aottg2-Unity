@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 11456738}
   - component: {fileID: 6556738}
   - component: {fileID: 13615476}
+  - component: {fileID: 3030115793356935824}
   - component: {fileID: 6250696981385339825}
   m_Layer: 17
   m_Name: Horse
@@ -184,6 +185,27 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 2
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!65 &3030115793356935824
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156616}
+  m_Material: {fileID: 13400000, guid: af6705323d641c647a47c20b7b3c3c30, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &6250696981385339825
 MonoBehaviour:
   m_ObjectHideFlags: 0

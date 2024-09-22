@@ -9,6 +9,7 @@ namespace Utility
         public static string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Aottg2";
         public static string StreamingAssetsPath = Application.streamingAssetsPath;
         public static string LanguagesPath = StreamingAssetsPath + "/Languages";
+        public static string TesterData = StreamingAssetsPath + "/TesterData";
         public static string PresetsPath = StreamingAssetsPath + "/Presets";
         public static string UIThemesPath = StreamingAssetsPath + "/UIThemes";
         public static string Settings = Documents + "/Settings";

@@ -51,9 +51,7 @@ namespace GameProgress
             if (_gameStat.Exp.Value >= _expPerLevel[_gameStat.Level.Value])
             {
                 _gameStat.Level.Value += 1;
-                _gameStat.Exp.Value -= _expPerLevel[_gameStat.Level.Value];
-                _gameStat.Exp.Value = Math.Max(_gameStat.Exp.Value, 0);
-                CheckLevelUp();
+                _gameStat.Exp.Value = 0;
             }
         }
 

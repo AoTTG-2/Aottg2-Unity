@@ -48,7 +48,7 @@ namespace UI
 
             // file dropdown
             List<string> options = new List<string>();
-            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "Quit" })
+            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "Quit", "SaveQuit" })
                 options.Add(UIManager.GetLocaleCommon(option));
             var fileDropdown = ElementFactory.CreateDropdownSelect(group, style, _dropdownSelection, UIManager.GetLocale(cat, "Top", "File"),
                options.ToArray(), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onDropdownOptionSelect: () => OnFileClick());
@@ -83,6 +83,9 @@ namespace UI
             _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Gizmo"));
             _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Snap"));
             ElementFactory.CreateDefaultButton(group, style, "Camera", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Camera"));
+
+            // tutorial
+            ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MainMenu", "Intro", "TutorialButton"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("Tutorial"));
         }
 
         public bool IsDropdownOpen()
@@ -150,6 +153,11 @@ namespace UI
             }
             else if (index == 7) // quit
                 SceneLoader.LoadScene(SceneName.MainMenu);
+            else if (index == 8) // save + quit
+            {
+                Save();
+                SceneLoader.LoadScene(SceneName.MainMenu);
+            }
         }
 
         public void Save()
@@ -209,6 +217,8 @@ namespace UI
                 NextGizmo();
             else if (name == "Snap")
                 ToggleSnap();
+            else if (name == "Tutorial")
+                _menu.ExternalLinkPopup.Show("https://aottg2.gitbook.io/custom-maps");
         }
 
         public void ToggleSnap()

@@ -930,6 +930,13 @@ namespace Characters
                 EffectSpawner.Spawn(EffectPrefabs.GroundShatter, hit.point + Vector3.up * 0.1f, Quaternion.identity, Size * SizeMultiplier);
             }
         }
+
+        public virtual bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
+        {
+            var nape = BaseTitanCache.Head.transform;
+            Vector3 direction = (hitPosition - nape.position).normalized;
+            return Vector3.Angle(-nape.forward, direction) < maxAngle;
+        }
     }
 
     public enum TitanState

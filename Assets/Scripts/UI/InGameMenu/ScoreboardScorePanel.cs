@@ -10,6 +10,7 @@ using GameManagers;
 using Photon.Realtime;
 using Photon.Pun;
 using Utility;
+using CustomLogic;
 
 namespace UI
 {
@@ -40,7 +41,7 @@ namespace UI
         {
             _lastPlayers = (Player[])PhotonNetwork.PlayerList.Clone();
             ElementStyle style = new ElementStyle(themePanel: ThemePanel);
-            SetHeader(style);
+            SetHeader(style, _lastPlayers.Length, PhotonNetwork.CurrentRoom.MaxPlayers);
             SetRows(style);
             _currentSyncDelay = MaxSyncDelay;
         }
@@ -65,7 +66,7 @@ namespace UI
                 SetRow(_rows[i], _lastPlayers[i]);
         }
 
-        private void SetHeader(ElementStyle style)
+        private void SetHeader(ElementStyle style, int currentPlayers, int maxPlayers)
         {
             if (_header == null)
             {
@@ -77,7 +78,10 @@ namespace UI
                     t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
                 CreateHorizontalDivider(SinglePanel);
             }
-            _header.GetChild(1).GetComponent<Text>().text = "Kills / Deaths / Max / Total";
+            string playerCount = " (" + currentPlayers.ToString() + "/" + maxPlayers.ToString() + ")";
+            _header.GetChild(0).GetComponent<Text>().text = UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Player") + playerCount;
+            if (CustomLogicManager.Evaluator != null)
+                _header.GetChild(1).GetComponent<Text>().text = CustomLogicManager.Evaluator.ScoreboardHeader;
         }
 
         private Transform CreateRow(ElementStyle style, int index)
@@ -104,21 +108,32 @@ namespace UI
         private void SetRow(Transform row, Player player)
         {
             string playerName = player.GetStringProperty(PlayerProperty.Name);
-            if (playerName.Length > 15)
-                playerName = playerName.Substring(0, 15) + "...";
+            playerName = playerName.TruncateRichText(15);
 
-            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient) + playerName;
+            string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + playerName;
             string status = player.GetStringProperty(PlayerProperty.Status);
             string character = player.GetStringProperty(PlayerProperty.Character);
             string loadout = player.GetStringProperty(PlayerProperty.Loadout);
-            List<string> scoreList = new List<string>();
-            foreach (string property in new string[] {"Kills", "Deaths", "HighestDamage", "TotalDamage"})
+            string score = string.Empty;
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
             {
-                object value = player.GetCustomProperty(property);
-                string str = value != null ? value.ToString() : string.Empty;
-                scoreList.Add(str);
+                var property = player.GetCustomProperty(CustomLogicManager.Evaluator.ScoreboardProperty);
+                if (property == null)
+                    score = string.Empty;
+                else
+                    score = property.ToString();
             }
-            string score = string.Join(" / ", scoreList.ToArray());
+            else
+            {
+                List<string> scoreList = new List<string>();
+                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                {
+                    object value = player.GetCustomProperty(property);
+                    string str = value != null ? value.ToString() : string.Empty;
+                    scoreList.Add(str);
+                }
+                score = string.Join(" / ", scoreList.ToArray());
+            }
             // update status icon
             Transform playerRow = row.GetChild(0);
             RawImage statusImage = playerRow.GetChild(0).GetComponent<RawImage>();

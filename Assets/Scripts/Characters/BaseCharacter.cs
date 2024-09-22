@@ -95,7 +95,7 @@ namespace Characters
             
             if (!ai)
             {
-                Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
+                Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
                 Guild = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Guild);
             }
             Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
@@ -106,7 +106,7 @@ namespace Characters
 
         public virtual Vector3 GetAimPoint()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             Vector3 target = ray.origin + ray.direction * 1000f;
             return target;
         }
@@ -218,14 +218,14 @@ namespace Characters
 
         public void PlayAnimation(string animation, float startTime = 0f)
         {
-
-            Cache.PhotonView.RPC("PlayAnimationRPC", RpcTarget.All, new object[] { animation, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlayAnimationRPC", RpcTarget.All, new object[] { animation, startTime });
         }
 
         public void PlayAnimationReset(string animation)
         {
-
-            Cache.PhotonView.RPC("PlayAnimationResetRPC", RpcTarget.All, new object[] { animation });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlayAnimationResetRPC", RpcTarget.All, new object[] { animation });
         }
 
         [PunRPC]
@@ -255,12 +255,14 @@ namespace Characters
 
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
-            Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
         {
-            Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
+            if (IsMine())
+                Cache.PhotonView.RPC("CrossFadeWithSpeedRPC", RpcTarget.All, new object[] { animation, speed, fadeTime, startTime });
         }
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
@@ -292,7 +294,8 @@ namespace Characters
 
         public void PlaySound(string sound)
         {
-            Cache.PhotonView.RPC("PlaySoundRPC", RpcTarget.All, new object[] { sound });
+            if (IsMine())
+                Cache.PhotonView.RPC("PlaySoundRPC", RpcTarget.All, new object[] { sound });
         }
 
         public bool IsPlayingSound(string sound)
@@ -317,7 +320,8 @@ namespace Characters
 
         public void StopSound(string sound)
         {
-            Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
+            if (IsMine())
+                Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
         }
 
         [PunRPC]
@@ -406,8 +410,9 @@ namespace Characters
                 if (killer.IsMainCharacter())
                     _inGameManager.RegisterMainCharacterKill(this);
             }
+            if (CustomLogicManager.Evaluator == null)
+                return;
             CustomLogicManager.Evaluator.OnCharacterDie(this, killer, name);
-
             if (_inGameManager.CurrentCharacter == this)
                 InGameManager.OnLocalPlayerDied(Cache.PhotonView.Owner);
         }
@@ -425,6 +430,8 @@ namespace Characters
                 if (killer.IsMainCharacter())
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
+            if (CustomLogicManager.Evaluator == null)
+                return;
             if (damage > 0)
                 CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
             if (SettingsManager.UISettings.GameFeed.Value)
@@ -584,6 +591,20 @@ namespace Characters
                 PlaySound(sound);
             else if (!toggle && Cache.AudioSources[sound].isPlaying)
                 StopSound(sound);
+        }
+
+        protected virtual void ToggleSoundLocal(string sound, bool toggle)
+        {
+            if (toggle && !Cache.AudioSources[sound].isPlaying)
+            {
+                if (Cache.AudioSources.ContainsKey(sound))
+                    Cache.AudioSources[sound].Play();
+            }
+            else if (!toggle && Cache.AudioSources[sound].isPlaying)
+            {
+                if (Cache.AudioSources.ContainsKey(sound))
+                    Cache.AudioSources[sound].Stop();
+            }
         }
 
         protected virtual void OnDestroy()

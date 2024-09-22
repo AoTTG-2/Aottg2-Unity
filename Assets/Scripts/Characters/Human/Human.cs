@@ -65,6 +65,8 @@ namespace Characters
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
         public bool CanDodge = true;
+        public bool IsInvincible = true;
+        public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
 
         // physics
@@ -81,6 +83,7 @@ namespace Characters
         private float _wallRunTime = 0f;
         private bool _wallJump = false;
         private bool _wallSlide = false;
+        private bool _canWallSlideJump = false;
         private Vector3 _wallSlideGround = Vector3.zero;
         private bool _launchLeft;
         private bool _launchRight;
@@ -142,7 +145,8 @@ namespace Characters
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             Dead = true;
-            Setup.DeleteDie();
+            if (Setup != null)
+                Setup.DeleteDie();
             GetComponent<CapsuleCollider>().enabled = false;
             if (IsMine())
             {
@@ -161,7 +165,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHuman()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
 
             // Define a plane at the characters position facing towards the camera's forward direction
             Plane plane = new Plane(ray.direction, Cache.Transform.position);
@@ -182,7 +186,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHumanCheap()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             // Move the ray origin along its direction by the distance between the ray origin and the character
             ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, HumanCache.Head.transform.position));
 
@@ -460,7 +464,7 @@ namespace Characters
             var windEmission = HumanCache.Wind.emission;
             windEmission.enabled = false;
             if (IsMainCharacter())
-                MusicManager.PlayDeathSong();
+                MusicManager.PlayGrabbedSong();
         }
 
         public void Ungrab(bool notifyTitan, bool idle)
@@ -471,6 +475,8 @@ namespace Characters
             SetTriggerCollider(false);
             if (idle)
                 Idle();
+            if (IsMainCharacter())
+                MusicManager.OnEscapeGrab();
         }
 
         public void Carry(Human carrier, Transform back)
@@ -774,10 +780,11 @@ namespace Characters
         {
             if (State == HumanState.Grab)
                 PlaySound(HumanSounds.Death5);
-            else if (Grounded)
-                PlaySound(HumanSounds.Death2);
             else
+            {
                 PlaySound(HumanSounds.Death2);
+                MusicManager.PlayDeathSong();
+            }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
             DestroyVoiceChat();
             yield return new WaitForSeconds(2f);
@@ -854,6 +861,7 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
+                InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
@@ -862,8 +870,6 @@ namespace Characters
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
-                if (DebugTesting.DebugPhase)
-                    GetComponent<CapsuleCollider>().isTrigger = true;
             }
         }
 
@@ -886,7 +892,7 @@ namespace Characters
         [PunRPC]
         public override void GetHitRPC(int viewId, string name, int damage, string type, string collider)
         {
-            if (Dead)
+            if (Dead || IsInvincible)
                 return;
             if (type == "TitanEat")
             {
@@ -979,14 +985,11 @@ namespace Characters
                     var titan = (BaseTitan)victimChar;
                     if (titan.BaseTitanCache.NapeHurtbox == collider)
                     {
-                        if (type == "Blade" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
+                        if (type == "Blade" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "AHSS" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
+                        if (type == "AHSS" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "APG" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
+                        if (type == "APG" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
                             return;
                         if (type != "APG" && _lastNapeHitTimes.ContainsKey(titan) && (_lastNapeHitTimes[titan] + 0.2f) > Time.time)
                             return;
@@ -1053,12 +1056,6 @@ namespace Characters
             }
         }
 
-        bool CheckTitanNapeAngle(Vector3 position, Transform nape, float angle)
-        {
-            Vector3 direction = (position - nape.position).normalized;
-            return Vector3.Angle(-nape.forward, direction) < angle;
-        }
-
         protected void Update()
         {
             if (IsMine() && !Dead)
@@ -1066,6 +1063,9 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
+                InvincibleTimeLeft -= Time.deltaTime;
+                if (InvincibleTimeLeft <= 0f)
+                    IsInvincible = false;
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1295,7 +1295,7 @@ namespace Characters
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
                 GameProgressManager.RegisterSpeed(gameObject, _currentVelocity.magnitude);
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 6f);
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 10f);
                 CheckGround();
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
@@ -1377,7 +1377,8 @@ namespace Characters
                     force.y = 0f;
                     if (Cache.Animation.IsPlaying(HumanAnimations.Jump) && Cache.Animation[HumanAnimations.Jump].normalizedTime > 0.18f)
                     {
-                        float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
+                        // float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
+                        float jumpSpeed = 20f;
                         if (_currentVelocity.y > 0f)
                             jumpSpeed -= _currentVelocity.y;
                         force.y += Mathf.Max(jumpSpeed, 0f);
@@ -1399,7 +1400,7 @@ namespace Characters
                 }
                 else
                 {
-                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 0.5f)
+                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 1f)
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
@@ -1775,7 +1776,7 @@ namespace Characters
             var velocity = Cache.Rigidbody.velocity;
             if (Special != null && Special is SwitchbackSpecial)
             {
-                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, velocity.magnitude))
+                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
@@ -1807,14 +1808,39 @@ namespace Characters
         {
             if (_wallSlide)
             {
+                if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
+                    _canWallSlideJump = true;
+                
                 if (Grounded)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
+                    
                 else if (Cache.Rigidbody.velocity.magnitude < 15f)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }             
+                else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f) && _canWallSlideJump) //pressing away from the wall
+                {
+                    Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
+                    DodgeWall();
+                }
+                else if (IsPressDirectionRelativeToWall(-_wallSlideGround, 0.8f)) //pressing towards the wall
+                {
+                    EndWallSlide();
+                }
             }
             ToggleSparks(_wallSlide);
+        }
+
+        private void EndWallSlide()
+        {
+            _wallSlide = false;
+            _canWallSlideJump = false;
         }
 
         private void LateUpdateReelOut()
@@ -1979,6 +2005,8 @@ namespace Characters
             }
             if (IsFiringThunderspear())
                 TargetAngle = oldTargetAngle;
+            if (Grounded && HasDirection && State != HumanState.Attack && State != HumanState.Slide)
+                TargetAngle = oldTargetAngle;
         }
 
         private void FixedUpdateBodyLean()
@@ -2051,7 +2079,7 @@ namespace Characters
 
         public void FixedUpdateLookTitan()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
             RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
             if (hitArr.Length == 0)
@@ -2342,7 +2370,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 10f;
+            float cooldown = 30f;
             Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
@@ -2386,7 +2414,7 @@ namespace Characters
         [PunRPC]
         public void LoadSkinRPC(int horse, string url, PhotonMessageInfo info)
         {
-            if (info.Sender != photonView.Owner)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             HumanCustomSkinSettings settings = SettingsManager.CustomSkinSettings.Human;
             if (settings.SkinsEnabled.Value && (!settings.SkinsLocal.Value || photonView.IsMine))
@@ -2398,6 +2426,8 @@ namespace Characters
         [PunRPC]
         public void SetHookStateRPC(bool left, int hookId, int state, PhotonMessageInfo info)
         {
+            if (!FinishSetup)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHookState(state, info);
             else
@@ -2407,6 +2437,8 @@ namespace Characters
         [PunRPC]
         public void SetHookingRPC(bool left, int hookId, Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
+            if (!FinishSetup)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooking(baseVelocity, relativeVelocity, info);
             else
@@ -2416,6 +2448,8 @@ namespace Characters
         [PunRPC]
         public void SetHookedRPC(bool left, int hookId, Vector3 position, int viewId, int objectId, PhotonMessageInfo info)
         {
+            if (!FinishSetup)
+                return;
             if (left)
                 HookLeft.Hooks[hookId].OnSetHooked(position, viewId, objectId, info);
             else
@@ -2425,7 +2459,7 @@ namespace Characters
         [PunRPC]
         public void SetSmokeRPC(bool active, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != Cache.PhotonView.Owner || !FinishSetup)
                 return;
             var emission = HumanCache.Smoke.emission;
             emission.enabled = active;
@@ -2433,6 +2467,8 @@ namespace Characters
 
         protected void ToggleSparks(bool toggle)
         {
+            if (!IsMine())
+                return;
             ToggleSound(HumanSounds.Slide, toggle);
             if (toggle != HumanCache.Sparks.emission.enabled)
                 Cache.PhotonView.RPC("ToggleSparksRPC", RpcTarget.All, new object[] { toggle });
@@ -2441,7 +2477,7 @@ namespace Characters
         [PunRPC]
         protected void ToggleSparksRPC(bool toggle, PhotonMessageInfo info)
         {
-            if (info.Sender != Cache.PhotonView.Owner)
+            if (info.Sender != Cache.PhotonView.Owner || !FinishSetup)
                 return;
             var emission = HumanCache.Sparks.emission;
             emission.enabled = toggle;
@@ -2449,13 +2485,15 @@ namespace Characters
 
         public void SetThunderspears(bool hasLeft, bool hasRight)
         {
+            if (!IsMine())
+                return;
             photonView.RPC("SetThunderspearsRPC", RpcTarget.All, new object[] { hasLeft, hasRight });
         }
 
         [PunRPC]
         public void SetThunderspearsRPC(bool hasLeft, bool hasRight, PhotonMessageInfo info)
         {
-            if (info.Sender != photonView.Owner)
+            if (info.Sender != photonView.Owner || !FinishSetup)
                 return;
             if (Setup._part_blade_l != null)
                 Setup._part_blade_l.SetActive(hasLeft);
@@ -2734,7 +2772,7 @@ namespace Characters
 
         private string GetBladeAnimationMouse()
         {
-            if (Input.mousePosition.x < (Screen.width * 0.5))
+            if (CursorManager.GetInGameMousePosition().x < (Screen.width * 0.5))
                 return HumanAnimations.Attack2;
             else
                 return HumanAnimations.Attack1;
@@ -2907,6 +2945,14 @@ namespace Characters
             return (Mathf.Abs(Mathf.DeltaAngle(TargetAngle, Cache.Transform.rotation.eulerAngles.y)) < 45f);
         }
 
+        private bool IsPressDirectionRelativeToWall(Vector3 wallNormal, float dotValue)
+        {
+            if (!HasDirection)
+                return false;
+            float dotProduct = Vector3.Dot(GetTargetDirection(), wallNormal);
+            return dotProduct > dotValue;
+        }
+
         private bool IsUpFrontGrounded()
         {
             return CheckRaycastIgnoreTriggers(Cache.Transform.position + Cache.Transform.up * 3f, Cache.Transform.forward, 1.2f, GroundMask.value);
@@ -2934,6 +2980,8 @@ namespace Characters
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
+            if (!FinishSetup)
+                return;
             if (toggle)
             {
                 Setup._part_blade_l.SetActive(true);
@@ -2955,6 +3003,8 @@ namespace Characters
         protected void ToggleBladeTrailsRPC(bool toggle, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (Setup == null)
                 return;
             if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
             {

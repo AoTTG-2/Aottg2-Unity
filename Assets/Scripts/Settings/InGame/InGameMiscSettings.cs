@@ -8,6 +8,7 @@ namespace Settings
         public BoolSetting EndlessRespawnEnabled = new BoolSetting(false);
         public FloatSetting EndlessRespawnTime = new FloatSetting(5f, minValue: 1f);
         public FloatSetting AllowSpawnTime = new FloatSetting(60f, minValue: 0f);
+        public FloatSetting InvincibilityTime = new FloatSetting(3f, minValue: 0f);
         public BoolSetting ThunderspearPVP = new BoolSetting(false);
         public BoolSetting APGPVP = new BoolSetting(false);
         public BoolSetting AllowBlades = new BoolSetting(true);

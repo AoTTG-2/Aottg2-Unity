@@ -20,37 +20,44 @@ namespace Settings
 
         public virtual void Save()
         {
-            Directory.CreateDirectory(FolderPath);
-            string text = SerializeToJsonString();
-            if (Encrypted)
+            try
             {
-                text = new SimpleAES().Encrypt(text);
+                Directory.CreateDirectory(FolderPath);
+                string text = SerializeToJsonString();
+                if (Encrypted)
+                {
+                    text = new SimpleAES().Encrypt(text);
+                }
+                File.WriteAllText(GetFilePath(), text);
             }
-            File.WriteAllText(GetFilePath(), text);
+            catch
+            {
+                Debug.Log("Failed to save container: " + FileName);
+            }
         }
 
         public virtual void Load()
         {
-            string path = GetFilePath();
-            if (File.Exists(path))
+            try
             {
-                string text = File.ReadAllText(path);
-                if (Encrypted)
+                string path = GetFilePath();
+                if (File.Exists(path))
                 {
-                    text = new SimpleAES().Decrypt(text);
+                    string text = File.ReadAllText(path);
+                    if (Encrypted)
+                    {
+                        text = new SimpleAES().Decrypt(text);
+                    }
+                    DeserializeFromJsonString(text);
                 }
-                DeserializeFromJsonString(text);
-            }
-            else
-            {
-                try
+                else
                 {
                     LoadLegacy();
                 }
-                catch
-                {
-                    Debug.Log("Exception occurred while loading legacy settings.");
-                }
+            }
+            catch
+            {
+                Debug.Log("Failed to load container: " + FileName);
             }
         }
 

@@ -27,5 +27,10 @@ namespace UI
             currentTipIndex = tipIndex;
             _label.text = "Tip: " + tips[tipIndex].Value;
         }
+
+        public void SetPressAnyKey()
+        {
+            _label.text = UIManager.GetLocaleCommon("PressAnyKey");
+        }
     }
 }

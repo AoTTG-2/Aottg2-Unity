@@ -732,6 +732,8 @@ namespace Map
                 layer = PhysicsLayer.MapObjectMapObjects;
             else if (collideWith == MapObjectCollideWith.Characters)
                 layer = PhysicsLayer.MapObjectCharacters;
+            else if (collideWith == MapObjectCollideWith.Titans)
+                layer = PhysicsLayer.MapObjectTitans;
             else if (collideWith == MapObjectCollideWith.Projectiles)
                 layer = PhysicsLayer.MapObjectProjectiles;
             else if (collideWith == MapObjectCollideWith.Entities)
@@ -815,6 +817,7 @@ namespace Map
         public static string All = "All";
         public static string MapObjects = "MapObjects";
         public static string Characters = "Characters";
+        public static string Titans = "Titans";
         public static string Projectiles = "Projectiles";
         public static string Entities = "Entities";
         public static string Hitboxes = "Hitboxes";

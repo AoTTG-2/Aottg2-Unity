@@ -91,7 +91,7 @@ namespace UI
         {
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             string start = SceneLoader.SceneName == SceneName.InGame ? "Restart" : "Start";
-            foreach (string buttonName in new string[] { "LoadPreset", "SavePreset", start, "Back" })
+            foreach (string buttonName in new string[] { "Import", "Export", "LoadPreset", "SavePreset", start, "Back" })
             {
                 string locale = UIManager.GetLocaleCommon(buttonName);
                 GameObject obj = ElementFactory.CreateTextButton(BottomBar, style, locale,
@@ -126,7 +126,7 @@ namespace UI
                     SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
                     if (!IsMultiplayer)
                         SettingsManager.MultiplayerSettings.ConnectOffline();
-                    StartRoom();
+                    SettingsManager.MultiplayerSettings.StartRoom();
                     break;
                 case "Back":
                     if (SceneLoader.SceneName == SceneName.InGame)
@@ -151,37 +151,18 @@ namespace UI
                     UIManager.CurrentMenu.SelectListPopup.ShowSave(SettingsManager.InGameSettings.InGameSets.GetSetNames().ToList(), onSave: () => OnSavePreset(),
                         disallowedSave: disallowedDelete, disallowedDelete: disallowedDelete, onDelete: () => OnDeletePreset());
                     break;
+                case "Import":
+                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnImportPreset());
+                    break;
+                case "Export":
+                    var set = new InGameSet();
+                    set.Copy(SettingsManager.InGameUI);
+                    set.Preset.Value = false;
+                    UIManager.CurrentMenu.ExportPopup.Show(SettingsManager.InGameUI.SerializeToJsonString());
+                    break;
             }
             SettingsManager.WeatherSettings.Save();
             SettingsManager.WeatherSettings.Load();
-        }
-
-        public static void StartRoom()
-        {
-            InGameSet settings = SettingsManager.InGameCurrent;
-            string roomName = settings.General.RoomName.Value;
-            string mapName = settings.General.MapName.Value;
-            string gameMode = settings.General.GameMode.Value;
-            int maxPlayers = settings.General.MaxPlayers.Value;
-            string password = settings.General.Password.Value;
-            if (password.Length > 0)
-                password = new SimpleAES().Encrypt(password);
-            string roomId = UnityEngine.Random.Range(0, 100000).ToString();
-            var properties = new ExitGames.Client.Photon.Hashtable
-            {
-                { RoomProperty.Name, roomName },
-                { RoomProperty.Map, mapName },
-                { RoomProperty.GameMode, gameMode },
-                { RoomProperty.Password, password }
-            };
-            string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.Password };
-            var roomOptions = new RoomOptions();
-            roomOptions.CustomRoomProperties = properties;
-            roomOptions.CustomRoomPropertiesForLobby = lobbyProperties;
-            roomOptions.IsVisible = true;
-            roomOptions.IsOpen = true;
-            roomOptions.MaxPlayers = maxPlayers;
-            PhotonNetwork.CreateRoom(roomId, roomOptions);
         }
 
         private void OnDeletePreset()
@@ -248,6 +229,25 @@ namespace UI
             newSet.Name.Value = name;
             SettingsManager.InGameSettings.InGameSets.Sets.AddItem(newSet);
             SettingsManager.InGameSettings.Save();
+        }
+
+        private void OnImportPreset()
+        {
+            var importPopup = UIManager.CurrentMenu.ImportPopup;
+            string preset = importPopup.ImportSetting.Value;
+            try
+            {
+                var set = new InGameSet();
+                set.DeserializeFromJsonString(preset);
+                set.Preset.Value = false;
+                SettingsManager.InGameUI.Copy(set);
+                RebuildCategoryPanel();
+                importPopup.Hide();
+            }
+            catch
+            {
+                importPopup.ShowError("Invalid preset.");
+            }
         }
     }
 }

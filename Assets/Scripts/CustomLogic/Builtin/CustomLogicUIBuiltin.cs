@@ -154,6 +154,16 @@ namespace CustomLogic
                 }
                 return null;
             }
+            if (name == "SetScoreboardHeader")
+            {
+                CustomLogicManager.Evaluator.ScoreboardHeader = (string)parameters[0];
+                return null;
+            }
+            if (name == "SetScoreboardProperty")
+            {
+                CustomLogicManager.Evaluator.ScoreboardProperty = "CL:" + (string)parameters[0];
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
     }
