@@ -14,7 +14,8 @@ namespace Characters
     {
         protected bool _needActivate;
         protected override float ActiveTime => 0.64f;
-        protected float CarryDistance => 10f;
+        protected float CarryDistance => 25f;
+        protected float GroundedCarryDistance => 10f;
         public CarrySpecial(BaseCharacter owner) : base(owner)
         {
             Cooldown = 2f;
@@ -47,10 +48,11 @@ namespace Characters
                 return;
             }
 
+            float distance = owner.Grounded ? GroundedCarryDistance : CarryDistance;
 
             RaycastHit hit;
-            Human target = owner.GetHumanAlongRay(owner.GetAimRayAfterHumanCheap(), CarryDistance);
-            bool hasTarget = owner.IsValidCarryTarget(target, CarryDistance);
+            Human target = owner.GetHumanAlongRay(owner.GetAimRayAfterHumanCheap(), distance);
+            bool hasTarget = owner.IsValidCarryTarget(target, distance);
             if (hasTarget)
             {
                 target.AddVisibleOutlineWithColor(Color.green);
@@ -69,7 +71,7 @@ namespace Characters
                 {
                     continue;
                 }
-                if (Vector3.Distance(owner.Cache.Transform.position, carryTarget.Cache.Transform.position) > CarryDistance)
+                if (Vector3.Distance(owner.Cache.Transform.position, carryTarget.Cache.Transform.position) > distance)
                 {
                     carryTarget.RemoveOutline();
                     continue;
@@ -107,7 +109,8 @@ namespace Characters
                 owner.StopCarrySpecial();
                 return;
             }
-            var target = owner.GetCarryOption(CarryDistance);
+            float distance = owner.Grounded ? GroundedCarryDistance : CarryDistance;
+            var target = owner.GetCarryOption(distance);
             if (target != null)
                 owner.StartCarrySpecial(target);
 

@@ -547,7 +547,6 @@ namespace Characters
             float minDistance = float.PositiveInfinity;
 
             RaycastHit[] hits = Physics.RaycastAll(ray, distance, PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.MapObjectCharacters));
-            Debug.Log(hits.Length);
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.gameObject.GetComponent<Human>() is Human h)
