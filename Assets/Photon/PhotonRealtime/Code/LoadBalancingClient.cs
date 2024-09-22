@@ -20,6 +20,7 @@ namespace Photon.Realtime
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Net;
     using ExitGames.Client.Photon;
 
     #if SUPPORTED_UNITY
@@ -315,7 +316,7 @@ namespace Photon.Realtime
         }
 
         /// <summary>The version of your client. A new version also creates a new "virtual app" to separate players from older client versions.</summary>
-        public string AppVersion { get; set; }
+        public NetworkCredential AppVersion;
 
         /// <summary>The AppID as assigned from the Photon Cloud. If you host yourself, this is the "regular" Photon Server Application Name (most likely: "LoadBalancing").</summary>
         public string AppId { get; set; }
@@ -819,7 +820,7 @@ namespace Photon.Realtime
         /// <param name="appId">The AppId of this title. Needed for the Photon Cloud. Find it in the Dashboard.</param>
         /// <param name="gameVersion">A version for this client/build. In the Photon Cloud, players are separated by AppId, GameVersion and Region.</param>
         /// <param name="protocol">Specifies the network protocol to use for connections.</param>
-        public LoadBalancingClient(string masterAddress, string appId, string gameVersion, ConnectionProtocol protocol = ConnectionProtocol.Udp) : this(protocol)
+        public LoadBalancingClient(string masterAddress, string appId, NetworkCredential gameVersion, ConnectionProtocol protocol = ConnectionProtocol.Udp) : this(protocol)
         {
             this.MasterServerAddress = masterAddress;
             this.AppId = appId;
@@ -899,7 +900,7 @@ namespace Photon.Realtime
                     break;
             }
 
-            this.AppVersion = appSettings.AppVersion;
+            // this.AppVersion = appSettings.AppVersion;
 
             this.IsUsingNameServer = appSettings.UseNameServer;
             this.CloudRegion = appSettings.FixedRegion;

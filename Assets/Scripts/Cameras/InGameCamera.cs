@@ -14,6 +14,7 @@ using System.Linq;
 using System.Collections.Generic;
 using CustomLogic;
 using UnityStandardAssets.ImageEffects;
+using Photon.Pun;
 
 namespace Cameras
 {
@@ -57,6 +58,7 @@ namespace Cameras
         public void ApplyGeneralSettings()
         {
             _cameraDistance = SettingsManager.GeneralSettings.CameraDistance.Value + 0.3f;
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CameraDistance, _cameraDistance);
             if (SettingsManager.GeneralSettings.CameraDistance.Value == 0f)
                 _cameraDistance = 0f;
             CurrentCameraMode = (CameraInputMode)SettingsManager.GeneralSettings.CameraMode.Value;
@@ -64,9 +66,17 @@ namespace Cameras
 
         public float GetCameraDistance()
         {
-            if (CurrentCameraMode == CameraInputMode.FPS)
-                return 0f;
-            return _cameraDistance;
+            if (_follow != null && !_follow.IsMine())
+            {
+                var owner = _follow.Cache.PhotonView.Owner;
+                return owner.GetFloatProperty(PlayerProperty.CameraDistance, 1f);
+            }
+            else
+            {
+                if (CurrentCameraMode == CameraInputMode.FPS)
+                    return 0f;
+                return _cameraDistance;
+            }
         }
 
         public void StartShake()
@@ -408,9 +418,8 @@ namespace Cameras
                     fovMax = SettingsManager.GeneralSettings.FPSFOVMax.Value;
                 }
                 fovMax = Mathf.Max(fovMin, fovMax);
-                float speed = _follow.Cache.Rigidbody.velocity.magnitude;
+                float speed = ((Human)_follow).GetVelocity().magnitude;
                 float fovTarget = fovMin;
-
                 if (speed > 10f)
                     fovTarget = Mathf.Min(fovMax, speed + fovMin - 10f);
                 Camera.fieldOfView = Mathf.Lerp(Camera.fieldOfView, fovTarget, 5f * Time.deltaTime);

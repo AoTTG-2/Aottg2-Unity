@@ -21,8 +21,9 @@ namespace CustomLogic
             }
             if (methodName == "Get")
             {
-                if (Dict.ContainsKey(parameters[0]))
-                    return Dict[parameters[0]];
+                var key = GetDictKey(parameters[0]);
+                if (key != null)
+                    return Dict[key];
                 if (parameters.Count > 1)
                     return parameters[1];
                 throw new System.Exception("No dict key found: " + parameters[0]);
@@ -30,22 +31,35 @@ namespace CustomLogic
             if (methodName == "Set")
             {
                 object key = parameters[0];
-                if (Dict.ContainsKey(key))
-                    Dict[key] = parameters[1];
+                var dictKey = GetDictKey(key);
+                if (dictKey != null)
+                    Dict[dictKey] = parameters[1];
                 else
                     Dict.Add(key, parameters[1]);
                 return null;
             }
             if (methodName == "Remove")
             {
-                Dict.Remove(parameters[0]);
+                var dictKey = GetDictKey(parameters[0]);
+                if (dictKey != null)
+                    Dict.Remove(dictKey);
                 return null;
             }
             if (methodName == "Contains")
             {
-                return Dict.ContainsKey(parameters[0]);
+                return GetDictKey(parameters[0]) != null;
             }
             return base.CallMethod(methodName, parameters);
+        }
+
+        private object GetDictKey(object key)
+        {
+            foreach (var dictKey in Dict.Keys)
+            {
+                if (CustomLogicManager.Evaluator.CheckEquals(dictKey, key))
+                    return dictKey;
+            }
+            return null;
         }
 
         public override object GetField(string name)

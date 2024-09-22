@@ -48,7 +48,7 @@ namespace UI
 
             // file dropdown
             List<string> options = new List<string>();
-            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "Quit" })
+            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "Quit", "SaveQuit" })
                 options.Add(UIManager.GetLocaleCommon(option));
             var fileDropdown = ElementFactory.CreateDropdownSelect(group, style, _dropdownSelection, UIManager.GetLocale(cat, "Top", "File"),
                options.ToArray(), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onDropdownOptionSelect: () => OnFileClick());
@@ -153,6 +153,11 @@ namespace UI
             }
             else if (index == 7) // quit
                 SceneLoader.LoadScene(SceneName.MainMenu);
+            else if (index == 8) // save + quit
+            {
+                Save();
+                SceneLoader.LoadScene(SceneName.MainMenu);
+            }
         }
 
         public void Save()

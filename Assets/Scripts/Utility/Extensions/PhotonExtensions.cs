@@ -80,6 +80,17 @@ static class PhotonExtensions
         return defaultValue;
     }
 
+    public static bool GetBoolProperty(this RoomInfo room, string key, bool defaultValue = false)
+    {
+        if (room.CustomProperties.ContainsKey(key))
+        {
+            object obj = room.CustomProperties[key];
+            if (obj != null && obj is bool)
+                return (bool)obj;
+        }
+        return defaultValue;
+    }
+
     public static bool HasSpawnPoint(this Player player)
     {
         var property = player.GetStringProperty(PlayerProperty.SpawnPoint, "null");

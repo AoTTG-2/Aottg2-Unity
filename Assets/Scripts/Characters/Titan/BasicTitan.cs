@@ -237,9 +237,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtL);
                 DamagedGrunt();
             }
@@ -250,9 +251,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtR);
                 DamagedGrunt();
             }
@@ -971,7 +973,11 @@ namespace Characters
                 }
             }
             else
-                base.Cripple(time);
+            {
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
+                if (!isBellyFlop)
+                    base.Cripple(time);
+            }
         }
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)

@@ -21,6 +21,7 @@ namespace GameManagers
         public static string HighestDamage = "HighestDamage";
         public static string TotalDamage = "TotalDamage";
         public static string SpawnPoint = "SpawnPoint";
+        public static string CameraDistance = "CameraDistance";
     }
 
     class PlayerStatus
@@ -89,5 +90,6 @@ namespace GameManagers
         public static string Map = "Map";
         public static string GameMode = "GameMode";
         public static string Password = "Password";
+        public static string PasswordHash = "PH";
     }
 }

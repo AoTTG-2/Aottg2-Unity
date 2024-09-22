@@ -78,6 +78,9 @@ namespace Photon.Pun
         /// This means you can set the GameVersion right after calling ConnectUsingSettings (e.g.) and the new value will be used on the server.
         /// Once the client is connected, authentication is done and the value won't be sent to the server anymore.
         /// </remarks>
+        /// 
+        
+        /*
         public static string GameVersion
         {
             get { return gameVersion; }
@@ -89,13 +92,17 @@ namespace Photon.Pun
         }
 
         private static string gameVersion;
+        */
 
         /// <summary>Sent to Photon Server to specify the "Virtual AppId".</summary>
         /// <remarks>Sent with the operation Authenticate. When using PUN, you should set the GameVersion or use ConnectUsingSettings().</remarks>
+        
+        /*
         public static string AppVersion
         {
             get { return NetworkingClient.AppVersion; }
         }
+        */
 
         /// <summary>The LoadBalancingClient is part of Photon Realtime and wraps up multiple servers and states for PUN.</summary>
         public static LoadBalancingClient NetworkingClient;
@@ -1159,7 +1166,7 @@ namespace Photon.Pun
 
             IsMessageQueueRunning = true;
             NetworkingClient.AppId = appSettings.AppIdRealtime;
-            GameVersion = appSettings.AppVersion;
+            // GameVersion = appSettings.AppVersion;
 
 
 
@@ -1898,7 +1905,7 @@ namespace Photon.Pun
         /// <param name="roomName">Unique name of the room to join.</param>
         /// <param name="expectedUsers">Optional list of users (by UserId) who are expected to join this game and who you want to block a slot for.</param>
         /// <returns>If the operation got queued and will be sent.</returns>
-        public static bool JoinRoom(string roomName, string[] expectedUsers = null)
+        public static bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null)
         {
             if (OfflineMode)
             {
@@ -1925,7 +1932,8 @@ namespace Photon.Pun
             EnterRoomParams opParams = new EnterRoomParams();
             opParams.RoomName = roomName;
             opParams.ExpectedUsers = expectedUsers;
-
+            opParams.Password = password;
+            opParams.Hash = hash;
             return NetworkingClient.OpJoinRoom(opParams);
         }
 

@@ -13,9 +13,6 @@ namespace UI
     {
         private Text _label;
         protected string[] _options;
-        protected string[] _iconPaths;
-        protected UnityAction _onSelect;
-        protected IconPickPopup _popup;
 
         protected override HashSet<SettingType> SupportedSettingTypes => new HashSet<SettingType>()
         {
@@ -23,8 +20,8 @@ namespace UI
             SettingType.Int
         };
 
-        public void Setup(BaseSetting setting, ElementStyle style, string title, string[] options, string[] iconPaths, 
-            IconPickPopup iconPickPopup, string tooltip, float elementWidth, float elementHeight, UnityAction onSelect)
+        public void Setup(BaseSetting setting, ElementStyle style, string title, string[] options, string[] iconPaths, string[] tooltips, 
+            IconPickPopup iconPickPopup, string tooltip, float elementWidth, float elementHeight, UnityAction onSelect, TooltipPopup tooltipPopup)
         {
             GameObject button = transform.Find("Button").gameObject;
             if (elementWidth > 0f)
@@ -32,10 +29,10 @@ namespace UI
             if (elementHeight > 0f)
                 button.GetComponent<LayoutElement>().preferredHeight = elementHeight;
             _options = options;
-            _iconPaths = iconPaths;
-            _onSelect = onSelect;
-            _popup = iconPickPopup;
-            button.GetComponent<Button>().onClick.AddListener(() => OnClick());
+            button.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                iconPickPopup.Show(_setting, _label, options, iconPaths, tooltips, onSelect, tooltipPopup);
+            });
             button.GetComponent<Button>().colors = UIManager.GetThemeColorBlock(style.ThemePanel, "DefaultButton", "");
             _label = button.transform.Find("Text").GetComponent<Text>();
             _label.fontSize = style.FontSize;
@@ -43,17 +40,17 @@ namespace UI
             base.Setup(setting, style, title, tooltip);
         }
 
-        private void OnClick()
-        {
-            _popup.Show(_setting, _label, _options, _iconPaths, _onSelect);
-        }
-
         public override void SyncElement()
         {
             if (_settingType == SettingType.String)
                 _label.text = ((StringSetting)_setting).Value;
             else if (_settingType == SettingType.Int)
+            {
+                var setting = (IntSetting)_setting;
+                if (setting.Value >= _options.Length)
+                    setting.Value = 0;
                 _label.text = _options[((IntSetting)_setting).Value];
+            }
         }
     }
 }

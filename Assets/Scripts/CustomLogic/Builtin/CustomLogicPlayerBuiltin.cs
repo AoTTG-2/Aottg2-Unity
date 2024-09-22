@@ -18,20 +18,22 @@ namespace CustomLogic
 
         public override object CallMethod(string methodName, List<object> parameters)
         {
+            if (methodName == "GetCustomProperty")
+                return Player.GetCustomProperty("CL:" + (string)parameters[0]);
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
                 return null;
-            if (methodName == "GetCustomProperty")
-                return Player.GetCustomProperty((string)parameters[0]);
             if (methodName == "SetCustomProperty")
             {
                 object param = parameters[1];
                 if (!(param is float || param is int || param is string || param is bool))
                     throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
-                Player.SetCustomProperty((string)parameters[0], param);
+                CheckPropertyRateLimit("CL:" + (string)parameters[0]);
+                Player.SetCustomProperty("CL:" + (string)parameters[0], param);
                 return null;
             }
             if (methodName == "ClearKDR")
             {
+                CheckPropertyRateLimit("ClearKDR");
                 var properties = new Dictionary<string, object>
                     {
                         { PlayerProperty.Kills, 0 },
@@ -100,6 +102,7 @@ namespace CustomLogic
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
                 return;
+            CheckPropertyRateLimit(name);
             if (name == "Kills")
                 Player.SetCustomProperty(PlayerProperty.Kills, (int)value);
             else if (name == "Deaths")
@@ -121,6 +124,22 @@ namespace CustomLogic
             }
             else
                 base.SetField(name, value);
+        }
+
+        private void CheckPropertyRateLimit(string property)
+        {
+            if (Player == PhotonNetwork.LocalPlayer)
+                return;
+            var properties = CustomLogicManager.Evaluator.PlayerIdToLastPropertyChanges;
+            if (!properties.ContainsKey(Player.ActorNumber))
+                properties[Player.ActorNumber] = new Dictionary<string, float>();
+            var lastChanges = properties[Player.ActorNumber];
+            if (!lastChanges.ContainsKey(property))
+                lastChanges[property] = 0;
+            float timeElapsed = Time.time - lastChanges[property];
+            if (timeElapsed < 1f)
+                throw new System.Exception("Exceeded set property rate limit on non-local client: " + property);
+            lastChanges[property] = Time.time;
         }
 
         public override bool Equals(object obj)

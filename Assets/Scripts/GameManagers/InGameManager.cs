@@ -432,9 +432,9 @@ namespace GameManagers
                 loadouts.Add(HumanLoadout.Blades);
             if (!loadouts.Contains(settings.Loadout.Value))
                 settings.Loadout.Value = loadouts[0];
-            List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+            var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
             if (!specials.Contains(settings.Special.Value))
-                settings.Special.Value = specials[0];
+                settings.Special.Value = HumanSpecials.DefaultSpecial;
 
             return SettingsManager.InGameCharacterSettings;
         }
@@ -481,9 +481,9 @@ namespace GameManagers
                     loadouts.Add(HumanLoadout.Blades);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
-                List<string> specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
+                var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
-                    settings.Special.Value = specials[0];
+                    settings.Special.Value = HumanSpecials.DefaultSpecial;
                 var human = (Human)CharacterSpawner.Spawn(CharacterPrefabs.Human, position, rotation);
                 human.Init(false, GetPlayerTeam(false), SettingsManager.InGameCharacterSettings);
                 CurrentCharacter = human;
@@ -891,10 +891,8 @@ namespace GameManagers
                 string gameMode = settings.General.GameMode.Value;
                 var properties = new ExitGames.Client.Photon.Hashtable
                 {
-                    { RoomProperty.Name, PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Name) },
                     { RoomProperty.Map, mapName },
-                    { RoomProperty.GameMode, gameMode },
-                    { RoomProperty.Password, PhotonNetwork.CurrentRoom.GetStringProperty(RoomProperty.Password) }
+                    { RoomProperty.GameMode, gameMode }
                 };
                 PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
                 LoadSkin();
@@ -923,6 +921,12 @@ namespace GameManagers
                 CustomLogicManager.Logic = MapManager.MapScript.Logic;
             else
                 CustomLogicManager.Logic += MapManager.MapScript.Logic;
+            UIManager.LoadingMenu.UpdateLoading(1f, true);
+            if (State == GameState.Loading)
+                State = GameState.Playing;
+            if (SettingsManager.InGameCharacterSettings.ChooseStatus.Value == (int)ChooseCharacterStatus.Choosing)
+                _inGameMenu.SetCharacterMenu(true);
+            CustomLogicManager.StartLogic(SettingsManager.InGameCurrent.Mode.Current);
             if (_needSendPlayerInfo)
             {
                 RPCManager.PhotonView.RPC("PlayerInfoRPC", RpcTarget.Others, new object[] { StringCompression.Compress(MyPlayerInfo.SerializeToJsonString()) });
@@ -930,12 +934,6 @@ namespace GameManagers
                     RPCManager.PhotonView.RPC("NotifyPlayerJoinedRPC", RpcTarget.Others, new object[0]);
                 _needSendPlayerInfo = false;
             }
-            UIManager.LoadingMenu.UpdateLoading(1f, true);
-            if (State == GameState.Loading)
-                State = GameState.Playing;
-            if (SettingsManager.InGameCharacterSettings.ChooseStatus.Value == (int)ChooseCharacterStatus.Choosing)
-                _inGameMenu.SetCharacterMenu(true);
-            CustomLogicManager.StartLogic(SettingsManager.InGameCurrent.Mode.Current);
             SpawnPlayer(false);
             if (SettingsManager.UISettings.GameFeed.Value)
             {

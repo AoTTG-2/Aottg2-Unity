@@ -37,6 +37,7 @@ namespace UI
         public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
         public BasePopup _selectMapPopup;
+        public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
         public SnapshotPopup _snapshotPopup;
         public GlobalPauseGamePopup _globalPauseGamePopup;
@@ -50,6 +51,8 @@ namespace UI
         private Text _topLeftLabel;
         private Text _topRightLabel;
         private Text _middleCenterLabel;
+        private Text _middleLeftLabel;
+        private Text _middleRightLabel;
         private Text _bottomLeftLabel;
         private Text _bottomRightLabel;
         private Text _bottomCenterLabel;
@@ -111,7 +114,7 @@ namespace UI
         public void SetupMinimap()
         {
             gameObject.AddComponent<MinimapHandler>();
-            if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+            if (SettingsManager.GeneralSettings.MinimapEnabled.Value)
             {
                 _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
                 ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
@@ -152,6 +155,10 @@ namespace UI
             ElementFactory.SetAnchor(_topRightLabel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
             _middleCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_middleCenterLabel.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(0f, 100f));
+            _middleRightLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
+            ElementFactory.SetAnchor(_middleRightLabel.gameObject, TextAnchor.MiddleRight, TextAnchor.MiddleRight, new Vector2(-10f, 0f));
+            _middleLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
+            ElementFactory.SetAnchor(_middleLeftLabel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10f, 0f));
             _bottomCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_bottomCenterLabel.gameObject, TextAnchor.LowerCenter, TextAnchor.LowerCenter, new Vector2(0f, 10f));
             _bottomLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
@@ -193,9 +200,11 @@ namespace UI
             _gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (_minimapPanel != null)
             {
-                _minimapPanel.SetActive(true);
+                if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                    _minimapPanel.SetActive(true);
+                else
+                    GetComponent<MinimapHandler>().Disable();
             }
-
         }
 
         public static bool InMenu()
@@ -359,6 +368,10 @@ namespace UI
                 _topRightLabel.text = message;
             else if (label == "MiddleCenter")
                 _middleCenterText = message;
+            else if (label == "MiddleLeft")
+                _middleLeftLabel.text = message;
+            else if (label == "MiddleRight")
+                _middleRightLabel.text = message;
             else if (label == "BottomLeft")
                 _bottomLeftLabel.text = message;
             else if (label == "BottomRight")
@@ -537,18 +550,29 @@ namespace UI
 
 
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
-            
 
-            // string guild = player.GetStringProperty(PlayerProperty.Guild);
-            string kills = player.GetIntProperty(PlayerProperty.Kills).ToString();
-            string deaths = player.GetIntProperty(PlayerProperty.Deaths).ToString();
-            string highestDamage = player.GetIntProperty(PlayerProperty.HighestDamage).ToString();
-            string totalDamage = player.GetIntProperty(PlayerProperty.TotalDamage).ToString();
-
-            string stats = kills + "/" + deaths + "/" + highestDamage + "/" + totalDamage;
+            string score = string.Empty;
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
+            {
+                var property = player.GetCustomProperty(CustomLogicManager.Evaluator.ScoreboardProperty);
+                if (property == null)
+                    score = string.Empty;
+                else
+                    score = property.ToString();
+            }
+            else
+            {
+                List<string> scoreList = new List<string>();
+                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                {
+                    object value = player.GetCustomProperty(property);
+                    string str = value != null ? value.ToString() : string.Empty;
+                    scoreList.Add(str);
+                }
+                score = string.Join("/", scoreList.ToArray());
+            }
             
-            // build row
-            row = Util.SizeText($"{name}: {stats}", 19);
+            row = Util.SizeText($"{name}: {score}", 19);
 
             return row;
         }
@@ -665,11 +689,13 @@ namespace UI
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
             _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
             _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
+            SkillTooltipPopup = ElementFactory.CreateTooltipPopup<SkillTooltipPopup>(IconPickPopup.transform).GetComponent<SkillTooltipPopup>();
             _popups.Add(_settingsPopup);
             _popups.Add(_pausePopup);
             _popups.Add(_createGamePopup);
             _popups.Add(_selectMapPopup);
             _popups.Add(_customAssetUrlPopup);
+            _popups.Add(SkillTooltipPopup);
             _allPausePopups.Add(_settingsPopup);
             _allPausePopups.Add(_pausePopup);
             _allPausePopups.Add(_createGamePopup);

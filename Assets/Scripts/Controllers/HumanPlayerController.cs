@@ -97,7 +97,7 @@ namespace Controllers
 
         protected override void UpdateUI(bool inMenu)
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             RaycastHit hit;
             string str = string.Empty;
             string distance = "???";
@@ -167,8 +167,9 @@ namespace Controllers
 
         Quaternion GetHookArrowRotation(bool left, Vector3 position)
         {
-            float x = position.x - Input.mousePosition.x;
-            float y = position.y - Input.mousePosition.y;
+            Vector3 mousePosition = CursorManager.GetInGameMousePosition();
+            float x = position.x - mousePosition.x;
+            float y = position.y - mousePosition.y;
             float z = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             return Quaternion.Euler(0, 0, z);
         }
@@ -412,7 +413,7 @@ namespace Controllers
                     {
                         if (_human.Stats.Perks["OmniDash"].CurrPoints == 1)
                         {
-                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
                             _human.DashVertical(GetTargetAngle(direction), direction);
                         }
                         else if (_human.Stats.Perks["VerticalDash"].CurrPoints == 1)
@@ -422,7 +423,7 @@ namespace Controllers
                                 angle += 360f;
                             if (angle >= 360f)
                                 angle -= 360f;
-                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition).direction.normalized;
+                            Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
                             if (angle > 0f && angle < 180f)
                                 _human.DashVertical(GetTargetAngle(direction), Vector3.down);
                             else
