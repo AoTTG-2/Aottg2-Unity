@@ -6,10 +6,6 @@ using System.IO;
 using UnityEngine.Networking;
 using System.Threading;
 using UI;
-using UnityEditor.VersionControl;
-using Photon.Realtime;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace ApplicationManagers
 {

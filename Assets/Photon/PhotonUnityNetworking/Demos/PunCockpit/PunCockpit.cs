@@ -544,7 +544,7 @@ namespace Photon.Pun.Demo.Cockpit
 
             PhotonNetwork.ConnectToBestCloudServer();
 			if (GameVersionOverride != string.Empty) {
-				PhotonNetwork.GameVersion = GameVersionOverride;
+				// PhotonNetwork.GameVersion = GameVersionOverride;
 			}
         }
 
@@ -566,7 +566,7 @@ namespace Photon.Pun.Demo.Cockpit
             bool _result = PhotonNetwork.ConnectToRegion(region);
 
 			if (GameVersionOverride != string.Empty) {
-				PhotonNetwork.GameVersion = GameVersionOverride;
+				// PhotonNetwork.GameVersion = GameVersionOverride;
 			}
 
 			if (debug)  Debug.Log("PunCockpit:ConnectToRegion(" + region + ") ->" + _result);

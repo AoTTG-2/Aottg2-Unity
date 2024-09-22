@@ -57,7 +57,12 @@ namespace UI
                 : null;
             _currentIndex = 0;
             for (int i = 0; i < itemNames.Count; i++)
-                CreateRow(itemNames[i], iconNames[i], tooltipNames[i], tooltipPopup);
+            {
+                if (tooltipNames == null || i >= tooltipNames.Count)
+                    CreateRow(itemNames[i], iconNames[i], new List<string>(), tooltipPopup);
+                else
+                    CreateRow(itemNames[i], iconNames[i], tooltipNames[i], tooltipPopup);
+            }
             base.Show();
         }
 
@@ -83,7 +88,7 @@ namespace UI
                     {
                         var texture = (Texture2D)ResourceManager.LoadAsset(string.Empty, icons[i], true);
                         obj.transform.Find("Icon").GetComponent<RawImage>().texture = texture;
-                        if (tooltips?[i] != string.Empty)
+                        if (tooltips.Count > i && tooltips[i] != string.Empty)
                         {
                             var tooltip = obj.GetOrAddComponent<HoverTooltip>();
                             tooltip.Message = tooltips[i];

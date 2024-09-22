@@ -73,7 +73,7 @@
 		"MultiplayerSettingsPopup.AppIdTooltip": "Connect to public servers or a custom self-hosted photon server.",
 		"MultiplayerSettingsPopup.AppIdCustom": "Custom App ID",
 		"MultiplayerSettingsPopup.Lobby": "Lobby",
-		"MultiplayerSettingsPopup.LobbyOptions": ["Public", "Private", "Custom"],
+		"MultiplayerSettingsPopup.LobbyOptions": ["Public", "Custom"],
 		"MultiplayerSettingsPopup.LobbyTooltip": "Connect to a specific lobby within the server. Only players in the same lobby can see each other.",
 		"MultiplayerSettingsPopup.LobbyCustom": "Custom lobby",
 		"MultiplayerLanPopup.Connect": "Connect",

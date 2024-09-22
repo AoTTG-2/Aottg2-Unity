@@ -114,7 +114,7 @@ namespace UI
         public void SetupMinimap()
         {
             gameObject.AddComponent<MinimapHandler>();
-            if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+            if (SettingsManager.GeneralSettings.MinimapEnabled.Value)
             {
                 _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
                 ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
