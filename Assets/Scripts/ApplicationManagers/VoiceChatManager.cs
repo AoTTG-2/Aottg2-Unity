@@ -46,7 +46,9 @@ namespace GameManagers
             if (FindObjectOfType<PunVoiceClient>() == null)
             {
                 var go = new GameObject("PunVoiceClient");
-                go.AddComponent<PunVoiceClient>();
+                var client = go.AddComponent<PunVoiceClient>();
+                client.UsePunAppSettings = true;
+                client.UsePunAuthValues = true;
                 DontDestroyOnLoad(go);
             }
         }
