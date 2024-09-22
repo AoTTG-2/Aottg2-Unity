@@ -5,11 +5,10 @@ namespace Characters
 {
     class HumanSpecials
     {
-        private static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback"};
-        private static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
-        private static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
-        private static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
-
+        public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse"};
+        public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
+        public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
+        public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
         public static readonly string DefaultSpecial = "Potato";
 
         public static List<string> GetSpecialNames(string loadout, bool includeShifters)
@@ -60,6 +59,7 @@ namespace Characters
             "Annie" => new ShifterTransformSpecial(owner, "Annie"),
             "Armored" => new ShifterTransformSpecial(owner, "Armored"),
             "Switchback" => new SwitchbackSpecial(owner),
+            "Confuse" => new ConfuseSpecial(owner),
             _ => null
         };
 

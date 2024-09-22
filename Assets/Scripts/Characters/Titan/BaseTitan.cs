@@ -47,6 +47,8 @@ namespace Characters
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
         public float AttackSpeedMultiplier = 1f;
+        public float ConfusedTime = 0;
+        public float PreviousAttackSpeedMultiplier = -1f;
         public Dictionary<string, float> AttackSpeeds = new Dictionary<string, float>();
         public float RunSpeedBase;
         public float WalkSpeedBase;
@@ -363,6 +365,30 @@ namespace Characters
             {
                 HoldHuman.Cache.PhotonView.RPC("UngrabRPC", HoldHuman.Cache.PhotonView.Owner, new object[0]);
                 HoldHuman = null;
+            }
+        }
+
+        [PunRPC]
+        public virtual void DecreaseAttackSpeedRPC(PhotonMessageInfo info)
+        {
+            if(confusedTime <= 0)
+            {
+                PreviousAttackSpeedMultiplier = AttackSpeedMultiplier;
+                AttackSpeedMultiplier = AttackSpeedMultiplier * 0.67f;
+            }
+            confusedTime = 10;
+        }
+
+        public virtual void Confuse()
+        {
+            Cache.PhotonView.RPC("DecreaseAttackSpeedRPC", Cache.PhotonView.Owner, new object[0]);
+        }
+
+        protected void ResetAttackSpeed()
+        {
+            if(PreviousAttackSpeedMultiplier >= 0)
+            {
+                AttackSpeedMultiplier = PreviousAttackSpeedMultiplier;
             }
         }
 
@@ -721,6 +747,14 @@ namespace Characters
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
+                if(confusedTime > 0)
+                {
+                    confusedTime -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    ResetAttackSpeed();
+                }
             }
         }
 
