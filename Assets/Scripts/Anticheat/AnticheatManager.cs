@@ -58,6 +58,8 @@ namespace Anticheat
 
         public static bool TryVoteKickPlayer(Player voter, Player target, out (int submitted, int required) progress)
         {
+            RemoveOldVotes();
+
             HashSet<Vote> votes = null;
             if (target != PhotonNetwork.LocalPlayer)
             {
