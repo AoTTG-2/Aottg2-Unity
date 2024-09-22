@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using GameManagers;
 using Map;
 using System.Collections.Generic;
@@ -93,6 +93,7 @@ namespace CustomLogic
                 script.Parent = 0;
                 var mapObject = MapLoader.LoadObject(script, false);
                 MapLoader.SetParent(mapObject);
+                CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
                 return new CustomLogicMapObjectBuiltin(mapObject);
             }
             if (name == "DestroyMapObject")
