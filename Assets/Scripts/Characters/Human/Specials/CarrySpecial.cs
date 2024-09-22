@@ -76,16 +76,13 @@ namespace Characters
                     carryTarget.RemoveOutline();
                     continue;
                 }
-
-                if (TeamInfo.SameTeam(carryTarget, owner.Team))
-                {
-                    carryTarget.AddVisibleOutlineWithColor(Color.white);
-                }
-                else
+                if (!TeamInfo.SameTeam(carryTarget, owner.Team))
                 {
                     carryTarget.AddVisibleOutlineWithColor(Color.red);
+                    continue;
+                    
                 }
-
+                carryTarget.AddVisibleOutlineWithColor(Color.white);
                 float targetDistance = Vector3.Distance(owner.Cache.Transform.position, carryTarget.Cache.Transform.position);
                 if (targetDistance < nearestDistance)
                 {
@@ -113,6 +110,9 @@ namespace Characters
             var target = owner.GetCarryOption(distance);
             if (target != null)
                 owner.StartCarrySpecial(target);
+
+            // reset skill cd
+            SetCooldownLeft(0f);
 
             InGameManager inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
             foreach (Human human in inGameManager.Humans)
