@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: VoiceAppSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: eea04957-6920-49fb-955e-1b6d660bb1e3
+    AppIdRealtime: 
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: eea04957-6920-49fb-955e-1b6d660bb1e3
+    AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
     FixedRegion: 

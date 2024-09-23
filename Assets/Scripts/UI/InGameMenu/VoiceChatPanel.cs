@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Settings;
 using GameManagers;
-using Photon.Pun.Demo.SlotRacer.Utils;
 using Photon.Realtime;
 
 namespace UI
