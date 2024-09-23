@@ -16,7 +16,6 @@ namespace ApplicationManagers
     {
         private static VoiceChatManager _instance;
         public static PunVoiceClient Client;
-        public static float AudioMultiplier = 2.5f;
         public static float ProximitySpatialBlend = 1.0f;
 
         public static string[] MicrophoneDevices
@@ -54,16 +53,16 @@ namespace ApplicationManagers
             }
         }
 
-        public static float GetMyVoiceChatVolume()
+        public static float GetInputVolume()
         {
             if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.Off)
             {
                 return 0f;
             }
-            return SettingsManager.SoundSettings.VoiceChatMicVolume.Value * AudioMultiplier;
+            return Mathf.Clamp(SettingsManager.SoundSettings.VoiceChatMicVolume.Value, 0f, 1f) * 16f;
         }
 
-        public static float GetOtherVoiceChatVolume(PhotonView view)
+        public static float GetOuputVolume(PhotonView view)
         {
             var pActorID = view.OwnerActorNr;
             if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.Off || InGameManager.MuteVoiceChat.Contains(pActorID))
@@ -75,8 +74,7 @@ namespace ApplicationManagers
             {
                 multiplier = InGameManager.VoiceChatVolumeMultiplier[pActorID];
             }
-            multiplier *= 2f;
-            return SettingsManager.SoundSettings.VoiceChatAudioVolume.Value * AudioMultiplier * multiplier;
+            return Mathf.Clamp(SettingsManager.SoundSettings.VoiceChatAudioVolume.Value * multiplier, 0f, 1f);
         }
     }
 }

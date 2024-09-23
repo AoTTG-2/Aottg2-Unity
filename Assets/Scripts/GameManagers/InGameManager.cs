@@ -342,6 +342,8 @@ namespace GameManagers
         {
             if (!AllPlayerInfo.ContainsKey(info.Sender.ActorNumber))
                 AllPlayerInfo.Add(info.Sender.ActorNumber, new PlayerInfo());
+            if (data.Length > 1000)
+                return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
         }
 

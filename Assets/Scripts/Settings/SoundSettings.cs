@@ -28,9 +28,8 @@ namespace Settings
         public StringSetting CustomPlaylist = new StringSetting("");
         public StringSetting VoiceChatDevice = new StringSetting(VoiceChatManager.DefaultDevice);
         public IntSetting VoiceChatInput = new IntSetting(0);
-        public FloatSetting VoiceChatMicVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
+        public FloatSetting VoiceChatMicVolume = new FloatSetting(1f, minValue: 0f, maxValue: 1f);
         public FloatSetting VoiceChatAudioVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
-
 
 
         public override void Apply()

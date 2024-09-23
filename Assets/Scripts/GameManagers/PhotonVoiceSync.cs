@@ -13,10 +13,13 @@ using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using Settings;
 using Photon.Voice;
+using Photon.Realtime;
+using Utility;
+using Photon.Voice.Unity.UtilityScripts;
 
 namespace GameManagers
 {
-    class PhotonVoiceSync : Photon.Pun.MonoBehaviourPun
+    class PhotonVoiceSync : Photon.Pun.MonoBehaviourPunCallbacks
     {
         public PhotonView PhotonView;
         public PhotonVoiceView VoiceView;
@@ -25,6 +28,7 @@ namespace GameManagers
         public AudioSource AudioSource;
         public Speaker Speaker;
         public Transform Transform;
+        public MicAmplifier MicAmplifier;
 
         void Awake()
         {
@@ -35,6 +39,7 @@ namespace GameManagers
             Recorder = GetComponent<Recorder>();
             AudioSource = transform.Find("Speaker").GetComponent<AudioSource>();
             Speaker = transform.Find("Speaker").GetComponent<Speaker>();
+            MicAmplifier = GetComponent<MicAmplifier>();
             if (PhotonView.IsMine)
             {
                 Recorder.UseMicrophoneTypeFallback = true;
@@ -55,6 +60,7 @@ namespace GameManagers
                 Recorder.VoiceDetection = SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.AutoDetect;
                 Recorder.MicrophoneType = Recorder.MicType.Unity;
                 Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                MicAmplifier.AmplificationFactor = VoiceChatManager.GetInputVolume();
             }
             if (SettingsManager.InGameCurrent.Misc.VoiceChat.Value == (int)VoiceChatMode.Proximity)
             {
@@ -64,36 +70,41 @@ namespace GameManagers
             }
             else
                 AudioSource.spatialBlend = 0.0f;
-            if (PhotonView.IsMine)
-                AudioSource.volume = VoiceChatManager.GetMyVoiceChatVolume();
-            else
-                AudioSource.volume = VoiceChatManager.GetOtherVoiceChatVolume(PhotonView);
         }
 
         private void Update()
         {
-            if (!PhotonView.IsMine)
-                return;
             var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            if (inGameManager.CurrentCharacter != null)
-            {
-                Transform.position = inGameManager.CurrentCharacter.GetCameraAnchor().position;
-            }
             var setting = SettingsManager.InGameCurrent.Misc.VoiceChat.Value;
-            bool alive = inGameManager.CurrentCharacter != null && !inGameManager.CurrentCharacter.Dead;
-            if (setting == (int)VoiceChatMode.Off || (setting == (int)VoiceChatMode.Proximity && !alive))
+            if (PhotonView.IsMine)
             {
-                Recorder.TransmitEnabled = false;
-            }
-            else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.PushToTalk)
-            {
-                if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
-                    Recorder.TransmitEnabled = true;
-                else
+                if (inGameManager.CurrentCharacter != null)
+                {
+                    Transform.position = inGameManager.CurrentCharacter.GetCameraAnchor().position;
+                }
+                bool alive = inGameManager.CurrentCharacter != null && !inGameManager.CurrentCharacter.Dead;
+                if (setting == (int)VoiceChatMode.Off || (setting == (int)VoiceChatMode.Proximity && !alive))
+                {
                     Recorder.TransmitEnabled = false;
+                }
+                else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.PushToTalk)
+                {
+                    if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
+                        Recorder.TransmitEnabled = true;
+                    else
+                        Recorder.TransmitEnabled = false;
+                }
+                else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.AutoDetect)
+                    Recorder.TransmitEnabled = true;
+                AudioSource.volume = 1f;
             }
-            else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.AutoDetect)
-                Recorder.TransmitEnabled = true;
+            else
+            {
+                if (setting == (int)VoiceChatMode.Off)
+                    AudioSource.volume = 0f;
+                else
+                    AudioSource.volume = VoiceChatManager.GetOuputVolume(PhotonView);
+            }
         }
 
         private void LateUpdate()

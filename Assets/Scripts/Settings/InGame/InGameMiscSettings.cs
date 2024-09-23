@@ -27,9 +27,9 @@ namespace Settings
         public BoolSetting CustomStats = new BoolSetting(true);
         public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
-        public IntSetting VoiceChat = new IntSetting(0);
-        public FloatSetting ProximityMaxDistance = new FloatSetting(20f, minValue: 1f);
-        public FloatSetting ProximityMinDistance = new FloatSetting(20f, minValue: 1f);
+        public IntSetting VoiceChat = new IntSetting(1);
+        public FloatSetting ProximityMinDistance = new FloatSetting(30f, minValue: 1f);
+        public FloatSetting ProximityMaxDistance = new FloatSetting(50f, minValue: 1f);
         public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
         public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
     }

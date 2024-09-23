@@ -133,7 +133,7 @@ namespace Settings
                 { RoomProperty.GameMode, gameMode },
                 { RoomProperty.Password, password },
                 { RoomProperty.PasswordHash, passwordHash },
-                { "Hash", GetHashCode(roomName)}
+                { "Hash", GetHashCode(roomId + roomName)}
             };
             string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
             var roomOptions = new RoomOptions();
@@ -146,23 +146,29 @@ namespace Settings
             PhotonNetwork.CreateRoom(roomId, roomOptions);
             if (!PhotonNetwork.OfflineMode)
             {
-                roomOptions.MaxPlayers = 255;
-                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, roomOptions);
+                var vcRoomOptions = new RoomOptions();
+                vcRoomOptions.CustomRoomProperties = properties;
+                vcRoomOptions.CustomRoomPropertiesForLobby = lobbyProperties;
+                vcRoomOptions.IsVisible = false;
+                vcRoomOptions.IsOpen = true;
+                vcRoomOptions.MaxPlayers = 255;
+                vcRoomOptions.BroadcastPropsChangeToAll = false;
+                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions);
             }
         }
 
         public void JoinRoom(string roomId, string roomName, string password)
         {
-            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomName));
+            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName));
             if (!PhotonNetwork.OfflineMode)
-                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomName));
+                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName));
         }
 
         public string GetHashCode(string str)
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return string.Empty;
+            return str + "hashed";
         }
     }
 

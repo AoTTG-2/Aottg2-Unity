@@ -44,8 +44,8 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GlobalMinimapDisable, UIManager.GetLocale(cat, sub, "GlobalMinimapDisable"));
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.VoiceChat, UIManager.GetLocale(cat, sub, "VoiceChat"), 
                                UIManager.GetLocaleArray(cat, sub, "VoiceChatOptions"), elementWidth: inputWidth);
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMaxDistance, UIManager.GetLocale(cat, sub, "ProximityMaxDistance"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMinDistance, UIManager.GetLocale(cat, sub, "ProximityMinDistance"), elementWidth: inputWidth);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProximityMaxDistance, UIManager.GetLocale(cat, sub, "ProximityMaxDistance"), elementWidth: inputWidth);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.GunsAirReload, UIManager.GetLocale(cat, sub, "GunsAirReload"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.AllowStock, UIManager.GetLocale(cat, sub, "AllowStock"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.InvincibilityTime, UIManager.GetLocale(cat, sub, "InvincibilityTime"), elementWidth: inputWidth);
