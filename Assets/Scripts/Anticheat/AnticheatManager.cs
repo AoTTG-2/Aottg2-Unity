@@ -75,19 +75,23 @@ namespace Anticheat
         private static readonly List<Player> removals = new();
 
         private readonly Dictionary<Player, HashSet<Ballot>> BallotsByTargetPlayer = new();
+        private readonly Dictionary<Player, DateTime> LastBallotCastTimestampByPlayer = new();
         private readonly TimeSpan BallotTimeout = TimeSpan.FromMinutes(5.0);
+        private readonly TimeSpan BallotCooldown = TimeSpan.FromMinutes(1.0);
 
         public bool CastBallot(Player voter, Player target, out (int submitted, int required) progress)
         {
             RemoveOldBallots();
 
             HashSet<Ballot> ballots = null;
-            if (target != PhotonNetwork.LocalPlayer && CountBallotsCast(voter) < ConcurrentVoteLimit)
+            if (target != PhotonNetwork.LocalPlayer && CountBallotsCast(voter) < ConcurrentVoteLimit && !HasCooldown(voter))
             {
                 if (BallotsByTargetPlayer.TryGetValue(target, out ballots))
                     ballots.Add(voter);
-                else 
+                else
                     BallotsByTargetPlayer.Add(target, ballots = new HashSet<Ballot> { voter });
+
+                LastBallotCastTimestampByPlayer.TryAdd(voter, DateTime.UtcNow);
             }
 
             progress.submitted = ballots != null ? ballots.Count : 0;
@@ -131,6 +135,9 @@ namespace Anticheat
 
             return count;
         }
+
+        private bool HasCooldown(Player voter) =>
+            LastBallotCastTimestampByPlayer.TryGetValue(voter, out var timestamp) && DateTime.UtcNow - timestamp < BallotCooldown;
 
         readonly struct Ballot
         {
