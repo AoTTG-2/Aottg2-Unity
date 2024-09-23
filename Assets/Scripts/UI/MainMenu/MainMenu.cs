@@ -13,7 +13,7 @@ using Utility;
 
 namespace UI
 {
-    class MainMenu: BaseMenu
+    class MainMenu : BaseMenu
     {
         public BasePopup _createGamePopup;
         public BasePopup _selectMapPopup;
@@ -102,20 +102,40 @@ namespace UI
             _popups.Add(_outdatedPopup);
         }
 
+        private RectTransform _introPanelRect;
+        private IntroPanelAnimator _introPanelAnimator;
         private void SetupIntroPanel()
         {
             GameObject introPanel = ElementFactory.InstantiateAndBind(transform, "Prefabs/MainMenu/IntroPanel");
             introPanel.AddComponent<IgnoreScaler>();
+            _introPanelRect = introPanel.GetComponent<RectTransform>();
+
+            _introPanelAnimator = introPanel.AddComponent<IntroPanelAnimator>();
+
             ElementFactory.SetAnchor(introPanel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
-            foreach (Transform transform in introPanel.transform.Find("Buttons"))
+
+            SetupButtons(introPanel.transform.Find("Buttons"));
+            SetupIcons(introPanel.transform.Find("Icons"));
+
+            _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
+
+            _introPanelAnimator.StartAnimation();
+        }
+        private void SetupButtons(Transform buttonsParent)
+        {
+            foreach (Transform buttonTransform in buttonsParent)
             {
-                IntroButton introButton = transform.gameObject.AddComponent<IntroButton>();
+                IntroButton introButton = buttonTransform.gameObject.AddComponent<IntroButton>();
                 introButton.onClick.AddListener(() => OnIntroButtonClick(introButton.name));
             }
-            foreach (Transform transform in introPanel.transform.Find("Icons"))
+        }
+
+        private void SetupIcons(Transform iconsParent)
+        {
+            foreach (Transform iconTransform in iconsParent)
             {
-                Button button = transform.gameObject.GetComponent<Button>();
-                button.onClick.AddListener(() => OnIntroButtonClick(transform.name));
+                Button button = iconTransform.gameObject.GetComponent<Button>();
+                button.onClick.AddListener(() => OnIntroButtonClick(iconTransform.name));
                 ColorBlock block = new ColorBlock
                 {
                     colorMultiplier = 1f,
@@ -127,7 +147,6 @@ namespace UI
                 };
                 button.colors = block;
             }
-            _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
         }
 
         private void SetupLabels()
