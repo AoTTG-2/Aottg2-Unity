@@ -5,13 +5,13 @@ namespace Characters
 {
     class ShifterTransformSpecial : ExtendedUseable
     {
-        protected float LiveTime = 10f;
+        protected float LiveTime = 60f;
         protected string _shifter;
         protected override float ActiveTime => 0.8f;
 
         public ShifterTransformSpecial(BaseCharacter owner, string shifter): base(owner)
         {
-            Cooldown = 10f;
+            Cooldown = 60f;
             _shifter = shifter;
             SetCooldownLeft(Cooldown);
         }

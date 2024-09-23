@@ -24,7 +24,6 @@ namespace ApplicationManagers
         static SceneLoader _instance;
         public static SceneName SceneName = SceneName.Startup;
         public static BaseGameManager CurrentGameManager;
-        public static VoiceChatManager VoiceChatManager;
         public static BaseCamera CurrentCamera;
 
         public static void Init()
@@ -58,10 +57,7 @@ namespace ApplicationManagers
             if (SceneName == SceneName.MainMenu)
                 CurrentGameManager = Util.CreateObj<MainMenuGameManager>();
             else if (SceneName == SceneName.InGame)
-            { 
                 CurrentGameManager = Util.CreateObj<InGameManager>();
-                VoiceChatManager = Util.CreateObj<VoiceChatManager>();
-            }
             else if (SceneName == SceneName.CharacterEditor)
                 CurrentGameManager = Util.CreateObj<CharacterEditorGameManager>();
             else if (SceneName == SceneName.MapEditor)
