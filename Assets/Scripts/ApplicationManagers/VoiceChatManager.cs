@@ -59,7 +59,7 @@ namespace ApplicationManagers
             {
                 return 0f;
             }
-            return Mathf.Clamp(SettingsManager.SoundSettings.VoiceChatMicVolume.Value, 0f, 1f) * 16f;
+            return Mathf.Clamp(SettingsManager.SoundSettings.VoiceChatMicVolume.Value, 0f, 1f) * 4f;
         }
 
         public static float GetOuputVolume(PhotonView view)
@@ -69,7 +69,7 @@ namespace ApplicationManagers
             {
                 return 0f;
             }
-            float multiplier = 0.5f;
+            float multiplier = 1f;
             if (InGameManager.VoiceChatVolumeMultiplier.ContainsKey(pActorID))
             {
                 multiplier = InGameManager.VoiceChatVolumeMultiplier[pActorID];

@@ -38,6 +38,7 @@ namespace GameManagers
             VoiceView = GetComponent<PhotonVoiceView>();
             Recorder = GetComponent<Recorder>();
             AudioSource = transform.Find("Speaker").GetComponent<AudioSource>();
+            AudioSource.ignoreListenerVolume = true;
             Speaker = transform.Find("Speaker").GetComponent<Speaker>();
             MicAmplifier = GetComponent<MicAmplifier>();
             if (PhotonView.IsMine)
@@ -46,7 +47,7 @@ namespace GameManagers
                 Recorder.LoopAudioClip = true;
                 Recorder.VoiceDetectionThreshold = 0.01f;
                 Recorder.FrameDuration = Photon.Voice.OpusCodec.FrameDuration.Frame20ms;
-                Recorder.SamplingRate = POpusCodec.Enums.SamplingRate.Sampling24000;
+                Recorder.SamplingRate = POpusCodec.Enums.SamplingRate.Sampling48000;
                 Recorder.VoiceDetectionDelayMs = 500;
             }
             Apply();

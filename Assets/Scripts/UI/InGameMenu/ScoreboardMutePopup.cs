@@ -20,7 +20,7 @@ namespace UI
         protected BoolSetting _muteEmote = new BoolSetting(false);
         protected BoolSetting _muteText = new BoolSetting(false);
         protected BoolSetting _muteVoice = new BoolSetting(false);
-        protected FloatSetting _voiceVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
+        protected FloatSetting _voiceVolume = new FloatSetting(1f, minValue: 0f, maxValue: 1f);
         protected Player _player;
 
         public override void Setup(BasePanel parent = null)
