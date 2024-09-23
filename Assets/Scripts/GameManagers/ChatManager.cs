@@ -470,10 +470,10 @@ namespace GameManagers
             if (!PhotonNetwork.IsMasterClient) return;
             if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value) return;
 
-            var success = AnticheatManager.TryVoteKickPlayer(voter, target, out var progress);
-            var msg = GetColorString($"Voted to kick {target.GetStringProperty(PlayerProperty.Name)} {progress.submitted}/{progress.required}.", ChatTextColor.System);
+            var result = AnticheatManager.TryVoteKickPlayer(voter, target);
+            var msg = result.ToString();
             RPCManager.PhotonView.RPC(nameof(RPCManager.AnnounceRPC), voter, new object[] { msg });
-            if (success)
+            if (result.IsSuccess)
                 SendChatAll(target.GetStringProperty(PlayerProperty.Name) + " has been vote kicked.", ChatTextColor.System);
         }
 

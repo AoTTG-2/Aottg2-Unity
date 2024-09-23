@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
+using GameManagers;
 
 namespace Anticheat
 {
@@ -53,11 +54,11 @@ namespace Anticheat
             }
         }
 
-        public static bool TryVoteKickPlayer(Player voter, Player target, out (int submitted, int required) progress)
+        public static BallotBox.Result TryVoteKickPlayer(Player voter, Player target)
         {
-            var kick = kicks.CastBallot(voter, target, out progress);
-            if (kick) KickPlayer(target);
-            return kick;
+            var result = kicks.TryCastBallot(voter, target);
+            if (result.IsSuccess) KickPlayer(target);
+            return result;
         }
 
         public static void ResetVoteKicks(Player voter) => kicks.ResetBallots(voter);
@@ -79,27 +80,34 @@ namespace Anticheat
         private readonly TimeSpan BallotTimeout = TimeSpan.FromMinutes(5.0);
         private readonly TimeSpan BallotCooldown = TimeSpan.FromMinutes(1.0);
 
-        public bool CastBallot(Player voter, Player target, out (int submitted, int required) progress)
+        public Result TryCastBallot(Player voter, Player target)
         {
             RemoveOldBallots();
 
-            HashSet<Ballot> ballots = null;
-            if (target != PhotonNetwork.LocalPlayer && CountBallotsCast(voter) < ConcurrentVoteLimit && !HasCooldown(voter))
+            var required = PhotonNetwork.CurrentRoom.PlayerCount / 2 + 1;
+            var hasBucket = BallotsByTargetPlayer.TryGetValue(target, out var ballots);
+
+            var cast = ballots != null ? ballots.Count : 0;
+
+            if (!PhotonNetwork.IsMasterClient) return Result.MissingAuthority((cast, required), target);
+            if (target == PhotonNetwork.LocalPlayer || target == voter) return Result.InvalidTarget((cast, required), target);
+            if (HasCooldown(voter)) return Result.UnderCooldown((cast, required), BallotCooldown);
+            if (CountBallotsCast(voter) >= ConcurrentVoteLimit) return Result.ExceededConcurrentVotesLimit((cast, required));
+
+            if (hasBucket)
+                ballots.Add(voter);
+            else
+                BallotsByTargetPlayer.Add(target, ballots = new() { voter });
+
+            LastBallotCastTimestampByPlayer.TryAdd(voter, DateTime.UtcNow);
+
+            cast = ballots.Count;
+            if (cast >= required)
             {
-                if (BallotsByTargetPlayer.TryGetValue(target, out ballots))
-                    ballots.Add(voter);
-                else
-                    BallotsByTargetPlayer.Add(target, ballots = new HashSet<Ballot> { voter });
-
-                LastBallotCastTimestampByPlayer.TryAdd(voter, DateTime.UtcNow);
+                BallotsByTargetPlayer.Remove(target);
+                return Result.Success(required, target);
             }
-
-            progress.submitted = ballots != null ? ballots.Count : 0;
-            progress.required = PhotonNetwork.CurrentRoom.PlayerCount / 2 + 1;
-
-            var votePassed = progress.submitted >= progress.required;
-            if (votePassed) BallotsByTargetPlayer.Remove(target);
-            return votePassed;
+            else return Result.InsufficientVotes((cast, required), target);
         }
 
         public void ResetBallots(Player player)
@@ -138,6 +146,61 @@ namespace Anticheat
 
         private bool HasCooldown(Player voter) =>
             LastBallotCastTimestampByPlayer.TryGetValue(voter, out var timestamp) && DateTime.UtcNow - timestamp < BallotCooldown;
+
+        public readonly struct Result
+        {
+            private readonly Type type;
+            private readonly (int cast, int required) progress;
+            private readonly Player target;
+            private readonly TimeSpan cooldown;
+
+            private Result(Type type, (int, int) progress, Player target, TimeSpan cooldown = default)
+            {
+                this.type = type;
+                this.progress = progress;
+                this.target = target;
+                this.cooldown = cooldown;
+            }
+
+            public static Result Success(int required, Player target) =>
+                new(Type.Success, (required, required), target);
+
+            public static Result InsufficientVotes((int cast, int required) progress, Player target) =>
+                new(Type.InsufficientVotes, progress, target);
+
+            public static Result ExceededConcurrentVotesLimit((int cast, int required) progress) =>
+                new(Type.ExceededConcurrentVotesLimit, progress, default);
+
+            public static Result UnderCooldown((int cast, int required) progress, TimeSpan cooldown) =>
+                new(Type.UnderCooldown, progress, default, cooldown);
+
+            public static Result MissingAuthority((int cast, int required) progress, Player target) => new(Type.MissingAuthority, progress, target);
+
+            public static Result InvalidTarget((int cast, int required) progress, Player target) => new(Type.InvalidTarget, progress, target);
+
+            public bool IsSuccess => type == Type.Success;
+
+            public override string ToString() => type switch
+            {
+                Type.Success => ChatManager.GetColorString($"Voted to kick {target.GetStringProperty(PlayerProperty.Name)} ({progress.cast}/{progress.required}).", ChatTextColor.System),
+                Type.InsufficientVotes => ChatManager.GetColorString($"Voted to kick {target.GetStringProperty(PlayerProperty.Name)} ({progress.cast}/{progress.required}).", ChatTextColor.System),
+                Type.ExceededConcurrentVotesLimit => ChatManager.GetColorString($"Cannot vote for more than {BallotBox.ConcurrentVoteLimit} players at a time ({progress.cast}/{progress.required}).", ChatTextColor.Error),
+                Type.UnderCooldown => ChatManager.GetColorString($"Voting is limited to once every {cooldown.TotalMinutes:N1} minutes ({progress.cast}/{progress.required}).", ChatTextColor.Error),
+                Type.MissingAuthority => ChatManager.GetColorString($"Cannot {target.GetStringProperty(PlayerProperty.Name)}: missing authority.", ChatTextColor.Error),
+                Type.InvalidTarget => ChatManager.GetColorString($"Cannot kick {target.GetStringProperty(PlayerProperty.Name)}: invalid target.", ChatTextColor.Error),
+                _ => ChatManager.GetColorString("Unknown error.", ChatTextColor.Error),
+            };
+
+            public enum Type
+            {
+                Success,
+                InsufficientVotes,
+                ExceededConcurrentVotesLimit,
+                UnderCooldown,
+                MissingAuthority,
+                InvalidTarget
+            }
+        }
 
         readonly struct Ballot
         {
