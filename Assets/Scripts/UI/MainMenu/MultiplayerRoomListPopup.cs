@@ -86,7 +86,7 @@ namespace UI
         public override void Hide()
         {
             if (gameObject.activeSelf)
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
             base.Hide();
         }
 
@@ -207,7 +207,7 @@ namespace UI
         protected bool IsValidRoom(RoomInfo info)
         {
             return info.CustomProperties.ContainsKey(RoomProperty.Name) && info.CustomProperties.ContainsKey(RoomProperty.Map)
-                && info.CustomProperties.ContainsKey(RoomProperty.GameMode);
+                && info.CustomProperties.ContainsKey(RoomProperty.GameMode) && !info.Name.EndsWith("vc");
         }
 
         protected string GetPasswordHash(RoomInfo info)

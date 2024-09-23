@@ -123,14 +123,14 @@ namespace ApplicationManagers
                 AudioListener.volume = _isFocused ? SettingsManager.SoundSettings.Volume.Value : 0;
                 MusicManager._muted = !_isFocused;
                 MusicManager.ApplySoundSettings();
-                VoiceChatManager.ApplySoundSettingsAll();
+                VoiceChatManager.ApplySoundSettings();
             }
             else
             {
                 AudioListener.volume = SettingsManager.SoundSettings.Volume.Value;
                 MusicManager._muted = false;
                 MusicManager.ApplySoundSettings();
-                VoiceChatManager.ApplySoundSettingsAll();
+                VoiceChatManager.ApplySoundSettings();
             }
         }
 

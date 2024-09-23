@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using Discord;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,7 +14,7 @@ namespace Settings
     class MultiplayerSettings : SaveableSettingsContainer
     {
         protected override string FileName { get { return "Multiplayer.json"; } }
-        public static string PrivateLobbyPrefix = "private343";
+        public static string VoiceRoomSuffix = "vc";
         public static string PublicAppId = "28521206-90d0-41b1-93b0-f35460fef0b6";
         public IntSetting LobbyMode = new IntSetting(0, minValue: 0, maxValue: 1);
         public IntSetting AppIdMode = new IntSetting(0);
@@ -46,9 +47,15 @@ namespace Settings
             return CurrentMultiplayerServerType == MultiplayerServerType.Public && LobbyMode.Value == (int)LobbyModeType.Public;
         }
 
-        public void ConnectServer(MultiplayerRegion region)
+        public void Disconnect()
         {
             PhotonNetwork.Disconnect();
+            VoiceChatManager.Client.Disconnect();
+        }
+
+        public void ConnectServer(MultiplayerRegion region)
+        {
+            Disconnect();
             string address;
             if (AppIdMode.Value == (int)AppIdModeType.Public)
             {
@@ -56,6 +63,12 @@ namespace Settings
                 CurrentMultiplayerServerType = MultiplayerServerType.Public;
                 PhotonNetwork.ConnectToMaster(address, DefaultPort, string.Empty);
                 PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(true);
+                var settings = new AppSettings();
+                settings.Server = address;
+                settings.Port = DefaultPort;
+                settings.UseNameServer = false;
+                VoiceChatManager.Client.ConnectUsingSettings(settings);
+                VoiceChatManager.Client.Client.AppVersion = GetCurrentLobby(true);
             }
             else
             {
@@ -64,12 +77,17 @@ namespace Settings
                 PhotonNetwork.NetworkingClient.AppId = CustomAppId.Value;
                 PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(false);
                 PhotonNetwork.ConnectToRegion(address);
+                var settings = new AppSettings();
+                settings.AppIdVoice = CustomAppId.Value;
+                settings.FixedRegion = address;
+                VoiceChatManager.Client.ConnectUsingSettings(settings);
+                VoiceChatManager.Client.Client.AppVersion = GetCurrentLobby(false);
             }
         }
 
         public void ConnectLAN()
         {
-            PhotonNetwork.Disconnect();
+            Disconnect();
             if (PhotonNetwork.ConnectToMaster(LanIP.Value, LanPort.Value, string.Empty))
             {
                 PhotonNetwork.NetworkingClient.AppVersion = GetCurrentLobby(false);
@@ -79,7 +97,7 @@ namespace Settings
 
         public void ConnectOffline()
         {
-            PhotonNetwork.Disconnect();
+            Disconnect();
             PhotonNetwork.OfflineMode = true;
             CurrentMultiplayerServerType = MultiplayerServerType.Cloud;
         }
@@ -126,11 +144,18 @@ namespace Settings
             roomOptions.MaxPlayers = maxPlayers;
             roomOptions.BroadcastPropsChangeToAll = false;
             PhotonNetwork.CreateRoom(roomId, roomOptions);
+            if (!PhotonNetwork.OfflineMode)
+            {
+                roomOptions.MaxPlayers = 255;
+                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, roomOptions);
+            }
         }
 
         public void JoinRoom(string roomId, string roomName, string password)
         {
             PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomName));
+            if (!PhotonNetwork.OfflineMode)
+                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomName));
         }
 
         public string GetHashCode(string str)

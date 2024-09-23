@@ -186,7 +186,7 @@ namespace Photon.Voice.PUN
         {
             if (PhotonNetwork.InRoom && PhotonNetwork.CurrentRoom != null && !string.IsNullOrEmpty(PhotonNetwork.CurrentRoom.Name))
             {
-                return $"{PhotonNetwork.CurrentRoom.CustomProperties["Name"]}{VoiceRoomNameSuffix} {PhotonNetwork.CurrentRoom.Name} )";
+                return PhotonNetwork.CurrentRoom.Name + "vc";
             }
             return null;
         }

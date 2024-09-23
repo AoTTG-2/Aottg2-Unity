@@ -52,8 +52,8 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldBladeEffect, UIManager.GetLocale(cat, sub, "OldBladeEffect"));
             CreateHorizontalDivider(DoublePanelRight);
 
-            ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.VoiceChat, UIManager.GetLocale(cat, sub, "VoiceChat"),
-                VoiceChatManager.VoiceChatInputModes, elementWidth: 160f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.VoiceChatInput, UIManager.GetLocale(cat, sub, "VoiceChatInput"),
+                UIManager.GetLocaleArray(cat, sub, "VoiceChatInputOptions"), elementWidth: 160f);
 
             ElementFactory.CreateDropdownSetting(DoublePanelRight, dropdownStyle, settings.VoiceChatDevice, UIManager.GetLocale(cat, sub, "VoiceChatDevice"),
                 VoiceChatManager.MicrophoneDevices, elementWidth: 160f);

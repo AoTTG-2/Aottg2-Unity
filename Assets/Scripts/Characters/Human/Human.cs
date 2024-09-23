@@ -786,22 +786,8 @@ namespace Characters
                 MusicManager.PlayDeathSong();
             }
             EffectSpawner.Spawn(EffectPrefabs.Blood2, Cache.Transform.position, Cache.Transform.rotation);
-            DestroyVoiceChat();
             yield return new WaitForSeconds(2f);
             PhotonNetwork.Destroy(gameObject);
-        }
-
-
-        private void DestroyVoiceChat() 
-        {
-            Destroy(gameObject.GetComponent<PhotonVoiceView>());
-            Destroy(gameObject.GetComponent<PunVoiceClient>());
-            Destroy(gameObject.GetComponent<Recorder>());
-            if (IsMine()) 
-            {
-                VoiceChatManager.PVV = null;
-                VoiceChatManager.character = null;
-            }
         }
 
         public void Init(bool ai, string team, InGameCharacterSettings settings)

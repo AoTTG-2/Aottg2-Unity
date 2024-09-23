@@ -27,9 +27,9 @@ namespace Settings
         public BoolSetting CustomStats = new BoolSetting(true);
         public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
-        public StringSetting VoiceChatMode = new StringSetting(VoiceChatManager.VoiceChatModes[0]);
-        public FloatSetting ProximityMaxDistance = new FloatSetting(10f, minValue: 1f);
-        public FloatSetting ProximityMinDistance = new FloatSetting(10f, minValue: 1f);
+        public IntSetting VoiceChat = new IntSetting(0);
+        public FloatSetting ProximityMaxDistance = new FloatSetting(20f, minValue: 1f);
+        public FloatSetting ProximityMinDistance = new FloatSetting(20f, minValue: 1f);
         public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
         public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
     }
@@ -39,5 +39,12 @@ namespace Settings
         Off,
         FFA,
         Team
+    }
+
+    public enum VoiceChatMode
+    {
+        Global,
+        Proximity,
+        Off
     }
 }

@@ -16,6 +16,7 @@ using Photon.Realtime;
 using System.IO;
 using System.Linq;
 using Controllers;
+using Photon.Voice.PUN;
 
 namespace GameManagers
 {
@@ -33,6 +34,7 @@ namespace GameManagers
         public HashSet<Human> Humans = new HashSet<Human>();
         public HashSet<BasicTitan> Titans = new HashSet<BasicTitan>();
         public HashSet<BaseShifter> Shifters = new HashSet<BaseShifter>();
+        public List<PhotonVoiceSync> PhotonVoiceSyncs = new List<PhotonVoiceSync>();
         public bool IsEnding;
         public float EndTimeLeft;
         public GameState State = GameState.Loading;
@@ -182,7 +184,7 @@ namespace GameManagers
             if (PhotonNetwork.IsMasterClient)
                 PhotonNetwork.DestroyAll();
             if (PhotonNetwork.IsConnected)
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
             SettingsManager.InGameCurrent.SetDefault();
             SettingsManager.InGameUI.SetDefault();
             SettingsManager.InGameCharacterSettings.SetDefault();
@@ -915,6 +917,7 @@ namespace GameManagers
                 PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
                 LoadSkin();
             }
+            PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
         }
 

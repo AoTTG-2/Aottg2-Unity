@@ -27,7 +27,7 @@ namespace Settings
         public StringSetting ForcePlaylist = new StringSetting("Default");
         public StringSetting CustomPlaylist = new StringSetting("");
         public StringSetting VoiceChatDevice = new StringSetting(VoiceChatManager.DefaultDevice);
-        public StringSetting VoiceChat = new StringSetting(VoiceChatManager.VoiceChatInputModes[0]);
+        public IntSetting VoiceChatInput = new IntSetting(0);
         public FloatSetting VoiceChatMicVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
         public FloatSetting VoiceChatAudioVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
 
@@ -37,7 +37,14 @@ namespace Settings
         {
             AudioListener.volume = Volume.Value;
             MusicManager.ApplySoundSettings();
-            VoiceChatManager.ApplySoundSettingsAll();
+            VoiceChatManager.ApplySoundSettings();
         }
+    }
+
+    public enum VoiceChatInputMode
+    {
+        PushToTalk,
+        AutoDetect,
+        Off
     }
 }

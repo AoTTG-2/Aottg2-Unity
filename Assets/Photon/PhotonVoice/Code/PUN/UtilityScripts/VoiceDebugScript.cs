@@ -81,7 +81,7 @@ namespace Photon.Voice.PUN.UtilityScripts
                 {
                     Debug.LogError("locally speaker not linked, trying late linking & asking anyway");
                 }
-                this.photonView.RPC("CantHearYou", this.photonView.Owner, PunVoiceClient.Instance.Client.CurrentRoom.Name, PunVoiceClient.Instance.Client.LoadBalancingPeer.ServerIpAddress, PunVoiceClient.Instance.Client.AppVersion);
+                // this.photonView.RPC("CantHearYou", this.photonView.Owner, PunVoiceClient.Instance.Client.CurrentRoom.Name, PunVoiceClient.Instance.Client.LoadBalancingPeer.ServerIpAddress, PunVoiceClient.Instance.Client.AppVersion);
             }
         }
 
@@ -89,6 +89,7 @@ namespace Photon.Voice.PUN.UtilityScripts
         private void CantHearYou(string roomName, string serverIp, string appVersion, PhotonMessageInfo photonMessageInfo)
         {
             string why;
+            return;
             if (!PunVoiceClient.Instance.Client.InRoom)
             {
                 why = "voice client not in a room";

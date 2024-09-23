@@ -16554,11 +16554,6 @@ MonoBehaviour:
   JustGrounded: 0
   TargetAngle: 0
   HasDirection: 0
-  PVV: {fileID: 0}
-  Recorder: {fileID: 0}
-  Speaker: {fileID: 0}
-  AudioSource: {fileID: 0}
-  SpeakerSpeaker: {fileID: 0}
   MountState: 0
   CarryState: 0
   Horse: {fileID: 0}

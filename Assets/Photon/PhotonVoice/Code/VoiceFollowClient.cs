@@ -197,6 +197,31 @@ namespace Photon.Voice
             }
         }
 
+        public bool JoinRoom(string roomName, string[] expectedUsers = null, string password = null, string hash = null)
+        {
+            if (string.IsNullOrEmpty(roomName))
+            {
+                Debug.LogError("JoinRoom failed. A roomname is required. If you don't know one, how will you join?");
+                return false;
+            }
+            EnterRoomParams opParams = new EnterRoomParams();
+            opParams.RoomName = roomName;
+            opParams.ExpectedUsers = expectedUsers;
+            opParams.Password = password;
+            opParams.Hash = hash;
+            return Client.OpJoinRoom(opParams);
+        }
+
+        public bool CreateRoom(string roomName, RoomOptions roomOptions = null, TypedLobby typedLobby = null, string[] expectedUsers = null)
+        {
+            EnterRoomParams opParams = new EnterRoomParams();
+            opParams.RoomName = roomName;
+            opParams.RoomOptions = roomOptions;
+            opParams.Lobby = typedLobby;
+            opParams.ExpectedUsers = expectedUsers;
+            return Client.OpCreateRoom(opParams);
+        }
+
         protected virtual bool JoinVoiceRoom(string voiceRoomName)
         {
             if (string.IsNullOrEmpty(voiceRoomName))
@@ -230,6 +255,7 @@ namespace Photon.Voice
 
         private void FollowLeader()
         {
+            return;
             // no matter what usually happens, if there was a deliberate disconnect call, don't react to state changes
             if (this.manualDisconnect)
             {
@@ -237,7 +263,7 @@ namespace Photon.Voice
             }
 
             // setting errAuthOrJoin to true should keep the client from automatically joining the lead room (unless this client is already on the way).
-            if (this.AutoConnectAndJoin && !this.errAuthOrJoin || this.Client.IsConnected)
+            if ((this.AutoConnectAndJoin && !this.errAuthOrJoin) || this.Client.IsConnected)
             {
                 // if Leader is NOT in an online room, voice should disconnect
                 if (!LeaderInRoom || LeaderOfflineMode)
@@ -253,7 +279,7 @@ namespace Photon.Voice
                 if (!this.Client.InRoom)
                 {
                     // Leader is in a room but the voice client not. follow with next steps!
-                    this.ConnectOrJoinVoice();
+                    // this.ConnectOrJoinVoice();
                     return;
                 }
 
