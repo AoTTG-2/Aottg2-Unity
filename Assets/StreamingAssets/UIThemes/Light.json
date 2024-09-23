@@ -179,6 +179,16 @@
 			"TeamBlue": [98, 183, 240, 255]
 		}
 	},
+	"VoiceChatPanel": {
+		"TextColor": {
+			"Default": [255, 255, 255, 255],
+			"ID": [255, 200, 0, 255],
+			"System": [255, 200, 0, 255],
+			"Error": [200, 0, 0, 255],
+			"TeamRed": [240, 100, 100, 255],
+			"TeamBlue": [98, 183, 240, 255]
+		}
+	},
 	"ScoreboardPopup": {
 		"Icon": {
 			"SpectateColor": [70, 70, 70, 255],

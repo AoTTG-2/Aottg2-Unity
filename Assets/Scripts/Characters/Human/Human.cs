@@ -9,6 +9,8 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 using Settings;
 using SimpleJSONFixed;
 using System;

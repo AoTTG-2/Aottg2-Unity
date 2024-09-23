@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 63aaf8df43de62247af0bbdc549b31b5
+timeCreated: 1541686936
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130518
+  packageName: Photon Voice 2
+  packageVersion: 2.54
+  assetPath: Assets/Photon/PhotonVoice/changes-voice.txt
+  uploadId: 636261
