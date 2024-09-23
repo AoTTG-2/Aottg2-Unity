@@ -133,11 +133,9 @@ namespace CustomLogic
                 }
                 foreach (var instance in _staticClasses.Values)
                     EvaluateMethod(instance, "Init", new List<object>());
-                foreach (var instance in _callback)
-                    EvaluateMethod(instance, "Init", new List<object>());
+                EvaluateMethodForCallbacks("Init");
                 _callback.Add(_staticClasses["Main"]);
-                foreach (var instance in _callback)
-                    EvaluateMethod(instance, "OnGameStart", new List<object>());
+                EvaluateMethodForCallbacks("OnGameStart");
                 CustomLogicManager._instance.StartCoroutine(OnSecond());
             }
             catch (Exception e)
@@ -148,27 +146,23 @@ namespace CustomLogic
 
         public void OnTick()
         {
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnTick", new List<object>());
+            EvaluateMethodForCallbacks("OnTick");
             CurrentTime += Time.fixedDeltaTime;
         }
 
         public void OnFrame()
         {
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnFrame", new List<object>());
+            EvaluateMethodForCallbacks("OnFrame");
         }
 
         public void OnLateFrame()
         {
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnLateFrame", new List<object>());
+            EvaluateMethodForCallbacks("OnLateFrame");
         }
 
         public void OnButtonClick(string name)
         {
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnButtonClick", new List<object>() { name });
+            EvaluateMethodForCallbacks("OnButtonClick", new List<object>() { name });
         }
 
         public void OnPlayerSpawn(Player player, BaseCharacter character)
@@ -177,8 +171,8 @@ namespace CustomLogic
             var characterBuiltin = GetCharacterBuiltin(character);
             if (characterBuiltin == null)
                 return;
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnPlayerSpawn", new List<object>() { playerBuiltin, characterBuiltin });
+
+            EvaluateMethodForCallbacks("OnPlayerSpawn", new List<object>() { playerBuiltin, characterBuiltin });
         }
 
         public void OnCharacterSpawn(BaseCharacter character)
@@ -186,45 +180,42 @@ namespace CustomLogic
             var builtin = GetCharacterBuiltin(character);
             if (builtin == null)
                 return;
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnCharacterSpawn", new List<object>() { builtin });
+
+            EvaluateMethodForCallbacks("OnCharacterSpawn", new List<object>() { builtin });
         }
 
         public void OnCharacterDie(BaseCharacter victim, BaseCharacter killer, string killerName)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);
             var killerBuiltin = GetCharacterBuiltin(killer);
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnCharacterDie", new List<object>() { victimBuiltin, killerBuiltin, killerName });
+
+            EvaluateMethodForCallbacks("OnCharacterDie", new List<object>() { victimBuiltin, killerBuiltin, killerName });
         }
 
         public void OnCharacterDamaged(BaseCharacter victim, BaseCharacter killer, string killerName, int damage)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);
             var killerBuiltin = GetCharacterBuiltin(killer);
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnCharacterDamaged", new List<object>() { victimBuiltin, killerBuiltin, killerName, damage });
+
+            EvaluateMethodForCallbacks("OnCharacterDamaged", new List<object>() { victimBuiltin, killerBuiltin, killerName, damage });
         }
 
         public void OnChatInput(string message)
         {
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnChatInput", new List<object>() { message });
+            EvaluateMethod(_staticClasses["Main"], "OnChatInput", new List<object>() { message });
         }
 
         public void OnPlayerJoin(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnPlayerJoin", new List<object>() { playerBuiltin });
+            EvaluateMethodForCallbacks("OnPlayerJoin", new List<object>() { playerBuiltin });
             ((CustomLogicUIBuiltin)_staticClasses["UI"]).OnPlayerJoin(player);
         }
 
         public void OnPlayerLeave(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
-            foreach (var instance in _callback)
-                EvaluateMethod(instance, "OnPlayerLeave", new List<object>() { playerBuiltin });
+            EvaluateMethodForCallbacks("OnPlayerLeave", new List<object>() { playerBuiltin });
         }
 
         public void OnNetworkMessage(Player sender, string message)
@@ -284,6 +275,13 @@ namespace CustomLogic
             }
         }
 
+        private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
+        {
+            // for loop instead of foreach because the list might be modified during the loop
+            for (int i = 0; i < _callback.Count; i++)
+                EvaluateMethod(_callback[i], methodName, parameters ?? new List<object>());
+        }
+
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
         {
             if (obj.ScriptObject is MapScriptSceneObject)
@@ -308,6 +306,58 @@ namespace CustomLogic
                 if (photonView != null)
                     photonView.Init(obj.ScriptObject.Id, rigidbody);
             }
+        }
+
+        public CustomLogicComponentInstance AddMapObjectComponent(MapObject obj, string componentName)
+        {
+            if (_start.Classes.ContainsKey(componentName))
+            {
+                var parameters = new List<string>();
+                foreach (var assignment in _start.Classes[componentName].Assignments)
+                {
+                    if (assignment.Left is CustomLogicVariableExpressionAst left)
+                    {
+                        if (assignment.Right is CustomLogicPrimitiveExpressionAst right)
+                        {
+                            if (left.Name == "Description")
+                                continue;
+                            if (left.Name.EndsWith("Tooltip") && right.Value is string)
+                                continue;
+                            if (left.Name.EndsWith("Dropbox") && right.Value is string)
+                                continue;
+                        }
+
+                        var str = left.Name + ":" + CustomLogicUtils.SerializeAst(assignment.Right);
+                        parameters.Add(str);
+                    }
+                }
+
+                MapScriptComponent component = new()
+                {
+                    ComponentName = componentName,
+                    Parameters = parameters
+                };
+
+                var photonView = SetupNetworking(obj);
+                CustomLogicComponentInstance instance = CreateComponentInstance(componentName, obj, component);
+                obj.RegisterComponentInstance(instance);
+                EvaluateMethod(instance, "Init", new List<object>());
+                if (photonView != null)
+                    photonView.Init(obj.ScriptObject.Id, componentName == "Rigidbody");
+                else if (componentName == "Rigidbody" && IdToNetworkView.TryGetValue(instance.MapObject.Value.ScriptObject.Id, out var networkView))
+                {
+                    // re-init if a rigidbody is added
+                    networkView.Sync.Init(obj.ScriptObject.Id, true);
+                }
+                return instance;
+            }
+
+            throw new Exception("No component named " + componentName + " found");
+        }
+
+        public void RemoveComponent(CustomLogicComponentInstance instance)
+        {
+            _callback.Remove(instance);
         }
 
         private void CreateStaticClass(string className)

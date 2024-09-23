@@ -371,6 +371,17 @@ namespace CustomLogic
                 MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
                 return null;
             }
+            if (methodName == "AddComponent")
+            {
+                string name = (string)parameters[0];
+                return CustomLogicManager.Evaluator.AddMapObjectComponent(Value, name);
+            }
+            if (methodName == "RemoveComponent")
+            {
+                string name = (string)parameters[0];
+                CustomLogicManager.Evaluator.RemoveComponent(Value.FindComponentInstance(name));
+                return null;
+            }
             if (methodName == "GetComponent")
             {
                 string name = (string)parameters[0];
