@@ -37,34 +37,68 @@ namespace Anticheat
                 Close,
             }
 
+            // Optionally match the value for a tag
+            private const string VALUE_PATTERN = "(=[^\\s]*?)?";
+
             // Initialize rich text tags
-            public static TextTag boldOpenTag = new TextTag("<b>", "<b>", TextTagType.Open);
-            public static TextTag boldCloseTag = new TextTag("</b>", "</b>", TextTagType.Close);
-            public static TextTag colorOpenTag = new TextTag("<color(=[^\\s]*?)?>", "<color=white>", TextTagType.Open);
-            public static TextTag colorCloseTag = new TextTag("</color>", "</color>", TextTagType.Close);
-            public static TextTag italicsOpenTag = new TextTag("<i>", "<i>", TextTagType.Open);
-            public static TextTag italicsCloseTag = new TextTag("</i>", "</i>", TextTagType.Close);
-            public static TextTag sizeOpenTag = new TextTag("<size(=[^\\s]*?)?>", "<size=18>", TextTagType.Open);
-            public static TextTag sizeCloseTag = new TextTag("</size>", "</size>", TextTagType.Close);
+            public static TextTag boldOpenTag = new TextTag("b", TextTagType.Open);
+            public static TextTag boldCloseTag = new TextTag("b", TextTagType.Close);
+            public static TextTag colorOpenTag = new TextTag("color", TextTagType.Open, "white");
+            public static TextTag colorCloseTag = new TextTag("color",TextTagType.Close);
+            public static TextTag italicsOpenTag = new TextTag("i", TextTagType.Open);
+            public static TextTag italicsCloseTag = new TextTag("i", TextTagType.Close);
+            public static TextTag sizeOpenTag = new TextTag("size", TextTagType.Open, "18");
+            public static TextTag sizeCloseTag = new TextTag("size", TextTagType.Close);
 
             // Array of all rich text tags
             public static TextTag[] allTags = { boldOpenTag, boldCloseTag, colorOpenTag, colorCloseTag, italicsOpenTag, italicsCloseTag, sizeOpenTag, sizeCloseTag };
 
-            private TextTag(string tagPattern, string tagDefault, TextTagType tagType)
+            private TextTag(string tagName, TextTagType tagType, string defaultValue = null)
             {
-                Pattern = tagPattern;
-                DefaultValue = tagDefault;
+                Name = tagName;
+                HasValue = !string.IsNullOrEmpty(defaultValue);
+                this.defaultValue = defaultValue;
                 this.tagType = tagType;
             }
 
-            public string Pattern { get; }
-            public string DefaultValue { get; }
+            private string defaultValue;
             private TextTagType tagType;
+
+            public string Name { get; }
+            public bool HasValue { get; }
+
+            // Return a regex string to match this tag
+            public string Pattern
+            {
+                get 
+                {
+                    // Closing tag
+                    if (tagType == TextTagType.Close)
+                    {
+                        return string.Format("</{0}>", Name);
+                    }
+                    // Opening tag with value
+                    else if (HasValue)
+                    {
+                        return string.Format("<{0}{1}>", Name, VALUE_PATTERN);
+                    }
+                    else
+                    {
+                        // Opening tag without value
+                        return string.Format("<{0}>", Name);
+                    }
+                }
+            }
+
+            public string DefaultValue
+            {
+                get { return HasValue ? string.Format("<{0}={1}>", Name, defaultValue) : null; }
+            }
 
             // Return Regex pattern for all tags
             public static string getAllTagsPattern()
             {
-                string[] patterns = allTags.Select(tag => "(" + tag.Pattern + ")").ToArray();
+                string[] patterns = allTags.Select(tag => string.Format("({0})", tag.Pattern)).ToArray();
                 return string.Join("|", patterns);
             }
 
