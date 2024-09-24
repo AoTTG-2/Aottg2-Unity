@@ -134,6 +134,40 @@ namespace Anticheat
             }
         }
 
+        private class TagOperation
+        {
+            public enum StringOperation
+            {
+                Add,
+                Remove,
+            }
+
+            public TagOperation(int index, Match match, TextTag tag, StringOperation operation)
+            {
+                Index = index;
+                Match = match;
+                Tag = tag;
+                Operation = operation;
+            }
+
+            public int Index { get; }
+            public Match Match { get; }
+            public TextTag Tag { get; }
+            public StringOperation Operation { get; }
+
+            public string applyOperation(string text)
+            {
+                if (Operation.Equals(StringOperation.Add))
+                {
+                    return text.Insert(Index, Tag.DefaultValue);
+                }
+                else
+                {
+                    return text.Remove(Index, Match.Value.Length);
+                }
+            }
+        }
+
         public static string FilterText(this string text)
         {
             text = text.FilterSizeTag();
@@ -168,55 +202,78 @@ namespace Anticheat
         }
 
         // Ensure that all tags are balanced by adding new tags to the beginning or end of the text
-        public static string BalanceTags(this String text)
+        public static string BalanceTags(this string text)
         {
-            Stack<TextTag> tagMatchStack = new Stack<TextTag>();
-            Queue<Tuple<int, string>> insertQueue = new Queue<Tuple<int, string>>();
+            Stack<TextTag> openTagStack = new Stack<TextTag>();
+            Stack<TagOperation> operationStack = new Stack<TagOperation>();
             Match tagMatch = Regex.Match(text, TextTag.getAllTagsPattern(), RegexOptions.IgnoreCase);
 
             // Parse all the tags in the text
             while (tagMatch.Success)
             {
-                string nextTagString = tagMatch.Value;
-                int nextTagIndex = tagMatch.Index;
-                TextTag nextTag = TextTag.getTag(nextTagString);
-
-                // If the next tag is an opening tag, add it to the stack
-                if (nextTag != null && nextTag.isOpeningTag())
-                {
-                    tagMatchStack.Push(nextTag);
-                }
-                // If the next tag is a closing tag, pop the top value from the stack
-                else
-                {
-                    TextTag topTag;
-                    tagMatchStack.TryPop(out topTag);
-
-                    // If the closing tag does not match the top tag, queue an operation to add a new closing tag
-                    if (nextTag != null && !nextTag.isMatchingTag(topTag))
-                    {
-                        insertQueue.Enqueue(new Tuple<int, string>(nextTagIndex, topTag.getMatchingTag().DefaultValue));
-                    }
-                }
-
+                processTag(ref openTagStack, ref operationStack, tagMatch);
                 tagMatch = tagMatch.NextMatch();
             }
 
             // And closing tags for any remaining tags on the stack
-            while (tagMatchStack.Count > 0)
+            while (openTagStack.Count > 0)
             {
-                TextTag topTag = tagMatchStack.Pop();
+                TextTag topTag = openTagStack.Pop();
                 text = string.Concat(text, topTag.getMatchingTag().DefaultValue);
             }
 
             // Insert closing tags from the queue
-            while (insertQueue.Count > 0)
+            while (operationStack.Count > 0)
             {
-                Tuple<int, string> insertOperation = insertQueue.Dequeue();
-                text = text.Insert(insertOperation.Item1, insertOperation.Item2);
+                TagOperation insertOperation = operationStack.Pop();
+                text = insertOperation.applyOperation(text);
             }
 
             return text;
+        }
+
+        private static void processTag(ref Stack<TextTag> openTagStack, ref Stack<TagOperation> operationStack, Match tagMatch)
+        {
+            string nextTagString = tagMatch.Value;
+            int nextTagIndex = tagMatch.Index;
+            TextTag nextTag = TextTag.getTag(nextTagString);
+
+            // Ignore the match if it cannot be parsed
+            if (nextTag == null)
+            {
+                return;
+            }
+
+            // If the next tag is an opening tag, add it to the stack
+            if (nextTag.isOpeningTag())
+            {
+                openTagStack.Push(nextTag);
+            }
+            // Handle a closing tag
+            else
+            {
+                TextTag topTag;
+                openTagStack.TryPeek(out topTag);
+
+                // If there is no opening tag on the stack, push the closing tag to be removed
+                if (topTag == null)
+                {
+                    operationStack.Push(new TagOperation(nextTagIndex, tagMatch, nextTag, TagOperation.StringOperation.Remove));
+                    return;
+                }
+
+                // If the closing tag matches the top of the opening tag stack, pop the top tag
+                if (nextTag.isMatchingTag(topTag))
+                {
+                    openTagStack.Pop();
+                    return;
+                }
+
+                // If the closing tag doesn't match the top opening tag on stack, keep popping opening tags until a match is found or the stack is empty
+                topTag = openTagStack.Pop();
+                operationStack.Push(new TagOperation(nextTagIndex, tagMatch, topTag.getMatchingTag(), TagOperation.StringOperation.Add));
+                processTag(ref openTagStack, ref operationStack, tagMatch);
+            }
         }
     }
 }
