@@ -38,8 +38,16 @@ class Main
         {
             if (Vector3.Distance(human.Position, position) < self.ExplodeRadius)
             {
-                human.GetKilled("Explosion");
+                Network.SendMessage(human.Player, "die");
             }
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "die")
+        {
+            Network.MyPlayer.Character.GetKilled("Explosion");
         }
     }
 
