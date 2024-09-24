@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -248,9 +247,11 @@ namespace Anticheat
             if (nextTag.isOpeningTag())
             {
                 openTagStack.Push(nextTag);
+                return;
             }
+
             // Handle a closing tag
-            else
+            while (true)
             {
                 TextTag topTag;
                 openTagStack.TryPeek(out topTag);
@@ -269,10 +270,9 @@ namespace Anticheat
                     return;
                 }
 
-                // If the closing tag doesn't match the top opening tag on stack, keep popping opening tags until a match is found or the stack is empty
+                // If the closing tag doesn't match the top opening tag on stack, pop the top tag and keep looping until a match is found or the stack is empty
                 topTag = openTagStack.Pop();
                 operationStack.Push(new TagOperation(nextTagIndex, tagMatch, topTag.getMatchingTag(), TagOperation.StringOperation.Add));
-                processTag(ref openTagStack, ref operationStack, tagMatch);
             }
         }
     }
