@@ -24,7 +24,7 @@ namespace CustomLogic
             {
                 if (methodName == "Refill")
                 {
-                    if (Human.NeedRefill())
+                    if (Human.NeedRefill(true))
                         return Human.Refill();
                     return false;
                 }

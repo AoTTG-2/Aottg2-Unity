@@ -478,6 +478,8 @@ MonoBehaviour:
   SprintStaminaConsumption: 1
   CurrentSprintStamina: 3
   AttackSpeedMultiplier: 1
+  ConfusedTime: 0
+  PreviousAttackSpeedMultiplier: -1
   RunSpeedBase: 0
   WalkSpeedBase: 0
   RunSpeedPerLevel: 0
