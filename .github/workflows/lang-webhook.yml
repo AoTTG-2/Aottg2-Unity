@@ -1,0 +1,40 @@
+name: Publish language changes to a webhook
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - Assets/StreamingAssets/Languages/English.json
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Public changes to Discord
+        run: |
+          # Get the diff and limit to 1900 characters
+          CONTENT=$(git diff HEAD^ HEAD Assets/StreamingAssets/Languages/English.json | head -c 1900)
+
+          ESCAPED_CONTENT=$(echo "$CONTENT" | awk '{
+              gsub(/\\/, "\\\\");     # Backslash
+              gsub(/"/, "\\\"");      # Double quote
+              gsub(/\t/, "\\t");      # Tab
+              gsub(/\r/, "");         # Carriage return
+              gsub(/\x0c/, "\\f");    # Form feed
+              gsub(/\x08/, "\\b");    # Backspace
+              printf "%s\\n", $0      # Newline
+          }')
+
+          DATA="{\"content\": \"\`\`\`json\n$ESCAPED_CONTENT\`\`\`\n\"}"
+
+          # Send the diff to Discord using curl
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "$DATA" \
+               ${{ secrets.DISCORD_WEBHOOK }}
