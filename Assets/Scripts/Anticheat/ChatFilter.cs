@@ -40,11 +40,11 @@ namespace Anticheat
             // Initialize rich text tags
             public static TextTag boldOpenTag = new TextTag("<b>", "<b>", TextTagType.Open);
             public static TextTag boldCloseTag = new TextTag("</b>", "</b>", TextTagType.Close);
-            public static TextTag colorOpenTag = new TextTag("<color=.*?>", "<color=white>", TextTagType.Open);
+            public static TextTag colorOpenTag = new TextTag("<color(=[^\\s]*?)?>", "<color=white>", TextTagType.Open);
             public static TextTag colorCloseTag = new TextTag("</color>", "</color>", TextTagType.Close);
             public static TextTag italicsOpenTag = new TextTag("<i>", "<i>", TextTagType.Open);
             public static TextTag italicsCloseTag = new TextTag("</i>", "</i>", TextTagType.Close);
-            public static TextTag sizeOpenTag = new TextTag("<size=.*?>", "<size=18>", TextTagType.Open);
+            public static TextTag sizeOpenTag = new TextTag("<size(=[^\\s]*?)?>", "<size=18>", TextTagType.Open);
             public static TextTag sizeCloseTag = new TextTag("</size>", "</size>", TextTagType.Close);
 
             // Array of all rich text tags
