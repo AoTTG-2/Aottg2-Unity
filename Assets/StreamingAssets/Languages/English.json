@@ -515,6 +515,7 @@
 		"SpecialTooltip.Annie": "Transform into the Female Titan",
 		"SpecialTooltip.Armored": "Transform into the Armored Titan",
 		"SpecialTooltip.Switchback": "Use near surfaces to bounce, keeping your momentum",
+		"SpecialTooltip.Confuse": "Lower nearby titans' attack speed by confusing them with your acrobatics"
 	},
 	"CharacterEditor": {
 		"Costume.Title": "Costume",
