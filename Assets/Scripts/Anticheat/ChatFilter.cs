@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,19 +12,13 @@ namespace Anticheat
             // Non-instantiable record for managing rich text tags pairs
             public record TextTagPair
             {
-                // Initialize text tag pairs
-                public static TextTagPair boldTag = new TextTagPair(boldOpenTag, boldCloseTag);
-                public static TextTagPair colorTag = new TextTagPair(colorOpenTag, colorCloseTag);
-                public static TextTagPair italicsTag = new TextTagPair(italicsOpenTag, italicsCloseTag);
-                public static TextTagPair sizeTag = new TextTagPair(sizeOpenTag, sizeCloseTag);
-
                 // Array of all rich text tags pairs
                 public static TextTagPair[] allTagPairs = { boldTag, colorTag, italicsTag, sizeTag };
 
-                private TextTagPair(TextTag openTag, TextTag closeTag)
+                public TextTagPair(string tagName, string shortName = null, string defaultValue = null)
                 {
-                    OpenTag = openTag;
-                    CloseTag = closeTag;
+                    OpenTag = new TextTag(tagName, TextTagType.Open, this, shortName, defaultValue);
+                    CloseTag = new TextTag(tagName, TextTagType.Close, this, shortName, defaultValue);
                 }
 
                 public TextTag OpenTag { get; }
@@ -46,24 +39,21 @@ namespace Anticheat
             private const string OPEN_VALUE_FORMAT = "<{0}={1}>";
             private const string CLOSE_FORMAT = "</{0}>";
 
-            // Initialize rich text tags
-            public static TextTag boldOpenTag = new TextTag("b", TextTagType.Open);
-            public static TextTag boldCloseTag = new TextTag("b", TextTagType.Close);
-            public static TextTag colorOpenTag = new TextTag("color", TextTagType.Open, shortName: "c", defaultValue: "white");
-            public static TextTag colorCloseTag = new TextTag("color",TextTagType.Close, shortName: "c");
-            public static TextTag italicsOpenTag = new TextTag("i", TextTagType.Open);
-            public static TextTag italicsCloseTag = new TextTag("i", TextTagType.Close);
-            public static TextTag sizeOpenTag = new TextTag("size", TextTagType.Open, shortName: "s", defaultValue: "18");
-            public static TextTag sizeCloseTag = new TextTag("size", TextTagType.Close, shortName: "s");
+            // Initialize text tag pairs
+            public static TextTagPair boldTag = new TextTagPair("b");
+            public static TextTagPair colorTag = new TextTagPair("color", shortName: "c", defaultValue: "white");
+            public static TextTagPair italicsTag = new TextTagPair("i");
+            public static TextTagPair sizeTag = new TextTagPair("size", shortName: "s", defaultValue: "18");
 
             // Array of all rich text tags
-            public static TextTag[] allTags = { boldOpenTag, boldCloseTag, colorOpenTag, colorCloseTag, italicsOpenTag, italicsCloseTag, sizeOpenTag, sizeCloseTag };
+            public static TextTag[] allTags = { boldTag.OpenTag, boldTag.CloseTag, colorTag.OpenTag, colorTag.CloseTag, italicsTag.OpenTag, italicsTag.CloseTag, sizeTag.OpenTag, sizeTag.CloseTag };
 
-            private TextTag(string tagName, TextTagType tagType, string shortName = null, string defaultValue = null)
+            private TextTag(string tagName, TextTagType tagType, TextTagPair parentTagPair, string shortName = null, string defaultValue = null)
             {
                 Name = tagName;
                 ShortName = shortName;
                 HasValue = !string.IsNullOrEmpty(defaultValue);
+                ParentTagPair = parentTagPair;
                 this.defaultValue = defaultValue;
                 this.tagType = tagType;
             }
@@ -74,6 +64,7 @@ namespace Anticheat
             public string Name { get; }
             public string ShortName { get; }
             public bool HasValue { get; }
+            public TextTagPair ParentTagPair { get; }
 
             // Return a regex string to match this tag
             public string Pattern
@@ -146,35 +137,10 @@ namespace Anticheat
                 return tagType.Equals(TextTagType.Close);
             }
 
-            // Get the TextTagPair corresponding to the given tag
-            public TextTagPair getTagPair()
-            {
-                //return TextTagPair.allTagPairs.Where(tagPair => tagPair.OpenTag.Equals(this) || tagPair.CloseTag.Equals(this)).FirstOrDefault(null);
-
-                foreach (TextTagPair tagPair in TextTagPair.allTagPairs)
-                {
-                    if (tagPair.OpenTag.Equals(this) || tagPair.CloseTag.Equals(this))
-                    {
-                        return tagPair;
-                    }
-                }
-
-                return null;
-            }
-
             // Get the complementary TextTag for the given tag
             public TextTag getMatchingTag()
             {
-                TextTagPair textTagPair = getTagPair();
-
-                if (isOpeningTag())
-                {
-                    return textTagPair.CloseTag;
-                }
-                else
-                {
-                    return textTagPair.OpenTag;
-                }
+                return isOpeningTag() ? ParentTagPair.CloseTag : ParentTagPair.OpenTag;
             }
 
             public bool isMatchingTag(TextTag otherTag)
@@ -254,7 +220,7 @@ namespace Anticheat
 
         public static string FilterSizeTag(this string text)
         {
-            MatchCollection matches = Regex.Matches(text, TextTag.sizeOpenTag.Pattern, RegexOptions.IgnoreCase);
+            MatchCollection matches = Regex.Matches(text, TextTag.sizeTag.OpenTag.Pattern, RegexOptions.IgnoreCase);
             List<KeyValuePair<int, string>> list = new List<KeyValuePair<int, string>>();
             foreach (Match match in matches)
             {
@@ -271,7 +237,7 @@ namespace Anticheat
                     if (pair.Value.Length > 9)
                     {
                         text = text.Remove(pair.Key, pair.Value.Length);
-                        text = text.Substring(0, pair.Key) + TextTag.sizeOpenTag.DefaultValue + text.Substring(pair.Key, text.Length - pair.Key);
+                        text = text.Substring(0, pair.Key) + TextTag.sizeTag.OpenTag.DefaultValue + text.Substring(pair.Key, text.Length - pair.Key);
                     }
                 }
             }
