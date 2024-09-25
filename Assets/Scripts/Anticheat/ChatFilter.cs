@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -39,23 +40,29 @@ namespace Anticheat
 
             // Optionally match the value for a tag
             private const string VALUE_PATTERN = "(=[^\\s]*?)?";
+            private const string OPEN_PATTERN = "<{0}" + VALUE_PATTERN + ">";
+            private const string OPEN_VALUE_LOOKAHEAD = "<{0}(?=" + VALUE_PATTERN + ">)";
+            private const string OPEN_FORMAT = "<{0}>";
+            private const string OPEN_VALUE_FORMAT = "<{0}={1}>";
+            private const string CLOSE_FORMAT = "</{0}>";
 
             // Initialize rich text tags
             public static TextTag boldOpenTag = new TextTag("b", TextTagType.Open);
             public static TextTag boldCloseTag = new TextTag("b", TextTagType.Close);
-            public static TextTag colorOpenTag = new TextTag("color", TextTagType.Open, "white");
-            public static TextTag colorCloseTag = new TextTag("color",TextTagType.Close);
+            public static TextTag colorOpenTag = new TextTag("color", TextTagType.Open, shortName: "c", defaultValue: "white");
+            public static TextTag colorCloseTag = new TextTag("color",TextTagType.Close, shortName: "c");
             public static TextTag italicsOpenTag = new TextTag("i", TextTagType.Open);
             public static TextTag italicsCloseTag = new TextTag("i", TextTagType.Close);
-            public static TextTag sizeOpenTag = new TextTag("size", TextTagType.Open, "18");
-            public static TextTag sizeCloseTag = new TextTag("size", TextTagType.Close);
+            public static TextTag sizeOpenTag = new TextTag("size", TextTagType.Open, shortName: "s", defaultValue: "18");
+            public static TextTag sizeCloseTag = new TextTag("size", TextTagType.Close, shortName: "s");
 
             // Array of all rich text tags
             public static TextTag[] allTags = { boldOpenTag, boldCloseTag, colorOpenTag, colorCloseTag, italicsOpenTag, italicsCloseTag, sizeOpenTag, sizeCloseTag };
 
-            private TextTag(string tagName, TextTagType tagType, string defaultValue = null)
+            private TextTag(string tagName, TextTagType tagType, string shortName = null, string defaultValue = null)
             {
                 Name = tagName;
+                ShortName = shortName;
                 HasValue = !string.IsNullOrEmpty(defaultValue);
                 this.defaultValue = defaultValue;
                 this.tagType = tagType;
@@ -65,34 +72,43 @@ namespace Anticheat
             private TextTagType tagType;
 
             public string Name { get; }
+            public string ShortName { get; }
             public bool HasValue { get; }
 
             // Return a regex string to match this tag
             public string Pattern
             {
-                get 
+                get
                 {
-                    // Closing tag
-                    if (tagType == TextTagType.Close)
-                    {
-                        return string.Format("</{0}>", Name);
-                    }
-                    // Opening tag with value
-                    else if (HasValue)
-                    {
-                        return string.Format("<{0}{1}>", Name, VALUE_PATTERN);
-                    }
-                    else
-                    {
-                        // Opening tag without value
-                        return string.Format("<{0}>", Name);
-                    }
+                    string pattern = isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT;
+                    return string.Format(pattern, Name);
+                }
+            }
+
+            // Return a regex string to match this tag using the shortened name
+            public string ShortPattern
+            {
+                get
+                {
+                    string pattern = isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT;
+                    return string.Format(pattern, ShortName);
                 }
             }
 
             public string DefaultValue
             {
-                get { return HasValue ? string.Format("<{0}={1}>", Name, defaultValue) : null; }
+                get
+                {
+                    // Close tag
+                    if (!isOpeningTag())
+                    {
+                        return string.Format(CLOSE_FORMAT, Name);
+                    }
+
+                    // Open tag
+                    return HasValue ? string.Format(OPEN_VALUE_FORMAT, Name, defaultValue) : string.Format(OPEN_FORMAT, Name);
+
+                }
             }
 
             // Return Regex pattern for all tags
@@ -165,6 +181,30 @@ namespace Anticheat
             {
                 return getMatchingTag().Equals(otherTag);
             }
+
+            // Replace all occurances of shortened tags in a text the full tags
+            public static string expandAllTags(string text)
+            {
+                foreach (TextTag tag in allTags)
+                {
+                    text = tag.expandTags(text);
+                }
+
+                return text;
+            }
+
+            // Replace occurances of the short tag in a text with the full tag
+            public string expandTags(string text)
+            {
+                string openLookaheadPattern = string.Format(OPEN_VALUE_LOOKAHEAD, ShortName);
+                string closePattern = string.Format(CLOSE_FORMAT, ShortName);
+                string openReplace = "<" + Name;
+                string closeReplace = string.Format(CLOSE_FORMAT, Name);
+
+                text = Regex.Replace(text, openLookaheadPattern, openReplace, RegexOptions.IgnoreCase);
+                text = Regex.Replace(text, closePattern, closeReplace, RegexOptions.IgnoreCase);
+                return text;
+            }
         }
 
         private class TagOperation
@@ -204,6 +244,7 @@ namespace Anticheat
         public static string FilterText(this string text)
         {
             text = text.FilterSizeTag();
+            text = TextTag.expandAllTags(text);
             text = text.BalanceTags();
             return text;
         }
