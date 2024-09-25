@@ -9,7 +9,7 @@ namespace Anticheat
         // Non-instantiable class for managing rich text tags
         protected class TextTag
         {
-            // Non-instantiable record for managing rich text tags pairs
+            // Record for organizing rich text tags pairs
             public record TextTagPair
             {
                 // Array of all rich text tags pairs
@@ -31,7 +31,7 @@ namespace Anticheat
                 Close,
             }
 
-            // Optionally match the value for a tag
+            // Regex patterns
             private const string VALUE_PATTERN = "(=[^\\s]*?)?";
             private const string OPEN_PATTERN = "<{0}" + VALUE_PATTERN + ">";
             private const string OPEN_VALUE_LOOKAHEAD = "<{0}(?=" + VALUE_PATTERN + ">)";
@@ -72,7 +72,7 @@ namespace Anticheat
                 get
                 {
                     string pattern = isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT;
-                    return string.Format(pattern, Name);
+                    return string.Format(isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT, Name);
                 }
             }
 
