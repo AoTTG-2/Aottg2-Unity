@@ -112,17 +112,7 @@ namespace Anticheat
             // Return the TextTag corresponding to a given string
             public static TextTag getTag(string tagString)
             {
-                //return allTags.Where(tag => Regex.IsMatch(tagString, tag.Pattern, RegexOptions.IgnoreCase)).FirstOrDefault(null);
-
-                foreach (TextTag tag in allTags)
-                {
-                    if (Regex.IsMatch(tagString, tag.Pattern, RegexOptions.IgnoreCase))
-                    {
-                        return tag;
-                    }
-                }
-
-                return null;
+                return allTags.Where(tag => Regex.IsMatch(tagString, tag.Pattern, RegexOptions.IgnoreCase)).FirstOrDefault();
             }
 
             // Check if a given tag is an opening tag
