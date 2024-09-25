@@ -187,7 +187,10 @@ namespace Anticheat
             {
                 foreach (TextTag tag in allTags)
                 {
-                    text = tag.expandTags(text);
+                    if (tag.ShortName != null)
+                    {
+                        text = tag.expandTags(text);
+                    }
                 }
 
                 return text;
