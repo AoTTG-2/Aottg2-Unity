@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Events;
 using ApplicationManagers;
 using Characters;
+using GameManagers;
 
 namespace GameProgress
 {
@@ -62,22 +63,16 @@ namespace GameProgress
             _gameStatHandler.AddExp(exp);
         }
 
-        public static void RegisterTitanKill(BasicTitan victim, KillMethod method)
+        public static void RegisterKill(BaseCharacter player, BaseCharacter enemy)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterTitanKill(victim, method);
+                handler.RegisterKill(player, enemy);
         }
 
-        public static void RegisterHumanKill(Human victim, KillMethod method)
+        public static void RegisterDamage(BaseCharacter player, BaseCharacter enemy, int damage)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterHumanKill(victim, method);
-        }
-
-        public static void RegisterDamage(GameObject victim, KillMethod method, int damage)
-        {
-            foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterDamage(victim, method, damage);
+                handler.RegisterDamage(player, enemy, damage);
         }
 
         public static void RegisterSpeed(float speed)
@@ -124,6 +119,40 @@ namespace GameProgress
         {
             Weapon = weapon;
             Special = special;
+        }
+
+        public static KillMethod FromCurrentCharacter()
+        {
+            var character = (SceneLoader.CurrentGameManager as InGameManager)?.CurrentCharacter;
+            if (!character) throw new InvalidOperationException("Cannot get KillMethod when no Character exists");
+
+            KillMethod killMethod = KillWeapon.Other;
+            if (character is Human human)
+            {
+                if (human.Setup.Weapon == HumanWeapon.AHSS)
+                    killMethod = KillWeapon.AHSS;
+                else if (human.Setup.Weapon == HumanWeapon.Blade)
+                    killMethod = KillWeapon.Blade;
+                else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
+                    killMethod = KillWeapon.Thunderspear;
+                else if (human.Setup.Weapon == HumanWeapon.APG)
+                    killMethod = KillWeapon.APG;
+                killMethod.Special = human.State == HumanState.SpecialAttack ? human.CurrentSpecial : "";
+            }
+            else if (character is BasicTitan)
+                killMethod = KillWeapon.Titan;
+            else if (character is BaseShifter shifter)
+            {
+                killMethod = KillWeapon.Shifter;
+                killMethod.Special = shifter switch
+                {
+                    ErenShifter => "Eren",
+                    AnnieShifter => "Annie",
+                    _ => "",
+                };
+            }
+
+            return killMethod;
         }
 
         public static implicit operator KillMethod(KillWeapon weapon) => new(weapon, "");

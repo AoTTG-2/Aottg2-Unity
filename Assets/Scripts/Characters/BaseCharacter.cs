@@ -341,7 +341,7 @@ namespace Characters
                     name = killer.Name;
             }
             TakeDamage(damage);
-            Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
+            Cache.PhotonView.RPC(nameof(NotifyDamagedRPC), RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
                 RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
@@ -355,7 +355,7 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             TakeDamage(damage);
-            Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
+            Cache.PhotonView.RPC(nameof(NotifyDamagedRPC), RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
                 RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
@@ -434,13 +434,13 @@ namespace Characters
             int viewId = -1;
             if (enemy != null)
                 viewId = enemy.Cache.PhotonView.ViewID;
-            Cache.PhotonView.RPC("GetHitRPC", Cache.PhotonView.Owner, new object[] { viewId, "", damage, type, collider });
+            Cache.PhotonView.RPC(nameof(GetHitRPC), Cache.PhotonView.Owner, new object[] { viewId, "", damage, type, collider });
         }
 
         public virtual void GetHit(string name, int damage, string type, string collider)
         {
             if (!Dead)
-                Cache.PhotonView.RPC("GetHitRPC", Cache.PhotonView.Owner, new object[] { -1, name, damage, type, collider });
+                Cache.PhotonView.RPC(nameof(GetHitRPC), Cache.PhotonView.Owner, new object[] { -1, name, damage, type, collider });
         }
 
         public virtual void GetDamaged(string name, int damage)

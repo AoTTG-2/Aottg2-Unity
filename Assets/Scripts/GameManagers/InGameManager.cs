@@ -213,31 +213,10 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
         }
 
-        public void RegisterMainCharacterKill(BaseCharacter victim)
+        public void RegisterMainCharacterKill(BaseCharacter enemy)
         {
-            if (CurrentCharacter == null)
-                return;
-            var killWeapon = KillWeapon.Other;
-            if (CurrentCharacter is Human)
-            {
-                var human = (Human)CurrentCharacter;
-                if (human.Setup.Weapon == HumanWeapon.AHSS)
-                    killWeapon = KillWeapon.AHSS;
-                else if (human.Setup.Weapon == HumanWeapon.Blade)
-                    killWeapon = KillWeapon.Blade;
-                else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
-                    killWeapon = KillWeapon.Thunderspear;
-                else if (human.Setup.Weapon == HumanWeapon.APG)
-                    killWeapon = KillWeapon.APG;
-            }
-            else if (CurrentCharacter is BasicTitan)
-                killWeapon = KillWeapon.Titan;
-            else if (CurrentCharacter is BaseShifter)
-                killWeapon = KillWeapon.Shifter;
-            if (victim is Human)
-                GameProgressManager.RegisterHumanKill((Human)victim, killWeapon);
-            else if (victim is BasicTitan)
-                GameProgressManager.RegisterTitanKill((BasicTitan)victim, killWeapon);
+            if (CurrentCharacter == null) return;
+            GameProgressManager.RegisterKill(CurrentCharacter, enemy);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.Kills, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills) + 1 }
@@ -245,29 +224,10 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
         }
 
-        public void RegisterMainCharacterDamage(BaseCharacter victim, int damage)
+        public void RegisterMainCharacterDamage(BaseCharacter enemy, int damage)
         {
-            if (CurrentCharacter == null)
-                return;
-            KillMethod killMethod = KillWeapon.Other;
-            if (CurrentCharacter is Human)
-            {
-                var human = (Human)CurrentCharacter;
-                if (human.Setup.Weapon == HumanWeapon.AHSS)
-                    killMethod.Weapon = KillWeapon.AHSS;
-                else if (human.Setup.Weapon == HumanWeapon.Blade)
-                    killMethod.Weapon = KillWeapon.Blade;
-                else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
-                    killMethod.Weapon = KillWeapon.Thunderspear;
-                else if (human.Setup.Weapon == HumanWeapon.APG)
-                    killMethod.Weapon = KillWeapon.APG;
-                killMethod.Special = human.State == HumanState.SpecialAttack ? human.CurrentSpecial : "";
-            }
-            else if (CurrentCharacter is BasicTitan)
-                killMethod = KillWeapon.Titan;
-            else if (CurrentCharacter is BaseShifter)
-                killMethod = KillWeapon.Shifter;
-            GameProgressManager.RegisterDamage(victim.gameObject, killMethod, damage);
+            if (CurrentCharacter == null) return;
+            GameProgressManager.RegisterDamage(CurrentCharacter, enemy, damage);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.TotalDamage, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage) + damage },

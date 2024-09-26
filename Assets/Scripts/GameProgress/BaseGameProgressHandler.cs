@@ -8,13 +8,10 @@ namespace GameProgress
 {
     abstract class BaseGameProgressHandler
     {
-        public virtual void RegisterTitanKill(BasicTitan victim, KillMethod method)
+        public virtual void RegisterKill(BaseCharacter player, BaseCharacter enemy)
         {
         }
-        public virtual void RegisterHumanKill(Human victim, KillMethod method)
-        {
-        }
-        public virtual void RegisterDamage(GameObject victim, KillMethod method, int damage)
+        public virtual void RegisterDamage(BaseCharacter player, BaseCharacter enemy, int damage)
         {
         }
         public virtual void RegisterSpeed(float speed)

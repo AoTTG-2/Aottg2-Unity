@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using Utility;
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using Characters;
 
 namespace GameProgress
@@ -55,60 +53,22 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterTitanKill(BasicTitan victim, KillMethod method)
+        public override void RegisterKill(BaseCharacter player, BaseCharacter enemy)
         {
-            switch (method.Weapon)
-            {
-                case KillWeapon.Blade:
-                    _gameStat.TitansKilledBlade.Value++;
-                    break;
-                case KillWeapon.AHSS:
-                    _gameStat.TitansKilledAHSS.Value++;
-                    break;
-                case KillWeapon.APG:
-                    _gameStat.TitansKilledAPG.Value++;
-                    break;
-                case KillWeapon.Thunderspear:
-                    _gameStat.TitansKilledThunderspear.Value++;
-                    break;
-                default:
-                    _gameStat.TitansKilledOther.Value++;
-                    break;
-            }
-            _gameStat.TitansKilledTotal.Value++;
+            var method = KillMethod.FromCurrentCharacter();
+            var metrics = StatsManager.GetOrCreateMetrics(enemy, method);
+            metrics.Kills += 1;
+
             AddExp(ExpPerKill);
         }
 
-        public override void RegisterHumanKill(Human victim, KillMethod method)
-        {
-            switch (method.Weapon)
-            {
-                case KillWeapon.Blade:
-                    _gameStat.HumansKilledBlade.Value++;
-                    break;
-                case KillWeapon.AHSS:
-                    _gameStat.HumansKilledAHSS.Value++;
-                    break;
-                case KillWeapon.APG:
-                    _gameStat.HumansKilledAPG.Value++;
-                    break;
-                case KillWeapon.Thunderspear:
-                    _gameStat.HumansKilledThunderspear.Value++;
-                    break;
-                case KillWeapon.Titan:
-                    _gameStat.HumansKilledTitan.Value++;
-                    break;
-                default:
-                    _gameStat.HumansKilledOther.Value++;
-                    break;
-            }
-            _gameStat.HumansKilledTotal.Value++;
-            AddExp(ExpPerKill);
-        }
 
-        public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
+        public override void RegisterDamage(BaseCharacter player, BaseCharacter enemy, int damage)
         {
-            _gameStat.Damage.Register(method, (ulong)damage);
+            var method = KillMethod.FromCurrentCharacter();
+            var metrics = StatsManager.GetOrCreateMetrics(enemy, method);
+            metrics.HighestDamage = Math.Max((uint)damage, metrics.HighestDamage);
+            metrics.TotalDamage += (uint)damage;
         }
 
         public override void RegisterSpeed(float speed)

@@ -1,0 +1,96 @@
+namespace GameProgress.Codegen;
+
+file_identifier "AOT2";
+
+// maps.forest1.survival.titan.
+table Maps {
+    // General
+    forest1:Modes;
+    forest2:Modes;
+    forest3:Modes;
+    city1:Modes;
+    city2:Modes;
+    utgard1:Modes;
+    utgard2:Modes;
+    cave1:Modes;
+    lake:Modes;
+    plaza:Modes;
+    grandmaster:Modes;
+    casino:Modes;
+    forest_flooded:Modes;
+    forest_lava:Modes;
+    deforest1:Modes;
+    birth_of_levi:Modes;
+    mews_1k:Modes;
+    rocky_mountain:Modes;
+    shiganshina:Modes;
+    trost:Modes;
+    futuristic_forest:Modes;
+    other:[NamedMap];
+}
+
+table NamedMap {
+    name:string;
+    modes:Modes;
+}
+
+table Modes {
+    ahss_pvp:Enemies;
+    apg_pvp:Enemies;
+    base:Enemies;
+    blade_pvp:Enemies;
+    cage_fight:Enemies;
+    cranked:Enemies;
+    endless:Enemies;
+    none:Enemies;
+    racing:Enemies;
+    survive:Enemies;
+    thunderspear_pvp:Enemies;
+    titan_explode:Enemies;
+    waves:Enemies;
+    other:[NamedMode];
+}
+
+table NamedMode {
+    name:string;
+    enemies:Enemies;
+}
+
+table Enemies {
+    human:Weapons;
+    titan:Weapons;
+    shifter:Weapons;
+    other:Weapons;
+}
+
+table Weapons {
+    blade:Specials;
+    ahss:Specials;
+    thunderspear:Specials;
+    apg:Specials;
+    titan:Specials;
+    shifter:Specials;
+    other:Specials;
+}
+
+table Specials {
+    none:Metrics;
+    downstrike:Metrics;
+    spin1:Metrics;
+    spin2:Metrics;
+    spin3:Metrics;
+    bladethrow:Metrics;
+    twinshot:Metrics;
+    stock:Metrics;
+    eren:Metrics;
+    annie:Metrics;
+    other:Metrics;
+}
+
+table Metrics {
+    kills:uint32;
+    total_damage:uint64;
+    highest_damage:uint32;
+}
+
+root_type Maps;
