@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Anticheat
 {
-    static class ChatFilter
+    public static class ChatFilter
     {
         // Non-instantiable class for managing rich text tags
         protected class TextTag
