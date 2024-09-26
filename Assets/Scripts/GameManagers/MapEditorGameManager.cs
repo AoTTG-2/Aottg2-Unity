@@ -12,7 +12,6 @@ using CustomLogic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
-using Photon.Pun.Demo.PunBasics;
 
 namespace GameManagers
 {

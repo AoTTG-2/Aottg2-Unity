@@ -179,6 +179,19 @@ namespace GameManagers
             feed.AddLine(line);
         }
 
+        public static void IsTalking(Player player, bool isSpeaking)
+        {
+            if (!IsChatAvailable())
+                return;
+            var voiceChatPanel = GetVoiceChatPanel();
+            if (voiceChatPanel == null)
+                return;
+            if (isSpeaking)
+                voiceChatPanel.AddPlayer(player);
+            else
+                voiceChatPanel.RemovePlayer(player);
+        }
+
         protected static void LoadTheme()
         {
             ColorTags.Clear();
@@ -332,8 +345,9 @@ namespace GameManagers
             var player = GetPlayer(args);
             if (player != null)
             {
-                MutePlayer(player, true);
-                MutePlayer(player, false);
+                MutePlayer(player, "Emote");
+                MutePlayer(player, "Text");
+                MutePlayer(player, "Voice");
             }
         }
 
@@ -343,8 +357,9 @@ namespace GameManagers
             var player = GetPlayer(args);
             if (player != null)
             {
-                UnmutePlayer(player, true);
-                UnmutePlayer(player, false);
+                UnmutePlayer(player, "Emote");
+                UnmutePlayer(player, "Text");
+                UnmutePlayer(player, "Voice");
             }
         }
 
@@ -426,36 +441,54 @@ namespace GameManagers
             }
         }
 
-        public static void MutePlayer(Player player, bool emote)
+        public static void MutePlayer(Player player, string muteType)
         {
             if (player == PhotonNetwork.LocalPlayer)
                 return;
-            if (emote)
+            if (muteType == "emote")
             {
                 InGameManager.MuteEmote.Add(player.ActorNumber);
-                AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been muted (emote).", ChatTextColor.System);
             }
-            else
+            else if (muteType == "text")
             {
                 InGameManager.MuteText.Add(player.ActorNumber);
-                AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been muted (chat).", ChatTextColor.System);
             }
+            else if (muteType == "voice")
+            {
+                InGameManager.MuteVoiceChat.Add(player.ActorNumber);
+            }
+
+            AddLine($"{player.GetStringProperty(PlayerProperty.Name)} has been muted ({muteType}).", ChatTextColor.System);
         }
 
-        public static void UnmutePlayer(Player player, bool emote)
+        public static void UnmutePlayer(Player player, string muteType)
         {
             if (player == PhotonNetwork.LocalPlayer)
                 return;
-            if (emote && InGameManager.MuteEmote.Contains(player.ActorNumber))
+            if (muteType == "emote" && InGameManager.MuteEmote.Contains(player.ActorNumber))
             {
                 InGameManager.MuteEmote.Remove(player.ActorNumber);
-                AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been unmuted (emote).", ChatTextColor.System);
             }
-            else if (!emote && InGameManager.MuteText.Contains(player.ActorNumber))
+            else if (muteType == "text" && InGameManager.MuteText.Contains(player.ActorNumber))
             {
                 InGameManager.MuteText.Remove(player.ActorNumber);
-                AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been unmuted (chat).", ChatTextColor.System);
             }
+            else if (muteType == "voice" && InGameManager.MuteVoiceChat.Contains(player.ActorNumber))
+            {
+                InGameManager.MuteVoiceChat.Remove(player.ActorNumber);
+            }
+
+            AddLine($"{player.GetStringProperty(PlayerProperty.Name)} has been unmuted ({muteType}).", ChatTextColor.System);
+        }
+
+        public static void SetPlayerVolume(Player player, float volume)
+        {
+            if (player == PhotonNetwork.LocalPlayer)
+                return;
+            if (InGameManager.VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
+                if (InGameManager.VoiceChatVolumeMultiplier[player.ActorNumber] == volume)
+                    return;
+            InGameManager.VoiceChatVolumeMultiplier[player.ActorNumber] = volume;
         }
 
         private static Player GetPlayer(string stringID)
@@ -498,6 +531,11 @@ namespace GameManagers
         private static FeedPanel GetFeedPanel()
         {
             return ((InGameMenu)UIManager.CurrentMenu).FeedPanel;
+        }
+
+        private static VoiceChatPanel GetVoiceChatPanel()
+        {
+            return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
         public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)

@@ -103,7 +103,7 @@ namespace UI
         {
             if (gameObject.activeSelf && SceneLoader.SceneName == SceneName.MainMenu)
             {
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
             }
             base.Hide();
         }

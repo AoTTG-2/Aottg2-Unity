@@ -223,15 +223,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 453260, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -441
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 453260, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10634
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 453260, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -62
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 453260, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: m_LocalRotation.w
@@ -264,6 +264,22 @@ PrefabInstance:
     - target: {fileID: 2417212506604296573, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417212506604296573, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
+      propertyPath: Synchronization
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417212506604296573, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
+      propertyPath: observableSearch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417212506604296573, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417212506604296573, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
+      propertyPath: 'ObservedComponents.Array.data[0]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5828446848476270888, guid: 54ac7bfb5fcc2c84e923244f04290229, type: 3}
       propertyPath: sceneViewId

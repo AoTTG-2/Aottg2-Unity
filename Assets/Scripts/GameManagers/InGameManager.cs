@@ -16,6 +16,7 @@ using Photon.Realtime;
 using System.IO;
 using System.Linq;
 using Controllers;
+using Photon.Voice.PUN;
 
 namespace GameManagers
 {
@@ -33,6 +34,7 @@ namespace GameManagers
         public HashSet<Human> Humans = new HashSet<Human>();
         public HashSet<BasicTitan> Titans = new HashSet<BasicTitan>();
         public HashSet<BaseShifter> Shifters = new HashSet<BaseShifter>();
+        public List<PhotonVoiceSync> PhotonVoiceSyncs = new List<PhotonVoiceSync>();
         public bool IsEnding;
         public float EndTimeLeft;
         public GameState State = GameState.Loading;
@@ -41,6 +43,8 @@ namespace GameManagers
         public static Dictionary<int, PlayerInfo> AllPlayerInfo = new Dictionary<int, PlayerInfo>();
         public static HashSet<int> MuteEmote = new HashSet<int>();
         public static HashSet<int> MuteText = new HashSet<int>();
+        public static HashSet<int> MuteVoiceChat = new HashSet<int>();
+        public static Dictionary<int, float> VoiceChatVolumeMultiplier = new Dictionary<int, float>();
         public static PlayerInfo MyPlayerInfo = new PlayerInfo();
         private static bool _needSendPlayerInfo;
         public bool HasSpawned = false;
@@ -68,6 +72,11 @@ namespace GameManagers
                     characters.Add(shifter);
             }
             return characters;
+        }
+
+        public HashSet<BaseCharacter> GetAllNonAICharacters()
+        {
+            return GetAllCharacters().Where(x => !x.AI).ToHashSet();
         }
 
         public void PauseGame()
@@ -175,7 +184,7 @@ namespace GameManagers
             if (PhotonNetwork.IsMasterClient)
                 PhotonNetwork.DestroyAll();
             if (PhotonNetwork.IsConnected)
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
             SettingsManager.InGameCurrent.SetDefault();
             SettingsManager.InGameUI.SetDefault();
             SettingsManager.InGameCharacterSettings.SetDefault();
@@ -307,6 +316,17 @@ namespace GameManagers
             }
             if (CustomLogicManager.Evaluator != null)
                 CustomLogicManager.Evaluator.OnPlayerLeave(player);
+
+            // Clear the mute lists for the player that left (only if they are in the lists)
+            if (MuteEmote.Contains(player.ActorNumber))
+                MuteEmote.Remove(player.ActorNumber);
+            if (MuteText.Contains(player.ActorNumber))
+                MuteText.Remove(player.ActorNumber);
+            if (MuteVoiceChat.Contains(player.ActorNumber))
+                MuteVoiceChat.Remove(player.ActorNumber);
+            if (VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
+                VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
+
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
@@ -322,6 +342,8 @@ namespace GameManagers
         {
             if (!AllPlayerInfo.ContainsKey(info.Sender.ActorNumber))
                 AllPlayerInfo.Add(info.Sender.ActorNumber, new PlayerInfo());
+            if (data.Length > 1000)
+                return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
         }
 
@@ -333,13 +355,12 @@ namespace GameManagers
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
             PrintMOTD(original);
-
+            VoiceChatManager.ApplySoundSettings();
             if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
                 return;
-
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
-            }
+        }
 
         public static void OnCharacterChosen()
         {
@@ -897,6 +918,7 @@ namespace GameManagers
                 PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
                 LoadSkin();
             }
+            PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
         }
 

@@ -15,6 +15,7 @@ namespace UI
         public float ShowTimeLeft = 0f;
         public BaseCharacter Character;
         public Vector3 Offset;
+        public bool infinitePopup = false;
 
         public override void Setup(BasePanel parent = null)
         {

@@ -1039,13 +1039,13 @@ component CustomPhysicsMaterial
 # internal
 component CaptureZone
 {
-    Description = "Makes the capture zone interactable. Must enable network flag on the object.";
-    Enabled = false;
-    AICanCapture = false;
+    Description = "Makes the capture zone interactable. Must enable <b>Networked</b> flag on the object.";
+    Enabled = true;
+    AICanCapture = true;
     HumanCanCapture = true;
     ShifterCanCapture = true;
     TitanCanCapture = true;
-    TeamsCanCapture = true;
+    TeamsCanCapture = false;
     CaptureTime = 10.0;
     DecaySpeed = 1.0;
     Order = 0;
@@ -1053,6 +1053,16 @@ component CaptureZone
     ShowUI = true;
     UIVisibilityRange = 80.0;
     CurrentOwner = "Neutral";
+
+    EnabledTooltip = "Enable/Disable the component. Note that this doesn't show/hide the map object, it only affect the functionality";
+    CaptureTimeTooltip = "How long it takes for the CaptureZone to be captured. In seconds";
+    DecaySpeedTooltip = "How fast a team will lose the progress if no one is inside the CaptureZone";
+    OrderTooltip = "Order does not affect how the component works. This property is only here to help the <b>Main</b> logic with sorting the capture zones. Useful for game modes like Outside The Walls";
+    SupplyStationIDTooltip = "ID of an object that becomes visible when the capture zone is captured by <b>Humans</b> (players) but hidden otherwise. Object can be anything, it doesn't have to be a SupplyStation. In Outside The Walls, this is used for showing/hiding the supply station";
+    ShowUITooltip = "If this option is enabled, the capture zone's state will be visible at the top of the screen";
+    UIVisibilityRangeTooltip = "UI will only be visible when the player is within this range of the capture zone";
+    CurrentOwnerTooltip = "Initial owner of the capture zone";
+    CurrentOwnerDropbox = "Neutral, Human, Titan, Shifter, Blue, Red";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
@@ -1744,7 +1754,12 @@ component SupplyStation
         {
             self._currentHuman = other;
             self._currentHumanRefill = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.", 0.1);
+            text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            if (!self._currentHumanRefill.AutoRefillGas)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
+            }
+            UI.SetLabelForTime("MiddleCenter", text, 0.1);
         }
     }
 

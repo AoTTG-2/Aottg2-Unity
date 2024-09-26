@@ -13,6 +13,9 @@ using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
 using GameProgress;
+using Photon.Voice.Unity;
+using Photon.Voice.PUN;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
@@ -36,6 +39,7 @@ namespace Characters
         public List<BaseUseable> Items = new List<BaseUseable>();
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
+        protected bool _wasMainCharacter = false;
 
         // movement
         public bool Grounded;
@@ -43,6 +47,7 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
+
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
@@ -127,6 +132,7 @@ namespace Characters
         public virtual void Init(bool ai, string team)
         {
             AI = ai;
+            
             if (!ai)
             {
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
@@ -135,6 +141,8 @@ namespace Characters
             Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
             SetTeam(team);
         }
+
+
 
         public virtual Vector3 GetAimPoint()
         {
@@ -522,6 +530,7 @@ namespace Characters
 
         protected virtual void Start()
         {
+
             MinimapHandler.CreateMinimapIcon(this);
             StartCoroutine(WaitAndNotifyCharacterSpawn());
         }
