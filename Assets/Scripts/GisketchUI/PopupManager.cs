@@ -24,8 +24,10 @@ namespace GisketchUI
             }
         }
 
-        private Dictionary<string, GisketchBasePopup> _popups = new Dictionary<string, GisketchBasePopup>();
+        private Dictionary<string, BasePopup> _popups = new Dictionary<string, BasePopup>();
         private Canvas _popupCanvas;
+        private PopupBackground background;
+        private int _activePopupCount = 0;
 
         private void Awake()
         {
@@ -54,13 +56,19 @@ namespace GisketchUI
             scaler.referenceResolution = new Vector2(1920, 1080);
 
             canvasObject.AddComponent<GraphicRaycaster>();
+
+            // Add background
+            GameObject bgObject = new GameObject("PopupBackground");
+            bgObject.transform.SetParent(_popupCanvas.transform, false);
+            background = bgObject.AddComponent<PopupBackground>();
+            background.gameObject.SetActive(false);
         }
 
-        public T GetOrCreatePopup<T>() where T : GisketchBasePopup
+        public T GetOrCreatePopup<T>() where T : BasePopup
         {
             string popupName = typeof(T).Name;
 
-            if (!_popups.TryGetValue(popupName, out GisketchBasePopup popup))
+            if (!_popups.TryGetValue(popupName, out BasePopup popup))
             {
                 popup = gameObject.AddComponent<T>();
                 popup.Setup(_popupCanvas.transform);
@@ -70,25 +78,47 @@ namespace GisketchUI
             return (T)popup;
         }
 
-        public void ShowPopup<T>() where T : GisketchBasePopup
+        public void ShowPopup<T>() where T : BasePopup
         {
+            _activePopupCount++;
+            if (_activePopupCount == 1)
+            {
+                background.Show(0.15f);
+            }
             GetOrCreatePopup<T>().Show();
         }
 
-        public void HidePopup<T>() where T : GisketchBasePopup
+        public void HidePopup<T>() where T : BasePopup
         {
-            if (_popups.TryGetValue(typeof(T).Name, out GisketchBasePopup popup))
+            if (_popups.TryGetValue(typeof(T).Name, out BasePopup popup))
             {
                 popup.Hide();
+            }
+        }
+
+        public void OnPopupHidden(BasePopup popup)
+        {
+            _activePopupCount--;
+            if (_activePopupCount <= 0)
+            {
+                _activePopupCount = 0;
+                background.Hide(0.15f);
             }
         }
 
         public void HideAllPopups()
         {
+            background.Hide(0.15f);
             foreach (var popup in _popups.Values)
             {
                 popup.Hide();
             }
+            _activePopupCount = 0;
+        }
+
+        public void OnBackgroundClicked()
+        {
+            HideAllPopups();
         }
     }
 }

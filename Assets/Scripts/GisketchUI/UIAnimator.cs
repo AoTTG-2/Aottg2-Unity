@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace GisketchUI
 {
-    public static class GisketchUIAnimator
+    public static class UIAnimator
     {
         public static void HoverAnimation(RectTransform rectTransform, Vector3 originalPosition, float offset, float duration)
         {

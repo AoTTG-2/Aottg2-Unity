@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 namespace GisketchUI
 {
-    public class GisketchButton : GisketchUIElement, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    public class Button : UIElement, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
-        public Button button;
+        public UnityEngine.UI.Button button;
         public Text labelText;
         public RectTransform baseRectTransform;
         public RectTransform shadowRectTransform;
@@ -43,7 +43,7 @@ namespace GisketchUI
 
         private void Awake()
         {
-            button = GetComponent<Button>();
+            button = GetComponent<UnityEngine.UI.Button>();
             labelText = GetComponentInChildren<Text>();
 
             Transform baseTransform = transform.Find("Base");
@@ -93,15 +93,15 @@ namespace GisketchUI
             switch (variant)
             {
                 case ButtonVariant.Neutral: return Color.white;
-                case ButtonVariant.Primary: return GisketchColors.Primary;
-                case ButtonVariant.Secondary: return GisketchColors.Secondary;
-                case ButtonVariant.Tertiary: return GisketchColors.Tertiary;
-                case ButtonVariant.Blue: return GisketchColors.Blue;
-                case ButtonVariant.Orange: return GisketchColors.Orange;
-                case ButtonVariant.Green: return GisketchColors.Green;
-                case ButtonVariant.Red: return GisketchColors.Red;
-                case ButtonVariant.Purple: return GisketchColors.Purple;
-                default: return GisketchColors.Primary;
+                case ButtonVariant.Primary: return ColorPalette.Primary;
+                case ButtonVariant.Secondary: return ColorPalette.Secondary;
+                case ButtonVariant.Tertiary: return ColorPalette.Tertiary;
+                case ButtonVariant.Blue: return ColorPalette.Blue;
+                case ButtonVariant.Orange: return ColorPalette.Orange;
+                case ButtonVariant.Green: return ColorPalette.Green;
+                case ButtonVariant.Red: return ColorPalette.Red;
+                case ButtonVariant.Purple: return ColorPalette.Purple;
+                default: return ColorPalette.Primary;
             }
         }
 
@@ -151,24 +151,24 @@ namespace GisketchUI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GisketchUIAnimator.HoverAnimation(baseRectTransform, originalBasePosition, hoverOffset, animationDuration);
-            GisketchUIAnimator.ChangeButtonState(baseImage, outlineImage, labelText, darkSprite, variantColor, Color.white);
+            UIAnimator.HoverAnimation(baseRectTransform, originalBasePosition, hoverOffset, animationDuration);
+            UIAnimator.ChangeButtonState(baseImage, outlineImage, labelText, darkSprite, variantColor, Color.white);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GisketchUIAnimator.UnhoverAnimation(baseRectTransform, originalBasePosition, animationDuration);
-            GisketchUIAnimator.ChangeButtonState(baseImage, outlineImage, labelText, lightSprite, originalOutlineColor, originalTextColor);
+            UIAnimator.UnhoverAnimation(baseRectTransform, originalBasePosition, animationDuration);
+            UIAnimator.ChangeButtonState(baseImage, outlineImage, labelText, lightSprite, originalOutlineColor, originalTextColor);
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            GisketchUIAnimator.PressAnimation(baseRectTransform, originalBasePosition, pressOffset, animationDuration);
+            UIAnimator.PressAnimation(baseRectTransform, originalBasePosition, pressOffset, animationDuration);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            GisketchUIAnimator.ReleaseAnimation(baseRectTransform, originalBasePosition, hoverOffset, animationDuration);
+            UIAnimator.ReleaseAnimation(baseRectTransform, originalBasePosition, hoverOffset, animationDuration);
         }
     }
 }

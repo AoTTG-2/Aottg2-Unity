@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static LeanTween;
 
 namespace GisketchUI
 {
-    public abstract class GisketchUIElement : MonoBehaviour
+    public abstract class UIElement : MonoBehaviour
     {
         public virtual void Show(float duration = 0.3f) { }
         public virtual void Hide(float duration = 0.3f) { }
     }
 
-    public abstract class GisketchUIPanel : GisketchUIElement
+    public abstract class UIPanel : UIElement
     {
         public RectTransform rectTransform;
 
