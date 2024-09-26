@@ -747,7 +747,7 @@ namespace Characters
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
-                if(ConfusedTime > 0)
+                if (ConfusedTime > 0)
                 {
                     ConfusedTime -= Time.fixedDeltaTime;
                 }
