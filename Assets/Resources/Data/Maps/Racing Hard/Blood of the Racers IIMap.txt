@@ -641,8 +641,7 @@ Scene,Geometry/Cuboid,635,0,1,1,1,0,Kill Region Cuboid,-3895,90,1230,0,0,0,1,6,8
 Scene,Geometry/Cuboid,636,0,1,1,1,0,Kill Region Cuboid,-3895,65,1300,0,0,0,1,1,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,637,0,1,1,1,0,Kill Region Cuboid,-4105,65,1300,0,0,0,1,1,6,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cylinder,638,0,1,1,1,0,Cylinder,-4000,65,1300,0,0,0,4,6.4,4,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal1|0.01/0.01|0/0,;
-Scene,Geometry/Tube,639,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,35,1300,0,0,0,8,8,8,Physical,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
-Scene,Geometry/Tube,640,0,1,1,1,0,Racing Checkpoint Region Tube,-4000,95,1300,0,0,0,8,8,8,Physical,Characters,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|;
+Scene,Geometry/Cylinder1,1164,0,1,1,1,0,Cylinder1,-4000,31.10239,1300,0,0,0,94,30,94,Region,Entities,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true;
 Scene,Geometry/Cylinder,641,0,1,1,1,0,Cylinder,-4120,96.5,1300,90,0,0,1.2,10.5,1.2,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone8|0.25/2|0/0,;
 Scene,Geometry/Cuboid,642,0,1,1,1,0,Kill Region Cuboid,-4875,750,1240,0,0,315.0209,1,13,8,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
 Scene,Geometry/Cuboid,643,0,1,1,1,0,Kill Region Cuboid,-4875,750,1360,0,0,315.0209,1,13,8,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|;
@@ -1157,7 +1156,8 @@ Scene,Geometry/Cuboid,1151,0,1,1,0,0,Barrier,10010,-9700,10700,0,270,270,150,3,1
 Scene,Geometry/Cuboid,1152,0,1,1,0,0,Barrier,10010,-9700,9300,0,270,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,1153,0,1,1,0,0,Barrier,9300,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,1154,0,1,1,0,0,Barrier,10700,-9700,10000,0,0,270,150,3,150,Physical,Characters,Default,Default|255/255/255/255,;
-Scene,None,1155,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+Scene,None,1155,0,1,1,1,0,Titan SpawnPoint,10000,-9900,10000,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,Geometry/Cylinder1,1163,0,1,1,1,0,Cylinder1,-4000,95,1300,0,0,0,94,30,94,Region,Entities,Default,Transparent|51/255/0/130|Misc/None|1/1|0/0,RacingCheckpointRegion|Refill:true|PlaySound:true
 /// Logic
 
 /// Weather

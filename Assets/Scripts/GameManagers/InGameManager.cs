@@ -355,13 +355,12 @@ namespace GameManagers
             SettingsManager.InGameCurrent.DeserializeFromJsonString(StringCompression.Decompress(data));
             ((InGameManager)SceneLoader.CurrentGameManager)._gameSettingsLoaded = true;
             PrintMOTD(original);
-
+            VoiceChatManager.ApplySoundSettings();
             if (!SettingsManager.InGameCurrent.Misc.EndlessRespawnEnabled.Value)
                 return;
-
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             gameManager.StartCoroutine(gameManager.RespawnForever(SettingsManager.InGameCurrent.Misc.EndlessRespawnTime.Value));
-            }
+        }
 
         public static void OnCharacterChosen()
         {
