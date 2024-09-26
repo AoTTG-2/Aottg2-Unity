@@ -131,14 +131,14 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8497704390954061689}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: -15}
-  m_SizeDelta: {x: 1108, y: 284}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -4.999939, y: -5.0000153}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2192545806878415549
 CanvasRenderer:
@@ -320,7 +320,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: bd7ba5c513c146a4d889bbacc172c7f2, type: 3}
-    m_FontSize: 120
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -364,10 +364,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 9104903601907352102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8, y: 0}
-  m_SizeDelta: {x: 1139.446, y: 317.864}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3014464061194786452
 CanvasRenderer:
@@ -435,8 +435,8 @@ RectTransform:
   m_GameObject: {fileID: 7086846113599077454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3262549037928261447}
   - {fileID: 9104903601907352102}
@@ -445,7 +445,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.000015259}
-  m_SizeDelta: {x: 1108.3695, y: 283.8575}
+  m_SizeDelta: {x: 512, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4875274535799045163
 CanvasRenderer:
@@ -511,13 +511,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0873312d5682fda4dbb272ab6d09874b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  labelText: {fileID: 0}
-  baseRectTransform: {fileID: 0}
-  shadowRectTransform: {fileID: 0}
-  rectTransform: {fileID: 0}
+  button: {fileID: 2248627629463434051}
+  labelText: {fileID: 7567663762200380272}
+  baseRectTransform: {fileID: 9104903601907352102}
+  shadowRectTransform: {fileID: 3262549037928261447}
+  rectTransform: {fileID: 8497704390954061689}
   baseImage: {fileID: 0}
   outlineImage: {fileID: 0}
+  variant: 0
   hoverOffset: 6
   pressOffset: 3
   animationDuration: 0.2
@@ -550,7 +551,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1416997037090335060}
   - {fileID: 7369408748477358248}

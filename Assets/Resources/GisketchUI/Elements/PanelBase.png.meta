@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: eef26dbcdb522134a85867fb16005b67
+guid: 222f6061832a20e4b9775f5aa5e99e79
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -119,22 +119,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ButtonBaseOutline_0
+      name: PanelBase_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 288
+        width: 1024
+        height: 1024
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 150, y: 115, z: 91, w: 140}
+      pivot: {x: 0, y: 0}
+      border: {x: 163, y: 188, z: 180, w: 247}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 827519719039aa447b17952e8a1494ef
-      internalID: -922446999
+      spriteID: 2efb9dcefd2f3094fb48f80705ef5d30
+      internalID: 346707350
       vertices: []
       indices: 
       edges: []
@@ -142,7 +142,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 8f12135befd9d5d47a44f59c41942e0e
+    spriteID: 957410647fed70b428e56be4ed89937d
     internalID: 0
     vertices: []
     indices: 
@@ -150,7 +150,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ButtonBaseOutline_0: -922446999
+      PanelBase_0: 346707350
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

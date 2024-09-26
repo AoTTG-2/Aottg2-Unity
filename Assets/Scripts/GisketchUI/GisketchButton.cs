@@ -108,13 +108,25 @@ namespace GisketchUI
         public void SetLabel(string label)
         {
             if (labelText != null)
+            {
                 labelText.text = label;
+            }
+            else
+            {
+                Debug.LogWarning("Label Text component is missing on GisketchButton");
+            }
         }
 
-        public void AddListener(UnityAction action)
+        public void AddListener(UnityAction onClick)
         {
             if (button != null)
-                button.onClick.AddListener(action);
+            {
+                button.onClick.AddListener(onClick);
+            }
+            else
+            {
+                Debug.LogError("Button component is missing on GisketchButton");
+            }
         }
 
         public override void Show(float duration = 0.3f)
