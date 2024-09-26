@@ -3,9 +3,10 @@ using UnityEngine.Events;
 
 namespace GisketchUI
 {
-    public class GisketchToolsPopup : GisketchBasePopup
+    public class ToolsPopup : BasePopup
     {
         protected override string Title => "Tools";
+        protected override float Width => 480f;
 
         protected override void SetupContent()
         {
@@ -18,13 +19,12 @@ namespace GisketchUI
 
         private void CreateButton(string label, UnityAction onClick)
         {
-            GisketchButton button = GisketchElementFactory.CreateButton(contentView.rectTransform, label, onClick);
+            Button button = ElementFactory.CreateButton(contentView.rectTransform, label, onClick);
             contentView.AddElement(button);
         }
 
         protected void OnButtonClick(string name)
         {
-            Debug.Log($"Button clicked: {name}");
             switch (name)
             {
                 case "MapEditor":

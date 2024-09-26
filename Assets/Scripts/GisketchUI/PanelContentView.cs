@@ -11,7 +11,7 @@ namespace GisketchUI
         // RowList
     }
 
-    public class GisketchPanelContentView : GisketchUIPanel
+    public class PanelContentView : UIPanel
     {
         [SerializeField] private Text headerLabel;
         [SerializeField] private RectTransform listContent;
@@ -21,7 +21,7 @@ namespace GisketchUI
         private ContentLayoutType currentLayoutType;
         private RectTransform currentContent;
 
-        private List<GisketchUIElement> contentElements = new List<GisketchUIElement>();
+        private List<UIElement> contentElements = new List<UIElement>();
 
         public void Initialize(string headerText, ContentLayoutType layoutType)
         {
@@ -52,14 +52,14 @@ namespace GisketchUI
             currentContent.gameObject.SetActive(true);
         }
 
-        public void AddElement(GisketchUIElement element)
+        public void AddElement(UIElement element)
         {
             element.transform.SetParent(currentContent, false);
             contentElements.Add(element);
             AnimateElementEntry(element);
         }
 
-        private void AnimateElementEntry(GisketchUIElement element)
+        private void AnimateElementEntry(UIElement element)
         {
             element.transform.localScale = Vector3.zero;
             LeanTween.scale(element.gameObject, Vector3.one, 0.3f).setEaseOutBack();

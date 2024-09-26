@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GisketchUI
 {
-    public static class GisketchColors
+    public static class ColorPalette
     {
         public static readonly Color Blue = new Color(0.1254902f, 0.3960784f, 0.627451f);    // #2065a0
         public static readonly Color Orange = new Color(0.7294118f, 0.4f, 0.1215686f);       // #ba661f

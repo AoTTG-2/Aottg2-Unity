@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8564120681840915644}
   - component: {fileID: 5668813227604213831}
   m_Layer: 5
-  m_Name: GisketchPanelContentView
+  m_Name: PanelContentView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,7 +248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -14.999939, y: -15}
+  m_AnchoredPosition: {x: -14.999908, y: -15}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &205051793298011652
