@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Settings;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -72,7 +74,7 @@ namespace Anticheat
                 get
                 {
                     string pattern = isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT;
-                    return string.Format(isOpeningTag() ? OPEN_PATTERN : CLOSE_FORMAT, Name);
+                    return string.Format(pattern, Name);
                 }
             }
 
@@ -138,23 +140,14 @@ namespace Anticheat
                 return getMatchingTag().Equals(otherTag);
             }
 
-            // Replace all occurances of shortened tags in a text the full tags
-            public static string expandAllTags(string text)
-            {
-                foreach (TextTag tag in allTags)
-                {
-                    if (tag.ShortName != null)
-                    {
-                        text = tag.expandTags(text);
-                    }
-                }
-
-                return text;
-            }
-
             // Replace occurances of the short tag in a text with the full tag
             public string expandTags(string text)
             {
+                if (string.IsNullOrEmpty(ShortName))
+                {
+                    return text;
+                }
+
                 string openLookaheadPattern = string.Format(OPEN_VALUE_LOOKAHEAD, ShortName);
                 string closePattern = string.Format(CLOSE_FORMAT, ShortName);
                 string openReplace = "<" + Name;
@@ -202,8 +195,8 @@ namespace Anticheat
 
         public static string FilterText(this string text)
         {
+            text = text.expandAllTags();
             text = text.FilterSizeTag();
-            text = TextTag.expandAllTags(text);
             text = text.BalanceTags();
             return text;
         }
@@ -231,6 +224,14 @@ namespace Anticheat
                     }
                 }
             }
+            return text;
+        }
+
+
+        // Replace all occurances of shortened tags in a text the full tags
+        public static string expandAllTags(this string text)
+        {
+            TextTag.allTags.ToList().ForEach(tag => text = tag.expandTags(text));
             return text;
         }
 
