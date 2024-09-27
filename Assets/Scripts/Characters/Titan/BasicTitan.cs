@@ -1175,7 +1175,7 @@ namespace Characters
                 BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
                 if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
                 {
-                    var body = BasicCache.Core.Find("Controller.Body");
+                    var body = BasicCache.Body;
                     body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
                     BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
                 }
