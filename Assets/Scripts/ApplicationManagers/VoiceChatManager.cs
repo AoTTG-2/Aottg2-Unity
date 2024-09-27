@@ -9,6 +9,9 @@ using Photon.Voice;
 using Utility;
 using Unity.VisualScripting;
 using GameManagers;
+using System.Linq;
+using UI;
+using UnityEditor.Hardware;
 
 namespace ApplicationManagers
 {
@@ -22,14 +25,15 @@ namespace ApplicationManagers
         {
             get
             {
-                return Microphone.devices;
+                // If someone has a headset called "None" then they deserve to not have voice chat
+                return Microphone.devices.Append(UIManager.GetLocale("Common", "None")).ToArray<string>();
             }
         }
 
         public static string DefaultDevice
         {   get
             {
-                return Microphone.devices.Length > 0 ? Microphone.devices[0] : string.Empty;
+                return Microphone.devices.Length > 0 ? Microphone.devices[0] : UIManager.GetLocale("Common", "None");
             }
         }
 

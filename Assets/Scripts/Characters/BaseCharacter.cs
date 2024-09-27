@@ -537,9 +537,23 @@ namespace Characters
 
         protected IEnumerator WaitAndNotifyCharacterSpawn()
         {
-            yield return new WaitForEndOfFrame();
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
+        }
+
+        public void NotifyPlayerSpawn(Player player)
+        {
+            StartCoroutine(WaitAndNotifyPlayerSpawn(player));
+        }
+
+        protected IEnumerator WaitAndNotifyPlayerSpawn(Player player)
+        {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+            if (CustomLogicManager.Evaluator != null)
+                CustomLogicManager.Evaluator.OnPlayerSpawn(player, this);
         }
 
         public string GetCurrentAnimation()

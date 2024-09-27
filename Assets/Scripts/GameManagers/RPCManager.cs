@@ -9,6 +9,7 @@ using ApplicationManagers;
 using Characters;
 using Photon.Pun;
 using Spawnables;
+using System.Collections;
 
 namespace GameManagers
 {
@@ -207,10 +208,10 @@ namespace GameManagers
         {
 
             var view = PhotonView.Find(viewId);
-            if (view != null && view.Owner == info.Sender && CustomLogicManager.Evaluator != null)
+            if (view != null && view.Owner == info.Sender)
             {
                 var character = view.GetComponent<BaseCharacter>();
-                CustomLogicManager.Evaluator.OnPlayerSpawn(info.Sender, character);
+                character.NotifyPlayerSpawn(info.Sender);
             }
         }
 

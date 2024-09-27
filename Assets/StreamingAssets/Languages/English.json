@@ -56,7 +56,8 @@
 		"Icon": "Icon",
 		"Clear": "Clear",
 		"ExternalLinkConfirm": "You are about to open an external link",
-		"PressAnyKey": "Press any key to continue."
+		"PressAnyKey": "Press any key to continue.",
+		"None": "None"
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",
