@@ -1150,10 +1150,10 @@ namespace Characters
             }
             if (!base.AI && base.State == TitanState.Attack && base._currentAttackAnimation == this.BasicAnimations.AttackRockThrow)
             {
-                Vector3 rockThrowTarget = this.GetAimPoint();
-                rockThrowTarget.y = base.Cache.Transform.position.y;
-                Vector3 normalized = (rockThrowTarget - base.Cache.Transform.position).normalized;
-                base.Cache.Transform.rotation = Quaternion.Lerp(base.Cache.Transform.rotation, Quaternion.LookRotation(normalized), Time.deltaTime * 25f);
+                Vector3 rockThrowTarget = GetAimPoint();
+                rockThrowTarget.y = BasicCache.Transform.position.y;
+                Vector3 normalized = (rockThrowTarget - BasicCache.Transform.position).normalized;
+                BasicCache.Transform.rotation = Quaternion.Lerp(BasicCache.Transform.rotation, Quaternion.LookRotation(normalized), Time.deltaTime * 25f);
             }
             else
             {
