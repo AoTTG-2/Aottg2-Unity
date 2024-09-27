@@ -319,19 +319,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: bd7ba5c513c146a4d889bbacc172c7f2, type: 3}
+    m_Font: {fileID: 12800000, guid: e45f87d97e19a7b46a90b514fd2c91a9, type: 3}
     m_FontSize: 32
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 135
+    m_MaxSize: 32
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: button item
+  m_Text: Button Placeholder
 --- !u!1 &7052465050856270096
 GameObject:
   m_ObjectHideFlags: 0

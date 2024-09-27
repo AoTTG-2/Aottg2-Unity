@@ -1,3 +1,5 @@
+using ApplicationManagers;
+using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,16 +7,19 @@ namespace GisketchUI
 {
     public class ToolsPopup : BasePopup
     {
-        protected override string Title => "Tools";
+        protected override string Title => UIManager.GetLocale("MainMenu", "ToolsPopup", "Title");
         protected override float Width => 480f;
 
         protected override void SetupContent()
         {
-            CreateButton("Map Editor", () => OnButtonClick("MapEditor"));
-            CreateButton("Character Editor", () => OnButtonClick("CharacterEditor"));
-            CreateButton("Snapshot Viewer", () => OnButtonClick("SnapshotViewer"));
-            CreateButton("Gallery", () => OnButtonClick("Gallery"));
-            CreateButton("Back", () => OnButtonClick("Back"), Button.ButtonVariant.Red);
+            string cat = "MainMenu";
+            string sub = "ToolsPopup";
+
+            CreateButton(UIManager.GetLocale(cat, sub, "MapEditorButton"), () => OnButtonClick("MapEditor"));
+            CreateButton(UIManager.GetLocale(cat, sub, "CharacterEditorButton"), () => OnButtonClick("CharacterEditor"));
+            CreateButton(UIManager.GetLocale(cat, sub, "SnapshotViewerButton"), () => OnButtonClick("SnapshotViewer"));
+            CreateButton(UIManager.GetLocale(cat, sub, "GalleryButton"), () => OnButtonClick("Gallery"));
+            CreateButton(UIManager.GetLocaleCommon("Back"), () => OnButtonClick("Back"), Button.ButtonVariant.Red);
         }
 
         private void CreateButton(string label, UnityAction onClick, Button.ButtonVariant variant = Button.ButtonVariant.Secondary)
@@ -28,21 +33,22 @@ namespace GisketchUI
             switch (name)
             {
                 case "MapEditor":
-                    Debug.Log("Load Map Editor Scene");
+                    SceneLoader.LoadScene(SceneName.MapEditor);
                     break;
                 case "CharacterEditor":
-                    Debug.Log("Load Character Editor Scene");
+                    SceneLoader.LoadScene(SceneName.CharacterEditor);
                     break;
                 case "SnapshotViewer":
-                    Debug.Log("Load Snapshot Viewer Scene");
+                    SceneLoader.LoadScene(SceneName.SnapshotViewer);
                     break;
                 case "Gallery":
-                    Debug.Log("Load Gallery Scene");
+                    SceneLoader.LoadScene(SceneName.Gallery);
                     break;
                 case "Back":
                     Hide();
                     break;
             }
+            Hide();
         }
     }
 }

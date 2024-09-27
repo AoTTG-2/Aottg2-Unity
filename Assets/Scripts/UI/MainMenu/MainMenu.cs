@@ -10,6 +10,7 @@ using SimpleJSONFixed;
 using System.Collections;
 using Photon.Pun;
 using Utility;
+using GisketchUI;
 
 namespace UI
 {
@@ -121,6 +122,7 @@ namespace UI
 
             _introPanelAnimator.StartAnimation();
         }
+
         private void SetupButtons(Transform buttonsParent)
         {
             foreach (Transform buttonTransform in buttonsParent)
@@ -134,7 +136,7 @@ namespace UI
         {
             foreach (Transform iconTransform in iconsParent)
             {
-                Button button = iconTransform.gameObject.GetComponent<Button>();
+                UnityEngine.UI.Button button = iconTransform.gameObject.GetComponent<UnityEngine.UI.Button>();
                 button.onClick.AddListener(() => OnIntroButtonClick(iconTransform.name));
                 ColorBlock block = new ColorBlock
                 {
@@ -295,7 +297,8 @@ namespace UI
                     _settingsPopup.Show();
                     break;
                 case "ToolsButton":
-                    _toolsPopup.Show();
+                    PopupManager.Instance.ShowPopup<GisketchUI.ToolsPopup>();
+                    // _toolsPopup.Show();
                     break;
                 case "QuitButton":
                     Application.Quit();
