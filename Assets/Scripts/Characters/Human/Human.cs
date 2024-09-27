@@ -9,13 +9,20 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 using Settings;
 using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using UnityEngine.XR;
 using Utility;
 using Weather;
 
@@ -63,8 +70,6 @@ namespace Characters
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
-        private int _lastCarryRPCSender = -1;
-        private float _grabIFrames = 0f;
 
         // physics
         public float ReelInAxis = 0f;
@@ -95,14 +100,12 @@ namespace Characters
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
-        private LayerMask HumanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
+        public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
-        public override LayerMask GroundMask => HumanGroundMaskLayers;
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
         public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
-        private const float CarryLagCompensationDistance = 100f;
 
         // actions
         public string StandAnimation;
@@ -376,7 +379,6 @@ namespace Characters
 
         public void DodgeWall()
         {
-            FalseAttack();
             State = HumanState.GroundDodge;
             PlayAnimation(HumanAnimations.Dodge, 0.2f);
             ToggleSparks(false);
@@ -443,23 +445,31 @@ namespace Characters
             State = HumanState.Idle;
             CrossFade(StandAnimation, 0.1f);
         }
-        public void Grab(BaseTitan grabber, string type)
+        [PunRPC]
+        public void setMyGrabber(int grabberViewID, PhotonMessageInfo info)
         {
-            if (HasGrabImmunity())
+            if (info.Sender != Cache.PhotonView.Owner)
                 return;
+            BaseTitan grabber = PhotonView.Find(grabberViewID).GetComponent<BaseTitan>();
+            if (grabber != null)
+            {
+                Grabber = grabber;
+                if (grabber.GetCurrentAnimation().Contains("grab") && grabber.GetCurrentAnimation().Contains(".l"))
+                    GrabHand = grabber.BaseTitanCache.GrabLSocket;
+                else if (grabber.GetCurrentAnimation().Contains("grab") && grabber.GetCurrentAnimation().Contains(".r"))
+                    GrabHand = grabber.BaseTitanCache.GrabRSocket;
+            }
+        }
+        public void Grab(BaseTitan grabber, Transform hand)
+        {
             if (MountState != HumanMountState.None)
                 Unmount(true);
-            Transform hand;
-            if (type == "GrabLeft")
-                hand = grabber.BaseTitanCache.GrabLSocket;
-            else
-                hand = grabber.BaseTitanCache.GrabRSocket;
             HookLeft.DisableAnyHook();
             HookRight.DisableAnyHook();
             UnhookHuman(true);
             UnhookHuman(false);
             State = HumanState.Grab;
-            grabber.Cache.PhotonView.RPC("GrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID, type == "GrabLeft" });
+            grabber.Cache.PhotonView.RPC("GrabRPC", grabber.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
             SetTriggerCollider(true);
             FalseAttack();
             Grabber = grabber;
@@ -471,14 +481,14 @@ namespace Characters
             windEmission.enabled = false;
             if (IsMainCharacter())
                 MusicManager.PlayGrabbedSong();
+            Cache.PhotonView.RPC("setMyGrabber", RpcTarget.All, new object[] { grabber.Cache.PhotonView.ViewID });
         }
 
         public void Ungrab(bool notifyTitan, bool idle)
         {
             if (notifyTitan && Grabber != null)
-                Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                Grabber.Cache.PhotonView.RPC("UngrabRPC", Grabber.Cache.PhotonView.Owner, new object[0]);
             Grabber = null;
-            GrabHand = null;
             SetTriggerCollider(false);
             if (idle)
                 Idle();
@@ -507,37 +517,14 @@ namespace Characters
         }
 
         [PunRPC]
-        public void CarryRPC(int initiatorViewId, PhotonMessageInfo info)
+        public void CarryRPC(int viewId, PhotonMessageInfo info)
         {
-            var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView.Owner != info.Sender)
+            var view = PhotonView.Find(viewId);
+            if (view.Owner != info.Sender)
                 return;
-            var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
-                return;
-            _lastCarryRPCSender = initiatorViewId;
-            if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
-                Cache.PhotonView.RPC("ConfirmCarryRPC", RpcTarget.All, new object[] { initiatorViewId, Cache.PhotonView.ViewID });
-        }
-
-        [PunRPC]
-        public void ConfirmCarryRPC(int initiatorViewId, int targetViewId, PhotonMessageInfo info)
-        {
-            var targetView = PhotonView.Find(targetViewId);
-            if (targetView.Owner != info.Sender)
-                return;
-            if (_lastCarryRPCSender != initiatorViewId)
-                return;
-            var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView == null) 
-                return;
-            var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
-                return;
-            Carrier = initiator;
+            Carrier = view.GetComponent<Human>();
             Carrier.BackHuman = this;
             CarryState = HumanCarryState.Carry;
-            _lastCarryRPCSender = -1;
             if (Cache.PhotonView.IsMine)
                 Carry(Carrier, Carrier.Cache.Transform);
         }
@@ -607,17 +594,6 @@ namespace Characters
         public bool IsCarryable(Human human)
         {
             return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null;
-        }
-
-        private bool IsCarryableBy(Human initiator)
-        {
-            if (initiator == null)
-                return false;
-            bool isFree = CarryState == HumanCarryState.None && Carrier == null && BackHuman == null;
-            bool isInitiatorFree = initiator.CarryState == HumanCarryState.None && initiator.Carrier == null && initiator.BackHuman == null;
-            float distance = Vector3.Distance(initiator.Cache.Transform.position, Cache.Transform.position);
-            bool isWithinDistance = distance < CarrySpecial.DefaultCarryDistance + CarryLagCompensationDistance;
-            return isFree && isInitiatorFree && isWithinDistance;
         }
 
         /// <summary>
@@ -703,10 +679,8 @@ namespace Characters
         public void TransformShifter(string shifter, float liveTime)
         {
             _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
-            var character = (BaseShifter)_inGameManager.CurrentCharacter;
-            character.PreviousHumanGas = Stats.CurrentGas;
-            character.PreviousHumanWeapon = Weapon;
-            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, character.Cache.PhotonView.ViewID);
+            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = Stats.CurrentGas;
+            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
             PhotonNetwork.Destroy(gameObject);
         }
 
@@ -730,10 +704,6 @@ namespace Characters
             }
             else if (previousHumanWeapon is AmmoWeapon)
             {
-                if (previousHumanWeapon is AHSSWeapon)
-                {
-                    ((AHSSWeapon)previousHumanWeapon).HandleUI();
-                }
                 AmmoWeapon previousAmmoWeapon = (AmmoWeapon)previousHumanWeapon;
                 AmmoWeapon weapon = (AmmoWeapon)Weapon;
                 weapon.RoundLeft = previousAmmoWeapon.RoundLeft;
@@ -824,9 +794,9 @@ namespace Characters
             if (!Grounded || State != HumanState.Idle)
                 return false;
             State = HumanState.Refill;
-            if (Special is SupplySpecial)
+            if (Special is SupplySpecial && Special.UsesLeft == 0)
             {
-                ((SupplySpecial)Special).Reset();
+                Special.Reset();
             }
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
@@ -834,24 +804,12 @@ namespace Characters
             _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length / Cache.Animation[HumanAnimations.Refill].speed;
             return true;
         }
-        public bool SupplySpawnableRefill()
-        {
-            if (!Grounded || State != HumanState.Idle)
-                return false;
-            State = HumanState.Refill;
-            ToggleSparks(false);
-            CrossFade(HumanAnimations.Refill, 0.1f);
-            PlaySound(HumanSounds.Refill);
-            _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length / Cache.Animation[HumanAnimations.Refill].speed;
-            return true;
-        }
-        public bool NeedRefill(bool isGasTank)
+
+        public bool NeedRefill()
         {
             if (Stats.CurrentGas < Stats.MaxGas)
-            {
                 return true;
-            }
-            if (isGasTank && Special is SupplySpecial && Special.UsesLeft <= 0)
+            if (Special is SupplySpecial && Special.UsesLeft == 0)
             {
                 return true;
             }
@@ -1005,12 +963,12 @@ namespace Characters
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
+                LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
-                LoadSkin();
             }
         }
 
@@ -1046,7 +1004,10 @@ namespace Characters
                 if (State == HumanState.Grab)
                     return;
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
-                Grab(titan, type);
+                if (type == "GrabLeft")
+                    Grab(titan, titan.BaseTitanCache.GrabLSocket);
+                else
+                    Grab(titan, titan.BaseTitanCache.GrabRSocket);
             }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
@@ -1201,7 +1162,9 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
-                UpdateIFrames();
+                InvincibleTimeLeft -= Time.deltaTime;
+                if (InvincibleTimeLeft <= 0f)
+                    IsInvincible = false;
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1433,15 +1396,9 @@ namespace Characters
                     }
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
-                GameProgressManager.RegisterSpeed(_currentVelocity.magnitude);
+                GameProgressManager.RegisterSpeed(gameObject, _currentVelocity.magnitude);
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 10f);
                 CheckGround();
-
-                float rotationSpeed = 6f;
-                if (Grounded)
-                {
-                    rotationSpeed = 10f;
-                }
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
@@ -1806,25 +1763,6 @@ namespace Characters
             EnableSmartTitans();
         }
 
-        public bool HasGrabImmunity()
-        {
-            return _grabIFrames > 0;
-        }
-
-        public void StartGrabImmunity(float duration)
-        {
-            _grabIFrames = duration;
-        }
-
-        private void UpdateIFrames()
-        {
-            InvincibleTimeLeft -= Time.deltaTime;
-            if (InvincibleTimeLeft <= 0f)
-                IsInvincible = false;
-            if (_grabIFrames > 0)
-                _grabIFrames -= Time.deltaTime;
-        }
-
         private void lookAtTarget(Vector3 target)
         {
             Transform chestT = HumanCache.Chest;
@@ -1903,14 +1841,12 @@ namespace Characters
 
         protected override void LateUpdate()
         {
-            if (IsMine() && State != HumanState.Grab)
+            if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab)
             {
-                if (MountState == HumanMountState.None)
-                {
-                    LateUpdateTilt();
-                    LateUpdateGun();
-                    LateUpdateReelOut();
-                }
+                LateUpdateTilt();
+                LateUpdateGun();
+                LateUpdateReelOut();
+
                 bool validState = State == HumanState.Idle || State == HumanState.Run || State == HumanState.Slide;
                 if (Grounded && validState && !_cameraFPS)
                 {
@@ -1923,6 +1859,7 @@ namespace Characters
                     LateUpdateHeadRotation = null;
                     _oldHeadRotation = HumanCache.Head.localRotation;
                 }
+
             }
             else if (!IsMine())
             {
@@ -2086,8 +2023,6 @@ namespace Characters
                 _isReelingOut = true;
             else if (reelAxis < 0f && !_reelInWaitForRelease)
             {
-                if (State == HumanState.AirDodge && IsHookedLeft() && IsHookedRight())
-                    return;
                 if (SettingsManager.SoundSettings.ReelInEffect.Value)
                     PlaySoundRPC(HumanSounds.ReelIn, Util.CreateLocalPhotonInfo());
                 if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
@@ -2247,7 +2182,7 @@ namespace Characters
         public void FixedUpdateLookTitan()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
-            LayerMask mask = TitanDetectionMask;
+            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
             RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
             if (hitArr.Length == 0)
                 return;
@@ -3173,9 +3108,7 @@ namespace Characters
                 return;
             if (Setup == null)
                 return;
-            bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
-                                || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
-            if (toggle && canShowTrail)
+            if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
             {
                 Setup.LeftTrail.Emit = true;
                 Setup.RightTrail.Emit = true;
@@ -3186,18 +3119,6 @@ namespace Characters
             {
                 Setup.LeftTrail._emitTime = 0.1f;
                 Setup.RightTrail._emitTime = 0.1f;
-            }
-
-            // if canShowTrail is false and the trails are active, disable them
-            if (!canShowTrail && (Setup.LeftTrail.isActiveAndEnabled || Setup.RightTrail.isActiveAndEnabled))
-            {
-                Setup.LeftTrail.enabled = false;
-                Setup.RightTrail.enabled = false;
-            }
-            else if (canShowTrail && (!Setup.LeftTrail.isActiveAndEnabled || !Setup.RightTrail.isActiveAndEnabled))
-            {
-                Setup.LeftTrail.enabled = true;
-                Setup.RightTrail.enabled = true;
             }
         }
 
@@ -3319,9 +3240,6 @@ namespace Characters
             if (FinishSetup)
             {
                 AddRendererIfExists(renderers, Setup._part_head);
-                AddRendererIfExists(renderers, Setup._part_hat);
-                AddRendererIfExists(renderers, Setup._part_back);
-                AddRendererIfExists(renderers, Setup._part_head_decor);
                 AddRendererIfExists(renderers, Setup._part_hair);
                 AddRendererIfExists(renderers, Setup._part_eye);
                 AddRendererIfExists(renderers, Setup._part_glass);
