@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using UnityEngine.XR;
 using Utility;
 using Weather;
 
@@ -439,7 +440,7 @@ namespace Characters
             CrossFade(StandAnimation, 0.1f);
         }
         [PunRPC]
-        public void setMyGrabber(int grabberViewID, PhotonMessageInfo info)
+        public void setMyGrabber(int grabberViewID, string type, PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
@@ -447,16 +448,21 @@ namespace Characters
             if (grabber != null)
             {
                 Grabber = grabber;
-                if (grabber.GetCurrentAnimation().Contains("grab") && grabber.GetCurrentAnimation().Contains(".l"))
+                if (type == "GrabLeft")
                     GrabHand = grabber.BaseTitanCache.GrabLSocket;
-                else if (grabber.GetCurrentAnimation().Contains("grab") && grabber.GetCurrentAnimation().Contains(".r"))
+                else
                     GrabHand = grabber.BaseTitanCache.GrabRSocket;
             }
         }
-        public void Grab(BaseTitan grabber, Transform hand)
+        public void Grab(BaseTitan grabber, string type)
         {
             if (MountState != HumanMountState.None)
                 Unmount(true);
+            Transform hand;
+            if (type == "GrabLeft")
+                hand = grabber.BaseTitanCache.GrabLSocket;
+            else
+                hand = grabber.BaseTitanCache.GrabRSocket;
             HookLeft.DisableAnyHook();
             HookRight.DisableAnyHook();
             UnhookHuman(true);
@@ -474,7 +480,7 @@ namespace Characters
             windEmission.enabled = false;
             if (IsMainCharacter())
                 MusicManager.PlayGrabbedSong();
-            Cache.PhotonView.RPC("setMyGrabber", RpcTarget.All, new object[] { grabber.Cache.PhotonView.ViewID });
+            Cache.PhotonView.RPC("setMyGrabber", RpcTarget.All, new object[] { grabber.Cache.PhotonView.ViewID, type });
         }
 
         public void Ungrab(bool notifyTitan, bool idle)
@@ -997,10 +1003,7 @@ namespace Characters
                 if (State == HumanState.Grab)
                     return;
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
-                if (type == "GrabLeft")
-                    Grab(titan, titan.BaseTitanCache.GrabLSocket);
-                else
-                    Grab(titan, titan.BaseTitanCache.GrabRSocket);
+                Grab(titan, type);
             }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
