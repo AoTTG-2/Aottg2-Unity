@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Settings;
+using System.Collections;
 
 namespace GisketchUI
 {
@@ -41,6 +43,7 @@ namespace GisketchUI
             DontDestroyOnLoad(gameObject);
 
             SetupPopupCanvas();
+            UpdateUIScale();
         }
 
         private void SetupPopupCanvas()
@@ -54,6 +57,7 @@ namespace GisketchUI
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 
             canvasObject.AddComponent<GraphicRaycaster>();
 
@@ -94,6 +98,40 @@ namespace GisketchUI
             {
                 popup.Hide();
             }
+        }
+
+        private void ApplyUIScale()
+        {
+            float scaleFactor = 1f / SettingsManager.UISettings.UIMasterScale.Value;
+
+            // Apply scale to the popup canvas
+            if (_popupCanvas != null)
+            {
+                CanvasScaler scaler = _popupCanvas.GetComponent<CanvasScaler>();
+                if (scaler != null)
+                {
+                    scaler.referenceResolution = new Vector2(1920 * scaleFactor, 1080 * scaleFactor);
+                }
+            }
+
+            // // Apply scale to all existing popups
+            // foreach (var popup in _popups.Values)
+            // {
+            //     popup.ApplyScale(scaleFactor);
+            // }
+        }
+
+        // Call this method when you want to update the UI scale
+        public void UpdateUIScale()
+        {
+            StartCoroutine(WaitAndApplyScale());
+        }
+
+        private IEnumerator WaitAndApplyScale()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            ApplyUIScale();
         }
 
         public void OnPopupHidden(BasePopup popup)

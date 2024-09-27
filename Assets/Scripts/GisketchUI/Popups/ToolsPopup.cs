@@ -14,12 +14,12 @@ namespace GisketchUI
             CreateButton("Character Editor", () => OnButtonClick("CharacterEditor"));
             CreateButton("Snapshot Viewer", () => OnButtonClick("SnapshotViewer"));
             CreateButton("Gallery", () => OnButtonClick("Gallery"));
-            CreateButton("Back", () => OnButtonClick("Back"));
+            CreateButton("Back", () => OnButtonClick("Back"), Button.ButtonVariant.Red);
         }
 
-        private void CreateButton(string label, UnityAction onClick)
+        private void CreateButton(string label, UnityAction onClick, Button.ButtonVariant variant = Button.ButtonVariant.Secondary)
         {
-            Button button = ElementFactory.CreateButton(contentView.rectTransform, label, onClick);
+            Button button = ElementFactory.CreateButton(contentView.rectTransform, label, onClick, variant);
             contentView.AddElement(button);
         }
 
