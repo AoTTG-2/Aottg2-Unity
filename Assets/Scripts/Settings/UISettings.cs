@@ -2,10 +2,11 @@
 using UnityEngine;
 using UI;
 using ApplicationManagers;
+using GisketchUI;
 
 namespace Settings
 {
-    class UISettings: SaveableSettingsContainer
+    class UISettings : SaveableSettingsContainer
     {
         protected override string FileName { get { return "UI.json"; } }
         public StringSetting UITheme = new StringSetting("Dark");
@@ -48,6 +49,8 @@ namespace Settings
             {
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
             }
+            // Update GisketchUI popup scaling
+            PopupManager.Instance.UpdateUIScale();
         }
     }
 

@@ -37,6 +37,18 @@ namespace GisketchUI
             contentView.ClearContent();
         }
 
+        // public virtual void ApplyScale(float scaleFactor)
+        // {
+        //     if (contentView != null)
+        //     {
+        //         RectTransform rectTransform = contentView.GetComponent<RectTransform>();
+        //         if (rectTransform != null)
+        //         {
+        //             rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Width * scaleFactor);
+        //         }
+        //     }
+        // }
+
         public override void Show(float duration = 0.3f)
         {
             contentView.gameObject.SetActive(true);

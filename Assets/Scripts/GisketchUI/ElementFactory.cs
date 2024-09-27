@@ -12,9 +12,10 @@ namespace GisketchUI
             return panel;
         }
 
-        public static Button CreateButton(Transform parent, string label, UnityEngine.Events.UnityAction onClick)
+        public static Button CreateButton(Transform parent, string label, UnityEngine.Events.UnityAction onClick, Button.ButtonVariant variant = Button.ButtonVariant.Neutral)
         {
             Button button = Object.Instantiate(Resources.Load<Button>("GisketchUI/Prefabs/Button"), parent);
+            button.SetButtonVariant(variant);
             button.SetLabel(label);
             button.AddListener(onClick);
             return button;
