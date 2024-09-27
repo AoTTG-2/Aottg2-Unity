@@ -204,18 +204,6 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void NotifyPlayerSpawnRPC(int viewId, PhotonMessageInfo info)
-        {
-
-            var view = PhotonView.Find(viewId);
-            if (view != null && view.Owner == info.Sender)
-            {
-                var character = view.GetComponent<BaseCharacter>();
-                character.NotifyPlayerSpawn(info.Sender);
-            }
-        }
-
-        [PunRPC]
         public void SpawnPlayerRPC(bool force, PhotonMessageInfo info)
         {
             if (info.Sender.IsMasterClient)

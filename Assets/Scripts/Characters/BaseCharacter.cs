@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using System.Collections.Generic;
 using Settings;
@@ -12,10 +10,6 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
-using GameProgress;
-using Photon.Voice.Unity;
-using Photon.Voice.PUN;
-using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
@@ -75,20 +69,43 @@ namespace Characters
 
         public void AddOutlineWithColor(Color color, Outline.Mode mode)
         {
-            if (_outline == null)
+            if (_outline != null)
             {
-                _outline = gameObject.AddComponent<Outline>();
+                _outline.OutlineMode = mode;
+                _outline.OutlineColor = color;
+                _outline.enabled = true;
+            }
+        }
+
+        public void ChangeOutlineColor(Color color)
+        {
+            if (_outline != null)
+            {
+                _outline.OutlineColor = color;
+            }
+        }
+
+        public void ChangeOutlineMode(Outline.Mode mode)
+        {
+            if (_outline != null)
+            {
                 _outline.OutlineMode = mode;
             }
-            _outline.OutlineColor = color;
+        }
+
+        public void ChangeOutlineWidth(float width)
+        {
+            if (_outline != null)
+            {
+                _outline.OutlineWidth = width;
+            }
         }
 
         public void RemoveOutline()
         {
             if (_outline != null)
             {
-                Destroy(_outline);
-                _outline = null;
+                _outline.enabled = false;
             }
         }
 
@@ -532,28 +549,22 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            StartCoroutine(WaitAndNotifyCharacterSpawn());
+            _outline = gameObject.AddComponent<Outline>();
+            _outline.enabled = false;
+            StartCoroutine(WaitAndNotifySpawn());
         }
 
-        protected IEnumerator WaitAndNotifyCharacterSpawn()
+        protected IEnumerator WaitAndNotifySpawn()
         {
             while (CustomLogicManager.Evaluator == null)
                 yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
+            {
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
-        }
-
-        public void NotifyPlayerSpawn(Player player)
-        {
-            StartCoroutine(WaitAndNotifyPlayerSpawn(player));
-        }
-
-        protected IEnumerator WaitAndNotifyPlayerSpawn(Player player)
-        {
-            while (CustomLogicManager.Evaluator == null)
-                yield return new WaitForEndOfFrame();
-            if (CustomLogicManager.Evaluator != null)
-                CustomLogicManager.Evaluator.OnPlayerSpawn(player, this);
+                if (!AI)
+                    CustomLogicManager.Evaluator.OnPlayerSpawn(this.Cache.PhotonView.Owner, this);
+            }
+                
         }
 
         public string GetCurrentAnimation()
