@@ -120,7 +120,7 @@ namespace UI
             if (refetch)
             {
                 _rooms = MainMenuGameManager.RoomList.Values.ToArray();
-                string playerCount = PhotonNetwork.CountOfPlayers + " " + 
+                string playerCount = (PhotonNetwork.CountOfPlayers / 2) + " " + 
                     UIManager.GetLocale("MainMenu", "MultiplayerRoomListPopup", "PlayersOnline");
                 _playersOnlineLabel.text = playerCount;
             }

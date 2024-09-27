@@ -168,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return str + "hashed";
+            return string.Empty;
         }
     }
 
