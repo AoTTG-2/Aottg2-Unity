@@ -438,21 +438,6 @@ namespace Characters
             State = HumanState.Idle;
             CrossFade(StandAnimation, 0.1f);
         }
-        [PunRPC]
-        public void setMyGrabber(int grabberViewID, string type, PhotonMessageInfo info)
-        {
-            if (info.Sender != Cache.PhotonView.Owner)
-                return;
-            BaseTitan grabber = PhotonView.Find(grabberViewID).GetComponent<BaseTitan>();
-            if (grabber != null)
-            {
-                Grabber = grabber;
-                if (type == "GrabLeft")
-                    GrabHand = grabber.BaseTitanCache.GrabLSocket;
-                else
-                    GrabHand = grabber.BaseTitanCache.GrabRSocket;
-            }
-        }
         public void Grab(BaseTitan grabber, string type)
         {
             if (MountState != HumanMountState.None)
@@ -467,7 +452,7 @@ namespace Characters
             UnhookHuman(true);
             UnhookHuman(false);
             State = HumanState.Grab;
-            grabber.Cache.PhotonView.RPC("GrabRPC", grabber.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
+            grabber.Cache.PhotonView.RPC("GrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID, type == "GrabLeft" });
             SetTriggerCollider(true);
             FalseAttack();
             Grabber = grabber;
@@ -479,7 +464,6 @@ namespace Characters
             windEmission.enabled = false;
             if (IsMainCharacter())
                 MusicManager.PlayGrabbedSong();
-            Cache.PhotonView.RPC("setMyGrabber", RpcTarget.All, new object[] { grabber.Cache.PhotonView.ViewID, type });
         }
 
         public void Ungrab(bool notifyTitan, bool idle)

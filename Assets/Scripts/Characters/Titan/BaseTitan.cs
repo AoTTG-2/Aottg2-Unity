@@ -345,12 +345,21 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void GrabRPC(int viewId, PhotonMessageInfo info)
+        public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
             if (view.Owner != info.Sender)
                 return;
             HoldHuman = view.GetComponent<Human>();
+            BaseTitan grabber = this;
+            if (grabber != null)
+            {
+                HoldHuman.Grabber = grabber;
+                if (left)
+                    HoldHuman.GrabHand = grabber.BaseTitanCache.GrabLSocket;
+                else
+                    HoldHuman.GrabHand = grabber.BaseTitanCache.GrabRSocket;
+            }
         }
 
         [PunRPC]
