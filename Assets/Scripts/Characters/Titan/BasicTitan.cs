@@ -1148,7 +1148,7 @@ namespace Characters
                     }
                 }
             }
-            if (!base.AI && base.State == TitanState.Attack && base._currentAttackAnimation == this.BasicAnimations.AttackRockThrow)//kirit00
+            if (!base.AI && base.State == TitanState.Attack && base._currentAttackAnimation == this.BasicAnimations.AttackRockThrow)
             {
                 Vector3 rockThrowTarget = this.GetAimPoint();
                 rockThrowTarget.y = base.Cache.Transform.position.y;
