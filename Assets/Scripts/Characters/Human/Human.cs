@@ -1377,7 +1377,7 @@ namespace Characters
                     }
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
-                GameProgressManager.RegisterSpeed(gameObject, _currentVelocity.magnitude);
+                GameProgressManager.RegisterSpeed(_currentVelocity.magnitude);
                 Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 10f);
                 CheckGround();
                 bool pivotLeft = FixedUpdateLaunch(true);

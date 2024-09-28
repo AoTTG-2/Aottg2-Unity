@@ -158,7 +158,7 @@ namespace GameProgress
             return true;
         }
 
-        protected virtual bool CheckSpeedConditions(List<StringSetting> conditions, GameObject character, float speed)
+        protected virtual bool CheckSpeedConditions(List<StringSetting> conditions, float speed)
         {
             foreach (StringSetting condition in conditions)
             {
@@ -171,7 +171,7 @@ namespace GameProgress
             return true;
         }
 
-        public override void RegisterTitanKill(GameObject character, BasicTitan victim, KillWeapon weapon)
+        public override void RegisterTitanKill(BasicTitan victim, KillMethod method)
         {
             foreach (string category in TitanKillCategories)
             {
@@ -179,7 +179,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckKillConditions(item.Conditions.Value, weapon))
+                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
                         continue;
                     if (category == "KillTitan")
                         item.AddProgress();
@@ -187,7 +187,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterHumanKill(GameObject character, Human victim, KillWeapon weapon)
+        public override void RegisterHumanKill(Human victim, KillMethod method)
         {
             foreach (string category in HumanKillCategories)
             {
@@ -195,7 +195,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckKillConditions(item.Conditions.Value, weapon))
+                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
                         continue;
                     if (category == "KillHuman")
                         item.AddProgress();
@@ -203,7 +203,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterDamage(GameObject character, GameObject victim, KillWeapon weapon, int damage)
+        public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
             foreach (string category in DamageCategories)
             {
@@ -211,7 +211,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckDamageConditions(item.Conditions.Value, weapon, damage))
+                    if (!CheckDamageConditions(item.Conditions.Value, method.Weapon, damage))
                         continue;
                     if (category == "HitDamage")
                         item.AddProgress();
@@ -221,7 +221,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterSpeed(GameObject character, float speed)
+        public override void RegisterSpeed(float speed)
         {
             foreach (string category in SpeedCategories)
             {
@@ -229,7 +229,7 @@ namespace GameProgress
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckSpeedConditions(item.Conditions.Value, character, speed))
+                    if (!CheckSpeedConditions(item.Conditions.Value, speed))
                         continue;
                     if (category == "ReachSpeed")
                         item.AddProgress();
@@ -237,7 +237,7 @@ namespace GameProgress
             }
         }
 
-        public override void RegisterInteraction(GameObject character, GameObject interact, InteractionType interactionType)
+        public override void RegisterInteraction(GameObject interact, InteractionType interactionType)
         {
             foreach (string category in InteractionCategories)
             {
