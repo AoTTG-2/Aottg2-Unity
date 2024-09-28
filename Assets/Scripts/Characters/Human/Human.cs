@@ -9,19 +9,13 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
-using Photon.Voice.PUN;
-using Photon.Voice.Unity;
 using Settings;
 using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Utility;
 using Weather;
 
@@ -224,7 +218,7 @@ namespace Characters
             return new Vector2(horizontalAngle, verticalAngle);
         }
 
-        
+
         public bool CanJump()
         {
             return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
@@ -393,20 +387,20 @@ namespace Characters
                 Vector3 direction = GetTargetDirection();
                 _originalDashSpeed = Cache.Rigidbody.velocity.magnitude;
                 _targetRotation = GetTargetRotation();
-                if(!_wallSlide)
+                if (!_wallSlide)
                 {
                     //The line below was causing problems when dashing away from walls at certain angles.
                     //Removing it fixed that but I'm unsure if it's needed for another situation (didn't notice a difference without it), do uncomment if the case
                     //Cache.Rigidbody.rotation = _targetRotation;
                     CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 }
-                   
+
                 else
-                    PlayAnimation(HumanAnimations.Dodge, 0.2f);           
+                    PlayAnimation(HumanAnimations.Dodge, 0.2f);
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
                 PlaySound(HumanSounds.GasBurst);
                 _dashTimeLeft = 0.5f;
-                
+
                 State = HumanState.AirDodge;
                 FalseAttack();
                 Cache.Rigidbody.AddForce(direction * 40f, ForceMode.VelocityChange);
@@ -444,17 +438,21 @@ namespace Characters
             State = HumanState.Idle;
             CrossFade(StandAnimation, 0.1f);
         }
-
-        public void Grab(BaseTitan grabber, Transform hand)
+        public void Grab(BaseTitan grabber, string type)
         {
             if (MountState != HumanMountState.None)
                 Unmount(true);
+            Transform hand;
+            if (type == "GrabLeft")
+                hand = grabber.BaseTitanCache.GrabLSocket;
+            else
+                hand = grabber.BaseTitanCache.GrabRSocket;
             HookLeft.DisableAnyHook();
             HookRight.DisableAnyHook();
             UnhookHuman(true);
             UnhookHuman(false);
             State = HumanState.Grab;
-            grabber.Cache.PhotonView.RPC("GrabRPC", grabber.Cache.PhotonView.Owner, new object[] { Cache.PhotonView.ViewID });
+            grabber.Cache.PhotonView.RPC("GrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID, type == "GrabLeft" });
             SetTriggerCollider(true);
             FalseAttack();
             Grabber = grabber;
@@ -778,8 +776,8 @@ namespace Characters
             if (!Grounded || State != HumanState.Idle)
                 return false;
             State = HumanState.Refill;
-            if(Special is SupplySpecial && Special.UsesLeft == 0 )
-            { 
+            if (Special is SupplySpecial && Special.UsesLeft == 0)
+            {
                 Special.Reset();
             }
             ToggleSparks(false);
@@ -988,10 +986,7 @@ namespace Characters
                 if (State == HumanState.Grab)
                     return;
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
-                if (type == "GrabLeft")
-                    Grab(titan, titan.BaseTitanCache.GrabLSocket);
-                else
-                    Grab(titan, titan.BaseTitanCache.GrabRSocket);
+                Grab(titan, type);
             }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
@@ -1011,7 +1006,7 @@ namespace Characters
                         type = "AHSSDouble";
                     }
                 }
-                    
+
                 else if (hitbox == HumanCache.APGHit)
                     type = "APG";
             }
@@ -1116,9 +1111,9 @@ namespace Characters
                                         PlaySound(HumanSounds.GetRandomAHSSNapeHitVar2());
                                     }
                                 }
-                                
+
                             }
-                                
+
                         }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
@@ -1169,11 +1164,6 @@ namespace Characters
                 {
                     if (Grabber == null || Grabber.Dead)
                         Ungrab(false, true);
-                    else
-                    {
-                        Cache.Transform.position = GrabHand.transform.position;
-                        Cache.Transform.rotation = GrabHand.transform.rotation;
-                    }
                 }
                 else if (MountState == HumanMountState.MapObject)
                 {
@@ -1324,6 +1314,14 @@ namespace Characters
                         Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
+            if (Cache.Animation.IsPlaying(HumanAnimations.Grabbed))
+            {
+                if (GrabHand != null)
+                {
+                    Cache.Transform.position = GrabHand.transform.position;
+                    Cache.Transform.rotation = GrabHand.transform.rotation;
+                }
+            }
         }
 
         protected void FixedUpdate()
@@ -1340,7 +1338,7 @@ namespace Characters
                     {
                         StopSound(HumanSounds.GasLoop);
                         ToggleSound(HumanSounds.GasEnd, true);
-                    }                     
+                    }
                     return;
                 }
                 if (CarryState == HumanCarryState.Carry)
@@ -1736,9 +1734,9 @@ namespace Characters
                     _useFixedUpdateClipping = true;
                     _lastPosition = Cache.Rigidbody.position;
                     _lastVelocity = _currentVelocity;
-  
+
                 }
-                
+
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();
@@ -1840,7 +1838,7 @@ namespace Characters
                     LateUpdateHeadRotation = null;
                     _oldHeadRotation = HumanCache.Head.localRotation;
                 }
-                    
+
             }
             else if (!IsMine())
             {
@@ -1893,12 +1891,12 @@ namespace Characters
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
                     _canWallSlideJump = true;
-                
+
                 if (Grounded)
                 {
                     EndWallSlide();
                 }
-                    
+
                 else if (Cache.Rigidbody.velocity.magnitude < 15f)
                 {
                     EndWallSlide();
@@ -1906,7 +1904,7 @@ namespace Characters
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
                 {
                     EndWallSlide();
-                }             
+                }
                 else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f) && _canWallSlideJump) //pressing away from the wall
                 {
                     Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
@@ -2406,7 +2404,7 @@ namespace Characters
             else if (humanWeapon == (int)HumanWeapon.AHSS)
             {
                 var gunInfo = CharacterData.HumanWeaponInfo["AHSS"];
-                Weapon = new AHSSWeapon(this,  Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 22, 4, 30), gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
+                Weapon = new AHSSWeapon(this, Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 22, 4, 30), gunInfo["AmmoRound"].AsInt, gunInfo["CD"].AsFloat);
             }
             else if (humanWeapon == (int)HumanWeapon.APG)
             {
@@ -2905,7 +2903,7 @@ namespace Characters
             Human nearestHuman = null;
             foreach (Human human in _inGameManager.Humans)
             {
-                if(human != this && TeamInfo.SameTeam(human, Team))
+                if (human != this && TeamInfo.SameTeam(human, Team))
                 {
                     float distance = Vector3.Distance(Cache.Transform.position, human.Cache.Transform.position);
                     if (distance < nearestDistance)
@@ -3045,7 +3043,7 @@ namespace Characters
         {
             return Setup.Weapon == HumanWeapon.Thunderspear && (Cache.Animation.IsPlaying(HumanAnimations.TSShootL) || Cache.Animation.IsPlaying(HumanAnimations.TSShootR) || Cache.Animation.IsPlaying(HumanAnimations.TSShootLAir) || Cache.Animation.IsPlaying(HumanAnimations.TSShootRAir));
         }
-      
+
         private void ToggleBladeTrails(bool toggle)
         {
             if (IsMine())
