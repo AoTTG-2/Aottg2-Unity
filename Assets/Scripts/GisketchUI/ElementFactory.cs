@@ -12,12 +12,21 @@ namespace GisketchUI
             return panel;
         }
 
-        public static Button CreateButton(Transform parent, string label, UnityEngine.Events.UnityAction onClick, Button.ButtonVariant variant = Button.ButtonVariant.Neutral)
+        public static ActionButton CreateButton(Transform parent, string label, UnityEngine.Events.UnityAction onClick, ActionButton.ButtonVariant variant = ActionButton.ButtonVariant.Neutral)
         {
-            Button button = Object.Instantiate(Resources.Load<Button>("GisketchUI/Prefabs/Button"), parent);
+            ActionButton button = Object.Instantiate(Resources.Load<ActionButton>("GisketchUI/Prefabs/Button"), parent);
             button.SetButtonVariant(variant);
             button.SetLabel(label);
             button.AddListener(onClick);
+            return button;
+        }
+
+        public static SidePanelButton CreateSidePanelButton(Transform parent, string label, System.Action onClick, SidePanelButton.ButtonVariant variant = SidePanelButton.ButtonVariant.Default)
+        {
+            SidePanelButton button = Object.Instantiate(Resources.Load<SidePanelButton>("GisketchUI/Prefabs/SidePanelButton"), parent);
+            button.SetLabel(label);
+            button.OnClick += onClick;
+            button.SetVariant(variant);
             return button;
         }
 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace GisketchUI
 {
-    public class Button : UIElement, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    public class ActionButton : UIElement, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
     {
         public UnityEngine.UI.Button button;
         public Text labelText;
