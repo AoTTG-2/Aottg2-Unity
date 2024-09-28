@@ -27,7 +27,6 @@ namespace GisketchUI
         }
 
         private Dictionary<string, BasePopup> _popups = new Dictionary<string, BasePopup>();
-        private Canvas _popupCanvas;
         private PopupBackground background;
         private int _activePopupCount = 0;
 
@@ -42,28 +41,17 @@ namespace GisketchUI
             _instance = this;
             DontDestroyOnLoad(gameObject);
 
-            SetupPopupCanvas();
+            SetupPopupBackground();
             UpdateUIScale();
         }
 
-        private void SetupPopupCanvas()
+        private void SetupPopupBackground()
         {
-            GameObject canvasObject = new GameObject("PopupCanvas");
-            canvasObject.transform.SetParent(transform);
-            _popupCanvas = canvasObject.AddComponent<Canvas>();
-            _popupCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _popupCanvas.sortingOrder = 100; // Ensure it's on top
-
-            CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920, 1080);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
-
-            canvasObject.AddComponent<GraphicRaycaster>();
+            Canvas mainCanvas = GisketchUIManager.Instance.MainCanvas;
 
             // Add background
             GameObject bgObject = new GameObject("PopupBackground");
-            bgObject.transform.SetParent(_popupCanvas.transform, false);
+            bgObject.transform.SetParent(mainCanvas.transform, false);
             background = bgObject.AddComponent<PopupBackground>();
             background.gameObject.SetActive(false);
         }
@@ -75,7 +63,7 @@ namespace GisketchUI
             if (!_popups.TryGetValue(popupName, out BasePopup popup))
             {
                 popup = gameObject.AddComponent<T>();
-                popup.Setup(_popupCanvas.transform);
+                popup.Setup(GisketchUIManager.Instance.MainCanvas.transform);
                 _popups[popupName] = popup;
             }
 
@@ -103,22 +91,7 @@ namespace GisketchUI
         private void ApplyUIScale()
         {
             float scaleFactor = 1f / SettingsManager.UISettings.UIMasterScale.Value;
-
-            // Apply scale to the popup canvas
-            if (_popupCanvas != null)
-            {
-                CanvasScaler scaler = _popupCanvas.GetComponent<CanvasScaler>();
-                if (scaler != null)
-                {
-                    scaler.referenceResolution = new Vector2(1920 * scaleFactor, 1080 * scaleFactor);
-                }
-            }
-
-            // // Apply scale to all existing popups
-            // foreach (var popup in _popups.Values)
-            // {
-            //     popup.ApplyScale(scaleFactor);
-            // }
+            GisketchUIManager.Instance.UpdateUIScale(scaleFactor);
         }
 
         // Call this method when you want to update the UI scale

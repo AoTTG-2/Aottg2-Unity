@@ -13,5 +13,9 @@ namespace GisketchUI
         public static readonly Color Primary = Red;
         public static readonly Color Secondary = Purple;
         public static readonly Color Tertiary = Blue;
+
+        // Neutrals
+        public static readonly Color White = Color.white;
+        public static readonly Color Black = new Color(0.0588235f, 0.0588235f, 0.0588235f);  // #0F0F0F
     }
 }

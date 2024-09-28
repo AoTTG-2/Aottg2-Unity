@@ -1,5 +1,4 @@
 using ApplicationManagers;
-using UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +6,7 @@ namespace GisketchUI
 {
     public class ToolsPopup : BasePopup
     {
-        protected override string Title => UIManager.GetLocale("MainMenu", "ToolsPopup", "Title");
+        protected override string Title => UI.UIManager.GetLocale("MainMenu", "ToolsPopup", "Title");
         protected override float Width => 480f;
 
         protected override void SetupContent()
@@ -15,16 +14,16 @@ namespace GisketchUI
             string cat = "MainMenu";
             string sub = "ToolsPopup";
 
-            CreateButton(UIManager.GetLocale(cat, sub, "MapEditorButton"), () => OnButtonClick("MapEditor"));
-            CreateButton(UIManager.GetLocale(cat, sub, "CharacterEditorButton"), () => OnButtonClick("CharacterEditor"));
-            CreateButton(UIManager.GetLocale(cat, sub, "SnapshotViewerButton"), () => OnButtonClick("SnapshotViewer"));
-            CreateButton(UIManager.GetLocale(cat, sub, "GalleryButton"), () => OnButtonClick("Gallery"));
-            CreateButton(UIManager.GetLocaleCommon("Back"), () => OnButtonClick("Back"), Button.ButtonVariant.Red);
+            CreateButton(UI.UIManager.GetLocale(cat, sub, "MapEditorButton"), () => OnButtonClick("MapEditor"));
+            CreateButton(UI.UIManager.GetLocale(cat, sub, "CharacterEditorButton"), () => OnButtonClick("CharacterEditor"));
+            CreateButton(UI.UIManager.GetLocale(cat, sub, "SnapshotViewerButton"), () => OnButtonClick("SnapshotViewer"));
+            CreateButton(UI.UIManager.GetLocale(cat, sub, "GalleryButton"), () => OnButtonClick("Gallery"));
+            CreateButton(UI.UIManager.GetLocaleCommon("Back"), () => OnButtonClick("Back"), ActionButton.ButtonVariant.Red);
         }
 
-        private void CreateButton(string label, UnityAction onClick, Button.ButtonVariant variant = Button.ButtonVariant.Secondary)
+        private void CreateButton(string label, UnityAction onClick, ActionButton.ButtonVariant variant = ActionButton.ButtonVariant.Secondary)
         {
-            Button button = ElementFactory.CreateButton(contentView.rectTransform, label, onClick, variant);
+            ActionButton button = ElementFactory.CreateButton(contentView.rectTransform, label, onClick, variant);
             contentView.AddElement(button);
         }
 
