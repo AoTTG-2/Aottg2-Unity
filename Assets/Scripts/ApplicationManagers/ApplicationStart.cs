@@ -16,6 +16,7 @@ using Photon;
 using Photon.Pun;
 using System.Threading;
 using System.Globalization;
+using Assets.Scripts.ApplicationManagers;
 
 namespace ApplicationManagers
 {
@@ -69,6 +70,14 @@ namespace ApplicationManagers
                 DebugTesting.Init();
                 DebugTesting.RunTests();
             }
+
+#if UNITY_EDITOR
+            // if in editor
+            if (Application.isEditor)
+            {
+                DebugLagSim.Init();
+            }
+#endif
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();

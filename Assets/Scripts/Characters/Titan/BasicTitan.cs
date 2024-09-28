@@ -1093,7 +1093,7 @@ namespace Characters
                     var canTarget = false;
                     if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
+                        BaseCharacter character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
                         canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
                     }
@@ -1101,9 +1101,8 @@ namespace Characters
                         TargetViewId = -1;
                     if (canTarget)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
                         LookAtTarget = true;
-                        LateUpdateHead(character);
+                        LateUpdateHead((BaseCharacter)TargetEnemy);
                     }
                     else
                     {
@@ -1150,14 +1149,14 @@ namespace Characters
             }
             if (_leftArmDisabled)
             {
-                BasicCache.ForearmL.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                BasicCache.ForearmL.localScale = Vector3.zero;
                 BasicCache.ForearmL.localRotation = Quaternion.identity;
             }
             else
                 BasicCache.ForearmL.localScale = Vector3.one;
             if (_rightArmDisabled)
             {
-                BasicCache.ForearmR.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                BasicCache.ForearmR.localScale = Vector3.zero;
                 BasicCache.ForearmR.localRotation = Quaternion.identity;
             }
             else

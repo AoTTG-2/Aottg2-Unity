@@ -91,35 +91,20 @@ namespace Utility
 
         public static HashSet<T> RemoveNull<T>(HashSet<T> set) where T: UnityEngine.Object
         {
-            HashSet<T> newSet = new HashSet<T>();
-            foreach (T item in set)
-            {
-                if (item != null)
-                    newSet.Add(item);
-            }
-            return newSet;
+            set.RemoveWhere(e => !e);
+            return set;
         }
 
         public static HashSet<T> RemoveNullOrDead<T>(HashSet<T> set) where T : BaseCharacter
         {
-            HashSet<T> newSet = new HashSet<T>();
-            foreach (T item in set)
-            {
-                if (item != null && !item.Dead)
-                    newSet.Add(item);
-            }
-            return newSet;
+            set.RemoveWhere(e => !e || e.Dead);
+            return set;
         }
 
         public static HashSet<BaseShifter> RemoveNullOrDeadShifters(HashSet<BaseShifter> set)
         {
-            HashSet<BaseShifter> newSet = new HashSet<BaseShifter>();
-            foreach (BaseShifter item in set)
-            {
-                if (item != null && (!item.Dead || item.TransformingToHuman))
-                    newSet.Add(item);
-            }
-            return newSet;
+            set.RemoveWhere(e => !e || (e.Dead && !e.TransformingToHuman));
+            return set;
         }
 
         public static string CreateMD5(string input)
@@ -264,9 +249,9 @@ namespace Utility
 
         public static float DistanceIgnoreY(Vector3 a, Vector3 b)
         {
-            a = new Vector3(a.x, 0f, a.z);
-            b = new Vector3(b.x, 0f, b.z);
-            return Vector3.Distance(a, b);
+            float x = a.x - b.x;
+            float z = a.z - b.z;
+            return Mathf.Sqrt(x * x + z * z);
         }
 
         public static List<TValue> PaginateDictionary<TKey, TValue>(Dictionary<TKey, TValue> dict, int pageNumber, int elementsPerPage)

@@ -641,7 +641,7 @@ namespace UI
             if (SettingsManager.UISettings.ShowGameTime.Value)
             {
                 if (CustomLogicManager.Evaluator != null)
-                    timeLine += "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator.CurrentTime, 0), ChatTextColor.System);
+                    timeLine += "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator.CurrentTime, 4), ChatTextColor.System);
                 else
                     timeLine += "Game Time: " + ChatManager.GetColorString("0", ChatTextColor.System);
                 var dt = System.DateTime.Now;

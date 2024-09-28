@@ -14,7 +14,8 @@ namespace UI
 {
     class CharacterInfoHandler : MonoBehaviour
     {
-        protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
+        protected HashSet<KeyValuePair<BaseCharacter, CharacterInfoPopup>> _characterInfoPopups = new HashSet<KeyValuePair<BaseCharacter, CharacterInfoPopup>>();
+        //protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
         protected const float HumanRange = 500f;
         protected const float TitanRange = 250f;
         protected const float HumanOffset = 2f;
@@ -136,25 +137,15 @@ namespace UI
 
         protected void RefreshDict()
         {
-            Dictionary<BaseCharacter, CharacterInfoPopup> newDict = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-            foreach (KeyValuePair<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
+            _characterInfoPopups.RemoveWhere(e =>
             {
-                var character = kv.Key;
-                var popup = kv.Value;
-                if (character == null || character.Dead)
-                    Destroy(popup.gameObject);
-                else
-                    newDict.Add(character, popup);
-            }
-            foreach (var character in _inGameManager.GetAllCharacters())
-            {
-                if (!newDict.ContainsKey(character))
+                if (!e.Key || e.Key.Dead)
                 {
-                    var popup = CreateInfoPopup(character);
-                    newDict.Add(character, popup);
+                    Destroy(e.Value.gameObject);
+                    return true;
                 }
-            }
-            _characterInfoPopups = newDict;
+                return false;
+            });
         }
     }
 }

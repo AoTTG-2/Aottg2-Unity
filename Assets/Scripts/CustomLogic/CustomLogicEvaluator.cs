@@ -275,11 +275,13 @@ namespace CustomLogic
             }
         }
 
+        private List<object> emptyList = new List<object>();
+
         private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
         {
             // for loop instead of foreach because the list might be modified during the loop
             for (int i = 0; i < _callback.Count; i++)
-                EvaluateMethod(_callback[i], methodName, parameters ?? new List<object>());
+                EvaluateMethod(_callback[i], methodName, parameters ?? emptyList);
         }
 
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
@@ -826,9 +828,9 @@ namespace CustomLogic
                 {
                     return ((CustomLogicBaseBuiltin)classInstance).CallMethod(methodName, parameterValues);
                 }
-                Dictionary<string, object> localVariables = new Dictionary<string, object>();
                 if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     return null;
+                Dictionary<string, object> localVariables = new Dictionary<string, object>();
                 CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
                 int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)

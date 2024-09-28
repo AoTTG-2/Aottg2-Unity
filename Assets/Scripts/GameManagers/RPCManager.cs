@@ -226,7 +226,7 @@ namespace GameManagers
         {
             if (info.Sender.IsMasterClient && CustomLogicManager.Evaluator != null)
             {
-                CustomLogicManager.Evaluator.CurrentTime = time;
+                CustomLogicManager.Evaluator.CurrentTime = time + (float)(PhotonNetwork.Time - info.SentServerTime);
             }
         }
 

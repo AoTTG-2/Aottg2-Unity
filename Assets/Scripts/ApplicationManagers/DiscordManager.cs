@@ -5,6 +5,7 @@ using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using UnityEngine;
 using Utility;
 
@@ -23,6 +24,10 @@ namespace ApplicationManagers
         private int playerCount;
         private int maxPlayerCount;
         private RoomInfo roomInfo;
+        private Activity roomActivity;
+        private Activity mainMenuActivity;
+        private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
+        private string[] propertyValues = new string[] { "0", "0", "0", "0" };
 
         public static void Init()
         {
@@ -31,6 +36,8 @@ namespace ApplicationManagers
             {
                 discord = new Discord.Discord(appID, (ulong)CreateFlags.NoRequireDiscord);
                 time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _instance.roomActivity = new Activity();
+                _instance.mainMenuActivity = new Activity();
             }
             catch
             {
@@ -56,6 +63,26 @@ namespace ApplicationManagers
             UpdateStatus();
         }
 
+        private void SetRoomActivity(string state, string details, string profileIcon, long startTime, int playerCount, int maxPlayers)
+        {
+            roomActivity.State = state;
+            roomActivity.Details = details;
+            roomActivity.Assets.LargeImage = largeImage;
+            roomActivity.Assets.SmallImage = profileIcon;
+            roomActivity.Timestamps.Start = startTime;
+            roomActivity.Party.Size.CurrentSize = playerCount;
+            roomActivity.Party.Size.MaxSize = maxPlayers;
+        }
+
+        private void SetMenuActivity(string state, string details, string profileIcon, long startTime)
+        {
+            mainMenuActivity.State = state;
+            mainMenuActivity.Details = details;
+            mainMenuActivity.Assets.LargeImage = largeImage;
+            mainMenuActivity.Assets.SmallImage = profileIcon;
+            mainMenuActivity.Timestamps.Start = startTime;
+        }
+
         private void UpdateStatus()
         {
             try
@@ -70,111 +97,74 @@ namespace ApplicationManagers
                 }
 
                 //in game activity
+                string state = "Creating a room";
+                string details = guild + name;
+                string icon = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower();
                 if (PhotonNetwork.CurrentRoom != null)
                 {
                     playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
-                    maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers;
+                    maxPlayerCount = PhotonNetwork.OfflineMode ? 1 : PhotonNetwork.CurrentRoom.MaxPlayers;
                     InGameSet settings = SettingsManager.InGameCurrent;
                     roomName = settings.General.RoomName.Value;
                     Player player = PhotonNetwork.LocalPlayer;
-                    List<string> scoreList = new List<string>();
-                    foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                    string score = string.Empty;
+                    for (int i = 0; i < trackedProperties.Length; i++)
                     {
-                        object value = player.GetCustomProperty(property);
-                        string str = value != null ? value.ToString() : string.Empty;
-                        scoreList.Add(str);
+                        object value = player.GetCustomProperty(trackedProperties[i]);
+                        propertyValues[i] = value != null ? value.ToString() : "0";
+                        score += value != null ? value.ToString() : "0";
+                        if (i < trackedProperties.Length - 1)
+                        {
+                            score += " / ";
+                        }
                     }
-                    string score = string.Join(" / ", scoreList.ToArray());
 
-                    if (PhotonNetwork.OfflineMode)
-                    {
-                        var activity = new Activity
+                    details = details + " " + score;
+                    state = PhotonNetwork.OfflineMode ? "SinglePlayer" : roomName;
+                    
+                    activityManager.UpdateActivity(
+                        new Activity()
                         {
-                            State = "SinglePlayer",
-                            Details = guild + name + " " + score,
-                            Assets =
-                        {
-                            LargeImage = largeImage,
-                            SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
-                        },
-                            Timestamps =
-                        {
-                            Start = time,
-                        },
-                            Party =
-                        {
-                            Size =
+                            State = state,
+                            Details = details,
+                            Assets = new ActivityAssets()
                             {
-                                CurrentSize = playerCount,
-                                MaxSize = 1,
+                                LargeImage = largeImage,
+                                SmallImage = icon
                             },
-                        }
-                        };
-                        activityManager.UpdateActivity(activity, (res) =>
-                        {
-                            if (res != Result.Ok)
-                            {
-                                Debug.Log("Discord is not connected!");
-                            }
-                        });
-                    }
-                    else
-                    {
-                        var activity = new Activity
-                        {
-                            State = roomName,
-                            Details = guild + name + " " + score,
-                            Assets =
-                        {
-                            LargeImage = largeImage,
-                            SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
-                        },
                             Timestamps =
-                        {
-                            Start = time,
-                        },
-                            Party =
-                        {
-                            Size =
                             {
-                                CurrentSize = playerCount,
-                                MaxSize = maxPlayerCount,
+                                Start = time
                             },
-                        }
-                        };
-                        activityManager.UpdateActivity(activity, (res) =>
-                        {
-                            if (res != Result.Ok)
+                            Party =
                             {
-                                Debug.Log("Discord is not connected!");
+                                Size =
+                                {
+                                    CurrentSize = playerCount,
+                                    MaxSize = maxPlayerCount
+                                }
                             }
-                        });
-                    }
+                        },
+                        null);
                 }
-                //main menu activity
                 else
                 {
-                    var activity = new Activity
-                    {
-                        State = "Creating a room!",
-                        Details = guild + name,
-                        Assets =
-                    {
-                        LargeImage = largeImage,
-                        SmallImage = SettingsManager.ProfileSettings.ProfileIcon.Value.ToLower(),
-                    },
-                        Timestamps =
-                    {
-                        Start = time,
-                    }
-                    };
-                    activityManager.UpdateActivity(activity, (res) =>
-                    {
-                        if (res != Result.Ok)
+                    activityManager.UpdateActivity(
+                        new Activity()
                         {
-                            Debug.Log("Discord is not connected!");
-                        }
-                    });
+                            State = state,
+                            Details = details,
+                            Assets = new ActivityAssets()
+                            {
+                                LargeImage = largeImage,
+                                SmallImage = icon
+                            },
+                            Timestamps =
+                            {
+                                Start = time
+                            }
+                        },
+                        null);
                 }
             }
             catch
