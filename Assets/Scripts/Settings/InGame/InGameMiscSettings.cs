@@ -1,4 +1,6 @@
-﻿namespace Settings
+﻿using GameManagers;
+
+namespace Settings
 {
     class InGameMiscSettings : BaseSettingsContainer
     {
@@ -6,6 +8,7 @@
         public BoolSetting EndlessRespawnEnabled = new BoolSetting(false);
         public FloatSetting EndlessRespawnTime = new FloatSetting(5f, minValue: 1f);
         public FloatSetting AllowSpawnTime = new FloatSetting(60f, minValue: 0f);
+        public FloatSetting InvincibilityTime = new FloatSetting(3f, minValue: 0f);
         public BoolSetting ThunderspearPVP = new BoolSetting(false);
         public BoolSetting APGPVP = new BoolSetting(false);
         public BoolSetting AllowBlades = new BoolSetting(true);
@@ -24,6 +27,9 @@
         public BoolSetting CustomStats = new BoolSetting(true);
         public BoolSetting CustomPerks = new BoolSetting(true);
         public StringSetting Motd = new StringSetting(string.Empty, maxLength: 1000);
+        public IntSetting VoiceChat = new IntSetting(1);
+        public FloatSetting ProximityMinDistance = new FloatSetting(20f, minValue: 1f);
+        public FloatSetting ProximityMaxDistance = new FloatSetting(80f, minValue: 1f);
         public IntSetting HumanHealth = new IntSetting(1, minValue: 1);
         public IntSetting ShifterHealth = new IntSetting(1000, minValue: 1);
     }
@@ -33,5 +39,12 @@
         Off,
         FFA,
         Team
+    }
+
+    public enum VoiceChatMode
+    {
+        Global,
+        Proximity,
+        Off
     }
 }

@@ -748,7 +748,7 @@ Scene,Nature/Fern1,799,0,1,1,1,0,Fern1,-61.5,0,-242,0,0,0,3,3,3,None,Entities,De
 /// Logic
 class Main
 {
-	TitansCount = 15;
+	TitansCount = 20;
 	TitansCountTooltip = "Number of titans that is spawned after the female titan died. Can be 0.";
 
 	_hasSpawned = false;

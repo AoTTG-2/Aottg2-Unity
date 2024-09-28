@@ -738,7 +738,7 @@ component VelocityZone
 # general
 component DestructibleTrigger
 {
-    Description = "A generic component for destroying, replacing, and recovering objects.";
+    Description = "A generic component for destroying, replacing, and recovering objects. Place this on a separate object with the Hitboxes collider, and it will destroy objects in TargetIDs when hit.";
     # Reference object
     TargetIDs = "0";
     TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
@@ -1039,12 +1039,13 @@ component CustomPhysicsMaterial
 # internal
 component CaptureZone
 {
-    Enabled = false;
-    AICanCapture = false;
+    Description = "Makes the capture zone interactable. Must enable <b>Networked</b> flag on the object.";
+    Enabled = true;
+    AICanCapture = true;
     HumanCanCapture = true;
     ShifterCanCapture = true;
     TitanCanCapture = true;
-    TeamsCanCapture = true;
+    TeamsCanCapture = false;
     CaptureTime = 10.0;
     DecaySpeed = 1.0;
     Order = 0;
@@ -1052,6 +1053,16 @@ component CaptureZone
     ShowUI = true;
     UIVisibilityRange = 80.0;
     CurrentOwner = "Neutral";
+
+    EnabledTooltip = "Enable/Disable the component. Note that this doesn't show/hide the map object, it only affect the functionality";
+    CaptureTimeTooltip = "How long it takes for the CaptureZone to be captured. In seconds";
+    DecaySpeedTooltip = "How fast a team will lose the progress if no one is inside the CaptureZone";
+    OrderTooltip = "Order does not affect how the component works. This property is only here to help the <b>Main</b> logic with sorting the capture zones. Useful for game modes like Outside The Walls";
+    SupplyStationIDTooltip = "ID of an object that becomes visible when the capture zone is captured by <b>Humans</b> (players) but hidden otherwise. Object can be anything, it doesn't have to be a SupplyStation. In Outside The Walls, this is used for showing/hiding the supply station";
+    ShowUITooltip = "If this option is enabled, the capture zone's state will be visible at the top of the screen";
+    UIVisibilityRangeTooltip = "UI will only be visible when the player is within this range of the capture zone";
+    CurrentOwnerTooltip = "Initial owner of the capture zone";
+    CurrentOwnerDropbox = "Neutral, Human, Titan, Shifter, Blue, Red";
     
     # States: Captured, Capturing, Contested
     _state = "Captured";
@@ -1521,36 +1532,48 @@ component CaptureZone
 
     function AddTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
         {
-            self._teamsInZone.Set(player.Team, List());
+            team = player.Type;
         }
-        value = self._teamsInZone.Get(player.Team);
+        
+        if (self._teamsInZone.Contains(team) == false)
+        {
+            self._teamsInZone.Set(team, List());
+        }
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player) == false)
 		{
             value.Add(player);
-            self._teamsInZone.Set(player.Team, value);
+            self._teamsInZone.Set(team, value);
         }
     }
 
     function RemoveTeamPlayer(player)
     {
-        if (self._teamsInZone.Contains(player.Team) == false)
+        team = player.Team;
+        if (team == "None")
+        {
+            team = player.Type;
+        }
+
+        if (self._teamsInZone.Contains(team) == false)
         {
             return;
         }
-        value = self._teamsInZone.Get(player.Team);
+        value = self._teamsInZone.Get(team);
         if (self.ListContains(value, player))
         {
             value.Remove(player);
         }
         if (value.Count == 0)
         {
-            self._teamsInZone.Remove(player.Team);
+            self._teamsInZone.Remove(team);
 		}
 		else
 		{
-			self._teamsInZone.Set(player.Team, value);
+			self._teamsInZone.Set(team, value);
         }
     }
 
@@ -1569,7 +1592,7 @@ component CaptureZone
             {
                 self.AddTeamPlayer(other);
             }
-            elif (other.Team == "Human")
+            else
             {
                 self.AddTeamPlayer(other);
             }
@@ -1602,7 +1625,7 @@ component CaptureZone
             {
                 self.RemoveTeamPlayer(other);
             }
-            elif (other.Team == "Human")
+            else
             {
                 self.RemoveTeamPlayer(other);
             }
@@ -1731,7 +1754,12 @@ component SupplyStation
         {
             self._currentHuman = other;
             self._currentHumanRefill = other;
-            UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.", 0.1);
+            text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            if (!self._currentHumanRefill.AutoRefillGas)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
+            }
+            UI.SetLabelForTime("MiddleCenter", text, 0.1);
         }
     }
 
@@ -2120,6 +2148,9 @@ component Wagon
     MoveForce = 20.0;
     MaxMoveSpeed = 50.0;
     RotateSpeed = 3.0;
+    CanSupply = true;
+    InfiniteSupply = true;
+    MaxSupplyTimes = 0;
     _inUse = false;
     _riding = false;
     _horse = null;
@@ -2133,6 +2164,7 @@ component Wagon
     _rightWheel = null;
     _leftSitTransform = null;
     _rightSitTransform = null;
+    _supplyTimesLeft = 0;
 
     function Init()
     {
@@ -2143,6 +2175,7 @@ component Wagon
         self._rightWheel = self.MapObject.GetTransform("Carriage/Wheels/RightWheelPivot");
         self._leftSitTransform = self.MapObject.GetTransform("SitRegionBottomLeft");
         self._rightSitTransform = self.MapObject.GetTransform("SitRegionBottomRight");
+        self._supplyTimesLeft = self.MaxSupplyTimes;
     }
 
     function OnNetworkMessage(sender, message)
@@ -2151,6 +2184,24 @@ component Wagon
         {
             self.NetworkView.Transfer(sender);
         }
+        elif (String.StartsWith(message, "s"))
+        {
+            self._supplyTimesLeft = Convert.ToInt(String.Substring(message, 1));
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NetworkView.SendMessage(player, "s" + Convert.ToString(self._supplyTimesLeft));
+        }
+    }
+
+    function UseSupply()
+    {
+        self._supplyTimesLeft = self._supplyTimesLeft - 1;
+        self.NetworkView.SendMessageOthers("s" + Convert.ToString(self._supplyTimesLeft));
     }
 
     function OnNetworkTransfer(oldOwner, newOwner) 
@@ -2188,20 +2239,33 @@ component Wagon
             }
             elif (project.Magnitude > 4 * self.MapObject.Scale.Z && project.Normalized == self.MapObject.Forward * -1.0)
             {
+                if (!self._inUse && !self._riding && self.CanSupply)
+                {
+                    if (self.InfiniteSupply)
+                    {
+                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
+                        self._collidingHuman = other;
+                        self._collidingGas = true;
+                    }
+                    else
+                    {
+                        left = Math.Max(self._supplyTimesLeft, 0);
+                        UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill (" + Convert.ToString(self._supplyTimesLeft) + " left.)", 0.1);
+                        if (left > 0)
+                        {
+                            self._collidingHuman = other;
+                            self._collidingGas = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
                 if (!self._riding)
                 {
                     UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to ride wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingRide = true;
-                }
-            }
-            else
-            {
-                if (!self._inUse && !self._riding)
-                {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to refill.", 0.1);
-                    self._collidingHuman = other;
-                    self._collidingGas = true;
                 }
             }
         }
@@ -2333,7 +2397,10 @@ component Wagon
                 }
                 elif (self._collidingGas && !self._inUse)
                 {
-                    self._collidingHuman.Refill(true);
+                    if (self._collidingHuman.Refill(true))
+                    {
+                        self.UseSupply();
+                    }
                 }
                 elif (self._collidingRide && !self._riding)
                 {

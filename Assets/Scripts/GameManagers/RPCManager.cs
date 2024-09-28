@@ -134,6 +134,18 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void EmoteVoiceRPC(int viewId, string emoji, PhotonMessageInfo info)
+        {
+            EmoteHandler.OnEmoteVoiceRPC(viewId, emoji, info);
+        }
+
+        [PunRPC]
+        public void StopVoiceRPC(PhotonMessageInfo Info) 
+        {
+            EmoteHandler.OnStopVoiceRPC(Info);
+        }
+
+        [PunRPC]
         public void EmoteTextRPC(int viewId, string text, PhotonMessageInfo info)
         {
             EmoteHandler.OnEmoteTextRPC(viewId, text, info);
@@ -193,6 +205,7 @@ namespace GameManagers
         [PunRPC]
         public void NotifyPlayerSpawnRPC(int viewId, PhotonMessageInfo info)
         {
+
             var view = PhotonView.Find(viewId);
             if (view != null && view.Owner == info.Sender && CustomLogicManager.Evaluator != null)
             {

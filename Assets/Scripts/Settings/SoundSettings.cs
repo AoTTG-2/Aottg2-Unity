@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using Cameras;
+using GameManagers;
 
 namespace Settings
 {
@@ -25,11 +26,24 @@ namespace Settings
         public BoolSetting OldNapeEffect = new BoolSetting(false);
         public StringSetting ForcePlaylist = new StringSetting("Default");
         public StringSetting CustomPlaylist = new StringSetting("");
+        public StringSetting VoiceChatDevice = new StringSetting(VoiceChatManager.DefaultDevice);
+        public IntSetting VoiceChatInput = new IntSetting(0);
+        public FloatSetting VoiceChatMicVolume = new FloatSetting(1f, minValue: 0f, maxValue: 1f);
+        public FloatSetting VoiceChatAudioVolume = new FloatSetting(0.5f, minValue: 0f, maxValue: 1f);
+
 
         public override void Apply()
         {
             AudioListener.volume = Volume.Value;
             MusicManager.ApplySoundSettings();
+            VoiceChatManager.ApplySoundSettings();
         }
+    }
+
+    public enum VoiceChatInputMode
+    {
+        PushToTalk,
+        AutoDetect,
+        Off
     }
 }

@@ -13,6 +13,9 @@ using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
 using GameProgress;
+using Photon.Voice.Unity;
+using Photon.Voice.PUN;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
@@ -36,6 +39,7 @@ namespace Characters
         public List<BaseUseable> Items = new List<BaseUseable>();
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
+        protected bool _wasMainCharacter = false;
 
         // movement
         public bool Grounded;
@@ -43,9 +47,58 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
+
         public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
         protected virtual float GroundDistance => 0.3f;
+
+        // Visuals
+        private Outline _outline = null;
+
+        public void Reveal(float startDelay, float activeTime)
+        {
+            if (_outline == null)
+            {
+                StartCoroutine(RevealAndRemove(startDelay, activeTime));
+            }
+        }
+
+        public void AddOutline()
+        {
+            AddOutlineWithColor(Color.white, Outline.Mode.OutlineAll);
+        }
+
+        public void AddVisibleOutlineWithColor(Color color)
+        {
+            AddOutlineWithColor(color, Outline.Mode.OutlineVisible);
+        }
+
+        public void AddOutlineWithColor(Color color, Outline.Mode mode)
+        {
+            if (_outline == null)
+            {
+                _outline = gameObject.AddComponent<Outline>();
+                _outline.OutlineMode = mode;
+            }
+            _outline.OutlineColor = color;
+        }
+
+        public void RemoveOutline()
+        {
+            if (_outline != null)
+            {
+                Destroy(_outline);
+                _outline = null;
+            }
+        }
+
+        private IEnumerator RevealAndRemove(float startDelay, float seconds)
+        {
+            yield return new WaitForSeconds(startDelay);
+            AddOutline();
+            yield return new WaitForSeconds(seconds);
+            RemoveOutline();
+        }
 
         public virtual string GetTeam()
         {
@@ -79,6 +132,7 @@ namespace Characters
         public virtual void Init(bool ai, string team)
         {
             AI = ai;
+            
             if (!ai)
             {
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
@@ -88,9 +142,11 @@ namespace Characters
             SetTeam(team);
         }
 
+
+
         public virtual Vector3 GetAimPoint()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             Vector3 target = ray.origin + ray.direction * 1000f;
             return target;
         }
@@ -474,6 +530,7 @@ namespace Characters
 
         protected virtual void Start()
         {
+
             MinimapHandler.CreateMinimapIcon(this);
             StartCoroutine(WaitAndNotifyCharacterSpawn());
         }

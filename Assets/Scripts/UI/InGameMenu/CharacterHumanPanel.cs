@@ -61,9 +61,10 @@ namespace UI
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Loadout, UIManager.GetLocale(LocaleCategory, sub, "Loadout"),
                 loadouts.ToArray(), elementWidth: 180f, optionsWidth: 180f, onDropdownOptionSelect: () => OnLoadoutClick());
             options = specials.ToArray();
-            var skillPopup = ElementFactory.CreateTooltipPopup<SkillTooltipPopup>(UIManager.CurrentMenu.IconPickPopup.transform).GetComponent<TooltipPopup>();
+            var maybeTooltip = UIManager.CurrentMenu is InGameMenu menu ? menu.SkillTooltipPopup : null;
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.Special, UIManager.GetLocale(LocaleCategory, sub, "Special"),
-                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, tooltips: GetSpecialTooltips(options), elementWidth: 180f, elementHeight: 40f, tooltipPopup: skillPopup);
+                options, GetSpecialIcons(options), UIManager.CurrentMenu.IconPickPopup, tooltips: GetSpecialTooltips(options), elementWidth: 180f, elementHeight: 40f, tooltipPopup: maybeTooltip);
+
             if (miscSettings.PVP.Value == (int)PVPMode.Team)
             {
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 100f, themePanel: ThemePanel), charSettings.Team, UIManager.GetLocaleCommon("Team"),

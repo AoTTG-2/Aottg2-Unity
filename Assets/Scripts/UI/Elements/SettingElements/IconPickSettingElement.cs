@@ -45,7 +45,12 @@ namespace UI
             if (_settingType == SettingType.String)
                 _label.text = ((StringSetting)_setting).Value;
             else if (_settingType == SettingType.Int)
+            {
+                var setting = (IntSetting)_setting;
+                if (setting.Value >= _options.Length)
+                    setting.Value = 0;
                 _label.text = _options[((IntSetting)_setting).Value];
+            }
         }
     }
 }

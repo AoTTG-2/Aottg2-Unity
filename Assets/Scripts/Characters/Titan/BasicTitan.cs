@@ -45,7 +45,6 @@ namespace Characters
         public int TargetViewId = -1;
         public bool LookAtTarget = false;
         public int HeadPrefab;
-        private Outline _outline = null;
         public override bool CanSprint => true;
         public override bool CanWallClimb => true;
 
@@ -100,39 +99,6 @@ namespace Characters
             }
             BasicCache.ForearmSmokeL.transform.localScale = Vector3.one * Size;
             BasicCache.ForearmSmokeR.transform.localScale = Vector3.one * Size;
-        }
-
-        public void Reveal(float startDelay, float activeTime)
-        {
-            if (_outline == null)
-            {
-                StartCoroutine(RevealAndRemove(startDelay, activeTime));
-            }
-        }
-
-        public void AddOutline()
-        {
-            if (_outline == null)
-            {
-                _outline = gameObject.AddComponent<Outline>();
-            }
-        }
-
-        public void RemoveOutline()
-        {
-            if (_outline != null)
-            {
-                Destroy(_outline);
-                _outline = null;
-            }
-        }
-
-        private IEnumerator RevealAndRemove(float startDelay, float seconds)
-        {
-            yield return new WaitForSeconds(startDelay);
-            AddOutline();
-            yield return new WaitForSeconds(seconds);
-            RemoveOutline();
         }
 
         [PunRPC]
@@ -237,9 +203,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtL);
                 DamagedGrunt();
             }
@@ -250,9 +217,10 @@ namespace Characters
                 {
                     Ungrab();
                 }
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
                 if (State != TitanState.SitDown && State != TitanState.SitUp && State != TitanState.SitFall && State != TitanState.SitIdle &&
                     State != TitanState.Fall && State != TitanState.Jump && State != TitanState.PreJump && State != TitanState.SitBlind &&
-                    State != TitanState.SitCripple && State != TitanState.StartJump)
+                    State != TitanState.SitCripple && State != TitanState.StartJump && !isBellyFlop)
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtR);
                 DamagedGrunt();
             }
@@ -971,7 +939,11 @@ namespace Characters
                 }
             }
             else
-                base.Cripple(time);
+            {
+                bool isBellyFlop = _currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup;
+                if (!isBellyFlop)
+                    base.Cripple(time);
+            }
         }
 
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)

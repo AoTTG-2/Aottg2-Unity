@@ -46,7 +46,7 @@ namespace CustomLogic
             if (name == "GetMouseAim")
             {
                 RaycastHit hit;
-                Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
                 Vector3 target = ray.origin + ray.direction * 1000f;
                 if (Physics.Raycast(ray, out hit, 1000f, Human.AimMask.value))
                     target = hit.point;

@@ -86,7 +86,7 @@ namespace UI
         public override void Hide()
         {
             if (gameObject.activeSelf)
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
             base.Hide();
         }
 
@@ -120,7 +120,7 @@ namespace UI
             if (refetch)
             {
                 _rooms = MainMenuGameManager.RoomList.Values.ToArray();
-                string playerCount = PhotonNetwork.CountOfPlayers + " " + 
+                string playerCount = (PhotonNetwork.CountOfPlayers / 2) + " " + 
                     UIManager.GetLocale("MainMenu", "MultiplayerRoomListPopup", "PlayersOnline");
                 _playersOnlineLabel.text = playerCount;
             }
@@ -143,7 +143,7 @@ namespace UI
                 _roomButtons.Add(button);
                 button.GetComponent<Button>().onClick.AddListener(() => OnRoomClick(room));
                 button.transform.Find("Text").GetComponent<Text>().text = GetRoomFormattedName(room);
-                if (GetRoomPassword(room) == string.Empty)
+                if (GetPasswordHash(room) == string.Empty)
                 {
                     button.transform.Find("PasswordIcon").gameObject.SetActive(false);
                 }
@@ -171,14 +171,17 @@ namespace UI
             List<RoomInfo> filteredRooms = new List<RoomInfo>();
             foreach (RoomInfo room in _rooms)
             {
-                string name = room.GetStringProperty(RoomProperty.Name);
+                string name = room.GetStringProperty(RoomProperty.Name).ToLower();
+                string map = room.GetStringProperty(RoomProperty.Map).ToLower();
+                string mode = room.GetStringProperty(RoomProperty.GameMode).ToLower();
+                string search = _filterQuery.Value.ToLower();
                 if (!IsValidRoom(room))
                     continue;
-                if (_filterQuery.Value != string.Empty && !name.ToLower().Contains(_filterQuery.Value.ToLower()))
+                if (search != string.Empty && !name.Contains(search) && !map.Contains(search) && !mode.Contains(search))
                     continue;
                 if (!_filterShowFull.Value && room.PlayerCount >= room.MaxPlayers)
                     continue;
-                if (!_filterShowPassword.Value && GetRoomPassword(room) != string.Empty)
+                if (!_filterShowPassword.Value && GetPasswordHash(room) != string.Empty)
                     continue;
                 filteredRooms.Add(room);
             }
@@ -204,12 +207,12 @@ namespace UI
         protected bool IsValidRoom(RoomInfo info)
         {
             return info.CustomProperties.ContainsKey(RoomProperty.Name) && info.CustomProperties.ContainsKey(RoomProperty.Map)
-                && info.CustomProperties.ContainsKey(RoomProperty.GameMode) && info.CustomProperties.ContainsKey(RoomProperty.Password);
+                && info.CustomProperties.ContainsKey(RoomProperty.GameMode) && !info.Name.EndsWith("vc");
         }
 
-        protected string GetRoomPassword(RoomInfo info)
+        protected string GetPasswordHash(RoomInfo info)
         {
-            return info.GetStringProperty(RoomProperty.Password);
+            return info.GetStringProperty(RoomProperty.PasswordHash);
         }
 
         protected string GetRoomFormattedName(RoomInfo room)
@@ -223,15 +226,15 @@ namespace UI
 
         private void OnRoomClick(RoomInfo room)
         {
-            string password = GetRoomPassword(room);
-            if (password != string.Empty)
+            string passwordHash = GetPasswordHash(room);
+            if (passwordHash != string.Empty)
             {
                 HideAllPopups();
-                _multiplayerPasswordPopup.Show(password, room.Name);
+                _multiplayerPasswordPopup.Show(passwordHash, room.Name, room.GetStringProperty(RoomProperty.Name));
             }
             else
             {
-                PhotonNetwork.JoinRoom(room.Name);
+                SettingsManager.MultiplayerSettings.JoinRoom(room.Name, room.GetStringProperty(RoomProperty.Name), string.Empty);
             }
         }
 

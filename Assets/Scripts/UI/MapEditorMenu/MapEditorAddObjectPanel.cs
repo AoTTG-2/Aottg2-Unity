@@ -10,7 +10,6 @@ using ApplicationManagers;
 using GameManagers;
 using Map;
 using Utility;
-using Photon.Pun.Demo.Asteroids;
 using UnityEditor.Rendering;
 
 namespace UI

@@ -1,6 +1,5 @@
 ﻿using ApplicationManagers;
 using GameManagers;
-using Photon.Pun.Demo.PunBasics;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;

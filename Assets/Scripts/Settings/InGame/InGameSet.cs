@@ -8,7 +8,6 @@ namespace Settings
         public InGameModeSettings Mode = new InGameModeSettings();
         public InGameTitanSettings Titan = new InGameTitanSettings();
         public InGameMiscSettings Misc = new InGameMiscSettings();
-        public InGameInternalSettings Internal = new InGameInternalSettings();
         public IntSetting WeatherIndex = new IntSetting(0);
     }
 }

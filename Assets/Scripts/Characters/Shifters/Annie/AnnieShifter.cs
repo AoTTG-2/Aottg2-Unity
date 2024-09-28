@@ -88,6 +88,27 @@ namespace Characters
                     PlaySound(TitanSounds.Swing3);
                 }
             }
+            else if (_currentAttackAnimation == AnnieAnimations.AttackComboBlind)
+            {
+                if (_currentAttackStage == 0 && animationTime > 0.222f)
+                {
+                    _currentAttackStage = 1;
+                    AnnieCache.HandRHitbox.Activate(0f, GetHitboxTime(0.04f));
+                    PlaySound(TitanSounds.Swing1);
+                }
+                else if (_currentAttackStage == 1 && animationTime > 0.386f)
+                {
+                    _currentAttackStage = 2;
+                    AnnieCache.HandRHitbox.Activate(0f, GetHitboxTime(0.07f));
+                    PlaySound(TitanSounds.Swing2);
+                }
+                else if (_currentAttackStage == 2 && animationTime > 0.612f)
+                {
+                    _currentAttackStage = 3;
+                    AnnieCache.FootRHitbox.Activate(0f, GetHitboxTime(0.04f));
+                    PlaySound(TitanSounds.Swing3);
+                }
+            }
             else if (_currentAttackAnimation == AnnieAnimations.AttackKick)
             {
                 if (_currentAttackStage == 0 && animationTime > 0.395f)
@@ -248,6 +269,15 @@ namespace Characters
             if (SettingsManager.SoundSettings.TitanVocalEffect.Value && RandomGen.Roll(chance))
             {
                 PlaySound(ShifterSounds.AnnieHurt);
+            }
+        }
+
+        public override void Blind()
+        {
+            if (_currentAttackAnimation != AnnieAnimations.AttackComboBlind)
+            {
+                DamagedGrunt();
+                Attack("AttackComboBlind");
             }
         }
     }

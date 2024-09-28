@@ -19,6 +19,7 @@ namespace Photon.Realtime
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Net;
     using ExitGames.Client.Photon;
 
     #if SUPPORTED_UNITY
@@ -345,6 +346,16 @@ namespace Photon.Realtime
             if (!string.IsNullOrEmpty(opParams.RoomName))
             {
                 op[ParameterCode.RoomName] = opParams.RoomName;
+            }
+
+            if (!string.IsNullOrEmpty(opParams.Password))
+            {
+                op[ParameterCode.Password] = opParams.Password;
+            }
+
+            if (!string.IsNullOrEmpty(opParams.Hash))
+            {
+                op[ParameterCode.Hash] = opParams.Hash;
             }
 
             if (opParams.JoinMode == JoinMode.CreateIfNotExists)
@@ -731,7 +742,7 @@ namespace Photon.Realtime
         /// <param name="regionCode">Optional region code, if the client should connect to a specific Photon Cloud Region.</param>
         /// <param name="getLobbyStatistics">Set to true on Master Server to receive "Lobby Statistics" events.</param>
         /// <returns>If the operation could be sent (has to be connected).</returns>
-        public virtual bool OpAuthenticate(string appId, string appVersion, AuthenticationValues authValues, string regionCode, bool getLobbyStatistics)
+        public virtual bool OpAuthenticate(string appId, NetworkCredential appVersion, AuthenticationValues authValues, string regionCode, bool getLobbyStatistics)
         {
             if (this.DebugOut >= DebugLevel.INFO)
             {
@@ -754,8 +765,8 @@ namespace Photon.Realtime
 
 
             // without a token, we send a complete op auth
-
-            opParameters[ParameterCode.AppVersion] = appVersion;
+            opParameters[ParameterCode.AppVersion] = appVersion.UserName;
+            opParameters[ParameterCode.AppVersion] = appVersion.Password;
             opParameters[ParameterCode.ApplicationId] = appId;
 
             if (!string.IsNullOrEmpty(regionCode))
@@ -806,7 +817,7 @@ namespace Photon.Realtime
         /// <param name="encryptionMode"></param>
         /// <param name="expectedProtocol"></param>
         /// <returns>If the operation could be sent (has to be connected).</returns>
-        public virtual bool OpAuthenticateOnce(string appId, string appVersion, AuthenticationValues authValues, string regionCode, EncryptionMode encryptionMode, ConnectionProtocol expectedProtocol)
+        public virtual bool OpAuthenticateOnce(string appId, NetworkCredential appVersion, AuthenticationValues authValues, string regionCode, EncryptionMode encryptionMode, ConnectionProtocol expectedProtocol)
         {
             if (this.DebugOut >= DebugLevel.INFO)
             {
@@ -830,8 +841,8 @@ namespace Photon.Realtime
 
             opParameters[ParameterCode.ExpectedProtocol] = (byte)expectedProtocol;
             opParameters[ParameterCode.EncryptionMode] = (byte)encryptionMode;
-
-            opParameters[ParameterCode.AppVersion] = appVersion;
+            opParameters[ParameterCode.AppVersion] = appVersion.UserName;
+            opParameters[ParameterCode.AppVersion] = appVersion.Password;
             opParameters[ParameterCode.ApplicationId] = appId;
 
             if (!string.IsNullOrEmpty(regionCode))
@@ -1086,6 +1097,8 @@ namespace Photon.Realtime
         public TypedLobby Lobby;
         /// <summary>The custom player properties that describe this client / user. Keys must be strings.</summary>
         public Hashtable PlayerProperties;
+        public string Password;
+        public string Hash;
         /// <summary>Internally used value to skip some values when the operation is sent to the Master Server.</summary>
         protected internal bool OnGameServer = true; // defaults to true! better send more parameter than too few (GS needs all)
         /// <summary>Internally used value to check which join mode we should call.</summary>
@@ -1615,6 +1628,9 @@ namespace Photon.Realtime
 
         /// <summary>(191) An int parameter summarizing several boolean room-options with bit-flags.</summary>
         public const byte RoomOptionFlags = 191;
+        public const byte Password = 10;
+        public const byte Hash = 11;
+
     }
 
 

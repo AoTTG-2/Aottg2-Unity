@@ -9,6 +9,8 @@ using GameProgress;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 using Settings;
 using SimpleJSONFixed;
 using System;
@@ -18,6 +20,7 @@ using UI;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Utility;
 using Weather;
@@ -63,6 +66,8 @@ namespace Characters
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
         public bool CanDodge = true;
+        public bool IsInvincible = true;
+        public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
 
         // physics
@@ -79,6 +84,7 @@ namespace Characters
         private float _wallRunTime = 0f;
         private bool _wallJump = false;
         private bool _wallSlide = false;
+        private bool _canWallSlideJump = false;
         private Vector3 _wallSlideGround = Vector3.zero;
         private bool _launchLeft;
         private bool _launchRight;
@@ -160,7 +166,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHuman()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
 
             // Define a plane at the characters position facing towards the camera's forward direction
             Plane plane = new Plane(ray.direction, Cache.Transform.position);
@@ -181,7 +187,7 @@ namespace Characters
 
         public Ray GetAimRayAfterHumanCheap()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             // Move the ray origin along its direction by the distance between the ray origin and the character
             ray.origin = ray.GetPoint(Vector3.Distance(ray.origin, HumanCache.Head.transform.position));
 
@@ -538,7 +544,103 @@ namespace Characters
                 Cache.Rigidbody.velocity = Carrier.CarryVelocity;
         }
 
-        public void StartSpecialCarry()
+        public Human GetHumanAlongRay(Ray ray, float distance)
+        {
+            Human human = null;
+            float minDistance = float.PositiveInfinity;
+
+            RaycastHit[] hits = Physics.RaycastAll(ray, distance, PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.MapObjectCharacters));
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider.gameObject.GetComponent<Human>() is Human h)
+                {
+                    if (IsValidCarryTarget(h, distance))
+                    {
+                        float d = Vector3.Distance(Cache.Transform.position, h.Cache.Transform.position);
+                        if (d < minDistance)
+                        {
+                            human = h;
+                            minDistance = d;
+                        }
+                    }
+                }
+            }
+
+            return human;
+        }
+
+        public bool IsValidCarryTarget(Human human, float distance)
+        {
+            return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null
+                && human.BackHuman == null && TeamInfo.SameTeam(human, Team) && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance;
+        }
+
+        public bool IsCarryable(Human human)
+        {
+            return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null;
+        }
+
+        /// <summary>
+        /// Gets the carry target first by aimpoint, then by distance if that fails.
+        /// </summary>
+        /// <param name="distance">Max range allowed for carry target.</param>
+        /// <returns>Human carry option or null if none exists.</returns>
+        public Human GetCarryOption(float distance)
+        {
+            RaycastHit hit;
+            Human target = GetHumanAlongRay(GetAimRayAfterHumanCheap(), distance);
+            if (IsValidCarryTarget(target, distance))
+            {
+                return target;
+            }
+
+            // Otherwise, find the nearest valid carry target within the distance.
+            float nearestDistance = float.PositiveInfinity;
+            Human nearestHuman = null;
+            foreach (Human carryTarget in _inGameManager.Humans)
+            {
+                if (!IsValidCarryTarget(carryTarget, distance))
+                {
+                    continue;
+                }
+                float targetDistance = Vector3.Distance(Cache.Transform.position, carryTarget.Cache.Transform.position);
+                if (targetDistance < nearestDistance)
+                {
+                    nearestHuman = carryTarget;
+                    nearestDistance = targetDistance;
+                }
+            }
+            return nearestHuman;
+        }
+
+
+        public void StartCarrySpecial(Human target)
+        {
+            ClearAllActionsForSpecial();
+            target.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+        }
+
+        public void StopCarrySpecial()
+        {
+            ClearAllActionsForSpecial();
+            if (BackHuman != null)
+            {
+                BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
+            }
+        }
+
+        public void ClearAllActionsForSpecial()
+        {
+            this.CancelHookBothKey = true;
+            this.CancelHookLeftKey = true;
+            this.CancelHookRightKey = true;
+            this.HookLeft.SetInput(false);
+            this.HookRight.SetInput(false);
+            this.HookLeft.DisableAnyHook();
+            this.HookRight.DisableAnyHook();
+        }
+
+        /*public void StartSpecialCarry(float distance)
         {
             Human human = FindNearestHuman();
             if (BackHuman != null)
@@ -546,11 +648,11 @@ namespace Characters
                 BackHuman.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
             }
             else if (human != null && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null
-                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < 7f)
+                && Vector3.Distance(human.Cache.Transform.position, Cache.Transform.position) < distance)
             {
                 human.Cache.PhotonView.RPC("CarryRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             }
-        }
+        }*/
 
         public void SpecialActionState(float time)
         {
@@ -842,6 +944,7 @@ namespace Characters
             SetInterpolation(true);
             if (IsMine())
             {
+                InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
                 LoadSkin();
@@ -872,7 +975,7 @@ namespace Characters
         [PunRPC]
         public override void GetHitRPC(int viewId, string name, int damage, string type, string collider)
         {
-            if (Dead)
+            if (Dead || IsInvincible)
                 return;
             if (type == "TitanEat")
             {
@@ -965,14 +1068,11 @@ namespace Characters
                     var titan = (BaseTitan)victimChar;
                     if (titan.BaseTitanCache.NapeHurtbox == collider)
                     {
-                        if (type == "Blade" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
+                        if (type == "Blade" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["Blade"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "AHSS" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
+                        if (type == "AHSS" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["AHSS"]["RestrictAngle"].AsFloat))
                             return;
-                        if (type == "APG" && !CheckTitanNapeAngle(hitbox.transform.position, titan.BaseTitanCache.Head.transform,
-                            CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
+                        if (type == "APG" && !titan.CheckNapeAngle(hitbox.transform.position, CharacterData.HumanWeaponInfo["APG"]["RestrictAngle"].AsFloat))
                             return;
                         if (type != "APG" && _lastNapeHitTimes.ContainsKey(titan) && (_lastNapeHitTimes[titan] + 0.2f) > Time.time)
                             return;
@@ -1039,12 +1139,6 @@ namespace Characters
             }
         }
 
-        bool CheckTitanNapeAngle(Vector3 position, Transform nape, float angle)
-        {
-            Vector3 direction = (position - nape.position).normalized;
-            return Vector3.Angle(-nape.forward, direction) < angle;
-        }
-
         protected void Update()
         {
             if (IsMine() && !Dead)
@@ -1052,6 +1146,9 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
+                InvincibleTimeLeft -= Time.deltaTime;
+                if (InvincibleTimeLeft <= 0f)
+                    IsInvincible = false;
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1386,7 +1483,7 @@ namespace Characters
                 }
                 else
                 {
-                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 0.5f)
+                    if (Horse != null && (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) || Cache.Animation.IsPlaying(HumanAnimations.AirFall)) && Cache.Rigidbody.velocity.y < 0f && Vector3.Distance(Horse.Cache.Transform.position + Vector3.up * 1.65f, Cache.Transform.position) < 1f)
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
@@ -1762,7 +1859,7 @@ namespace Characters
             var velocity = Cache.Rigidbody.velocity;
             if (Special != null && Special is SwitchbackSpecial)
             {
-                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, velocity.magnitude))
+                if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
@@ -1794,14 +1891,39 @@ namespace Characters
         {
             if (_wallSlide)
             {
+                if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
+                    _canWallSlideJump = true;
+                
                 if (Grounded)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
+                    
                 else if (Cache.Rigidbody.velocity.magnitude < 15f)
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }
                 else if (!CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.7f, -_wallSlideGround, 1f, GroundMask.value))
-                    _wallSlide = false;
+                {
+                    EndWallSlide();
+                }             
+                else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f) && _canWallSlideJump) //pressing away from the wall
+                {
+                    Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
+                    DodgeWall();
+                }
+                else if (IsPressDirectionRelativeToWall(-_wallSlideGround, 0.8f)) //pressing towards the wall
+                {
+                    EndWallSlide();
+                }
             }
             ToggleSparks(_wallSlide);
+        }
+
+        private void EndWallSlide()
+        {
+            _wallSlide = false;
+            _canWallSlideJump = false;
         }
 
         private void LateUpdateReelOut()
@@ -2040,7 +2162,7 @@ namespace Characters
 
         public void FixedUpdateLookTitan()
         {
-            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
             LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
             RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
             if (hitArr.Length == 0)
@@ -2331,7 +2453,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 10f;
+            float cooldown = 30f;
             Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
@@ -2733,7 +2855,7 @@ namespace Characters
 
         private string GetBladeAnimationMouse()
         {
-            if (Input.mousePosition.x < (Screen.width * 0.5))
+            if (CursorManager.GetInGameMousePosition().x < (Screen.width * 0.5))
                 return HumanAnimations.Attack2;
             else
                 return HumanAnimations.Attack1;
@@ -2904,6 +3026,14 @@ namespace Characters
             if (!HasDirection)
                 return false;
             return (Mathf.Abs(Mathf.DeltaAngle(TargetAngle, Cache.Transform.rotation.eulerAngles.y)) < 45f);
+        }
+
+        private bool IsPressDirectionRelativeToWall(Vector3 wallNormal, float dotValue)
+        {
+            if (!HasDirection)
+                return false;
+            float dotProduct = Vector3.Dot(GetTargetDirection(), wallNormal);
+            return dotProduct > dotValue;
         }
 
         private bool IsUpFrontGrounded()

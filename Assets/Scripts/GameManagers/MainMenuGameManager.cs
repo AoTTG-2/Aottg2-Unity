@@ -22,7 +22,7 @@ namespace GameManagers
             RoomList = new Dictionary<string, RoomInfo>();
             if (JustLeftRoom)
             {
-                PhotonNetwork.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
                 JustLeftRoom = false;
             }
             else if (UIManager.CurrentMenu != null && UIManager.CurrentMenu.GetComponent<MainMenu>() != null)

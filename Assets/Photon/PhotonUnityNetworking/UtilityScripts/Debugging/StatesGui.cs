@@ -106,7 +106,7 @@ namespace Photon.Pun.UtilityScripts
             }
             if (AppVersion)
             {
-                GUILayout.Label(PhotonNetwork.NetworkingClient.AppVersion);
+                // GUILayout.Label(PhotonNetwork.NetworkingClient.AppVersion);
             }
             GUILayout.EndHorizontal();
 

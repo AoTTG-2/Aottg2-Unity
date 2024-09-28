@@ -2,7 +2,6 @@
 using Cameras;
 using Characters;
 using GameManagers;
-using Photon.Pun.Demo.PunBasics;
 using Settings;
 using System.Collections.Generic;
 using UI;
@@ -106,9 +105,13 @@ namespace CustomLogic
                     }
                     return null;
                 }
-                return base.CallMethod(methodName, parameters);
+                if (methodName == "DisablePerks")
+                {
+                    Human.Stats.DisablePerks();
+                    return null;
+                }
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)
@@ -209,6 +212,10 @@ namespace CustomLogic
                 return Human.State.ToString();
             if (name == "CanDodge")
                 return Human.CanDodge;
+            if (name == "IsInvincible")
+                return Human.IsInvincible;
+            if (name == "InvincibleTimeLeft")
+                return Human.InvincibleTimeLeft;
             return base.GetField(name);
         }
 
@@ -283,6 +290,10 @@ namespace CustomLogic
             }
             else if (name == "CanDodge")
                 Human.CanDodge = (bool)value;
+            else if (name == "IsInvincible")
+                Human.IsInvincible = (bool)value;
+            else if (name == "InvincibleTimeLeft")
+                Human.InvincibleTimeLeft = (float)value;
             else
                 base.SetField(name, value);
             Human.Stats.UpdateStats();

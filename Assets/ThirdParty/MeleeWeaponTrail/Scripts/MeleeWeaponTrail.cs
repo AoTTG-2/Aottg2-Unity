@@ -136,8 +136,10 @@ public class MeleeWeaponTrail : MonoBehaviour
 
 		if (!_emit && _points.Count == 0 && _autoDestruct)
 		{
-			Destroy(_trailObject);
-			Destroy(gameObject);
+			if (_trailObject != null)
+				Destroy(_trailObject);
+			if (gameObject != null)
+				Destroy(gameObject);
 		}
 
 

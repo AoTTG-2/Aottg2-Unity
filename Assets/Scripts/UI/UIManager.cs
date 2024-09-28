@@ -82,6 +82,8 @@ namespace UI
         {
             foreach (string emoji in EmoteHandler.AvailableEmojis)
                 EmoteHandler.EmojiTextures.Add(emoji, ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/Emoji" + emoji) as Texture2D);
+
+            EmoteHandler.EmojiTextures.Add("Speaking", ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/" + "Speaking") as Texture2D);
         }
 
         private static void LoadProfileIcons()
