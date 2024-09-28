@@ -63,6 +63,7 @@ namespace Characters
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
+        private int _lastCarryRPCSender = -1;
 
         // physics
         public float ReelInAxis = 0f;
@@ -99,6 +100,7 @@ namespace Characters
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
         public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
+        private const float CarryLagCompensationDistance = 100f;
 
         // actions
         public string StandAnimation;
@@ -499,14 +501,37 @@ namespace Characters
         }
 
         [PunRPC]
-        public void CarryRPC(int viewId, PhotonMessageInfo info)
+        public void CarryRPC(int initiatorViewId, PhotonMessageInfo info)
         {
-            var view = PhotonView.Find(viewId);
-            if (view.Owner != info.Sender)
+            var initiatorView = PhotonView.Find(initiatorViewId);
+            if (initiatorView.Owner != info.Sender)
                 return;
-            Carrier = view.GetComponent<Human>();
+            var initiator = initiatorView.GetComponent<Human>();
+            if (initiator == null) 
+                return;
+            _lastCarryRPCSender = initiatorViewId;
+            if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
+                Cache.PhotonView.RPC("ConfirmCarryRPC", RpcTarget.All, new object[] { initiatorViewId, Cache.PhotonView.ViewID });
+        }
+
+        [PunRPC]
+        public void ConfirmCarryRPC(int initiatorViewId, int targetViewId, PhotonMessageInfo info)
+        {
+            var targetView = PhotonView.Find(targetViewId);
+            if (targetView.Owner != info.Sender)
+                return;
+            if (_lastCarryRPCSender != initiatorViewId)
+                return;
+            var initiatorView = PhotonView.Find(initiatorViewId);
+            if (initiatorView == null) 
+                return;
+            var initiator = initiatorView.GetComponent<Human>();
+            if (initiator == null) 
+                return;
+            Carrier = initiator;
             Carrier.BackHuman = this;
             CarryState = HumanCarryState.Carry;
+            _lastCarryRPCSender = -1;
             if (Cache.PhotonView.IsMine)
                 Carry(Carrier, Carrier.Cache.Transform);
         }
@@ -576,6 +601,17 @@ namespace Characters
         public bool IsCarryable(Human human)
         {
             return human != null && human != this && human.CarryState == HumanCarryState.None && human.Carrier == null && human.BackHuman == null;
+        }
+
+        private bool IsCarryableBy(Human initiator)
+        {
+            if (initiator == null)
+                return false;
+            bool isFree = CarryState == HumanCarryState.None && Carrier == null && BackHuman == null;
+            bool isInitiatorFree = initiator.CarryState == HumanCarryState.None && initiator.Carrier == null && initiator.BackHuman == null;
+            float distance = Vector3.Distance(initiator.Cache.Transform.position, Cache.Transform.position);
+            bool isWithinDistance = distance < CarrySpecial.DefaultCarryDistance + CarryLagCompensationDistance;
+            return isFree && isInitiatorFree && isWithinDistance;
         }
 
         /// <summary>
