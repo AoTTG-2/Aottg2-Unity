@@ -287,6 +287,7 @@ namespace UI
                     _characterChangePopup = ElementFactory.CreateDefaultPopup<CharacterChangePopup>(transform);
                     _popups.Add(_characterChangePopup);
                 }
+                SkipAHSSInput = true;
                 _characterChangePopup.Show();
             }
         }
