@@ -1,8 +1,12 @@
 {
-    "name": "MeleeWeaponTrail",
+    "name": "StandardAssets.Editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:252d21770f9a89742b1bebaa42c7f69e"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
