@@ -2026,7 +2026,7 @@ component RacingCheckpointRegion
             {
                 other.PlaySound("Checkpoint");
             }
-            other.Player.SpawnPoint = self.MapObject.Position;
+            other.Player.SpawnPoint = self.MapObject;
         }
     }
 }

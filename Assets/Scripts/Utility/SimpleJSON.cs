@@ -164,7 +164,7 @@ namespace SimpleJSONFixed
         #region common interface
 
         public static bool forceASCII = false; // Use Unicode by default
-        public static bool longAsString = false; // lazy creator creates a JSONString instead of JSONNumber
+        public static readonly bool longAsString = true; // lazy creator creates a JSONString instead of JSONNumber
         public static bool allowLineComments = true; // allow "//"-style comments at the end of a line
 
         public abstract JSONNodeType Tag { get; }
