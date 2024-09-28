@@ -9,8 +9,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using ApplicationManagers;
-using Cameras;
 
 public class MeleeWeaponTrail : MonoBehaviour
 {
@@ -120,8 +118,8 @@ public class MeleeWeaponTrail : MonoBehaviour
 
     void Update()
 	{
-		if (SceneLoader.CurrentCamera == null)
-			return;
+		//if (SceneLoader.CurrentCamera == null)
+		//	return;
 		if (!_use)
 		{
 			return;
