@@ -73,7 +73,7 @@ namespace GameManagers
                         if (attr is CommandAttribute cmdAttr)
                         {
                             cmdAttr.Command = info;
-                            
+
                             CommandsCache.Add(cmdAttr.Name, cmdAttr);
 
                             // Create second mapping from alias to cmd, has to be a separate object flagged as alias.
@@ -83,14 +83,14 @@ namespace GameManagers
                                 CommandAttribute alias = new CommandAttribute(cmdAttr);
                                 alias.IsAlias = true;
                                 CommandsCache.Add(alias.Alias, alias);
-                            }                                   
+                            }
                         }
                     }
                 }
             }
 
         }
-        
+
         public static void Reset()
         {
             Lines.Clear();
@@ -136,6 +136,8 @@ namespace GameManagers
                 return;
             AddLine(message, info.Sender.ActorNumber);
         }
+
+        public static void OnAnnounceRPC(string message) => AddLine(message);
 
         public static void AddLine(string line, ChatTextColor color = ChatTextColor.Default)
         {
@@ -315,12 +317,32 @@ namespace GameManagers
         [CommandAttribute("kick", "/kick [ID]: Kick the player with ID")]
         private static void Kick(string[] args)
         {
-            if (CheckMC())
+            var player = GetPlayer(args);
+            if (player == null) return;
+            if (PhotonNetwork.IsMasterClient)
+                KickPlayer(player);
+            else if (CanVoteKick(player))
+                RPCManager.PhotonView.RPC(nameof(RPCManager.VoteKickRPC), RpcTarget.MasterClient, new object[] { player.ActorNumber });
+        }
+
+        private static bool CanVoteKick(Player player)
+        {
+            if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value)
             {
-                var player = GetPlayer(args);
-                if (player != null)
-                    KickPlayer(player);
+                AddLine("Server does not allow vote kicking.", ChatTextColor.Error);
+                return false;
             }
+            if (player == PhotonNetwork.LocalPlayer)
+            {
+                AddLine("Cannot vote to kick yourself.", ChatTextColor.Error);
+                return false;
+            }
+            if (player.IsMasterClient)
+            {
+                AddLine("Cannot vote to kick the Master Client.", ChatTextColor.Error);
+                return false;
+            }
+            return true;
         }
 
         [CommandAttribute("maxplayers", "/maxplayers [num]: Sets room's max player count.")]
@@ -439,6 +461,20 @@ namespace GameManagers
                 AnticheatManager.KickPlayer(player);
                 SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
             }
+        }
+
+        public static void VoteKickPlayer(Player voter, Player target)
+        {
+            if (target == null) return;
+            if (target.IsMasterClient) return;
+            if (!PhotonNetwork.IsMasterClient) return;
+            if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value) return;
+
+            var result = AnticheatManager.TryVoteKickPlayer(voter, target);
+            var msg = result.ToString();
+            RPCManager.PhotonView.RPC(nameof(RPCManager.AnnounceRPC), voter, new object[] { msg });
+            if (result.IsSuccess)
+                SendChatAll(target.GetStringProperty(PlayerProperty.Name) + " has been vote kicked.", ChatTextColor.System);
         }
 
         public static void MutePlayer(Player player, string muteType)

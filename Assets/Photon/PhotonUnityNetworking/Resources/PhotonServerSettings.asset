@@ -128,6 +128,8 @@ MonoBehaviour:
   - ResetKDRPC
   - SetInputVolumeRPC
   - DecreaseAttackSpeedRPC
+  - VoteKickRPC
+  - AnnounceRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
