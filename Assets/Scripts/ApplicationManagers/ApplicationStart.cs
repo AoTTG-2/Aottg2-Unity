@@ -16,6 +16,7 @@ using Photon;
 using Photon.Pun;
 using System.Threading;
 using System.Globalization;
+using GisketchUI;
 
 namespace ApplicationManagers
 {
@@ -34,7 +35,7 @@ namespace ApplicationManagers
                 Init();
             }
         }
-       
+
         private static void Init()
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -52,6 +53,7 @@ namespace ApplicationManagers
             SettingsManager.Init();
             FullscreenHandler.Init();
             UIManager.Init();
+            GisketchUIManager.Init();
             SnapshotManager.Init();
             CursorManager.Init();
             WeatherManager.Init();

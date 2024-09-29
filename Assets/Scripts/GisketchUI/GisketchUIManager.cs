@@ -1,42 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Utility;
+using Settings;
+using System.Collections;
 
 namespace GisketchUI
 {
     public class GisketchUIManager : MonoBehaviour
     {
         private static GisketchUIManager _instance;
-        public static GisketchUIManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindFirstObjectByType<GisketchUIManager>();
-                    if (_instance == null)
-                    {
-                        GameObject go = new GameObject("UIManager");
-                        _instance = go.AddComponent<GisketchUIManager>();
-                    }
-                }
-                return _instance;
-            }
-        }
+        public static GisketchUIManager Instance => _instance;
 
         public Canvas MainCanvas { get; private set; }
 
-        private void Awake()
+        public static void Init()
         {
-            if (_instance != null && _instance != this)
+            if (_instance == null)
             {
-                Destroy(gameObject);
-                return;
+                _instance = SingletonFactory.CreateSingleton(_instance);
+                _instance.SetupMainCanvas();
+                SidePanelManager.Init();
+                PopupManager.Init();
+                _instance.UpdateUIScale();
             }
-
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            SetupMainCanvas();
         }
 
         private void SetupMainCanvas()
@@ -45,7 +31,7 @@ namespace GisketchUI
             canvasObject.transform.SetParent(transform);
             MainCanvas = canvasObject.AddComponent<Canvas>();
             MainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            MainCanvas.sortingOrder = 100; // Ensure it's on top
+            MainCanvas.sortingOrder = 100;
 
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -73,8 +59,21 @@ namespace GisketchUI
             return canvas;
         }
 
-        public void UpdateUIScale(float scaleFactor)
+        public void UpdateUIScale()
         {
+            StartCoroutine(WaitAndApplyScale());
+        }
+
+        private IEnumerator WaitAndApplyScale()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            ApplyUIScale();
+        }
+
+        private void ApplyUIScale()
+        {
+            float scaleFactor = 1f / SettingsManager.UISettings.UIMasterScale.Value;
             CanvasScaler scaler = MainCanvas.GetComponent<CanvasScaler>();
             if (scaler != null)
             {

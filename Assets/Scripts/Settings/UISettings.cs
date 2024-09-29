@@ -45,12 +45,15 @@ namespace Settings
         public override void Apply()
         {
             base.Apply();
-            if (UIManager.CurrentMenu != null)
+            if (UI.UIManager.CurrentMenu != null)
             {
-                UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
+                UI.UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
             }
-            // Update GisketchUI popup scaling
-            PopupManager.Instance.UpdateUIScale();
+            // Update GisketchUI scaling
+            if (GisketchUI.GisketchUIManager.Instance != null)
+            {
+                GisketchUI.GisketchUIManager.Instance.UpdateUIScale();
+            }
         }
     }
 
