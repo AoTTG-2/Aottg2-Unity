@@ -30,6 +30,28 @@ namespace GisketchUI
             return button;
         }
 
+        public static TipPanel CreateTipPanel(Transform parent)
+        {
+            TipPanel tipPanel = Object.Instantiate(Resources.Load<TipPanel>("GisketchUI/Prefabs/TipPanel"), parent);
+
+            if (tipPanel == null)
+            {
+                Debug.LogError("TipPanel prefab not found.");
+                return null;
+            }
+
+            // Set up RectTransform for bottom-right positioning
+            RectTransform rectTransform = tipPanel.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(1, 0);
+            rectTransform.anchorMax = new Vector2(1, 0);
+            rectTransform.pivot = new Vector2(1, 0);
+            rectTransform.anchoredPosition = new Vector2(30, 20);
+            rectTransform.sizeDelta = new Vector2(560, 180);
+
+            tipPanel.Setup();
+            return tipPanel;
+        }
+
         // Add more factory methods as needed
     }
 }

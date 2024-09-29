@@ -31,11 +31,16 @@ namespace GisketchUI
         private List<LTDescr> activeAnimations = new List<LTDescr>();
 
         private MainMenu _mainMenu;
+        private TipPanel tipPanel;
 
         public override void Initialize()
         {
             base.Initialize();
             _mainMenu = FindFirstObjectByType<MainMenu>();
+
+            // Create and setup the TipPanel
+            tipPanel = ElementFactory.CreateTipPanel(GisketchUIManager.Instance.MainCanvas.transform);
+            tipPanel.gameObject.SetActive(false);
 
             nextButtonPosition = new Vector2(0, -firstButtonOffset);
             SetupLogo();
@@ -182,7 +187,20 @@ namespace GisketchUI
 
         public override void Show(float duration)
         {
+            Debug.Log("IntroPanel Show called");
             base.Show(1f);
+            tipPanel.Show();
+        }
+
+        public override void Hide(float duration)
+        {
+            base.Hide(duration);
+            tipPanel.Hide();
+        }
+
+        public void ShowRandomTipPanel()
+        {
+            tipPanel.SetRandomTip();
         }
 
         protected override void AnimateEntrance(float duration)

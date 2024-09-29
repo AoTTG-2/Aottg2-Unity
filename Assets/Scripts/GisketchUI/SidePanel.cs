@@ -10,6 +10,7 @@ namespace GisketchUI
         [SerializeField] protected RectTransform contentContainer;
 
         protected List<SidePanelButton> buttons = new List<SidePanelButton>();
+        protected List<SidePanelButton> footerButtons = new List<SidePanelButton>();
         protected RectTransform panelRectTransform;
 
         public virtual void Initialize()
@@ -49,6 +50,11 @@ namespace GisketchUI
         protected void AddButton(SidePanelButton button)
         {
             buttons.Add(button);
+        }
+
+        protected void AddFooterButton(SidePanelButton button)
+        {
+            footerButtons.Add(button);
         }
 
         private void ResetPosition()

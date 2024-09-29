@@ -55,7 +55,10 @@ namespace GisketchUI
                 T panelPrefab = Resources.Load<T>(prefabPath);
                 if (panelPrefab != null)
                 {
-                    Canvas targetCanvas = typeof(T) == typeof(IntroPanel) ? nonScalingCanvas : mainCanvas;
+                    Canvas targetCanvas = (typeof(T) == typeof(IntroPanel) || typeof(T) == typeof(SettingsPanel))
+                        ? nonScalingCanvas
+                        : mainCanvas;
+
                     currentPanel = Instantiate(panelPrefab, targetCanvas.transform);
                     currentPanel.Initialize();
                     currentPanel.Show();
@@ -96,6 +99,7 @@ namespace GisketchUI
             activePanels.Clear();
             currentPanel = null;
         }
+
 
         private System.Collections.IEnumerator DestroyPanelAfterDelay(SidePanel panel, float delay)
         {
