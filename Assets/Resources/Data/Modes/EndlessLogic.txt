@@ -30,7 +30,7 @@ class Main
         if (Network.MyPlayer.Status == "Alive")
         {
             character = Network.MyPlayer.Character;
-            if (character.Type == "Human")
+            if (character != null && character.Type == "Human")
             {
                 if (self.InfiniteGas)
                 {
