@@ -1,27 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Utility;
 
 namespace GisketchUI
 {
     public class SidePanelManager : MonoBehaviour
     {
         private static SidePanelManager _instance;
-        public static SidePanelManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindFirstObjectByType<SidePanelManager>();
-                    if (_instance == null)
-                    {
-                        GameObject go = new GameObject("SidePanelManager");
-                        _instance = go.AddComponent<SidePanelManager>();
-                    }
-                }
-                return _instance;
-            }
-        }
+        public static SidePanelManager Instance => _instance;
 
         private Dictionary<System.Type, string> panelPrefabPaths = new Dictionary<System.Type, string>();
         private SidePanel currentPanel;
@@ -29,23 +15,19 @@ namespace GisketchUI
         private Canvas mainCanvas;
         private Canvas nonScalingCanvas;
 
-        private void Awake()
+        public static void Init()
         {
             if (_instance == null)
             {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
+                _instance = SingletonFactory.CreateSingleton(_instance);
+                _instance.Initialize();
             }
-            else if (_instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
+        }
 
+        private void Initialize()
+        {
             mainCanvas = GisketchUIManager.Instance.MainCanvas;
             InitializePanelPaths();
-
-
             nonScalingCanvas = GisketchUIManager.Instance.CreateNonScalingCanvas("NonScalingCanvas");
         }
 
@@ -89,7 +71,7 @@ namespace GisketchUI
             if (currentPanel != null)
             {
                 currentPanel.Hide();
-                Destroy(currentPanel.gameObject, 0.5f); // Destroy after animation
+                Destroy(currentPanel.gameObject, 0.5f);
                 currentPanel = null;
             }
         }

@@ -1,55 +1,37 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Settings;
-using System.Collections;
+using Utility;
 
 namespace GisketchUI
 {
     public class PopupManager : MonoBehaviour
     {
         private static PopupManager _instance;
-        public static PopupManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindFirstObjectByType<PopupManager>();
-                    if (_instance == null)
-                    {
-                        GameObject go = new GameObject("PopupManager");
-                        _instance = go.AddComponent<PopupManager>();
-                    }
-                }
-                return _instance;
-            }
-        }
+        public static PopupManager Instance => _instance;
 
         private Dictionary<string, BasePopup> _popups = new Dictionary<string, BasePopup>();
         private PopupBackground background;
         private int _activePopupCount = 0;
 
-        private void Awake()
+        public static void Init()
         {
-            if (_instance != null && _instance != this)
+            if (_instance == null)
             {
-                Destroy(gameObject);
-                return;
+                _instance = SingletonFactory.CreateSingleton(_instance);
+                _instance.Initialize();
             }
+        }
 
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-
+        private void Initialize()
+        {
             SetupPopupBackground();
-            UpdateUIScale();
         }
 
         private void SetupPopupBackground()
         {
             Canvas mainCanvas = GisketchUIManager.Instance.MainCanvas;
 
-            // Add background
             GameObject bgObject = new GameObject("PopupBackground");
             bgObject.transform.SetParent(mainCanvas.transform, false);
             background = bgObject.AddComponent<PopupBackground>();
@@ -86,25 +68,6 @@ namespace GisketchUI
             {
                 popup.Hide();
             }
-        }
-
-        private void ApplyUIScale()
-        {
-            float scaleFactor = 1f / SettingsManager.UISettings.UIMasterScale.Value;
-            GisketchUIManager.Instance.UpdateUIScale(scaleFactor);
-        }
-
-        // Call this method when you want to update the UI scale
-        public void UpdateUIScale()
-        {
-            StartCoroutine(WaitAndApplyScale());
-        }
-
-        private IEnumerator WaitAndApplyScale()
-        {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            ApplyUIScale();
         }
 
         public void OnPopupHidden(BasePopup popup)
