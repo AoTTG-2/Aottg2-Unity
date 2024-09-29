@@ -384,5 +384,16 @@ namespace Utility
                 && fileName.Trim() == fileName
                 && fileName.Length < 50;
         }
+
+        public static double GetPhotonTimestampDifference(double sentTime, double serverTime)
+        {
+            if (serverTime >= sentTime)
+            {
+                return serverTime - sentTime;
+            }
+
+            // Handle wrap-around
+            return (4294967.295 - sentTime) + serverTime;
+        }
     }
 }
