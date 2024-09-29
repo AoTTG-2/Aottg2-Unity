@@ -3,6 +3,7 @@ using Characters;
 using Effects;
 using GameManagers;
 using Map;
+using NUnit.Framework;
 using Photon.Pun;
 using Projectiles;
 using Settings;
@@ -16,6 +17,7 @@ namespace CustomLogic
     class CustomLogicGameBuiltin: CustomLogicBaseBuiltin
     {
         private string _lastSetTopLabel = string.Empty;
+        private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();
 
         public CustomLogicGameBuiltin(): base("Game")
         {
@@ -325,93 +327,129 @@ namespace CustomLogic
                 return gameManager.EndTimeLeft;
             if (name == "Titans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var titan in gameManager.Titans)
+                if (NeedRefreshList(name, gameManager.Titans, includeAI: true, includeNonAI: true, isShifter: false))
                 {
-                    if (titan != null && !titan.Dead)
-                        list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var titan in gameManager.Titans)
+                    {
+                        if (titan != null && !titan.Dead)
+                            list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "AITitans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var titan in gameManager.Titans)
+                if (NeedRefreshList(name, gameManager.Titans, includeAI: true, includeNonAI: false, isShifter: false))
                 {
-                    if (titan != null && !titan.Dead && titan.AI)
-                        list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var titan in gameManager.Titans)
+                    {
+                        if (titan != null && !titan.Dead && titan.AI)
+                            list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "PlayerTitans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var titan in gameManager.Titans)
+                if (NeedRefreshList(name, gameManager.Titans, includeAI: false, includeNonAI: true, isShifter: false))
                 {
-                    if (titan != null && !titan.Dead && !titan.AI)
-                        list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var titan in gameManager.Titans)
+                    {
+                        if (titan != null && !titan.Dead && !titan.AI)
+                            list.List.Add(new CustomLogicTitanBuiltin(titan));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "Shifters")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var shifter in gameManager.Shifters)
+                if (NeedRefreshList(name, gameManager.Shifters, includeAI: true, includeNonAI: true, isShifter: true))
                 {
-                    if (shifter != null && (!shifter.Dead || shifter.TransformingToHuman))
-                        list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var shifter in gameManager.Shifters)
+                    {
+                        if (shifter != null && (!shifter.Dead || shifter.TransformingToHuman))
+                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "AIShifters")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var shifter in gameManager.Shifters)
+                if (NeedRefreshList(name, gameManager.Shifters, includeAI: true, includeNonAI: false, isShifter: true))
                 {
-                    if (shifter != null && shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                        list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var shifter in gameManager.Shifters)
+                    {
+                        if (shifter != null && shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
+                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "PlayerShifters")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var shifter in gameManager.Shifters)
+                if (NeedRefreshList(name, gameManager.Shifters, includeAI: false, includeNonAI: true, isShifter: true))
                 {
-                    if (shifter != null && !shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                        list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var shifter in gameManager.Shifters)
+                    {
+                        if (shifter != null && !shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
+                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "Humans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var human in gameManager.Humans)
+                if (NeedRefreshList(name, gameManager.Humans, includeAI: true, includeNonAI: true, isShifter: false))
                 {
-                    if (human != null && !human.Dead)
-                        list.List.Add(new CustomLogicHumanBuiltin(human));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var human in gameManager.Humans)
+                    {
+                        if (human != null && !human.Dead)
+                            list.List.Add(new CustomLogicHumanBuiltin(human));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "AIHumans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var human in gameManager.Humans)
+                if (NeedRefreshList(name, gameManager.Humans, includeAI: true, includeNonAI: false, isShifter: false))
                 {
-                    if (human != null && !human.Dead && human.AI)
-                        list.List.Add(new CustomLogicHumanBuiltin(human));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var human in gameManager.Humans)
+                    {
+                        if (human != null && !human.Dead && human.AI)
+                            list.List.Add(new CustomLogicHumanBuiltin(human));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "PlayerHumans")
             {
-                var list = new CustomLogicListBuiltin();
-                foreach (var human in gameManager.Humans)
+                if (NeedRefreshList(name, gameManager.Humans, includeAI: false, includeNonAI: true, isShifter: false))
                 {
-                    if (human != null && !human.Dead && !human.AI)
-                        list.List.Add(new CustomLogicHumanBuiltin(human));
+                    var list = new CustomLogicListBuiltin();
+                    foreach (var human in gameManager.Humans)
+                    {
+                        if (human != null && !human.Dead && !human.AI)
+                            list.List.Add(new CustomLogicHumanBuiltin(human));
+                    }
+                    _cachedLists[name] = list;
                 }
-                return list;
+                return _cachedLists[name];
             }
             if (name == "Loadouts")
             {
@@ -433,6 +471,32 @@ namespace CustomLogic
                 return result;
             }
             return base.GetField(name);
+        }
+
+        private bool NeedRefreshList<T>(string cacheKey, HashSet<T> currentSet, bool includeAI, bool includeNonAI, bool isShifter) where T: BaseCharacter
+        {
+            if (!_cachedLists.ContainsKey(cacheKey))
+                return true;
+            var cachedList = _cachedLists[cacheKey];
+            if (cachedList.List.Count > currentSet.Count)
+                return true;
+            int index = 0;
+            foreach (var character in currentSet)
+            {
+                if (isShifter)
+                {
+                    var shifter = character as BaseShifter;
+                    if (shifter.Dead && !shifter.TransformingToHuman)
+                        continue;
+                }
+                if (character != null && !character.Dead && ((includeAI && character.AI) || (includeNonAI && !character.AI)))
+                {
+                    if (index >= cachedList.List.Count || ((CustomLogicCharacterBuiltin)cachedList.List[index]).Character != character)
+                        return true;
+                    index += 1;
+                }
+            }
+            return index != cachedList.List.Count;
         }
 
         public override void SetField(string name, object value)
