@@ -81,6 +81,7 @@ namespace UI
             misc.AllowPlayerTitans.Value = true;
             misc.AllowShifterSpecials.Value = true;
             misc.AllowShifters.Value = false;
+            misc.AllowVoteKicking.Value = false;
             misc.Horses.Value = false;
             misc.APGPVP.Value = false;
             misc.RealismMode.Value = false;

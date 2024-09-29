@@ -248,7 +248,7 @@ namespace Characters
             else
                 Idle(0f);
         }
-        
+
         public virtual void Idle(float fadeTime)
         {
             StateActionWithTime(TitanState.Idle, BaseTitanAnimations.Idle, 0f, fadeTime);
@@ -263,7 +263,7 @@ namespace Characters
         public virtual void Land()
         {
             StateAction(TitanState.Land, BaseTitanAnimations.Land);
-            EffectSpawner.Spawn(EffectPrefabs.Boom2, Cache.Transform.position + Vector3.down * _currentGroundDistance, 
+            EffectSpawner.Spawn(EffectPrefabs.Boom2, Cache.Transform.position + Vector3.down * _currentGroundDistance,
                 Quaternion.Euler(270f, 0f, 0f), Size * SizeMultiplier);
         }
 
@@ -319,7 +319,7 @@ namespace Characters
         {
             if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI)
             {
-                _currentCrippleTime = time > 0f? time: DefaultCrippleTime;
+                _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
             }
@@ -345,12 +345,19 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void GrabRPC(int viewId, PhotonMessageInfo info)
+        public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
             if (view.Owner != info.Sender)
                 return;
-            HoldHuman = view.GetComponent<Human>();
+            var human = view.GetComponent<Human>();
+            if (this.Cache.PhotonView.Owner == PhotonNetwork.LocalPlayer)
+                HoldHuman = human;
+            human.Grabber = this;
+            if (left)
+                human.GrabHand = this.BaseTitanCache.GrabLSocket;
+            else
+                human.GrabHand = this.BaseTitanCache.GrabRSocket;
         }
 
         [PunRPC]
@@ -371,7 +378,7 @@ namespace Characters
         [PunRPC]
         public virtual void DecreaseAttackSpeedRPC(PhotonMessageInfo info)
         {
-            if(ConfusedTime <= 0)
+            if (ConfusedTime <= 0)
             {
                 PreviousAttackSpeedMultiplier = AttackSpeedMultiplier;
                 AttackSpeedMultiplier = AttackSpeedMultiplier * 0.67f;
@@ -386,7 +393,7 @@ namespace Characters
 
         protected void ResetAttackSpeed()
         {
-            if(PreviousAttackSpeedMultiplier >= 0)
+            if (PreviousAttackSpeedMultiplier >= 0)
             {
                 AttackSpeedMultiplier = PreviousAttackSpeedMultiplier;
             }
@@ -747,7 +754,7 @@ namespace Characters
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
-                if(ConfusedTime > 0)
+                if (ConfusedTime > 0)
                 {
                     ConfusedTime -= Time.fixedDeltaTime;
                 }
@@ -799,7 +806,7 @@ namespace Characters
             float radius = BaseTitanCache.Movebox.transform.lossyScale.x * ((CapsuleCollider)(BaseTitanCache.Movebox)).radius;
             RaycastHit hit;
             JustGrounded = false;
-            if (Physics.SphereCast(Cache.Transform.position + Vector3.up * (radius + 1f), radius, Vector3.down, 
+            if (Physics.SphereCast(Cache.Transform.position + Vector3.up * (radius + 1f), radius, Vector3.down,
                 out hit, 1f + GroundDistance, GroundMask.value))
             {
                 if (!Grounded)

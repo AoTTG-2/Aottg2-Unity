@@ -110,9 +110,8 @@ namespace CustomLogic
                     Human.Stats.DisablePerks();
                     return null;
                 }
-                return base.CallMethod(methodName, parameters);
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)
