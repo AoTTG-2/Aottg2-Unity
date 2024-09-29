@@ -457,11 +457,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8904992816339182994}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -62.16553, y: 0}
-  m_SizeDelta: {x: -124.3311, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1795.669, y: 1080}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &6301864501657015534
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -980,6 +980,7 @@ MonoBehaviour:
   background: {fileID: 8904992816339182994}
   contentContainer: {fileID: 859137689006537541}
   logo: {fileID: 7286142135003344013}
+  backgroundPanel: {fileID: 0}
   buttonWidth: 400
   buttonHeight: 72
   iconsContainer: {fileID: 2981530568907879633}
@@ -1089,11 +1090,11 @@ RectTransform:
   - {fileID: 2992088794618235312}
   m_Father: {fileID: 462218897710934219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 1920, y: 1080}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &7719156054615356251
 GameObject:
   m_ObjectHideFlags: 0
