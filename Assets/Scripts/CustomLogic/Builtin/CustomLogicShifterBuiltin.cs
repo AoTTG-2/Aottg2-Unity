@@ -15,60 +15,63 @@ namespace CustomLogic
         }
         public override object CallMethod(string methodName, List<object> parameters)
         {
-            if (Shifter != null && !Shifter.Dead && Shifter.IsMine())
+            if (Shifter != null && !Shifter.Dead)
             {
-                if (methodName == "MoveTo")
+                if (Shifter.IsMine())
                 {
-                    if (!Shifter.AI)
+                    if (methodName == "MoveTo")
+                    {
+                        if (!Shifter.AI)
+                            return null;
+                        var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                        var range = parameters[1].UnboxToFloat();
+                        bool ignoreEnemies = (bool)parameters[2];
+                        Shifter.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
                         return null;
-                    var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                    var range = parameters[1].UnboxToFloat();
-                    bool ignoreEnemies = (bool)parameters[2];
-                    Shifter.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
-                    return null;
-                }
-                if (methodName == "Target")
-                {
-                    if (!Shifter.AI)
+                    }
+                    if (methodName == "Target")
+                    {
+                        if (!Shifter.AI)
+                            return null;
+                        ITargetable enemy;
+                        if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
+                            enemy = mapTargetable.Value;
+                        else
+                            enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
+                        var focus = parameters[1].UnboxToFloat();
+                        Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
                         return null;
-                    ITargetable enemy;
-                    if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
-                        enemy = mapTargetable.Value;
-                    else
-                        enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
-                    var focus = parameters[1].UnboxToFloat();
-                    Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
-                    return null;
-                }
-                if (methodName == "Idle")
-                {
-                    if (!Shifter.AI)
+                    }
+                    if (methodName == "Idle")
+                    {
+                        if (!Shifter.AI)
+                            return null;
+                        var time = parameters[0].UnboxToFloat();
+                        Shifter.GetComponent<BaseTitanAIController>().ForceIdle(time);
                         return null;
-                    var time = parameters[0].UnboxToFloat();
-                    Shifter.GetComponent<BaseTitanAIController>().ForceIdle(time);
-                    return null;
-                }
-                if (methodName == "Wander")
-                {
-                    if (!Shifter.AI)
+                    }
+                    if (methodName == "Wander")
+                    {
+                        if (!Shifter.AI)
+                            return null;
+                        Shifter.GetComponent<BaseTitanAIController>().CancelOrder();
                         return null;
-                    Shifter.GetComponent<BaseTitanAIController>().CancelOrder();
-                    return null;
-                }
-                if (methodName == "Blind")
-                {
-                    Shifter.Blind();
-                    return null;
-                }
-                if (methodName == "Cripple")
-                {
-                    Shifter.Cripple();
-                    return null;
-                }
-                if (methodName == "Emote")
-                {
-                    Shifter.Emote((string)parameters[0]);
-                    return null;
+                    }
+                    if (methodName == "Blind")
+                    {
+                        Shifter.Blind();
+                        return null;
+                    }
+                    if (methodName == "Cripple")
+                    {
+                        Shifter.Cripple();
+                        return null;
+                    }
+                    if (methodName == "Emote")
+                    {
+                        Shifter.Emote((string)parameters[0]);
+                        return null;
+                    }
                 }
                 return base.CallMethod(methodName, parameters);
             }

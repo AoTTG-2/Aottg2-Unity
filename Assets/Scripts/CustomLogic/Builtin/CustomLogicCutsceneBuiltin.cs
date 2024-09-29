@@ -41,7 +41,7 @@ namespace CustomLogic
         {
             var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, new List<object>(), true);
             CustomLogicManager.ToggleCutscene(full);
-            yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start", new List<object>());
+            yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start");
             CustomLogicManager.ToggleCutscene(false);
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
         }
