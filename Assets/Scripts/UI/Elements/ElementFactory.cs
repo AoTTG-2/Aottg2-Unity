@@ -10,12 +10,25 @@ using Utility;
 
 namespace UI
 {
-    class ElementFactory: MonoBehaviour
+    class ElementFactory : MonoBehaviour
     {
-        public static T CreateDefaultMenu<T>() where T : BaseMenu
+        public static T CreateDefaultMenu<T>(int sortOrder = 0) where T : BaseMenu
         {
-            return CreateMenu<T>("Prefabs/Panels/DefaultMenu");
+            T menu = CreateMenu<T>("Prefabs/Panels/DefaultMenu");
+
+            Canvas canvas = menu.GetComponent<Canvas>();
+            if (canvas != null)
+            {
+                canvas.sortingOrder = sortOrder;
+            }
+            else
+            {
+                Debug.LogWarning("Canvas component not found on the created menu.");
+            }
+
+            return menu;
         }
+
 
         public static T CreateMenu<T>(string asset) where T : BaseMenu
         {
@@ -86,7 +99,7 @@ namespace UI
             return button;
         }
 
-        public static GameObject CreatePerkButton(Transform parent, ElementStyle style, string title, string tooltip, 
+        public static GameObject CreatePerkButton(Transform parent, ElementStyle style, string title, string tooltip,
             float elementWidth = 0f, float elementHeight = 0f, float offset = 0f, UnityAction onClick = null)
         {
             GameObject button = InstantiateAndBind(parent, "Prefabs/Misc/PerkButton");
@@ -106,7 +119,7 @@ namespace UI
             return button;
         }
 
-        public static GameObject CreateIconButton(Transform parent, ElementStyle style, string icon, float elementWidth = 32f, float elementHeight = 32f, 
+        public static GameObject CreateIconButton(Transform parent, ElementStyle style, string icon, float elementWidth = 32f, float elementHeight = 32f,
             UnityAction onClick = null)
         {
             GameObject button = InstantiateAndBind(parent, "Prefabs/Elements/IconButton");
@@ -330,7 +343,7 @@ namespace UI
         }
 
         public static GameObject CreateIconPickSetting(Transform parent, ElementStyle style, BaseSetting setting, string title,
-            string[] options, string[] icons, IconPickPopup popup, string tooltip = "", string[] tooltips = null, float elementWidth = 0f, float elementHeight = 0f, 
+            string[] options, string[] icons, IconPickPopup popup, string tooltip = "", string[] tooltips = null, float elementWidth = 0f, float elementHeight = 0f,
             UnityAction onSelect = null, TooltipPopup tooltipPopup = null)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/ButtonSetting");

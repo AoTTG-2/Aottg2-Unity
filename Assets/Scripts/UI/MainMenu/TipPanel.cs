@@ -8,17 +8,32 @@ using SimpleJSONFixed;
 
 namespace UI
 {
-    class TipPanel: MonoBehaviour
+    class TipPanel : MonoBehaviour
     {
         private Text _label;
         private int currentTipIndex = -1;
+        private RectTransform _labelRectTransform;
+        private const float AnimationDuration = 0.5f;
 
         public void Setup()
         {
             _label = transform.Find("Label").GetComponent<Text>();
+            _labelRectTransform = _label.GetComponent<RectTransform>();
         }
 
         public void SetRandomTip()
+        {
+            LeanTween.scale(_labelRectTransform, Vector3.zero, AnimationDuration)
+                .setEase(LeanTweenType.easeInOutQuad)
+                .setOnComplete(() =>
+                {
+                    ChangeTextContent();
+                    LeanTween.scale(_labelRectTransform, Vector3.one, AnimationDuration)
+                        .setEase(LeanTweenType.easeInOutQuad);
+                });
+        }
+
+        private void ChangeTextContent()
         {
             var tips = MainMenu.MainBackgroundInfo["Tips"];
             int tipIndex = currentTipIndex;
@@ -30,7 +45,14 @@ namespace UI
 
         public void SetPressAnyKey()
         {
-            _label.text = UIManager.GetLocaleCommon("PressAnyKey");
+            LeanTween.scale(_labelRectTransform, Vector3.zero, AnimationDuration)
+                .setEase(LeanTweenType.easeInOutQuad)
+                .setOnComplete(() =>
+                {
+                    _label.text = UIManager.GetLocaleCommon("PressAnyKey");
+                    LeanTween.scale(_labelRectTransform, Vector3.one, AnimationDuration)
+                        .setEase(LeanTweenType.easeInOutQuad);
+                });
         }
     }
 }

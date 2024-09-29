@@ -109,7 +109,7 @@ namespace UI
             if (sceneName == SceneName.MainMenu)
             {
                 _lastCategories.Clear();
-                CurrentMenu = ElementFactory.CreateDefaultMenu<MainMenu>();
+                CurrentMenu = ElementFactory.CreateDefaultMenu<MainMenu>(50);
                 ChatManager.Reset();
             }
             else if (sceneName == SceneName.InGame)
