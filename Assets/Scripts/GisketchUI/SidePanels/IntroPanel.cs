@@ -28,6 +28,8 @@ namespace GisketchUI
 
         private List<UnityEngine.UI.Button> footerButtons = new List<UnityEngine.UI.Button>();
         private Dictionary<UnityEngine.UI.Button, Vector3> footerButtonOriginalPositions = new Dictionary<UnityEngine.UI.Button, Vector3>();
+        private bool isAnimating = false;
+        private List<LTDescr> activeAnimations = new List<LTDescr>();
 
         public override void Initialize()
         {
@@ -36,6 +38,10 @@ namespace GisketchUI
             SetupLogo();
             SetupButtons();
             SetupFooterButtons();
+
+            // Add click listener to the panel
+            UnityEngine.UI.Button panelButton = gameObject.AddComponent<UnityEngine.UI.Button>();
+            panelButton.onClick.AddListener(SkipAnimationIfPlaying);
         }
 
         private void SetupLogo()
@@ -71,33 +77,41 @@ namespace GisketchUI
 
         public override void Show(float duration)
         {
-            base.Show(1.5f);
+            base.Show(1f);
         }
 
         protected override void AnimateEntrance(float duration)
         {
+            isAnimating = true;
+            activeAnimations.Clear();
+
             base.AnimateEntrance(duration);
 
-            float timeToStart = duration * 0.5f;
+            float timeToStart = duration * 0.7f;
 
             // Animate logo
             float logoDelay = timeToStart;
-            LeanTween.moveX(logo, logoOriginalPosition.x, 1f).setDelay(logoDelay).setEaseInOutCubic();
+            activeAnimations.Add(LeanTween.moveX(logo, logoOriginalPosition.x, 0.6f).setDelay(logoDelay).setEaseInOutCubic());
 
             // Animate buttons
-            float buttonDelay = timeToStart + 0.7f;
-            float buttonDuration = 0.3f;
+            float buttonDelay = timeToStart + 0.25f;
+            float buttonDuration = 0.15f;
             for (int i = 0; i < buttons.Count; i++)
             {
-                float delay = buttonDelay + (i * 0.05f);
+                float delay = buttonDelay + (i * 0.025f);
                 Vector3 startPosition = nextButtonPosition;
                 nextButtonPosition.y -= buttonHeight + buttonSpacing;
                 buttons[i].AnimateEntrance(buttonDuration, delay, startPosition);
             }
 
             // Animate footer buttons
-            AnimateFooterButtons(buttonDelay + buttons.Count * 0.05f);
+            AnimateFooterButtons(buttonDelay + buttons.Count * 0.025f);
+
+            // Set a callback to mark animation as complete
+            LeanTween.delayedCall(timeToStart + 1f, () => isAnimating = false);
         }
+
+
 
         private void SetupFooterButtons()
         {
@@ -156,9 +170,47 @@ namespace GisketchUI
             for (int i = 0; i < footerButtons.Count; i++)
             {
                 UnityEngine.UI.Button button = footerButtons[i];
-                float delay = startDelay + i * 0.1f;
+                float delay = startDelay + i * 0.05f;
                 button.transform.localScale = Vector3.zero;
-                LeanTween.scale(button.gameObject, Vector3.one, 0.3f).setDelay(delay).setEaseOutBack();
+                activeAnimations.Add(LeanTween.scale(button.gameObject, Vector3.one, 0.2f).setDelay(delay).setEaseOutBack());
+            }
+        }
+
+        private void SkipAnimationIfPlaying()
+        {
+            if (isAnimating)
+            {
+                SkipAnimation();
+            }
+        }
+
+        private void SkipAnimation()
+        {
+            isAnimating = false;
+
+            // Cancel all active animations
+            foreach (var anim in activeAnimations)
+            {
+                LeanTween.cancel(anim.uniqueId);
+            }
+            activeAnimations.Clear();
+
+            // Set logo to final position
+            logo.anchoredPosition = new Vector2(logoOriginalPosition.x, logo.anchoredPosition.y);
+
+            // Set buttons to final positions
+            Vector2 buttonPosition = new Vector2(0, -firstButtonOffset);
+            foreach (var button in buttons)
+            {
+                button.GetComponent<RectTransform>().anchoredPosition = buttonPosition;
+                buttonPosition.y -= buttonHeight + buttonSpacing;
+            }
+
+            // Set footer buttons to final scale and position
+            foreach (var button in footerButtons)
+            {
+                button.transform.localScale = Vector3.one;
+                button.transform.localPosition = footerButtonOriginalPositions[button];
             }
         }
 
