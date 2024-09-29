@@ -1,4 +1,4 @@
-﻿using Settings;
+using Settings;
 using Characters;
 using UnityEngine;
 using System.Collections.Generic;
@@ -623,7 +623,7 @@ namespace Controllers
                 if (targetable == null || !targetable.ValidTarget())
                     continue;
                 float distance = Vector3.Distance(targetable.GetPosition(), position);
-                if (distance < nearestDistance)
+                if (distance < nearestDistance && distance < DetectRange)
                 {
                     nearestDistance = distance;
                     nearestCharacter = targetable;
