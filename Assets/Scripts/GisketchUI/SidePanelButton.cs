@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using UI;
 
 namespace GisketchUI
 {
@@ -76,6 +77,7 @@ namespace GisketchUI
                 SetActiveColors();
                 AnimateLabelHover();
             }
+            UIManager.PlaySound(UISound.Hover);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -91,6 +93,7 @@ namespace GisketchUI
         public void OnPointerDown(PointerEventData eventData)
         {
             AnimateLabelPress();
+            UIManager.PlaySound(UISound.Forward);
         }
 
         public void OnPointerUp(PointerEventData eventData)

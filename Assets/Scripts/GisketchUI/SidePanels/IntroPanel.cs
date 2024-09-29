@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UI;
 
 namespace GisketchUI
 {
@@ -15,12 +16,6 @@ namespace GisketchUI
         [SerializeField] private float buttonWidth = 400f;
         [SerializeField] private float buttonHeight = 72f;
 
-        private UnityEngine.UI.Button questButton;
-        private UnityEngine.UI.Button leaderboardButton;
-        private UnityEngine.UI.Button socialButton;
-        private UnityEngine.UI.Button helpButton;
-        private UnityEngine.UI.Button patreonButton;
-
         private Vector2 nextButtonPosition;
         private Vector3 logoOriginalPosition;
 
@@ -31,9 +26,13 @@ namespace GisketchUI
         private bool isAnimating = false;
         private List<LTDescr> activeAnimations = new List<LTDescr>();
 
+        private MainMenu _mainMenu;
+
         public override void Initialize()
         {
             base.Initialize();
+            _mainMenu = FindFirstObjectByType<MainMenu>();
+
             nextButtonPosition = new Vector2(0, -firstButtonOffset);
             SetupLogo();
             SetupButtons();
@@ -52,14 +51,19 @@ namespace GisketchUI
 
         private void SetupButtons()
         {
-            AddButton("TUTORIAL", OnTutorialClicked);
-            AddButton("SINGLEPLAYER", OnSingleplayerClicked);
-            AddButton("MULTIPLAYER", OnMultiplayerClicked);
-            AddButton("PROFILE", OnProfileClicked);
-            AddButton("SETTINGS", OnSettingsClicked);
-            AddButton("TOOLS", OnToolsClicked);
-            AddButton("CREDITS", OnCreditsClicked);
-            AddButton("QUIT", OnQuitClicked);
+            AddButton("TUTORIAL", () => OnButtonClicked("TutorialButton"));
+            AddButton("SINGLEPLAYER", () => OnButtonClicked("SingleplayerButton"));
+            AddButton("MULTIPLAYER", () => OnButtonClicked("MultiplayerButton"));
+            AddButton("PROFILE", () => OnButtonClicked("ProfileButton"));
+            AddButton("SETTINGS", () => OnButtonClicked("SettingsButton"));
+            AddButton("TOOLS", () => OnButtonClicked("ToolsButton"));
+            AddButton("CREDITS", () => OnButtonClicked("CreditsButton"));
+            AddButton("QUIT", () => OnButtonClicked("QuitButton"));
+        }
+
+        private void OnButtonClicked(string buttonName)
+        {
+            _mainMenu.HandleIntroButtonClick(buttonName);
         }
 
         private void AddButton(string label, Action onClick)
@@ -242,74 +246,8 @@ namespace GisketchUI
 
         private void OnFooterButtonClicked(string buttonName)
         {
-            Debug.Log($"{buttonName} clicked");
+            _mainMenu.HandleIntroButtonClick(buttonName);
         }
 
-
-        // Button click handlers...
-        private void OnTutorialClicked()
-        {
-            Debug.Log("Tutorial clicked");
-        }
-
-        private void OnSingleplayerClicked()
-        {
-            Debug.Log("Singleplayer clicked");
-        }
-
-        private void OnMultiplayerClicked()
-        {
-            Debug.Log("Multiplayer clicked");
-        }
-
-        private void OnProfileClicked()
-        {
-            Debug.Log("Profile clicked");
-        }
-
-        private void OnSettingsClicked()
-        {
-            Debug.Log("Settings clicked");
-        }
-
-        private void OnToolsClicked()
-        {
-            Debug.Log("Tools clicked");
-        }
-
-        private void OnCreditsClicked()
-        {
-            Debug.Log("Credits clicked");
-        }
-
-        private void OnQuitClicked()
-        {
-            Debug.Log("Quit clicked");
-        }
-
-        private void OnQuestClicked()
-        {
-            Debug.Log("Quest clicked");
-        }
-
-        private void OnLeaderboardClicked()
-        {
-            Debug.Log("Leaderboard clicked");
-        }
-
-        private void OnSocialClicked()
-        {
-            Debug.Log("Social clicked");
-        }
-
-        private void OnHelpClicked()
-        {
-            Debug.Log("Help clicked");
-        }
-
-        private void OnPatreonClicked()
-        {
-            Debug.Log("Patreon clicked");
-        }
     }
 }

@@ -31,7 +31,7 @@ namespace GisketchUI
             canvasObject.transform.SetParent(transform);
             MainCanvas = canvasObject.AddComponent<Canvas>();
             MainCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            MainCanvas.sortingOrder = 100;
+            MainCanvas.sortingOrder = 50;
 
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -47,7 +47,7 @@ namespace GisketchUI
             canvasObject.transform.SetParent(transform);
             Canvas canvas = canvasObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 101;
+            canvas.sortingOrder = 25;
 
             CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;

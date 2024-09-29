@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Linq;
 using Utility;
 
 namespace GisketchUI
@@ -10,6 +12,7 @@ namespace GisketchUI
         public static SidePanelManager Instance => _instance;
 
         private Dictionary<System.Type, string> panelPrefabPaths = new Dictionary<System.Type, string>();
+        private List<SidePanel> activePanels = new List<SidePanel>();
         private SidePanel currentPanel;
 
         private Canvas mainCanvas;
@@ -29,6 +32,12 @@ namespace GisketchUI
             mainCanvas = GisketchUIManager.Instance.MainCanvas;
             InitializePanelPaths();
             nonScalingCanvas = GisketchUIManager.Instance.CreateNonScalingCanvas("NonScalingCanvas");
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         private void InitializePanelPaths()
@@ -39,11 +48,7 @@ namespace GisketchUI
 
         public void ShowPanel<T>() where T : SidePanel
         {
-            if (currentPanel != null)
-            {
-                Destroy(currentPanel.gameObject);
-                currentPanel = null;
-            }
+            HideCurrentPanel();
 
             if (panelPrefabPaths.TryGetValue(typeof(T), out string prefabPath))
             {
@@ -54,6 +59,7 @@ namespace GisketchUI
                     currentPanel = Instantiate(panelPrefab, targetCanvas.transform);
                     currentPanel.Initialize();
                     currentPanel.Show();
+                    activePanels.Add(currentPanel);
                 }
                 else
                 {
@@ -71,19 +77,41 @@ namespace GisketchUI
             if (currentPanel != null)
             {
                 currentPanel.Hide();
-                Destroy(currentPanel.gameObject, 0.5f);
+                StartCoroutine(DestroyPanelAfterDelay(currentPanel, 0.5f));
+                activePanels.Remove(currentPanel);
                 currentPanel = null;
             }
         }
 
-        public void ShowSettingsPanel()
+        public void HideAllPanels()
         {
-            ShowPanel<SettingsPanel>();
+            foreach (var panel in activePanels.ToList())
+            {
+                if (panel != null)
+                {
+                    panel.Hide();
+                    StartCoroutine(DestroyPanelAfterDelay(panel, 0.5f));
+                }
+            }
+            activePanels.Clear();
+            currentPanel = null;
         }
 
-        public void ShowIntroPanel()
+        private System.Collections.IEnumerator DestroyPanelAfterDelay(SidePanel panel, float delay)
         {
-            ShowPanel<IntroPanel>();
+            yield return new WaitForSeconds(delay);
+            if (panel != null)
+            {
+                Destroy(panel.gameObject);
+            }
         }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            HideAllPanels();
+        }
+
+        public void ShowSettingsPanel() => ShowPanel<SettingsPanel>();
+        public void ShowIntroPanel() => ShowPanel<IntroPanel>();
     }
 }

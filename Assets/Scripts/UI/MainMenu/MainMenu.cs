@@ -44,8 +44,9 @@ namespace UI
             if (MainBackgroundInfo == null)
                 MainBackgroundInfo = JSON.Parse(ResourceManager.LoadText(ResourcePaths.Info, "MainBackgroundInfo"));
             SetupMainBackground();
-            SetupIntroPanel();
+            // SetupIntroPanel();
             SetupLabels();
+            SidePanelManager.Instance.ShowIntroPanel();
         }
 
         private void SetupMainBackground()
@@ -103,53 +104,57 @@ namespace UI
             _popups.Add(_outdatedPopup);
         }
 
-        private RectTransform _introPanelRect;
-        private IntroPanelAnimator _introPanelAnimator;
-        private void SetupIntroPanel()
-        {
-            GameObject introPanel = ElementFactory.InstantiateAndBind(transform, "Prefabs/MainMenu/IntroPanel");
-            introPanel.AddComponent<IgnoreScaler>();
-            _introPanelRect = introPanel.GetComponent<RectTransform>();
+        // Note: The following code is commented out as part of the migration to the new IntroPanel.
+        // It is kept for reference during the transition period.
+        //
 
-            _introPanelAnimator = introPanel.AddComponent<IntroPanelAnimator>();
+        // private RectTransform _introPanelRect;
+        // private IntroPanelAnimator _introPanelAnimator;
+        // private void SetupIntroPanel()
+        // {
+        //     GameObject introPanel = ElementFactory.InstantiateAndBind(transform, "Prefabs/MainMenu/IntroPanel");
+        //     introPanel.AddComponent<IgnoreScaler>();
+        //     _introPanelRect = introPanel.GetComponent<RectTransform>();
 
-            ElementFactory.SetAnchor(introPanel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+        //     _introPanelAnimator = introPanel.AddComponent<IntroPanelAnimator>();
 
-            SetupButtons(introPanel.transform.Find("Buttons"));
-            SetupIcons(introPanel.transform.Find("Icons"));
+        //     ElementFactory.SetAnchor(introPanel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
 
-            _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
+        //     SetupButtons(introPanel.transform.Find("Buttons"));
+        //     SetupIcons(introPanel.transform.Find("Icons"));
 
-            _introPanelAnimator.StartAnimation();
-        }
+        //     _introPanelBackground = introPanel.transform.Find("Background").GetComponent<Image>();
 
-        private void SetupButtons(Transform buttonsParent)
-        {
-            foreach (Transform buttonTransform in buttonsParent)
-            {
-                IntroButton introButton = buttonTransform.gameObject.AddComponent<IntroButton>();
-                introButton.onClick.AddListener(() => OnIntroButtonClick(introButton.name));
-            }
-        }
+        //     _introPanelAnimator.StartAnimation();
+        // }
 
-        private void SetupIcons(Transform iconsParent)
-        {
-            foreach (Transform iconTransform in iconsParent)
-            {
-                UnityEngine.UI.Button button = iconTransform.gameObject.GetComponent<UnityEngine.UI.Button>();
-                button.onClick.AddListener(() => OnIntroButtonClick(iconTransform.name));
-                ColorBlock block = new ColorBlock
-                {
-                    colorMultiplier = 1f,
-                    fadeDuration = 0.1f,
-                    normalColor = new Color(0.9f, 0.9f, 0.9f),
-                    highlightedColor = new Color(0.75f, 0.75f, 0.75f),
-                    pressedColor = new Color(0.5f, 0.5f, 0.5f),
-                    disabledColor = new Color(0.5f, 0.5f, 0.5f)
-                };
-                button.colors = block;
-            }
-        }
+        // private void SetupButtons(Transform buttonsParent)
+        // {
+        //     foreach (Transform buttonTransform in buttonsParent)
+        //     {
+        //         IntroButton introButton = buttonTransform.gameObject.AddComponent<IntroButton>();
+        //         introButton.onClick.AddListener(() => OnIntroButtonClick(introButton.name));
+        //     }
+        // }
+
+        // private void SetupIcons(Transform iconsParent)
+        // {
+        //     foreach (Transform iconTransform in iconsParent)
+        //     {
+        //         UnityEngine.UI.Button button = iconTransform.gameObject.GetComponent<UnityEngine.UI.Button>();
+        //         button.onClick.AddListener(() => OnIntroButtonClick(iconTransform.name));
+        //         ColorBlock block = new ColorBlock
+        //         {
+        //             colorMultiplier = 1f,
+        //             fadeDuration = 0.1f,
+        //             normalColor = new Color(0.9f, 0.9f, 0.9f),
+        //             highlightedColor = new Color(0.75f, 0.75f, 0.75f),
+        //             pressedColor = new Color(0.5f, 0.5f, 0.5f),
+        //             disabledColor = new Color(0.5f, 0.5f, 0.5f)
+        //         };
+        //         button.colors = block;
+        //     }
+        // }
 
         private void SetupLabels()
         {
@@ -212,23 +217,29 @@ namespace UI
                 }
                 _multiplayerStatusLabel.text = label;
             }
-            if (SettingsManager.UISettings.FadeMainMenu.Value)
-            {
-                if (HoverIntroPanel())
-                {
-                    float alpha = _introPanelBackground.color.a;
-                    if (alpha < 1f)
-                        _introPanelBackground.color = new Color(1f, 1f, 1f, Mathf.Min(1f, alpha + Time.deltaTime * 2f));
-                }
-                else
-                {
-                    float alpha = _introPanelBackground.color.a;
-                    if (alpha > 0f)
-                        _introPanelBackground.color = new Color(1f, 1f, 1f, Mathf.Max(0f, alpha - Time.deltaTime * 1f));
-                }
-            }
-            else
-                _introPanelBackground.color = Color.white;
+
+            // Note: The following code is commented out as part of the migration to the new IntroPanel.
+            // It is kept for reference during the transition period.
+
+
+            // if (SettingsManager.UISettings.FadeMainMenu.Value)
+            // {
+            //     if (HoverIntroPanel())
+            //     {
+            //         float alpha = _introPanelBackground.color.a;
+            //         if (alpha < 1f)
+            //             _introPanelBackground.color = new Color(1f, 1f, 1f, Mathf.Min(1f, alpha + Time.deltaTime * 2f));
+            //     }
+            //     else
+            //     {
+            //         float alpha = _introPanelBackground.color.a;
+            //         if (alpha > 0f)
+            //             _introPanelBackground.color = new Color(1f, 1f, 1f, Mathf.Max(0f, alpha - Time.deltaTime * 1f));
+            //     }
+            // }
+            // else
+            //     _introPanelBackground.color = Color.white;
+
             if (!ShowedOutdated)
             {
                 if (PastebinLoader.Status == PastebinStatus.Loaded)
@@ -251,35 +262,28 @@ namespace UI
             return false;
         }
 
-        private bool HoverIntroPanel()
-        {
-            float x = _introPanelBackground.GetComponent<RectTransform>().sizeDelta.x * UIManager.CurrentMenu.GetComponent<Canvas>().scaleFactor * 0.25f;
-            return Input.mousePosition.x < x;
-        }
+        // Note: The following code is commented out as part of the migration to the new IntroPanel.
+        // It is kept for reference during the transition period.
 
-        private void OnIntroButtonClick(string name)
+
+        // private bool HoverIntroPanel()
+        // {
+        //     float x = _introPanelBackground.GetComponent<RectTransform>().sizeDelta.x * UIManager.CurrentMenu.GetComponent<Canvas>().scaleFactor * 0.25f;
+        //     return Input.mousePosition.x < x;
+        // }
+
+        public void HandleIntroButtonClick(string buttonName)
         {
-            bool isPopupAactive = IsPopupActive();
+            bool isPopupActive = IsPopupActive();
             HideAllPopups();
-            if (isPopupAactive && _lastButtonClicked == name)
+            if (isPopupActive && _lastButtonClicked == buttonName)
                 return;
-            _lastButtonClicked = name;
-            switch (name)
+            _lastButtonClicked = buttonName;
+
+            switch (buttonName)
             {
                 case "TutorialButton":
-                    // _tutorialPopup.Show();
-                    MusicManager.PlayEffect();
-                    MusicManager.PlayTransition();
-                    SettingsManager.InGameUI.SetDefault();
-                    SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
-                    SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
-                    SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
-                    SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
-                    SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
-                    SettingsManager.MultiplayerSettings.ConnectOffline();
-                    SettingsManager.MultiplayerSettings.StartRoom();
+                    HandleTutorialButton();
                     break;
                 case "CreditsButton":
                     SceneLoader.LoadScene(SceneName.Credits);
@@ -298,7 +302,6 @@ namespace UI
                     break;
                 case "ToolsButton":
                     PopupManager.Instance.ShowPopup<GisketchUI.ToolsPopup>();
-                    // _toolsPopup.Show();
                     break;
                 case "QuitButton":
                     Application.Quit();
@@ -320,5 +323,22 @@ namespace UI
                     break;
             }
         }
+
+        private void HandleTutorialButton()
+        {
+            MusicManager.PlayEffect();
+            MusicManager.PlayTransition();
+            SettingsManager.InGameUI.SetDefault();
+            SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
+            SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
+            SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
+            SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
+            SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
+            SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
+            SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
+            SettingsManager.MultiplayerSettings.ConnectOffline();
+            SettingsManager.MultiplayerSettings.StartRoom();
+        }
+
     }
 }
