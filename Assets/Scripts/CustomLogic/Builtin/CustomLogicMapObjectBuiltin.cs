@@ -340,8 +340,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddBoxTarget")
             {
@@ -368,8 +369,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddComponent")
             {

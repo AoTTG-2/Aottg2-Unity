@@ -31,9 +31,13 @@ namespace CustomLogic
                 {
                     if (!Shifter.AI)
                         return null;
-                    var enemy = (CustomLogicCharacterBuiltin)parameters[0];
+                    ITargetable enemy;
+                    if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
+                        enemy = mapTargetable.Value;
+                    else
+                        enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
                     var focus = parameters[1].UnboxToFloat();
-                    Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy.Character, focus);
+                    Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
                     return null;
                 }
                 if (methodName == "Idle")
