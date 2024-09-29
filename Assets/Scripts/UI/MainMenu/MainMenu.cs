@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -30,7 +30,7 @@ namespace UI
         public BasePopup _tutorialPopup;
         public OutdatedPopup _outdatedPopup;
         public MainBackgroundMenu _backgroundMenu;
-        public TipPanel _tipPanel;
+        // public TipPanel _tipPanel;
         protected Text _multiplayerStatusLabel;
         protected string _lastButtonClicked;
         protected Image _introPanelBackground;
@@ -53,9 +53,9 @@ namespace UI
         {
             _backgroundMenu = ElementFactory.CreateMenu<MainBackgroundMenu>("Prefabs/Panels/BackgroundMenu");
             _backgroundMenu.Setup();
-            _tipPanel = ElementFactory.CreateTipPanel(transform, enabled: true);
-            _tipPanel.SetRandomTip();
-            ElementFactory.SetAnchor(_tipPanel.gameObject, TextAnchor.LowerRight, TextAnchor.LowerRight, new Vector2(10f, -10f));
+            // _tipPanel = ElementFactory.CreateTipPanel(transform, enabled: true);
+            // _tipPanel.SetRandomTip();
+            // ElementFactory.SetAnchor(_tipPanel.gameObject, TextAnchor.LowerRight, TextAnchor.LowerRight, new Vector2(10f, -10f));
             StartCoroutine(WaitAndChangeBackground());
         }
 
@@ -174,7 +174,7 @@ namespace UI
         private void ChangeMainBackground()
         {
             _backgroundMenu.ChangeMainBackground();
-            _tipPanel.SetRandomTip();
+            // _tipPanel.SetRandomTip();
         }
 
         private IEnumerator WaitAndChangeBackground()
@@ -298,7 +298,8 @@ namespace UI
                     _editProfilePopup.Show();
                     break;
                 case "SettingsButton":
-                    _settingsPopup.Show();
+                    // _settingsPopup.Show();
+                    SidePanelManager.Instance.ShowSettingsPanel();
                     break;
                 case "ToolsButton":
                     PopupManager.Instance.ShowPopup<GisketchUI.ToolsPopup>();

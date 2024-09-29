@@ -983,6 +983,7 @@ MonoBehaviour:
   backgroundPanel: {fileID: 0}
   buttonWidth: 400
   buttonHeight: 72
+  tipPanel: {fileID: 8092265274330500043, guid: 4cfa413974a61e24ab0d60a425206d36, type: 3}
   iconsContainer: {fileID: 2981530568907879633}
 --- !u!1 &7149472279988558872
 GameObject:
