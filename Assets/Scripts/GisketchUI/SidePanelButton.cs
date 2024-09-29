@@ -93,7 +93,6 @@ namespace GisketchUI
         public void OnPointerDown(PointerEventData eventData)
         {
             AnimateLabelPress();
-            UIManager.PlaySound(UISound.Forward);
         }
 
         public void OnPointerUp(PointerEventData eventData)

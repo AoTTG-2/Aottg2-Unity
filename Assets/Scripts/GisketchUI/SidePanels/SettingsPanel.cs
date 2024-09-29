@@ -85,7 +85,7 @@ namespace GisketchUI
 
         private void OnBackClicked()
         {
-            SidePanelManager.Instance.HideCurrentPanel();
+            // SidePanelManager.Instance.HideCurrentPanel();
         }
     }
 }

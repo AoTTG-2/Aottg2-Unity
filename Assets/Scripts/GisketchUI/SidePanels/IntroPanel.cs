@@ -5,12 +5,14 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UI;
+using Settings;
 
 namespace GisketchUI
 {
     public class IntroPanel : SidePanel
     {
         [SerializeField] private RectTransform logo;
+        [SerializeField] private RectTransform backgroundPanel;
         private float firstButtonOffset = 360f;
         private float buttonSpacing = 0f;
         [SerializeField] private float buttonWidth = 400f;
@@ -18,6 +20,8 @@ namespace GisketchUI
 
         private Vector2 nextButtonPosition;
         private Vector3 logoOriginalPosition;
+        private Vector2 logoOriginalSize;
+        private Vector2 backgroundPanelOriginalPosition;
 
         [SerializeField] private GameObject iconsContainer;
 
@@ -35,6 +39,7 @@ namespace GisketchUI
 
             nextButtonPosition = new Vector2(0, -firstButtonOffset);
             SetupLogo();
+            SetupBackground();
             SetupButtons();
             SetupFooterButtons();
 
@@ -45,20 +50,116 @@ namespace GisketchUI
 
         private void SetupLogo()
         {
-            logo.anchoredPosition = new Vector3(-700f, 0f, 0f);
-            logo.sizeDelta = new Vector2(640f, 520f);
+            logoOriginalPosition = logo.anchoredPosition;
+            logoOriginalSize = logo.sizeDelta;
+        }
+
+        private void SetupBackground()
+        {
+            backgroundPanel = transform.Find("Background").GetComponent<RectTransform>();
+            backgroundPanelOriginalPosition = backgroundPanel.anchoredPosition;
+        }
+
+        private bool isBackgroundAnimating = false;
+        private bool isLogoAnimating = false;
+        private bool isEntranceAnimationComplete = false;
+
+        private void Update()
+        {
+            if (!isEntranceAnimationComplete)
+                return;
+
+            if (SettingsManager.UISettings.FadeMainMenu.Value)
+            {
+                if (HoverIntroPanel())
+                {
+                    if (!isBackgroundAnimating && !isLogoAnimating)
+                    {
+                        AnimateToOriginalState();
+                    }
+                }
+                else
+                {
+                    if (!isBackgroundAnimating && !isLogoAnimating)
+                    {
+                        AnimateToFadedState();
+                    }
+                }
+            }
+            else
+            {
+                // Reset background and logo to original positions immediately
+                backgroundPanel.anchoredPosition = backgroundPanelOriginalPosition;
+                logo.anchoredPosition = logoOriginalPosition;
+                logo.sizeDelta = logoOriginalSize;
+            }
+        }
+
+        private void AnimateToOriginalState()
+        {
+            isBackgroundAnimating = true;
+            isLogoAnimating = true;
+
+            // Reset background position
+            LeanTween.moveX(backgroundPanel, backgroundPanelOriginalPosition.x, 0.15f)
+                .setEaseOutCubic()
+                .setOnComplete(() => isBackgroundAnimating = false);
+
+            // Reset logo position and size
+            LeanTween.move(logo, logoOriginalPosition, 0.15f).setEaseOutCubic();
+            LeanTween.size(logo, logoOriginalSize, 0.15f)
+                .setEaseOutCubic()
+                .setOnComplete(() => isLogoAnimating = false);
+        }
+
+        private void AnimateToFadedState()
+        {
+            isBackgroundAnimating = true;
+            isLogoAnimating = true;
+
+            // Move background out of view
+            float targetX = -backgroundPanel.rect.width / 2;
+            LeanTween.moveX(backgroundPanel, targetX, 0.15f)
+                .setEaseOutCubic()
+                .setOnComplete(() => isBackgroundAnimating = false);
+
+            // Adjust logo size and position
+            Vector3 targetLogoPosition = new Vector3(-96f, 60f, 0f);
+            Vector2 targetLogoSize = logoOriginalSize * 0.7f;
+            LeanTween.move(logo, targetLogoPosition, 0.15f).setEaseOutCubic();
+            LeanTween.size(logo, targetLogoSize, 0.15f)
+                .setEaseOutCubic()
+                .setOnComplete(() => isLogoAnimating = false);
+        }
+
+        private bool HoverIntroPanel()
+        {
+            float x = backgroundPanel.rect.width * 0.25f;
+            return Input.mousePosition.x < x;
         }
 
         private void SetupButtons()
         {
-            AddButton("TUTORIAL", () => OnButtonClicked("TutorialButton"));
-            AddButton("SINGLEPLAYER", () => OnButtonClicked("SingleplayerButton"));
-            AddButton("MULTIPLAYER", () => OnButtonClicked("MultiplayerButton"));
-            AddButton("PROFILE", () => OnButtonClicked("ProfileButton"));
-            AddButton("SETTINGS", () => OnButtonClicked("SettingsButton"));
-            AddButton("TOOLS", () => OnButtonClicked("ToolsButton"));
-            AddButton("CREDITS", () => OnButtonClicked("CreditsButton"));
-            AddButton("QUIT", () => OnButtonClicked("QuitButton"));
+            string[] buttonKeys = new string[]
+            {
+                "Tutorial",
+                "Singleplayer",
+                "Multiplayer",
+                "Profile",
+                "Settings",
+                "Tools",
+                "Credits",
+                "Quit"
+            };
+
+            foreach (string key in buttonKeys)
+            {
+                string localizedText = (key == "Profile" || key == "Settings" || key == "Quit")
+                    ? UIManager.GetLocaleCommon(key)
+                    : UIManager.GetLocale("MainMenu", "Intro", $"{key}Button");
+
+                AddButton(localizedText.ToUpper(), () => OnButtonClicked($"{key}Button"));
+            }
         }
 
         private void OnButtonClicked(string buttonName)
@@ -87,6 +188,7 @@ namespace GisketchUI
         protected override void AnimateEntrance(float duration)
         {
             isAnimating = true;
+            isEntranceAnimationComplete = false;
             activeAnimations.Clear();
 
             base.AnimateEntrance(duration);
@@ -112,9 +214,12 @@ namespace GisketchUI
             AnimateFooterButtons(buttonDelay + buttons.Count * 0.025f);
 
             // Set a callback to mark animation as complete
-            LeanTween.delayedCall(timeToStart + 1f, () => isAnimating = false);
+            LeanTween.delayedCall(timeToStart + 1f, () =>
+            {
+                isAnimating = false;
+                isEntranceAnimationComplete = true;
+            });
         }
-
 
 
         private void SetupFooterButtons()
@@ -191,6 +296,7 @@ namespace GisketchUI
         private void SkipAnimation()
         {
             isAnimating = false;
+            isEntranceAnimationComplete = true;
 
             // Cancel all active animations
             foreach (var anim in activeAnimations)
