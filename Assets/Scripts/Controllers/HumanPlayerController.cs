@@ -232,15 +232,16 @@ namespace Controllers
             }
         }
 
+        private HashSet<HumanState> _illegalWeaponStates = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
+            HumanState.SpecialAttack, HumanState.Stun };
+
         protected override void UpdateActionInput(bool inMenu)
         {
             base.UpdateActionInput(inMenu);
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
-            HumanState.SpecialAttack, HumanState.Stun};
-            bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon = _human.MountState == HumanMountState.None && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)

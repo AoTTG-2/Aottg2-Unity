@@ -147,7 +147,7 @@ namespace UI
             });
 
             
-            foreach (var character in _inGameManager.GetAllCharacters())
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
                 mockEntry.Key = character;
                 if (!_characterInfoPopups.Contains(mockEntry) && !character == false && character.Dead == false)

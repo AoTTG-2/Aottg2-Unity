@@ -43,7 +43,6 @@ namespace ApplicationManagers
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
-            DebugConsole.Init();
             ApplicationConfig.Init();
             AnticheatManager.Init();
             PhysicsLayer.Init();
@@ -71,11 +70,11 @@ namespace ApplicationManagers
                 DebugTesting.RunTests();
             }
 
-#if UNITY_EDITOR
-            // if in editor
-            if (Application.isEditor)
+#if (UNITY_EDITOR || DEVELOPMENT_BUILD)
+            if (Application.isEditor || Debug.isDebugBuild)
             {
                 DebugLagSim.Init();
+                //DebugConsole.Init();
             }
 #endif
             BasicTitanSetup.Init();

@@ -27,7 +27,6 @@ namespace ApplicationManagers
         private Activity roomActivity;
         private Activity mainMenuActivity;
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
-        private string[] propertyValues = new string[] { "0", "0", "0", "0" };
 
         public static void Init()
         {
@@ -111,7 +110,6 @@ namespace ApplicationManagers
                     for (int i = 0; i < trackedProperties.Length; i++)
                     {
                         object value = player.GetCustomProperty(trackedProperties[i]);
-                        propertyValues[i] = value != null ? value.ToString() : "0";
                         score += value != null ? value.ToString() : "0";
                         if (i < trackedProperties.Length - 1)
                         {

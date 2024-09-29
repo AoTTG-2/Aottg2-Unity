@@ -41,9 +41,10 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
-
-        public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
+        private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+
+        public virtual LayerMask GroundMask => GroundMaskLayers;
         protected virtual float GroundDistance => 0.3f;
 
         // Visuals

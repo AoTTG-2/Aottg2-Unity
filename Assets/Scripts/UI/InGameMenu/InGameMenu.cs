@@ -70,7 +70,8 @@ namespace UI
         private string _topLeftText;
         private InGameManager _gameManager;
         private Dictionary<string, BasePopup> _customPopups = new Dictionary<string, BasePopup>();
-        
+        private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
+
         public override void Setup()
         {
             base.Setup();
@@ -408,7 +409,7 @@ namespace UI
             }
             else
                 _globalPauseGamePopup.Hide();
-            foreach (string label in new List<string>(_labelHasTimeLeft.Keys))
+            foreach (string label in _labelHasTimeLeft.Keys)
             {
                 if (_labelHasTimeLeft[label])
                 {
@@ -568,14 +569,15 @@ namespace UI
             }
             else
             {
-                List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                for (int i = 0; i < trackedProperties.Length; i++)
                 {
-                    object value = player.GetCustomProperty(property);
-                    string str = value != null ? value.ToString() : string.Empty;
-                    scoreList.Add(str);
+                    object value = player.GetCustomProperty(trackedProperties[i]);
+                    score += value != null ? value.ToString() : string.Empty;
+                    if (i < trackedProperties.Length - 1)
+                    {
+                        score += " / ";
+                    }
                 }
-                score = string.Join("/", scoreList.ToArray());
             }
             
             row = Util.SizeText($"{name}: {score}", 19);
@@ -604,7 +606,6 @@ namespace UI
         private string GetPlayerList()
         {
             string list = string.Empty;
-            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
             foreach (var player in PhotonNetwork.PlayerList)
             {
                 list += GetPlayerListEntry(player) + "\n";
