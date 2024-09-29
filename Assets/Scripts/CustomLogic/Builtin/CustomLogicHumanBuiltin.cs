@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Characters;
 using GameManagers;
@@ -138,6 +138,13 @@ namespace CustomLogic
                 return Human.CurrentSpecial;
             if (name == "Cooldown")
                 return Human.Special == null ? 0f : Human.Special.Cooldown;
+            if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    return special.LiveTime;
+
+                return 0f;
+            }
             if (name == "CooldownRatio")
                 return Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
             if (name == "CurrentGas")
@@ -249,6 +256,11 @@ namespace CustomLogic
 
                 var v = Mathf.Max(0f, value.UnboxToFloat());
                 Human.Special.Cooldown = v;
+            }
+            else if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    special.LiveTime = value.UnboxToFloat();
             }
             else if (name == "CurrentGas")
                 Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
