@@ -16,6 +16,7 @@ namespace UI
         public BaseCharacter Character;
         public Vector3 Offset;
         public float Range;
+        private bool _highlyVisible = false;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -44,8 +45,14 @@ namespace UI
                 _healthbar.gameObject.SetActive(toggle);
         }
 
-        public void SetName(string name)
+        public void SetName(string name, bool highlyVisibleEnabled)
         {
+            if (highlyVisibleEnabled && !_highlyVisible)
+            {
+                name = name.ForceWhiteColorTag();
+                _highlyVisible = true;
+            }
+                
             _nameLabel.text = name;
         }
 

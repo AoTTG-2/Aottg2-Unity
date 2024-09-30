@@ -91,9 +91,7 @@ namespace UI
                     string name = character.Name;
                     if (character.Guild != "")
                         name = character.Guild + "\n" + name;
-                    if (highlyVisible)
-                        name = name.ForceWhiteColorTag();
-                    popup.SetName(name);
+                    popup.SetName(name, highlyVisible);
                 }
                 else
                     popup.ToggleName(false);

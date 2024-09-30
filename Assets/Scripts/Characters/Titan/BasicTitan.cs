@@ -1218,7 +1218,7 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else
+            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
             {
                 if (IsCrawler)
                     collider.height = _originalCapsuleValue;

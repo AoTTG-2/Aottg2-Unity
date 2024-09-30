@@ -446,8 +446,8 @@ namespace UI
             }
             else
                 _bottomCenterLabel.text = _bottomCenterText;
-            _bottomRightLabel.text = (_bottomRightText + "\n" + GetKeybindStrings()).Trim();
-            _topLeftLabel.text = (GetTelemetricStrings().Trim() + "\n" + _topLeftText).Trim();
+            _bottomRightLabel.text = (_bottomRightText + "\n" + GetKeybindStrings());
+            _topLeftLabel.text = (GetTelemetricStrings() + "\n" + _topLeftText);
             _killFeedBigPopup.TimeLeft -= Time.deltaTime;
             if (_killFeedBigPopup.IsActive && _killFeedBigPopup.TimeLeft <= 0f)
                 _killFeedBigPopup.Hide();

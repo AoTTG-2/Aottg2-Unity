@@ -311,10 +311,16 @@ namespace Characters
                 PlayAnimation(animation, startTime);
         }
 
+        private object[] crossfadeCache = new object[3];
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
+            {
+                crossfadeCache[0] = animation;
+                crossfadeCache[1] = fadeTime;
+                crossfadeCache[2] = startTime;
+                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, crossfadeCache);
+            }
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
