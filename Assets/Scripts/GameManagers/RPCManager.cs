@@ -248,6 +248,20 @@ namespace GameManagers
         }
 
         [PunRPC]
+        public void AnnounceRPC(string message, PhotonMessageInfo info)
+        {
+            ChatManager.OnAnnounceRPC(message);
+        }
+
+        [PunRPC]
+        public void VoteKickRPC(int id, PhotonMessageInfo info)
+        {
+            var voter = info.Sender;
+            var target = PhotonNetwork.CurrentRoom.GetPlayer(id, false);
+            ChatManager.VoteKickPlayer(voter, target);
+        }
+
+        [PunRPC]
         public void TestRPC(Color c)
         {
             Debug.Log(c);

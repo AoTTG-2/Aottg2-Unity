@@ -11,8 +11,8 @@ namespace Spawnables
         {
             var go = collision.transform.root.gameObject;
             var human = go.GetComponent<Human>();
-            if (human != null && human.IsMine() && human.NeedRefill())
-                human.Refill();
+            if (human != null && human.IsMine() && human.NeedRefill(false))
+                human.SupplySpawnableRefill();
         }
     }
 }

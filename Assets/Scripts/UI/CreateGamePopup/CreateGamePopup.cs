@@ -119,6 +119,7 @@ namespace UI
             {
                 case "Restart":
                     InGameManager.RestartGame();
+                    ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true; // Prevents AHSS players from shooting when restarting the map/level
                     break;
                 case "Start":
                     MusicManager.PlayEffect();

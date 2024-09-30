@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
+using Anticheat;
 
 namespace GameManagers
 {
@@ -248,9 +249,9 @@ namespace GameManagers
             else if (CurrentCharacter is BaseShifter)
                 killWeapon = KillWeapon.Shifter;
             if (victim is Human)
-                GameProgressManager.RegisterHumanKill(CurrentCharacter.gameObject, (Human)victim, killWeapon);
+                GameProgressManager.RegisterHumanKill((Human)victim, killWeapon);
             else if (victim is BasicTitan)
-                GameProgressManager.RegisterTitanKill(CurrentCharacter.gameObject, (BasicTitan)victim, killWeapon);
+                GameProgressManager.RegisterTitanKill((BasicTitan)victim, killWeapon);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.Kills, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills) + 1 }
@@ -262,24 +263,25 @@ namespace GameManagers
         {
             if (CurrentCharacter == null)
                 return;
-            var killWeapon = KillWeapon.Other;
+            KillMethod killMethod = KillWeapon.Other;
             if (CurrentCharacter is Human)
             {
                 var human = (Human)CurrentCharacter;
                 if (human.Setup.Weapon == HumanWeapon.AHSS)
-                    killWeapon = KillWeapon.AHSS;
+                    killMethod.Weapon = KillWeapon.AHSS;
                 else if (human.Setup.Weapon == HumanWeapon.Blade)
-                    killWeapon = KillWeapon.Blade;
+                    killMethod.Weapon = KillWeapon.Blade;
                 else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
-                    killWeapon = KillWeapon.Thunderspear;
+                    killMethod.Weapon = KillWeapon.Thunderspear;
                 else if (human.Setup.Weapon == HumanWeapon.APG)
-                    killWeapon = KillWeapon.APG;
+                    killMethod.Weapon = KillWeapon.APG;
+                killMethod.Special = human.State == HumanState.SpecialAttack ? human.CurrentSpecial : "";
             }
             else if (CurrentCharacter is BasicTitan)
-                killWeapon = KillWeapon.Titan;
+                killMethod = KillWeapon.Titan;
             else if (CurrentCharacter is BaseShifter)
-                killWeapon = KillWeapon.Shifter;
-            GameProgressManager.RegisterDamage(CurrentCharacter.gameObject, victim.gameObject, killWeapon, damage);
+                killMethod = KillWeapon.Shifter;
+            GameProgressManager.RegisterDamage(victim.gameObject, killMethod, damage);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.TotalDamage, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage) + damage },
@@ -331,6 +333,7 @@ namespace GameManagers
             if (VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
                 VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
 
+            AnticheatManager.ResetVoteKicks(player);
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)

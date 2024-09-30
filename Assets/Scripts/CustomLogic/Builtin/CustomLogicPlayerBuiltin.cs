@@ -121,9 +121,18 @@ namespace CustomLogic
                     Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
                 else
                 {
-                    Vector3 vector = ((CustomLogicVector3Builtin)value).Value;
-                    string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
-                    Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
+                    if (value is CustomLogicVector3Builtin v3)
+                    {
+                        var vector = v3.Value;
+                        string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
+                    }
+                    else if (value is CustomLogicMapObjectBuiltin mapObject)
+                    {
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, mapObject.Value.ScriptObject.Id.ToString());
+                    }
+                    else
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
                 }
             }
             else
