@@ -1,4 +1,4 @@
-using Settings;
+﻿using Settings;
 using Characters;
 using UnityEngine;
 using System.Collections.Generic;
@@ -403,7 +403,7 @@ namespace Controllers
             {
                 return (hit.position - _titan.Cache.Transform.position).normalized;
             }
-            
+
             // Return a random direction if the navmesh is not found
             Vector3 randDir = Random.onUnitSphere;
             randDir.y = 0;
@@ -685,6 +685,7 @@ namespace Controllers
             Vector3 velocity = Vector3.zero;
             Vector3 relativePosition;
             bool isHuman = _enemy is Human;
+            bool isMapTargetable = _enemy is MapTargetable;
             if (isHuman)
             {
                 velocity = ((Human)_enemy).GetVelocity();
@@ -700,7 +701,7 @@ namespace Controllers
             foreach (string attackName in AttackChances.Keys)
             {
                 var attackInfo = AttackInfos[attackName];
-                if (attackInfo.HumanOnly && !isHuman)
+                if (attackInfo.HumanOnly && !isHuman && (!isMapTargetable || !attackInfo.MapObject))
                     continue;
                 if (farOnly && !attackInfo.FarOnly)
                     continue;
