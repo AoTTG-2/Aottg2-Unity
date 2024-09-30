@@ -156,6 +156,7 @@
 		"Misc.AllowPlayerTitans": "Allow player titans",
 		"Misc.AllowShifters": "Allow shifters",
 		"Misc.AllowShifterSpecials": "Allow shifter specials",
+		"Misc.AllowVoteKicking": "Allow vote kicking",
 		"Misc.Horses": "Horses",
 		"Misc.HorseSpeed": "Horse speed",
 		"Misc.GunsAirReload": "Guns air reload",
@@ -496,7 +497,7 @@
 		"General.Loadout": "Loadout",
 		"General.Special": "Special",
 		"SpecialTooltip.Distract": "Causes enemies to switch their focus to you",
-		"SpecialTooltip.Escape": "Lets you escape the grasp of a titan  —  just once",
+		"SpecialTooltip.Escape": "Lets you escape the grasp of a titan - just once",
 		"SpecialTooltip.Dance": "Make titans around you laugh, holding them in place",
 		"SpecialTooltip.Smell": "Sniff out the location of titans in range",
 		"SpecialTooltip.Potato": "Eat a potato to give you a burst of running speed",
@@ -515,6 +516,7 @@
 		"SpecialTooltip.Annie": "Transform into the Female Titan",
 		"SpecialTooltip.Armored": "Transform into the Armored Titan",
 		"SpecialTooltip.Switchback": "Use near surfaces to bounce, keeping your momentum",
+		"SpecialTooltip.Confuse": "Slows down the attack speed of a nearby titan"
 	},
 	"CharacterEditor": {
 		"Costume.Title": "Costume",
@@ -627,7 +629,7 @@
 		"Movement.Back": "Back with {0}",
 		"Movement.Right": "And right with {0}",
 		"Camera.Text": "You can switch between the camera types with the {0} key",
-		"SupplyStation.Text": "You can refill your gas and blades at a supply stations",
+		"SupplyStation.Text": "You can refill your gas and blades at supply stations",
 		"SupplyStation.Instruction1": "Reload your blades by pressing {0}",
 		"SupplyStation.Instruction2": "Now move to the supply station to refill your gas and blades",
 		"Jump.Text": "Jump with {0}. Hold it to use gas and move with {1} while in the air",
