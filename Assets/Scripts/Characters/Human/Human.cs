@@ -812,9 +812,9 @@ namespace Characters
             if (!Grounded || State != HumanState.Idle)
                 return false;
             State = HumanState.Refill;
-            if (Special is SupplySpecial && Special.UsesLeft == 0)
+            if (Special is SupplySpecial)
             {
-                Special.Reset();
+                ((SupplySpecial)Special).Reset();
             }
             ToggleSparks(false);
             CrossFade(HumanAnimations.Refill, 0.1f);
@@ -822,12 +822,24 @@ namespace Characters
             _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length / Cache.Animation[HumanAnimations.Refill].speed;
             return true;
         }
-
-        public bool NeedRefill()
+        public bool SupplySpawnableRefill()
+        {
+            if (!Grounded || State != HumanState.Idle)
+                return false;
+            State = HumanState.Refill;
+            ToggleSparks(false);
+            CrossFade(HumanAnimations.Refill, 0.1f);
+            PlaySound(HumanSounds.Refill);
+            _stateTimeLeft = Cache.Animation[HumanAnimations.Refill].length / Cache.Animation[HumanAnimations.Refill].speed;
+            return true;
+        }
+        public bool NeedRefill(bool isGasTank)
         {
             if (Stats.CurrentGas < Stats.MaxGas)
+            {
                 return true;
-            if (Special is SupplySpecial && Special.UsesLeft == 0)
+            }
+            if (isGasTank && Special is SupplySpecial && Special.UsesLeft <= 0)
             {
                 return true;
             }
