@@ -10,6 +10,7 @@ using Characters;
 using Photon.Pun;
 using Spawnables;
 using System.Collections;
+using Utility;
 
 namespace GameManagers
 {
@@ -226,7 +227,7 @@ namespace GameManagers
         {
             if (info.Sender.IsMasterClient && CustomLogicManager.Evaluator != null)
             {
-                CustomLogicManager.Evaluator.CurrentTime = time + (float)(PhotonNetwork.Time - info.SentServerTime);
+                CustomLogicManager.Evaluator.CurrentTime = time + (float)Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time);
             }
         }
 
