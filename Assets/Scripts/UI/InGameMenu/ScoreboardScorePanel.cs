@@ -126,7 +126,7 @@ namespace UI
             else
             {
                 List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage","Ping" })
                 {
                     object value = player.GetCustomProperty(property);
                     string str = value != null ? value.ToString() : string.Empty;
