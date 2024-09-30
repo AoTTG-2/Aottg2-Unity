@@ -64,7 +64,7 @@ namespace CustomLogic
             _streamObjs = new List<object>();            
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream", new List<object>());
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
             }
             stream.SendNext(_streamObjs.ToArray());
         }
@@ -74,7 +74,7 @@ namespace CustomLogic
             _streamObjs = new List<object>(objs);
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkStream", new List<object>());
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkStream");
             }
         }
 

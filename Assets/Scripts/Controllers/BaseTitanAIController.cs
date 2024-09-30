@@ -302,6 +302,8 @@ namespace Controllers
                             else
                                 WaitAttack();
                         }
+                        else if (GetEnemyAngle(_enemy) > TurnAngle && AttackWait > 0f)
+                            WaitAttack();
                         else if (HasClearLineOfSight(_enemy.GetPosition()))
                             TargetEnemy();
                         else if (_stateTimeLeft <= 0f)
@@ -353,6 +355,7 @@ namespace Controllers
                         else
                             MoveToEnemy();
                     }
+                    _waitAttackTimeLeft = AttackWait;
                 }
             }
             else if (AIState == TitanAIState.Action)
@@ -611,6 +614,7 @@ namespace Controllers
         {
             AIState = TitanAIState.WaitAttack;
             _titan.HasDirection = false;
+            _waitAttackTimeLeft = AttackWait;
         }
 
         protected ITargetable FindNearestEnemy()
