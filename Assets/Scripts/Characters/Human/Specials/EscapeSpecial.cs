@@ -1,6 +1,8 @@
 ﻿using Effects;
+using log4net.Util;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Characters
 {
@@ -10,17 +12,39 @@ namespace Characters
 
         public EscapeSpecial(BaseCharacter owner) : base(owner)
         {
-            UsesLeft = MaxUses = 1;
+            UsesLeft = -1;
+            MaxUses = 1;
+            Cooldown = 300;
+            ReduceCooldownAmount = 50f;
+            SetCooldownLeft(300);
         }
 
         public override bool CanUse()
         {
-            return base.CanUse() && ((Human)_owner).State == HumanState.Grab;
+            var human = (Human)_owner;
+            if (!human.Weapon.HasDurability()) return false;
+            return base.CanUse() && human.State == HumanState.Grab;
         }
-
         protected override void Activate()
         {
-            ((Human)_owner).CrossFade(HumanAnimations.SpecialJean, 0.1f);
+            var human = (Human)_owner;
+            if (human.Weapon is BladeWeapon)
+            {
+                human.CrossFade(HumanAnimations.SpecialJean, 0.1f);
+            }
+            if (human.Weapon is AHSSWeapon)
+            {
+                human.CrossFade(HumanAnimations.AHSSShootBoth, 0.1f);
+            }
+            if (human.Weapon is ThunderspearWeapon)
+            {
+                human.CrossFade(HumanAnimations.TSShootLAir, 0.1f);
+            }
+            if (human.Weapon is APGWeapon)
+            {
+                human.CrossFade(HumanAnimations.AHSSShootBoth, 0.1f);
+            }
+            
         }
 
         protected override void Deactivate()
@@ -29,10 +53,37 @@ namespace Characters
             if (!human.Dead && human.Grabber != null && human.State == HumanState.Grab)
             {
                 human.Ungrab(true, false);
-                EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
-                human.PlaySound(HumanSounds.BladeHit);
-                human.SpecialActionState(0.5f);
+                if(human.Weapon is BladeWeapon)
+                {
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
+                    human.PlaySound(HumanSounds.BladeHit);
+                    human.SpecialActionState(0.5f);
+                }
+                if(human.Weapon is AHSSWeapon)
+                {
+                    EffectSpawner.Spawn(EffectPrefabs.GunExplode, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation ((human.GetAimPoint() - human.Cache.Transform.position).normalized));
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
+                    human.PlaySound(HumanSounds.GetRandomAHSSGunShot());
+                    human.SpecialActionState(0.5f);
+                }
+                if (human.Weapon is ThunderspearWeapon)
+                {
+                    EffectSpawner.Spawn(EffectPrefabs.ThunderspearExplode, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true);
+                    EffectSpawner.Spawn(EffectPrefabs.Boom2, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true);
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
+                    human.PlaySound(HumanSounds.GetRandomTSLaunch());
+                    human.SpecialActionState(0.5f);
+                }
+                if (human.Weapon is APGWeapon)
+                {
+                    EffectSpawner.Spawn(EffectPrefabs.APGTrail, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized));
+                    EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
+                    human.PlaySound(HumanSounds.GetRandomAPGShot());
+                    human.SpecialActionState(0.5f);
+                }
             }
+            UsesLeft = -1;
+            Cooldown = 300;
         }
     }
 }

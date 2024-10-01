@@ -1039,7 +1039,6 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
-
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
@@ -1163,6 +1162,10 @@ namespace Characters
                             }
 
                         }
+                        if (GetCurrentSpecial() is EscapeSpecial)
+                        {
+                            ReduceSpecialCooldown();
+                        }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
@@ -1181,7 +1184,6 @@ namespace Characters
                 }
             }
         }
-
         protected void Update()
         {
             if (IsMine() && !Dead)
@@ -2515,7 +2517,15 @@ namespace Characters
             Special = HumanSpecials.GetSpecialUseable(this, special);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
-
+        public BaseUseable GetCurrentSpecial()
+        {
+            return Special;
+        }
+        public void ReduceSpecialCooldown()
+        {
+            Special.ReduceCooldown();
+        }
+        
         protected void LoadSkin(Player player = null)
         {
             if (IsMine())
