@@ -8,6 +8,7 @@ using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace CustomLogic
@@ -19,10 +20,11 @@ namespace CustomLogic
         public Dictionary<int, CustomLogicNetworkViewBuiltin> IdToNetworkView = new Dictionary<int, CustomLogicNetworkViewBuiltin>();
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
-        protected List<CustomLogicClassInstance> _callback = new List<CustomLogicClassInstance>();
+        protected Dictionary<string, List<CustomLogicClassInstance>> _callbacks = new Dictionary<string, List<CustomLogicClassInstance>>();
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
         public string ScoreboardProperty = "";
+        private List<object> EmptyParameters = new List<object>();
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {
@@ -132,15 +134,38 @@ namespace CustomLogic
                         main.Variables[variableName] = ((BoolSetting)setting).Value;
                 }
                 foreach (var instance in _staticClasses.Values)
-                    EvaluateMethod(instance, "Init", new List<object>());
+                    EvaluateMethod(instance, "Init");
                 EvaluateMethodForCallbacks("Init");
-                _callback.Add(_staticClasses["Main"]);
+                AddCallbacks(_staticClasses["Main"]);
                 EvaluateMethodForCallbacks("OnGameStart");
                 CustomLogicManager._instance.StartCoroutine(OnSecond());
             }
             catch (Exception e)
             {
                 DebugConsole.Log("Custom logic runtime error: " + e.Message, true);
+            }
+        }
+
+        protected void AddCallbacks(CustomLogicClassInstance instance)
+        {
+            foreach (string method in _start.Classes[instance.ClassName].Methods.Keys)
+            {
+                if (!_callbacks.ContainsKey(method))
+                    _callbacks.Add(method, new List<CustomLogicClassInstance>());
+                _callbacks[method].Add(instance);
+            }
+        }
+
+        protected void RemoveCallbacks(CustomLogicClassInstance instance)
+        {
+            foreach (string method in _start.Classes[instance.ClassName].Methods.Keys)
+            {
+                if (_callbacks.ContainsKey(method))
+                {
+                    var callback = _callbacks[method];
+                    if (callback.Contains(instance))
+                        callback.Remove(instance);
+                }
             }
         }
 
@@ -200,9 +225,9 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterDamaged", new List<object>() { victimBuiltin, killerBuiltin, killerName, damage });
         }
 
-        public void OnChatInput(string message)
+        public object OnChatInput(string message)
         {
-            EvaluateMethod(_staticClasses["Main"], "OnChatInput", new List<object>() { message });
+            return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new List<object>() { message });
         }
 
         public void OnPlayerJoin(Player player)
@@ -240,8 +265,7 @@ namespace CustomLogic
             while (true)
             {
                 yield return new WaitForSeconds(1f);
-                foreach (var instance in new List<CustomLogicClassInstance>(_callback))
-                    EvaluateMethod(instance, "OnSecond", new List<object>());
+                EvaluateMethodForCallbacks("OnSecond");
                 if (PhotonNetwork.IsMasterClient)
                 {
                     RPCManager.PhotonView.RPC("SyncCurrentTimeRPC", RpcTarget.Others, new object[] { CurrentTime });
@@ -278,8 +302,12 @@ namespace CustomLogic
         private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
         {
             // for loop instead of foreach because the list might be modified during the loop
-            for (int i = 0; i < _callback.Count; i++)
-                EvaluateMethod(_callback[i], methodName, parameters ?? new List<object>());
+            if (_callbacks.ContainsKey(methodName))
+            {
+                var callback = _callbacks[methodName];
+                for (int i = 0; i < callback.Count; i++)
+                    EvaluateMethod(callback[i], methodName, parameters);
+            }
         }
 
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
@@ -297,7 +325,7 @@ namespace CustomLogic
                         obj.RegisterComponentInstance(instance);
                         if (init)
                         {
-                            EvaluateMethod(instance, "Init", new List<object>());
+                            EvaluateMethod(instance, "Init");
                         }
                         if (component.ComponentName == "Rigidbody")
                             rigidbody = true;
@@ -341,7 +369,7 @@ namespace CustomLogic
                 var photonView = SetupNetworking(obj);
                 CustomLogicComponentInstance instance = CreateComponentInstance(componentName, obj, component);
                 obj.RegisterComponentInstance(instance);
-                EvaluateMethod(instance, "Init", new List<object>());
+                EvaluateMethod(instance, "Init");
                 if (photonView != null)
                     photonView.Init(obj.ScriptObject.Id, componentName == "Rigidbody");
                 else if (componentName == "Rigidbody" && IdToNetworkView.TryGetValue(instance.MapObject.Value.ScriptObject.Id, out var networkView))
@@ -357,7 +385,7 @@ namespace CustomLogic
 
         public void RemoveComponent(CustomLogicComponentInstance instance)
         {
-            _callback.Remove(instance);
+            RemoveCallbacks(instance);
         }
 
         private void CreateStaticClass(string className)
@@ -420,7 +448,7 @@ namespace CustomLogic
                 networkView.RegisterComponentInstance(classInstance);
             RunAssignmentsClassInstance(classInstance);
             classInstance.LoadVariables();
-            _callback.Add(classInstance);
+            AddCallbacks(classInstance);
             if (classInstance.UsesCollider())
             {
                 HashSet<GameObject> children = new HashSet<GameObject>();
@@ -818,17 +846,19 @@ namespace CustomLogic
             return _start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName);
         }
 
-        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, List<object> parameterValues)
+        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, List<object> parameterValues = null)
         {
+            if (parameterValues == null)
+                parameterValues = EmptyParameters;
             try
             {
                 if (classInstance is CustomLogicBaseBuiltin)
                 {
                     return ((CustomLogicBaseBuiltin)classInstance).CallMethod(methodName, parameterValues);
                 }
-                Dictionary<string, object> localVariables = new Dictionary<string, object>();
                 if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     return null;
+                Dictionary<string, object> localVariables = new Dictionary<string, object>();
                 CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
                 int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)

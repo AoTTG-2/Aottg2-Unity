@@ -18,6 +18,7 @@ namespace Settings
         public BoolSetting AllowPlayerTitans = new BoolSetting(true);
         public BoolSetting AllowShifterSpecials = new BoolSetting(true);
         public BoolSetting AllowShifters = new BoolSetting(false);
+        public BoolSetting AllowVoteKicking = new BoolSetting(false);
         public BoolSetting Horses = new BoolSetting(false);
         public BoolSetting GunsAirReload = new BoolSetting(true);
         public BoolSetting AllowStock = new BoolSetting(true);

@@ -62,34 +62,34 @@ namespace GameProgress
             _gameStatHandler.AddExp(exp);
         }
 
-        public static void RegisterTitanKill(GameObject character, BasicTitan victim, KillWeapon weapon)
+        public static void RegisterTitanKill(BasicTitan victim, KillMethod method)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterTitanKill(character, victim, weapon);
+                handler.RegisterTitanKill(victim, method);
         }
 
-        public static void RegisterHumanKill(GameObject character, Human victim, KillWeapon weapon)
+        public static void RegisterHumanKill(Human victim, KillMethod method)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterHumanKill(character, victim, weapon);
+                handler.RegisterHumanKill(victim, method);
         }
 
-        public static void RegisterDamage(GameObject character, GameObject victim, KillWeapon weapon, int damage)
+        public static void RegisterDamage(GameObject victim, KillMethod method, int damage)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterDamage(character, victim, weapon, damage);
+                handler.RegisterDamage(victim, method, damage);
         }
 
-        public static void RegisterSpeed(GameObject character, float speed)
+        public static void RegisterSpeed(float speed)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterSpeed(character, speed);
+                handler.RegisterSpeed(speed);
         }
 
-        public static void RegisterInteraction(GameObject character, GameObject interact, InteractionType interactionType)
+        public static void RegisterInteraction(GameObject interact, InteractionType interactionType)
         {
             foreach (BaseGameProgressHandler handler in _handlers)
-                handler.RegisterInteraction(character, interact, interactionType);
+                handler.RegisterInteraction(interact, interactionType);
         }
 
         private IEnumerator IncrementPlayTime()
@@ -111,6 +111,27 @@ namespace GameProgress
         Other,
         Shifter,
         Titan
+    }
+
+    public struct KillMethod
+    {
+        public const string NullSpecialKey = "None";
+
+        public KillWeapon Weapon;
+        public string Special;
+
+        public KillMethod(KillWeapon weapon, string special)
+        {
+            Weapon = weapon;
+            Special = special;
+        }
+
+        public static implicit operator KillMethod(KillWeapon weapon) => new(weapon, "");
+
+        public readonly string WeaponKey => Weapon.ToString();
+        public readonly string SpecialKey => string.IsNullOrEmpty(Special) ? NullSpecialKey : Special;
+
+        public override readonly string ToString() => $"({WeaponKey}, {SpecialKey})";
     }
 
     public enum InteractionType
