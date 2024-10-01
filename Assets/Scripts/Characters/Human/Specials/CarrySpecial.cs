@@ -12,10 +12,12 @@ namespace Characters
 {
     class CarrySpecial : BaseHoldAttackSpecial
     {
+        public const float DefaultCarryDistance = 25f;
+        public const float DefaultGroundedCarryDistance = 10f;
         protected bool _needActivate;
         protected override float ActiveTime => 0.64f;
-        protected float CarryDistance => 25f;
-        protected float GroundedCarryDistance => 10f;
+        protected float CarryDistance => DefaultCarryDistance;
+        protected float GroundedCarryDistance => DefaultGroundedCarryDistance;
         public CarrySpecial(BaseCharacter owner) : base(owner)
         {
             Cooldown = 2f;
