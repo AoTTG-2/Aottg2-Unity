@@ -135,7 +135,7 @@ namespace CustomLogic
                 return Human.Setup.Weapon.ToString();
             if (name == "CurrentSpecial")
                 return Human.CurrentSpecial;
-            if (name == "Cooldown")
+            if (name == "SpecialCooldown")
                 return Human.Special == null ? 0f : Human.Special.Cooldown;
             if (name == "ShifterLiveTime")
             {
@@ -144,7 +144,7 @@ namespace CustomLogic
 
                 return 0f;
             }
-            if (name == "CooldownRatio")
+            if (name == "SpecialCooldownRatio")
                 return Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
             if (name == "CurrentGas")
                 return Human.Stats.CurrentGas;
