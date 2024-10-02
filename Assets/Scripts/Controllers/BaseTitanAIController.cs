@@ -701,7 +701,12 @@ namespace Controllers
             foreach (string attackName in AttackChances.Keys)
             {
                 var attackInfo = AttackInfos[attackName];
-                if (attackInfo.HumanOnly && !isHuman && (!isMapTargetable || !attackInfo.MapObject))
+                if (isMapTargetable)
+                {
+                    if (!attackInfo.MapObject)
+                        continue;
+                }
+                else if (attackInfo.HumanOnly && !isHuman)
                     continue;
                 if (farOnly && !attackInfo.FarOnly)
                     continue;
