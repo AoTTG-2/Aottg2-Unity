@@ -64,6 +64,7 @@ namespace Characters
         public float InvincibleTimeLeft;
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
+        private float _grabIFrames = 0f;
 
         // physics
         public float ReelInAxis = 0f;
@@ -442,6 +443,8 @@ namespace Characters
         }
         public void Grab(BaseTitan grabber, string type)
         {
+            if (HasGrabImmunity())
+                return;
             if (MountState != HumanMountState.None)
                 Unmount(true);
             Transform hand;
@@ -1189,9 +1192,7 @@ namespace Characters
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
-                InvincibleTimeLeft -= Time.deltaTime;
-                if (InvincibleTimeLeft <= 0f)
-                    IsInvincible = false;
+                UpdateIFrames();
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1788,6 +1789,25 @@ namespace Characters
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();
+        }
+
+        public bool HasGrabImmunity()
+        {
+            return _grabIFrames > 0;
+        }
+
+        public void StartGrabImmunity(float duration)
+        {
+            _grabIFrames = duration;
+        }
+
+        private void UpdateIFrames()
+        {
+            InvincibleTimeLeft -= Time.deltaTime;
+            if (InvincibleTimeLeft <= 0f)
+                IsInvincible = false;
+            if (_grabIFrames > 0)
+                _grabIFrames -= Time.deltaTime;
         }
 
         private void lookAtTarget(Vector3 target)
