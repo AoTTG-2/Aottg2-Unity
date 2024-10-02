@@ -62,6 +62,7 @@ namespace UI
         private List<BasePopup> _allPausePopups = new List<BasePopup>();
         private Dictionary<string, float> _labelTimeLeft = new Dictionary<string, float>();
         private Dictionary<string, bool> _labelHasTimeLeft = new Dictionary<string, bool>();
+        List<string> labelsToDeactivate = new List<string>();
         private float _killScoreTimeLeft;
         private float _snapshotTimeLeft;
         private string _middleCenterText;
@@ -409,17 +410,22 @@ namespace UI
             }
             else
                 _globalPauseGamePopup.Hide();
-            foreach (string label in _labelHasTimeLeft.Keys)
+            labelsToDeactivate.Clear();
+            foreach (var kvp in _labelHasTimeLeft)
             {
-                if (_labelHasTimeLeft[label])
+                if (kvp.Value)
                 {
-                    _labelTimeLeft[label] -= Time.deltaTime;
-                    if (_labelTimeLeft[label] <= 0f)
+                    _labelTimeLeft[kvp.Key] -= Time.deltaTime;
+                    if (_labelTimeLeft[kvp.Key] <= 0f)
                     {
-                        _labelHasTimeLeft[label] = false;
-                        SetLabelText(label, "");
+                        labelsToDeactivate.Add(kvp.Key);
+                        SetLabelText(kvp.Key, "");
                     }
                 }
+            }
+            foreach (var label in labelsToDeactivate)
+            {
+                _labelHasTimeLeft[label] = false;
             }
             if (_gameManager.IsEnding)
                 _middleCenterLabel.text = _middleCenterText + "\n" + "Restarting in " + ((int)_gameManager.EndTimeLeft).ToString();
