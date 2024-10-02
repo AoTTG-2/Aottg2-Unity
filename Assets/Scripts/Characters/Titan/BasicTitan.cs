@@ -49,6 +49,7 @@ namespace Characters
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
+        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
 
         public void Init(bool ai, string team, JSONNode data, int headPrefab)
         {
@@ -1149,14 +1150,14 @@ namespace Characters
             }
             if (_leftArmDisabled)
             {
-                BasicCache.ForearmL.localScale = Vector3.zero;
+                BasicCache.ForearmL.localScale = _cutHandSize;
                 BasicCache.ForearmL.localRotation = Quaternion.identity;
             }
             else
                 BasicCache.ForearmL.localScale = Vector3.one;
             if (_rightArmDisabled)
             {
-                BasicCache.ForearmR.localScale = Vector3.zero;
+                BasicCache.ForearmR.localScale = _cutHandSize;
                 BasicCache.ForearmR.localRotation = Quaternion.identity;
             }
             else

@@ -565,6 +565,9 @@ namespace Characters
         {
             while (CustomLogicManager.Evaluator == null)
                 yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
+            yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
             {
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
