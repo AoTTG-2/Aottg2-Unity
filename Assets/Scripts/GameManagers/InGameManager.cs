@@ -951,7 +951,7 @@ namespace GameManagers
             {
                 int currentPing = PhotonNetwork.GetPing();
                 PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
-                timeSinceLastPingUpdate= 0f;
+                timeSinceLastPingUpdate = 0f;
             }
         }
 

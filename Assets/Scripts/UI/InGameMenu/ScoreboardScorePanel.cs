@@ -82,8 +82,6 @@ namespace UI
                 _header.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
                 _header.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
 
-                //foreach (Transform t in _header)
-                //    t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
                 CreateHorizontalDivider(SinglePanel);
             }
             string playerCount = " (" + currentPlayers.ToString() + "/" + maxPlayers.ToString() + ")";
@@ -117,8 +115,6 @@ namespace UI
             row.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
             row.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
 
-            //foreach (Transform t in row)
-            //    t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
             return row;
         }
 
@@ -143,7 +139,7 @@ namespace UI
             else
             {
                 List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage"})
+                foreach (string property in new string[] {"Kills","Deaths","HighestDamage","TotalDamage"})
                 {
                     object value = player.GetCustomProperty(property);
                     string str = value != null ? value.ToString() : string.Empty;
