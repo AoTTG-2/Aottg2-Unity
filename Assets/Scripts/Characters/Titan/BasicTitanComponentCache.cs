@@ -10,6 +10,7 @@ namespace Characters
         public BaseHitbox CrawlerHitbox;
         public Transform ForearmL;
         public Transform ForearmR;
+        public Transform Body;
         public Collider ForearmLHurtbox;
         public Collider ForearmRHurtbox;
         public ParticleSystem ForearmBloodL;
@@ -21,6 +22,7 @@ namespace Characters
         public BasicTitanComponentCache(GameObject owner): base(owner)
         {
             Core = Transform.Find("Amarture_VER2/Core");
+            Body = Transform.Find("Amarture_VER2/Core/Controller.Body");
             Neck = Transform.Find("Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck");
             Hip = Transform.Find("Amarture_VER2/Core/Controller.Body/hip");
             Head = Neck.Find("head");

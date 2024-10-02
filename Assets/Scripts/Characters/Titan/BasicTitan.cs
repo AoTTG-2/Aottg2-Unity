@@ -1,11 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using Controllers;
-using CustomSkins;
 using System.Collections.Generic;
 using SimpleJSONFixed;
 using System.Collections;
@@ -16,9 +12,6 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
-using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 namespace Characters
 {
@@ -68,7 +61,7 @@ namespace Characters
             else
             {
                 int runAnimationType = 1;
-                if (data != null  && data.HasKey("RunAnimation"))
+                if (data != null && data.HasKey("RunAnimation"))
                     runAnimationType = data["RunAnimation"].AsInt;
                 if (runAnimationType == 0)
                     _runAnimation = BasicAnimations.Runs[UnityEngine.Random.Range(0, BasicAnimations.Runs.Length)];
@@ -93,7 +86,7 @@ namespace Characters
         protected override void SetSizeParticles(float size)
         {
             base.SetSizeParticles(size);
-            foreach (ParticleSystem system in new ParticleSystem[] {BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR})
+            foreach (ParticleSystem system in new ParticleSystem[] { BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR })
             {
                 system.startSize *= size;
                 system.startSpeed *= size;
@@ -434,7 +427,7 @@ namespace Characters
                 dieAnimation = BasicAnimations.DieCrawler;
             else if (_currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup)
                 dieAnimation = BasicAnimations.DieGround;
-            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle 
+            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
             StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
@@ -769,7 +762,7 @@ namespace Characters
                     BasicCache.MouthHitbox.Activate(0f, GetHitboxTime(0.09f));
                     _currentAttackStage = 1;
                 }
-                else if (_currentAttackStage == 1  && animationTime > stage2Time)
+                else if (_currentAttackStage == 1 && animationTime > stage2Time)
                 {
                     var transform = BasicCache.MouthHitbox.transform;
                     var position = transform.position + transform.up * Size;
@@ -865,7 +858,7 @@ namespace Characters
                 else if (_currentAttackStage == 1 && animationTime > 0.61f)
                 {
                     _currentAttackStage = 2;
-                    Vector3 direction = (_rockThrowTarget - hand).normalized;
+                    Vector3 direction = (GetAimPoint() - hand).normalized;
                     Cache.PhotonView.RPC("ClearRockRPC", RpcTarget.All, new object[0]);
                     ProjectileSpawner.Spawn(ProjectilePrefabs.Rock1, hand, Quaternion.LookRotation(direction), direction * RockThrow1Speed,
                         Vector3.zero, 10f, Cache.PhotonView.ViewID, "", new object[] { Size * 1.5f });
@@ -875,7 +868,7 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (HoldHuman == null  && _stateTimeLeft > 4.72f)
+            if (HoldHuman == null && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
@@ -1148,27 +1141,37 @@ namespace Characters
                     }
                 }
             }
-            if (_leftArmDisabled)
+            if (!base.AI && base.State == TitanState.Attack && base._currentAttackAnimation == this.BasicAnimations.AttackRockThrow)
             {
-                BasicCache.ForearmL.localScale = _cutHandSize;
-                BasicCache.ForearmL.localRotation = Quaternion.identity;
+                Vector3 rockThrowTarget = GetAimPoint();
+                rockThrowTarget.y = BasicCache.Transform.position.y;
+                Vector3 normalized = (rockThrowTarget - BasicCache.Transform.position).normalized;
+                BasicCache.Transform.rotation = Quaternion.Lerp(BasicCache.Transform.rotation, Quaternion.LookRotation(normalized), Time.deltaTime * 20f);
             }
             else
-                BasicCache.ForearmL.localScale = Vector3.one;
-            if (_rightArmDisabled)
             {
-                BasicCache.ForearmR.localScale = _cutHandSize;
-                BasicCache.ForearmR.localRotation = Quaternion.identity;
-            }
-            else
-                BasicCache.ForearmR.localScale = Vector3.one;
-            BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
-            BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
-            if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
-            {
-                var body = BasicCache.Core.Find("Controller.Body");
-                body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-                BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
+                if (_leftArmDisabled)
+                {
+                    BasicCache.ForearmL.localScale = _cutHandSize;
+                    BasicCache.ForearmL.localRotation = Quaternion.identity;
+                }
+                else
+                    BasicCache.ForearmL.localScale = Vector3.one;
+                if (_rightArmDisabled)
+                {
+                    BasicCache.ForearmR.localScale = _cutHandSize;
+                    BasicCache.ForearmR.localRotation = Quaternion.identity;
+                }
+                else
+                    BasicCache.ForearmR.localScale = Vector3.one;
+                BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
+                BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
+                if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+                {
+                    var body = BasicCache.Body;
+                    body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                    BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
+                }
             }
         }
 
