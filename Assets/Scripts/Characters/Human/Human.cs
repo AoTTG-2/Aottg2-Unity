@@ -1162,7 +1162,7 @@ namespace Characters
                             }
 
                         }
-                        if (GetCurrentSpecial() is EscapeSpecial)
+                        if (GetCurrentSpecial() is EscapeSpecial || GetCurrentSpecial() is ShifterTransformSpecial)
                         {
                             ReduceSpecialCooldown();
                         }

@@ -14,7 +14,7 @@ namespace Characters
         {
             UsesLeft = -1;
             MaxUses = 1;
-            Cooldown = 300;
+            Cooldown = 300f;
             ReduceCooldownAmount = 50f;
             SetCooldownLeft(300);
         }

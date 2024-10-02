@@ -169,7 +169,7 @@ namespace Projectiles
                             ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
                             titan.GetHit(_owner, damage, "Thunderspear", collider.name);
                         }
-                        if(((Human)_owner).GetCurrentSpecial() is EscapeSpecial)
+                        if(((Human)_owner).GetCurrentSpecial() is EscapeSpecial || ((Human)_owner).GetCurrentSpecial() is ShifterTransformSpecial)
                         {
                             ((Human)_owner).ReduceSpecialCooldown();
                         }
