@@ -41,6 +41,10 @@ namespace Characters
         {
             return base.CanUse() && CurrentDurability > 0f && ((Human)_owner).State == HumanState.Idle;
         }
+        public override bool HasDurability()
+        {
+            return CurrentDurability > 0f;
+        }
 
         protected override void Activate()
         {

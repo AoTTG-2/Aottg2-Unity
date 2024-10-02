@@ -9,6 +9,7 @@ namespace Characters
     abstract class BaseUseable
     {
         public float Cooldown;
+        public float ReduceCooldownAmount;
         public int UsesLeft;
         public int MaxUses;
         public bool IsActive;
@@ -16,10 +17,11 @@ namespace Characters
         protected float _lastUseTime = -1000f;
         protected BaseCharacter _owner;
 
-        public BaseUseable(BaseCharacter owner, float cooldown = 0f, int maxUses = -1)
+        public BaseUseable(BaseCharacter owner, float cooldown = 0f, float _reduceCooldownAmount =0f,int maxUses = -1)
         {
             _owner = owner;
             Cooldown = cooldown;
+            ReduceCooldownAmount = _reduceCooldownAmount;
             UsesLeft = MaxUses = maxUses;
         }
 
@@ -31,17 +33,18 @@ namespace Characters
         {
             UsesLeft = MaxUses;
         }
-
         public void SetCooldownLeft(float cooldownLeft)
         {
             _lastUseTime = Time.time - Cooldown + cooldownLeft;
         }
-
+        public void ReduceCooldown()
+        {
+            _lastUseTime -= ReduceCooldownAmount;
+        }
         public float GetCooldownLeft()
         {
             return Mathf.Clamp(Cooldown - (Time.time - _lastUseTime), 0f, Cooldown);
         }
-
         public float GetCooldownRatio()
         {
             if (!HasUsesLeft())
@@ -67,7 +70,10 @@ namespace Characters
         {
             return (Time.time - _lastUseTime) >= Cooldown && (UsesLeft == -1 || UsesLeft > 0);
         }
-
+        public virtual bool HasDurability()
+        {
+            return false;
+        }
         protected virtual void OnUse()
         {
             if (UsesLeft > 0)
