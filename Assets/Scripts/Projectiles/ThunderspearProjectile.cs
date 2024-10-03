@@ -152,7 +152,8 @@ namespace Projectiles
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Thunderspear", 100, "Thunderspear", transform.position);
+                    var damage = CalculateDamage();
+                    handler.GetHit(_owner, _owner.Name, damage, "Thunderspear", transform.position);
                     continue;
                 }
                 if (titan != null && titan != _owner && !TeamInfo.SameTeam(titan, _team) && !titan.Dead)
