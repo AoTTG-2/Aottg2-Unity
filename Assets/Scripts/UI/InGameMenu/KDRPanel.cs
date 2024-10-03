@@ -51,7 +51,8 @@ namespace UI
 
         public override void Setup(BasePanel parent = null)
         {
-            _panel = transform.Find("Content/Panel").gameObject;
+            // _panel = transform.Find("Content/Panel").gameObject;
+            _panel = transform.Find("Panel").gameObject;
             _style = new ElementStyle(themePanel: ThemePanel);
 
             PlayerStatuses = new Dictionary<string, string>
@@ -113,7 +114,8 @@ namespace UI
 
         private PlayerRow CreateRow(Player player, ElementStyle style)
         {
-            GameObject rowGameObject = ElementFactory.CreateHorizontalGroup(_panel.transform, 0f, TextAnchor.MiddleCenter);
+            // NOTE: Added spacing for horizontal group
+            GameObject rowGameObject = ElementFactory.CreateHorizontalGroup(_panel.transform, 12f, TextAnchor.MiddleCenter);
             Transform rowGroup = rowGameObject.transform;
             // player
             var id = ElementFactory.CreateDefaultLabel(rowGroup, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft);   // host, id, status (0)
