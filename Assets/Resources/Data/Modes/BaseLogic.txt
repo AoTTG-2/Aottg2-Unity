@@ -2477,6 +2477,7 @@ component Cannon
     UnlimitedAmmo = true;
     MaxAmmo = 0;
     Cooldown = 3.0;
+    ProjectileLiveTime = 2.0;
     _rotateSpeed = 20;
     _ballSpeed = 300.0;
     _barrel = null;
@@ -2640,7 +2641,7 @@ component Cannon
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
             Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed, 
-            Vector3(0, -20, 0), 2.0, self._human);
+            Vector3(0, -20, 0), self.ProjectileLiveTime, self._human);
         }
     }
 }
