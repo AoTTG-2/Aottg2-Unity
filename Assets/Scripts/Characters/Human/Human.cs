@@ -724,8 +724,7 @@ namespace Characters
             {
                 if (previousHumanWeapon is AHSSWeapon)
                 {
-                    AHSSWeapon ahss = (AHSSWeapon)previousHumanWeapon;
-                    ahss.HandleUI();
+                    ((AHSSWeapon)previousHumanWeapon).HandleUI();
                 }
                 AmmoWeapon previousAmmoWeapon = (AmmoWeapon)previousHumanWeapon;
                 AmmoWeapon weapon = (AmmoWeapon)Weapon;
