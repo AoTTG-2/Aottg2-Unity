@@ -31,6 +31,7 @@ namespace UI
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
         public VoiceChatPanel VoiceChatPanel;
+        public KDRPanel KDRPanel;
         public BasePopup _settingsPopup;
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
@@ -147,6 +148,11 @@ namespace UI
             {
                 VoiceChatPanel = ElementFactory.InstantiateAndSetupPanel<VoiceChatPanel>(transform, "Prefabs/InGame/VoiceChatPanel", true).GetComponent<VoiceChatPanel>();
                 ElementFactory.SetAnchor(VoiceChatPanel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10, 10f));
+            }
+            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.Off)
+            {
+                KDRPanel = ElementFactory.InstantiateAndSetupPanel<KDRPanel>(_topLeftLabel.transform, "Prefabs/InGame/KDRPanel", true).GetComponent<KDRPanel>();
+                ElementFactory.SetAnchor(KDRPanel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0, 0));
             }
             ChatPanel = ElementFactory.InstantiateAndSetupPanel<ChatPanel>(transform, "Prefabs/InGame/ChatPanel", true).GetComponent<ChatPanel>();
             ElementFactory.SetAnchor(ChatPanel.gameObject, TextAnchor.LowerLeft, TextAnchor.LowerLeft, new Vector2(10f, 10f));
@@ -662,13 +668,13 @@ namespace UI
                     fpsLine += ", ";
                 fpsLine += "Ping:" + PhotonNetwork.GetPing().ToString();
             }
-            if (SettingsManager.UISettings.ShowKDR.Value)
+            /*if (SettingsManager.UISettings.ShowKDR.Value)
             {
                 if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
                     kdrLine = GetPlayerList();
                 else
                     kdrLine = GetPlayerListTeams();
-            }
+            }*/
             string final = timeLine;
             if (timeLine != "")
                 final += "\n";

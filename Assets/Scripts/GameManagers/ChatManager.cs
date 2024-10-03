@@ -576,6 +576,11 @@ namespace GameManagers
             return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
+        private static KDRPanel GetKDRPanel()
+        {
+            return ((InGameMenu)UIManager.CurrentMenu).KDRPanel;
+        }
+
         public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)
         {
             string str = "[" + id.ToString() + "] ";
