@@ -30,11 +30,6 @@ namespace Settings
             MultiplayerSettings = new MultiplayerSettings();
             ProfileSettings = new ProfileSettings();
             CustomSkinSettings = new CustomSkinSettings();
-            GraphicsSettings = new GraphicsSettings();
-            GeneralSettings = new GeneralSettings();
-            UISettings = new UISettings();
-            AbilitySettings = new AbilitySettings();
-            InputSettings = new InputSettings();
             InGameSettings = new InGameSettings();
             WeatherSettings = new WeatherSettings();
             InGameCurrent = new InGameSet();
@@ -42,7 +37,24 @@ namespace Settings
             HumanCustomSettings = new HumanCustomSettings();
             InGameCharacterSettings = new InGameCharacterSettings();
             MapEditorSettings = new MapEditorSettings();
+
+            // SAVEABLE SETTINGS
+            GraphicsSettings = new GraphicsSettings();
+            GeneralSettings = new GeneralSettings();
+            UISettings = new UISettings();
+            AbilitySettings = new AbilitySettings();
+            InputSettings = new InputSettings();
             SoundSettings = new SoundSettings();
+        }
+
+        public static IEnumerable<SaveableSettingsContainer> GetSaveableSettings()
+        {
+            yield return GraphicsSettings;
+            yield return GeneralSettings;
+            yield return UISettings;
+            yield return AbilitySettings;
+            yield return InputSettings;
+            yield return SoundSettings;
         }
     }
 }

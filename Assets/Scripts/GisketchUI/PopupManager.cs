@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Utility;
+using UI;
 
 namespace GisketchUI
 {
@@ -57,6 +58,7 @@ namespace GisketchUI
             _activePopupCount++;
             if (_activePopupCount == 1)
             {
+                UIManager.PlaySound(UISound.Forward);
                 background.Show(0.15f);
             }
             GetOrCreatePopup<T>().Show();
@@ -66,6 +68,7 @@ namespace GisketchUI
         {
             if (_popups.TryGetValue(typeof(T).Name, out BasePopup popup))
             {
+                UIManager.PlaySound(UISound.Back);
                 popup.Hide();
             }
         }
