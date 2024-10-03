@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using SimpleJSONFixed;
 using UI;
 using System.Collections;
+using DentedPixel;
 
 namespace GisketchUI
 {
@@ -11,7 +12,7 @@ namespace GisketchUI
         [SerializeField] private Text _label;
         [SerializeField] private RectTransform _rectTransform;
         [SerializeField] private Image _backgroundImage;
-        [SerializeField] private float _slideDistance = 620f;
+        [SerializeField] private float _slideDistance = 650f;
         [SerializeField] private float _animationDuration = 0.5f;
         [SerializeField] private float _tipChangeDuration = 20f;
 

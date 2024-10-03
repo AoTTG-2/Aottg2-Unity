@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UI;
 using Settings;
+using DentedPixel;
 
 namespace GisketchUI
 {
@@ -38,9 +39,11 @@ namespace GisketchUI
             base.Initialize();
             _mainMenu = FindFirstObjectByType<MainMenu>();
 
-            // Create and setup the TipPanel
-            tipPanel = ElementFactory.CreateTipPanel(GisketchUIManager.Instance.MainCanvas.transform);
-            tipPanel.gameObject.SetActive(false);
+            if (tipPanel == null)
+            {
+                tipPanel = ElementFactory.CreateTipPanel(GisketchUIManager.Instance.MainCanvas.transform);
+                tipPanel.gameObject.SetActive(false);
+            }
 
             nextButtonPosition = new Vector2(0, -firstButtonOffset);
             SetupLogo();
@@ -189,7 +192,6 @@ namespace GisketchUI
         {
             Debug.Log("IntroPanel Show called");
             base.Show(1f);
-            tipPanel.Show();
         }
 
         public override void Hide(float duration)
@@ -234,6 +236,7 @@ namespace GisketchUI
             // Set a callback to mark animation as complete
             LeanTween.delayedCall(timeToStart + 1f, () =>
             {
+                tipPanel.Show();
                 isAnimating = false;
                 isEntranceAnimationComplete = true;
             });
@@ -315,6 +318,8 @@ namespace GisketchUI
         {
             isAnimating = false;
             isEntranceAnimationComplete = true;
+
+            tipPanel.Show();
 
             // Cancel all active animations
             foreach (var anim in activeAnimations)

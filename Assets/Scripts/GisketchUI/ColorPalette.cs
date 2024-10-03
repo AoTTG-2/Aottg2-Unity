@@ -10,9 +10,13 @@ namespace GisketchUI
         public static readonly Color Red = new Color(0.5058824f, 0.2392157f, 0.3215686f);    // #813d52
         public static readonly Color Purple = new Color(0.3803922f, 0.2980392f, 0.5647059f); // #614c90
 
+        public static readonly Color RedLight = new Color(0.8431373f, 0.2784314f, 0.3686275f); // #d7475e
+
         public static readonly Color Primary = Red;
         public static readonly Color Secondary = Purple;
         public static readonly Color Tertiary = Blue;
+
+        public static readonly Color PrimaryLight = RedLight;
 
         // Neutrals
         public static readonly Color White = Color.white;
