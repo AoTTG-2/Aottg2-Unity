@@ -598,6 +598,14 @@ namespace GameManagers
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 
+        public static string GetTimeString(int time)
+        {
+            string str = time.ToString();
+            if (str.Length == 1)
+                str = "0" + str;
+            return str;
+        }
+
         private void Update()
         {
             if (IsChatAvailable() && !InGameMenu.InMenu() && !DebugConsole.Enabled)

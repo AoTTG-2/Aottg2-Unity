@@ -459,7 +459,7 @@ namespace UI
             else
                 _bottomCenterLabel.text = _bottomCenterText;
             _bottomRightLabel.text = (_bottomRightText + "\n" + GetKeybindStrings());
-            _topLeftLabel.text = (GetTelemetricStrings() + "\n" + _topLeftText);
+            _topLeftLabel.text = _topLeftText;
             _killFeedBigPopup.TimeLeft -= Time.deltaTime;
             if (_killFeedBigPopup.IsActive && _killFeedBigPopup.TimeLeft <= 0f)
                 _killFeedBigPopup.Hide();
@@ -644,53 +644,6 @@ namespace UI
                 list += "\t" + GetPlayerListEntry(player) + "\n";
             }
             return list;
-        }
-
-        private string GetTelemetricStrings()
-        {
-            string timeLine = "";
-            string fpsLine = "";
-            string kdrLine = "";
-            if (SettingsManager.UISettings.ShowGameTime.Value)
-            {
-                if (CustomLogicManager.Evaluator != null)
-                    timeLine += "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator.CurrentTime, 2), ChatTextColor.System);
-                else
-                    timeLine += "Game Time: " + ChatManager.GetColorString("0", ChatTextColor.System);
-                var dt = System.DateTime.Now;
-                timeLine += ", System: " + ChatManager.GetColorString(GetTimeString(dt.Hour) + ":" + GetTimeString(dt.Minute) + ":" + GetTimeString(dt.Second), ChatTextColor.System);
-            }
-            if (SettingsManager.GraphicsSettings.ShowFPS.Value)
-                fpsLine += "FPS:" + UIManager.GetFPS().ToString();
-            if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
-            {
-                if (fpsLine != "")
-                    fpsLine += ", ";
-                fpsLine += "Ping:" + PhotonNetwork.GetPing().ToString();
-            }
-            /*if (SettingsManager.UISettings.ShowKDR.Value)
-            {
-                if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
-                    kdrLine = GetPlayerList();
-                else
-                    kdrLine = GetPlayerListTeams();
-            }*/
-            string final = timeLine;
-            if (timeLine != "")
-                final += "\n";
-            final += fpsLine;
-            if (fpsLine != "")
-                final += "\n";
-            final += kdrLine;
-            return final;
-        }
-
-        private string GetTimeString(int time)
-        {
-            string str = time.ToString();
-            if (str.Length == 1)
-                str = "0" + str;
-            return str;
         }
 
         private void HideAllMenus()

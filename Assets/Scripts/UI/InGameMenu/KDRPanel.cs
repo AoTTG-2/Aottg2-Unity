@@ -14,71 +14,36 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
+using static UnityEngine.Rendering.DebugUI.MessageBox;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace UI
 {
-    struct PlayerRow
-    {
-        public Transform row;
-        public GameObject gameObject;
-        public Player Player;
-        public Text id;
-        public Text name;
-        public RawImage weapon;
-        public Text score;
-        public bool isSet;
-        public bool isMasterClient;
-        public int actorNumber;
-        public string status;
-        public string character;
-    }
-
     class KDRPanel : BasePanel, IInRoomCallbacks, IMatchmakingCallbacks
     {
         protected override string ThemePanel => "KDRPanel";
         private GameObject _panel;
-        private PlayerRow _myRow = new PlayerRow();
-        private List<PlayerRow> _rows = new List<PlayerRow>();
-        private Player[] _lastPlayers;
-        private const float MaxSyncDelay = 1f;
+        private PlayerKDRRow _myRow;
+        private Dictionary<int, PlayerKDRRow> _rows = new Dictionary<int, PlayerKDRRow>();
+        private Text _gameTimeText;
+        private Text _systemTimeText;
+        private Text _fpsText;
+        private Text _pingText;
+        private const float MaxSyncDelay = 0.2f;
         private float _currentSyncDelay = 1f;
-        private ElementStyle _style;
-        private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
-        private Dictionary<string, string> PlayerStatuses;
-        private Dictionary<string, string> CharacterTypes;
-        private Dictionary<string, Texture> WeaponIcons;
 
+        private const float MaxTelemetryDelay = 0.01f;
+        private float _currentTelemetryDelay = 1f;
+
+        private ElementStyle _style;
+        private float _maxWidth = 0f;
+        private int _ownerMaxWidth = -10;
 
         public override void Setup(BasePanel parent = null)
         {
-            // _panel = transform.Find("Content/Panel").gameObject;
             _panel = transform.Find("Panel").gameObject;
             _style = new ElementStyle(themePanel: ThemePanel);
-
-            PlayerStatuses = new Dictionary<string, string>
-            {
-                { PlayerStatus.Spectating, " <color=red>*dead*</color> " },
-                { PlayerStatus.Dead, " <color=white>*spec*</color> " },
-                { PlayerStatus.Alive, string.Empty }
-            };
-            CharacterTypes = new Dictionary<string, string>
-            {
-                { TeamInfo.Human, Util.ColorText(" H ", TeamInfo.GetTeamColor(TeamInfo.Human)) },
-                { TeamInfo.Titan, Util.ColorText(" T ", TeamInfo.GetTeamColor(TeamInfo.Titan)) },
-                { TeamInfo.Blue, Util.ColorText(" B ", TeamInfo.GetTeamColor(TeamInfo.Blue)) },
-                { TeamInfo.Red, Util.ColorText(" R ", TeamInfo.GetTeamColor(TeamInfo.Red)) },
-
-            };
-            WeaponIcons = new Dictionary<string, Texture>
-            {
-                { HumanLoadout.Blades, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/BladeIcon", true) },
-                { HumanLoadout.AHSS, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/AHSSIcon", true) },
-                { HumanLoadout.APG, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/APGIcon", true) },
-                { HumanLoadout.Thunderspears, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ThunderspearIcon", true) },
-                { PlayerCharacter.Titan, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/TitanIcon", true) },
-                { PlayerCharacter.Shifter, (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ShifterIcon", true) }
-            };
-
+            CreateTelemetry();
             DestroyAndRecreate();
             Sync();
         }
@@ -88,6 +53,69 @@ namespace UI
             _currentSyncDelay -= Time.deltaTime;
             if (_currentSyncDelay <= 0f)
                 Sync();
+
+            _currentTelemetryDelay -= Time.deltaTime;
+            if (_currentTelemetryDelay <= 0f)
+            {
+                SyncTelemetry();
+            }
+        }
+
+        private void CreateTelemetry()
+        {
+            if (_gameTimeText != null || _systemTimeText != null || _fpsText != null || _pingText != null)
+                return;
+            var timeRow = ElementFactory.CreateHorizontalGroup(_panel.transform, 25f, TextAnchor.MiddleLeft);
+            _gameTimeText = ElementFactory.CreateDefaultLabel(timeRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+            _systemTimeText = ElementFactory.CreateDefaultLabel(timeRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+
+            var performanceRow = ElementFactory.CreateHorizontalGroup(_panel.transform, 25f, TextAnchor.MiddleLeft);
+            _fpsText = ElementFactory.CreateDefaultLabel(performanceRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+            _pingText = ElementFactory.CreateDefaultLabel(performanceRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+        }
+
+        private void SyncTelemetry()
+        {
+            if (SettingsManager.UISettings.ShowGameTime.Value)
+            {
+                if (!_gameTimeText.gameObject.activeSelf)
+                    _gameTimeText.gameObject.SetActive(true);
+                if (!_systemTimeText.gameObject.activeSelf)
+                    _systemTimeText.gameObject.SetActive(true);
+                _gameTimeText.text = "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator?.CurrentTime ?? 0, 2), ChatTextColor.System) + ",";
+                var dt = System.DateTime.Now;
+                _systemTimeText.text = "System: " + ChatManager.GetColorString(ChatManager.GetTimeString(dt.Hour) + ":" + ChatManager.GetTimeString(dt.Minute) + ":" + ChatManager.GetTimeString(dt.Second), ChatTextColor.System);
+            }
+            else
+            {
+                _gameTimeText.text = string.Empty;
+                _systemTimeText.text = string.Empty;
+
+                // disable
+                _gameTimeText.gameObject.SetActive(false);
+                _systemTimeText.gameObject.SetActive(false);
+
+            }
+            if (SettingsManager.GraphicsSettings.ShowFPS.Value)
+            {
+                if (!_fpsText.gameObject.activeSelf)
+                    _fpsText.gameObject.SetActive(true);
+                _fpsText.text = "FPS:" + UIManager.GetFPS().ToString();
+                if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
+                    _fpsText.text += ",";
+            }
+            else
+                _fpsText.gameObject.SetActive(false);
+            if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
+            {
+                if (!_pingText.gameObject.activeSelf)
+                    _pingText.gameObject.SetActive(true);
+                _pingText.text = "Ping:" + PhotonNetwork.GetPing().ToString();
+            }
+            else
+                _pingText.gameObject.SetActive(false);
+
+            _currentTelemetryDelay = MaxTelemetryDelay;
         }
 
         /// <summary>
@@ -96,139 +124,45 @@ namespace UI
         private void Sync()
         {
             // Sync my row
-            if (_myRow.Player != null)
-            {
-                SetRow(_myRow, PhotonNetwork.LocalPlayer);
-            }
+            if (PhotonNetwork.LocalPlayer != null)
+                _myRow.UpdateRow();
 
-            // Iterate over all rows and sync
-            foreach (var row in _rows)
-            {
-                var player = row.Player;
-                if (player == null)
-                    continue;
-                SetRow(row, player);
-            }
             _currentSyncDelay = MaxSyncDelay;
-        }
-
-        private PlayerRow CreateRow(Player player, ElementStyle style)
-        {
-            // NOTE: Added spacing for horizontal group
-            GameObject rowGameObject = ElementFactory.CreateHorizontalGroup(_panel.transform, 12f, TextAnchor.MiddleCenter);
-            Transform rowGroup = rowGameObject.transform;
-            // player
-            var id = ElementFactory.CreateDefaultLabel(rowGroup, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft);   // host, id, status (0)
-            var weapon = ElementFactory.CreateRawImage(rowGroup, style, "Icons/Game/BladeIcon");  // loadout/character type   (1)
-            var name = ElementFactory.CreateDefaultLabel(rowGroup, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft); // name   (2)
-            var score = ElementFactory.CreateDefaultLabel(rowGroup, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter); // score    (3)
-            PlayerRow row = new PlayerRow
-            {
-                row = rowGroup,
-                gameObject = rowGameObject,
-                id = id.GetComponent<Text>(),
-                name = name.GetComponent<Text>(),
-                weapon = weapon.GetComponent<RawImage>(),
-                score = score.GetComponent<Text>(),
-                isSet = false,
-                isMasterClient = false,
-                actorNumber = -1,
-                status = string.Empty,
-                character = string.Empty
-            };
-
-            SetRow(row, player);
-
-            return row;
-        }
-
-        private PlayerRow SetRow(PlayerRow row, Player player)
-        {
-            string playerName = player.GetStringProperty(PlayerProperty.Name);
-            string status = player.GetStringProperty(PlayerProperty.Status);
-            string character = player.GetStringProperty(PlayerProperty.Character);
-            string loadout = player.GetStringProperty(PlayerProperty.Loadout);
-            if (!row.isSet)
-            {
-                row.isSet = true;
-                row.actorNumber = player.ActorNumber;
-                row.id.text = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + PlayerStatuses[status];
-                row.name.text = playerName;
-                row.status = status;
-                row.Player = player;
-            }
-
-            // If host, id, status, or type change, change the row transform label
-            if (row.isMasterClient != player.IsMasterClient || row.status != status)
-            {
-                row.isMasterClient = player.IsMasterClient;
-                row.status = status;
-                row.id.text = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + PlayerStatuses[status];
-            }
-
-            // If human and loadout change, change the weapon icon, otherwise if titan or shifter, change the icon
-            if (character == PlayerCharacter.Human && row.character != character || loadout != row.character)
-            {
-                row.character = character;
-                row.weapon.texture = WeaponIcons[loadout];
-            }
-            else if (character != row.character)
-            {
-                row.character = character;
-                row.weapon.texture = WeaponIcons[character];
-            }
-
-            // If name changes, change the name label
-            if (playerName != row.name.text)
-                row.name.text = playerName + ": ";
-
-            // If score changes, change the score label
-            string score = string.Empty;
-            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
-            {
-                var property = player.GetCustomProperty(CustomLogicManager.Evaluator.ScoreboardProperty);
-                if (property == null)
-                    score = string.Empty;
-                else
-                    score = property.ToString();
-            }
-            else
-            {
-                for (int i = 0; i < trackedProperties.Length; i++)
-                {
-                    object value = player.GetCustomProperty(trackedProperties[i]);
-                    score += value != null ? value.ToString() : string.Empty;
-                    if (i < trackedProperties.Length - 1)
-                    {
-                        score += " / ";
-                    }
-                }
-            }
-
-            if (score != row.score.text)
-                row.score.text = score;
-
-            return row;
         }
 
         public void DestroyAndRecreate()
         {
             // Destroy all rows and add all players via PhotonNetwork.PlayerListOthers
+            Debug.Log("Destroying and recreating");
             foreach (var row in _rows)
-                Destroy(row.gameObject);
+                if (row.Value?.gameObject != null)
+                    Destroy(row.Value.gameObject);
             _rows.Clear();
 
-            // Create my row and set it
-            _myRow = CreateRow(PhotonNetwork.LocalPlayer, _style);
+            // Destroy my row and recreate it
+            if (_myRow?.gameObject != null)
+                Destroy(_myRow.gameObject);
+            _myRow = new PlayerKDRRow(_panel.transform, _style, PhotonNetwork.LocalPlayer);
 
             // Create rows for all other players and set them
             foreach (var player in PhotonNetwork.PlayerListOthers)
             {
                 if (player != null)
                 {
-                    var row = CreateRow(player, _style);
-                    _rows.Add(row);
+                    _rows.Add(player.ActorNumber, new PlayerKDRRow(_panel.transform, _style, player));
+
+                    // Check if this new element has a larger width
+                    if (_rows[player.ActorNumber].GetFirstElementWidth() > _maxWidth)
+                    {
+                        _maxWidth = _rows[player.ActorNumber].GetFirstElementWidth();
+                        _ownerMaxWidth = player.ActorNumber;
+                    }
                 }
+            }
+            // Update all rows with the new width
+            foreach (var row in _rows)
+            {
+                row.Value.UpdateFirstElementWidth(_maxWidth);
             }
         }
 
@@ -236,24 +170,73 @@ namespace UI
         {
             if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
                 return;
-            // Create a row for the new player and set it
-            var row = CreateRow(newPlayer, _style);
-            _rows.Add(row);
+            _rows.Add(newPlayer.ActorNumber, new PlayerKDRRow(_panel.transform, _style, newPlayer));
+
+            // Check if this new element has a larger width
+            if (_rows[newPlayer.ActorNumber].GetFirstElementWidth() > _maxWidth)
+            {
+                _maxWidth = _rows[newPlayer.ActorNumber].GetFirstElementWidth();
+                _ownerMaxWidth = newPlayer.ActorNumber;
+
+                // Update all rows with the new width
+                foreach (var row in _rows)
+                {
+                    if (row.Key != newPlayer.ActorNumber)
+                        row.Value.UpdateFirstElementWidth(_maxWidth);
+                }
+
+            }
         }
 
         public void OnPlayerLeftRoom(Player otherPlayer)
         {
             if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
                 return;
-            // Destroy the row for the player that left
-            for (int i = 0; i < _rows.Count; i++)
+            
+            // try to get the row of the player and destroy it if it exists, then remove it from the dictionary
+            if (_rows.ContainsKey(otherPlayer.ActorNumber))
             {
-                if (_rows[i].actorNumber == otherPlayer.ActorNumber)
+                Destroy(_rows[otherPlayer.ActorNumber].gameObject);
+                _rows.Remove(otherPlayer.ActorNumber);
+
+                // Check if the player with the largest width left
+                if (_ownerMaxWidth == otherPlayer.ActorNumber)
                 {
-                    Destroy(_rows[i].gameObject);
-                    _rows.RemoveAt(i);
-                    break;
+                    _maxWidth = 0f;
+                    _ownerMaxWidth = -10;
+
+                    // Find the new player with the largest width
+                    foreach (var row in _rows)
+                    {
+                        if (row.Value.GetFirstElementWidth() > _maxWidth)
+                        {
+                            _maxWidth = row.Value.GetFirstElementWidth();
+                            _ownerMaxWidth = row.Key;
+                        }
+                    }
+
+                    // Update all rows with the new width
+                    foreach (var row in _rows)
+                    {
+                        if (row.Key != otherPlayer.ActorNumber)
+                            row.Value.UpdateFirstElementWidth(_maxWidth);
+                    }
                 }
+            }
+        }
+
+        public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        {
+            if (targetPlayer.IsLocal)
+            {
+                // Sync local player on timer (faster)
+                return;
+            }
+
+            // Sync the player row with the target player
+            if (_rows.ContainsKey(targetPlayer.ActorNumber))
+            {
+                _rows[targetPlayer.ActorNumber].UpdateRow();
             }
         }
 
@@ -262,12 +245,18 @@ namespace UI
             DestroyAndRecreate();
         }
 
-        public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        public virtual void OnEnable()
         {
-            //throw new NotImplementedException();
+            PhotonNetwork.AddCallbackTarget(this);
         }
 
-        public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public virtual void OnDisable()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
+        #region Unused
+        public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
         {
             //throw new NotImplementedException();
         }
@@ -306,5 +295,6 @@ namespace UI
         {
             //throw new NotImplementedException();
         }
+        #endregion
     }
 }
