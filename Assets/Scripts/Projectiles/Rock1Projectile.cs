@@ -36,7 +36,7 @@ namespace Projectiles
                 var handler = GetComponent<Collider>().gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Rock", 100, "Rock", transform.position);
+                    handler.GetHit(_owner, _owner.Name, 100, "Rock", transform.position);
                     return;
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
