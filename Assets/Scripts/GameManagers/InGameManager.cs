@@ -522,7 +522,7 @@ namespace GameManagers
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
-                SetupTitan(titan);
+                SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
                 float largeSize = 3f;
@@ -673,7 +673,7 @@ namespace GameManagers
             return titan;
         }
 
-        public void SetupTitan(BasicTitan titan)
+        public void SetupTitan(BasicTitan titan, bool ai=true)
         {
             var settings = SettingsManager.InGameCurrent.Titan;
             if (settings.TitanSizeEnabled.Value)
@@ -713,6 +713,10 @@ namespace GameManagers
                     health = Mathf.Max(health, 1);
                     titan.SetHealth(health);
                 }
+            }
+            else if (!ai)
+            {
+                titan.SetHealth(10);
             }
         }
 

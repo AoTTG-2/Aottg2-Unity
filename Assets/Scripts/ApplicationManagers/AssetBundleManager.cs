@@ -44,6 +44,7 @@ namespace ApplicationManagers
             typeof(UnityEngine.Joint),
             typeof(UnityEngine.Rigidbody),
             typeof(UnityEngine.Light),
+            typeof(UnityEngine.LODGroup),
             typeof(UnityEngine.Video.VideoPlayer)
         };
 

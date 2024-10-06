@@ -50,6 +50,7 @@ namespace UI
         private void CreateKeybindSettings(BaseSettingsContainer container, KeybindPopup popup, string cat, string sub, ElementStyle style)
         {
             int count = 0;
+            bool isTitan = sub == "Keybinds.Titan";
             foreach (DictionaryEntry entry in container.Settings)
             {
                 BaseSetting setting = (BaseSetting)entry.Value;
@@ -57,8 +58,16 @@ namespace UI
                 if (setting.GetType() == typeof(KeybindSetting))
                 {
                     Transform side = count < (container.Settings.Count / 2) ? DoublePanelLeft : DoublePanelRight;
-                    GameObject obj = ElementFactory.CreateKeybindSetting(side, style, setting, UIManager.GetLocale(cat, sub, name),
+                    if (isTitan && name.StartsWith("Attack"))
+                    {
+                        GameObject obj = ElementFactory.CreateKeybindSetting(side, style, setting, name.Substring("Attack".Length),
                         popup);
+                    }
+                    else
+                    {
+                        GameObject obj = ElementFactory.CreateKeybindSetting(side, style, setting, UIManager.GetLocale(cat, sub, name),
+                        popup);
+                    }
                     count += 1;
                 }
             }

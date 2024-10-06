@@ -22,7 +22,10 @@ class Main
     {
         if (character.IsMine && character.Type == "Titan")
         {
-            character.DetectRange = 2000;
+            if (character.DetectRange > 0)
+            {
+                character.DetectRange = 2000;
+            }
         }
     }
 

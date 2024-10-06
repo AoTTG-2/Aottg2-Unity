@@ -78,6 +78,7 @@ namespace Characters
         protected float _currentAttackSpeed;
         protected int _currentAttackStage;
         protected bool _needFreshCore;
+        protected Vector3 _attackVelocity;
         protected Vector3 _startCoreAttackPosition;
         protected Vector3 _previousCoreLocalPosition;
         protected Vector3 _furthestCoreLocalPosition;
@@ -642,7 +643,7 @@ namespace Characters
                     State = TitanState.Jump;
                 else if (State == TitanState.Attack || State == TitanState.Eat)
                     IdleWait(AttackPause);
-                else if (State == TitanState.Land)
+                else if (State == TitanState.Land || State == TitanState.CoverNape)
                     IdleWait(ActionPause);
                 else if (State == TitanState.Turn)
                     IdleWait(TurnPause);
@@ -1007,6 +1008,7 @@ namespace Characters
         SitIdle,
         Eat,
         Turn,
-        WallClimb
+        WallClimb,
+        CoverNape
     }
 }

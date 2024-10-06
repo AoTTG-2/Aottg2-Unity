@@ -154,6 +154,8 @@ namespace Characters
             var victimChar = (BaseCharacter)victim;
             if (victimChar is BaseTitan)
             {
+                if (!victimChar.AI && victimChar.MaxHealth == 10)
+                    damage = 1;
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);
