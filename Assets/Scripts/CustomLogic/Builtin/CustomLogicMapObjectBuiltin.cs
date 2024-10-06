@@ -389,6 +389,22 @@ namespace CustomLogic
                 string name = (string)parameters[0];
                 return Value.FindComponentInstance(name);
             }
+            if (methodName == "SetComponentEnabled")
+            {
+                string name = (string)parameters[0];
+                bool enabled = (bool)parameters[1];
+                Value.FindComponentInstance(name).Enabled = enabled;
+                return null;
+            }
+            if (methodName == "SetComponentsEnabled")
+            {
+                bool enabled = (bool)parameters[0];
+                foreach (var instance in Value.ComponentInstances)
+                {
+                    instance.Enabled = enabled;
+                }
+                return null;
+            }
             if (methodName == "GetChild")
             {
                 string name = (string)parameters[0];
