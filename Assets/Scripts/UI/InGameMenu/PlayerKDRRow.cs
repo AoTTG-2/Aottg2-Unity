@@ -16,11 +16,13 @@ namespace UI
 {
     class PlayerKDRRow
     {
-        public Transform row;
-        public GameObject gameObject;
+        #region Fields
+        public Transform leftRow;
+        public Transform rightRow;
+        public GameObject leftGameObject;
+        public GameObject rightGameObject;
         public Player player;
         public Text id;
-        public RectTransform idRect;
         public Text name;
         public Text score;
         public RawImage weapon;
@@ -43,20 +45,22 @@ namespace UI
         // private
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
         private string _deadStatus = " <color=red>*dead*</color> ";
+        private StringBuilder _scoreBuilder = new StringBuilder();
+        #endregion
 
-        public PlayerKDRRow(Transform parent, ElementStyle style, Player player)
+        public PlayerKDRRow(Transform leftParent, Transform rightParent, ElementStyle style, Player player)
         {
             // NOTE: Added spacing for horizontal group
-            gameObject = ElementFactory.CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
-            gameObject.GetComponent<HorizontalLayoutGroup>().childControlWidth = true;
-            row = gameObject.transform;
+            leftGameObject = ElementFactory.CreateHorizontalGroup(leftParent, 10f, TextAnchor.MiddleLeft);
+            rightGameObject = ElementFactory.CreateHorizontalGroup(rightParent, 10f, TextAnchor.MiddleLeft);
+            leftRow = leftGameObject.transform;
+            rightRow = rightGameObject.transform;
 
             // HUD
-            id = ElementFactory.CreateDefaultLabel(row, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
-            idRect = id.GetComponent<RectTransform>();
-            weapon = ElementFactory.CreateRawImage(row, style, "Icons/Game/BladeIcon").GetComponent<RawImage>();                                 // loadout/character type   (1)
-            name = ElementFactory.CreateDefaultLabel(row, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
-            score = ElementFactory.CreateDefaultLabel(row, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
+            id = ElementFactory.CreateDefaultLabel(leftRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
+            weapon = ElementFactory.CreateRawImage(rightRow, style, "Icons/Game/BladeIcon", 24f, 24f).GetComponent<RawImage>();                                 // loadout/character type   (1)
+            name = ElementFactory.CreateDefaultLabel(rightRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
+            score = ElementFactory.CreateDefaultLabel(rightRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
 
             // Save player information
             isMasterClient = player.IsMasterClient;
@@ -69,6 +73,14 @@ namespace UI
             this.player = player;
 
             UpdateRow();
+        }
+
+        public void Destroy()
+        {
+            if (leftGameObject != null)
+                GameObject.Destroy(leftGameObject);
+            if (rightGameObject != null)
+                GameObject.Destroy(rightGameObject);
         }
 
         public int GetKillDiff()
@@ -95,16 +107,6 @@ namespace UI
         {
             this.player = player;
             UpdateRow();
-        }
-
-        public void UpdateFirstElementWidth(float width)
-        {
-            idRect.sizeDelta = new Vector2(width, idRect.sizeDelta.y);
-        }
-
-        public float GetFirstElementWidth()
-        {
-            return idRect.sizeDelta.x;
         }
 
         /// <summary>
@@ -162,15 +164,17 @@ namespace UI
             }
             else
             {
+                _scoreBuilder.Clear();
                 for (int i = 0; i < trackedProperties.Length; i++)
                 {
                     object value = player.GetCustomProperty(trackedProperties[i]);
-                    score += value != null ? value.ToString() : string.Empty;
+                    _scoreBuilder.Append(value != null ? value.ToString() : string.Empty);
                     if (i < trackedProperties.Length - 1)
                     {
-                        score += " / ";
+                        _scoreBuilder.Append("/");
                     }
                 }
+                score = _scoreBuilder.ToString();
             }
 
             if (score != this.score.text)

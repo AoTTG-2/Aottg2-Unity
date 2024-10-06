@@ -17,6 +17,7 @@ using Photon.Realtime;
 using UnityEngine.Rendering;
 using System.Linq;
 using Photon.Pun.UtilityScripts;
+using JetBrains.Annotations;
 
 namespace UI
 {
@@ -31,7 +32,9 @@ namespace UI
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
         public VoiceChatPanel VoiceChatPanel;
+        public VerticalLayoutGroup TopLeftHud;
         public KDRPanel KDRPanel;
+        public Telemetry TelemetryPanel;
         public BasePopup _settingsPopup;
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
@@ -78,6 +81,7 @@ namespace UI
         {
             base.Setup();
             SetupLoading();
+            SetupTopLeftHud();
             SetupLabels();
             EmoteHandler = gameObject.AddComponent<EmoteHandler>();
             ItemHandler = gameObject.AddComponent<ItemHandler>();
@@ -91,6 +95,13 @@ namespace UI
             SetupMinimap();
             SetupSnapshot();
             HideAllMenus();
+        }
+
+        public void SetupTopLeftHud()
+        {
+            // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
+            TopLeftHud = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD").GetComponent<VerticalLayoutGroup>();
+            ElementFactory.SetAnchor(TopLeftHud.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -10f));
         }
 
         public void ToggleUI(bool toggle)
@@ -149,11 +160,7 @@ namespace UI
                 VoiceChatPanel = ElementFactory.InstantiateAndSetupPanel<VoiceChatPanel>(transform, "Prefabs/InGame/VoiceChatPanel", true).GetComponent<VoiceChatPanel>();
                 ElementFactory.SetAnchor(VoiceChatPanel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10, 10f));
             }
-            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.Off)
-            {
-                KDRPanel = ElementFactory.InstantiateAndSetupPanel<KDRPanel>(_topLeftLabel.transform, "Prefabs/InGame/KDRPanel", true).GetComponent<KDRPanel>();
-                ElementFactory.SetAnchor(KDRPanel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0, 0));
-            }
+
             ChatPanel = ElementFactory.InstantiateAndSetupPanel<ChatPanel>(transform, "Prefabs/InGame/ChatPanel", true).GetComponent<ChatPanel>();
             ElementFactory.SetAnchor(ChatPanel.gameObject, TextAnchor.LowerLeft, TextAnchor.LowerLeft, new Vector2(10f, 10f));
         }
@@ -163,7 +170,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: 22);
             _topCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_topCenterLabel.gameObject, TextAnchor.UpperCenter, TextAnchor.UpperCenter, new Vector2(0f, -10f));
-            _topLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+            _topLeftLabel = ElementFactory.CreateHUDLabel(TopLeftHud.transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
             ElementFactory.SetAnchor(_topLeftLabel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -10f));
             _topRightLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleRight).GetComponent<Text>();
             ElementFactory.SetAnchor(_topRightLabel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));

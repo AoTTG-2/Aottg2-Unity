@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Settings;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,36 +15,24 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
-using static UnityEngine.Rendering.DebugUI.MessageBox;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 namespace UI
 {
-    class KDRPanel : BasePanel, IInRoomCallbacks, IMatchmakingCallbacks
+    class KDRPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
-        protected override string ThemePanel => "KDRPanel";
-        private GameObject _panel;
-        private PlayerKDRRow _myRow;
-        private Dictionary<int, PlayerKDRRow> _rows = new Dictionary<int, PlayerKDRRow>();
-        private Text _gameTimeText;
-        private Text _systemTimeText;
-        private Text _fpsText;
-        private Text _pingText;
+        private GameObject _kdrGroup;
+        private ElementStyle _style;
+        private Dictionary<string, PlayerListPanel> _teams = new Dictionary<string, PlayerListPanel>();
+
+        // Syncing
         private const float MaxSyncDelay = 0.2f;
         private float _currentSyncDelay = 1f;
+        private KDRMode _kdrMode = KDRMode.Off;
 
-        private const float MaxTelemetryDelay = 0.01f;
-        private float _currentTelemetryDelay = 1f;
-
-        private ElementStyle _style;
-        private float _maxWidth = 0f;
-        private int _ownerMaxWidth = -10;
-
-        public override void Setup(BasePanel parent = null)
+        public void Setup(ElementStyle style)
         {
-            _panel = transform.Find("Panel").gameObject;
-            _style = new ElementStyle(themePanel: ThemePanel);
-            CreateTelemetry();
+            _kdrGroup = ElementFactory.CreateVerticalGroup(transform, 0f, TextAnchor.UpperLeft);
+            _style = style;
             DestroyAndRecreate();
             Sync();
         }
@@ -53,69 +42,6 @@ namespace UI
             _currentSyncDelay -= Time.deltaTime;
             if (_currentSyncDelay <= 0f)
                 Sync();
-
-            _currentTelemetryDelay -= Time.deltaTime;
-            if (_currentTelemetryDelay <= 0f)
-            {
-                SyncTelemetry();
-            }
-        }
-
-        private void CreateTelemetry()
-        {
-            if (_gameTimeText != null || _systemTimeText != null || _fpsText != null || _pingText != null)
-                return;
-            var timeRow = ElementFactory.CreateHorizontalGroup(_panel.transform, 25f, TextAnchor.MiddleLeft);
-            _gameTimeText = ElementFactory.CreateDefaultLabel(timeRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
-            _systemTimeText = ElementFactory.CreateDefaultLabel(timeRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
-
-            var performanceRow = ElementFactory.CreateHorizontalGroup(_panel.transform, 25f, TextAnchor.MiddleLeft);
-            _fpsText = ElementFactory.CreateDefaultLabel(performanceRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
-            _pingText = ElementFactory.CreateDefaultLabel(performanceRow.transform, _style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
-        }
-
-        private void SyncTelemetry()
-        {
-            if (SettingsManager.UISettings.ShowGameTime.Value)
-            {
-                if (!_gameTimeText.gameObject.activeSelf)
-                    _gameTimeText.gameObject.SetActive(true);
-                if (!_systemTimeText.gameObject.activeSelf)
-                    _systemTimeText.gameObject.SetActive(true);
-                _gameTimeText.text = "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator?.CurrentTime ?? 0, 2), ChatTextColor.System) + ",";
-                var dt = System.DateTime.Now;
-                _systemTimeText.text = "System: " + ChatManager.GetColorString(ChatManager.GetTimeString(dt.Hour) + ":" + ChatManager.GetTimeString(dt.Minute) + ":" + ChatManager.GetTimeString(dt.Second), ChatTextColor.System);
-            }
-            else
-            {
-                _gameTimeText.text = string.Empty;
-                _systemTimeText.text = string.Empty;
-
-                // disable
-                _gameTimeText.gameObject.SetActive(false);
-                _systemTimeText.gameObject.SetActive(false);
-
-            }
-            if (SettingsManager.GraphicsSettings.ShowFPS.Value)
-            {
-                if (!_fpsText.gameObject.activeSelf)
-                    _fpsText.gameObject.SetActive(true);
-                _fpsText.text = "FPS:" + UIManager.GetFPS().ToString();
-                if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
-                    _fpsText.text += ",";
-            }
-            else
-                _fpsText.gameObject.SetActive(false);
-            if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
-            {
-                if (!_pingText.gameObject.activeSelf)
-                    _pingText.gameObject.SetActive(true);
-                _pingText.text = "Ping:" + PhotonNetwork.GetPing().ToString();
-            }
-            else
-                _pingText.gameObject.SetActive(false);
-
-            _currentTelemetryDelay = MaxTelemetryDelay;
         }
 
         /// <summary>
@@ -123,46 +49,103 @@ namespace UI
         /// </summary>
         private void Sync()
         {
-            // Sync my row
-            if (PhotonNetwork.LocalPlayer != null)
-                _myRow.UpdateRow();
-
+            // Check if kdr mode changed
+            if ((KDRMode)SettingsManager.UISettings.KDR.Value != _kdrMode)
+            {
+                _kdrMode = (KDRMode)SettingsManager.UISettings.KDR.Value;
+                DestroyAndRecreate();
+            }
             _currentSyncDelay = MaxSyncDelay;
+        }
+
+        private void AddPlayer(Player player)
+        {
+            if (player == null)
+                return;
+            string team = player.GetStringProperty(PlayerProperty.Team);
+            if (!_teams.ContainsKey(team))
+            {
+                // Create PlayerListPanel for team and add to teams
+                var playerlist = ElementFactory.CreateVerticalGroup(_kdrGroup.transform, 0f, TextAnchor.UpperLeft);
+                var playerListComponent = playerlist.AddComponent<PlayerListPanel>();
+                playerListComponent.Setup(_style, team);
+                _teams.Add(team, playerListComponent);
+            }
+            _teams[team].AddRow(player);
+
+        }
+
+        private void RemovePlayer(Player player)
+        {
+            if (player == null)
+                return;
+            string team = player.GetStringProperty(PlayerProperty.Team);
+            if (!_teams.ContainsKey(team))
+            {
+                // search through teams for which contains the playerActor
+                foreach (var teamList in _teams)
+                {
+                    if (teamList.Value.ContainsPlayer(player))
+                    {
+                        team = teamList.Key;
+                        break;
+                    }
+                }
+            }
+
+            if (_teams.ContainsKey(team))
+            {
+                _teams[team].RemoveRow(player);
+
+                // if the team is empty, remove the team from the dictionary
+                if (!_teams[team].HasPlayers())
+                {
+                    _teams[team].Cleanup();
+                    Destroy(_teams[team].gameObject);
+                    _teams.Remove(team);
+                }
+            }
+            
         }
 
         public void DestroyAndRecreate()
         {
             // Destroy all rows and add all players via PhotonNetwork.PlayerListOthers
-            Debug.Log("Destroying and recreating");
-            foreach (var row in _rows)
-                if (row.Value?.gameObject != null)
-                    Destroy(row.Value.gameObject);
-            _rows.Clear();
+            Debug.Log("Resetting KDRPanel UI");
+            foreach (var playerList in _teams)
+            {
+                if (playerList.Value != null)
+                {
+                    playerList.Value.Cleanup();
+                    Destroy(playerList.Value.gameObject);
+                }
+            }
+            _teams.Clear();
 
-            // Destroy my row and recreate it
-            if (_myRow?.gameObject != null)
-                Destroy(_myRow.gameObject);
-            _myRow = new PlayerKDRRow(_panel.transform, _style, PhotonNetwork.LocalPlayer);
+            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
+                return;
 
+            AddPlayer(PhotonNetwork.LocalPlayer);
+
+            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Mine)
+                return;
             // Create rows for all other players and set them
             foreach (var player in PhotonNetwork.PlayerListOthers)
             {
-                if (player != null)
-                {
-                    _rows.Add(player.ActorNumber, new PlayerKDRRow(_panel.transform, _style, player));
-
-                    // Check if this new element has a larger width
-                    if (_rows[player.ActorNumber].GetFirstElementWidth() > _maxWidth)
-                    {
-                        _maxWidth = _rows[player.ActorNumber].GetFirstElementWidth();
-                        _ownerMaxWidth = player.ActorNumber;
-                    }
-                }
+                AddPlayer(player);
             }
-            // Update all rows with the new width
-            foreach (var row in _rows)
+        }
+
+        public void PlayerSwapTeam(Player player, string oldTeam, string newTeam)
+        {
+            // _teams will contain the team name and the PlayerListPanel, sometimes a player will swap teams and we will need to remove them from the old team and add them to the new team
+            if (_teams.ContainsKey(oldTeam))
             {
-                row.Value.UpdateFirstElementWidth(_maxWidth);
+                _teams[oldTeam].RemoveRow(player);
+            }
+            if (_teams.ContainsKey(newTeam))
+            {
+                _teams[newTeam].AddRow(player);
             }
         }
 
@@ -170,73 +153,40 @@ namespace UI
         {
             if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
                 return;
-            _rows.Add(newPlayer.ActorNumber, new PlayerKDRRow(_panel.transform, _style, newPlayer));
-
-            // Check if this new element has a larger width
-            if (_rows[newPlayer.ActorNumber].GetFirstElementWidth() > _maxWidth)
-            {
-                _maxWidth = _rows[newPlayer.ActorNumber].GetFirstElementWidth();
-                _ownerMaxWidth = newPlayer.ActorNumber;
-
-                // Update all rows with the new width
-                foreach (var row in _rows)
-                {
-                    if (row.Key != newPlayer.ActorNumber)
-                        row.Value.UpdateFirstElementWidth(_maxWidth);
-                }
-
-            }
+            AddPlayer(newPlayer);
         }
 
         public void OnPlayerLeftRoom(Player otherPlayer)
         {
             if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
                 return;
-            
-            // try to get the row of the player and destroy it if it exists, then remove it from the dictionary
-            if (_rows.ContainsKey(otherPlayer.ActorNumber))
-            {
-                Destroy(_rows[otherPlayer.ActorNumber].gameObject);
-                _rows.Remove(otherPlayer.ActorNumber);
-
-                // Check if the player with the largest width left
-                if (_ownerMaxWidth == otherPlayer.ActorNumber)
-                {
-                    _maxWidth = 0f;
-                    _ownerMaxWidth = -10;
-
-                    // Find the new player with the largest width
-                    foreach (var row in _rows)
-                    {
-                        if (row.Value.GetFirstElementWidth() > _maxWidth)
-                        {
-                            _maxWidth = row.Value.GetFirstElementWidth();
-                            _ownerMaxWidth = row.Key;
-                        }
-                    }
-
-                    // Update all rows with the new width
-                    foreach (var row in _rows)
-                    {
-                        if (row.Key != otherPlayer.ActorNumber)
-                            row.Value.UpdateFirstElementWidth(_maxWidth);
-                    }
-                }
-            }
+            RemovePlayer(otherPlayer);
         }
 
-        public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
         {
-            if (targetPlayer.IsLocal)
-            {
-                // Sync local player on timer (faster)
+            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
                 return;
-            }
 
-            // Sync the player row with the target player
-            if (_rows.ContainsKey(targetPlayer.ActorNumber))
+            // if hashtable contains team prop, swap team
+            changedProps.TryGetValue(PlayerProperty.Team, out object team);
+
+            if (team != null)
             {
-                _rows[targetPlayer.ActorNumber].UpdateRow();
+                PlayerSwapTeam(targetPlayer, (string)changedProps[PlayerProperty.Team], targetPlayer.GetStringProperty(PlayerProperty.Team));
+            }
+            else
+            {
+                if (targetPlayer.IsLocal || SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
+                {
+                    return;
+                }
+
+                // Sync the player row with the target player
+                if (_teams.ContainsKey(targetPlayer.GetStringProperty(PlayerProperty.Team)))
+                {
+                    _teams[targetPlayer.GetStringProperty(PlayerProperty.Team)].UpdatePlayer(targetPlayer);
+                }
             }
         }
 
@@ -256,7 +206,7 @@ namespace UI
         }
 
         #region Unused
-        public void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        public void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
         {
             //throw new NotImplementedException();
         }
