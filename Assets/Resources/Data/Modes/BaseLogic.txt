@@ -1778,6 +1778,7 @@ component SupplyStation
 {
     UnlimitedRefills = true;
     MaxRefills = 0;
+    LoadoutChange = true;
     _currentHumanRefill = null;
     _currentHuman = null;
 
@@ -1793,7 +1794,11 @@ component SupplyStation
         {
             self._currentHuman = other;
             self._currentHumanRefill = other;
-            text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            text = "";
+            if (self.LoadoutChange)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            }
             if (!self._currentHumanRefill.AutoRefillGas)
             {
                 text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
@@ -1812,7 +1817,7 @@ component SupplyStation
                 self._refillsLeft = self._refillsLeft - 1;
             }
         }
-        if (self._currentHuman != null)
+        if (self.LoadoutChange && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact2"))
             {
