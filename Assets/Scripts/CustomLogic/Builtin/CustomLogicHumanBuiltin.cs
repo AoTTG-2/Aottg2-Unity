@@ -249,7 +249,7 @@ namespace CustomLogic
                 bladeWeapon = (BladeWeapon)Human.Weapon;
             else if (Human.Weapon is AmmoWeapon)
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
-            if (name == "Cooldown")
+            if (name == "SpecialCooldown")
             {
                 if (Human.Special == null) return;
 
