@@ -46,6 +46,7 @@ namespace Characters
         protected virtual float DefaultJumpForce => 150f;
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
+        protected virtual float DisableCooldown => 0f;
         public float AttackSpeedMultiplier = 1f;
         public float ConfusedTime = 0;
         public float PreviousAttackSpeedMultiplier = -1f;
@@ -68,6 +69,7 @@ namespace Characters
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
         protected float _currentFallTime;
+        protected float _disableCooldownLeft;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -295,7 +297,7 @@ namespace Characters
 
         public virtual void Blind()
         {
-            if (State != TitanState.Blind && State != TitanState.SitBlind && AI)
+            if (State != TitanState.Blind && State != TitanState.SitBlind && AI && _disableCooldownLeft <= 0f)
             {
                 if (State == TitanState.SitCripple || State == TitanState.SitIdle)
                 {
@@ -318,11 +320,12 @@ namespace Characters
 
         public virtual void Cripple(float time = 0f)
         {
-            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI)
+            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI && _disableCooldownLeft <= 0f)
             {
                 _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
+                _disableCooldownLeft = _currentCrippleTime + DisableCooldown;
             }
         }
 
@@ -524,6 +527,7 @@ namespace Characters
             UpdateAnimationColliders();
             if (IsMine())
             {
+                _disableCooldownLeft -= Time.deltaTime;
                 if (State == TitanState.Fall || State == TitanState.Jump)
                 {
                     if (!AI && HasDirection && IsSprint && CurrentSprintStamina > 1f)

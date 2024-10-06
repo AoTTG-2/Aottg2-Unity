@@ -25,6 +25,7 @@ namespace Characters
         protected override float DefaultJumpForce => 200f;
         protected override float SizeMultiplier => 3f;
         public override float DefaultCrippleTime => 3.5f;
+        protected override float DisableCooldown => 5f;
         protected bool _needRoar = true;
         public bool TransformingToHuman;
         public float PreviousHumanGas;

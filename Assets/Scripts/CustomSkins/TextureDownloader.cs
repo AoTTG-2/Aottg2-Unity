@@ -79,6 +79,8 @@ namespace CustomSkins
         {
             if (url.StartsWith("file://"))
                 return true;
+            if (url.Contains("http://"))
+                url = url.Replace("http://", "https://");
             foreach (string prefix in URLPrefixes)
             {
                 if (url.StartsWith(prefix))
