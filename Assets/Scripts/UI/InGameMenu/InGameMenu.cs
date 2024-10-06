@@ -101,8 +101,9 @@ namespace UI
         {
             // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
             var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
-            TopLeftHud = panel.GetComponent<VerticalLayoutGroup>();
-            ElementFactory.SetAnchor(TopLeftHud.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -10f));
+            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+            TopLeftHud = panel.GetComponent<TopLeftHUD>().panel.GetComponent<VerticalLayoutGroup>();
+            panel.SetActive(true); // ????
         }
 
         public void ToggleUI(bool toggle)
