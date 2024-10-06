@@ -244,7 +244,6 @@ namespace Cameras
 
         private void UpdateMain()
         {
-
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
                 if (_input.ChangeCamera.GetKeyDown())
@@ -270,6 +269,8 @@ namespace Cameras
                             _napeLockTitan = titan;
                     }
                 }
+                if (_napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
+                    _napeLock = false;
             }
             var cameraDistance = GetCameraDistance();
             float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;

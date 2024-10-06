@@ -56,7 +56,7 @@ namespace CustomSkins
             switch ((HumanCustomSkinPartId)partId)
             {
                 case HumanCustomSkinPartId.Horse:
-                    AddRenderersMatchingName(renderers, PhotonView.Find(_horseViewId).gameObject, "HORSE");
+                    AddRenderersMatchingName(renderers, PhotonView.Find(_horseViewId).gameObject, "Body");
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
                 case HumanCustomSkinPartId.Hair:
                     AddRendererIfExists(renderers, human.Setup._part_hair);

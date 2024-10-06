@@ -993,12 +993,12 @@ namespace Characters
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
-                LoadSkin();
                 if (SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
                 }
+                LoadSkin();
             }
         }
 
