@@ -67,12 +67,16 @@ namespace UI
 
         public void Sync()
         {
+            _currentSyncDelay = MaxSyncDelay;
             bool teamsEnabled = SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team
                                 && (KDRMode)SettingsManager.UISettings.KDR.Value == KDRMode.All;
+
+            UpdatePlayer(PhotonNetwork.LocalPlayer);
             if (_teamHeader.isActiveAndEnabled != teamsEnabled)
                 _teamHeader.gameObject.SetActive(teamsEnabled);
 
-            _rows[PhotonNetwork.LocalPlayer.ActorNumber].UpdateRow();
+            if (!teamsEnabled)
+                return;
 
             // temp. fix later
             ResetState();
@@ -80,7 +84,6 @@ namespace UI
                 AggregatePlayerStats(row.Value);
 
             _teamHeader.SetValue(2, $"{kills}/{deaths}/{maxDamage}/{totalDamage}");
-            _currentSyncDelay = MaxSyncDelay;
         }
 
         public void UpdatePlayer(Player player)

@@ -3137,7 +3137,9 @@ namespace Characters
                 return;
             if (Setup == null)
                 return;
-            if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
+            bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
+                                || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
+            if (toggle && canShowTrail)
             {
                 Setup.LeftTrail.Emit = true;
                 Setup.RightTrail.Emit = true;

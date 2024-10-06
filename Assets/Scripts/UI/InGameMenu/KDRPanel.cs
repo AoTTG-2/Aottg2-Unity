@@ -58,11 +58,23 @@ namespace UI
             _currentSyncDelay = MaxSyncDelay;
         }
 
+        private string GetPlayerTeam(Player player)
+        {
+            if (player == null)
+                return string.Empty;
+
+            // If teams are not enabled, return empty string
+            if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
+                return string.Empty;
+
+            return player.GetStringProperty(PlayerProperty.Team, "Individuals");
+        }
+
         private void AddPlayer(Player player)
         {
             if (player == null)
                 return;
-            string team = player.GetStringProperty(PlayerProperty.Team);
+            string team = GetPlayerTeam(player);
             if (!_teams.ContainsKey(team))
             {
                 // Create PlayerListPanel for team and add to teams
@@ -79,7 +91,7 @@ namespace UI
         {
             if (player == null)
                 return;
-            string team = player.GetStringProperty(PlayerProperty.Team);
+            string team = GetPlayerTeam(player);
             if (!_teams.ContainsKey(team))
             {
                 // search through teams for which contains the playerActor
@@ -136,17 +148,32 @@ namespace UI
             }
         }
 
+        public string FindPlayerTeam(Player player)
+        {
+            foreach (var team in _teams)
+            {
+                if (team.Value.ContainsPlayer(player))
+                {
+                    return team.Key;
+                }
+            }
+            return string.Empty;
+        }
+
         public void PlayerSwapTeam(Player player, string oldTeam, string newTeam)
         {
-            // _teams will contain the team name and the PlayerListPanel, sometimes a player will swap teams and we will need to remove them from the old team and add them to the new team
+            // Sometimes player props update before I can compare them here so we need to search for the player's team.
+            if (!_teams.ContainsKey(oldTeam) || !_teams[oldTeam].ContainsPlayer(player))
+            {
+                oldTeam = FindPlayerTeam(player);
+            }
+
             if (_teams.ContainsKey(oldTeam))
             {
                 _teams[oldTeam].RemoveRow(player);
             }
-            if (_teams.ContainsKey(newTeam))
-            {
-                _teams[newTeam].AddRow(player);
-            }
+
+            AddPlayer(player);
         }
 
         public void OnPlayerEnteredRoom(Player newPlayer)

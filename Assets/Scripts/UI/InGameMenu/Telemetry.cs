@@ -14,7 +14,6 @@ namespace UI
 {
     class Telemetry : MonoBehaviour
     {
-        private GameObject telemetryPanel;
         private MultiTextLabel timePanel;
         private MultiTextLabel performancePanel;
         private ElementStyle _style;
@@ -24,7 +23,7 @@ namespace UI
         private const string _gameTimeFormat = "{0:0.00}";
 
         // Syncing
-        private const float MaxSyncDelay = 0.2f;
+        private const float MaxSyncDelay = 0.05f;
         private float _currentSyncDelay = 1f;
 
         public void Setup(ElementStyle _style)
@@ -42,6 +41,7 @@ namespace UI
             Color systemColor = ColorUtility.TryParseHtmlString(ChatManager.ColorTags[ChatTextColor.System], out Color color) ? color : Color.yellow;
             timePanel.ChangeTextColor(1, systemColor);
             timePanel.ChangeTextColor(3, systemColor);
+            timePanel.SetEnabled(false);
 
             performancePanel = ElementFactory.CreateMultiTextLabel(
                 transform, _style, FontStyle.Normal, TextAnchor.MiddleLeft, 12f, 4
@@ -51,6 +51,7 @@ namespace UI
             performancePanel.SetValue(1, string.Empty);
             performancePanel.SetValue(2, "Ping: ");
             performancePanel.SetValue(3, string.Empty);
+            performancePanel.SetEnabled(false);
         }
 
         private void Update()
@@ -89,7 +90,7 @@ namespace UI
                 performancePanel.SetElementEnabled(0, true);
                 performancePanel.SetElementEnabled(1, true);
                 _sb.Clear();
-                _sb.AppendFormat(_gameTimeFormat, UIManager.GetFPS());
+                _sb.Append(UIManager.GetFPS());
                 if (SettingsManager.UISettings.ShowPing.Value)
                     _sb.Append(", ");
                 performancePanel.SetValue(1, _sb.ToString());
