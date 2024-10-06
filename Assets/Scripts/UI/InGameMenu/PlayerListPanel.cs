@@ -47,9 +47,9 @@ namespace UI
 
             _teamHeader.SetValue(0, $"{team}: ");
             _teamHeader.SetValue(1, "0/0/0/0");
-            _mainPanel = ElementFactory.CreateHorizontalGroup(gameObject.transform, 10, TextAnchor.UpperLeft);
-            _idPanel = ElementFactory.CreateVerticalGroup(_mainPanel.transform, 10, TextAnchor.UpperLeft);
-            _namePanel = ElementFactory.CreateVerticalGroup(_mainPanel.transform, 10, TextAnchor.UpperLeft);
+            _mainPanel = ElementFactory.CreateHorizontalGroup(gameObject.transform, 5, TextAnchor.UpperLeft);
+            _idPanel = ElementFactory.CreateVerticalGroup(_mainPanel.transform, 0, TextAnchor.UpperLeft);
+            _namePanel = ElementFactory.CreateVerticalGroup(_mainPanel.transform, 0, TextAnchor.UpperLeft);
             _style = style;
             Team = team;
         }

@@ -43,6 +43,7 @@ namespace ApplicationManagers
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
+            PhotonNetwork.UseRpcMonoBehaviourCache = true;
             ApplicationConfig.Init();
             AnticheatManager.Init();
             PhysicsLayer.Init();
