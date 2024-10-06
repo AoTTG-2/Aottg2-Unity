@@ -244,17 +244,23 @@ namespace Cameras
 
         private void UpdateMain()
         {
-
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
-                if (_input.ChangeCamera.GetKeyDown())
+                if (CustomLogicManager.CameraMode != null)
                 {
-                    if (CurrentCameraMode == CameraInputMode.TPS)
-                        CurrentCameraMode = CameraInputMode.Original;
-                    else if (CurrentCameraMode == CameraInputMode.Original)
-                        CurrentCameraMode = CameraInputMode.FPS;
-                    else
-                        CurrentCameraMode = CameraInputMode.TPS;
+                    CurrentCameraMode = CustomLogicManager.CameraMode.Value;
+                }
+                else
+                {
+                    if (_input.ChangeCamera.GetKeyDown())
+                    {
+                        if (CurrentCameraMode == CameraInputMode.TPS)
+                            CurrentCameraMode = CameraInputMode.Original;
+                        else if (CurrentCameraMode == CameraInputMode.Original)
+                            CurrentCameraMode = CameraInputMode.FPS;
+                        else
+                            CurrentCameraMode = CameraInputMode.TPS;
+                    }
                 }
                 if (SettingsManager.InputSettings.Human.NapeLock.GetKeyDown())
                 {
@@ -483,7 +489,7 @@ namespace Cameras
             {
                 if (!human.AI)
                     characters.Add(human);
-            } 
+            }
             foreach (var shifter in _inGameManager.Shifters)
             {
                 if (!shifter.AI)
