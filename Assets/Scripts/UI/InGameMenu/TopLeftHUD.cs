@@ -18,7 +18,7 @@ namespace UI
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
-
+            _style = new ElementStyle(themePanel: ThemePanel);
             // Get vertical layout group component on this gameobject
             var verticalLayoutGroup = gameObject.GetComponent<VerticalLayoutGroup>();
 
