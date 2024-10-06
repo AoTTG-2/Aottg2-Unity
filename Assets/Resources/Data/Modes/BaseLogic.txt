@@ -736,18 +736,22 @@ component VelocityZone
 }
 
 # general
-component AITarget
+component TitanTarget
 {
-    Description = "Objects with this component will be targeted by AI characters (titans). Do not move this somewhere unreachable or the characters will walk towards them but won't be able to attack.";
     EnabledByDefault = true;
-
-    Team = "Human";
     PlayerPriorityRange = 0.0;
+
+    Description = "Objects with this component will be targeted by titans. It's a good idea to keep this component on an empty object and put it somewhere that titans can reach otherwise they will only walk towards the object without being able to attack.";
+    PlayerPriorityRangeTooltip = "If any player is in this range, this component will be automatically disabled so that the titans can focus on the player.";
+
+    _playersInsideCount = 0;
 
     function Init()
     {
-        self._targetable = self.MapObject.AddSphereTarget(self.Team, Vector3(0), 10.1);
+        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 10.1);
         self._targetable.Enabled = self.EnabledByDefault;
+
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3(0), self.PlayerPriorityRange);
     }
 
     function IsEnabled()
@@ -758,6 +762,48 @@ component AITarget
     function SetEnabled(enabled)
     {
         self._targetable.Enabled = enabled;
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self.NetworkView.SendMessage(Network.MasterClient, "Add");
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self.NetworkView.SendMessage(Network.MasterClient, "Remove");
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (message == "Add")
+        {
+            self._playersInsideCount += 1;
+        }
+        elif (message == "Remove")
+        {
+            self._playersInsideCount -= 1;
+        }
+
+        if (self._playersInsideCount > 0)
+        {
+            self.SetEnabled(false);
+        }
+        else
+        {
+            self.SetEnabled(true);
+        }
     }
 }
 
@@ -772,8 +818,8 @@ component DestructibleTrigger
     ReplacementIDs = "0";
     ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
 
-    AITargetIDs = "0";
-    AITargetIDsTooltip = "Slash (/) separated list of IDs of objects with AITarget component. Once destruction is triggered, this objects will be disabled so that titans don't keep targeting them.";
+    TitanTargetIDs = "0";
+    TitanTargetIDsTooltip = "Slash (/) separated list of IDs of objects with TitanTarget component. Once destruction is triggered, these targets will be disabled so the titans can ignore them.";
 
     # Modifiers
     Health = 100;
@@ -797,7 +843,7 @@ component DestructibleTrigger
     # Private state
     _targets = List();
     _replacements = List();
-    _aiTargets = List();
+    _titanTargets = List();
     _attacksThatCanDestroy = List();
     _teamsThatCanDestroy = List();
 
@@ -814,7 +860,7 @@ component DestructibleTrigger
         # Cache targets and replacements, enable targets, disable replacements
         self._targets = self.PopulateMapObjectList(self.TargetIDs);
         self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
-        self._aiTargets = self.PopulateMapObjectList(self.AITargetIDs);
+        self._titanTargets = self.PopulateMapObjectList(self.TitanTargetIDs);
 
         # Setup state only if this trigger is active
         if (self.MapObject.Active)
@@ -937,9 +983,13 @@ component DestructibleTrigger
         self.MapObject.Active = false;
         self.SetState(self._targets, false);
         self.SetState(self._replacements, true);
-        for(t in self._aiTargets)
+        for(t in self._titanTargets)
         {
-            t.GetComponent("AITarget").SetEnabled(false);
+            c = t.GetComponent("TitanTarget");
+            if (c != null)
+            {
+                c.SetEnabled(false);
+            }
         }
         self._isDestroyed = true;
     }
@@ -950,9 +1000,13 @@ component DestructibleTrigger
         self.MapObject.Active = true;
         self.SetState(self._targets, true);
         self.SetState(self._replacements, false);
-        for(t in self._aiTargets)
+        for(t in self._titanTargets)
         {
-            t.GetComponent("AITarget").SetEnabled(true);
+            c = t.GetComponent("TitanTarget");
+            if (c != null)
+            {
+                c.SetEnabled(true);
+            }
         }
         self._isDestroyed = false;
     }
