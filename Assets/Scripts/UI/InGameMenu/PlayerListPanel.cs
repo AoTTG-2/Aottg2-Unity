@@ -112,18 +112,22 @@ namespace UI
                 return;
             if (_rows.ContainsKey(player.ActorNumber))
                 return;
-            _rows.Add(player.ActorNumber, new PlayerKDRRow(_idPanel.transform, _namePanel.transform, _style, player));
+            var row = new PlayerKDRRow(_idPanel.transform, _namePanel.transform, _style, player);
+            _rows.Add(player.ActorNumber, row);
+            AggregatePlayerStats(row);
         }
 
         public void RemoveRow(Player player)
         {
             if (player == null)
                 return;
+            RemovePlayerStats(player);
             if (_rows.ContainsKey(player.ActorNumber))
             {
                 _rows[player.ActorNumber].Destroy();
                 _rows.Remove(player.ActorNumber);
             }
+
         }
 
         public void Cleanup()
@@ -132,6 +136,10 @@ namespace UI
             foreach (var row in _rows)
                 if (row.Value != null)
                     row.Value.Destroy();
+
+            // Destroy the header and panel
+            Destroy(_teamHeader.gameObject);
+            Destroy(_mainPanel);
             _rows.Clear();
         }
 
@@ -151,6 +159,17 @@ namespace UI
             totalDamage += row.totalDamage;
         }
 
+        private void RemovePlayerStats(Player player)
+        {
+            if (player == null) return;
+            if (_rows.ContainsKey(player.ActorNumber))
+            {
+                kills -= _rows[player.ActorNumber].kills;
+                deaths -= _rows[player.ActorNumber].deaths;
+                maxDamage = Math.Max(0, maxDamage - _rows[player.ActorNumber].maxDamage);
+                totalDamage -= _rows[player.ActorNumber].totalDamage;
+            }
+        }
 
     }
 }

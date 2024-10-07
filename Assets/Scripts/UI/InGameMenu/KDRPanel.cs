@@ -28,10 +28,11 @@ namespace UI
         private const float MaxSyncDelay = 0.2f;
         private float _currentSyncDelay = 1f;
         private KDRMode _kdrMode = KDRMode.Off;
+        private PVPMode _pvpMode = PVPMode.Off;
 
         public void Setup(ElementStyle style)
         {
-            _kdrGroup = ElementFactory.CreateVerticalGroup(transform, 0f, TextAnchor.UpperLeft);
+            _kdrGroup = ElementFactory.CreateVerticalGroup(transform, 10f, TextAnchor.UpperLeft);
             _style = style;
             DestroyAndRecreate();
             Sync();
@@ -55,6 +56,13 @@ namespace UI
                 _kdrMode = (KDRMode)SettingsManager.UISettings.KDR.Value;
                 DestroyAndRecreate();
             }
+
+            if ((PVPMode)SettingsManager.InGameCurrent.Misc.PVP.Value != _pvpMode)
+            {
+                _pvpMode = (PVPMode)SettingsManager.InGameCurrent.Misc.PVP.Value;
+                DestroyAndRecreate();
+            }
+
             _currentSyncDelay = MaxSyncDelay;
         }
 
@@ -65,7 +73,7 @@ namespace UI
 
             // If teams are not enabled, return empty string
             if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
-                return string.Empty;
+                return "Individuals";
 
             return player.GetStringProperty(PlayerProperty.Team, "Individuals");
         }
@@ -91,20 +99,7 @@ namespace UI
         {
             if (player == null)
                 return;
-            string team = GetPlayerTeam(player);
-            if (!_teams.ContainsKey(team))
-            {
-                // search through teams for which contains the playerActor
-                foreach (var teamList in _teams)
-                {
-                    if (teamList.Value.ContainsPlayer(player))
-                    {
-                        team = teamList.Key;
-                        break;
-                    }
-                }
-            }
-
+            string team = FindPlayerTeam(player);
             if (_teams.ContainsKey(team))
             {
                 _teams[team].RemoveRow(player);
@@ -160,22 +155,6 @@ namespace UI
             return string.Empty;
         }
 
-        public void PlayerSwapTeam(Player player, string oldTeam, string newTeam)
-        {
-            // Sometimes player props update before I can compare them here so we need to search for the player's team.
-            if (!_teams.ContainsKey(oldTeam) || !_teams[oldTeam].ContainsPlayer(player))
-            {
-                oldTeam = FindPlayerTeam(player);
-            }
-
-            if (_teams.ContainsKey(oldTeam))
-            {
-                _teams[oldTeam].RemoveRow(player);
-            }
-
-            AddPlayer(player);
-        }
-
         public void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
@@ -200,7 +179,8 @@ namespace UI
 
             if (team != null)
             {
-                PlayerSwapTeam(targetPlayer, (string)changedProps[PlayerProperty.Team], targetPlayer.GetStringProperty(PlayerProperty.Team));
+                RemovePlayer(targetPlayer);
+                AddPlayer(targetPlayer);
             }
             else
             {
