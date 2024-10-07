@@ -75,6 +75,12 @@ namespace CustomLogic
                 return ((string)parameters[0]).Trim();
             if (name == "Insert")
                 return ((string)parameters[0]).Insert((int)parameters[2], (string)parameters[1]);
+            if (name == "Capitalize")
+                return ((string)parameters[0]).UpperFirstLetter();
+            if (name == "ToUpper")
+                return ((string)parameters[0]).ToUpper();
+            if (name == "ToLower")
+                return ((string)parameters[0]).ToLower();
             return base.CallMethod(name, parameters);
         }
 

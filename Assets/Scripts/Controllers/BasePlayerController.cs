@@ -17,6 +17,7 @@ namespace Controllers
         protected InGameMenu _inGameMenu;
         protected BaseCharacter _character;
         protected InGameManager _gameManager;
+        protected bool _autorun;
         public bool HideCursor;
 
         protected virtual void Awake()
@@ -65,11 +66,14 @@ namespace Controllers
         {
             if (inMenu)
             {
-                _character.HasDirection = false;
+                if (!_autorun)
+                    _character.HasDirection = false;
                 return;
             }
             int forward = 0;
             int right = 0;
+            if (_generalInput.Autorun.GetKeyDown())
+                _autorun = !_autorun;
             if (_generalInput.Forward.GetKey())
                 forward = 1;
             else if (_generalInput.Back.GetKey())
@@ -78,6 +82,13 @@ namespace Controllers
                 right = -1;
             else if (_generalInput.Right.GetKey())
                 right = 1;
+            if (forward != 0 || right != 0)
+                _autorun = false;
+            if (_autorun)
+            {
+                forward = 1;
+                right = 0;
+            }
             if (forward != 0 || right != 0)
             {
                 _character.TargetAngle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.y + 90f - Mathf.Atan2(forward, right) * Mathf.Rad2Deg;

@@ -64,9 +64,7 @@ namespace CustomLogic
                 float time = parameters[2].UnboxToFloat();
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    if (!_lastSetLabels.ContainsKey(label) || message != _lastSetLabels[label])
-                        RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
-                    _lastSetLabels[label] = message;
+                     RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
                 }
                 return null;
             }

@@ -58,7 +58,8 @@ namespace Controllers
         {
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
             {
-                _human.HasDirection = false;
+                if (!_autorun)
+                    _human.HasDirection = false;
                 return;
             }
             _human.IsWalk = _humanInput.HorseWalk.GetKey();
@@ -72,6 +73,8 @@ namespace Controllers
             }
             int forward = 0;
             int right = 0;
+            if (_generalInput.Autorun.GetKeyDown())
+                _autorun = !_autorun;
             if (_generalInput.Forward.GetKey())
                 forward = 1;
             else if (_generalInput.Back.GetKey())
@@ -80,6 +83,13 @@ namespace Controllers
                 right = -1;
             else if (_generalInput.Right.GetKey())
                 right = 1;
+            if (forward != 0 || right != 0)
+                _autorun = false;
+            if (_autorun)
+            {
+                forward = 1;
+                right = 0;
+            }
             if (forward != 0 || right != 0)
             {
                 _character.TargetAngle = GetTargetAngle(forward, right);

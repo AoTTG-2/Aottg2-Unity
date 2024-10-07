@@ -130,25 +130,28 @@
 			"TurnPause": 1.0,
 			"AttackWait": 1.0,
 			"AttackPause": 1.0,
-			"ActionPause": 1.0
+			"ActionPause": 1.0,
+			"AttackSpeedMultiplier": 0.8
 		},
 		"Normal": {
 		},
 		"Hard": {
-			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
-			"RotateSpeed": 1.0
+			"TurnPause": 0.3,
+			"AttackWait": 0.3,
+			"AttackPause": 0.3,
+			"ActionPause": 0.3,
+			"RotateSpeed": 1.0,
+			"AttackSpeedMultiplier": 1.1
 		},
 		"Abnormal": {
 			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
+			"AttackWait": 0.2,
+			"AttackPause": 0.2,
+			"ActionPause": 0.2,
 			"RotateSpeed": 2.0,
 			"WalkSpeedBase": 10.0,
-			"RunSpeedBase": 20.0
+			"RunSpeedBase": 20.0,
+			"AttackSpeedMultiplier": 1.2
 		}
 	},
 	"Abnormal": {
@@ -175,25 +178,28 @@
 			"TurnPause": 1.0,
 			"AttackWait": 1.0,
 			"AttackPause": 1.0,
-			"ActionPause": 1.0
+			"ActionPause": 1.0,
+			"AttackSpeedMultiplier": 0.8
 		},
 		"Normal": {
 		},
 		"Hard": {
-			"TurnPause": 0.2,
+			"TurnPause": 0.3,
 			"AttackWait": 0.3,
-			"AttackPause": 0.2,
-			"ActionPause": 0.2,
-			"RotateSpeed": 1.0
+			"AttackPause": 0.3,
+			"ActionPause": 0.3,
+			"RotateSpeed": 1.0,
+			"AttackSpeedMultiplier": 1.1
 		},
 		"Abnormal": {
 			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
+			"AttackWait": 0.2,
+			"AttackPause": 0.2,
+			"ActionPause": 0.2,
 			"RotateSpeed": 2.0,
-			"WalkSpeedBase": 20.0,
-			"RunSpeedBase": 30.0
+			"WalkSpeedBase": 10.0,
+			"RunSpeedBase": 20.0,
+			"AttackSpeedMultiplier": 1.2
 		}
 	},
 	"Jumper": {
@@ -217,25 +223,28 @@
 			"TurnPause": 1.0,
 			"AttackWait": 1.0,
 			"AttackPause": 1.0,
-			"ActionPause": 1.0
+			"ActionPause": 1.0,
+			"AttackSpeedMultiplier": 0.8
 		},
 		"Normal": {
 		},
 		"Hard": {
-			"TurnPause": 0.2,
+			"TurnPause": 0.3,
 			"AttackWait": 0.3,
-			"AttackPause": 0.2,
-			"ActionPause": 0.2,
-			"RotateSpeed": 1.0
+			"AttackPause": 0.3,
+			"ActionPause": 0.3,
+			"RotateSpeed": 1.0,
+			"AttackSpeedMultiplier": 1.1
 		},
 		"Abnormal": {
 			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
+			"AttackWait": 0.2,
+			"AttackPause": 0.2,
+			"ActionPause": 0.2,
 			"RotateSpeed": 2.0,
 			"WalkSpeedBase": 10.0,
-			"RunSpeedBase": 20.0
+			"RunSpeedBase": 20.0,
+			"AttackSpeedMultiplier": 1.2
 		}
 	},
 	"Crawler": {
@@ -276,12 +285,10 @@
 		},
 		"Abnormal": {
 			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
+			"AttackPause": 0.2,
+			"ActionPause": 0.2,
 			"RotateSpeed": 2.0,
 			"TurnSpeed": 2.0,
-			"WalkSpeedBase": 10.0,
 			"RunSpeedBase": 20.0
 		}
 	},
@@ -300,7 +307,6 @@
 				"AttackPunchCombo": 0.1,
 				"AttackSlap*": 0.1,
 				"AttackBrush*": 0.1,
-				"AttackGrab*": 0.1,
 				"AttackSwing*": 0.1
 			}
 		},
@@ -311,24 +317,26 @@
 		"Easy": {
 			"TurnPause": 0.5,
 			"AttackPause": 1.0,
-			"ActionPause": 1.0
+			"ActionPause": 1.0,
+			"AttackSpeedMultiplier": 0.8
 		},
 		"Normal": {
 		},
 		"Hard": {
-			"TurnPause": 0.2,
-			"AttackPause": 0.2,
-			"ActionPause": 0.2,
-			"RotateSpeed": 1.0
+			"TurnPause": 0.3,
+			"AttackPause": 0.3,
+			"ActionPause": 0.3,
+			"RotateSpeed": 1.0,
+			"AttackSpeedMultiplier": 1.1
 		},
 		"Abnormal": {
-			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
+			"TurnPause": 0.1,
+			"AttackPause": 0.1,
+			"ActionPause": 0.1,
 			"RotateSpeed": 2.0,
 			"WalkSpeedBase": 10.0,
-			"RunSpeedBase": 20.0
+			"RunSpeedBase": 20.0,
+			"AttackSpeedMultiplier": 1.2
 		}
 	},
 	"Thrower": {
@@ -352,26 +360,27 @@
 			"TurnPause": 1.0,
 			"AttackWait": 1.0,
 			"AttackPause": 1.0,
-			"ActionPause": 1.0
+			"ActionPause": 1.0,
+			"AttackSpeedMultiplier": 0.8
 		},
 		"Normal": {
 			"AttackWait": 1.0
 		},
 		"Hard": {
+			"TurnPause": 0.3,
+			"AttackWait": 0.5,
+			"AttackPause": 0.3,
+			"ActionPause": 0.3,
+			"RotateSpeed": 1.0,
+		},
+		"Abnormal": {
 			"TurnPause": 0.2,
 			"AttackWait": 0.3,
 			"AttackPause": 0.2,
 			"ActionPause": 0.2,
-			"RotateSpeed": 1.0
-		},
-		"Abnormal": {
-			"TurnPause": 0.2,
-			"AttackWait": 0.1,
-			"AttackPause": 0.4,
-			"ActionPause": 0.4,
 			"RotateSpeed": 2.0,
 			"WalkSpeedBase": 10.0,
-			"RunSpeedBase": 20.0
+			"RunSpeedBase": 20.0,
 		}
 	}
 }

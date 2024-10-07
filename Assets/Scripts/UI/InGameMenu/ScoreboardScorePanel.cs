@@ -74,8 +74,14 @@ namespace UI
                 ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Player"), FontStyle.Bold, TextAnchor.MiddleCenter);
                 ElementFactory.CreateDefaultLabel(_header, style, string.Empty, FontStyle.Bold, TextAnchor.MiddleCenter);
                 ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Action"), FontStyle.Bold, TextAnchor.MiddleCenter);
-                foreach (Transform t in _header)
-                    t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
+                ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Ping"), FontStyle.Bold, TextAnchor.MiddleCenter);
+
+                _header.GetChild(0).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+                _header.GetChild(1).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+
+                _header.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+                _header.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+
                 CreateHorizontalDivider(SinglePanel);
             }
             string playerCount = " (" + currentPlayers.ToString() + "/" + maxPlayers.ToString() + ")";
@@ -100,8 +106,15 @@ namespace UI
             ElementFactory.CreateIconButton(actionRow, style, "Icons/Game/VolumeOffIcon", elementWidth: 30f, elementHeight: 30f, onClick: () => OnClickMute(index));
             if (PhotonNetwork.IsMasterClient)
                 ElementFactory.CreateIconButton(actionRow, style, "Icons/Navigation/CloseIcon", elementWidth: 24f, elementHeight: 24f, onClick: () => OnClickKick(index));
-            foreach (Transform t in row)
-                t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
+
+            ElementFactory.CreateDefaultLabel(row, style, "0", FontStyle.Normal, TextAnchor.MiddleCenter);
+
+            row.GetChild(0).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+            row.GetChild(1).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+
+            row.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+            row.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+
             return row;
         }
 
@@ -126,7 +139,7 @@ namespace UI
             else
             {
                 List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                foreach (string property in new string[] {"Kills","Deaths","HighestDamage","TotalDamage"})
                 {
                     object value = player.GetCustomProperty(property);
                     string str = value != null ? value.ToString() : string.Empty;
@@ -190,6 +203,8 @@ namespace UI
             actionRow.GetChild(1).gameObject.SetActive(!isMine);
             if (actionRow.childCount > 2)
                 actionRow.GetChild(2).gameObject.SetActive(!isMine);
+
+            row.GetChild(3).GetComponent<Text>().text = player.GetCustomProperty("Ping").ToString();
         }
 
         private void OnClickProfile(int index)
