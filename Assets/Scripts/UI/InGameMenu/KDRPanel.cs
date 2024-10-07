@@ -29,7 +29,7 @@ namespace UI
         private float _currentSyncDelay = 1f;
         private KDRMode _kdrMode = KDRMode.Off;
         private PVPMode _pvpMode = PVPMode.Off;
-
+        private string _defaultTeam = "Individuals";
         public void Setup(ElementStyle style)
         {
             _kdrGroup = ElementFactory.CreateVerticalGroup(transform, 10f, TextAnchor.UpperLeft);
@@ -73,9 +73,9 @@ namespace UI
 
             // If teams are not enabled, return empty string
             if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
-                return "Individuals";
+                return _defaultTeam;
 
-            return player.GetStringProperty(PlayerProperty.Team, "Individuals");
+            return player.GetStringProperty(PlayerProperty.Team, _defaultTeam);
         }
 
         private void AddPlayer(Player player)
