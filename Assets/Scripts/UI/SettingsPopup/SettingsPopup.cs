@@ -63,6 +63,7 @@ namespace UI
             _saveableSettings.Add(SettingsManager.InputSettings);
             _saveableSettings.Add(SettingsManager.CustomSkinSettings);
             _saveableSettings.Add(SettingsManager.AbilitySettings);
+            _saveableSettings.Add(SettingsManager.ChatSettings);
             _ignoreDefaultButtonSettings.Add(SettingsManager.CustomSkinSettings);
         }
 

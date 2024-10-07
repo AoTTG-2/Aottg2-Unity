@@ -1,21 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Weather;
 using UI;
 using Utility;
-using CustomSkins;
 using CustomLogic;
 using ApplicationManagers;
-using System.Diagnostics;
 using Settings;
 using Anticheat;
 using Photon.Realtime;
 using Photon.Pun;
 using System;
 using System.Reflection;
-using System.Linq;
-using Map;
-
 
 namespace GameManagers
 {
@@ -590,6 +584,7 @@ namespace GameManagers
         {
             if (color == ChatTextColor.Default)
                 return str;
+
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 

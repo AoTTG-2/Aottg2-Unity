@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,6 +17,7 @@ namespace UI
         protected override string ThemePanel => "ChatPanel";
         protected Transform _caret;
         public bool IgnoreNextActivation;
+        public static ChatSettings _chatSettings;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -32,6 +35,7 @@ namespace UI
             {
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
+            _chatSettings = SettingsManager.ChatSettings;
             Sync();
         }
 
@@ -114,10 +118,53 @@ namespace UI
 
         protected GameObject CreateLine(string text)
         {
+            if (_chatSettings.FilterEnabled)
+            {
+                text = FilterMessage(text);
+            }
+
             var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
             GameObject line = ElementFactory.CreateDefaultLabel(_panel.transform, style, text, alignment: TextAnchor.MiddleLeft);
             line.GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
             return line;
         }
+
+        private static string FilterMessage(string message)
+        {
+            foreach(KeyValuePair<StringSetting, StringSetting> entry in _chatSettings.filters)
+            {
+                // Regex Key is stored with leading and trailing quotes so need to remove those
+                string cleaned_pattern = entry.Key.Value.TrimStart('"').TrimEnd('"');
+                Regex pattern = new Regex(cleaned_pattern, RegexOptions.IgnoreCase);
+                Match match = pattern.Match(message);
+
+                UnityEngine.Debug.Log($"Checking {message} :: isMatch {match.Success} :: pattern {entry.Key} :: Value :: {entry.Value}");
+
+                if (!match.Success)
+                    continue;
+
+                while (match.Success)
+                {
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        Group group = match.Groups[i];
+
+                        if (!string.IsNullOrEmpty(group.ToString()))
+                        {
+                            if (!string.IsNullOrEmpty(entry.Value.Value))
+                            {
+                                message = message.Replace(group.ToString(), entry.Value.Value);
+                                continue;
+                            }
+                            message = message.Replace(group.ToString(), string.Concat(Enumerable.Repeat("*", group.Length)));
+                        }
+                    }
+
+                    match = match.NextMatch();
+                }
+            }
+            return message;
+        }
+
     }
 }
