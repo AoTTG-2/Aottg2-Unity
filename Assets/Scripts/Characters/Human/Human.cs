@@ -722,6 +722,10 @@ namespace Characters
             }
             else if (previousHumanWeapon is AmmoWeapon)
             {
+                if (previousHumanWeapon is AHSSWeapon)
+                {
+                    ((AHSSWeapon)previousHumanWeapon).HandleUI();
+                }
                 AmmoWeapon previousAmmoWeapon = (AmmoWeapon)previousHumanWeapon;
                 AmmoWeapon weapon = (AmmoWeapon)Weapon;
                 weapon.RoundLeft = previousAmmoWeapon.RoundLeft;
