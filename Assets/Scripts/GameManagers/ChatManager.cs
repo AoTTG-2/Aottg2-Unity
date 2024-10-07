@@ -152,7 +152,7 @@ namespace GameManagers
 
         public static void AddLine(string line)
         {
-            line = line.FilterSizeTag();
+            line = line.FilterText();
             Lines.Add(line);
             if (Lines.Count > MaxLines)
                 Lines.RemoveAt(0);
@@ -174,7 +174,7 @@ namespace GameManagers
                 AddLine(line);
                 return;
             }
-            line = line.FilterSizeTag();
+            line = line.FilterText();
             FeedLines.Add(line);
             if (FeedLines.Count > MaxLines)
                 FeedLines.RemoveAt(0);
