@@ -39,6 +39,7 @@ namespace Controllers
             _titan.BasicCache.HandRHitbox.ScaleSphereCollider(1.5f);
             _titan.BasicCache.FootLHitbox.ScaleSphereCollider(1.5f);
             _titan.BasicCache.FootRHitbox.ScaleSphereCollider(1.5f);
+            _titan.BasicCache.MouthHitbox.ScaleSphereCollider(1.2f);
         }
 
         protected override void UpdateUI(bool inMenu)

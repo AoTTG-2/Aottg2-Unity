@@ -27,6 +27,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: 24, themePanel: ThemePanel, titleWidth: 70f);
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Back"),
                     onClick: () => OnBottomBarButtonClick("Back"));
+            gameObject.AddComponent<IgnoreScaler>();
         }
 
         protected virtual string[] GetCategories()

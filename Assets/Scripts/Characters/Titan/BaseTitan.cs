@@ -59,6 +59,7 @@ namespace Characters
         public float RotateSpeed;
         public float TurnSpeed;
         protected override Vector3 Gravity => Vector3.down * 100f;
+        protected virtual float CheckGroundTime => 0.4f;
         protected Vector3 LastTargetDirection;
         protected Vector3 _wallClimbForward;
         protected Quaternion _turnStartRotation;
@@ -70,6 +71,7 @@ namespace Characters
         protected float _currentCrippleTime;
         protected float _currentFallTime;
         protected float _disableCooldownLeft;
+        protected float _checkGroundTimeLeft;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -671,7 +673,12 @@ namespace Characters
         {
             if (IsMine())
             {
-                CheckGround();
+                _checkGroundTimeLeft -= Time.fixedDeltaTime;
+                if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
+                {
+                    CheckGround();
+                    _checkGroundTimeLeft = CheckGroundTime;
+                }
                 if (State != TitanState.Fall)
                     _currentFallTime = 0f;
                 if (State == TitanState.Jump)
