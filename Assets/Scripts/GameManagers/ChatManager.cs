@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Weather;
 using UI;
@@ -52,10 +53,12 @@ namespace GameManagers
         private static readonly int MaxLines = 30;
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
+        private static ChatSettings _chatSettings;
 
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
+            _chatSettings = SettingsManager.ChatSettings;
 
             // Read all methods, filter out methods using CommandAttribute, create mapping from name/alias to CommandAttribute for later reference.
             MethodInfo[] infos = typeof(ChatManager).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
@@ -120,12 +123,22 @@ namespace GameManagers
 
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
+            if (_chatSettings.FilterEnabled)
+            {
+                message = FilterMessage(message);
+            }
+
             message = GetColorString(message, color);
             RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { message });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
         {
+            if (_chatSettings.FilterEnabled)
+            {
+                message = FilterMessage(message);
+            }
+
             message = GetColorString(message, color);
             RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { message });
         }
@@ -590,7 +603,43 @@ namespace GameManagers
         {
             if (color == ChatTextColor.Default)
                 return str;
+
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
+        }
+
+        private static string FilterMessage(string message)
+        {
+            foreach(KeyValuePair<string, string> entry in _chatSettings.filter_patterns)
+            {
+                Regex pattern = new Regex(entry.Key, RegexOptions.IgnoreCase);
+                Match match = pattern.Match(message);
+
+                UnityEngine.Debug.Log($"Checking {message} :: isMatch {match.Success} :: pattern {entry.Key}");
+
+                if (!match.Success)
+                    continue;
+
+                while (match.Success)
+                {
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        Group group = match.Groups[i];
+
+                        if (!string.IsNullOrEmpty(group.ToString()))
+                        {
+                            if (!string.IsNullOrEmpty(entry.Value))
+                            {
+                                message = message.Replace(group.ToString(), entry.Value);
+                                continue;
+                            }
+                            message = message.Replace(group.ToString(), string.Concat(Enumerable.Repeat("*", group.Length)));
+                        }
+                    }
+
+                    match = match.NextMatch();
+                }
+            }
+            return message;
         }
 
         private void Update()
