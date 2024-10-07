@@ -114,10 +114,17 @@ namespace UI
                 State = CursorState.Crosshair;
             }
             var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
+            var isNapeLocked = ((InGameCamera)SceneLoader.CurrentCamera)._napeLock;
             if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
             {
-                if (Cursor.lockState != CursorLockMode.Locked)
+                if (Cursor.lockState != CursorLockMode.Locked && !isNapeLocked)
+                {
                     Cursor.lockState = CursorLockMode.Locked;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Confined;
+                }
             }
             else if (Cursor.lockState != CursorLockMode.Confined)
                 Cursor.lockState = CursorLockMode.Confined;
