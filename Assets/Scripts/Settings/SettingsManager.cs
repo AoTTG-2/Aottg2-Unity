@@ -24,6 +24,7 @@ namespace Settings
         public static InGameCharacterSettings InGameCharacterSettings;
         public static MapEditorSettings MapEditorSettings;
         public static SoundSettings SoundSettings;
+        public static ChatSettings ChatSettings;
 
         public static void Init()
         {
@@ -43,6 +44,7 @@ namespace Settings
             InGameCharacterSettings = new InGameCharacterSettings();
             MapEditorSettings = new MapEditorSettings();
             SoundSettings = new SoundSettings();
+            ChatSettings = new ChatSettings();
         }
     }
 }
