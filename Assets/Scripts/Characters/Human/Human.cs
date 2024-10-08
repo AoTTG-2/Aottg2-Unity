@@ -2062,7 +2062,7 @@ namespace Characters
 
         private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot &&
+            return Grounded && State == HumanState.Attack && pivot &&
                 (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2));
         }
 
