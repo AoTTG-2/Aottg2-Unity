@@ -78,6 +78,7 @@ class Main
             {
                 self._spawnTimeLeft = self.TitanSpawnEvery;
             }
+            UI.SetLabelAll("TopCenter", "Titans: " + Convert.ToString(titans));
         }
     }
 }
