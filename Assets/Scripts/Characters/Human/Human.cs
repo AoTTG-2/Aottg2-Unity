@@ -1709,9 +1709,10 @@ namespace Characters
                     gravity = Gravity * 0.5f * Cache.Rigidbody.mass;
                 else
                     gravity = Gravity * Cache.Rigidbody.mass;
+                
                 if (Grounded && State == HumanState.Attack)
                 {
-                    if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2))
+                    if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2))
                     {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
@@ -2062,7 +2063,7 @@ namespace Characters
         private bool IsStock(bool pivot)
         {
             return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot &&
-                (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2));
+                (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2));
         }
 
         private void FixedUpdateSetHookedDirection()

@@ -68,6 +68,7 @@ namespace CustomLogic
             Dictionary<string, string> parameterDict = new Dictionary<string, string>();
             try
             {
+                Debug.Log("test");
                 var instance = CreateClassInstance(component, new List<object>(), false);
                 RunAssignmentsClassInstance(instance);
                 foreach (string str in parameters)
@@ -99,6 +100,7 @@ namespace CustomLogic
             }
             catch
             {
+                Debug.Log("test2");
             }
             return settings;
         }
