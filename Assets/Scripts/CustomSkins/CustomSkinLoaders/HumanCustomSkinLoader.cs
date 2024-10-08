@@ -56,7 +56,7 @@ namespace CustomSkins
             switch ((HumanCustomSkinPartId)partId)
             {
                 case HumanCustomSkinPartId.Horse:
-                    AddRenderersMatchingName(renderers, PhotonView.Find(_horseViewId).gameObject, "HORSE");
+                    AddRenderersMatchingName(renderers, PhotonView.Find(_horseViewId).gameObject, "Body");
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
                 case HumanCustomSkinPartId.Hair:
                     AddRendererIfExists(renderers, human.Setup._part_hair);
@@ -108,7 +108,7 @@ namespace CustomSkins
                     AddRendererIfExists(renderers, human.transform.Find("3dmg_smoke").gameObject);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.Hoodie:
-                    if (human.Setup._part_chest_1 != null && human.Setup._part_chest_1.name.Contains("character_cap"))
+                    if (human.Setup._part_chest_1 != null && human.Setup._part_chest_1.name.Contains("char_cap"))
                         AddRendererIfExists(renderers, human.Setup._part_chest_1);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.WeaponTrail:

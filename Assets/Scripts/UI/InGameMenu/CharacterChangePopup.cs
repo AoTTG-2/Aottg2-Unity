@@ -29,6 +29,7 @@ namespace UI
 
         private void OnBottomBarButtonClick(string name)
         {
+            ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true; // Prevents AHSS players from shooting when leaving the character change menu saving one extra round
             var manager = (InGameManager)SceneLoader.CurrentGameManager;
             switch (name)
             {

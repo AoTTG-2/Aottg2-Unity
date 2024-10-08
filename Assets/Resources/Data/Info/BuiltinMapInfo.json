@@ -77,6 +77,8 @@
 					"Name": "Annie",
 					"MiscSettings": {
 						"AllowThunderspears": false,
+						"AllowAHSS": false,
+						"AllowAPG": false,
 						"AllowShifterSpecials": false
 					}
 				},

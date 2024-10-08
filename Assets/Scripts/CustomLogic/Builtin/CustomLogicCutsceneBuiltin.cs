@@ -29,6 +29,15 @@ namespace CustomLogic
                 ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content, CustomLogicManager.Cutscene);
                 return null;
             }
+            if (methodName == "ShowDialogueForTime")
+            {
+                string icon = (string)parameters[0];
+                string title = (string)parameters[1];
+                string content = (string)parameters[2];
+                float time = (float)parameters[3];
+                CustomLogicManager._instance.StartCoroutine(ShowDialogueForTime(icon, title, content, time));
+                return null;
+            }
             if (methodName == "HideDialogue")
             {
                 ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
@@ -37,11 +46,18 @@ namespace CustomLogic
             return base.CallMethod(methodName, parameters);
         }
 
+        private IEnumerator ShowDialogueForTime(string icon, string title, string content, float time)
+        {
+            ((InGameMenu)UIManager.CurrentMenu).ShowCutsceneMenu(icon, title, content, CustomLogicManager.Cutscene);
+            yield return new WaitForSeconds(time);
+            ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
+        }
+
         private IEnumerator StartCutscene(string name, bool full)
         {
             var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, new List<object>(), true);
             CustomLogicManager.ToggleCutscene(full);
-            yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start", new List<object>());
+            yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start");
             CustomLogicManager.ToggleCutscene(false);
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
         }

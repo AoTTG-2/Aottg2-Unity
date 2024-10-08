@@ -46,6 +46,7 @@ namespace Characters
         protected virtual float DefaultJumpForce => 150f;
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
+        protected virtual float DisableCooldown => 0f;
         public float AttackSpeedMultiplier = 1f;
         public float ConfusedTime = 0;
         public float PreviousAttackSpeedMultiplier = -1f;
@@ -58,6 +59,7 @@ namespace Characters
         public float RotateSpeed;
         public float TurnSpeed;
         protected override Vector3 Gravity => Vector3.down * 100f;
+        protected virtual float CheckGroundTime => 0.4f;
         protected Vector3 LastTargetDirection;
         protected Vector3 _wallClimbForward;
         protected Quaternion _turnStartRotation;
@@ -68,6 +70,8 @@ namespace Characters
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
         protected float _currentFallTime;
+        protected float _disableCooldownLeft;
+        protected float _checkGroundTimeLeft;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -78,6 +82,7 @@ namespace Characters
         protected float _currentAttackSpeed;
         protected int _currentAttackStage;
         protected bool _needFreshCore;
+        protected Vector3 _attackVelocity;
         protected Vector3 _startCoreAttackPosition;
         protected Vector3 _previousCoreLocalPosition;
         protected Vector3 _furthestCoreLocalPosition;
@@ -248,7 +253,7 @@ namespace Characters
             else
                 Idle(0f);
         }
-        
+
         public virtual void Idle(float fadeTime)
         {
             StateActionWithTime(TitanState.Idle, BaseTitanAnimations.Idle, 0f, fadeTime);
@@ -263,7 +268,7 @@ namespace Characters
         public virtual void Land()
         {
             StateAction(TitanState.Land, BaseTitanAnimations.Land);
-            EffectSpawner.Spawn(EffectPrefabs.Boom2, Cache.Transform.position + Vector3.down * _currentGroundDistance, 
+            EffectSpawner.Spawn(EffectPrefabs.Boom2, Cache.Transform.position + Vector3.down * _currentGroundDistance,
                 Quaternion.Euler(270f, 0f, 0f), Size * SizeMultiplier);
         }
 
@@ -294,7 +299,7 @@ namespace Characters
 
         public virtual void Blind()
         {
-            if (State != TitanState.Blind && State != TitanState.SitBlind && AI)
+            if (State != TitanState.Blind && State != TitanState.SitBlind && AI && _disableCooldownLeft <= 0f)
             {
                 if (State == TitanState.SitCripple || State == TitanState.SitIdle)
                 {
@@ -317,11 +322,12 @@ namespace Characters
 
         public virtual void Cripple(float time = 0f)
         {
-            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI)
+            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI && _disableCooldownLeft <= 0f)
             {
-                _currentCrippleTime = time > 0f? time: DefaultCrippleTime;
+                _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
+                _disableCooldownLeft = _currentCrippleTime + DisableCooldown;
             }
         }
 
@@ -345,12 +351,19 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void GrabRPC(int viewId, PhotonMessageInfo info)
+        public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
             if (view.Owner != info.Sender)
                 return;
-            HoldHuman = view.GetComponent<Human>();
+            var human = view.GetComponent<Human>();
+            if (this.Cache.PhotonView.Owner == PhotonNetwork.LocalPlayer)
+                HoldHuman = human;
+            human.Grabber = this;
+            if (left)
+                human.GrabHand = this.BaseTitanCache.GrabLSocket;
+            else
+                human.GrabHand = this.BaseTitanCache.GrabRSocket;
         }
 
         [PunRPC]
@@ -371,7 +384,7 @@ namespace Characters
         [PunRPC]
         public virtual void DecreaseAttackSpeedRPC(PhotonMessageInfo info)
         {
-            if(ConfusedTime <= 0)
+            if (ConfusedTime <= 0)
             {
                 PreviousAttackSpeedMultiplier = AttackSpeedMultiplier;
                 AttackSpeedMultiplier = AttackSpeedMultiplier * 0.67f;
@@ -386,7 +399,7 @@ namespace Characters
 
         protected void ResetAttackSpeed()
         {
-            if(PreviousAttackSpeedMultiplier >= 0)
+            if (PreviousAttackSpeedMultiplier >= 0)
             {
                 AttackSpeedMultiplier = PreviousAttackSpeedMultiplier;
             }
@@ -516,6 +529,7 @@ namespace Characters
             UpdateAnimationColliders();
             if (IsMine())
             {
+                _disableCooldownLeft -= Time.deltaTime;
                 if (State == TitanState.Fall || State == TitanState.Jump)
                 {
                     if (!AI && HasDirection && IsSprint && CurrentSprintStamina > 1f)
@@ -635,7 +649,7 @@ namespace Characters
                     State = TitanState.Jump;
                 else if (State == TitanState.Attack || State == TitanState.Eat)
                     IdleWait(AttackPause);
-                else if (State == TitanState.Land)
+                else if (State == TitanState.Land || State == TitanState.CoverNape)
                     IdleWait(ActionPause);
                 else if (State == TitanState.Turn)
                     IdleWait(TurnPause);
@@ -659,7 +673,12 @@ namespace Characters
         {
             if (IsMine())
             {
-                CheckGround();
+                _checkGroundTimeLeft -= Time.fixedDeltaTime;
+                if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
+                {
+                    CheckGround();
+                    _checkGroundTimeLeft = CheckGroundTime;
+                }
                 if (State != TitanState.Fall)
                     _currentFallTime = 0f;
                 if (State == TitanState.Jump)
@@ -747,7 +766,7 @@ namespace Characters
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
-                if(ConfusedTime > 0)
+                if (ConfusedTime > 0)
                 {
                     ConfusedTime -= Time.fixedDeltaTime;
                 }
@@ -799,7 +818,7 @@ namespace Characters
             float radius = BaseTitanCache.Movebox.transform.lossyScale.x * ((CapsuleCollider)(BaseTitanCache.Movebox)).radius;
             RaycastHit hit;
             JustGrounded = false;
-            if (Physics.SphereCast(Cache.Transform.position + Vector3.up * (radius + 1f), radius, Vector3.down, 
+            if (Physics.SphereCast(Cache.Transform.position + Vector3.up * (radius + 1f), radius, Vector3.down,
                 out hit, 1f + GroundDistance, GroundMask.value))
             {
                 if (!Grounded)
@@ -1000,6 +1019,7 @@ namespace Characters
         SitIdle,
         Eat,
         Turn,
-        WallClimb
+        WallClimb,
+        CoverNape
     }
 }

@@ -89,6 +89,8 @@ namespace CustomLogic
                 return Player.GetIntProperty(PlayerProperty.HighestDamage);
             if (name == "TotalDamage")
                 return Player.GetIntProperty(PlayerProperty.TotalDamage);
+            if (name == "Ping")
+                return Player.GetIntProperty(PlayerProperty.Ping);
             if (name == "SpawnPoint")
             {
                 if (Player.HasSpawnPoint())
@@ -111,15 +113,26 @@ namespace CustomLogic
                 Player.SetCustomProperty(PlayerProperty.HighestDamage, (int)value);
             else if (name == "TotalDamage")
                 Player.SetCustomProperty(PlayerProperty.TotalDamage, (int)value);
+            else if (name == "Ping")
+                Player.SetCustomProperty(PlayerProperty.Ping, (int)value);
             else if (name == "SpawnPoint")
             {
                 if (value == null)
                     Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
                 else
                 {
-                    Vector3 vector = ((CustomLogicVector3Builtin)value).Value;
-                    string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
-                    Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
+                    if (value is CustomLogicVector3Builtin v3)
+                    {
+                        var vector = v3.Value;
+                        string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
+                    }
+                    else if (value is CustomLogicMapObjectBuiltin mapObject)
+                    {
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, mapObject.Value.ScriptObject.Id.ToString());
+                    }
+                    else
+                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
                 }
             }
             else

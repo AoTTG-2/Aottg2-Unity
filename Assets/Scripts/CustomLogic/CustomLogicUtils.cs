@@ -11,7 +11,7 @@ namespace CustomLogic
             if (ast is CustomLogicPrimitiveExpressionAst primitiveAst)
             {
                 if (primitiveAst.Value is float or int)
-                    return primitiveAst.ToString();
+                    return primitiveAst.Value.ToString();
                 else if (primitiveAst.Value is bool b)
                     return b ? "true" : "false";
                 else if (primitiveAst.Value is string s)

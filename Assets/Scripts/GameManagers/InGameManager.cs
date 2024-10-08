@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
+using Anticheat;
 
 namespace GameManagers
 {
@@ -52,6 +53,10 @@ namespace GameManagers
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
+
+        //ping related
+        private float pingUpdateInterval = 10f;
+        private float timeSinceLastPingUpdate = 0f;
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -244,9 +249,9 @@ namespace GameManagers
             else if (CurrentCharacter is BaseShifter)
                 killWeapon = KillWeapon.Shifter;
             if (victim is Human)
-                GameProgressManager.RegisterHumanKill(CurrentCharacter.gameObject, (Human)victim, killWeapon);
+                GameProgressManager.RegisterHumanKill((Human)victim, killWeapon);
             else if (victim is BasicTitan)
-                GameProgressManager.RegisterTitanKill(CurrentCharacter.gameObject, (BasicTitan)victim, killWeapon);
+                GameProgressManager.RegisterTitanKill((BasicTitan)victim, killWeapon);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.Kills, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Kills) + 1 }
@@ -258,24 +263,25 @@ namespace GameManagers
         {
             if (CurrentCharacter == null)
                 return;
-            var killWeapon = KillWeapon.Other;
+            KillMethod killMethod = KillWeapon.Other;
             if (CurrentCharacter is Human)
             {
                 var human = (Human)CurrentCharacter;
                 if (human.Setup.Weapon == HumanWeapon.AHSS)
-                    killWeapon = KillWeapon.AHSS;
+                    killMethod.Weapon = KillWeapon.AHSS;
                 else if (human.Setup.Weapon == HumanWeapon.Blade)
-                    killWeapon = KillWeapon.Blade;
+                    killMethod.Weapon = KillWeapon.Blade;
                 else if (human.Setup.Weapon == HumanWeapon.Thunderspear)
-                    killWeapon = KillWeapon.Thunderspear;
+                    killMethod.Weapon = KillWeapon.Thunderspear;
                 else if (human.Setup.Weapon == HumanWeapon.APG)
-                    killWeapon = KillWeapon.APG;
+                    killMethod.Weapon = KillWeapon.APG;
+                killMethod.Special = human.State == HumanState.SpecialAttack ? human.CurrentSpecial : "";
             }
             else if (CurrentCharacter is BasicTitan)
-                killWeapon = KillWeapon.Titan;
+                killMethod = KillWeapon.Titan;
             else if (CurrentCharacter is BaseShifter)
-                killWeapon = KillWeapon.Shifter;
-            GameProgressManager.RegisterDamage(CurrentCharacter.gameObject, victim.gameObject, killWeapon, damage);
+                killMethod = KillWeapon.Shifter;
+            GameProgressManager.RegisterDamage(victim.gameObject, killMethod, damage);
             var properties = new Dictionary<string, object>
             {
                 { PlayerProperty.TotalDamage, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.TotalDamage) + damage },
@@ -327,6 +333,7 @@ namespace GameManagers
             if (VoiceChatVolumeMultiplier.ContainsKey(player.ActorNumber))
                 VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
 
+            AnticheatManager.ResetVoteKicks(player);
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
@@ -519,7 +526,7 @@ namespace GameManagers
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
-                SetupTitan(titan);
+                SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
                 float largeSize = 3f;
@@ -670,7 +677,7 @@ namespace GameManagers
             return titan;
         }
 
-        public void SetupTitan(BasicTitan titan)
+        public void SetupTitan(BasicTitan titan, bool ai=true)
         {
             var settings = SettingsManager.InGameCurrent.Titan;
             if (settings.TitanSizeEnabled.Value)
@@ -710,6 +717,10 @@ namespace GameManagers
                     health = Mathf.Max(health, 1);
                     titan.SetHealth(health);
                 }
+            }
+            else if (!ai)
+            {
+                titan.SetHealth(10);
             }
         }
 
@@ -920,6 +931,10 @@ namespace GameManagers
             }
             PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
+
+            //set ping at start
+            int currentPing = PhotonNetwork.GetPing();
+            PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
         }
 
         public override bool IsFinishedLoading()
@@ -934,6 +949,14 @@ namespace GameManagers
             UpdateCleanCharacters();
             EndTimeLeft -= Time.deltaTime;
             EndTimeLeft = Mathf.Max(EndTimeLeft, 0f);
+
+            timeSinceLastPingUpdate += Time.deltaTime;
+            if (timeSinceLastPingUpdate >= pingUpdateInterval)
+            {
+                int currentPing = PhotonNetwork.GetPing();
+                PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+                timeSinceLastPingUpdate = 0f;
+            }
         }
 
         protected override void OnFinishLoading()

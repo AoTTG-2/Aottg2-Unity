@@ -22,6 +22,7 @@ namespace GameManagers
         public static string TotalDamage = "TotalDamage";
         public static string SpawnPoint = "SpawnPoint";
         public static string CameraDistance = "CameraDistance";
+        public static string Ping = "Ping";
     }
 
     class PlayerStatus

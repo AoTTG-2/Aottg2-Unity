@@ -24,7 +24,7 @@ namespace CustomLogic
             {
                 if (methodName == "Refill")
                 {
-                    if (Human.NeedRefill())
+                    if (Human.NeedRefill(true))
                         return Human.Refill();
                     return false;
                 }
@@ -110,9 +110,8 @@ namespace CustomLogic
                     Human.Stats.DisablePerks();
                     return null;
                 }
-                return base.CallMethod(methodName, parameters);
             }
-            return null;
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)

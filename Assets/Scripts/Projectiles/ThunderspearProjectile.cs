@@ -160,17 +160,24 @@ namespace Projectiles
                     if (collider == titan.BaseTitanCache.NapeHurtbox && titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Thunderspear"]["RestrictAngle"].AsFloat))
                     {
                         float titanHealth = titan.CurrentHealth;
-                        if (_owner == null || !(_owner is Human))
-                            titan.GetHit("Thunderspear", 100, "Thunderspear", collider.name);
+                        int damage = 100;
+                        if (!titan.AI)
+                        {
+                            damage = 0;
+                            titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
+                        }
+                        else if (_owner == null || !(_owner is Human))
+                        {
+                            titan.GetHit("Thunderspear", damage, "Thunderspear", collider.name);
+                        }
                         else
                         {
-                            var damage = CalculateDamage();
+                            damage = CalculateDamage();
                             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                             ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
                             titan.GetHit(_owner, damage, "Thunderspear", collider.name);
                         }
-
-                        if (titan.CurrentHealth <= 0)
+                        if (damage >= titanHealth)
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.Kill);
                         else
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.ArmorHit);

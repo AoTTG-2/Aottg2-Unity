@@ -1,4 +1,5 @@
 ﻿using GameManagers;
+using Map;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
@@ -94,13 +95,24 @@ static class PhotonExtensions
     public static bool HasSpawnPoint(this Player player)
     {
         var property = player.GetStringProperty(PlayerProperty.SpawnPoint, "null");
-        return property != "null" && property.Contains(",");
+        return property != "null";
     }
 
     public static Vector3 GetSpawnPoint(this Player player)
     {
+        var position = Vector3.zero;
         var property = player.GetStringProperty(PlayerProperty.SpawnPoint, "0,0,0");
-        var strArr = property.Split(',');
-        return new Vector3(float.Parse(strArr[0]), float.Parse(strArr[1]), float.Parse(strArr[2]));
+
+        if (property.Contains(","))
+        {
+            var strArr = property.Split(',');
+            position = new Vector3(float.Parse(strArr[0]), float.Parse(strArr[1]), float.Parse(strArr[2]));
+        }
+        else
+        {
+            if (MapLoader.IdToMapObject.TryGetValue(int.Parse(property), out MapObject mapObject))
+                position = mapObject.GameObject.transform.position;
+        }
+        return position;
     }
 }

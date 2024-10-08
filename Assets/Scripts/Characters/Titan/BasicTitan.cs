@@ -1,11 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using Controllers;
-using CustomSkins;
 using System.Collections.Generic;
 using SimpleJSONFixed;
 using System.Collections;
@@ -16,9 +12,6 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
-using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 namespace Characters
 {
@@ -67,7 +60,7 @@ namespace Characters
             else
             {
                 int runAnimationType = 1;
-                if (data != null  && data.HasKey("RunAnimation"))
+                if (data != null && data.HasKey("RunAnimation"))
                     runAnimationType = data["RunAnimation"].AsInt;
                 if (runAnimationType == 0)
                     _runAnimation = BasicAnimations.Runs[UnityEngine.Random.Range(0, BasicAnimations.Runs.Length)];
@@ -76,6 +69,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
+            Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
         }
 
         public override bool IsGrabAttack()
@@ -92,7 +86,7 @@ namespace Characters
         protected override void SetSizeParticles(float size)
         {
             base.SetSizeParticles(size);
-            foreach (ParticleSystem system in new ParticleSystem[] {BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR})
+            foreach (ParticleSystem system in new ParticleSystem[] { BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR })
             {
                 system.startSize *= size;
                 system.startSpeed *= size;
@@ -189,6 +183,15 @@ namespace Characters
                     StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 1.4f));
                 }
                 StateAction(TitanState.Emote, anim);
+            }
+        }
+
+        public void CoverNape()
+        {
+            if (CanAction())
+            {
+                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, 
+                    Cache.Animation[BasicAnimations.CoverNape].length / Cache.Animation[BasicAnimations.CoverNape].speed);
             }
         }
 
@@ -433,7 +436,7 @@ namespace Characters
                 dieAnimation = BasicAnimations.DieCrawler;
             else if (_currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup)
                 dieAnimation = BasicAnimations.DieGround;
-            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle 
+            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
             StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
@@ -520,6 +523,8 @@ namespace Characters
 
         public override void Attack(string attack)
         {
+            if (!AI)
+                _attackVelocity = new Vector3(Cache.Rigidbody.velocity.x, 0f, Cache.Rigidbody.velocity.z);
             ResetAttackState(attack);
             if (_currentAttackAnimation == BasicAnimations.AttackBellyFlop)
                 StateActionWithTime(TitanState.Attack, _currentAttackAnimation, BellyFlopTime, 0.1f);
@@ -768,7 +773,7 @@ namespace Characters
                     BasicCache.MouthHitbox.Activate(0f, GetHitboxTime(0.09f));
                     _currentAttackStage = 1;
                 }
-                else if (_currentAttackStage == 1  && animationTime > stage2Time)
+                else if (_currentAttackStage == 1 && animationTime > stage2Time)
                 {
                     var transform = BasicCache.MouthHitbox.transform;
                     var position = transform.position + transform.up * Size;
@@ -846,12 +851,14 @@ namespace Characters
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
                         _rockThrowTarget = TargetEnemy.GetPosition();
-                        if (TargetEnemy is BaseCharacter)
-                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
+                        //if (TargetEnemy is BaseCharacter)
+                        //    _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
                     }
                     else
                         _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
                 }
+                else
+                    _rockThrowTarget = GetAimPoint();
                 var flatTarget = _rockThrowTarget;
                 flatTarget.y = Cache.Transform.position.y;
                 var forward = (flatTarget - Cache.Transform.position).normalized;
@@ -874,7 +881,7 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (HoldHuman == null  && _stateTimeLeft > 4.72f)
+            if (HoldHuman == null && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
@@ -1166,7 +1173,7 @@ namespace Characters
             BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
             if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
             {
-                var body = BasicCache.Core.Find("Controller.Body");
+                var body = BasicCache.Body;
                 body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
                 BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
             }
