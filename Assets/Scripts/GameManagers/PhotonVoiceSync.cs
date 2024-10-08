@@ -82,9 +82,13 @@ namespace GameManagers
             var setting = SettingsManager.InGameCurrent.Misc.VoiceChat.Value;
             if (PhotonView.IsMine)
             {
-                if (inGameManager.CurrentCharacter != null)
+                var character = inGameManager.CurrentCharacter;
+                if (character != null)
                 {
-                    Transform.position = inGameManager.CurrentCharacter.GetCameraAnchor().position;
+                    if (character is BaseTitan)
+                        Transform.position = ((BaseTitan)character).BaseTitanCache.Head.position;
+                    else
+                        Transform.position = character.GetCameraAnchor().position;
                 }
                 bool alive = inGameManager.CurrentCharacter != null && !inGameManager.CurrentCharacter.Dead;
                 if (setting == (int)VoiceChatMode.Off || (setting == (int)VoiceChatMode.Proximity && !alive))
@@ -122,16 +126,6 @@ namespace GameManagers
                 else
                 {
                     bool isSpeaking = VoiceView.IsSpeaking;
-                    if (SettingsManager.InGameCurrent.Misc.VoiceChat.Value == (int)VoiceChatMode.Proximity)
-                    {
-                        var mainCharacter = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
-                        if (mainCharacter != null)
-                        {
-                            var distance = Vector3.Distance(mainCharacter.Cache.Transform.position, Transform.position);
-                            var volume = this.AudioSource.volume;
-                            isSpeaking = isSpeaking && volume > 0f && distance <= SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
-                        }
-                    }
                     ChatManager.IsTalking(this.photonView.Owner, isSpeaking);
                 }
             }

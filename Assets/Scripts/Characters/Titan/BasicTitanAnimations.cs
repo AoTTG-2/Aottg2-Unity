@@ -85,6 +85,7 @@
         public string BlindCrawler = "Amarture_VER2|crawler.hiteyes";
         public string ArmHurtL = "Amarture_VER2|arm_hurt_L";
         public string ArmHurtR = "Amarture_VER2|arm_hurt_R";
+        public string CoverNape = "Amarture_VER2|idle.recovery";
         public string EmoteLaugh = "Amarture_VER2|laugh";
         public string EmoteNod = "Amarture_VER2|emote_titan_yes";
         public string EmoteShake = "Amarture_VER2|emote_titan_no";

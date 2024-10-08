@@ -26,6 +26,7 @@ namespace Utility
         public static int MinimapIcon = 27;
         public static int Background = 28;
         public static int MapObjectTitans = 29;
+        public static int MapObjectHumans = 30;
         private static Dictionary<int, LayerMask> _masks = new Dictionary<int, LayerMask>();
 
         public static void Init()
@@ -33,7 +34,7 @@ namespace Utility
             SetLayerCollisions(NoCollision, new int[0]);
             SetLayerCollisions(Hitbox, new int[] { Human, TitanPushbox, Hurtbox });
             SetLayerCollisions(Human, new int[] { Hitbox, TitanPushbox, Projectile, EntityDetection, CharacterDetection, 
-                MapObjectAll, MapObjectEntities, MapObjectCharacters});
+                MapObjectAll, MapObjectEntities, MapObjectCharacters, MapObjectHumans});
             SetLayerCollisions(TitanMovebox, new int[] { TitanMovebox, EntityDetection, CharacterDetection, MapObjectAll, MapObjectEntities, MapObjectCharacters, MapObjectTitans });
             SetLayerCollisions(TitanPushbox, new int[] { Hitbox, Human, Projectile, NPC });
             SetLayerCollisions(Projectile, new int[] { Human, TitanPushbox, EntityDetection, MapObjectEntities, MapObjectAll, MapObjectProjectiles });
@@ -41,12 +42,13 @@ namespace Utility
             SetLayerCollisions(CharacterDetection, new int[] { Human, TitanMovebox });
             SetLayerCollisions(NPC, new int[] {TitanPushbox, MapObjectCharacters, MapObjectEntities, MapObjectAll});
             SetLayerCollisions(Hurtbox, new int[] { Hitbox });
-            SetLayerCollisions(MapObjectMapObjects, new int[] { MapObjectAll, MapObjectMapObjects, MapObjectProjectiles, MapObjectTitans, MapObjectCharacters, MapObjectEntities });
+            SetLayerCollisions(MapObjectMapObjects, new int[] { MapObjectAll, MapObjectMapObjects, MapObjectProjectiles, MapObjectTitans, MapObjectHumans, MapObjectCharacters, MapObjectEntities });
             SetLayerCollisions(MapObjectProjectiles, new int[] { MapObjectAll, MapObjectMapObjects, Projectile });
             SetLayerCollisions(MapObjectTitans, new int[] { MapObjectAll, MapObjectMapObjects, TitanMovebox });
+            SetLayerCollisions(MapObjectHumans, new int[] { MapObjectAll, MapObjectMapObjects, Human });
             SetLayerCollisions(MapObjectCharacters, new int[] { MapObjectAll, MapObjectMapObjects, Human, TitanMovebox, NPC });
             SetLayerCollisions(MapObjectEntities, new int[] { MapObjectAll, MapObjectMapObjects, TitanMovebox, Human, Projectile, NPC });
-            SetLayerCollisions(MapObjectAll, new int[] { Human, TitanMovebox, Projectile, MapObjectAll, MapObjectTitans, MapObjectMapObjects, MapObjectEntities, 
+            SetLayerCollisions(MapObjectAll, new int[] { Human, TitanMovebox, Projectile, MapObjectAll, MapObjectTitans, MapObjectHumans, MapObjectMapObjects, MapObjectEntities, 
                 MapObjectCharacters, MapObjectProjectiles, NPC});
             SetLayerCollisions(MapEditorObject, new int[0]);
             SetLayerCollisions(MapEditorGizmo, new int[0]);

@@ -54,6 +54,10 @@ namespace GameManagers
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
 
+        //ping related
+        private float pingUpdateInterval = 10f;
+        private float timeSinceLastPingUpdate = 0f;
+
         public HashSet<BaseCharacter> GetAllCharacters()
         {
             var characters = new HashSet<BaseCharacter>();
@@ -541,7 +545,7 @@ namespace GameManagers
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
-                SetupTitan(titan);
+                SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
                 float largeSize = 3f;
@@ -691,7 +695,7 @@ namespace GameManagers
             return titan;
         }
 
-        public void SetupTitan(BasicTitan titan)
+        public void SetupTitan(BasicTitan titan, bool ai=true)
         {
             var settings = SettingsManager.InGameCurrent.Titan;
             if (settings.TitanSizeEnabled.Value)
@@ -731,6 +735,10 @@ namespace GameManagers
                     health = Mathf.Max(health, 1);
                     titan.SetHealth(health);
                 }
+            }
+            else if (!ai)
+            {
+                titan.SetHealth(10);
             }
         }
 
@@ -941,6 +949,10 @@ namespace GameManagers
             }
             PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
+
+            //set ping at start
+            int currentPing = PhotonNetwork.GetPing();
+            PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
         }
 
         public override bool IsFinishedLoading()
@@ -955,6 +967,14 @@ namespace GameManagers
             UpdateCleanCharacters();
             EndTimeLeft -= Time.deltaTime;
             EndTimeLeft = Mathf.Max(EndTimeLeft, 0f);
+
+            timeSinceLastPingUpdate += Time.deltaTime;
+            if (timeSinceLastPingUpdate >= pingUpdateInterval)
+            {
+                int currentPing = PhotonNetwork.GetPing();
+                PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+                timeSinceLastPingUpdate = 0f;
+            }
         }
 
         protected override void OnFinishLoading()

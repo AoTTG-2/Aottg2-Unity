@@ -244,7 +244,6 @@ namespace Cameras
 
         private void UpdateMain()
         {
-
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
                 if (_input.ChangeCamera.GetKeyDown())
@@ -270,6 +269,8 @@ namespace Cameras
                             _napeLockTitan = titan;
                     }
                 }
+                if (_napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
+                    _napeLock = false;
             }
             var cameraDistance = GetCameraDistance();
             float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
@@ -283,19 +284,7 @@ namespace Cameras
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
             if (InGameMenu.InMenu())
                 sensitivity = 0f;
-            if (_napeLock && (_napeLockTitan != null))
-            {
-                float z = Cache.Transform.eulerAngles.z;
-                Transform neck = _napeLockTitan.BaseTitanCache.Neck;
-                Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
-                Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-                if (_napeLockTitan.Dead)
-                {
-                    _napeLockTitan = null;
-                }
-            }
-            else if (CurrentCameraMode == CameraInputMode.Original)
+            if (CurrentCameraMode == CameraInputMode.Original)
             {
                 if (Input.mousePosition.x < (Screen.width * 0.4f))
                 {
@@ -310,6 +299,19 @@ namespace Cameras
                 float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+            }
+            if (_napeLock && (_napeLockTitan != null))
+            {
+                float z = Cache.Transform.eulerAngles.z;
+                Transform neck = _napeLockTitan.BaseTitanCache.Neck;
+                Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
+                Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
+                if (CurrentCameraMode != CameraInputMode.Original)
+                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+                if (_napeLockTitan.Dead)
+                {
+                    _napeLockTitan = null;
+                }
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
             {

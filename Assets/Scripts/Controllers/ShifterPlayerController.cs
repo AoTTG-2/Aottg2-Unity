@@ -16,6 +16,10 @@ namespace Controllers
             base.Awake();
             _shifter = GetComponent<BaseShifter>();
             _shifterInput = SettingsManager.InputSettings.Shifter;
+            _shifter.BaseTitanCache.HandLHitbox.ScaleSphereCollider(1.5f);
+            _shifter.BaseTitanCache.HandRHitbox.ScaleSphereCollider(1.5f);
+            _shifter.BaseTitanCache.FootLHitbox.ScaleSphereCollider(1.5f);
+            _shifter.BaseTitanCache.FootRHitbox.ScaleSphereCollider(1.5f);
         }
 
         protected override void UpdateActionInput(bool inMenu)

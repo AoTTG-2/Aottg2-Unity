@@ -15,8 +15,9 @@ namespace Characters
         public bool TwoFixedUpdates = false;
         protected HashSet<GameObject> _hitGameObjects = new HashSet<GameObject>();
         protected HashSet<Collider> _firstFrameColliders = new HashSet<Collider>();
+        protected HashSet<BaseCharacter> _firstHitCharacters = new HashSet<BaseCharacter>();
+        protected HashSet<CustomLogicCollisionHandler> _firstHitHandlers = new HashSet<CustomLogicCollisionHandler>();
         public Collider _collider;
-        protected bool _firstHit = false;
         public GameObject _debugObject;
 
         public static BaseHitbox Create(BaseCharacter owner, GameObject obj, Collider collider = null)
@@ -38,6 +39,16 @@ namespace Characters
             {
                 SphereCollider collider = (SphereCollider)_collider;
                 collider.radius = radius;
+                UpdateDebugCollider(collider);
+            }
+        }
+
+        public void ScaleSphereCollider(float scale)
+        {
+            if (_collider is SphereCollider)
+            {
+                SphereCollider collider = (SphereCollider)_collider;
+                collider.radius = collider.radius * scale;
                 UpdateDebugCollider(collider);
             }
         }
@@ -66,7 +77,8 @@ namespace Characters
         public void Activate(float delay = 0f, float length = 0f)
         {
             _hitGameObjects.Clear();
-            _firstHit = true;
+            _firstHitCharacters.Clear();
+            _firstHitHandlers.Clear();
             _firstFrameColliders.Clear();
             if (delay == 0f)
             {
@@ -139,14 +151,14 @@ namespace Characters
 
         protected virtual void OnHit(BaseCharacter victim, Collider collider)
         {
-            Owner.OnHit(this, victim, collider, "", _firstHit);
-            _firstHit = false;
+            Owner.OnHit(this, victim, collider, "", !_firstHitCharacters.Contains(victim));
+            _firstHitCharacters.Add(victim);
         }
 
         protected virtual void OnHit(CustomLogicCollisionHandler handler, Collider collider)
         {
-            Owner.OnHit(this, handler, collider, "", _firstHit);
-            _firstHit = false;
+            Owner.OnHit(this, handler, collider, "", _firstHitHandlers.Contains(handler));
+            _firstHitHandlers.Add(handler);
         }
 
         protected void ToggleDebug(bool toggle)

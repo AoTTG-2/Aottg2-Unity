@@ -291,6 +291,20 @@ namespace CustomLogic
                     startIndex = ParseAst(end + 2, foreachAst);
                     ((CustomLogicBlockAst)prev).Statements.Add(foreachAst);
                 }
+                else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Continue))
+                {
+                    AssertSymbolValue(nextToken, (int)CustomLogicSymbol.Semicolon);
+                    startIndex = startIndex + 2;
+                    CustomLogicContinueExpressionAst continueExpression = new CustomLogicContinueExpressionAst(currToken.Line);
+                    ((CustomLogicBlockAst)prev).Statements.Add(continueExpression);
+                }
+                else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.Break))
+                {
+                    AssertSymbolValue(nextToken, (int)CustomLogicSymbol.Semicolon);
+                    startIndex = startIndex + 2;
+                    CustomLogicBreakExpressionAst continueExpression = new CustomLogicBreakExpressionAst(currToken.Line);
+                    ((CustomLogicBlockAst)prev).Statements.Add(continueExpression);
+                }
                 else if (IsSymbolValue(currToken, (int)CustomLogicSymbol.RightCurly))
                 {
                     return startIndex + 1;
