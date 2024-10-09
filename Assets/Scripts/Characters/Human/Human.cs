@@ -2168,7 +2168,7 @@ namespace Characters
         private void FixedUpdateBodyLean()
         {
             float z = 0f;
-            _needLean = true;
+            _needLean = false;
             if (Setup.Weapon != HumanWeapon.AHSS && Setup.Weapon != HumanWeapon.APG && State == HumanState.Attack && !IsFiringThunderspear())
             {
                 Vector3 v = Cache.Rigidbody.velocity;
