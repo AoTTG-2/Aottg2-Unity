@@ -327,7 +327,7 @@ namespace Characters
                             {
                                 MapObject mapObject = MapLoader.GoToMapObject[obj.transform.root.gameObject];
                                 if (mapObject.ScriptObject.Static)
-                                    SetHooked(finalHit.point + new Vector3(0f, 0.03f, 0f));
+                                    SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
                                 else
                                     SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
                                 var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
