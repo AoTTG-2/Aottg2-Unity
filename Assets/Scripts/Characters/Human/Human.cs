@@ -2062,10 +2062,10 @@ namespace Characters
         private void FixedUpdatePivot(Vector3 position)
         {
             float addSpeed = 0.1f;
-            if (Grounded)
-                addSpeed = -0.01f;
+            //if (Grounded) ITMAGIA6
+                //addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - Cache.Rigidbody.position;
+            Vector3 v = (position + new Vector3(0,0.6f,0)) - Cache.Rigidbody.position;
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2074,6 +2074,7 @@ namespace Characters
             }
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
             v = Vector3.RotateTowards(v, _currentVelocity, 1.53938f * reel, 1.53938f * reel).normalized;
+            Debug.Log("Here: " + v);
             if (reelAxis > 0f)
                 _isReelingOut = true;
             else if (reelAxis < 0f && !_reelInWaitForRelease)
@@ -2083,8 +2084,11 @@ namespace Characters
                 if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                     _reelInWaitForRelease = true;
             }
+            Vector3 a = new Vector3(1, 1, 1);
             _currentVelocity = v * newSpeed;
             Cache.Rigidbody.velocity = _currentVelocity;
+
+            Debug.Log("test2");
         }
 
         private bool IsStock(bool pivot)
@@ -2094,6 +2098,7 @@ namespace Characters
 
         private void FixedUpdateSetHookedDirection()
         {
+            Debug.Log("test");
             _almostSingleHook = false;
             float oldTargetAngle = TargetAngle;
             if (IsHookedLeft() && IsHookedRight())
