@@ -1717,7 +1717,7 @@ namespace Characters
                       {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
-                        if (isStock || !stockPivot && CanStockDueToBL())
+                        if (isStock && CanStockDueToBL() || !stockPivot && CanStockDueToBL())
                         {
                             _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
                             Cache.Rigidbody.velocity = _currentVelocity;
