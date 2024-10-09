@@ -1709,14 +1709,15 @@ namespace Characters
                     gravity = Gravity * 0.5f * Cache.Rigidbody.mass;
                 else
                     gravity = Gravity * Cache.Rigidbody.mass;
+
                 
                 if (Grounded && State == HumanState.Attack)
                 {
-                    if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2))
-                    {
+                      if (ValidStockAttacks())
+                      {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
-                        if (isStock || !stockPivot)
+                        if (isStock || !stockPivot && CanStockDueToBL())
                         {
                             _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
                             Cache.Rigidbody.velocity = _currentVelocity;
@@ -1726,7 +1727,7 @@ namespace Characters
                             _currentVelocity = _currentVelocity.normalized * Mathf.Min(_currentVelocity.magnitude, 20f);
                             Cache.Rigidbody.velocity = _currentVelocity;
                         }
-                    }
+                      }
                     ToggleSparks(false);
                 }
                 gravity += WeatherManager.GetWeatherForce();
@@ -1791,6 +1792,32 @@ namespace Characters
             EnableSmartTitans();
         }
 
+        private bool CanStockDueToBL()
+        {
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (_almostSingleHook)
+                {
+                    return false;
+                }
+            }
+            else if (IsHookedLeft())
+            {
+                return false;
+            }
+            else if (IsHookedRight())
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private bool ValidStockAttacks()
+        {
+            return Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2);
+        }
         private void lookAtTarget(Vector3 target)
         {
             Transform chestT = HumanCache.Chest;
@@ -2062,8 +2089,7 @@ namespace Characters
 
         private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && pivot &&
-                (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2));
+            return Grounded && State == HumanState.Attack && pivot && ValidStockAttacks();
         }
 
         private void FixedUpdateSetHookedDirection()
@@ -2138,11 +2164,11 @@ namespace Characters
             if (Grounded && HasDirection && State != HumanState.Attack && State != HumanState.Slide)
                 TargetAngle = oldTargetAngle;
         }
-
+       
         private void FixedUpdateBodyLean()
         {
             float z = 0f;
-            _needLean = false;
+            _needLean = true;
             if (Setup.Weapon != HumanWeapon.AHSS && Setup.Weapon != HumanWeapon.APG && State == HumanState.Attack && !IsFiringThunderspear())
             {
                 Vector3 v = Cache.Rigidbody.velocity;
@@ -2160,6 +2186,7 @@ namespace Characters
                     {
                         if (_almostSingleHook)
                         {
+
                             _needLean = true;
                             z = GetLeanAngle(HookRight.GetHookPosition(), true);
                         }
