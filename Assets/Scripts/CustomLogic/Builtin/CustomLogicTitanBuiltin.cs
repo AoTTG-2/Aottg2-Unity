@@ -98,14 +98,26 @@ namespace CustomLogic
                     return Titan.GetComponent<BaseTitanAIController>().FocusRange;
                 return null;
             }
+            if (name == "RunSpeedBase")
+                return Titan.RunSpeedBase;
+            if (name == "WalkSpeedBase")
+                return Titan.WalkSpeedBase;
+            if (name == "TurnSpeed")
+                return Titan.TurnSpeed;
+            if (name == "RotateSpeed")
+                return Titan.RotateSpeed;
+            if (name == "JumpForce")
+                return Titan.JumpForce;
+            if (name == "ActionPause")
+                return Titan.ActionPause;
+            if (name == "AttackPause")
+                return Titan.AttackPause;
+            if (name == "TurnPause")
+                return Titan.TurnPause;
             if (name == "NapePosition")
-            {
                 return new CustomLogicVector3Builtin(Titan.BasicCache.NapeHurtbox.transform.position);
-            }
             if (name == "IsCrawler")
-            {
                 return Titan.IsCrawler;
-            }
             if (name == "UsePathfinding")
             {
                 if (Titan.IsMine() && Titan.AI)
@@ -121,6 +133,22 @@ namespace CustomLogic
                 return;
             if (name == "Size")
                 Titan.SetSize(value.UnboxToFloat());
+            else if (name == "RunSpeedBase")
+                Titan.RunSpeedBase = value.UnboxToFloat();
+            else if (name == "WalkSpeedBase")
+                Titan.WalkSpeedBase = value.UnboxToFloat();
+            else if (name == "TurnSpeed")
+                Titan.TurnSpeed = value.UnboxToFloat();
+            else if (name == "RotateSpeed")
+                Titan.RotateSpeed = value.UnboxToFloat();
+            else if (name == "JumpForce")
+                Titan.JumpForce = value.UnboxToFloat();
+            else if (name == "ActionPause")
+                Titan.ActionPause = value.UnboxToFloat();
+            else if (name == "AttackPause")
+                Titan.AttackPause = value.UnboxToFloat();
+            else if (name == "TurnPause")
+                Titan.TurnPause = value.UnboxToFloat();
             else if (name == "DetectRange")
             {
                 if (Titan.AI)
