@@ -16575,6 +16575,10 @@ MonoBehaviour:
   CanDodge: 1
   IsInvincible: 1
   InvincibleTimeLeft: 0
+  _YClippingMultiplier: 0.02
+  YMultiplier: 1.17
+  BounceRange: 10
+  BounceValue: 1
   ReelInAxis: 0
   ReelOutAxis: 0
   ReelOutScrollTimeLeft: 0
@@ -16582,6 +16586,7 @@ MonoBehaviour:
   IsWalk: 0
   _targetRotation: {x: 0, y: 0, z: 0, w: 0}
   LastGoodHeadAngle: {x: 0, y: 0}
+  CanBounce: 0
   StandAnimation: 
   AttackAnimation: 
   _gunArmAim: 0
