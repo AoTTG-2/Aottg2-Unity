@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Utility;
 using Weather;
 
@@ -66,6 +67,11 @@ namespace Characters
         private int _lastCarryRPCSender = -1;
 
         // physics
+        public float _YClippingMultiplier = 0.020f;
+        public float YMultiplier = 1.17f;
+        public int BounceRange = 10;
+        public float BounceValue = 0.2f;
+
         public float ReelInAxis = 0f;
         public float ReelOutAxis = 0f;
         public float ReelOutScrollTimeLeft = 0f;
@@ -103,6 +109,7 @@ namespace Characters
         private const float CarryLagCompensationDistance = 100f;
 
         // actions
+        public bool CanBounce;
         public string StandAnimation;
         public string AttackAnimation;
         public bool _gunArmAim;
@@ -507,7 +514,7 @@ namespace Characters
             if (initiatorView.Owner != info.Sender)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             _lastCarryRPCSender = initiatorViewId;
             if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
@@ -523,10 +530,10 @@ namespace Characters
             if (_lastCarryRPCSender != initiatorViewId)
                 return;
             var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView == null) 
+            if (initiatorView == null)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             Carrier = initiator;
             Carrier.BackHuman = this;
@@ -1374,6 +1381,11 @@ namespace Characters
 
         protected void FixedUpdate()
         {
+
+            //if (_targetRotation.w > 0.7f)
+            //{
+            //    Debug.Log("Cant bounce");
+            //}
             if (IsMine())
             {
                 FixedUpdateLookTitan();
@@ -1710,11 +1722,11 @@ namespace Characters
                 else
                     gravity = Gravity * Cache.Rigidbody.mass;
 
-                
+
                 if (Grounded && State == HumanState.Attack)
                 {
-                      if (ValidStockAttacks())
-                      {
+                    if (ValidStockAttacks())
+                    {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
                         if (isStock && CanStockDueToBL() || !stockPivot && CanStockDueToBL())
@@ -1727,7 +1739,7 @@ namespace Characters
                             _currentVelocity = _currentVelocity.normalized * Mathf.Min(_currentVelocity.magnitude, 20f);
                             Cache.Rigidbody.velocity = _currentVelocity;
                         }
-                      }
+                    }
                     ToggleSparks(false);
                 }
                 gravity += WeatherManager.GetWeatherForce();
@@ -2061,20 +2073,37 @@ namespace Characters
 
         private void FixedUpdatePivot(Vector3 position)
         {
+            if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
+            {
+                UnityEngine.Debug.LogError("CanBounce");
+                YMultiplier = BounceValue;
+            }
+            else
+            {
+                if (JustGrounded)
+                    YMultiplier = 0;
+            }
             float addSpeed = 0.1f;
-            //if (Grounded) ITMAGIA6
-                //addSpeed = -0.01f;
+            // TO CHECK
+            //if (Grounded)
+            //addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = (position + new Vector3(0,0.6f,0)) - Cache.Rigidbody.position;
+            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier + YMultiplier, 0));
+            if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
+                UnityEngine.Debug.Log(Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier + YMultiplier, 0));
+
+
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && Vector3.Distance(Cache.Transform.position, position) > RealismMaxReel)
                     reelAxis = 0f;
             }
+
+            //TODO : Check for BodyLean Orientation to give more YClippingMult for allowing "One-Hook Bounce" (Problably only OnJustGrounded?)
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
+            //Debug.Log(v.y);
             v = Vector3.RotateTowards(v, _currentVelocity, 1.53938f * reel, 1.53938f * reel).normalized;
-            Debug.Log("Here: " + v);
             if (reelAxis > 0f)
                 _isReelingOut = true;
             else if (reelAxis < 0f && !_reelInWaitForRelease)
@@ -2084,11 +2113,8 @@ namespace Characters
                 if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
                     _reelInWaitForRelease = true;
             }
-            Vector3 a = new Vector3(1, 1, 1);
             _currentVelocity = v * newSpeed;
             Cache.Rigidbody.velocity = _currentVelocity;
-
-            Debug.Log("test2");
         }
 
         private bool IsStock(bool pivot)
@@ -2096,9 +2122,50 @@ namespace Characters
             return Grounded && State == HumanState.Attack && pivot && ValidStockAttacks();
         }
 
+
+        bool CheckBounce(Vector3 PlayerPos, Vector3 HookPos, float xLimit)
+        {
+
+            float xDifference = Mathf.Abs(PlayerPos.x - HookPos.x);
+            float zDifference = Mathf.Abs(PlayerPos.z - HookPos.z);
+
+
+            float xMultiplier = (xLimit - xDifference) / xLimit;
+            xMultiplier = Mathf.Clamp01(xMultiplier);
+
+
+            float zMultiplier = (xLimit - zDifference);
+            zMultiplier = Mathf.Clamp(zMultiplier, 1f, 10f);
+
+            // Calcolo del moltiplicatore finale
+            float finalMultiplier = Mathf.Min(xMultiplier, zMultiplier);
+
+            Debug.Log("Moltiplicatore di vicinanza: " + finalMultiplier);
+
+            // Ritorna true se i limiti sono rispettati, altrimenti false
+            return xDifference <= xLimit && zDifference <= xLimit;
+
+            //float xDifference = Mathf.Abs(PlayerPos.x - HookPos.x);
+            //float zDifference = Mathf.Abs(PlayerPos.z - HookPos.z);
+            //
+            //Debug.Log(xDifference + " " + zDifference);
+            //return xDifference <= xLimit && zDifference <= xLimit;
+
+
+
+
+            //float xDifference = Mathf.Abs(PlayerPos.x - HookPos.x);
+            //float zDifference = HookPos.z - PlayerPos.z;
+            //
+            //bool isZWithinLimit = (zDifference >= -zBackwardLimit) && (zDifference <= zForwardLimit);
+            //
+            //
+            //return isZWithinLimit;
+
+        }
+
         private void FixedUpdateSetHookedDirection()
         {
-            Debug.Log("test");
             _almostSingleHook = false;
             float oldTargetAngle = TargetAngle;
             if (IsHookedLeft() && IsHookedRight())
@@ -2169,7 +2236,7 @@ namespace Characters
             if (Grounded && HasDirection && State != HumanState.Attack && State != HumanState.Slide)
                 TargetAngle = oldTargetAngle;
         }
-       
+
         private void FixedUpdateBodyLean()
         {
             float z = 0f;
@@ -3268,24 +3335,33 @@ namespace Characters
 
         protected override void CheckGround()
         {
-
             JustGrounded = false;
+            CanBounce = false;
             if (CheckRaycastIgnoreTriggers(Cache.Transform.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
             {
                 if (!Grounded)
+                {
                     Grounded = JustGrounded = true;
+                    CanBounce = true;
+                }
             }
             else if (_needLean && (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG))
             {
                 if (CheckRaycastIgnoreTriggers(HumanCache.GroundLeft.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
                 {
                     if (!Grounded)
+                    {
                         Grounded = JustGrounded = true;
+                        CanBounce = true;
+                    }
                 }
                 else if (CheckRaycastIgnoreTriggers(HumanCache.GroundRight.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
                 {
                     if (!Grounded)
+                    {
                         Grounded = JustGrounded = true;
+                        CanBounce = true;
+                    }
                 }
                 else
                     Grounded = false;
