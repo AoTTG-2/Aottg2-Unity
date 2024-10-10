@@ -1,5 +1,4 @@
-﻿using Settings;
-using UnityEngine;
+﻿using UnityEngine;
 using Characters;
 
 namespace Map
@@ -8,18 +7,20 @@ namespace Map
     {
         private Transform _transform;
         private Vector3 _center;
-        private string _team;
+
+        public string Team { get; set; }
+        public bool Enabled { get; set; } = true;
 
         public MapTargetable(Transform transform, Vector3 center, string team)
         {
             _transform = transform;
             _center = center;
-            _team = team;
+            Team = team;
         }
 
         public bool ValidTarget()
         {
-            return _transform != null;
+            return Enabled && _transform != null;
         }
 
         public Vector3 GetPosition()
@@ -29,7 +30,7 @@ namespace Map
 
         public string GetTeam()
         {
-            return _team;
+            return Team;
         }
     }
 }

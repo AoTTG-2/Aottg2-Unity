@@ -34,23 +34,24 @@ namespace Projectiles
             {
                 var character = collision.collider.gameObject.transform.root.GetComponent<BaseCharacter>();
                 var handler = GetComponent<Collider>().gameObject.GetComponent<CustomLogicCollisionHandler>();
+                var damage = CalculateDamage();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Rock", 100, "Rock", transform.position);
+                    handler.GetHit(_owner, _owner.Name, damage, "Rock", transform.position);
                     return;
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {
-                    character.GetHit("Rock", 100, "Rock", collision.collider.name);
+                    character.GetHit("Rock", damage, "Rock", collision.collider.name);
                     return;
                 }
-                KillPlayersInRadius(_size * 2f);
+                KillPlayersInRadius(_size * 2f, damage);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);
                 DestroySelf();
             }
         }
 
-        void KillPlayersInRadius(float radius)
+        void KillPlayersInRadius(float radius, int damage)
         {
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             var position = transform.position;
@@ -59,8 +60,21 @@ namespace Projectiles
                 if (human == null || human.Dead)
                     continue;
                 if (Vector3.Distance(human.Cache.Transform.position, position) < radius && !TeamInfo.SameTeam(human, _team))
-                    human.GetHit("Rock", 100, "Rock", "");
+                    human.GetHit("Rock", damage, "Rock", "");
             }
+        }
+
+        private int CalculateDamage()
+        {
+            int damage = 100;
+
+            if (_owner != null && _owner is BaseCharacter character)
+            {
+                if (character.CustomDamageEnabled)
+                    damage = character.CustomDamage;
+            }
+
+            return damage;
         }
     }
 }
