@@ -34,14 +34,21 @@
         public static string Laugh1 = "Laugh1";
         public static string Laugh2 = "Laugh2";
 
+        private static string[] Footsteps = new string[] { Footstep1, Footstep2, Footstep3 };
+
         public static string GetRandom(params string[] sounds)
+        {
+            return sounds[UnityEngine.Random.Range(0, sounds.Length)];
+        }
+
+        public static string GetRandomFromList(string[] sounds)
         {
             return sounds[UnityEngine.Random.Range(0, sounds.Length)];
         }
 
         public static string GetRandomFootstep()
         {
-            return GetRandom(Footstep1, Footstep2, Footstep3);
+            return GetRandomFromList(Footsteps);
         }
 
         public static string GetRandomHurt()

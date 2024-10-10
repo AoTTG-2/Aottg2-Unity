@@ -79,13 +79,7 @@ namespace Characters
         {
             _entities = Util.RemoveNull(_entities);
             _humans = Util.RemoveNull(_humans);
-            var newHooks = new HashSet<Hook>();
-            foreach (var item in _hooks)
-            {
-                if (item != null && (item.State == HookState.Hooking || item.State == HookState.Hooked))
-                    newHooks.Add(item);
-            }
-            _hooks = newHooks;
+            _hooks.RemoveWhere(hook => !hook || (hook.State != HookState.Hooking && hook.State != HookState.Hooked));
             if (_entities.Count == 0 && _hooks.Count == 0)
                 Detect = false;
         }

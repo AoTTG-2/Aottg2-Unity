@@ -44,13 +44,14 @@ namespace Controllers
             UpdateUI(inMenu);
         }
 
+        private string[] _quickSelectOptions = new string[8] { "QuickSelect1", "QuickSelect2", "QuickSelect3", "QuickSelect4", "QuickSelect5", "QuickSelect6", "QuickSelect7", "QuickSelect8" };
         protected virtual void UpdateActionInput(bool inMenu)
         {
             if (!inMenu && !_character.Dead)
             {
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < _quickSelectOptions.Length; i++)
                 {
-                    string name = "QuickSelect" + (i + 1).ToString();
+                    string name = _quickSelectOptions[i];
                     if (((KeybindSetting)SettingsManager.InputSettings.Interaction.Settings[name]).GetKeyDown())
                     {
                         if (i < _character.Items.Count)

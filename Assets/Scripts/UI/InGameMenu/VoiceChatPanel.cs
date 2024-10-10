@@ -40,8 +40,8 @@ namespace UI
             {
                 Destroy(_playersTalking[player.ActorNumber]);
                 _playersTalking.Remove(player.ActorNumber);
+                Canvas.ForceUpdateCanvases();
             }
-            Canvas.ForceUpdateCanvases();
         }
 
         protected GameObject CreateLine(string text)

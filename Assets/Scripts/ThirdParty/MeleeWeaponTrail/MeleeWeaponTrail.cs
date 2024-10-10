@@ -271,14 +271,14 @@ public class MeleeWeaponTrail : MonoBehaviour
 
 
 		RemoveOldPoints(_points);
-		if (_points.Count == 0)
+		if (_points.Count == 0 && _trailMesh != null)
 		{
 			_trailMesh.Clear();
 		}
 
 #if USE_INTERPOLATION
 		RemoveOldPoints(_smoothedPoints);
-		if (_smoothedPoints.Count == 0)
+		if (_smoothedPoints.Count == 0 && _trailMesh != null)
 		{
 			_trailMesh.Clear();
 		}

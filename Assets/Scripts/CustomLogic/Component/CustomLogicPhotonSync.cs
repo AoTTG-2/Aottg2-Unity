@@ -92,7 +92,7 @@ namespace CustomLogic
         {
             var player = info.Sender;
             if (_networkView != null)
-                _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message);
+                _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message, info.SentServerTime);
         }
 
         public void SendMessage(Player player, string message)

@@ -79,6 +79,25 @@ namespace GameManagers
             return characters;
         }
 
+        public IEnumerable<BaseCharacter> GetAllCharactersEnumerable()
+        {
+            foreach (var human in Humans)
+            {
+                if (human != null && !human.Dead)
+                    yield return human;
+            }
+            foreach (var titan in Titans)
+            {
+                if (titan != null && !titan.Dead)
+                    yield return titan;
+            }
+            foreach (var shifter in Shifters)
+            {
+                if (shifter != null && !shifter.Dead)
+                    yield return shifter;
+            }
+        }
+
         public HashSet<BaseCharacter> GetAllNonAICharacters()
         {
             return GetAllCharacters().Where(x => !x.AI).ToHashSet();
@@ -549,7 +568,6 @@ namespace GameManagers
             }
             HasSpawned = true;
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, CurrentCharacter.Cache.PhotonView.ViewID);
-            RPCManager.PhotonView.RPC("NotifyPlayerSpawnRPC", RpcTarget.All, new object[] { CurrentCharacter.Cache.PhotonView.ViewID });
             UpdateRoundPlayerProperties();
         }
         
