@@ -2073,20 +2073,22 @@ namespace Characters
 
         private void FixedUpdatePivot(Vector3 position)
         {
+            float addSpeed = 0.1f;
             if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
             {
                 UnityEngine.Debug.LogError("CanBounce");
                 YMultiplier = BounceValue;
             }
-            else
-            {
-                if (JustGrounded)
-                    YMultiplier = 0;
+            else if (Grounded) 
+            { 
+                addSpeed = -0.01f;
+                YMultiplier = 0;
             }
-            float addSpeed = 0.1f;
+            else 
+            {
+                YMultiplier = 0;
+            }
             // TO CHECK
-            //if (Grounded)
-            //addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
             Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier + YMultiplier, 0));
             if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
