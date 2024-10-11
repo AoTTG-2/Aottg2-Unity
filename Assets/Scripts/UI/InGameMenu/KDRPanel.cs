@@ -20,10 +20,9 @@ namespace UI
 {
     class KDRPanel : MonoBehaviour, IInRoomCallbacks, IMatchmakingCallbacks
     {
-        private GameObject _kdrGroup;
         private ElementStyle _style;
-        private Dictionary<string, PlayerListPanel> _teams = new Dictionary<string, PlayerListPanel>();
-
+        private Dictionary<int, PlayerKDRRow> _players = new Dictionary<int, PlayerKDRRow>();
+        private Dictionary<string, TeamKDRRow> _teamHeaders = new Dictionary<string, TeamKDRRow>();
         // Syncing
         private const float MaxSyncDelay = 0.2f;
         private float _currentSyncDelay = 1f;
@@ -32,7 +31,6 @@ namespace UI
         private string _defaultTeam = "Individuals";
         public void Setup(ElementStyle style)
         {
-            _kdrGroup = ElementFactory.CreateVerticalGroup(transform, 10f, TextAnchor.UpperLeft);
             _style = style;
             DestroyAndRecreate();
             Sync();
@@ -78,56 +76,108 @@ namespace UI
             return player.GetStringProperty(PlayerProperty.Team, _defaultTeam);
         }
 
-        private void AddPlayer(Player player)
+        private void ReorganizeLayout()
         {
-            if (player == null)
-                return;
-            string team = GetPlayerTeam(player);
-            if (!_teams.ContainsKey(team))
+            var sortedHeaders = _teamHeaders.OrderBy(x => x.Key).ToList();
+            var sortedPlayers = _players.OrderBy(x => GetPlayerTeam(x.Value.player)).ThenBy(x => x.Key).ToList();
+
+            int siblingIndex = 0;
+
+            foreach (var header in sortedHeaders)
             {
-                // Create PlayerListPanel for team and add to teams
-                var playerlist = ElementFactory.CreateVerticalGroup(_kdrGroup.transform, 0f, TextAnchor.UpperLeft);
-                var playerListComponent = playerlist.AddComponent<PlayerListPanel>();
-                playerListComponent.Setup(_style, team);
-                _teams.Add(team, playerListComponent);
-            }
-            _teams[team].AddRow(player);
-
-        }
-
-        private void RemovePlayer(Player player)
-        {
-            if (player == null)
-                return;
-            string team = FindPlayerTeam(player);
-            if (_teams.ContainsKey(team))
-            {
-                _teams[team].RemoveRow(player);
-
-                // if the team is empty, remove the team from the dictionary
-                if (!_teams[team].HasPlayers())
+                header.Value.transform.SetSiblingIndex(siblingIndex++);
+                foreach (var kvp in sortedPlayers)
                 {
-                    _teams[team].Cleanup();
-                    Destroy(_teams[team].gameObject);
-                    _teams.Remove(team);
+                    if (GetPlayerTeam(kvp.Value.player) == header.Key)
+                    {
+                        kvp.Value.transform.SetSiblingIndex(siblingIndex++);
+                    }
                 }
             }
-            
+        }
+
+        private void AddPlayer(Player player, bool redoLayout=false)
+        {
+            if (player == null)
+                return;
+            if (_players.ContainsKey(player.ActorNumber))
+                return;
+
+            var playerRow = ElementFactory.CreatePlayerKDRRow(transform, _style, player);
+            var playerKDRRow = playerRow.GetComponent<PlayerKDRRow>();  
+            _players.Add(player.ActorNumber, playerKDRRow);
+
+            if (_pvpMode == PVPMode.Team)
+            {
+                // Create header for team if it doesn't exist and set element position to the last team header
+                string team = GetPlayerTeam(player);
+                if (!_teamHeaders.ContainsKey(team))
+                {
+                    GameObject header = ElementFactory.CreateTeamKDRRow(transform, _style, team);
+                    TeamKDRRow teamKDRRow = header.GetComponent<TeamKDRRow>();
+                    _teamHeaders.Add(team, teamKDRRow);
+                }
+
+                var headerUI = _teamHeaders[team];
+                headerUI.AddPlayerStats(playerKDRRow);
+                headerUI.UpdateRow();
+                if (redoLayout)
+                    ReorganizeLayout();
+            }
+        }
+
+        private void RemovePlayer(Player player, bool redoLayout=false)
+        {
+            if (player == null)
+                return;
+            if (!_players.ContainsKey(player.ActorNumber))
+                return;
+
+            // Remove player from team header
+            if (_pvpMode == PVPMode.Team)
+            {
+                string team = GetPlayerTeam(player);
+                if (_teamHeaders.ContainsKey(team))
+                {
+                    var header = _teamHeaders[team];
+                    header.RemovePlayerStats(_players[player.ActorNumber]);
+
+                    if (_teamHeaders[team].playerCount <= 0)
+                    {
+                        Destroy(_teamHeaders[team].gameObject);
+                        _teamHeaders.Remove(team);
+                    }
+                    else
+                    {
+                        _teamHeaders[team].UpdateRow();
+                    }
+                }
+
+                if (redoLayout)
+                    ReorganizeLayout();
+
+            }
+
+            // Remove the player row
+            Destroy(_players[player.ActorNumber].gameObject);
+            _players.Remove(player.ActorNumber);
         }
 
         public void DestroyAndRecreate()
         {
             // Destroy all rows and add all players via PhotonNetwork.PlayerListOthers
             Debug.Log("Resetting KDRPanel UI");
-            foreach (var playerList in _teams)
+            foreach (var player in _players)
             {
-                if (playerList.Value != null)
-                {
-                    playerList.Value.Cleanup();
-                    Destroy(playerList.Value.gameObject);
-                }
+                Destroy(player.Value.gameObject);
             }
-            _teams.Clear();
+            _players.Clear();
+
+            foreach (var team in _teamHeaders)
+            {
+                Destroy(team.Value.gameObject);
+            }
+            _teamHeaders.Clear();
 
             if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
                 return;
@@ -141,32 +191,23 @@ namespace UI
             {
                 AddPlayer(player);
             }
-        }
 
-        public string FindPlayerTeam(Player player)
-        {
-            foreach (var team in _teams)
-            {
-                if (team.Value.ContainsPlayer(player))
-                {
-                    return team.Key;
-                }
-            }
-            return string.Empty;
+            ReorganizeLayout();
         }
 
         public void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
+            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All || newPlayer == null)
                 return;
-            AddPlayer(newPlayer);
+
+            AddPlayer(newPlayer, redoLayout: true);
         }
 
         public void OnPlayerLeftRoom(Player otherPlayer)
         {
-            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
+            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All || otherPlayer == null)
                 return;
-            RemovePlayer(otherPlayer);
+            RemovePlayer(otherPlayer, redoLayout: true);
         }
 
         public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -180,19 +221,34 @@ namespace UI
             if (team != null)
             {
                 RemovePlayer(targetPlayer);
-                AddPlayer(targetPlayer);
+                AddPlayer(targetPlayer, redoLayout: true);
             }
             else
             {
-                if (targetPlayer.IsLocal || SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
+                if (!targetPlayer.IsLocal && SettingsManager.UISettings.KDR.Value != (int)KDRMode.All)
                 {
                     return;
                 }
 
-                // Sync the player row with the target player
-                if (_teams.ContainsKey(targetPlayer.GetStringProperty(PlayerProperty.Team)))
+                // Update player row
+                if (_players.ContainsKey(targetPlayer.ActorNumber))
                 {
-                    _teams[targetPlayer.GetStringProperty(PlayerProperty.Team)].UpdatePlayer(targetPlayer);
+                    // Update team header
+                    if (_pvpMode == PVPMode.Team)
+                    {
+                        string playerTeam = GetPlayerTeam(targetPlayer);
+                        if (_teamHeaders.ContainsKey(playerTeam))
+                        {
+                            _teamHeaders[playerTeam].RemovePlayerStats(_players[targetPlayer.ActorNumber]);
+                            _players[targetPlayer.ActorNumber].UpdateRow(targetPlayer);
+                            _teamHeaders[playerTeam].AddPlayerStats(_players[targetPlayer.ActorNumber]);
+                            _teamHeaders[playerTeam].UpdateRow();
+                        }
+                    }
+                    else
+                    {
+                        _players[targetPlayer.ActorNumber].UpdateRow(targetPlayer);
+                    }
                 }
             }
         }

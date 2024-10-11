@@ -107,7 +107,7 @@ namespace Settings
             if (LobbyMode.Value == (int)LobbyModeType.Public)
             {
                 if (isPublic)
-                    return ApplicationVersion.GetVersion();
+                    return ApplicationEncoder.GetTempBuffer();
                 return new NetworkCredential("Public", "Public");
             }
             var credential = new NetworkCredential(CustomLobby.Value, CustomLobby.Value);
@@ -168,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return string.Empty;
+            return ApplicationEncoder.Encode1a(str + "zkf").Password;
         }
     }
 

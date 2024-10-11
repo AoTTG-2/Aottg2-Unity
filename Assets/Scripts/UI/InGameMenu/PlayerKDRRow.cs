@@ -14,18 +14,14 @@ using Discord;
 
 namespace UI
 {
-    class PlayerKDRRow
+    class PlayerKDRRow : MonoBehaviour
     {
         #region Fields
-        public Transform leftRow;
-        public Transform rightRow;
-        public GameObject leftGameObject;
-        public GameObject rightGameObject;
         public Player player;
         public Text id;
-        public Text name;
-        public Text score;
         public RawImage weapon;
+        public Text playerName;
+        public Text score;
 
         // state
         public bool isSet;
@@ -44,23 +40,17 @@ namespace UI
 
         // private
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
-        private string _deadStatus = " <color=red>*dead*</color> ";
+        private const string _deadStatus = " <color=red>*dead*</color> ";
         private StringBuilder _scoreBuilder = new StringBuilder();
         #endregion
 
-        public PlayerKDRRow(Transform leftParent, Transform rightParent, ElementStyle style, Player player)
+        public void Setup(ElementStyle style, Player player)
         {
-            // NOTE: Added spacing for horizontal group
-            leftGameObject = ElementFactory.CreateHorizontalGroup(leftParent, 10f, TextAnchor.MiddleLeft);
-            rightGameObject = ElementFactory.CreateHorizontalGroup(rightParent, 10f, TextAnchor.MiddleLeft);
-            leftRow = leftGameObject.transform;
-            rightRow = rightGameObject.transform;
-
             // HUD
-            id = ElementFactory.CreateDefaultLabel(leftRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
-            weapon = ElementFactory.CreateRawImage(rightRow, style, "Icons/Game/BladeIcon", 24f, 24f).GetComponent<RawImage>();                                 // loadout/character type   (1)
-            name = ElementFactory.CreateDefaultLabel(rightRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
-            score = ElementFactory.CreateDefaultLabel(rightRow, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
+            id = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
+            weapon = ElementFactory.CreateRawImage(this.transform, style, "Icons/Game/BladeIcon", 24f, 24f).GetComponent<RawImage>();                                 // loadout/character type   (1)
+            playerName = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
+            score = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
 
             // Save player information
             isMasterClient = player.IsMasterClient;
@@ -75,32 +65,39 @@ namespace UI
             UpdateRow();
         }
 
-        public void Destroy()
+        public bool StatsChanged()
         {
-            if (leftGameObject != null)
-                GameObject.Destroy(leftGameObject);
-            if (rightGameObject != null)
-                GameObject.Destroy(rightGameObject);
+            int kills = player.GetIntProperty("Kills", 0);
+            int deaths = player.GetIntProperty("Deaths", 0);
+            int maxDamage = player.GetIntProperty("HighestDamage", 0);
+            int totalDamage = player.GetIntProperty("TotalDamage", 0);
+
+            return StatsChanged(kills, deaths, maxDamage, totalDamage);
+        }
+
+        public bool StatsChanged(int kills, int deaths, int maxDamage, int totalDamage)
+        {
+            return kills != this.kills || deaths != this.deaths || maxDamage != this.maxDamage || totalDamage != this.totalDamage;
         }
 
         public int GetKillDiff()
         {
-            return player.GetCustomProperty("Kills") != null ? player.GetIntProperty("Kills") - kills : 0;
+            return player.GetIntProperty("Kills", 0) - kills;
         }
 
         public int GetDeathDiff()
         {
-            return player.GetCustomProperty("Deaths") != null ? player.GetIntProperty("Deaths") - deaths : 0;
+            return player.GetIntProperty("Deaths", 0) - deaths;
         }
 
         public int GetMaxDamageDiff()
         {
-            return player.GetCustomProperty("HighestDamage") != null ? player.GetIntProperty("HighestDamage") - maxDamage : 0;
+            return player.GetIntProperty("HighestDamage", 0) - maxDamage;
         }
 
         public int GetTotalDamageDiff()
         {
-            return player.GetCustomProperty("TotalDamage") != null ? player.GetIntProperty("TotalDamage") - totalDamage : 0;
+            return player.GetIntProperty("TotalDamage", 0) - totalDamage;
         }
 
         public void UpdateRow(Player player)
@@ -140,10 +137,10 @@ namespace UI
             }
 
             // Update if name or status changed.
-            if (playerName != name.text || status != this.status)
+            if (playerName != this.playerName.text || status != this.status)
             {
                 this.status = status;
-                name.text = GetPlayerStatus(status) + playerName + ": ";
+                this.playerName.text = GetPlayerStatus(status) + playerName + ": ";
             }
 
             // Update team
@@ -152,34 +149,43 @@ namespace UI
                 team = player.GetStringProperty(PlayerProperty.Team);
             }
 
+            // Get Stats
+            int kills = player.GetIntProperty("Kills", 0);
+            int deaths = player.GetIntProperty("Deaths", 0);
+            int maxDamage = player.GetIntProperty("HighestDamage", 0);
+            int totalDamage = player.GetIntProperty("TotalDamage", 0);
+
             // Update if score changes 
-            string score = string.Empty;
             if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
             {
+                string score = string.Empty;
                 var property = player.GetCustomProperty(CustomLogicManager.Evaluator.ScoreboardProperty);
-                if (property == null)
-                    score = string.Empty;
-                else
-                    score = property.ToString();
+                if (property != null)
+                    score = property.ToString();                    
+                if (score != this.score.text)
+                {
+                    this.score.text = score;
+                }
             }
             else
             {
                 _scoreBuilder.Clear();
                 for (int i = 0; i < trackedProperties.Length; i++)
                 {
-                    object value = player.GetCustomProperty(trackedProperties[i]);
-                    _scoreBuilder.Append(value != null ? value.ToString() : string.Empty);
+                    int value = player.GetIntProperty(trackedProperties[i], 0);
+                    _scoreBuilder.Append(value.ToString());
                     if (i < trackedProperties.Length - 1)
                     {
                         _scoreBuilder.Append("/");
                     }
                 }
-                score = _scoreBuilder.ToString();
-            }
+                this.score.text = _scoreBuilder.ToString();
 
-            if (score != this.score.text)
-            {
-                this.score.text = score;
+                // Update stats
+                this.kills = kills;
+                this.deaths = deaths;
+                this.maxDamage = maxDamage;
+                this.totalDamage = totalDamage;
             }
         }
 

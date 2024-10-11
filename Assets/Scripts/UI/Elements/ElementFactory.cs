@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Settings;
 using Utility;
+using Photon.Realtime;
 
 namespace UI
 {
@@ -382,6 +383,22 @@ namespace UI
             if (parent.GetComponent<HorizontalLayoutGroup>() != null)
                 group.GetComponent<LayoutElement>().flexibleWidth = 0f;
             return group;
+        }
+
+        public static GameObject CreatePlayerKDRRow(Transform parent, ElementStyle style, Player player)
+        {
+            GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
+            PlayerKDRRow rowComponent = row.AddComponent<PlayerKDRRow>();
+            rowComponent.Setup(style, player);
+            return row;
+        }
+
+        public static GameObject CreateTeamKDRRow(Transform parent, ElementStyle style, string team)
+        {
+            GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
+            TeamKDRRow rowComponent = row.AddComponent<TeamKDRRow>();
+            rowComponent.Setup(style, team);
+            return row;
         }
 
         public static GameObject CreateVerticalGroup(Transform parent, float spacing, TextAnchor alignment = TextAnchor.UpperLeft)
