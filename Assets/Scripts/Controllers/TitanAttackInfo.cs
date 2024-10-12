@@ -12,6 +12,7 @@ namespace Characters
     class TitanAttackInfo
     {
         public bool HumanOnly;
+        public bool MapObject;
         public bool FarOnly;
         public Vector3 MinRange;
         public Vector3 MaxRange;
@@ -21,6 +22,7 @@ namespace Characters
         public TitanAttackInfo(JSONNode attackInfo, JSONNode keyframes)
         {
             HumanOnly = attackInfo["HumanOnly"].AsBool;
+            MapObject = !attackInfo.HasKey("MapObject") || attackInfo["MapObject"].AsBool;
             FarOnly = attackInfo["Far"].AsBool;
             if (attackInfo.HasKey("Ranges"))
             {

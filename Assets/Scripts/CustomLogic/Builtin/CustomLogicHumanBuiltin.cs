@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Characters;
 using GameManagers;
@@ -73,6 +73,15 @@ namespace CustomLogic
                     Human.SetSpecial((string)parameters[0]);
                     return null;
                 }
+                if (methodName == "ActivateSpecial")
+                {
+                    if (Human.Special != null)
+                    {
+                        Human.Special.SetInput(true);
+                        Human.Special.SetInput(false);
+                    }
+                    return null;
+                }
                 if (methodName == "SetWeapon")
                 {
                     var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
@@ -126,6 +135,17 @@ namespace CustomLogic
                 return Human.Setup.Weapon.ToString();
             if (name == "CurrentSpecial")
                 return Human.CurrentSpecial;
+            if (name == "SpecialCooldown")
+                return Human.Special == null ? 0f : Human.Special.Cooldown;
+            if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    return special.LiveTime;
+
+                return 0f;
+            }
+            if (name == "SpecialCooldownRatio")
+                return Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
             if (name == "CurrentGas")
                 return Human.Stats.CurrentGas;
             if (name == "MaxGas")
@@ -229,7 +249,19 @@ namespace CustomLogic
                 bladeWeapon = (BladeWeapon)Human.Weapon;
             else if (Human.Weapon is AmmoWeapon)
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
-            if (name == "CurrentGas")
+            if (name == "SpecialCooldown")
+            {
+                if (Human.Special == null) return;
+
+                var v = Mathf.Max(0f, value.UnboxToFloat());
+                Human.Special.Cooldown = v;
+            }
+            else if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    special.LiveTime = value.UnboxToFloat();
+            }
+            else if (name == "CurrentGas")
                 Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
             else if (name == "MaxGas")
                 Human.Stats.MaxGas = value.UnboxToFloat();

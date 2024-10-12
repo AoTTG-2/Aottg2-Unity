@@ -110,6 +110,13 @@ namespace CustomLogic
                 var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
                 return new CustomLogicMapObjectBuiltin(copy);
             }
+            if (name == "DestroyMapTargetable")
+            {
+                var targetable = (CustomLogicMapTargetableBuiltin)parameters[0];
+                Object.Destroy(targetable.GameObject);
+                MapLoader.MapTargetables.Remove(targetable.Value);
+                return null;
+            }
             if (name == "UpdateNavMesh")
             {
                 MapLoader.UpdateNavMesh().Wait();

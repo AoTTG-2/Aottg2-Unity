@@ -89,14 +89,14 @@ namespace Projectiles
             {
                 var character = collider.transform.root.gameObject.GetComponent<BaseCharacter>();
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
+                var damage = CalculateDamage();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Blade", 100, "BladeThrow", transform.position);
+                    handler.GetHit(_owner, _owner.Name, damage, "BladeThrow", transform.position);
                     continue;
                 }
                 if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)
                     continue;
-                var damage = CalculateDamage();
                 if (character is BaseTitan)
                 {
                     var titan = (BaseTitan)character;
