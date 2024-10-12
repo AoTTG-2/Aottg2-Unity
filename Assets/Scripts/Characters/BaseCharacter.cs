@@ -18,7 +18,19 @@ namespace Characters
         protected virtual int DefaultMaxHealth => 1;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
         public virtual List<string> EmoteActions => new List<string>();
-        public string Name = "";
+        public string Name { 
+            get
+            {
+                return RichTextName;
+            }
+            set
+            {
+                RichTextName = value;
+                VisibleName = RichTextName.ForceWhiteColorTag();
+            }
+        }
+        public string RichTextName = "";
+        public string VisibleName = "";
         public string Guild = "";
         public bool Dead;
         public bool CustomDamageEnabled;

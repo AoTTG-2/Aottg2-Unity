@@ -48,6 +48,13 @@ namespace Settings
             if (UIManager.CurrentMenu != null)
             {
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
+
+                if (UIManager.CurrentMenu is InGameMenu)
+                {
+                    InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
+                    igm.ApplyUISettings();
+                }
+
             }
         }
     }

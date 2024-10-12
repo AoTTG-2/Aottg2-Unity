@@ -20,11 +20,11 @@ namespace UI
 
         // Cache
         private StringBuilder _sb = new StringBuilder();
-        private const string _gameTimeFormat = "{0:0.00}";
+        private const string _gameTimeFormat = "{0:0}";
 
         // Syncing
-        private const float MaxSyncDelay = 0.05f;
-        private float _currentSyncDelay = 1f;
+        private const float MaxSyncDelay = 0.01f;
+        private float _currentSyncDelay = 0f;
 
         public void Setup(ElementStyle _style)
         {
@@ -91,7 +91,7 @@ namespace UI
                 performancePanel.SetElementEnabled(1, true);
                 _sb.Clear();
                 _sb.Append(UIManager.GetFPS());
-                if (SettingsManager.UISettings.ShowPing.Value)
+                if (SettingsManager.UISettings.ShowPing.Value && !PhotonNetwork.OfflineMode)
                     _sb.Append(", ");
                 performancePanel.SetValue(1, _sb.ToString());
             }
@@ -101,7 +101,7 @@ namespace UI
                 performancePanel.SetElementEnabled(1, false);
             }
 
-            if (SettingsManager.UISettings.ShowPing.Value)
+            if (SettingsManager.UISettings.ShowPing.Value && !PhotonNetwork.OfflineMode)
             {
                 performancePanel.SetElementEnabled(2, true);
                 performancePanel.SetElementEnabled(3, true);
@@ -112,13 +112,11 @@ namespace UI
                 performancePanel.SetElementEnabled(2, false);
                 performancePanel.SetElementEnabled(3, false);
             }
-            
-            
         }
 
         private void UpdateGameTime(float currentTime)
         {
-            // format time 0.00
+            // format time 0
             _sb.Clear();
             _sb.AppendFormat(_gameTimeFormat, currentTime);
             _sb.Append(", ");

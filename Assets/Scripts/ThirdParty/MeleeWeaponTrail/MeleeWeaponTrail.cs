@@ -360,18 +360,12 @@ public class MeleeWeaponTrail : MonoBehaviour
 
 	void RemoveOldPoints(List<Point> pointList)
 	{
-		List<Point> remove = new List<Point>();
-		foreach (Point p in pointList)
-		{
-			// cull old points first
-			if (Time.time - p.timeCreated > _lifeTime)
-			{
-				remove.Add(p);
-			}
-		}
-		foreach (Point p in remove)
-		{
-			pointList.Remove(p);
-		}
-	}
+        for (int i = pointList.Count - 1; i >= 0; i--)
+        {
+            if (Time.time - pointList[i].timeCreated > _lifeTime)
+            {
+                pointList.RemoveAt(i);
+            }
+        }
+    }
 }

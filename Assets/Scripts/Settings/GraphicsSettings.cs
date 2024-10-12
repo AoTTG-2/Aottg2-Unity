@@ -2,6 +2,7 @@
 using Cameras;
 using System;
 using System.Linq;
+using UI;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Utility;
@@ -91,6 +92,15 @@ namespace Settings
                     (MotionBlurLevel)MotionBlur.Value,
                     (WaterFXLevel)WaterFX.Value
                 );
+
+            if (UIManager.CurrentMenu != null)
+            {
+                if (UIManager.CurrentMenu is InGameMenu)
+                {
+                    InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
+                    igm.ApplyUISettings();
+                }
+            }
         }
 
         public void OnSelectPreset()

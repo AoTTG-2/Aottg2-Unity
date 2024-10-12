@@ -3175,6 +3175,18 @@ namespace Characters
                 Setup.LeftTrail._emitTime = 0.1f;
                 Setup.RightTrail._emitTime = 0.1f;
             }
+
+            // if canShowTrail is false and the trails are active, disable them
+            if (!canShowTrail && (Setup.LeftTrail.isActiveAndEnabled || Setup.RightTrail.isActiveAndEnabled))
+            {
+                Setup.LeftTrail.enabled = false;
+                Setup.RightTrail.enabled = false;
+            }
+            else if (canShowTrail && (!Setup.LeftTrail.isActiveAndEnabled || !Setup.RightTrail.isActiveAndEnabled))
+            {
+                Setup.LeftTrail.enabled = true;
+                Setup.RightTrail.enabled = true;
+            }
         }
 
         protected override string GetFootstepAudio(int phase)

@@ -32,7 +32,8 @@ namespace UI
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
         public VoiceChatPanel VoiceChatPanel;
-        public VerticalLayoutGroup TopLeftHud;
+        public GameObject TopLeftHud;
+        public GameObject KDRReference;
         public KDRPanel KDRPanel;
         public Telemetry TelemetryPanel;
         public BasePopup _settingsPopup;
@@ -97,12 +98,18 @@ namespace UI
             HideAllMenus();
         }
 
+        public void ApplyUISettings()
+        {
+            TopLeftHud.GetComponent<TopLeftHUD>().ApplySettings();
+        }
+
         public void SetupTopLeftHud()
         {
             // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
             var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
             ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
-            TopLeftHud = panel.GetComponent<TopLeftHUD>().panel.GetComponent<VerticalLayoutGroup>();
+            TopLeftHud = panel;
+            KDRReference = panel.GetComponent<TopLeftHUD>().kdrCanvas;
             panel.SetActive(true); // ????
         }
 
@@ -172,7 +179,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: 22);
             _topCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_topCenterLabel.gameObject, TextAnchor.UpperCenter, TextAnchor.UpperCenter, new Vector2(0f, -10f));
-            _topLeftLabel = ElementFactory.CreateHUDLabel(TopLeftHud.transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+            _topLeftLabel = ElementFactory.CreateHUDLabel(KDRReference.transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
             ElementFactory.SetAnchor(_topLeftLabel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -10f));
             _topRightLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleRight).GetComponent<Text>();
             ElementFactory.SetAnchor(_topRightLabel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));

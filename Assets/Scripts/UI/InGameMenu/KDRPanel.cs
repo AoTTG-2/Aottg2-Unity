@@ -136,7 +136,7 @@ namespace UI
             // Remove player from team header
             if (_pvpMode == PVPMode.Team)
             {
-                string team = GetPlayerTeam(player);
+                string team = _players[player.ActorNumber].team;
                 if (_teamHeaders.ContainsKey(team))
                 {
                     var header = _teamHeaders[team];
@@ -165,8 +165,6 @@ namespace UI
 
         public void DestroyAndRecreate()
         {
-            // Destroy all rows and add all players via PhotonNetwork.PlayerListOthers
-            Debug.Log("Resetting KDRPanel UI");
             foreach (var player in _players)
             {
                 Destroy(player.Value.gameObject);

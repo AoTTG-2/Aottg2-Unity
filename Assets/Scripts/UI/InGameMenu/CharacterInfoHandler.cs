@@ -89,6 +89,9 @@ namespace UI
                 {
                     popup.ToggleName(true);
                     string name = character.Name;
+
+                    if (highlyVisible)
+                        name = character.VisibleName;
                     if (character.Guild != "")
                         name = character.Guild + "\n" + name;
                     popup.SetName(name, highlyVisible);
