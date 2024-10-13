@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pumpkin2Mat
+  m_Name: Pumpkin3Mat
   m_Shader: {fileID: -6465566751694194690, guid: 2fc7d7b85155dc0459334d00f97017fc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmitTex:
-        m_Texture: {fileID: 2800000, guid: 64067906301792f43bf6ad313a45f9a7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 42ea307a166c5a74dbf4faf1a0e539c1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
