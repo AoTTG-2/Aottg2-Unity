@@ -403,7 +403,7 @@ namespace Controllers
             {
                 return (hit.position - _titan.Cache.Transform.position).normalized;
             }
-            
+
             // Return a random direction if the navmesh is not found
             Vector3 randDir = Random.onUnitSphere;
             randDir.y = 0;
@@ -627,7 +627,7 @@ namespace Controllers
                 if (targetable == null || !targetable.ValidTarget())
                     continue;
                 float distance = Vector3.Distance(targetable.GetPosition(), position);
-                if (distance < nearestDistance)
+                if (distance < nearestDistance && distance < DetectRange)
                 {
                     nearestDistance = distance;
                     nearestCharacter = targetable;
@@ -685,6 +685,7 @@ namespace Controllers
             Vector3 velocity = Vector3.zero;
             Vector3 relativePosition;
             bool isHuman = _enemy is Human;
+            bool isMapTargetable = _enemy is MapTargetable;
             if (isHuman)
             {
                 velocity = ((Human)_enemy).GetVelocity();
@@ -700,7 +701,12 @@ namespace Controllers
             foreach (string attackName in AttackChances.Keys)
             {
                 var attackInfo = AttackInfos[attackName];
-                if (attackInfo.HumanOnly && !isHuman)
+                if (isMapTargetable)
+                {
+                    if (!attackInfo.MapObject)
+                        continue;
+                }
+                else if (attackInfo.HumanOnly && !isHuman)
                     continue;
                 if (farOnly && !attackInfo.FarOnly)
                     continue;

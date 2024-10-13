@@ -4,8 +4,13 @@ namespace CustomLogic
 {
     class CustomLogicClassInstance
     {
-        public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        // Always true for class instances, but for components it can be toggled
+        // The reason this is here instead of in CustomLogicComponentInstance is to
+        // avoid an extra type check in the evaluator
+        public bool Enabled = true;
+
         public string ClassName;
+        public Dictionary<string, object> Variables = new Dictionary<string, object>();
 
         public CustomLogicClassInstance(string name)
         {
