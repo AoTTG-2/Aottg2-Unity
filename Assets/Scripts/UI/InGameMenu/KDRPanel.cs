@@ -213,6 +213,9 @@ namespace UI
             if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
                 return;
 
+            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Mine && targetPlayer != PhotonNetwork.LocalPlayer)
+                return;
+
             // if hashtable contains team prop, swap team
             changedProps.TryGetValue(PlayerProperty.Team, out object team);
 
