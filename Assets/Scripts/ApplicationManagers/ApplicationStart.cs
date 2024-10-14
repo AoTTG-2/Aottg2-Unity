@@ -34,7 +34,7 @@ namespace ApplicationManagers
                 Init();
             }
         }
-       
+
         private static void Init()
         {
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
@@ -78,6 +78,7 @@ namespace ApplicationManagers
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
             DiscordManager.Init();
+            APIConnectionManager.Init();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace UI
 {
-    class AboutPopup: BasePopup
+    class AboutPopup : BasePopup
     {
         protected override string Title => string.Empty;
         protected override float Width => 800f;
@@ -28,9 +28,9 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Help", "Changelog" })
+            foreach (string buttonName in new string[] { "Help", "Changelog", "Login with Discord" })
             {
-                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale("MainMenu", "AboutPopup", buttonName),
+                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, buttonName == "Login with Discord" ? "Login with Discord" : UIManager.GetLocale("MainMenu", "AboutPopup", buttonName),
                     onClick: () => SetCategoryPanel(buttonName));
                 _topButtons.Add(buttonName, obj.GetComponent<Button>());
             }
@@ -41,6 +41,7 @@ namespace UI
         {
             _categoryPanelTypes.Add("Help", typeof(AboutHelpPanel));
             _categoryPanelTypes.Add("Changelog", typeof(AboutChangelogPanel));
+            _categoryPanelTypes.Add("Login with Discord", typeof(DiscordLoginPanel));
         }
 
         private void SetupBottomButtons()
@@ -48,7 +49,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
             foreach (string buttonName in new string[] { "Back" })
             {
-                GameObject obj = ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon(buttonName), 
+                GameObject obj = ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon(buttonName),
                     onClick: () => OnBottomBarButtonClick(buttonName));
             }
         }
