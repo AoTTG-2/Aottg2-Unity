@@ -306,7 +306,13 @@ namespace CustomLogic
             {
                 var callback = _callbacks[methodName];
                 for (int i = 0; i < callback.Count; i++)
+                {
+                    // Init function should run even if the class (component) is disabled
+                    if (!callback[i].Enabled && methodName != "Init")
+                        continue;
+
                     EvaluateMethod(callback[i], methodName, parameters);
+                }
             }
         }
 

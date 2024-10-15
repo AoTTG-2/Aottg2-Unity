@@ -340,8 +340,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddBoxTarget")
             {
@@ -368,8 +369,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddComponent")
             {
@@ -386,6 +388,22 @@ namespace CustomLogic
             {
                 string name = (string)parameters[0];
                 return Value.FindComponentInstance(name);
+            }
+            if (methodName == "SetComponentEnabled")
+            {
+                string name = (string)parameters[0];
+                bool enabled = (bool)parameters[1];
+                Value.FindComponentInstance(name).Enabled = enabled;
+                return null;
+            }
+            if (methodName == "SetComponentsEnabled")
+            {
+                bool enabled = (bool)parameters[0];
+                foreach (var instance in Value.ComponentInstances)
+                {
+                    instance.Enabled = enabled;
+                }
+                return null;
             }
             if (methodName == "GetChild")
             {

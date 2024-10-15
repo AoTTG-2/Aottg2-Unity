@@ -7,6 +7,7 @@ namespace Characters
 {
     class SwitchbackSpecial : ExtendedUseable
     {
+        private const float GrabIFrameDuration = 0.5f;
         protected override float ActiveTime => 0.3f;
 
         public SwitchbackSpecial(BaseCharacter owner): base(owner)
@@ -26,6 +27,12 @@ namespace Characters
                 return true;
             }
             return false;
+        }
+
+        protected override void Activate()
+        {
+            ((Human)_owner).StartGrabImmunity(GrabIFrameDuration);
+            base.Activate();
         }
 
         protected override void Deactivate()

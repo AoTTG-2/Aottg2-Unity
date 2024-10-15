@@ -481,17 +481,17 @@ namespace GameManagers
 
         public static void MutePlayer(Player player, string muteType)
         {
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            if (muteType == "emote")
+            if (player == PhotonNetwork.LocalPlayer) return;
+
+            if (muteType == "Emote")
             {
                 InGameManager.MuteEmote.Add(player.ActorNumber);
             }
-            else if (muteType == "text")
+            else if (muteType == "Text")
             {
                 InGameManager.MuteText.Add(player.ActorNumber);
             }
-            else if (muteType == "voice")
+            else if (muteType == "Voice")
             {
                 InGameManager.MuteVoiceChat.Add(player.ActorNumber);
             }
@@ -501,17 +501,17 @@ namespace GameManagers
 
         public static void UnmutePlayer(Player player, string muteType)
         {
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            if (muteType == "emote" && InGameManager.MuteEmote.Contains(player.ActorNumber))
+            if (player == PhotonNetwork.LocalPlayer) return;
+
+            if (muteType == "Emote" && InGameManager.MuteEmote.Contains(player.ActorNumber))
             {
                 InGameManager.MuteEmote.Remove(player.ActorNumber);
             }
-            else if (muteType == "text" && InGameManager.MuteText.Contains(player.ActorNumber))
+            else if (muteType == "Text" && InGameManager.MuteText.Contains(player.ActorNumber))
             {
                 InGameManager.MuteText.Remove(player.ActorNumber);
             }
-            else if (muteType == "voice" && InGameManager.MuteVoiceChat.Contains(player.ActorNumber))
+            else if (muteType == "Voice" && InGameManager.MuteVoiceChat.Contains(player.ActorNumber))
             {
                 InGameManager.MuteVoiceChat.Remove(player.ActorNumber);
             }

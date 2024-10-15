@@ -33,9 +33,13 @@ namespace CustomLogic
                     {
                         if (!Shifter.AI)
                             return null;
-                        var enemy = (CustomLogicCharacterBuiltin)parameters[0];
+                        ITargetable enemy;
+                        if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
+                            enemy = mapTargetable.Value;
+                        else
+                            enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
                         var focus = parameters[1].UnboxToFloat();
-                        Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy.Character, focus);
+                        Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
                         return null;
                     }
                     if (methodName == "Idle")
@@ -78,6 +82,22 @@ namespace CustomLogic
         {
             if (name == "Size")
                 return Shifter.Size;
+            if (name == "RunSpeedBase")
+                return Shifter.RunSpeedBase;
+            if (name == "WalkSpeedBase")
+                return Shifter.WalkSpeedBase;
+            if (name == "TurnSpeed")
+                return Shifter.TurnSpeed;
+            if (name == "RotateSpeed")
+                return Shifter.RotateSpeed;
+            if (name == "JumpForce")
+                return Shifter.JumpForce;
+            if (name == "ActionPause")
+                return Shifter.ActionPause;
+            if (name == "AttackPause")
+                return Shifter.AttackPause;
+            if (name == "TurnPause")
+                return Shifter.TurnPause;
             if (name == "DetectRange")
             {
                 if (Shifter.IsMine() && Shifter.AI)
@@ -107,6 +127,22 @@ namespace CustomLogic
                 return;
             if (name == "Size")
                 Shifter.SetSize((float)value);
+            else if (name == "RunSpeedBase")
+                Shifter.RunSpeedBase = value.UnboxToFloat();
+            else if (name == "WalkSpeedBase")
+                Shifter.WalkSpeedBase = value.UnboxToFloat();
+            else if (name == "TurnSpeed")
+                Shifter.TurnSpeed = value.UnboxToFloat();
+            else if (name == "RotateSpeed")
+                Shifter.RotateSpeed = value.UnboxToFloat();
+            else if (name == "JumpForce")
+                Shifter.JumpForce = value.UnboxToFloat();
+            else if (name == "ActionPause")
+                Shifter.ActionPause = value.UnboxToFloat();
+            else if (name == "AttackPause")
+                Shifter.AttackPause = value.UnboxToFloat();
+            else if (name == "TurnPause")
+                Shifter.TurnPause = value.UnboxToFloat();
             else if (name == "DetectRange")
             {
                 if (Shifter.AI)

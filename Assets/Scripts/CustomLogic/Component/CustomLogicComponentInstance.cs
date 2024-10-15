@@ -6,14 +6,14 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicComponentInstance: CustomLogicClassInstance
+    class CustomLogicComponentInstance : CustomLogicClassInstance
     {
         public CustomLogicMapObjectBuiltin MapObject;
         public CustomLogicNetworkViewBuiltin NetworkView;
         private MapScriptComponent _script;
 
         public CustomLogicComponentInstance(string name, MapObject obj, MapScriptComponent script,
-            CustomLogicNetworkViewBuiltin networkView): base(name)
+            CustomLogicNetworkViewBuiltin networkView) : base(name)
         {
             ClassName = name;
             MapObject = new CustomLogicMapObjectBuiltin(obj);
@@ -46,26 +46,41 @@ namespace CustomLogic
 
         public void OnCollisionStay(CustomLogicBaseBuiltin other)
         {
+            if (!Enabled)
+                return;
+
             CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
         }
 
         public void OnCollisionEnter(CustomLogicBaseBuiltin other)
         {
+            if (!Enabled)
+                return;
+
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new List<object>() { other });
         }
 
         public void OnCollisionExit(CustomLogicBaseBuiltin other)
         {
+            if (!Enabled)
+                return;
+
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new List<object>() { other });
         }
 
         public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, Vector3 position)
         {
+            if (!Enabled)
+                return;
+
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new List<object>() { character, name, damage, type, position });
         }
 
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
         {
+            if (!Enabled)
+                return;
+
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new List<object>() { human, position, left });
         }
 
@@ -90,7 +105,7 @@ namespace CustomLogic
             if (obj is CustomLogicVector3Builtin)
             {
                 string[] strArr = value.Split('/');
-                return new CustomLogicVector3Builtin(new Vector3(float.Parse(strArr[0]), float.Parse(strArr[1]), 
+                return new CustomLogicVector3Builtin(new Vector3(float.Parse(strArr[0]), float.Parse(strArr[1]),
                     float.Parse(strArr[2])));
             }
             else if (obj is CustomLogicDictBuiltin)
