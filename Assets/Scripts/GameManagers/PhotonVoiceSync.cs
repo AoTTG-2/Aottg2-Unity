@@ -94,7 +94,7 @@ namespace GameManagers
                 }
                 else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.PushToTalk)
                 {
-                    if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
+                    if (!ChatManager.IsChatActive() && SettingsManager.InputSettings.General.PushToTalk.GetKey())
                         Recorder.TransmitEnabled = true;
                     else
                         Recorder.TransmitEnabled = false;

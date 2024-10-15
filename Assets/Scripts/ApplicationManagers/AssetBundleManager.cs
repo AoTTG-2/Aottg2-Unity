@@ -116,7 +116,10 @@ namespace ApplicationManagers
                 else
                 {
                     var menu = (InGameMenu)UIManager.CurrentMenu;
-                    menu._customAssetUrlPopup.Show(url);
+                    string showUrl = url;
+                    if (showUrl.Length > 50)
+                        showUrl = showUrl.Substring(0, 50);
+                    menu._customAssetUrlPopup.Show(showUrl);
                     while (!menu._customAssetUrlPopup.Done)
                         yield return null;
                     if (menu._customAssetUrlPopup.Confirmed)
@@ -135,6 +138,10 @@ namespace ApplicationManagers
                                         yield return null;
                                 }
                                 _bundles[bundle] = AssetBundle.LoadFromFile(path);
+                                if (_bundles[bundle] == null)
+                                {
+                                    File.Delete(path);
+                                }
                             }
                         }
                     }

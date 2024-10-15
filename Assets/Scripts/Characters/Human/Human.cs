@@ -697,8 +697,10 @@ namespace Characters
         public void TransformShifter(string shifter, float liveTime)
         {
             _inGameManager.SpawnPlayerShifterAt(shifter, liveTime, Cache.Transform.position, Cache.Transform.rotation.eulerAngles.y);
-            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanGas = Stats.CurrentGas;
-            ((BaseShifter)_inGameManager.CurrentCharacter).PreviousHumanWeapon = Weapon;
+            var character = (BaseShifter)_inGameManager.CurrentCharacter;
+            character.PreviousHumanGas = Stats.CurrentGas;
+            character.PreviousHumanWeapon = Weapon;
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, character.Cache.PhotonView.ViewID);
             PhotonNetwork.Destroy(gameObject);
         }
 
@@ -1868,12 +1870,14 @@ namespace Characters
 
         protected override void LateUpdate()
         {
-            if (IsMine() && MountState == HumanMountState.None && State != HumanState.Grab)
+            if (IsMine() && State != HumanState.Grab)
             {
-                LateUpdateTilt();
-                LateUpdateGun();
-                LateUpdateReelOut();
-
+                if (MountState == HumanMountState.None)
+                {
+                    LateUpdateTilt();
+                    LateUpdateGun();
+                    LateUpdateReelOut();
+                }
                 bool validState = State == HumanState.Idle || State == HumanState.Run || State == HumanState.Slide;
                 if (Grounded && validState && !_cameraFPS)
                 {
@@ -1886,7 +1890,6 @@ namespace Characters
                     LateUpdateHeadRotation = null;
                     _oldHeadRotation = HumanCache.Head.localRotation;
                 }
-
             }
             else if (!IsMine())
             {
