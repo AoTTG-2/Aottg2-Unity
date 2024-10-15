@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7616080205092923931}
   m_Layer: 23
-  m_Name: Candy2
+  m_Name: Candy1b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

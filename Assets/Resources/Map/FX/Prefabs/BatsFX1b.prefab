@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3396536810242807229}
   - component: {fileID: 6106217479178751779}
   m_Layer: 0
-  m_Name: BatsFX2
+  m_Name: BatsFX1b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

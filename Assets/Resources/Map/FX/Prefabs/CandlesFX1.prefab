@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 970708794485707464}
   m_Layer: 0
-  m_Name: Candles1FX
+  m_Name: CandlesFX1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
