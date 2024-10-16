@@ -41,7 +41,7 @@ namespace Settings
                 }
                 else
                 {
-                    _special = leftStickY < 0 ? SpecialKey.LeftStickUp : SpecialKey.LeftStickDown;
+                    _special = leftStickY < 0 ? SpecialKey.LeftStickDown : SpecialKey.LeftStickUp;
                 }
                 _isSpecial = true;
                 return true;
