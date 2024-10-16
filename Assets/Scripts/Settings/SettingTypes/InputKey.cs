@@ -178,13 +178,13 @@ namespace Settings
                 case SpecialKey.WheelDown:
                     return Input.GetAxis("Mouse ScrollWheel") < 0f;
                 case SpecialKey.LeftStickUp:
-                    return Input.GetAxis("LeftStickVertical") > Deadzone;
+                    return Input.GetAxis("LeftStickVertical") > 0;
                 case SpecialKey.LeftStickDown:
-                    return Input.GetAxis("LeftStickVertical") < -Deadzone;
+                    return Input.GetAxis("LeftStickVertical") < -0;
                 case SpecialKey.LeftStickLeft:
-                    return Input.GetAxis("LeftStickHorizontal") < -Deadzone;
+                    return Input.GetAxis("LeftStickHorizontal") < -0;
                 case SpecialKey.LeftStickRight:
-                    return Input.GetAxis("LeftStickHorizontal") > Deadzone;
+                    return Input.GetAxis("LeftStickHorizontal") > 0;
                 default:
                     return false;
             }
