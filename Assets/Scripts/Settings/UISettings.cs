@@ -26,7 +26,6 @@ namespace Settings
         public IntSetting Speedometer = new IntSetting((int)SpeedometerType.Off);
         public BoolSetting ShowInterpolation = new BoolSetting(false);
         public BoolSetting ShowCrosshairArrows = new BoolSetting(false);
-        public BoolSetting ShowKDR = new BoolSetting(false);
         public IntSetting KDR = new IntSetting((int)KDRMode.Off);
         public BoolSetting ShowPing = new BoolSetting(false);
         public BoolSetting ShowEmotes = new BoolSetting(true);
