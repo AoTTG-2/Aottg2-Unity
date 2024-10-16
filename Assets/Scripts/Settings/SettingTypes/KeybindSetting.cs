@@ -8,7 +8,7 @@ namespace Settings
     {
         public List<InputKey> InputKeys = new List<InputKey>();
         protected string[] _defaultKeyStrings;
-
+        
         public KeybindSetting(string[] defaultKeyStrings)
         {
             _defaultKeyStrings = defaultKeyStrings;

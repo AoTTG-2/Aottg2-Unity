@@ -324,6 +324,14 @@ namespace Cameras
             {
                 float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
                 float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
+                if(inputX == 0) 
+                {
+                    inputX = Input.GetAxis("Stick X") * 10f * sensitivity * 1.5f;
+                }
+                if(inputY == 0) 
+                {
+                    inputY = -Input.GetAxis("Stick Y") * 10f * sensitivity * invertY * 1.5f;
+                }
                 Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX);
                 float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
                 float sumY = inputY + angleY;

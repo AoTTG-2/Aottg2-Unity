@@ -11,6 +11,7 @@ namespace Settings
         protected SpecialKey _special;
         protected bool _isModifier;
         protected KeyCode _modifier;
+        protected float Deadzone = 0.5f; // Soglia per ignorare piccoli drift degli stick
         protected HashSet<KeyCode> ModifierKeys = new HashSet<KeyCode> { KeyCode.LeftShift, KeyCode.LeftAlt, KeyCode.LeftControl, KeyCode.RightShift, KeyCode.RightAlt, KeyCode.RightControl };
         protected HashSet<string> AlphaDigits = new HashSet<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -30,6 +31,25 @@ namespace Settings
 
         public bool ReadNextInput()
         {
+            float leftStickX = Input.GetAxis("LeftStickHorizontal");
+            float leftStickY = Input.GetAxis("LeftStickVertical");
+
+            // Verifica e determina la direzione dello stick sinistro con la deadzone
+            if (Mathf.Abs(leftStickX) > Deadzone || Mathf.Abs(leftStickY) > Deadzone)
+            {
+                if (Mathf.Abs(leftStickX) > Mathf.Abs(leftStickY))
+                {
+                    _special = leftStickX > 0 ? SpecialKey.LeftStickRight : SpecialKey.LeftStickLeft;
+                }
+                else
+                {
+                    _special = leftStickY < 0 ? SpecialKey.LeftStickUp : SpecialKey.LeftStickDown;
+                }
+                _isSpecial = true;
+                return true;
+            }
+
+            // Verifica i modificatori
             _isModifier = false;
             foreach (KeyCode key in ModifierKeys)
             {
@@ -39,6 +59,7 @@ namespace Settings
                     _isModifier = true;
                 }
             }
+
             foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
             {
                 if (key == KeyCode.WheelDown || key == KeyCode.WheelUp)
@@ -63,6 +84,7 @@ namespace Settings
                     return true;
                 }
             }
+
             foreach (SpecialKey specialKey in Enum.GetValues(typeof(SpecialKey)))
             {
                 if (GetSpecial(specialKey))
@@ -72,6 +94,7 @@ namespace Settings
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -152,11 +175,23 @@ namespace Settings
 
         protected bool GetSpecial(SpecialKey specialKey)
         {
-            if (specialKey == SpecialKey.WheelUp)
-                return Input.GetAxis("Mouse ScrollWheel") > 0f;
-            else if (specialKey == SpecialKey.WheelDown)
-                return Input.GetAxis("Mouse ScrollWheel") < 0f;
-            return false;
+            switch (specialKey)
+            {
+                case SpecialKey.WheelUp:
+                    return Input.GetAxis("Mouse ScrollWheel") > 0f;
+                case SpecialKey.WheelDown:
+                    return Input.GetAxis("Mouse ScrollWheel") < 0f;
+                case SpecialKey.LeftStickUp:
+                    return Input.GetAxis("LeftStickVertical") > Deadzone;
+                case SpecialKey.LeftStickDown:
+                    return Input.GetAxis("LeftStickVertical") < -Deadzone;
+                case SpecialKey.LeftStickLeft:
+                    return Input.GetAxis("LeftStickHorizontal") < -Deadzone;
+                case SpecialKey.LeftStickRight:
+                    return Input.GetAxis("LeftStickHorizontal") > Deadzone;
+                default:
+                    return false;
+            }
         }
     }
 
@@ -164,6 +199,10 @@ namespace Settings
     {
         None,
         WheelUp,
-        WheelDown
+        WheelDown,
+        LeftStickUp,
+        LeftStickDown,
+        LeftStickLeft,
+        LeftStickRight
     }
 }
