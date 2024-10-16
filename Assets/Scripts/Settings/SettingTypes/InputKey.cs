@@ -11,7 +11,6 @@ namespace Settings
         protected SpecialKey _special;
         protected bool _isModifier;
         protected KeyCode _modifier;
-        protected float Deadzone = 0.5f; // Soglia per ignorare piccoli drift degli stick
         protected HashSet<KeyCode> ModifierKeys = new HashSet<KeyCode> { KeyCode.LeftShift, KeyCode.LeftAlt, KeyCode.LeftControl, KeyCode.RightShift, KeyCode.RightAlt, KeyCode.RightControl };
         protected HashSet<string> AlphaDigits = new HashSet<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -34,8 +33,7 @@ namespace Settings
             float leftStickX = Input.GetAxis("LeftStickHorizontal");
             float leftStickY = Input.GetAxis("LeftStickVertical");
 
-            // Verifica e determina la direzione dello stick sinistro con la deadzone
-            if (Mathf.Abs(leftStickX) > Deadzone || Mathf.Abs(leftStickY) > Deadzone)
+            if (Mathf.Abs(leftStickX) != 0|| Mathf.Abs(leftStickY) != 0)
             {
                 if (Mathf.Abs(leftStickX) > Mathf.Abs(leftStickY))
                 {
@@ -48,8 +46,6 @@ namespace Settings
                 _isSpecial = true;
                 return true;
             }
-
-            // Verifica i modificatori
             _isModifier = false;
             foreach (KeyCode key in ModifierKeys)
             {
