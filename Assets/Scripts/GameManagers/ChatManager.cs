@@ -576,6 +576,11 @@ namespace GameManagers
             return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
+        private static KDRPanel GetKDRPanel()
+        {
+            return ((InGameMenu)UIManager.CurrentMenu).KDRPanel;
+        }
+
         public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)
         {
             string str = "[" + id.ToString() + "] ";
@@ -591,6 +596,14 @@ namespace GameManagers
             if (color == ChatTextColor.Default)
                 return str;
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
+        }
+
+        public static string GetTimeString(int time)
+        {
+            string str = time.ToString();
+            if (str.Length == 1)
+                str = "0" + str;
+            return str;
         }
 
         private void Update()

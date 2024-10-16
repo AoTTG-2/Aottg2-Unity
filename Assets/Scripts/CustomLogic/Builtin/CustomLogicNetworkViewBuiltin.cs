@@ -78,13 +78,13 @@ namespace CustomLogic
             }
         }
 
-        public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message)
+        public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message, double sentServerTime)
         {
             if (CustomLogicManager.Evaluator == null)
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message });
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message, sentServerTime });
             }
         }
 

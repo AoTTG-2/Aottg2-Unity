@@ -340,11 +340,25 @@ namespace UI
             }
         }
 
+        Dictionary<Image, Animator> _AnimationCache = new Dictionary<Image, Animator>();
         private void StopAnimator(Image obj)
         {
-            var animator = obj.GetComponent<Animator>();
-            animator.Update(0f);
-            animator.speed = 0f;
+            // Check Animation cache first
+            Animator animator;
+            if (_AnimationCache.ContainsKey(obj))
+            {
+                animator = _AnimationCache[obj];
+            }
+            else
+            {
+                animator = obj.GetComponent<Animator>();
+                _AnimationCache.Add(obj, animator);
+            }
+            if (animator.speed != 0f)
+            {
+                animator.Update(0f);
+                animator.speed = 0f;
+            }
         }
 
         private void StartAnimator(Image obj)

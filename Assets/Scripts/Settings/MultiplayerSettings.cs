@@ -107,7 +107,7 @@ namespace Settings
             if (LobbyMode.Value == (int)LobbyModeType.Public)
             {
                 if (isPublic)
-                    return ApplicationVersion.GetVersion();
+                    return ApplicationEncoder.GetTempBuffer();
                 return new NetworkCredential("Public", "Public");
             }
             var credential = new NetworkCredential(CustomLobby.Value, CustomLobby.Value);

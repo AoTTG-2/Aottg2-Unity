@@ -56,7 +56,8 @@
 		"Icon": "Icon",
 		"Clear": "Clear",
 		"ExternalLinkConfirm": "You are about to open an external link",
-		"PressAnyKey": "Press any key to continue."
+		"PressAnyKey": "Press any key to continue.",
+		"None": "None"
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",
@@ -292,7 +293,8 @@
 		"Graphics.WaterFXOptions": ["Off", "Low", "Medium", "High"],
 		"Graphics.HDR": "HDR",
 		"Graphics.HDRTooltip": "HDR lighting for high dynamic range monitors.",
-		"Graphics.WeaponTrailEnabled": "Weapon trail",
+		"Graphics.WeaponTrail": "Weapon trail",
+		"Graphics.WeaponTrailOptions": ["Off", "Mine", "All"],
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",
 		"Graphics.NapeBloodEnabled": "Nape blood",
@@ -305,6 +307,8 @@
 		"UI.FeedConsole": "Feed console",
 		"UI.FeedConsoleTooltip": "Show game feed in separate window.",
 		"UI.ShowKDR": "Show KDR",
+		"UI.KDR": "KDR",
+		"UI.KDROptions": ["Off", "Mine", "All"],
 		"UI.ShowKDRTooltip": "Show your KDR at the top left.",
 		"UI.JoinNotifications": "Join notifications",
 		"UI.JoinNotificationsTooltip": "Show player join and leave notifications in chat.",

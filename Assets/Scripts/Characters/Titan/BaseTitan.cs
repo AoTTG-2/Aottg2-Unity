@@ -354,10 +354,10 @@ namespace Characters
         public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
-            if (view.Owner != info.Sender)
+            if (view?.Owner != info.Sender)
                 return;
             var human = view.GetComponent<Human>();
-            if (this.Cache.PhotonView.Owner == PhotonNetwork.LocalPlayer)
+            if (this.IsMine())
                 HoldHuman = human;
             human.Grabber = this;
             if (left)
@@ -367,9 +367,16 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void UngrabRPC(PhotonMessageInfo info)
+        public virtual void UngrabRPC(int viewId, PhotonMessageInfo info)
         {
-            HoldHuman = null;
+            var view = PhotonView.Find(viewId);
+            if (view?.Owner != info.Sender)
+                return;
+            var human = view.GetComponent<Human>();
+            if (this.IsMine())
+                HoldHuman = null;
+            human.Grabber = null;
+            human.GrabHand = null;
         }
 
         public virtual void Ungrab()
@@ -377,6 +384,7 @@ namespace Characters
             if (HoldHuman != null)
             {
                 HoldHuman.Cache.PhotonView.RPC("UngrabRPC", HoldHuman.Cache.PhotonView.Owner, new object[0]);
+                HoldHuman.GrabHand = null;
                 HoldHuman = null;
             }
         }

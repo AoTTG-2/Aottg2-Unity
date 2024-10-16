@@ -61,7 +61,7 @@ namespace Characters
             InGameManager inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
             foreach (Human carryTarget in inGameManager.Humans)
             {
-                if (!owner.IsCarryable(carryTarget) || carryTarget == target)
+                if (!owner.IsCarryable(carryTarget))
                 {
                     carryTarget.RemoveOutline();
                     continue;
@@ -77,6 +77,8 @@ namespace Characters
                     continue;
                     
                 }
+                if (carryTarget == target)
+                    continue;
                 carryTarget.AddVisibleOutlineWithColor(Color.white);
                 float targetDistance = Vector3.Distance(owner.Cache.Transform.position, carryTarget.Cache.Transform.position);
                 if (targetDistance < nearestDistance)

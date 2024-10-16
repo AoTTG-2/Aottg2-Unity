@@ -3,6 +3,7 @@ using GameManagers;
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -30,6 +31,11 @@ namespace CustomLogic
                 RPCManager.PhotonView.RPC("SendMessageRPC", RpcTarget.Others, new object[] { (string)parameters[0] });
                 return null;
             }
+            if (name == "GetTimestampDifference")
+            {
+                // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
+                return Util.GetPhotonTimestampDifference(parameters[0].UnboxToDouble(), parameters[1].UnboxToDouble());
+            }
             return base.CallMethod(name, parameters);
         }
 
@@ -50,6 +56,8 @@ namespace CustomLogic
                 return new CustomLogicPlayerBuiltin(PhotonNetwork.MasterClient);
             if (name == "MyPlayer")
                 return new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
+            if (name == "NetworkTime")
+                return PhotonNetwork.Time;
             return base.GetField(name);
         }
 

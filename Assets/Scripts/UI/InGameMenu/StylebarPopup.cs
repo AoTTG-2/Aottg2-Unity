@@ -46,6 +46,11 @@ namespace UI
             _sentenceLabel.text = sentence;
         }
 
+        public void SetColor(Color color)
+        {
+            _letterLabel.color = color;
+        }
+
         public void SetScore(string score, string bottom)
         {
             _scoreLabel.text = score;

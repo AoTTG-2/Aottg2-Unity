@@ -95,8 +95,9 @@ namespace Characters
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
-        public override LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
+        private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
+        public override LayerMask GroundMask => GroundMaskLayers;
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
@@ -474,8 +475,9 @@ namespace Characters
         public void Ungrab(bool notifyTitan, bool idle)
         {
             if (notifyTitan && Grabber != null)
-                Grabber.Cache.PhotonView.RPC("UngrabRPC", Grabber.Cache.PhotonView.Owner, new object[0]);
+                Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
             Grabber = null;
+            GrabHand = null;
             SetTriggerCollider(false);
             if (idle)
                 Idle();
@@ -3162,7 +3164,9 @@ namespace Characters
                 return;
             if (Setup == null)
                 return;
-            if (toggle && SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
+            bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
+                                || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
+            if (toggle && canShowTrail)
             {
                 Setup.LeftTrail.Emit = true;
                 Setup.RightTrail.Emit = true;
@@ -3173,6 +3177,18 @@ namespace Characters
             {
                 Setup.LeftTrail._emitTime = 0.1f;
                 Setup.RightTrail._emitTime = 0.1f;
+            }
+
+            // if canShowTrail is false and the trails are active, disable them
+            if (!canShowTrail && (Setup.LeftTrail.isActiveAndEnabled || Setup.RightTrail.isActiveAndEnabled))
+            {
+                Setup.LeftTrail.enabled = false;
+                Setup.RightTrail.enabled = false;
+            }
+            else if (canShowTrail && (!Setup.LeftTrail.isActiveAndEnabled || !Setup.RightTrail.isActiveAndEnabled))
+            {
+                Setup.LeftTrail.enabled = true;
+                Setup.RightTrail.enabled = true;
             }
         }
 

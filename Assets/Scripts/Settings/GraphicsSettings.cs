@@ -2,6 +2,7 @@
 using Cameras;
 using System;
 using System.Linq;
+using UI;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 using Utility;
@@ -27,7 +28,7 @@ namespace Settings
         public IntSetting AntiAliasing = new IntSetting((int)AntiAliasingLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AntiAliasingLevel>());
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
-        public BoolSetting WeaponTrailEnabled = new BoolSetting(true);
+        public IntSetting WeaponTrail = new IntSetting((int)WeaponTrailMode.All);
         public BoolSetting WindEffectEnabled = new BoolSetting(true);
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);
@@ -91,6 +92,15 @@ namespace Settings
                     (MotionBlurLevel)MotionBlur.Value,
                     (WaterFXLevel)WaterFX.Value
                 );
+
+            if (UIManager.CurrentMenu != null)
+            {
+                if (UIManager.CurrentMenu is InGameMenu)
+                {
+                    InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
+                    igm.ApplyUISettings();
+                }
+            }
         }
 
         public void OnSelectPreset()
@@ -317,5 +327,12 @@ namespace Settings
         Windowed,
         Borderless,
         Exclusive
+    }
+
+    public enum WeaponTrailMode
+    {
+        Off,
+        Mine,
+        All
     }
 }
