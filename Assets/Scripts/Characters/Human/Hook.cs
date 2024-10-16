@@ -158,6 +158,10 @@ namespace Characters
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
 
+                GameObject debugger = new GameObject();
+                debugger.AddComponent<DesertDebug>();
+                debugger.GetComponent<DesertDebug>().Init(_lastWorldHookPosition);
+
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
@@ -355,9 +359,13 @@ namespace Characters
         protected void Update()
         {
             if (State == HookState.Hooking)
+            {
                 UpdateHooking();
+            }
             else if (State == HookState.Hooked)
+            {
                 UpdateHooked();
+            }
             else if (State == HookState.DisablingHooking)
                 UpdateDisablingHooking();
             else if (State == HookState.DisablingHooked)

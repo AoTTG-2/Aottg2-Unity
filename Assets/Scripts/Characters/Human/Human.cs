@@ -14,6 +14,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UI;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -1381,7 +1382,7 @@ namespace Characters
 
         protected void FixedUpdate()
         {
-
+            //Debug.Log(this.GetCurrentAnimation().ToString());
             //if (_targetRotation.w > 0.7f)
             //{
             //    Debug.Log("Cant bounce");
@@ -1470,6 +1471,7 @@ namespace Characters
                                     PlaySound(HumanSounds.CrashLand);
                             }
                         }
+                        JustGrounded = false;
                         newVelocity = _currentVelocity;
                     }
                     if (State == HumanState.GroundDodge)
@@ -1519,9 +1521,10 @@ namespace Characters
                     if (Cache.Animation.IsPlaying(HumanAnimations.Jump) && Cache.Animation[HumanAnimations.Jump].normalizedTime > 0.18f)
                     {
                         // float jumpSpeed = ((0.5f * (float)Stats.Speed) - 20f);
-                        float jumpSpeed = 20f;
-                        if (_currentVelocity.y > 0f)
-                            jumpSpeed -= _currentVelocity.y;
+                        //float jumpSpeed = 20f;
+                        //if (_currentVelocity.y > 0f)
+                        //    jumpSpeed -= _currentVelocity.y;
+                        float jumpSpeed = Mathf.Sqrt((2f * 2f) * 20f);
                         force.y += Mathf.Max(jumpSpeed, 0f);
                     }
                     if (Cache.Animation.IsPlaying(HumanAnimations.HorseMount) && Cache.Animation[HumanAnimations.HorseMount].normalizedTime > 0.18f && Cache.Animation[HumanAnimations.HorseMount].normalizedTime < 1f)
@@ -1717,12 +1720,16 @@ namespace Characters
                 else if (IsHookedRight() && HookRight.GetHookPosition().y > Cache.Transform.position.y && _launchRight)
                     lowerGravity = true;
                 Vector3 gravity;
-                if (lowerGravity)
-                    gravity = Gravity * 0.5f * Cache.Rigidbody.mass;
-                else
+                if (lowerGravity) 
+                {
+                gravity = Gravity * 0.5f * Cache.Rigidbody.mass;
+                Debug.Log("test1");
+                }
+                else 
+                {
                     gravity = Gravity * Cache.Rigidbody.mass;
-
-
+                    //Debug.Log(gravity);
+                }
                 if (Grounded && State == HumanState.Attack)
                 {
                     if (ValidStockAttacks())
@@ -2073,28 +2080,6 @@ namespace Characters
 
         private void FixedUpdatePivot(Vector3 position)
         {
-            float addSpeed = 0.1f;
-            if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
-            {
-                UnityEngine.Debug.LogError("CanBounce");
-                YMultiplier = BounceValue;
-            }
-            else if (Grounded) 
-            { 
-                addSpeed = -0.01f;
-                YMultiplier = 0;
-            }
-            else 
-            {
-                YMultiplier = 0;
-            }
-            // TO CHECK
-            float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier + YMultiplier, 0));
-            if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
-                UnityEngine.Debug.Log(Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier + YMultiplier, 0));
-
-
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2104,8 +2089,32 @@ namespace Characters
 
             //TODO : Check for BodyLean Orientation to give more YClippingMult for allowing "One-Hook Bounce" (Problably only OnJustGrounded?)
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
+
+            float addSpeed = 0.1f;
+            //if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && !Grounded)
+            //{
+            //    Debug.Log(JustGrounded + " " + Grounded);
+            //    UnityEngine.Debug.LogError("CanBounce");
+            //    YMultiplier = BounceValue;
+            //    Debug.Log("->" + reel);
+            //}
+            //else if (Grounded) 
+            //{ 
+            //    addSpeed = -0.01f;
+            //    YMultiplier = 0;
+            //}
+
+
+            // TO CHECK
+            float newSpeed = _currentVelocity.magnitude + addSpeed;
+            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier, 0));
+            //if (CheckBounce(position, Cache.Rigidbody.position, BounceRange) && JustGrounded)
+               // UnityEngine.Debug.Log(Cache.Rigidbody.position - new Vector3(0, _YClippingMultiplier, 0));
+
+
             //Debug.Log(v.y);
             v = Vector3.RotateTowards(v, _currentVelocity, 1.53938f * reel, 1.53938f * reel).normalized;
+            //v.y = v.y + YMultiplier;
             if (reelAxis > 0f)
                 _isReelingOut = true;
             else if (reelAxis < 0f && !_reelInWaitForRelease)
@@ -2142,27 +2151,10 @@ namespace Characters
             // Calcolo del moltiplicatore finale
             float finalMultiplier = Mathf.Min(xMultiplier, zMultiplier);
 
-            Debug.Log("Moltiplicatore di vicinanza: " + finalMultiplier);
+            //Debug.Log("Moltiplicatore di vicinanza: " + finalMultiplier);
 
             // Ritorna true se i limiti sono rispettati, altrimenti false
             return xDifference <= xLimit && zDifference <= xLimit;
-
-            //float xDifference = Mathf.Abs(PlayerPos.x - HookPos.x);
-            //float zDifference = Mathf.Abs(PlayerPos.z - HookPos.z);
-            //
-            //Debug.Log(xDifference + " " + zDifference);
-            //return xDifference <= xLimit && zDifference <= xLimit;
-
-
-
-
-            //float xDifference = Mathf.Abs(PlayerPos.x - HookPos.x);
-            //float zDifference = HookPos.z - PlayerPos.z;
-            //
-            //bool isZWithinLimit = (zDifference >= -zBackwardLimit) && (zDifference <= zForwardLimit);
-            //
-            //
-            //return isZWithinLimit;
 
         }
 
