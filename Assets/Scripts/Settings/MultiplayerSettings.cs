@@ -168,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return ApplicationEncoder.Encode1a(str + "zkf").Password;
+            return string.Empty;
         }
     }
 
