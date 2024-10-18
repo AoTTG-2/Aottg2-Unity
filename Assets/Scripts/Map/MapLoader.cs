@@ -181,8 +181,16 @@ namespace Map
             }
         }
 
+
         public static void DeleteObject(MapObject obj)
         {
+            if (IdToMapObject.ContainsKey(obj.ScriptObject.Id) == false)
+            {
+                // Case for runtime made objects
+                GameObject.Destroy(obj.GameObject);
+                return;
+            }
+                
             int id = obj.ScriptObject.Id;
             DeleteObject(id);
         }

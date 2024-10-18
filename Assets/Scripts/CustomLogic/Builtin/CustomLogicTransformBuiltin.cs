@@ -38,7 +38,7 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
-            
+
             if (methodName == "PlayAnimation")
             {
                 string anim = (string)parameters[0];
@@ -103,6 +103,20 @@ namespace CustomLogic
             {
                 var rotation = (CustomLogicVector3Builtin)parameters[0];
                 Value.Rotate(rotation.Value);
+                return null;
+            }
+            if (methodName == "RotateAround")
+            {
+                var point = (CustomLogicVector3Builtin)parameters[0];
+                var axis = (CustomLogicVector3Builtin)parameters[1];
+                var angle = (float)parameters[2];
+                Value.RotateAround(point.Value, axis.Value, angle);
+                return null;
+            }
+            if (methodName == "LookAt")
+            {
+                var target = (CustomLogicVector3Builtin)parameters[0];
+                Value.LookAt(target.Value);
                 return null;
             }
             return base.CallMethod(methodName, parameters);
