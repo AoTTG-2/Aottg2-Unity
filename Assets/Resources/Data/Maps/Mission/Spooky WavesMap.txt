@@ -2456,209 +2456,228 @@ Scene,General/EditorPointLight,122013,121963,1,0,0,0,PointLight,343.45,1068.565,
 Scene,Decor/Pumpkin1d,122014,0,1,0,1,0,PumpkinHead,1,2,3,0,0,0,2.1,2.2,2.3,None,Entities,Default,Default|255/255/255/255,
 /// Logic
 class Main
-{
-Description = "Survive multiple waves of titans.";
-StartTitans = 3;
-AddTitansPerWave = 1;
-MaxWaves = 20;
-RespawnOnWave = true;
-GradualSpawn = true;
-GradualSpawnTooltip = "Spawn new titans gradually over time. Helpful for reducing lag.";
-_currentWave = 0;
-_hasSpawned = false;
-_jumpscare = false;
+{   
+    Description = "Survive multiple waves of titans.";
+    StartTitans = 3;
+    AddTitansPerWave = 1;
+    MaxWaves = 20;
+    RespawnOnWave = true;
+    GradualSpawn = true;
+    GradualSpawnTooltip = "Spawn new titans gradually over time. Helpful for reducing lag.";
+    _currentWave = 0;
+    _hasSpawned = false;
+    _jumpscare = false;
 
-function OnGameStart()
-{
-if (Network.IsMasterClient)
-{
-self.NextWave();
-}
-}
+    function OnGameStart()
+    {
+        if (Network.IsMasterClient)
+        {
+            self.NextWave();
+        }
+    }
 
-function OnCharacterSpawn(character)
-{
-if (character.IsMine && character.Type == "Titan")
-{
-if (character.DetectRange > 0)
-{
-character.DetectRange = 2000;
-}
+    function OnCharacterSpawn(character)
+    {
+        if (character.IsMine && character.Type == "Titan")
+        {
+            if (character.DetectRange > 0)
+            {
+                character.DetectRange = 2000;
+            }
 
-head = character.HeadMount;
-ps = head.Position;
-size = character.Size;
+            head = character.HeadMount;
+            ps = head.Position;
+            size = character.Size;
 
-x = ps.X;
-y = ps.Y + 8 * (size / 3);
-z = ps.Z;
+            x = ps.X;
+            y = ps.Y + 8 * (size / 3);
+            z = ps.Z;
 
-rx = 0;
-ry = 90;
-rz = 0;
+            rx = 0;
+            ry = 90;
+            rz = 0;
 
-sx = size * 4;
-sy = size * 4;
-sz = size * 4;
+            sx = size * 4;
+            sy = size * 4;
+            sz = size * 4;
 
-# Spawn a pumpkin on the titan's head
-pos =   "" + x  + "," + y  + "," + z ;
-rot =   "" + rx + "," + ry + "," + rz;
-scale = "" + sx + "," + sy + "," + sz;
-trs = pos + "," + rot + "," + scale;
-jack = Map.CreateMapObjectRaw("Scene,Decor/Pumpkin1d,0,0,1,0,1,0,PumpkinHead,"+trs+",None,Entities,Default,Default|255/255/255/255");
-jack.Parent = head;
-}
-}
+            # Spawn a pumpkin on the titan's head
+            pos =   "" + x  + "," + y  + "," + z ;
+            rot =   "" + rx + "," + ry + "," + rz;
+            scale = "" + sx + "," + sy + "," + sz;
+            trs = pos + "," + rot + "," + scale;
+            # a,b,c,d options for pumpkin head
+            selection = Random.RandomInt(0, 4);
+            name = "Decor/Pumpkin1";
+            if (selection == 0)
+            {
+                name += "a";
+            }
+            elif (selection == 1)
+            {
+                name += "b";
+            }
+            elif (selection == 2)
+            {
+                name += "c";
+            }
+            else
+            {
+                name += "d";
+            }
+            jack = Map.CreateMapObjectRaw("Scene,"+name+",0,0,1,0,1,0,PumpkinHead,"+trs+",None,Entities,Default,Default|255/255/255/255");
+            jack.Parent = head;
+        }
+    }
 
-function SpawnObject(object, name, ps, rt, sz)
-{
-# Spawn a pumpkin on the titan's head
-pos =   "" + ps.X  + "," + ps.Y  + "," + ps.Z;
-rot =   "" + rt.X + "," + rt.Y + "," + rt.Z;
-scale = "" + sz.X + "," + sz.Y + "," + sz.Z;
-trs = pos + "," + rot + "," + scale;
-Game.Print("Spawning object: " + object + " at " + trs);
-return Map.CreateMapObjectRaw("Scene,"+object+",0,0,1,0,1,0,"+name+","+trs+",None,Entities,Default,Default|255/255/255/255");
-}
+    function SpawnObject(object, name, ps, rt, sz)
+    {
+        # Spawn a pumpkin on the titan's head
+        pos =   "" + ps.X  + "," + ps.Y  + "," + ps.Z;
+        rot =   "" + rt.X + "," + rt.Y + "," + rt.Z;
+        scale = "" + sz.X + "," + sz.Y + "," + sz.Z;
+        trs = pos + "," + rot + "," + scale;
+        Game.Print("Spawning object: " + object + " at " + trs);
+        return Map.CreateMapObjectRaw("Scene,"+object+",0,0,1,0,1,0,"+name+","+trs+",None,Entities,Default,Default|255/255/255/255");
+    }
 
 
-coroutine Jumpscare()
-{
-if (Network.MyPlayer.Character == null)
-{
-return;
-}
-self._jumpscare = true;
-type = "Decor/Darwin1";
-name = "Jumpscare";
-ps = Vector3(120, 0, 0);
-ps = Network.MyPlayer.Character.Position + ps;
-rt = Vector3(0, 0, 0);
-sz = Vector3(1, 1, 1);
-object = self.SpawnObject(type, name, ps, rt, sz);
+    coroutine Jumpscare()
+    {
+        if (Network.MyPlayer.Character == null)
+        {
+            return;
+        }
+        self._jumpscare = true;
+        type = "Decor/Darwin1";
+        name = "Jumpscare";
+        ps = Vector3(120, 0, 0);
+        ps = Network.MyPlayer.Character.Position + ps;
+        rt = Vector3(0, 0, 0);
+        sz = Vector3(1, 1, 1);
+        object = self.SpawnObject(type, name, ps, rt, sz);
 
-# Wait for 1 second
-wait 3.0;
+        # Wait for 1 second
+        wait 3.0;
 
-# Destroy the jumpscare
-Map.DestroyMapObject(object, false);
-self._jumpscare = false;
-}
+        # Destroy the jumpscare
+        Map.DestroyMapObject(object, false);
+        self._jumpscare = false;
+    }
 
-function OnTick()
-{
-# Jumpscare :^)
-# if (Random.RandomInt(0, 100) < 10 && self._jumpscare == false)
-# {
-#     self.Jumpscare();
-# }
+    function OnTick()
+    {
+        # Jumpscare :^)
+        # if (Random.RandomInt(0, 100) < 10 && self._jumpscare == false)
+        # {
+        #     self.Jumpscare();
+        # }
 
-if (Network.IsMasterClient && !Game.IsEnding)
-{
-titans = Game.Titans.Count;
-humans = Game.Humans.Count;
-playerShifters = Game.PlayerShifters.Count;
-if (humans > 0 || playerShifters > 0)
-{
-self._hasSpawned = true;
-}
-if (titans == 0)
-{
-self.NextWave();
-}
-if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-{
-UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-Game.End(10.0);
-return;
-}
-UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
-}
-}
+        if (Network.IsMasterClient && !Game.IsEnding)
+        {
+            titans = Game.Titans.Count;
+            humans = Game.Humans.Count;
+		    playerShifters = Game.PlayerShifters.Count;
+            if (humans > 0 || playerShifters > 0)
+            {
+                self._hasSpawned = true;
+            }
+            if (titans == 0)
+            {
+                self.NextWave();
+            }
+            if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+            {
+                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                Game.End(10.0);
+                return;
+            }
+            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans) + "  " + "Wave: " + Convert.ToString(self._currentWave));
+        }
+    }
 
-function NextWave()
-{
-self._currentWave = self._currentWave + 1;
-if (self._currentWave > self.MaxWaves)
-{
-UI.SetLabelAll("MiddleCenter", "All waves cleared, humanity wins!");
-Game.End(10.0);
-return;
-}
-amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
-if (self.GradualSpawn)
-{
-Game.SpawnTitansAsync("Default", amount);
-}
-else
-{
-Game.SpawnTitans("Default", amount);
-}
-if (self.RespawnOnWave)
-{
-Game.SpawnPlayerAll(false);
-}
-}
+    function NextWave()
+    {
+        self._currentWave = self._currentWave + 1;
+        if (self._currentWave > self.MaxWaves)
+        {
+            UI.SetLabelAll("MiddleCenter", "All waves cleared, humanity wins!");
+            Game.End(10.0);
+            return;
+        }
+        amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
+        if (self.GradualSpawn)
+        {
+            Game.SpawnTitansAsync("Default", amount);
+        }
+        else
+        {
+            Game.SpawnTitans("Default", amount);
+        }
+        if (self.RespawnOnWave)
+        {
+            Game.SpawnPlayerAll(false);
+        }
+    }
 }
 
 component EyeTracker {
-TrackTimer = 10;
-Limit = 40;
+    TrackTimer = 10;
+    Limit = 40;
 
-_startRotation = null;
-_timer = 0;
-_trackedPlayer = null;
+    _startRotation = null;
+    _timer = 0;
+    _trackedPlayer = null;
 
-function Init()
-{
-self._startRotation = self.MapObject.Rotation;
-self._trackedPlayer = self.FindClosestPlayer();
-}
+    function Init()
+    {
+        self._startRotation = self.MapObject.Rotation;
+        self._trackedPlayer = self.FindClosestPlayer();
+    }
 
-function OnTick()
-{
-if (self._timer > 0)
-{
-self._timer = self._timer - Time.TickTime;
-}
-else
-{
-self._timer = self.TrackTimer;
-self._trackedPlayer = self.FindClosestPlayer();
-}
-if (self._trackedPlayer != null)
-{
-# Look at opposite of player
-target = self.SubtractVector3(self._trackedPlayer.Position, self.MapObject.Position);
-target = self.SubtractVector3(self.MapObject.Position, target);
-self.MapObject.Transform.LookAt(target);
-}
-}
+    function OnTick()
+    {
+        if (self._timer > 0)
+        {
+            self._timer = self._timer - Time.TickTime;
+        }
+        else
+        {
+            self._timer = self.TrackTimer;
+            self._trackedPlayer = self.FindClosestPlayer();
+        }
+        if (self._trackedPlayer != null)
+        {
+            # Look at opposite of player
+            target = self.SubtractVector3(self._trackedPlayer.Position, self.MapObject.Position);
+            target = self.SubtractVector3(self.MapObject.Position, target);
+            self.MapObject.Transform.LookAt(target);
+        }
+    }
 
-function SubtractVector3(a, b)
-{
-return Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
-}
+    function SubtractVector3(a, b)
+    {
+        return Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+    }
 
-function FindClosestPlayer()
-{
-closestPlayer = null;
-closestDistance = 9999999;
-for (player in Game.Humans)
-{
-if (player != null)
-{
-distance = Vector3.Distance(self.MapObject.Position, player.Position);
-if (distance < closestDistance)
-{
-closestDistance = distance;
-closestPlayer = player;
-}
-}
-}
-return closestPlayer;
-}
+    function FindClosestPlayer()
+    {
+        closestPlayer = null;
+        closestDistance = 9999999;
+        for (player in Game.Humans)
+        {
+            if (player != null)
+            {
+                distance = Vector3.Distance(self.MapObject.Position, player.Position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestPlayer = player;
+                }
+            }
+        }
+        return closestPlayer;
+    }
 }
 /// Weather
 {
