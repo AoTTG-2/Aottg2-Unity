@@ -227,6 +227,7 @@ namespace GameManagers
 
         public static void OnJoinRoom()
         {
+            AnticheatManager.Reset();
             ResetPersistentPlayerProperties();
             ResetPlayerInfo();
             _needSendPlayerInfo = true;
@@ -371,6 +372,8 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
+            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
+                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)

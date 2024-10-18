@@ -376,6 +376,7 @@ namespace Characters
 
         public void DodgeWall()
         {
+            FalseAttack();
             State = HumanState.GroundDodge;
             PlayAnimation(HumanAnimations.Dodge, 0.2f);
             ToggleSparks(false);

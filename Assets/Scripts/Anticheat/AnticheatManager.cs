@@ -14,12 +14,19 @@ namespace Anticheat
     {
         private static AnticheatManager _instance;
         private static readonly Dictionary<int, Dictionary<PhotonEventType, BaseEventFilter>> _IdToEventFilters = new();
-        private static readonly BallotBox kicks = new();
+        private static BallotBox VoteKick = new BallotBox();
+        public static HashSet<string> BanList = new HashSet<string>();
 
         public static void Init()
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
             EventManager.OnLoadScene += OnLoadScene;
+        }
+
+        public static void Reset()
+        {
+            BanList.Clear();
+            VoteKick = new BallotBox();
         }
 
         private static void OnLoadScene(SceneName sceneName) => _IdToEventFilters.Clear();
@@ -46,6 +53,13 @@ namespace Anticheat
                 DebugConsole.Log("Attempting to ban myself for: " + reason + ", please report this to the devs.", true);
                 return;
             }
+            if (ban)
+            {
+                if (InGameManager.AllPlayerInfo.ContainsKey(player.ActorNumber))
+                {
+                    BanList.Add(InGameManager.AllPlayerInfo[player.ActorNumber].Profile.ID.Value);
+                }
+            }
             PhotonNetwork.DestroyPlayerObjects(player);
             PhotonNetwork.CloseConnection(player);
             if (reason != string.Empty)
@@ -56,12 +70,12 @@ namespace Anticheat
 
         public static BallotBox.Result TryVoteKickPlayer(Player voter, Player target)
         {
-            var result = kicks.TryCastBallot(voter, target);
+            var result = VoteKick.TryCastBallot(voter, target);
             if (result.IsSuccess) KickPlayer(target);
             return result;
         }
 
-        public static void ResetVoteKicks(Player voter) => kicks.ResetBallots(voter);
+        public static void ResetVoteKicks(Player voter) => VoteKick.ResetBallots(voter);
     }
 
     public enum PhotonEventType

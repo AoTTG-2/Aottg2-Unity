@@ -15,6 +15,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using Map;
+using System.Collections;
 
 
 namespace GameManagers
@@ -263,11 +264,17 @@ namespace GameManagers
                 {
                     if (!player.IsLocal)
                     {
-                        KickPlayer(player);
+                        KickPlayer(player, false);
                     }
                 }
-                InGameManager.LeaveRoom();
+                _instance.StartCoroutine(_instance.WaitAndLeave());
             }
+        }
+
+        private IEnumerator WaitAndLeave()
+        {
+            yield return new WaitForSeconds(2f);
+            InGameManager.LeaveRoom();
         }
 
         [CommandAttribute("clear", "/clear: Clears the chat window.", Alias = "c")]
@@ -325,6 +332,15 @@ namespace GameManagers
                 KickPlayer(player);
             else if (CanVoteKick(player))
                 RPCManager.PhotonView.RPC(nameof(RPCManager.VoteKickRPC), RpcTarget.MasterClient, new object[] { player.ActorNumber });
+        }
+
+        [CommandAttribute("ban", "/ban [ID]: Ban the player with ID")]
+        private static void Ban(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player == null) return;
+            if (PhotonNetwork.IsMasterClient)
+                KickPlayer(player, ban: true);
         }
 
         private static bool CanVoteKick(Player player)
@@ -456,12 +472,18 @@ namespace GameManagers
             AddLine(help, ChatTextColor.System);
         }
 
-        public static void KickPlayer(Player player)
+        public static void KickPlayer(Player player, bool print = true, bool ban = false)
         {
             if (PhotonNetwork.IsMasterClient && player != PhotonNetwork.LocalPlayer)
             {
-                AnticheatManager.KickPlayer(player);
-                SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
+                AnticheatManager.KickPlayer(player, ban);
+                if (print)
+                {
+                    if (ban)
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been banned.", ChatTextColor.System);
+                    else
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
+                }
             }
         }
 
