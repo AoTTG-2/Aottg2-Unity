@@ -2722,7 +2722,7 @@ component EyeTracker {
     "Rain" : 0,
     "Thunder" : 0,
     "Snow" : 0,
-    "Wind" : 0.442154139280319,
+    "Wind" : 0,
     "WindDirection" : [
         1,
         0,
