@@ -139,6 +139,9 @@
 						"AllowAPG": false,
 						"GlobalMinimapDisable": true
 					}
+				},
+				{
+					"Name": "Halloween Waves"
 				}
 			]
 		},
