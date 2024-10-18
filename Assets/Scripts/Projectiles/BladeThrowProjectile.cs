@@ -29,7 +29,7 @@ namespace Projectiles
             _blade = transform.Find("Blade");
             _model = _blade.Find("Model").gameObject;
             WeaponTrail = GetComponentInChildren<MeleeWeaponTrail>();
-            if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
+            if (SettingsManager.GraphicsSettings.WeaponTrail.Value != (int)WeaponTrailMode.Off)
                 WeaponTrail.Emit = true;
             else
                 WeaponTrail.Emit = false;

@@ -470,7 +470,7 @@ namespace Cameras
         {
             BaseTitan nearestTitan = null;
             float nearestDistance = Mathf.Infinity;
-            foreach (var character in _inGameManager.GetAllCharacters())
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {

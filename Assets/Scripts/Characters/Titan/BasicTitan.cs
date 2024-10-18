@@ -42,6 +42,7 @@ namespace Characters
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
+        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
 
         public void Init(bool ai, string team, JSONNode data, int headPrefab)
         {
@@ -1100,7 +1101,7 @@ namespace Characters
                     var canTarget = false;
                     if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
+                        BaseCharacter character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
                         canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
                     }
@@ -1108,9 +1109,8 @@ namespace Characters
                         TargetViewId = -1;
                     if (canTarget)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
                         LookAtTarget = true;
-                        LateUpdateHead(character);
+                        LateUpdateHead((BaseCharacter)TargetEnemy);
                     }
                     else
                     {
@@ -1226,7 +1226,7 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else
+            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
             {
                 if (IsCrawler)
                     collider.height = _originalCapsuleValue;

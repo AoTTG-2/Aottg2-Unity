@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using Settings;
 using Characters;
 using GameManagers;
 using ApplicationManagers;
 using Utility;
-using System.Collections;
 using Cameras;
+using Assets.Scripts.Utility;
 
 namespace UI
 {
     class CharacterInfoHandler : MonoBehaviour
     {
-        protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
+        protected HashSet<SetItem<BaseCharacter, CharacterInfoPopup>> _characterInfoPopups = new HashSet<SetItem<BaseCharacter, CharacterInfoPopup>>();
+        //protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
         protected const float HumanRange = 500f;
         protected const float TitanRange = 250f;
         protected const float HumanOffset = 2f;
@@ -25,6 +24,7 @@ namespace UI
         protected Color GreenColor = new Color(0.106f, 0.368f, 0.086f);
         protected LayerMask CullMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities, PhysicsLayer.TitanMovebox);
         private InGameManager _inGameManager;
+        private SetItem<BaseCharacter, CharacterInfoPopup> mockEntry = new SetItem<BaseCharacter, CharacterInfoPopup>(null, null);
 
         private void Awake()
         {
@@ -39,7 +39,7 @@ namespace UI
             ShowMode showNameMode = (ShowMode)SettingsManager.UISettings.ShowNames.Value;
             ShowMode showHealthMode = (ShowMode)SettingsManager.UISettings.ShowHealthbars.Value;
             bool highlyVisible = SettingsManager.UISettings.HighVisibilityNames.Value;
-            foreach (KeyValuePair<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
+            foreach (SetItem<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
             {
                 var character = kv.Key;
                 var popup = kv.Value;
@@ -89,11 +89,12 @@ namespace UI
                 {
                     popup.ToggleName(true);
                     string name = character.Name;
+
+                    if (highlyVisible)
+                        name = character.VisibleName;
                     if (character.Guild != "")
                         name = character.Guild + "\n" + name;
-                    if (highlyVisible)
-                        name = name.ForceWhiteColorTag();
-                    popup.SetName(name);
+                    popup.SetName(name, highlyVisible);
                 }
                 else
                     popup.ToggleName(false);
@@ -136,25 +137,26 @@ namespace UI
 
         protected void RefreshDict()
         {
-            Dictionary<BaseCharacter, CharacterInfoPopup> newDict = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-            foreach (KeyValuePair<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
+            _characterInfoPopups.RemoveWhere(e =>
             {
-                var character = kv.Key;
-                var popup = kv.Value;
-                if (character == null || character.Dead)
-                    Destroy(popup.gameObject);
-                else
-                    newDict.Add(character, popup);
-            }
-            foreach (var character in _inGameManager.GetAllCharacters())
+                if (!e.Key || e.Key.Dead)
+                {
+                    Destroy(e.Value.gameObject);
+                    return true;
+                }
+                return false;
+            });
+
+            
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
-                if (!newDict.ContainsKey(character))
+                mockEntry.Key = character;
+                if (!_characterInfoPopups.Contains(mockEntry) && !character == false && character.Dead == false)
                 {
                     var popup = CreateInfoPopup(character);
-                    newDict.Add(character, popup);
+                    _characterInfoPopups.Add(new SetItem<BaseCharacter, CharacterInfoPopup>(character, popup));
                 }
             }
-            _characterInfoPopups = newDict;
         }
     }
 }

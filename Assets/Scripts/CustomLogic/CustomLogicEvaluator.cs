@@ -243,10 +243,10 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnPlayerLeave", new List<object>() { playerBuiltin });
         }
 
-        public void OnNetworkMessage(Player sender, string message)
+        public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message });
+            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message, sentServerTimestamp });
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
@@ -298,6 +298,8 @@ namespace CustomLogic
                 LoadMapObjectComponents(obj);
             }
         }
+
+        private List<object> emptyList = new List<object>();
 
         private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
         {

@@ -16,6 +16,7 @@ using Photon;
 using Photon.Pun;
 using System.Threading;
 using System.Globalization;
+using Assets.Scripts.ApplicationManagers;
 
 namespace ApplicationManagers
 {
@@ -42,7 +43,7 @@ namespace ApplicationManagers
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
-            DebugConsole.Init();
+            PhotonNetwork.UseRpcMonoBehaviourCache = true;
             ApplicationConfig.Init();
             AnticheatManager.Init();
             PhysicsLayer.Init();
@@ -69,6 +70,14 @@ namespace ApplicationManagers
                 DebugTesting.Init();
                 DebugTesting.RunTests();
             }
+
+#if (UNITY_EDITOR || DEVELOPMENT_BUILD)
+            if (Application.isEditor || Debug.isDebugBuild)
+            {
+                DebugLagSim.Init();
+                //DebugConsole.Init();
+            }
+#endif
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();
