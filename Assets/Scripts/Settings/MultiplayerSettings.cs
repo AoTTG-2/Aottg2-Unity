@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Discord;
 using GameManagers;
 using Photon.Pun;
@@ -107,7 +107,7 @@ namespace Settings
             if (LobbyMode.Value == (int)LobbyModeType.Public)
             {
                 if (isPublic)
-                    return ApplicationEncoder.GetTempBuffer();
+                    return ApplicationVersion.GetVersion();
                 return new NetworkCredential("Public", "Public");
             }
             var credential = new NetworkCredential(CustomLobby.Value, CustomLobby.Value);
