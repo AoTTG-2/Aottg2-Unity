@@ -2,6 +2,7 @@
 using Settings;
 using Characters;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine;
 
 namespace GameManagers
 {
@@ -68,6 +69,13 @@ namespace GameManagers
         public static bool SameTeam(BaseCharacter a, string b)
         {
             return a.Team == b && a.Team != None && b != None;
+        }
+
+        public static Color GetTeamColorUnity(string Team)
+        {
+            string color = GetTeamColor(Team);
+            ColorUtility.TryParseHtmlString(color, out Color c);
+            return c;
         }
 
         public static string GetTeamColor(string team)

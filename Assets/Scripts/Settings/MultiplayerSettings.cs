@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Discord;
 using GameManagers;
 using Photon.Pun;
