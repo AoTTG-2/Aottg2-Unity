@@ -711,10 +711,15 @@ namespace CustomLogic
                 {
                     MapLoader.SetParent(Value, null);
                 }
-                else
+                else if (value is CustomLogicMapObjectBuiltin)
                 {
                     var parent = (CustomLogicMapObjectBuiltin)value;
                     MapLoader.SetParent(Value, parent.Value);
+                }
+                else if (value is CustomLogicTransformBuiltin)
+                {
+                    var parent = (CustomLogicTransformBuiltin)value;
+                    Value.GameObject.transform.SetParent(parent.Value);
                 }
                 _needSetLocalRotation = true;
             }

@@ -181,6 +181,7 @@ namespace Map
             }
         }
 
+
         public static void DeleteObject(MapObject obj)
         {
             int id = obj.ScriptObject.Id;
