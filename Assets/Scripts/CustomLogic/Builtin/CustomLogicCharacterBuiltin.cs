@@ -140,6 +140,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             if (name == "Rotation")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.rotation.eulerAngles);
+            if (name == "QuaternionRotation")
+                return new CustomLogicQuaternionBuiltin(Character.Cache.Transform.rotation);
             if (name == "Velocity")
                 return new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
             if (name == "Forward")
@@ -179,6 +181,8 @@ namespace CustomLogic
                 Character.Cache.Transform.position = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Rotation")
                 Character.Cache.Transform.rotation = Quaternion.Euler(((CustomLogicVector3Builtin)value).Value);
+            else if (name == "QuaternionRotation")
+                Character.Cache.Transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
             else if (name == "Velocity")
                 Character.Cache.Rigidbody.velocity = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Forward")

@@ -593,6 +593,14 @@ namespace CustomLogic
                 }
                 return new CustomLogicVector3Builtin(_internalLocalRotation);
             }
+            if (name == "QuaternionRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.rotation);
+            }
+            if (name == "QuaternionLocalRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.localRotation);
+            }
             if (name == "Forward")
                 return new CustomLogicVector3Builtin(Value.GameObject.transform.forward.normalized);
             if (name == "Up")
@@ -692,6 +700,20 @@ namespace CustomLogic
                 _internalLocalRotation = ((CustomLogicVector3Builtin)value).Value;
                 _needSetLocalRotation = false;
                 Value.GameObject.transform.localRotation = Quaternion.Euler(_internalLocalRotation);
+            }
+            else if (name == "QuaternionRotation")
+            {
+                // Set the rotation of the object to the quaternion value
+                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
+                _needSetLocalRotation = false;
+                Value.GameObject.transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
+            }
+            else if (name == "QuaternionLocalRotation")
+            {
+                // Set the local rotation of the object to the quaternion value
+                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
+                _needSetLocalRotation = false;
+                Value.GameObject.transform.localRotation = ((CustomLogicQuaternionBuiltin)value).Value;
             }
             else if (name == "Forward")
                 Value.GameObject.transform.forward = ((CustomLogicVector3Builtin)value).Value;

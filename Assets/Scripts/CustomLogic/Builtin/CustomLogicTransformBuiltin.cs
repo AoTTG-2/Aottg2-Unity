@@ -146,6 +146,14 @@ namespace CustomLogic
                 }
                 return new CustomLogicVector3Builtin(_internalLocalRotation);
             }
+            if (name == "QuaternionRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.rotation);
+            }
+            if (name == "QuaternionLocalRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.localRotation);
+            }
             if (name == "Scale")
             {
                 var scale = Value.localScale;
@@ -177,6 +185,14 @@ namespace CustomLogic
                 _internalLocalRotation = ((CustomLogicVector3Builtin)value).Value;
                 _needSetLocalRotation = false;
                 Value.localRotation = Quaternion.Euler(_internalLocalRotation);
+            }
+            else if (name == "QuaternionRotation")
+            {
+                Value.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
+            }
+            else if (name == "QuaternionLocalRotation")
+            {
+                Value.localRotation = ((CustomLogicQuaternionBuiltin)value).Value;
             }
             else if (name == "Scale")
                 Value.localScale = ((CustomLogicVector3Builtin)value).Value;
