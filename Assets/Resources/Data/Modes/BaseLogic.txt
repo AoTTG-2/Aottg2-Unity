@@ -748,7 +748,7 @@ component TitanTarget
 
     function Init()
     {
-        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 10.1);
+        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 0.1);
         self._targetable.Enabled = self.EnabledByDefault;
 
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3(0), self.PlayerPriorityRange);
