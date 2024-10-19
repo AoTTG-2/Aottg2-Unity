@@ -617,11 +617,15 @@ namespace CustomLogic
                 else if (statement is CustomLogicWaitExpressionAst waitExpressionAst)
                 {
                     object value = EvaluateExpression(classInstance, localVariables, waitExpressionAst.WaitTime);
+                    bool isCutscene = (int)_start.Classes[classInstance.ClassName].Token.Value == (int)CustomLogicSymbol.Cutscene;
 
                     if (value is null)
                         yield return null;
                     else if (waitExpressionAst.WaitTime is CustomLogicMethodCallExpressionAst methodCallExpressionAst)
                     {
+                        if (isCutscene)
+                            value = null;
+
                         if (value is Coroutine coroutine)
                             yield return value;
                         else
@@ -629,8 +633,7 @@ namespace CustomLogic
                     }
                     else
                     {
-                        string className = classInstance.ClassName;
-                        if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Cutscene)
+                        if (isCutscene)
                         {
                             float time = value.UnboxToFloat();
                             while (time > 0f && !CustomLogicManager.SkipCutscene)
