@@ -614,21 +614,34 @@ namespace CustomLogic
                 {
                     yield break;
                 }
-                else if (statement is CustomLogicWaitExpressionAst)
+                else if (statement is CustomLogicWaitExpressionAst waitExpressionAst)
                 {
-                    object value = EvaluateExpression(classInstance, localVariables, ((CustomLogicWaitExpressionAst)statement).WaitTime);
-                    string className = classInstance.ClassName;
-                    if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Cutscene)
+                    object value = EvaluateExpression(classInstance, localVariables, waitExpressionAst.WaitTime);
+
+                    if (value is null)
+                        yield return null;
+                    else if (waitExpressionAst.WaitTime is CustomLogicMethodCallExpressionAst methodCallExpressionAst)
                     {
-                        float time = value.UnboxToFloat();
-                        while (time > 0f && !CustomLogicManager.SkipCutscene)
-                        {
-                            yield return new WaitForSeconds(0.1f);
-                            time -= 0.1f;
-                        }
+                        if (value is Coroutine coroutine)
+                            yield return value;
+                        else
+                            yield return null;
                     }
                     else
-                        yield return new WaitForSeconds(value.UnboxToFloat());
+                    {
+                        string className = classInstance.ClassName;
+                        if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Cutscene)
+                        {
+                            float time = value.UnboxToFloat();
+                            while (time > 0f && !CustomLogicManager.SkipCutscene)
+                            {
+                                yield return new WaitForSeconds(0.1f);
+                                time -= 0.1f;
+                            }
+                        }
+                        else
+                            yield return new WaitForSeconds(value.UnboxToFloat());
+                    }
                 }
                 else if (statement is CustomLogicConditionalBlockAst)
                 {
