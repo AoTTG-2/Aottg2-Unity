@@ -1,9 +1,12 @@
 ﻿using Effects;
 using GameManagers;
 using Settings;
+using System.Net;
+using System.Text.RegularExpressions;
 using UI;
 using UnityEngine;
 using Utility;
+using static UnityEngine.GraphicsBuffer;
 
 
 namespace Characters
@@ -74,6 +77,22 @@ namespace Characters
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.identity, settings: settings);
             human.HumanCache.APGHit.Activate(0f, 0.1f);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
+        }
+        public object[] GetSettings()
+        {
+            var human = (Human)_owner;
+            Vector3 target = human.GetAimPoint();
+            Vector3 direction = (target - human.Cache.Transform.position).normalized;
+            Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
+            direction = (target - start).normalized;
+            var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
+            capsule.radius = 0.1f;
+            float height = capsule.height * 1.2f;
+            float radius = capsule.radius * 4f;
+            Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
+            object[] settings = new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f,
+            radius, radius, 0.25f};
+            return settings;
         }
     }
 }
