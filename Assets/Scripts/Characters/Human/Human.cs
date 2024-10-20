@@ -470,8 +470,11 @@ namespace Characters
 
         public void Ungrab(bool notifyTitan, bool idle)
         {
-            if (notifyTitan && Grabber != null)
+            if (notifyTitan && Grabber != null){
                 Grabber.Cache.PhotonView.RPC("UngrabRPC", Grabber.Cache.PhotonView.Owner, new object[0]);
+                Grabber.DisableArm(Grabber.HoldHumanLeft);
+            }
+
             Grabber = null;
             SetTriggerCollider(false);
             if (idle)

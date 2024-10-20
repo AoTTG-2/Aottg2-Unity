@@ -20,7 +20,7 @@ namespace Characters
             MaxUses = 1;
             Cooldown = 300f;
             ReduceCooldownAmount = 50f;
-            SetCooldownLeft(Cooldown);
+            SetCooldownLeft(0);
         }
 
         public override bool CanUse()
