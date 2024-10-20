@@ -789,6 +789,18 @@ namespace CustomLogic
                     result[1] = EvaluateExpression(classInstance, localVariables, ((CustomLogicReturnExpressionAst)statement).ReturnValue);
                     return result;
                 }
+                else if (statement is CustomLogicBreakExpressionAst breakExpressionAst)
+                {
+                    result[0] = true;
+                    result[1] = breakExpressionAst;
+                    return result;
+                }
+                else if (statement is CustomLogicContinueExpressionAst continueExpressionAst)
+                {
+                    result[0] = true;
+                    result[1] = continueExpressionAst;
+                    return result;
+                }
                 else if (statement is CustomLogicConditionalBlockAst)
                 {
                     CustomLogicConditionalBlockAst conditional = (CustomLogicConditionalBlockAst)statement;
@@ -806,10 +818,28 @@ namespace CustomLogic
                     }
                     else if ((int)conditional.Token.Value == (int)CustomLogicSymbol.While)
                     {
+                        var skipNext = false;
                         while ((bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
                         {
+                            if (skipNext)
+                            {
+                                skipNext = false;
+                                continue;
+                            }
+
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
-                            if ((bool)nextResult[0])
+                            bool shouldBreak = (bool)nextResult[0];
+
+                            if (shouldBreak && nextResult[1] is CustomLogicContinueExpressionAst)
+                            {
+                                skipNext = true;
+                                continue;
+                            }
+
+                            if (shouldBreak && nextResult[1] is CustomLogicBreakExpressionAst)
+                                break;
+
+                            if (shouldBreak)
                                 return nextResult;
                         }
                         conditionalState = ConditionalEvalState.None;
@@ -852,7 +882,15 @@ namespace CustomLogic
                         else
                             localVariables.Add(variableName, variable);
                         object[] nextResult = EvaluateBlock(classInstance, localVariables, forBlock.Statements);
-                        if ((bool)nextResult[0])
+                        bool shouldBreak = (bool)nextResult[0];
+
+                        if (shouldBreak && nextResult[1] is CustomLogicContinueExpressionAst)
+                            continue;
+
+                        if (shouldBreak && nextResult[1] is CustomLogicBreakExpressionAst)
+                            break;
+
+                        if (shouldBreak)
                             return nextResult;
                     }
                 }
