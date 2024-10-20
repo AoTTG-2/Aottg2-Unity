@@ -38,7 +38,7 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
-            
+
             if (methodName == "PlayAnimation")
             {
                 string anim = (string)parameters[0];
@@ -105,6 +105,20 @@ namespace CustomLogic
                 Value.Rotate(rotation.Value);
                 return null;
             }
+            if (methodName == "RotateAround")
+            {
+                var point = (CustomLogicVector3Builtin)parameters[0];
+                var axis = (CustomLogicVector3Builtin)parameters[1];
+                var angle = (float)parameters[2];
+                Value.RotateAround(point.Value, axis.Value, angle);
+                return null;
+            }
+            if (methodName == "LookAt")
+            {
+                var target = (CustomLogicVector3Builtin)parameters[0];
+                Value.LookAt(target.Value);
+                return null;
+            }
             return base.CallMethod(methodName, parameters);
         }
 
@@ -131,6 +145,14 @@ namespace CustomLogic
                     _needSetLocalRotation = false;
                 }
                 return new CustomLogicVector3Builtin(_internalLocalRotation);
+            }
+            if (name == "QuaternionRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.rotation);
+            }
+            if (name == "QuaternionLocalRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.localRotation);
             }
             if (name == "Scale")
             {
@@ -163,6 +185,14 @@ namespace CustomLogic
                 _internalLocalRotation = ((CustomLogicVector3Builtin)value).Value;
                 _needSetLocalRotation = false;
                 Value.localRotation = Quaternion.Euler(_internalLocalRotation);
+            }
+            else if (name == "QuaternionRotation")
+            {
+                Value.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
+            }
+            else if (name == "QuaternionLocalRotation")
+            {
+                Value.localRotation = ((CustomLogicQuaternionBuiltin)value).Value;
             }
             else if (name == "Scale")
                 Value.localScale = ((CustomLogicVector3Builtin)value).Value;

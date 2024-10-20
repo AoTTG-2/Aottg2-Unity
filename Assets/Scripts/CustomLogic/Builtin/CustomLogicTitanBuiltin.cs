@@ -124,6 +124,14 @@ namespace CustomLogic
                     return Titan.GetComponent<BaseTitanAIController>()._usePathfinding;
                 return null;
             }
+            if (name == "HeadMount")
+            {
+                return new CustomLogicTransformBuiltin(Titan.BasicCache.Head);
+            }
+            if (name == "NeckMount")
+            {
+                return new CustomLogicTransformBuiltin(Titan.BasicCache.Neck);
+            }
             return base.GetField(name);
         }
 

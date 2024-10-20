@@ -1434,8 +1434,14 @@ namespace Characters
                 }
                 _currentVelocity = Cache.Rigidbody.velocity;
                 GameProgressManager.RegisterSpeed(_currentVelocity.magnitude);
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * 10f);
                 CheckGround();
+
+                float rotationSpeed = 6f;
+                if (Grounded)
+                {
+                    rotationSpeed = 10f;
+                }
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
