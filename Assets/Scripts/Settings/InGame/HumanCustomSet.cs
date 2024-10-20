@@ -17,6 +17,9 @@ namespace Settings
         public IntSetting Boots = new IntSetting(0);
         public IntSetting Cape = new IntSetting(0);
         public IntSetting Logo = new IntSetting(0);
+        public StringSetting Hat = new StringSetting("HatNone");
+        public StringSetting Head = new StringSetting("HeadNone");
+        public StringSetting Back = new StringSetting("BackNone");
         public ColorSetting SkinColor = new ColorSetting(new Color255(255, 220, 196));
         public ColorSetting HairColor = new ColorSetting(new Color255(128, 128, 128));
         public ColorSetting ShirtColor = new ColorSetting(new Color255(255, 255, 255));

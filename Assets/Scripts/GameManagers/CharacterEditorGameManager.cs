@@ -51,7 +51,7 @@ namespace GameManagers
         {
             var set = new HumanCustomSet();
             set.Hair.Value = "HairM8";
-            set.Costume.Value = 3;
+            set.Costume.Value = 1;
             for (int i = 0; i < HumanSetup.EyeCount; i++)
             {
                 set.Eye.Value = i;
@@ -97,6 +97,42 @@ namespace GameManagers
                 yield return new WaitForEndOfFrame();
                 Screenshot(816f, 510f, 280f, 280f, set.Hair.Value);
             }
+            set.Hair.Value = "HairM10";
+            for (int i = -1; i < HumanSetup.HatCount; i++)
+            {
+                if (i == -1)
+                    set.Hat.Value = "HatNone";
+                else
+                    set.Hat.Value = "Hat" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(796f, 570f, 320f, 320f, set.Hat.Value);
+            }
+            set.Hat.Value = "HatNone";
+            Character.transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            for (int i = -1; i < HumanSetup.BackCount; i++)
+            {
+                if (i == -1)
+                    set.Back.Value = "BackNone";
+                else
+                    set.Back.Value = "Back" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(776f, 300f, 360f, 360f, set.Back.Value);
+            }
+            set.Back.Value = "BackNone";
+            Character.transform.rotation = Quaternion.identity;
+            for (int i = -1; i < HumanSetup.HeadCount; i++)
+            {
+                if (i == -1)
+                    set.Head.Value = "HeadNone";
+                else
+                    set.Head.Value = "Head" + i.ToString();
+                Character.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForEndOfFrame();
+                Screenshot(801f, 470f, 310f, 310f, set.Head.Value);
+            }
+            set.Head.Value = "HeadNone";
             set.Hair.Value = "HairM8";
             for (int i = 0; i < HumanSetup.CostumeMCount; i++)
             {

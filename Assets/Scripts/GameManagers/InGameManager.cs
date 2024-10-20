@@ -955,7 +955,7 @@ namespace GameManagers
 
             //set ping at start
             int currentPing = PhotonNetwork.GetPing();
-            PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
         }
 
         public override bool IsFinishedLoading()
@@ -975,7 +975,7 @@ namespace GameManagers
             if (timeSinceLastPingUpdate >= pingUpdateInterval)
             {
                 int currentPing = PhotonNetwork.GetPing();
-                PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
                 timeSinceLastPingUpdate = 0f;
             }
         }

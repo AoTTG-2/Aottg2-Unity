@@ -67,17 +67,11 @@ namespace ApplicationManagers
             CustomSerialization.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
+                DebugConsole.Init();
                 DebugTesting.Init();
                 DebugTesting.RunTests();
-            }
-
-#if (UNITY_EDITOR || DEVELOPMENT_BUILD)
-            if (Application.isEditor || Debug.isDebugBuild)
-            {
                 DebugLagSim.Init();
-                //DebugConsole.Init();
             }
-#endif
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();

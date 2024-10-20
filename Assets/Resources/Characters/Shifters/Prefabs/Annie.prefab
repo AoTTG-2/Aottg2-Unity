@@ -1095,7 +1095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c9df397ce951448a3795c912c95158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  RichTextName: 
+  VisibleName: 
   Guild: 
   Dead: 0
   CustomDamageEnabled: 0

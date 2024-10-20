@@ -113,8 +113,6 @@ namespace CustomLogic
                 Player.SetCustomProperty(PlayerProperty.HighestDamage, (int)value);
             else if (name == "TotalDamage")
                 Player.SetCustomProperty(PlayerProperty.TotalDamage, (int)value);
-            else if (name == "Ping")
-                Player.SetCustomProperty(PlayerProperty.Ping, (int)value);
             else if (name == "SpawnPoint")
             {
                 if (value == null)

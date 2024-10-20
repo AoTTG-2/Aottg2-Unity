@@ -204,7 +204,7 @@ namespace UI
             if (actionRow.childCount > 2)
                 actionRow.GetChild(2).gameObject.SetActive(!isMine);
 
-            row.GetChild(3).GetComponent<Text>().text = player.GetStringProperty("Ping", string.Empty);
+            row.GetChild(3).GetComponent<Text>().text = player.GetIntProperty(PlayerProperty.Ping).ToString();
         }
 
         private void OnClickProfile(int index)

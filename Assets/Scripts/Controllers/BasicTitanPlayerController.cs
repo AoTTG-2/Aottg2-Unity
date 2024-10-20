@@ -31,7 +31,7 @@ namespace Controllers
             _titan.WalkSpeedPerLevel = 1f;
             _titan.BellyFlopTime = 2.6f;
             _titan.AttackSpeedMultiplier = 1.2f;
-            _titan.JumpForce = 240f;
+            _titan.JumpForce = 200f;
             _titan.AttackPause = 0.1f;
             _titan.ActionPause = 0.1f;
             _titan.RockThrow1Speed = 500f;

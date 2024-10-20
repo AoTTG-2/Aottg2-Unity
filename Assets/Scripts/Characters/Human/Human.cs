@@ -95,9 +95,9 @@ namespace Characters
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
-        private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
+        private LayerMask HumanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
-        public override LayerMask GroundMask => GroundMaskLayers;
+        public override LayerMask GroundMask => HumanGroundMaskLayers;
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public Quaternion? LateUpdateHeadRotation = Quaternion.identity;
@@ -2239,7 +2239,7 @@ namespace Characters
         public void FixedUpdateLookTitan()
         {
             Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
-            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
+            LayerMask mask = TitanDetectionMask;
             RaycastHit[] hitArr = Physics.RaycastAll(ray, 200f, mask.value);
             if (hitArr.Length == 0)
                 return;

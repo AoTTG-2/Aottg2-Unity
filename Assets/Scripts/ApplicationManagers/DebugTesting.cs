@@ -41,9 +41,6 @@ namespace ApplicationManagers
         {
             if (!ApplicationConfig.DevelopmentMode)
                 return;
-            //CustomLogicManager.Logic = BuiltinLevels.LoadLogic("test2");
-            //var settings = CustomLogicManager.GetModeSettings(CustomLogicManager.Logic);
-            //CustomLogicManager.StartLogic(settings);
         }
 
         private static void OnLoadScene(SceneName sceneName)
