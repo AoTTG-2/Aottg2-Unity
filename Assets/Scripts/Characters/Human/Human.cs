@@ -474,7 +474,6 @@ namespace Characters
                 Grabber.Cache.PhotonView.RPC("UngrabRPC", Grabber.Cache.PhotonView.Owner, new object[0]);
                 Grabber.DisableArm(Grabber.HoldHumanLeft);
             }
-
             Grabber = null;
             SetTriggerCollider(false);
             if (idle)
