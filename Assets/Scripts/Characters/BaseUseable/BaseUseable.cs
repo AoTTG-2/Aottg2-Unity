@@ -9,7 +9,6 @@ namespace Characters
     abstract class BaseUseable
     {
         public float Cooldown;
-        public float ReduceCooldownAmount;
         public int UsesLeft;
         public int MaxUses;
         public bool IsActive;
@@ -17,11 +16,10 @@ namespace Characters
         protected float _lastUseTime = -1000f;
         protected BaseCharacter _owner;
 
-        public BaseUseable(BaseCharacter owner, float cooldown = 0f, float reduceCooldownAmount =0f,int maxUses = -1)
+        public BaseUseable(BaseCharacter owner, float cooldown = 0f,int maxUses = -1)
         {
             _owner = owner;
             Cooldown = cooldown;
-            ReduceCooldownAmount = reduceCooldownAmount;
             UsesLeft = MaxUses = maxUses;
         }
 
@@ -36,10 +34,6 @@ namespace Characters
         public void SetCooldownLeft(float cooldownLeft)
         {
             _lastUseTime = Time.time - Cooldown + cooldownLeft;
-        }
-        public void ReduceCooldown()
-        {
-            _lastUseTime -= ReduceCooldownAmount;
         }
         public float GetCooldownLeft()
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Characters
 {
-    class EscapeSpecial : ExtendedUseable
+    class EscapeSpecial : RechargeableUseable
     {
         protected override float ActiveTime => 0.64f;
 

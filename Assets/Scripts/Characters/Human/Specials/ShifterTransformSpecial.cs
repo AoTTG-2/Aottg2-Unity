@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Characters
 {
-    class ShifterTransformSpecial : ExtendedUseable
+    class ShifterTransformSpecial : RechargeableUseable
     {
         protected float LiveTime = 60f;
         protected string _shifter;

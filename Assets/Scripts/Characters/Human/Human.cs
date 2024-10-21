@@ -1165,9 +1165,9 @@ namespace Characters
                             }
 
                         }
-                        if (Special is EscapeSpecial || Special is ShifterTransformSpecial)
+                        if (Special is RechargeableUseable)
                         {
-                            Special.ReduceCooldown();
+                            ((RechargeableUseable)Special).ReduceCooldown();
                         }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
