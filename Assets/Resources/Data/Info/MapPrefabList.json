@@ -3,9 +3,9 @@
 		"Info": {"Type": "Scene"},
 		"Prefabs": [
 			{"Name": "Empty Object"},
-			{"Name": "Barrier", "Asset": "Geometry/Cuboid", "Visible": false, "CollideWith": "Characters"},
+			{"Name": "Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideWith": "Characters"},
       		{"Name": "Titan Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "Physical", "CollideWith": "Titans"},
-      		{"Name": "Human Barrier", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "Physical", "CollideWith": "Humans"},
+      		{"Name": "Human Barrier", "Asset": "Geometry/Cube1", "Visible": false, "CollideMode": "Physical", "CollideWith": "Humans"},
 			{"Name": "NavMeshObstacle", "Asset": "Geometry/NavMeshObstacle", "Visible": false, "CollideMode": "None", "CollideWith": "Characters"},
 			{"Name": "Daylight", "Asset": "General/EditorDaylight", "Visible": false, "CollideMode": "None", "Components": ["Daylight|"], "Preview": "EditorDaylight", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PointLight", "Asset": "General/EditorPointLight", "Visible": false, "CollideMode": "None", "Components": ["PointLight|"], "Preview": "EditorPointLight", "Material": "DefaultNoTint|255/255/255/255|"},
@@ -305,9 +305,9 @@
 			{"Name": "WallGateA1", "Static": false, "Networked": true, "Components": ["WallGateA1|"]},
 			{"Name": "WallGateA2"},
 			{"Name": "WaterWheel1"},
-			{"Name": "Windmill1"},
+			{"Name": "Windmill1", "Static": false},
 			{"Name": "Windmill1b", "Variant": "Windmill1"},
-			{"Name": "Windmill2"},
+			{"Name": "Windmill2", "Static": false},
 			{"Name": "Windmill2b", "Variant": "Windmill2"},
 		]
 	},

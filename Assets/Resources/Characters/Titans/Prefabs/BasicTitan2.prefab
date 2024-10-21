@@ -3887,6 +3887,7 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
   IsCrawler: 0
   Setup: {fileID: 0}

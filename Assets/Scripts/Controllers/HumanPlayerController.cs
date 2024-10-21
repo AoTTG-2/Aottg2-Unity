@@ -149,7 +149,17 @@ namespace Controllers
                     originalSpeed /= 100f;
                     str += " | " + originalSpeed.ToString("F1") + "K";
                 }
-
+            }
+            if (SettingsManager.AbilitySettings.CursorCooldown.Value && SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value &&
+                _human.Weapon is ThunderspearWeapon)
+            {
+                if (str != string.Empty)
+                    str += "\n";
+                float cd = ((ThunderspearWeapon)_human.Weapon).GetCooldownLeft();
+                if (cd > 0)
+                    str += "<color=#FF0000>" + cd.ToString("F2") + "</color>";
+                else
+                    str += "<color=#008000>READY</color>";
             }
 
             CursorManager.SetCrosshairText(str);

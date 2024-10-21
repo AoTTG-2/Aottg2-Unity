@@ -952,10 +952,9 @@ namespace GameManagers
             }
             PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
-
-            //set ping at start
             int currentPing = PhotonNetwork.GetPing();
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
         }
 
         public override bool IsFinishedLoading()

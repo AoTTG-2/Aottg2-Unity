@@ -74,6 +74,8 @@ namespace UI
         private string _bottomRightText;
         private string _bottomCenterText;
         private string _topLeftText;
+        public float _spectateUpdateTimeLeft;
+        public int _spectateCount;
         private InGameManager _gameManager;
         private Dictionary<string, BasePopup> _customPopups = new Dictionary<string, BasePopup>();
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
@@ -453,6 +455,23 @@ namespace UI
                 _middleCenterLabel.text = _middleCenterText + "\n" + "Restarting in " + ((int)_gameManager.EndTimeLeft).ToString();
             else
                 _middleCenterLabel.text = _middleCenterText;
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            _spectateUpdateTimeLeft -= Time.deltaTime;
+            if (_spectateUpdateTimeLeft <= 0f)
+            {
+                _spectateUpdateTimeLeft = 1f;
+                int spectateCount = 0;
+                if (camera._follow != null)
+                {
+                    int actorId = camera._follow.Cache.PhotonView.Owner.ActorNumber;
+                    foreach (var player in PhotonNetwork.PlayerList)
+                    {
+                        if (player.GetIntProperty(PlayerProperty.SpectateID, -1) == actorId)
+                            spectateCount++;
+                    }
+                }
+                _spectateCount = spectateCount;
+            }
             var inGame = SettingsManager.InGameCharacterSettings;
             if (inGame.ChooseStatus.Value == (int)ChooseCharacterStatus.Spectating || (_gameManager.CurrentCharacter == null || _gameManager.CurrentCharacter.Dead))
             {
@@ -465,9 +484,10 @@ namespace UI
                     spectating += "Join: " + ChatManager.GetColorString(input.ChangeCharacter.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Free Cam: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
                 }
-                var camera = (InGameCamera)SceneLoader.CurrentCamera;
                 if (camera._follow != null && camera._follow != _gameManager.CurrentCharacter)
-                    spectating = "Spectating " + camera._follow.Name + ". " + spectating;
+                {
+                    spectating = "Spectating " + camera._follow.Name + " (" + _spectateCount.ToString() + "). " + spectating;
+                }
                 else
                     spectating = "Spectating. " + spectating;
                 _bottomCenterLabel.text = _bottomCenterText + "\n" + spectating;
@@ -496,6 +516,7 @@ namespace UI
         private string GetKeybindStrings()
         {
             string str = "";
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
             if (SettingsManager.UISettings.ShowInterpolation.Value)
             {
                 var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
@@ -507,14 +528,22 @@ namespace UI
                         str = "Interpolation: " + ChatManager.GetColorString("OFF", ChatTextColor.System);
                 }
             }
-            if (!SettingsManager.UISettings.ShowKeybindTip.Value)
-                return str;
-            var settings = SettingsManager.InputSettings;
-            if (str != "")
-                str += ", ";
-            str += "Pause: " + ChatManager.GetColorString(settings.General.Pause.ToString(), ChatTextColor.System);
-            str += ", " + "Scoreboard: " + ChatManager.GetColorString(settings.General.ToggleScoreboard.ToString(), ChatTextColor.System);
-            str += ", " + "Change Char: " + ChatManager.GetColorString(settings.General.ChangeCharacter.ToString(), ChatTextColor.System);
+            if (SettingsManager.UISettings.ShowKeybindTip.Value)
+            {
+                var settings = SettingsManager.InputSettings;
+                if (str != "")
+                    str += ", ";
+                str += "Pause: " + ChatManager.GetColorString(settings.General.Pause.ToString(), ChatTextColor.System);
+                str += ", " + "Scoreboard: " + ChatManager.GetColorString(settings.General.ToggleScoreboard.ToString(), ChatTextColor.System);
+                str += ", " + "Change Char: " + ChatManager.GetColorString(settings.General.ChangeCharacter.ToString(), ChatTextColor.System);
+            }
+            if (camera._follow != null && _spectateCount > 0 && camera._follow.IsMainCharacter())
+            {
+                string spectate = "Spectating: " + _spectateCount.ToString();
+                if (str != "")
+                    spectate += "\n";
+                str = spectate + str;
+            }
             return str;
         }
 

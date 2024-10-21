@@ -132,9 +132,16 @@ namespace Cameras
                     ? Util.ConstrainedToY(_follow.Cache.Transform.rotation)
                     : Quaternion.Euler(0f, 0f, 0f);
             if (character.IsMine())
+            {
                 _menu.HUDBottomHandler.SetBottomHUD(character);
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
+            }
             else
+            {
                 _menu.HUDBottomHandler.SetBottomHUD();
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, character.Cache.PhotonView.Owner.ActorNumber);
+            }
+            _menu._spectateUpdateTimeLeft = 0f;
         }
 
         protected override void Awake()

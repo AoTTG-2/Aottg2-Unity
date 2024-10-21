@@ -2086,6 +2086,8 @@ namespace Characters
                 _isReelingOut = true;
             else if (reelAxis < 0f && !_reelInWaitForRelease)
             {
+                if (State == HumanState.AirDodge && IsHookedLeft() && IsHookedRight())
+                    return;
                 if (SettingsManager.SoundSettings.ReelInEffect.Value)
                     PlaySoundRPC(HumanSounds.ReelIn, Util.CreateLocalPhotonInfo());
                 if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)

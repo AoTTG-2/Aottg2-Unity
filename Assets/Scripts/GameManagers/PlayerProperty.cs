@@ -24,6 +24,7 @@ namespace GameManagers
         public static string SpawnPoint = "SpawnPoint";
         public static string CameraDistance = "CameraDistance";
         public static string Ping = "Ping";
+        public static string SpectateID = "SpectateID";
     }
 
     class PlayerStatus

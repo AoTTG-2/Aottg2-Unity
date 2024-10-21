@@ -2111,7 +2111,9 @@ component RacingCheckpointRegion
 {
     Refill = true;
     PlaySound = true;
-
+    LapCheckpoint = false;
+    LapCheckpointTooltip = "Enable to count this checkpoint for lap racing.";
+    _Cleared = false;
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)
@@ -2124,7 +2126,12 @@ component RacingCheckpointRegion
             {
                 other.PlaySound("Checkpoint");
             }
-            other.Player.SpawnPoint = self.MapObject;
+            other.Player.SpawnPoint = self.MapObject.Position;
+            if (self.LapCheckpoint)
+            {    
+                self._Cleared = true;
+                Main.CheckpointStatus();
+            }
         }
     }
 }
@@ -2132,6 +2139,12 @@ component RacingCheckpointRegion
 # general
 component RacingFinishRegion
 {
+    NumberOfLaps = 1;
+    NumberOfLapsTooltip = "Any number above '1' uses lap mode";
+    function Init()
+    {
+        Main._NumberOfLapsTotal = self.NumberOfLaps;
+    }
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)

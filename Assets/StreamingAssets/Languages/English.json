@@ -465,6 +465,7 @@
 		"Skins.Skybox.Down": "Down",
 		"Ability.BombColor": "Bomb color",
 		"Ability.ShowBombColors": "Show bomb colors",
+		"Ability.CursorCooldown": "Cursor cooldown",
 		"Ability.UseOldEffect": "Use old effect",
 		"Ability.PointsLeft": "Points left",
 		"Ability.BombRadius": "Bomb radius",
