@@ -353,6 +353,12 @@ namespace Characters
             BasicCache.MouthHitbox.Activate();
         }
 
+        public void JumpImmediate()
+        {
+            StartJump();
+            CrossFade(BasicAnimations.Jump, 0.1f, 0.85f);
+        }
+
         public override void Eat()
         {
             if (HoldHuman == null)

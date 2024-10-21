@@ -60,7 +60,10 @@ namespace Controllers
             if (_titan.CanAction())
             {
                 if (_titanInput.Jump.GetKeyDown())
+                {
+                    _titan.JumpForce = 200f;
                     _titan.Attack("AttackJump");
+                }
                 else if (_titanInput.CoverNape.GetKeyDown())
                     _titan.CoverNape();
                 else if (_titanInput.Kick.GetKeyDown())
@@ -76,6 +79,17 @@ namespace Controllers
                         }
                     }
                 }
+            }
+            else if (_titan.State == TitanState.PreJump && _titanInput.Jump.GetKeyUp())
+            {
+                _titan._jumpDirection = Vector3.up;
+                _titan.JumpForce = 120f;
+                if (_titan.HasDirection)
+                {
+                    _titan._jumpDirection += _titan.Cache.Transform.forward * 0.5f;
+                    _titan._jumpDirection.Normalize();
+                }
+                _titan.JumpImmediate();
             }
         }
     }

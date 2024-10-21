@@ -64,7 +64,7 @@ namespace Characters
         protected Vector3 _wallClimbForward;
         protected Quaternion _turnStartRotation;
         protected Quaternion _turnTargetRotation;
-        protected Vector3 _jumpDirection;
+        public Vector3 _jumpDirection;
         protected float _maxTurnTime;
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
@@ -568,6 +568,14 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     UpdateAttack();
+                }
+                else if (State == TitanState.PreJump && !AI)
+                {
+                    Vector3 to = GetAimPoint() - BaseTitanCache.Head.position;
+                    float time = to.magnitude / JumpForce;
+                    float down = 0.5f * Gravity.magnitude * time * time;
+                    to.y += down;
+                    _jumpDirection = to;
                 }
                 _stateTimeLeft -= Time.deltaTime;
                 if (_stateTimeLeft > 0f)

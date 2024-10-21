@@ -32,7 +32,7 @@
 		"AmmoTotal": 18,
 		"DamageMultiplier": 0.7,
 		"RestrictAngle": 100,
-		"KnockbackForce": 30
+		"KnockbackForce": 10
 	},
 	"APG": {
 		"Range1Multiplier": 0.15,

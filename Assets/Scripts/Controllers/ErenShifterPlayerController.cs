@@ -6,16 +6,16 @@ using UI;
 
 namespace Controllers
 {
-    class ShifterPlayerController: BasePlayerController
+    class ErenShifterPlayerController: BasePlayerController
     {
-        protected BaseShifter _shifter;
-        protected ShifterInputSettings _shifterInput;
+        protected ErenShifter _shifter;
+        protected ErenShifterInputSettings _shifterInput;
 
         protected override void Awake()
         {
             base.Awake();
-            _shifter = GetComponent<BaseShifter>();
-            _shifterInput = SettingsManager.InputSettings.Shifter;
+            _shifter = GetComponent<ErenShifter>();
+            _shifterInput = SettingsManager.InputSettings.ErenShifter;
             _shifter.BaseTitanCache.HandLHitbox.ScaleSphereCollider(1.5f);
             _shifter.BaseTitanCache.HandRHitbox.ScaleSphereCollider(1.5f);
             _shifter.BaseTitanCache.FootLHitbox.ScaleSphereCollider(1.5f);
@@ -30,9 +30,7 @@ namespace Controllers
             _shifter.IsWalk = _shifterInput.Walk.GetKey();
             if (_shifter.CanAction())
             {
-                if (_shifterInput.Attack.GetKeyDown())
-                    _shifter.Attack("AttackCombo");
-                else if (_shifterInput.Jump.GetKeyDown())
+                if (_shifterInput.Jump.GetKeyDown())
                 {
                     if (_shifter.HasDirection)
                         _shifter.Jump(Vector3.up + _shifter.Cache.Transform.forward);
@@ -41,6 +39,17 @@ namespace Controllers
                 }
                 else if (_shifterInput.Kick.GetKeyDown())
                     _shifter.Kick();
+                else
+                {
+                    foreach (string settingName in _shifterInput.Settings.Keys)
+                    {
+                        if (settingName.StartsWith("Attack"))
+                        {
+                            if (((KeybindSetting)_shifterInput.Settings[settingName]).GetKeyDown())
+                                _shifter.Attack(settingName);
+                        }
+                    }
+                }
             }
         }
     }

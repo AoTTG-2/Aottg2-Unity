@@ -186,6 +186,7 @@ namespace Controllers
 
         void UpdateHookInput(bool inMenu)
         {
+            //TestScore();
             if (inMenu)
                 return;
             bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.Stats.CurrentGas > 0f
@@ -225,7 +226,6 @@ namespace Controllers
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
                     _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
             }
-            // TestScore();
         }
 
         private void TestScore()
