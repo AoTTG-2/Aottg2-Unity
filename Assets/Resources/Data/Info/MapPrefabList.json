@@ -843,7 +843,7 @@
 			{"Name": "Horse1", "Asset": "Interact/Horse1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:horse_WALK|IdleAnimations:horse_idle0|ActionAnimations:horse_idle1/horse_idle2/horse_idle3/horse_crazy|ActionSounds:None/Idle2Sound/Idle3Sound/CrazySound,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name": "Dog1", "Asset": "Interact/Dog1", "CollideWith": "All", "Static": false, "Components": ["Animal|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake,Rigidbody|Mass:5.0|Gravity:0.0/-20.0/0.0|FreezeRotation:true"]},
 			{"Name":"Destructible Trigger", "Asset":"Geometry/Cube1", "Visible": false, "Static": false, "Networked": true, "CollideMode": "Region", "CollideWith": "Hitboxes", "Components": ["DestructibleTrigger|"]},
-			{"Name":"Titan Target", "Components": ["TitanTarget|"]}
+			{"Name":"Titan Target", "Static": false, "Networked": true, "Components": ["TitanTarget|"]}
 		]
 	},
 	"Legacy": {
