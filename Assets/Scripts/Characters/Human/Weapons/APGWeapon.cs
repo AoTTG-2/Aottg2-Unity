@@ -1,12 +1,9 @@
 ﻿using Effects;
 using GameManagers;
 using Settings;
-using System.Net;
-using System.Text.RegularExpressions;
 using UI;
 using UnityEngine;
 using Utility;
-using static UnityEngine.GraphicsBuffer;
 
 
 namespace Characters

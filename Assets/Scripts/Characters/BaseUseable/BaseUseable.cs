@@ -17,11 +17,11 @@ namespace Characters
         protected float _lastUseTime = -1000f;
         protected BaseCharacter _owner;
 
-        public BaseUseable(BaseCharacter owner, float cooldown = 0f, float _reduceCooldownAmount =0f,int maxUses = -1)
+        public BaseUseable(BaseCharacter owner, float cooldown = 0f, float reduceCooldownAmount =0f,int maxUses = -1)
         {
             _owner = owner;
             Cooldown = cooldown;
-            ReduceCooldownAmount = _reduceCooldownAmount;
+            ReduceCooldownAmount = reduceCooldownAmount;
             UsesLeft = MaxUses = maxUses;
         }
 

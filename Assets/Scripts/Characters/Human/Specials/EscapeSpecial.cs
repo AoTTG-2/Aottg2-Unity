@@ -1,12 +1,6 @@
-﻿using Codice.CM.Client.Differences.Graphic;
-using Codice.CM.Common;
-using Effects;
-using log4net.Util;
+﻿using Effects;
 using System.Collections;
-using System.Net;
-using System.Text.RegularExpressions;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Characters
 {
@@ -80,30 +74,16 @@ namespace Characters
                 }
                 if (human.Weapon is APGWeapon)
                 {
-                    //var gunInfo = CharacterData.HumanWeaponInfo["APG"];
-                    //float minRange = gunInfo["MinRange"].AsFloat;
-                    //float maxRange = gunInfo["MaxRange"].AsFloat;
-                    //if (speed <= gunInfo["Range2Speed"].AsFloat)
-                    //    range = range1Const + range1Mult * speed;
-                    //else
-                    //    range = range2Const + range2Mult * speed;
-                    //var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
-
-                    //capsule.height = Mathf.Clamp(range, minRange, maxRange);
-                    //float height = capsule.height * 1.2f;
                     Vector3 target = human.GetAimPoint();
                     Vector3 direction = (target - human.Cache.Transform.position).normalized;
                     Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
                     direction = (target - start).normalized;
-                    //Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
                     EffectSpawner.Spawn(EffectPrefabs.APGTrail, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true,((APGWeapon)human.Weapon).GetSettings());
                     EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
                     human.PlaySound(HumanSounds.GetRandomAPGShot());
                     human.SpecialActionState(0.5f);
                 }
             }
-            UsesLeft = -1;
-            Cooldown = 300;
         }
     }
 }

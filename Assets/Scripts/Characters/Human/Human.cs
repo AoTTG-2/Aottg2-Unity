@@ -1165,9 +1165,9 @@ namespace Characters
                             }
 
                         }
-                        if (GetCurrentSpecial() is EscapeSpecial || GetCurrentSpecial() is ShifterTransformSpecial)
+                        if (Special is EscapeSpecial || Special is ShifterTransformSpecial)
                         {
-                            ReduceSpecialCooldown();
+                            Special.ReduceCooldown();
                         }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
@@ -2520,15 +2520,7 @@ namespace Characters
             Special = HumanSpecials.GetSpecialUseable(this, special);
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetSpecialIcon(HumanSpecials.GetSpecialIcon(special));
         }
-        public BaseUseable GetCurrentSpecial()
-        {
-            return Special;
-        }
-        public void ReduceSpecialCooldown()
-        {
-            Special.ReduceCooldown();
-        }
-        
+
         protected void LoadSkin(Player player = null)
         {
             if (IsMine())
