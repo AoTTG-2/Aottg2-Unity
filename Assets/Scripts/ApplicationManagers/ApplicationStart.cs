@@ -50,6 +50,11 @@ namespace ApplicationManagers
             MaterialCache.Init();
             EventManager.Init();
             HumanSetup.Init();
+            if (Application.platform == RuntimePlatform.LinuxPlayer)
+            {
+                // Linux - Data path has moved, migrate old data
+                DataMigrator.MigrateLinuxSaves();
+            }
             SettingsManager.Init();
             FullscreenHandler.Init();
             UIManager.Init();
