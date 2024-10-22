@@ -56,7 +56,7 @@ namespace CustomLogic
         {
             foreach (var dictKey in Dict.Keys)
             {
-                if (CustomLogicManager.Evaluator.CheckEquals(dictKey, key))
+                if (CustomLogicEvaluator.CheckEquals(dictKey, key))
                     return dictKey;
             }
             return null;

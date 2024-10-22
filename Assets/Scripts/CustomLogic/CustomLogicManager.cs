@@ -199,7 +199,7 @@ namespace CustomLogic
             var lexer = GetLexer(Logic);
             var parser = new CustomLogicParser(lexer.GetTokens());
             Evaluator = new CustomLogicEvaluator(parser.GetStartAst());
-            Evaluator.Start(modeSettings);
+            Evaluator.Start(modeSettings).Forget();
         }
 
         private static CustomLogicLexer GetLexer(string logic)
