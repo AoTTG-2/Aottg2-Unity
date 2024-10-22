@@ -1,14 +1,15 @@
 ﻿using ApplicationManagers;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UI;
 using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicCutsceneBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicCutsceneBuiltin : CustomLogicBaseBuiltin
     {
-        public CustomLogicCutsceneBuiltin(): base("Cutscene")
+        public CustomLogicCutsceneBuiltin() : base("Cutscene")
         {
         }
 
@@ -18,7 +19,7 @@ namespace CustomLogic
             {
                 string name = (string)parameters[0];
                 bool full = (bool)parameters[1];
-                CustomLogicManager._instance.StartCoroutine(StartCutscene(name, full));
+                StartCutscene(name, full).Forget();
                 return null;
             }
             if (methodName == "ShowDialogue")
@@ -53,11 +54,11 @@ namespace CustomLogic
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
         }
 
-        private IEnumerator StartCutscene(string name, bool full)
+        private static async UniTaskVoid StartCutscene(string name, bool full)
         {
-            var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, new List<object>(), true);
+            var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, new List<object>());
             CustomLogicManager.ToggleCutscene(full);
-            yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start");
+            await CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start");
             CustomLogicManager.ToggleCutscene(false);
             ((InGameMenu)UIManager.CurrentMenu).HideCutsceneMenu();
         }

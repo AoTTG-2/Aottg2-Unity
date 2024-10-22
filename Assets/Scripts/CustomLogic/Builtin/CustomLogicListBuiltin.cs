@@ -58,7 +58,7 @@ namespace CustomLogic
             }
             if (methodName == "Contains")
             {
-                return List.Any(e => CustomLogicManager.Evaluator.CheckEquals(e, parameters[0]));
+                return List.Any(e => CustomLogicEvaluator.CheckEquals(e, parameters[0]));
             }
             if (methodName == "Sort")
             {
