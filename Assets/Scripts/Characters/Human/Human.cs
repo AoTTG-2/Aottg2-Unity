@@ -3319,6 +3319,9 @@ namespace Characters
             if (FinishSetup)
             {
                 AddRendererIfExists(renderers, Setup._part_head);
+                AddRendererIfExists(renderers, Setup._part_hat);
+                AddRendererIfExists(renderers, Setup._part_back);
+                AddRendererIfExists(renderers, Setup._part_head_decor);
                 AddRendererIfExists(renderers, Setup._part_hair);
                 AddRendererIfExists(renderers, Setup._part_eye);
                 AddRendererIfExists(renderers, Setup._part_glass);

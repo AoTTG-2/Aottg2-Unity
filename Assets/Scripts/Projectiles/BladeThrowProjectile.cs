@@ -95,7 +95,7 @@ namespace Projectiles
                     handler.GetHit(_owner, _owner.Name, damage, "BladeThrow", transform.position);
                     continue;
                 }
-                if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)
+                if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead || !character.AI)
                     continue;
                 if (character is BaseTitan)
                 {

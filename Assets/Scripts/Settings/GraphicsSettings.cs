@@ -37,7 +37,7 @@ namespace Settings
         // Post Processing
         public IntSetting AmbientOcclusion = new IntSetting((int)AmbientOcclusionLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<AmbientOcclusionLevel>());
         public IntSetting Bloom = new IntSetting((int)BloomLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<BloomLevel>());
-        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Low, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
+        public IntSetting ChromaticAberration = new IntSetting((int)ChromaticAberrationLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ChromaticAberrationLevel>());
         public IntSetting ColorGrading = new IntSetting((int)ColorGradingLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<ColorGradingLevel>());
         public IntSetting AutoExposure = new IntSetting((int)AutoExposureLevel.On, minValue: 0, maxValue: (int)Util.EnumMaxValue<AutoExposureLevel>());
         public IntSetting DepthOfField = new IntSetting((int)DepthOfFieldLevel.Off, minValue: 0, maxValue: (int)Util.EnumMaxValue<DepthOfFieldLevel>());

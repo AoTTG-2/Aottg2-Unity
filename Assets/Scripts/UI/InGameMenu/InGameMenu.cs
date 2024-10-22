@@ -63,7 +63,7 @@ namespace UI
         private Text _bottomRightLabel;
         private Text _bottomCenterLabel;
         private bool _showingBlood;
-        private GameObject _minimapPanel;
+        public GameObject _minimapPanel;
         private List<BasePopup> _allPausePopups = new List<BasePopup>();
         private Dictionary<string, float> _labelTimeLeft = new Dictionary<string, float>();
         private Dictionary<string, bool> _labelHasTimeLeft = new Dictionary<string, bool>();
@@ -536,6 +536,16 @@ namespace UI
                 str += "Pause: " + ChatManager.GetColorString(settings.General.Pause.ToString(), ChatTextColor.System);
                 str += ", " + "Scoreboard: " + ChatManager.GetColorString(settings.General.ToggleScoreboard.ToString(), ChatTextColor.System);
                 str += ", " + "Change Char: " + ChatManager.GetColorString(settings.General.ChangeCharacter.ToString(), ChatTextColor.System);
+            }
+            if (SettingsManager.UISettings.Coordinates.Value == (int)CoordinateMode.BottomRight)
+            {
+                var position = camera.Cache.Transform.position;
+                if (camera._follow != null)
+                    position = camera._follow.Cache.Transform.position;
+                string pos = "Position: " + position.x.ToString("F0") + ", " + position.y.ToString("F0") + ", " + position.z.ToString("F0");
+                if (str != "")
+                    pos += "\n";
+                str = pos + str;
             }
             if (camera._follow != null && _spectateCount > 0 && camera._follow.IsMainCharacter())
             {

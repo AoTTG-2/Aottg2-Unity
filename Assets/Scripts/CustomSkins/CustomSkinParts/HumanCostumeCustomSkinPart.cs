@@ -9,8 +9,8 @@ namespace CustomSkins
 {
     class HumanCostumeCustomSkinPart: BaseCustomSkinPart
     {
-        public HumanCostumeCustomSkinPart(BaseCustomSkinLoader loader, List<Renderer> renderers, string rendererId, int maxSize, Vector2? textureScale = null, bool useTransparentMaterial = false) :
-            base(loader, renderers, rendererId, maxSize, textureScale, useTransparentMaterial)
+        public HumanCostumeCustomSkinPart(BaseCustomSkinLoader loader, List<Renderer> renderers, string rendererId, int maxSize, Vector2? textureScale = null) :
+            base(loader, renderers, rendererId, maxSize, textureScale, true)
         {
         }
 

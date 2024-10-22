@@ -40,6 +40,7 @@ namespace Settings
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
         public BoolSetting JoinNotifications = new BoolSetting(true);
+        public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
 
         public override void Apply()
         {
@@ -78,5 +79,12 @@ namespace Settings
         Off,
         Mine,
         All
+    }
+
+    public enum CoordinateMode
+    {
+        Off,
+        Minimap,
+        BottomRight
     }
 }

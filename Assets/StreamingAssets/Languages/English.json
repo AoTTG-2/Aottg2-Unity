@@ -347,6 +347,8 @@
 		"UI.ChatWidth": "Chat width",
 		"UI.ChatHeight": "Chat height",
 		"UI.ChatFontSize": "Chat font size",
+		"UI.Coordinates": "Coordinates",
+		"UI.CoordinatesOptions": ["Off", "Minimap", "Bottom right"],
 		"Keybinds.General.Forward": "Move forward",
 		"Keybinds.General.Back": "Move back",
 		"Keybinds.General.Left": "Move left",

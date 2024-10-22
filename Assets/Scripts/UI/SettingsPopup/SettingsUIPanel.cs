@@ -49,8 +49,10 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowCrosshairDistance, UIManager.GetLocale(cat, sub, "ShowCrosshairDistance"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowCrosshairArrows, UIManager.GetLocale(cat, sub, "ShowCrosshairArrows"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.CrosshairSkin, UIManager.GetLocale(cat, sub, "CrosshairSkin"), elementWidth: 160f);
-            ElementFactory.CreateToggleGroupSetting(DoublePanelRight, style, SettingsManager.UISettings.Speedometer, UIManager.GetLocale(cat, sub, "Speedometer"),
-                UIManager.GetLocaleArray(cat, sub, "SpeedometerOptions"));
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.Speedometer, UIManager.GetLocale(cat, sub, "Speedometer"),
+                               UIManager.GetLocaleArray(cat, sub, "SpeedometerOptions"), elementWidth: 160f);
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.Coordinates, UIManager.GetLocale(cat, sub, "Coordinates"),
+                               UIManager.GetLocaleArray(cat, sub, "CoordinatesOptions"), elementWidth: 160f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.FadeMainMenu, UIManager.GetLocale(cat, sub, "FadeMainMenu"), tooltip: UIManager.GetLocale(cat, sub, "FadeMainMenuTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.FadeLoadscreen, UIManager.GetLocale(cat, sub, "FadeLoadscreen"), tooltip: UIManager.GetLocale(cat, sub, "FadeLoadscreenTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowInterpolation, UIManager.GetLocale(cat, sub, "ShowInterpolation"), tooltip: UIManager.GetLocale(cat, sub, "ShowInterpolationTooltip"));

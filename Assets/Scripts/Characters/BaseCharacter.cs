@@ -760,8 +760,12 @@ namespace Characters
 
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject go)
         {
-            if (go != null && go.GetComponent<Renderer>() != null)
-                renderers.Add(go.GetComponent<Renderer>());
+            if (go != null)
+            {
+                var renderer = go.GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                    renderers.Add(renderer);
+            }
         }
 
         protected void AddSkinnedRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)
