@@ -16,7 +16,7 @@ namespace Characters
         protected float _lastUseTime = -1000f;
         protected BaseCharacter _owner;
 
-        public BaseUseable(BaseCharacter owner, float cooldown = 0f,int maxUses = -1)
+        public BaseUseable(BaseCharacter owner, float cooldown = 0f, int maxUses = -1)
         {
             _owner = owner;
             Cooldown = cooldown;
