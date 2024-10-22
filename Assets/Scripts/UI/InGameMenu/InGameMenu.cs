@@ -111,7 +111,7 @@ namespace UI
             var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
             ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
             TopLeftHud = panel;
-            KDRReference = panel.GetComponent<TopLeftHUD>().kdrCanvas;
+            KDRReference = panel.GetComponent<TopLeftHUD>().kdrAndLabel;
             panel.SetActive(true); // ????
         }
 

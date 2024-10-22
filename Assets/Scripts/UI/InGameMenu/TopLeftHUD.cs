@@ -16,6 +16,7 @@ namespace UI
         public GameObject panel;
         public GameObject telemetryCanvas;
         public GameObject kdrCanvas;
+        public GameObject kdrAndLabel;
         private ElementStyle _style;
         private Telemetry _telemetry;
         private KDRPanel _kdr;
@@ -29,16 +30,27 @@ namespace UI
             // Create a nested canvas for the telemetry and KDR panels
             telemetryCanvas = new GameObject();
             telemetryCanvas.name = "Telemetry";
-            telemetryCanvas.AddComponent<Canvas>();
+            var tcanvas = telemetryCanvas.AddComponent<Canvas>();
+            var tcanvasScaler = telemetryCanvas.AddComponent<CanvasScaler>();
+            tcanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            tcanvasScaler.referenceResolution = new Vector2(1920, 1080);
+            tcanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            tcanvasScaler.matchWidthOrHeight = 0f;
+            tcanvasScaler.referencePixelsPerUnit = 100;
 
             // set canvas pivot
             var rect = telemetryCanvas.GetComponent<RectTransform>();
             rect.pivot = ElementFactory.GetAnchorVector(TextAnchor.UpperLeft);
 
-
             kdrCanvas = new GameObject();
             kdrCanvas.name = "KDR";
             kdrCanvas.AddComponent<Canvas>();
+            var kdrcanvas = kdrCanvas.AddComponent<CanvasScaler>();
+            kdrcanvas.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            kdrcanvas.referenceResolution = new Vector2(1920, 1080);
+            kdrcanvas.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            kdrcanvas.matchWidthOrHeight = 0f;
+            kdrcanvas.referencePixelsPerUnit = 100;
 
             // set canvas pivot
             rect = kdrCanvas.GetComponent<RectTransform>();
@@ -55,20 +67,23 @@ namespace UI
             _telemetry = telemetrySection.AddComponent<Telemetry>();
             _telemetry.Setup(_style);
 
-            var kdrSection = ElementFactory.CreateVerticalGroup(kdrCanvas.transform, 0f);
-            ElementFactory.SetAnchor(kdrSection, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+            kdrAndLabel = ElementFactory.CreateVerticalGroup(kdrCanvas.transform, 0f);
+            ElementFactory.SetAnchor(kdrAndLabel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
 
-            var krect = kdrSection.GetComponent<RectTransform>();
+            var krect = kdrAndLabel.GetComponent<RectTransform>();
             krect.sizeDelta = new Vector2(500, 700f);
 
-            _kdr = kdrSection.AddComponent<KDRPanel>();
+            var kdrScroll = ElementFactory.CreateVerticalGroup(kdrAndLabel.transform, 0f);
+            ElementFactory.SetAnchor(kdrScroll, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+
+            _kdr = kdrScroll.AddComponent<KDRPanel>();
             _kdr.Setup(_style);
             ApplySettings();
         }
 
         public void ApplySettings()
         {
-            var rect = _kdr.GetComponent<RectTransform>();
+            var rect = kdrAndLabel.GetComponent<RectTransform>();
 
             float verticaloffset = 0f;
             if (SettingsManager.GraphicsSettings.ShowFPS.Value || SettingsManager.UISettings.ShowPing.Value)
