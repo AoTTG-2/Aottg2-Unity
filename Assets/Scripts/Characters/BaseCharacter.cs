@@ -32,6 +32,8 @@ namespace Characters
         public string RichTextName = "";
         public string VisibleName = "";
         public string Guild = "";
+        public string FeedKillerName = "";
+        public string FeedVictimName = "";
         public bool Dead;
         public bool CustomDamageEnabled;
         public int CustomDamage;
@@ -436,7 +438,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
             }
         }
@@ -450,7 +453,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
             }
         }
@@ -461,7 +465,8 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             SetCurrentHealth(0);
-            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
             Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
         }
 
@@ -483,7 +488,7 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterKill(this);
             }
             if (CustomLogicManager.Evaluator == null)
@@ -503,7 +508,7 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
             if (CustomLogicManager.Evaluator == null)

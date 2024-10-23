@@ -65,13 +65,16 @@ namespace ApplicationManagers
             MusicManager.Init();
             VoiceChatManager.Init();
             CustomSerialization.Init();
+
+            // debug
+            DebugConsole.Init();
+            DebugLagSim.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
-                DebugConsole.Init();
                 DebugTesting.Init();
                 DebugTesting.RunTests();
-                DebugLagSim.Init();
             }
+
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();

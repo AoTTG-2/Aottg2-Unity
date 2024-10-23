@@ -134,6 +134,8 @@ namespace CustomLogic
                 return Character.IsMine();
             if (name == "Name")
                 return Character.Name;
+            if (name == "Guild")
+                return Character.Guild;
             if (name == "IsMainCharacter")
                 return Character.IsMainCharacter();
             if (name == "Position")
@@ -201,6 +203,10 @@ namespace CustomLogic
                 Character.CustomDamageEnabled = (bool)value;
             else if (name == "CustomDamage")
                 Character.CustomDamage = value.UnboxToInt();
+            else if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             else
                 base.SetField(name, value);
         }

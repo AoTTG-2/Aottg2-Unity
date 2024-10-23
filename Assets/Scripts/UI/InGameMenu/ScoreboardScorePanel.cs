@@ -150,13 +150,14 @@ namespace UI
             // update status icon
             Transform playerRow = row.GetChild(0);
             RawImage statusImage = playerRow.GetChild(0).GetComponent<RawImage>();
-            if (status == PlayerStatus.Spectating)
+            bool showStatus = CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ShowScoreboardStatus;
+            if (showStatus && status == PlayerStatus.Spectating)
             {
                 statusImage.gameObject.SetActive(true);
                 statusImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/SpectateIcon", true);
                 statusImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "SpectateColor");
             }
-            else if (status == PlayerStatus.Dead)
+            else if (showStatus && status == PlayerStatus.Dead)
             {
                 statusImage.gameObject.SetActive(true);
                 statusImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Quests/Skull1Icon", true);
@@ -165,6 +166,7 @@ namespace UI
             else
                 statusImage.gameObject.SetActive(false);
             // update loadout icon
+            bool showLoadout = CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ShowScoreboardLoadout;
             RawImage loadoutImage = playerRow.GetChild(1).GetComponent<RawImage>();
             if (character == PlayerCharacter.Human)
             {
@@ -188,7 +190,7 @@ namespace UI
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutShifter");
                 loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ShifterIcon", true);
             }
-            if (status == PlayerStatus.Spectating)
+            if (!showLoadout || status == PlayerStatus.Spectating)
                 loadoutImage.gameObject.SetActive(false);
             else
                 loadoutImage.gameObject.SetActive(true);

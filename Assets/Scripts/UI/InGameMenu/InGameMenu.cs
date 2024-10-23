@@ -373,8 +373,10 @@ namespace UI
             popup.ShowImmediate(killer, victim, score, weapon, timeLeft);
         }
 
-        public void ShowKillScore(int score)
+        public void ShowKillScore(int score, bool force = false)
         {
+            if (!force && !CustomLogicManager.Evaluator.DefaultShowKillScore)
+                return;
             _killScorePopup.Show(score);
             _killScoreTimeLeft = 3f;
             StylebarHandler.OnHit(score);

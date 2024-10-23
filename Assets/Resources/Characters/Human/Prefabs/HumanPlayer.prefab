@@ -16544,6 +16544,8 @@ MonoBehaviour:
   RichTextName: 
   VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
