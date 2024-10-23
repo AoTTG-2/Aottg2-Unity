@@ -74,6 +74,20 @@
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
+					"Name": "Spooky Waves"
+				},
+				{
+					"Name": "Trick or Treat"
+				},
+				{
+					"Name": "Slender Titan",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowShifterSpecials": false,
+						"GlobalMinimapDisable": true
+					}
+				},
+				{
 					"Name": "Annie",
 					"MiscSettings": {
 						"AllowThunderspears": false,
@@ -139,9 +153,6 @@
 						"AllowAPG": false,
 						"GlobalMinimapDisable": true
 					}
-				},
-				{
-					"Name": "Spooky Waves"
 				}
 			]
 		},
