@@ -660,8 +660,7 @@ namespace CustomLogic
                     }
                     else if ((int)conditional.Token.Value == (int)CustomLogicSymbol.Else)
                     {
-                        if ((conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf) &&
-                            (bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
+                        if (conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf)
                         {
                             yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                         }

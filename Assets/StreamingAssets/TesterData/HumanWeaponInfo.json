@@ -35,19 +35,19 @@
 		"KnockbackForce": 10
 	},
 	"APG": {
-		"Range1Multiplier": 0.15,
-		"Range1Constant": -5.0,
+		"Range1Multiplier": 0.125,
+		"Range1Constant": 0.0,
 		"Range2Multiplier": 0.5,
 		"Range2Constant": -75.0,
 		"Range2Speed": 200.0,
-		"MinRange": 10.0,
+		"MinRange": 12.5,
 		"MaxRange": 75.0,
-		"Radius": 0.1,
+		"Radius": 0.01,
 		"CD": 0.5,
 		"AmmoRound": 6,
 		"AmmoTotal": 24,
 		"DamageMultiplier": 0.8,
-		"RestrictAngle": 80
+		"RestrictAngle": 65
 	},
 	"APGPVP": {
 		"Range1Multiplier": 0.0,

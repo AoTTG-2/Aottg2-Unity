@@ -7,7 +7,7 @@ Scene,Geometry/Cuboid,3,0,1,1,1,0,Ground,22.11218,-32.42622,13.03547,0,0,0,1444.
 Scene,Nature/Trunk1,2578,0,1,1,1,0,Trunk1,-440.4475,41.11639,49.38808,0,0,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,549,0,1,1,1,0,House20,42.4688,25.03515,-454.0067,0,90,0,1.8,1.2,-1.4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,670,0,1,1,1,0,House20,188.5957,8.983744,-45.09486,0,0,0,0.8,1.4,-0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Nature/Trunk1,2552,0,1,1,1,0,Trunk1,-522.9007,41.11639,-158.2668,0,0,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Trunk1,2552,0,1,1,1,0,Trunk1,-522.9007,41,-158.2668,0,0,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Trunk1,2551,0,1,1,1,0,Trunk1,-391.1542,41.11639,-166.6736,0,0,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,2548,0,1,1,1,0,Cuboid,-413.0326,39.52745,-184.7737,0,0,0,31.14569,0.2592957,8.66828,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone4|3/1|0/0,;
 Scene,Geometry/Cuboid,2571,0,1,1,1,0,Cuboid,-413.0326,39.68955,112.32,0,0,0,31.13301,0.2592957,6.975984,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|3/1|0/0,;
@@ -21,7 +21,7 @@ Scene,Buildings/House20,3115,0,1,1,1,0,House20,-437.113,10.16118,551.6863,0,330,
 Scene,Decor/Barrel2,2760,0,1,1,1,0,Barrel2,584.4575,10.28423,-48.08263,0,120.4419,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3032,0,1,1,1,0,House20,391.3663,10.16118,548.0989,0,30,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House19,3113,0,1,1,1,0,House19,-447.747,10.26152,505.1761,0,315,0,1,1.2,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,1553,0,1,1,1,0,House20,368,10.16118,-139,0,90,0,1.1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,1553,0,1,1,1,0,House20,368,10.16118,-139,0,90,0,1.1,1,1,Physical,Entities,Default,Default|255/225/200/255,;
 Scene,Buildings/House17,3112,0,1,1,1,0,House17,-478.0425,9.833046,477.1232,0,315,0,1,1.2,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2544,0,1,1,1,0,House20,-532,40.5242,-210,0,179.9651,0,1.2,0.8799999,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2550,0,1,1,1,0,Tree12,-360.4074,41.60516,-147.1329,0,45,0,0.25,0.25,0.25,Physical,Entities,Default,Default|255/150/0/255,;
@@ -38,7 +38,7 @@ Scene,Buildings/House19,3116,0,1,1,1,0,House19,-392.156,10.26152,546.4886,0,330,
 Scene,Buildings/House18,1501,0,1,1,1,0,House18,-246,25.01636,-494,0,90,0,1,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House26,2543,0,1,1,1,0,House26,-448,40.73375,-191,0,0,0,1,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3123,0,1,1,1,0,House20,-316.7399,10.16118,500.061,0,337,0,1.2,1.2,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2590,0,1,1,1,0,House20,-89,9.661602,516,0,90,0,1,1.1,-0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2590,0,1,1,1,0,House20,-89,9.661602,516,0,90,0,1,1.1,-0.8,Physical,Entities,Default,Default|255/255/200/255,;
 Scene,Decor/Box1,2803,0,1,1,1,0,Box1,484.3616,10.45856,83.7174,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House26,2824,0,1,1,1,0,House26,-252.3043,9.775774,393.7177,0,235,0,0.8,0.6,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,941,0,1,1,1,0,House20,40,10.11387,413.5534,0,90,0,1,1.001,0.8,Physical,Entities,Default,Default|255/255/255/255,;
@@ -71,7 +71,7 @@ Scene,Buildings/House20,939,0,1,1,1,0,House20,40,10.11387,449.0638,0,90,0,1,1,0.
 Scene,Buildings/House20,938,0,1,1,1,0,House20,-40,10.11387,411.9061,0,90,0,1,1.001,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2470,0,1,1,1,0,House20,150,9.661602,516,0,90,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2618,0,1,1,1,0,House20,-498.8193,10.16118,245.2023,0,90,0,0.6,1.2,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2617,0,1,1,1,0,House20,-454,10.07534,173,0,0,0,1,1,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2617,0,1,1,1,0,House20,-454,10.07534,173,0,0,0,1,1,1.2,Physical,Entities,Default,Default|255/200/200/255,;
 Scene,Buildings/House21,2758,0,1,1,1,0,House21,295.2891,10.38912,233.2409,0,270,0,0.6,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2626,0,1,1,1,0,House20,-479.3044,10.16118,322.1736,0,112,0,0.8999999,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/SquareTorus,2963,0,1,1,1,0,SquareTorus,523.3477,7.70285,176.9183,0,0,0,2.6,1,2.6,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/0.5|0/0,;
@@ -86,7 +86,7 @@ Scene,Decor/Box2,2763,0,1,1,1,0,Box2,609.3826,10.40578,58.82268,0,83.18136,0,1,1
 Scene,Buildings/House20,1555,0,1,1,1,0,House20,368,10.16118,24,0,90,0,0.6,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold5,1611,0,1,1,1,0,Scaffold5,452.9852,8.860349,100.8894,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall1,1563,0,1,1,1,0,Stall1,567.6287,9.058921,89.18514,10.5296,1.098662,5.990858,1.109338,1.096826,1.168252,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2601,0,1,1,1,0,House20,-200.9456,9.902321,316.6682,0,235,0,1,0.8,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2601,0,1,1,1,0,House20,-200.9456,9.902321,316.6682,0,235,0,1,0.8,0.7,Physical,Entities,Default,Default|200/255/200/255,;
 Scene,Buildings/House19,3039,0,1,1,1,0,House19,217.1516,10.26152,622.6116,0,15,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,2865,0,1,1,1,0,Cuboid,-115.6204,4.28503,-18.89029,0,0,0,1.843331,1.36248,13.16654,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|0.5/2|0/0,;
 Scene,Geometry/Cuboid,2866,0,1,1,1,0,Cuboid,-115.6204,4.02796,-18.89029,0,0,0,1.948371,1.36248,13.25029,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick7|1.5/3|0/0,;
@@ -109,7 +109,7 @@ Scene,Buildings/House20,787,0,1,1,1,0,House20,296,9.304282,52,0,90,0,1.2,0.89999
 Scene,Buildings/House20,616,0,1,1,1,0,House20,114.6639,-2.733913,79,0,90,0,0.8,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Tree12,2895,0,1,1,1,0,Tree12,-115.1987,11.68225,-65.33217,0,12,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/150/0/255,;
 Scene,Buildings/House20,673,0,1,1,1,0,House20,-185.2274,9.386146,31.80301,0,0,0,-0.8,1.4,-0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,672,0,1,1,1,0,House20,-185.227,9.18284,-43.59038,0,0,0,-0.8,1.4,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,672,0,1,1,1,0,House20,-185.227,9.18284,-43.59038,0,0,0,-0.8,1.4,0.8,Physical,Entities,Default,Default|200/225/255/255,;
 Scene,Buildings/House20,671,0,1,1,1,0,House20,188.6028,9.312401,35.70156,0,0,0,0.8,1.4,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,679,0,1,1,1,0,House20,-175,25.13849,-317,0,179.9651,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,2679,0,1,1,1,0,Titan SpawnPoint,190.3614,41.38882,-477.5326,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
@@ -147,7 +147,7 @@ Scene,Buildings/House20,635,0,1,1,1,0,House20,-396.5501,11.71147,-334.1501,0,133
 Scene,Buildings/House20,634,0,1,1,1,0,House20,-331.4779,11.90769,-398.0942,0,133.6711,0,1.2,0.92,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,633,0,1,1,1,0,House20,-457.6716,24.98825,-399.1693,0,133.6711,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,632,0,1,1,1,0,House20,-270.5815,24.9882,-334.5123,0,133.6711,0,1,1.2,-1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,676,0,1,1,1,0,House20,94.56665,14.73508,-316.5187,0,179.9651,0,1.2,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,676,0,1,1,1,0,House20,94.56665,14.73508,-316.5187,0,179.9651,0,1.2,0.8,1,Physical,Entities,Default,Default|255/200/200/255,;
 Scene,Buildings/House20,550,0,1,1,1,0,House20,42.48293,25.03335,-362.7933,0,90,0,1.8,1,-1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1392,0,1,1,1,0,House20,-46.61967,25.03515,-454.2014,0,90,0,1.8,1.2,1.4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1391,0,1,1,1,0,House20,-46.61967,25.03515,-363.372,0,90,0,1.8,1,1.2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -258,7 +258,7 @@ Scene,Geometry/Cuboid,540,0,1,1,1,0,Ground,-7.774139,-39.67874,49.80218,0,0,0,12
 Scene,Buildings/House20,678,0,1,1,1,0,House20,-100,14.82831,-316,0,179.9651,0,1.1,0.8,1.1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Field3,2867,0,1,1,1,0,Field3,-115.5342,11.01004,-15.9726,0,270,0,0.25,0.2,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,643,0,1,1,1,0,House17,192,9.833046,-104,0,90,0,0.6,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,669,0,1,1,1,0,House20,40,9.103214,223.8852,0,90,0,1,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,669,0,1,1,1,0,House20,40,9.103214,223.8852,0,90,0,1,1.2,1.2,Physical,Entities,Default,Default|200/200/255/255,;
 Scene,Buildings/House20,681,0,1,1,1,0,House20,-75,-0.124776,-208,0,90,0,0.8,0.8,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box1,2801,0,1,1,1,0,Box1,548.6097,10.45856,-72.12542,0,299.3333,0,0.75,0.75,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,687,0,1,1,1,0,House20,70,-0.1093273,-209,0,90,0,0.8,0.8,0.75,Physical,Entities,Default,Default|255/255/255/255,;
@@ -267,17 +267,17 @@ Scene,Buildings/House26,1716,0,1,1,1,0,House26,47,9.775774,-193,0,90,0,1,0.95,1,
 Scene,Buildings/House15,3051,0,1,1,1,0,House15,-279,40.94492,112,0,180,0,0.9,1.6,0.8000001,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House15,3050,0,1,1,1,0,House15,-279,40.94492,23,0,180,0,0.9,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House19,3110,0,1,1,1,0,House19,-600,25.16958,-511.6444,0,270,0,1,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House17,2563,0,1,1,1,0,House17,-546.1406,39.85997,12.66047,0,0,0,0.8999999,1.6001,0.8001,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House17,2564,0,1,1,1,0,House17,-515.662,39.85997,12.66047,0,0,0,0.8999999,1.6,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House17,2563,0,1,1,1,0,House17,-546.1406,39.85997,12.66047,0,0,0,0.8999999,1.6001,0.8001,Physical,Entities,Default,Default|225/200/255/255,;
+Scene,Buildings/House17,2564,0,1,1,1,0,House17,-515.662,39.85997,12.66047,0,0,0,0.8999999,1.6,0.8,Physical,Entities,Default,Default|225/200/255/255,;
 Scene,Geometry/Cuboid,1713,0,1,1,1,0,Cuboid,143.4533,22.54866,-446.3176,0,0,0,13.81871,1,20.05233,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|1/1|0/0,;
 Scene,Buildings/Stairs2,2931,0,1,1,1,0,Stairs2,328.8034,10.403,-215.1667,0,180,0,6.479655,7.399996,2.899999,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick6|2/1|0/0,;
 Scene,Buildings/House20,2558,0,1,1,1,0,House20,-540.0403,40.58681,-66.32809,0,179.9651,0,0.8,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,2559,0,1,1,1,0,House17,-384.8792,40.46835,11.60574,0,0,0,0.8500001,1.1,-0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,2561,0,1,1,1,0,House17,-414.2236,40.46831,33.56125,0,0,0,0.8500001,1.1001,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House18,2569,0,1,1,1,0,House18,-532,40.96788,112,0,180,0,1.3,1.4,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House18,2569,0,1,1,1,0,House18,-532,41,112,0,180,0,1.3,1.4,1.5,Physical,Entities,Default,Default|200/255/225/255,;
 Scene,Geometry/Cuboid,2574,0,1,1,1,0,Cuboid,-413.0326,39.52745,-77.00804,0,0,0,31.14569,0.2592957,7.051772,Physical,Entities,Default,Basic|255/255/255/255|Stone/Stone4|3/1|0/0,;
 Scene,Buildings/House17,2567,0,1,1,1,0,House17,-343,39.85997,112,0,0,0,0.8,1.6,1.4,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2553,0,1,1,1,0,House20,-364.8167,40.58681,-89.68353,0,179.9651,0,0.95,1.6,-1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2553,0,1,1,1,0,House20,-364.8167,40.58681,-89.68353,0,179.9651,0,0.95,1.6,-1,Physical,Entities,Default,Default|200/200/255/255,;
 Scene,Buildings/House20,1558,0,1,1,1,0,House20,367.8972,10.16118,-36.02676,0,90,0,0.6,1.3,1.4,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Window3,4157,0,1,1,1,0,Window3,481.5,30,-583.5,0,0,0,0.6,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1552,0,1,1,1,0,House20,368,10.16118,-198,0,90,0,1.5,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -288,7 +288,7 @@ Scene,Geometry/SquareTorus,3122,0,1,1,1,0,SquareTorus,-202.7656,7.70285,446.5646
 Scene,Buildings/House20,1492,0,1,1,1,0,House20,55,25.13849,-241,0,179.9651,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2798,0,1,1,1,0,House20,-298,25.08141,-496,0,90,0,0.6,1.2,0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold1,3722,0,1,1,1,0,Scaffold1,-143.6089,23.09489,615.845,0,355,0,1.4,0.85,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2799,0,1,1,1,0,House20,-513.1584,25.08141,-312.2924,0,0,0,0.6,1.2,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2799,0,1,1,1,0,House20,-513.1584,25.08141,-312.2924,0,0,0,0.6,1.2,0.7,Physical,Entities,Default,Default|200/255/200/255,;
 Scene,Buildings/House20,2582,0,1,1,1,0,House20,-105,9.585412,328,0,90,0,0.6,1.2,-0.7,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,3114,0,1,1,1,0,House17,-418.0513,9.833046,519.4638,0,322.5,0,0.6,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1623,0,1,1,1,0,House20,455.2626,10.16118,219.5529,0,90,0,0.6,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
@@ -296,7 +296,7 @@ Scene,Buildings/House20,3027,0,1,1,1,0,House20,301.4014,10.094,486.023,0,0,0,0.8
 Scene,Buildings/House19,3026,0,1,1,1,0,House19,343.9335,10.26152,486.8306,0,7.5,0,1.2,1.4,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House19,3721,0,1,1,1,0,House19,-100.5355,10.26152,638.1762,0,355,0,1.3,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3025,0,1,1,1,0,House20,393.692,10.094,473.7002,0,15,0,0.95,0.8,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,3024,0,1,1,1,0,House20,295.5926,10.17531,273.0451,0,90,0,1,0.95,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,3024,0,1,1,1,0,House20,295.5926,10.17531,273.0451,0,90,0,1,0.95,1,Physical,Entities,Default,Default|200/255/225/255,;
 Scene,Decor/Barrel4,3023,0,1,1,1,0,Barrel4,595.5602,10.25084,333.1336,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,2808,0,1,1,1,0,Cuboid,408.5103,4.766628,377.1178,0,0,0,2.5,1.36248,2.5,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass4|0.75/0.75|0/0,;
 Scene,Decor/Barrel4,3022,0,1,1,1,0,Barrel4,602.1848,10.27209,330.5435,0,295.1793,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -307,7 +307,7 @@ Scene,Buildings/House20,944,0,1,1,1,0,House20,40,-5.283167,348.1646,0,90,0,0.8,1
 Scene,Buildings/House20,945,0,1,1,1,0,House20,40,-5.283167,319.7074,0,90,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,1712,0,1,1,1,0,Cuboid,143.4533,22.26322,-446.3176,0,0,0,14.08051,1,20.2442,Physical,Entities,Default,Basic|255/255/255/255|Brick/Brick5|1/0.1|0/0,;
 Scene,Buildings/House21,2614,0,1,1,1,0,House21,-277.2771,10.38256,228.2076,0,90,0,0.8,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2467,0,1,1,1,0,House20,136,9.661602,446,0,90,0,1,0.8,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2467,0,1,1,1,0,House20,136,9.661602,446,0,90,0,1,0.8,0.8,Physical,Entities,Default,Default|255/200/225/255,;
 Scene,Decor/Scaffold1,3041,0,1,1,1,0,Scaffold1,101.8335,23.09489,619.762,0,5,0,1.4,0.85,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3720,0,1,1,1,0,House20,-307.163,9.902321,583.8937,0,337.5,0,0.7,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3044,0,1,1,1,0,House20,220,9.661602,394,0,90,0,1,1.2,0.8,Physical,Entities,Default,Default|255/255/255/255,;
@@ -360,7 +360,7 @@ Scene,Decor/Stall1,1583,0,1,1,1,0,Stall1,496,9.526506,-72,12.36428,198.4594,358.
 Scene,Buildings/Tower6,1585,0,1,1,1,0,Tower6,533.0554,9.434154,-40.57491,0,0,0,0.5,0.5,0.5,Physical,Entities,Default,Default|200/150/200/255,;
 Scene,Buildings/House20,1587,0,1,1,1,0,House20,490,10.16118,-212,0,0,0,1,1.4,1.1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1590,0,1,1,1,0,House20,599,10.16118,-146,0,90,0,1.1,1.1,1.1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,1592,0,1,1,1,0,House20,480.5245,10.16118,-99.15984,0,0,0,1,1.2,0.8,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,1592,0,1,1,1,0,House20,480.5245,10.16118,-99.15984,0,0,0,1,1.2,0.8,Physical,Entities,Default,Default|200/255/255/255,;
 Scene,Buildings/House20,1591,0,1,1,1,0,House20,548.544,10.16118,-99.72754,0,0,0,0.95,0.8,0.75,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Stall1,2989,0,1,1,1,0,Stall1,540.0406,10.18303,89.27417,0,0,0,0.8,1.096826,1.168252,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,2982,0,1,1,1,0,House20,608.8301,10.16118,27.44158,0,90,0,1.1,1.1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
@@ -374,7 +374,7 @@ Scene,Buildings/House21,2984,0,1,1,1,0,House21,597.7775,10.38912,-20.59401,0,90,
 Scene,Decor/Stall1,1580,0,1,1,1,0,Stall1,558.2026,10.13415,-75.8158,0,180,0,1.109338,1.096826,1.168252,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/BloodStainFX1,4154,0,1,0,1,0,BloodStainFX1,-167,27.5,-440,0,0,0,2,1,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Buildings/House17,2826,0,1,1,1,0,House17,368,9.833046,-98,0,90,0,0.7,1,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,2604,0,1,1,1,0,House20,-221.0586,9.902321,345.3057,0,235,0,1,0.8,0.7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,2604,0,1,1,1,0,House20,-221.0586,9.902321,345.3057,0,235,0,1,0.8,0.7,Physical,Entities,Default,Default|200/255/200/255,;
 Scene,Buildings/WallA1,3522,0,1,1,1,0,WallA1,721.4104,10.37501,-638.253,0,180.0001,0,2.5,2.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallA1,3520,0,1,1,1,0,WallA1,480.9965,10.37501,-638.253,0,180.0001,0,2.5,2.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallA1,3521,0,1,1,1,0,WallA1,600.6639,10.37501,-638.2532,0,180.0001,0,2.5,2.5,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -406,7 +406,7 @@ Scene,Decor/Lantern5,3204,0,1,1,1,0,Lantern5,527.3528,25.58979,-525.1761,0,0,0,2
 Scene,Decor/Lantern5,3202,0,1,1,1,0,Lantern5,453.8328,25.58979,-482.3854,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3206,0,1,1,1,0,Lantern3,456.1832,10.73634,22.14643,0,180,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3205,0,1,1,1,0,Lantern3,584.8436,10.73634,-169.1036,0,180,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,1616,0,1,1,1,0,House20,599.5747,-6.604948,174.7705,0,90,0,1.3,1.3,1.3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,1616,0,1,1,1,0,House20,599.5747,-6.604948,174.7705,0,90,0,1.3,1.3,1.3,Physical,Entities,Default,Default|225/200/255/255,;
 Scene,Decor/Lantern5,3203,0,1,1,1,0,Lantern5,454.2621,25.58979,-527.2976,0,0,0,2,1.5,2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House21,1615,0,1,1,1,0,House21,474.1029,10.38912,99.95621,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1617,0,1,1,1,0,House20,594.1157,10.16118,256.9121,0,75,0,0.8,0.8,1.2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -424,7 +424,7 @@ Scene,Decor/Box2,1395,0,1,1,1,0,Box2,17.77466,25.24616,-595.7869,0,183.0769,0,0.
 Scene,Decor/Box1,1396,0,1,1,1,0,Box1,14.33596,25.45422,-597.8393,0,72.78249,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Box1,1397,0,1,1,1,0,Box1,-24.04363,25.2509,-596.667,0,72.78249,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House18,1477,0,1,1,1,0,House18,379.2366,25.01636,-506.5354,0,90,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House18,1479,0,1,1,1,0,House18,475,25.01636,-594.1633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House18,1479,0,1,1,1,0,House18,475,25.01636,-594.1633,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/200/255,;
 Scene,Buildings/House20,1493,0,1,1,1,0,House20,121,9.522112,-241,0,179.9651,0,1.2,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,1494,0,1,1,1,0,House20,185,25.13849,-241,0,179.9651,0,1.2,1.2,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House18,1503,0,1,1,1,0,House18,-272,25.01636,-588,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -441,7 +441,7 @@ Scene,Buildings/Tower6,1510,0,1,0,1,0,Tower6,-118,23.82196,-371,0,0,0,0.75,0.75,
 Scene,Buildings/House20,3109,0,1,1,1,0,House20,-608,24.95026,-568,0,90,0,1.5,1.2,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House18,1518,0,1,1,1,0,House18,-605,25.01636,-331,0,90,0,0.8,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House18,1519,0,1,1,1,0,House18,-597,25.01636,-420.8019,0,90,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/WallGateA1,3239,0,1,0,1,1,WallGateA1,0,-49.75218,680.304,0,0,0,3,3,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Open|Interactable:true|StartStateDropdown:Closed  Open;
+Scene,Buildings/WallGateA1,3239,0,1,0,1,1,WallGateA1,0,-49.75218,680.304,0,0,0,3,3,2,Physical,Entities,Default,Default|255/255/255/255,WallGateA1|StartState:Open|Interactable:false|StartStateDropdown:Closed  Open;
 Scene,Decor/Lantern3,3237,0,1,1,1,0,Lantern3,470.0273,10.73634,207.0328,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3236,0,1,1,1,0,Lantern3,470.0273,10.73634,275.8438,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lantern3,3235,0,1,1,1,0,Lantern3,51.31726,10.76392,302.3167,0,0,0,1.2,1.2,1.5,Physical,Entities,Default,Default|255/255/255/255,;
@@ -694,7 +694,7 @@ Scene,Buildings/House20,3054,0,1,1,1,0,House20,537,24.95036,-261,0,90,0,1.5,1,1.
 Scene,Buildings/House17,3055,0,1,1,1,0,House17,484,24.85396,-245,0,0,0,1.4,1.5,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3056,0,1,1,1,0,House20,429,25.13849,-245,0,179.9651,0,1,1.4,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,3058,0,1,1,1,0,House17,589,24.85396,-413,0,0,0,1,1.2,1.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House20,3059,0,1,1,1,0,House20,487.095,25.13849,-412,0,179.9651,0,1,1.4,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House20,3059,0,1,1,1,0,House20,487.095,25.13849,-412,0,179.9651,0,1,1.4,1,Physical,Entities,Default,Default|255/200/255/255,;
 Scene,Decor/Scaffold1,3060,0,1,1,1,0,Scaffold1,405.0009,23.29356,-401.4464,0,0,0,1.683176,0.898984,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Scaffold1,3061,0,1,1,1,0,Scaffold1,405.034,36.1821,-401.1375,0,0,0,1.683176,0.7989849,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House21,3062,0,1,1,1,0,House21,405,25.19821,-416,0,180,0,1.1,0.8989828,1,Physical,Entities,Default,Default|255/255/255/255,;
@@ -759,7 +759,7 @@ Scene,Decor/Lantern5,3198,0,1,1,1,0,Lantern5,416,10.33425,-120,0,0,0,2,1.5,2,Phy
 Scene,Buildings/House20,3273,0,1,1,1,0,House20,-261.7776,10.16118,609.3328,0,345,0,1.5,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3274,0,1,1,1,0,House20,-362.056,9.902321,562.512,0,330,0,0.5,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House20,3275,0,1,1,1,0,House20,-599.5529,24.95026,-466.8471,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Buildings/House18,3276,0,1,1,1,0,House18,-444,25.01636,-594,0,0,0,0.95,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Buildings/House18,3276,0,1,1,1,0,House18,-444,25.01636,-594,0,0,0,0.95,1,1,Physical,Entities,Default,Default|200/200/255/255,;
 Scene,Buildings/House20,3277,0,1,1,1,0,House20,-574,25.12941,-597.8867,0,0,0,0.8,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House17,3718,0,1,1,1,0,House17,184.4067,9.833046,620.4036,0,9.999999,0,0.6,1,0.8,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Terrain/Hill2,3485,0,1,1,1,0,Hill2,-10.32628,-17.51762,1552.525,0,255.673,0,2.034606,0.3726483,1.551201,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|50/50|0/0,;
@@ -1196,16 +1196,16 @@ Scene,Decor/Window3,4240,0,1,1,1,0,Window3,-185.5,48,-36,0,0,0,0.5,1,1,Physical,
 Scene,Decor/Window3,4241,0,1,1,1,0,Window3,-192.5,31.5,-36,0,0,0,0.5,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Window3,4242,0,1,1,1,0,Window3,-178,31.5,-36,0,0,0,0.5,0.8,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Window3,4244,0,1,1,1,0,Window3,-199,48,-43.5,0,270,0,0.5,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/TitanSkeleton1e,4246,0,1,1,1,0,TitanSkeleton1e,366.5,25.5,-539.5,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/TitanSkeleton1e,4246,0,1,1,1,0,TitanSkeleton1e,366.5,25.5,-539.5,0,270,0,1,1,1,Physical,Entities,Default,Default|255/200/200/255,;
 Scene,Decor/TitanSkeleton1d,4247,0,1,1,1,0,TitanSkeleton1d,-32.5,25,-408.5,345,89.99997,7.955024E-06,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/TitanSkeleton1e,4248,0,1,1,1,0,TitanSkeleton1e,525,10.5,-5.5,0,270,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/TitanSkeleton1b,4249,0,1,1,1,0,TitanSkeleton1b,483.5,10,222,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/TitanSkeleton1e,4248,0,1,1,1,0,TitanSkeleton1e,525,10.5,-5.5,0,270,0,2,2,2,Physical,Entities,Default,Default|200/255/200/255,;
+Scene,Decor/TitanSkeleton1b,4249,0,1,1,1,0,TitanSkeleton1b,483.5,10,222,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|175/150/255/255,;
 Scene,Decor/TitanSkeleton1c,4250,0,1,1,1,0,TitanSkeleton1c,10,34.5,-41.5,90,0,0,1,0.5,1,Physical,Entities,Default,Default|255/50/50/255,;
 Scene,Decor/TitanSkeleton1c,4251,0,1,1,1,0,TitanSkeleton1c,32.5,43,-521,90,270,0,1,0.5,1,Physical,Entities,Default,Default|50/255/50/255,;
 Scene,Decor/TitanSkeleton1,4252,0,1,1,1,0,TitanSkeleton1,-31.5,29.5,-454,0,89.99997,0,0.9,0.9,0.5,Physical,Entities,Default,Default|50/50/255/255,;
 Scene,Decor/TitanSkeleton1,4253,0,1,1,1,0,TitanSkeleton1,29.5,29.5,-363.5,0,270,0,0.9,0.9,0.5,Physical,Entities,Default,Default|200/50/255/255,;
 Scene,Decor/TitanSkeleton1c,4254,0,1,1,1,0,TitanSkeleton1c,25,34.5,-130,90,180,0,1.5,0.5,1.5,Physical,Entities,Default,Default|255/50/50/255,;
-Scene,Decor/TitanSkeleton1,4255,0,1,1,1,0,TitanSkeleton1,-502,-1.5,-73.5,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/TitanSkeleton1,4255,0,1,1,1,0,TitanSkeleton1,-502,-2.5,-73.5,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/0/255,;
 Scene,Decor/TitanSkeleton1e,4257,0,1,1,1,0,TitanSkeleton1e,379.5,10,540,0,210,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Gore6,4258,0,1,1,1,0,Gore6,199,58,-34.5,0,270,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Gore6,4259,0,1,1,1,0,Gore6,199,58,25,0,270,0,10,10,10,Physical,Entities,Default,Default|255/255/255/255,;
@@ -1329,7 +1329,52 @@ Scene,Interact/CaptureZone1,4374,4339,1,0,1,1,CaptureZone1,-110,10,516,0,0,0,2,4
 Scene,Interact/CaptureZone1,4375,4349,1,0,1,1,CaptureZone1,-453,10,198,0,0,0,2,4,2,Region,Characters,Default,Default|250/200/0/255,;
 Scene,Interact/CaptureZone1,4376,4354,1,0,1,1,CaptureZone1,-532,40.5,82.5,0,0,0,2,4,2,Region,Characters,Default,Default|200/250/0/255,;
 Scene,Interact/CaptureZone1,4377,4355,1,0,1,1,CaptureZone1,-571,40,13.5,0,0,0,2,4,2,Region,Characters,Default,Default|100/250/200/255,;
-Scene,Interact/CaptureZone1,4378,4344,1,0,1,1,CaptureZone1,-365,40.5,-114.5,0,0,0,2,4,2,Region,Characters,Default,Default|100/200/150/255,
+Scene,Interact/CaptureZone1,4378,4344,1,0,1,1,CaptureZone1,-365,40.5,-114.5,0,0,0,2,4,2,Region,Characters,Default,Default|100/200/150/255,;
+Scene,FX/PumpkinFX1,4379,0,1,0,1,0,PumpkinFX1,-352.5685,41.07042,28.01194,0,0,0,1.5,1.5,1.5,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1b,4380,0,1,0,1,0,PumpkinFX1b,-461.5,41,30.78661,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Decor/Pumpkin1d,4382,0,1,1,1,0,Pumpkin1d,-523,46.5,-158,0,89.99997,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Remains1,4383,0,1,1,1,0,Remains1,-527.5,41,-155,0,0,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1h,4384,0,1,1,1,0,Paper1h,-550.5,47.5,-200,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/PumpkinFX1,4387,0,1,0,1,0,PumpkinFX1,-457.5,41,-160.5,0,0,0,2,2,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4388,0,1,0,1,0,PumpkinFX1,-477,41,-179.5,0,0,0,2,2,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4389,0,1,0,1,0,PumpkinFX1,-504.5,41,-162.5,0,0,0,2,2,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Decor/Pumpkin1b,4390,0,1,1,1,0,Pumpkin1b,-348.5,42.5,-106.5,0,270,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1b,4391,0,1,1,1,0,Pumpkin1b,-381,42.5,-106.5,0,270,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Goober1,4392,0,1,1,1,0,Goober1,-545.5,41,91.5,0,180.0001,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1b,4393,0,1,1,1,0,Pumpkin1b,-545.5,49.5,91,0,270,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Remains1,4395,0,1,1,1,0,Remains1,-437.5,41,87.5,0,270,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1c,4396,0,1,1,1,0,Pumpkin1c,-405.5,42,85,0,270,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/BloodStainFX1,4398,0,1,0,1,0,BloodStainFX1,-407.5,10.5,209.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1b,4399,0,1,0,1,0,PumpkinFX1b,-359.5,11.5,394,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1b,4400,0,1,0,1,0,PumpkinFX1b,-370,11.5,394,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1b,4401,0,1,0,1,0,PumpkinFX1b,-358,11.5,408,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1b,4402,0,1,0,1,0,PumpkinFX1b,-371,11.5,407.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/MistFX1,4404,0,1,0,1,0,MistFX1,0,10.5,0,0,0,0,25,25,25,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/MistFX1,4405,0,1,0,1,0,MistFX1,-337,10.5,352,0,0,0,25,25,25,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/MistFX1,4406,0,1,0,1,0,MistFX1,0,10.5,381.5,0,0,0,25,25,25,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/MistFX1,4407,0,1,0,1,0,MistFX1,336.5,10.5,424,0,0,0,25,25,25,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/MistFX1,4408,0,1,0,1,0,MistFX1,460,10.5,88,0,0,0,25,25,25,None,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Decor/Pumpkin1c,4409,0,1,1,1,0,Pumpkin1c,0,104,650,0,270,0,1,20,20,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/PumpkinFX1,4410,0,1,0,1,0,PumpkinFX1,457,11.4858,37,0,0,0,1.4,1.4,1.4,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4411,0,1,0,1,0,PumpkinFX1,457,11.4858,-50,0,0,0,1.4,1.4,1.4,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4413,0,1,0,1,0,PumpkinFX1,464.5,30.5,-517.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4414,0,1,0,1,0,PumpkinFX1,464.5,30.5,-492,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4415,0,1,0,1,0,PumpkinFX1,464.5,30.5,-505,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4416,0,1,0,1,0,PumpkinFX1,499.5,30.5,-517.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4417,0,1,0,1,0,PumpkinFX1,482.5,30.5,-517.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4418,0,1,0,1,0,PumpkinFX1,499,30.5,-492,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4419,0,1,0,1,0,PumpkinFX1,482.5,30.5,-491.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4420,0,1,0,1,0,PumpkinFX1,473.5,30.5,-517.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4421,0,1,0,1,0,PumpkinFX1,491.5,30.5,-517.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4422,0,1,0,1,0,PumpkinFX1,473,30.5,-491.5,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/PumpkinFX1,4423,0,1,0,1,0,PumpkinFX1,491,30.5,-492,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Decor/Pumpkin1d,4425,0,1,1,1,0,Pumpkin1d,532,27.5,-525,0,180,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1d,4426,0,1,1,1,0,Pumpkin1d,532,27.5,-484.5,0,180,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1d,4427,0,1,1,1,0,Pumpkin1d,24.5,161.5,-117.5,0,89.99997,0,15,15,15,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1a,4428,0,1,1,1,0,Pumpkin1a,196,111,-184,0,270,0,7,7,7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1a,4429,0,1,1,1,0,Pumpkin1a,-194,111,-184,0,270,0,7,7,7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1a,4430,0,1,1,1,0,Pumpkin1a,195,111,181.5,0,90,0,7,7,7,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Pumpkin1a,4431,0,1,1,1,0,Pumpkin1a,-194.5,111.5,181.5,0,90,0,7,7,7,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
 class Main
 {
@@ -1503,9 +1548,9 @@ Main.FinishRace(other);
 {
     "Skybox" : "Night3",
     "SkyboxColor" : [
-        50,
         20,
-        100,
+        0,
+        70,
         255
     ],
     "Daylight" : [
@@ -1514,28 +1559,28 @@ Main.FinishRace(other);
         100,
         255
     ],
-    "DaylightIntensity" : 0.453333348035812,
+    "DaylightIntensity" : 0.346666663885117,
     "DaylightDirection" : [
         45,
         45,
         0
     ],
     "AmbientLight" : [
-        126,
-        122,
-        114,
+        70,
+        20,
+        120,
         255
     ],
     "Flashlight" : [
         255,
         255,
-        255,
-        0
+        100,
+        50
     ],
-    "FogDensity" : 0,
+    "FogDensity" : 0.00999999977648258,
     "FogColor" : [
-        128,
-        128,
+        100,
+        70,
         128,
         255
     ],

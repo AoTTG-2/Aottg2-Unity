@@ -164,7 +164,7 @@ namespace CustomLogic
         // obj is CustomLogicMapObjectBuiltin or MapObject
         protected void DestroyMapObject(object obj, bool recursive)
         {
-            if (obj is not CustomLogicMapObjectBuiltin or MapObject)
+            if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
                 return;
             }

@@ -67,7 +67,7 @@ Scene,Geometry/Cube1,76,0,1,1,1,0,interior,136.6027,5.349413,47.30564,0,0,0,1,10
 Scene,Nature/RiverRock2,81,0,1,1,1,0,RiverRock2,160.7932,0.1731308,3.097247,0,27.80202,0,0.3,0.3,0.3,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Pebbles1,82,0,1,1,1,0,Pebbles1,130.8922,0.03603116,27.703,0,0,0,12.21466,8,12.8478,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chair1,83,0,1,1,1,0,Chair1,139.7776,1.104684,39.47112,0,181.211,0,0.2234975,0.3,0.3,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood8|1/1|0/0,;
-Scene,Nature/Pebbles2,84,0,1,1,1,0,Pebbles2,180.5394,0.09748192,45.54836,0,334.4342,0,12,1,12,None,Entities,Default,Default|255/255/255/255,;
+Scene,Nature/Pebbles2,84,0,1,1,1,0,Pebbles2,180.5394,0.09748192,45.54836,0,334.4342,0,12,1,12,None,Entities,Default,Default|218/157/154/150,;
 Scene,Nature/Pebbles2,85,0,1,1,1,0,Pebbles2,139.2046,0.09748192,-16.61197,0,271.6595,0,16.50255,1,5.659823,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chair1,86,0,1,1,1,0,Chair1,209.1816,1.268402,-23.2909,78.82678,194.847,4.187174,0.2234975,0.3,0.3,Physical,Entities,Default,Basic|255/255/255/255|Wood/Wood8|1/1|0/0,;
 Scene,Nature/Pebbles1,87,0,1,1,1,0,Pebbles1,143.3461,0.03603116,-42.00679,0,73.41241,0,12.21466,8,12.8478,None,Entities,Default,Default|255/255/255/255,;
@@ -542,52 +542,52 @@ Scene,Decor/Facade1f,964,0,1,1,1,0,Facade1f,966.3414,0,102.5888,0,260.068,0,1,1,
 Scene,Decor/Facade1e,965,0,1,1,1,0,Facade1e,894.8306,0,74.6988,0,260.068,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Facade1f,966,0,1,1,1,0,Facade1f,708.4576,0,-619.1255,0,316.6486,0,1.151455,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Facade1e,967,0,1,1,1,0,Facade1e,645.7934,0,-574.799,0,316.6486,0,1.151455,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,969,0,1,1,1,0,GrassFacade1c,-262.9492,-0.2539136,481.3055,0,333.554,0,1.857164,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,970,0,1,1,1,0,GrassFacade1c,-397.4333,-0.2539136,372.8132,0,289.1878,0,1.857164,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,971,0,1,1,1,0,GrassFacade1c,-409.6175,-0.2539136,255.8878,0,249.4001,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,972,0,1,1,1,0,GrassFacade1c,-491.4392,-0.2539136,132.1129,0,249.4001,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,973,0,1,1,1,0,GrassFacade1c,-398.9805,-0.2539136,-1.038532,0,189.893,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,974,0,1,1,1,0,GrassFacade1c,-390.3808,-0.2539136,-65.01133,0,268.9242,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,975,0,1,1,1,0,GrassFacade1c,-423.7723,-0.2539136,-146.391,0,268.9242,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,976,0,1,1,1,0,GrassFacade1c,-518.0037,-0.2539136,-199.0698,0,355.079,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,977,0,1,1,1,0,GrassFacade1c,-582.2354,-0.2539136,-206.3413,0,294.0742,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,978,0,1,1,1,0,GrassFacade1c,-582.2354,-0.2539136,-360.6027,0,232.0517,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,979,0,1,1,1,0,GrassFacade1c,-445.0568,-0.2539136,-338.1298,0,127.2869,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,980,0,1,1,1,0,GrassFacade1c,-361.8955,-0.2539136,-379.5404,0,217.7644,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,981,0,1,1,1,0,GrassFacade1c,-270.7318,-0.2539136,-444.9764,0,38.1833,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,982,0,1,1,1,0,GrassFacade1c,-131.3493,-0.2539136,-468.848,0,11.15943,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,983,0,1,1,1,0,GrassFacade1c,10.71335,-0.2539136,-420.7959,0,335.054,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,984,0,1,1,1,0,GrassFacade1c,139.2182,-0.2539136,-420.7959,0,22.20858,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,985,0,1,1,1,0,GrassFacade1c,277.0926,-0.2539136,-402.0842,0,350.6796,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,986,0,1,1,1,0,GrassFacade1c,414.6613,-0.2539136,-355.6762,0,315.1087,0,0.9671674,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,987,0,1,1,1,0,GrassFacade1c,517.3167,-0.2539136,-174.3333,0,307.3663,0,1.394394,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,990,0,1,1,1,0,GrassFacade1c,464.4788,-0.2539136,330.7481,0,49.57402,0,-2.221761,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,989,0,1,1,1,0,GrassFacade1c,576.392,-0.2539136,41.7705,0,90.15075,0,-1.954991,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,991,0,1,1,1,0,GrassFacade1c,199.8701,-0.2539136,486.2254,0,10.66361,0,-1.533979,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,992,0,1,1,1,0,GrassFacade1c,87.31469,-0.2539136,546.94,0,259.9448,0,-1.137205,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,993,0,1,1,1,0,GrassFacade1c,-71.08108,-0.2539136,628.3673,0,156.2235,0,-1.320699,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,994,0,1,1,1,0,GrassFacade1c,14.15888,-0.2539136,363.2602,0,31.69218,0,-1.137205,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,995,0,1,1,1,0,GrassFacade1c,99.91401,-0.2539136,230.5745,0,50.24071,0,-1.137205,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,996,0,1,1,1,0,GrassFacade1c,200.5792,-0.2539136,162.1481,0,173.6521,0,-1.271684,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,997,0,1,1,1,0,GrassFacade1c,331.8589,-0.2539136,147.4992,0,252.5415,0,-0.9356073,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,998,0,1,1,1,0,GrassFacade1c,353.7635,-0.2539136,231.1138,0,222.7747,0,-1.046308,1,1,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,999,0,1,1,1,0,GrassFacade1c,116.6712,-0.2539136,271.3506,0,194.6114,0,-1.689544,1,1.682067,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1000,0,1,1,1,0,GrassFacade1c,214.0603,-0.2539136,-180.4266,0,189.5457,0,-1.028955,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1001,0,1,1,1,0,GrassFacade1c,314.6255,-0.2539136,-180.4266,0,167.23,0,-1.028955,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1002,0,1,1,1,0,GrassFacade1c,409.1123,-0.2539136,-89.31723,0,108.6207,0,-1.259655,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1003,0,1,1,1,0,GrassFacade1c,391.8857,-0.2539136,-20.90166,0,330.4799,0,-0.8964067,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1004,0,1,1,1,0,GrassFacade1c,-86.77271,-0.2539136,-171.7855,0,354.9343,0,-1.433775,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1005,0,1,1,1,0,GrassFacade1c,-7.751216,-0.2539136,-233.2467,0,74.28793,0,-0.955253,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1006,0,1,1,1,0,GrassFacade1c,-130.3891,-0.2539136,-334.0103,0,163.3714,0,-0.955253,1,1.337548,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1007,0,1,1,1,0,GrassFacade1c,-245.093,-0.2539136,-322.5038,0,211.8257,0,-0.7491937,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1008,0,1,1,1,0,GrassFacade1c,-113.1003,-0.2539136,-233.248,0,211.8257,0,-1.249409,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1009,0,1,1,1,0,GrassFacade1c,-246.9523,-0.2539136,-185.13,0,174.1035,0,-0.9038005,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1010,0,1,1,1,0,GrassFacade1c,-293.1768,-0.2539136,-125.657,0,113.8454,0,-0.9038005,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1011,0,1,1,1,0,GrassFacade1c,-228.703,-0.2539136,-93.98992,0,240.3473,0,-0.8615835,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1012,0,1,1,1,0,GrassFacade1c,-265.2446,-0.2539136,139.0596,0,68.01579,0,-1.041033,1,0.6083885,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1013,0,1,1,1,0,GrassFacade1c,-241.1822,-0.2539136,281.2776,0,150.0454,0,-1.041033,1,1.450667,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1014,0,1,1,1,0,GrassFacade1c,-149.2286,-0.2539136,270.8976,0,229.9042,0,-1.175413,1,1.186674,None,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/GrassFacade1c,1015,0,1,1,1,0,GrassFacade1c,-147.9722,-0.2539136,203.2601,0,25.2383,0,-1.778554,1,1.617243,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,969,0,1,1,1,0,GrassFacade1c,-262.9492,-0.2539136,481.3055,0,333.554,0,1.857164,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,970,0,1,1,1,0,GrassFacade1c,-397.4333,-0.2539136,372.8132,0,289.1878,0,1.857164,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,971,0,1,1,1,0,GrassFacade1c,-409.6175,-0.2539136,255.8878,0,249.4001,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,972,0,1,1,1,0,GrassFacade1c,-491.4392,-0.2539136,132.1129,0,249.4001,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,973,0,1,1,1,0,GrassFacade1c,-398.9805,-0.2539136,-1.038532,0,189.893,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,974,0,1,1,1,0,GrassFacade1c,-390.3808,-0.2539136,-65.01133,0,268.9242,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,975,0,1,1,1,0,GrassFacade1c,-423.7723,-0.2539136,-146.391,0,268.9242,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,976,0,1,1,1,0,GrassFacade1c,-518.0037,-0.2539136,-199.0698,0,355.079,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,977,0,1,1,1,0,GrassFacade1c,-582.2354,-0.2539136,-206.3413,0,294.0742,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,978,0,1,1,1,0,GrassFacade1c,-582.2354,-0.2539136,-360.6027,0,232.0517,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,979,0,1,1,1,0,GrassFacade1c,-445.0568,-0.2539136,-338.1298,0,127.2869,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,980,0,1,1,1,0,GrassFacade1c,-361.8955,-0.2539136,-379.5404,0,217.7644,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,981,0,1,1,1,0,GrassFacade1c,-270.7318,-0.2539136,-444.9764,0,38.1833,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,982,0,1,1,1,0,GrassFacade1c,-131.3493,-0.2539136,-468.848,0,11.15943,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,983,0,1,1,1,0,GrassFacade1c,10.71335,-0.2539136,-420.7959,0,335.054,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,984,0,1,1,1,0,GrassFacade1c,139.2182,-0.2539136,-420.7959,0,22.20858,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,985,0,1,1,1,0,GrassFacade1c,277.0926,-0.2539136,-402.0842,0,350.6796,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,986,0,1,1,1,0,GrassFacade1c,414.6613,-0.2539136,-355.6762,0,315.1087,0,0.9671674,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,987,0,1,1,1,0,GrassFacade1c,517.3167,-0.2539136,-174.3333,0,307.3663,0,1.394394,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,990,0,1,1,1,0,GrassFacade1c,464.4788,-0.2539136,330.7481,0,49.57402,0,-2.221761,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,989,0,1,1,1,0,GrassFacade1c,576.392,-0.2539136,41.7705,0,90.15075,0,-1.954991,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,991,0,1,1,1,0,GrassFacade1c,199.8701,-0.2539136,486.2254,0,10.66361,0,-1.533979,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,992,0,1,1,1,0,GrassFacade1c,87.31469,-0.2539136,546.94,0,259.9448,0,-1.137205,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,993,0,1,1,1,0,GrassFacade1c,-71.08108,-0.2539136,628.3673,0,156.2235,0,-1.320699,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,994,0,1,1,1,0,GrassFacade1c,14.15888,-0.2539136,363.2602,0,31.69218,0,-1.137205,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,995,0,1,1,1,0,GrassFacade1c,99.91401,-0.2539136,230.5745,0,50.24071,0,-1.137205,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,996,0,1,1,1,0,GrassFacade1c,200.5792,-0.2539136,162.1481,0,173.6521,0,-1.271684,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,997,0,1,1,1,0,GrassFacade1c,331.8589,-0.2539136,147.4992,0,252.5415,0,-0.9356073,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,998,0,1,1,1,0,GrassFacade1c,353.7635,-0.2539136,231.1138,0,222.7747,0,-1.046308,0.4,1,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,999,0,1,1,1,0,GrassFacade1c,116.6712,-0.2539136,271.3506,0,194.6114,0,-1.689544,0.4,1.682067,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1000,0,1,1,1,0,GrassFacade1c,214.0603,-0.2539136,-180.4266,0,189.5457,0,-1.028955,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1001,0,1,1,1,0,GrassFacade1c,314.6255,-0.2539136,-180.4266,0,167.23,0,-1.028955,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1002,0,1,1,1,0,GrassFacade1c,409.1123,-0.2539136,-89.31723,0,108.6207,0,-1.259655,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1003,0,1,1,1,0,GrassFacade1c,391.8857,-0.2539136,-20.90166,0,330.4799,0,-0.8964067,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1004,0,1,1,1,0,GrassFacade1c,-86.77271,-0.2539136,-171.7855,0,354.9343,0,-1.433775,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1005,0,1,1,1,0,GrassFacade1c,-7.751216,-0.2539136,-233.2467,0,74.28793,0,-0.955253,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1006,0,1,1,1,0,GrassFacade1c,-130.3891,-0.2539136,-334.0103,0,163.3714,0,-0.955253,0.4,1.337548,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1007,0,1,1,1,0,GrassFacade1c,-245.093,-0.2539136,-322.5038,0,211.8257,0,-0.7491937,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1008,0,1,1,1,0,GrassFacade1c,-113.1003,-0.2539136,-233.248,0,211.8257,0,-1.249409,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1009,0,1,1,1,0,GrassFacade1c,-246.9523,-0.2539136,-185.13,0,174.1035,0,-0.9038005,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1010,0,1,1,1,0,GrassFacade1c,-293.1768,-0.2539136,-125.657,0,113.8454,0,-0.9038005,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1011,0,1,1,1,0,GrassFacade1c,-228.703,-0.2539136,-93.98992,0,240.3473,0,-0.8615835,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1012,0,1,1,1,0,GrassFacade1c,-265.2446,-0.2539136,139.0596,0,68.01579,0,-1.041033,0.4,0.6083885,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1013,0,1,1,1,0,GrassFacade1c,-241.1822,-0.2539136,281.2776,0,150.0454,0,-1.041033,0.4,1.450667,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1014,0,1,1,1,0,GrassFacade1c,-149.2286,-0.2539136,270.8976,0,229.9042,0,-1.175413,0.4,1.186674,None,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/GrassFacade1c,1015,0,1,1,1,0,GrassFacade1c,-147.9722,-0.2539136,203.2601,0,25.2383,0,-1.778554,0.4,1.617243,None,Entities,Default,Default|255/255/255/255,;
 Scene,FX/GroundFog1,1019,0,1,0,1,0,GroundFog1,0,0,-11.88459,0,0,0,7,1,7,None,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,General/EditorTitanSpawnPoint,1020,0,1,1,0,0,Titan SpawnPoint,44.12888,0.4253474,-10.30025,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,1021,0,1,1,0,0,Titan SpawnPoint,76.18397,0.4253474,-232.2366,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
@@ -716,166 +716,206 @@ Scene,Decor/Chain1,1174,0,1,1,1,0,Chain1,186.0547,12.15956,36.64082,3.275096,321
 Scene,Decor/Chain1,1175,0,1,1,1,0,Chain1,182.8721,10.6449,37.16613,39.80003,356.1125,1.023393,1,1.841928,0.4239883,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Chain1,1176,0,1,1,1,0,Chain1,172.7267,10.66308,45.51463,39.33432,90.00002,1.023401,1,1.660949,0.4395247,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Lamp2,1178,0,1,1,1,0,Lamp2,200.5183,5.558769,57.93122,0,90,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1c,1184,0,1,0,1,0,Paper1c,148.6362,3.801892,36.96472,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1,1181,0,1,0,1,0,Paper1,171.2825,6.093244,42.98585,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1b,1183,0,1,0,1,0,Paper1b,186.5559,7.939571,198.2867,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1d,1185,0,1,0,1,0,Paper1d,161.5672,5.330529,21.66493,0,180,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1e,1186,0,1,0,1,0,Paper1e,210.7147,4.512803,27.4768,0,90,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1f,1187,0,1,0,1,0,Paper1f,-241.3681,13.44401,311.4289,0,330,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1g,1188,0,1,0,1,0,Paper1g,-250.5113,84.33733,335.7535,0,150,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Paper1h,1189,0,1,0,1,0,Paper1h,-367.9608,8.629727,312.7289,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
+Scene,Decor/Paper1c,1184,0,1,0,1,0,Paper1c,-252.1611,6.610086,313.478,0,30.61485,0,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1,1181,0,1,0,1,0,Paper1,251.9899,6.093244,363.7673,10.77877,265.5421,358.2908,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1b,1183,0,1,0,1,0,Paper1b,547.4191,4.441019,206.2044,3.896718,355.6549,359.6893,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1d,1185,0,1,0,1,0,Paper1d,428.4684,5.030437,-274.208,11.69513,89.90479,1.049916,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1e,1186,0,1,0,1,0,Paper1e,-233.0284,5.786437,-273.7347,0.1678891,211.5192,359.3844,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1f,1187,0,1,0,1,0,Paper1f,187.8928,4.871743,-36.97616,4.850829,359.7625,0.128844,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1g,1188,0,1,0,1,0,Paper1g,-551.5609,4.435719,-293.9202,2.616796,342.7928,359.2582,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1h,1189,0,1,0,1,0,Paper1h,-390.8579,6.491605,68.49402,7.844703,337.5474,1.438199,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Gore2,1190,0,1,1,1,0,Gore2,363.4821,0.8354264,-225.5387,336.5113,0,0,11,11,11,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Gore2,1191,0,1,1,1,0,Gore2,365.222,0.8628684,-224.2607,336.5113,0,0,11,11,11,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/BloodStainFX1,1192,0,1,0,1,0,BloodStainFX1,366.5469,-0.05438611,-299.7295,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/BloodStainFX1,1193,0,1,0,1,0,BloodStainFX1,366.5469,-0.04676662,-238.5198,0,315.941,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/BloodStainFX1,1194,0,1,0,1,0,BloodStainFX1,246.0577,-0.04676662,-275.4511,0,315.941,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,FX/BloodStainFX1,1195,0,1,0,1,0,BloodStainFX1,195.9841,-0.05869852,51.94861,0,276.2712,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
+Scene,Decor/Paper1h,1196,0,1,0,1,0,Paper1h,-108.9008,6.491605,66.23879,7.84471,1.055595,1.438194,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1g,1197,0,1,0,1,0,Paper1g,7.777727,4.435719,-389.9653,2.616799,151.6136,359.2582,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1f,1198,0,1,0,1,0,Paper1f,172.6402,4.871743,40.08828,4.850793,270.1066,0.1288435,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1e,1199,0,1,0,1,0,Paper1e,13.07059,5.503181,537.5189,0.1678893,248.746,359.3844,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1d,1200,0,1,0,1,0,Paper1d,16.31096,5.030437,-175.3126,11.69515,191.9186,1.049913,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1,1201,0,1,0,1,0,Paper1,10.35445,6.093244,132.0133,10.77879,36.85544,358.2908,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Paper1c,1202,0,1,0,1,0,Paper1c,296.9421,5.193958,-129.9128,1.590785,289.3311,0.5579628,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Goober1,1203,0,1,1,1,0,Goober1,355.8246,2.182465,-214.8023,270,309.5471,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,
 /// Logic
 component Paper
 {
-_Found = false;
-function OnCollisionEnter(other)
-{
-if (other.Type == "Human" && other.IsMainCharacter && !self._Found)
-{
-self._Found = true;
-Network.SendMessage(Network.MasterClient, "Found" + Convert.ToString(self.MapObject.ID));
-}
-}
+    _Found = false;
+    function OnCollisionEnter(other)
+    {
+        if (other.Type == "Human" && other.IsMainCharacter && !self._Found)
+        {
+            self._Found = true;
+            other.PlaySound("Checkpoint");
+            Network.SendMessage(Network.MasterClient, "Found" + Convert.ToString(self.MapObject.ID));
+        }
+    }
 }
 
 class Main
 {
-Papers = 8;
-MaxTitans = 15;
-_allPapers = List();
-_activePapers = List();
-_syncTimeLeft = 0.0;
-_hasSpawned = false;
+    Papers = 8;
+    _maxTitans = 20;
+    _spawnTitans = 2;
+    _spawnTitansEvery = 60;
+    _spawnTimeLeft = 60;
+    _allPapers = List();
+    _activePapers = List();
+    _syncTimeLeft = 0.0;
+    _hasSpawned = false;
 
-function OnGameStart()
-{
-Game.SpawnTitans("Normal", self.MaxTitans);
-for (mapObject in Map.FindAllMapObjects())
-{
-if (String.StartsWith(mapObject.Name, "Paper"))
-{
-self._allPapers.Add(mapObject.ID);
-mapObject.AddComponent("Paper");
-if (mapObject.Static)
-{
-Game.Print("Warning: Paper is marked static.");
-}
-mapObject.Active = false;
-}
-}
-if (Network.IsMasterClient)
-{
-self._allPapers.Randomize();
-for (i in Range(0, self.Papers, 1))
-{
-if (self._allPapers.Count > i)
-{
-self._activePapers.Add(self._allPapers.Get(i));
-}
-}
-self.Sync();
-}
-}
+    function OnGameStart()
+    {
+        for (mapObject in Map.FindAllMapObjects())
+        {
+            if (String.StartsWith(mapObject.Name, "Paper"))
+            {
+                self._allPapers.Add(mapObject.ID);
+                mapObject.AddComponent("Paper");
+                if (mapObject.Static)
+                {
+                    Game.Print("Warning: Paper is marked static.");
+                }
+                mapObject.Active = false;
+            }
+        }
+        if (Network.IsMasterClient)
+        {
+            self._allPapers.Randomize();
+            for (i in Range(0, self.Papers, 1))
+            {
+                if (self._allPapers.Count > i)
+                {
+                    self._activePapers.Add(self._allPapers.Get(i));
+                }
+            }
+            self.Sync();
+        }
+    }
 
-function OnCharacterSpawn(character)
-{
-if (character.IsMine)
-{
-if (character.Type == "Titan")
-{
-character.RunSpeedBase = 100;
-character.RotateSpeed = 10.0;
-character.AttackWait = 0;
-character.AttackPause = 0.1;
-character.ActionPause = 0.1;
-character.AttackSpeedMultiplier = 2.0;
-character.Size = 2.0;
-character.CanRun = true;
-character.FocusRange = 500;
-}
-}
-if (character.Type == "Titan")
-{
-character.Name = "SlenderTitan";
-}
-}
+    function OnCharacterSpawn(character)
+    {
+        if (character.IsMine)
+        {
+            if (character.Type == "Titan")
+            {
+                character.RunSpeedBase = 50;
+                character.RotateSpeed = 5.0;
+                character.AttackWait = 0;
+                character.AttackPause = 0.1;
+                character.ActionPause = 0.1;
+                character.AttackSpeedMultiplier = 1.5;
+                character.Size = 1.5;
+                character.CanRun = true;
+                character.FocusRange = 500;
+            }
+            if (character.Type == "Human")
+            {
+                character.SetSpecial("Potato");
+                character.MaxGas = 60;
+                character.CurrentGas = 60;
+                character.CustomDamageEnabled = true;
+                character.CustomDamage = 0;
+            }
+        }
+        if (character.Type == "Titan")
+        {
+            character.Name = "SlenderTitan";
+        }
+    }
 
-function OnNetworkMessage(sender, message)
-{
-if (String.StartsWith(message, "Found") && Network.IsMasterClient)
-{
-id = Convert.ToInt(String.Substring(message, 5));
-self._activePapers.Remove(id);
-self.Sync();
-}
-elif (String.StartsWith(message, "Sync"))
-{
-message = String.Substring(message, 4);
-activePapers = List();
-if (message != "")
-{
-for (idStr in String.Split(message, ","))
-{
-id = Convert.ToInt(idStr);
-activePapers.Add(id);
-}
-}
-for (id in self._allPapers)
-{
-mapObject = Map.FindMapObjectByID(id);
-mapObject.Active = activePapers.Contains(id);
-}
-}
-}
+    function OnNetworkMessage(sender, message)
+    {
+        if (String.StartsWith(message, "Found") && Network.IsMasterClient)
+        {
+            id = Convert.ToInt(String.Substring(message, 5));
+            if (self._activePapers.Contains(id))
+            {
+                self._activePapers.Remove(id);
+                self.SpawnTitans();
+            }
+            self.Sync();
+        }
+        elif (String.StartsWith(message, "Sync"))
+        {
+            message = String.Substring(message, 4);
+            activePapers = List();
+            if (message != "")
+            {
+                for (idStr in String.Split(message, ","))
+                {
+                    id = Convert.ToInt(idStr);
+                    activePapers.Add(id);
+                }
+            }
+            for (id in self._allPapers)
+            {
+                mapObject = Map.FindMapObjectByID(id);
+                mapObject.Active = activePapers.Contains(id);
+            }
+        }
+    }
 
-function OnSecond()
-{
-if (Network.IsMasterClient)
-{
-self._syncTimeLeft = self._syncTimeLeft - 1.0;
-if (self._syncTimeLeft <= 0.0)
-{
-self.Sync();
-self._syncTimeLeft = 10.0;
-}
-titans = Game.Titans.Count;
-if (titans < self.MaxTitans)
-{
-Game.SpawnTitans("Normal", 1);
-}
-humans = Game.Humans.Count;
-playerShifters = Game.PlayerShifters.Count;
-if (humans > 0 || playerShifters > 0)
-{
-self._hasSpawned = true;
-}
-if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-{
-UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-Game.End(10.0);
-return;
-}
-}
-}
+    function OnSecond()
+    {
+        if (Network.IsMasterClient)
+        {
+            self._syncTimeLeft = self._syncTimeLeft - 1.0;
+            self._spawnTimeLeft = self._spawnTimeLeft - 1.0;
+            if (self._syncTimeLeft <= 0.0)
+            {
+                self.Sync();
+                self._syncTimeLeft = 10.0;
+            }
+            if (self._spawnTimeLeft <= 0.0)
+            {
+                self._spawnTimeLeft = self._spawnTitansEvery;
+                self.SpawnTitans();
+            }
+            humans = Game.Humans.Count;
+            playerShifters = Game.PlayerShifters.Count;
+            if (humans > 0 || playerShifters > 0)
+            {
+                self._hasSpawned = true;
+            }
+            if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+            {
+                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+                Game.End(10.0);
+                return;
+            }
+        }
+        Camera.FollowDistance = 0.0;
+    }
 
-function Sync()
-{
-foundPapers = self.Papers - self._activePapers.Count;
-if (self._activePapers.Count == 0 && !Game.IsEnding)
-{
-UI.SetLabelAll("MiddleCenter", "<color=#00FF00><size=30>All the notes have been found!</size></color>");
-Game.End(10);
-}
-UI.SetLabelAll("TopCenter", "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
-message = "Sync";
-idStrs = List();
-for (id in self._activePapers)
-{
-idStrs.Add(Convert.ToString(id));
-}
-message = message + String.Join(idStrs, ",");
-Network.SendMessageAll(message);
-}
+    function SpawnTitans()
+    {
+        titans = Game.Titans.Count;
+        if (titans < self._maxTitans)
+        {
+            Game.SpawnTitans("Normal", self._spawnTitans);
+        }
+    }
+
+    function Sync()
+    {
+        foundPapers = self.Papers - self._activePapers.Count;
+        if (self._activePapers.Count == 0 && !Game.IsEnding)
+        {
+            UI.SetLabelAll("MiddleCenter", "<color=#00FF00><size=30>All the notes have been found!</size></color>");
+            Game.End(10);
+        }
+        UI.SetLabelAll("TopCenter", "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
+        message = "Sync";
+        idStrs = List();
+        for (id in self._activePapers)
+        {
+            idStrs.Add(Convert.ToString(id));
+        }
+        message = message + String.Join(idStrs, ",");
+        Network.SendMessageAll(message);
+    }
 }
 /// Weather
 {

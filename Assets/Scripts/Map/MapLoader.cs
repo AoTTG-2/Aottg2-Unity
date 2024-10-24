@@ -374,9 +374,9 @@ namespace Map
             _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
 
             // Create sources and bounds
-            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
+                PhysicsLayer.MapObjectTitans);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
-
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
