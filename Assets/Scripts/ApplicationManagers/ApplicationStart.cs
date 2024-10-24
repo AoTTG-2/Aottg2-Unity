@@ -53,7 +53,14 @@ namespace ApplicationManagers
             if (Application.platform == RuntimePlatform.LinuxPlayer)
             {
                 // Linux - Data path has moved, migrate old data
-                DataMigrator.MigrateLinuxSaves();
+                try
+                {                    
+                    DataMigrator.MigrateLinuxSaves();
+                }
+                catch (System.Exception MigrationFailed)
+                {
+                    Debug.LogException(MigrationFailed);
+                }
             }
             SettingsManager.Init();
             FullscreenHandler.Init();
