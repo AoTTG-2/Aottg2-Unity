@@ -1,5 +1,5 @@
 /// Options
-EditorVersion:1.0|Description:An imagining of a Forest of Giant Trees taking place between Seasons 3 and 4, having been restored to a tourist spot.|HasWeather:1
+EditorVersion:1.0|Description:Forest2 but spooky.|HasWeather:1
 /// CustomAssets
 
 /// Objects
@@ -199,7 +199,7 @@ Scene,None,196,0,1,1,1,0,Titan SpawnPoint,28.945,0.5,45.855,0,0,0,1,1,1,Physical
 Scene,None,197,0,1,1,1,0,Titan SpawnPoint,398.648,0.5,193.9648,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree12,198,0,1,1,1,0,Tree12,281.613,2.240254,508.079,0,0,0,0.702,0.702,0.702,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,None,199,0,1,1,1,0,Titan SpawnPoint,-218.686,0.5,476.3722,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,Interact/Supply2,121933,0,1,1,1,0,Supply2,77.75,0.6864465,-567,0,270,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
+Scene,Interact/Supply2,121933,0,1,1,1,0,Supply2,77.75,0.6864465,-567,0,270,0,0.7,0.7,0.7,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
 Scene,None,201,0,1,1,1,0,Titan SpawnPoint,-334.88,0.5,-340.3966,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,None,202,0,1,1,1,0,Titan SpawnPoint,388.108,0.5,378.549,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,Nature/Tree12,203,0,1,1,1,0,Tree12,-493.994,3.079363,-17.637,0,0,0,0.91,0.909,0.91,Physical,Entities,Default,Default|255/255/255/255,;
@@ -2398,29 +2398,29 @@ Scene,Nature/TreeRoot1,121929,0,1,1,1,0,TreeRoot1,-136.5072,-0.009277778,-648.60
 Scene,Decor/Goober1,121930,0,1,1,1,0,Goober1,-517.5417,0.4511663,1175.683,0,299.9048,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/SpiderFX1b,121931,0,1,0,1,0,SpiderFX1b,97.61281,11.3414,-575.7758,0,0,0,4,4,4,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/SpiderFX1b,121932,0,1,0,1,0,SpiderFX1b,115.7068,11.36126,-575.7758,0,0,0,4,4,4,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
-Scene,Decor/Gore2,121934,0,1,0,1,1,Gore2,83,0.8255901,-561.6038,75.00007,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
-Scene,Decor/Gore2,121935,0,1,0,1,1,Gore2,83.1441,0.8673967,-561.5167,68.7943,315.6857,313.6776,1,1,1,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121934,0,1,0,1,0,Gore2,83,0.8255901,-561.6038,75.00007,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121935,0,1,0,1,0,Gore2,83.1441,0.8673967,-561.5167,68.7943,315.6857,313.6776,1,1,1,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
 Scene,Decor/Gore1,121936,0,1,1,1,0,Gore1,83.00958,0.690562,-562.1097,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/BloodStainFX1,121938,0,1,0,1,0,BloodStainFX1,82.53868,0.4542742,-577.2877,0,0,0,0.001,0.0001,0.001,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/Blood1,121939,0,1,0,1,0,Blood1,110.5187,0.06807799,-565.8713,0,0,0,1.156754,0.4016847,1,None,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/GhostsFX1b,121941,0,1,0,1,0,GhostsFX1b,124.029,2.226649,-590.759,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Decor/Goober1,121942,0,1,1,1,0,Goober1,109.8397,0.4334408,-590.8925,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Gore2,121943,0,1,0,1,1,Gore2,110.8398,9.563272,-589.7551,0,221.7277,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
-Scene,Decor/Gore2,121944,0,1,0,1,1,Gore2,108.5844,9.563272,-589.7551,0,144.1876,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
-Scene,Decor/Gore2,121945,0,1,0,1,1,Gore2,127.5609,3.768033,-586.3262,0,192.4708,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:4|Limit:40;
+Scene,Decor/Gore2,121943,0,1,0,1,0,Gore2,110.8398,9.563272,-589.7551,0,221.7277,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121944,0,1,0,1,0,Gore2,108.5844,9.563272,-589.7551,0,144.1876,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121945,0,1,0,1,0,Gore2,127.5609,3.768033,-586.3262,0,192.4708,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:4|Limit:40;
 Scene,Decor/Gore2,121946,0,1,1,1,0,Gore2,127.1921,1.692443,-584.498,24.09793,181.7563,5.676989,24,24,24,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorPointLight,121947,0,1,1,0,0,PointLight,127.2215,1.988632,-583.4484,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/0/0/255|Intensity:3|Range:25;
 Scene,General/EditorPointLight,121948,0,1,1,0,0,PointLight,127.568,3.689847,-585.501,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/0/0/255|Intensity:3|Range:25;
-Scene,Decor/Petra1,121950,0,1,1,1,0,Petra1,76.84481,0.5350462,-562.7592,0,174.5543,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Petra1,121950,0,1,1,1,0,Petra1,77.69835,0.5350462,-564.0135,0,174.5543,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/TitanSkeleton1,121952,0,1,1,1,0,TitanSkeleton1,83.10419,0.8481574,-566.2703,0,270,0,0.2,0.2,0.2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Gore2,121954,0,1,0,1,1,Gore2,82.64044,6.027372,-566.4658,0,71.15983,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121954,0,1,0,1,0,Gore2,82.64044,6.027372,-566.4658,0,71.15983,0,3,3,3,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
 Scene,FX/PumpkinFX1,121955,0,1,0,1,0,PumpkinFX1,-53.97122,0.3017908,321.5365,0,0,0,2,2,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/PumpkinFX1,121956,0,1,0,1,0,PumpkinFX1,-251.6382,0.3017908,274.2437,0,0,0,2,2,2,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Nature/Field4c,121958,0,1,1,1,0,Field4c,274.041,-0.1639101,436.6252,0,0,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Field4c,121959,0,1,1,1,0,Field4c,506.649,-0.1639101,194.0711,0,0,0,5,5,5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Nature/Field4c,121962,0,1,1,1,0,Field4c,368.5354,-0.1639101,200.1544,0,0,0,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Gore2,121963,0,1,0,1,1,Gore2,537.3753,1285.636,-150.5315,302.4836,104.0474,58.50119,5000,5000,5000,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:5|Limit:40;
-Scene,Decor/Pumpkin1d,121964,121780,1,0,1,1,Pumpkin1d,93.33374,1.832469,-580.7626,0,251.4945,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Decor/Gore2,121963,0,1,0,1,0,Gore2,537.3753,1285.636,-150.5315,302.4836,104.0474,58.50119,5000,5000,5000,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:5|Limit:40;
+Scene,Decor/Pumpkin1d,121964,121780,1,0,1,0,Pumpkin1d,93.33374,1.832469,-580.7626,0,251.4945,0,1.5,1.5,1.5,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,FX/BatsFX1b,121965,0,1,0,1,0,BatsFX1b,402.6571,91.5542,302.946,0,255.0482,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/GraveFX1,121967,0,1,0,1,0,GraveFX1,503.8283,0.5959734,-79.01909,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/GraveFX1,121968,0,1,0,1,0,GraveFX1,492.0923,0.5959734,-99.99006,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
@@ -2432,10 +2432,10 @@ Scene,FX/GraveFX1,121973,0,1,0,1,0,GraveFX1,504.3912,0.5959734,-110.4789,0,0,0,5
 Scene,FX/GraveFX1,121974,0,1,0,1,0,GraveFX1,509.3051,0.5959734,-110.4789,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/GhostsFX1,121975,0,1,0,1,0,GhostsFX1,509.8458,2.107371,-110.7557,0,0,0,5,5,5,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Interact/Dog1,121976,0,1,0,1,0,Dog1,532.7564,0.5800619,272.9416,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,Animal|Wanders:true|WanderRadius:100|WanderSpeed:50|WalkAnimation:Walk|IdleAnimations:Idle0/Lie1/Lie2/Lie3/Sit1/Sit2/Sleep/Stand|ActionAnimations:Itch/Stretch/Shake|ActionSounds:,Rigidbody|Mass:5|Gravity:0/-20/0|FreezeRotation:true|Interpolate:false;
-Scene,Decor/DirtMuncherTitan1,121977,121976,1,0,1,0,DirtMuncherTitan1,533.5693,0.456687,272.0374,0,0,0,1,1,1,Physical,All,Default,Default|255/255/255/255,;
+Scene,Decor/DirtMuncherTitan1,121977,121976,1,0,1,0,DirtMuncherTitan1,533.5693,0.456687,272.0374,0,0,0,1,1,1,None,All,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,121978,121977,1,0,0,0,Kill Region,533.5843,0.3724366,287.6964,0,0,0,0.6814453,0.3169088,0.5036957,Region,Characters,Default,Transparent|255/0/0/130|Misc/None|1/1|0/0,KillRegion|Team:None|KillHumans:true|KillTitans:true|KillShifters:true|KillMessage:Got too close...;
-Scene,Decor/Gore2,121979,121977,1,0,1,1,Gore2,531.9335,2.06299,287.9758,0,169.1983,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
-Scene,Decor/Gore2,121980,121977,1,0,1,1,Gore2,535.2044,2.052953,288.0304,0,185.4283,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121979,121977,1,0,1,0,Gore2,531.9335,2.06299,287.9758,0,169.1983,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
+Scene,Decor/Gore2,121980,121977,1,0,1,0,Gore2,535.2044,2.052953,288.0304,0,185.4283,0,20,20,20,Physical,Entities,Default,Default|255/255/255/255,EyeTracker|TrackTimer:10|Limit:40;
 Scene,General/EditorPointLight,121982,121977,1,0,0,0,PointLight,533.5634,2.536949,289.4165,0,0,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/80/0/255|Intensity:3|Range:15;
 Scene,Decor/TitanSkeleton1e,121983,0,1,1,1,0,TitanSkeleton1e,-336.1676,10.85742,217.3605,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Bread1,121987,0,1,1,1,0,Bread1,-336.6504,23.16202,221.6134,40.16148,77.63358,33.97312,2,2,2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -2452,8 +2452,7 @@ Scene,FX/SpiderFX1b,122008,0,1,0,1,0,SpiderFX1b,-241.6065,12.07732,-106.8677,0,0
 Scene,FX/SpiderFX1,122009,0,1,0,1,0,SpiderFX1,-200.8807,0.5289798,-71.49068,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,FX/PumpkinFX1,122011,0,1,0,1,0,PumpkinFX1,-205.7497,0.614033,-70.03815,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Decor/DirtMuncherTitan1,122012,0,1,1,1,0,DirtMuncherTitan1,-251.5233,8.485835,-58.92149,82.08739,265.8485,306.7292,0.3,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorPointLight,122013,121963,1,0,0,0,PointLight,343.45,1068.565,-126.8058,0,0,0,4,4,4,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/0/0/255|Intensity:1|Range:100;
-Scene,Decor/Pumpkin1d,122014,0,1,0,1,0,PumpkinHead,1,2,3,0,0,0,2.1,2.2,2.3,None,Entities,Default,Default|255/255/255/255,
+Scene,General/EditorPointLight,122013,121963,1,0,0,0,PointLight,343.45,1068.565,-126.8058,0,0,0,4,4,4,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/0/0/255|Intensity:1|Range:100
 /// Logic
 class Main
 {   
@@ -2478,11 +2477,15 @@ class Main
 
     function OnCharacterSpawn(character)
     {
-        if (character.IsMine && character.Type == "Titan")
+        if (character.Type == "Titan")
         {
-            if (character.DetectRange > 0)
+
+            if (character.IsMine)
             {
-                character.DetectRange = 2000;
+                if (character.DetectRange > 0)
+                {
+                    character.DetectRange = 2000;
+                }
             }
 
             head = character.HeadMount;
@@ -2527,6 +2530,11 @@ class Main
             }
             jack = Map.CreateMapObjectRaw("Scene,"+name+",0,0,1,0,1,0,PumpkinHead,"+trs+",None,Entities,Default,Default|255/255/255/255");
             jack.Parent = head;
+            jack.Forward = head.Forward;
+
+            # Rotate jack 90 degrees to the right
+            jack.LocalRotation = Vector3(0, 90, 0);
+
         }
     }
 
@@ -2679,19 +2687,20 @@ component EyeTracker {
         return closestPlayer;
     }
 }
+
 /// Weather
 {
-    "Skybox" : "Night2",
+    "Skybox" : "Dusk1",
     "SkyboxColor" : [
-        0,
-        0,
+        167,
+        83,
         0,
         255
     ],
     "Daylight" : [
-        47,
-        58,
-        96,
+        111,
+        63,
+        60,
         255
     ],
     "DaylightIntensity" : 1.17982172966003,
@@ -2701,9 +2710,9 @@ component EyeTracker {
         0
     ],
     "AmbientLight" : [
-        15,
-        15,
-        20,
+        45,
+        35,
+        0,
         255
     ],
     "Flashlight" : [
