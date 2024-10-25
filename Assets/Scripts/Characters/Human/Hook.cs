@@ -35,6 +35,62 @@ namespace Characters
         protected float _tiling;
         protected float _lastLength;
         protected float _maxLiveTime;
+        protected float _hookWidth = 0.08f;
+
+        protected readonly struct HookRetractSettings
+        {
+            public readonly float TotalRetractTime;
+            public readonly float WaveStartDelay;
+            public readonly float WaveTransitionTime;
+            public readonly float BaseAmplitude;
+            public readonly float WaveFrequency;
+            public readonly float MinWaveInfluence;
+            public readonly float PointSpacing;
+
+            public HookRetractSettings(float retractTime = 0.6f, float startDelay = 0.15f, float transitionTime = 0.15f,
+                float amplitude = 0.15f, float frequency = 2.5f, float minInfluence = 0.1f, float spacing = 1.2f)
+            {
+                TotalRetractTime = retractTime;
+                WaveStartDelay = startDelay;
+                WaveTransitionTime = transitionTime;
+                BaseAmplitude = amplitude;
+                WaveFrequency = frequency;
+                MinWaveInfluence = minInfluence;
+                PointSpacing = spacing;
+            }
+        }
+
+        protected void TransitionFromCurvedToStraight(List<Vector3> sourceNodes, Vector3 startPos, Vector3 endPos, float transitionProgress)
+        {
+            int vertex = (int)((endPos - startPos).magnitude / 5f);
+            vertex = Mathf.Clamp(vertex, 2, 6);
+
+            int pointCount = Mathf.Max(sourceNodes.Count, vertex);
+            _renderer.positionCount = pointCount;
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                float normalizedI = (float)i / (pointCount - 1);
+
+                Vector3 curvedPos;
+                if (i < sourceNodes.Count)
+                {
+                    Vector3 v = startPos - sourceNodes[0];
+                    curvedPos = sourceNodes[i] + v * Mathf.Pow(0.85f, i);
+                }
+                else
+                {
+                    curvedPos = endPos;
+                }
+
+                Vector3 straightPos = Vector3.Lerp(startPos, endPos, normalizedI);
+
+                Vector3 finalPos = Vector3.Lerp(curvedPos, straightPos, transitionProgress);
+                _renderer.SetPosition(i, finalPos);
+            }
+
+            _renderer.SetPosition(_renderer.positionCount - 1, endPos);
+        }
 
         public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
@@ -65,8 +121,8 @@ namespace Characters
         protected void Awake()
         {
             _renderer = gameObject.AddComponent<LineRenderer>();
-            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/BasicMaterial", true);
-            _renderer.material.color = Color.black;
+            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/HookMaterial", true);
+            _renderer.material.color = Color.white;
             _renderer.positionCount = 0;
             _particles = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Particles/Prefabs/HookParticle", true)
                 .GetComponent<ParticleSystem>();
@@ -104,7 +160,8 @@ namespace Characters
                 else
                     _owner.PlaySoundRPC(HumanSounds.HookRetractRight, Util.CreateLocalPhotonInfo());
             }
-            _endSprite.SetActive(false);
+
+            _endSprite.SetActive(State == HookState.DisablingHooked ? true : false);
         }
 
         public void OnSetHooking(Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
@@ -119,7 +176,7 @@ namespace Characters
             _nodes.Clear();
             _currentLiveTime = 0f;
             _nodes.Add(_hookPosition);
-            _renderer.startWidth = _renderer.endWidth = 0.1f;
+            _renderer.startWidth = _renderer.endWidth = _hookWidth;
             if (SettingsManager.SoundSettings.OldHookEffect.Value)
                 _owner.PlaySoundRPC(HumanSounds.OldHookLaunch, Util.CreateLocalPhotonInfo());
             else
@@ -167,7 +224,7 @@ namespace Characters
                 }
             }
             _currentLiveTime = 0f;
-            _renderer.startWidth = _renderer.endWidth = 0.1f;
+            _renderer.startWidth = _renderer.endWidth = _hookWidth;
             if (SettingsManager.SoundSettings.HookImpactEffect.Value)
             {
                 if (HookCharacter != null && HookCharacter is Human)
@@ -188,8 +245,15 @@ namespace Characters
             _owner.Cache.PhotonView.RPC("SetHookingRPC", RpcTarget.All, new object[] { _left, _id, baseVelocity, relativeVelocity });
         }
 
+        private float _hookTransitionTime = 0f;
+        private const float HOOK_TRANSITION_DURATION = 0.1f;
+        private List<Vector3> _lastHookingNodes = new List<Vector3>();
+
         public void SetHooked(Vector3 position, Transform t = null, int viewId = -1, int objectId = -1)
         {
+            _lastHookingNodes = new List<Vector3>(_nodes);
+            _hookTransitionTime = 0f;
+
             _owner.Cache.PhotonView.RPC("SetHookedRPC", RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
             OnSetHooked(position, t);
             _owner.OnHooked(_left, position);
@@ -211,7 +275,7 @@ namespace Characters
                 Vector3 v = Anchor.position - _nodes[0];
                 _renderer.positionCount = _nodes.Count;
                 for (int i = 0; i < _nodes.Count; i++)
-                    _renderer.SetPosition(i, _nodes[i] + v * Mathf.Pow(0.75f, i));
+                    _renderer.SetPosition(i, _nodes[i] + v * Mathf.Pow(0.85f, i));
                 if (_nodes.Count > 1)
                     _renderer.SetPosition(1, Anchor.position);
             }
@@ -222,44 +286,190 @@ namespace Characters
             Vector3 position = GetHookPosition();
             Vector3 v1 = position - Anchor.position;
             Vector3 velocity = _owner.Cache.Rigidbody.velocity;
-            int vertex = (int)((v1.magnitude + velocity.magnitude) / 5f);
-            vertex = Mathf.Clamp(vertex, 2, 6);
-            _renderer.positionCount = vertex;
-            _renderer.SetPosition(0, Anchor.position);
-            float rndFactor = Mathf.Pow(v1.magnitude, 0.3f);
-            for (int i = 1; i < vertex - 1; i++)
+
+            // Calculate transition progress
+            _hookTransitionTime += Time.deltaTime;
+            float transitionProgress = Mathf.Clamp01(_hookTransitionTime / HOOK_TRANSITION_DURATION);
+            transitionProgress = Mathf.SmoothStep(0, 1, transitionProgress);
+
+            if (transitionProgress < 1f && _lastHookingNodes.Count > 0)
             {
-                int midpoint = vertex / 2;
-                float midDiff = Mathf.Abs((i - midpoint));
-                float noise = (midpoint - midDiff) / (float)midpoint;
-                noise = Mathf.Pow(noise, 0.5f);
-                float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
-                Vector3 noisePosition = Anchor.position + new Vector3(Random.Range(-max, max), Random.Range(-max, max), Random.Range(-max, max));
-                noisePosition += (v1 * ((float)i / (float)vertex)) - (Vector3.up * rndFactor * 0.05f * noise) - (velocity * 0.001f * noise * rndFactor);
-                _renderer.SetPosition(i, noisePosition);
+                // Use shared transition function for the curved-to-straight transition
+                TransitionFromCurvedToStraight(_lastHookingNodes, Anchor.position, position, transitionProgress);
             }
-            _renderer.SetPosition(vertex - 1, position);
+            else
+            {
+                // After transition, handle normal hooked state with velocity-based noise
+                int vertex = (int)((v1.magnitude + velocity.magnitude) / 5f);
+                vertex = Mathf.Clamp(vertex, 2, 6);
+                _renderer.positionCount = vertex;
+                _renderer.SetPosition(0, Anchor.position);
+
+                float rndFactor = Mathf.Pow(v1.magnitude, 0.3f);
+                for (int i = 1; i < vertex - 1; i++)
+                {
+                    int midpoint = vertex / 2;
+                    float midDiff = Mathf.Abs((i - midpoint));
+                    float noise = (midpoint - midDiff) / (float)midpoint;
+                    noise = Mathf.Pow(noise, 0.5f);
+                    float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
+                    Vector3 noisePosition = Anchor.position + new Vector3(
+                        Random.Range(-max, max),
+                        Random.Range(-max, max),
+                        Random.Range(-max, max));
+                    noisePosition += (v1 * ((float)i / (float)vertex))
+                        - (Vector3.up * rndFactor * 0.05f * noise)
+                        - (velocity * 0.001f * noise * rndFactor);
+                    _renderer.SetPosition(i, noisePosition);
+                }
+                _renderer.SetPosition(vertex - 1, position);
+            }
+
+            // Update end sprite
             _endSprite.transform.position = position + v1.normalized * 0.1f;
-            _endSprite.transform.rotation = Quaternion.LookRotation(v1.normalized, (SceneLoader.CurrentCamera.Cache.Transform.position - _endSprite.transform.position).normalized);
+            _endSprite.transform.rotation = Quaternion.LookRotation(v1.normalized,
+                (SceneLoader.CurrentCamera.Cache.Transform.position - _endSprite.transform.position).normalized);
+        }
+
+        private float _randomRotationAngle;
+        private float _secondaryRotationAngle;
+        private float _waveVariation;
+        private float _amplitudeVariation;
+
+        protected void UpdateRetractingHook(Vector3 startPos, Vector3 endPos, HookRetractSettings settings)
+        {
+            if (_currentLiveTime == 0)
+            {
+                _randomRotationAngle = Random.Range(0f, 360f);
+                _secondaryRotationAngle = Random.Range(-30f, 30f);
+                _waveVariation = Random.Range(0.8f, 1.2f);
+                _amplitudeVariation = Random.Range(0.9f, 1.1f);
+            }
+
+            float totalDistance = Vector3.Distance(startPos, endPos);
+            _currentLiveTime += Time.deltaTime;
+
+            float baseProgress = _currentLiveTime / settings.TotalRetractTime;
+            float exponentialProgress = 1f - Mathf.Pow(1f - baseProgress, 3f);
+
+            if (_currentLiveTime > 0.325f)
+            {
+                float lateGameAcceleration = (_currentLiveTime - 0.325f) / 0.2f;
+                exponentialProgress = Mathf.Lerp(exponentialProgress, 1f, lateGameAcceleration * lateGameAcceleration);
+            }
+            exponentialProgress = Mathf.Min(exponentialProgress, 1f);
+
+            float waveTimeInfluence = _currentLiveTime < settings.WaveStartDelay ? 0f :
+                Mathf.SmoothStep(0f, 1f, (_currentLiveTime - settings.WaveStartDelay) / settings.WaveTransitionTime);
+
+            int pointCount = Mathf.Max(24, Mathf.Min(32, Mathf.CeilToInt(totalDistance / settings.PointSpacing)));
+            _renderer.positionCount = pointCount;
+
+            Vector3 directVector = endPos - startPos;
+            Vector3 forward = directVector.normalized;
+
+            // Create a randomized rotation basis
+            Quaternion randomRotation = Quaternion.Euler(0, _randomRotationAngle, _secondaryRotationAngle);
+            Vector3 right = randomRotation * Vector3.Cross(forward, Vector3.up).normalized;
+            Vector3 up = Vector3.Cross(right, forward);
+
+            // Generate points along the line
+            for (int i = 0; i < pointCount; i++)
+            {
+                float pointProgress = (float)i / (pointCount - 1);
+                Vector3 basePoint = Vector3.Lerp(startPos, endPos, Mathf.Lerp(exponentialProgress, 1f, pointProgress));
+
+                if (exponentialProgress < 0.95f && waveTimeInfluence > 0f)
+                {
+                    float waveInfluence = Mathf.Lerp(1f, settings.MinWaveInfluence, Mathf.Pow(pointProgress, 0.9f));
+
+                    float time = _currentLiveTime * settings.WaveFrequency * _waveVariation;
+                    float wavePhase = pointProgress * Mathf.PI * settings.WaveFrequency + time;
+
+                    float amplitude = totalDistance * settings.BaseAmplitude * _amplitudeVariation *
+                        waveInfluence *
+                        (1f - exponentialProgress) *
+                        waveTimeInfluence;
+
+                    // Add some variation to the spiral shape
+                    float horizontalScale = Mathf.Sin(pointProgress * Mathf.PI * 0.5f);
+                    float verticalScale = Mathf.Cos(pointProgress * Mathf.PI * 0.5f);
+
+                    Vector3 offset = right * Mathf.Sin(wavePhase) * amplitude * horizontalScale +
+                                   up * Mathf.Cos(wavePhase) * amplitude * verticalScale;
+
+                    if (exponentialProgress > 0.8f)
+                    {
+                        float endSmoothing = 1f - ((exponentialProgress - 0.8f) / 0.15f);
+                        offset *= Mathf.SmoothStep(0f, 1f, endSmoothing);
+                    }
+
+                    basePoint += offset;
+                }
+
+                _renderer.SetPosition(i, basePoint);
+            }
+
+            // Handle end points
+            if (exponentialProgress < 0.95f)
+            {
+                Vector3 slightOffset = Vector3.Lerp(
+                    _renderer.GetPosition(pointCount - 2) - endPos,
+                    Vector3.zero,
+                    exponentialProgress);
+                _renderer.SetPosition(pointCount - 1, endPos + slightOffset * 0.1f);
+            }
+            else
+            {
+                _renderer.SetPosition(pointCount - 1, endPos);
+            }
+
+            _renderer.startWidth = _renderer.endWidth = _hookWidth;
+
+            // Update end sprite
+            if (_endSprite != null)
+            {
+                Debug.Log("END SPRITE EXISTS!!!");
+                Vector3 direction = (_renderer.GetPosition(1) - _renderer.GetPosition(0)).normalized;
+                _endSprite.transform.position = _renderer.GetPosition(0) + direction * 0.1f;
+                _endSprite.transform.rotation = Quaternion.LookRotation(direction,
+                    (SceneLoader.CurrentCamera.Cache.Transform.position - _endSprite.transform.position).normalized);
+            }
+
+            if (_currentLiveTime >= settings.TotalRetractTime || Vector3.Distance(startPos, endPos) < 0.1f)
+            {
+                FinishDisable();
+            }
         }
 
         protected void UpdateDisablingHooking()
         {
-            Vector3 position = GetHookPosition();
-            position += _baseVelocity + (_relativeVelocity * Time.deltaTime);
-            _nodes.Add(position);
-            Vector3 v = Anchor.position - _nodes[0];
-            _renderer.positionCount = _nodes.Count;
-            for (int i = 0; i < _nodes.Count; i++)
-            {
-                _renderer.SetPosition(i, _nodes[i] + (v * Mathf.Pow(0.75f, i)));
-            }
-            if (_nodes.Count > 1)
-                _renderer.SetPosition(1, Anchor.position);
+            const float TOTAL_DURATION = 0.5f;
             _currentLiveTime += Time.deltaTime;
-            float width = 0.1f - _currentLiveTime * 0.2f;
-            _renderer.startWidth = _renderer.endWidth = width;
-            if (_currentLiveTime > 0.5f)
+
+            if (_nodes.Count > 0)
+            {
+                float retractProgress = _currentLiveTime / TOTAL_DURATION;
+                retractProgress = 1f - Mathf.Pow(1f - retractProgress, 3f); // Exponential easing
+
+                int nodeCount = Mathf.Max(2, Mathf.CeilToInt(_nodes.Count * (1f - retractProgress)));
+                _renderer.positionCount = nodeCount;
+
+                Vector3 v = Anchor.position - _nodes[0];
+                for (int i = 0; i < nodeCount; i++)
+                {
+                    _renderer.SetPosition(i, _nodes[i] + v * Mathf.Pow(0.85f, i));
+                }
+
+                if (nodeCount > 1)
+                {
+                    _renderer.SetPosition(1, Anchor.position);
+                }
+            }
+
+            _renderer.startWidth = _renderer.endWidth = _hookWidth;
+
+            if (_currentLiveTime >= TOTAL_DURATION)
             {
                 FinishDisable();
             }
@@ -267,14 +477,16 @@ namespace Characters
 
         protected void UpdateDisablingHooked()
         {
-            _renderer.positionCount = 2;
-            _renderer.SetPosition(0, GetHookPosition());
-            _renderer.SetPosition(1, Anchor.position);
-            _currentLiveTime += Time.deltaTime;
-            float width = 0.1f - _currentLiveTime * 0.2f;
-            _renderer.startWidth = _renderer.endWidth = width;
-            if (_currentLiveTime > 0.5f)
-                FinishDisable();
+            var settings = new HookRetractSettings(
+                retractTime: 0.45f,
+                startDelay: 0.12f,
+                transitionTime: 0.15f,
+                amplitude: 0.3f,
+                frequency: 2.5f,
+                minInfluence: 0.2f,
+                spacing: 1.2f
+            );
+            UpdateRetractingHook(GetHookPosition(), Anchor.position, settings);
         }
 
         protected void FixedUpdateHooking()

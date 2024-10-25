@@ -66,6 +66,7 @@ namespace Characters
 
         public void DisableActiveHook()
         {
+            Debug.Log("DisableACtiveHook");
             if (_activeHook != null && _activeHook.State == HookState.Hooked)
             {
                 _activeHook.SetHookState(HookState.DisablingHooked);
