@@ -168,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return string.Empty;
+            return ApplicationVersion.GetHashCode(str);
         }
     }
 
