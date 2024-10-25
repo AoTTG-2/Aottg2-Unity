@@ -110,7 +110,7 @@ namespace Characters
             _part_head = head.Find("char_head").gameObject;
             _part_leg = transform.Find("character_leg").gameObject;
             _part_chest = transform.Find("character_chest").gameObject;
-            _mount_back = hip.Find("spine").gameObject;
+            _mount_back = hip.Find("spine/chest").gameObject;
             _mount_hat = head.gameObject;
             _mount_head_decor = head.gameObject;
             _mount_chest = CreateMount("spine/chest");

@@ -53,6 +53,8 @@ namespace GameManagers
         private static readonly int MaxLines = 30;
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
+        private static string LastException;
+        private static int LastExceptionCount;
 
         public static void Init()
         {
@@ -95,6 +97,8 @@ namespace GameManagers
         public static void Reset()
         {
             Lines.Clear();
+            LastException = string.Empty;
+            LastExceptionCount = 0;
             FeedLines.Clear();
             LoadTheme();
         }
@@ -102,6 +106,8 @@ namespace GameManagers
         public static void Clear()
         {
             Lines.Clear();
+            LastException = string.Empty;
+            LastExceptionCount = 0;
             FeedLines.Clear();
             GetChatPanel().Sync();
             var feedPanel = GetFeedPanel();
@@ -140,9 +146,43 @@ namespace GameManagers
 
         public static void OnAnnounceRPC(string message) => AddLine(message);
 
-        public static void AddLine(string line, ChatTextColor color = ChatTextColor.Default)
+        public static void AddLine(string line, ChatTextColor color)
         {
             AddLine(GetColorString(line, color));
+        }
+
+        public static void AddException(string line)
+        {
+            if (LastException == line)
+            {
+                LastExceptionCount++;
+                ReplaceLastLine(GetColorString(line + "(" + LastExceptionCount.ToString() + ")", ChatTextColor.Error));
+            }
+            else
+            {
+                LastException = line;
+                LastExceptionCount = 0;
+                AddLine(GetColorString(line, ChatTextColor.Error), true);
+            }
+        }
+
+        public static void ReplaceLastLine(string line)
+        {
+            if (Lines.Count > 0)
+            {
+                line = line.FilterSizeTag();
+                Lines[Lines.Count - 1] = line;
+                if (IsChatAvailable())
+                {
+                    var panel = GetChatPanel();
+                    if (panel != null)
+                        panel.ReplaceLastLine(line);
+                }
+            }
+            else
+            {
+                AddLine(line, true);
+            }
         }
 
         public static void AddLine(string line, int senderID)
@@ -151,8 +191,13 @@ namespace GameManagers
             AddLine(line);
         }
 
-        public static void AddLine(string line)
+        public static void AddLine(string line, bool exception = false)
         {
+            if (!exception)
+            {
+                LastException = string.Empty;
+                LastExceptionCount = 0;
+            }
             line = line.FilterSizeTag();
             Lines.Add(line);
             if (Lines.Count > MaxLines)

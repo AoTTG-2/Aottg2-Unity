@@ -244,7 +244,8 @@ namespace GameManagers
             UpdateRoundPlayerProperties();
             if (CurrentCharacter == null)
                 return;
-            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
         }
 
         public void RegisterMainCharacterKill(BaseCharacter victim)

@@ -14,6 +14,15 @@ namespace CustomLogic
 
         public override object CallMethod(string name, List<object> parameters)
         {
+            if (name == "FindAllMapObjects")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                {
+                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                }
+                return listBuiltin;
+            }
             if (name == "FindMapObjectByName")
             {
                 string objectName = (string)parameters[0];
@@ -155,7 +164,7 @@ namespace CustomLogic
         // obj is CustomLogicMapObjectBuiltin or MapObject
         protected void DestroyMapObject(object obj, bool recursive)
         {
-            if (obj is not CustomLogicMapObjectBuiltin or MapObject)
+            if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
                 return;
             }

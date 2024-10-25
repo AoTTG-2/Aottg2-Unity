@@ -43,7 +43,7 @@ namespace ApplicationManagers
         {
             UnityEngine.Debug.Log(message);
             if (showInChat && ChatManager.IsChatAvailable())
-                ChatManager.AddLine(message, color: ChatTextColor.Error);
+                ChatManager.AddException(message);
         }
 
         public static void DebugLog(object message)

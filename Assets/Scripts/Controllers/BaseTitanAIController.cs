@@ -53,7 +53,8 @@ namespace Controllers
         private bool _setTargetThisFrame = false;
 
         // Layers
-        private LayerMask _losLayer = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+        private LayerMask _losLayer = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectTitans,
+            PhysicsLayer.MapObjectAll);
 
         protected override void Awake()
         {

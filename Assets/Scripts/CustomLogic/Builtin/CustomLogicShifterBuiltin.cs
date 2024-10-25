@@ -86,6 +86,10 @@ namespace CustomLogic
                 return Shifter.RunSpeedBase;
             if (name == "WalkSpeedBase")
                 return Shifter.WalkSpeedBase;
+            if (name == "WalkSpeedPerLevel")
+                return Shifter.WalkSpeedPerLevel;
+            if (name == "RunSpeedPerLevel")
+                return Shifter.RunSpeedPerLevel;
             if (name == "TurnSpeed")
                 return Shifter.TurnSpeed;
             if (name == "RotateSpeed")
@@ -110,6 +114,34 @@ namespace CustomLogic
                     return Shifter.GetComponent<BaseTitanAIController>().FocusRange;
                 return null;
             }
+            if (name == "FocusTime")
+            {
+                if (Shifter.IsMine() && Shifter.AI)
+                    return Shifter.GetComponent<BaseTitanAIController>().FocusTime;
+                return null;
+            }
+            if (name == "FarAttackCooldown")
+            {
+                if (Shifter.IsMine() && Shifter.AI)
+                    return Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown;
+                return null;
+            }
+            if (name == "AttackWait")
+            {
+                if (Shifter.IsMine() && Shifter.AI)
+                    return Shifter.GetComponent<BaseTitanAIController>().AttackWait;
+                return null;
+            }
+            if (name == "AttackSpeedMultiplier")
+            {
+                return Shifter.AttackSpeedMultiplier;
+            }
+            if (name == "UsePathfinding")
+            {
+                if (Shifter.IsMine() && Shifter.AI)
+                    return Shifter.GetComponent<BaseTitanAIController>()._usePathfinding;
+                return null;
+            }
             if (name == "NapePosition")
             {
                 return new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
@@ -126,11 +158,15 @@ namespace CustomLogic
             if (!Shifter.IsMine())
                 return;
             if (name == "Size")
-                Shifter.SetSize((float)value);
+                Shifter.SetSize(value.UnboxToFloat());
             else if (name == "RunSpeedBase")
                 Shifter.RunSpeedBase = value.UnboxToFloat();
             else if (name == "WalkSpeedBase")
                 Shifter.WalkSpeedBase = value.UnboxToFloat();
+            else if (name == "RunSpeedPerLevel")
+                Shifter.RunSpeedPerLevel = value.UnboxToFloat();
+            else if (name == "WalkSpeedPerLevel")
+                Shifter.WalkSpeedPerLevel = value.UnboxToFloat();
             else if (name == "TurnSpeed")
                 Shifter.TurnSpeed = value.UnboxToFloat();
             else if (name == "RotateSpeed")
@@ -153,9 +189,33 @@ namespace CustomLogic
                 if (Shifter.AI)
                     Shifter.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
             }
+            else if (name == "FocusTime")
+            {
+                if (Shifter.AI)
+                    Shifter.GetComponent<BaseTitanAIController>().FocusTime = value.UnboxToFloat();
+            }
+            else if (name == "FarAttackCooldown")
+            {
+                if (Shifter.AI)
+                    Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown = value.UnboxToFloat();
+            }
+            else if (name == "AttackWait")
+            {
+                if (Shifter.AI)
+                    Shifter.GetComponent<BaseTitanAIController>().AttackWait = value.UnboxToFloat();
+            }
+            else if (name == "AttackSpeedMultiplier")
+            {
+                Shifter.AttackSpeedMultiplier = value.UnboxToFloat();
+            }
             if (name == "DeathAnimLength")
             {
                 Shifter.DeathAnimationLength = value.UnboxToFloat();
+            }
+            else if (name == "UsePathfinding")
+            {
+                if (Shifter.AI)
+                    Shifter.GetComponent<BaseTitanAIController>()._usePathfinding = (bool)value;
             }
             else
                 base.SetField(name, value);

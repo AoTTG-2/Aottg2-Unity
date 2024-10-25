@@ -50,6 +50,18 @@ namespace ApplicationManagers
             MaterialCache.Init();
             EventManager.Init();
             HumanSetup.Init();
+            if (Application.platform == RuntimePlatform.LinuxPlayer)
+            {
+                // Linux - Data path has moved, migrate old data
+                try
+                {                    
+                    DataMigrator.MigrateLinuxSaves();
+                }
+                catch (System.Exception MigrationFailed)
+                {
+                    Debug.LogException(MigrationFailed);
+                }
+            }
             SettingsManager.Init();
             FullscreenHandler.Init();
             UIManager.Init();
@@ -65,13 +77,16 @@ namespace ApplicationManagers
             MusicManager.Init();
             VoiceChatManager.Init();
             CustomSerialization.Init();
+
+            // debug
+            DebugConsole.Init();
+            DebugLagSim.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
-                DebugConsole.Init();
                 DebugTesting.Init();
                 DebugTesting.RunTests();
-                DebugLagSim.Init();
             }
+
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();

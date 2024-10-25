@@ -740,6 +740,7 @@ namespace CustomLogic
                 }
                 else if (value is CustomLogicTransformBuiltin)
                 {
+                    MapLoader.SetParent(Value, null);
                     var parent = (CustomLogicTransformBuiltin)value;
                     Value.GameObject.transform.SetParent(parent.Value);
                 }

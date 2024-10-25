@@ -102,6 +102,10 @@ namespace CustomLogic
                 return Titan.RunSpeedBase;
             if (name == "WalkSpeedBase")
                 return Titan.WalkSpeedBase;
+            if (name == "WalkSpeedPerLevel")
+                return Titan.WalkSpeedPerLevel;
+            if (name == "RunSpeedPerLevel")
+                return Titan.RunSpeedPerLevel;
             if (name == "TurnSpeed")
                 return Titan.TurnSpeed;
             if (name == "RotateSpeed")
@@ -118,6 +122,34 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(Titan.BasicCache.NapeHurtbox.transform.position);
             if (name == "IsCrawler")
                 return Titan.IsCrawler;
+            if (name == "FocusTime")
+            {
+                if (Titan.IsMine() && Titan.AI)
+                    return Titan.GetComponent<BaseTitanAIController>().FocusTime;
+                return null;
+            }
+            if (name == "FarAttackCooldown")
+            {
+                if (Titan.IsMine() && Titan.AI)
+                    return Titan.GetComponent<BaseTitanAIController>().FarAttackCooldown;
+                return null;
+            }
+            if (name == "AttackWait")
+            {
+                if (Titan.IsMine() && Titan.AI)
+                    return Titan.GetComponent<BaseTitanAIController>().AttackWait;
+                return null;
+            }
+            if (name == "CanRun")
+            {
+                if (Titan.IsMine() && Titan.AI)
+                    return Titan.GetComponent<BaseTitanAIController>().IsRun;
+                return null;
+            }
+            if (name == "AttackSpeedMultiplier")
+            {
+                return Titan.AttackSpeedMultiplier;
+            }
             if (name == "UsePathfinding")
             {
                 if (Titan.IsMine() && Titan.AI)
@@ -145,6 +177,10 @@ namespace CustomLogic
                 Titan.RunSpeedBase = value.UnboxToFloat();
             else if (name == "WalkSpeedBase")
                 Titan.WalkSpeedBase = value.UnboxToFloat();
+            else if (name == "RunSpeedPerLevel")
+                Titan.RunSpeedPerLevel = value.UnboxToFloat();
+            else if (name == "WalkSpeedPerLevel")
+                Titan.WalkSpeedPerLevel = value.UnboxToFloat();
             else if (name == "TurnSpeed")
                 Titan.TurnSpeed = value.UnboxToFloat();
             else if (name == "RotateSpeed")
@@ -166,6 +202,25 @@ namespace CustomLogic
             {
                 if (Titan.AI)
                     Titan.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
+            }
+            else if (name == "FocusTime")
+            {
+                if (Titan.AI)
+                    Titan.GetComponent<BaseTitanAIController>().FocusTime = value.UnboxToFloat();
+            }
+            else if (name == "AttackWait")
+            {
+                if (Titan.AI)
+                    Titan.GetComponent<BaseTitanAIController>().AttackWait = value.UnboxToFloat();
+            }
+            else if (name == "CanRun")
+            {
+                if (Titan.AI)
+                    Titan.GetComponent<BaseTitanAIController>().IsRun = (bool)value;
+            }
+            else if (name == "AttackSpeedMultiplier")
+            {
+                Titan.AttackSpeedMultiplier = value.UnboxToFloat();
             }
             else if (name == "UsePathfinding")
             {
