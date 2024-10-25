@@ -2456,13 +2456,14 @@ Scene,General/EditorPointLight,122013,121963,1,0,0,0,PointLight,343.45,1068.565,
 /// Logic
 class Main
 {   
-    Description = "Survive multiple waves of titans.";
+    Description = "Survive multiple waves of spooky titans.";
     StartTitans = 3;
     AddTitansPerWave = 1;
     MaxWaves = 20;
     RespawnOnWave = true;
     GradualSpawn = true;
     GradualSpawnTooltip = "Spawn new titans gradually over time. Helpful for reducing lag.";
+    PumpkinHookable = true;
     _currentWave = 0;
     _hasSpawned = false;
     _jumpscare = false;
@@ -2528,7 +2529,12 @@ class Main
             {
                 name += "d";
             }
-            jack = Map.CreateMapObjectRaw("Scene,"+name+",0,0,1,0,1,0,PumpkinHead,"+trs+",None,Entities,Default,Default|255/255/255/255");
+            collisionMode = "None,Projectiles";
+            if (self.PumpkinHookable)
+            {
+                collisionMode = "Physical,Projectiles";
+            }
+            jack = Map.CreateMapObjectRaw("Scene,"+name+",0,0,1,0,1,0,PumpkinHead,"+trs+","+collisionMode+",Default,Default|255/255/255/255");
             jack.Parent = head;
             jack.Forward = head.Forward;
 
@@ -2546,7 +2552,7 @@ class Main
         scale = "" + sz.X + "," + sz.Y + "," + sz.Z;
         trs = pos + "," + rot + "," + scale;
         Game.Print("Spawning object: " + object + " at " + trs);
-        return Map.CreateMapObjectRaw("Scene,"+object+",0,0,1,0,1,0,"+name+","+trs+",None,Entities,Default,Default|255/255/255/255");
+        return Map.CreateMapObjectRaw("Scene,"+object+",0,0,1,0,1,0,"+name+","+trs+",Physical,Projectiles,Default,Default|255/255/255/255");
     }
 
 

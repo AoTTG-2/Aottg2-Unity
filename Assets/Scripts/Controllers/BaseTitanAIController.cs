@@ -233,7 +233,7 @@ namespace Controllers
                         _enemy = null;
                 }
 
-                if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false)
+                if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false && !(_moveToActive && _moveToIgnoreEnemies))
                     SetAgentDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
             }
