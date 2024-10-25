@@ -5,6 +5,7 @@ using System.Text;
 using Utility;
 using System.Diagnostics;
 using GameManagers;
+using Assets.Scripts.ApplicationManagers;
 
 namespace ApplicationManagers
 {
@@ -46,11 +47,6 @@ namespace ApplicationManagers
                 ChatManager.AddException(message);
         }
 
-        public static void DebugLog(object message)
-        {
-            UnityEngine.Debug.Log(message);
-        }
-
         public static void LogTimeSince(float start, string prefix = "")
         {
             UnityEngine.Debug.Log(prefix + ": " + (Time.realtimeSinceStartup - start).ToString());
@@ -82,7 +78,10 @@ namespace ApplicationManagers
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.F11))
+            {
                 Enabled = !Enabled;
+                DebugLagSim.Toggle(Enabled);
+            }
         }
 
         void OnGUI()

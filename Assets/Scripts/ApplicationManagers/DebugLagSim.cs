@@ -20,13 +20,11 @@ namespace Assets.Scripts.ApplicationManagers
             _instance = SingletonFactory.CreateSingleton(_instance);
             _instance.LagSimGui = _instance.gameObject.AddComponent<PhotonLagSimulationGui>();
             _instance.LagSimGui.enabled = false;
-
         }
 
-        void Update()
+        public static void Toggle(bool toggle)
         {
-            if (Input.GetKeyDown(KeyCode.F10))
-                LagSimGui.enabled = !LagSimGui.enabled;
+            _instance.LagSimGui.enabled = toggle;
         }
     }
 }

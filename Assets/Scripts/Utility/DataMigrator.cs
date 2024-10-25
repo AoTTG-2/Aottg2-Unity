@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Utility
@@ -21,18 +22,25 @@ namespace Utility
 
         public static void MigrateLinuxSaves()
         {
-            string oldPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Aottg2";
-            string newPath = FolderPaths.Documents;
-
-            if (Directory.Exists(oldPath))
+            try
             {
-                // Only attempt to copy if the old path exists and the new does not
-                // Avoids overwriting new data
-                FileAttributes sourceAttribs = File.GetAttributes(oldPath);
-                if (sourceAttribs == FileAttributes.Directory && !Directory.Exists(newPath))
+                string oldPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Aottg2";
+                string newPath = FolderPaths.Documents;
+
+                if (Directory.Exists(oldPath))
                 {
-                    CopyDirectory(new DirectoryInfo(oldPath), new DirectoryInfo(newPath));
+                    // Only attempt to copy if the old path exists and the new does not
+                    // Avoids overwriting new data
+                    FileAttributes sourceAttribs = File.GetAttributes(oldPath);
+                    if (sourceAttribs == FileAttributes.Directory && !Directory.Exists(newPath))
+                    {
+                        CopyDirectory(new DirectoryInfo(oldPath), new DirectoryInfo(newPath));
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.Log("Exception while migrating linux saves.");
             }
         }
     }
