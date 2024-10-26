@@ -17,69 +17,68 @@ namespace CustomLogic
 
         public override object CallMethod(string methodName, List<object> parameters)
         {
-            if (Titan != null && !Titan.Dead)
+            bool mine = Titan.IsMine() && !Titan.Dead;
+            if (methodName == "MoveTo")
             {
-                if (Titan.IsMine())
-                {
-                    if (methodName == "MoveTo")
-                    {
-                        if (!Titan.AI)
-                            return null;
-                        var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                        var range = parameters[1].UnboxToFloat();
-                        bool ignoreEnemies = (bool)parameters[2];
-                        Titan.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
-                        return null;
-                    }
-                    if (methodName == "Target")
-                    {
-                        if (!Titan.AI)
-                            return null;
-
-                        ITargetable enemy;
-                        if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
-                            enemy = mapTargetable.Value;
-                        else
-                            enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
-                        var focus = parameters[1].UnboxToFloat();
-                        Titan.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
-                        return null;
-                    }
-                    if (methodName == "Idle")
-                    {
-                        if (!Titan.AI)
-                            return null;
-                        var time = parameters[0].UnboxToFloat();
-                        Titan.GetComponent<BaseTitanAIController>().ForceIdle(time);
-                        return null;
-                    }
-                    if (methodName == "Wander")
-                    {
-                        if (!Titan.AI)
-                            return null;
-                        Titan.GetComponent<BaseTitanAIController>().CancelOrder();
-                        return null;
-                    }
-                    if (methodName == "Blind")
-                    {
-                        Titan.Blind();
-                        return null;
-                    }
-                    if (methodName == "Cripple")
-                    {
-                        var time = parameters[0].UnboxToFloat();
-                        Titan.Cripple(time);
-                        return null;
-                    }
-                    if (methodName == "Emote")
-                    {
-                        Titan.Emote((string)parameters[0]);
-                        return null;
-                    }
-                }
-                return base.CallMethod(methodName, parameters);
+                if (!mine || !Titan.AI)
+                    return null;
+                var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
+                var range = parameters[1].UnboxToFloat();
+                bool ignoreEnemies = (bool)parameters[2];
+                Titan.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
+                return null;
             }
-            return null;
+            if (methodName == "Target")
+            {
+                if (!mine || !Titan.AI)
+                    return null;
+
+                ITargetable enemy;
+                if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
+                    enemy = mapTargetable.Value;
+                else
+                    enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
+                var focus = parameters[1].UnboxToFloat();
+                Titan.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
+                return null;
+            }
+            if (methodName == "Idle")
+            {
+                if (!mine || !Titan.AI)
+                    return null;
+                var time = parameters[0].UnboxToFloat();
+                Titan.GetComponent<BaseTitanAIController>().ForceIdle(time);
+                return null;
+            }
+            if (methodName == "Wander")
+            {
+                if (!mine || !Titan.AI)
+                    return null;
+                Titan.GetComponent<BaseTitanAIController>().CancelOrder();
+                return null;
+            }
+            if (methodName == "Blind")
+            {
+                if (mine)
+                    Titan.Blind();
+                return null;
+            }
+            if (methodName == "Cripple")
+            {
+                if (mine)
+                {
+                    var time = parameters[0].UnboxToFloat();
+                    Titan.Cripple(time);
+                }
+                return null;
+            }
+            if (methodName == "Emote")
+            {
+                if (mine)
+                    Titan.Emote((string)parameters[0]);
+                return null;
+            }
+            return base.CallMethod(methodName, parameters);
         }
 
         public override object GetField(string name)

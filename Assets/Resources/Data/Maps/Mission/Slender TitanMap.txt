@@ -588,7 +588,6 @@ Scene,Decor/GrassFacade1c,1012,0,1,1,1,0,GrassFacade1c,-265.2446,-0.2539136,139.
 Scene,Decor/GrassFacade1c,1013,0,1,1,1,0,GrassFacade1c,-241.1822,-0.2539136,281.2776,0,150.0454,0,-1.041033,0.4,1.450667,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/GrassFacade1c,1014,0,1,1,1,0,GrassFacade1c,-149.2286,-0.2539136,270.8976,0,229.9042,0,-1.175413,0.4,1.186674,None,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/GrassFacade1c,1015,0,1,1,1,0,GrassFacade1c,-147.9722,-0.2539136,203.2601,0,25.2383,0,-1.778554,0.4,1.617243,None,Entities,Default,Default|255/255/255/255,;
-Scene,FX/GroundFog1,1019,0,1,0,1,0,GroundFog1,0,0,-11.88459,0,0,0,7,1,7,None,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,General/EditorTitanSpawnPoint,1020,0,1,1,0,0,Titan SpawnPoint,44.12888,0.4253474,-10.30025,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,1021,0,1,1,0,0,Titan SpawnPoint,76.18397,0.4253474,-232.2366,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,1022,0,1,1,0,0,Titan SpawnPoint,243.0862,0.4253474,-345.5899,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
@@ -737,185 +736,186 @@ Scene,Decor/Paper1e,1199,0,1,0,1,0,Paper1e,13.07059,5.503181,537.5189,0.1678893,
 Scene,Decor/Paper1d,1200,0,1,0,1,0,Paper1d,16.31096,5.030437,-175.3126,11.69515,191.9186,1.049913,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Paper1,1201,0,1,0,1,0,Paper1,10.35445,6.093244,132.0133,10.77879,36.85544,358.2908,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Decor/Paper1c,1202,0,1,0,1,0,Paper1c,296.9421,5.193958,-129.9128,1.590785,289.3311,0.5579628,0.65,0.65,0.65,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Decor/Goober1,1203,0,1,1,1,0,Goober1,355.8246,2.182465,-214.8023,270,309.5471,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,
+Scene,Decor/Goober1,1203,0,1,1,1,0,Goober1,355.8246,2.182465,-214.8023,270,309.5471,0,0.6,0.6,0.6,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,FX/FarFog1b,1219,0,1,0,1,0,FarFog1b,-335.2201,51.98283,36.57142,0,0,0,6.362202,3.52444,7.299649,None,Entities,Default,Default|255/255/255/255,
 /// Logic
 component Paper
 {
-    _Found = false;
-    function OnCollisionEnter(other)
-    {
-        if (other.Type == "Human" && other.IsMainCharacter && !self._Found)
-        {
-            self._Found = true;
-            other.PlaySound("Checkpoint");
-            Network.SendMessage(Network.MasterClient, "Found" + Convert.ToString(self.MapObject.ID));
-        }
-    }
+_Found = false;
+function OnCollisionEnter(other)
+{
+if (other.Type == "Human" && other.IsMainCharacter && !self._Found)
+{
+self._Found = true;
+other.PlaySound("Checkpoint");
+Network.SendMessage(Network.MasterClient, "Found" + Convert.ToString(self.MapObject.ID));
+}
+}
 }
 
 class Main
 {
-    Papers = 8;
-    _maxTitans = 20;
-    _spawnTitans = 2;
-    _spawnTitansEvery = 60;
-    _spawnTimeLeft = 60;
-    _allPapers = List();
-    _activePapers = List();
-    _syncTimeLeft = 0.0;
-    _hasSpawned = false;
+Papers = 8;
+_maxTitans = 20;
+_spawnTitans = 2;
+_spawnTitansEvery = 60;
+_spawnTimeLeft = 60;
+_allPapers = List();
+_activePapers = List();
+_syncTimeLeft = 0.0;
+_hasSpawned = false;
 
-    function OnGameStart()
-    {
-        for (mapObject in Map.FindAllMapObjects())
-        {
-            if (String.StartsWith(mapObject.Name, "Paper"))
-            {
-                self._allPapers.Add(mapObject.ID);
-                mapObject.AddComponent("Paper");
-                if (mapObject.Static)
-                {
-                    Game.Print("Warning: Paper is marked static.");
-                }
-                mapObject.Active = false;
-            }
-        }
-        if (Network.IsMasterClient)
-        {
-            self._allPapers.Randomize();
-            for (i in Range(0, self.Papers, 1))
-            {
-                if (self._allPapers.Count > i)
-                {
-                    self._activePapers.Add(self._allPapers.Get(i));
-                }
-            }
-            self.Sync();
-        }
-    }
+function OnGameStart()
+{
+for (mapObject in Map.FindAllMapObjects())
+{
+if (String.StartsWith(mapObject.Name, "Paper"))
+{
+self._allPapers.Add(mapObject.ID);
+mapObject.AddComponent("Paper");
+if (mapObject.Static)
+{
+Game.Print("Warning: Paper is marked static.");
+}
+mapObject.Active = false;
+}
+}
+if (Network.IsMasterClient)
+{
+self._allPapers.Randomize();
+for (i in Range(0, self.Papers, 1))
+{
+if (self._allPapers.Count > i)
+{
+self._activePapers.Add(self._allPapers.Get(i));
+}
+}
+self.Sync();
+}
+}
 
-    function OnCharacterSpawn(character)
-    {
-        if (character.IsMine)
-        {
-            if (character.Type == "Titan")
-            {
-                character.RunSpeedBase = 50;
-                character.RotateSpeed = 5.0;
-                character.AttackWait = 0;
-                character.AttackPause = 0.1;
-                character.ActionPause = 0.1;
-                character.AttackSpeedMultiplier = 1.5;
-                character.Size = 1.5;
-                character.CanRun = true;
-                character.FocusRange = 500;
-            }
-            if (character.Type == "Human")
-            {
-                character.SetSpecial("Potato");
-                character.MaxGas = 60;
-                character.CurrentGas = 60;
-                character.CustomDamageEnabled = true;
-                character.CustomDamage = 0;
-            }
-        }
-        if (character.Type == "Titan")
-        {
-            character.Name = "SlenderTitan";
-        }
-    }
+function OnCharacterSpawn(character)
+{
+if (character.IsMine)
+{
+if (character.Type == "Titan")
+{
+character.RunSpeedBase = 50;
+character.RotateSpeed = 5.0;
+character.AttackWait = 0;
+character.AttackPause = 0.1;
+character.ActionPause = 0.1;
+character.AttackSpeedMultiplier = 1.5;
+character.Size = 1.5;
+character.CanRun = true;
+character.FocusRange = 500;
+}
+if (character.Type == "Human")
+{
+character.SetSpecial("Potato");
+character.MaxGas = 60;
+character.CurrentGas = 60;
+character.CustomDamageEnabled = true;
+character.CustomDamage = 0;
+}
+}
+if (character.Type == "Titan")
+{
+character.Name = "SlenderTitan";
+}
+}
 
-    function OnNetworkMessage(sender, message)
-    {
-        if (String.StartsWith(message, "Found") && Network.IsMasterClient)
-        {
-            id = Convert.ToInt(String.Substring(message, 5));
-            if (self._activePapers.Contains(id))
-            {
-                self._activePapers.Remove(id);
-                self.SpawnTitans();
-            }
-            self.Sync();
-        }
-        elif (String.StartsWith(message, "Sync"))
-        {
-            message = String.Substring(message, 4);
-            activePapers = List();
-            if (message != "")
-            {
-                for (idStr in String.Split(message, ","))
-                {
-                    id = Convert.ToInt(idStr);
-                    activePapers.Add(id);
-                }
-            }
-            for (id in self._allPapers)
-            {
-                mapObject = Map.FindMapObjectByID(id);
-                mapObject.Active = activePapers.Contains(id);
-            }
-        }
-    }
+function OnNetworkMessage(sender, message)
+{
+if (String.StartsWith(message, "Found") && Network.IsMasterClient)
+{
+id = Convert.ToInt(String.Substring(message, 5));
+if (self._activePapers.Contains(id))
+{
+self._activePapers.Remove(id);
+self.SpawnTitans();
+}
+self.Sync();
+}
+elif (String.StartsWith(message, "Sync"))
+{
+message = String.Substring(message, 4);
+activePapers = List();
+if (message != "")
+{
+for (idStr in String.Split(message, ","))
+{
+id = Convert.ToInt(idStr);
+activePapers.Add(id);
+}
+}
+for (id in self._allPapers)
+{
+mapObject = Map.FindMapObjectByID(id);
+mapObject.Active = activePapers.Contains(id);
+}
+}
+}
 
-    function OnSecond()
-    {
-        if (Network.IsMasterClient)
-        {
-            self._syncTimeLeft = self._syncTimeLeft - 1.0;
-            self._spawnTimeLeft = self._spawnTimeLeft - 1.0;
-            if (self._syncTimeLeft <= 0.0)
-            {
-                self.Sync();
-                self._syncTimeLeft = 10.0;
-            }
-            if (self._spawnTimeLeft <= 0.0)
-            {
-                self._spawnTimeLeft = self._spawnTitansEvery;
-                self.SpawnTitans();
-            }
-            humans = Game.Humans.Count;
-            playerShifters = Game.PlayerShifters.Count;
-            if (humans > 0 || playerShifters > 0)
-            {
-                self._hasSpawned = true;
-            }
-            if (humans == 0 && playerShifters == 0 && self._hasSpawned)
-            {
-                UI.SetLabelAll("MiddleCenter", "Humanity failed!");
-                Game.End(10.0);
-                return;
-            }
-        }
-        Camera.FollowDistance = 0.0;
-    }
+function OnSecond()
+{
+if (Network.IsMasterClient)
+{
+self._syncTimeLeft = self._syncTimeLeft - 1.0;
+self._spawnTimeLeft = self._spawnTimeLeft - 1.0;
+if (self._syncTimeLeft <= 0.0)
+{
+self.Sync();
+self._syncTimeLeft = 10.0;
+}
+if (self._spawnTimeLeft <= 0.0)
+{
+self._spawnTimeLeft = self._spawnTitansEvery;
+self.SpawnTitans();
+}
+humans = Game.Humans.Count;
+playerShifters = Game.PlayerShifters.Count;
+if (humans > 0 || playerShifters > 0)
+{
+self._hasSpawned = true;
+}
+if (humans == 0 && playerShifters == 0 && self._hasSpawned)
+{
+UI.SetLabelAll("MiddleCenter", "Humanity failed!");
+Game.End(10.0);
+return;
+}
+}
+Camera.FollowDistance = 0.0;
+}
 
-    function SpawnTitans()
-    {
-        titans = Game.Titans.Count;
-        if (titans < self._maxTitans)
-        {
-            Game.SpawnTitans("Normal", self._spawnTitans);
-        }
-    }
+function SpawnTitans()
+{
+titans = Game.Titans.Count;
+if (titans < self._maxTitans)
+{
+Game.SpawnTitans("Normal", self._spawnTitans);
+}
+}
 
-    function Sync()
-    {
-        foundPapers = self.Papers - self._activePapers.Count;
-        if (self._activePapers.Count == 0 && !Game.IsEnding)
-        {
-            UI.SetLabelAll("MiddleCenter", "<color=#00FF00><size=30>All the notes have been found!</size></color>");
-            Game.End(10);
-        }
-        UI.SetLabelAll("TopCenter", "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
-        message = "Sync";
-        idStrs = List();
-        for (id in self._activePapers)
-        {
-            idStrs.Add(Convert.ToString(id));
-        }
-        message = message + String.Join(idStrs, ",");
-        Network.SendMessageAll(message);
-    }
+function Sync()
+{
+foundPapers = self.Papers - self._activePapers.Count;
+if (self._activePapers.Count == 0 && !Game.IsEnding)
+{
+UI.SetLabelAll("MiddleCenter", "<color=#00FF00><size=30>All the notes have been found!</size></color>");
+Game.End(10);
+}
+UI.SetLabelAll("TopCenter", "<color=red><size=30>Find all the notes</size></color>" + String.Newline + "Notes Found: " + foundPapers + " / " + self.Papers);
+message = "Sync";
+idStrs = List();
+for (id in self._activePapers)
+{
+idStrs.Add(Convert.ToString(id));
+}
+message = message + String.Join(idStrs, ",");
+Network.SendMessageAll(message);
+}
 }
 /// Weather
 {

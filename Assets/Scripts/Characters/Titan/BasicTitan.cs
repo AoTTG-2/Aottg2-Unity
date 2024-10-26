@@ -819,9 +819,9 @@ namespace Characters
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabStomachR)
                         BasicCache.HandRHitbox.Activate(GetHitboxTime(0.35f), GetHitboxTime(0.19f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackL)
-                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
+                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackR)
-                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
+                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontL)
                         BasicCache.HandLHitbox.Activate(GetHitboxTime(0.42f), GetHitboxTime(0.25f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontR)
