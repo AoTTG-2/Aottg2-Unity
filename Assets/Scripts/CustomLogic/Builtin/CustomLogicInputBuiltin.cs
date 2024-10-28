@@ -57,6 +57,11 @@ namespace CustomLogic
                 Vector3 position = Input.mousePosition;
                 return new CustomLogicVector3Builtin(position);
             }
+            if (name == "GetScreenDimensions")
+            {
+                Vector3 dimensions = new Vector3(Screen.width, Screen.height, 0f);
+                return new CustomLogicVector3Builtin(dimensions);
+            }
             return base.CallMethod(name, parameters);
         }
     }
