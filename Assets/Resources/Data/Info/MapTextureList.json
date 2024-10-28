@@ -117,7 +117,13 @@
 		{"Name": "Snow1", "TilingX": 1, "TilingY": 1},
 		{"Name": "Straw1", "TilingX": 3, "TilingY": 3},
 		{"Name": "TechGlow1", "TilingX": 1, "TilingY": 1},
-		{"Name": "Water1", "TilingX": 1, "TilingY": 1}
+		{"Name": "Water1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web2", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web3", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web4", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web5", "TilingX": 1, "TilingY": 1},
+		{"Name": "Web6", "TilingX": 1, "TilingY": 1}
 	],
 	"Legacy": [
 		{"Name": "WallMat", "Texture": "Buildings/Textures/Wall1Tex1"},

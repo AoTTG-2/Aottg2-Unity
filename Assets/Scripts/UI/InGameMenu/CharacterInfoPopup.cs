@@ -10,16 +10,19 @@ namespace UI
         protected override float AnimationTime => 0.25f;
         protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
         protected Text _nameLabel;
+        protected Image _nameBackground;
         protected GameObject _healthbar;
         protected Image _healthbarFill;
         protected Text _healthbarLabel;
         public BaseCharacter Character;
         public Vector3 Offset;
         public float Range;
+        private bool _highlyVisible = false;
 
         public override void Setup(BasePanel parent = null)
         {
-            _nameLabel = transform.Find("NameLabel").GetComponent<Text>();
+            _nameBackground = transform.Find("Name").GetComponent<Image>();
+            _nameLabel = transform.Find("Name/NameLabel").GetComponent<Text>();
             _healthbar = transform.Find("Healthbar").gameObject;
             _healthbarFill = _healthbar.transform.Find("Fill").GetComponent<Image>();
             _healthbarLabel = _healthbar.transform.Find("Label").GetComponent<Text>();
@@ -34,8 +37,8 @@ namespace UI
 
         public void ToggleName(bool toggle)
         {
-            if (_nameLabel.gameObject.activeSelf != toggle)
-                _nameLabel.gameObject.SetActive(toggle);
+            if (_nameBackground.gameObject.activeSelf != toggle)
+                _nameBackground.gameObject.SetActive(toggle);
         }
 
         public void ToggleHealthbar(bool toggle)
@@ -44,8 +47,19 @@ namespace UI
                 _healthbar.gameObject.SetActive(toggle);
         }
 
-        public void SetName(string name)
+        public void SetName(string name, bool highlyVisibleEnabled)
         {
+            if (highlyVisibleEnabled && !_highlyVisible)
+            {
+                _nameBackground.color = new Color(0,0,0, 0.5f);
+                _highlyVisible = true;
+            }
+            else if (!highlyVisibleEnabled && _highlyVisible)
+            {
+                 _nameBackground.color = new Color(0,0,0,0);
+                _highlyVisible = false;
+            }
+
             _nameLabel.text = name;
         }
 

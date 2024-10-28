@@ -74,6 +74,15 @@ namespace UI
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptions("Logo", 4),
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+            options = GetOptions("Hat", HumanSetup.HatCount, true);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hat, UIManager.GetLocale(cat, sub, "Hat"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            options = GetOptions("Head", HumanSetup.HeadCount, true);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Head, UIManager.GetLocale(cat, sub, "Head"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+            options = GetOptions("Back", HumanSetup.BackCount, true);
+            ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Back, UIManager.GetLocale(cat, sub, "Back"), options, GetIcons(options),
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.SkinColor, UIManager.GetLocale(cat, sub, "SkinColor"), UIManager.CurrentMenu.ColorPickPopup,
                 onChangeColor: () => _menu.ResetCharacter());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,

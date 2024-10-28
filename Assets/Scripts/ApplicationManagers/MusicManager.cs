@@ -379,7 +379,7 @@ namespace ApplicationManagers
                     var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
                     if (follow == null)
                         return false;
-                    foreach (var character in inGameManager.GetAllCharacters())
+                    foreach (var character in inGameManager.GetAllCharactersEnumerable())
                     {
                         if (!TeamInfo.SameTeam(character, follow))
                         {

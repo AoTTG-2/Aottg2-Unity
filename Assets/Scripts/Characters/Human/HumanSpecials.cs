@@ -1,5 +1,7 @@
-﻿using GameManagers;
+﻿using CustomLogic;
+using GameManagers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Characters
 {
@@ -15,26 +17,56 @@ namespace Characters
         {
             var names = new List<string>();
             foreach (string special in AnySpecials)
-                names.Add(special);
+                AddSpecialName(names, special);
             if (loadout == HumanLoadout.Blades)
             {
                 foreach (string special in BladeSpecials)
-                    names.Add(special);
+                    AddSpecialName(names, special);
             }
             else if (loadout == HumanLoadout.AHSS)
             {
                 foreach (string special in AHSSSpecials)
-                    names.Add(special);
+                    AddSpecialName(names, special);
             }
             if (includeShifters)
             {
                 foreach (string special in ShifterSpecials)
-                    names.Add(special);
+                    AddSpecialName(names, special);
             }
             if (loadout == HumanLoadout.Thunderspears)
-                names.Add("Stock");
-            names.Add("None");
+                AddSpecialName(names, "Stock");
+            AddSpecialName(names, "None");
             return names;
+        }
+
+        private static void AddSpecialName(List<string> specials, string special)
+        {
+            specials.Add(special);
+            return;
+
+            /*
+            var allowed = CustomLogicManager.Evaluator.AllowedSpecials;
+            var disallowed = CustomLogicManager.Evaluator.DisallowedSpecials;
+            if (allowed.Count == 0 && disallowed.Count == 0)
+            {
+                specials.Add(special);
+            }
+            else if (allowed.Count > 0 && disallowed.Count == 0)
+            {
+                if (allowed.Contains(special))
+                    specials.Add(special);
+            }
+            else if (allowed.Count == 0 && disallowed.Count > 0)
+            {
+                if (!disallowed.Contains(special))
+                    specials.Add(special);
+            }
+            else if (allowed.Count > 0 && disallowed.Count > 0)
+            {
+                if (allowed.Contains(special) && !disallowed.Contains(special))
+                    specials.Add(special);
+            }
+            */
         }
 
         public static BaseUseable GetSpecialUseable(BaseCharacter owner, string special) => special switch

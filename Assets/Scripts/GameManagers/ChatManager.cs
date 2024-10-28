@@ -15,6 +15,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 using Map;
+using System.Collections;
 
 
 namespace GameManagers
@@ -52,6 +53,8 @@ namespace GameManagers
         private static readonly int MaxLines = 30;
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
+        private static string LastException;
+        private static int LastExceptionCount;
 
         public static void Init()
         {
@@ -94,6 +97,8 @@ namespace GameManagers
         public static void Reset()
         {
             Lines.Clear();
+            LastException = string.Empty;
+            LastExceptionCount = 0;
             FeedLines.Clear();
             LoadTheme();
         }
@@ -101,6 +106,8 @@ namespace GameManagers
         public static void Clear()
         {
             Lines.Clear();
+            LastException = string.Empty;
+            LastExceptionCount = 0;
             FeedLines.Clear();
             GetChatPanel().Sync();
             var feedPanel = GetFeedPanel();
@@ -139,9 +146,43 @@ namespace GameManagers
 
         public static void OnAnnounceRPC(string message) => AddLine(message);
 
-        public static void AddLine(string line, ChatTextColor color = ChatTextColor.Default)
+        public static void AddLine(string line, ChatTextColor color)
         {
             AddLine(GetColorString(line, color));
+        }
+
+        public static void AddException(string line)
+        {
+            if (LastException == line)
+            {
+                LastExceptionCount++;
+                ReplaceLastLine(GetColorString(line + "(" + LastExceptionCount.ToString() + ")", ChatTextColor.Error));
+            }
+            else
+            {
+                LastException = line;
+                LastExceptionCount = 0;
+                AddLine(GetColorString(line, ChatTextColor.Error), true);
+            }
+        }
+
+        public static void ReplaceLastLine(string line)
+        {
+            if (Lines.Count > 0)
+            {
+                line = line.FilterSizeTag();
+                Lines[Lines.Count - 1] = line;
+                if (IsChatAvailable())
+                {
+                    var panel = GetChatPanel();
+                    if (panel != null)
+                        panel.ReplaceLastLine(line);
+                }
+            }
+            else
+            {
+                AddLine(line, true);
+            }
         }
 
         public static void AddLine(string line, int senderID)
@@ -150,8 +191,13 @@ namespace GameManagers
             AddLine(line);
         }
 
-        public static void AddLine(string line)
+        public static void AddLine(string line, bool exception = false)
         {
+            if (!exception)
+            {
+                LastException = string.Empty;
+                LastExceptionCount = 0;
+            }
             line = line.FilterSizeTag();
             Lines.Add(line);
             if (Lines.Count > MaxLines)
@@ -263,11 +309,17 @@ namespace GameManagers
                 {
                     if (!player.IsLocal)
                     {
-                        KickPlayer(player);
+                        KickPlayer(player, false);
                     }
                 }
-                InGameManager.LeaveRoom();
+                _instance.StartCoroutine(_instance.WaitAndLeave());
             }
+        }
+
+        private IEnumerator WaitAndLeave()
+        {
+            yield return new WaitForSeconds(2f);
+            InGameManager.LeaveRoom();
         }
 
         [CommandAttribute("clear", "/clear: Clears the chat window.", Alias = "c")]
@@ -325,6 +377,15 @@ namespace GameManagers
                 KickPlayer(player);
             else if (CanVoteKick(player))
                 RPCManager.PhotonView.RPC(nameof(RPCManager.VoteKickRPC), RpcTarget.MasterClient, new object[] { player.ActorNumber });
+        }
+
+        [CommandAttribute("ban", "/ban [ID]: Ban the player with ID")]
+        private static void Ban(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player == null) return;
+            if (PhotonNetwork.IsMasterClient)
+                KickPlayer(player, ban: true);
         }
 
         private static bool CanVoteKick(Player player)
@@ -456,12 +517,18 @@ namespace GameManagers
             AddLine(help, ChatTextColor.System);
         }
 
-        public static void KickPlayer(Player player)
+        public static void KickPlayer(Player player, bool print = true, bool ban = false)
         {
             if (PhotonNetwork.IsMasterClient && player != PhotonNetwork.LocalPlayer)
             {
-                AnticheatManager.KickPlayer(player);
-                SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
+                AnticheatManager.KickPlayer(player, ban);
+                if (print)
+                {
+                    if (ban)
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been banned.", ChatTextColor.System);
+                    else
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
+                }
             }
         }
 
@@ -481,17 +548,17 @@ namespace GameManagers
 
         public static void MutePlayer(Player player, string muteType)
         {
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            if (muteType == "emote")
+            if (player == PhotonNetwork.LocalPlayer) return;
+
+            if (muteType == "Emote")
             {
                 InGameManager.MuteEmote.Add(player.ActorNumber);
             }
-            else if (muteType == "text")
+            else if (muteType == "Text")
             {
                 InGameManager.MuteText.Add(player.ActorNumber);
             }
-            else if (muteType == "voice")
+            else if (muteType == "Voice")
             {
                 InGameManager.MuteVoiceChat.Add(player.ActorNumber);
             }
@@ -501,17 +568,17 @@ namespace GameManagers
 
         public static void UnmutePlayer(Player player, string muteType)
         {
-            if (player == PhotonNetwork.LocalPlayer)
-                return;
-            if (muteType == "emote" && InGameManager.MuteEmote.Contains(player.ActorNumber))
+            if (player == PhotonNetwork.LocalPlayer) return;
+
+            if (muteType == "Emote" && InGameManager.MuteEmote.Contains(player.ActorNumber))
             {
                 InGameManager.MuteEmote.Remove(player.ActorNumber);
             }
-            else if (muteType == "text" && InGameManager.MuteText.Contains(player.ActorNumber))
+            else if (muteType == "Text" && InGameManager.MuteText.Contains(player.ActorNumber))
             {
                 InGameManager.MuteText.Remove(player.ActorNumber);
             }
-            else if (muteType == "voice" && InGameManager.MuteVoiceChat.Contains(player.ActorNumber))
+            else if (muteType == "Voice" && InGameManager.MuteVoiceChat.Contains(player.ActorNumber))
             {
                 InGameManager.MuteVoiceChat.Remove(player.ActorNumber);
             }
@@ -576,6 +643,11 @@ namespace GameManagers
             return ((InGameMenu)UIManager.CurrentMenu).VoiceChatPanel;
         }
 
+        private static KDRPanel GetKDRPanel()
+        {
+            return ((InGameMenu)UIManager.CurrentMenu).KDRPanel;
+        }
+
         public static string GetIDString(int id, bool includeMC = false, bool myPlayer = false)
         {
             string str = "[" + id.ToString() + "] ";
@@ -591,6 +663,14 @@ namespace GameManagers
             if (color == ChatTextColor.Default)
                 return str;
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
+        }
+
+        public static string GetTimeString(int time)
+        {
+            string str = time.ToString();
+            if (str.Length == 1)
+                str = "0" + str;
+            return str;
         }
 
         private void Update()

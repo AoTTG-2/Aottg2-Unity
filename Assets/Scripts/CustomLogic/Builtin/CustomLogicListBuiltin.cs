@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace CustomLogic
 {
@@ -63,6 +64,12 @@ namespace CustomLogic
             if (methodName == "Sort")
             {
                 List.Sort();
+                return null;
+            }
+            if (methodName == "Randomize")
+            {
+                System.Random r = new System.Random();
+                List = List.OrderBy(x => (r.Next())).ToList();
                 return null;
             }
             return base.CallMethod(methodName, parameters);

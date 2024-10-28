@@ -9,6 +9,8 @@ using ApplicationManagers;
 using Characters;
 using Photon.Pun;
 using Spawnables;
+using System.Collections;
+using Utility;
 
 namespace GameManagers
 {
@@ -199,19 +201,7 @@ namespace GameManagers
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
             if (CustomLogicManager.Evaluator != null)
-                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message);
-        }
-
-        [PunRPC]
-        public void NotifyPlayerSpawnRPC(int viewId, PhotonMessageInfo info)
-        {
-
-            var view = PhotonView.Find(viewId);
-            if (view != null && view.Owner == info.Sender && CustomLogicManager.Evaluator != null)
-            {
-                var character = view.GetComponent<BaseCharacter>();
-                CustomLogicManager.Evaluator.OnPlayerSpawn(info.Sender, character);
-            }
+                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message, info.SentServerTimestamp);
         }
 
         [PunRPC]

@@ -16,6 +16,7 @@ namespace UI
             AbilitySettings settings = SettingsManager.AbilitySettings;
             ElementStyle style = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, settings.BombColor, UIManager.GetLocale(cat, sub, "BombColor"), UIManager.CurrentMenu.ColorPickPopup);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.CursorCooldown, UIManager.GetLocale(cat, sub, "CursorCooldown"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.ShowBombColors, UIManager.GetLocale(cat, sub, "ShowBombColors"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.UseOldEffect, UIManager.GetLocale(cat, sub, "UseOldEffect"));
             _pointsLeftLabel = ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, UIManager.GetLocale(cat, sub, "PointsLeft")).GetComponent<Text>();

@@ -57,6 +57,7 @@ namespace UI
             CreateHorizontalDivider(DoublePanelRight);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldHookEffect, UIManager.GetLocale(cat, sub, "OldHookEffect"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldBladeEffect, UIManager.GetLocale(cat, sub, "OldBladeEffect"));
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.OldNapeEffect, UIManager.GetLocale(cat, sub, "OldNapeEffect"));
         }
 
         protected void OnButtonClick(string name)

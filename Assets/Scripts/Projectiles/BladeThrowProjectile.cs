@@ -29,7 +29,7 @@ namespace Projectiles
             _blade = transform.Find("Blade");
             _model = _blade.Find("Model").gameObject;
             WeaponTrail = GetComponentInChildren<MeleeWeaponTrail>();
-            if (SettingsManager.GraphicsSettings.WeaponTrailEnabled.Value)
+            if (SettingsManager.GraphicsSettings.WeaponTrail.Value != (int)WeaponTrailMode.Off)
                 WeaponTrail.Emit = true;
             else
                 WeaponTrail.Emit = false;
@@ -89,14 +89,14 @@ namespace Projectiles
             {
                 var character = collider.transform.root.gameObject.GetComponent<BaseCharacter>();
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
+                var damage = CalculateDamage();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Blade", 100, "BladeThrow", transform.position);
+                    handler.GetHit(_owner, _owner.Name, damage, "BladeThrow", transform.position);
                     continue;
                 }
-                if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead)
+                if (character == null || character == _owner || TeamInfo.SameTeam(character, _team) || character.Dead || !character.AI)
                     continue;
-                var damage = CalculateDamage();
                 if (character is BaseTitan)
                 {
                     var titan = (BaseTitan)character;

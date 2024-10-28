@@ -69,9 +69,9 @@ namespace UI
                 bool prevMuteText = InGameManager.MuteText.Contains(_player.ActorNumber);
                 bool prevMuteVoice = InGameManager.MuteVoiceChat.Contains(_player.ActorNumber);
 
-                HandleMute(_player, "emote", _muteEmote.Value, prevMuteEmote);
-                HandleMute(_player, "text", _muteText.Value, prevMuteText);
-                HandleMute(_player, "voice", _muteVoice.Value, prevMuteVoice);
+                HandleMute(_player, "Emote", _muteEmote.Value, prevMuteEmote);
+                HandleMute(_player, "Text", _muteText.Value, prevMuteText);
+                HandleMute(_player, "Voice", _muteVoice.Value, prevMuteVoice);
                 ChatManager.SetPlayerVolume(_player, _voiceVolume.Value);
 
                 Hide();

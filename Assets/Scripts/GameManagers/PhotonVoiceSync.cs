@@ -60,7 +60,10 @@ namespace GameManagers
                 Recorder.TransmitEnabled = false;
                 Recorder.VoiceDetection = SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.AutoDetect;
                 Recorder.MicrophoneType = Recorder.MicType.Unity;
-                Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                if (SettingsManager.SoundSettings.VoiceChatDevice.Value != UIManager.GetLocale("Common", "None"))
+                    Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                else
+                    Recorder.MicrophoneDevice = new DeviceInfo(string.Empty);
                 MicAmplifier.AmplificationFactor = VoiceChatManager.GetInputVolume();
             }
             if (SettingsManager.InGameCurrent.Misc.VoiceChat.Value == (int)VoiceChatMode.Proximity)
@@ -94,7 +97,7 @@ namespace GameManagers
                 }
                 else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.PushToTalk)
                 {
-                    if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
+                    if (!ChatManager.IsChatActive() && SettingsManager.InputSettings.General.PushToTalk.GetKey())
                         Recorder.TransmitEnabled = true;
                     else
                         Recorder.TransmitEnabled = false;

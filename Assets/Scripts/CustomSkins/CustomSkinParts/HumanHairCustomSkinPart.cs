@@ -12,7 +12,7 @@ namespace CustomSkins
         private string _hairTexture;
 
         public HumanHairCustomSkinPart(BaseCustomSkinLoader loader, List<Renderer> renderers, string rendererId, int maxSize, string hairTexture, Vector2? textureScale = null): 
-            base(loader, renderers, rendererId, maxSize, textureScale)
+            base(loader, renderers, rendererId, maxSize, textureScale, true)
         {
             _hairTexture = hairTexture;
         }

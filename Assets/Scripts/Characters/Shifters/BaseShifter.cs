@@ -71,7 +71,10 @@ namespace Characters
             }
             else
             {
-                gameObject.AddComponent<ShifterPlayerController>();
+                if (this is ErenShifter)
+                    gameObject.AddComponent<ErenShifterPlayerController>();
+                else if (this is AnnieShifter)
+                    gameObject.AddComponent<AnnieShifterPlayerController>();
                 if (liveTime > 0f)
                     StartCoroutine(WaitAndBecomeHuman(liveTime));
             }
