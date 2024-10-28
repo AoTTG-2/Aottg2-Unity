@@ -326,7 +326,7 @@ namespace CustomLogic
                 string killer = (string)parameters[0];
                 string victim = (string)parameters[1];
                 int score = parameters[2].UnboxToInt();
-                string weapon = (string)parameters[2];
+                string weapon = (string)parameters[3];
                 ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score, weapon);
                 return null;
             }
@@ -335,7 +335,7 @@ namespace CustomLogic
                 string killer = (string)parameters[0];
                 string victim = (string)parameters[1];
                 int score = parameters[2].UnboxToInt();
-                string weapon = (string)parameters[2];
+                string weapon = (string)parameters[3];
                 RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { killer, victim, score, weapon });
                 return null;
             }

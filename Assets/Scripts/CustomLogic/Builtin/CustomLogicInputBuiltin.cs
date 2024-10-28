@@ -52,6 +52,11 @@ namespace CustomLogic
                     target = hit.point;
                 return new CustomLogicVector3Builtin(target);
             }
+            if (name == "GetMousePosition")
+            {
+                position = Input.mousePosition;
+                return new CustomLogicVector3Builtin(position);
+            }
             return base.CallMethod(name, parameters);
         }
     }
