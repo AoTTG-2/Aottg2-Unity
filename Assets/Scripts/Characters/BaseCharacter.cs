@@ -62,11 +62,11 @@ namespace Characters
         protected virtual float GroundDistance => 0.3f;
 
         // Visuals
-        private Outline _outline = null;
+        protected Outline OutlineComponent = null;
 
         public void Reveal(float startDelay, float activeTime)
         {
-            if (_outline == null)
+            if (OutlineComponent == null)
             {
                 StartCoroutine(RevealAndRemove(startDelay, activeTime));
             }
@@ -84,43 +84,43 @@ namespace Characters
 
         public void AddOutlineWithColor(Color color, Outline.Mode mode)
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                _outline.OutlineMode = mode;
-                _outline.OutlineColor = color;
-                _outline.enabled = true;
+                OutlineComponent.OutlineMode = mode;
+                OutlineComponent.OutlineColor = color;
+                OutlineComponent.enabled = true;
             }
         }
 
         public void ChangeOutlineColor(Color color)
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                _outline.OutlineColor = color;
+                OutlineComponent.OutlineColor = color;
             }
         }
 
         public void ChangeOutlineMode(Outline.Mode mode)
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                _outline.OutlineMode = mode;
+                OutlineComponent.OutlineMode = mode;
             }
         }
 
         public void ChangeOutlineWidth(float width)
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                _outline.OutlineWidth = width;
+                OutlineComponent.OutlineWidth = width;
             }
         }
 
         public void RemoveOutline()
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                _outline.enabled = false;
+                OutlineComponent.enabled = false;
             }
         }
 
@@ -573,8 +573,8 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            _outline = gameObject.AddComponent<Outline>();
-            _outline.enabled = false;
+            OutlineComponent = gameObject.AddComponent<Outline>();
+            OutlineComponent.enabled = false;
             StartCoroutine(WaitAndNotifySpawn());
         }
 

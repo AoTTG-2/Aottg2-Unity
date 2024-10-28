@@ -957,9 +957,6 @@ namespace Characters
         {
             FinishSetup = false;
             Setup.Copy(settings);
-            HookLeft.DisableAnyHook();
-            HookRight.DisableAnyHook();
-
             if (IsMine())
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
@@ -968,6 +965,7 @@ namespace Characters
             }
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
         }
+
 
         protected override void Awake()
         {
@@ -2450,6 +2448,12 @@ namespace Characters
                 Stats.UpdateStats();
             }
             bool isGun = humanWeapon == (int)HumanWeapon.AHSS || humanWeapon == (int)HumanWeapon.APG;
+
+            if (HookLeft != null)
+                HookLeft.LocalClearAllHooks();
+            if (HookRight != null)
+                HookRight.LocalClearAllHooks();
+
             HookLeft = new HookUseable(this, true, isGun);
             HookRight = new HookUseable(this, false, isGun);
             bool male = Setup.CustomSet.Sex.Value == (int)HumanSex.Male;
@@ -2470,6 +2474,10 @@ namespace Characters
                 SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
             }
             FinishSetup = true;
+            // ignore if name contains char_eyes, char_face, char_glasses
+            List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
+            
+            this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
         }
 

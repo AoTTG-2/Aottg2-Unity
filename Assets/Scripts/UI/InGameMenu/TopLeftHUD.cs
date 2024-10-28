@@ -31,12 +31,6 @@ namespace UI
             telemetryCanvas = new GameObject();
             telemetryCanvas.name = "Telemetry";
             var tcanvas = telemetryCanvas.AddComponent<Canvas>();
-            var tcanvasScaler = telemetryCanvas.AddComponent<CanvasScaler>();
-            tcanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            tcanvasScaler.referenceResolution = new Vector2(1920, 1080);
-            tcanvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            tcanvasScaler.matchWidthOrHeight = 0f;
-            tcanvasScaler.referencePixelsPerUnit = 100;
 
             // set canvas pivot
             var rect = telemetryCanvas.GetComponent<RectTransform>();
@@ -45,12 +39,6 @@ namespace UI
             kdrCanvas = new GameObject();
             kdrCanvas.name = "KDR";
             kdrCanvas.AddComponent<Canvas>();
-            var kdrcanvas = kdrCanvas.AddComponent<CanvasScaler>();
-            kdrcanvas.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            kdrcanvas.referenceResolution = new Vector2(1920, 1080);
-            kdrcanvas.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            kdrcanvas.matchWidthOrHeight = 0f;
-            kdrcanvas.referencePixelsPerUnit = 100;
 
             // set canvas pivot
             rect = kdrCanvas.GetComponent<RectTransform>();

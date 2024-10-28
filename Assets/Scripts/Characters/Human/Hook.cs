@@ -107,6 +107,15 @@ namespace Characters
             _endSprite.SetActive(false);
         }
 
+        public void SetHookStateLocal(int state)
+        {
+            if (State == HookState.Disabled)
+                return;
+            State = (HookState)state;
+            _currentLiveTime = 0f;
+            _endSprite.SetActive(false);
+        }
+
         public void OnSetHooking(Vector3 baseVelocity, Vector3 relativeVelocity, PhotonMessageInfo info)
         {
             if (info.Sender != _owner.Cache.PhotonView.Owner)
