@@ -54,7 +54,7 @@ namespace CustomLogic
             }
             if (name == "GetMousePosition")
             {
-                position = Input.mousePosition;
+                Vector3 position = Input.mousePosition;
                 return new CustomLogicVector3Builtin(position);
             }
             return base.CallMethod(name, parameters);
