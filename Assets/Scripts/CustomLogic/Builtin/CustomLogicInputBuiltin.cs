@@ -52,6 +52,11 @@ namespace CustomLogic
                     target = hit.point;
                 return new CustomLogicVector3Builtin(target);
             }
+            if (name == "GetMouseSpeed")
+            {
+                Vector3 speed = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
+                return new CustomLogicVector3Builtin(speed);
+            }
             if (name == "GetMousePosition")
             {
                 Vector3 position = Input.mousePosition;
