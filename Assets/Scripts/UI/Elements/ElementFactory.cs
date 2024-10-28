@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Settings;
 using Utility;
+using Photon.Realtime;
 
 namespace UI
 {
@@ -311,6 +312,14 @@ namespace UI
             return label;
         }
 
+        public static GameObject CreateMultiTextLabel(Transform parent, ElementStyle style, FontStyle fontStyle, TextAnchor anchor, float fontSize, int numberOfLabels, bool richText=false)
+        {
+            GameObject multiLabel = CreateHorizontalGroup(parent, 0f, TextAnchor.MiddleLeft);
+            MultiTextLabel element = multiLabel.AddComponent<MultiTextLabel>();
+            element.Setup(multiLabel.transform, style, fontStyle, anchor, fontSize, numberOfLabels, richText);
+            return multiLabel;
+        }
+
         public static GameObject CreateKeybindSetting(Transform parent, ElementStyle style, BaseSetting setting, string title, KeybindPopup keybindPopup,
             string tooltip = "", float elementWidth = 120f, float elementHeight = 35f, int bindCount = 2)
         {
@@ -372,6 +381,32 @@ namespace UI
             group.GetComponent<HorizontalLayoutGroup>().spacing = spacing;
             group.GetComponent<HorizontalLayoutGroup>().childAlignment = alignment;
             if (parent.GetComponent<HorizontalLayoutGroup>() != null)
+                group.GetComponent<LayoutElement>().flexibleWidth = 0f;
+            return group;
+        }
+
+        public static GameObject CreatePlayerKDRRow(Transform parent, ElementStyle style, Player player)
+        {
+            GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
+            PlayerKDRRow rowComponent = row.AddComponent<PlayerKDRRow>();
+            rowComponent.Setup(style, player);
+            return row;
+        }
+
+        public static GameObject CreateTeamKDRRow(Transform parent, ElementStyle style, string team)
+        {
+            GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
+            TeamKDRRow rowComponent = row.AddComponent<TeamKDRRow>();
+            rowComponent.Setup(style, team);
+            return row;
+        }
+
+        public static GameObject CreateVerticalGroup(Transform parent, float spacing, TextAnchor alignment = TextAnchor.UpperLeft)
+        {
+            GameObject group = InstantiateAndBind(parent, "Prefabs/Elements/VerticalGroup");
+            group.GetComponent<VerticalLayoutGroup>().spacing = spacing;
+            group.GetComponent<VerticalLayoutGroup>().childAlignment = alignment;
+            if (parent.GetComponent<VerticalLayoutGroup>() != null)
                 group.GetComponent<LayoutElement>().flexibleWidth = 0f;
             return group;
         }

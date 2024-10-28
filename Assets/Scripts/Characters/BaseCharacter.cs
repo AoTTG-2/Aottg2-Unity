@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using System.Collections.Generic;
 using Settings;
@@ -12,10 +10,6 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
-using GameProgress;
-using Photon.Voice.Unity;
-using Photon.Voice.PUN;
-using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {
@@ -24,8 +18,22 @@ namespace Characters
         protected virtual int DefaultMaxHealth => 1;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
         public virtual List<string> EmoteActions => new List<string>();
-        public string Name = "";
+        public string Name { 
+            get
+            {
+                return RichTextName;
+            }
+            set
+            {
+                RichTextName = value;
+                VisibleName = RichTextName.ForceWhiteColorTag();
+            }
+        }
+        public string RichTextName = "";
+        public string VisibleName = "";
         public string Guild = "";
+        public string FeedKillerName = "";
+        public string FeedVictimName = "";
         public bool Dead;
         public bool CustomDamageEnabled;
         public int CustomDamage;
@@ -47,9 +55,10 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
-
-        public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
+        private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+
+        public virtual LayerMask GroundMask => GroundMaskLayers;
         protected virtual float GroundDistance => 0.3f;
 
         // Visuals
@@ -75,20 +84,43 @@ namespace Characters
 
         public void AddOutlineWithColor(Color color, Outline.Mode mode)
         {
-            if (_outline == null)
+            if (_outline != null)
             {
-                _outline = gameObject.AddComponent<Outline>();
+                _outline.OutlineMode = mode;
+                _outline.OutlineColor = color;
+                _outline.enabled = true;
+            }
+        }
+
+        public void ChangeOutlineColor(Color color)
+        {
+            if (_outline != null)
+            {
+                _outline.OutlineColor = color;
+            }
+        }
+
+        public void ChangeOutlineMode(Outline.Mode mode)
+        {
+            if (_outline != null)
+            {
                 _outline.OutlineMode = mode;
             }
-            _outline.OutlineColor = color;
+        }
+
+        public void ChangeOutlineWidth(float width)
+        {
+            if (_outline != null)
+            {
+                _outline.OutlineWidth = width;
+            }
         }
 
         public void RemoveOutline()
         {
             if (_outline != null)
             {
-                Destroy(_outline);
-                _outline = null;
+                _outline.enabled = false;
             }
         }
 
@@ -293,10 +325,16 @@ namespace Characters
                 PlayAnimation(animation, startTime);
         }
 
+        private object[] crossfadeCache = new object[3];
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
+            {
+                crossfadeCache[0] = animation;
+                crossfadeCache[1] = fadeTime;
+                crossfadeCache[2] = startTime;
+                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, crossfadeCache);
+            }
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
@@ -400,7 +438,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
             }
         }
@@ -414,7 +453,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
             }
         }
@@ -425,7 +465,8 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             SetCurrentHealth(0);
-            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
             Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
         }
 
@@ -447,7 +488,7 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterKill(this);
             }
             if (CustomLogicManager.Evaluator == null)
@@ -467,7 +508,7 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
             if (CustomLogicManager.Evaluator == null)
@@ -532,14 +573,25 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            StartCoroutine(WaitAndNotifyCharacterSpawn());
+            _outline = gameObject.AddComponent<Outline>();
+            _outline.enabled = false;
+            StartCoroutine(WaitAndNotifySpawn());
         }
 
-        protected IEnumerator WaitAndNotifyCharacterSpawn()
+        protected IEnumerator WaitAndNotifySpawn()
         {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
             yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
+            {
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
+                if (!AI)
+                    CustomLogicManager.Evaluator.OnPlayerSpawn(this.Cache.PhotonView.Owner, this);
+            }
+                
         }
 
         public string GetCurrentAnimation()
@@ -713,8 +765,12 @@ namespace Characters
 
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject go)
         {
-            if (go != null && go.GetComponent<Renderer>() != null)
-                renderers.Add(go.GetComponent<Renderer>());
+            if (go != null)
+            {
+                var renderer = go.GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                    renderers.Add(renderer);
+            }
         }
 
         protected void AddSkinnedRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)

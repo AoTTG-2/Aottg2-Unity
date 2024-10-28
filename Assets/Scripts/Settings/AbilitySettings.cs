@@ -12,6 +12,7 @@ namespace Settings
         public IntSetting BombRange = new IntSetting(3, minValue: 0, maxValue: 3);
         public IntSetting BombSpeed = new IntSetting(6, minValue: 0, maxValue: 10);
         public IntSetting BombCooldown = new IntSetting(1, minValue: 0, maxValue: 6);
+        public BoolSetting CursorCooldown = new BoolSetting(false);
         public BoolSetting ShowBombColors = new BoolSetting(false);
         public BoolSetting UseOldEffect = new BoolSetting(false);
 

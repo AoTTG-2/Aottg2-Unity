@@ -79,6 +79,25 @@ namespace GameManagers
             return characters;
         }
 
+        public IEnumerable<BaseCharacter> GetAllCharactersEnumerable()
+        {
+            foreach (var human in Humans)
+            {
+                if (human != null && !human.Dead)
+                    yield return human;
+            }
+            foreach (var titan in Titans)
+            {
+                if (titan != null && !titan.Dead)
+                    yield return titan;
+            }
+            foreach (var shifter in Shifters)
+            {
+                if (shifter != null && !shifter.Dead)
+                    yield return shifter;
+            }
+        }
+
         public HashSet<BaseCharacter> GetAllNonAICharacters()
         {
             return GetAllCharacters().Where(x => !x.AI).ToHashSet();
@@ -208,6 +227,7 @@ namespace GameManagers
 
         public static void OnJoinRoom()
         {
+            AnticheatManager.Reset();
             ResetPersistentPlayerProperties();
             ResetPlayerInfo();
             _needSendPlayerInfo = true;
@@ -224,7 +244,8 @@ namespace GameManagers
             UpdateRoundPlayerProperties();
             if (CurrentCharacter == null)
                 return;
-            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
         }
 
         public void RegisterMainCharacterKill(BaseCharacter victim)
@@ -352,6 +373,8 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
+            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
+                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)
@@ -549,7 +572,6 @@ namespace GameManagers
             }
             HasSpawned = true;
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, CurrentCharacter.Cache.PhotonView.ViewID);
-            RPCManager.PhotonView.RPC("NotifyPlayerSpawnRPC", RpcTarget.All, new object[] { CurrentCharacter.Cache.PhotonView.ViewID });
             UpdateRoundPlayerProperties();
         }
         
@@ -931,10 +953,9 @@ namespace GameManagers
             }
             PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
-
-            //set ping at start
             int currentPing = PhotonNetwork.GetPing();
-            PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
         }
 
         public override bool IsFinishedLoading()
@@ -954,7 +975,7 @@ namespace GameManagers
             if (timeSinceLastPingUpdate >= pingUpdateInterval)
             {
                 int currentPing = PhotonNetwork.GetPing();
-                PhotonNetwork.LocalPlayer.SetCustomProperty("Ping", currentPing);
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
                 timeSinceLastPingUpdate = 0f;
             }
         }

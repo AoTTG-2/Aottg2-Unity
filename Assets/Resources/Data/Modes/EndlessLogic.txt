@@ -30,7 +30,7 @@ class Main
         if (Network.MyPlayer.Status == "Alive")
         {
             character = Network.MyPlayer.Character;
-            if (character.Type == "Human")
+            if (character != null && character.Type == "Human")
             {
                 if (self.InfiniteGas)
                 {
@@ -48,9 +48,19 @@ class Main
     function OnTick()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+        if (Network.MyPlayer.Status == "Dead")
         {
-            Game.SpawnPlayer(Network.MyPlayer, false);
+            if (self._dieTimeLeft <= 0.0)
+            {
+                Game.SpawnPlayer(Network.MyPlayer, false);
+                UI.SetLabel("MiddleCenter", "");
+            }
+            else
+            {
+                str = "Respawning in: " + String.Newline;
+                str += UI.WrapStyleTag(String.FormatFloat(self._dieTimeLeft, 2), "size", "34");
+                UI.SetLabel("MiddleCenter", str);
+            }
         }
         if (Network.IsMasterClient)
         {
@@ -68,7 +78,7 @@ class Main
             {
                 self._spawnTimeLeft = self.TitanSpawnEvery;
             }
-            UI.SetLabelAll("TopCenter", "Titans Left: " + Convert.ToString(titans));
+            UI.SetLabelAll("TopCenter", "Titans: " + Convert.ToString(titans));
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Settings
         public IntSetting Speedometer = new IntSetting((int)SpeedometerType.Off);
         public BoolSetting ShowInterpolation = new BoolSetting(false);
         public BoolSetting ShowCrosshairArrows = new BoolSetting(false);
-        public BoolSetting ShowKDR = new BoolSetting(false);
+        public IntSetting KDR = new IntSetting((int)KDRMode.Off);
         public BoolSetting ShowPing = new BoolSetting(false);
         public BoolSetting ShowEmotes = new BoolSetting(true);
         public BoolSetting ShowKeybindTip = new BoolSetting(true);
@@ -40,6 +40,7 @@ namespace Settings
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
         public BoolSetting JoinNotifications = new BoolSetting(true);
+        public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
 
         public override void Apply()
         {
@@ -47,6 +48,13 @@ namespace Settings
             if (UIManager.CurrentMenu != null)
             {
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
+
+                if (UIManager.CurrentMenu is InGameMenu)
+                {
+                    InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
+                    igm.ApplyUISettings();
+                }
+
             }
         }
     }
@@ -64,5 +72,19 @@ namespace Settings
         Mine,
         Others,
         None
+    }
+
+    public enum KDRMode
+    {
+        Off,
+        Mine,
+        All
+    }
+
+    public enum CoordinateMode
+    {
+        Off,
+        Minimap,
+        BottomRight
     }
 }

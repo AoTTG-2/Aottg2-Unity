@@ -10,7 +10,7 @@ namespace UI
     {
         protected override bool CategoryPanel => true;
         protected override string DefaultCategoryPanel => "General";
-        protected string[] _categories = new string[] { "General", "Human", "Titan", "Shifter", "Interaction" };
+        protected string[] _categories = new string[] { "General", "Interaction", "Human", "Titan", "AnnieShifter", "ErenShifter" };
 
         public void CreateGategoryDropdown(Transform panel)
         {

@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Discord;
 using GameManagers;
 using Photon.Pun;
@@ -168,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return string.Empty;
+            return ApplicationVersion.GetHashCode(str);
         }
     }
 

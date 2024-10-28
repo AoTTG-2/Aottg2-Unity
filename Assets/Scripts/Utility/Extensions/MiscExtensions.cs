@@ -33,6 +33,13 @@ static class MiscExtensions
         return "(" + vector.x.ToString() + "," + vector.y.ToString() + "," + vector.z.ToString() + ")";
     }
 
+    public static double UnboxToDouble(this object obj)
+    {
+        if (obj is int)
+            return (double)(int)obj;
+        return (double)obj;
+    }
+
     public static float UnboxToFloat(this object obj)
     {
         if (obj is int)

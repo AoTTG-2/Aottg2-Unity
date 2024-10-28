@@ -132,9 +132,16 @@ namespace Cameras
                     ? Util.ConstrainedToY(_follow.Cache.Transform.rotation)
                     : Quaternion.Euler(0f, 0f, 0f);
             if (character.IsMine())
+            {
                 _menu.HUDBottomHandler.SetBottomHUD(character);
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
+            }
             else
+            {
                 _menu.HUDBottomHandler.SetBottomHUD();
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, character.Cache.PhotonView.Owner.ActorNumber);
+            }
+            _menu._spectateUpdateTimeLeft = 0f;
         }
 
         protected override void Awake()
@@ -246,14 +253,21 @@ namespace Cameras
         {
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
-                if (_input.ChangeCamera.GetKeyDown())
+                if (CustomLogicManager.CameraMode != null)
                 {
-                    if (CurrentCameraMode == CameraInputMode.TPS)
-                        CurrentCameraMode = CameraInputMode.Original;
-                    else if (CurrentCameraMode == CameraInputMode.Original)
-                        CurrentCameraMode = CameraInputMode.FPS;
-                    else
-                        CurrentCameraMode = CameraInputMode.TPS;
+                    CurrentCameraMode = CustomLogicManager.CameraMode.Value;
+                }
+                else
+                {
+                    if (_input.ChangeCamera.GetKeyDown())
+                    {
+                        if (CurrentCameraMode == CameraInputMode.TPS)
+                            CurrentCameraMode = CameraInputMode.Original;
+                        else if (CurrentCameraMode == CameraInputMode.Original)
+                            CurrentCameraMode = CameraInputMode.FPS;
+                        else
+                            CurrentCameraMode = CameraInputMode.TPS;
+                    }
                 }
                 if (SettingsManager.InputSettings.Human.NapeLock.GetKeyDown())
                 {
@@ -463,7 +477,7 @@ namespace Cameras
         {
             BaseTitan nearestTitan = null;
             float nearestDistance = Mathf.Infinity;
-            foreach (var character in _inGameManager.GetAllCharacters())
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {
@@ -485,7 +499,7 @@ namespace Cameras
             {
                 if (!human.AI)
                     characters.Add(human);
-            } 
+            }
             foreach (var shifter in _inGameManager.Shifters)
             {
                 if (!shifter.AI)

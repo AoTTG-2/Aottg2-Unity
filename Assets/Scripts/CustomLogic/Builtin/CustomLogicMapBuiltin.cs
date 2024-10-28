@@ -14,6 +14,15 @@ namespace CustomLogic
 
         public override object CallMethod(string name, List<object> parameters)
         {
+            if (name == "FindAllMapObjects")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                {
+                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                }
+                return listBuiltin;
+            }
             if (name == "FindMapObjectByName")
             {
                 string objectName = (string)parameters[0];
@@ -110,6 +119,13 @@ namespace CustomLogic
                 var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
                 return new CustomLogicMapObjectBuiltin(copy);
             }
+            if (name == "DestroyMapTargetable")
+            {
+                var targetable = (CustomLogicMapTargetableBuiltin)parameters[0];
+                Object.Destroy(targetable.GameObject);
+                MapLoader.MapTargetables.Remove(targetable.Value);
+                return null;
+            }
             if (name == "UpdateNavMesh")
             {
                 MapLoader.UpdateNavMesh().Wait();
@@ -148,7 +164,7 @@ namespace CustomLogic
         // obj is CustomLogicMapObjectBuiltin or MapObject
         protected void DestroyMapObject(object obj, bool recursive)
         {
-            if (obj is not CustomLogicMapObjectBuiltin or MapObject)
+            if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
                 return;
             }
