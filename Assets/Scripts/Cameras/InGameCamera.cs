@@ -41,6 +41,16 @@ namespace Cameras
         private float _currentShakeDistance;
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
+        private float _lastChangeSpectateID = 0;
+
+        private bool CheckSpectateRateLimit()
+        {
+            float timeElapsed = Time.time - _lastChangeSpectateID;
+            if (timeElapsed < 1f)
+                return false;
+            _lastChangeSpectateID = Time.time;
+            return true;
+        }
 
         public void SetCameraDistance(float distance)
         {
@@ -57,10 +67,20 @@ namespace Cameras
 
         public void ApplyGeneralSettings()
         {
+            ResetDistance();
+            ResetCameraMode();
+        }
+
+        public void ResetDistance()
+        {
             _cameraDistance = SettingsManager.GeneralSettings.CameraDistance.Value + 0.3f;
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CameraDistance, _cameraDistance);
             if (SettingsManager.GeneralSettings.CameraDistance.Value == 0f)
                 _cameraDistance = 0f;
+        }
+
+        public void ResetCameraMode()
+        {
             CurrentCameraMode = (CameraInputMode)SettingsManager.GeneralSettings.CameraMode.Value;
         }
 
@@ -103,9 +123,12 @@ namespace Cameras
 
         public void SetFollow(BaseCharacter character, bool resetRotation = true)
         {
+            bool changed = _follow != character;
             _follow = character;
             if (_follow == null)
             {
+                if (PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.SpectateID, -1) != -1 && CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
                 _menu.HUDBottomHandler.SetBottomHUD();
                 return;
             }
@@ -134,12 +157,14 @@ namespace Cameras
             if (character.IsMine())
             {
                 _menu.HUDBottomHandler.SetBottomHUD(character);
-                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
+                if (changed || CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
             }
             else
             {
                 _menu.HUDBottomHandler.SetBottomHUD();
-                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, character.Cache.PhotonView.Owner.ActorNumber);
+                if (changed || CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, character.Cache.PhotonView.Owner.ActorNumber);
             }
             _menu._spectateUpdateTimeLeft = 0f;
         }
@@ -208,7 +233,9 @@ namespace Cameras
                 else
                     _freeCam = false;
                 if (_freeCam)
-                    _follow = null;
+                {
+                    SetFollow(null);
+                }
                 else if (_follow == null)
                     FindNextSpectate();
                 if (_follow != null)

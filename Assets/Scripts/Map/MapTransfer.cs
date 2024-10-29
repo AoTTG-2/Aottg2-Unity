@@ -8,6 +8,7 @@ using SimpleJSONFixed;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UI;
 using UnityEngine;
@@ -88,6 +89,7 @@ namespace Map
                     chunkSize = totalSize - i;
                 chunks.Add(_mapScriptCompressed.GetRange(i, chunkSize).ToArray());
             }
+            chunkSize = 10000;
             for (int i = 0; i < chunks.Count; i++)
             {
                 _mapTransferData.Add(new byte[][] { new byte[] { MsgMapBody }, chunks[i] });
