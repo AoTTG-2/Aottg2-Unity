@@ -2453,6 +2453,7 @@ Scene,FX/SpiderFX1,122009,0,1,0,1,0,SpiderFX1,-200.8807,0.5289798,-71.49068,0,0,
 Scene,FX/PumpkinFX1,122011,0,1,0,1,0,PumpkinFX1,-205.7497,0.614033,-70.03815,0,0,0,1,1,1,Physical,Entities,Default,DefaultNoTint|255/255/255/255,;
 Scene,Decor/DirtMuncherTitan1,122012,0,1,1,1,0,DirtMuncherTitan1,-251.5233,8.485835,-58.92149,82.08739,265.8485,306.7292,0.3,0.25,0.25,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorPointLight,122013,121963,1,0,0,0,PointLight,343.45,1068.565,-126.8058,0,0,0,4,4,4,None,Entities,Default,DefaultNoTint|255/255/255/255,PointLight|Color:255/0/0/255|Intensity:1|Range:100
+/// Logic
 class Main
 {   
     Description = "Survive multiple waves of spooky titans.";
