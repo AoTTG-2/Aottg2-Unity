@@ -6,12 +6,18 @@ class Main
     InfiniteLives = true;
     Lives = 0;
     RespawnDelay = 1.5;
+
+    _CurrentNumberOfLaps = 1;
+    _NumberOfLapsTotal = 1;
+    _CanFinish = true;
     _started = false;
     _startBarriers = null;
     _dieTimeLeft = 0.0;
     _livesLeft = 0;
     _finished = false;
     _hasSpawned = false;
+    _lapText = "";
+    CheckpointList = List();
 
     function OnGameStart()
     {
@@ -22,17 +28,40 @@ class Main
         Game.SetPlaylist("Racing");
         UI.SetScoreboardHeader("Finish Time");
         UI.SetScoreboardProperty("FinishTime");
+        if (self._NumberOfLapsTotal > 1)
+        {
+            self._CanFinish = false;
+            CheckpointObjects = Map.FindMapObjectsByName("Racing Checkpoint Region");
+            for (object in CheckpointObjects)
+            {
+                if (object.GetComponent("RacingCheckpointRegion").LapCheckpoint)
+                {
+                    self.CheckpointList.Add(object.GetComponent("RacingCheckpointRegion"));
+                }
+            }
+            self._lapText = "Lap " + Convert.ToString(self._CurrentNumberOfLaps)+ "/" + Convert.ToString(self._NumberOfLapsTotal);
+        }
     }
 
     function FinishRace(human)
     {
-        if (!self._finished)
+        if (!self._finished && self._CurrentNumberOfLaps == self._NumberOfLapsTotal && self._CanFinish)
         {
             finishTime = String.FormatFloat(Time.GameTime - self.StartDelay, 2);
             Game.PrintAll(human.Player.Name + " finished at " + finishTime);
             Network.MyPlayer.SetCustomProperty("FinishTime", finishTime);
             Network.SendMessage(Network.MasterClient, "Finish");
             self._finished = true;
+        }
+        elif (self._CurrentNumberOfLaps < self._NumberOfLapsTotal && self._CanFinish)
+        {
+            self._CanFinish = false;
+            self._CurrentNumberOfLaps += 1;
+            self._lapText = "Lap " + Convert.ToString(self._CurrentNumberOfLaps)+ "/" + Convert.ToString(self._NumberOfLapsTotal);
+            for (checkpoint in self.CheckpointList)
+            {
+                checkpoint._Cleared = false;
+            }
         }
     }
 
@@ -61,6 +90,7 @@ class Main
         }
     }
 
+
     function OnTick()
     {
         if (!self._started)
@@ -84,11 +114,12 @@ class Main
         {
             if (!self.InfiniteLives)
             {
-                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + ", Lives: " + Convert.ToString(self._livesLeft));
+                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + ", Lives: " + Convert.ToString(self._livesLeft)
+                + String.Newline + self._lapText);
             }
             else
             {
-                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2));
+                UI.SetLabel("TopCenter", "Racing Time: " + String.FormatFloat(Time.GameTime - self.StartDelay, 2) + String.Newline + self._lapText);
             }
             self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
             if (!self._hasSpawned && Network.MyPlayer.Status == "Dead")
@@ -130,6 +161,22 @@ class Main
                     Game.End(10);
                 }
             }
+        }
+    }
+
+    function CheckpointStatus()
+    {
+        totalCleared = 0;
+        for (Checkpoint in self.CheckpointList)
+        {
+            if (Checkpoint._Cleared)
+            {
+                totalCleared += 1;
+            }
+        }
+        if (totalCleared == self.CheckpointList.Count)
+        {
+            self._CanFinish = true;
         }
     }
 }

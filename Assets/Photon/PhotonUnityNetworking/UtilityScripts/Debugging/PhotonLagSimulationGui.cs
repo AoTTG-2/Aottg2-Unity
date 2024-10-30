@@ -41,6 +41,10 @@ namespace Photon.Pun.UtilityScripts
         public void Start()
         {
             this.Peer = PhotonNetwork.NetworkingClient.LoadBalancingPeer;
+            if (this.WindowRect.x <= 0)
+            {
+                this.WindowRect.x = Screen.width - WindowRect.width;
+            }
         }
 
         public void OnGUI()

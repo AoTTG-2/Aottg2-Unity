@@ -14,6 +14,8 @@ using Controllers;
 using Unity.VisualScripting;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Settings;
+using System.Collections;
 
 namespace ApplicationManagers
 {
@@ -41,9 +43,6 @@ namespace ApplicationManagers
         {
             if (!ApplicationConfig.DevelopmentMode)
                 return;
-            //CustomLogicManager.Logic = BuiltinLevels.LoadLogic("test2");
-            //var settings = CustomLogicManager.GetModeSettings(CustomLogicManager.Logic);
-            //CustomLogicManager.StartLogic(settings);
         }
 
         private static void OnLoadScene(SceneName sceneName)
@@ -75,9 +74,6 @@ namespace ApplicationManagers
                     DebugColliders = !DebugColliders;
                     Debug.Log("Debug colliders enabled: " + DebugColliders.ToString());
                     break;
-                case "network":
-                    _instance.AddComponent<PhotonStatsGui>();
-                    break;
                 case "generate_char_previews":
                     ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).GeneratePreviews();
                     break;
@@ -85,9 +81,27 @@ namespace ApplicationManagers
                     var titan = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
                     titan.AddComponent<DebugAttackKeyframes>();
                     break;
+                case "room":
+                    _instance.StartCoroutine(_instance.Test());
+                    break;
                 default:
                     Debug.Log("Invalid debug command.");
                     break;
+            }
+        }
+
+        private IEnumerator Test()
+        {
+            while (true)
+            {
+                SettingsManager.MultiplayerSettings.ConnectServer(MultiplayerRegion.US);
+                yield return new WaitForSeconds(1f);
+                SettingsManager.MultiplayerSettings.StartRoom();
+                yield return new WaitForSeconds(1f);
+                SettingsManager.MultiplayerSettings.Disconnect();
+                SettingsManager.MultiplayerSettings.Disconnect();
+                yield return new WaitForSeconds(1f);
+                Debug.Log(PhotonNetwork.CountOfRooms);
             }
         }
     }

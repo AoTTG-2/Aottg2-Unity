@@ -340,8 +340,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddBoxTarget")
             {
@@ -368,8 +369,9 @@ namespace CustomLogic
                     if (instance.UsesCollider())
                         handler.RegisterInstance(instance);
                 }
-                MapLoader.MapTargetables.Add(new MapTargetable(go.transform, c.center, team));
-                return null;
+                var targetable = new MapTargetable(go.transform, c.center, team);
+                MapLoader.MapTargetables.Add(targetable);
+                return new CustomLogicMapTargetableBuiltin(go, targetable);
             }
             if (methodName == "AddComponent")
             {
@@ -386,6 +388,22 @@ namespace CustomLogic
             {
                 string name = (string)parameters[0];
                 return Value.FindComponentInstance(name);
+            }
+            if (methodName == "SetComponentEnabled")
+            {
+                string name = (string)parameters[0];
+                bool enabled = (bool)parameters[1];
+                Value.FindComponentInstance(name).Enabled = enabled;
+                return null;
+            }
+            if (methodName == "SetComponentsEnabled")
+            {
+                bool enabled = (bool)parameters[0];
+                foreach (var instance in Value.ComponentInstances)
+                {
+                    instance.Enabled = enabled;
+                }
+                return null;
             }
             if (methodName == "GetChild")
             {
@@ -575,6 +593,14 @@ namespace CustomLogic
                 }
                 return new CustomLogicVector3Builtin(_internalLocalRotation);
             }
+            if (name == "QuaternionRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.rotation);
+            }
+            if (name == "QuaternionLocalRotation")
+            {
+                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.localRotation);
+            }
             if (name == "Forward")
                 return new CustomLogicVector3Builtin(Value.GameObject.transform.forward.normalized);
             if (name == "Up")
@@ -675,6 +701,20 @@ namespace CustomLogic
                 _needSetLocalRotation = false;
                 Value.GameObject.transform.localRotation = Quaternion.Euler(_internalLocalRotation);
             }
+            else if (name == "QuaternionRotation")
+            {
+                // Set the rotation of the object to the quaternion value
+                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
+                _needSetLocalRotation = false;
+                Value.GameObject.transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
+            }
+            else if (name == "QuaternionLocalRotation")
+            {
+                // Set the local rotation of the object to the quaternion value
+                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
+                _needSetLocalRotation = false;
+                Value.GameObject.transform.localRotation = ((CustomLogicQuaternionBuiltin)value).Value;
+            }
             else if (name == "Forward")
                 Value.GameObject.transform.forward = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Up")
@@ -693,10 +733,16 @@ namespace CustomLogic
                 {
                     MapLoader.SetParent(Value, null);
                 }
-                else
+                else if (value is CustomLogicMapObjectBuiltin)
                 {
                     var parent = (CustomLogicMapObjectBuiltin)value;
                     MapLoader.SetParent(Value, parent.Value);
+                }
+                else if (value is CustomLogicTransformBuiltin)
+                {
+                    MapLoader.SetParent(Value, null);
+                    var parent = (CustomLogicTransformBuiltin)value;
+                    Value.GameObject.transform.SetParent(parent.Value);
                 }
                 _needSetLocalRotation = true;
             }

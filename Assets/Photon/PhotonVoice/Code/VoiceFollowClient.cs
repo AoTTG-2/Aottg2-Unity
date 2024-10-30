@@ -154,6 +154,8 @@ namespace Photon.Voice
                 // TODO test rejoins and maybe add more cases we could recover
                 if (this.Client.DisconnectedCause == DisconnectCause.ClientTimeout)
                 {
+                    return;
+
                     bool result = this.Client.ReconnectAndRejoin();
                     if (result)
                     {

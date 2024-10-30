@@ -108,7 +108,7 @@
 
         public static string GetRandomBladeNapeVar1()
         {
-            return GetRandom(BladeNape1Var1, BladeNape1Var3);
+            return GetRandom(BladeNape1Var1, BladeNape1Var2, BladeNape1Var3);
         }
 
         public static string GetRandomBladeNapeVar2()
@@ -118,12 +118,12 @@
 
         public static string GetRandomBladeNapeVar3()
         {
-            return GetRandom(BladeNape3Var1, BladeNape3Var3, BladeNape3Var3);
+            return GetRandom(BladeNape3Var1, BladeNape3Var2, BladeNape3Var3);
         }
 
         public static string GetRandomBladeNapeVar4()
         {
-            return GetRandom(BladeNape4Var1, BladeNape4Var3, BladeNape4Var3);
+            return GetRandom(BladeNape4Var1, BladeNape4Var2, BladeNape4Var3);
         }
 
         public static string GetRandomAHSSGunShot()

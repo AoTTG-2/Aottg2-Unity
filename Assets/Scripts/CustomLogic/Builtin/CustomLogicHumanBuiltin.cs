@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Characters;
 using GameManagers;
@@ -20,96 +20,119 @@ namespace CustomLogic
 
         public override object CallMethod(string methodName, List<object> parameters)
         {
-            if (Human != null && Human.IsMine())
+            if (methodName == "Refill")
             {
-                if (methodName == "Refill")
-                {
-                    if (Human.NeedRefill(true))
-                        return Human.Refill();
-                    return false;
-                }
-                if (methodName == "RefillImmediate")
-                {
+                if (Human.IsMine() && Human.NeedRefill(true))
+                    return Human.Refill();
+                return false;
+            }
+            if (methodName == "RefillImmediate")
+            {
+                if (Human.IsMine())
                     Human.FinishRefill();
-                    return null;
-                }
-                if (methodName == "ClearHooks")
+                return null;
+            }
+            if (methodName == "ClearHooks")
+            {
+                if (Human.IsMine())
                 {
                     Human.HookLeft.DisableAnyHook();
                     Human.HookRight.DisableAnyHook();
-                    return null;
                 }
-                if (methodName == "ClearLeftHook")
-                {
+                return null;
+            }
+            if (methodName == "ClearLeftHook")
+            {
+                if (Human.IsMine())
                     Human.HookLeft.DisableAnyHook();
-                    return null;
-                }
-                if (methodName == "ClearRightHook")
-                {
+                return null;
+            }
+            if (methodName == "ClearRightHook")
+            {
+                if (Human.IsMine())
                     Human.HookRight.DisableAnyHook();
-                    return null;
-                }
-                if (methodName == "MountMapObject")
+                return null;
+            }
+            if (methodName == "MountMapObject")
+            {
+                if (Human.IsMine())
                 {
                     Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
                     Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
                     Human.Mount(((CustomLogicMapObjectBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
-                    return null;
                 }
-                if (methodName == "MountTransform")
+                return null;
+            }
+            if (methodName == "MountTransform")
+            {
+                if (Human.IsMine())
                 {
                     Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
                     Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
                     Human.Mount(((CustomLogicTransformBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
-                    return null;
                 }
-                if (methodName == "Unmount")
-                {
+                return null;
+            }
+            if (methodName == "Unmount")
+            {
+                if (Human.IsMine())
                     Human.Unmount(true);
-                    return null;
-                }
-                if (methodName == "SetSpecial")
-                {
+                return null;
+            }
+            if (methodName == "SetSpecial")
+            {
+                if (Human.IsMine())
                     Human.SetSpecial((string)parameters[0]);
-                    return null;
-                }
-                if (methodName == "SetWeapon")
+                return null;
+            }
+            if (methodName == "ActivateSpecial")
+            {
+                if (Human.IsMine() && Human.Special != null)
                 {
-                    var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                    string weapon = (string)parameters[0];
-                    if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
+                    Human.Special.SetInput(true);
+                    Human.Special.SetInput(false);
+                }
+                return null;
+            }
+            if (methodName == "SetWeapon")
+            {
+                if (!Human.IsMine())
+                    return null;
+                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+                string weapon = (string)parameters[0];
+                if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
+                {
+                    var miscSettings = SettingsManager.InGameCurrent.Misc;
+                    if (!Human.Dead)
                     {
-                        var miscSettings = SettingsManager.InGameCurrent.Misc;
-                        if (!Human.Dead)
-                        {
-                            List<string> loadouts = new List<string>();
-                            if (miscSettings.AllowBlades.Value)
-                                loadouts.Add(HumanLoadout.Blades);
-                            if (miscSettings.AllowAHSS.Value)
-                                loadouts.Add(HumanLoadout.AHSS);
-                            if (miscSettings.AllowAPG.Value)
-                                loadouts.Add(HumanLoadout.APG);
-                            if (miscSettings.AllowThunderspears.Value)
-                                loadouts.Add(HumanLoadout.Thunderspears);
-                            if (loadouts.Count == 0)
-                                loadouts.Add(HumanLoadout.Blades);
+                        List<string> loadouts = new List<string>();
+                        if (miscSettings.AllowBlades.Value)
+                            loadouts.Add(HumanLoadout.Blades);
+                        if (miscSettings.AllowAHSS.Value)
+                            loadouts.Add(HumanLoadout.AHSS);
+                        if (miscSettings.AllowAPG.Value)
+                            loadouts.Add(HumanLoadout.APG);
+                        if (miscSettings.AllowThunderspears.Value)
+                            loadouts.Add(HumanLoadout.Thunderspears);
+                        if (loadouts.Count == 0)
+                            loadouts.Add(HumanLoadout.Blades);
 
-                            if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
-                            {
-                                SettingsManager.InGameCharacterSettings.Loadout.Value = weapon;
-                                var manager = (InGameManager)SceneLoader.CurrentGameManager;
-                                Human = (Human)gameManager.CurrentCharacter;
-                                Human.ReloadHuman(manager.GetSetHumanSettings());
-                            }
+                        if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
+                        {
+                            SettingsManager.InGameCharacterSettings.Loadout.Value = weapon;
+                            var manager = (InGameManager)SceneLoader.CurrentGameManager;
+                            Human = (Human)gameManager.CurrentCharacter;
+                            Human.ReloadHuman(manager.GetSetHumanSettings());
                         }
                     }
-                    return null;
                 }
-                if (methodName == "DisablePerks")
-                {
+                return null;
+            }
+            if (methodName == "DisablePerks")
+            {
+                if (Human.IsMine())
                     Human.Stats.DisablePerks();
-                    return null;
-                }
+                return null;
             }
             return base.CallMethod(methodName, parameters);
         }
@@ -126,6 +149,17 @@ namespace CustomLogic
                 return Human.Setup.Weapon.ToString();
             if (name == "CurrentSpecial")
                 return Human.CurrentSpecial;
+            if (name == "SpecialCooldown")
+                return Human.Special == null ? 0f : Human.Special.Cooldown;
+            if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    return special.LiveTime;
+
+                return 0f;
+            }
+            if (name == "SpecialCooldownRatio")
+                return Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
             if (name == "CurrentGas")
                 return Human.Stats.CurrentGas;
             if (name == "MaxGas")
@@ -229,7 +263,19 @@ namespace CustomLogic
                 bladeWeapon = (BladeWeapon)Human.Weapon;
             else if (Human.Weapon is AmmoWeapon)
                 ammoWeapon = (AmmoWeapon)Human.Weapon;
-            if (name == "CurrentGas")
+            if (name == "SpecialCooldown")
+            {
+                if (Human.Special == null) return;
+
+                var v = Mathf.Max(0f, value.UnboxToFloat());
+                Human.Special.Cooldown = v;
+            }
+            else if (name == "ShifterLiveTime")
+            {
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    special.LiveTime = value.UnboxToFloat();
+            }
+            else if (name == "CurrentGas")
                 Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
             else if (name == "MaxGas")
                 Human.Stats.MaxGas = value.UnboxToFloat();

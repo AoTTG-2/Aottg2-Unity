@@ -736,6 +736,78 @@ component VelocityZone
 }
 
 # general
+component TitanTarget
+{
+    EnabledByDefault = true;
+    PlayerPriorityRange = 0.0;
+
+    Description = "Objects with this component will be targeted by titans. It's a good idea to keep this component on an empty object and put it somewhere that titans can reach otherwise they will only walk towards the object without being able to attack.";
+    PlayerPriorityRangeTooltip = "If any player is in this range, this component will be automatically disabled so that the titans can focus on the player.";
+
+    _playersInsideCount = 0;
+
+    function Init()
+    {
+        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 0.1);
+        self._targetable.Enabled = self.EnabledByDefault;
+
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3(0), self.PlayerPriorityRange);
+    }
+
+    function IsEnabled()
+    {
+        return self._targetable.Enabled;
+    }
+
+    function SetEnabled(enabled)
+    {
+        self._targetable.Enabled = enabled;
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self.NetworkView.SendMessage(Network.MasterClient, "Add");
+        }
+    }
+
+    function OnCollisionExit(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            self.NetworkView.SendMessage(Network.MasterClient, "Remove");
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (message == "Add")
+        {
+            self._playersInsideCount += 1;
+        }
+        elif (message == "Remove")
+        {
+            self._playersInsideCount -= 1;
+        }
+
+        if (self._playersInsideCount > 0)
+        {
+            self.SetEnabled(false);
+        }
+        else
+        {
+            self.SetEnabled(true);
+        }
+    }
+}
+
+# general
 component DestructibleTrigger
 {
     Description = "A generic component for destroying, replacing, and recovering objects. Place this on a separate object with the Hitboxes collider, and it will destroy objects in TargetIDs when hit.";
@@ -745,6 +817,9 @@ component DestructibleTrigger
 
     ReplacementIDs = "0";
     ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
+
+    TitanTargetIDs = "0";
+    TitanTargetIDsTooltip = "Slash (/) separated list of IDs of objects with TitanTarget component. Once destruction is triggered, these targets will be disabled so the titans can ignore them.";
 
     # Modifiers
     Health = 100;
@@ -768,6 +843,7 @@ component DestructibleTrigger
     # Private state
     _targets = List();
     _replacements = List();
+    _titanTargets = List();
     _attacksThatCanDestroy = List();
     _teamsThatCanDestroy = List();
 
@@ -784,6 +860,7 @@ component DestructibleTrigger
         # Cache targets and replacements, enable targets, disable replacements
         self._targets = self.PopulateMapObjectList(self.TargetIDs);
         self._replacements = self.PopulateMapObjectList(self.ReplacementIDs);
+        self._titanTargets = self.PopulateMapObjectList(self.TitanTargetIDs);
 
         # Setup state only if this trigger is active
         if (self.MapObject.Active)
@@ -906,6 +983,14 @@ component DestructibleTrigger
         self.MapObject.Active = false;
         self.SetState(self._targets, false);
         self.SetState(self._replacements, true);
+        for(t in self._titanTargets)
+        {
+            c = t.GetComponent("TitanTarget");
+            if (c != null)
+            {
+                c.SetEnabled(false);
+            }
+        }
         self._isDestroyed = true;
     }
 
@@ -915,6 +1000,14 @@ component DestructibleTrigger
         self.MapObject.Active = true;
         self.SetState(self._targets, true);
         self.SetState(self._replacements, false);
+        for(t in self._titanTargets)
+        {
+            c = t.GetComponent("TitanTarget");
+            if (c != null)
+            {
+                c.SetEnabled(true);
+            }
+        }
         self._isDestroyed = false;
     }
 
@@ -1739,6 +1832,7 @@ component SupplyStation
 {
     UnlimitedRefills = true;
     MaxRefills = 0;
+    LoadoutChange = true;
     _currentHumanRefill = null;
     _currentHuman = null;
 
@@ -1754,7 +1848,11 @@ component SupplyStation
         {
             self._currentHuman = other;
             self._currentHumanRefill = other;
-            text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            text = "";
+            if (self.LoadoutChange)
+            {
+                text = "Press " + Input.GetKeyName("Interaction/Interact2") + " to change loadout.";
+            }
             if (!self._currentHumanRefill.AutoRefillGas)
             {
                 text = "Press " + Input.GetKeyName("Interaction/Interact") + " to refill." + String.Newline + text;
@@ -1773,7 +1871,7 @@ component SupplyStation
                 self._refillsLeft = self._refillsLeft - 1;
             }
         }
-        if (self._currentHuman != null)
+        if (self.LoadoutChange && self._currentHuman != null)
         {
             if (Input.GetKeyDown("Interaction/Interact2"))
             {
@@ -2013,7 +2111,9 @@ component RacingCheckpointRegion
 {
     Refill = true;
     PlaySound = true;
-
+    LapCheckpoint = false;
+    LapCheckpointTooltip = "Enable to count this checkpoint for lap racing.";
+    _Cleared = false;
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)
@@ -2026,7 +2126,12 @@ component RacingCheckpointRegion
             {
                 other.PlaySound("Checkpoint");
             }
-            other.Player.SpawnPoint = self.MapObject;
+            other.Player.SpawnPoint = self.MapObject.Position;
+            if (self.LapCheckpoint)
+            {    
+                self._Cleared = true;
+                Main.CheckpointStatus();
+            }
         }
     }
 }
@@ -2034,6 +2139,12 @@ component RacingCheckpointRegion
 # general
 component RacingFinishRegion
 {
+    NumberOfLaps = 1;
+    NumberOfLapsTooltip = "Any number above '1' uses lap mode";
+    function Init()
+    {
+        Main._NumberOfLapsTotal = self.NumberOfLaps;
+    }
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)
@@ -2438,6 +2549,7 @@ component Cannon
     UnlimitedAmmo = true;
     MaxAmmo = 0;
     Cooldown = 3.0;
+    ProjectileLiveTime = 2.0;
     _rotateSpeed = 20;
     _ballSpeed = 300.0;
     _barrel = null;
@@ -2601,7 +2713,7 @@ component Cannon
         {
             Game.SpawnEffect("Boom2", self._barrelEnd.Position, self.MapObject.Rotation, 0.5);
             Game.SpawnProjectileWithOwner("CannonBall", self._barrelEnd.Position, Vector3.Zero, self._barrel.Forward.Normalized * self._ballSpeed, 
-            Vector3(0, -20, 0), 2.0, self._human);
+            Vector3(0, -20, 0), self.ProjectileLiveTime, self._human);
         }
     }
 }

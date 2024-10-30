@@ -1,7 +1,8 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Characters;
 using Settings;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -27,6 +28,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
             if (name == "FOV")
                 return CustomLogicManager.CameraFOV;
+            if (name == "CameraMode")
+                return (CustomLogicManager.CameraMode ?? camera.CurrentCameraMode).ToString();
             if (name == "Forward")
                 return new CustomLogicVector3Builtin(camera.Cache.Transform.forward);
             if (name == "FollowDistance")
@@ -45,7 +48,7 @@ namespace CustomLogic
             }
             else if (name == "FollowDistance")
             {
-                camera.SetCameraDistance((float)value);
+                camera.SetCameraDistance(value.UnboxToFloat());
             }
             else
                 base.SetField(name, value);
@@ -92,6 +95,31 @@ namespace CustomLogic
             if (name == "SetFOV")
             {
                 CustomLogicManager.CameraFOV = parameters[0].UnboxToFloat();
+                return null;
+            }
+            if (name == "SetCameraMode")
+            {
+                if (parameters[0] is string str)
+                {
+                    if (str == "null")
+                        CustomLogicManager.CameraMode = null;
+                    else
+                        CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(str);
+                }
+                else
+                    CustomLogicManager.CameraMode = null;
+
+                return null;
+            }
+            if (name == "ResetDistance")
+            {
+                camera.ResetDistance();
+                return null;
+            }
+            if (name == "ResetCameraMode")
+            {
+                CustomLogicManager.CameraMode = null;
+                camera.ResetCameraMode();
                 return null;
             }
             return base.CallMethod(name, parameters);

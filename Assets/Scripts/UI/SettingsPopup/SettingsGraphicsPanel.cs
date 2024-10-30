@@ -34,10 +34,10 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.ShowFPS, UIManager.GetLocale(cat, sub, "ShowFPS"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.MipmapEnabled, UIManager.GetLocale(cat, sub, "MipmapEnabled"), tooltip: UIManager.GetLocale(cat, sub, "MipmapEnabledTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.NapeBloodEnabled, UIManager.GetLocale(cat, sub, "NapeBloodEnabled"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponTrailEnabled, UIManager.GetLocale(cat, sub, "WeaponTrailEnabled"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WindEffectEnabled, UIManager.GetLocale(cat, sub, "WindEffectEnabled"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.BloodSplatterEnabled, UIManager.GetLocale(cat, sub, "BloodSplatterEnabled"));
-
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.WeaponTrail, UIManager.GetLocale(cat, sub, "WeaponTrail"),
+                UIManager.GetLocaleArray(cat, sub, "WeaponTrailOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.TextureQuality, UIManager.GetLocale(cat, sub, "TextureQuality"),
                 UIManager.GetLocaleArray(cat, sub, "TextureQualityOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ShadowQuality, UIManager.GetLocale(cat, sub, "ShadowQuality"),
