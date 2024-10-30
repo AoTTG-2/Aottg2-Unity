@@ -106,31 +106,31 @@ namespace CustomLogic
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().DetectRange;
-                return null;
+                return 0;
             }
             if (name == "FocusRange")
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().FocusRange;
-                return null;
+                return 0;
             }
             if (name == "FocusTime")
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().FocusTime;
-                return null;
+                return 0;
             }
             if (name == "FarAttackCooldown")
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown;
-                return null;
+                return 0;
             }
             if (name == "AttackWait")
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>().AttackWait;
-                return null;
+                return 0;
             }
             if (name == "AttackSpeedMultiplier")
             {
@@ -140,7 +140,7 @@ namespace CustomLogic
             {
                 if (Shifter.IsMine() && Shifter.AI)
                     return Shifter.GetComponent<BaseTitanAIController>()._usePathfinding;
-                return null;
+                return false;
             }
             if (name == "NapePosition")
             {

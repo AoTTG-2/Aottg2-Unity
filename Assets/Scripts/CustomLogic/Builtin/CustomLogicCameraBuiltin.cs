@@ -48,7 +48,7 @@ namespace CustomLogic
             }
             else if (name == "FollowDistance")
             {
-                camera.SetCameraDistance((float)value);
+                camera.SetCameraDistance(value.UnboxToFloat());
             }
             else
                 base.SetField(name, value);
@@ -100,10 +100,26 @@ namespace CustomLogic
             if (name == "SetCameraMode")
             {
                 if (parameters[0] is string str)
-                    CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(str);
+                {
+                    if (str == "null")
+                        CustomLogicManager.CameraMode = null;
+                    else
+                        CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(str);
+                }
                 else
                     CustomLogicManager.CameraMode = null;
 
+                return null;
+            }
+            if (name == "ResetDistance")
+            {
+                camera.ResetDistance();
+                return null;
+            }
+            if (name == "ResetCameraMode")
+            {
+                CustomLogicManager.CameraMode = null;
+                camera.ResetCameraMode();
                 return null;
             }
             return base.CallMethod(name, parameters);

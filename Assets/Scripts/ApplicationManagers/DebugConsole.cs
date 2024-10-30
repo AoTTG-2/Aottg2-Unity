@@ -80,7 +80,10 @@ namespace ApplicationManagers
             if (Input.GetKeyDown(KeyCode.F11))
             {
                 Enabled = !Enabled;
-                DebugLagSim.Toggle(Enabled);
+            }
+            if (Input.GetKeyDown(KeyCode.F10))
+            {
+                DebugLagSim.Toggle();
             }
         }
 

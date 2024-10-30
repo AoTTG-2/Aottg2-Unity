@@ -13,6 +13,7 @@ using Settings;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.AI;
+using Cameras;
 
 namespace Characters
 {
@@ -868,6 +869,9 @@ namespace Characters
             Size = size;
             SetSizeParticles(size);
             ScaleSounds(size);
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (camera._follow == this)
+                camera.SetFollow(this);
         }
 
         protected virtual void ScaleSounds(float size)
