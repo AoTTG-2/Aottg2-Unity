@@ -913,6 +913,10 @@ namespace Characters
         {
             if (State != TitanState.HumanThrow)
                 StateAction(TitanState.HumanThrow, "Amarture_VER2|attack.throw");
+            var flatTarget = GetAimPoint();
+            flatTarget.y = Cache.Transform.position.y;
+            var forward = (flatTarget - Cache.Transform.position).normalized;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
             if (GetAnimationTime() > 0.61f)
             {
                 Human temp = HoldHuman;
