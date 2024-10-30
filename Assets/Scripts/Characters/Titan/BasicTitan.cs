@@ -12,7 +12,6 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
-using GameManagers;
 
 namespace Characters
 {
