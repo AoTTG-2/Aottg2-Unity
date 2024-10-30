@@ -920,7 +920,8 @@ namespace Characters
             if (GetAnimationTime() > 0.61f)
             {
                 Human temp = HoldHuman;
-                Vector3 pos = GetAimPoint().normalized * 150;
+                Vector3 hand = BasicCache.HandRHitbox.transform.position;
+                Vector3 pos = (GetAimPoint() - hand).normalized * 150;
                 Ungrab();
                 if (temp.photonView.gameObject != null)
                     temp.photonView.RPC("blowAway", temp.photonView.Owner, new object[] { pos });
