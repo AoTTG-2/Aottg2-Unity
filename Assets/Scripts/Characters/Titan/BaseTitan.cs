@@ -809,19 +809,13 @@ namespace Characters
         {
             if (IsMine())
             {
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
+                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
                 }
-                else if (State == TitanState.StartJump || State == TitanState.Jump)
+                else if (State == TitanState.HumanThrow)
                 {
-                    if (_jumpDirection.x != 0f || _jumpDirection.z != 0f)
-                    {
-                        var forward = _jumpDirection;
-                        forward.y = 0f;
-                        Quaternion rotation = Quaternion.LookRotation(forward.normalized);
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, rotation, Time.deltaTime * 10f);
-                    }
+                    Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
                 }
             }
             base.LateUpdate();
