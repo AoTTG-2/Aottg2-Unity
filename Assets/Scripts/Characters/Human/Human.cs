@@ -139,7 +139,7 @@ namespace Characters
         }
 
         [PunRPC]
-        public void blowAway(Vector3 force, PhotonMessageInfo info)
+        public void BlowAwayRPC(Vector3 force, PhotonMessageInfo info)
         {
             if (info.photonView.IsMine)
                 Cache.Rigidbody.AddForce(force, ForceMode.Impulse);

@@ -923,7 +923,7 @@ namespace Characters
                 Vector3 pos = (GetAimPoint() - hand).normalized * 150;
                 Ungrab();
                 if (temp.photonView.gameObject != null)
-                    temp.photonView.RPC("blowAway", temp.photonView.Owner, new object[] { pos });
+                    temp.photonView.RPC("BlowAwayRPC", temp.photonView.Owner, new object[] { pos });
             }
         }
 
