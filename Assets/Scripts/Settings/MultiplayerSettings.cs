@@ -1,4 +1,4 @@
-using ApplicationManagers;
+﻿using ApplicationManagers;
 using Discord;
 using GameManagers;
 using Photon.Pun;
@@ -153,7 +153,6 @@ namespace Settings
                 vcRoomOptions.IsOpen = true;
                 vcRoomOptions.MaxPlayers = 255;
                 vcRoomOptions.BroadcastPropsChangeToAll = false;
-                vcRoomOptions.EmptyRoomTtl = 10;
                 VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions);
             }
         }
@@ -169,7 +168,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return ApplicationVersion.GetHashCode(str);
+            return string.Empty;
         }
     }
 

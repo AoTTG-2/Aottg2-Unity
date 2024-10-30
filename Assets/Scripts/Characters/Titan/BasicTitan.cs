@@ -42,7 +42,6 @@ namespace Characters
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
-        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
 
         public void Init(bool ai, string team, JSONNode data, int headPrefab)
         {
@@ -70,7 +69,6 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
-            Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
         }
 
         public override bool IsGrabAttack()
@@ -184,15 +182,6 @@ namespace Characters
                     StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 1.4f));
                 }
                 StateAction(TitanState.Emote, anim);
-            }
-        }
-
-        public void CoverNape()
-        {
-            if (CanAction())
-            {
-                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, 
-                    Cache.Animation[BasicAnimations.CoverNape].length / Cache.Animation[BasicAnimations.CoverNape].speed);
             }
         }
 
@@ -351,12 +340,6 @@ namespace Characters
         {
             base.StartJump();
             BasicCache.MouthHitbox.Activate();
-        }
-
-        public void JumpImmediate()
-        {
-            StartJump();
-            CrossFade(BasicAnimations.Jump, 0.1f, 0.85f);
         }
 
         public override void Eat()
@@ -530,8 +513,6 @@ namespace Characters
 
         public override void Attack(string attack)
         {
-            if (!AI)
-                _attackVelocity = new Vector3(Cache.Rigidbody.velocity.x, 0f, Cache.Rigidbody.velocity.z);
             ResetAttackState(attack);
             if (_currentAttackAnimation == BasicAnimations.AttackBellyFlop)
                 StateActionWithTime(TitanState.Attack, _currentAttackAnimation, BellyFlopTime, 0.1f);
@@ -819,9 +800,9 @@ namespace Characters
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabStomachR)
                         BasicCache.HandRHitbox.Activate(GetHitboxTime(0.35f), GetHitboxTime(0.19f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackL)
-                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
+                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackR)
-                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
+                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontL)
                         BasicCache.HandLHitbox.Activate(GetHitboxTime(0.42f), GetHitboxTime(0.25f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontR)
@@ -858,14 +839,12 @@ namespace Characters
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
                         _rockThrowTarget = TargetEnemy.GetPosition();
-                        //if (TargetEnemy is BaseCharacter)
-                        //    _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
+                        if (TargetEnemy is BaseCharacter)
+                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
                     }
                     else
                         _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
                 }
-                else
-                    _rockThrowTarget = GetAimPoint();
                 var flatTarget = _rockThrowTarget;
                 flatTarget.y = Cache.Transform.position.y;
                 var forward = (flatTarget - Cache.Transform.position).normalized;
@@ -878,7 +857,7 @@ namespace Characters
                 else if (_currentAttackStage == 1 && animationTime > 0.61f)
                 {
                     _currentAttackStage = 2;
-                    Vector3 direction = (_rockThrowTarget - hand).normalized;
+                    Vector3 direction = (GetAimPoint() - hand).normalized;
                     Cache.PhotonView.RPC("ClearRockRPC", RpcTarget.All, new object[0]);
                     ProjectileSpawner.Spawn(ProjectilePrefabs.Rock1, hand, Quaternion.LookRotation(direction), direction * RockThrow1Speed,
                         Vector3.zero, 10f, Cache.PhotonView.ViewID, "", new object[] { Size * 1.5f });
@@ -1107,7 +1086,7 @@ namespace Characters
                     var canTarget = false;
                     if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
-                        BaseCharacter character = (BaseCharacter)TargetEnemy;
+                        var character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
                         canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
                     }
@@ -1115,8 +1094,9 @@ namespace Characters
                         TargetViewId = -1;
                     if (canTarget)
                     {
+                        var character = (BaseCharacter)TargetEnemy;
                         LookAtTarget = true;
-                        LateUpdateHead((BaseCharacter)TargetEnemy);
+                        LateUpdateHead(character);
                     }
                     else
                     {
@@ -1161,27 +1141,37 @@ namespace Characters
                     }
                 }
             }
-            if (_leftArmDisabled)
+            if (!base.AI && base.State == TitanState.Attack && base._currentAttackAnimation == this.BasicAnimations.AttackRockThrow)
             {
-                BasicCache.ForearmL.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-                BasicCache.ForearmL.localRotation = Quaternion.identity;
+                Vector3 rockThrowTarget = GetAimPoint();
+                rockThrowTarget.y = BasicCache.Transform.position.y;
+                Vector3 normalized = (rockThrowTarget - BasicCache.Transform.position).normalized;
+                BasicCache.Transform.rotation = Quaternion.Lerp(BasicCache.Transform.rotation, Quaternion.LookRotation(normalized), Time.deltaTime * 20f);
             }
             else
-                BasicCache.ForearmL.localScale = Vector3.one;
-            if (_rightArmDisabled)
             {
-                BasicCache.ForearmR.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-                BasicCache.ForearmR.localRotation = Quaternion.identity;
-            }
-            else
-                BasicCache.ForearmR.localScale = Vector3.one;
-            BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
-            BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
-            if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
-            {
-                var body = BasicCache.Body;
-                body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-                BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
+                if (_leftArmDisabled)
+                {
+                    BasicCache.ForearmL.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                    BasicCache.ForearmL.localRotation = Quaternion.identity;
+                }
+                else
+                    BasicCache.ForearmL.localScale = Vector3.one;
+                if (_rightArmDisabled)
+                {
+                    BasicCache.ForearmR.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+                    BasicCache.ForearmR.localRotation = Quaternion.identity;
+                }
+                else
+                    BasicCache.ForearmR.localScale = Vector3.one;
+                BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
+                BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
+                if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+                {
+                    var body = BasicCache.Body;
+                    body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                    BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
+                }
             }
         }
 
@@ -1232,7 +1222,7 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
+            else
             {
                 if (IsCrawler)
                     collider.height = _originalCapsuleValue;
