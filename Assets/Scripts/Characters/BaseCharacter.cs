@@ -66,10 +66,7 @@ namespace Characters
 
         public void Reveal(float startDelay, float activeTime)
         {
-            if (OutlineComponent == null)
-            {
-                StartCoroutine(RevealAndRemove(startDelay, activeTime));
-            }
+            StartCoroutine(RevealAndRemove(startDelay, activeTime));
         }
 
         public void AddOutline()
