@@ -2488,21 +2488,22 @@ class Main
                 }
             }
 
+            actualHead = character.Transform.GetTransform("Head");
             head = character.HeadMount;
             ps = head.Position;
             size = character.Size;
 
             x = ps.X;
-            y = ps.Y + 8 * (size / 3);
+            y = ps.Y + 7 * (size / 3);
             z = ps.Z;
 
             rx = 0;
             ry = 90;
             rz = 0;
 
-            sx = size * 4;
-            sy = size * 4;
-            sz = size * 4;
+            sx = size * 3;
+            sy = size * 3.4;
+            sz = size * 3;
 
             # Spawn a pumpkin on the titan's head
             pos =   "" + x  + "," + y  + "," + z ;
@@ -2528,13 +2529,14 @@ class Main
             {
                 name += "d";
             }
+            head.SetRenderersEnabled(false);
+            actualHead.SetRenderersEnabled(false);
             jack = Map.CreateMapObjectRaw("Scene,"+name+",0,0,1,0,1,0,PumpkinHead,"+trs+",Physical,Entities,Default,Default|255/255/255/255");
             jack.Parent = head;
             jack.Forward = head.Forward;
 
             # Rotate jack 90 degrees to the right
-            jack.LocalRotation = Vector3(0, 90, 0);
-
+            jack.LocalRotation = Vector3(0, 90, -11);
         }
     }
 
