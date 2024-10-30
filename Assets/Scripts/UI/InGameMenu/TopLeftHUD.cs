@@ -35,6 +35,7 @@ namespace UI
             // set canvas pivot
             var rect = telemetryCanvas.GetComponent<RectTransform>();
             rect.pivot = ElementFactory.GetAnchorVector(TextAnchor.UpperLeft);
+            rect.sizeDelta = new Vector2(400, 60f);
 
             kdrCanvas = new GameObject();
             kdrCanvas.name = "KDR";
@@ -43,6 +44,7 @@ namespace UI
             // set canvas pivot
             rect = kdrCanvas.GetComponent<RectTransform>();
             rect.pivot = ElementFactory.GetAnchorVector(TextAnchor.UpperLeft);
+            rect.sizeDelta = new Vector2(500, 700f);
 
             telemetryCanvas.transform.SetParent(panel.transform);
             kdrCanvas.transform.SetParent(panel.transform);
@@ -71,7 +73,7 @@ namespace UI
 
         public void ApplySettings()
         {
-            var rect = kdrAndLabel.GetComponent<RectTransform>();
+            /*var rect = kdrAndLabel.GetComponent<RectTransform>();
 
             float verticaloffset = 0f;
             if (SettingsManager.GraphicsSettings.ShowFPS.Value || SettingsManager.UISettings.ShowPing.Value)
@@ -80,7 +82,7 @@ namespace UI
                 verticaloffset += 30;
 
             // Set the offset for the KDR panel
-            rect.anchoredPosition = new Vector2(0, -verticaloffset);
+            rect.anchoredPosition = new Vector2(0, -verticaloffset);*/
         }
     }
 }
