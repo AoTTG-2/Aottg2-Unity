@@ -12,6 +12,7 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
+using GameManagers;
 
 namespace Characters
 {
@@ -888,12 +889,12 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (HoldHuman == null && _stateTimeLeft > 4.72f)
+            if (State != TitanState.HumanThrow && HoldHuman == null && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
             }
-            if (_stateTimeLeft <= 4.72f)
+            if (State != TitanState.HumanThrow && _stateTimeLeft <= 4.72f)
             {
                 if (HoldHuman != null)
                 {
@@ -903,6 +904,22 @@ namespace Characters
                     HoldHuman.GetHit(this, damage, "TitanEat", "");
                     HoldHuman = null;
                 }
+            }
+            if (HoldHuman != null && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
+                UpdateThrowHuman();
+        }
+
+        private void UpdateThrowHuman()
+        {
+            if (State != TitanState.HumanThrow)
+                StateAction(TitanState.HumanThrow, "Amarture_VER2|attack.throw");
+            if (GetAnimationTime() > 0.61f)
+            {
+                Human temp = HoldHuman;
+                Vector3 pos = GetAimPoint().normalized * 150;
+                Ungrab();
+                if (temp.photonView.gameObject != null)
+                    temp.photonView.RPC("blowAway", temp.photonView.Owner, new object[] { pos });
             }
         }
 
