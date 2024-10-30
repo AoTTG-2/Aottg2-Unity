@@ -58,18 +58,13 @@ namespace Photon.Pun.UtilityScripts
         {
             if (this.statsRect.x <= 0)
             {
-                this.statsRect.x = Screen.width - this.statsRect.width;
+                this.statsRect.x = this.statsRect.width;
             }
         }
 
         /// <summary>Checks for shift+tab input combination (to toggle statsOn).</summary>
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift))
-            {
-                this.statsWindowOn = !this.statsWindowOn;
-                this.statsOn = true;    // enable stats when showing the window
-            }
         }
 
         public void OnGUI()
@@ -84,7 +79,7 @@ namespace Photon.Pun.UtilityScripts
                 return;
             }
 
-            this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.TrafficStatsWindow, "Messages (shift+tab)");
+            this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.TrafficStatsWindow, "Net Traffic (F10 to hide)");
         }
 
         public void TrafficStatsWindow(int windowID)
@@ -96,7 +91,7 @@ namespace Photon.Pun.UtilityScripts
             {
                 elapsedMs = 1;
             }
-
+            GUILayout.Label("Rooms: " + PhotonNetwork.CountOfRooms.ToString());
             GUILayout.BeginHorizontal();
             this.buttonsOn = GUILayout.Toggle(this.buttonsOn, "buttons");
             this.healthStatsVisible = GUILayout.Toggle(this.healthStatsVisible, "health");

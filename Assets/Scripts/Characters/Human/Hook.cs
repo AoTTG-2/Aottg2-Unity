@@ -147,7 +147,7 @@ namespace Characters
             Transform t = null;
             if (photonViewId != -1)
                 t = PhotonView.Find(photonViewId).gameObject.transform;
-            if (objectId != -1 && MapManager.MapLoaded)
+            if (objectId != -1 && MapManager.MapLoaded && MapLoader.IdToMapObject.ContainsKey(objectId))
                 t = MapLoader.IdToMapObject[objectId].GameObject.transform;
             OnSetHooked(position, t);
         }
@@ -331,14 +331,25 @@ namespace Characters
                         }
                         else
                         {
-                            var root = obj.transform.root.gameObject;
-                            if (MapLoader.GoToMapObject.ContainsKey(root))
+                            var go = obj;
+                            while (!MapLoader.GoToMapObject.ContainsKey(go))
                             {
-                                MapObject mapObject = MapLoader.GoToMapObject[obj.transform.root.gameObject];
+                                if (go == null)
+                                    break;
+                                var parent = go.transform.parent;
+                                if (parent == null)
+                                    break;
+                                go = parent.gameObject;
+                            }
+                            if (MapLoader.GoToMapObject.ContainsKey(go))
+                            {
+                                MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
                                     SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
+                                else if (mapObject.RuntimeCreated)
+                                    SetHooked(finalHit.point, go.transform);
                                 else
-                                    SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
+                                    SetHooked(finalHit.point, go.transform, -1, mapObject.ScriptObject.Id);
                                 var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
                                 if (collisionHandler != null)
                                     collisionHandler.GetHooked(_owner, finalHit.point, _left);

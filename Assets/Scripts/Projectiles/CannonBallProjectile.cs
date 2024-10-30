@@ -30,7 +30,6 @@ namespace Projectiles
                 {
                     int damage = CalculateDamage();
                     handler.GetHit(_owner, _owner.Name, damage, "CannonBall", transform.position);
-                    return;
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {

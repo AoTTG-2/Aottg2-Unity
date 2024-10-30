@@ -886,7 +886,15 @@ Game.End(10.0);
 return;
 }
 }
-Camera.FollowDistance = 0.0;
+character = Network.MyPlayer.Character;
+if (character != null && character.Type == "Human")
+{
+Camera.SetCameraMode("FPS");
+}
+elif (character == null)
+{
+Camera.ResetCameraMode();
+}
 }
 
 function SpawnTitans()

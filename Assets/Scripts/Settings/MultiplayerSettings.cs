@@ -153,6 +153,7 @@ namespace Settings
                 vcRoomOptions.IsOpen = true;
                 vcRoomOptions.MaxPlayers = 255;
                 vcRoomOptions.BroadcastPropsChangeToAll = false;
+                vcRoomOptions.EmptyRoomTtl = 10;
                 VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions);
             }
         }

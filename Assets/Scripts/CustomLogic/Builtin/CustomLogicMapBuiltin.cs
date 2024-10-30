@@ -103,6 +103,7 @@ namespace CustomLogic
                 var mapObject = MapLoader.LoadObject(script, false);
                 MapLoader.SetParent(mapObject);
                 CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
+                mapObject.RuntimeCreated = true;
                 return new CustomLogicMapObjectBuiltin(mapObject);
             }
             if (name == "DestroyMapObject")
@@ -117,6 +118,7 @@ namespace CustomLogic
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
                 bool includeChildren = (bool)parameters[1];
                 var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
+                copy.RuntimeCreated = true;
                 return new CustomLogicMapObjectBuiltin(copy);
             }
             if (name == "DestroyMapTargetable")
@@ -148,6 +150,7 @@ namespace CustomLogic
             var copy = MapLoader.LoadObject(script, false);
             MapLoader.SetParent(copy);
             CustomLogicManager.Evaluator.LoadMapObjectComponents(copy, true);
+            copy.RuntimeCreated = true;
             if (recursive && MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
             {
                 foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
