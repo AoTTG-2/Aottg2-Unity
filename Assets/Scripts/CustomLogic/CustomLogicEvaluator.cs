@@ -32,6 +32,8 @@ namespace CustomLogic
         public bool DefaultAddKillScore = true;
         public bool ShowScoreboardLoadout = true;
         public bool ShowScoreboardStatus = true;
+        public string ForcedCharacterType = string.Empty;
+        public string ForcedLoadout = string.Empty;
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {

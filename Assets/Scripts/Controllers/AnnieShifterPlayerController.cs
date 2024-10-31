@@ -40,6 +40,16 @@ namespace Controllers
                 }
                 else if (_shifterInput.Kick.GetKeyDown())
                     _shifter.Kick();
+                else if (_shifterInput.AttackBrushFront.GetKeyDown())
+                    AttackBrushFront();
+                else if (_shifterInput.AttackBrushHead.GetKeyDown())
+                    AttackBrushHead();
+                else if (_shifterInput.AttackGrabBottom.GetKeyDown())
+                    AttackGrabBottom();
+                else if (_shifterInput.AttackGrabMid.GetKeyDown())
+                    AttackGrabMid();
+                else if (_shifterInput.AttackGrabUp.GetKeyDown())
+                    AttackGrabUp();
                 else
                 {
                     foreach (string settingName in _shifterInput.Settings.Keys)
@@ -52,6 +62,61 @@ namespace Controllers
                     }
                 }
             }
+        }
+
+        protected void AttackBrushFront()
+        {
+            float x = GetAimAngles()[0];
+            string attack;
+            if (x > 0)
+                attack = "AttackBrushFrontR";
+            else
+                attack = "AttackBrushFrontL";
+            _shifter.Attack(attack);
+        }
+
+        protected void AttackBrushHead()
+        {
+            float x = GetAimAngles()[0];
+            string attack;
+            if (x > 0)
+                attack = "AttackBrushHeadR";
+            else
+                attack = "AttackBrushHeadL";
+            _shifter.Attack(attack);
+        }
+
+        protected void AttackGrabBottom()
+        {
+            float x = GetAimAngles()[0];
+            string attack;
+            if (x > 0)
+                attack = "AttackGrabBottomRight";
+            else
+                attack = "AttackGrabBottomLeft";
+            _shifter.Attack(attack);
+        }
+
+        protected void AttackGrabMid()
+        {
+            float x = GetAimAngles()[0];
+            string attack;
+            if (x > 0)
+                attack = "AttackGrabMidRight";
+            else
+                attack = "AttackGrabMidLeft";
+            _shifter.Attack(attack);
+        }
+
+        protected void AttackGrabUp()
+        {
+            float x = GetAimAngles()[0];
+            string attack;
+            if (x > 0)
+                attack = "AttackGrabUpRight";
+            else
+                attack = "AttackGrabUpLeft";
+            _shifter.Attack(attack);
         }
     }
 }
