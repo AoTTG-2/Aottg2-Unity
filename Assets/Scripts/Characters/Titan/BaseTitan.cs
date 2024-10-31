@@ -189,7 +189,8 @@ namespace Characters
 
         public virtual void ResetAttackState(string attack)
         {
-            Cache.Rigidbody.velocity = Vector3.zero;
+            if (AI)
+                Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
             _currentAttackAnimation = AttackAnimations[attack];
             _currentAttackSpeed = GetAttackSpeed(attack);

@@ -527,14 +527,6 @@ namespace Characters
         {
             Attack("AttackKick");
         }
-
-        public override void ResetAttackState(string attack)
-        {
-            _currentAttack = attack;
-            _currentAttackAnimation = AttackAnimations[attack];
-            _currentAttackSpeed = GetAttackSpeed(attack);
-            _currentAttackStage = 0;
-        }
         public override void Attack(string attack)
         {
             if (!AI)
