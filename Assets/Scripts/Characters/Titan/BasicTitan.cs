@@ -527,6 +527,7 @@ namespace Characters
         {
             Attack("AttackKick");
         }
+
         public override void Attack(string attack)
         {
             if (!AI)
