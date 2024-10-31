@@ -159,7 +159,7 @@ namespace Characters
             if (victimChar is BaseTitan)
             {
                 if (!victimChar.AI && victimChar.MaxHealth == 10)
-                    damage = 1;
+                    damage = 2;
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);

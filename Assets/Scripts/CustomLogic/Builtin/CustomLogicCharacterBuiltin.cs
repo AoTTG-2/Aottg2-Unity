@@ -138,6 +138,8 @@ namespace CustomLogic
                 return Character.Guild;
             if (name == "IsMainCharacter")
                 return Character.IsMainCharacter();
+            if (name == "Transform")
+                return new CustomLogicTransformBuiltin(Character.Cache.Transform);
             if (name == "Position")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             if (name == "Rotation")

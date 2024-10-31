@@ -326,7 +326,7 @@ namespace CustomLogic
                 string killer = (string)parameters[0];
                 string victim = (string)parameters[1];
                 int score = parameters[2].UnboxToInt();
-                string weapon = (string)parameters[2];
+                string weapon = (string)parameters[3];
                 ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score, weapon);
                 return null;
             }
@@ -335,7 +335,7 @@ namespace CustomLogic
                 string killer = (string)parameters[0];
                 string victim = (string)parameters[1];
                 int score = parameters[2].UnboxToInt();
-                string weapon = (string)parameters[2];
+                string weapon = (string)parameters[3];
                 RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { killer, victim, score, weapon });
                 return null;
             }
@@ -518,6 +518,10 @@ namespace CustomLogic
                 return CustomLogicManager.Evaluator.ShowScoreboardStatus;
             if (name == "ShowScoreboardLoadout")
                 return CustomLogicManager.Evaluator.ShowScoreboardLoadout;
+            if (name == "ForcedCharacterType")
+                return CustomLogicManager.Evaluator.ForcedCharacterType;
+            if (name == "ForcedLoadout")
+                return CustomLogicManager.Evaluator.ForcedLoadout;
             return base.GetField(name);
         }
 
@@ -581,6 +585,10 @@ namespace CustomLogic
                 CustomLogicManager.Evaluator.ShowScoreboardLoadout = (bool)value;
             else if (name == "ShowScoreboardStatus")
                 CustomLogicManager.Evaluator.ShowScoreboardStatus = (bool)value;
+            else if (name == "ForcedCharacterType")
+                CustomLogicManager.Evaluator.ForcedCharacterType = (string)value;
+            else if (name == "ForcedLoadout")
+                CustomLogicManager.Evaluator.ForcedLoadout = (string)value;
             else
                 base.SetField(name, value);
         }

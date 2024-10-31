@@ -81,27 +81,9 @@ namespace ApplicationManagers
                     var titan = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
                     titan.AddComponent<DebugAttackKeyframes>();
                     break;
-                case "room":
-                    _instance.StartCoroutine(_instance.Test());
-                    break;
                 default:
                     Debug.Log("Invalid debug command.");
                     break;
-            }
-        }
-
-        private IEnumerator Test()
-        {
-            while (true)
-            {
-                SettingsManager.MultiplayerSettings.ConnectServer(MultiplayerRegion.US);
-                yield return new WaitForSeconds(1f);
-                SettingsManager.MultiplayerSettings.StartRoom();
-                yield return new WaitForSeconds(1f);
-                SettingsManager.MultiplayerSettings.Disconnect();
-                SettingsManager.MultiplayerSettings.Disconnect();
-                yield return new WaitForSeconds(1f);
-                Debug.Log(PhotonNetwork.CountOfRooms);
             }
         }
     }
