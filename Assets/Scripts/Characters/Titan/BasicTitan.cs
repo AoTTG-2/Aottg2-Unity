@@ -530,6 +530,8 @@ namespace Characters
 
         public override void Attack(string attack)
         {
+            if (!Grounded && (attack == "AttackBellyFlop" || attack == "AttackRockThrow"))
+                return;
             if (!AI)
                 _attackVelocity = new Vector3(Cache.Rigidbody.velocity.x, 0f, Cache.Rigidbody.velocity.z);
             ResetAttackState(attack);
