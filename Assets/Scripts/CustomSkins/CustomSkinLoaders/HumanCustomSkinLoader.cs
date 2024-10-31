@@ -16,6 +16,7 @@ namespace CustomSkins
         private int _horseViewId;
         private float _hookLTiling;
         private float _hookRTiling;
+        public bool Finished;
 
         public override IEnumerator LoadSkinsFromRPC(object[] data)
         {
@@ -47,6 +48,7 @@ namespace CustomSkins
                 if (skinUrls.Length > partId && !part.LoadCache(skinUrls[partId]))
                     yield return StartCoroutine(part.LoadSkin(skinUrls[partId]));
             }
+            Finished = true;
         }
 
         protected override BaseCustomSkinPart GetCustomSkinPart(int partId)

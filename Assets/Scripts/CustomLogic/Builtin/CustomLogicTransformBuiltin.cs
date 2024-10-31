@@ -119,6 +119,15 @@ namespace CustomLogic
                 Value.LookAt(target.Value);
                 return null;
             }
+            if (methodName == "SetRenderersEnabled")
+            {
+                bool enabled = (bool)parameters[0];
+                foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
+                    renderer.enabled = enabled;
+
+                return null;
+            }
+
             return base.CallMethod(methodName, parameters);
         }
 

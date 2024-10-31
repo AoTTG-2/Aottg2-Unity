@@ -41,7 +41,7 @@ namespace Characters
            PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         public static LayerMask ClipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
             PhysicsLayer.MapObjectEntities);
-        protected HumanMovementSync MovementSync;
+        private Dictionary<Renderer, Material> FPSMaterials = new Dictionary<Renderer, Material>();
 
         // state
         private HumanState _state = HumanState.Idle;
@@ -964,9 +964,6 @@ namespace Characters
         {
             FinishSetup = false;
             Setup.Copy(settings);
-            HookLeft.DisableAnyHook();
-            HookRight.DisableAnyHook();
-
             if (IsMine())
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
@@ -976,6 +973,7 @@ namespace Characters
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.SetBottomHUD(this);
         }
 
+
         protected override void Awake()
         {
             if (SceneLoader.SceneName == SceneName.CharacterEditor)
@@ -984,7 +982,6 @@ namespace Characters
                 return;
             }
             base.Awake();
-            MovementSync = GetComponent<HumanMovementSync>();
             HumanCache = (HumanComponentCache)Cache;
             Cache.Rigidbody.freezeRotation = true;
             Cache.Rigidbody.useGravity = false;
@@ -1943,6 +1940,36 @@ namespace Characters
             base.LateUpdate();
         }
 
+        protected override void LateUpdateFPS()
+        {
+            if (!IsMine() || !FinishSetup || !_customSkinLoader.Finished)
+                return;
+            var camera = ((InGameCamera)SceneLoader.CurrentCamera);
+            if (camera._follow == this && camera.GetCameraDistance() == 0f)
+            {
+                if (!_cameraFPS)
+                {
+                    _cameraFPS = true;
+                    foreach (var renderer in GetFPSDisabledRenderers())
+                    {
+                        FPSMaterials[renderer] = renderer.material;
+                        renderer.material = MaterialCache.TransparentMaterial;
+                    }
+                }
+            }
+            else if (_cameraFPS)
+            {
+                _cameraFPS = false;
+                if (!Dead || !(this is Human))
+                {
+                    foreach (var renderer in GetFPSDisabledRenderers())
+                    {
+                        renderer.material = FPSMaterials[renderer];
+                    }
+                }
+            }
+        }
+
         protected void OnCollisionEnter(Collision collision)
         {
             var velocity = Cache.Rigidbody.velocity;
@@ -2457,6 +2484,12 @@ namespace Characters
                 Stats.UpdateStats();
             }
             bool isGun = humanWeapon == (int)HumanWeapon.AHSS || humanWeapon == (int)HumanWeapon.APG;
+
+            if (HookLeft != null)
+                HookLeft.LocalClearAllHooks();
+            if (HookRight != null)
+                HookRight.LocalClearAllHooks();
+
             HookLeft = new HookUseable(this, true, isGun);
             HookRight = new HookUseable(this, false, isGun);
             bool male = Setup.CustomSet.Sex.Value == (int)HumanSex.Male;
@@ -2477,6 +2510,10 @@ namespace Characters
                 SetSpecial(SettingsManager.InGameCharacterSettings.Special.Value);
             }
             FinishSetup = true;
+            // ignore if name contains char_eyes, char_face, char_glasses
+            List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
+            
+            this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
         }
 
@@ -2595,6 +2632,8 @@ namespace Characters
             {
                 StartCoroutine(_customSkinLoader.LoadSkinsFromRPC(new object[] { horse, url }));
             }
+            else
+                _customSkinLoader.Finished = true;
         }
 
         [PunRPC]
@@ -3284,14 +3323,6 @@ namespace Characters
             }
         }
 
-        public Vector3 GetVelocity()
-        {
-            if (IsMine())
-                return Cache.Rigidbody.velocity;
-            else
-                return MovementSync._correctVelocity;
-        }
-
         protected override void CheckGround()
         {
 
@@ -3323,7 +3354,7 @@ namespace Characters
         protected override List<Renderer> GetFPSDisabledRenderers()
         {
             List<Renderer> renderers = new List<Renderer>();
-            if (FinishSetup)
+            if (FinishSetup && _customSkinLoader.Finished)
             {
                 AddRendererIfExists(renderers, Setup._part_head);
                 AddRendererIfExists(renderers, Setup._part_hat);
@@ -3339,34 +3370,21 @@ namespace Characters
                 AddRendererIfExists(renderers, Setup._part_gas_r);
                 AddRendererIfExists(renderers, Setup._part_chest_1);
                 AddRendererIfExists(renderers, Setup._part_chest_2);
+                AddRendererIfExists(renderers, Setup._part_upper_body);
+                AddRendererIfExists(renderers, Setup._part_chest);
+                AddRendererIfExists(renderers, Setup._part_brand_1);
+                AddRendererIfExists(renderers, Setup._part_brand_2);
+                AddRendererIfExists(renderers, Setup._part_brand_3);
+                AddRendererIfExists(renderers, Setup._part_brand_4);
+                AddRendererIfExists(renderers, Setup._part_arm_l);
+                AddRendererIfExists(renderers, Setup._part_arm_r);
+                AddRendererIfExists(renderers, Setup._part_leg);
+                AddRendererIfExists(renderers, Setup._part_hair_1);
+                AddRendererIfExists(renderers, Setup._part_cape);
+                AddRendererIfExists(renderers, Setup._part_chest_3);
             }
             return renderers;
         }
-
-        protected override List<SkinnedMeshRenderer> GetFPSDisabledSkinnedRenderers()
-        {
-            List<SkinnedMeshRenderer> renderers = new List<SkinnedMeshRenderer>();
-            AddSkinnedRendererIfExists(renderers, Setup._part_upper_body);
-            AddSkinnedRendererIfExists(renderers, Setup._part_chest);
-            AddSkinnedRendererIfExists(renderers, Setup._part_brand_1);
-            AddSkinnedRendererIfExists(renderers, Setup._part_brand_2);
-            AddSkinnedRendererIfExists(renderers, Setup._part_brand_3);
-            AddSkinnedRendererIfExists(renderers, Setup._part_brand_4);
-            AddSkinnedRendererIfExists(renderers, Setup._part_arm_l);
-            AddSkinnedRendererIfExists(renderers, Setup._part_arm_r);
-            AddSkinnedRendererIfExists(renderers, Setup._part_leg);
-            return renderers;
-        }
-
-        protected override List<SkinnedMeshRenderer> GetFPSDisabledClothRenderers()
-        {
-            List<SkinnedMeshRenderer> renderers = new List<SkinnedMeshRenderer>();
-            AddSkinnedRendererIfExists(renderers, Setup._part_hair_1);
-            AddSkinnedRendererIfExists(renderers, Setup._part_cape);
-            AddSkinnedRendererIfExists(renderers, Setup._part_chest_3);
-            return renderers;
-        }
-
 
         public HumanState State
         {

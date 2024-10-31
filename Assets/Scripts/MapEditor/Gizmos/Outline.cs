@@ -85,16 +85,17 @@ public class Outline : MonoBehaviour
     [SerializeField, HideInInspector]
     private List<ListVector3> bakeValues = new List<ListVector3>();
 
-    private Renderer[] renderers;
+    private HashSet<Renderer> renderers;
     private Material outlineMaskAndFillMaterial;
 
     private bool needsUpdate;
+    private List<string> _namesToIgnore = new List<String>();
 
     void Awake()
     {
 
         // Cache renderers
-        renderers = GetComponentsInChildren<Renderer>();
+        renderers = GetComponentsInChildren<Renderer>().ToHashSet();
 
         // Instantiate outline materials
         outlineMaskAndFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMaskAndFill"));
@@ -107,18 +108,57 @@ public class Outline : MonoBehaviour
         // Apply material properties immediately
         needsUpdate = true;
     }
+    
+    // Create a function that takes in a filter predicate where the argument is a Renderer and filters using that
+    public void RefreshRenderers(List<string> namesToIgnore)
+    {
+        _namesToIgnore = namesToIgnore;
+        registeredMeshes.Clear();
+        bakeValues.Clear();
+        bakeKeys.Clear();
+
+        bool isEnabled = enabled;
+
+        OnDisable();
+        
+        // Update renderer cache
+        renderers = GetComponentsInChildren<Renderer>().Where(e => !_namesToIgnore.Where(a => e.name.Contains(a)).Any()).ToHashSet();
+
+        // Retrieve or generate smooth normals
+        LoadSmoothNormals();
+
+        OnEnable();
+
+        // Apply material properties immediately
+        needsUpdate = true;
+
+        if (isEnabled)
+        {
+            OnEnable();
+        }
+        else
+        {
+            OnDisable();
+        }
+
+    }
 
     void OnEnable()
     {
-        foreach (var renderer in renderers)
+        renderers.RemoveWhere(e =>
         {
+            if (!e == false)
+            {
+                // Append outline shaders
+                var materials = e.sharedMaterials.ToList();
 
-            // Append outline shaders
-            var materials = renderer.sharedMaterials.ToList();
-
-            materials.Add(outlineMaskAndFillMaterial);
-            renderer.materials = materials.ToArray();
-        }
+                // Only add if material does not exist
+                if (!materials.Contains(outlineMaskAndFillMaterial))
+                    materials.Add(outlineMaskAndFillMaterial);
+                e.materials = materials.ToArray();
+            }
+            return !e;
+        });
     }
 
     void OnValidate()
@@ -153,15 +193,16 @@ public class Outline : MonoBehaviour
 
     void OnDisable()
     {
-        foreach (var renderer in renderers)
+        renderers.RemoveWhere(e =>
         {
-
-            // Remove outline shaders
-            var materials = renderer.sharedMaterials.ToList();
-
-            materials.Remove(outlineMaskAndFillMaterial);
-            renderer.materials = materials.ToArray();
-        }
+            if (!e == false)
+            {
+                var materials = e.sharedMaterials.ToList();
+                materials.Remove(outlineMaskAndFillMaterial);
+                e.materials = materials.ToArray();
+            }
+            return !e;
+        });
     }
 
     void OnDestroy()
@@ -198,7 +239,9 @@ public class Outline : MonoBehaviour
     {
 
         // Retrieve or generate smooth normals
-        foreach (var meshFilter in GetComponentsInChildren<MeshFilter>())
+        var filters = GetComponentsInChildren<MeshFilter>().ToHashSet();
+        filters.RemoveWhere(e => !e && !_namesToIgnore.Where(a => e.name.Contains(a)).Any());
+        foreach (var meshFilter in filters)
         {
 
             // Skip if smooth normals have already been adopted
@@ -224,7 +267,9 @@ public class Outline : MonoBehaviour
         }
 
         // Clear UV3 on skinned mesh renderers
-        foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>())
+        var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>().ToHashSet();
+        skinnedMeshRenderers.RemoveWhere(e => !e && !_namesToIgnore.Where(a => e.name.Contains(a)).Any());
+        foreach (var skinnedMeshRenderer in skinnedMeshRenderers)
         {
 
             // Skip if UV3 has already been reset

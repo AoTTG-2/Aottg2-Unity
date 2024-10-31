@@ -21,7 +21,7 @@ namespace CustomLogic
             }
             else
             {
-                for (int i = end; i > start; i -= step)
+                for (int i = start; i > end; i += step)
                     List.Add(i);
             }
         }

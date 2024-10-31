@@ -67,7 +67,7 @@ namespace Map
         private static MapScriptSceneObject CreateBound(Vector3 center, Vector3 size, Vector3 rotation)
         {
             var sceneObject = new MapScriptSceneObject();
-            sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Barrier"]);
+            sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["LegacyBarrier"]);
             sceneObject.SetPosition(center);
             sceneObject.SetScale(size);
             sceneObject.SetRotation(rotation);
@@ -233,7 +233,7 @@ namespace Map
                 {
                     bool skip = false;
                     if (strArray[1] == "barrier")
-                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Barrier"]);
+                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["LegacyBarrier"]);
                     else if (strArray[1] == "barrierEditor")
                     {
                         sceneObject.Asset = "Geometry/Cuboid";
@@ -244,9 +244,9 @@ namespace Map
                         };
                     }
                     else if (strArray[1] == "racingStart")
-                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Racing Start Barrier"]);
+                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Racing Start Barrier Cuboid"]);
                     else if (strArray[1] == "racingEnd")
-                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Racing Finish Region"]);
+                        sceneObject.Copy(BuiltinMapPrefabs.AllPrefabs["Racing Finish Region Cuboid"]);
                     else if (strArray[1] == "region")
                         continue;
                     else

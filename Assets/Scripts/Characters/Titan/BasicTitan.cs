@@ -32,7 +32,7 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
-        public float RockThrow1Speed = 200f;
+        public float RockThrow1Speed = 150f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
@@ -530,6 +530,8 @@ namespace Characters
 
         public override void Attack(string attack)
         {
+            if (!Grounded && (attack == "AttackBellyFlop" || attack == "AttackRockThrow"))
+                return;
             if (!AI)
                 _attackVelocity = new Vector3(Cache.Rigidbody.velocity.x, 0f, Cache.Rigidbody.velocity.z);
             ResetAttackState(attack);
@@ -819,9 +821,9 @@ namespace Characters
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabStomachR)
                         BasicCache.HandRHitbox.Activate(GetHitboxTime(0.35f), GetHitboxTime(0.19f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackL)
-                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
+                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.05f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackR)
-                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.06f));
+                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.05f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontL)
                         BasicCache.HandLHitbox.Activate(GetHitboxTime(0.42f), GetHitboxTime(0.25f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontR)
@@ -857,9 +859,10 @@ namespace Characters
                     {
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
+                        float predictivePower = Mathf.Clamp(distance / 120f, 0f, 1f);
                         _rockThrowTarget = TargetEnemy.GetPosition();
-                        //if (TargetEnemy is BaseCharacter)
-                        //    _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
+                        if (TargetEnemy is BaseCharacter)
+                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).GetVelocity() * time * predictivePower;
                     }
                     else
                         _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
