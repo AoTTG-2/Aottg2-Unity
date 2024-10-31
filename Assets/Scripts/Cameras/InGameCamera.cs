@@ -30,8 +30,9 @@ namespace Cameras
         private float _anchorDistance;
         private float _headOffset;
         private const float DistanceMultiplier = 10f;
-        private bool _napeLock;
+        public bool napeLock;
         private BaseTitan _napeLockTitan;
+        private Transform _neck;
         private SnapshotHandler _snapshotHandler;
         private const float ShakeDistance = 10f;
         private const float ShakeDuration = 1f;
@@ -263,7 +264,7 @@ namespace Cameras
 
         private void UpdateNapeLockImage()
         {
-            if (_follow != null && _follow == _inGameManager.CurrentCharacter && _napeLock && _napeLockTitan != null)
+            if (_follow != null && _follow == _inGameManager.CurrentCharacter && napeLock && _napeLockTitan != null)
             {
                 _menu.NapeLock.SetActive(true);
                 Vector3 position = _napeLockTitan.BaseTitanCache.Neck.position - _napeLockTitan.BaseTitanCache.Neck.forward * _napeLockTitan.Size;
@@ -278,6 +279,8 @@ namespace Cameras
 
         private void UpdateMain()
         {
+            var cameraDistance = GetCameraDistance();
+            float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
                 if (CustomLogicManager.CameraMode != null)
@@ -298,23 +301,21 @@ namespace Cameras
                 }
                 if (SettingsManager.InputSettings.Human.NapeLock.GetKeyDown())
                 {
-                    _napeLock = !_napeLock;
-                    if (_napeLock)
+                    napeLock = !napeLock;
+                    if (napeLock)
                     {
                         var titan = GetNearestTitan();
                         if (titan == null)
-                            _napeLock = false;
+                            napeLock = false;
                         else if (Vector3.Distance(_follow.Cache.Transform.position, titan.Cache.Transform.position) >= 150f)
-                            _napeLock = false;
+                            napeLock = false;
                         else
                             _napeLockTitan = titan;
                     }
                 }
-                if (_napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
-                    _napeLock = false;
+                if (napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
+                    napeLock = false;
             }
-            var cameraDistance = GetCameraDistance();
-            float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
             if (cameraDistance == 0f)
                 offset = 0.1f;
             Cache.Transform.position = _follow.GetCameraAnchor().position;
@@ -325,7 +326,34 @@ namespace Cameras
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
             if (InGameMenu.InMenu())
                 sensitivity = 0f;
-            if (CurrentCameraMode == CameraInputMode.Original)
+            if (napeLock && (_napeLockTitan != null))
+            {
+                float rotationX;
+                Transform neck = _napeLockTitan.BaseTitanCache.Neck;
+                if (CurrentCameraMode == CameraInputMode.Original)
+                {
+                    rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
+                    Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
+                }
+                else
+                {
+                    float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
+                    float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
+                    float sumY = inputY + angleY;
+                    bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
+                    bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
+                    if (rotateUp && rotateDown)
+                        Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
+                }
+                float angle = Mathf.Atan2(neck.position.x - Cache.Transform.position.x, neck.position.z - Cache.Transform.position.z)*Mathf.Rad2Deg;
+                Cache.Transform.rotation = Quaternion.Euler(Cache.Transform.rotation.eulerAngles.x, angle, Cache.Transform.rotation.eulerAngles.z);
+                if (_napeLockTitan.Dead)
+                {
+                    _napeLockTitan = null;
+                    napeLock = false;
+                }
+            }
+            else if (CurrentCameraMode == CameraInputMode.Original)
             {
                 if (Input.mousePosition.x < (Screen.width * 0.4f))
                 {
@@ -339,20 +367,7 @@ namespace Cameras
                 }
                 float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-            }
-            if (_napeLock && (_napeLockTitan != null))
-            {
-                float z = Cache.Transform.eulerAngles.z;
-                Transform neck = _napeLockTitan.BaseTitanCache.Neck;
-                Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
-                Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
-                if (CurrentCameraMode != CameraInputMode.Original)
-                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-                if (_napeLockTitan.Dead)
-                {
-                    _napeLockTitan = null;
-                }
+                
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
             {
@@ -365,8 +380,8 @@ namespace Cameras
                 bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
                 if (rotateUp && rotateDown)
                     Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
+            Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             Cache.Transform.position += Cache.Transform.right * (SettingsManager.GeneralSettings.CameraSide.Value - 1f);
             UpdateShake();
         }
