@@ -352,6 +352,7 @@ namespace Cameras
                 if (_napeLockTitan.Dead)
                 {
                     _napeLockTitan = null;
+                    _napeLock = false;
                 }
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
