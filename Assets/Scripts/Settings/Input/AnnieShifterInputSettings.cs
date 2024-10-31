@@ -12,16 +12,10 @@
         public KeybindSetting AttackBite = new KeybindSetting(new string[] { "E", "None" });
         public KeybindSetting AttackHead = new KeybindSetting(new string[] { "Alpha1", "None" });
         public KeybindSetting AttackBrushBack = new KeybindSetting(new string[] { "Alpha2", "None" });
-        public KeybindSetting AttackBrushFrontL = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackBrushFrontR = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackBrushHeadL = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackBrushHeadR = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabBottomLeft = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabBottomRight = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabMidLeft = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabMidRight = new KeybindSetting(new string[] { "None", "None" });
+        public KeybindSetting AttackBrushFront = new KeybindSetting(new string[] { "None", "None" });
+        public KeybindSetting AttackBrushHead = new KeybindSetting(new string[] { "None", "None" });
+        public KeybindSetting AttackGrabBottom = new KeybindSetting(new string[] { "None", "None" });
+        public KeybindSetting AttackGrabMid = new KeybindSetting(new string[] { "None", "None" });
         public KeybindSetting AttackGrabUp = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabUpLeft = new KeybindSetting(new string[] { "None", "None" });
-        public KeybindSetting AttackGrabUpRight = new KeybindSetting(new string[] { "None", "None" });
     }
 }

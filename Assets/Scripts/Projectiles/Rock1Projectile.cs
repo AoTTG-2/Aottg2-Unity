@@ -38,12 +38,10 @@ namespace Projectiles
                 if (handler != null)
                 {
                     handler.GetHit(_owner, _owner.Name, damage, "Rock", transform.position);
-                    return;
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {
                     character.GetHit("Rock", damage, "Rock", collision.collider.name);
-                    return;
                 }
                 KillPlayersInRadius(_size * 2f, damage);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);

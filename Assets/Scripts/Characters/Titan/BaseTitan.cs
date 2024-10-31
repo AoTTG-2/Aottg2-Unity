@@ -13,6 +13,7 @@ using Settings;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.AI;
+using Cameras;
 
 namespace Characters
 {
@@ -806,19 +807,9 @@ namespace Characters
         {
             if (IsMine())
             {
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
+                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
-                }
-                else if (State == TitanState.StartJump || State == TitanState.Jump)
-                {
-                    if (_jumpDirection.x != 0f || _jumpDirection.z != 0f)
-                    {
-                        var forward = _jumpDirection;
-                        forward.y = 0f;
-                        Quaternion rotation = Quaternion.LookRotation(forward.normalized);
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, rotation, Time.deltaTime * 10f);
-                    }
                 }
             }
             base.LateUpdate();
@@ -874,6 +865,9 @@ namespace Characters
             Size = size;
             SetSizeParticles(size);
             ScaleSounds(size);
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (camera._follow == this)
+                camera.SetFollow(this);
         }
 
         protected virtual void ScaleSounds(float size)

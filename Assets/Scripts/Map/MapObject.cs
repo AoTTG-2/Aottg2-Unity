@@ -15,6 +15,7 @@ namespace Map
         public List<CustomLogicComponentInstance> ComponentInstances = new List<CustomLogicComponentInstance>();
         public Renderer[] renderCache;
         public Collider[] colliderCache;
+        public bool RuntimeCreated = false;
 
         public MapObject(int parent, GameObject gameObject, MapScriptBaseObject scriptObject)
         {

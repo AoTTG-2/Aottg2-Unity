@@ -15,6 +15,13 @@ namespace CustomLogic
         {
         }
 
+        private KeybindSetting GetKeybind(string key)
+        {
+            string[] strArr = key.Split('/');
+            KeybindSetting keybind = (KeybindSetting)((SaveableSettingsContainer)SettingsManager.InputSettings.Settings[strArr[0]]).Settings[strArr[1]];
+            return keybind;
+        }
+
         public override object CallMethod(string name, List<object> parameters)
         {
             if (name == "GetKeyHold" || name == "GetKeyDown" || name == "GetKeyUp")
@@ -25,22 +32,18 @@ namespace CustomLogic
                 bool inMenu = InGameMenu.InMenu() || ChatManager.IsChatActive() || CustomLogicManager.Cutscene;
                 if (inMenu)
                     return false;
-                string key = (string)parameters[0];
-                string[] strArr = key.Split('/');
-                KeybindSetting keybind = (KeybindSetting)((SaveableSettingsContainer)SettingsManager.InputSettings.Settings[strArr[0]]).Settings[strArr[1]];
+                KeybindSetting keybind = GetKeybind((string)parameters[0]);
                 if (name == "GetKeyDown")
-                    return keybind.GetKeyDown();
+                    return keybind.GetKeyDown(true);
                 if (name == "GetKeyUp")
-                    return keybind.GetKeyUp();
+                    return keybind.GetKeyUp(true);
                 if (name == "GetKeyHold")
-                    return keybind.GetKey();
+                    return keybind.GetKey(true);
                 return false;
             }
             if (name == "GetKeyName")
             {
-                string key = (string)parameters[0];
-                string[] strArr = key.Split('/');
-                KeybindSetting keybind = (KeybindSetting)((SaveableSettingsContainer)SettingsManager.InputSettings.Settings[strArr[0]]).Settings[strArr[1]];
+                KeybindSetting keybind = GetKeybind((string)parameters[0]);
                 return keybind.ToString();
             }
             if (name == "GetMouseAim")
@@ -66,6 +69,23 @@ namespace CustomLogic
             {
                 Vector3 dimensions = new Vector3(Screen.width, Screen.height, 0f);
                 return new CustomLogicVector3Builtin(dimensions);
+            if (name == "SetKeyDefaultEnabled")
+            {
+                KeybindSetting keybind = GetKeybind((string)parameters[0]);
+                bool enabled = (bool)parameters[1];
+                if (enabled && CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
+                    CustomLogicManager.KeybindDefaultDisabled.Remove(keybind);
+                else if (!enabled && !CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
+                    CustomLogicManager.KeybindDefaultDisabled.Add(keybind);
+            }
+            if (name == "SetKeyHold")
+            {
+                KeybindSetting keybind = GetKeybind((string)parameters[0]);
+                bool enabled = (bool)parameters[1];
+                if (!enabled && CustomLogicManager.KeybindHold.Contains(keybind))
+                    CustomLogicManager.KeybindHold.Remove(keybind);
+                else if (enabled && !CustomLogicManager.KeybindHold.Contains(keybind))
+                    CustomLogicManager.KeybindHold.Add(keybind);
             }
             return base.CallMethod(name, parameters);
         }

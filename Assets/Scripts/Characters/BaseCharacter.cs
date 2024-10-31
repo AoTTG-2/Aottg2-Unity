@@ -48,6 +48,7 @@ namespace Characters
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
         protected bool _wasMainCharacter = false;
+        public BaseMovementSync MovementSync;
 
         // movement
         public bool Grounded;
@@ -63,6 +64,13 @@ namespace Characters
 
         // Visuals
         private Outline _outline = null;
+
+        public Vector3 GetVelocity()
+        {
+            if (!IsMine() && MovementSync != null)
+                return MovementSync._correctVelocity;
+            return Cache.Rigidbody.velocity;
+        }
 
         public void Reveal(float startDelay, float activeTime)
         {
@@ -513,8 +521,7 @@ namespace Characters
             }
             if (CustomLogicManager.Evaluator == null)
                 return;
-            if (damage > 0)
-                CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
+            CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
             if (SettingsManager.UISettings.GameFeed.Value)
             {
                 string keyword = " killed ";
@@ -559,6 +566,7 @@ namespace Characters
             CreateCache(null);
             SetColliders();
             CurrentHealth = MaxHealth = DefaultMaxHealth;
+            MovementSync = GetComponent<BaseMovementSync>();
         }
 
         protected virtual void CreateCharacterIcon()
@@ -585,13 +593,13 @@ namespace Characters
 
             // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
             yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
             {
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
                 if (!AI)
                     CustomLogicManager.Evaluator.OnPlayerSpawn(this.Cache.PhotonView.Owner, this);
             }
-                
         }
 
         public string GetCurrentAnimation()
@@ -707,15 +715,7 @@ namespace Characters
                 if (!_cameraFPS)
                 {
                     _cameraFPS = true;
-                    foreach (var renderer in GetFPSDisabledSkinnedRenderers())
-                    {
-                        var localbounds = renderer.localBounds;
-                        localbounds.center = Vector3.up * 100000f;
-                        renderer.localBounds = localbounds;
-                    }
                     foreach (var renderer in GetFPSDisabledRenderers())
-                        renderer.enabled = false;
-                    foreach (var renderer in GetFPSDisabledClothRenderers())
                         renderer.enabled = false;
                 }
             }
@@ -724,15 +724,7 @@ namespace Characters
                 _cameraFPS = false;
                 if (!Dead || !(this is Human))
                 {
-                    foreach (var renderer in GetFPSDisabledSkinnedRenderers())
-                    {
-                        var localbounds = renderer.localBounds;
-                        localbounds.center = Vector3.zero;
-                        renderer.localBounds = localbounds;
-                    }
                     foreach (var renderer in GetFPSDisabledRenderers())
-                        renderer.enabled = true;
-                    foreach (var renderer in GetFPSDisabledClothRenderers())
                         renderer.enabled = true;
                 }
             }
@@ -748,48 +740,17 @@ namespace Characters
             return "";
         }
 
-        protected virtual List<SkinnedMeshRenderer> GetFPSDisabledSkinnedRenderers()
-        {
-            return new List<SkinnedMeshRenderer>();
-        }
-
         protected virtual List<Renderer> GetFPSDisabledRenderers()
         {
             return new List<Renderer>();
         }
-
-        protected virtual List<SkinnedMeshRenderer> GetFPSDisabledClothRenderers()
-        {
-            return new List<SkinnedMeshRenderer>();
-        }
-
+     
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject go)
         {
             if (go != null)
             {
                 var renderer = go.GetComponentInChildren<Renderer>();
                 if (renderer != null)
-                    renderers.Add(renderer);
-            }
-        }
-
-        protected void AddSkinnedRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)
-        {
-            if (go != null)
-            {
-                var renderer = go.GetComponent<SkinnedMeshRenderer>();
-                if (renderer != null)
-                    renderers.Add(renderer);
-            }
-        }
-
-        protected void AddClothRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)
-        {
-            if (go != null)
-            {
-                var renderer = go.GetComponent<SkinnedMeshRenderer>();
-                var cloth = go.GetComponent<Cloth>();
-                if (renderer != null && cloth != null)
                     renderers.Add(renderer);
             }
         }
