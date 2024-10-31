@@ -528,6 +528,13 @@ namespace Characters
             Attack("AttackKick");
         }
 
+        public override void ResetAttackState(string attack)
+        {
+            _currentAttack = attack;
+            _currentAttackAnimation = AttackAnimations[attack];
+            _currentAttackSpeed = GetAttackSpeed(attack);
+            _currentAttackStage = 0;
+        }
         public override void Attack(string attack)
         {
             if (!AI)
@@ -1094,6 +1101,100 @@ namespace Characters
             else
                 BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
             _oldHeadRotation = BasicCache.Head.localRotation;
+        }
+        protected override void FixedUpdate()
+        {
+            if (IsMine())
+            {
+                _checkGroundTimeLeft -= Time.fixedDeltaTime;
+                if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
+                {
+                    CheckGround();
+                    _checkGroundTimeLeft = CheckGroundTime;
+                }
+                if (State != TitanState.Fall)
+                    _currentFallTime = 0f;
+                if (State == TitanState.Jump)
+                {
+                    if (Cache.Rigidbody.velocity.y <= 1f)
+                        Fall();
+                }
+                else if (State == TitanState.Attack)
+                {
+                    FixedUpdateAttack();
+                    if (Grounded)
+                        SetDefaultVelocityLerp();
+                }
+                else if (State == TitanState.Dead)
+                {
+                    if (Grounded)
+                        SetDefaultVelocity();
+                }
+                else if (Grounded && State != TitanState.Jump && State != TitanState.StartJump && State != TitanState.WallClimb)
+                {
+                    SetDefaultVelocity();
+                    LastTargetDirection = Vector3.zero;
+                    if (State == TitanState.Fall)
+                        Land();
+                    else if (HasDirection && (State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint))
+                    {
+                        LastTargetDirection = GetTargetDirection();
+                        if (State == TitanState.Run)
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size);
+                        else if (State == TitanState.Sprint)
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size) * 1.7f;
+                        else if (State == TitanState.Walk)
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (WalkSpeedBase + WalkSpeedPerLevel * Size);
+                    }
+                }
+                else if (State == TitanState.Fall)
+                {
+                    if (Cache.Rigidbody.velocity.y >= -1f)
+                    {
+                        _currentFallTime += Time.fixedDeltaTime;
+                        if (_currentFallTime > 0.5f)
+                            Land();
+                    }
+                }
+                else if (State == TitanState.WallClimb)
+                {
+                    Cache.Rigidbody.velocity = Vector3.zero;
+                    var direction = GetTargetDirection();
+                    if (!HasDirection || Vector3.Angle(direction, Cache.Transform.forward) >= 135f)
+                        StopWallClimb();
+                    else
+                    {
+                        RaycastHit hit;
+                        if (Physics.Raycast(Cache.Transform.position + Vector3.up * 3f * Size, Cache.Transform.forward, out hit, 5f * Size, MapObjectMask.value))
+                        {
+                            Cache.Rigidbody.velocity += Vector3.up * (RunSpeedBase + RunSpeedPerLevel * Size * 0.5f);
+                            if (hit.distance > 3.5f * Size)
+                                Cache.Rigidbody.velocity += Cache.Transform.forward * Mathf.Min((hit.distance - 3.5f * Size) / Time.fixedDeltaTime, 10f);
+                        }
+                        else
+                        {
+                            Cache.Transform.position += Vector3.up * 3f * Size + Cache.Transform.forward * 2f * Size;
+                            StopWallClimb();
+                        }
+                    }
+                }
+                if (_needFreshCore)
+                {
+                    _furthestCoreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
+                    _previousCoreLocalPosition = _furthestCoreLocalPosition;
+                    _needFreshCore = false;
+                }
+                if (State != TitanState.WallClimb)
+                    Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
+                if (ConfusedTime > 0)
+                {
+                    ConfusedTime -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    ResetAttackSpeed();
+                }
+            }
         }
 
         protected override void LateUpdate()

@@ -189,6 +189,7 @@ namespace Characters
 
         public virtual void ResetAttackState(string attack)
         {
+            Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
             _currentAttackAnimation = AttackAnimations[attack];
             _currentAttackSpeed = GetAttackSpeed(attack);
@@ -706,7 +707,7 @@ namespace Characters
                 {
                     FixedUpdateAttack();
                     if (Grounded)
-                        SetDefaultVelocityLerp();
+                        SetDefaultVelocity();
                 }
                 else if (State == TitanState.Dead)
                 {
@@ -766,6 +767,19 @@ namespace Characters
                     _furthestCoreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
                     _previousCoreLocalPosition = _furthestCoreLocalPosition;
                     _needFreshCore = false;
+                }
+                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
+                    && Cache.Animation[_currentStateAnimation].normalizedTime < _rootMotionAnimations[_currentStateAnimation])
+                {
+                    Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
+                    if (coreLocalPosition.magnitude >= _furthestCoreLocalPosition.magnitude)
+                    {
+                        Vector3 v = -1f * (coreLocalPosition - _previousCoreLocalPosition) / Time.fixedDeltaTime;
+                        _furthestCoreLocalPosition = coreLocalPosition;
+                        _previousCoreLocalPosition = coreLocalPosition;
+                        v.y = Cache.Rigidbody.velocity.y;
+                        Cache.Rigidbody.velocity = v;
+                    }
                 }
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
