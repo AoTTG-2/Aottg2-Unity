@@ -102,10 +102,6 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             //EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.LookRotation(direction), 2f);
-            var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
-            capsule.radius = 0.1f;
-            float height = capsule.height * 1.2f;
-            float radius = capsule.radius * 4f;
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true, new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f, radius, radius, 0.25f });
             human.PlaySound(HumanSounds.GetRandomAPGShot());
