@@ -67,6 +67,8 @@ namespace UI
             _kdr = kdrScroll.AddComponent<KDRPanel>();
             _kdr.Setup(_style);
             ApplySettings();
+            kdrCanvas.transform.localScale = Vector3.one;
+            telemetryCanvas.transform.localScale = Vector3.one;
         }
 
         public void ApplySettings()
