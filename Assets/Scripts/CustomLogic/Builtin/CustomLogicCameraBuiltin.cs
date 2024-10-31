@@ -32,6 +32,10 @@ namespace CustomLogic
                 return (CustomLogicManager.CameraMode ?? camera.CurrentCameraMode).ToString();
             if (name == "Forward")
                 return new CustomLogicVector3Builtin(camera.Cache.Transform.forward);
+            if (name == "Right")
+                return new CustomLogicVector3Builtin(camera.Cache.Transform.right);
+            if (name == "Up")
+                return new CustomLogicVector3Builtin(camera.Cache.Transform.up);
             if (name == "FollowDistance")
                 return camera.GetCameraDistance();
             return base.GetField(name);
@@ -44,6 +48,18 @@ namespace CustomLogic
             {
                 var vectorBuiltin = (CustomLogicVector3Builtin)value;
                 camera.Cache.Transform.forward = vectorBuiltin.Value;
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+            }
+            else if (name == "Right")
+            {
+                var vectorBuiltin = (CustomLogicVector3Builtin)value;
+                camera.Cache.Transform.right = vectorBuiltin.Value;
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+            }
+            else if (name == "Up")
+            {
+                var vectorBuiltin = (CustomLogicVector3Builtin)value;
+                camera.Cache.Transform.up = vectorBuiltin.Value;
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
             }
             else if (name == "FollowDistance")
