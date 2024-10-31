@@ -55,6 +55,20 @@ namespace CustomLogic
                     target = hit.point;
                 return new CustomLogicVector3Builtin(target);
             }
+            if (name == "GetMouseSpeed")
+            {
+                Vector3 speed = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
+                return new CustomLogicVector3Builtin(speed);
+            }
+            if (name == "GetMousePosition")
+            {
+                Vector3 position = Input.mousePosition;
+                return new CustomLogicVector3Builtin(position);
+            }
+            if (name == "GetScreenDimensions")
+            {
+                Vector3 dimensions = new Vector3(Screen.width, Screen.height, 0f);
+                return new CustomLogicVector3Builtin(dimensions);
             if (name == "SetKeyDefaultEnabled")
             {
                 KeybindSetting keybind = GetKeybind((string)parameters[0]);

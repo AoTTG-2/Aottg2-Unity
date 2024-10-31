@@ -166,6 +166,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(Vector3.forward);
             if (name == "Back")
                 return new CustomLogicVector3Builtin(Vector3.back);
+            if (name == "One")
+                return new CustomLogicVector3Builtin(Vector3.one);
             if (name == "Zero")
                 return new CustomLogicVector3Builtin(Vector3.zero);
             return base.GetField(name);
