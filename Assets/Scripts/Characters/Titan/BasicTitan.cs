@@ -1196,7 +1196,14 @@ namespace Characters
                 }
             }
         }
-
+        protected void SetDefaultVelocityLerp()
+        {
+            float value = 1f;
+            if (this._currentAttack != "AttackBellyFlop" && this._currentAttack != "AttackRockThrow")
+                value = 1.47f;
+            Vector3 targetVelocity = Vector3.up * Cache.Rigidbody.velocity.y + Vector3.down * Mathf.Min(_currentGroundDistance * 100f, 100f);
+            Cache.Rigidbody.velocity = Vector3.Lerp(Cache.Rigidbody.velocity, targetVelocity, Time.deltaTime * value);
+        }
         protected override void LateUpdate()
         {
             base.LateUpdate();
