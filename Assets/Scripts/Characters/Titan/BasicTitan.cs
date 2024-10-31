@@ -1102,6 +1102,7 @@ namespace Characters
                 BasicCache.Head.localRotation = Quaternion.Lerp(_oldHeadRotation, BasicCache.Head.localRotation, Time.deltaTime * 10f);
             _oldHeadRotation = BasicCache.Head.localRotation;
         }
+
         protected override void LateUpdate()
         {
             base.LateUpdate();
