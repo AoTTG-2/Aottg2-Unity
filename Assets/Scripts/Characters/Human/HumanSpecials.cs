@@ -9,6 +9,7 @@ namespace Characters
     {
         public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse"};
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
+        public static string[] APGSpecials = new string[] { "APGRapidFire" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
         public static readonly string DefaultSpecial = "Potato";
@@ -26,6 +27,11 @@ namespace Characters
             else if (loadout == HumanLoadout.AHSS)
             {
                 foreach (string special in AHSSSpecials)
+                    AddSpecialName(names, special);
+            }
+            else if (loadout == HumanLoadout.APG)
+            {
+                foreach (string special in APGSpecials)
                     AddSpecialName(names, special);
             }
             if (includeShifters)
@@ -87,6 +93,7 @@ namespace Characters
             "SmokeBomb" => new SmokeBombSpecial(owner),
             "Carry" => new CarrySpecial(owner),
             "AHSSTwinShot" => new AHSSTwinShot(owner),
+            "APGRapidFire" => new APGRapidFire(owner),
             "Eren" => new ShifterTransformSpecial(owner, "Eren"),
             "Annie" => new ShifterTransformSpecial(owner, "Annie"),
             "Armored" => new ShifterTransformSpecial(owner, "Armored"),
