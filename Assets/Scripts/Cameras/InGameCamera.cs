@@ -509,7 +509,8 @@ namespace Cameras
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {
-                    float distance = Vector3.Distance(_follow.Cache.Transform.position, character.Cache.Transform.position);
+                    var neck = ((BaseTitan)character).BaseTitanCache.Neck;
+                    float distance = Vector3.Distance(_follow.Cache.Transform.position, neck.position);
                     if (distance < nearestDistance)
                     {
                         nearestDistance = distance;
