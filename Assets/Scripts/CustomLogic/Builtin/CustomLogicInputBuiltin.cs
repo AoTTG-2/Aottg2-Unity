@@ -69,6 +69,7 @@ namespace CustomLogic
             {
                 Vector3 dimensions = new Vector3(Screen.width, Screen.height, 0f);
                 return new CustomLogicVector3Builtin(dimensions);
+            }
             if (name == "SetKeyDefaultEnabled")
             {
                 KeybindSetting keybind = GetKeybind((string)parameters[0]);
