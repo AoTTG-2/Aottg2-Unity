@@ -1,11 +1,12 @@
 using Effects;
 using Settings;
 using UI;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Characters
 {
-    class APGRapidFire : HoldUseable
+    class APGRapidFire : BaseHoldAttackSpecial
     {
         int _MaxShotCount;
         float _waitBeforeShot = 0.25f;
@@ -24,6 +25,11 @@ namespace Characters
             }
             return false;
         }
+        protected override void Activate()
+        {
+            var weapon = (AmmoWeapon)((Human)_owner).Weapon;
+            _MaxShotCount = weapon.RoundLeft;
+        }
         protected override void OnUse()
         {
             if (UsesLeft > 0)
@@ -33,25 +39,45 @@ namespace Characters
         {
             _lastUseTime = Time.time;
         }
-        protected override void Activate()
-        {
-            var weapon = (AmmoWeapon)((Human)_owner).Weapon;
-            _MaxShotCount = weapon.RoundLeft;
-        }
         protected override void ActiveFixedUpdate()
         {
-            _lastShotTime += Time.deltaTime;
-            if ((_lastShotTime - _waitBeforeShot >= 0) &&(_MaxShotCount > 0))
+            if (_MaxShotCount > 0)
             {
-                Shoot();
-                _MaxShotCount--;
-                ((AmmoWeapon)((Human)_owner).Weapon).RoundLeft--;
-                _lastShotTime = Time.deltaTime;
+                var human = (Human)_owner;
+
+                Vector3 target = human.GetAimPoint();
+                Vector3 direction = (target - human.Cache.Transform.position).normalized;
+                Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
+                direction = (target - start).normalized;
+                human.HumanCache.APGHit.transform.position = start;
+                human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
+                human.HumanCache.APGHit.Activate(0f, 0.1f);
+
+                //var gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
+                //var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
+                //float height = capsule.height * 1.2f;
+                //float radius = capsule.radius * 4f;
+                //capsule.radius = gunInfo["Radius"].AsFloat;
+                _lastShotTime += Time.deltaTime;
+                if ((_lastShotTime - _waitBeforeShot >= 0))
+                {
+                    Shoot();
+                    _MaxShotCount--;
+                    ((AmmoWeapon)human.Weapon).RoundLeft--;
+                    _lastShotTime = Time.deltaTime;
+                }
             }
+            
         }
         private void Shoot()
         {
             var human = (Human)_owner;
+            var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
+            float height = capsule.height * 1.2f;
+            float radius = capsule.radius * 4f;
+            
+            
+
             Vector3 target = human.GetAimPoint();
             Vector3 direction = (target - human.Cache.Transform.position).normalized;
             string anim;
@@ -77,20 +103,13 @@ namespace Characters
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
             //EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.LookRotation(direction), 2f);
-            var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
-            capsule.radius = 0.1f;
-            float height = capsule.height * 1.2f;
-            float radius = capsule.radius * 4f;
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true, new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f, radius, radius, 0.25f });
             human.PlaySound(HumanSounds.GetRandomAPGShot());
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];
             if (SettingsManager.InGameCurrent.Misc.APGPVP.Value)
                 gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
-            capsule.radius = gunInfo["Radius"].AsFloat;
-            human.HumanCache.APGHit.transform.position = start;
-            human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
-            human.HumanCache.APGHit.Activate(0f, 0.1f);
+            
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
         }
     }
