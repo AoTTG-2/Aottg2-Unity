@@ -10,6 +10,7 @@ namespace Characters
         public static string[] AnySpecials = new string[] {"Potato", "Escape", "Dance", "Distract", "Smell", "Supply", "SmokeBomb", "Carry", "Switchback", "Confuse"};
         public static string[] AHSSSpecials = new string[] { "AHSSTwinShot" };
         public static string[] BladeSpecials = new string[] { "DownStrike", "Spin1", "Spin2", "Spin3", "BladeThrow" };
+        public static string[] AmmoWeaponSpecials = new string[] { "SpinKennySpecial" };
         public static string[] ShifterSpecials = new string[] { "Eren", "Annie" };
         public static readonly string DefaultSpecial = "Potato";
 
@@ -33,8 +34,13 @@ namespace Characters
                 foreach (string special in ShifterSpecials)
                     AddSpecialName(names, special);
             }
-            if (loadout == HumanLoadout.Thunderspear)
+            if (loadout == HumanLoadout.Thunderspears)
+            {
                 AddSpecialName(names, "Stock");
+            }
+            if(loadout == HumanLoadout.Thunderspears || loadout == HumanLoadout.APG || loadout == HumanLoadout.AHSS)
+                foreach (string special in AmmoWeaponSpecials)
+                    AddSpecialName(names, special);
             AddSpecialName(names, "None");
             return names;
         }
@@ -92,6 +98,7 @@ namespace Characters
             "Armored" => new ShifterTransformSpecial(owner, "Armored"),
             "Switchback" => new SwitchbackSpecial(owner),
             "Confuse" => new ConfuseSpecial(owner),
+            "SpinKennySpecial" => new SpinKennySpecial(owner),
             _ => null
         };
 
