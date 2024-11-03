@@ -1,4 +1,5 @@
 using Effects;
+using Projectiles;
 using Settings;
 using System.Collections;
 using System.Net;
@@ -54,7 +55,7 @@ namespace Characters
                 }
                 else if (_weapon is ThunderspearWeapon)
                 {
-                    ShootAPG(_stage);
+                    ShootTS();
                     _human.PlaySound(HumanSounds.GetRandomTSLaunch());
                 }
                 _stage += 1;
@@ -80,11 +81,11 @@ namespace Characters
                 {
                     ShootAHSS(_stage);
                 }
-                else if (_weapon is ThunderspearWeapon)
-                {
-                    ShootAPG(_stage);
-                    _human.PlaySound(HumanSounds.GetRandomTSLaunch());
-                }
+                //else if (_weapon is ThunderspearWeapon)
+                //{
+                //    ShootTS();
+                //    _human.PlaySound(HumanSounds.GetRandomTSLaunch());
+                //}
                 _stage += 1;
             }
             Debug.Log(_owner.Cache.Transform.rotation.x);
@@ -99,6 +100,21 @@ namespace Characters
         }
         void ShootAPG(int stage)
         {
+            var shootDirX = 0f;
+            var shootDirZ = 0f;
+            if(stage == 0)
+            {
+                shootDirX = 5;
+                shootDirZ = 0;
+            }else if(stage == 1)
+            {
+                shootDirX = -5f;
+                shootDirZ = 5f;
+            }else if (stage == 2)
+            {
+                shootDirX = -5f;
+                shootDirZ = -5f;
+            }
             Vector3 target = _human.GetAimPoint();
             Vector3 direction = (target - _human.Cache.Transform.position).normalized;
             Vector3 start = _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f;
@@ -108,8 +124,10 @@ namespace Characters
             float height = capsule.height * 1.2f;
             float radius = capsule.radius * 4f;
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
-            EffectSpawner.Spawn(EffectPrefabs.APGTrail, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 120 * _stage, 0), 4f, true, new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f, radius, radius, 0.25f });
+            EffectSpawner.Spawn(EffectPrefabs.APGTrail, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 360/Loops * stage, 0), 4f, true, new object[] { _human.Cache.Transform.position, _human.Cache.Transform.position + new Vector3(shootDirX, 0, shootDirZ), radius, radius, 0.25f });
+            EffectSpawner.Spawn(EffectPrefabs.APGTrail, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 360 / Loops * stage, 0), 4f, true, new object[] { _human.Cache.Transform.position, _human.Cache.Transform.position + new Vector3(-shootDirX, 0, shootDirZ), radius, radius, 0.25f });
             //EffectSpawner.Spawn(EffectPrefabs.APGTrail, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 120 * stage, 0), 4f, true, new object[] { _human.transform.position , midpoint - direction * height * 0.5f, 0.4f, 0.4f, 0.25f });
+            _human.PlaySound(HumanSounds.GetRandomAPGShot());
             _human.PlaySound(HumanSounds.GetRandomAPGShot());
             ((CapsuleCollider)_human.HumanCache.APGHit._collider).center = _human.transform.position;
             ((CapsuleCollider)_human.HumanCache.APGHit._collider).direction = 0;
@@ -119,13 +137,18 @@ namespace Characters
         }
         void ShootAHSS(int stage)
         {
-            EffectSpawner.Spawn(EffectPrefabs.GunExplode, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 120 * stage, 0));
+            EffectSpawner.Spawn(EffectPrefabs.GunExplode, _human.Cache.Transform.position + _human.Cache.Transform.up * 0.8f, Quaternion.Euler(0, 360 / Loops * stage, 0));
             _human.PlaySound(HumanSounds.GetRandomAHSSGunShot());
             ((CapsuleCollider)_human.HumanCache.AHSSHit._collider).center = _human.transform.position;
             ((CapsuleCollider)_human.HumanCache.AHSSHit._collider).direction = 0;
             ((CapsuleCollider)_human.HumanCache.AHSSHit._collider).height = 4f;
             ((CapsuleCollider)_human.HumanCache.AHSSHit._collider).radius = 10f;
             _human.HumanCache.AHSSHit.Activate(0f, 0.1f);
+        }
+        void ShootTS()
+        {
+            var Current = (ThunderspearProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.Thunderspear, _human.Cache.Transform.position - _human.Cache.Transform.forward, Quaternion.LookRotation(_human.Cache.Transform.position - _human.Cache.Transform.forward),
+                new Vector3(0,-1,0) * SettingsManager.AbilitySettings.BombSpeed.Value , Vector3.zero, 0.1f, _human.Cache.PhotonView.ViewID, "", new object[] { (SettingsManager.AbilitySettings.BombRadius.Value * 4f) + 20f, SettingsManager.AbilitySettings.BombColor.Value.ToColor() });
         }
     }
 }
