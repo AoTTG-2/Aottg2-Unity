@@ -6,6 +6,7 @@ using Utility;
 using System.Diagnostics;
 using GameManagers;
 using Assets.Scripts.ApplicationManagers;
+using Photon.Pun;
 
 namespace ApplicationManagers
 {
@@ -98,6 +99,13 @@ namespace ApplicationManagers
                 DrawInputWindow();
                 HandleInput();
                 GUI.depth = 0;
+                string rpcs = "";
+                foreach (var rpc in PhotonNetwork.rpcCounts)
+                {
+                    rpcs += rpc.Key + ": " + rpc.Value + "\n";
+                }
+
+                GUI.Label(new Rect(PositionX + Width + Padding, PositionY, Width, Height * 2), rpcs);
             }
         }
 

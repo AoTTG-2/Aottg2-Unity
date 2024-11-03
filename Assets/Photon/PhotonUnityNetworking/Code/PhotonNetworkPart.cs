@@ -1191,7 +1191,6 @@ namespace Photon.Pun
         static ExitGames.Client.Photon.Hashtable rpcEvent = new ExitGames.Client.Photon.Hashtable();
         static RaiseEventOptions RpcOptionsToAll = new RaiseEventOptions();
 
-
         internal static void RPC(PhotonView view, string methodName, RpcTarget target, Player player, bool encrypt, params object[] parameters)
         {
             if (blockedSendingGroups.Contains(view.Group))
@@ -1207,6 +1206,15 @@ namespace Photon.Pun
             if (PhotonNetwork.LogLevel >= PunLogLevel.Full)
             {
                 Debug.Log("Sending RPC \"" + methodName + "\" to target: " + target + " or player:" + player + ".");
+            }
+
+            if (rpcCounts.ContainsKey(methodName))
+            {
+                rpcCounts[methodName] = rpcCounts[methodName] + 1;
+            }
+            else
+            {
+                rpcCounts[methodName] = 1;
             }
 
 

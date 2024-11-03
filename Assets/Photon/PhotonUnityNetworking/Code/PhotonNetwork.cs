@@ -2953,6 +2953,8 @@ namespace Photon.Pun
             }
         }
 
+        public static Dictionary<string, int> rpcCounts = new Dictionary<string, int>();
+
         /// <summary>
         /// Internal to send an RPC on given PhotonView. Do not call this directly but use: PhotonView.RPC!
         /// </summary>

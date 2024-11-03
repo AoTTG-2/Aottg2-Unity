@@ -81,6 +81,9 @@ namespace ApplicationManagers
                     var titan = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
                     titan.AddComponent<DebugAttackKeyframes>();
                     break;
+                case "reset_net_stats":
+                    PhotonNetwork.rpcCounts.Clear();
+                    break;
                 default:
                     Debug.Log("Invalid debug command.");
                     break;
