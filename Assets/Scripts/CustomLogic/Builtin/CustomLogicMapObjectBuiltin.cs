@@ -86,6 +86,9 @@ namespace CustomLogic
                     var navMeshObstacleGo = new GameObject("NavMeshObstacle");
                     navMeshObstacleGo.transform.parent = Value.GameObject.transform;
 
+                    // Set local position to zero
+                    navMeshObstacleGo.transform.localPosition = Vector3.zero;
+
                     var navMeshObstacle = navMeshObstacleGo.AddComponent<NavMeshObstacle>();
                     navMeshObstacle.carving = true;
                     navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
@@ -100,6 +103,10 @@ namespace CustomLogic
                     // Set size and center based on bounds
                     navMeshObstacle.size = bounds.size;
                     navMeshObstacle.center = bounds.center;
+
+                    // change bounds center to local position
+                    navMeshObstacle.center = navMeshObstacle.center - Value.GameObject.transform.position;
+
                 }
                 return null;
             }

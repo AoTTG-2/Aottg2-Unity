@@ -379,6 +379,14 @@ namespace Map
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
+
+            // Remove all sources that are non-static
+            _navMeshSources = _navMeshSources.Where(src =>
+            {
+                var go = src.component.gameObject;
+                return go.isStatic;
+            }).ToList();
+
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
             _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
         }
@@ -461,6 +469,12 @@ namespace Map
                 var mapObject = IdToMapObject[id];
                 if (mapObject.ScriptObject.Parent > 0 || !mapObject.ScriptObject.Static)
                     continue;
+                mapObject.GameObject.isStatic = true;
+                foreach (var child in mapObject.GameObject.GetComponentsInChildren<Transform>())
+                {
+                    child.gameObject.isStatic = true;
+                }
+
                 var shader = ((MapScriptSceneObject)mapObject.ScriptObject).Material.Shader;
                 if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
                     continue;
@@ -485,6 +499,8 @@ namespace Map
                     if (!roots.ContainsKey(hash))
                     {
                         var go = new GameObject();
+                        go.name = $"BatchedMesh-{mapObject.GameObject.name}";
+                        go.isStatic = true;
                         go.layer = PhysicsLayer.MapObjectEntities;
                         roots.Add(hash, go);
                         shared.Add(hash, new List<GameObject>());
