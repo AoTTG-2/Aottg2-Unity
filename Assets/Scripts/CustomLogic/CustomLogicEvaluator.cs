@@ -607,7 +607,17 @@ namespace CustomLogic
                     {
                         CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
                         CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.Variables[fieldExpression.FieldName];
+                        var isBuiltinClass = fieldInstance is CustomLogicBaseBuiltin;
+                        var builtinClass = isBuiltinClass ? (CustomLogicBaseBuiltin)fieldInstance : null;
+                        object originalValue = null;
+                        if (isBuiltinClass)
+                        {
+                            // will throw if the field does not exist or is set only
+                            originalValue = builtinClass.GetField(fieldExpression.FieldName);
+                        }
+                        else
+                            originalValue = fieldInstance.Variables[fieldExpression.FieldName];
+
                         object newValue = op switch
                         {
                             CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
@@ -616,7 +626,10 @@ namespace CustomLogic
                             CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
                             _ => value,
                         };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
+                        if (isBuiltinClass)
+                            builtinClass.SetField(fieldExpression.FieldName, newValue);
+                        else
+                            fieldInstance.Variables[fieldExpression.FieldName] = newValue;
                     }
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
@@ -764,7 +777,14 @@ namespace CustomLogic
                     {
                         CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
                         CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.Variables[fieldExpression.FieldName];
+                        var isBuiltinClass = fieldInstance is CustomLogicBaseBuiltin;
+                        var builtinClass = isBuiltinClass ? (CustomLogicBaseBuiltin)fieldInstance : null;
+                        object originalValue = null;
+                        if (isBuiltinClass)
+                            originalValue = builtinClass.GetField(fieldExpression.FieldName);
+                        else
+                            originalValue = fieldInstance.Variables[fieldExpression.FieldName];
+
                         object newValue = op switch
                         {
                             CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
@@ -773,7 +793,10 @@ namespace CustomLogic
                             CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
                             _ => value,
                         };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
+                        if (isBuiltinClass)
+                            builtinClass.SetField(fieldExpression.FieldName, newValue);
+                        else
+                            fieldInstance.Variables[fieldExpression.FieldName] = newValue;
                     }
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
