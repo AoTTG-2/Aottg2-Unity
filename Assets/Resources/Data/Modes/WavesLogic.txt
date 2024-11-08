@@ -7,6 +7,11 @@ class Main
     RespawnOnWave = true;
     GradualSpawn = true;
     GradualSpawnTooltip = "Spawn new titans gradually over time. Helpful for reducing lag.";
+    ChallengeWaves = "Punks";
+    ChallengeWavesTooltip = "Makes every Nth wave spawn special titans";
+    ChallengeWavesDropbox = "Disabled, Punks, Throwers, Crawlers, Random";
+    ChallengeWavesEveryX = 5;
+
     _currentWave = 0;
     _hasSpawned = false;
 
@@ -64,13 +69,34 @@ class Main
             return;
         }
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
+        type = "Default";
+        if (self.ChallengeWaves != "Disabled" && Math.Mod(self._currentWave, self.ChallengeWavesEveryX) == 0)
+        {
+            amount = self._currentWave / self.ChallengeWavesEveryX;
+            if (self.ChallengeWaves == "Punks")
+            {
+                type = "Punk";
+            }
+            elif (self.ChallengeWaves == "Throwers")
+            {
+                type = "Thrower";
+            }
+            elif (self.ChallengeWaves == "Crawlers")
+            {
+                type = "Crawler";
+            }
+            elif (self.ChallengeWaves == "Random")
+            {
+                type = "Random";
+            }
+        }
         if (self.GradualSpawn)
         {
-            Game.SpawnTitansAsync("Default", amount);
+            Game.SpawnTitansAsync(type, amount);
         }
         else
         {
-            Game.SpawnTitans("Default", amount);
+            Game.SpawnTitans(type, amount);
         }
         if (self.RespawnOnWave)
         {
