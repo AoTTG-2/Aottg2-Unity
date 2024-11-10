@@ -70,7 +70,7 @@ namespace CustomLogic
 
     interface ICustomLogicCallable
     {
-        object Call(object instance, object[] parameters, Dictionary<string, object> kwargs);
+        object Call(object instance, List<object> parameters, Dictionary<string, object> kwargs);
     }
 
     interface ICustomLogicMathOperators
@@ -112,14 +112,14 @@ namespace CustomLogic
 
     struct BuiltinFunction : ICustomLogicCallable
     {
-        private readonly Func<object, object[], Dictionary<string, object>, object> _function;
+        private readonly Func<object, List<object>, Dictionary<string, object>, object> _function;
 
-        public BuiltinFunction(Func<object, object[], Dictionary<string, object>, object> function)
+        public BuiltinFunction(Func<object, List<object>, Dictionary<string, object>, object> function)
         {
             _function = function;
         }
 
-        public object Call(object instance, object[] parameters, Dictionary<string, object> kwargs)
+        public object Call(object instance, List<object> parameters, Dictionary<string, object> kwargs)
         {
             return _function?.Invoke(instance, parameters, kwargs);
         }

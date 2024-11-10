@@ -912,7 +912,11 @@ namespace CustomLogic
                 }
                 if (classInstance is CustomLogicClassInstanceBuiltin)
                 {
-                    return EvaluateMethod((CustomLogicClassInstanceBuiltin)classInstance, methodName, parameterValues);
+                    CustomLogicClassInstanceBuiltin builtin = (CustomLogicClassInstanceBuiltin)classInstance;
+                    if (builtin.Variables.ContainsKey(methodName))
+                        return ((ICustomLogicCallable)builtin.Variables[methodName]).Call(builtin, parameterValues, new Dictionary<string, object>());
+                    return null;
+                    // return EvaluateMethod((CustomLogicClassInstanceBuiltin)classInstance, methodName, parameterValues);
                 }
                 if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     return null;

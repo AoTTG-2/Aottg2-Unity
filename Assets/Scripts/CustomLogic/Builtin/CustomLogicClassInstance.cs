@@ -126,17 +126,17 @@ namespace CustomLogic
         /// Match the method signature to the parameters and call the method.
         /// Kwargs/Named Parameters are supported but are slower due to needing to build the relevant function signature.
         /// </summary>
-        private object InvokeMethod(MethodInfo method, object instance, object[] args, Dictionary<string, object> kwargs)
+        private object InvokeMethod(MethodInfo method, object instance, List<object> args, Dictionary<string, object> kwargs)
         {
             if (kwargs.Count == 0)
-                return method.Invoke(instance, args);
+                return method.Invoke(instance, args.ToArray());
 
             var paramInfos = method.GetParameters();
             var finalParameters = new object[paramInfos.Length];
 
             for (int i = 0; i < paramInfos.Length; i++)
             {
-                if (i < args.Length)
+                if (i < args.Count)
                 {
                     finalParameters[i] = args[i];
                 }
