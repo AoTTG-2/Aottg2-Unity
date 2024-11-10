@@ -957,8 +957,6 @@ namespace CustomLogic
                     if (fieldInstance is CustomLogicBaseBuiltin)
                         return ((CustomLogicBaseBuiltin)fieldInstance).GetField(fieldExpression.FieldName);
                     object value = fieldInstance.Variables[fieldExpression.FieldName];
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
                     return value;
                 }
                 else if (expression.Type == CustomLogicAstType.NotExpression)
