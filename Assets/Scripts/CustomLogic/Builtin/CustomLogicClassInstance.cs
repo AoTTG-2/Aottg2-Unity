@@ -14,13 +14,13 @@ namespace CustomLogic
         public bool Enabled = true;
 
         public string ClassName;
-        public Dictionary<string, object> Variables = new Dictionary<string, object>();
-        public static List<KeyValuePair<string, object>> builtinCache = new List<KeyValuePair<string, object>>();
-        public static bool builtinCacheDirty = true;
+        //public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        public CustomLogicClassVariables Variables;
 
         public CustomLogicClassInstance(string name)
         {
             ClassName = name;
+            Variables = new CustomLogicClassVariables(name);
         }
 
         public void Setvariable(string variableName, object value)
@@ -38,24 +38,11 @@ namespace CustomLogic
 
         public void RegisterBuiltinClass(Type type)
         {
-            // if (builtinCacheDirty)
-            // {
-            //     builtinCache.Clear();
-            //     RegisterFields(type);
-            //     RegisterProperties(type);
-            //     RegisterMethods(type);
-            //     builtinCacheDirty = false;
-            // }
-            
-            builtinCache.Clear();
-            RegisterFields(type);
-            RegisterProperties(type);
-            RegisterMethods(type);
-
-            // init from cache
-            foreach (var pair in builtinCache)
+            if (Variables.BuiltinIsEmpty())
             {
-                Variables[pair.Key] = pair.Value;
+                RegisterFields(type);
+                RegisterProperties(type);
+                RegisterMethods(type);
             }
         }
 
@@ -75,8 +62,7 @@ namespace CustomLogic
                 Func<object> getter = () => field.GetValue(this);
                 Action<object> setter = hasSetter ? value => field.SetValue(this, value) : value => throw new Exception($"Property {field.Name} is read-only");
                 var builtinField = new BuiltinField(getter, setter);
-
-                builtinCache.Add(new KeyValuePair<string, object>(field.Name, builtinField));
+                Variables.AssignToBuiltinVariable(field.Name, builtinField);
             }
         }
 
@@ -100,8 +86,7 @@ namespace CustomLogic
                 Func<object> getter = hasGetter? () => property.GetValue(this) : () => throw new Exception($"Property {property.Name} has no Get Method");
                 Action<object> setter = hasSetter? value => property.SetValue(this, value) : value => throw new Exception($"Property {property.Name} is read-only");
                 var builtinField = new BuiltinField(getter, setter);
-
-                builtinCache.Add(new KeyValuePair<string, object>(property.Name, builtinField));
+                Variables.AssignToBuiltinVariable(property.Name, builtinField);
             }
         }
 
@@ -122,8 +107,7 @@ namespace CustomLogic
                 var parameters = method.GetParameters();
                 //var methodSignature = $"{method.Name}({string.Join(",", parameters.Select(p => p.ParameterType.Name))})";
                 var builtinFunction = new BuiltinFunction((instance, args, kwargs) => InvokeMethod(method, instance, args, kwargs));
-
-                builtinCache.Add(new KeyValuePair<string, object>(method.Name, builtinFunction));
+                Variables.AssignToBuiltinVariable(method.Name, builtinFunction);
             }
         }
 
