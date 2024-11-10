@@ -73,6 +73,25 @@ namespace CustomLogic
         object Call(object instance, object[] parameters, Dictionary<string, object> kwargs);
     }
 
+    interface ICustomLogicMathOperators
+    {
+        object __Add__(object other);
+        object __Sub__(object other);
+        object __Mul__(object other);
+        object __Div__(object other);
+    }
+
+    interface ICustomLogicEquals
+    {
+        bool __Eq__(object other);
+        int __Hash__();
+    }
+
+    interface ICustomLogicCopyable
+    {
+        object __Copy__();
+    }
+
     struct BuiltinField
     {
         private readonly Func<object> _getter;

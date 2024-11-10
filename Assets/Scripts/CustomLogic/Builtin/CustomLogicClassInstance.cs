@@ -15,8 +15,8 @@ namespace CustomLogic
 
         public string ClassName;
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
-        public List<KeyValuePair<string, object>> builtinCache = new List<KeyValuePair<string, object>>();
-        public bool builtinCacheDirty = true;
+        public static List<KeyValuePair<string, object>> builtinCache = new List<KeyValuePair<string, object>>();
+        public static bool builtinCacheDirty = true;
 
         public CustomLogicClassInstance(string name)
         {
@@ -115,10 +115,10 @@ namespace CustomLogic
                 var attribute = method.GetCustomAttribute<CLMethod>();
                 attribute.Description = string.Empty;
                 var parameters = method.GetParameters();
-                var methodSignature = $"{method.Name}({string.Join(",", parameters.Select(p => p.ParameterType.Name))})";
+                //var methodSignature = $"{method.Name}({string.Join(",", parameters.Select(p => p.ParameterType.Name))})";
                 var builtinFunction = new BuiltinFunction((instance, args, kwargs) => InvokeMethod(method, instance, args, kwargs));
 
-                builtinCache.Add(new KeyValuePair<string, object>(methodSignature, builtinFunction));
+                builtinCache.Add(new KeyValuePair<string, object>(method.Name, builtinFunction));
             }
         }
 

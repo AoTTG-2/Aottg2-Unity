@@ -28,6 +28,7 @@ namespace CustomLogic
         //public List<string> AllowedSpecials = new List<string>();
         //public List<string> DisallowedSpecials = new List<string>();
         private List<object> EmptyParameters = new List<object>();
+        private List<object> Parameters = new List<object>();
         public bool DefaultShowKillScore = true;
         public bool DefaultShowKillFeed = true;
         public bool DefaultAddKillScore = true;
@@ -287,7 +288,7 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
+            foreach (string name in new string[] {"Game", "Vector3", "Vector2", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
             "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
@@ -299,7 +300,7 @@ namespace CustomLogic
             }
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
-                if (!(instance is CustomLogicBaseBuiltin))
+                if (!(instance is CustomLogicBaseBuiltin) && !(instance is CustomLogicClassInstanceBuiltin))
                     RunAssignmentsClassInstance(instance);
             }
             foreach (int id in MapLoader.IdToMapObject.Keys)
@@ -564,6 +565,14 @@ namespace CustomLogic
                     object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
                     if (value != null && value is CustomLogicStructBuiltin)
                         value = ((CustomLogicStructBuiltin)value).Copy();
+                    else if (value != null && value is CustomLogicClassInstance)
+                    {
+                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                        string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                        if (customLogicClassInstance.Variables.ContainsKey(method))
+                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    }
                     if (assignment.Left is CustomLogicVariableExpressionAst)
                     {
                         string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
@@ -594,6 +603,14 @@ namespace CustomLogic
                     object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
                     if (value != null && value is CustomLogicStructBuiltin)
                         value = ((CustomLogicStructBuiltin)value).Copy();
+                    else if (value != null && value is CustomLogicClassInstance)
+                    {
+                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                        string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                        if (customLogicClassInstance.Variables.ContainsKey(method))
+                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    }
                     if (assignment.Left is CustomLogicVariableExpressionAst)
                     {
                         string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
@@ -720,6 +737,14 @@ namespace CustomLogic
                     object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
                     if (value != null && value is CustomLogicStructBuiltin)
                         value = ((CustomLogicStructBuiltin)value).Copy();
+                    else if (value != null && value is CustomLogicClassInstance)
+                    {
+                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                        string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                        if (customLogicClassInstance.Variables.ContainsKey(method))
+                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    }
                     if (assignment.Left is CustomLogicVariableExpressionAst)
                     {
                         string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
@@ -750,6 +775,14 @@ namespace CustomLogic
                     object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
                     if (value != null && value is CustomLogicStructBuiltin)
                         value = ((CustomLogicStructBuiltin)value).Copy();
+                    else if (value != null && value is CustomLogicClassInstance)
+                    {
+                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                        string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                        if (customLogicClassInstance.Variables.ContainsKey(method))
+                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    }
 
                     if (assignment.Left is CustomLogicVariableExpressionAst)
                     {
@@ -941,6 +974,14 @@ namespace CustomLogic
                     object value = fieldInstance.Variables[fieldExpression.FieldName];
                     if (value != null && value is CustomLogicStructBuiltin)
                         value = ((CustomLogicStructBuiltin)value).Copy();
+                    else if (value != null && value is CustomLogicClassInstance)
+                    {
+                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                        string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                        if (customLogicClassInstance.Variables.ContainsKey(method))
+                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    }
                     return value;
                 }
                 else if (expression.Type == CustomLogicAstType.NotExpression)
@@ -1012,6 +1053,19 @@ namespace CustomLogic
             return null;
         }
 
+        private object ClassMathOperation(object left, object right, string method)
+        {
+            CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
+            if (leftInstance.Variables.ContainsKey(method))
+            {
+                Parameters.Clear();
+                Parameters.Add(right);
+                return EvaluateMethod(leftInstance, method, Parameters);
+            }
+            else
+                throw new Exception($"No {method} method found in class " + leftInstance.ClassName);
+        }
+
         private object AddValues(object left, object right)
         {
             if (left is int && right is int)
@@ -1028,6 +1082,8 @@ namespace CustomLogic
             }
             else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
+            else if (left is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Add__));
             else
                 return left.UnboxToFloat() + right.UnboxToFloat();
         }
@@ -1038,6 +1094,8 @@ namespace CustomLogic
                 return (int)left - (int)right;
             else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value - ((CustomLogicVector3Builtin)right).Value);
+            else if (left is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Sub__));
             else
                 return left.UnboxToFloat() - right.UnboxToFloat();
         }
@@ -1052,6 +1110,8 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
             else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
                 return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
+            else if (left is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Mul__));
             else
                 return left.UnboxToFloat() * right.UnboxToFloat();
         }
@@ -1062,6 +1122,8 @@ namespace CustomLogic
                 return (int)left / (int)right;
             else if (left is CustomLogicVector3Builtin)
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value / right.UnboxToFloat());
+            else if (left is CustomLogicClassInstance)
+                return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Div__));
             else
                 return left.UnboxToFloat() / right.UnboxToFloat();
         }
@@ -1070,6 +1132,16 @@ namespace CustomLogic
         {
             if (left == null && right == null)
                 return true;
+            if (left is CustomLogicClassInstance)
+            {
+                CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
+                if (leftInstance.Variables.ContainsKey(nameof(ICustomLogicEquals.__Eq__)))
+                {
+                    Parameters.Clear();
+                    Parameters.Add(right);
+                    return (bool)EvaluateMethod(leftInstance, nameof(ICustomLogicEquals.__Eq__), Parameters);
+                }
+            }
             if (left != null)
                 return left.Equals(right);
             return right.Equals(left);

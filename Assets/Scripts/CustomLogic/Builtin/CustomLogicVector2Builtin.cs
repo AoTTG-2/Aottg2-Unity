@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Builtin
 {
-    class CustomLogicVector2Builtin : CustomLogicClassInstance
+    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals
     {
         private Vector2 _value;
         public CustomLogicVector2Builtin(List<object> parameterValues) : base("Vector2")
@@ -37,6 +37,20 @@ namespace Builtin
         {
             _value = value;
             RegisterBuiltinClass(this.GetType());
+        }
+
+        public CustomLogicVector2Builtin Copy()
+        {
+            Vector2 value = new Vector2(_value.x, _value.y);
+            return new CustomLogicVector2Builtin(value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is CustomLogicVector2Builtin))
+                return false;
+            var other = ((CustomLogicVector2Builtin)obj)._value;
+            return _value == other;
         }
 
         #region Properties
@@ -91,6 +105,56 @@ namespace Builtin
 
         [CLMethod(description: "Returns a formatted string for this vector.")]
         public override string ToString() => _value.ToString();
+        #endregion
+
+        #region Operations
+        [CLMethod(description:"Addition")]
+        public object __Add__(object other)
+        {
+            if (other is CustomLogicVector2Builtin == false)
+                throw new Exception("Invalid operation, rhs was null.");
+
+            return new CustomLogicVector2Builtin(this._value + ((CustomLogicVector2Builtin)other)._value);
+        }
+
+        [CLMethod(description: "Subtraction")]
+        public object __Sub__(object other)
+        {
+            if (other is CustomLogicVector2Builtin == false)
+                throw new Exception("Invalid operation, rhs was null.");
+
+            return new CustomLogicVector2Builtin(this._value - ((CustomLogicVector2Builtin)other)._value);
+        }
+
+        [CLMethod(description: "Multiplication")]
+        public object __Mul__(object other)
+        {
+            if (other is CustomLogicVector2Builtin == false)
+                throw new Exception("Invalid operation, rhs was null.");
+
+            return new CustomLogicVector2Builtin(this._value * ((CustomLogicVector2Builtin)other)._value);
+        }
+
+        [CLMethod(description: "Division")]
+        public object __Div__(object other)
+        {
+            if (other is CustomLogicVector2Builtin == false)
+                throw new Exception("Invalid operation, rhs was null.");
+
+            return new CustomLogicVector2Builtin(this._value / ((CustomLogicVector2Builtin)other)._value);
+        }
+
+        [CLMethod(description: "Equals")]
+        public bool __Eq__(object other)
+        {
+            if (other is CustomLogicVector2Builtin == false)
+                return false;
+
+            return this._value == ((CustomLogicVector2Builtin)other)._value;
+        }
+
+        [CLMethod(description: "GetHashCode")]
+        public int __Hash__() => this._value.GetHashCode();
         #endregion
 
         #region Static Methods
