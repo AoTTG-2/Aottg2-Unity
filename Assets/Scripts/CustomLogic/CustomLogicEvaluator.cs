@@ -1,4 +1,5 @@
 using ApplicationManagers;
+using Builtin;
 using Characters;
 using GameManagers;
 using Map;
@@ -428,6 +429,8 @@ namespace CustomLogic
                     instance = new CustomLogicMathBuiltin();
                 else if (className == "Vector3")
                     instance = new CustomLogicVector3Builtin(new List<object>());
+                else if (className == "Vector2")
+                    instance = new CustomLogicVector2Builtin(new List<object>());
                 else if (className == "Quaternion")
                     instance = new CustomLogicQuaternionBuiltin(new List<object>());
                 else if (className == "Map")
@@ -513,6 +516,8 @@ namespace CustomLogic
                 classInstance = new CustomLogicListBuiltin();
             else if (className == "Vector3")
                 classInstance = new CustomLogicVector3Builtin(parameterValues);
+            else if (className == "Vector2")
+                classInstance = new CustomLogicVector2Builtin(parameterValues);
             else if (className == "Color")
                 classInstance = new CustomLogicColorBuiltin(parameterValues);
             else if (className == "Quaternion")
