@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CustomLogic
+﻿namespace CustomLogic
 {
     class CustomLogicClassInstanceBuiltin : CustomLogicClassInstance
     {
         public CustomLogicClassInstanceBuiltin(string name) : base(name)
         {
+            Variables["Init"] = new BuiltinFunction((_, _, _) => null);
         }
     }
 }

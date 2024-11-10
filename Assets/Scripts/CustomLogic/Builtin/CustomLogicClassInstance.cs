@@ -38,14 +38,19 @@ namespace CustomLogic
 
         public void RegisterBuiltinClass(Type type)
         {
-            if (builtinCacheDirty)
-            {
-                builtinCache.Clear();
-                RegisterFields(type);
-                RegisterProperties(type);
-                RegisterMethods(type);
-                builtinCacheDirty = false;
-            }
+            // if (builtinCacheDirty)
+            // {
+            //     builtinCache.Clear();
+            //     RegisterFields(type);
+            //     RegisterProperties(type);
+            //     RegisterMethods(type);
+            //     builtinCacheDirty = false;
+            // }
+            
+            builtinCache.Clear();
+            RegisterFields(type);
+            RegisterProperties(type);
+            RegisterMethods(type);
 
             // init from cache
             foreach (var pair in builtinCache)

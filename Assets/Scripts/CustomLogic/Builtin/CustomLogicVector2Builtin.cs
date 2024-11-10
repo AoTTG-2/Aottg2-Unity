@@ -1,15 +1,11 @@
 ﻿using CustomLogic;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Builtin
 {
-    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals
+    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         private Vector2 _value;
         public CustomLogicVector2Builtin(List<object> parameterValues) : base("Vector2")
@@ -145,16 +141,13 @@ namespace Builtin
         }
 
         [CLMethod(description: "Equals")]
-        public bool __Eq__(object other)
-        {
-            if (other is CustomLogicVector2Builtin == false)
-                return false;
-
-            return this._value == ((CustomLogicVector2Builtin)other)._value;
-        }
+        public bool __Eq__(object other) => Equals(other);
 
         [CLMethod(description: "GetHashCode")]
         public int __Hash__() => this._value.GetHashCode();
+        
+        [CLMethod(description: "Copy")]
+        public object __Copy__() => Copy();
         #endregion
 
         #region Static Methods

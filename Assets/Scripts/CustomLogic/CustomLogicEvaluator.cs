@@ -762,7 +762,13 @@ namespace CustomLogic
                         else
                         {
                             if (fieldInstance.Variables.ContainsKey(fieldExpression.FieldName))
-                                fieldInstance.Variables[fieldExpression.FieldName] = value;
+                            {
+                                var field = fieldInstance.Variables[fieldExpression.FieldName];
+                                if (field is BuiltinField builtinField)
+                                    builtinField.Value = value;
+                                else
+                                    fieldInstance.Variables[fieldExpression.FieldName] = value;
+                            }
                             else
                                 fieldInstance.Variables.Add(fieldExpression.FieldName, value);
                         }
@@ -906,6 +912,12 @@ namespace CustomLogic
                 parameterValues = EmptyParameters;
             try
             {
+                if (classInstance.Variables.ContainsKey(methodName) &&
+                    classInstance.Variables[methodName] is ICustomLogicCallable)
+                {
+                    var method = (ICustomLogicCallable)classInstance.Variables[methodName];
+                    return method.Call(classInstance, parameterValues, new Dictionary<string, object>());
+                }
                 if (classInstance is CustomLogicBaseBuiltin)
                 {
                     return ((CustomLogicBaseBuiltin)classInstance).CallMethod(methodName, parameterValues);
@@ -980,16 +992,18 @@ namespace CustomLogic
                     if (fieldInstance is CustomLogicBaseBuiltin)
                         return ((CustomLogicBaseBuiltin)fieldInstance).GetField(fieldExpression.FieldName);
                     object value = fieldInstance.Variables[fieldExpression.FieldName];
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    else if (value != null && value is CustomLogicClassInstance)
-                    {
-                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                        string method = nameof(ICustomLogicCopyable.__Copy__);
-
-                        if (customLogicClassInstance.Variables.ContainsKey(method))
-                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                    }
+                    if (value is BuiltinField builtinField)
+                        return builtinField.Value;
+                    // if (value != null && value is CustomLogicStructBuiltin)
+                    //     value = ((CustomLogicStructBuiltin)value).Copy();
+                    // else if (value != null && value is CustomLogicClassInstance)
+                    // {
+                    //     CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                    //     string method = nameof(ICustomLogicCopyable.__Copy__);
+                    //
+                    //     if (customLogicClassInstance.Variables.ContainsKey(method))
+                    //         value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                    // }
                     return value;
                 }
                 else if (expression.Type == CustomLogicAstType.NotExpression)

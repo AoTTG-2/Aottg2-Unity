@@ -108,6 +108,11 @@ namespace CustomLogic
             get => _getter?.Invoke();
             set => _setter?.Invoke(value);
         }
+        
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 
     struct BuiltinFunction : ICustomLogicCallable
