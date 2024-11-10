@@ -910,6 +910,10 @@ namespace CustomLogic
                 {
                     return ((CustomLogicBaseBuiltin)classInstance).CallMethod(methodName, parameterValues);
                 }
+                if (classInstance is CustomLogicClassInstanceBuiltin)
+                {
+                    return EvaluateMethod((CustomLogicClassInstanceBuiltin)classInstance, methodName, parameterValues);
+                }
                 if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     return null;
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
