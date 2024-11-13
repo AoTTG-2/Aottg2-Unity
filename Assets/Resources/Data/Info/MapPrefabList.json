@@ -316,6 +316,7 @@
 	"Decor": {
 		"Info": {"Type": "Scene", "AssetPrefix": "Decor/", "AssetSameAsName": true},
 		"Prefabs": [
+			{"Name": "Airship1"},
 			{"Name": "APG1"},
 			{"Name": "Atom1"},
 			{"Name": "Barrel1"},
