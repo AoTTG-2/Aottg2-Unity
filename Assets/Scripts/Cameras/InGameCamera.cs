@@ -42,6 +42,9 @@ namespace Cameras
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
         private float _lastChangeSpectateID = 0;
+        public float Deadzone { get; set; } = SettingsManager.GeneralSettings.Deadzone.Value;
+        public float CameraSpeed { get; set; } = SettingsManager.GeneralSettings.CameraSpeed.Value;
+        public float RotationSpeed { get; set; } = SettingsManager.GeneralSettings.RotationSpeed.Value;
 
         private bool CheckSpectateRateLimit()
         {
@@ -69,6 +72,10 @@ namespace Cameras
         {
             ResetDistance();
             ResetCameraMode();
+
+            Deadzone = SettingsManager.GeneralSettings.Deadzone.Value;
+            CameraSpeed = SettingsManager.GeneralSettings.CameraSpeed.Value;
+            RotationSpeed = SettingsManager.GeneralSettings.RotationSpeed.Value;
         }
 
         public void ResetDistance()
@@ -327,17 +334,31 @@ namespace Cameras
                 sensitivity = 0f;
             if (CurrentCameraMode == CameraInputMode.Original)
             {
-                if (Input.mousePosition.x < (Screen.width * 0.4f))
+                float screenWidth = Screen.width;
+                float centerX = screenWidth / 2;
+                float deadzoneWidth = Deadzone * screenWidth;
+                float leftDeadzoneBoundary = centerX - (deadzoneWidth / 2);
+                float rightDeadzoneBoundary = centerX + (deadzoneWidth / 2);
+
+                float inputX = Input.mousePosition.x;
+                float inputY = Input.mousePosition.y;
+
+                if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
                 {
-                    float angle = -(((Screen.width * 0.4f) - Input.mousePosition.x) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    if (inputX < leftDeadzoneBoundary)
+                    {
+                        float t = (leftDeadzoneBoundary - inputX) / leftDeadzoneBoundary;
+                        float angle = -t * CameraSpeed * GetSensitivityDeltaTime(sensitivity) * (RotationSpeed / 150f);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
+                    else if (inputX > rightDeadzoneBoundary)
+                    {
+                        float t = (inputX - rightDeadzoneBoundary) / (screenWidth - rightDeadzoneBoundary);
+                        float angle = t * CameraSpeed * GetSensitivityDeltaTime(sensitivity) * (RotationSpeed / 150f);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
                 }
-                else if (Input.mousePosition.x > (Screen.width * 0.6f))
-                {
-                    float angle = ((Input.mousePosition.x - (Screen.width * 0.6f)) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
-                }
-                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
+                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
