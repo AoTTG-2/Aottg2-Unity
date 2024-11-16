@@ -8,6 +8,7 @@ namespace Builtin
     class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         private Vector2 _value;
+        private static Dictionary<string, object> _builtinVariables = new Dictionary<string, object>();
         public CustomLogicVector2Builtin(List<object> parameterValues) : base("Vector2")
         {
             RegisterBuiltinClass(this.GetType());

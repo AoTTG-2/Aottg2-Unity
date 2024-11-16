@@ -94,10 +94,11 @@ namespace CustomLogic
 
     struct BuiltinField
     {
-        private readonly Func<object> _getter;
+        private readonly Func<object, object> _getter;
         private readonly Action<object> _setter;
 
-        public BuiltinField(Func<object> getter, Action<object> setter)
+
+        public BuiltinField(Func<object, object> getter, Action<object> setter)
         {
             _getter = getter;
             _setter = setter;

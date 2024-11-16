@@ -6,24 +6,16 @@ using System.Threading.Tasks;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// All CLClassInstances will maintain their own static dictionary cache for builtins, on creation, they will be added to this in order of inheritance.
+    /// The child class should appear first in the list, so that it can override the parent class.
+    /// </summary>
     class CustomLogicClassVariables
     {
-        public string ClassName { get; set; }
         private Dictionary<string, object> _variables = new Dictionary<string, object>();
-        private static Dictionary<string, Dictionary<string, object>> _builtinVariables = new Dictionary<string, Dictionary<string, object>>();
+        private List<Dictionary<string, object>> _builtinVariables = new List<Dictionary<string, object>>();
 
-
-        public CustomLogicClassVariables(string className)
-        {
-            ClassName = className;
-            if (!_builtinVariables.ContainsKey(className))
-            {
-                _builtinVariables[className] = new Dictionary<string, object>();
-            }
-        }
-
-        // Implement all methods that exist on dictionary including [] operator. first check in variables for each reference, if it doesn't exist, check in builtin variables scoped to the class name.
-        // for assignment, only assign to variables, not builtin variables. Expose a separate method to assign to builtin variables.
+        public CustomLogicClassVariables() {}
 
         public object this[string key]
         {
@@ -33,14 +25,16 @@ namespace CustomLogic
                 {
                     return _variables[key];
                 }
-                else if (_builtinVariables.ContainsKey(ClassName) && _builtinVariables[ClassName].ContainsKey(key))
+                
+                // Try to get from builtin variables in order of merge (child class, parent class, etc...)
+                foreach (var builtin in _builtinVariables)
                 {
-                    return _builtinVariables[ClassName][key];
+                    if (builtin.ContainsKey(key))
+                    {
+                        return builtin[key];
+                    }
                 }
-                else
-                {
-                    throw new KeyNotFoundException();
-                }
+                throw new KeyNotFoundException();
             }
             set
             {
@@ -48,29 +42,16 @@ namespace CustomLogic
             }
         }
 
-        public void AssignToBuiltinVariable(string key, object value)
+        public void MergeCachedBuiltinVariables(Dictionary<string, object> builtinVariables)
         {
-            if (!_builtinVariables.ContainsKey(ClassName))
-            {
-                _builtinVariables[ClassName] = new Dictionary<string, object>();
-            }
-            _builtinVariables[ClassName][key] = value;
+            _builtinVariables.Add(builtinVariables);
         }
 
-        public void RemoveVariable(string key)
+        public object RemoveVariable(string key)
         {
             if (_variables.ContainsKey(key))
-            {
-                _variables.Remove(key);
-            }
-            else if (_builtinVariables.ContainsKey(ClassName) && _builtinVariables[ClassName].ContainsKey(key))
-            {
-                _builtinVariables[ClassName].Remove(key);
-            }
-            else
-            {
-                throw new KeyNotFoundException();
-            }
+                return _variables.Remove(key);
+            throw new KeyNotFoundException();
         }
 
         public void ClearVariables()
@@ -80,10 +61,8 @@ namespace CustomLogic
 
         public void ClearBuiltinVariables()
         {
-            if (_builtinVariables.ContainsKey(ClassName))
-            {
-                _builtinVariables[ClassName].Clear();
-            }
+            // Clear the list, not the static referenced dictionaries.
+            _builtinVariables.Clear();
         }
 
         public void ClearAllVariables()
@@ -94,12 +73,19 @@ namespace CustomLogic
 
         public bool ContainsVariable(string key)
         {
-            return _variables.ContainsKey(key) || (_builtinVariables.ContainsKey(ClassName) && _builtinVariables[ClassName].ContainsKey(key));
+            if (_variables.ContainsKey(key))
+                return true;
+            return ContainsBuiltinVariable(key);
         }
 
         public bool ContainsBuiltinVariable(string key)
         {
-            return _builtinVariables.ContainsKey(ClassName) && _builtinVariables[ClassName].ContainsKey(key);
+            foreach (var builtin in _builtinVariables)
+            {
+                if (builtin.ContainsKey(key))
+                    return true;
+            }
+            return false;
         }
 
         public void Add(string key, object value)
@@ -109,12 +95,22 @@ namespace CustomLogic
 
         public bool ContainsKey(string key)
         {
-            return _variables.ContainsKey(key) || _builtinVariables[ClassName].ContainsKey(key);
+            return ContainsVariable(key);
         }
 
         public bool BuiltinIsEmpty()
         {
-            return _builtinVariables.ContainsKey(ClassName) && _builtinVariables[ClassName].Count == 0;
+            return _builtinVariables.Count == 0;
+        }
+
+        public bool BuiltinVariablesAreEmpty()
+        {
+            foreach (var builtin in _builtinVariables)
+            {
+                if (builtin.Count > 0)
+                    return false;
+            }
+            return true;
         }
 
         // Keys

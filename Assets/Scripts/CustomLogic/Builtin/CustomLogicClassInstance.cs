@@ -20,7 +20,7 @@ namespace CustomLogic
         public CustomLogicClassInstance(string name)
         {
             ClassName = name;
-            Variables = new CustomLogicClassVariables(name);
+            Variables = new CustomLogicClassVariables();
         }
 
         public void Setvariable(string variableName, object value)

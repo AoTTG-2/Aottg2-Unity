@@ -1,4 +1,6 @@
-﻿namespace CustomLogic
+﻿using System;
+
+namespace CustomLogic
 {
     class CustomLogicClassInstanceBuiltin : CustomLogicClassInstance
     {
