@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using System.Collections;
 using ApplicationManagers;
-using GameManagers;
 
 namespace UI
 {
@@ -63,6 +58,7 @@ namespace UI
             _saveableSettings.Add(SettingsManager.InputSettings);
             _saveableSettings.Add(SettingsManager.CustomSkinSettings);
             _saveableSettings.Add(SettingsManager.AbilitySettings);
+            _saveableSettings.Add(SettingsManager.ChatSettings);
             _ignoreDefaultButtonSettings.Add(SettingsManager.CustomSkinSettings);
         }
 

@@ -225,6 +225,8 @@
 		"General.FPSFOVMinTooltip": "Field of view when not moving and using 0 camera distance.",
 		"General.FPSFOVMax": "FPS FOV max",
 		"General.FPSFOVMaxTooltip": "Field of view when moving at high speeds and using 0 camera distance.",
+    "General.FilterChat": "Enable chat filters.",
+    "General.FilterChatTooltip": "Enables chat filters for sensitive words",
 		"Sound.Volume": "Volume",
 		"Sound.Music": "Music",
 		"Sound.MuteMinimized": "Mute on minimize",

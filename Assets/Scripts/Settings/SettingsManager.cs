@@ -1,10 +1,4 @@
-﻿using Settings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Settings
+﻿namespace Settings
 {
     class SettingsManager
     {
@@ -24,6 +18,7 @@ namespace Settings
         public static InGameCharacterSettings InGameCharacterSettings;
         public static MapEditorSettings MapEditorSettings;
         public static SoundSettings SoundSettings;
+        public static ChatSettings ChatSettings;
 
         public static void Init()
         {
@@ -43,6 +38,7 @@ namespace Settings
             InGameCharacterSettings = new InGameCharacterSettings();
             MapEditorSettings = new MapEditorSettings();
             SoundSettings = new SoundSettings();
+            ChatSettings = new ChatSettings();
         }
     }
 }

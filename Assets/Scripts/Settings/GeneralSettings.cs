@@ -1,6 +1,4 @@
 ﻿using ApplicationManagers;
-using System;
-using UnityEngine;
 using Cameras;
 
 namespace Settings
