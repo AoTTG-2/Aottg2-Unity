@@ -70,7 +70,7 @@ class Main
         }
         amount = self.AddTitansPerWave * (self._currentWave - 1) + self.StartTitans;
         type = "Default";
-        if (self.ChallengeWaves != "Disabled" && Math.Mod(self._currentWave, self.ChallengeWavesEveryX) == 0)
+        if (self.ChallengeWaves != "Disabled" && self.ChallengeWavesEveryX > 0 && Math.Mod(self._currentWave, self.ChallengeWavesEveryX) == 0)
         {
             amount = self._currentWave / self.ChallengeWavesEveryX;
             if (self.ChallengeWaves == "Punks")
