@@ -1724,11 +1724,11 @@ namespace Characters
                     gravity = Gravity * Cache.Rigidbody.mass;
                 if (Grounded && State == HumanState.Attack)
                 {
-                    if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2))
+                    if (ValidStockAttacks())
                     {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
-                        if (isStock || !stockPivot)
+                        if (isStock && CanStockDueToBL() || !stockPivot && CanStockDueToBL())
                         {
                             _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
                             Cache.Rigidbody.velocity = _currentVelocity;
@@ -1801,6 +1801,32 @@ namespace Characters
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();
+        }
+        private bool CanStockDueToBL()
+        {
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (_almostSingleHook)
+                {
+                    return false;
+                }
+            }
+            else if (IsHookedLeft())
+            {
+                return false;
+            }
+            else if (IsHookedRight())
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private bool ValidStockAttacks()
+        {
+            return Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2);
         }
 
         public bool HasGrabImmunity()
@@ -2100,7 +2126,7 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - Cache.Rigidbody.position;
+            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2126,8 +2152,7 @@ namespace Characters
 
         private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot &&
-                (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2));
+            return Grounded && State == HumanState.Attack && pivot && ValidStockAttacks();
         }
 
         private void FixedUpdateSetHookedDirection()
