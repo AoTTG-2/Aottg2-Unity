@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Settings;
 using GameManagers;
@@ -130,7 +129,7 @@ namespace UI
 
         protected GameObject CreateLine(string text)
         {
-            if (_chatSettings.FilterEnabled)
+            if (_chatSettings.FilterEnabled.Value)
             {
                 text = FilterMessage(text);
             }
@@ -149,8 +148,6 @@ namespace UI
                 string cleaned_pattern = entry.Key.Value.TrimStart('"').TrimEnd('"');
                 Regex pattern = new Regex(cleaned_pattern, RegexOptions.IgnoreCase);
                 Match match = pattern.Match(message);
-
-                UnityEngine.Debug.Log($"Checking {message} :: isMatch {match.Success} :: pattern {entry.Key} :: Value :: {entry.Value}");
 
                 if (!match.Success)
                     continue;

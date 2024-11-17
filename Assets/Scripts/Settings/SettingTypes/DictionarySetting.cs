@@ -4,9 +4,7 @@ using SimpleJSONFixed;
 
 namespace Settings
 {
-    class DictionarySetting<K, V>
-        : TypedSetting<Dictionary<K, V>>,
-            IEnumerable<KeyValuePair<K, V>>
+    class DictionarySetting<K, V> : TypedSetting<Dictionary<K, V>>, IEnumerable<KeyValuePair<K, V>>
         where K : BaseSetting, new()
         where V : BaseSetting, new()
     {
@@ -51,8 +49,8 @@ namespace Settings
         {
             JSONObject obj = new JSONObject();
 
-            foreach (KeyValuePair<K, V> kv in DefaultValue)
-                obj.Add(kv.Key.SerializeToJsonString(), kv.Value.SerializeToJsonObject());
+            foreach (KeyValuePair<K, V> kv in Value)
+                obj.Add(kv.Key.SerializeToJsonObject(), kv.Value.SerializeToJsonObject());
 
             return obj;
         }

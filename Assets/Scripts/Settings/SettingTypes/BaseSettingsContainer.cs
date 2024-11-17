@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using SimpleJSONFixed;
 using System.Collections.Specialized;
-using System.Diagnostics;
 
 namespace Settings
 {

@@ -1,8 +1,4 @@
 ﻿using Settings;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -49,6 +45,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapshotsMinimumDamage, UIManager.GetLocale(cat, sub, "SnapshotsMinimumDamage"),
                 elementWidth: 100f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.ChatSettings.FilterEnabled, UIManager.GetLocale(cat, sub, "FilterChat"), tooltip:
+                UIManager.GetLocale(cat, sub, "FilterChatTooltip"));
         }
     }
 }
