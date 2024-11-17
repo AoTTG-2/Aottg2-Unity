@@ -11,7 +11,7 @@ namespace Builtin
         private static Dictionary<string, object> _builtinVariables = new Dictionary<string, object>();
         public CustomLogicVector2Builtin(List<object> parameterValues) : base("Vector2")
         {
-            RegisterBuiltinClass(this.GetType());
+            RegisterBuiltinClass(this.GetType(), ref _builtinVariables);
             float x = 0;
             float y = 0;
 
@@ -33,7 +33,7 @@ namespace Builtin
         public CustomLogicVector2Builtin(Vector2 value) : base("Vector2")
         {
             _value = value;
-            RegisterBuiltinClass(this.GetType());
+            RegisterBuiltinClass(this.GetType(), ref _builtinVariables);
         }
 
         public CustomLogicVector2Builtin Copy()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 
 namespace CustomLogic
 {
@@ -36,21 +37,22 @@ namespace CustomLogic
             return $"{ClassName} (CustomLogicClassInstance)";
         }
 
-        public void RegisterBuiltinClass(Type type)
+        public void RegisterBuiltinClass(Type type, ref Dictionary<string, object> cache)
         {
-            if (Variables.BuiltinIsEmpty())
+            if (cache.Count == 0)
             {
-                RegisterFields(type);
-                RegisterProperties(type);
-                RegisterMethods(type);
+                RegisterFields(type, ref cache);
+                RegisterProperties(type, ref cache);
+                RegisterMethods(type, ref cache);
             }
+            this.Variables.MergeCachedBuiltinVariables(cache);
         }
 
         /// <summary>
         /// Register all CLFields on the class.
         /// </summary>
         /// <exception cref="Exception">Getters/Setters will throw relevant exceptions for readonly/unimplemented behavior</exception>
-        private void RegisterFields(Type type)
+        private void RegisterFields(Type type, ref Dictionary<string, object> cache)
         {
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             fields = fields.Where(p => p.GetCustomAttribute<CLField>() != null).ToArray();
@@ -59,10 +61,11 @@ namespace CustomLogic
                 var attribute = field.GetCustomAttribute<CLField>();
                 attribute.Description = string.Empty;
                 bool hasSetter = field.IsInitOnly == false && field.IsLiteral == false && field.IsStatic == false && attribute.ReadOnly == false;
-                Func<object> getter = () => field.GetValue(this);
-                Action<object> setter = hasSetter ? value => field.SetValue(this, value) : value => throw new Exception($"Property {field.Name} is read-only");
+                Func<object, object> getter = (object instance) => field.GetValue(instance);
+                Action<object, object> setter = hasSetter ? (object instance, object value) => field.SetValue(instance, value)
+                                                            : (object instance, object value) => throw new Exception($"Property {field.Name} is read-only");
                 var builtinField = new BuiltinField(getter, setter);
-                Variables.AssignToBuiltinVariable(field.Name, builtinField);
+                cache.Add(field.Name, builtinField);
             }
         }
 
@@ -70,7 +73,7 @@ namespace CustomLogic
         /// Register all CLProperties on the class.
         /// </summary>
         /// <exception cref="Exception">Getters/Setters will throw relevant exceptions for readonly/unimplemented behavior</exception>
-        private void RegisterProperties(Type type)
+        private void RegisterProperties(Type type, ref Dictionary<string, object> cache)
         {
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             properties = properties.Where(p => p.GetCustomAttribute<CLProperty>() != null).ToArray();
@@ -83,10 +86,12 @@ namespace CustomLogic
                 bool hasGetter = property.GetGetMethod() != null;
                 bool hasSetter = property.GetSetMethod() != null && attribute.ReadOnly == false;
 
-                Func<object> getter = hasGetter? () => property.GetValue(this) : () => throw new Exception($"Property {property.Name} has no Get Method");
-                Action<object> setter = hasSetter? value => property.SetValue(this, value) : value => throw new Exception($"Property {property.Name} is read-only");
+                Func<object, object> getter = hasGetter? (object instance) => property.GetValue(instance)
+                                                        : (object instance) => throw new Exception($"Property {property.Name} has no Get Method");
+                Action<object, object> setter = hasSetter? (object instance, object value) => property.SetValue(instance, value)
+                                                        : (object instance, object value) => throw new Exception($"Property {property.Name} is read-only");
                 var builtinField = new BuiltinField(getter, setter);
-                Variables.AssignToBuiltinVariable(property.Name, builtinField);
+                cache.Add(property.Name, builtinField);
             }
         }
 
@@ -96,7 +101,7 @@ namespace CustomLogic
         /// Methods will be passed a object[] parameters and a Dictionary<string, object> kwargs from the base language.
         /// InvokeMethod will be responsible for generating the function signature and calling.
         /// </summary>
-        private void RegisterMethods(Type type)
+        private void RegisterMethods(Type type, ref Dictionary<string, object> cache)
         {
             var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
             methods = methods.Where(p => p.GetCustomAttribute<CLMethod>() != null).ToArray();
@@ -107,7 +112,7 @@ namespace CustomLogic
                 var parameters = method.GetParameters();
                 //var methodSignature = $"{method.Name}({string.Join(",", parameters.Select(p => p.ParameterType.Name))})";
                 var builtinFunction = new BuiltinFunction((instance, args, kwargs) => InvokeMethod(method, instance, args, kwargs));
-                Variables.AssignToBuiltinVariable(method.Name, builtinFunction);
+                cache.Add(method.Name, builtinFunction);
             }
         }
 

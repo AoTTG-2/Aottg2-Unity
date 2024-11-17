@@ -95,25 +95,17 @@ namespace CustomLogic
     struct BuiltinField
     {
         private readonly Func<object, object> _getter;
-        private readonly Action<object> _setter;
+        private readonly Action<object, object> _setter;
 
 
-        public BuiltinField(Func<object, object> getter, Action<object> setter)
+        public BuiltinField(Func<object, object> getter, Action<object, object> setter)
         {
             _getter = getter;
             _setter = setter;
         }
 
-        public object Value
-        {
-            get => _getter?.Invoke();
-            set => _setter?.Invoke(value);
-        }
-        
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        public object GetValue(object instance) => _getter?.Invoke(instance);
+        public void SetValue(object instance, object value) => _setter?.Invoke(instance, value);
     }
 
     struct BuiltinFunction : ICustomLogicCallable

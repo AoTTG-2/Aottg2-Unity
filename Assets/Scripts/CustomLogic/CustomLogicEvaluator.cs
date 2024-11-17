@@ -765,7 +765,7 @@ namespace CustomLogic
                             {
                                 var field = fieldInstance.Variables[fieldExpression.FieldName];
                                 if (field is BuiltinField builtinField)
-                                    builtinField.Value = value;
+                                    builtinField.SetValue(fieldInstance, value);
                                 else
                                     fieldInstance.Variables[fieldExpression.FieldName] = value;
                             }
@@ -993,17 +993,7 @@ namespace CustomLogic
                         return ((CustomLogicBaseBuiltin)fieldInstance).GetField(fieldExpression.FieldName);
                     object value = fieldInstance.Variables[fieldExpression.FieldName];
                     if (value is BuiltinField builtinField)
-                        return builtinField.Value;
-                    // if (value != null && value is CustomLogicStructBuiltin)
-                    //     value = ((CustomLogicStructBuiltin)value).Copy();
-                    // else if (value != null && value is CustomLogicClassInstance)
-                    // {
-                    //     CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                    //     string method = nameof(ICustomLogicCopyable.__Copy__);
-                    //
-                    //     if (customLogicClassInstance.Variables.ContainsKey(method))
-                    //         value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                    // }
+                        return builtinField.GetValue(fieldInstance) ;
                     return value;
                 }
                 else if (expression.Type == CustomLogicAstType.NotExpression)
