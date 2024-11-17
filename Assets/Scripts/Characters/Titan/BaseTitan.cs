@@ -13,6 +13,7 @@ using Settings;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.AI;
+using Cameras;
 
 namespace Characters
 {
@@ -64,7 +65,7 @@ namespace Characters
         protected Vector3 _wallClimbForward;
         protected Quaternion _turnStartRotation;
         protected Quaternion _turnTargetRotation;
-        protected Vector3 _jumpDirection;
+        public Vector3 _jumpDirection;
         protected float _maxTurnTime;
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
@@ -354,10 +355,10 @@ namespace Characters
         public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
-            if (view.Owner != info.Sender)
+            if (view?.Owner != info.Sender)
                 return;
             var human = view.GetComponent<Human>();
-            if (this.Cache.PhotonView.Owner == PhotonNetwork.LocalPlayer)
+            if (this.IsMine())
                 HoldHuman = human;
             human.Grabber = this;
             if (left)
@@ -367,9 +368,16 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void UngrabRPC(PhotonMessageInfo info)
+        public virtual void UngrabRPC(int viewId, PhotonMessageInfo info)
         {
-            HoldHuman = null;
+            var view = PhotonView.Find(viewId);
+            if (view?.Owner != info.Sender)
+                return;
+            var human = view.GetComponent<Human>();
+            if (this.IsMine())
+                HoldHuman = null;
+            human.Grabber = null;
+            human.GrabHand = null;
         }
 
         public virtual void Ungrab()
@@ -377,6 +385,7 @@ namespace Characters
             if (HoldHuman != null)
             {
                 HoldHuman.Cache.PhotonView.RPC("UngrabRPC", HoldHuman.Cache.PhotonView.Owner, new object[0]);
+                HoldHuman.GrabHand = null;
                 HoldHuman = null;
             }
         }
@@ -560,6 +569,14 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     UpdateAttack();
+                }
+                else if (State == TitanState.PreJump && !AI)
+                {
+                    Vector3 to = GetAimPoint() - BaseTitanCache.Head.position;
+                    float time = to.magnitude / JumpForce;
+                    float down = 0.5f * Gravity.magnitude * time * time;
+                    to.y += down;
+                    _jumpDirection = to;
                 }
                 _stateTimeLeft -= Time.deltaTime;
                 if (_stateTimeLeft > 0f)
@@ -790,19 +807,9 @@ namespace Characters
         {
             if (IsMine())
             {
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
+                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
-                }
-                else if (State == TitanState.StartJump || State == TitanState.Jump)
-                {
-                    if (_jumpDirection.x != 0f || _jumpDirection.z != 0f)
-                    {
-                        var forward = _jumpDirection;
-                        forward.y = 0f;
-                        Quaternion rotation = Quaternion.LookRotation(forward.normalized);
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, rotation, Time.deltaTime * 10f);
-                    }
                 }
             }
             base.LateUpdate();
@@ -858,6 +865,9 @@ namespace Characters
             Size = size;
             SetSizeParticles(size);
             ScaleSounds(size);
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (camera._follow == this)
+                camera.SetFollow(this);
         }
 
         protected virtual void ScaleSounds(float size)

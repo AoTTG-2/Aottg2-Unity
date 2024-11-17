@@ -33,6 +33,10 @@ namespace UI
             _styleBarPopup.SetScore("", "");
             _styleBarPopup.SetText("", "");
             _styleBarPopup.SetRank(0);
+
+            // Precreate rich text strings for letters
+            for (int i = 0; i < Letters.Length; i++)
+                Letters[i] = "<color=#" + ColorTags[i] + ">" + Letters[i] + "</color>";
         }
 
         public void OnHit(int damage)
@@ -88,9 +92,7 @@ namespace UI
 
         private void UpdateLabels()
         {
-            string letter = "<color=#" + ColorTags[_rank] + ">" + Letters[_rank] + "</color>";
-            string sentence = Sentences[_rank];
-            _styleBarPopup.SetText(letter, sentence);
+            _styleBarPopup.SetText(Letters[_rank], Sentences[_rank]);
             _styleBarPopup.SetFill(GetRankPercent() * 0.01f);
             _styleBarPopup.SetRank(_rank);
         }

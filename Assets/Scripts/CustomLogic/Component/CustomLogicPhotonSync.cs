@@ -42,7 +42,7 @@ namespace CustomLogic
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
             if (_inited)
-                _photonView.RPC("SyncRPC", newPlayer, new object[] { _mapObject.GameObject.transform.position, _mapObject.GameObject.transform.rotation });
+                _photonView.RPC("SyncRPC", newPlayer, new object[] { GetPosition(), GetRotation() });
         }
 
         [PunRPC]
@@ -92,7 +92,7 @@ namespace CustomLogic
         {
             var player = info.Sender;
             if (_networkView != null)
-                _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message);
+                _networkView.OnNetworkMessage(new CustomLogicPlayerBuiltin(player), message, info.SentServerTime);
         }
 
         public void SendMessage(Player player, string message)
@@ -112,15 +112,18 @@ namespace CustomLogic
 
         protected virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            if (stream.IsWriting && _inited)
+            if (stream.IsWriting)
             {
-                stream.SendNext(_mapObject.GameObject.transform.position);
-                stream.SendNext(_mapObject.GameObject.transform.rotation);
-                if (_syncVelocity)
+                if (_inited && _mapObject.GameObject != null)
                 {
-                    stream.SendNext(_mapObject.GameObject.GetComponent<Rigidbody>().velocity);
+                    stream.SendNext(GetPosition());
+                    stream.SendNext(GetRotation());
+                    if (_syncVelocity)
+                    {
+                        stream.SendNext(GetVelocity());
+                    }
+                    _networkView.SendNetworkStream(stream);
                 }
-                _networkView.SendNetworkStream(stream);
             }
             else
             {
@@ -141,6 +144,8 @@ namespace CustomLogic
         {
             if (!_photonView.IsMine && _inited)
             {
+                if (_mapObject.GameObject == null)
+                    return;
                 var transform = _mapObject.GameObject.transform;
                 transform.position = Vector3.Lerp(transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                 transform.rotation = Quaternion.Lerp(transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
@@ -149,6 +154,27 @@ namespace CustomLogic
                     _mapObject.GameObject.GetComponent<Rigidbody>().velocity = _correctVelocity;
                 }
             }
+        }
+
+        private Vector3 GetPosition()
+        {
+            if (_mapObject.GameObject != null)
+                return _mapObject.GameObject.transform.position;
+            return Vector3.zero;
+        }
+
+        private Quaternion GetRotation()
+        {
+            if (_mapObject.GameObject != null)
+                return _mapObject.GameObject.transform.rotation;
+            return Quaternion.identity;
+        }
+
+        private Vector3 GetVelocity()
+        {
+            if (_mapObject.GameObject != null)
+                return _mapObject.GameObject.GetComponent<Rigidbody>().velocity;
+            return Vector3.zero;
         }
 
         void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

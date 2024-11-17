@@ -181,8 +181,16 @@ namespace Map
             }
         }
 
+
         public static void DeleteObject(MapObject obj)
         {
+            if (IdToMapObject.ContainsKey(obj.ScriptObject.Id) == false)
+            {
+                // Case for runtime made objects
+                GameObject.Destroy(obj.GameObject);
+                return;
+            }
+                
             int id = obj.ScriptObject.Id;
             DeleteObject(id);
         }
@@ -366,9 +374,9 @@ namespace Map
             _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
 
             // Create sources and bounds
-            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
+                PhysicsLayer.MapObjectTitans);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
-
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);

@@ -24,7 +24,16 @@ namespace CustomLogic
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
         public string ScoreboardProperty = "";
+        //public List<string> AllowedSpecials = new List<string>();
+        //public List<string> DisallowedSpecials = new List<string>();
         private List<object> EmptyParameters = new List<object>();
+        public bool DefaultShowKillScore = true;
+        public bool DefaultShowKillFeed = true;
+        public bool DefaultAddKillScore = true;
+        public bool ShowScoreboardLoadout = true;
+        public bool ShowScoreboardStatus = true;
+        public string ForcedCharacterType = string.Empty;
+        public string ForcedLoadout = string.Empty;
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {
@@ -243,10 +252,10 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnPlayerLeave", new List<object>() { playerBuiltin });
         }
 
-        public void OnNetworkMessage(Player sender, string message)
+        public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message });
+            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message, sentServerTimestamp });
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
@@ -298,6 +307,8 @@ namespace CustomLogic
                 LoadMapObjectComponents(obj);
             }
         }
+
+        private List<object> emptyList = new List<object>();
 
         private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
         {
@@ -651,8 +662,7 @@ namespace CustomLogic
                     }
                     else if ((int)conditional.Token.Value == (int)CustomLogicSymbol.Else)
                     {
-                        if ((conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf) &&
-                            (bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
+                        if (conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf)
                         {
                             yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                         }

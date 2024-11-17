@@ -50,6 +50,11 @@ namespace Controllers
         public bool _usePathfinding = true;
         private NavMeshAgent _agent;
         private CapsuleCollider _mainCollider;
+        private bool _setTargetThisFrame = false;
+
+        // Layers
+        private LayerMask _losLayer = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectTitans,
+            PhysicsLayer.MapObjectAll);
 
         protected override void Awake()
         {
@@ -176,10 +181,26 @@ namespace Controllers
             _focusTimeLeft = focusTime;
         }
 
+        /// <summary>
+        /// SetDestination is a marshalled call and is being called more often than needed.
+        /// </summary>
+        /// <param name="position"></param>
+        public void SetAgentDestination(Vector3 position)
+        {
+            if (!_setTargetThisFrame)
+            {
+                _agent.SetDestination(position);
+                _setTargetThisFrame = true;
+            }
+        }
+
         protected override void FixedUpdate()
         {
             if (_usePathfinding)
+            {
+                _setTargetThisFrame = false;
                 _agent.speed = _titan.GetCurrentSpeed();
+            }
             _focusTimeLeft -= Time.deltaTime;
             _stateTimeLeft -= Time.deltaTime;
             if (_titan.Dead)
@@ -212,8 +233,8 @@ namespace Controllers
                         _enemy = null;
                 }
 
-                if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false)
-                    _agent.SetDestination(_enemy.GetPosition());
+                if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false && !(_moveToActive && _moveToIgnoreEnemies))
+                    SetAgentDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
             }
             _titan.TargetEnemy = _enemy;
@@ -396,7 +417,6 @@ namespace Controllers
 
         protected Vector3 GetDirectionTowardsNavMesh()
         {
-            Debug.Log("Agent is not on navmesh, trying to get back");
             // Find a point on the navmesh closest to the titan
             NavMeshHit hit;
             if (NavMesh.SamplePosition(_titan.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
@@ -455,21 +475,14 @@ namespace Controllers
             Vector3 titanPositionXY = new Vector3(_titan.Cache.Transform.position.x, 0, _titan.Cache.Transform.position.z);
             if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
             {
-                // debug log
-                //Debug.Log("Agent is desynced in nav angle, moving back toward agent");
-
-                // get direction twards agent
                 resultDirection = (_agent.transform.position - _titan.Cache.Transform.position).normalized;
             }
             else if (_agent.isOnNavMesh && _agent.pathPending == false)
             {
-                _agent.SetDestination(target);
+                SetAgentDestination(target);
             }
             else if (_agent.isOnNavMesh == false)
             {
-                // debug log
-                //Debug.Log("Agent off navmesh");
-
                 resultDirection = GetDirectionTowardsNavMesh();
             }
 
@@ -498,8 +511,7 @@ namespace Controllers
             if (distance > 1000)
                 return false;
             direction = direction.normalized;
-            LayerMask mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
-            if (Physics.Raycast(start, direction, out hit, distance, mask.value))
+            if (Physics.Raycast(start, direction, out hit, distance, _losLayer.value))
                 return false;
             return true;
         }

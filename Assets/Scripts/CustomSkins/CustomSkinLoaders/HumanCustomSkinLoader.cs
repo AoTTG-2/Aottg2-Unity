@@ -16,6 +16,7 @@ namespace CustomSkins
         private int _horseViewId;
         private float _hookLTiling;
         private float _hookRTiling;
+        public bool Finished;
 
         public override IEnumerator LoadSkinsFromRPC(object[] data)
         {
@@ -47,6 +48,7 @@ namespace CustomSkins
                 if (skinUrls.Length > partId && !part.LoadCache(skinUrls[partId]))
                     yield return StartCoroutine(part.LoadSkin(skinUrls[partId]));
             }
+            Finished = true;
         }
 
         protected override BaseCustomSkinPart GetCustomSkinPart(int partId)
@@ -65,13 +67,13 @@ namespace CustomSkins
                     return new HumanHairCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, texture);
                 case HumanCustomSkinPartId.Eye:
                     AddRendererIfExists(renderers, human.Setup._part_eye);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f));
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
                 case HumanCustomSkinPartId.Glass:
                     AddRendererIfExists(renderers, human.Setup._part_glass);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f));
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
                 case HumanCustomSkinPartId.Face:
                     AddRendererIfExists(renderers, human.Setup._part_face);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f));
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
                 case HumanCustomSkinPartId.Skin:
                     AddRendererIfExists(renderers, human.Setup._part_hand_l);
                     AddRendererIfExists(renderers, human.Setup._part_hand_r);
@@ -85,45 +87,49 @@ namespace CustomSkins
                     AddRendererIfExists(renderers, human.Setup._part_chest_2);
                     AddRendererIfExists(renderers, human.Setup._part_chest_3);
                     AddRendererIfExists(renderers, human.Setup._part_upper_body);
-                    // disabling costume renderers causes animation glitches, so we use transparent material instead
-                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeLarge, useTransparentMaterial: true);
+                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeLarge);
                 case HumanCustomSkinPartId.Logo:
                     AddRendererIfExists(renderers, human.Setup._part_cape);
                     AddRendererIfExists(renderers, human.Setup._part_brand_1);
                     AddRendererIfExists(renderers, human.Setup._part_brand_2);
                     AddRendererIfExists(renderers, human.Setup._part_brand_3);
                     AddRendererIfExists(renderers, human.Setup._part_brand_4);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.GearL:
                     AddRendererIfExists(renderers, human.Setup._part_3dmg);
                     AddRendererIfExists(renderers, human.Setup._part_belt);
                     AddRendererIfExists(renderers, human.Setup._part_gas_l);
-                    AddRendererIfExists(renderers, human.Setup._part_blade_l);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
+                    if (human.Setup.Weapon != HumanWeapon.Thunderspear)
+                        AddRendererIfExists(renderers, human.Setup._part_blade_l);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.GearR:
                     AddRendererIfExists(renderers, human.Setup._part_gas_r);
-                    AddRendererIfExists(renderers, human.Setup._part_blade_r);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
+                    if (human.Setup.Weapon != HumanWeapon.Thunderspear)
+                        AddRendererIfExists(renderers, human.Setup._part_blade_r);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.Gas:
                     AddRendererIfExists(renderers, human.transform.Find("3dmg_smoke").gameObject);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.Hoodie:
                     if (human.Setup._part_chest_1 != null && human.Setup._part_chest_1.name.Contains("char_cap"))
                         AddRendererIfExists(renderers, human.Setup._part_chest_1);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.WeaponTrail:
                     List<MeleeWeaponTrail> trails = new List<MeleeWeaponTrail>();
-                    trails.Add(human.Setup.LeftTrail);
-                    trails.Add(human.Setup.RightTrail);
+                    if (human.Setup.Weapon == HumanWeapon.Blade)
+                    {
+                        trails.Add(human.Setup.LeftTrail);
+                        trails.Add(human.Setup.RightTrail);
+                    }
                     return new WeaponTrailCustomSkinPart(this, trails, GetRendererId(partId), MaxSizeSmall);
                 case HumanCustomSkinPartId.ThunderspearL:
-                    if (human.Setup._part_blade_l != null)
+                    if (human.Setup.Weapon == HumanWeapon.Thunderspear && human.Setup._part_blade_l != null)
                         AddRendererIfExists(renderers, human.Setup._part_blade_l);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.ThunderspearR:
-                    if (human.Setup._part_blade_r != null)
+                    if (human.Setup.Weapon == HumanWeapon.Thunderspear && human.Setup._part_blade_r != null)
                         AddRendererIfExists(renderers, human.Setup._part_blade_r);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.HookL:
                     return new HookCustomSkinPart(this, human.HookLeft.GetRenderers(), GetRendererId(partId), MaxSizeSmall, _hookLTiling);
                 case HumanCustomSkinPartId.HookR:

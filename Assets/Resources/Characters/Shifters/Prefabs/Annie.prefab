@@ -1095,7 +1095,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c9df397ce951448a3795c912c95158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  RichTextName: 
+  VisibleName: 
   Guild: 
   Dead: 0
   CustomDamageEnabled: 0
@@ -1125,6 +1126,8 @@ MonoBehaviour:
   SprintStaminaConsumption: 1
   CurrentSprintStamina: 3
   AttackSpeedMultiplier: 1
+  ConfusedTime: 0
+  PreviousAttackSpeedMultiplier: -1
   RunSpeedBase: 0
   WalkSpeedBase: 0
   RunSpeedPerLevel: 0

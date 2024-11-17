@@ -50,7 +50,9 @@ namespace UI
         private void CreateKeybindSettings(BaseSettingsContainer container, KeybindPopup popup, string cat, string sub, ElementStyle style)
         {
             int count = 0;
-            bool isTitan = sub == "Keybinds.Titan";
+            bool isTitan = sub == "Keybinds.Titan" || sub.Contains("Shifter");
+            if (isTitan)
+                sub = "Keybinds.Titan";
             foreach (DictionaryEntry entry in container.Settings)
             {
                 BaseSetting setting = (BaseSetting)entry.Value;

@@ -11,5 +11,10 @@ namespace ApplicationManagers
         {
             return new NetworkCredential("TestVersion", "TestVersion");
         }
+
+        public static string GetHashCode(string str)
+        {
+            return string.Empty;
+        }
     }
 }

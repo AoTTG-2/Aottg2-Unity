@@ -23,6 +23,7 @@ namespace ApplicationManagers
         static readonly string VersionURL = "https://pastebin.com/raw/txV4YVcr";
         static readonly string LeaderboardURL = "https://pastebin.com/raw/zptDi9T6";
         static readonly string ChangelogURL = "https://pastebin.com/raw/i8SL3cY1";
+        static readonly string PlatformURL = "https://aottgrc.com/Aottg2/Version.json";
         private static JSONNode[] _nodes;
 
         public static void Init()
@@ -38,7 +39,7 @@ namespace ApplicationManagers
         IEnumerator LoadPastebinCoroutine()
         {
             Status = PastebinStatus.Loading;
-            string[] urls = new string[] { VersionURL, LeaderboardURL, ChangelogURL };
+            string[] urls = new string[] { VersionURL, LeaderboardURL, ChangelogURL, PlatformURL };
             _nodes = new JSONNode[urls.Length];
             for (int i = 0; i < urls.Length; i++)
                 _nodes[i] = null;

@@ -28,10 +28,12 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Help", "Changelog" })
+            foreach (string buttonName in new string[] { "Help", "Changelog", "Version" })
             {
-                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale("MainMenu", "AboutPopup", buttonName),
-                    onClick: () => SetCategoryPanel(buttonName));
+                string locale = buttonName;
+                if (buttonName != "Version")
+                    locale = UIManager.GetLocale("MainMenu", "AboutPopup", buttonName);
+                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, locale, onClick: () => SetCategoryPanel(buttonName));
                 _topButtons.Add(buttonName, obj.GetComponent<Button>());
             }
             base.SetupTopButtons();
@@ -41,6 +43,7 @@ namespace UI
         {
             _categoryPanelTypes.Add("Help", typeof(AboutHelpPanel));
             _categoryPanelTypes.Add("Changelog", typeof(AboutChangelogPanel));
+            _categoryPanelTypes.Add("Version", typeof(AboutVersionPanel));
         }
 
         private void SetupBottomButtons()

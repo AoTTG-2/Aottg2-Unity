@@ -748,7 +748,7 @@ component TitanTarget
 
     function Init()
     {
-        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 10.1);
+        self._targetable = self.MapObject.AddSphereTarget("Human", Vector3(0), 0.1);
         self._targetable.Enabled = self.EnabledByDefault;
 
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3(0), self.PlayerPriorityRange);
@@ -2111,7 +2111,9 @@ component RacingCheckpointRegion
 {
     Refill = true;
     PlaySound = true;
-
+    LapCheckpoint = false;
+    LapCheckpointTooltip = "Enable to count this checkpoint for lap racing.";
+    _Cleared = false;
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)
@@ -2124,7 +2126,12 @@ component RacingCheckpointRegion
             {
                 other.PlaySound("Checkpoint");
             }
-            other.Player.SpawnPoint = self.MapObject;
+            other.Player.SpawnPoint = self.MapObject.Position;
+            if (self.LapCheckpoint)
+            {    
+                self._Cleared = true;
+                Main.CheckpointStatus();
+            }
         }
     }
 }
@@ -2132,6 +2139,12 @@ component RacingCheckpointRegion
 # general
 component RacingFinishRegion
 {
+    NumberOfLaps = 1;
+    NumberOfLapsTooltip = "Any number above '1' uses lap mode";
+    function Init()
+    {
+        Main._NumberOfLapsTotal = self.NumberOfLaps;
+    }
     function OnCollisionEnter(other)
     {
         if (other.Type == "Human" && other.IsMine)
@@ -2328,7 +2341,7 @@ component Wagon
             project = Vector3.Project(diff, self.MapObject.Forward);
             if (project.Magnitude > 3 * self.MapObject.Scale.Z && project.Normalized == self.MapObject.Forward)
             {
-                if (!self._inUse && !self._riding)
+                if (!self._inUse && !self._riding && !other.IsMounted)
                 {
                     UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to drive wagon.", 0.1);
                     self._collidingHuman = other;
@@ -2337,7 +2350,7 @@ component Wagon
             }
             elif (project.Magnitude > 4 * self.MapObject.Scale.Z && project.Normalized == self.MapObject.Forward * -1.0)
             {
-                if (!self._inUse && !self._riding && self.CanSupply)
+                if (!self._inUse && !self._riding && self.CanSupply && !other.IsMounted)
                 {
                     if (self.InfiniteSupply)
                     {
@@ -2359,7 +2372,7 @@ component Wagon
             }
             else
             {
-                if (!self._riding)
+                if (!self._riding && !other.IsMounted)
                 {
                     UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to ride wagon.", 0.1);
                     self._collidingHuman = other;

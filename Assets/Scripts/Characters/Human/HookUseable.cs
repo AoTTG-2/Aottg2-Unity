@@ -85,6 +85,12 @@ namespace Characters
             _activeHook = null;
         }
 
+        public void LocalClearAllHooks()
+        {
+            foreach (var hook in Hooks)
+                hook.SetHookStateLocal((int)HookState.DisablingHooked);
+        }
+
         protected override void Activate()
         {
             StartHook();

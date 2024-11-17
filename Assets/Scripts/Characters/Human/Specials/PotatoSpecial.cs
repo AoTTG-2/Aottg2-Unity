@@ -8,6 +8,7 @@ namespace Characters
         protected override float ActiveTime => 10f;
         protected override bool GroundedOnly => false;
         private float _oldSpeed;
+        private float _currentSpeed;
 
         public PotatoSpecial(BaseCharacter owner): base(owner)
         {
@@ -17,9 +18,14 @@ namespace Characters
         protected override void Activate()
         {
             _oldSpeed = _human.Stats.RunSpeed;
-            _human.Stats.RunSpeed = _oldSpeed + 40f;
+            _currentSpeed = _oldSpeed + 40f;
             _human.RunAnimation = HumanAnimations.RunBuffed;
             _human.EmoteAnimation(HumanAnimations.SpecialSasha);
+        }
+
+        protected override void ActiveFixedUpdate()
+        {
+            _human.Stats.RunSpeed = _currentSpeed;
         }
 
         protected override void Deactivate()

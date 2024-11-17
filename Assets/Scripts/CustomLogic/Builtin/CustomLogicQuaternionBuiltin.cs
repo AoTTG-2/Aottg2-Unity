@@ -55,6 +55,33 @@ namespace CustomLogic
                 var a = (CustomLogicVector3Builtin)parameters[0];
                 return new CustomLogicQuaternionBuiltin(Quaternion.Euler(a.Value));
             }
+            if (methodName == "LookRotation")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                if (parameters.Count == 1)
+                    return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(a.Value));
+
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(a.Value, b.Value));
+            }
+            if (methodName == "FromToRotation")
+            {
+                var a = (CustomLogicVector3Builtin)parameters[0];
+                var b = (CustomLogicVector3Builtin)parameters[1];
+                return new CustomLogicQuaternionBuiltin(Quaternion.FromToRotation(a.Value, b.Value));
+            }
+            if (methodName == "Inverse")
+            {
+                var a = (CustomLogicQuaternionBuiltin)parameters[0];
+                return new CustomLogicQuaternionBuiltin(Quaternion.Inverse(a.Value));
+            }
+            if (methodName == "RotateTowards")
+            {
+                var a = (CustomLogicQuaternionBuiltin)parameters[0];
+                var b = (CustomLogicQuaternionBuiltin)parameters[1];
+                float maxDegreesDelta = parameters[2].UnboxToFloat();
+                return new CustomLogicQuaternionBuiltin(Quaternion.RotateTowards(a.Value, b.Value, maxDegreesDelta));
+            }
             return base.CallMethod(methodName, parameters);
         }
       

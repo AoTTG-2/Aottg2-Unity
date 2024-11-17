@@ -14,6 +14,15 @@ namespace CustomLogic
 
         public override object CallMethod(string name, List<object> parameters)
         {
+            if (name == "FindAllMapObjects")
+            {
+                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                {
+                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                }
+                return listBuiltin;
+            }
             if (name == "FindMapObjectByName")
             {
                 string objectName = (string)parameters[0];
@@ -91,16 +100,18 @@ namespace CustomLogic
                 script.Deserialize(prefab);
                 script.Id = MapLoader.GetNextObjectId();
                 script.Parent = 0;
+                script.Networked = false;
                 var mapObject = MapLoader.LoadObject(script, false);
                 MapLoader.SetParent(mapObject);
                 CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
+                mapObject.RuntimeCreated = true;
                 return new CustomLogicMapObjectBuiltin(mapObject);
             }
             if (name == "DestroyMapObject")
             {
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
-                bool incldueChildren = (bool)parameters[1];
-                DestroyMapObject(mapObject, incldueChildren);
+                bool includeChildren = (bool)parameters[1];
+                DestroyMapObject(mapObject, includeChildren);
                 return null;
             }
             if (name == "CopyMapObject")
@@ -108,6 +119,7 @@ namespace CustomLogic
                 var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
                 bool includeChildren = (bool)parameters[1];
                 var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
+                copy.RuntimeCreated = true;
                 return new CustomLogicMapObjectBuiltin(copy);
             }
             if (name == "DestroyMapTargetable")
@@ -136,9 +148,11 @@ namespace CustomLogic
             script.Deserialize(obj.ScriptObject.Serialize());
             script.Id = MapLoader.GetNextObjectId();
             script.Parent = parent;
+            script.Networked = false; // we dont support runtime network instantiation for now
             var copy = MapLoader.LoadObject(script, false);
             MapLoader.SetParent(copy);
             CustomLogicManager.Evaluator.LoadMapObjectComponents(copy, true);
+            copy.RuntimeCreated = true;
             if (recursive && MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
             {
                 foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
@@ -152,17 +166,16 @@ namespace CustomLogic
             return copy;
         }
 
-        // obj is CustomLogicMapObjectBuiltin or MapObject
         protected void DestroyMapObject(object obj, bool recursive)
         {
-            if (obj is not CustomLogicMapObjectBuiltin or MapObject)
+            if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
                 return;
             }
 
             MapObject mapObject;
             if (obj is CustomLogicMapObjectBuiltin mapObjectBuiltin)
-        {
+            {
                 mapObject = mapObjectBuiltin.Value;
                 mapObjectBuiltin.Value = null;
             }
@@ -172,11 +185,12 @@ namespace CustomLogic
             var id = mapObject.ScriptObject.Id;
             HashSet<int> children = new HashSet<int>();
             if (MapLoader.IdToChildren.ContainsKey(id))
-                children = MapLoader.IdToChildren[mapObject.ScriptObject.Id];
-            foreach (var component in mapObject.ComponentInstances)
             {
-                CustomLogicManager.Evaluator.RemoveComponent(component);
+                foreach (var child in MapLoader.IdToChildren[mapObject.ScriptObject.Id])
+                    children.Add(child);
             }
+            foreach (var component in mapObject.ComponentInstances)
+                CustomLogicManager.Evaluator.RemoveComponent(component);
             MapLoader.DeleteObject(mapObject);
             if (recursive)
             {
