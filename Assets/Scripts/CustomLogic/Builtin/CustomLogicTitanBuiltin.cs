@@ -117,6 +117,10 @@ namespace CustomLogic
                 return Titan.AttackPause;
             if (name == "TurnPause")
                 return Titan.TurnPause;
+            if (name == "Stamina")
+                return Titan.CurrentSprintStamina;
+            if (name == "MaxStamina")
+                return Titan.MaxSprintStamina;
             if (name == "NapePosition")
                 return new CustomLogicVector3Builtin(Titan.BasicCache.NapeHurtbox.transform.position);
             if (name == "IsCrawler")
@@ -192,6 +196,10 @@ namespace CustomLogic
                 Titan.AttackPause = value.UnboxToFloat();
             else if (name == "TurnPause")
                 Titan.TurnPause = value.UnboxToFloat();
+            if (name == "Stamina")
+                Titan.CurrentSprintStamina = value.UnboxToFloat();
+            if (name == "MaxStamina")
+                Titan.MaxSprintStamina = value.UnboxToFloat();
             else if (name == "DetectRange")
             {
                 if (Titan.AI)

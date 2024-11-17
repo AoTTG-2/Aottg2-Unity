@@ -6,6 +6,7 @@ using Photon.Realtime;
 using Settings;
 using System.Collections.Generic;
 using UI;
+using Utility;
 using UnityEngine;
 
 namespace CustomLogic
@@ -142,6 +143,14 @@ namespace CustomLogic
             if (name == "GetLanguage")
             {
                 return SettingsManager.GeneralSettings.Language.Value;
+            }
+            if (name == "GetThemeColor")
+            {
+                string panel = (string)parameters[0];
+                string category = (string)parameters[1]; 
+                string item = (string)parameters[2];
+                Color255 color = new Color255(UIManager.GetThemeColor(panel, category, item));
+                return new CustomLogicColorBuiltin(color);
             }
             if (name == "ShowChangeCharacterMenu")
             {
