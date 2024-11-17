@@ -27,9 +27,10 @@ namespace Settings
         public FloatSetting FOVMax = new FloatSetting(100f, minValue: 1f, maxValue: 120f);
         public FloatSetting FPSFOVMin = new FloatSetting(80f, minValue: 1f, maxValue: 120f);
         public FloatSetting FPSFOVMax = new FloatSetting(100f, minValue: 1f, maxValue: 120f);
-        public FloatSetting Deadzone = new FloatSetting(0.1f, minValue: 0f, maxValue: 0.99f); // New deadzone setting
-        public FloatSetting CameraSpeed = new FloatSetting(1f, minValue: 0.1f, maxValue: 100f); // New camera speed setting
-        public FloatSetting RotationSpeed = new FloatSetting(150f, minValue: 50f, maxValue: 500f); // New rotation speed setting
+        public FloatSetting Deadzone = new FloatSetting(0.2f, minValue: 0.0f, maxValue: 0.99f);
+        public FloatSetting CameraSpeed = new FloatSetting(60f, minValue: 0.1f, maxValue: 100f);
+        public FloatSetting RotationSpeed = new FloatSetting(150f, minValue: 50f, maxValue: 500f);
+        public BoolSetting EnableAdvancedCamera = new BoolSetting(false);
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is InGameCamera)

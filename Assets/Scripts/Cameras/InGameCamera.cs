@@ -336,31 +336,36 @@ namespace Cameras
             {
                 float screenWidth = Screen.width;
                 float centerX = screenWidth / 2;
-                float deadzoneWidth = Deadzone * screenWidth;
-                float leftDeadzoneBoundary = centerX - (deadzoneWidth / 2);
-                float rightDeadzoneBoundary = centerX + (deadzoneWidth / 2);
+                float leftDeadzoneBoundary = screenWidth * ((1 - Deadzone) / 2);
+                float rightDeadzoneBoundary = screenWidth * ((1 + Deadzone) / 2);
 
                 float inputX = Input.mousePosition.x;
                 float inputY = Input.mousePosition.y;
 
                 if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
                 {
+                    float t = 0;
                     if (inputX < leftDeadzoneBoundary)
                     {
-                        float t = (leftDeadzoneBoundary - inputX) / leftDeadzoneBoundary;
-                        float angle = -t * CameraSpeed * GetSensitivityDeltaTime(sensitivity) * (RotationSpeed / 150f);
+                        t = (leftDeadzoneBoundary - inputX) / screenWidth;
+                        float angle = -t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
                         Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
                     }
                     else if (inputX > rightDeadzoneBoundary)
                     {
-                        float t = (inputX - rightDeadzoneBoundary) / (screenWidth - rightDeadzoneBoundary);
-                        float angle = t * CameraSpeed * GetSensitivityDeltaTime(sensitivity) * (RotationSpeed / 150f);
+                        t = (inputX - rightDeadzoneBoundary) / screenWidth;
+                        float angle = t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
                         Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
                     }
                 }
                 float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+            }
+            if (!SettingsManager.GeneralSettings.EnableAdvancedCamera.Value)
+            {
+            Deadzone = 0.2f;
+            CameraSpeed = 60f;
             }
             if (_napeLock && (_napeLockTitan != null))
             {
