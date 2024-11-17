@@ -50,8 +50,8 @@ namespace UI
                 elementWidth: 100f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.EnableAdvancedCamera, 
-                UIManager.GetLocale(cat, sub, "EnableAdvancedCamera"), tooltip:
-                UIManager.GetLocale(cat, sub, "EnableAdvancedCameraTooltip"), elementWidth: 100f);
+                UIManager.GetLocale(cat, sub, "EnableAdvancedCamera"),
+                UIManager.GetLocale(cat, sub, "EnableAdvancedCameraTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Deadzone, UIManager.GetLocale(cat, sub, "Deadzone"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.CameraSpeed, UIManager.GetLocale(cat, sub, "CameraSpeed"));
 }   
