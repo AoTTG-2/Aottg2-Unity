@@ -1,76 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomLogic
 {
-
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    class CLField : Attribute
+    abstract class CLBaseAttribute : Attribute
     {
-        public FieldInfo Field { get; set; } = null;
-        public bool ReadOnly { get; set; } = false;
         public string Description { get; set; } = "";
-
-        public CLField(CLField commandAttribute)
+        
+        public void ClearDescription() => Description = "";
+    }
+    
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
+    class CLTypeAttribute : CLBaseAttribute
+    {
+        public CLTypeAttribute(string description = "")
         {
-            Field = commandAttribute.Field;
-            ReadOnly = commandAttribute.ReadOnly;
-            Description = commandAttribute.Description;
+            Description = description;
         }
+    }
 
-        public CLField(string description = "", bool readOnly=false)
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    class CLPropertyAttribute : CLBaseAttribute
+    {
+        public bool ReadOnly { get; set; }
+
+        public CLPropertyAttribute(string description = "", bool readOnly = false)
         {
             ReadOnly = readOnly;
             Description = description;
         }
     }
 
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    class CLProperty : Attribute
+    [AttributeUsage(AttributeTargets.Method)]
+    class CLMethodAttribute : CLBaseAttribute
     {
-        public PropertyInfo Property { get; set; } = null;
-        public bool ReadOnly { get; set; } = false;
-        public string Description { get; set; } = "";
-
-        public CLProperty(CLProperty commandAttribute)
-        {
-            Property = commandAttribute.Property;
-            ReadOnly = commandAttribute.ReadOnly;
-            Description = commandAttribute.Description;
-        }
-
-        public CLProperty(string description="", bool readOnly=false)
-        {
-            ReadOnly = readOnly;
-            Description = description;
-        }
-    }
-
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    class CLMethod : Attribute
-    {
-        public MethodInfo Method { get; set; } = null;
-        public string Description { get; set; } = "";
-
-        public CLMethod(CLMethod commandAttribute)
-        {
-            Method = commandAttribute.Method;
-            Description = commandAttribute.Description;
-        }
-
-        public CLMethod(string description="")
+        public CLMethodAttribute(string description = "")
         {
             Description = description;
         }
-    }
-
-    interface ICustomLogicCallable
-    {
-        object Call(object instance, List<object> parameters, Dictionary<string, object> kwargs);
     }
 
     interface ICustomLogicMathOperators
@@ -92,13 +59,12 @@ namespace CustomLogic
         object __Copy__();
     }
 
-    struct BuiltinField
+    readonly struct BuiltinProperty
     {
         private readonly Func<object, object> _getter;
         private readonly Action<object, object> _setter;
 
-
-        public BuiltinField(Func<object, object> getter, Action<object, object> setter)
+        public BuiltinProperty(Func<object, object> getter, Action<object, object> setter)
         {
             _getter = getter;
             _setter = setter;
@@ -108,11 +74,11 @@ namespace CustomLogic
         public void SetValue(object instance, object value) => _setter?.Invoke(instance, value);
     }
 
-    struct BuiltinFunction : ICustomLogicCallable
+    readonly struct BuiltinMethod
     {
         private readonly Func<object, List<object>, Dictionary<string, object>, object> _function;
 
-        public BuiltinFunction(Func<object, List<object>, Dictionary<string, object>, object> function)
+        public BuiltinMethod(Func<object, List<object>, Dictionary<string, object>, object> function)
         {
             _function = function;
         }
