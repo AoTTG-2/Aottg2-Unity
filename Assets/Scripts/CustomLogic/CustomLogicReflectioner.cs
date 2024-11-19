@@ -76,8 +76,6 @@ namespace CustomLogic
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Properties => Instance._properties;
         public static Dictionary<string, Dictionary<string, BuiltinMethod>> Methods => Instance._methods;
         
-        // todo: make sure static fields work
-
         /// <summary>
         /// Tries to create a BuiltinField from a field of a builtin type
         /// </summary>
@@ -114,9 +112,7 @@ namespace CustomLogic
             var attribute = fieldInfo.GetCustomAttribute<CLPropertyAttribute>();
             attribute.ClearDescription();
                 
-            var hasSetter = fieldInfo.IsInitOnly == false && fieldInfo.IsLiteral == false && fieldInfo.IsStatic == false &&
-                            attribute.ReadOnly == false;
-
+            var hasSetter = fieldInfo.IsInitOnly == false && fieldInfo.IsLiteral == false && attribute.ReadOnly == false;
             var builtinField = new BuiltinProperty(Getter, hasSetter ? Setter : null);
             
             if (Instance._fields.ContainsKey(typeName) == false)
