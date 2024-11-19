@@ -41,6 +41,12 @@ namespace UI
                 Destroy(go);
             _lines.Clear();
             AddLines(ChatManager.Lines);
+
+            if (!string.IsNullOrEmpty(ChatManager.MessageDraft))
+            {
+                _inputField.text = ChatManager.MessageDraft;
+                Activate();
+            }
         }
 
         public void Activate()
