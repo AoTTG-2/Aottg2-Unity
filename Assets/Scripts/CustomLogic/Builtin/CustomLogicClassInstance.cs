@@ -48,12 +48,13 @@ namespace CustomLogic
 
             if (CustomLogicBuiltinTypes.IsBuiltinType(ClassName) && CustomLogicBuiltinTypes.TypeMemberNames[ClassName].Contains(name))
             {
-                var isProperty = CustomLogicReflectioner.TryCreateProperty(ClassName, name, out var property);
-                var isMethod = CustomLogicReflectioner.TryCreateMethod(ClassName, name, out var method);
+                var isField = CustomLogicReflectioner.GetOrCreateField(ClassName, name, out var field);
+                var isProperty = CustomLogicReflectioner.GetOrCreateProperty(ClassName, name, out var property);
+                var isMethod = CustomLogicReflectioner.GetOrCreateMethod(ClassName, name, out var method);
                 
-                if (isProperty || isMethod)
+                if (isField || isProperty || isMethod)
                 {
-                    variable = isProperty ? property : method;
+                    variable = isField ? field : isProperty ? property : method;
                     Variables[name] = variable;
                     return true;
                 }
@@ -67,12 +68,13 @@ namespace CustomLogic
                 c = CustomLogicBuiltinTypes.BaseTypeNames[c];
                 if (CustomLogicBuiltinTypes.TypeMemberNames[c].Contains(name))
                 {
-                    var isProperty = CustomLogicReflectioner.TryCreateProperty(c, name, out var property);
-                    var isMethod = CustomLogicReflectioner.TryCreateMethod(c, name, out var method);
+                    var isField = CustomLogicReflectioner.GetOrCreateField(c, name, out var field);
+                    var isProperty = CustomLogicReflectioner.GetOrCreateProperty(c, name, out var property);
+                    var isMethod = CustomLogicReflectioner.GetOrCreateMethod(c, name, out var method);
                 
-                    if (isProperty || isMethod)
+                    if (isField || isProperty || isMethod)
                     {
-                        variable = isProperty ? property : method;
+                        variable = isField ? field : isProperty ? property : method;
                         Variables[name] = variable;
                         return true;
                     }

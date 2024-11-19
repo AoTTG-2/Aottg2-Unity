@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace CustomLogic
@@ -27,6 +26,9 @@ namespace CustomLogic
         private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _properties = new();
         private readonly Dictionary<string, Dictionary<string, BuiltinMethod>> _methods = new();
         
+        private static readonly Type IntType = typeof(int);
+        private static readonly Type FloatType = typeof(float);
+        
         /// <summary>
         /// <see cref="GenericGetDelegate{TClass,TResult}"/> as a MethodInfo (not generic yet)
         /// </summary>
@@ -49,14 +51,77 @@ namespace CustomLogic
         /// Converts a generic Action&lt;TClass, TResult&gt; to an Action&lt;object, object&gt;
         /// </summary>
         private static Action<object, object> GenericSetDelegate<TClass, TResult>(Action<TClass, TResult> func)
-            => (classInstance, result) => func((TClass)classInstance, (TResult)result);
-        
+        {
+            return (classInstance, result) =>
+            {
+                var res = result;
+                if (typeof(TResult) == IntType)
+                    res = result.UnboxToInt();
+                else if (typeof(TResult) == FloatType)
+                    res = result.UnboxToFloat();
+                
+                func((TClass)classInstance, (TResult)res);
+            };
+        }
+
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Fields => Instance._fields;
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Properties => Instance._properties;
         public static Dictionary<string, Dictionary<string, BuiltinMethod>> Methods => Instance._methods;
         
         // todo: handle static properties (unlike instance properties, their type is Func<TPropertyType>)
-        
+
+        /// <summary>
+        /// Tries to create a BuiltinField from a field of a builtin type
+        /// </summary>
+        /// <param name="typeName">Name of the builtin type</param>
+        /// <param name="fieldName">Name of the field</param>
+        /// <param name="field">Output BuiltinField</param>
+        /// <returns>true if the field was found or created, false otherwise</returns>
+        public static bool GetOrCreateField(string typeName, string fieldName, out BuiltinProperty field)
+        {
+            if (Instance._fields.ContainsKey(typeName))
+            {
+                if (Instance._fields[typeName].ContainsKey(fieldName))
+                {
+                    field = Instance._fields[typeName][fieldName];
+                    return true;
+                }
+            }
+            
+            if (CustomLogicBuiltinTypes.TypeMemberNames[typeName].Contains(fieldName) == false)
+            {
+                field = default;
+                return false;
+            }
+            
+            var type = CustomLogicBuiltinTypes.Types[typeName];
+            var fieldInfo = type.GetField(fieldName, Flags);
+
+            if (fieldInfo == null)
+            {
+                field = default;
+                return false;
+            }
+            
+            var attribute = fieldInfo.GetCustomAttribute<CLPropertyAttribute>();
+            attribute.ClearDescription();
+                
+            var hasSetter = fieldInfo.IsInitOnly == false && fieldInfo.IsLiteral == false && fieldInfo.IsStatic == false &&
+                            attribute.ReadOnly == false;
+
+            var builtinField = new BuiltinProperty(Getter, hasSetter ? Setter : null);
+            
+            if (Instance._fields.ContainsKey(typeName) == false)
+                Instance._fields[typeName] = new Dictionary<string, BuiltinProperty>();
+            
+            Instance._fields[typeName][fieldInfo.Name] = builtinField;
+            field = builtinField;
+            return true;
+
+            object Getter(object classInstance) => fieldInfo.GetValue(classInstance);
+            void Setter(object classInstance, object value) => fieldInfo.SetValue(classInstance, value);
+        }
+
         /// <summary>
         /// Tries to create a BuiltinProperty from a property of a builtin type
         /// </summary>
@@ -64,7 +129,7 @@ namespace CustomLogic
         /// <param name="propertyName">Name of the property</param>
         /// <param name="property">Output BuiltinProperty</param>
         /// <returns>true if the property was found or created, false otherwise</returns>
-        public static bool TryCreateProperty(string typeName, string propertyName, out BuiltinProperty property)
+        public static bool GetOrCreateProperty(string typeName, string propertyName, out BuiltinProperty property)
         {
             if (Instance._properties.ContainsKey(typeName))
             {
@@ -137,7 +202,7 @@ namespace CustomLogic
         /// <param name="methodName">Name of the method</param>
         /// <param name="method">Output BuiltinMethod</param>
         /// <returns>true if the method was found or created, false otherwise</returns>
-        public static bool TryCreateMethod(string typeName, string methodName, out BuiltinMethod method)
+        public static bool GetOrCreateMethod(string typeName, string methodName, out BuiltinMethod method)
         {
             if (Instance._methods.ContainsKey(typeName))
             {
@@ -172,30 +237,6 @@ namespace CustomLogic
             
             Instance._methods[typeName][methodInfo.Name] = method;
             return true;
-        }
-        
-        // todo: TryCreateField
-        private void CacheFieldsOfType(Type type, string typeName)
-        {
-            if (_fields.ContainsKey(typeName) == false)
-                _fields[typeName] = new Dictionary<string, BuiltinProperty>();
-
-            foreach (var field in type.GetFields(Flags).Where(x => x.GetCustomAttribute<CLPropertyAttribute>() != null))
-            {
-                var attribute = field.GetCustomAttribute<CLPropertyAttribute>();
-                attribute.ClearDescription();
-                
-                var hasSetter = field.IsInitOnly == false && field.IsLiteral == false && field.IsStatic == false &&
-                                attribute.ReadOnly == false;
-
-                var builtinField = new BuiltinProperty(Getter, hasSetter ? Setter : null);
-                _fields[typeName][field.Name] = builtinField;
-                
-                continue;
-
-                object Getter(object instance) => field.GetValue(instance);
-                void Setter(object instance, object value) => field.SetValue(instance, value);
-            }
         }
     }
 }
