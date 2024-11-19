@@ -66,26 +66,26 @@ namespace Builtin
         #endregion
 
         #region Static Properties
-        // [CLProperty(description: "Shorthand for writing Vector2(0, -1).")]
-        // public static CustomLogicVector2Builtin Down => new CustomLogicVector2Builtin(Vector2.down);
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(-1, 0).")]
-        // public static CustomLogicVector2Builtin Left => new CustomLogicVector2Builtin(Vector2.left);
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).")]
-        // public static CustomLogicVector2Builtin NegativeInfinity => new CustomLogicVector2Builtin(new Vector2(float.NegativeInfinity, float.NegativeInfinity));
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(1, 1).")]
-        // public static CustomLogicVector2Builtin One => new CustomLogicVector2Builtin(Vector2.one);
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(1, 0).")]
-        // public static CustomLogicVector2Builtin Right => new CustomLogicVector2Builtin(Vector2.right);
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(0, 1).")]
-        // public static CustomLogicVector2Builtin Up => new CustomLogicVector2Builtin(Vector2.up);
-        //
-        // [CLProperty(description: "Shorthand for writing Vector2(0, 0).")]
-        // public static CustomLogicVector2Builtin Zero => new CustomLogicVector2Builtin(Vector2.zero);
+        [CLProperty(description: "Shorthand for writing Vector2(0, -1).")]
+        public static CustomLogicVector2Builtin Down => new CustomLogicVector2Builtin(Vector2.down);
+        
+        [CLProperty(description: "Shorthand for writing Vector2(-1, 0).")]
+        public static CustomLogicVector2Builtin Left => new CustomLogicVector2Builtin(Vector2.left);
+        
+        [CLProperty(description: "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).")]
+        public static CustomLogicVector2Builtin NegativeInfinity => new CustomLogicVector2Builtin(new Vector2(float.NegativeInfinity, float.NegativeInfinity));
+        
+        [CLProperty(description: "Shorthand for writing Vector2(1, 1).")]
+        public static CustomLogicVector2Builtin One => new CustomLogicVector2Builtin(Vector2.one);
+        
+        [CLProperty(description: "Shorthand for writing Vector2(1, 0).")]
+        public static CustomLogicVector2Builtin Right => new CustomLogicVector2Builtin(Vector2.right);
+        
+        [CLProperty(description: "Shorthand for writing Vector2(0, 1).")]
+        public static CustomLogicVector2Builtin Up => new CustomLogicVector2Builtin(Vector2.up);
+        
+        [CLProperty(description: "Shorthand for writing Vector2(0, 0).")]
+        public static CustomLogicVector2Builtin Zero => new CustomLogicVector2Builtin(Vector2.zero);
         #endregion
 
         #region Methods

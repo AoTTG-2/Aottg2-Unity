@@ -1162,6 +1162,17 @@ namespace CustomLogic
                 return left.Equals(right);
             return right.Equals(left);
         }
+
+        public static T ConvertTo<T>(object obj)
+        {
+            var res = obj;
+            if (typeof(T) == ReflectionExtensions.IntType)
+                res = obj.UnboxToInt();
+            else if (typeof(T) == ReflectionExtensions.FloatType)
+                res = obj.UnboxToFloat();
+
+            return (T)res;
+        }
     }
 
     public enum ConditionalEvalState

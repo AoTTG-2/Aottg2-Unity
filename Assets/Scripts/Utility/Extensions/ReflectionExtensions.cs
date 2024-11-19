@@ -3,20 +3,16 @@ using System.Reflection;
 
 public static class ReflectionExtensions
 {
+    public static readonly Type IntType = typeof(int);
+    public static readonly Type FloatType = typeof(float);
+    
     public static bool HasAttribute<T>(this Type member) where T : Attribute
     {
         return member.GetCustomAttribute<T>() != null;
     }
-
-    public static bool TryGetAttribute<T>(this Type type, out T attribute) where T : Attribute
+    
+    public static bool HasAttribute<T>(this MemberInfo member) where T : Attribute
     {
-        if (type.HasAttribute<T>())
-        {
-            attribute = type.GetCustomAttribute<T>();
-            return true;
-        }
-
-        attribute = null;
-        return false;
+        return member.GetCustomAttribute<T>() != null;
     }
 }

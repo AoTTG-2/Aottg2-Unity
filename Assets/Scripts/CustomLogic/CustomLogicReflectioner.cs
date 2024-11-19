@@ -25,50 +25,58 @@ namespace CustomLogic
         private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _fields = new();
         private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _properties = new();
         private readonly Dictionary<string, Dictionary<string, BuiltinMethod>> _methods = new();
+
+        #region Converter MethodInfos
         
-        private static readonly Type IntType = typeof(int);
-        private static readonly Type FloatType = typeof(float);
+        /*
+         * The static converter methods (below) as reflection MethodInfo.
+         * These method infos are not generic yet.
+         */
+
+        private static readonly Type ThisType = typeof(CustomLogicReflectioner); 
         
-        /// <summary>
-        /// <see cref="GenericGetDelegate{TClass,TResult}"/> as a MethodInfo (not generic yet)
-        /// </summary>
-        private static readonly MethodInfo GenericGetDelegateMethodInfo =
-            typeof(CustomLogicReflectioner).GetMethod(nameof(GenericGetDelegate), Flags);
+        private static readonly MethodInfo GetMethodInfo = ThisType.GetMethod(nameof(InstanceGetDelegate), Flags);
+        private static readonly MethodInfo SetMethodInfo = ThisType.GetMethod(nameof(InstanceSetDelegate), Flags);
         
-        /// <summary>
-        /// <see cref="GenericSetDelegate{TClass,TResult}"/> as a MethodInfo (not generic yet)
-        /// </summary>
-        private static readonly MethodInfo GenericSetDelegateMethodInfo =
-            typeof(CustomLogicReflectioner).GetMethod(nameof(GenericSetDelegate), Flags);
+        private static readonly MethodInfo StaticGetMethodInfo = ThisType.GetMethod(nameof(StaticGetDelegate), Flags);
+        private static readonly MethodInfo StaticSetMethodInfo = ThisType.GetMethod(nameof(StaticSetDelegate), Flags);
+
+        #endregion
+
+        #region Converters
         
-        /// <summary>
-        /// Converts a generic Func&lt;TClass, TResult&gt; to a Func&lt;object, object&gt;
-        /// </summary>
-        private static Func<object, object> GenericGetDelegate<TClass, TResult>(Func<TClass, TResult> func)
+        /*
+         * Converters for converting generic Func and Action to Func and Action of object.
+         * Func<TClass, TResult>        ->      Func<object, object>
+         * Action<TClass, TResult>      ->      Action<object, object>
+         * Func<TResult>                ->      Func<object>
+         * Action<TResult>              ->      Action<object>
+         */
+
+        private static Func<object, object> InstanceGetDelegate<TClass, TResult>(Func<TClass, TResult> func) 
             => classInstance => func((TClass)classInstance);
         
-        /// <summary>
-        /// Converts a generic Action&lt;TClass, TResult&gt; to an Action&lt;object, object&gt;
-        /// </summary>
-        private static Action<object, object> GenericSetDelegate<TClass, TResult>(Action<TClass, TResult> func)
+        private static Action<object, object> InstanceSetDelegate<TClass, TResult>(Action<TClass, TResult> func)
         {
             return (classInstance, result) =>
             {
-                var res = result;
-                if (typeof(TResult) == IntType)
-                    res = result.UnboxToInt();
-                else if (typeof(TResult) == FloatType)
-                    res = result.UnboxToFloat();
-                
-                func((TClass)classInstance, (TResult)res);
+                func((TClass)classInstance, CustomLogicEvaluator.ConvertTo<TResult>(result));
             };
         }
+        
+        private static Func<object> StaticGetDelegate<TResult>(Func<TResult> func) => () => func();
+        private static Action<object> StaticSetDelegate<TResult>(Action<TResult> func)
+        {
+            return result => func(CustomLogicEvaluator.ConvertTo<TResult>(result));
+        }
+
+        #endregion
 
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Fields => Instance._fields;
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Properties => Instance._properties;
         public static Dictionary<string, Dictionary<string, BuiltinMethod>> Methods => Instance._methods;
         
-        // todo: handle static properties (unlike instance properties, their type is Func<TPropertyType>)
+        // todo: make sure static fields work
 
         /// <summary>
         /// Tries to create a BuiltinField from a field of a builtin type
@@ -169,20 +177,44 @@ namespace CustomLogic
 
             if (hasGetter)
             {
-                var getterType = typeof(Func<,>).MakeGenericType(type, propertyInfo.PropertyType);
+                var getterType = getMethod.IsStatic
+                    ? typeof(Func<>).MakeGenericType(propertyInfo.PropertyType)
+                    : typeof(Func<,>).MakeGenericType(type, propertyInfo.PropertyType);
+
+                var genericGetMethod = getMethod.IsStatic
+                    ? StaticGetMethodInfo.MakeGenericMethod(propertyInfo.PropertyType)
+                    : GetMethodInfo.MakeGenericMethod(type, propertyInfo.PropertyType);
+
                 var getterDelegate = getMethod.CreateDelegate(getterType);
 
-                var genericGetMethod = GenericGetDelegateMethodInfo.MakeGenericMethod(type, propertyInfo.PropertyType);
-                getter = (Func<object, object>)genericGetMethod.Invoke(null, new object[] { getterDelegate });
+                if (getMethod.IsStatic)
+                {
+                    var staticGetter = (Func<object>)genericGetMethod.Invoke(null, new object[] { getterDelegate });
+                    getter = _ => staticGetter();
+                }
+                else
+                    getter = (Func<object, object>)genericGetMethod.Invoke(null, new object[] { getterDelegate });
             }
             
             if (hasSetter)
             {
-                var setterType = typeof(Action<,>).MakeGenericType(type, propertyInfo.PropertyType);
+                var setterType = setMethod.IsStatic
+                    ? typeof(Action<>).MakeGenericType(propertyInfo.PropertyType)
+                    : typeof(Action<,>).MakeGenericType(type, propertyInfo.PropertyType);
+
+                var genericSetMethod = setMethod.IsStatic
+                    ? StaticSetMethodInfo.MakeGenericMethod(propertyInfo.PropertyType)
+                    : SetMethodInfo.MakeGenericMethod(type, propertyInfo.PropertyType);
+                
                 var setterDelegate = setMethod.CreateDelegate(setterType);
-                    
-                var genericSetMethod = GenericSetDelegateMethodInfo.MakeGenericMethod(type, propertyInfo.PropertyType);
-                setter = (Action<object, object>)genericSetMethod.Invoke(null, new object[] { setterDelegate });
+                
+                if (setMethod.IsStatic)
+                {
+                    var staticSetter = (Action<object>)genericSetMethod.Invoke(null, new object[] { setterDelegate });
+                    setter = (_, value) => staticSetter(value);
+                }
+                else
+                    setter = (Action<object, object>)genericSetMethod.Invoke(null, new object[] { setterDelegate });
             }
             
             property = new BuiltinProperty(getter, setter);
