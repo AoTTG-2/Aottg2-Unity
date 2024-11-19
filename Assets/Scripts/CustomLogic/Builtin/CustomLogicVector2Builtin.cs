@@ -8,10 +8,8 @@ namespace Builtin
     [CLType]
     class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
-        private const string TypeName = "Vector2";
-
         private Vector2 _value;
-        public CustomLogicVector2Builtin(List<object> parameterValues) : base(TypeName)
+        public CustomLogicVector2Builtin(List<object> parameterValues, string name = "Vector2") : base(name)
         {
             float x = 0;
             float y = 0;
@@ -31,7 +29,7 @@ namespace Builtin
 
         }
 
-        public CustomLogicVector2Builtin(Vector2 value) : base(TypeName)
+        public CustomLogicVector2Builtin(Vector2 value, string name = "Vector2") : base(name)
         {
             _value = value;
         }
@@ -148,7 +146,7 @@ namespace Builtin
         public int __Hash__() => this._value.GetHashCode();
         
         [CLMethod(description: "Copy")]
-        public object __Copy__() => Copy();
+        public virtual object __Copy__() => Copy();
         #endregion
 
         #region Static Methods

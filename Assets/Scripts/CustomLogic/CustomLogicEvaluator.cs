@@ -519,6 +519,12 @@ namespace CustomLogic
                 classInstance = new CustomLogicVector3Builtin(parameterValues);
             else if (className == "Vector2")
                 classInstance = new CustomLogicVector2Builtin(parameterValues);
+            else if (className == "Point")
+                classInstance = new CustomLogicPoint();
+            else if (className == "Vector2Child")
+                classInstance = new CustomLogicVector2Child(parameterValues);
+            else if (className == "Vector2ChildChild")
+                classInstance = new CustomLogicVector2ChildChild(parameterValues);
             else if (className == "Color")
                 classInstance = new CustomLogicColorBuiltin(parameterValues);
             else if (className == "Quaternion")
@@ -735,16 +741,20 @@ namespace CustomLogic
                 {
                     CustomLogicAssignmentExpressionAst assignment = (CustomLogicAssignmentExpressionAst)statement;
                     object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    else if (value != null && value is CustomLogicClassInstance)
+                    if (assignment.Right is not CustomLogicClassInstantiateExpressionAst)
                     {
-                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                        string method = nameof(ICustomLogicCopyable.__Copy__);
+                        if (value != null && value is CustomLogicStructBuiltin)
+                            value = ((CustomLogicStructBuiltin)value).Copy();
+                        else if (value != null && value is CustomLogicClassInstance)
+                        {
+                            CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
+                            string method = nameof(ICustomLogicCopyable.__Copy__);
 
-                        if (customLogicClassInstance.HasVariable(method))
-                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                            if (customLogicClassInstance.HasVariable(method))
+                                value = EvaluateMethod(customLogicClassInstance, method, emptyList);
+                        }
                     }
+
                     if (assignment.Left is CustomLogicVariableExpressionAst)
                     {
                         string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;

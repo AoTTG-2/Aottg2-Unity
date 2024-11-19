@@ -24,6 +24,7 @@ namespace CustomLogic
         }
 
         private Dictionary<string, Type> _types;
+        private Dictionary<string, string> _baseTypeNames;
         private Dictionary<string, HashSet<string>> _typeMemberNames;
         
         /// <summary>
@@ -31,6 +32,11 @@ namespace CustomLogic
         /// Only types that are marked with <see cref="CLTypeAttribute"/> are included
         /// </summary>
         public static Dictionary<string, Type> Types => Instance._types;
+        
+        /// <summary>
+        /// Map of all the builtin type names to their base (builtin) type names.
+        /// </summary>
+        public static Dictionary<string, string> BaseTypeNames => Instance._baseTypeNames;
         
         /// <summary>
         /// Map of all the builtin type names to their member names.
@@ -53,11 +59,19 @@ namespace CustomLogic
                 .ToArray();
 
             _types = new Dictionary<string, Type>(types.Length);
+            _baseTypeNames = new Dictionary<string, string>(types.Length);
             _typeMemberNames = new Dictionary<string, HashSet<string>>(types.Length);
             
             foreach (var type in types)
             {
-                var name = type.Name.Replace("CustomLogic", "").Replace("Builtin", "");
+                var name = GetBuiltinTypeName(type);
+                
+                var baseType = type.BaseType;
+                var isBaseTypeBuiltin = baseType != null && baseType.HasAttribute<CLTypeAttribute>();
+                var baseTypeName = isBaseTypeBuiltin ? GetBuiltinTypeName(baseType) : null;
+                
+                if (isBaseTypeBuiltin)
+                    _baseTypeNames[name] = baseTypeName;
                 
                 _types[name] = type;
                 
@@ -71,9 +85,20 @@ namespace CustomLogic
                              x.HasAttribute<CLPropertyAttribute>() 
                              || x.HasAttribute<CLMethodAttribute>()))
                 {
+                    if (isBaseTypeBuiltin)
+                    {
+                        if (_typeMemberNames[baseTypeName].Contains(member.Name))
+                            continue;
+                    }
+                    
                     _typeMemberNames[name].Add(member.Name);
                 }
             }
+        }
+
+        private static string GetBuiltinTypeName(Type type)
+        {
+            return type.Name.Replace("CustomLogic", "").Replace("Builtin", "");
         }
     }
 }

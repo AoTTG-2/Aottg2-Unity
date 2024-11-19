@@ -59,7 +59,7 @@ namespace CustomLogic
         object __Copy__();
     }
 
-    readonly struct BuiltinProperty
+    class BuiltinProperty
     {
         private readonly Func<object, object> _getter;
         private readonly Action<object, object> _setter;
@@ -74,7 +74,7 @@ namespace CustomLogic
         public void SetValue(object instance, object value) => _setter?.Invoke(instance, value);
     }
 
-    readonly struct BuiltinMethod
+    class BuiltinMethod
     {
         private readonly Func<object, List<object>, Dictionary<string, object>, object> _function;
 

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using UnityEngine;
 
 namespace CustomLogic
 {
@@ -51,18 +48,34 @@ namespace CustomLogic
 
             if (CustomLogicBuiltinTypes.IsBuiltinType(ClassName) && CustomLogicBuiltinTypes.TypeMemberNames[ClassName].Contains(name))
             {
-                if (CustomLogicReflectioner.TryCreateProperty(ClassName, name, out var property))
+                var isProperty = CustomLogicReflectioner.TryCreateProperty(ClassName, name, out var property);
+                var isMethod = CustomLogicReflectioner.TryCreateMethod(ClassName, name, out var method);
+                
+                if (isProperty || isMethod)
                 {
-                    Variables[name] = property;
-                    variable = property;
+                    variable = isProperty ? property : method;
+                    Variables[name] = variable;
                     return true;
                 }
-
-                if (CustomLogicReflectioner.TryCreateMethod(ClassName, name, out var method))
+            }
+            
+            var c = ClassName;
+            
+            // Recursively try to get the variable from the base classes
+            while (CustomLogicBuiltinTypes.IsBuiltinType(c) && CustomLogicBuiltinTypes.BaseTypeNames.ContainsKey(c))
+            {
+                c = CustomLogicBuiltinTypes.BaseTypeNames[c];
+                if (CustomLogicBuiltinTypes.TypeMemberNames[c].Contains(name))
                 {
-                    Variables[name] = method;
-                    variable = method;
-                    return true;
+                    var isProperty = CustomLogicReflectioner.TryCreateProperty(c, name, out var property);
+                    var isMethod = CustomLogicReflectioner.TryCreateMethod(c, name, out var method);
+                
+                    if (isProperty || isMethod)
+                    {
+                        variable = isProperty ? property : method;
+                        Variables[name] = variable;
+                        return true;
+                    }
                 }
             }
 
@@ -72,9 +85,22 @@ namespace CustomLogic
 
         public bool HasVariable(string name)
         {
-            return Variables.ContainsKey(name) ||
-                   (CustomLogicBuiltinTypes.IsBuiltinType(ClassName) &&
-                    CustomLogicBuiltinTypes.TypeMemberNames[ClassName].Contains(name));
+            if (Variables.ContainsKey(name) ||
+                (CustomLogicBuiltinTypes.IsBuiltinType(ClassName)
+                 && CustomLogicBuiltinTypes.TypeMemberNames[ClassName].Contains(name)))
+            {
+                return true;
+            }
+
+            var c = ClassName;
+            while (CustomLogicBuiltinTypes.IsBuiltinType(c) && CustomLogicBuiltinTypes.BaseTypeNames.ContainsKey(c))
+            {
+                c = CustomLogicBuiltinTypes.BaseTypeNames[c];
+                if (CustomLogicBuiltinTypes.TypeMemberNames[c].Contains(name))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
