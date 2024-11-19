@@ -773,8 +773,13 @@ namespace CustomLogic
                         {
                             if (fieldInstance.TryGetVariable(fieldExpression.FieldName, out var field))
                             {
-                                if (field is BuiltinProperty builtinField)
-                                    builtinField.SetValue(fieldInstance, value);
+                                if (field is BuiltinProperty property)
+                                {
+                                    if (property.IsReadOnly)
+                                        throw new Exception($"Field '{fieldExpression.FieldName}' is read-only");
+                                    
+                                    property.SetValue(fieldInstance, value);
+                                }
                                 else
                                     fieldInstance.Variables[fieldExpression.FieldName] = value;
                             }
