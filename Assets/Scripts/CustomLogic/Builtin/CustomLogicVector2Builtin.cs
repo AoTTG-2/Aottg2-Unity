@@ -5,21 +5,21 @@ using UnityEngine;
 
 namespace Builtin
 {
-    [CLType]
+    [CLType(Static = true)]
     class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         private Vector2 _value;
-        public CustomLogicVector2Builtin(List<object> parameterValues, string name = "Vector2") : base(name)
+        public CustomLogicVector2Builtin(object[] parameterValues)
         {
             float x = 0;
             float y = 0;
 
-            if (parameterValues.Count == 1)
+            if (parameterValues.Length == 1)
             {
                 x = parameterValues[0].UnboxToFloat();
                 y = x;
             }
-            else if (parameterValues.Count > 1)
+            else if (parameterValues.Length > 1)
             {
                 x = parameterValues[0].UnboxToFloat();
                 y = parameterValues[1].UnboxToFloat();
@@ -29,7 +29,7 @@ namespace Builtin
 
         }
 
-        public CustomLogicVector2Builtin(Vector2 value, string name = "Vector2") : base(name)
+        public CustomLogicVector2Builtin(Vector2 value)
         {
             _value = value;
         }
@@ -192,5 +192,8 @@ namespace Builtin
         [CLMethod(description: "Gradually changes a vector towards a desired goal over time.")]
         public static CustomLogicVector2Builtin SmoothDamp(CustomLogicVector2Builtin current, CustomLogicVector2Builtin target, ref CustomLogicVector2Builtin currentVelocity, float smoothTime, float maxSpeed) => new CustomLogicVector2Builtin(Vector2.SmoothDamp(current._value, target._value, ref currentVelocity._value, smoothTime, maxSpeed));
         #endregion
+        
+        public static implicit operator CustomLogicVector2Builtin(Vector2 value) => new(value);
+        public static implicit operator Vector2(CustomLogicVector2Builtin value) => value._value;
     }
 }

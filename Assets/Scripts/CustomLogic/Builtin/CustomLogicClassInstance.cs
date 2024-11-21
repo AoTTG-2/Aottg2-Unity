@@ -13,6 +13,8 @@ namespace CustomLogic
 
         public string ClassName;
         public readonly Dictionary<string, object> Variables = new();
+        
+        public CustomLogicClassInstance() { }
 
         public CustomLogicClassInstance(string name)
         {

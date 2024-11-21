@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace CustomLogic
 {
-    public class CustomLogicBuiltinTypes
+    internal class CustomLogicBuiltinTypes
     {
         private static CustomLogicBuiltinTypes instance;
 
@@ -26,6 +26,9 @@ namespace CustomLogic
         private Dictionary<string, string> _baseTypeNames;
         private Dictionary<string, HashSet<string>> _typeMemberNames;
         
+        private HashSet<string> _staticTypes;
+        private HashSet<string> _abstractTypes;
+        
         /// <summary>
         /// Map of all the builtin type names to their types.
         /// Only types that are marked with <see cref="CLTypeAttribute"/> are included
@@ -44,6 +47,16 @@ namespace CustomLogic
         /// </summary>
         public static Dictionary<string, HashSet<string>> TypeMemberNames => Instance._typeMemberNames;
         
+        /// <summary>
+        /// Set of all the builtin type names that have at least one static member
+        /// </summary>
+        public static HashSet<string> StaticTypes => Instance._staticTypes;
+        
+        /// <summary>
+        /// Set of all the builtin type names that are abstract
+        /// </summary>
+        public static HashSet<string> AbstractTypes => Instance._abstractTypes;
+        
         public static bool IsBuiltinType(string typeName)
         {
             return Types.ContainsKey(typeName);
@@ -60,10 +73,16 @@ namespace CustomLogic
             _types = new Dictionary<string, Type>(types.Length);
             _baseTypeNames = new Dictionary<string, string>(types.Length);
             _typeMemberNames = new Dictionary<string, HashSet<string>>(types.Length);
+            _staticTypes = new HashSet<string>(types.Length);
+            _abstractTypes = new HashSet<string>(types.Length);
             
             foreach (var type in types)
             {
                 var name = GetBuiltinTypeName(type);
+                var attribute = type.GetCustomAttribute<CLTypeAttribute>();
+                
+                if (attribute.Static) _staticTypes.Add(name);
+                if (attribute.Abstract) _abstractTypes.Add(name);
                 
                 var baseType = type.BaseType;
                 var isBaseTypeBuiltin = baseType != null && baseType.HasAttribute<CLTypeAttribute>();

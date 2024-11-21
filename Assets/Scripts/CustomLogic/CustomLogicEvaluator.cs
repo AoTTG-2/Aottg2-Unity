@@ -27,6 +27,7 @@ namespace CustomLogic
         public string ScoreboardProperty = "";
         //public List<string> AllowedSpecials = new List<string>();
         //public List<string> DisallowedSpecials = new List<string>();
+        public static readonly object[] EmptyArgs = Array.Empty<object>();
         private List<object> EmptyParameters = new List<object>();
         private List<object> Parameters = new List<object>();
         public bool DefaultShowKillScore = true;
@@ -412,6 +413,16 @@ namespace CustomLogic
             if (!_staticClasses.ContainsKey(className))
             {
                 CustomLogicClassInstance instance;
+                if (CustomLogicBuiltinTypes.IsBuiltinType(className))
+                {
+                    if (CustomLogicBuiltinTypes.StaticTypes.Contains(className))
+                    {
+                        instance = CustomLogicActivator.CreateInstance(className, EmptyArgs);
+                        _staticClasses[className] = instance;
+                        return;
+                    }
+                }
+                
                 if (className == "Game")
                     instance = new CustomLogicGameBuiltin();
                 else if (className == "Convert")
@@ -430,8 +441,6 @@ namespace CustomLogic
                     instance = new CustomLogicMathBuiltin();
                 else if (className == "Vector3")
                     instance = new CustomLogicVector3Builtin(new List<object>());
-                else if (className == "Vector2")
-                    instance = new CustomLogicVector2Builtin(new List<object>());
                 else if (className == "Quaternion")
                     instance = new CustomLogicQuaternionBuiltin(new List<object>());
                 else if (className == "Map")
@@ -510,6 +519,14 @@ namespace CustomLogic
 
         public CustomLogicClassInstance CreateClassInstance(string className, List<object> parameterValues, bool init = true)
         {
+            if (CustomLogicBuiltinTypes.IsBuiltinType(className))
+            {
+                if (CustomLogicBuiltinTypes.AbstractTypes.Contains(className))
+                    throw new Exception("Cannot instantiate abstract type " + className);
+                
+                return CustomLogicActivator.CreateInstance(className, parameterValues.ToArray());
+            }
+            
             CustomLogicClassInstance classInstance;
             if (className == "Dict")
                 classInstance = new CustomLogicDictBuiltin();
@@ -517,14 +534,6 @@ namespace CustomLogic
                 classInstance = new CustomLogicListBuiltin();
             else if (className == "Vector3")
                 classInstance = new CustomLogicVector3Builtin(parameterValues);
-            else if (className == "Vector2")
-                classInstance = new CustomLogicVector2Builtin(parameterValues);
-            else if (className == "Point")
-                classInstance = new CustomLogicPoint();
-            else if (className == "Vector2Child")
-                classInstance = new CustomLogicVector2Child(parameterValues);
-            else if (className == "Vector2ChildChild")
-                classInstance = new CustomLogicVector2ChildChild(parameterValues);
             else if (className == "Color")
                 classInstance = new CustomLogicColorBuiltin(parameterValues);
             else if (className == "Quaternion")

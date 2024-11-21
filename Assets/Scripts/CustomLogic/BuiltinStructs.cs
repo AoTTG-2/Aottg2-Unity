@@ -10,13 +10,23 @@ namespace CustomLogic
         public void ClearDescription() => Description = "";
     }
     
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false)]
+    /// <summary>
+    /// Custom logic builtin types must be marked with this attribute,
+    /// they must also either have a parameterless constructor or
+    /// a constructor with a single parameter of type object[]
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     class CLTypeAttribute : CLBaseAttribute
     {
-        public CLTypeAttribute(string description = "")
-        {
-            Description = description;
-        }
+        /// <summary>
+        /// Should be set to true if the type has static members
+        /// </summary>
+        public bool Static { get; set; }
+        
+        /// <summary>
+        /// Should be set to true if the type shouldn't be instantiated
+        /// </summary>
+        public bool Abstract { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

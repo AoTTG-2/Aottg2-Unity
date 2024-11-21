@@ -4,23 +4,16 @@ using System.Reflection;
 
 namespace CustomLogic
 {
-    class CustomLogicReflectioner
+    /// <summary>
+    /// Responsible for creating and caching <see cref="BuiltinProperty"/> and <see cref="BuiltinMethod"/>
+    /// of builtin types
+    /// </summary>
+    internal class CustomLogicReflectioner
     {
         private const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
         
         private static CustomLogicReflectioner instance;
-
-        private static CustomLogicReflectioner Instance
-        {
-            get
-            {
-                if (instance != null)
-                    return instance;
-
-                instance = new CustomLogicReflectioner();
-                return instance;
-            }
-        }
+        private static CustomLogicReflectioner Instance => instance ??= new CustomLogicReflectioner();
 
         private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _fields = new();
         private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _properties = new();

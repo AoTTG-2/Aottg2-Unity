@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace CustomLogic
+﻿namespace CustomLogic
 {
-    class CustomLogicClassInstanceBuiltin : CustomLogicClassInstance
+    abstract class CustomLogicClassInstanceBuiltin : CustomLogicClassInstance
     {
-        public CustomLogicClassInstanceBuiltin(string name) : base(name)
+        protected CustomLogicClassInstanceBuiltin()
         {
             Variables["Init"] = new BuiltinMethod((_, _, _) => null);
         }
