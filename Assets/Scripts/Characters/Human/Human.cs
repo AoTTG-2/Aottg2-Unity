@@ -3175,7 +3175,7 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle)
+        public void ToggleBlades(bool toggle)
         {
             if (IsMine())
                 Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });

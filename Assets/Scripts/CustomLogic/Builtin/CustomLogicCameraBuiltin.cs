@@ -4,6 +4,7 @@ using Characters;
 using Settings;
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
 
@@ -38,6 +39,15 @@ namespace CustomLogic
                 return new CustomLogicVector3Builtin(camera.Cache.Transform.up);
             if (name == "FollowDistance")
                 return camera.GetCameraDistance();
+            if (name == "CursorAimDirection")
+            {
+                Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
+                return new CustomLogicVector3Builtin(ray.direction);
+            }
+            if (name == "MousePosition")
+            {
+                return new CustomLogicVector3Builtin(CursorManager.GetInGameMousePosition());
+            }
             return base.GetField(name);
         }
 
