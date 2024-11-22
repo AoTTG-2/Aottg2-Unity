@@ -832,10 +832,12 @@ namespace CustomLogic
                         if (field is BuiltinProperty property)
                         {
                             if (property.IsReadOnly)
-                                throw new Exception($"Field '{fieldName}' is read-only");
+                                throw new Exception($"Cannot reassign read-only field '{fieldInstance.ClassName}.{fieldName}'");
 
                             property.SetValue(fieldInstance, newValue);
                         }
+                        else if (field is BuiltinMethod)
+                            throw new Exception($"Cannot reassign built-in method '{fieldInstance.ClassName}.{fieldName}'");
                         else
                             fieldInstance.Variables[fieldName] = newValue;
                     }
