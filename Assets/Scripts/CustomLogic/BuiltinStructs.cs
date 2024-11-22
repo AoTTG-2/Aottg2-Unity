@@ -27,6 +27,8 @@ namespace CustomLogic
         /// Should be set to true if the type shouldn't be instantiated
         /// </summary>
         public bool Abstract { get; set; }
+
+        public bool InheritBaseMembers { get; set; } = true;
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

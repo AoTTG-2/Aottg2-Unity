@@ -88,7 +88,7 @@ namespace CustomLogic
                 var isBaseTypeBuiltin = baseType != null && baseType.HasAttribute<CLTypeAttribute>();
                 var baseTypeName = isBaseTypeBuiltin ? GetBuiltinTypeName(baseType) : null;
                 
-                if (isBaseTypeBuiltin)
+                if (isBaseTypeBuiltin && attribute.InheritBaseMembers)
                     _baseTypeNames[name] = baseTypeName;
                 
                 _types[name] = type;
