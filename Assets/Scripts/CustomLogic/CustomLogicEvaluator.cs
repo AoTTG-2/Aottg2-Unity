@@ -872,18 +872,31 @@ namespace CustomLogic
                 {
                     return baseBuiltin.CallMethod(methodName, parameterValues);
                 }
+                
+                if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
+                    return null;
+            
+                Dictionary<string, object> localVariables = new Dictionary<string, object>();
+                CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
+                int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
+                for (int i = 0; i < maxValues; i++)
+                    localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
+                if (methodAst.Coroutine)
+                {
+                    return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance,
+                        localVariables, methodAst.Statements));
+                }
+                else
+                {
+                    var result = EvaluateBlock(classInstance, localVariables, methodAst.Statements);
+                    return result[1];
+                }
             }
             catch (Exception e)
             {
                 DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
                 return null;
             }
-            
-            if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
-                return null;
-            
-            CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
-            return EvaluateMethod(methodAst, parameterValues);
         }
 
         private object EvaluateMethod(CustomLogicMethodDefinitionAst methodAst, List<object> parameterValues = null)
