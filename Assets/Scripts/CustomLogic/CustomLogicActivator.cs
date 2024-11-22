@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using UnityEngine.Assertions;
 
 namespace CustomLogic
 {
@@ -26,14 +25,17 @@ namespace CustomLogic
         {
             var type = CustomLogicBuiltinTypes.Types[typeName];
 
-            if (Instance._parameterlessConstructors.Contains(typeName))
-            {
-                // Activator.CreateInstance is faster for parameterless constructors
-                return (CustomLogicClassInstanceBuiltin)Activator.CreateInstance(type);
-            }
+            if (TryCreateParameterlessInstance(typeName, out var classInstance))
+                return classInstance;
 
             var ctor = GetConstructor(type);
-            Assert.IsNotNull(ctor, $"{typeName} must have a parameterless constructor or a constructor that takes an array of objects (object[])");
+            if (ctor == null)
+            {
+                if (TryCreateParameterlessInstance(typeName, out classInstance))
+                    return classInstance;
+
+                throw new Exception($"{typeName} must have a parameterless constructor or a constructor that takes an array of objects (object[])");
+            }
 
             ClassInstanceActivator activator;
             if (Instance._activators.ContainsKey(typeName))
@@ -72,6 +74,22 @@ namespace CustomLogic
 
             var compiled = (ClassInstanceActivator)lambda.Compile();
             return compiled;
+        }
+
+        private static bool TryCreateParameterlessInstance(string typeName, out CustomLogicClassInstanceBuiltin classInstance)
+        {
+            if (!Instance._parameterlessConstructors.Contains(typeName))
+            {
+                classInstance = null;
+                return false;
+            }
+            
+            var type = CustomLogicBuiltinTypes.Types[typeName];
+            
+            // Activator.CreateInstance is faster for parameterless constructors
+            classInstance = (CustomLogicClassInstanceBuiltin)Activator.CreateInstance(type);
+            classInstance.ClassName = typeName;
+            return true;
         }
 
         private static CustomLogicClassInstanceBuiltin CreateInstanceUsingActivator(string typeName, object[] args,
