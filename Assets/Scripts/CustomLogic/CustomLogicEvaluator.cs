@@ -574,87 +574,9 @@ namespace CustomLogic
             ConditionalEvalState conditionalState = ConditionalEvalState.None;
             foreach (CustomLogicBaseAst statement in statements)
             {
-                if (statement is CustomLogicAssignmentExpressionAst)
+                if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
-                    CustomLogicAssignmentExpressionAst assignment = (CustomLogicAssignmentExpressionAst)statement;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    else if (value != null && value is CustomLogicClassInstance)
-                    {
-                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                        string method = nameof(ICustomLogicCopyable.__Copy__);
-
-                        if (customLogicClassInstance.HasVariable(method))
-                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                    }
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        if (localVariables.ContainsKey(variableName))
-                            localVariables[variableName] = value;
-                        else
-                            localVariables.Add(variableName, value);
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        if (fieldInstance is CustomLogicBaseBuiltin)
-                            ((CustomLogicBaseBuiltin)fieldInstance).SetField(fieldExpression.FieldName, value);
-                        else
-                        {
-                            if (fieldInstance.Variables.ContainsKey(fieldExpression.FieldName))
-                                fieldInstance.Variables[fieldExpression.FieldName] = value;
-                            else
-                                fieldInstance.Variables.Add(fieldExpression.FieldName, value);
-                        }
-                    }
-                }
-                else if (statement is CustomLogicCompoundAssignmentExpressionAst)
-                {
-                    CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
-                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    else if (value != null && value is CustomLogicClassInstance)
-                    {
-                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                        string method = nameof(ICustomLogicCopyable.__Copy__);
-
-                        if (customLogicClassInstance.HasVariable(method))
-                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                    }
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        object originalValue = localVariables[variableName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        localVariables[variableName] = newValue;
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.GetVariable(fieldExpression.FieldName);
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
-                    }
+                    EvaluateAssignmentExpression(classInstance, localVariables, assignment);
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
                 {
@@ -746,102 +668,9 @@ namespace CustomLogic
             object[] result = new object[2] { false, null };
             foreach (CustomLogicBaseAst statement in statements)
             {
-                if (statement is CustomLogicAssignmentExpressionAst)
+                if (statement is CustomLogicAssignmentExpressionAst assignment)
                 {
-                    CustomLogicAssignmentExpressionAst assignment = (CustomLogicAssignmentExpressionAst)statement;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (assignment.Right is not CustomLogicClassInstantiateExpressionAst)
-                    {
-                        if (value != null && value is CustomLogicStructBuiltin)
-                            value = ((CustomLogicStructBuiltin)value).Copy();
-                        else if (value != null && value is CustomLogicClassInstance)
-                        {
-                            CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                            string method = nameof(ICustomLogicCopyable.__Copy__);
-
-                            if (customLogicClassInstance.HasVariable(method))
-                                value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                        }
-                    }
-
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        if (localVariables.ContainsKey(variableName))
-                            localVariables[variableName] = value;
-                        else
-                            localVariables.Add(variableName, value);
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        if (fieldInstance is CustomLogicBaseBuiltin)
-                            ((CustomLogicBaseBuiltin)fieldInstance).SetField(fieldExpression.FieldName, value);
-                        else
-                        {
-                            if (fieldInstance.TryGetVariable(fieldExpression.FieldName, out var field))
-                            {
-                                if (field is BuiltinProperty property)
-                                {
-                                    if (property.IsReadOnly)
-                                        throw new Exception($"Field '{fieldExpression.FieldName}' is read-only");
-                                    
-                                    property.SetValue(fieldInstance, value);
-                                }
-                                else
-                                    fieldInstance.Variables[fieldExpression.FieldName] = value;
-                            }
-                            else
-                                fieldInstance.Variables.Add(fieldExpression.FieldName, value);
-                        }
-                    }
-                }
-                else if (statement is CustomLogicCompoundAssignmentExpressionAst)
-                {
-                    CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
-                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    else if (value != null && value is CustomLogicClassInstance)
-                    {
-                        CustomLogicClassInstance customLogicClassInstance = (CustomLogicClassInstance)value;
-                        string method = nameof(ICustomLogicCopyable.__Copy__);
-
-                        if (customLogicClassInstance.HasVariable(method))
-                            value = EvaluateMethod(customLogicClassInstance, method, emptyList);
-                    }
-
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        object originalValue = localVariables[variableName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        localVariables[variableName] = newValue;
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.GetVariable(fieldExpression.FieldName);
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
-                    }
+                    EvaluateAssignmentExpression(classInstance, localVariables, assignment);
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
                 {
@@ -922,6 +751,98 @@ namespace CustomLogic
                     conditionalState = ConditionalEvalState.None;
             }
             return result;
+        }
+
+        private void EvaluateAssignmentExpression(CustomLogicClassInstance classInstance, Dictionary<string, object> localVariables,
+            CustomLogicAssignmentExpressionAst assignment)
+        {
+            var op = (CustomLogicSymbol)assignment.Operator.Value;
+            var isCompoundAssignment = op is CustomLogicSymbol.PlusEquals or CustomLogicSymbol.MinusEquals
+                or CustomLogicSymbol.TimesEquals or CustomLogicSymbol.DivideEquals;
+            
+            var value = EvaluateExpression(classInstance, localVariables, assignment.Right);
+
+            if (assignment.Right is not CustomLogicClassInstantiateExpressionAst)
+            {
+                if (value is CustomLogicStructBuiltin structBuiltin)
+                    value = structBuiltin.Copy();
+                else if (value is CustomLogicClassInstance instance)
+                {
+                    const string method = nameof(ICustomLogicCopyable.__Copy__);
+
+                    if (instance.HasVariable(method))
+                        value = EvaluateMethod(instance, method, emptyList);
+                }
+            }
+
+            if (assignment.Left is CustomLogicVariableExpressionAst variableAst)
+            {
+                var variableName = variableAst.Name;
+                var newValue = value;
+                
+                if (isCompoundAssignment)
+                {
+                    var originalValue = localVariables[variableName];
+                    newValue = op switch
+                    {
+                        CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                        CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                        CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                        CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                        _ => value,
+                    };
+                }
+                
+                localVariables[variableName] = newValue;
+            }
+            else if (assignment.Left is CustomLogicFieldExpressionAst fieldAst)
+            {
+                var fieldName = fieldAst.FieldName;
+                var fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldAst.Left);
+
+                var newValue = value;
+
+                if (isCompoundAssignment)
+                {
+                    object originalValue;
+                    if (fieldInstance is CustomLogicBaseBuiltin builtin)
+                        originalValue = builtin.GetField(fieldName);
+                    else
+                    {
+                        originalValue = fieldInstance.GetVariable(fieldName);
+                        if (originalValue is BuiltinProperty property) 
+                            originalValue = property.GetValue(fieldInstance);
+                    }
+                    newValue = op switch
+                    {
+                        CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                        CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                        CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                        CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                        _ => value,
+                    };
+                }
+                
+                if (fieldInstance is CustomLogicBaseBuiltin baseBuiltin)
+                    baseBuiltin.SetField(fieldName, newValue);
+                else
+                {
+                    if (fieldInstance.TryGetVariable(fieldName, out var field))
+                    {
+                        if (field is BuiltinProperty property)
+                        {
+                            if (property.IsReadOnly)
+                                throw new Exception($"Field '{fieldName}' is read-only");
+
+                            property.SetValue(fieldInstance, newValue);
+                        }
+                        else
+                            fieldInstance.Variables[fieldName] = newValue;
+                    }
+                    else
+                        fieldInstance.Variables.Add(fieldName, newValue);
+                }
+            }
         }
 
         public bool HasMethod(CustomLogicClassInstance classInstance, string methodName)
