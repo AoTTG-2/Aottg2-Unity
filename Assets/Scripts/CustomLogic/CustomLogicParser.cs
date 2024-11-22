@@ -182,6 +182,7 @@ namespace CustomLogic
                     AssertTokenType(nextToken, CustomLogicTokenType.Name);
                     bool coroutine = IsSymbolValue(currToken, (int)CustomLogicSymbol.Coroutine);
                     CustomLogicMethodDefinitionAst methodAst = new CustomLogicMethodDefinitionAst(currToken.Line, coroutine);
+                    methodAst.Name = (string)nextToken.Value;
                     int scanIndex = startIndex + 2;
                     CustomLogicToken scanToken = _tokens[scanIndex];
                     AssertSymbolValue(scanToken, (int)CustomLogicSymbol.LeftParen);

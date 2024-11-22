@@ -544,6 +544,9 @@ namespace CustomLogic
                 classInstance = new CustomLogicRandomBuiltin(parameterValues);
             else
             {
+                if (_start.Classes.ContainsKey(className) == false)
+                    return null;
+                
                 classInstance = new CustomLogicClassInstance(className);
                 if (init)
                 {
@@ -561,10 +564,13 @@ namespace CustomLogic
             {
                 string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
                 object value = EvaluateExpression(classInstance, new Dictionary<string, object>(), assignment.Right);
-                if (classInstance.Variables.ContainsKey(variableName))
-                    classInstance.Variables[variableName] = value;
-                else
-                    classInstance.Variables.Add(variableName, value);
+                classInstance.Variables[variableName] = value;
+            }
+            
+            foreach (var (name, methodAst) in classAst.Methods)
+            {
+                classInstance.Variables[name] = methodAst;
+                methodAst.Owner = classInstance;
             }
         }
 
@@ -862,20 +868,42 @@ namespace CustomLogic
                 {
                     return method.Call(classInstance, parameterValues, new Dictionary<string, object>());
                 }
-                if (classInstance is CustomLogicBaseBuiltin)
+                if (classInstance is CustomLogicBaseBuiltin baseBuiltin)
                 {
-                    return ((CustomLogicBaseBuiltin)classInstance).CallMethod(methodName, parameterValues);
+                    return baseBuiltin.CallMethod(methodName, parameterValues);
                 }
-                if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
-                    return null;
+            }
+            catch (Exception e)
+            {
+                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
+                return null;
+            }
+            
+            if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
+                return null;
+            
+            CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
+            return EvaluateMethod(methodAst, parameterValues);
+        }
+
+        private object EvaluateMethod(CustomLogicMethodDefinitionAst methodAst, List<object> parameterValues = null)
+        {
+            var methodName = methodAst.Name;
+            var classInstance = methodAst.Owner;
+            
+            if (parameterValues == null)
+                parameterValues = EmptyParameters;
+            
+            try
+            {
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
                 int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)
                     localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
                 if (methodAst.Coroutine)
                 {
-                    return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, methodAst.Statements));
+                    return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance,
+                        localVariables, methodAst.Statements));
                 }
                 else
                 {
@@ -919,7 +947,22 @@ namespace CustomLogic
                     {
                         parameters.Add(EvaluateExpression(classInstance, localVariables, (CustomLogicBaseExpressionAst)ast));
                     }
-                    return CreateClassInstance(instantiate.Name, parameters, true);
+                    
+                    // todo: Replace null check with:
+                    // CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) == false && _start.Classes.ContainsKey(instantiate.Name) == false
+                    // once all the builtin types have been converted to the new format
+                    var newClassInstance = CreateClassInstance(instantiate.Name, parameters, true);
+                    if (newClassInstance != null)
+                        return newClassInstance;
+                    
+                    // If no class was found with that name, interpret the expression as local method call
+                    if (localVariables.ContainsKey(instantiate.Name) && localVariables[instantiate.Name] is BuiltinMethod method)
+                    {
+                        return method.Call(classInstance, parameters, new Dictionary<string, object>());
+                    }
+
+                    var methodAst = (CustomLogicMethodDefinitionAst)localVariables[instantiate.Name];
+                    return EvaluateMethod(methodAst, parameters);
                 }
                 else if (expression.Type == CustomLogicAstType.FieldExpression)
                 {
