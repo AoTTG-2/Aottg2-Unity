@@ -872,12 +872,21 @@ namespace CustomLogic
                 {
                     return baseBuiltin.CallMethod(methodName, parameterValues);
                 }
-                
-                if (!_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
-                    return null;
             
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                CustomLogicMethodDefinitionAst methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
+                
+                CustomLogicMethodDefinitionAst methodAst;
+                if (classInstance.Variables.ContainsKey(methodName) &&
+                    classInstance.Variables[methodName] is CustomLogicMethodDefinitionAst methodDef)
+                {
+                    methodAst = methodDef;
+                    classInstance = methodAst.Owner;
+                }
+                else if (_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
+                    methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
+                else
+                    return null;
+                
                 int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)
                     localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
