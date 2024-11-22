@@ -18,7 +18,13 @@ namespace CustomLogic
 
         public CustomLogicClassInstance(string name)
         {
-            ClassName = name;
+            SetClassName(name);
+        }
+        
+        public void SetClassName(string className)
+        {
+            ClassName = className;
+            Variables["Type"] = className;
         }
 
         public override string ToString()
