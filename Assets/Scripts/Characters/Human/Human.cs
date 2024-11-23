@@ -2709,6 +2709,9 @@ namespace Characters
 
         public void OnHooked(bool left, Vector3 position)
         {
+            // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
+            if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
+                _reelInWaitForRelease = false;
             if (left)
             {
                 _launchLeft = true;
@@ -3175,7 +3178,7 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle)
+        public void ToggleBlades(bool toggle)
         {
             if (IsMine())
                 Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });

@@ -426,10 +426,10 @@ namespace GameManagers
         {
             if (!IsFinishedLoading())
                 return;
+            
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                SettingsManager.InGameCharacterSettings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
             string characterType = SettingsManager.InGameCharacterSettings.CharacterType.Value;
-            string forced = CustomLogicManager.Evaluator.ForcedCharacterType;
-            if (forced != string.Empty)
-                characterType = forced;
             var isHuman = characterType == PlayerCharacter.Human;
             if (PhotonNetwork.LocalPlayer.HasSpawnPoint())
             {
@@ -497,11 +497,10 @@ namespace GameManagers
             if (!IsFinishedLoading())
                 return;
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            var settings = SettingsManager.InGameCharacterSettings;
+            var settings = SettingsManager.InGameCharacterSettings;            
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                settings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
             string character = settings.CharacterType.Value;
-            string forced = CustomLogicManager.Evaluator.ForcedCharacterType;
-            if (forced != string.Empty)
-                character = forced;
             var miscSettings = SettingsManager.InGameCurrent.Misc;
             if (settings.ChooseStatus.Value != (int)ChooseCharacterStatus.Chosen)
                 return;
@@ -519,7 +518,7 @@ namespace GameManagers
                 characters.Add(PlayerCharacter.Shifter);
             if (characters.Count == 0)
                 characters.Add(PlayerCharacter.Human);
-            if (forced != string.Empty && !characters.Contains(character))
+            if (!characters.Contains(character))
                 character = characters[0];
             if (character == PlayerCharacter.Human)
             {
@@ -536,9 +535,8 @@ namespace GameManagers
                     loadouts.Add(HumanLoadout.Blades);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
-                forced = CustomLogicManager.Evaluator.ForcedLoadout;
-                if (forced != string.Empty)
-                    settings.Loadout.Value = forced;
+                if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)
+                    settings.Loadout.Value = CustomLogicManager.Evaluator.ForcedLoadout;
                 var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
                     settings.Special.Value = HumanSpecials.DefaultSpecial;
