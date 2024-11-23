@@ -18,6 +18,7 @@ using UI;
 using UnityEngine;
 using Utility;
 using Weather;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Characters
 {
@@ -2709,6 +2710,9 @@ namespace Characters
 
         public void OnHooked(bool left, Vector3 position)
         {
+            // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
+            if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
+                _reelInWaitForRelease = false;
             if (left)
             {
                 _launchLeft = true;
