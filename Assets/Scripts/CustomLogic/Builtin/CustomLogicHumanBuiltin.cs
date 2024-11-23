@@ -6,7 +6,6 @@ using Settings;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
-using static Codice.Client.Common.Connection.AskCredentialsToUser;
 
 namespace CustomLogic
 {
