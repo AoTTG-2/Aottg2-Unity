@@ -7,7 +7,6 @@ namespace CustomLogic
         public List<string> ParameterNames = new List<string>();
         public bool Coroutine;
         public string Name;
-        public CustomLogicClassInstance Owner;
 
         public CustomLogicMethodDefinitionAst(int line, bool coroutine = false) : base(CustomLogicAstType.MethodDefinition, line)
         {
@@ -16,7 +15,7 @@ namespace CustomLogic
 
         public override string ToString()
         {
-            return $"{(Coroutine ? "coroutine" : "function")} {Owner?.ClassName}.{Name}({string.Join(", ", ParameterNames)})";
+            return $"{(Coroutine ? "coroutine" : "function")} {Name}({string.Join(", ", ParameterNames)})";
         }
     }
 }

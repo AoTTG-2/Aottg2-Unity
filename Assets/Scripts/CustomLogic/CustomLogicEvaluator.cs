@@ -569,8 +569,8 @@ namespace CustomLogic
             
             foreach (var (name, methodAst) in classAst.Methods)
             {
-                classInstance.Variables[name] = methodAst;
-                methodAst.Owner = classInstance;
+                var method = new UserMethod(classInstance, methodAst);
+                classInstance.Variables[name] = method;
             }
         }
 
@@ -877,10 +877,10 @@ namespace CustomLogic
                 
                 CustomLogicMethodDefinitionAst methodAst;
                 if (classInstance.Variables.ContainsKey(methodName) &&
-                    classInstance.Variables[methodName] is CustomLogicMethodDefinitionAst methodDef)
+                    classInstance.Variables[methodName] is UserMethod userMethod)
                 {
-                    methodAst = methodDef;
-                    classInstance = methodAst.Owner;
+                    methodAst = userMethod.Ast;
+                    classInstance = userMethod.Owner;
                 }
                 else if (_start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName))
                     methodAst = _start.Classes[classInstance.ClassName].Methods[methodName];
@@ -908,10 +908,11 @@ namespace CustomLogic
             }
         }
 
-        private object EvaluateMethod(CustomLogicMethodDefinitionAst methodAst, List<object> parameterValues = null)
+        private object EvaluateMethod(UserMethod userMethod, List<object> parameterValues = null)
         {
-            var methodName = methodAst.Name;
-            var classInstance = methodAst.Owner;
+            var ast = userMethod.Ast;
+            var methodName = userMethod.Ast.Name;
+            var classInstance = userMethod.Owner;
             
             if (parameterValues == null)
                 parameterValues = EmptyParameters;
@@ -919,17 +920,17 @@ namespace CustomLogic
             try
             {
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
+                int maxValues = Math.Min(parameterValues.Count, ast.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)
-                    localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
-                if (methodAst.Coroutine)
+                    localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
+                if (ast.Coroutine)
                 {
                     return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance,
-                        localVariables, methodAst.Statements));
+                        localVariables, ast.Statements));
                 }
                 else
                 {
-                    var result = EvaluateBlock(classInstance, localVariables, methodAst.Statements);
+                    var result = EvaluateBlock(classInstance, localVariables, ast.Statements);
                     return result[1];
                 }
             }
@@ -983,8 +984,8 @@ namespace CustomLogic
                         return method.Call(classInstance, parameters, new Dictionary<string, object>());
                     }
 
-                    var methodAst = (CustomLogicMethodDefinitionAst)localVariables[instantiate.Name];
-                    return EvaluateMethod(methodAst, parameters);
+                    var userMethod = (UserMethod)localVariables[instantiate.Name];
+                    return EvaluateMethod(userMethod, parameters);
                 }
                 else if (expression.Type == CustomLogicAstType.FieldExpression)
                 {
