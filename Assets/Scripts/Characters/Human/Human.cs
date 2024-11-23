@@ -18,7 +18,6 @@ using UI;
 using UnityEngine;
 using Utility;
 using Weather;
-using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Characters
 {
