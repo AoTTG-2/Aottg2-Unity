@@ -29,7 +29,15 @@ namespace CustomLogic
 
         public override string ToString()
         {
-            return $"{ClassName} (CustomLogicClassInstance)";
+            const string methodName = nameof(ICustomLogicToString.__Str__);
+            var evaluator = CustomLogicManager.Evaluator;
+            
+            if (evaluator != null && HasVariable(methodName))
+            {
+                return (string)evaluator.EvaluateMethod(this, methodName);
+            }
+            
+            return $"(CustomLogicClassInstance){ClassName}";
         }
         
         public object GetVariable(string name)

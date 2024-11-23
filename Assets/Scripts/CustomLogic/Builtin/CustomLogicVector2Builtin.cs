@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Builtin
 {
     [CLType(Static = true)]
-    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
+    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicToString
     {
         private Vector2 _value;
         public CustomLogicVector2Builtin(object[] parameterValues)
@@ -97,9 +97,6 @@ namespace Builtin
 
         [CLMethod(description: "Set x and y components of an existing Vector2.")]
         public void Set(float newX, float newY) => _value.Set(newX, newY);
-
-        [CLMethod(description: "Returns a formatted string for this vector.")]
-        public override string ToString() => _value.ToString();
         #endregion
 
         #region Operations
@@ -147,6 +144,9 @@ namespace Builtin
         
         [CLMethod(description: "Copy")]
         public virtual object __Copy__() => Copy();
+        
+        [CLMethod(description: "ToString")]
+        public virtual string __Str__() => _value.ToString();
         #endregion
 
         #region Static Methods
