@@ -5,22 +5,21 @@ using UnityEngine;
 
 namespace Builtin
 {
-    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
+    [CLType(Static = true)]
+    class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicToString
     {
         private Vector2 _value;
-        private static Dictionary<string, object> _builtinVariables = new Dictionary<string, object>();
-        public CustomLogicVector2Builtin(List<object> parameterValues) : base("Vector2")
+        public CustomLogicVector2Builtin(object[] parameterValues)
         {
-            RegisterBuiltinClass(this.GetType(), ref _builtinVariables);
             float x = 0;
             float y = 0;
 
-            if (parameterValues.Count == 1)
+            if (parameterValues.Length == 1)
             {
                 x = parameterValues[0].UnboxToFloat();
                 y = x;
             }
-            else if (parameterValues.Count > 1)
+            else if (parameterValues.Length > 1)
             {
                 x = parameterValues[0].UnboxToFloat();
                 y = parameterValues[1].UnboxToFloat();
@@ -30,10 +29,9 @@ namespace Builtin
 
         }
 
-        public CustomLogicVector2Builtin(Vector2 value) : base("Vector2")
+        public CustomLogicVector2Builtin(Vector2 value)
         {
             _value = value;
-            RegisterBuiltinClass(this.GetType(), ref _builtinVariables);
         }
 
         public CustomLogicVector2Builtin Copy()
@@ -70,22 +68,22 @@ namespace Builtin
         #region Static Properties
         [CLProperty(description: "Shorthand for writing Vector2(0, -1).")]
         public static CustomLogicVector2Builtin Down => new CustomLogicVector2Builtin(Vector2.down);
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(-1, 0).")]
         public static CustomLogicVector2Builtin Left => new CustomLogicVector2Builtin(Vector2.left);
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(float.NegativeInfinity, float.NegativeInfinity).")]
         public static CustomLogicVector2Builtin NegativeInfinity => new CustomLogicVector2Builtin(new Vector2(float.NegativeInfinity, float.NegativeInfinity));
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(1, 1).")]
         public static CustomLogicVector2Builtin One => new CustomLogicVector2Builtin(Vector2.one);
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(1, 0).")]
         public static CustomLogicVector2Builtin Right => new CustomLogicVector2Builtin(Vector2.right);
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(0, 1).")]
         public static CustomLogicVector2Builtin Up => new CustomLogicVector2Builtin(Vector2.up);
-
+        
         [CLProperty(description: "Shorthand for writing Vector2(0, 0).")]
         public static CustomLogicVector2Builtin Zero => new CustomLogicVector2Builtin(Vector2.zero);
         #endregion
@@ -99,9 +97,6 @@ namespace Builtin
 
         [CLMethod(description: "Set x and y components of an existing Vector2.")]
         public void Set(float newX, float newY) => _value.Set(newX, newY);
-
-        [CLMethod(description: "Returns a formatted string for this vector.")]
-        public override string ToString() => _value.ToString();
         #endregion
 
         #region Operations
@@ -148,7 +143,10 @@ namespace Builtin
         public int __Hash__() => this._value.GetHashCode();
         
         [CLMethod(description: "Copy")]
-        public object __Copy__() => Copy();
+        public virtual object __Copy__() => Copy();
+        
+        [CLMethod(description: "ToString")]
+        public virtual string __Str__() => _value.ToString();
         #endregion
 
         #region Static Methods
@@ -194,5 +192,8 @@ namespace Builtin
         [CLMethod(description: "Gradually changes a vector towards a desired goal over time.")]
         public static CustomLogicVector2Builtin SmoothDamp(CustomLogicVector2Builtin current, CustomLogicVector2Builtin target, ref CustomLogicVector2Builtin currentVelocity, float smoothTime, float maxSpeed) => new CustomLogicVector2Builtin(Vector2.SmoothDamp(current._value, target._value, ref currentVelocity._value, smoothTime, maxSpeed));
         #endregion
+        
+        public static implicit operator CustomLogicVector2Builtin(Vector2 value) => new(value);
+        public static implicit operator Vector2(CustomLogicVector2Builtin value) => value._value;
     }
 }

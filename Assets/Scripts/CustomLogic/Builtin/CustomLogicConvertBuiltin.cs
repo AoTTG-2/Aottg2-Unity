@@ -6,6 +6,10 @@ using Utility;
 
 namespace CustomLogic
 {
+    // todo: add the following methods when converting to the new format either here or in a new "Object" class or something
+    // HasVariable(classInstance, variableName) -- check if the class instance has the variable
+    // DefineVariable(classInstance, variableName, value) -- define a variable for the class instance
+    // GetType(classInstance) -- get the type (name) of the class instance
     class CustomLogicConvertBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicConvertBuiltin(): base("Convert")
