@@ -289,7 +289,13 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (string name in new string[] {"Game", "Vector3", "Vector2", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
+            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypes)
+            {
+                var instance = CustomLogicActivator.CreateInstance(staticType, EmptyArgs);
+                _staticClasses[staticType] = instance;
+            }
+            
+            foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
             "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
                 CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
@@ -413,16 +419,6 @@ namespace CustomLogic
             if (!_staticClasses.ContainsKey(className))
             {
                 CustomLogicClassInstance instance;
-                if (CustomLogicBuiltinTypes.IsBuiltinType(className))
-                {
-                    if (CustomLogicBuiltinTypes.StaticTypes.Contains(className))
-                    {
-                        instance = CustomLogicActivator.CreateInstance(className, EmptyArgs);
-                        _staticClasses[className] = instance;
-                        return;
-                    }
-                }
-                
                 if (className == "Game")
                     instance = new CustomLogicGameBuiltin();
                 else if (className == "Convert")
