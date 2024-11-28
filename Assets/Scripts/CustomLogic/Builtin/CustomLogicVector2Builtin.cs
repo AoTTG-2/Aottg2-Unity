@@ -9,7 +9,7 @@ namespace Builtin
     class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicToString
     {
         private Vector2 _value;
-        public CustomLogicVector2Builtin(object[] parameterValues)
+        public CustomLogicVector2Builtin(object[] parameterValues) : base("Vector2")
         {
             float x = 0;
             float y = 0;
@@ -29,7 +29,7 @@ namespace Builtin
 
         }
 
-        public CustomLogicVector2Builtin(Vector2 value)
+        public CustomLogicVector2Builtin(Vector2 value) : base("Vector2")
         {
             _value = value;
         }

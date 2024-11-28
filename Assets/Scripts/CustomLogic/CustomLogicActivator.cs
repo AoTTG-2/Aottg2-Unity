@@ -46,7 +46,7 @@ namespace CustomLogic
                 Instance._activators[typeName] = activator;
             }
 
-            return CreateInstanceUsingActivator(typeName, args, activator);
+            return CreateInstanceUsingActivator(args, activator);
         }
 
         private static ConstructorInfo GetConstructor(Type type)
@@ -88,15 +88,13 @@ namespace CustomLogic
             
             // Activator.CreateInstance is faster for parameterless constructors
             classInstance = (CustomLogicClassInstanceBuiltin)Activator.CreateInstance(type);
-            classInstance.SetClassName(typeName);
             return true;
         }
 
-        private static CustomLogicClassInstanceBuiltin CreateInstanceUsingActivator(string typeName, object[] args,
+        private static CustomLogicClassInstanceBuiltin CreateInstanceUsingActivator(object[] args,
             ClassInstanceActivator activator)
         {
             var classInstance = activator(args);
-            classInstance.SetClassName(typeName);
             return classInstance;
         }
     }

@@ -13,18 +13,11 @@ namespace CustomLogic
 
         public string ClassName;
         public readonly Dictionary<string, object> Variables = new();
-        
-        public CustomLogicClassInstance() { }
 
         public CustomLogicClassInstance(string name)
         {
-            SetClassName(name);
-        }
-        
-        public void SetClassName(string className)
-        {
-            ClassName = className;
-            Variables["Type"] = className;
+            ClassName = name;
+            Variables["Type"] = name;
         }
 
         public override string ToString()
