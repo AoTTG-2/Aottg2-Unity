@@ -13,12 +13,12 @@ namespace CustomLogic
         /// <summary>
         /// Should be set to true if the type has static members
         /// </summary>
-        public bool Static { get; set; }
-        
+        public bool Static { get; set; } = false;
+
         /// <summary>
         /// Should be set to true if the type shouldn't be instantiated
         /// </summary>
-        public bool Abstract { get; set; }
+        public bool Abstract { get; set; } = false;
 
         public bool InheritBaseMembers { get; set; } = true;
     }

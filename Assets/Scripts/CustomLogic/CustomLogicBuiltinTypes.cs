@@ -61,7 +61,27 @@ namespace CustomLogic
         {
             return Types.ContainsKey(typeName);
         }
-        
+
+        public void IsStatic(Type type)
+        {
+            // Use reflection to determine if the type has static members with CLMethod or CLProperty attributes
+            bool isStatic = false;
+            foreach (var member in type.GetMembers(BindingFlags.Static))
+            {
+                if (member.HasAttribute<CLPropertyAttribute>() || member.HasAttribute<CLMethodAttribute>())
+                {
+                    isStatic = true;
+                    break;
+                }
+            }
+        }
+
+        public void IsAbstractClass(Type type)
+        {
+            // Use reflection to determine if the type has static members with CLMethod or CLProperty attributes
+            bool isAbstract = type.IsAbstract;
+        }
+
         private void Init()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -80,7 +100,7 @@ namespace CustomLogic
             {
                 var name = GetBuiltinTypeName(type);
                 var attribute = type.GetCustomAttribute<CLTypeAttribute>();
-                
+
                 if (attribute.Static) _staticTypes.Add(name);
                 if (attribute.Abstract) _abstractTypes.Add(name);
                 

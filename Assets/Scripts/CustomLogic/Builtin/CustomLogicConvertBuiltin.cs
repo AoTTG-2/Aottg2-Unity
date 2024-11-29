@@ -6,94 +6,142 @@ using Utility;
 
 namespace CustomLogic
 {
-    // todo: add the following methods when converting to the new format either here or in a new "Object" class or something
-    // HasVariable(classInstance, variableName) -- check if the class instance has the variable
-    // DefineVariable(classInstance, variableName, value) -- define a variable for the class instance
-    // GetType(classInstance) -- get the type (name) of the class instance
+    [CLType(Static = true, InheritBaseMembers = true)]
     class CustomLogicConvertBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicConvertBuiltin(): base("Convert")
         {
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        // Convert CallMethod to the CLMethod format
+        [CLMethod("Converts a value to a float")]
+        public float ToFloat(object value)
         {
-            if (name == "ToFloat")
-            {
-                object param = parameters[0];
-                if (param is string)
-                    return float.Parse((string)param);
-                if (param is float)
-                    return (float)param;
-                if (param is int)
-                    return param.UnboxToFloat();
-                if (param is bool)
-                    return ((bool)param) ? 1f : 0f;
-                return null;
-            }
-            if (name == "ToInt")
-            {
-                object param = parameters[0];
-                if (param is string)
-                    return int.Parse((string)param);
-                if (param is float)
-                    return (int)(float)param;
-                if (param is int)
-                    return (int)param;
-                if (param is bool)
-                    return ((bool)param) ? 1 : 0;
-                return null;
-            }
-            if (name == "ToBool")
-            {
-                object param = parameters[0];
-                if (param is string)
-                    return ((string)param).ToLower() == "true";
-                if (param is float)
-                    return (float)param != 0f;
-                if (param is int)
-                    return (int)param != 0;
-                if (param is bool)
-                    return (bool)param;
-                return null;
-            }
-            if (name == "ToString")
-            {
-                object param = parameters[0];
-                if (param == null)
-                    return "null";
-                if (param is string)
-                    return (string)param;
-                if (param is bool)
-                    return ((bool)param) ? "true" : "false";
-                return param.ToString();
-            }
-            if (name == "IsFloat")
-            {
-                object param = parameters[0];
-                return param != null && param is float;
-            }
-            if (name == "IsInt")
-            {
-                object param = parameters[0];
-                return param != null && param is int;
-            }
-            if (name == "IsBool")
-            {
-                object param = parameters[0];
-                return param != null && param is bool;
-            }
-            if (name == "IsString")
-            {
-                object param = parameters[0];
-                return param != null && param is string;
-            }
-            if (name == "IsObject")
-            {
-                object param = parameters[0];
-                return param != null && param is CustomLogicBaseBuiltin;
-            }
-            return base.CallMethod(name, parameters);
+            if (value is string)
+                return float.Parse((string)value, CultureInfo.InvariantCulture);
+            if (value is float)
+                return (float)value;
+            if (value is int)
+                return (float)(int)value;
+            if (value is bool)
+                return (bool)value ? 1f : 0f;
+            return 0f;
         }
+
+        [CLMethod("Converts a value to an int")]
+        public int ToInt(object value)
+        {
+            if (value is string)
+                return int.Parse((string)value);
+            if (value is float)
+                return (int)(float)value;
+            if (value is int)
+                return (int)value;
+            if (value is bool)
+                return (bool)value ? 1 : 0;
+            return 0;
+        }
+
+        [CLMethod("Converts a value to a bool")]
+        public bool ToBool(object value)
+        {
+            if (value is string)
+                return ((string)value).ToLower() == "true";
+            if (value is float)
+                return (float)value != 0f;
+            if (value is int)
+                return (int)value != 0;
+            if (value is bool)
+                return (bool)value;
+            return false;
+        }
+
+        [CLMethod("Converts a value to a string")]
+        public string ToString(object value)
+        {
+            if (value == null)
+                return "null";
+            if (value is string)
+                return (string)value;
+            if (value is bool)
+                return (bool)value ? "true" : "false";
+            return value.ToString();
+        }
+
+        [CLMethod("Checks if the value is a float")]
+        public bool IsFloat(object value)
+        {
+            return value != null && value is float;
+        }
+
+        [CLMethod("Checks if the value is an int")]
+        public bool IsInt(object value)
+        {
+            return value != null && value is int;
+        }
+
+        [CLMethod("Checks if the value is a bool")]
+        public bool IsBool(object value)
+        {
+            return value != null && value is bool;
+        }
+
+        [CLMethod("Checks if the value is a string")]
+        public bool IsString(object value)
+        {
+            return value != null && value is string;
+        }
+
+        [CLMethod("Checks if the value is an object")]
+        public bool IsObject(object value)
+        {
+            return value != null && value is CustomLogicBaseBuiltin || value is CustomLogicClassInstance;
+        }
+
+        [CLMethod("Checks if the value is a list")]
+        public bool IsList(object value)
+        {
+            return value != null && value is CustomLogicListBuiltin;
+        }
+
+        [CLMethod("Checks if the value is a dictionary")]
+        public bool IsDict(object value)
+        {
+            return value != null && value is CustomLogicDictBuiltin;
+        }
+
+        [CLMethod("Checks if the class instance has a variable")]
+        public bool HasVariable(CustomLogicClassInstance classInstance, string variableName)
+        {
+            return classInstance.HasVariable(variableName);
+        }
+
+        [CLMethod("Defines a variable for the class instance")]
+        public void DefineVariable(CustomLogicClassInstance classInstance, string variableName, object value)
+        {
+            // Add the variable to the class instance if it doesn't exist
+            if (!classInstance.HasVariable(variableName))
+            {
+                classInstance.Variables[variableName] = value;
+            }
+        }
+
+        [CLMethod("Removes a variable from the class instance")]
+        public void RemoveVariable(CustomLogicClassInstance classInstance, string variableName)
+        {
+            // Remove the variable from the class instance if it exists
+            if (classInstance.HasVariable(variableName))
+            {
+                classInstance.Variables.Remove(variableName);
+            }
+        }
+
+        [CLMethod("Gets the type of the class instance")]
+        public string GetType(CustomLogicClassInstance classInstance)
+        {
+            return classInstance.ClassName;
+        }
+
+
     }
 }

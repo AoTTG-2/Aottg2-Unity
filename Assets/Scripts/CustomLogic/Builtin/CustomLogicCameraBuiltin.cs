@@ -9,136 +9,133 @@ using Utility;
 
 namespace CustomLogic
 {
+    [CLType(Description = "References the main game camera.")]
     class CustomLogicCameraBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicCameraBuiltin(): base("Camera")
         {
         }
 
-        public override object GetField(string name)
+        [CLProperty(Description = "Is camera in manual mode.")]
+        public bool IsManual => CustomLogicManager.ManualCamera;
+
+        [CLProperty(Description = "Position of the camera.")]
+        public CustomLogicVector3Builtin Position => new CustomLogicVector3Builtin(CustomLogicManager.CameraPosition);
+
+        [CLProperty(Description = "Rotation of the camera.")]
+        public CustomLogicVector3Builtin Rotation => new CustomLogicVector3Builtin(CustomLogicManager.CameraRotation);
+
+        [CLProperty(Description = "Velocity of the camera.")]
+        public CustomLogicVector3Builtin Velocity => new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
+
+        [CLProperty(Description = "Field of view of the camera.")]
+        public float FOV => CustomLogicManager.CameraFOV;
+
+        [CLProperty(Description = "Current camera mode.")]
+        public string CameraMode => (CustomLogicManager.CameraMode ?? ((InGameCamera)(SceneLoader.CurrentCamera)).CurrentCameraMode).ToString();
+
+        [CLProperty(Description = "Forward vector of the camera.")]
+        public CustomLogicVector3Builtin Forward
         {
-            var camera = (InGameCamera)SceneLoader.CurrentCamera;
-            if (name == "IsManual")
-                return CustomLogicManager.ManualCamera;
-            if (name == "Position")
-                return new CustomLogicVector3Builtin(camera.Cache.Transform.position);
-            if (name == "Rotation")
-                return new CustomLogicVector3Builtin(camera.Cache.Transform.rotation.eulerAngles);
-            if (name == "Velocity")
-                return new CustomLogicVector3Builtin(CustomLogicManager.CameraVelocity);
-            if (name == "FOV")
-                return CustomLogicManager.CameraFOV;
-            if (name == "CameraMode")
-                return (CustomLogicManager.CameraMode ?? camera.CurrentCameraMode).ToString();
-            if (name == "Forward")
-                return new CustomLogicVector3Builtin(camera.Cache.Transform.forward);
-            if (name == "Right")
-                return new CustomLogicVector3Builtin(camera.Cache.Transform.right);
-            if (name == "Up")
-                return new CustomLogicVector3Builtin(camera.Cache.Transform.up);
-            if (name == "FollowDistance")
-                return camera.GetCameraDistance();
-            return base.GetField(name);
+            get => new CustomLogicVector3Builtin(SceneLoader.CurrentCamera.Cache.Transform.forward);
+            set
+            {
+                var camera = (InGameCamera)SceneLoader.CurrentCamera;
+                camera.Cache.Transform.forward = value.Value;
+                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
+            }
         }
 
-        public override void SetField(string name, object value)
+        [CLProperty(Description = "Right vector of the camera.")]
+        public CustomLogicVector3Builtin Right
         {
-            var camera = (InGameCamera)SceneLoader.CurrentCamera;
-            if (name == "Forward")
+            get => new CustomLogicVector3Builtin(SceneLoader.CurrentCamera.Cache.Transform.right);
+            set
             {
-                var vectorBuiltin = (CustomLogicVector3Builtin)value;
-                camera.Cache.Transform.forward = vectorBuiltin.Value;
+                var camera = (InGameCamera)SceneLoader.CurrentCamera;
+                camera.Cache.Transform.right = value.Value;
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
             }
-            else if (name == "Right")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)value;
-                camera.Cache.Transform.right = vectorBuiltin.Value;
-                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
-            }
-            else if (name == "Up")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)value;
-                camera.Cache.Transform.up = vectorBuiltin.Value;
-                CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
-            }
-            else if (name == "FollowDistance")
-            {
-                camera.SetCameraDistance(value.UnboxToFloat());
-            }
-            else
-                base.SetField(name, value);
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLProperty(Description = "Up vector of the camera.")]
+        public CustomLogicVector3Builtin Up
         {
-            var camera = (InGameCamera)SceneLoader.CurrentCamera;
-            if (name == "SetManual")
+            get => new CustomLogicVector3Builtin(SceneLoader.CurrentCamera.Cache.Transform.up);
+            set
             {
-                if (parameters.Count > 0)
-                    CustomLogicManager.ManualCamera = (bool)parameters[0];
-                else
-                    CustomLogicManager.ManualCamera = true;
-                return null;
-            }
-            if (name == "SetPosition")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
-                CustomLogicManager.CameraPosition = vectorBuiltin.Value;
-                camera.SyncCustomPosition();
-                return null;
-            }
-            if (name == "SetRotation")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
-                CustomLogicManager.CameraRotation = vectorBuiltin.Value;
-                camera.SyncCustomPosition();
-                return null;
-            }
-            if (name == "SetVelocity")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
-                CustomLogicManager.CameraVelocity = vectorBuiltin.Value;
-                return null;
-            }
-            if (name == "LookAt")
-            {
-                var vectorBuiltin = (CustomLogicVector3Builtin)parameters[0];
-                camera.Cache.Transform.LookAt(vectorBuiltin.Value);
+                var camera = (InGameCamera)SceneLoader.CurrentCamera;
+                camera.Cache.Transform.up = value.Value;
                 CustomLogicManager.CameraRotation = camera.Cache.Transform.rotation.eulerAngles;
-                return null;
             }
-            if (name == "SetFOV")
-            {
-                CustomLogicManager.CameraFOV = parameters[0].UnboxToFloat();
-                return null;
-            }
-            if (name == "SetCameraMode")
-            {
-                if (parameters[0] is string str)
-                {
-                    if (str == "null")
-                        CustomLogicManager.CameraMode = null;
-                    else
-                        CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(str);
-                }
-                else
-                    CustomLogicManager.CameraMode = null;
+        }
 
-                return null;
-            }
-            if (name == "ResetDistance")
-            {
-                camera.ResetDistance();
-                return null;
-            }
-            if (name == "ResetCameraMode")
-            {
+        [CLProperty(Description = "Distance from the camera to the character.")]
+        public float FollowDistance
+        {
+            get => ((InGameCamera)SceneLoader.CurrentCamera).GetCameraDistance();
+            set => ((InGameCamera)SceneLoader.CurrentCamera).SetCameraDistance(value);
+        }
+
+        [CLMethod(Description = "Sets the camera manual mode. If true, camera will only be controlled by custom logic. If false, camera will follow the spawned or spectated player and read input.")]
+        public static void SetManual(bool manual)
+        {
+            CustomLogicManager.ManualCamera = manual;
+        }
+
+        [CLMethod(Description = "Sets camera position.")]
+        public static void SetPosition(Vector3 position)
+        {
+            CustomLogicManager.CameraPosition = position;
+            ((InGameCamera)SceneLoader.CurrentCamera).SyncCustomPosition();
+        }
+
+        [CLMethod(Description = "Sets camera rotation.")]
+        public static void SetRotation(Vector3 rotation)
+        {
+            CustomLogicManager.CameraRotation = rotation;
+            ((InGameCamera)SceneLoader.CurrentCamera).SyncCustomPosition();
+        }
+
+        [CLMethod(Description = "Sets camera velocity.")]
+        public static void SetVelocity(Vector3 velocity)
+        {
+            CustomLogicManager.CameraVelocity = velocity;
+        }
+
+        [CLMethod(Description = "Sets the camera forward direction such that it is looking at a world position.")]
+        public static void LookAt(Vector3 position)
+        {
+            ((InGameCamera)SceneLoader.CurrentCamera).Cache.Transform.LookAt(position);
+            CustomLogicManager.CameraRotation = ((InGameCamera)SceneLoader.CurrentCamera).Cache.Transform.rotation.eulerAngles;
+        }
+
+        [CLMethod(Description = "Sets the camera field of view. Use 0 to use the default field of view.")]
+        public static void SetFOV(float fov)
+        {
+            CustomLogicManager.CameraFOV = fov;
+        }
+
+        [CLMethod(Description = "Forces the player to use a certain camera mode, taking priority over their camera setting. Accepted values are TPS, Original, FPS.")]
+        public static void SetCameraMode(string mode)
+        {
+            if (mode == "null")
                 CustomLogicManager.CameraMode = null;
-                camera.ResetCameraMode();
-                return null;
-            }
-            return base.CallMethod(name, parameters);
+            else
+                CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(mode);
+        }
+
+        [CLMethod(Description = "Resets the follow distance to player's settings.")]
+        public static void ResetDistance()
+        {
+            ((InGameCamera)SceneLoader.CurrentCamera).ResetDistance();
+        }
+
+        [CLMethod(Description = "Resets the camera mode to player's settings.")]
+        public static void ResetCameraMode()
+        {
+            CustomLogicManager.CameraMode = null;
+            ((InGameCamera)SceneLoader.CurrentCamera).ResetCameraMode();
         }
     }
 }

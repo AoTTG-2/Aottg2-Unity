@@ -6,7 +6,8 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
-    class CustomLogicColorBuiltin : CustomLogicStructBuiltin
+    [CLType(Abstract = false, InheritBaseMembers = true, Static = true, Description = "")]
+    class CustomLogicColorBuiltin : CustomLogicBaseBuiltin, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 
@@ -37,59 +38,63 @@ namespace CustomLogic
             Value = value;
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        // Convert the above to CLProperties
+        [CLProperty(Description = "Red component of the color")]
+        public int R
         {
-            if (methodName == "ToHexString")
-            {
-                return Value.ToColor().ToHexString();
-            }
-            if (methodName == "Gradient")
-            {
-                // Expects two colors and a float
-                var a = (CustomLogicColorBuiltin)parameters[0];
-                var b = (CustomLogicColorBuiltin)parameters[1];
-                var ac = a.Value.ToColor();
-                var bc = b.Value.ToColor();
-                var t = (float)parameters[2];
-
-                var colors = new GradientColorKey[2];
-                colors[0] = new GradientColorKey(ac, 0f);
-                colors[1] = new GradientColorKey(bc, 1f);
-
-                var alphas = new GradientAlphaKey[2];
-                alphas[0] = new GradientAlphaKey(ac.a, ac.a);
-                alphas[1] = new GradientAlphaKey(bc.a, bc.a);
-
-                return new CustomLogicColorBuiltin(Color255.Gradient(colors, alphas, GradientMode.Blend, t));
-            }
-            return base.CallMethod(methodName, parameters);
+            get => Value.R;
+            set => Value.R = value;
         }
 
-        public override object GetField(string name)
+        [CLProperty(Description = "Green component of the color")]
+        public int G
         {
-            if (name == "R")
-                return Value.R;
-            if (name == "G")
-                return Value.G;
-            if (name == "B")
-                return Value.B;
-            if (name == "A")
-                return Value.A;
-            return base.GetField(name);
+            get => Value.G;
+            set => Value.G = value;
         }
 
-        public override void SetField(string name, object value)
+        [CLProperty(Description = "Blue component of the color")]
+        public int B
         {
-            if (name == "R")
-                Value.R = (int)value;
-            else if (name == "G")
-                Value.G = (int)value;
-            else if (name == "B")
-                Value.B = (int)value;
-            else if (name == "A")
-                Value.A = (int)value;
-            else
-                base.SetField(name, value);
+            get => Value.B;
+            set => Value.B = value;
+        }
+
+        [CLProperty(Description = "Alpha component of the color")]
+        public int A
+        {
+            get => Value.A;
+            set => Value.A = value;
+        }
+
+        // Convert the above to CLMethods
+        [CLMethod(Description = "Converts the color to a hex string")]
+        public string ToHexString()
+        {
+            return Value.ToColor().ToHexString();
+        }
+
+        [CLMethod(Description = "Linearly interpolates between colors a and b by t")]
+        public static CustomLogicColorBuiltin Lerp(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        {
+            return new CustomLogicColorBuiltin(Color255.Lerp(a.Value, b.Value, t));
+        }
+
+        [CLMethod(Description = "Creates a gradient color from two colors")]
+        public static CustomLogicColorBuiltin Gradient(CustomLogicColorBuiltin a, CustomLogicColorBuiltin b, float t)
+        {
+            var colors = new GradientColorKey[2];
+            colors[0] = new GradientColorKey(a.Value.ToColor(), 0f);
+            colors[1] = new GradientColorKey(b.Value.ToColor(), 1f);
+            var alphas = new GradientAlphaKey[2];
+            alphas[0] = new GradientAlphaKey(a.Value.ToColor().a, a.Value.ToColor().a);
+            alphas[1] = new GradientAlphaKey(b.Value.ToColor().a, b.Value.ToColor().a);
+            return new CustomLogicColorBuiltin(Color255.Gradient(colors, alphas, GradientMode.Blend, t));
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -105,10 +110,93 @@ namespace CustomLogic
             return $"({Value.R}, {Value.G}, {Value.B}, {Value.A})";
         }
 
-        public override CustomLogicStructBuiltin Copy()
+        public CustomLogicColorBuiltin Copy()
         {
             var value = new Color255(Value.R, Value.G, Value.B, Value.A);
             return new CustomLogicColorBuiltin(value);
+        }
+
+        public bool __Eq__(object other)
+        {
+            if (other is CustomLogicColorBuiltin otherColor)
+            {
+                return Value.R == otherColor.Value.R &&
+                       Value.G == otherColor.Value.G &&
+                       Value.B == otherColor.Value.B &&
+                       Value.A == otherColor.Value.A;
+            }
+            return false;
+        }
+
+        public int __Hash__()
+        {
+            return Value.GetHashCode();
+        }
+
+        public object __Copy__()
+        {
+            return new CustomLogicColorBuiltin(new Color255(Value.R, Value.G, Value.B, Value.A));
+        }
+
+        public string __Str__()
+        {
+            return ToString();
+        }
+
+        public object __Add__(object other)
+        {
+            if (other is CustomLogicColorBuiltin otherColor)
+            {
+                return new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(Value.R + otherColor.Value.R, 0, 255),
+                    Mathf.Clamp(Value.G + otherColor.Value.G, 0, 255),
+                    Mathf.Clamp(Value.B + otherColor.Value.B, 0, 255),
+                    Mathf.Clamp(Value.A + otherColor.Value.A, 0, 255)
+                ));
+            }
+            throw new System.ArgumentException("Invalid type for addition");
+        }
+
+        public object __Sub__(object other)
+        {
+            if (other is CustomLogicColorBuiltin otherColor)
+            {
+                return new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(Value.R - otherColor.Value.R, 0, 255),
+                    Mathf.Clamp(Value.G - otherColor.Value.G, 0, 255),
+                    Mathf.Clamp(Value.B - otherColor.Value.B, 0, 255),
+                    Mathf.Clamp(Value.A - otherColor.Value.A, 0, 255)
+                ));
+            }
+            throw new System.ArgumentException("Invalid type for subtraction");
+        }
+
+        public object __Mul__(object other)
+        {
+            if (other is CustomLogicColorBuiltin otherColor)
+            {
+                return new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(Value.R * otherColor.Value.R / 255, 0, 255),
+                    Mathf.Clamp(Value.G * otherColor.Value.G / 255, 0, 255),
+                    Mathf.Clamp(Value.B * otherColor.Value.B / 255, 0, 255),
+                    Mathf.Clamp(Value.A * otherColor.Value.A / 255, 0, 255)
+                ));
+            }
+            throw new System.ArgumentException("Invalid type for multiplication");
+        }
+
+        public object __Div__(object other)
+        {
+            if (other is CustomLogicColorBuiltin otherColor)
+            {
+                return new CustomLogicColorBuiltin(new Color255(
+                    otherColor.Value.R == 0 ? 255 : Mathf.Clamp(Value.R / otherColor.Value.R, 0, 255),
+                    otherColor.Value.G == 0 ? 255 : Mathf.Clamp(Value.G / otherColor.Value.G, 0, 255),
+                    otherColor.Value.B == 0 ? 255 : Mathf.Clamp(Value.B / otherColor.Value.B, 0, 255),
+                    otherColor.Value.A == 0 ? 255 : Mathf.Clamp(Value.A / otherColor.Value.A, 0, 255)
+                ));
+            }
+            throw new System.ArgumentException("Invalid type for division");
         }
     }
 }
