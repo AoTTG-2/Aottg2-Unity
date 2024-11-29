@@ -442,7 +442,7 @@ namespace Characters
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCore = true;
-            SetAnimationUpdateMode(state == TitanState.Jump);
+            SetAnimationUpdateMode(state == TitanState.Jump || state == TitanState.Attack);
             if (state != TitanState.Eat)
                 Ungrab();
             if (deactivateHitboxes)
