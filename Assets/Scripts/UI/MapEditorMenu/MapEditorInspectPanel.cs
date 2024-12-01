@@ -17,6 +17,8 @@ using System.Globalization;
 using CustomLogic;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.UIElements;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using Unity.VisualScripting;
 
 namespace UI
 {
@@ -172,8 +174,10 @@ namespace UI
 
             for (int i = 0; i < _components.Count; i++)
             {
+                
                 ElementFactory.CreateDefaultLabel(SinglePanel, style, _componentNames[i]);
                 var settings = _components[i];
+                
                 string description = CustomLogicManager.GetModeDescription(settings);
                 if (description != "")
                     ElementFactory.CreateDefaultLabel(SinglePanel, style, description, alignment: TextAnchor.MiddleLeft);
@@ -181,7 +185,13 @@ namespace UI
                 var dropboxes = new Dictionary<string, string[]>();
                 foreach (string key in settings.Keys)
                 {
+                    
+                    // TODO Handle Setting for ID selector
                     BaseSetting setting = settings[key];
+                    Debug.Log("key");
+                    Debug.Log(key);
+                    Debug.Log("setting");
+                    Debug.Log(setting);
                     if (key.EndsWith("Tooltip") && setting is StringSetting)
                         tooltips[key.Substring(0, key.Length - 7)] = ((StringSetting)setting).Value;
                     else if (key.EndsWith("Dropbox") && setting is StringSetting)
@@ -193,6 +203,10 @@ namespace UI
                             options.Add("None");
                         dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
                     }
+                    else if (key.EndsWith("ObjectIDSelector")) 
+                    {
+                        ElementFactory.CreateDefaultButton(SinglePanel, style, "Select Object", onClick: () => OnButtonClick("ShowObjectSelectPopup"));
+                    }
                 }
                 foreach (string key in settings.Keys)
                 {
@@ -203,6 +217,10 @@ namespace UI
                         continue;
                     if (key.EndsWith("Dropbox") && setting is StringSetting)
                         continue;
+                    if (key.EndsWith("ObjectIDSelector")) 
+                    {
+                        continue;
+                    }
                     string tooltip = "";
                     if (tooltips.ContainsKey(key))
                         tooltip = tooltips[key];
@@ -246,6 +264,10 @@ namespace UI
             {
                 int index = int.Parse(name.Substring("DeleteComponent".Length));
                 _menu.ConfirmPopup.Show("Delete this component?", onConfirm: () => OnDeleteComponent(index));
+            }
+            else if (name.StartsWith("ShowObjectSelectPopup"))
+            {
+                _menu.ShowObjectSelectPanel();
             }
         }
 

@@ -27,6 +27,9 @@ namespace UI
         public MapEditorSettingsPopup SettingsPopup;
         public MapEditorCustomLogicPopup CustomLogicPopup;
         public MapEditorAddComponentPopup AddComponentPopup;
+
+        public MapEditorSelectObjectPopup SelectObjectPopup;
+
         public MapEditorErrorPopup ErrorPopup;
         public MapEditorCustomAssetPopup CustomAssetsPopup;
         public MapEditorWeatherPopup WeatherPopup;
@@ -60,6 +63,9 @@ namespace UI
             ErrorPopup = ElementFactory.CreateDefaultPopup<MapEditorErrorPopup>(transform);
             CustomAssetsPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomAssetPopup>(transform);
             WeatherPopup = ElementFactory.CreateDefaultPopup<MapEditorWeatherPopup>(transform);
+
+            SelectObjectPopup = ElementFactory.CreateDefaultPopup<MapEditorSelectObjectPopup>(transform);
+            
             _popups.Add(AddObjectPopup);
             _popups.Add(AddVariantPopup);
             _popups.Add(TexturePopup);
@@ -71,6 +77,8 @@ namespace UI
             _popups.Add(ErrorPopup);
             _popups.Add(CustomAssetsPopup);
             _popups.Add(WeatherPopup);
+
+            _popups.Add(SelectObjectPopup);
         }
 
         public void SetDrag(bool active, Vector2 start, Vector2 end)
@@ -123,6 +131,12 @@ namespace UI
             HierarchyPanel = ElementFactory.CreateHeadedPanel<MapEditorHierarchyPanel>(transform);
             ElementFactory.SetAnchor(HierarchyPanel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(5f, -65f));
             HierarchyPanel.Show();
+        }
+
+        public void ShowObjectSelectPanel()
+        {
+            SelectObjectPopup.Sync();
+            SelectObjectPopup.Show();
         }
 
         public void SyncHierarchyPanel()

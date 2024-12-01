@@ -5,19 +5,27 @@ using Utility;
 
 public class MapEditorObjects : IQueryable
 {
-    private Dictionary<int ,MapObject> _objects = new Dictionary<int, MapObject>();
+    private Dictionary<int, MapObject> _objects = new Dictionary<int, MapObject>();
 
     public MapEditorObjects()
     {
+        Sync();
+    }
+
+    public void Sync()
+    {
+        _objects.Clear(); // Clear the dictionary to avoid duplicates
         foreach (MapObject obj in MapLoader.IdToMapObject.Values)
         {
             int objectID = obj.ScriptObject.Id;
-           _objects.Add(objectID, obj);
+            _objects.Add(objectID, obj);
         }
     }
 
     public List<string> Query(string query)
     {
+
+
         query = query.ToLower();
         var results = new List<string>();
 
