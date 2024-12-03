@@ -23,6 +23,260 @@ namespace CustomLogic
             Value = obj;
         }
 
+        [CLProperty(description: "Object does not move")]
+        public bool Static => Value.ScriptObject.Static;
+
+        [CLProperty(description: "The position of the object")]
+        public CustomLogicVector3Builtin Position
+        {
+            get => new CustomLogicVector3Builtin(Value.GameObject.transform.position);
+            set => Value.GameObject.transform.position = value.Value;
+        }
+
+        [CLProperty(description: "The local position of the object")]
+        public CustomLogicVector3Builtin LocalPosition
+        {
+            get => new CustomLogicVector3Builtin(Value.GameObject.transform.localPosition);
+            set => Value.GameObject.transform.localPosition = value.Value;
+        }
+
+        [CLProperty(description: "The rotation of the object")]
+        public CustomLogicVector3Builtin Rotation
+        {
+            get
+            {
+                if (_needSetRotation)
+                {
+                    _internalRotation = Value.GameObject.transform.rotation.eulerAngles;
+                    _needSetRotation = false;
+                }
+                return new CustomLogicVector3Builtin(_internalRotation);
+            }
+            set
+            {
+                _internalRotation = value.Value;
+                _needSetRotation = false;
+                Value.GameObject.transform.rotation = Quaternion.Euler(_internalRotation);
+            }
+        }
+
+        [CLProperty(description: "The local rotation of the object")]
+        public CustomLogicVector3Builtin LocalRotation
+        {
+            get
+            {
+                if (_needSetLocalRotation)
+                {
+                    _internalLocalRotation = Value.GameObject.transform.localRotation.eulerAngles;
+                    _needSetLocalRotation = false;
+                }
+                return new CustomLogicVector3Builtin(_internalLocalRotation);
+            }
+            set
+            {
+                _internalLocalRotation = value.Value;
+                _needSetLocalRotation = false;
+                Value.GameObject.transform.localRotation = Quaternion.Euler(_internalLocalRotation);
+            }
+        }
+
+        [CLProperty(description: "The rotation of the object as a quaternion")]
+        public CustomLogicQuaternionBuiltin QuaternionRotation
+        {
+            get => new CustomLogicQuaternionBuiltin(Value.GameObject.transform.rotation);
+            set => Value.GameObject.transform.rotation = value.Value;
+        }
+
+        [CLProperty(description: "The local rotation of the object as a quaternion")]
+        public CustomLogicQuaternionBuiltin QuaternionLocalRotation
+        {
+            get => new CustomLogicQuaternionBuiltin(Value.GameObject.transform.localRotation);
+            set => Value.GameObject.transform.localRotation = value.Value;
+        }
+
+        [CLProperty(description: "The forward direction of the object")]
+        public CustomLogicVector3Builtin Forward
+        {
+            get => new CustomLogicVector3Builtin(Value.GameObject.transform.forward.normalized);
+            set => Value.GameObject.transform.forward = value.Value;
+        }
+
+        [CLProperty(description: "The up direction of the object")]
+        public CustomLogicVector3Builtin Up
+        {
+            get => new CustomLogicVector3Builtin(Value.GameObject.transform.up.normalized);
+            set => Value.GameObject.transform.up = value.Value;
+        }
+
+        [CLProperty(description: "The right direction of the object")]
+        public CustomLogicVector3Builtin Right
+        {
+            get => new CustomLogicVector3Builtin(Value.GameObject.transform.right.normalized);
+            set => Value.GameObject.transform.right = value.Value;
+        }
+
+        [CLProperty(description: "The scale of the object")]
+        public CustomLogicVector3Builtin Scale
+        {
+            get
+            {
+                var localScale = Value.GameObject.transform.localScale;
+                var baseScale = Value.BaseScale;
+                return new CustomLogicVector3Builtin(new Vector3(localScale.x / baseScale.x, localScale.y / baseScale.y, localScale.z / baseScale.z));
+            }
+            set
+            {
+                var localScale = value.Value;
+                var baseScale = Value.BaseScale;
+                Value.GameObject.transform.localScale = new Vector3(localScale.x * baseScale.x, localScale.y * baseScale.y, localScale.z * baseScale.z);
+            }
+        }
+
+        [CLProperty(description: "The name of the object")]
+        public string Name => Value.ScriptObject.Name;
+
+        [CLProperty(description: "The parent of the object")]
+        public CustomLogicMapObjectBuiltin Parent
+        {
+            get
+            {
+                int parentId = Value.Parent;
+                if (parentId <= 0)
+                    return null;
+                return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[parentId]);
+            }
+            set
+            {
+                if (value == null)
+                {
+                    MapLoader.SetParent(Value, null);
+                }
+                else
+                {
+                    MapLoader.SetParent(Value, value.Value);
+                }
+                _needSetLocalRotation = true;
+            }
+        }
+
+        [CLProperty(description: "Whether the object is active")]
+        public bool Active
+        {
+            get => Value.GameObject.activeSelf;
+            set => Value.GameObject.SetActive(value);
+        }
+
+        [CLProperty(description: "The transform of the object")]
+        public CustomLogicTransformBuiltin Transform => new CustomLogicTransformBuiltin(Value.GameObject.transform);
+
+        [CLProperty(description: "Whether the object has a renderer")]
+        public bool HasRenderer => Value.renderCache.Length > 0;
+
+        [CLProperty(description: "The color of the object")]
+        public CustomLogicColorBuiltin Color
+        {
+            get
+            {
+                AssertRendererGet();
+                var color = Value.renderCache[0].material.color;
+                return new CustomLogicColorBuiltin(new Color255(color));
+            }
+            set
+            {
+                AssertRendererSet();
+                var color = value.Value.ToColor();
+                Value.renderCache[0].material.color = color;
+            }
+        }
+
+        [CLProperty(description: "The x tiling of the object's texture")]
+        public float TextureTilingX
+        {
+            get
+            {
+                AssertRendererGet();
+                return Value.renderCache[0].material.mainTextureScale.x;
+            }
+            set
+            {
+                AssertRendererSet();
+                var tiling = Value.renderCache[0].material.mainTextureScale;
+                Value.renderCache[0].material.mainTextureScale = new Vector2(value, tiling.y);
+            }
+        }
+
+        [CLProperty(description: "The y tiling of the object's texture")]
+        public float TextureTilingY
+        {
+            get
+            {
+                AssertRendererGet();
+                return Value.renderCache[0].material.mainTextureScale.y;
+            }
+            set
+            {
+                AssertRendererSet();
+                var tiling = Value.renderCache[0].material.mainTextureScale;
+                Value.renderCache[0].material.mainTextureScale = new Vector2(tiling.x, value);
+            }
+        }
+
+        [CLProperty(description: "The x offset of the object's texture")]
+        public float TextureOffsetX
+        {
+            get
+            {
+                AssertRendererGet();
+                return Value.renderCache[0].material.mainTextureOffset.x;
+            }
+            set
+            {
+                AssertRendererSet();
+                var offset = Value.renderCache[0].material.mainTextureOffset;
+                Value.renderCache[0].material.mainTextureOffset = new Vector2(value, offset.y);
+            }
+        }
+
+        [CLProperty(description: "The y offset of the object's texture")]
+        public float TextureOffsetY
+        {
+            get
+            {
+                AssertRendererGet();
+                return Value.renderCache[0].material.mainTextureOffset.y;
+            }
+            set
+            {
+                AssertRendererSet();
+                var offset = Value.renderCache[0].material.mainTextureOffset;
+                Value.renderCache[0].material.mainTextureOffset = new Vector2(offset.x, value);
+            }
+        }
+
+        [CLProperty(description: "The ID of the object")]
+        public int ID => Value.ScriptObject.Id;
+
+
+        [CLProperty(description: "The tag of the object")]
+        public string Tag
+        {
+            get => Value.GameObject.tag;
+            set => Value.GameObject.tag = value;
+        }
+
+        [CLProperty(description: "The layer of the object")]
+        public int Layer
+        {
+            get => Value.GameObject.layer;
+            set => Value.GameObject.layer = value;
+        }
+
+        [CLMethod(description: "Add a component to the object")]
+        public CustomLogicBaseBuiltin AddComponent(string name)
+        {
+            return CustomLogicManager.Evaluator.AddMapObjectComponent(Value, name);
+        }
+
         public override object CallMethod(string methodName, List<object> parameters)
         {
             if (methodName == "AddBuiltinComponent")
@@ -574,267 +828,23 @@ namespace CustomLogic
             return base.CallMethod(methodName, parameters);
         }
 
-        public override object GetField(string name)
+        private void AssertRendererGet()
         {
-            if (name == "Static")
-                return Value.ScriptObject.Static;
-            if (name == "Position")
-                return new CustomLogicVector3Builtin(Value.GameObject.transform.position);
-            if (name == "LocalPosition")
-                return new CustomLogicVector3Builtin(Value.GameObject.transform.localPosition);
-            if (name == "Rotation")
+            if (Value.renderCache.Length == 0)
             {
-                if (_needSetRotation)
-                {
-                    _internalRotation = Value.GameObject.transform.rotation.eulerAngles;
-                    _needSetRotation = false;
-                }
-                return new CustomLogicVector3Builtin(_internalRotation);
+                throw new System.Exception("MapObject has no renderer.");
             }
-            if (name == "LocalRotation")
-            {
-                if (_needSetLocalRotation)
-                {
-                    _internalLocalRotation = Value.GameObject.transform.localRotation.eulerAngles;
-                    _needSetLocalRotation = false;
-                }
-                return new CustomLogicVector3Builtin(_internalLocalRotation);
-            }
-            if (name == "QuaternionRotation")
-            {
-                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.rotation);
-            }
-            if (name == "QuaternionLocalRotation")
-            {
-                return new CustomLogicQuaternionBuiltin(Value.GameObject.transform.localRotation);
-            }
-            if (name == "Forward")
-                return new CustomLogicVector3Builtin(Value.GameObject.transform.forward.normalized);
-            if (name == "Up")
-                return new CustomLogicVector3Builtin(Value.GameObject.transform.up.normalized);
-            if (name == "Right")
-                return new CustomLogicVector3Builtin(Value.GameObject.transform.right.normalized);
-            if (name == "Scale")
-            {
-                var localScale = Value.GameObject.transform.localScale;
-                var baseScale = Value.BaseScale;
-                return new CustomLogicVector3Builtin(new Vector3(localScale.x / baseScale.x, localScale.y / baseScale.y, localScale.z / baseScale.z));
-            }
-            if (name == "Name")
-                return Value.ScriptObject.Name;
-            if (name == "Parent")
-            {
-                int parentId = Value.Parent;
-                if (parentId <= 0)
-                    return null;
-                return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[parentId]);
-            }
-            if (name == "Active")
-            {
-                return Value.GameObject.activeSelf;
-            }
-            if (name == "Transform")
-            {
-                return new CustomLogicTransformBuiltin(Value.GameObject.transform);
-            }
-            else if (name == "HasRenderer")
-            {
-                return Value.renderCache.Length > 0;
-            }
-            if (name == "Color")
-            {
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-
-                var color = Value.renderCache[0].material.color;
-                return new CustomLogicColorBuiltin(new Color255(color));
-            }
-            if (name == "TextureTilingX")
-            {
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                return Value.renderCache[0].material.mainTextureScale.x;
-            }
-            if (name == "TextureTilingY")
-            {
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                return Value.renderCache[0].material.mainTextureScale.y;
-            }
-            if (name == "TextureOffsetX")
-            {
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                return Value.renderCache[0].material.mainTextureOffset.x;
-            }
-            if (name == "TextureOffsetY")
-            {
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                return Value.renderCache[0].material.mainTextureOffset.y;
-            }
-            if (name == "ID")
-            {
-                return Value.ScriptObject.Id;
-            }
-            return base.GetField(name);
         }
 
-        public override void SetField(string name, object value)
+        private void AssertRendererSet()
         {
-            if (name == "Position")
-                Value.GameObject.transform.position = ((CustomLogicVector3Builtin)value).Value;
-            else if (name == "LocalPosition")
-                Value.GameObject.transform.localPosition = ((CustomLogicVector3Builtin)value).Value;
-            else if (name == "Rotation")
+            if (Value.ScriptObject.Static)
             {
-                _internalRotation = ((CustomLogicVector3Builtin)value).Value;
-                _needSetRotation = false;
-                Value.GameObject.transform.rotation = Quaternion.Euler(_internalRotation);
+                throw new System.Exception("Property cannot be set on a static MapObject.");
             }
-            else if (name == "LocalRotation")
+            if (Value.renderCache.Length == 0)
             {
-                _internalLocalRotation = ((CustomLogicVector3Builtin)value).Value;
-                _needSetLocalRotation = false;
-                Value.GameObject.transform.localRotation = Quaternion.Euler(_internalLocalRotation);
-            }
-            else if (name == "QuaternionRotation")
-            {
-                // Set the rotation of the object to the quaternion value
-                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
-                _needSetLocalRotation = false;
-                Value.GameObject.transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
-            }
-            else if (name == "QuaternionLocalRotation")
-            {
-                // Set the local rotation of the object to the quaternion value
-                _internalLocalRotation = ((CustomLogicQuaternionBuiltin)value).Value.eulerAngles;
-                _needSetLocalRotation = false;
-                Value.GameObject.transform.localRotation = ((CustomLogicQuaternionBuiltin)value).Value;
-            }
-            else if (name == "Forward")
-                Value.GameObject.transform.forward = ((CustomLogicVector3Builtin)value).Value;
-            else if (name == "Up")
-                Value.GameObject.transform.up = ((CustomLogicVector3Builtin)value).Value;
-            else if (name == "Right")
-                Value.GameObject.transform.right = ((CustomLogicVector3Builtin)value).Value;
-            else if (name == "Scale")
-            {
-                var localScale = ((CustomLogicVector3Builtin)value).Value;
-                var baseScale = Value.BaseScale;
-                Value.GameObject.transform.localScale = new Vector3(localScale.x * baseScale.x, localScale.y * baseScale.y, localScale.z * baseScale.z);
-            }
-            else if (name == "Parent")
-            {
-                if (value == null)
-                {
-                    MapLoader.SetParent(Value, null);
-                }
-                else if (value is CustomLogicMapObjectBuiltin)
-                {
-                    var parent = (CustomLogicMapObjectBuiltin)value;
-                    MapLoader.SetParent(Value, parent.Value);
-                }
-                else if (value is CustomLogicTransformBuiltin)
-                {
-                    MapLoader.SetParent(Value, null);
-                    var parent = (CustomLogicTransformBuiltin)value;
-                    Value.GameObject.transform.SetParent(parent.Value);
-                }
-                _needSetLocalRotation = true;
-            }
-            else if (name == "Active")
-            {
-                Value.GameObject.SetActive((bool)value);
-            }
-            else if (name == "Color")
-            {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
-                }
-
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-
-                var color = ((CustomLogicColorBuiltin)value).Value.ToColor();
-                Value.renderCache[0].material.color = color;
-            }
-            else if (name == "TextureTilingX")
-            {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
-                }
-
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                var x = value.UnboxToFloat();
-                var tiling = Value.renderCache[0].material.mainTextureScale;
-                Value.renderCache[0].material.mainTextureScale = new Vector2(x, tiling.y);
-            }
-            else if (name == "TextureTilingY")
-            {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
-                }
-
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                var y = value.UnboxToFloat();
-                var tiling = Value.renderCache[0].material.mainTextureScale;
-                Value.renderCache[0].material.mainTextureScale = new Vector2(tiling.x, y);
-            }
-            else if (name == "TextureOffsetX")
-            {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
-                }
-
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                var x = value.UnboxToFloat();
-                var offset = Value.renderCache[0].material.mainTextureOffset;
-                Value.renderCache[0].material.mainTextureOffset = new Vector2(x, offset.y);
-            }
-            else if (name == "TextureOffsetY")
-            {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception(name + " cannot be set on a static MapObject.");
-                }
-                
-                if (Value.renderCache.Length == 0)
-                {
-                    throw new System.Exception("MapObject has no renderer.");
-                }
-                var y = value.UnboxToFloat();
-                var offset = Value.renderCache[0].material.mainTextureOffset;
-                Value.renderCache[0].material.mainTextureOffset = new Vector2(offset.x, y);
-            }
-            else
-            {
-                base.SetField(name, value);
+                throw new System.Exception("MapObject has no renderer.");
             }
         }
 

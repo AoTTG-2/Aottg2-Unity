@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace CustomLogic
 {
-    class CustomLogicListBuiltin: CustomLogicBaseBuiltin
+    [CLType(InheritBaseMembers = true)]
+    class CustomLogicListBuiltin : CustomLogicBaseBuiltin, ICustomLogicToString
     {
         public List<object> List = new List<object>();
 
@@ -18,73 +18,73 @@ namespace CustomLogic
         {
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        public CustomLogicListBuiltin(List<object> list) : base("List")
         {
-            if (methodName == "Clear")
-            {
-                List.Clear();
-                return null;
-            }
-            if (methodName == "Get")
-            {
-                int index = (int)parameters[0];
-                return List[index];
-            }
-            if (methodName == "Set")
-            {
-                int index = (int)parameters[0];
-                List[index] = parameters[1];
-                return null;
-            }
-            if (methodName == "Add")
-            {
-                List.Add(parameters[0]);
-                return null;
-            }
-            if (methodName == "InsertAt")
-            {
-                int index = (int)parameters[0];
-                List.Insert(index, parameters[1]);
-                return null;
-            }
-            if (methodName == "RemoveAt")
-            {
-                List.RemoveAt((int)parameters[0]);
-                return null;
-            }
-            if (methodName == "Remove")
-            {
-                List.Remove(parameters[0]);
-                return null;
-            }
-            if (methodName == "Contains")
-            {
-                return List.Any(e => CustomLogicManager.Evaluator.CheckEquals(e, parameters[0]));
-            }
-            if (methodName == "Sort")
-            {
-                List.Sort();
-                return null;
-            }
-            if (methodName == "Randomize")
-            {
-                System.Random r = new System.Random();
-                List = List.OrderBy(x => (r.Next())).ToList();
-                return null;
-            }
-            return base.CallMethod(methodName, parameters);
+            List = list;
         }
 
-        public override object GetField(string name)
+        [CLProperty(readOnly: true, description: "The number of elements in the list")]
+        public int Count => List.Count;
+
+        [CLMethod(description: "Clear all list elements")]
+        public void Clear()
         {
-            if (name == "Count")
-                return List.Count;
-            return base.GetField(name);
+            List.Clear();
         }
 
-        public override void SetField(string name, object value)
+        [CLMethod(description: "Get the element at the specified index")]
+        public object Get(int index)
         {
-            base.SetField(name, value);
+            return List[index];
+        }
+
+        [CLMethod(description: "Set the element at the specified index")]
+        public void Set(int index, object value)
+        {
+            List[index] = value;
+        }
+
+        [CLMethod(description: "Add an element to the end of the list")]
+        public void Add(object value)
+        {
+            List.Add(value);
+        }
+
+        [CLMethod(description: "Insert an element at the specified index")]
+        public void InsertAt(int index, object value)
+        {
+            List.Insert(index, value);
+        }
+
+        [CLMethod(description: "Remove the element at the specified index")]
+        public void RemoveAt(int index)
+        {
+            List.RemoveAt(index);
+        }
+
+        [CLMethod(description: "Remove the first occurrence of the specified element")]
+        public void Remove(object value)
+        {
+            List.Remove(value);
+        }
+
+        [CLMethod(description: "Check if the list contains the specified element")]
+        public bool Contains(object value)
+        {
+            return List.Any(e => CustomLogicManager.Evaluator.CheckEquals(e, value));
+        }
+
+        [CLMethod(description: "Sort the list")]
+        public void Sort()
+        {
+            List.Sort();
+        }
+
+        [CLMethod(description: "Randomize the list")]
+        public void Randomize()
+        {
+            System.Random r = new System.Random();
+            List = List.OrderBy(x => (r.Next())).ToList();
         }
 
         public override string ToString()
@@ -105,6 +105,11 @@ namespace CustomLogic
 
             builder.Append("]");
             return builder.ToString();
+        }
+
+        public string __Str__()
+        {
+            return ToString();
         }
     }
 }

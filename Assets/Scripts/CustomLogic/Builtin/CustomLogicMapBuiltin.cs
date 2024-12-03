@@ -6,140 +6,145 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    [CLType(InheritBaseMembers = true, Static = true)]
     class CustomLogicMapBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicMapBuiltin(): base("Map")
         {
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLMethod(description: "Find all map objects")]
+        public CustomLogicListBuiltin FindAllMapObjects()
         {
-            if (name == "FindAllMapObjects")
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
             {
-                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
-                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
-                {
+                listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+            }
+            return listBuiltin;
+        }
+
+        [CLMethod(description: "Find a map object by name")]
+        public CustomLogicMapObjectBuiltin FindMapObjectByName(string objectName)
+        {
+            foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+            {
+                if (mapObject.ScriptObject.Name == objectName)
+                    return new CustomLogicMapObjectBuiltin(mapObject);
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Find all map objects by name")]
+        public CustomLogicListBuiltin FindMapObjectsByName(string objectName)
+        {
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+            {
+                if (mapObject.ScriptObject.Name == objectName)
                     listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
-                }
-                return listBuiltin;
             }
-            if (name == "FindMapObjectByName")
+            return listBuiltin;
+        }
+
+        [CLMethod(description: "Find all map objects by component")]
+        public CustomLogicListBuiltin FindMapObjectsByComponent(string className)
+        {
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
             {
-                string objectName = (string)parameters[0];
-                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                foreach (CustomLogicComponentInstance component in mapObject.ComponentInstances)
                 {
-                    if (mapObject.ScriptObject.Name == objectName)
-                        return new CustomLogicMapObjectBuiltin(mapObject);
+                    if (component.ClassName == className)
+                    {
+                        listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                        break;
+                    }
                 }
-                return null;
             }
-            if (name == "FindMapObjectsByName")
+            return listBuiltin;
+        }
+
+        [CLMethod(description: "Find a map object by ID")]
+        public CustomLogicMapObjectBuiltin FindMapObjectByID(int id)
+        {
+            if (MapLoader.IdToMapObject.ContainsKey(id))
+                return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[id]);
+            return null;
+        }
+
+        [CLMethod(description: "Find a map object by tag")]
+        public CustomLogicMapObjectBuiltin FindMapObjectByTag(string tag)
+        {
+            if (MapLoader.Tags.ContainsKey(tag))
             {
-                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
-                string objectName = (string)parameters[0];
-                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+                if (MapLoader.Tags[tag].Count > 0)
+                    return new CustomLogicMapObjectBuiltin(MapLoader.Tags[tag][0]);
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Find all map objects by tag")]
+        public CustomLogicListBuiltin FindMapObjectsByTag(string tag)
+        {
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            if (MapLoader.Tags.ContainsKey(tag))
+            {
                 {
-                    if (mapObject.ScriptObject.Name == objectName)
+                    foreach (MapObject mapObject in MapLoader.Tags[tag])
                         listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
                 }
-                return listBuiltin;
             }
-            if (name == "FindMapObjectsByComponent")
-            {
-                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
-                string className = (string)parameters[0];
-                foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
-                {
-                    foreach (CustomLogicComponentInstance component in mapObject.ComponentInstances)
-                    {
-                        if (component.ClassName == className)
-                        {
-                            listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
-                            break;
-                        }
-                    }
-                }
-                return listBuiltin;
-            }
-            if (name == "FindMapObjectByID")
-            {
-                int id = (int)parameters[0];
-                if (MapLoader.IdToMapObject.ContainsKey(id))
-                    return new CustomLogicMapObjectBuiltin(MapLoader.IdToMapObject[id]);
-                return null;
-            }
-            if (name == "FindMapObjectByTag")
+            return listBuiltin;
+        }
 
-            {
-                string tag = (string)parameters[0];
-                if (MapLoader.Tags.ContainsKey(tag))
-                {
-                    if (MapLoader.Tags[tag].Count > 0)
-                        return new CustomLogicMapObjectBuiltin(MapLoader.Tags[tag][0]);
-                }
-                return null;
-            }
-            if (name == "FindMapObjectsByTag")
-            {
-                CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
-                string tag = (string)parameters[0];
-                if (MapLoader.Tags.ContainsKey(tag))
-                {
-                    {
-                        foreach (MapObject mapObject in MapLoader.Tags[tag])
-                            listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
-                    }
-                }
-                return listBuiltin;
-            }
-            if (name == "CreateMapObjectRaw")
-            {
-                string prefab = (string)parameters[0];
-                prefab = string.Join("", prefab.Split('\n'));
-                var script = new MapScriptSceneObject();
-                script.Deserialize(prefab);
-                script.Id = MapLoader.GetNextObjectId();
-                script.Parent = 0;
-                script.Networked = false;
-                var mapObject = MapLoader.LoadObject(script, false);
-                MapLoader.SetParent(mapObject);
-                CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
-                mapObject.RuntimeCreated = true;
-                return new CustomLogicMapObjectBuiltin(mapObject);
-            }
-            if (name == "DestroyMapObject")
-            {
-                var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
-                bool includeChildren = (bool)parameters[1];
-                DestroyMapObject(mapObject, includeChildren);
-                return null;
-            }
-            if (name == "CopyMapObject")
-            {
-                var mapObject = (CustomLogicMapObjectBuiltin)parameters[0];
-                bool includeChildren = (bool)parameters[1];
-                var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
-                copy.RuntimeCreated = true;
-                return new CustomLogicMapObjectBuiltin(copy);
-            }
-            if (name == "DestroyMapTargetable")
-            {
-                var targetable = (CustomLogicMapTargetableBuiltin)parameters[0];
-                Object.Destroy(targetable.GameObject);
-                MapLoader.MapTargetables.Remove(targetable.Value);
-                return null;
-            }
-            if (name == "UpdateNavMesh")
-            {
-                MapLoader.UpdateNavMesh().Wait();
-                return null;
-            }
-            if (name == "UpdateNavMeshAsync")
-            {
-                _ = MapLoader.UpdateNavMesh();
-                return null;
-            }
-            return base.CallMethod(name, parameters);
+        [CLMethod(description: "Create a new map object")]
+        public CustomLogicMapObjectBuiltin CreateMapObjectRaw(string prefab)
+        {
+            prefab = string.Join("", prefab.Split('\n'));
+            var script = new MapScriptSceneObject();
+            script.Deserialize(prefab);
+            script.Id = MapLoader.GetNextObjectId();
+            script.Parent = 0;
+            script.Networked = false;
+            var mapObject = MapLoader.LoadObject(script, false);
+            MapLoader.SetParent(mapObject);
+            CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
+            mapObject.RuntimeCreated = true;
+            return new CustomLogicMapObjectBuiltin(mapObject);
+        }
+
+        [CLMethod(description: "Destroy a map object")]
+        public void DestroyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
+        {
+            DestroyMapObject(mapObject, includeChildren);
+        }
+
+        [CLMethod(description: "Copy a map object")]
+        public CustomLogicMapObjectBuiltin CopyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
+        {
+            var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
+            copy.RuntimeCreated = true;
+            return new CustomLogicMapObjectBuiltin(copy);
+        }
+
+        [CLMethod(description: "Destroy a map targetable")]
+        public void DestroyMapTargetable(CustomLogicMapTargetableBuiltin targetable)
+        {
+            Object.Destroy(targetable.GameObject);
+            MapLoader.MapTargetables.Remove(targetable.Value);
+        }
+
+        [CLMethod(description: "Update the nav mesh")]
+        public void UpdateNavMesh()
+        {
+            MapLoader.UpdateNavMesh().Wait();
+        }
+
+        [CLMethod(description: "Update the nav mesh asynchronously")]
+        public void UpdateNavMeshAsync()
+        {
+            _ = MapLoader.UpdateNavMesh();
         }
 
         protected MapObject CopyMapObject(MapObject obj, int parent, bool recursive)
@@ -200,16 +205,6 @@ namespace CustomLogic
                         DestroyMapObject(MapLoader.IdToMapObject[child], true);
                 }
             }
-        }
-
-        public override object GetField(string name)
-        {
-            return base.GetField(name);
-        }
-
-        public override void SetField(string name, object value)
-        {
-            base.SetField(name, value);
         }
     }
 }

@@ -14,7 +14,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, InheritBaseMembers = true)]
+    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
     class CustomLogicGameBuiltin: CustomLogicBaseBuiltin
     {
         private string _lastSetTopLabel = string.Empty;

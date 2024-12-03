@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Static = false, InheritBaseMembers = true)]
+    [CLType(Abstract = true, Static = false, InheritBaseMembers = true)]
     class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;

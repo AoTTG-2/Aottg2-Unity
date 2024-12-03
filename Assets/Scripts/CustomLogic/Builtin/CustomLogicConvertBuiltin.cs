@@ -6,7 +6,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, InheritBaseMembers = true)]
+    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
     class CustomLogicConvertBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicConvertBuiltin(): base("Convert")

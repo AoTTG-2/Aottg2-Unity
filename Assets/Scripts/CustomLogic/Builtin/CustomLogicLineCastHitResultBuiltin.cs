@@ -1,37 +1,31 @@
 namespace CustomLogic
 {
-    class CustomLogicLineCastHitResultBuiltin : CustomLogicStructBuiltin
+    [CLType(InheritBaseMembers = true)]
+    class CustomLogicLineCastHitResultBuiltin : CustomLogicBaseBuiltin, ICustomLogicCopyable, ICustomLogicEquals
     {
-        public bool IsCharacter;
-        public bool IsMapObject;
-        public float Distance;
-        public CustomLogicVector3Builtin Point;
-        public CustomLogicVector3Builtin Normal;
-        public CustomLogicBaseBuiltin Collider;
+        [CLProperty(readOnly: true, description: "true if the linecast hit a character")]
+        public bool IsCharacter { get; set; }
+
+        [CLProperty(readOnly: true, description: "true if the linecast hit a map object")]
+        public bool IsMapObject { get; set; }
+
+        [CLProperty(readOnly: true, description: "The distance to the hit point")]
+        public float Distance { get; set; }
+
+        [CLProperty(readOnly: true, description: "The point in world space where the linecast hit")]
+        public CustomLogicVector3Builtin Point { get; set; }
+
+        [CLProperty(readOnly: true, description: "The normal of the surface the linecast hit")]
+        public CustomLogicVector3Builtin Normal { get; set; }
+
+        [CLProperty(readOnly: true, description: "The collider that was hit")]
+        public CustomLogicBaseBuiltin Collider { get; set; }
 
         public CustomLogicLineCastHitResultBuiltin() : base("LineCastHitResult")
         {
         }
 
-        public override object GetField(string name)
-        {
-            if (name == "IsCharacter")
-                return IsCharacter;
-            if (name == "IsMapObject")
-                return IsMapObject;
-            else if (name == "Point")
-                return Point;
-            else if (name == "Normal")
-                return Normal;
-            else if (name == "Distance")
-                return Distance;
-            else if (name == "Collider")
-                return Collider;
-
-            return base.GetField(name);
-        }
-
-        public override CustomLogicStructBuiltin Copy()
+        public CustomLogicBaseBuiltin Copy()
         {
             return new CustomLogicLineCastHitResultBuiltin()
             {
@@ -42,6 +36,35 @@ namespace CustomLogic
                 Distance = Distance,
                 Collider = Collider
             };
+        }
+
+        public object __Copy__()
+        {
+            return Copy();
+        }
+
+        public bool __Eq__(object other)
+        {
+            if (other is CustomLogicLineCastHitResultBuiltin otherLineCastHitResult)
+            {
+                return IsCharacter == otherLineCastHitResult.IsCharacter &&
+                       IsMapObject == otherLineCastHitResult.IsMapObject &&
+                       Distance == otherLineCastHitResult.Distance &&
+                       Point.__Eq__(otherLineCastHitResult.Point) &&
+                       Normal.__Eq__(otherLineCastHitResult.Normal) &&
+                       Collider.__Eq__(otherLineCastHitResult.Collider);
+            }
+            return false;
+        }
+
+        public int __Hash__()
+        {
+            return IsCharacter.GetHashCode() ^
+                   IsMapObject.GetHashCode() ^
+                   Distance.GetHashCode() ^
+                   Point.__Hash__() ^
+                   Normal.__Hash__() ^
+                   Collider.__Hash__();
         }
     }
 }

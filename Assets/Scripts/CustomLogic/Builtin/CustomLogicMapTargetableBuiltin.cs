@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    [CLType(InheritBaseMembers = true)]
     class CustomLogicMapTargetableBuiltin : CustomLogicBaseBuiltin
     {
         public GameObject GameObject { get; }
@@ -14,26 +15,21 @@ namespace CustomLogic
             Value = mapTargetable;
         }
 
-        public override object GetField(string name)
+        [CLProperty(description: "The team of the targetable")]
+        public string Team
         {
-            if (name == "Team")
-                return Value.GetTeam();
-            if (name == "Position")
-                return new CustomLogicVector3Builtin(Value.GetPosition());
-            if (name == "Enabled")
-                return Value.Enabled;
-
-            return base.GetField(name);
+            get => Value.Team;
+            set => Value.Team = value;
         }
 
-        public override void SetField(string name, object value)
+        [CLProperty(description: "The position of the targetable")]
+        public CustomLogicVector3Builtin Position => new CustomLogicVector3Builtin(Value.GetPosition());
+
+        [CLProperty(description: "Is the targetable enabled")]
+        public bool Enabled
         {
-            if (name == "Team")
-                Value.Team = (string)value;
-            else if (name == "Enabled")
-                Value.Enabled = (bool)value;
-            else
-                base.SetField(name, value);
+            get => Value.Enabled;
+            set => Value.Enabled = value;
         }
     }
 }

@@ -9,7 +9,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Description = "References the main game camera.")]
+    [CLType(Abstract = true, InheritBaseMembers = true, Static = true, Description = "References the main game camera.")]
     class CustomLogicCameraBuiltin: CustomLogicBaseBuiltin
     {
         public CustomLogicCameraBuiltin(): base("Camera")
