@@ -627,6 +627,10 @@ namespace UI
 
             string name = ChatManager.GetIDString(player.ActorNumber, player.IsMasterClient, player.IsLocal) + status + team + loadout + player.GetStringProperty(PlayerProperty.Name);
 
+            if (name.StartsWith("[") && name.Contains("]"))
+            {
+                name = $"<color={teamColor}>{name.Substring(name.IndexOf(']') + 1).Trim()}</color>";
+            }
             string score = string.Empty;
             if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ScoreboardProperty != string.Empty)
             {
