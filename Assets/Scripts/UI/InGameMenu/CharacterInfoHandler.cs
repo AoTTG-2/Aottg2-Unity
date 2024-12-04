@@ -90,11 +90,19 @@ namespace UI
                     popup.ToggleName(true);
                     string name = character.Name;
 
+                    Color backgroundColor = new Color(0, 0, 0, 0.5f);
+                    if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
+                    {
+                        if (character.Team == TeamInfo.Blue)
+                            backgroundColor = new Color(0, 0, 0.5f, 0.5f);
+                        else if (character.Team == TeamInfo.Red)
+                            backgroundColor = new Color(0.5f, 0, 0, 0.5f);
+                    }
                     if (highlyVisible)
                         name = character.VisibleName;
                     if (character.Guild != "")
                         name = character.Guild + "\n" + name;
-                    popup.SetName(name, highlyVisible);
+                    popup.SetName(name, highlyVisible, backgroundColor);
                 }
                 else
                     popup.ToggleName(false);
