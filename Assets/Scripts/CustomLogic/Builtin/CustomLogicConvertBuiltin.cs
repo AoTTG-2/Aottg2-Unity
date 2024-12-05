@@ -7,7 +7,7 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicConvertBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicConvertBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicConvertBuiltin(): base("Convert")
         {
@@ -95,7 +95,7 @@ namespace CustomLogic
         [CLMethod("Checks if the value is an object")]
         public bool IsObject(object value)
         {
-            return value != null && value is CustomLogicBaseBuiltin || value is CustomLogicClassInstance;
+            return value != null && value is CustomLogicClassInstance;
         }
 
         [CLMethod("Checks if the value is a list")]

@@ -5,90 +5,113 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicStringBuiltin: CustomLogicBaseBuiltin
+    [CLType(Static = true)]
+    class CustomLogicStringBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicStringBuiltin(): base("String")
+        public CustomLogicStringBuiltin() : base("String")
         {
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLProperty("Gets the newline character.")]
+        public static string Newline => "\n";
+
+        [CLMethod("Formats a float to a string with the specified number of decimal places.")]
+        public string FormatFloat(object value, int decimals)
         {
-            if (name == "FormatFloat")
-                return Util.FormatFloat(parameters[0].UnboxToFloat(), (int)parameters[1]);
-            if (name == "Split")
-            {
-                string toSplit = (string)parameters[0];
-                string splitStr = (string)parameters[1];
-                char splitChar = splitStr[0];
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                foreach (string str in toSplit.Split(splitChar))
-                    list.List.Add(str);
-                return list;
-            }
-            if (name == "Join")
-            {
-                var list = (CustomLogicListBuiltin)parameters[0];
-                string separator = (string)parameters[1];
-                List<string> strList = new List<string>();
-                foreach (var obj in list.List)
-                {
-                    strList.Add((string)obj);
-                }
-                return string.Join(separator, strList.ToArray());
-            }
-            if (name == "Substring")
-            {
-                string str = (string)parameters[0];
-                int startIndex = (int)parameters[1];
-                return str.Substring(startIndex);
-            }
-            if (name == "SubstringWithLength")
-            {
-                string str = (string)parameters[0];
-                int startIndex = (int)parameters[1];
-                int length = (int)parameters[2];
-                return str.Substring(startIndex, length);
-            }
-            if (name == "Length")
-            {
-                string str = (string)parameters[0];
-                return str.Length;
-            }
-            if (name == "Replace")
-            {
-                string str = (string)parameters[0];
-                string replace = (string)parameters[1];
-                string with = (string)parameters[2];
-                return str.Replace(replace, with);
-            }
-            if (name == "Contains")
-            {
-                string str = (string)parameters[0];
-                string contains = (string)parameters[1];
-                return str.Contains(contains);
-            }
-            if (name == "StartsWith")
-                return ((string)parameters[0]).StartsWith((string)parameters[1]);
-            if (name == "EndsWith")
-                return ((string)parameters[0]).EndsWith((string)parameters[1]);
-            if (name == "Trim")
-                return ((string)parameters[0]).Trim();
-            if (name == "Insert")
-                return ((string)parameters[0]).Insert((int)parameters[2], (string)parameters[1]);
-            if (name == "Capitalize")
-                return ((string)parameters[0]).UpperFirstLetter();
-            if (name == "ToUpper")
-                return ((string)parameters[0]).ToUpper();
-            if (name == "ToLower")
-                return ((string)parameters[0]).ToLower();
-            return base.CallMethod(name, parameters);
+            return Util.FormatFloat(value.UnboxToFloat(), decimals);
         }
 
-        public override object GetField(string name)
+        [CLMethod("Splits a string by the specified separator.")]
+        public CustomLogicListBuiltin Split(string toSplit, string splitStr)
         {
-            if (name == "Newline")
-                return "\n";
-            return base.GetField(name);
+            char splitChar = splitStr[0];
+            CustomLogicListBuiltin list = new CustomLogicListBuiltin();
+            foreach (string str in toSplit.Split(splitChar))
+                list.List.Add(str);
+            return list;
+        }
+
+        [CLMethod("Joins a list of strings into a single string with the specified separator.")]
+        public string Join(CustomLogicListBuiltin list, string separator)
+        {
+            List<string> strList = new List<string>();
+            foreach (var obj in list.List)
+            {
+                strList.Add((string)obj);
+            }
+            return string.Join(separator, strList.ToArray());
+        }
+
+        [CLMethod("Gets a substring starting from the specified index.")]
+        public string Substring(string str, int startIndex)
+        {
+            return str.Substring(startIndex);
+        }
+
+        [CLMethod("Gets a substring of the specified length starting from the specified index.")]
+        public string SubstringWithLength(string str, int startIndex, int length)
+        {
+            return str.Substring(startIndex, length);
+        }
+
+        [CLMethod("Gets the length of the string.")]
+        public int Length(string str)
+        {
+            return str.Length;
+        }
+
+        [CLMethod("Replaces all occurrences of a substring with another substring.")]
+        public string Replace(string str, string replace, string with)
+        {
+            return str.Replace(replace, with);
+        }
+
+        [CLMethod("Checks if the string contains the specified substring.")]
+        public bool Contains(string str, string contains)
+        {
+            return str.Contains(contains);
+        }
+
+        [CLMethod("Checks if the string starts with the specified substring.")]
+        public bool StartsWith(string str, string startsWith)
+        {
+            return str.StartsWith(startsWith);
+        }
+
+        [CLMethod("Checks if the string ends with the specified substring.")]
+        public bool EndsWith(string str, string endsWith)
+        {
+            return str.EndsWith(endsWith);
+        }
+
+        [CLMethod("Trims whitespace from the start and end of the string.")]
+        public string Trim(string str)
+        {
+            return str.Trim();
+        }
+
+        [CLMethod("Inserts a substring at the specified index.")]
+        public string Insert(string str, string insert, int index)
+        {
+            return str.Insert(index, insert);
+        }
+
+        [CLMethod("Capitalizes the first letter of the string.")]
+        public string Capitalize(string str)
+        {
+            return str.UpperFirstLetter();
+        }
+
+        [CLMethod("Converts the string to uppercase.")]
+        public string ToUpper(string str)
+        {
+            return str.ToUpper();
+        }
+
+        [CLMethod("Converts the string to lowercase.")]
+        public string ToLower(string str)
+        {
+            return str.ToLower();
         }
     }
 }

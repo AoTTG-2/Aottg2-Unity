@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Abstract = true, InheritBaseMembers = true)]
-    abstract class CustomLogicCharacterBuiltin: CustomLogicBaseBuiltin, ICustomLogicEquals
+    abstract class CustomLogicCharacterBuiltin: CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
         public BaseCharacter Character;
         public CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character"): base(type)

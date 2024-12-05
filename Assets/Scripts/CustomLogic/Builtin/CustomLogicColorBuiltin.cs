@@ -7,7 +7,7 @@ using ColorUtility = UnityEngine.ColorUtility;
 namespace CustomLogic
 {
     [CLType(InheritBaseMembers = true, Static = true, Description = "")]
-    class CustomLogicColorBuiltin : CustomLogicBaseBuiltin, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
+    class CustomLogicColorBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 

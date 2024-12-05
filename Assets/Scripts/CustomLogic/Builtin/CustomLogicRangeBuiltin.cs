@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    // todo: implement some kind of catching/pool for this
+    // we really don't need to create a new list every time
+    
+    [CLType(InheritBaseMembers = false)]
     class CustomLogicRangeBuiltin: CustomLogicListBuiltin
     {
         public CustomLogicRangeBuiltin(List<object> parameterValues) : base("Range")

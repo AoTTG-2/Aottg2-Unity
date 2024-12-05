@@ -307,7 +307,7 @@ namespace CustomLogic
             }
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
-                if (!(instance is CustomLogicBaseBuiltin) && !(instance is CustomLogicClassInstanceBuiltin))
+                if (!(instance is CustomLogicClassInstanceBuiltin))
                     RunAssignmentsClassInstance(instance);
             }
             foreach (int id in MapLoader.IdToMapObject.Keys)
@@ -419,45 +419,43 @@ namespace CustomLogic
             if (!_staticClasses.ContainsKey(className))
             {
                 CustomLogicClassInstance instance;
-                if (className == "Game")
-                    instance = new CustomLogicGameBuiltin();
-                else if (className == "Convert")
-                    instance = new CustomLogicConvertBuiltin();
-                else if (className == "Cutscene")
-                    instance = new CustomLogicCutsceneBuiltin();
-                else if (className == "Time")
-                    instance = new CustomLogicTimeBuiltin();
-                else if (className == "Network")
-                    instance = new CustomLogicNetworkBuiltin();
-                else if (className == "UI")
-                    instance = new CustomLogicUIBuiltin();
-                else if (className == "Input")
-                    instance = new CustomLogicInputBuiltin();
-                else if (className == "Math")
-                    instance = new CustomLogicMathBuiltin();
-                else if (className == "Vector3")
-                    instance = new CustomLogicVector3Builtin(new List<object>());
-                else if (className == "Quaternion")
-                    instance = new CustomLogicQuaternionBuiltin(new List<object>());
-                else if (className == "Map")
-                    instance = new CustomLogicMapBuiltin();
-                else if (className == "String")
-                    instance = new CustomLogicStringBuiltin();
-                else if (className == "Random")
-                    instance = new CustomLogicRandomBuiltin(new List<object>());
-                else if (className == "Camera")
-                    instance = new CustomLogicCameraBuiltin();
-                else if (className == "RoomData")
-                    instance = new CustomLogicRoomDataBuiltin();
-                else if (className == "PersistentData")
-                    instance = new CustomLogicPersistentDataBuiltin();
-                else if (className == "Json")
-                    instance = new CustomLogicJsonBuiltin();
-                else if (className == "Physics")
-                    instance = new CustomLogicPhysicsBuiltin();
-                else if (className == "LineRenderer")
-                    instance = new CustomLogicLineRendererBuiltin(null);
-                else
+                // if (className == "Game")
+                //     instance = new CustomLogicGameBuiltin();
+                // else if (className == "Convert")
+                //     instance = new CustomLogicConvertBuiltin();
+                // else if (className == "Cutscene")
+                //     instance = new CustomLogicCutsceneBuiltin();
+                // else if (className == "Time")
+                //     instance = new CustomLogicTimeBuiltin();
+                // else if (className == "Network")
+                //     instance = new CustomLogicNetworkBuiltin();
+                // // else if (className == "UI")
+                // //     instance = new CustomLogicUIBuiltin();
+                // else if (className == "Input")
+                //     instance = new CustomLogicInputBuiltin();
+                // else if (className == "Math")
+                //     instance = new CustomLogicMathBuiltin();
+                // else if (className == "Quaternion")
+                //     instance = new CustomLogicQuaternionBuiltin(new List<object>());
+                // else if (className == "Map")
+                //     instance = new CustomLogicMapBuiltin();
+                // else if (className == "String")
+                //     instance = new CustomLogicStringBuiltin();
+                // else if (className == "Random")
+                //     instance = new CustomLogicRandomBuiltin(new List<object>());
+                // else if (className == "Camera")
+                //     instance = new CustomLogicCameraBuiltin();
+                // else if (className == "RoomData")
+                //     instance = new CustomLogicRoomDataBuiltin();
+                // else if (className == "PersistentData")
+                //     instance = new CustomLogicPersistentDataBuiltin();
+                // else if (className == "Json")
+                //     instance = new CustomLogicJsonBuiltin();
+                // else if (className == "Physics")
+                //     instance = new CustomLogicPhysicsBuiltin();
+                // else if (className == "LineRenderer")
+                //     instance = new CustomLogicLineRendererBuiltin();
+                // else
                     instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);
             }
@@ -524,21 +522,19 @@ namespace CustomLogic
             }
             
             CustomLogicClassInstance classInstance;
-            if (className == "Dict")
-                classInstance = new CustomLogicDictBuiltin();
-            else if (className == "List")
-                classInstance = new CustomLogicListBuiltin();
-            else if (className == "Vector3")
-                classInstance = new CustomLogicVector3Builtin(parameterValues);
-            else if (className == "Color")
-                classInstance = new CustomLogicColorBuiltin(parameterValues);
-            else if (className == "Quaternion")
-                classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
-            else if (className == "Range")
-                classInstance = new CustomLogicRangeBuiltin(parameterValues);
-            else if (className == "Random")
-                classInstance = new CustomLogicRandomBuiltin(parameterValues);
-            else
+            // if (className == "Dict")
+            //     classInstance = new CustomLogicDictBuiltin();
+            // else if (className == "List")
+            //     classInstance = new CustomLogicListBuiltin();
+            // else if (className == "Color")
+            //     classInstance = new CustomLogicColorBuiltin(parameterValues);
+            // else if (className == "Quaternion")
+            //     classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
+            // else if (className == "Range")
+            //     classInstance = new CustomLogicRangeBuiltin(parameterValues);
+            // else if (className == "Random")
+            //     classInstance = new CustomLogicRandomBuiltin(parameterValues);
+            // else
             {
                 if (_start.Classes.ContainsKey(className) == false)
                     return null;
@@ -766,9 +762,7 @@ namespace CustomLogic
 
             if (assignment.Right is not CustomLogicClassInstantiateExpressionAst)
             {
-                if (value is CustomLogicStructBuiltin structBuiltin)
-                    value = structBuiltin.Copy();
-                else if (value is CustomLogicClassInstance instance)
+                if (value is CustomLogicClassInstance instance)
                 {
                     const string method = nameof(ICustomLogicCopyable.__Copy__);
 
@@ -806,15 +800,9 @@ namespace CustomLogic
 
                 if (isCompoundAssignment)
                 {
-                    object originalValue;
-                    if (fieldInstance is CustomLogicBaseBuiltin builtin)
-                        originalValue = builtin.GetField(fieldName);
-                    else
-                    {
-                        originalValue = fieldInstance.GetVariable(fieldName);
-                        if (originalValue is BuiltinProperty property) 
-                            originalValue = property.GetValue(fieldInstance);
-                    }
+                    var originalValue = fieldInstance.GetVariable(fieldName);
+                    if (originalValue is BuiltinProperty property) 
+                        originalValue = property.GetValue(fieldInstance);
                     newValue = op switch
                     {
                         CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
@@ -825,27 +813,22 @@ namespace CustomLogic
                     };
                 }
                 
-                if (fieldInstance is CustomLogicBaseBuiltin baseBuiltin)
-                    baseBuiltin.SetField(fieldName, newValue);
-                else
+                if (fieldInstance.TryGetVariable(fieldName, out var field))
                 {
-                    if (fieldInstance.TryGetVariable(fieldName, out var field))
+                    if (field is BuiltinProperty property)
                     {
-                        if (field is BuiltinProperty property)
-                        {
-                            if (property.IsReadOnly)
-                                throw new Exception($"Cannot reassign read-only field '{fieldInstance.ClassName}.{fieldName}'");
+                        if (property.IsReadOnly)
+                            throw new Exception($"Cannot reassign read-only field '{fieldInstance.ClassName}.{fieldName}'");
 
-                            property.SetValue(fieldInstance, newValue);
-                        }
-                        else if (field is BuiltinMethod)
-                            throw new Exception($"Cannot reassign built-in method '{fieldInstance.ClassName}.{fieldName}'");
-                        else
-                            fieldInstance.Variables[fieldName] = newValue;
+                        property.SetValue(fieldInstance, newValue);
                     }
+                    else if (field is BuiltinMethod)
+                        throw new Exception($"Cannot reassign built-in method '{fieldInstance.ClassName}.{fieldName}'");
                     else
-                        fieldInstance.Variables.Add(fieldName, newValue);
+                        fieldInstance.Variables[fieldName] = newValue;
                 }
+                else
+                    fieldInstance.Variables.Add(fieldName, newValue);
             }
         }
 
@@ -863,10 +846,6 @@ namespace CustomLogic
                 if (classInstance.TryGetVariable(methodName, out var variable) && variable is BuiltinMethod method)
                 {
                     return method.Call(classInstance, parameterValues, new Dictionary<string, object>());
-                }
-                if (classInstance is CustomLogicBaseBuiltin baseBuiltin)
-                {
-                    return baseBuiltin.CallMethod(methodName, parameterValues);
                 }
             
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
@@ -987,8 +966,6 @@ namespace CustomLogic
                 {
                     CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)expression;
                     CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                    if (fieldInstance is CustomLogicBaseBuiltin)
-                        return ((CustomLogicBaseBuiltin)fieldInstance).GetField(fieldExpression.FieldName);
                     object value = fieldInstance.GetVariable(fieldExpression.FieldName);
                     if (value is BuiltinProperty builtinField)
                         return builtinField.GetValue(fieldInstance) ;

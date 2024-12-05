@@ -6,7 +6,7 @@ using SimpleJSONFixed;
 namespace CustomLogic
 {
     [CLType(Static = true, InheritBaseMembers = true)]
-    class CustomLogicJsonBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicJsonBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicJsonBuiltin() : base("Json")
         {

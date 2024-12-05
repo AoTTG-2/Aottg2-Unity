@@ -15,7 +15,7 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicGameBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicGameBuiltin: CustomLogicClassInstanceBuiltin
     {
         private string _lastSetTopLabel = string.Empty;
         private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();

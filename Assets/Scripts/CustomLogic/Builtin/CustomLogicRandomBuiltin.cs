@@ -5,7 +5,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicRandomBuiltin : CustomLogicBaseBuiltin
+    [CLType(Static = true)]
+    class CustomLogicRandomBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Unity.Mathematics.Random Rand;
         public bool UseInstanceRandom = false;
@@ -19,41 +20,31 @@ namespace CustomLogic
             }
         }
 
-        public override object CallMethod(string name, List<object> parameters)
-        {
-            if (name == "RandomInt")
-                return RandomInt(parameters[0].UnboxToInt(), parameters[1].UnboxToInt());
-            if (name == "RandomFloat")
-                return RandomFloat(parameters[0].UnboxToFloat(), parameters[1].UnboxToFloat());
-            if (name == "RandomBool")
-                return RandomBool();
-            if (name == "RandomVector3")
-            {
-                Vector3 a = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                Vector3 b = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                return new CustomLogicVector3Builtin(RandomVector3(a, b));
-            }
-            if (name == "RandomDirection")
-                return new CustomLogicVector3Builtin(RandomDirection());
-            if (name == "RandomSign")
-                return RandomSign();
-            if (name == "PerlinNoise")
-                return Mathf.PerlinNoise(parameters[0].UnboxToFloat(), parameters[1].UnboxToFloat());
-            return base.CallMethod(name, parameters);
-        }
+        [CLMethod("Generates a random integer between the specified range.")]
+        public int RandomInt(int min, int max) => UseInstanceRandom ? Rand.NextInt(min, max) : Random.Range(min, max);
 
-        private int RandomInt(int min, int max) => UseInstanceRandom ? Rand.NextInt(min, max) : Random.Range(min, max);
-        private float RandomFloat(float min, float max) => UseInstanceRandom ? Rand.NextFloat(min, max) : Random.Range(min, max);
-        private bool RandomBool() => UseInstanceRandom ? Rand.NextBool() : RandomGen.GetRandomBool();
-        private Vector3 RandomVector3(Vector3 a, Vector3 b) => new(RandomFloat(a.x, b.x), RandomFloat(a.y, b.y), RandomFloat(a.z, b.z));
+        [CLMethod("Generates a random float between the specified range.")]
+        public float RandomFloat(float min, float max) => UseInstanceRandom ? Rand.NextFloat(min, max) : Random.Range(min, max);
 
-        private Vector3 RandomDirection(bool flat = false)
+        [CLMethod("Generates a random boolean value.")]
+        public bool RandomBool() => UseInstanceRandom ? Rand.NextBool() : RandomGen.GetRandomBool();
+
+        [CLMethod("Generates a random Vector3 between the specified ranges.")]
+        public CustomLogicVector3Builtin RandomVector3(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => new CustomLogicVector3Builtin(new Vector3(RandomFloat(a.Value.x, b.Value.x), RandomFloat(a.Value.y, b.Value.y), RandomFloat(a.Value.z, b.Value.z)));
+
+        [CLMethod("Generates a random direction vector. If flat is true, the y component will be zero.")]
+        public CustomLogicVector3Builtin RandomDirection(bool flat = false)
         {
             Vector3 v = new(RandomFloat(-1f, 1f), RandomFloat(-1f, 1f), RandomFloat(-1f, 1f));
             if (flat)
                 v.y = 0f;
-            return v.normalized;
+            return new CustomLogicVector3Builtin(v.normalized);
         }
-        private int RandomSign() => RandomBool() ? 1 : -1;
+
+        [CLMethod("Generates a random sign, either 1 or -1.")]
+        public int RandomSign() => RandomBool() ? 1 : -1;
+
+        [CLMethod("Calculates Perlin noise for the specified coordinates.")]
+        public float PerlinNoise(float x, float y) => Mathf.PerlinNoise(x, y);
     }
 }

@@ -5,6 +5,7 @@
         protected CustomLogicClassInstanceBuiltin(string className) : base(className)
         {
             Variables["Init"] = new BuiltinMethod((_, _, _) => null);
+            Variables["IsCharacter"] = false;
         }
     }
 }

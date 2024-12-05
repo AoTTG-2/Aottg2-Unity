@@ -11,7 +11,7 @@ using CustomLogic;
 
 namespace CustomLogic
 {
-    class CustomLogicMapObjectBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicMapObjectBuiltin: CustomLogicClassInstanceBuiltin
     {
         public MapObject Value;
         private Vector3 _internalRotation;

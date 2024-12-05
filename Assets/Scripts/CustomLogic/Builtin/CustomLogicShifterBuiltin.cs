@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    [CLType(Static = false)]
     class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {
         public BaseShifter Shifter;
@@ -13,212 +14,193 @@ namespace CustomLogic
         {
             Shifter = shifter;
         }
-        public override object CallMethod(string methodName, List<object> parameters)
+
+        [CLProperty("Gets or sets the size of the shifter.")]
+        public float Size
         {
-            bool mine = Shifter.IsMine() && !Shifter.Dead;
-            if (methodName == "MoveTo")
+            get => Shifter.Size;
+            set => Shifter.SetSize(value);
+        }
+
+        [CLProperty("Gets or sets the run speed base of the shifter.")]
+        public float RunSpeedBase
+        {
+            get => Shifter.RunSpeedBase;
+            set => Shifter.RunSpeedBase = value;
+        }
+
+        [CLProperty("Gets or sets the walk speed base of the shifter.")]
+        public float WalkSpeedBase
+        {
+            get => Shifter.WalkSpeedBase;
+            set => Shifter.WalkSpeedBase = value;
+        }
+
+        [CLProperty("Gets or sets the walk speed per level of the shifter.")]
+        public float WalkSpeedPerLevel
+        {
+            get => Shifter.WalkSpeedPerLevel;
+            set => Shifter.WalkSpeedPerLevel = value;
+        }
+
+        [CLProperty("Gets or sets the run speed per level of the shifter.")]
+        public float RunSpeedPerLevel
+        {
+            get => Shifter.RunSpeedPerLevel;
+            set => Shifter.RunSpeedPerLevel = value;
+        }
+
+        [CLProperty("Gets or sets the turn speed of the shifter.")]
+        public float TurnSpeed
+        {
+            get => Shifter.TurnSpeed;
+            set => Shifter.TurnSpeed = value;
+        }
+
+        [CLProperty("Gets or sets the rotate speed of the shifter.")]
+        public float RotateSpeed
+        {
+            get => Shifter.RotateSpeed;
+            set => Shifter.RotateSpeed = value;
+        }
+
+        [CLProperty("Gets or sets the jump force of the shifter.")]
+        public float JumpForce
+        {
+            get => Shifter.JumpForce;
+            set => Shifter.JumpForce = value;
+        }
+
+        [CLProperty("Gets or sets the action pause duration of the shifter.")]
+        public float ActionPause
+        {
+            get => Shifter.ActionPause;
+            set => Shifter.ActionPause = value;
+        }
+
+        [CLProperty("Gets or sets the attack pause duration of the shifter.")]
+        public float AttackPause
+        {
+            get => Shifter.AttackPause;
+            set => Shifter.AttackPause = value;
+        }
+
+        [CLProperty("Gets or sets the turn pause duration of the shifter.")]
+        public float TurnPause
+        {
+            get => Shifter.TurnPause;
+            set => Shifter.TurnPause = value;
+        }
+
+        [CLProperty("Gets the detect range of the shifter.")]
+        public float DetectRange
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>().DetectRange : 0;
+            set { if (Shifter.IsMine() && Shifter.AI) Shifter.GetComponent<BaseTitanAIController>().SetDetectRange(value); }
+        }
+
+        [CLProperty("Gets the focus range of the shifter.")]
+        public float FocusRange
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>().FocusRange : 0;
+            set { if (Shifter.IsMine() && Shifter.AI) Shifter.GetComponent<BaseTitanAIController>().FocusRange = value; }
+        }
+
+        [CLProperty("Gets the focus time of the shifter.")]
+        public float FocusTime
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>().FocusTime : 0;
+            set { if (Shifter.IsMine() && Shifter.AI) Shifter.GetComponent<BaseTitanAIController>().FocusTime = value; }
+        }
+
+        [CLProperty("Gets the far attack cooldown of the shifter.")]
+        public float FarAttackCooldown
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown : 0;
+        }
+
+        [CLProperty("Gets the attack wait time of the shifter.")]
+        public float AttackWait
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>().AttackWait : 0;
+        }
+
+        [CLProperty("Gets or sets the attack speed multiplier of the shifter.")]
+        public float AttackSpeedMultiplier
+        {
+            get => Shifter.AttackSpeedMultiplier;
+            set => Shifter.AttackSpeedMultiplier = value;
+        }
+
+        [CLProperty("Gets or sets a value indicating whether pathfinding is used by the shifter.")]
+        public bool UsePathfinding
+        {
+            get => Shifter.IsMine() && Shifter.AI ? Shifter.GetComponent<BaseTitanAIController>()._usePathfinding : false;
+            set { if (Shifter.IsMine() && Shifter.AI) Shifter.GetComponent<BaseTitanAIController>()._usePathfinding = value; }
+        }
+
+        [CLProperty("Gets the nape position of the shifter.")]
+        public CustomLogicVector3Builtin NapePosition => new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
+
+        [CLProperty("Gets or sets the death animation length of the shifter.")]
+        public float DeathAnimLength
+        {
+            get => Shifter.DeathAnimationLength;
+            set => Shifter.DeathAnimationLength = value;
+        }
+
+        [CLMethod("Moves the shifter to the specified position.")]
+        public void MoveTo(CustomLogicVector3Builtin position, float range, bool ignoreEnemies)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
+                Shifter.GetComponent<BaseTitanAIController>().MoveTo(position.Value, range, ignoreEnemies);
+        }
+
+        [CLMethod("Targets the specified enemy.")]
+        public void Target(object enemyObj, float focus)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
             {
-                if (!mine || !Shifter.AI)
-                    return null;
-                var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                var range = parameters[1].UnboxToFloat();
-                bool ignoreEnemies = (bool)parameters[2];
-                Shifter.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
-                return null;
-            }
-            if (methodName == "Target")
-            {
-                if (!mine || !Shifter.AI)
-                    return null;
-                ITargetable enemy;
-                if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
-                    enemy = mapTargetable.Value;
-                else
-                    enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
-                var focus = parameters[1].UnboxToFloat();
+                ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)enemyObj).Character;
                 Shifter.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
-                return null;
             }
-            if (methodName == "Idle")
-            {
-                if (!mine || !Shifter.AI)
-                    return null;
-                var time = parameters[0].UnboxToFloat();
+        }
+
+        [CLMethod("Forces the shifter to idle for a specified duration.")]
+        public void Idle(float time)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Shifter.GetComponent<BaseTitanAIController>().ForceIdle(time);
-                return null;
-            }
-            if (methodName == "Wander")
-            {
-                if (!mine || !Shifter.AI)
-                    return null;
+        }
+
+        [CLMethod("Cancels the shifter's current order, causing it to wander.")]
+        public void Wander()
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Shifter.GetComponent<BaseTitanAIController>().CancelOrder();
-                return null;
-            }
-            if (methodName == "Blind")
-            {
-                if (mine)
-                    Shifter.Blind();
-                return null;
-            }
-            if (methodName == "Cripple")
-            {
-                if (mine)
-                {
-                    var time = parameters[0].UnboxToFloat();
-                    Shifter.Cripple(time);
-                }
-                return null;
-            }
-            if (methodName == "Emote")
-            {
-                if (mine)
-                    Shifter.Emote((string)parameters[0]);
-                return null;
-            }
-            return base.CallMethod(methodName, parameters);
         }
 
-        public override object GetField(string name)
+        [CLMethod("Blinds the shifter.")]
+        public void Blind()
         {
-            if (name == "Size")
-                return Shifter.Size;
-            if (name == "RunSpeedBase")
-                return Shifter.RunSpeedBase;
-            if (name == "WalkSpeedBase")
-                return Shifter.WalkSpeedBase;
-            if (name == "WalkSpeedPerLevel")
-                return Shifter.WalkSpeedPerLevel;
-            if (name == "RunSpeedPerLevel")
-                return Shifter.RunSpeedPerLevel;
-            if (name == "TurnSpeed")
-                return Shifter.TurnSpeed;
-            if (name == "RotateSpeed")
-                return Shifter.RotateSpeed;
-            if (name == "JumpForce")
-                return Shifter.JumpForce;
-            if (name == "ActionPause")
-                return Shifter.ActionPause;
-            if (name == "AttackPause")
-                return Shifter.AttackPause;
-            if (name == "TurnPause")
-                return Shifter.TurnPause;
-            if (name == "DetectRange")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>().DetectRange;
-                return 0;
-            }
-            if (name == "FocusRange")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>().FocusRange;
-                return 0;
-            }
-            if (name == "FocusTime")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>().FocusTime;
-                return 0;
-            }
-            if (name == "FarAttackCooldown")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown;
-                return 0;
-            }
-            if (name == "AttackWait")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>().AttackWait;
-                return 0;
-            }
-            if (name == "AttackSpeedMultiplier")
-            {
-                return Shifter.AttackSpeedMultiplier;
-            }
-            if (name == "UsePathfinding")
-            {
-                if (Shifter.IsMine() && Shifter.AI)
-                    return Shifter.GetComponent<BaseTitanAIController>()._usePathfinding;
-                return false;
-            }
-            if (name == "NapePosition")
-            {
-                return new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
-            }
-            if (name == "DeathAnimLength")
-            {
-                return Shifter.DeathAnimationLength;
-            }
-            return base.GetField(name);
+            if (Shifter.IsMine() && !Shifter.Dead)
+                Shifter.Blind();
         }
 
-        public override void SetField(string name, object value)
+        [CLMethod("Cripples the shifter for a specified duration.")]
+        public void Cripple(float time)
         {
-            if (!Shifter.IsMine())
-                return;
-            if (name == "Size")
-                Shifter.SetSize(value.UnboxToFloat());
-            else if (name == "RunSpeedBase")
-                Shifter.RunSpeedBase = value.UnboxToFloat();
-            else if (name == "WalkSpeedBase")
-                Shifter.WalkSpeedBase = value.UnboxToFloat();
-            else if (name == "RunSpeedPerLevel")
-                Shifter.RunSpeedPerLevel = value.UnboxToFloat();
-            else if (name == "WalkSpeedPerLevel")
-                Shifter.WalkSpeedPerLevel = value.UnboxToFloat();
-            else if (name == "TurnSpeed")
-                Shifter.TurnSpeed = value.UnboxToFloat();
-            else if (name == "RotateSpeed")
-                Shifter.RotateSpeed = value.UnboxToFloat();
-            else if (name == "JumpForce")
-                Shifter.JumpForce = value.UnboxToFloat();
-            else if (name == "ActionPause")
-                Shifter.ActionPause = value.UnboxToFloat();
-            else if (name == "AttackPause")
-                Shifter.AttackPause = value.UnboxToFloat();
-            else if (name == "TurnPause")
-                Shifter.TurnPause = value.UnboxToFloat();
-            else if (name == "DetectRange")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>().SetDetectRange(value.UnboxToFloat());
-            }
-            else if (name == "FocusRange")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
-            }
-            else if (name == "FocusTime")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>().FocusTime = value.UnboxToFloat();
-            }
-            else if (name == "FarAttackCooldown")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown = value.UnboxToFloat();
-            }
-            else if (name == "AttackWait")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>().AttackWait = value.UnboxToFloat();
-            }
-            else if (name == "AttackSpeedMultiplier")
-            {
-                Shifter.AttackSpeedMultiplier = value.UnboxToFloat();
-            }
-            if (name == "DeathAnimLength")
-            {
-                Shifter.DeathAnimationLength = value.UnboxToFloat();
-            }
-            else if (name == "UsePathfinding")
-            {
-                if (Shifter.AI)
-                    Shifter.GetComponent<BaseTitanAIController>()._usePathfinding = (bool)value;
-            }
-            else
-                base.SetField(name, value);
+            if (Shifter.IsMine() && !Shifter.Dead)
+                Shifter.Cripple(time);
+        }
+
+        [CLMethod("Makes the shifter perform an emote.")]
+        public void Emote(string emote)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead)
+                Shifter.Emote(emote);
         }
     }
 }

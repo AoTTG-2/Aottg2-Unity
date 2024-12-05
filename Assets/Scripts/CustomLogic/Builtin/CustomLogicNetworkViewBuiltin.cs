@@ -7,7 +7,8 @@ using Photon.Pun;
 
 namespace CustomLogic
 {
-    class CustomLogicNetworkViewBuiltin: CustomLogicBaseBuiltin
+    [CLType(Static = false)]
+    class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
     {
         public MapObject MapObject;
         public CustomLogicPhotonSync Sync;
@@ -15,11 +16,23 @@ namespace CustomLogic
         List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
         List<object> _streamObjs;
 
-        public CustomLogicNetworkViewBuiltin(MapObject obj): base("NetworkView")
+        public CustomLogicNetworkViewBuiltin(MapObject obj) : base("NetworkView")
         {
             MapObject = obj;
         }
 
+        [CLProperty("Gets the owner of the network view.")]
+        public CustomLogicPlayerBuiltin Owner
+        {
+            get
+            {
+                if (Sync == null)
+                    return null;
+                return new CustomLogicPlayerBuiltin(Sync.photonView.Owner);
+            }
+        }
+
+        [CLMethod("Handles per-second updates for the network view.")]
         public void OnSecond()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -37,11 +50,13 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod("Registers a component instance with the network view.")]
         public void RegisterComponentInstance(CustomLogicComponentInstance instance)
         {
             _classInstances.Add(instance);
         }
 
+        [CLMethod("Sets the sync object for the network view.")]
         public void SetSync(CustomLogicPhotonSync sync)
         {
             int oldId = OwnerId;
@@ -62,9 +77,10 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod("Sends the network stream to the specified Photon stream.")]
         public void SendNetworkStream(PhotonStream stream)
         {
-            _streamObjs = new List<object>();            
+            _streamObjs = new List<object>();
             foreach (var instance in _classInstances)
             {
                 CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
@@ -72,6 +88,7 @@ namespace CustomLogic
             stream.SendNext(_streamObjs.ToArray());
         }
 
+        [CLMethod("Handles the network stream received from the specified objects.")]
         public void OnNetworkStream(object[] objs)
         {
             _streamObjs = new List<object>(objs);
@@ -83,6 +100,7 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod("Handles a network message from the specified player.")]
         public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message, double sentServerTime)
         {
             if (CustomLogicManager.Evaluator == null || MapObject.GameObject == null)
@@ -93,66 +111,51 @@ namespace CustomLogic
             }
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLMethod("Transfers the network view to the specified player.")]
+        public void Transfer(CustomLogicPlayerBuiltin player)
         {
-            if (methodName == "Transfer")
+            if (Sync.photonView.IsMine)
             {
-                if (Sync.photonView.IsMine)
+                if (player.Player != PhotonNetwork.LocalPlayer)
                 {
-                    var player = (CustomLogicPlayerBuiltin)parameters[0];
-                    if (player.Player != PhotonNetwork.LocalPlayer)
-                    {
-                        RPCManager.PhotonView.RPC("TransferNetworkViewRPC", player.Player, new object[] { MapObject.ScriptObject.Id });
-                        PhotonNetwork.Destroy(Sync.gameObject);
-                    }
+                    RPCManager.PhotonView.RPC("TransferNetworkViewRPC", player.Player, new object[] { MapObject.ScriptObject.Id });
+                    PhotonNetwork.Destroy(Sync.gameObject);
                 }
-                return null;
             }
-            if (methodName == "SendMessage")
-            {
-                var target = (CustomLogicPlayerBuiltin)parameters[0];
-                string msg = (string)parameters[1];
-                Sync.SendMessage(target.Player, msg);
-                return null;
-            }
-            if (methodName == "SendMessageAll")
-            {
-                string msg = (string)parameters[0];
-                Sync.SendMessageAll(msg);
-                return null;
-            }
-            if (methodName == "SendMessageOthers")
-            {
-                string msg = (string)parameters[0];
-                Sync.SendMessageOthers(msg);
-                return null;
-            }
-            if (methodName == "SendStream")
-            {
-                var obj = parameters[0];
-                obj = SerializeStreamObj(obj);
-                _streamObjs.Add(obj);
-                return null;
-            }
-            if (methodName == "ReceiveStream")
-            {
-                var obj = _streamObjs[0];
-                obj = DeserializeStreamObj(obj);
-                _streamObjs.RemoveAt(0);
-                return obj;
-            }
-            return base.CallMethod(methodName, parameters);
         }
 
-        public override object GetField(string name)
+        [CLMethod("Sends a message to the specified player.")]
+        public void SendMessage(CustomLogicPlayerBuiltin target, string msg)
         {
-            if (name == "Owner")
-            {
-                if (Sync == null)
-                    return null;
-                return new CustomLogicPlayerBuiltin(Sync.photonView.Owner);
-            }
-            return base.GetField(name);
+            Sync.SendMessage(target.Player, msg);
+        }
+
+        [CLMethod("Sends a message to all players.")]
+        public void SendMessageAll(string msg)
+        {
+            Sync.SendMessageAll(msg);
+        }
+
+        [CLMethod("Sends a message to all players except the sender.")]
+        public void SendMessageOthers(string msg)
+        {
+            Sync.SendMessageOthers(msg);
+        }
+
+        [CLMethod("Sends an object through the network stream.")]
+        public void SendStream(object obj)
+        {
+            obj = SerializeStreamObj(obj);
+            _streamObjs.Add(obj);
+        }
+
+        [CLMethod("Receives an object from the network stream.")]
+        public object ReceiveStream()
+        {
+            var obj = _streamObjs[0];
+            obj = DeserializeStreamObj(obj);
+            _streamObjs.RemoveAt(0);
+            return obj;
         }
 
         protected object SerializeStreamObj(object obj)

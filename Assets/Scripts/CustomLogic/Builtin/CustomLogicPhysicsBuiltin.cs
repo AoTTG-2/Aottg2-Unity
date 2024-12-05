@@ -6,60 +6,52 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicPhysicsBuiltin: CustomLogicBaseBuiltin
+    [CLType(Static = true)]
+    class CustomLogicPhysicsBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicPhysicsBuiltin(): base("Physics")
+        public CustomLogicPhysicsBuiltin() : base("Physics")
         {
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLMethod("Performs a line cast between two points.")]
+        public static object LineCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
-            if (name == "LineCast")
+            RaycastHit hit;
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            int layer = MapLoader.GetColliderLayer(collideWith);
+            if (Physics.Linecast(startPosition, endPosition, out hit, PhysicsLayer.CopyMask(layer).value))
             {
-                RaycastHit hit;
-                var start = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                var end = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                string collideWith = (string)parameters[2];
-                int layer = MapLoader.GetColliderLayer(collideWith);
-                if (Physics.Linecast(start, end, out hit, PhysicsLayer.CopyMask(layer).value))
+                var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                if (collider != null)
                 {
-                    var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
-                    if (collider != null)
+                    return new CustomLogicLineCastHitResultBuiltin
                     {
-                        return new CustomLogicLineCastHitResultBuiltin
-                        {
-                            IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
-                            IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
-                            Point = new CustomLogicVector3Builtin(hit.point),
-                            Normal = new CustomLogicVector3Builtin(hit.normal),
-                            Distance = hit.distance,
-                            Collider = collider
-                        };
-                    }
+                        IsCharacter = collider != null && collider is CustomLogicCharacterBuiltin,
+                        IsMapObject = collider != null && collider is CustomLogicMapObjectBuiltin,
+                        Point = new CustomLogicVector3Builtin(hit.point),
+                        Normal = new CustomLogicVector3Builtin(hit.normal),
+                        Distance = hit.distance,
+                        Collider = collider
+                    };
                 }
-                return null;
             }
-            if (name == "SphereCast")
-            {
-                RaycastHit hit;
-                var start = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                var end = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                var radius = (float)parameters[2];
-                string collideWith = (string)parameters[3];
-                int layer = MapLoader.GetColliderLayer(collideWith);
-                var diff = (end - start);
-                if (Physics.SphereCast(start, radius, diff.normalized, out hit, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
-                {
-                    return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
-                }
-                return null;
-            }
-            return base.CallMethod(name, parameters);
+            return null;
         }
 
-        public override object GetField(string name)
+        [CLMethod("Performs a sphere cast between two points.")]
+        public static object SphereCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, string collideWith)
         {
-            return base.GetField(name);
+            RaycastHit hit;
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            int layer = MapLoader.GetColliderLayer(collideWith);
+            var diff = (endPosition - startPosition);
+            if (Physics.SphereCast(startPosition, radius, diff.normalized, out hit, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
+            {
+                return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+            }
+            return null;
         }
     }
 }

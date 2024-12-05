@@ -44,7 +44,7 @@ namespace CustomLogic
             return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit");
         }
 
-        public void OnCollisionStay(CustomLogicBaseBuiltin other)
+        public void OnCollisionStay(CustomLogicClassInstanceBuiltin other)
         {
             if (!Enabled)
                 return;
@@ -52,7 +52,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
         }
 
-        public void OnCollisionEnter(CustomLogicBaseBuiltin other)
+        public void OnCollisionEnter(CustomLogicClassInstanceBuiltin other)
         {
             if (!Enabled)
                 return;
@@ -60,7 +60,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new List<object>() { other });
         }
 
-        public void OnCollisionExit(CustomLogicBaseBuiltin other)
+        public void OnCollisionExit(CustomLogicClassInstanceBuiltin other)
         {
             if (!Enabled)
                 return;

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(InheritBaseMembers = true)]
-    class CustomLogicListBuiltin : CustomLogicBaseBuiltin, ICustomLogicToString
+    class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicToString
     {
         public List<object> List = new List<object>();
 
