@@ -292,12 +292,14 @@ namespace CustomLogic
             foreach (var staticType in CustomLogicBuiltinTypes.StaticTypes)
             {
                 var instance = CustomLogicActivator.CreateInstance(staticType, EmptyArgs);
+                if (staticType == "UI")
+                    Debug.Log("UI created");
                 _staticClasses[staticType] = instance;
             }
             
-            foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
-                CreateStaticClass(name);
+            // foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
+            // "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
+            //     CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
                 if (className == "Main")
@@ -847,6 +849,9 @@ namespace CustomLogic
                 {
                     return method.Call(classInstance, parameterValues, new Dictionary<string, object>());
                 }
+                
+                if (classInstance is CustomLogicClassInstanceBuiltin)
+                    throw new Exception($"Method {methodName} not found in class {classInstance.ClassName}");
             
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
                 

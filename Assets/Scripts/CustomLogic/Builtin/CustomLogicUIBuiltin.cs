@@ -73,7 +73,7 @@ namespace CustomLogic
         [CLMethod] public static void SetLabelForTime(string label, string message, float time) => InGameManager.SetLabel(label, message, time);
         
         [CLMethod]
-        public static void SeLabelAll(string label, string message)
+        public static void SetLabelAll(string label, string message)
         {
             if (PhotonNetwork.IsMasterClient)
             {
@@ -119,10 +119,10 @@ namespace CustomLogic
         
         [CLMethod] public static void AddPopupBottomButton(string popupName, string label, string callback) => Menu.GetCustomPopup(popupName).AddBottomButton(label, callback);
         
-        [CLMethod] public static void AddPopupButtons(string popupName, List<object> labels, List<object> callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels, callbacks); // todo: test c# type (List) to CL type (CLList) conversion
+        [CLMethod] public static void AddPopupButtons(string popupName, CustomLogicListBuiltin labels, CustomLogicListBuiltin callbacks) => Menu.GetCustomPopup(popupName).AddButtons(labels.List, callbacks.List);
         
         [CLMethod]
-        public static string WrapStyleTag(string text, string style, string arg = null) // todo: optional arg doesn't work, fix it
+        public static string WrapStyleTag(string text, string style, string arg = null)
         {
             if (arg == null)
                 return $"<{style}>{text}</{style}>";

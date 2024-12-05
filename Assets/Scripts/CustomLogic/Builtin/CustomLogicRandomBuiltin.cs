@@ -11,9 +11,9 @@ namespace CustomLogic
         public Unity.Mathematics.Random Rand;
         public bool UseInstanceRandom = false;
 
-        public CustomLogicRandomBuiltin(List<object> parameterValues) : base("Random")
+        public CustomLogicRandomBuiltin(object[] parameterValues) : base("Random")
         {
-            if (parameterValues.Count == 1)
+            if (parameterValues.Length == 1)
             {
                 Rand = new Unity.Mathematics.Random((uint)parameterValues[0].UnboxToInt());
                 UseInstanceRandom = true;

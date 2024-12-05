@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    [CLType(Static = true)]
     class CustomLogicQuaternionBuiltin: CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
-        public CustomLogicQuaternionBuiltin(List<object> parameterValues): base("Quaternion")
+        public CustomLogicQuaternionBuiltin(object[] parameterValues): base("Quaternion")
         {
-            if (parameterValues.Count == 0)
+            if (parameterValues.Length == 0)
                 return;
             Value = new Quaternion(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat(), parameterValues[3].UnboxToFloat());
         }

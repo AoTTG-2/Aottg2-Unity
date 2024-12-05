@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(InheritBaseMembers = true)]
-    class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicToString
+    class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin
     {
         public List<object> List = new List<object>();
 
@@ -107,9 +107,9 @@ namespace CustomLogic
             return builder.ToString();
         }
 
-        public string __Str__()
-        {
-            return ToString();
-        }
+        // public string __Str__()
+        // {
+        //     return ToString();
+        // }
     }
 }

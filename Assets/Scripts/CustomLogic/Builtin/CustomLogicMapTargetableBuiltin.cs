@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(InheritBaseMembers = true)]
+    [CLType(Abstract = true)]
     class CustomLogicMapTargetableBuiltin : CustomLogicClassInstanceBuiltin
     {
         public GameObject GameObject { get; }

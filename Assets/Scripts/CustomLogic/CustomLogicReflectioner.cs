@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace CustomLogic
@@ -241,7 +242,8 @@ namespace CustomLogic
             }
             
             var type = CustomLogicBuiltinTypes.Types[typeName];
-            var methodInfo = type.GetMethod(methodName, Flags);
+            var methodInfo = type.GetMethods(Flags)
+                .FirstOrDefault(x => x.Name == methodName && x.HasAttribute<CLMethodAttribute>());
             
             if (methodInfo == null)
             {

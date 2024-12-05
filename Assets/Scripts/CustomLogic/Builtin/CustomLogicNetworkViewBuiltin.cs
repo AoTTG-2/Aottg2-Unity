@@ -7,7 +7,7 @@ using Photon.Pun;
 
 namespace CustomLogic
 {
-    [CLType(Static = false)]
+    [CLType(Abstract = true)]
     class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
     {
         public MapObject MapObject;

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Static = false)]
+    [CLType(Abstract = true)]
     class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Player Player;

@@ -11,6 +11,7 @@ using CustomLogic;
 
 namespace CustomLogic
 {
+    [CLType(Abstract = true)]
     class CustomLogicMapObjectBuiltin: CustomLogicClassInstanceBuiltin
     {
         public MapObject Value;
@@ -306,12 +307,8 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Add a sphere collider to the object")]
-        public void AddSphereCollider(object[] parameters)
+        public void AddSphereCollider(string collideMode, string collideWith, CustomLogicVector3Builtin center, float radius)
         {
-            string collideMode = (string)parameters[0];
-            string collideWith = (string)parameters[1];
-            Vector3 center = ((CustomLogicVector3Builtin)parameters[2]).Value;
-            float radius = (float)parameters[3];
             Vector3 scale = Value.BaseScale;
             center = Util.DivideVectors(center, scale);
             radius = radius / scale.MaxComponent();
@@ -333,19 +330,17 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Add a box collider to the object")]
-        public void AddBoxCollider(object[] parameters)
+        public void AddBoxCollider(string collideMode, string collideWith, CustomLogicVector3Builtin center = null, CustomLogicVector3Builtin size = null)
         {
-            string collideMode = (string)parameters[0];
-            string collideWith = (string)parameters[1];
-            Vector3 center;
-            Vector3 size;
+            Vector3 centerV;
+            Vector3 sizeV;
             Vector3 scale = Value.BaseScale;
-            if (parameters.Length > 2)
+            if (center != null && size != null)
             {
-                center = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                size = ((CustomLogicVector3Builtin)parameters[3]).Value;
-                center = Util.DivideVectors(center, scale);
-                size = Util.DivideVectors(size, scale);
+                centerV = center.Value;
+                sizeV = size.Value;
+                centerV = Util.DivideVectors(centerV, scale);
+                sizeV = Util.DivideVectors(sizeV, scale);
             }
             else
             {
@@ -369,11 +364,11 @@ namespace CustomLogic
                     }
                 }
 
-                center = bounds.center - Value.GameObject.transform.position;
-                size = bounds.size;
+                centerV = bounds.center - Value.GameObject.transform.position;
+                sizeV = bounds.size;
 
                 // resize based on localscale
-                size = new Vector3(size.x / Value.GameObject.transform.localScale.x, size.y / Value.GameObject.transform.localScale.y, size.z / Value.GameObject.transform.localScale.z);
+                sizeV = new Vector3(sizeV.x / Value.GameObject.transform.localScale.x, sizeV.y / Value.GameObject.transform.localScale.y, sizeV.z / Value.GameObject.transform.localScale.z);
             }
 
             var go = new GameObject();
@@ -383,8 +378,8 @@ namespace CustomLogic
             go.transform.localScale = Vector3.one;
             BoxCollider c = go.AddComponent<BoxCollider>();
             MapLoader.SetCollider(c, collideMode, collideWith);
-            c.size = size;
-            c.center = center;
+            c.size = sizeV;
+            c.center = centerV;
             var handler = go.AddComponent<CustomLogicCollisionHandler>();
             foreach (var instance in Value.ComponentInstances)
             {
@@ -394,13 +389,10 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Add a sphere target to the object")]
-        public CustomLogicMapTargetableBuiltin AddSphereTarget(object[] parameters)
+        public CustomLogicMapTargetableBuiltin AddSphereTarget(string team, CustomLogicVector3Builtin center, float radius)
         {
             string collideMode = "Region";
             string collideWith = "Hitboxes";
-            string team = (string)parameters[0];
-            Vector3 center = ((CustomLogicVector3Builtin)parameters[1]).Value;
-            float radius = (float)parameters[2];
             Vector3 scale = Value.BaseScale;
             center = Util.DivideVectors(center, scale);
             radius = radius / scale.MaxComponent();
@@ -425,13 +417,10 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Add a box target to the object")]
-        public CustomLogicMapTargetableBuiltin AddBoxTarget(object[] parameters)
+        public CustomLogicMapTargetableBuiltin AddBoxTarget(string team, CustomLogicVector3Builtin center, CustomLogicVector3Builtin size)
         {
             string collideMode = "Region";
             string collideWith = "Hitboxes";
-            string team = (string)parameters[0];
-            Vector3 center = ((CustomLogicVector3Builtin)parameters[1]).Value;
-            Vector3 size = ((CustomLogicVector3Builtin)parameters[2]).Value;
             Vector3 scale = Value.BaseScale;
             center = Util.DivideVectors(center, scale);
             size = Util.DivideVectors(size, scale);
@@ -640,19 +629,19 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "[OBSELETE] Add builtin component")]
-        public void AddBuiltinComponent(object[] parameters)
+        public void AddBuiltinComponent(object parameter0 = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
         {
-            string name = (string)parameters[0];
+            string name = (string)parameter0;
             if (name == "Daylight")
             {
                 var light = Value.GameObject.AddComponent<Light>();
                 light.type = LightType.Directional;
-                light.color = ((CustomLogicColorBuiltin) parameters[1]).Value.ToColor();
-                light.intensity = parameters[2].UnboxToFloat();
+                light.color = ((CustomLogicColorBuiltin) parameter1).Value.ToColor();
+                light.intensity = parameter2.UnboxToFloat();
                 light.shadows = LightShadows.Soft;
                 light.shadowStrength = 0.8f;
                 light.shadowBias = 0.2f;
-                bool weatherControlled = (bool)parameters[3];
+                bool weatherControlled = (bool)parameter3;
                 if (weatherControlled)
                     MapLoader.Daylight.Add(light);
             }
@@ -660,9 +649,9 @@ namespace CustomLogic
             {
                 var light = Value.GameObject.AddComponent<Light>();
                 light.type = LightType.Point;
-                light.color = ((CustomLogicColorBuiltin) parameters[1]).Value.ToColor();
-                light.intensity = parameters[2].UnboxToFloat();
-                light.range = parameters[3].UnboxToFloat();
+                light.color = ((CustomLogicColorBuiltin) parameter1).Value.ToColor();
+                light.intensity = parameter2.UnboxToFloat();
+                light.range = parameter3.UnboxToFloat();
                 light.shadows = LightShadows.None;
                 light.renderMode = LightRenderMode.ForcePixel;
                 light.bounceIntensity = 0f;
@@ -670,21 +659,21 @@ namespace CustomLogic
             }
             else if (name == "Tag")
             {
-                var tag = (string)parameters[1];
+                var tag = (string)parameter1;
                 MapLoader.RegisterTag(tag, Value);
             }
             else if (name == "Rigidbody")
             {
-                float mass = parameters[1].UnboxToFloat();
-                Vector3 gravity = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                float mass = parameter1.UnboxToFloat();
+                Vector3 gravity = ((CustomLogicVector3Builtin)parameter2).Value;
                 var rigidbody = Value.GameObject.AddComponent<Rigidbody>();
                 rigidbody.mass = mass;
                 var force = Value.GameObject.AddComponent<ConstantForce>();
                 force.force = gravity;
                 rigidbody.useGravity = false;
-                rigidbody.freezeRotation = (bool)parameters[3];
+                rigidbody.freezeRotation = (bool)parameter3;
 
-                var interpolate = (bool)parameters[4];
+                var interpolate = (bool)parameter4;
                 rigidbody.interpolation = interpolate
                     ? RigidbodyInterpolation.Interpolate
                     : RigidbodyInterpolation.None;
@@ -692,12 +681,12 @@ namespace CustomLogic
             else if (name == "CustomPhysicsMaterial")
             {
                 var customPhysicsMaterial = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
-                customPhysicsMaterial.Setup((bool)parameters[1]);
+                customPhysicsMaterial.Setup((bool)parameter1);
             }
             else if (name == "NavMeshObstacle")
             {
                 // Add a navmesh obstacle and size to the objects bounds
-                bool carveOnlyStationary = (bool)parameters[1];
+                bool carveOnlyStationary = (bool)parameter1;
                 var navMeshObstacleGo = new GameObject("NavMeshObstacle");
                 navMeshObstacleGo.transform.parent = Value.GameObject.transform;
 
@@ -726,10 +715,8 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "[OBSELETE] Read a builtin component")]
-        public object ReadBuiltinComponent(object[] parameters)
+        public object ReadBuiltinComponent(string name, string param)
         {
-            string name = (string)parameters[0];
-            string param = (string)parameters[1];
             if (name == "Rigidbody")
             {
                 var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
@@ -746,25 +733,25 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "[OBSELETE] Update a builtin component")]
-        public void UpdateBuiltinComponent(object[] parameters)
+        public void UpdateBuiltinComponent(object parameter0 = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
         {
-            string name = (string)parameters[0];
-            string param = (string)parameters[1];
+            string name = (string)parameter0;
+            string param = (string)parameter1;
             if (name == "Rigidbody")
             {
                 var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
                 if (param == "SetVelocity")
                 {
-                    Vector3 velocity = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                    Vector3 velocity = ((CustomLogicVector3Builtin)parameter2).Value;
                     rigidbody.velocity = velocity;
                 }
                 else if (param == "AddForce")
                 {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
                     ForceMode mode = ForceMode.Acceleration;
-                    if (parameters.Length >= 4)
+                    if (parameter3 != null)
                     {
-                        string forceMode = (string)parameters[3];
+                        string forceMode = (string)parameter3;
                         switch (forceMode)
                         {
                             case "Force":
@@ -781,9 +768,9 @@ namespace CustomLogic
                                 break;
                         }
                     }
-                    if (parameters.Length >= 5)
+                    if (parameter4 != null)
                     {
-                        Vector3 position = ((CustomLogicVector3Builtin)parameters[4]).Value;
+                        Vector3 position = ((CustomLogicVector3Builtin)parameter4).Value;
                         rigidbody.AddForceAtPosition(force, position, mode);
                     }
                     else
@@ -793,11 +780,11 @@ namespace CustomLogic
                 }
                 else if (param == "AddTorque")
                 {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameters[2]).Value;
+                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
                     ForceMode mode = ForceMode.Acceleration;
-                    if (parameters.Length >= 4)
+                    if (parameter3 != null)
                     {
-                        string forceMode = (string)parameters[3];
+                        string forceMode = (string)parameter3;
                         switch (forceMode)
                         {
                             case "Force":
@@ -822,22 +809,22 @@ namespace CustomLogic
                 var customPhysicsMaterial = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
                 if (param == "StaticFriction")
                 {
-                    customPhysicsMaterial.StaticFriction = parameters[2].UnboxToFloat();
+                    customPhysicsMaterial.StaticFriction = parameter2.UnboxToFloat();
                 }
                 if (param == "DynamicFriction")
                 {
-                    customPhysicsMaterial.DynamicFriction = parameters[2].UnboxToFloat();
+                    customPhysicsMaterial.DynamicFriction = parameter2.UnboxToFloat();
                 }
                 if (param == "Bounciness")
                 {
-                    customPhysicsMaterial.Bounciness = parameters[2].UnboxToFloat();
+                    customPhysicsMaterial.Bounciness = parameter2.UnboxToFloat();
                 }
 
                 var isFrictionCombine = param == "FrictionCombine";
                 var isBounceCombine = param == "BounceCombine";
                 if (isFrictionCombine || isBounceCombine)
                 {
-                    var combine = parameters[2] switch
+                    var combine = parameter2 switch
                     {
                         "Minimum" => PhysicMaterialCombine.Minimum,
                         "Multiply" => PhysicMaterialCombine.Multiply,
