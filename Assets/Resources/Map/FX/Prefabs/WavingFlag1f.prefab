@@ -74,11 +74,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b80e70c3864f3974888d3592c5481fc9, type: 2}
     - target: {fileID: 919132149155446097, guid: 29bd554532f7bf745a29c1cbae78b5e0, type: 3}
       propertyPath: m_Name
-      value: WavingFlag6
+      value: WavingFlag1f
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 29bd554532f7bf745a29c1cbae78b5e0, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
