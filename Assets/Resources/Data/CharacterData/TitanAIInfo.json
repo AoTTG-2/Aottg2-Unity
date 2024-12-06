@@ -206,7 +206,7 @@
 		"Default": {
 			"Name": "Jumper",
 			"IsRun": true,
-			"FarAttackRange": 80,
+			"FarAttackRange": 100,
 			"Attacks": {
 				"AttackGrab*": 0.1,
 				"AttackBite*": 0.1,
@@ -252,7 +252,7 @@
 			"Name": "Crawler",
 			"IsRun": true,
 			"AttackWait": 0,
-			"FarAttackRange": 80,
+			"FarAttackRange": 100,
 			"IsCrawler": true,
 			"ActionPause": 2.0,
 			"TurnPause": 1.0,
@@ -343,7 +343,7 @@
 		"Default": {
 			"Name": "Thrower",
 			"IsRun": true,
-			"FarAttackRange": 150,
+			"FarAttackRange": 160,
 			"Attacks": {
 				"AttackGrab*": 0.1,
 				"AttackBite*": 0.1,

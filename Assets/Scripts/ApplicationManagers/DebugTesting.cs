@@ -14,6 +14,8 @@ using Controllers;
 using Unity.VisualScripting;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Settings;
+using System.Collections;
 
 namespace ApplicationManagers
 {
@@ -71,9 +73,6 @@ namespace ApplicationManagers
                 case "colliders":
                     DebugColliders = !DebugColliders;
                     Debug.Log("Debug colliders enabled: " + DebugColliders.ToString());
-                    break;
-                case "network":
-                    _instance.AddComponent<PhotonStatsGui>();
                     break;
                 case "generate_char_previews":
                     ((CharacterEditorGameManager)SceneLoader.CurrentGameManager).GeneratePreviews();

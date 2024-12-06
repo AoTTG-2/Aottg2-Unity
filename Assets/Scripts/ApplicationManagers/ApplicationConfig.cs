@@ -12,7 +12,7 @@ namespace ApplicationManagers
     {
         private static readonly string DevelopmentConfigPath = Application.dataPath + "/DevelopmentConfig";
         public static bool DevelopmentMode = false;
-        public const string GameVersion = "10.25.2024";
+        public const string GameVersion = "10.30.2024";
 
         public static void Init()
         {

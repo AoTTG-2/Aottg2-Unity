@@ -89,13 +89,13 @@ namespace CustomLogic
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().DetectRange;
-                return null;
+                return 0;
             }
             if (name == "FocusRange")
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().FocusRange;
-                return null;
+                return 0;
             }
             if (name == "RunSpeedBase")
                 return Titan.RunSpeedBase;
@@ -125,25 +125,25 @@ namespace CustomLogic
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().FocusTime;
-                return null;
+                return 0;
             }
             if (name == "FarAttackCooldown")
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().FarAttackCooldown;
-                return null;
+                return 0;
             }
             if (name == "AttackWait")
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().AttackWait;
-                return null;
+                return 0;
             }
             if (name == "CanRun")
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>().IsRun;
-                return null;
+                return false;
             }
             if (name == "AttackSpeedMultiplier")
             {
@@ -153,7 +153,7 @@ namespace CustomLogic
             {
                 if (Titan.IsMine() && Titan.AI)
                     return Titan.GetComponent<BaseTitanAIController>()._usePathfinding;
-                return null;
+                return false;
             }
             if (name == "HeadMount")
             {

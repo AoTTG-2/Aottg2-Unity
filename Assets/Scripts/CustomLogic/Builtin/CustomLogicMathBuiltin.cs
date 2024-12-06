@@ -114,6 +114,12 @@ namespace CustomLogic
                 float a = parameters[0].UnboxToFloat();
                 return Mathf.Atan(a) * Mathf.Rad2Deg;
             }
+            if (name == "Atan2")
+            {
+                float a = parameters[0].UnboxToFloat();
+                float b = parameters[1].UnboxToFloat();
+                return Mathf.Atan2(a, b) * Mathf.Rad2Deg;
+            }
             if (name == "Ceil")
             {
                 float a = parameters[0].UnboxToFloat();
