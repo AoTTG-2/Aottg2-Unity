@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Static = false, InheritBaseMembers = true)]
-    class CustomLogicDictBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicDictBuiltin: CustomLogicClassInstanceBuiltin
     {
         public Dictionary<object, object> Dict = new Dictionary<object, object>();
 

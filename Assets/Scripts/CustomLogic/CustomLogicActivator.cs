@@ -28,7 +28,7 @@ namespace CustomLogic
             if (TryCreateParameterlessInstance(typeName, out var classInstance))
                 return classInstance;
 
-            var ctor = GetConstructor(type);
+            var ctor = GetConstructor(typeName, type);
             if (ctor == null)
             {
                 if (TryCreateParameterlessInstance(typeName, out classInstance))
@@ -49,20 +49,20 @@ namespace CustomLogic
             return CreateInstanceUsingActivator(args, activator);
         }
 
-        private static ConstructorInfo GetConstructor(Type type)
+        private static ConstructorInfo GetConstructor(string typeName, Type type)
         {
-            if (Instance._constructors.TryGetValue(type.Name, out var constructor))
+            if (Instance._constructors.TryGetValue(typeName, out var constructor))
                 return constructor;
 
             var ctor = type.GetConstructor(new[] { typeof(object[]) });
 
             if (ctor == null)
             {
-                Instance._parameterlessConstructors.Add(type.Name);
+                Instance._parameterlessConstructors.Add(typeName);
                 return null;
             }
             
-            Instance._constructors.Add(type.Name, ctor);
+            Instance._constructors.Add(typeName, ctor);
             return ctor;
         }
 

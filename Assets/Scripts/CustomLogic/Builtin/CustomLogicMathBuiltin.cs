@@ -8,7 +8,7 @@ using UnityEngine.Rendering.PostProcessing;
 namespace CustomLogic
 {
     [CLType(Abstract = true, InheritBaseMembers = true, Static = true)]
-    class CustomLogicMathBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicMathBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicMathBuiltin(): base("Math")
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Photon.Pun;
 
 namespace CustomLogic
 {
@@ -120,10 +121,10 @@ namespace CustomLogic
         /// </summary>
         public static object InvokeMethod(MethodInfo method, object instance, List<object> args, Dictionary<string, object> kwargs)
         {
-            if (kwargs.Count == 0)
-                return method.Invoke(instance, args.ToArray());
+            // if (kwargs.Count == 0)
+            //     return method.Invoke(instance, args.ToArray());
 
-            var paramInfos = method.GetParameters();
+            var paramInfos = method.GetCachedParemeters();
             var finalParameters = new object[paramInfos.Length];
 
             for (int i = 0; i < paramInfos.Length; i++)

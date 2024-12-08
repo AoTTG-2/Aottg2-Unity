@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicCutsceneBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicCutsceneBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicCutsceneBuiltin(): base("Cutscene")
         {

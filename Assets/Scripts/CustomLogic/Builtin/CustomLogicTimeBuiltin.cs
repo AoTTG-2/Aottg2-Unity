@@ -5,36 +5,27 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicTimeBuiltin: CustomLogicBaseBuiltin
+    [CLType(Static = true)]
+    class CustomLogicTimeBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicTimeBuiltin(): base("Time")
+        public CustomLogicTimeBuiltin() : base("Time")
         {
         }
 
-        public override object CallMethod(string name, List<object> parameters)
-        {
-            return base.CallMethod(name, parameters);
-        }
+        [CLProperty("Gets the fixed tick time.")]
+        public static float TickTime => Time.fixedDeltaTime;
 
-        public override object GetField(string name)
-        {
-            if (name == "TickTime")
-                return Time.fixedDeltaTime;
-            if (name == "FrameTime")
-                return Time.deltaTime;
-            if (name == "GameTime")
-                return CustomLogicManager.Evaluator.CurrentTime;
-            if (name == "TimeScale")
-                return Time.timeScale;
-            return base.GetField(name);
-        }
+        [CLProperty("Gets the frame time.")]
+        public static float FrameTime => Time.deltaTime;
 
-        public override void SetField(string name, object value)
+        [CLProperty("Gets the game time.")]
+        public static float GameTime => CustomLogicManager.Evaluator.CurrentTime;
+
+        [CLProperty("Gets or sets the time scale.")]
+        public static float TimeScale
         {
-            if (name == "TimeScale")
-                Time.timeScale = value.UnboxToFloat();
-            else
-                base.SetField(name, value);
+            get => Time.timeScale;
+            set => Time.timeScale = value;
         }
     }
 }

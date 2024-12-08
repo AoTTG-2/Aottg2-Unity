@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(InheritBaseMembers = true, Static = true)]
-    class CustomLogicMapBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicMapBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicMapBuiltin(): base("Map")
         {

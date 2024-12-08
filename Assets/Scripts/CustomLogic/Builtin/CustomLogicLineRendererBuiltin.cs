@@ -8,7 +8,7 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(InheritBaseMembers = true, Static = true)]
-    class CustomLogicLineRendererBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicLineRendererBuiltin: CustomLogicClassInstanceBuiltin
     {
         public LineRenderer Value = null;
 

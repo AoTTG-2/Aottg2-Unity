@@ -10,7 +10,7 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicInputBuiltin: CustomLogicBaseBuiltin
+    class CustomLogicInputBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicInputBuiltin(): base("Input")
         {

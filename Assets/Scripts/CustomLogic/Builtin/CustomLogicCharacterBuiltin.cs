@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true)]
-    abstract class CustomLogicCharacterBuiltin: CustomLogicBaseBuiltin, ICustomLogicEquals
+    // todo: all property setters should check IsMine()
+    [CLType(Abstract = true)]
+    abstract class CustomLogicCharacterBuiltin: CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
-        public BaseCharacter Character;
-        public CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character"): base(type)
+        public readonly BaseCharacter Character;
+        
+        protected CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character"): base(type)
         {
             Character = character;
+            Variables["IsCharacter"] = true;
         }
 
         [CLProperty(Description = "Player who owns this character.")]
@@ -21,12 +24,15 @@ namespace CustomLogic
 
         [CLProperty(Description = "Network view ID of the character.")]
         public int ViewID => Character.Cache.PhotonView.ViewID;
+        
+        [CLProperty(Description = "Is this character mine?")]
+        public bool IsMine => Character.IsMine();
+        
+        [CLProperty]
+        public bool IsMainCharacter => Character.IsMainCharacter();
 
         [CLProperty(Description = "Unity transform of the character.")]
-        public CustomLogicTransformBuiltin Transform
-        {
-            get => new CustomLogicTransformBuiltin(Character.Cache.Transform);
-        }
+        public CustomLogicTransformBuiltin Transform => new CustomLogicTransformBuiltin(Character.Cache.Transform);
 
         [CLProperty(Description = "Position of the character.")]
         public CustomLogicVector3Builtin Position
@@ -136,16 +142,10 @@ namespace CustomLogic
         public string CurrentAnimation => Character.GetCurrentAnimation();
 
         [CLMethod(Description = "Kills the character. Callable by non-owners.")]
-        public void GetKilled(string killer)
-        {
-            Character.GetKilled(killer);
-        }
+        public void GetKilled(string killer) => Character.GetKilled(killer);
 
         [CLMethod(Description = "Damages the character and kills it if its health reaches 0. Callable by non-owners.")]
-        public void GetDamaged(string killer, int damage)
-        {
-            Character.GetDamaged(killer, damage);
-        }
+        public void GetDamaged(string killer, int damage) => Character.GetDamaged(killer, damage);
 
         [CLMethod(Description = "Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.")]
         public void Emote(string emote)
@@ -191,22 +191,14 @@ namespace CustomLogic
         [CLMethod(Description = "Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.")]
         public void AddForce(Vector3 force, string mode = "Acceleration")
         {
-            ForceMode forceMode = ForceMode.Acceleration;
-            switch (mode)
+            var forceMode = mode switch
             {
-                case "Force":
-                    forceMode = ForceMode.Force;
-                    break;
-                case "Acceleration":
-                    forceMode = ForceMode.Acceleration;
-                    break;
-                case "Impulse":
-                    forceMode = ForceMode.Impulse;
-                    break;
-                case "VelocityChange":
-                    forceMode = ForceMode.VelocityChange;
-                    break;
-            }
+                "Force" => ForceMode.Force,
+                "Acceleration" => ForceMode.Acceleration,
+                "Impulse" => ForceMode.Impulse,
+                "VelocityChange" => ForceMode.VelocityChange,
+                _ => ForceMode.Acceleration
+            };
             Character.Cache.Rigidbody.AddForce(force, forceMode);
         }
 

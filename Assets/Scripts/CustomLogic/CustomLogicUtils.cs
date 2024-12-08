@@ -8,6 +8,13 @@ namespace CustomLogic
 {
     static class CustomLogicUtils
     {
+        public static Exception OperatorException(string operatorName, object lhs, object rhs)
+        {
+            var lhsType = lhs.GetType();
+            var rhsType = rhs.GetType();
+            return new Exception($"Operator {operatorName} not defined for types {lhsType} and {rhsType}");
+        }
+
         public static string SerializeAst(CustomLogicBaseAst ast)
         {
             if (ast is CustomLogicPrimitiveExpressionAst primitiveAst)

@@ -7,7 +7,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicNetworkBuiltin: CustomLogicBaseBuiltin
+    [CLType(Static = true)]
+    class CustomLogicNetworkBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicNetworkBuiltin(): base("Network")
         {

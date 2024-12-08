@@ -1865,7 +1865,7 @@ component SupplyStation
     {
         if (self._currentHumanRefill != null)
         {
-            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill(true))
+            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill())
             {
                 self._currentHumanRefill = null;
                 self._refillsLeft = self._refillsLeft - 1;

@@ -9,8 +9,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true, Static = true, Description = "References the main game camera.")]
-    class CustomLogicCameraBuiltin: CustomLogicBaseBuiltin
+    [CLType(Abstract = true, Static = true, Description = "References the main game camera.")]
+    class CustomLogicCameraBuiltin: CustomLogicClassInstanceBuiltin
     {
         public CustomLogicCameraBuiltin(): base("Camera")
         {
@@ -120,7 +120,7 @@ namespace CustomLogic
         public static void SetCameraMode(string mode)
         {
             if (mode == "null")
-                CustomLogicManager.CameraMode = null;
+                ResetCameraMode();
             else
                 CustomLogicManager.CameraMode = Enum.Parse<CameraInputMode>(mode);
         }
