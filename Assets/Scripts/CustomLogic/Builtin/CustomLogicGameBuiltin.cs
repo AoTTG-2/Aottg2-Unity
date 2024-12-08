@@ -344,11 +344,11 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn a titan at a position")]
-        public CustomLogicTitanBuiltin SpawnTitanAt(string type, Vector3 position, float rotationY = 0f)
+        public CustomLogicTitanBuiltin SpawnTitanAt(string type, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var titan = new CustomLogicTitanBuiltin(_inGameManager.SpawnAITitanAt(type, position, rotationY));
+                var titan = new CustomLogicTitanBuiltin(_inGameManager.SpawnAITitanAt(type, position.Value, rotationY));
                 return titan;
             }
             return null;
@@ -375,14 +375,14 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn titans at a position")]
-        public CustomLogicListBuiltin SpawnTitansAt(string type, int count, Vector3 position, float rotationY = 0f)
+        public CustomLogicListBuiltin SpawnTitansAt(string type, int count, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 var list = new CustomLogicListBuiltin();
                 for (int i = 0; i < count; i++)
                 {
-                    var titan = new CustomLogicTitanBuiltin(_inGameManager.SpawnAITitanAt(type, position, rotationY));
+                    var titan = new CustomLogicTitanBuiltin(_inGameManager.SpawnAITitanAt(type, position.Value, rotationY));
                     list.List.Add(titan);
                 }
                 return list;
@@ -391,10 +391,10 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn titans at a position asynchronously")]
-        public void SpawnTitansAtAsync(string type, int count, Vector3 position, float rotationY = 0f)
+        public void SpawnTitansAtAsync(string type, int count, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
-                _inGameManager.SpawnAITitansAtAsync(type, count, position, rotationY);
+                _inGameManager.SpawnAITitansAtAsync(type, count, position.Value, rotationY);
         }
 
         [CLMethod(description: "Spawn a shifter")]
@@ -409,35 +409,51 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn a shifter at a position")]
-        public CustomLogicShifterBuiltin SpawnShifterAt(string type, Vector3 position, float rotationY = 0f)
+        public CustomLogicShifterBuiltin SpawnShifterAt(string type, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifterAt(type, position, rotationY));
+                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifterAt(type, position.Value, rotationY));
                 return shifter;
             }
             return null;
         }
 
         [CLMethod(description: "Spawn a projectile")]
-        public void SpawnProjectile(string projectileName, Vector3 position, Vector3 rotation, Vector3 velocity, Vector3 gravity, float liveTime, string team, object[] settings = null)
+        public void SpawnProjectile(
+            string projectileName,
+            CustomLogicVector3Builtin position,
+            CustomLogicVector3Builtin rotation,
+            CustomLogicVector3Builtin velocity,
+            CustomLogicVector3Builtin gravity,
+            float liveTime,
+            string team,
+            object[] settings = null)
         {
             // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
-            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
+            ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, -1, team, settings);
         }
 
         [CLMethod(description: "Spawn a projectile with an owner")]
-        public void SpawnProjectileWithOwner(string projectileName, Vector3 position, Vector3 rotation, Vector3 velocity, Vector3 gravity, float liveTime, CustomLogicCharacterBuiltin character, object[] settings = null)
+        public void SpawnProjectileWithOwner(
+            string projectileName,
+            CustomLogicVector3Builtin position,
+            CustomLogicVector3Builtin rotation,
+            CustomLogicVector3Builtin velocity,
+            CustomLogicVector3Builtin gravity,
+            float liveTime,
+            CustomLogicCharacterBuiltin character,
+            object[] settings = null)
         {
             // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
-            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.Character.photonView.ViewID, character.Character.Team, settings);
+            ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, character.Character.photonView.ViewID, character.Character.Team, settings);
         }
 
         [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(string effectName, Vector3 position, Vector3 rotation, float scale, object[] settings = null)
+        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] settings = null)
         // TODO: Modify this to work with Kwargs (TS and Flare require optional params Color And Sound)
         {
-            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
+            EffectSpawner.Spawn(effectName, position.Value, Quaternion.Euler(rotation.Value), scale, true, settings);
         }
 
         [CLMethod(description: "Spawn a player")]
@@ -457,19 +473,19 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn a player at a position")]
-        public void SpawnPlayerAt(CustomLogicPlayerBuiltin player, bool force, Vector3 position, float rotationY = 0f)
+        public void SpawnPlayerAt(CustomLogicPlayerBuiltin player, bool force, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (player.Player == PhotonNetwork.LocalPlayer)
-                _inGameManager.SpawnPlayerAt(force, position, rotationY);
+                _inGameManager.SpawnPlayerAt(force, position.Value, rotationY);
             else if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player.Player, new object[] { force, position, rotationY });
+                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", player.Player, new object[] { force, position.Value, rotationY });
         }
 
         [CLMethod(description: "Spawn a player at a position for all players")]
-        public void SpawnPlayerAtAll(bool force, Vector3 position, float rotationY = 0f)
+        public void SpawnPlayerAtAll(bool force, CustomLogicVector3Builtin position, float rotationY = 0f)
         {
             if (PhotonNetwork.IsMasterClient)
-                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, new object[] { force, position, rotationY });
+                RPCManager.PhotonView.RPC("SpawnPlayerAtRPC", RpcTarget.All, new object[] { force, position.Value, rotationY });
         }
 
         [CLMethod(description: "Set the music playlist")]
@@ -487,9 +503,9 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Draw a ray")]
-        public void DrawRay(Vector3 start, Vector3 dir, Color color, float duration)
+        public void DrawRay(CustomLogicVector3Builtin start, CustomLogicVector3Builtin dir, Color color, float duration)
         {
-            UnityEngine.Debug.DrawRay(start, dir, color, duration);
+            UnityEngine.Debug.DrawRay(start.Value, dir.Value, color, duration);
         }
 
         [CLMethod(description: "Show the kill score")]

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    // TODO: Make dict lookup constant time
     [CLType(Static = false, InheritBaseMembers = true)]
     class CustomLogicDictBuiltin: CustomLogicClassInstanceBuiltin
     {

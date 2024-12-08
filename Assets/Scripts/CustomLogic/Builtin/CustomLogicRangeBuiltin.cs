@@ -6,12 +6,12 @@ namespace CustomLogic
     // todo: implement some kind of catching/pool for this
     // we really don't need to create a new list every time
     
-    [CLType(InheritBaseMembers = false)]
+    [CLType(InheritBaseMembers = true)]
     class CustomLogicRangeBuiltin: CustomLogicListBuiltin
     {
-        public CustomLogicRangeBuiltin(List<object> parameterValues) : base("Range")
+        public CustomLogicRangeBuiltin(object[] parameterValues) : base("Range")
         {
-            if (parameterValues.Count < 3)
+            if (parameterValues.Length < 3)
                 return;
             int start = parameterValues[0].UnboxToInt();
             int end = parameterValues[1].UnboxToInt();

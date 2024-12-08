@@ -10,10 +10,12 @@ namespace CustomLogic
     class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {
         public BasicTitan Titan;
+        public BaseTitanAIController Controller;
 
         public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan, "Titan")
         {
             Titan = titan;
+            Controller = Titan.GetComponent<BaseTitanAIController>();
         }
 
         [CLProperty("Gets or sets the size of the titan.")]
@@ -102,41 +104,42 @@ namespace CustomLogic
         [CLProperty("Gets or sets the detect range of the titan.")]
         public float DetectRange
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().DetectRange : 0;
-            set { if (Titan.IsMine() && Titan.AI) Titan.GetComponent<BaseTitanAIController>().SetDetectRange(value); }
+            get => Titan.IsMine() && Titan.AI ? Controller.DetectRange : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.SetDetectRange(value); }
         }
 
         [CLProperty("Gets or sets the focus range of the titan.")]
         public float FocusRange
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().FocusRange : 0;
-            set { if (Titan.IsMine() && Titan.AI) Titan.GetComponent<BaseTitanAIController>().FocusRange = value; }
+            get => Titan.IsMine() && Titan.AI ? Controller.FocusRange : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.FocusRange = value; }
         }
 
         [CLProperty("Gets or sets the focus time of the titan.")]
         public float FocusTime
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().FocusTime : 0;
-            set { if (Titan.IsMine() && Titan.AI) Titan.GetComponent<BaseTitanAIController>().FocusTime = value; }
+            get => Titan.IsMine() && Titan.AI ? Controller.FocusTime : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.FocusTime = value; }
         }
 
         [CLProperty("Gets or sets the far attack cooldown of the titan.")]
         public float FarAttackCooldown
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().FarAttackCooldown : 0;
+            get => Titan.IsMine() && Titan.AI ? Controller.FarAttackCooldown : 0;
         }
 
         [CLProperty("Gets or sets the attack wait time of the titan.")]
         public float AttackWait
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().AttackWait : 0;
+            get => Titan.IsMine() && Titan.AI ? Controller.AttackWait : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.AttackWait = value; }
         }
 
         [CLProperty("Gets or sets a value indicating whether the titan can run.")]
         public bool CanRun
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>().IsRun : false;
-            set { if (Titan.IsMine() && Titan.AI) Titan.GetComponent<BaseTitanAIController>().IsRun = value; }
+            get => Titan.IsMine() && Titan.AI ? Controller.IsRun : false;
+            set { if (Titan.IsMine() && Titan.AI) Controller.IsRun = value; }
         }
 
         [CLProperty("Gets or sets the attack speed multiplier of the titan.")]
@@ -149,8 +152,8 @@ namespace CustomLogic
         [CLProperty("Gets or sets a value indicating whether pathfinding is used by the titan.")]
         public bool UsePathfinding
         {
-            get => Titan.IsMine() && Titan.AI ? Titan.GetComponent<BaseTitanAIController>()._usePathfinding : false;
-            set { if (Titan.IsMine() && Titan.AI) Titan.GetComponent<BaseTitanAIController>()._usePathfinding = value; }
+            get => Titan.IsMine() && Titan.AI ? Controller._usePathfinding : false;
+            set { if (Titan.IsMine() && Titan.AI) Controller._usePathfinding = value; }
         }
 
         [CLProperty("Gets the head mount transform of the titan.")]
@@ -163,7 +166,7 @@ namespace CustomLogic
         public void MoveTo(CustomLogicVector3Builtin position, float range, bool ignoreEnemies)
         {
             if (Titan.IsMine() && !Titan.Dead && Titan.AI)
-                Titan.GetComponent<BaseTitanAIController>().MoveTo(position.Value, range, ignoreEnemies);
+                Controller.MoveTo(position.Value, range, ignoreEnemies);
         }
 
         [CLMethod("Targets the specified enemy.")]
@@ -174,7 +177,7 @@ namespace CustomLogic
                 ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value
                                     : ((CustomLogicCharacterBuiltin)enemyObj).Character;
-                Titan.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
+                Controller.SetEnemy(enemy, focus);
             }
         }
 
@@ -182,14 +185,14 @@ namespace CustomLogic
         public void Idle(float time)
         {
             if (Titan.IsMine() && !Titan.Dead && Titan.AI)
-                Titan.GetComponent<BaseTitanAIController>().ForceIdle(time);
+                Controller.ForceIdle(time);
         }
 
         [CLMethod("Cancels the titan's current order, causing it to wander.")]
         public void Wander()
         {
             if (Titan.IsMine() && !Titan.Dead && Titan.AI)
-                Titan.GetComponent<BaseTitanAIController>().CancelOrder();
+                Controller.CancelOrder();
         }
 
         [CLMethod("Blinds the titan.")]

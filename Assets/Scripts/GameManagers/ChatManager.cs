@@ -658,10 +658,12 @@ namespace GameManagers
             return GetColorString(str, ChatTextColor.ID);
         }
 
-        public static string GetColorString(string str, ChatTextColor color)
+        public static string GetColorString(string str, ChatTextColor color, bool bold=false)
         {
             if (color == ChatTextColor.Default)
                 return str;
+            if (bold)
+                str = $"<b>{str}</b>";
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 

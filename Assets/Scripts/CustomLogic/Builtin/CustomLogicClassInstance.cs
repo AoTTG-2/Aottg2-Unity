@@ -33,7 +33,34 @@ namespace CustomLogic
             
             return $"(CustomLogicClassInstance){ClassName}";
         }
-        
+
+        // TODO: Expose System.HashCode.Combine(propA, propB) so that users can properly override __Hash__
+        public override int GetHashCode()
+        {
+            const string methodName = nameof(ICustomLogicEquals.__Hash__);
+            var evaluator = CustomLogicManager.Evaluator;
+
+            if (evaluator != null && HasVariable(methodName))
+            {
+                return (int)evaluator.EvaluateMethod(this, methodName);
+            }
+
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            const string methodName = nameof(ICustomLogicEquals.__Eq__);
+            var evaluator = CustomLogicManager.Evaluator;
+
+            if (evaluator != null && HasVariable(methodName))
+            {
+                return (bool)evaluator.EvaluateMethod(this, methodName, new List<object> { obj });
+            }
+
+            return base.Equals(obj);
+        }
+
         public object GetVariable(string name)
         {
             if (TryGetVariable(name, out var variable))

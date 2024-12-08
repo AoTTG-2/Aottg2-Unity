@@ -5,7 +5,7 @@ using Map;
 namespace CustomLogic
 {
     [CLType(Static = false)]
-    class CustomLogicTransformBuiltin: CustomLogicClassInstanceBuiltin
+    class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Transform Value;
         private Vector3 _internalRotation;

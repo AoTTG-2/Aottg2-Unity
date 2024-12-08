@@ -182,24 +182,24 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Rotates the character such that it is looking towards a world position.")]
-        public void LookAt(Vector3 position)
+        public void LookAt(CustomLogicVector3Builtin position)
         {
             if (Character.IsMine() && !Character.Dead)
-                Character.Cache.Transform.LookAt(position);
+                Character.Cache.Transform.LookAt(position.Value);
         }
 
         [CLMethod(Description = "Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.")]
-        public void AddForce(Vector3 force, string mode = "Acceleration")
+        public void AddForce(CustomLogicVector3Builtin force, string mode = "Acceleration")
         {
-            var forceMode = mode switch
-            {
-                "Force" => ForceMode.Force,
-                "Acceleration" => ForceMode.Acceleration,
-                "Impulse" => ForceMode.Impulse,
-                "VelocityChange" => ForceMode.VelocityChange,
-                _ => ForceMode.Acceleration
-            };
-            Character.Cache.Rigidbody.AddForce(force, forceMode);
+            // parse mode as Forcemode enum
+            var useForceMode = Enum.TryParse(mode, out ForceMode forceMode) ? forceMode : ForceMode.Acceleration;
+            Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
+        }
+
+        [CLMethod(description: "Reveaal the titan for a set number of seconds.")]
+        public void AddOutline(float delay)
+        {
+            Character.Reveal(0, delay);
         }
 
         [CLMethod(Description = "Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor")]

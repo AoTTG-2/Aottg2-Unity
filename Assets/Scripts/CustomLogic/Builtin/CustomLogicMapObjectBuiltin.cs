@@ -138,7 +138,7 @@ namespace CustomLogic
         public string Name => Value.ScriptObject.Name;
 
         [CLProperty(description: "The parent of the object")]
-        public CustomLogicMapObjectBuiltin Parent
+        public object Parent
         {
             get
             {
@@ -153,9 +153,16 @@ namespace CustomLogic
                 {
                     MapLoader.SetParent(Value, null);
                 }
-                else
+                else if (value is CustomLogicMapObjectBuiltin)
                 {
-                    MapLoader.SetParent(Value, value.Value);
+                    var parent = (CustomLogicMapObjectBuiltin)value;
+                    MapLoader.SetParent(Value, parent.Value);
+                }
+                else if (value is CustomLogicTransformBuiltin)
+                {
+                    MapLoader.SetParent(Value, null);
+                    var parent = (CustomLogicTransformBuiltin)value;
+                    Value.GameObject.transform.SetParent(parent.Value);
                 }
                 _needSetLocalRotation = true;
             }
@@ -506,13 +513,13 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Check if a position is within the object's bounds")]
-        public bool InBounds(Vector3 position)
+        public bool InBounds(CustomLogicVector3Builtin position)
         {
             // Iterate over colliders and check if the param position is within the bounds
             // Check all colliders on the object and on its children
             foreach (var collider in Value.colliderCache)
             {
-                if (collider.bounds.Contains(position))
+                if (collider.bounds.Contains(position.Value))
                 {
                     return true;
                 }

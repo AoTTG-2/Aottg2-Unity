@@ -64,5 +64,11 @@ namespace CustomLogic
             // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
             return Util.GetPhotonTimestampDifference(timestamp1, timestamp2);
         }
+
+        [CLMethod(description: "Get my ping :)")]
+        public int Ping()
+        {
+            return PhotonNetwork.GetPing();
+        }
     }
 }
