@@ -77,8 +77,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af90dbbe94a53d741b9fa1c7a76eebdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  RichTextName: 
+  VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
@@ -86,6 +89,7 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
