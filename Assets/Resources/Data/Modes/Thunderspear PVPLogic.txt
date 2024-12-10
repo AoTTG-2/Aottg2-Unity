@@ -4,8 +4,20 @@ class Main
     MaxPoints = 25;
     RespawnDelay = 5.0;
     InfiniteGas = true;
+    RoundEndTimer = 8.0;
+
+    KillAfk = true;
+    AfkTimer = 30;
+    KickPing = true;
+    KickPingAbove = 500;
+    PingCheckInterval = 10.0;
+
     _hasSpawned = false;
     _dieTimeLeft = 0.0;
+    _isAFK = false;
+    _AfkTimer = 30;
+    _lastPosition = Vector3(0,0,0);
+    _lastPingCheck = 0.0;
 
     function OnTick()
     {
@@ -23,6 +35,85 @@ class Main
         }
     }
 
+    function OnFrame()
+    {
+        if (self._isAFK && Input.GetKeyDown("General/Forward"))
+        {
+            Game.SpawnPlayer(Network.MyPlayer, false);
+            self._isAFK = false;
+            self._AfkTimer = self.AfkTimer;
+            self._lastPosition = Vector3(0,0,0);
+        }
+    }
+
+    function AFKCheck()
+    {
+        if (self.KillAfk == false)
+        {
+            return;
+        }
+
+        if (self._isAFK)
+        {
+            UI.SetLabelForTime("MiddleCenter", "You are AFK" + String.Newline + "Press '<color=#ff0000>" + Input.GetKeyName("General/Forward") + "</color>' to respawn.", 1.1);
+        }
+
+        if (Network.MyPlayer.Status == "Alive")
+        {
+            if (Vector3.Distance(Network.MyPlayer.Character.Position, self._lastPosition) < 0.1)
+            {
+                self._AfkTimer -= 1;
+            }
+            else
+            {
+                self._AfkTimer = self.AfkTimer;
+            }
+            self._lastPosition = Network.MyPlayer.Character.Position;
+            if (self._AfkTimer < 1)
+            {
+                Network.MyPlayer.Character.GetKilled("AFK");
+                self._isAFK = true;
+            }
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {   
+        # Would be funny to let host self kick but people would complain.
+        if (message == "MyPingBad")
+        {
+            Network.KickPlayer(sender, ". Reason: Ping too high (" + Convert.ToString(sender.Ping) + ")");
+        }
+    }
+
+    function PingCheck()
+    {
+        if (Network.MyPlayer.Character == null)
+        {
+            return;
+        }
+        if (Network.MyPlayer.Ping > self.KickPingAbove)
+        {
+            self._lastPingCheck += 1.0;
+        }
+        else
+        {
+            self._lastPingCheck = 0.0;
+        }
+
+        if (self._lastPingCheck > self.PingCheckInterval)
+        {
+            Network.SendMessage(Network.MasterClient, "MyPingBad");
+        }
+    }
+
+    function OnSecond()
+    {
+        self.AFKCheck();
+
+        self.PingCheck();
+    }
+
     function OnGameStart()
     {
         Game.SetPlaylist("Battle");
@@ -32,7 +123,7 @@ class Main
         }
     }
 
-    function OnCharacterSpawn(character)
+    function OnCharacterReloaded(character)
     {
         if (character.IsMainCharacter && character.Type == "Human" && self.InfiniteGas)
         {
@@ -49,10 +140,11 @@ class Main
         }
     }
 
+
     function UpdatePointMode()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
-        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0)
+        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
@@ -76,12 +168,12 @@ class Main
                 if (redKills >= self.MaxPoints)
                 {
                     UI.SetLabelAll("MiddleCenter", "Red team wins!");
-                    Game.End(10.0);
+                    Game.End(self.RoundEndTimer);
                 }
                 elif (blueKills >= self.MaxPoints)
                 {
                     UI.SetLabelAll("MiddleCenter", "Blue team wins!");
-                    Game.End(10.0);
+                    Game.End(self.RoundEndTimer);
                 }
             }
             UI.SetLabel("TopCenter", "Red: " + Convert.ToString(redKills) + "   Blue: " + Convert.ToString(blueKills));
@@ -95,7 +187,7 @@ class Main
                     if (player.Kills >= self.MaxPoints)
                     {
                         UI.SetLabelAll("MiddleCenter", player.Name + " wins!");
-                        Game.End(10.0);
+                        Game.End(self.RoundEndTimer);
                     }
                 }
             }
@@ -115,12 +207,12 @@ class Main
             elif (humans == 1 && self._hasSpawned)
             {
                 UI.SetLabelAll("MiddleCenter", Game.Humans.Get(0).Player.Name + " wins!");
-                Game.End(10.0);
+                Game.End(self.RoundEndTimer);
             }
             elif (humans == 0 && self._hasSpawned)
             {
                 UI.SetLabelAll("MiddleCenter", "Nobody wins!");
-                Game.End(10.0);
+                Game.End(self.RoundEndTimer);
             }
         }
         UI.SetLabel("TopCenter", "Players alive: " + Convert.ToString(humans));

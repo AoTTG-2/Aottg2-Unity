@@ -218,6 +218,14 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterSpawn", new List<object>() { builtin });
         }
 
+        public void OnCharacterReloaded(BaseCharacter character)
+        {
+            var builtin = GetCharacterBuiltin(character);
+            if (builtin == null)
+                return;
+            EvaluateMethodForCallbacks("OnCharacterReloaded", new List<object>() { builtin });
+        }
+
         public void OnCharacterDie(BaseCharacter victim, BaseCharacter killer, string killerName)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);

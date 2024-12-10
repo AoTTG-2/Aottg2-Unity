@@ -2508,6 +2508,7 @@ namespace Characters
             
             this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
+            CustomLogicManager.Evaluator.OnCharacterReloaded(this);
         }
 
         protected void SetupWeapon(int humanWeapon)
