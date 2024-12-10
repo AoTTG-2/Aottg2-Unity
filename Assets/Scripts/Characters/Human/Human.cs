@@ -139,6 +139,13 @@ namespace Characters
         }
 
         [PunRPC]
+        public void BlowAwayRPC(Vector3 force, PhotonMessageInfo info)
+        {
+            if (info.photonView.IsMine)
+                Cache.Rigidbody.AddForce(force, ForceMode.Impulse);
+        }
+
+        [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
