@@ -57,7 +57,11 @@
 		"Clear": "Clear",
 		"ExternalLinkConfirm": "You are about to open an external link",
 		"PressAnyKey": "Press any key to continue.",
-		"None": "None"
+		"None": "None",
+		"Duel": "Duel",
+		"Play": "Play",
+		"Spectate": "Spectate",
+		"LoadAutosave": "Load Autosave"
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",

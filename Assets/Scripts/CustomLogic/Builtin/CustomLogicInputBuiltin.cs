@@ -78,6 +78,7 @@ namespace CustomLogic
                     CustomLogicManager.KeybindDefaultDisabled.Remove(keybind);
                 else if (!enabled && !CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
                     CustomLogicManager.KeybindDefaultDisabled.Add(keybind);
+                return null;
             }
             if (name == "SetKeyHold")
             {
@@ -87,6 +88,7 @@ namespace CustomLogic
                     CustomLogicManager.KeybindHold.Remove(keybind);
                 else if (enabled && !CustomLogicManager.KeybindHold.Contains(keybind))
                     CustomLogicManager.KeybindHold.Add(keybind);
+                return null;
             }
             return base.CallMethod(name, parameters);
         }

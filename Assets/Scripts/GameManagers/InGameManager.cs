@@ -549,7 +549,12 @@ namespace GameManagers
                     human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
             }
             else if (character == PlayerCharacter.Shifter)
+            {
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);
+            }
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
@@ -569,6 +574,9 @@ namespace GameManagers
                     mediumSize = 0.5f * (minSize + maxSize);
                     largeSize = maxSize;
                 }
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 if (settings.Loadout.Value == "Small")
                     titan.SetSize(smallSize);
                 else if (settings.Loadout.Value == "Medium")

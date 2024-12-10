@@ -245,12 +245,22 @@ namespace GameManagers
             CurrentGizmo = _positionGizmo;
             if (MapLoader.Errors.Count > 0)
                 _menu.ErrorPopup.Show(string.Join("\n", MapLoader.Errors));
+            StartCoroutine(WaitAndAutosave());
         }
 
         protected override void Awake()
         {
             base.Awake();
             _input = SettingsManager.InputSettings.MapEditor;
+        }
+
+        private IEnumerator WaitAndAutosave()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(900f);
+                _menu._topPanel.Autosave();
+            }
         }
 
         protected void Update()

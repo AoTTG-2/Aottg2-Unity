@@ -8,9 +8,7 @@ namespace UI
     class DuelPopup : BasePopup
     {
         protected override string Title => string.Empty;
-        protected override PopupAnimation PopupAnimationType => PopupAnimation.Fade;
-        protected override float MinFadeAlpha => 0.5f;
-        protected override float Width => 1400f;
+        protected override float Width => 1000f;
         protected override float Height => 800f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
@@ -33,7 +31,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
             foreach (string buttonName in new string[] { "Play", "Spectate" })
             {
-                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocale(LocaleCategory, "Top", buttonName + "Button"),
+                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocaleCommon(buttonName),
                     onClick: () => SetCategoryPanel(buttonName));
                 _topButtons.Add(buttonName, obj.GetComponent<Button>());
             }
@@ -63,6 +61,7 @@ namespace UI
             switch (name)
             {
                 case "Back":
+                    Hide();
                     ((MainMenu)UIManager.CurrentMenu).ShowMultiplayerMapPopup();
                     break;
             }

@@ -446,7 +446,7 @@ namespace Characters
             else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
-            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
+            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.05f);
             yield return new WaitForSeconds(1.4f);
             PlaySound(TitanSounds.Fall);
             yield return new WaitForSeconds(1f);

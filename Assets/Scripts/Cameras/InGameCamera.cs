@@ -532,6 +532,11 @@ namespace Cameras
                 if (!shifter.AI)
                     characters.Add(shifter);
             }
+            foreach (var titan in _inGameManager.Titans)
+            {
+                if (!titan.AI)
+                    characters.Add(titan);
+            }
             return characters.OrderBy(x => x.Cache.PhotonView.Owner.ActorNumber).ToList();
         }
 
