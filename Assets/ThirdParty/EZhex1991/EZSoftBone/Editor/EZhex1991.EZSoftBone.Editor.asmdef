@@ -1,0 +1,10 @@
+{
+    "name": "EZhex1991.EZSoftBone.Editor",
+    "references": [
+        "EZhex1991.EZSoftBone"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}
