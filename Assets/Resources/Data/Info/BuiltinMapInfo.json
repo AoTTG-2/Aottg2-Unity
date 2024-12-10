@@ -161,6 +161,9 @@
 			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
 			"Maps": [
 				{
+					"Name": "Cats Forest"
+				},
+				{
 					"Category": "General",
 					"Name": "Forest1"
 				},

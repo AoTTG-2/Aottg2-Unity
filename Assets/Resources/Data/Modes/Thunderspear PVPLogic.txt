@@ -7,6 +7,7 @@ class Main
     RoundEndTimer = 8.0;
 
     KillAfk = true;
+    AfkCanRespawn = true;
     AfkTimer = 30;
     KickPing = true;
     KickPingAbove = 500;
@@ -21,23 +22,42 @@ class Main
 
     function OnTick()
     {
+        if (Network.MyPlayer.Character != null)
+        {
+            if (Network.MyPlayer.Character.IsMainCharacter && Network.MyPlayer.Character.Type == "Human" && self.InfiniteGas)
+            {
+                Network.MyPlayer.Character.MaxGas = 100000;
+                Network.MyPlayer.Character.CurrentGas = 100000;
+            }
+        }
+
         if (Game.IsEnding)
         {
             return;
         }
         if (self.PointMode)
         {
-            self.UpdatePointMode();
+            if (Game.GetMiscSetting("PVP") == 2) {
+                self.LastManModeTeams();
+            }
+            else {
+                self.LastManModeFFA();
+            }
         }
         else
         {
-            self.UpdateLastManMode();
+            if (Game.GetMiscSetting("PVP") == 2) {
+                self.LastManModeTeams();
+            }
+            else {
+                self.LastManModeFFA();
+            }
         }
     }
 
     function OnFrame()
     {
-        if (self._isAFK && Input.GetKeyDown("General/Forward"))
+        if (self._isAFK && self.AfkCanRespawn && Input.GetKeyDown("General/Forward"))
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
             self._isAFK = false;
@@ -78,11 +98,18 @@ class Main
     }
 
     function OnNetworkMessage(sender, message)
-    {   
-        # Would be funny to let host self kick but people would complain.
-        if (message == "MyPingBad")
+    {
+        data = Json.LoadFromString(message);
+        event = data.Get("event");
+        if (event == "MyPingBad")
         {
-            Network.KickPlayer(sender, ". Reason: Ping too high (" + Convert.ToString(sender.Ping) + ")");
+            # Network.KickPlayer(sender, ". Reason: Ping too high (" + Convert.ToString(sender.Ping) + ")");
+        }
+        elif (event == "SyncRoomData")
+        {
+            RoomData.SetProperty("PreviousMode", data.Get("PreviousMode"));
+            RoomData.SetProperty("RedRounds", data.Get("RedRounds"));
+            RoomData.SetProperty("BlueRounds", data.Get("BlueRounds"));
         }
     }
 
@@ -103,7 +130,9 @@ class Main
 
         if (self._lastPingCheck > self.PingCheckInterval)
         {
-            Network.SendMessage(Network.MasterClient, "MyPingBad");
+            data = Dict();
+            data.Set("event", "MyPingBad");
+            Network.SendMessage(Network.MasterClient, Json.SaveToString(data));
         }
     }
 
@@ -114,6 +143,37 @@ class Main
         self.PingCheck();
     }
 
+    function OnChatInput(message)
+    {
+        # if message contains "kdra" or "resetkdall" or "/resetteams" and isMasterclient
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
+
+        if (message == "/resetkdall" || message == "/kdra" || message == "/resetteams")
+        {
+            self.ClearRoomData();
+            Game.Print("Reset Room Data");
+        }
+    }
+
+    function ClearRoomData()
+    {
+        RoomData.Clear();
+        self.SyncRoomData();
+    }
+
+    function SyncRoomData()
+    {
+        data = Dict();
+        data.Set("event", "SyncRoomData");
+        data.Set("PreviousMode", RoomData.GetProperty("PreviousMode", -1));
+        data.Set("RedRounds", RoomData.GetProperty("RedRounds", 0));
+        data.Set("BlueRounds", RoomData.GetProperty("BlueRounds", 0));
+        Network.SendMessageAll(Json.SaveToString(data));
+    }
+
     function OnGameStart()
     {
         Game.SetPlaylist("Battle");
@@ -121,6 +181,28 @@ class Main
         {
             Network.MyPlayer.ClearKDR();
         }
+
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
+
+        previousMode = RoomData.GetProperty("PreviousMode", -1);
+        if (previousMode == null)
+        {
+            previousMode = -1;
+        }
+        if (previousMode != Game.GetMiscSetting("PVP"))
+        {
+            RoomData.Clear();
+        }
+        RoomData.SetProperty("PreviousMode", Game.GetMiscSetting("PVP"));
+        self.SyncRoomData();
+    }
+
+    function OnPlayerJoin(player)
+    {
+        self.SyncRoomData();
     }
 
     function OnCharacterReloaded(character)
@@ -140,81 +222,163 @@ class Main
         }
     }
 
-
-    function UpdatePointMode()
+    function PointModeFFA()
     {
         self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
         if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
         {
             Game.SpawnPlayer(Network.MyPlayer, false);
         }
-        if (Game.GetMiscSetting("PVP") == 2)
-        {
-            redKills = 0;
-            blueKills = 0;
-            for (player in Network.Players)
-            {
-                if (player.Team == "Red")
-                {
-                    redKills = redKills + player.Kills;
-                }
-                elif (player.Team == "Blue")
-                {
-                    blueKills = blueKills + player.Kills;
-                }
-            }
-            if (Network.IsMasterClient)
-            {
-                if (redKills >= self.MaxPoints)
-                {
-                    UI.SetLabelAll("MiddleCenter", "Red team wins!");
-                    Game.End(self.RoundEndTimer);
-                }
-                elif (blueKills >= self.MaxPoints)
-                {
-                    UI.SetLabelAll("MiddleCenter", "Blue team wins!");
-                    Game.End(self.RoundEndTimer);
-                }
-            }
-            UI.SetLabel("TopCenter", "Red: " + Convert.ToString(redKills) + "   Blue: " + Convert.ToString(blueKills));
-        }
-        else
-        {
-            if (Network.IsMasterClient)
+
+        if (Network.IsMasterClient)
             {
                 for (player in Network.Players)
                 {
                     if (player.Kills >= self.MaxPoints)
                     {
                         UI.SetLabelAll("MiddleCenter", player.Name + " wins!");
-                        Game.End(self.RoundEndTimer);
+                        Game.End(10.0);
                     }
                 }
             }
             UI.SetLabel("TopCenter", "Points: " + Convert.ToString(Network.MyPlayer.Kills));
+    }
+
+    function PointModeTeams()
+    {
+        self._dieTimeLeft = self._dieTimeLeft - Time.TickTime;
+        if (Network.MyPlayer.Status == "Dead" && self._dieTimeLeft <= 0.0 && !self._isAFK)
+        {
+            Game.SpawnPlayer(Network.MyPlayer, false);
+        }
+
+        redKills = 0;
+        blueKills = 0;
+        for (player in Network.Players)
+        {
+            if (player.Team == "Red")
+            {
+                redKills = redKills + player.Kills;
+            }
+            elif (player.Team == "Blue")
+            {
+                blueKills = blueKills + player.Kills;
+            }
+        }
+        if (Network.IsMasterClient)
+        {
+            if (redKills >= self.MaxPoints)
+            {
+                UI.SetLabelAll("MiddleCenter", "Red team wins!");
+                Game.End(10.0);
+            }
+            elif (blueKills >= self.MaxPoints)
+            {
+                UI.SetLabelAll("MiddleCenter", "Blue team wins!");
+                Game.End(10.0);
+            }
+        }
+        UI.SetLabel("TopCenter", "Red: " + Convert.ToString(redKills) + "   Blue: " + Convert.ToString(blueKills));
+    }
+
+    function LastManModeFFA()
+    {
+        humans = Game.Humans.Count;
+        UI.SetLabel("TopCenter", "Players alive: " + Convert.ToString(humans));
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
+        if (humans > 1)
+        {
+            self._hasSpawned = true;
+        }
+        elif (humans == 1 && self._hasSpawned)
+        {
+            UI.SetLabelAll("MiddleCenter", Game.Humans.Get(0).Player.Name + " wins!");
+            Game.End(self.RoundEndTimer);
+        }
+        elif (humans == 0 && self._hasSpawned)
+        {
+            UI.SetLabelAll("MiddleCenter", "Nobody wins!");
+            Game.End(self.RoundEndTimer);
         }
     }
 
-    function UpdateLastManMode()
+    function LastManModeTeams()
     {
-        humans = Game.Humans.Count;
-        if (Network.IsMasterClient)
+        redRounds = RoomData.GetProperty("RedRounds", 0);
+        blueRounds = RoomData.GetProperty("BlueRounds", 0);
+        if (redRounds == null)
         {
-            if (humans > 1)
+            redRounds = 0;
+        }
+        if (blueRounds == null)
+        {
+            blueRounds = 0;
+        }
+
+        red = 0;
+        blue = 0;
+        for (player in Network.Players)
+        {
+            if (player.Team == "Red" && player.Status == "Alive")
             {
-                self._hasSpawned = true;
+                red = red + 1;
             }
-            elif (humans == 1 && self._hasSpawned)
+            elif (player.Team == "Blue" && player.Status == "Alive")
             {
-                UI.SetLabelAll("MiddleCenter", Game.Humans.Get(0).Player.Name + " wins!");
-                Game.End(self.RoundEndTimer);
-            }
-            elif (humans == 0 && self._hasSpawned)
-            {
-                UI.SetLabelAll("MiddleCenter", "Nobody wins!");
-                Game.End(self.RoundEndTimer);
+                blue = blue + 1;
             }
         }
-        UI.SetLabel("TopCenter", "Players alive: " + Convert.ToString(humans));
+
+        redPlayersAlive = "<color=#FF0000>RED ALIVE:  </color><color=#FFFFFF>" + Convert.ToString(red) + "</color>";
+        bluePlayersAlive = "<color=#0000FF>BLUE ALIVE:  </color><color=#FFFFFF>" + Convert.ToString(blue) + "</color>";
+
+        redString = "<color=#FF0000>RED:  </color><color=#FFFFFF>" + Convert.ToString(redRounds) + "</color>";
+        blueString = "<color=#0000FF>BLUE:  </color><color=#FFFFFF>" + Convert.ToString(blueRounds) + "</color>";
+        split = "             ";
+
+        finalString = redPlayersAlive + split + bluePlayersAlive + String.Newline + redString + split + blueString;
+
+        UI.SetLabel("TopCenter", "<size=25>" +finalString+ "</size>");
+
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
+
+        playerCount = Network.Players.Count;
+        humans = Game.Humans.Count;
+
+        if (playerCount == 1 || playerCount == red || playerCount == blue)
+        {
+            UI.SetLabelAll("TopCenter", "Waiting for players...");
+            return;
+        }
+
+        if (red >= 1 && blue >= 1 && !self._hasSpawned) {
+            self._hasSpawned = true;
+        }
+        elif (red == 0 && blue == 0 && self._hasSpawned)
+        {
+            UI.SetLabelAll("MiddleCenter", "Nobody wins!");
+            self.SyncRoomData();
+            Game.End(self.RoundEndTimer);
+        }
+        elif (red == 0 && self._hasSpawned)
+        {
+            UI.SetLabelAll("MiddleCenter", "Blue team wins!");
+            RoomData.SetProperty("BlueRounds", blueRounds + 1);
+            self.SyncRoomData();
+            Game.End(self.RoundEndTimer);
+        }
+        elif (blue == 0 && self._hasSpawned)
+        {
+            UI.SetLabelAll("MiddleCenter", "Red team wins!");
+            RoomData.SetProperty("RedRounds", redRounds + 1);
+            self.SyncRoomData();
+            Game.End(self.RoundEndTimer);
+        }
     }
 }
