@@ -20,7 +20,8 @@
 		{"Name": "Grass3", "TilingX": 4, "TilingY": 4},
 		{"Name": "Grass4", "TilingX": 5, "TilingY": 5},
 		{"Name": "Grass5", "TilingX": 3, "TilingY": 3},
-		{"Name": "Grass6", "TilingX": 1, "TilingY": 1}
+		{"Name": "Grass6", "TilingX": 1, "TilingY": 1},
+		{"Name": "Leaves", "TilingX": 2, "TilingY": 2}
 	],
 	"Brick": [
 		{"Name": "Brick1", "TilingX": 2, "TilingY": 2},
@@ -115,6 +116,7 @@
 		{"Name": "Sand1", "TilingX": 3, "TilingY": 3},
 		{"Name": "Sand2", "TilingX": 3, "TilingY": 3},
 		{"Name": "Snow1", "TilingX": 1, "TilingY": 1},
+		{"Name": "Snow2", "TilingX": 1, "TilingY": 1},
 		{"Name": "Straw1", "TilingX": 3, "TilingY": 3},
 		{"Name": "TechGlow1", "TilingX": 1, "TilingY": 1},
 		{"Name": "Water1", "TilingX": 1, "TilingY": 1},

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 3ab71d58e733cc6438302c000324c7d0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Runtime/EZSoftBoneUtility.cs
+  uploadId: 458587
