@@ -110,6 +110,7 @@ class Main
             RoomData.SetProperty("PreviousMode", data.Get("PreviousMode"));
             RoomData.SetProperty("RedRounds", data.Get("RedRounds"));
             RoomData.SetProperty("BlueRounds", data.Get("BlueRounds"));
+            self.ShowHeader();
         }
     }
 
@@ -166,6 +167,10 @@ class Main
 
     function SyncRoomData()
     {
+        if (!Network.IsMasterClient)
+        {
+            return;
+        }
         data = Dict();
         data.Set("event", "SyncRoomData");
         data.Set("PreviousMode", RoomData.GetProperty("PreviousMode", -1));
@@ -188,12 +193,9 @@ class Main
         }
 
         previousMode = RoomData.GetProperty("PreviousMode", -1);
-        if (previousMode == null)
-        {
-            previousMode = -1;
-        }
         if (previousMode != Game.GetMiscSetting("PVP"))
         {
+            Game.Print("Resetting room data beause pvp mode changed");
             RoomData.Clear();
         }
         RoomData.SetProperty("PreviousMode", Game.GetMiscSetting("PVP"));
@@ -202,7 +204,10 @@ class Main
 
     function OnPlayerJoin(player)
     {
-        self.SyncRoomData();
+        if (Network.IsMasterClient)
+        {
+            self.SyncRoomData();
+        }
     }
 
     function OnCharacterReloaded(character)
@@ -305,7 +310,7 @@ class Main
         }
     }
 
-    function LastManModeTeams()
+    function ShowHeader()
     {
         redRounds = RoomData.GetProperty("RedRounds", 0);
         blueRounds = RoomData.GetProperty("BlueRounds", 0);
@@ -320,13 +325,15 @@ class Main
 
         red = 0;
         blue = 0;
-        for (player in Network.Players)
+        humanPlayers = Game.Humans;
+        humans = humanPlayers.Count;
+        for (character in humanPlayers)
         {
-            if (player.Team == "Red" && player.Status == "Alive")
+            if (character.Team == "Red")
             {
                 red = red + 1;
             }
-            elif (player.Team == "Blue" && player.Status == "Alive")
+            elif (character.Team == "Blue")
             {
                 blue = blue + 1;
             }
@@ -342,6 +349,38 @@ class Main
         finalString = redPlayersAlive + split + bluePlayersAlive + String.Newline + redString + split + blueString;
 
         UI.SetLabel("TopCenter", "<size=25>" +finalString+ "</size>");
+    }
+
+    function LastManModeTeams()
+    {
+        redRounds = RoomData.GetProperty("RedRounds", 0);
+        blueRounds = RoomData.GetProperty("BlueRounds", 0);
+        if (redRounds == null)
+        {
+            redRounds = 0;
+        }
+        if (blueRounds == null)
+        {
+            blueRounds = 0;
+        }
+
+        red = 0;
+        blue = 0;
+        humanPlayers = Game.Humans;
+        humans = humanPlayers.Count;
+        for (character in humanPlayers)
+        {
+            if (character.Team == "Red")
+            {
+                red = red + 1;
+            }
+            elif (character.Team == "Blue")
+            {
+                blue = blue + 1;
+            }
+        }
+
+        self.ShowHeader();
 
         if (!Network.IsMasterClient)
         {
@@ -349,7 +388,6 @@ class Main
         }
 
         playerCount = Network.Players.Count;
-        humans = Game.Humans.Count;
 
         if (playerCount == 1 || playerCount == red || playerCount == blue)
         {
@@ -360,20 +398,20 @@ class Main
         if (red >= 1 && blue >= 1 && !self._hasSpawned) {
             self._hasSpawned = true;
         }
-        elif (red == 0 && blue == 0 && self._hasSpawned)
+        elif (red == 0 && blue == 0 && self._hasSpawned && !Game.IsEnding)
         {
             UI.SetLabelAll("MiddleCenter", "Nobody wins!");
             self.SyncRoomData();
             Game.End(self.RoundEndTimer);
         }
-        elif (red == 0 && self._hasSpawned)
+        elif (red == 0 && self._hasSpawned && !Game.IsEnding)
         {
             UI.SetLabelAll("MiddleCenter", "Blue team wins!");
             RoomData.SetProperty("BlueRounds", blueRounds + 1);
             self.SyncRoomData();
             Game.End(self.RoundEndTimer);
         }
-        elif (blue == 0 && self._hasSpawned)
+        elif (blue == 0 && self._hasSpawned && !Game.IsEnding)
         {
             UI.SetLabelAll("MiddleCenter", "Red team wins!");
             RoomData.SetProperty("RedRounds", redRounds + 1);
