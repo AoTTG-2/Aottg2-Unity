@@ -32,6 +32,7 @@ namespace Characters
                 EffectSpawner.Spawn(EffectPrefabs.Blood1, human.HumanCache.BladeHitLeft.transform.position, Quaternion.Euler(270f, 0f, 0f));
                 human.PlaySound(HumanSounds.BladeHit);
                 human.SpecialActionState(0.5f);
+                human.Cache.Rigidbody.velocity = Vector3.up * 30f;
             }
         }
     }
