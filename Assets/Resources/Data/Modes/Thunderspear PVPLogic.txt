@@ -59,10 +59,10 @@ class Main
     {
         if (self._isAFK && self.AfkCanRespawn && Input.GetKeyDown("General/Forward"))
         {
-            Game.SpawnPlayer(Network.MyPlayer, false);
             self._isAFK = false;
             self._AfkTimer = self.AfkTimer;
             self._lastPosition = Vector3(0,0,0);
+            Game.SpawnPlayer(Network.MyPlayer, false);
         }
     }
 
@@ -93,6 +93,7 @@ class Main
             {
                 Network.MyPlayer.Character.GetKilled("AFK");
                 self._isAFK = true;
+                self._AfkTimer = self.AfkTimer;
             }
         }
     }
@@ -323,30 +324,11 @@ class Main
             blueRounds = 0;
         }
 
-        red = 0;
-        blue = 0;
-        humanPlayers = Game.Humans;
-        humans = humanPlayers.Count;
-        for (character in humanPlayers)
-        {
-            if (character.Team == "Red")
-            {
-                red = red + 1;
-            }
-            elif (character.Team == "Blue")
-            {
-                blue = blue + 1;
-            }
-        }
-
-        redPlayersAlive = "<color=#FF0000>RED ALIVE:  </color><color=#FFFFFF>" + Convert.ToString(red) + "</color>";
-        bluePlayersAlive = "<color=#0000FF>BLUE ALIVE:  </color><color=#FFFFFF>" + Convert.ToString(blue) + "</color>";
-
         redString = "<color=#FF0000>RED:  </color><color=#FFFFFF>" + Convert.ToString(redRounds) + "</color>";
         blueString = "<color=#0000FF>BLUE:  </color><color=#FFFFFF>" + Convert.ToString(blueRounds) + "</color>";
         split = "             ";
 
-        finalString = redPlayersAlive + split + bluePlayersAlive + String.Newline + redString + split + blueString;
+        finalString = String.Newline + redString + split + blueString;
 
         UI.SetLabel("TopCenter", "<size=25>" +finalString+ "</size>");
     }
