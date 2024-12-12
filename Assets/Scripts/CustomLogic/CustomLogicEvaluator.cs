@@ -1052,7 +1052,12 @@ namespace CustomLogic
             else if (left is CustomLogicVector3Builtin)
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
             else if (right is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+            {
+                if (left is CustomLogicQuaternionBuiltin)
+                    return new CustomLogicVector3Builtin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicVector3Builtin)right).Value);
+                else
+                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+            }
             else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
                 return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
             else

@@ -15,6 +15,17 @@ namespace CustomLogic
         {
             if (name == "FormatFloat")
                 return Util.FormatFloat(parameters[0].UnboxToFloat(), (int)parameters[1]);
+            if (name == "FormatFromList")
+            {
+                string str = (string)parameters[0];
+                var list = (CustomLogicListBuiltin)parameters[1];
+                List<string> strList = new List<string>();
+                foreach (var obj in list.List)
+                {
+                    strList.Add((string)obj);
+                }
+                return string.Format(str, strList.ToArray());
+            }
             if (name == "Split")
             {
                 if (parameters.Count < 2 || parameters.Count > 3)
@@ -109,6 +120,8 @@ namespace CustomLogic
                 return ((string)parameters[0]).ToUpper();
             if (name == "ToLower")
                 return ((string)parameters[0]).ToLower();
+            if (name == "IndexOf")
+                return ((string)parameters[0]).IndexOf((string)parameters[1]);
             return base.CallMethod(name, parameters);
         }
 

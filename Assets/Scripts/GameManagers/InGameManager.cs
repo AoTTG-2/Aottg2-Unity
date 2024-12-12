@@ -694,6 +694,11 @@ namespace GameManagers
                         type = "Punk";
                 }
             }
+            else if (type == "Random")
+            {
+                string[] types = new string[]{ "Normal", "Abnormal", "Jumper", "Crawler", "Thrower" };
+                type = types[UnityEngine.Random.Range(0, types.Length)];
+            }
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
