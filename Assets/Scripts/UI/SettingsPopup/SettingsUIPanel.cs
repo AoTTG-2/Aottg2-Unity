@@ -28,18 +28,27 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowStylebar, UIManager.GetLocale(cat, sub, "ShowStylebar"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.GameFeed, UIManager.GetLocale(cat, sub, "GameFeed"), tooltip: UIManager.GetLocale(cat, sub, "GameFeedTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.FeedConsole, UIManager.GetLocale(cat, sub, "FeedConsole"), tooltip: UIManager.GetLocale(cat, sub, "FeedConsoleTooltip"));
-            //ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowKDR, UIManager.GetLocale(cat, sub, "ShowKDR"), tooltip: UIManager.GetLocale(cat, sub, "ShowKDRTooltip"));
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.KDR, UIManager.GetLocale(cat, sub, "KDR"),
                                UIManager.GetLocaleArray(cat, sub, "KDROptions"), elementWidth: 160f);
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.JoinNotifications, UIManager.GetLocale(cat, sub, "JoinNotifications"), tooltip: UIManager.GetLocale(cat, sub, "JoinNotificationsTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowPing, UIManager.GetLocale(cat, sub, "ShowPing"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowGameTime, UIManager.GetLocale(cat, sub, "ShowGameTime"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowEmotes, UIManager.GetLocale(cat, sub, "ShowEmotes"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.HighVisibilityNames, UIManager.GetLocale(cat, sub, "HighVisibilityNames"), tooltip: UIManager.GetLocale(cat, sub, "HighVisibilityNamesTooltip"));
+
+            // Name Visibility
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameOverrideTarget, UIManager.GetLocale(cat, sub, "NameOverrideTarget"),
+                UIManager.GetLocaleArray(cat, sub, "ShowNamesOptions"), elementWidth: 160f);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameDistanceCutoff, UIManager.GetLocale(cat, sub, "NameDistanceCutoff"), elementWidth: 160f);
+            ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameBackgroundType, UIManager.GetLocale(cat, sub, "NameBackgroundType"),
+                UIManager.GetLocaleArray(cat, sub, "NameBackgroundTypeOptions"), elementWidth: 160f);
+            ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceNameColor, UIManager.GetLocale(cat, sub, "ForceNameColor"), UIManager.CurrentMenu.ColorPickPopup);
+            ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceBackgroundColor, UIManager.GetLocale(cat, sub, "ForceBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowNames, UIManager.GetLocale(cat, sub, "ShowNames"),
                 UIManager.GetLocaleArray(cat, sub, "ShowNamesOptions"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowHealthbars, UIManager.GetLocale(cat, sub, "ShowHealthbars"),
                 UIManager.GetLocaleArray(cat, sub, "ShowHealthbarsOptions"), elementWidth: 160f);
+
+            // Crosshair
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.CrosshairStyle, UIManager.GetLocale(cat, sub, "CrosshairStyle"),
                 UIManager.GetLocaleArray(cat, sub, "CrosshairStyleOptions"), elementWidth: 200f);
             ElementFactory.CreateSliderSetting(DoublePanelRight, new ElementStyle(titleWidth: 150f, themePanel: ThemePanel), 
@@ -53,6 +62,8 @@ namespace UI
                                UIManager.GetLocaleArray(cat, sub, "SpeedometerOptions"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.Coordinates, UIManager.GetLocale(cat, sub, "Coordinates"),
                                UIManager.GetLocaleArray(cat, sub, "CoordinatesOptions"), elementWidth: 160f);
+
+            // Misc
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.FadeMainMenu, UIManager.GetLocale(cat, sub, "FadeMainMenu"), tooltip: UIManager.GetLocale(cat, sub, "FadeMainMenuTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.FadeLoadscreen, UIManager.GetLocale(cat, sub, "FadeLoadscreen"), tooltip: UIManager.GetLocale(cat, sub, "FadeLoadscreenTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowInterpolation, UIManager.GetLocale(cat, sub, "ShowInterpolation"), tooltip: UIManager.GetLocale(cat, sub, "ShowInterpolationTooltip"));

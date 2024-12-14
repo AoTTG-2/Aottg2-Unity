@@ -48,17 +48,35 @@ namespace UI
             statbar.Find("ProgressBar").GetComponent<Slider>().value = percentage;
             statbar.Find("ProgressBar/Background").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarBackgroundColor");
             statbar.Find("ProgressBar/Fill Area/Fill").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarFillColor");
+            statbar.Find("Value").GetComponent<Text>().text = value.ToString();
+            statbar.Find("Value").GetComponent<Text>().color = UIManager.GetThemeColor(ThemePanel, "DefaultLabel", "TextColor");
         }
 
         protected void OnButtonClick(string button)
         {
             if (button == "EditStats")
             {
-                ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Show();
+                if (!((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.IsActive)
+                {
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Show();
+                }
+                else
+                {
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
+                }
             }
             else if (button == "EditPerks")
             {
-                ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Show();
+                if (!((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.IsActive)
+                {
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Show();
+                }
+                else
+                {
+                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
+                }
             }
         }
     }

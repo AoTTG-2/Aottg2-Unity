@@ -2506,9 +2506,10 @@ namespace Characters
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
             
-            this.OutlineComponent.RefreshRenderers(namesToIgnore);
+            if (this.OutlineComponent != null)
+                this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
-            CustomLogicManager.Evaluator.OnCharacterReloaded(this);
+            StartCoroutine(WaitAndNotifyReloaded());
         }
 
         protected void SetupWeapon(int humanWeapon)
