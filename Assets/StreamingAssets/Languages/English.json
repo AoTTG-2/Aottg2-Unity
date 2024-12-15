@@ -320,9 +320,7 @@
 		"UI.ShowNamesOptions": [ "All", "Mine", "Others", "None" ],
 		"UI.ShowHealthbars": "Show healthbars",
 		"UI.ShowHealthbarsOptions": [ "All", "Mine", "Others", "None" ],
-
 		"UI.NameOverrideTarget": "Name override target",
-		"UI.NameOverrideTargetOptions": ["Off", "All", "Mine", "Others"],
 		"UI.NameDistanceCutoff": "Name distance",
 		"UI.NameDistanceCutoffTooltip": "Distance at which names are shown. Select max to always show names.",
 		"UI.NameBackgroundType": "Name background",
