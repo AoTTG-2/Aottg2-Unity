@@ -39,7 +39,6 @@ namespace UI
             ShowMode showNameMode = (ShowMode)SettingsManager.UISettings.ShowNames.Value;
             ShowMode showHealthMode = (ShowMode)SettingsManager.UISettings.ShowHealthbars.Value;
             ShowMode NameOverrideTarget = (ShowMode)SettingsManager.UISettings.NameOverrideTarget.Value;
-            bool applySettingsOff = NameOverrideTarget != ShowMode.None;
             int nameRangeOverride = SettingsManager.UISettings.NameDistanceCutoff.Value;
             if (nameRangeOverride == SettingsManager.UISettings.NameDistanceCutoff.MaxValue)
                 nameRangeOverride = int.MaxValue;
@@ -70,9 +69,9 @@ namespace UI
                     continue;
                 }
                 Vector3 worldPosition = character.Cache.Transform.position + popup.Offset;
-                float range = applySettingsOff ? popup.Range : nameRangeOverride;
+                float range = nameRangeOverride < 0 ? popup.Range : nameRangeOverride;
                 float distance = Vector3.Distance(camera.Cache.Transform.position, worldPosition);
-                if (distance > range && !applySettingsOff)
+                if (distance > range)
                 {
                     popup.Hide();
                     if (popup.gameObject.activeSelf)

@@ -36,9 +36,10 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, SettingsManager.UISettings.ShowEmotes, UIManager.GetLocale(cat, sub, "ShowEmotes"));
 
             // Name Visibility
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameDistanceCutoff, UIManager.GetLocale(cat, sub, "NameDistanceCutoff"),
+                tooltip: UIManager.GetLocale(cat, sub, "NameDistanceCutoffTooltip"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameOverrideTarget, UIManager.GetLocale(cat, sub, "NameOverrideTarget"),
                 UIManager.GetLocaleArray(cat, sub, "ShowNamesOptions"), elementWidth: 160f);
-            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameDistanceCutoff, UIManager.GetLocale(cat, sub, "NameDistanceCutoff"), elementWidth: 160f);
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.UISettings.NameBackgroundType, UIManager.GetLocale(cat, sub, "NameBackgroundType"),
                 UIManager.GetLocaleArray(cat, sub, "NameBackgroundTypeOptions"), elementWidth: 160f);
             ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceNameColor, UIManager.GetLocale(cat, sub, "ForceNameColor"), UIManager.CurrentMenu.ColorPickPopup);
