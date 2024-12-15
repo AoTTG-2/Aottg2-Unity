@@ -815,6 +815,9 @@ component DestructibleTrigger
     TargetIDs = "0";
     TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
 
+    ObjectIDSelector = "0";
+   
+
     ReplacementIDs = "0";
     ReplacementIDsTooltip = "Slash (/) separated list of Replacement IDs to turn active on trigger.";
 
