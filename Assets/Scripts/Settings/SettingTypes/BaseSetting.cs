@@ -1,5 +1,4 @@
 ﻿using SimpleJSONFixed;
-using UnityEngine;
 
 namespace Settings
 {
