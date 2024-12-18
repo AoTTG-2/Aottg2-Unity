@@ -659,6 +659,7 @@
 			{"Name": "Pebbles2", "CollideMode": "None"},
 			{"Name": "Pine1"},
 			{"Name": "Pine1b", "Variant": "Pine1"},
+			{"Name": "Pine1c", "Variant": "Pine1"},
 			{"Name": "RiverRock1"},
 			{"Name": "RiverRock2"},
 			{"Name": "TallGrass1", "CollideMode": "None"},

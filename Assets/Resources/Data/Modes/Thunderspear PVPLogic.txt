@@ -156,7 +156,7 @@ class Main
         if (message == "/resetkdall" || message == "/kdra" || message == "/resetteams")
         {
             self.ClearRoomData();
-            Game.Print("Reset Room Data");
+            Game.Print("Reset Room Data.");
         }
     }
 
@@ -194,9 +194,10 @@ class Main
         }
 
         previousMode = RoomData.GetProperty("PreviousMode", -1);
-        if (previousMode != Game.GetMiscSetting("PVP"))
+        if (previousMode != Game.GetMiscSetting("PVP") && previousMode != -1)
         {
-            Game.Print("Resetting room data beause pvp mode changed");
+            Game.Print(Game.GetMiscSetting("PVP"));
+            Game.Print("Resetting Room Data.");
             RoomData.Clear();
         }
         RoomData.SetProperty("PreviousMode", Game.GetMiscSetting("PVP"));
