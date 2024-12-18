@@ -38,49 +38,77 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
-            set => Character.Cache.Transform.position = value.Value;
+            set {
+                if (Character.IsMine())
+                    Character.Cache.Transform.position = value.Value;
+            }
         }
 
         [CLProperty(Description = "Rotation of the character.")]
         public CustomLogicVector3Builtin Rotation
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.rotation.eulerAngles);
-            set => Character.Cache.Transform.rotation = Quaternion.Euler(value.Value);
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Transform.rotation = Quaternion.Euler(value.Value);
+            }
+            
         }
 
         [CLProperty(Description = "Quaternion rotation of the character.")]
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
             get => new CustomLogicQuaternionBuiltin(Character.Cache.Transform.rotation);
-            set => Character.Cache.Transform.rotation = value.Value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Transform.rotation = value.Value;
+            }
         }
 
         [CLProperty(Description = "Velocity of the character.")]
         public CustomLogicVector3Builtin Velocity
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
-            set => Character.Cache.Rigidbody.velocity = value.Value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Rigidbody.velocity = value.Value;
+            }
         }
 
         [CLProperty(Description = "Forward direction of the character.")]
         public CustomLogicVector3Builtin Forward
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.forward);
-            set => Character.Cache.Transform.forward = value.Value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Transform.forward = value.Value;
+            }
         }
 
         [CLProperty(Description = "Right direction of the character.")]
         public CustomLogicVector3Builtin Right
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.right);
-            set => Character.Cache.Transform.right = value.Value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Transform.right = value.Value;
+            }
         }
 
         [CLProperty(Description = "Up direction of the character.")]
         public CustomLogicVector3Builtin Up
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.up);
-            set => Character.Cache.Transform.up = value.Value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Cache.Transform.up = value.Value;
+            }
         }
 
         [CLProperty(Description = "If the character has a target direction it is turning towards.")]
@@ -93,49 +121,77 @@ namespace CustomLogic
         public string Team
         {
             get => Character.Team;
-            set => Character.SetTeam(value);
+            set
+            {
+                if (Character.IsMine())
+                    Character.SetTeam(value);
+            }
         }
 
         [CLProperty(Description = "The display name of the character.")]
         public string Name
         {
             get => Character.Name;
-            set => Character.Name = value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Name = value;
+            }
         }
 
         [CLProperty(Description = "The guild name of the character.")]
         public string Guild
         {
             get => Character.Guild;
-            set => Character.Guild = value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.Guild = value;
+            }
         }
 
         [CLProperty(Description = "Character's current health.")]
         public float Health
         {
             get => Character.CurrentHealth;
-            set => Character.SetCurrentHealth((int)value);
+            set
+            {
+                if (Character.IsMine())
+                    Character.SetCurrentHealth((int)value);
+            }
         }
 
         [CLProperty(Description = "Character's maximum health.")]
         public float MaxHealth
         {
             get => Character.MaxHealth;
-            set => Character.SetMaxHealth((int)value);
+            set
+            {
+                if (Character.IsMine())
+                    Character.SetMaxHealth((int)value);
+            }
         }
 
         [CLProperty(Description = "Is custom damage dealing enabled.")]
         public bool CustomDamageEnabled
         {
             get => Character.CustomDamageEnabled;
-            set => Character.CustomDamageEnabled = value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.CustomDamageEnabled = value;
+            }
         }
 
         [CLProperty(Description = "Amount of custom damage to deal per attack.")]
         public int CustomDamage
         {
             get => Character.CustomDamage;
-            set => Character.CustomDamage = value;
+            set
+            {
+                if (Character.IsMine())
+                    Character.CustomDamage = value;
+            }
         }
 
         [CLProperty(Description = "Character's current playing animation.")]
@@ -197,16 +253,16 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Reveaal the titan for a set number of seconds.")]
-        public void AddOutline(float delay)
+        public void Reveal(float delay)
         {
             Character.Reveal(0, delay);
         }
 
         [CLMethod(Description = "Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor")]
-        public void AddOutline(Color color, string mode)
+        public void AddOutline(CustomLogicColorBuiltin color, string mode)
         {
             Outline.Mode outlineMode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), mode);
-            Character.AddOutlineWithColor(color, outlineMode);
+            Character.AddOutlineWithColor(color.Value.ToColor(), outlineMode);
         }
 
         [CLMethod(Description = "Removes the outline effect from the character.")]
