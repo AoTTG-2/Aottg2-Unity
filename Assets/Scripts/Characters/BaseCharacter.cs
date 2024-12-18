@@ -10,6 +10,7 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 namespace Characters
 {
@@ -26,7 +27,7 @@ namespace Characters
             set
             {
                 RichTextName = value;
-                VisibleName = RichTextName.ForceWhiteColorTag();
+                VisibleName = RichTextName.StripColor();
             }
         }
         public string RichTextName = "";
@@ -64,7 +65,15 @@ namespace Characters
 
         // Visuals
         protected Outline OutlineComponent = null;
+        public event Action<ExitGames.Client.Photon.Hashtable> OnPlayerPropertiesChanged;
 
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+        {
+            if (targetPlayer == photonView.Owner)
+            {
+                OnPlayerPropertiesChanged?.Invoke(changedProps);
+            }
+        }
         public Vector3 GetVelocity()
         {
             if (!IsMine() && MovementSync != null)
@@ -564,6 +573,8 @@ namespace Characters
             SetColliders();
             CurrentHealth = MaxHealth = DefaultMaxHealth;
             MovementSync = GetComponent<BaseMovementSync>();
+            OutlineComponent = gameObject.AddComponent<Outline>();
+            OutlineComponent.enabled = false;
         }
 
         protected virtual void CreateCharacterIcon()
@@ -578,8 +589,6 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            OutlineComponent = gameObject.AddComponent<Outline>();
-            OutlineComponent.enabled = false;
             StartCoroutine(WaitAndNotifySpawn());
         }
 
@@ -596,6 +605,20 @@ namespace Characters
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
                 if (!AI)
                     CustomLogicManager.Evaluator.OnPlayerSpawn(this.Cache.PhotonView.Owner, this);
+            }
+        }
+
+        protected IEnumerator WaitAndNotifyReloaded()
+        {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicManager.Evaluator.OnCharacterReloaded(this);
             }
         }
 

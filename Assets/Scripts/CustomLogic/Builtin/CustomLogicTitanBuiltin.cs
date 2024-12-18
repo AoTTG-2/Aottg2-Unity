@@ -196,9 +196,9 @@ namespace CustomLogic
                 Titan.AttackPause = value.UnboxToFloat();
             else if (name == "TurnPause")
                 Titan.TurnPause = value.UnboxToFloat();
-            if (name == "Stamina")
+            else if (name == "Stamina")
                 Titan.CurrentSprintStamina = value.UnboxToFloat();
-            if (name == "MaxStamina")
+            else if (name == "MaxStamina")
                 Titan.MaxSprintStamina = value.UnboxToFloat();
             else if (name == "DetectRange")
             {

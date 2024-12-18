@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using ApplicationManagers;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
@@ -30,8 +29,13 @@ namespace UI
             Button rightButton = transform.Find("Increment/RightButton").GetComponent<Button>();
             LayoutElement leftLayout = leftButton.GetComponent<LayoutElement>();
             LayoutElement rightLayout = rightButton.GetComponent<LayoutElement>();
-            leftButton.onClick.AddListener(() => OnButtonPressed(increment: false));
-            rightButton.onClick.AddListener(() => OnButtonPressed(increment: true));
+
+            var trigger = leftButton.gameObject.AddComponent<HoldableButton>();
+            trigger.OnClick += () => OnButtonPressed(increment: false);
+
+            trigger = rightButton.gameObject.AddComponent<HoldableButton>();
+            trigger.OnClick += () => OnButtonPressed(increment: true);
+
             leftLayout.preferredWidth = rightLayout.preferredWidth = elementWidth;
             leftLayout.preferredHeight = rightLayout.preferredHeight = elementHeight;
             base.Setup(setting, style, title, tooltip);

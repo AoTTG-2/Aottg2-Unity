@@ -22,7 +22,7 @@ namespace UI
         {
             _mainBackgroundPanelBack = ElementFactory.CreateDefaultPopup<MainMenuBackgroundPanel>(transform);
             _mainBackgroundPanelFront = ElementFactory.CreateDefaultPopup<MainMenuBackgroundPanel>(transform);
-            _mainBackgroundPanelBack.SetRandomBackground(loading: false);
+            _mainBackgroundPanelBack.SetRandomBackground(loading: false, seasonal: true);
             _mainBackgroundPanelBack.GetComponent<RectTransform>().localScale = Vector3.one * backgroundScale;
             _mainBackgroundPanelFront.GetComponent<RectTransform>().localScale = Vector3.one * backgroundScale;
             _mainBackgroundPanelBack.ShowImmediate();

@@ -2506,8 +2506,10 @@ namespace Characters
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
             
-            this.OutlineComponent.RefreshRenderers(namesToIgnore);
+            if (this.OutlineComponent != null)
+                this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
+            StartCoroutine(WaitAndNotifyReloaded());
         }
 
         protected void SetupWeapon(int humanWeapon)
@@ -2709,6 +2711,9 @@ namespace Characters
 
         public void OnHooked(bool left, Vector3 position)
         {
+            // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
+            if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
+                _reelInWaitForRelease = false;
             if (left)
             {
                 _launchLeft = true;
@@ -3175,7 +3180,7 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle)
+        public void ToggleBlades(bool toggle)
         {
             if (IsMine())
                 Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });

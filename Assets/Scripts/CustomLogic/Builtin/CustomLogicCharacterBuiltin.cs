@@ -174,6 +174,8 @@ namespace CustomLogic
                 return Character.GetCurrentAnimation();
             if (name == "IsAI")
                 return Character.AI;
+            if (name == "Grounded")
+                return Character.Grounded;
             return base.GetField(name);
         }
 
