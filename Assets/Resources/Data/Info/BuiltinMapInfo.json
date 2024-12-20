@@ -74,6 +74,14 @@
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
+					"Name": "Christmas Waves",
+					"MiscSettings": {
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
 					"Name": "Spooky Waves"
 				},
 				{
