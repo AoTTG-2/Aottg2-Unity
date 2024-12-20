@@ -50,8 +50,7 @@ namespace Settings
         public void Disconnect()
         {
             PhotonNetwork.Disconnect();
-            if (VoiceChatManager.Client.Client.IsConnected)
-                VoiceChatManager.Client.Disconnect();
+            VoiceChatManager.Client.Disconnect();
         }
 
         public void ConnectServer(MultiplayerRegion region)

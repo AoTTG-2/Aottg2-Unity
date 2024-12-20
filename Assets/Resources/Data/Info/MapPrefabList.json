@@ -549,6 +549,7 @@
 			{"Name": "Sign1"},
 			{"Name": "Spike1"},
 			{"Name": "Sleigh1"},
+			{"Name": "Sleigh1a", "Variant": "Sleigh1"},
 			{"Name": "Snowman1"},
 			{"Name": "Sock1"},
 			{"Name": "Sock1a", "Variant": "Sock1"},
