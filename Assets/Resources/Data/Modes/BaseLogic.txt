@@ -3337,7 +3337,7 @@ component SignalMover
                     self._GoalPosition = self._StartPosition - self.TargetPosition;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -3561,7 +3561,7 @@ component SignalArcMover
                     self._GoalPosition = self._StartPosition - self.TargetPosition;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -3800,7 +3800,7 @@ component SignalRotator
                     self._GoalRotation = self._StartRotation - self.Rotation;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -4016,7 +4016,7 @@ component SignalScaler
                     self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
