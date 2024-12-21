@@ -44,6 +44,7 @@ namespace Projectiles
         Vector3 _startPosition = Vector3.zero;
         bool _isAA = false;
         float _embedTime;
+        Color _critColor = Color.blue;
 
         protected override void SetupSettings(object[] settings)
         {
@@ -123,6 +124,7 @@ namespace Projectiles
             {
                 float effectRadius;
                 float restrictAngle = GetStat("RestrictAngle");
+                Color color = _color;
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                     effectRadius = _radius * 2f;
                 else
@@ -137,6 +139,7 @@ namespace Projectiles
                         {
                             _radius = _radius * GetStat("RadiusEmbed1Multiplier");
                             restrictAngle = GetStat("RestrictAngleEmbed1");
+                            color = _critColor;
                         }
                         else
                         {
@@ -152,14 +155,13 @@ namespace Projectiles
                 currentPriority = Mathf.Max(currentPriority, (int)killedPlayer);
                 currentPriority = Mathf.Max(currentPriority, (int)killedTitan);
                 TSKillType soundPriority = (TSKillType)currentPriority;
-
                 EffectSpawner.Spawn(
                     EffectPrefabs.ThunderspearExplode,
                     transform.position,
                     transform.rotation,
                     effectRadius,
                     true,
-                    new object[] { _color, soundPriority, _wasImpact }
+                    new object[] { color, soundPriority, _wasImpact }
                 );
                 StunMyHuman();
                 DestroySelf();

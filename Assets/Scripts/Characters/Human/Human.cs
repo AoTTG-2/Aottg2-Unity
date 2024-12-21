@@ -2540,6 +2540,7 @@ namespace Characters
             }
             else if (humanWeapon == (int)HumanWeapon.Thunderspear)
             {
+                var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 {
                     int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
@@ -2556,7 +2557,7 @@ namespace Characters
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f,tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else
@@ -2564,10 +2565,9 @@ namespace Characters
                 }
                 else
                 {
-                    var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                     float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
                     Weapon = new ThunderspearWeapon(this, Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 20, 4, 30), tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
-                        tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
+                        tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat, tsInfo);
                 }
             }
         }
