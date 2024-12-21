@@ -28,12 +28,40 @@ namespace CustomLogic
             }
             if (name == "Split")
             {
-                string toSplit = (string)parameters[0];
-                string splitStr = (string)parameters[1];
-                char splitChar = splitStr[0];
+                if (parameters.Count < 2 || parameters.Count > 3)
+                    throw new System.Exception("Invalid number of parameters for Split (string, string, [OPT]removeEmpty), (string, list, [OPT]removeEmpty)");
+                System.StringSplitOptions options = System.StringSplitOptions.None;
+
+                if (parameters.Count == 3)
+                {
+                    options = (bool)parameters[2] ? System.StringSplitOptions.RemoveEmptyEntries : System.StringSplitOptions.None;
+                }
+
+                string stringToSplit = (string)parameters[0];
                 CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                foreach (string str in toSplit.Split(splitChar))
-                    list.List.Add(str);
+                if (parameters[1] is string)
+                {
+                    string separator = (string)parameters[1];
+                    if (separator.Length == 1)
+                    {
+                        foreach (string str in stringToSplit.Split(separator[0], options))
+                            list.List.Add(str);
+                    }
+                    else
+                    {
+                        foreach (string str in stringToSplit.Split(separator, options))
+                            list.List.Add(str);
+                    }
+                }
+                else
+                {
+                    CustomLogicListBuiltin separatorList = (CustomLogicListBuiltin)parameters[1];
+                    string[] separators = new string[separatorList.List.Count];
+                    for (int i = 0; i < separatorList.List.Count; i++)
+                        separators[i] = (string)separatorList.List[i];
+                    foreach (string str in stringToSplit.Split(separators, options))
+                        list.List.Add(str);
+                }
                 return list;
             }
             if (name == "Join")

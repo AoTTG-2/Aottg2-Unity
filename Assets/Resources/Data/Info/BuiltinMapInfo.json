@@ -74,6 +74,14 @@
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
+					"Name": "Christmas Waves",
+					"MiscSettings": {
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
 					"Name": "Spooky Waves"
 				},
 				{
@@ -160,6 +168,9 @@
 			"Name": "PVP",
 			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
 			"Maps": [
+				{
+					"Name": "Cats Forest"
+				},
 				{
 					"Category": "General",
 					"Name": "Forest1"
