@@ -444,8 +444,10 @@ namespace Characters
         {
             _needFreshCore = true;
             SetAnimationUpdateMode(state == TitanState.Jump);
-            if (state != TitanState.Eat)
+            if (state != TitanState.Eat && state != TitanState.HumanThrow)
+            {
                 Ungrab();
+            }
             if (deactivateHitboxes)
                 DeactivateAllHitboxes();
             if (state != TitanState.Idle || _currentStateAnimation != animation)
@@ -571,7 +573,7 @@ namespace Characters
                 }
                 if (State == TitanState.Fall || State == TitanState.Dead || State == TitanState.Jump || State == TitanState.WallClimb)
                     return;
-                if (State == TitanState.Eat)
+                if (State == TitanState.Eat || State == TitanState.HumanThrow)
                     UpdateEat();
                 else if (State == TitanState.Turn)
                     UpdateTurn();
@@ -1041,6 +1043,7 @@ namespace Characters
         Eat,
         Turn,
         WallClimb,
-        CoverNape
+        CoverNape,
+        HumanThrow
     }
 }
