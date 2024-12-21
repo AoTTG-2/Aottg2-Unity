@@ -1376,13 +1376,10 @@ namespace Characters
                         Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
-            if (Cache.Animation.IsPlaying(HumanAnimations.Grabbed))
+            if (GrabHand != null)
             {
-                if (GrabHand != null)
-                {
-                    Cache.Transform.position = GrabHand.transform.position;
-                    Cache.Transform.rotation = GrabHand.transform.rotation;
-                }
+                Cache.Transform.position = GrabHand.transform.position;
+                Cache.Transform.rotation = GrabHand.transform.rotation;
             }
         }
 
