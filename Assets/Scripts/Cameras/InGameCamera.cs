@@ -42,6 +42,9 @@ namespace Cameras
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
         private float _lastChangeSpectateID = 0;
+        public float Deadzone { get; set; } = SettingsManager.GeneralSettings.Deadzone.Value;
+        public float CameraSpeed { get; set; } = SettingsManager.GeneralSettings.CameraSpeed.Value;
+        public float RotationSpeed { get; set; } = SettingsManager.GeneralSettings.RotationSpeed.Value;
 
         private bool CheckSpectateRateLimit()
         {
@@ -69,6 +72,10 @@ namespace Cameras
         {
             ResetDistance();
             ResetCameraMode();
+
+            Deadzone = SettingsManager.GeneralSettings.Deadzone.Value;
+            CameraSpeed = SettingsManager.GeneralSettings.CameraSpeed.Value;
+            RotationSpeed = SettingsManager.GeneralSettings.RotationSpeed.Value;
         }
 
         public void ResetDistance()
@@ -327,19 +334,38 @@ namespace Cameras
                 sensitivity = 0f;
             if (CurrentCameraMode == CameraInputMode.Original)
             {
-                if (Input.mousePosition.x < (Screen.width * 0.4f))
+                float screenWidth = Screen.width;
+                float centerX = screenWidth / 2;
+                float leftDeadzoneBoundary = screenWidth * ((1 - Deadzone) / 2);
+                float rightDeadzoneBoundary = screenWidth * ((1 + Deadzone) / 2);
+
+                float inputX = Input.mousePosition.x;
+                float inputY = Input.mousePosition.y;
+
+                if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
                 {
-                    float angle = -(((Screen.width * 0.4f) - Input.mousePosition.x) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    float t = 0;
+                    if (inputX < leftDeadzoneBoundary)
+                    {
+                        t = (leftDeadzoneBoundary - inputX) / screenWidth;
+                        float angle = -t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
+                    else if (inputX > rightDeadzoneBoundary)
+                    {
+                        t = (inputX - rightDeadzoneBoundary) / screenWidth;
+                        float angle = t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
                 }
-                else if (Input.mousePosition.x > (Screen.width * 0.6f))
-                {
-                    float angle = ((Input.mousePosition.x - (Screen.width * 0.6f)) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
-                }
-                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
+                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+            }
+            if (!SettingsManager.GeneralSettings.EnableAdvancedCamera.Value)
+            {
+            Deadzone = 0.2f;
+            CameraSpeed = 60f;
             }
             if (_napeLock && (_napeLockTitan != null))
             {
@@ -352,6 +378,7 @@ namespace Cameras
                 if (_napeLockTitan.Dead)
                 {
                     _napeLockTitan = null;
+                    _napeLock = false;
                 }
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
@@ -508,7 +535,8 @@ namespace Cameras
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {
-                    float distance = Vector3.Distance(_follow.Cache.Transform.position, character.Cache.Transform.position);
+                    var neck = ((BaseTitan)character).BaseTitanCache.Neck;
+                    float distance = Vector3.Distance(_follow.Cache.Transform.position, neck.position);
                     if (distance < nearestDistance)
                     {
                         nearestDistance = distance;
@@ -531,6 +559,11 @@ namespace Cameras
             {
                 if (!shifter.AI)
                     characters.Add(shifter);
+            }
+            foreach (var titan in _inGameManager.Titans)
+            {
+                if (!titan.AI)
+                    characters.Add(titan);
             }
             return characters.OrderBy(x => x.Cache.PhotonView.Owner.ActorNumber).ToList();
         }

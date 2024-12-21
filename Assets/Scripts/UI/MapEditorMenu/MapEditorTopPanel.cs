@@ -11,6 +11,8 @@ using GameManagers;
 using Characters;
 using Map;
 using System.Threading;
+using System.IO;
+using Utility;
 
 namespace UI
 {
@@ -48,7 +50,7 @@ namespace UI
 
             // file dropdown
             List<string> options = new List<string>();
-            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "Quit", "SaveQuit" })
+            foreach (string option in new string[] { "New", "Open", "Rename", "Save", "Import", "Export", "LoadPreset", "LoadAutosave", "Quit", "SaveQuit" })
                 options.Add(UIManager.GetLocaleCommon(option));
             var fileDropdown = ElementFactory.CreateDropdownSelect(group, style, _dropdownSelection, UIManager.GetLocale(cat, "Top", "File"),
                options.ToArray(), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onDropdownOptionSelect: () => OnFileClick());
@@ -151,9 +153,14 @@ namespace UI
                 }
                 _menu.SelectListPopup.ShowLoad(presets, UIManager.GetLocaleCommon("LoadPreset"), onLoad: () => OnImportPresetFinish());
             }
-            else if (index == 7) // quit
+            else if (index == 7) // load autosave
+            {
+                var autosaves = BuiltinLevels.GetAutosaveNames().OrderByDescending(c => c).ToList();
+                _menu.SelectListPopup.ShowLoad(autosaves, UIManager.GetLocaleCommon("LoadAutosave"), onLoad: () => OnImportAutosaveFinish());
+            }
+            else if (index == 8) // quit
                 SceneLoader.LoadScene(SceneName.MainMenu);
-            else if (index == 8) // save + quit
+            else if (index == 9) // save + quit
             {
                 Save();
                 SceneLoader.LoadScene(SceneName.MainMenu);
@@ -167,6 +174,17 @@ namespace UI
             foreach (var obj in MapLoader.IdToMapObject.Values)
                 objs.Add(obj.ScriptObject);
             BuiltinLevels.SaveCustomMap(_currentMap.Value, _gameManager.MapScript);
+        }
+
+        public void Autosave()
+        {
+            var objs = _gameManager.MapScript.Objects.Objects;
+            objs.Clear();
+            foreach (var obj in MapLoader.IdToMapObject.Values)
+                objs.Add(obj.ScriptObject);
+            foreach (var fi in new DirectoryInfo(FolderPaths.CustomMapAutosave).GetFiles().OrderByDescending(x => x.LastWriteTime).Skip(100))
+                fi.Delete();
+            BuiltinLevels.AutosaveCustomMap(_currentMap.Value + DateTime.Now.ToString("MM-dd-yyyy-HH-mm"), _gameManager.MapScript);
         }
 
         protected void OnEditClick()
@@ -311,6 +329,11 @@ namespace UI
             _menu.ConfirmPopup.Show("Loading preset will overwrite current save.", () => OnImportPresetConfirm());
         }
 
+        protected void OnImportAutosaveFinish()
+        {
+            _menu.ConfirmPopup.Show("Loading autosave will overwrite current save.", () => OnImportAutosaveConfirm());
+        }
+
         protected void OnImportPresetConfirm()
         {
             string[] strArr = _menu.SelectListPopup.FinishSetting.Value.Split('/');
@@ -318,6 +341,15 @@ namespace UI
             string map = strArr[1];
             MapScript script = new MapScript();
             script.Deserialize(BuiltinLevels.LoadMap(category, map));
+            BuiltinLevels.SaveCustomMap(_currentMap.Value, script);
+            SceneLoader.LoadScene(SceneName.MapEditor);
+        }
+
+        protected void OnImportAutosaveConfirm()
+        {
+            string map = _menu.SelectListPopup.FinishSetting.Value;
+            MapScript script = new MapScript();
+            script.Deserialize(BuiltinLevels.LoadAutosave(map));
             BuiltinLevels.SaveCustomMap(_currentMap.Value, script);
             SceneLoader.LoadScene(SceneName.MapEditor);
         }

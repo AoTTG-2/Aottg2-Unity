@@ -1,5 +1,9 @@
 {
+	"EventBackgrounds": [
+		"MainBackground0Texture"
+	],
 	"MainBackgrounds": [
+		"MainBackground0Texture",
 		"MainBackground2Texture",
 		"MainBackground4Texture",
 		"MainBackground5Texture",

@@ -16,6 +16,7 @@ namespace Map
     {
         private static JSONNode _info;
         public static string CustomMapFolderPath = FolderPaths.CustomMap;
+        public static string CustomMapAutosaveFolderPath = FolderPaths.CustomMapAutosave;
         public static string CustomLogicFolderPath = FolderPaths.CustomLogic;
         public static string UseMapLogic = "Map Logic";
 
@@ -23,6 +24,7 @@ namespace Map
         {
             Directory.CreateDirectory(CustomMapFolderPath);
             Directory.CreateDirectory(CustomLogicFolderPath);
+            Directory.CreateDirectory(CustomMapAutosaveFolderPath);
             _info = JSON.Parse(((TextAsset)ResourceManager.LoadAsset(ResourcePaths.Info, "BuiltinMapInfo")).text);
         }
 
@@ -42,6 +44,14 @@ namespace Map
                     category = map["Category"];
                 return ResourceManager.TryLoadText(ResourcePaths.BuiltinMaps, category + "/" + name + "Map");
             }
+            return string.Empty;
+        }
+
+        public static string LoadAutosave(string name)
+        {
+            string path = CustomMapAutosaveFolderPath + "/" + name + ".txt";
+            if (File.Exists(path))
+                return File.ReadAllText(path);
             return string.Empty;
         }
 
@@ -107,6 +117,14 @@ namespace Map
             }
         }
 
+        public static string[] GetAutosaveNames()
+        {
+            string[] files = GetTxtFiles(CustomMapAutosaveFolderPath);
+            for (int i = 0; i < files.Length; i++)
+                files[i] = files[i].Replace(".txt", "");
+            return files;
+        }
+
         public static void DeleteCustomMap(string name)
         {
             File.Delete(CustomMapFolderPath + "/" + name + ".txt");
@@ -120,6 +138,11 @@ namespace Map
         public static void SaveCustomMap(string name, MapScript script)
         {
             File.WriteAllText(CustomMapFolderPath + "/" + name + ".txt", script.Serialize());
+        }
+
+        public static void AutosaveCustomMap(string name, MapScript script)
+        {
+            File.WriteAllText(CustomMapAutosaveFolderPath + "/" + name + ".txt", script.Serialize());
         }
 
         public static void SaveCustomLogic(string name, string script)
