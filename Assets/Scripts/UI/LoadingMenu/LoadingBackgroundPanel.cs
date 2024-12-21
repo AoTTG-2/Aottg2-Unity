@@ -28,20 +28,27 @@ namespace UI
             _background = ElementFactory.InstantiateAndBind(transform, "Prefabs/MainMenu/MainBackground");
         }
 
-        public void SetRandomBackground(bool loading)
+        public void SetRandomBackground(bool loading, bool seasonal=false)
         {
-
-            JSONNode backgrounds = loading ? MainMenu.MainBackgroundInfo["LoadingBackgrounds"] : MainMenu.MainBackgroundInfo["MainBackgrounds"];
+            string seasonalPath = "EventBackgrounds";
+            string path = "MainBackgrounds";
+            if (seasonal && MainMenu.MainBackgroundInfo.HasKey(seasonalPath))
+            {
+                JSONNode seasonals = MainMenu.MainBackgroundInfo[seasonalPath];
+                if (seasonals.AsArray.Count > 0)
+                    path = seasonalPath;
+            }
+            JSONNode backgrounds = loading ? MainMenu.MainBackgroundInfo["LoadingBackgrounds"] : MainMenu.MainBackgroundInfo[path];
             int backgroundIndex = BackgroundIndex;
             while (backgroundIndex == BackgroundIndex)
                 backgroundIndex = Random.Range(0, backgrounds.Count);
-            SetBackground(loading, backgroundIndex);
+            SetBackground(loading, backgroundIndex, path);
         }
 
-        public void SetBackground(bool loading, int backgroundIndex)
+        public void SetBackground(bool loading, int backgroundIndex, string path= "MainBackgrounds")
         {
             BackgroundIndex = backgroundIndex;
-            JSONNode backgrounds = loading ? MainMenu.MainBackgroundInfo["LoadingBackgrounds"] : MainMenu.MainBackgroundInfo["MainBackgrounds"];
+            JSONNode backgrounds = loading ? MainMenu.MainBackgroundInfo["LoadingBackgrounds"] : MainMenu.MainBackgroundInfo[path];
             RawImage image = _background.transform.Find("Image").GetComponent<RawImage>();
             try
             {

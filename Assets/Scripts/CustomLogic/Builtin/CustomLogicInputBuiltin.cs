@@ -55,6 +55,11 @@ namespace CustomLogic
                     target = hit.point;
                 return new CustomLogicVector3Builtin(target);
             }
+            if (name == "CursorAimDirection")
+            {
+                Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
+                return new CustomLogicVector3Builtin(ray.direction);
+            }
             if (name == "GetMouseSpeed")
             {
                 Vector3 speed = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
@@ -78,6 +83,7 @@ namespace CustomLogic
                     CustomLogicManager.KeybindDefaultDisabled.Remove(keybind);
                 else if (!enabled && !CustomLogicManager.KeybindDefaultDisabled.Contains(keybind))
                     CustomLogicManager.KeybindDefaultDisabled.Add(keybind);
+                return null;
             }
             if (name == "SetKeyHold")
             {
@@ -87,6 +93,7 @@ namespace CustomLogic
                     CustomLogicManager.KeybindHold.Remove(keybind);
                 else if (enabled && !CustomLogicManager.KeybindHold.Contains(keybind))
                     CustomLogicManager.KeybindHold.Add(keybind);
+                return null;
             }
             return base.CallMethod(name, parameters);
         }

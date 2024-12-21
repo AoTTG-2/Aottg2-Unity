@@ -189,7 +189,8 @@ namespace Characters
 
         public virtual void ResetAttackState(string attack)
         {
-            Cache.Rigidbody.velocity = Vector3.zero;
+            if (AI)
+                Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
             _currentAttackAnimation = AttackAnimations[attack];
             _currentAttackSpeed = GetAttackSpeed(attack);
@@ -443,8 +444,10 @@ namespace Characters
         {
             _needFreshCore = true;
             SetAnimationUpdateMode(state == TitanState.Jump || state == TitanState.Attack);
-            if (state != TitanState.Eat)
+            if (state != TitanState.Eat && state != TitanState.HumanThrow)
+            {
                 Ungrab();
+            }
             if (deactivateHitboxes)
                 DeactivateAllHitboxes();
             if (state != TitanState.Idle || _currentStateAnimation != animation)
@@ -532,6 +535,14 @@ namespace Characters
             return BaseTitanAnimations.SitUp;
         }
 
+        protected void SetDefaultVelocityLerp()
+        {
+            float value = 1f;
+            if (this._currentAttack != "AttackBellyFlop" && this._currentAttack != "AttackRockThrow")
+                value = 1.47f;
+            Vector3 targetVelocity = Vector3.up * Cache.Rigidbody.velocity.y + Vector3.down * Mathf.Min(_currentGroundDistance * 100f, 100f);
+            Cache.Rigidbody.velocity = Vector3.Lerp(Cache.Rigidbody.velocity, targetVelocity, Time.deltaTime * value);
+        }
         protected virtual void Update()
         {
             UpdateDisableArm();
@@ -562,7 +573,7 @@ namespace Characters
                 }
                 if (State == TitanState.Fall || State == TitanState.Dead || State == TitanState.Jump || State == TitanState.WallClimb)
                     return;
-                if (State == TitanState.Eat)
+                if (State == TitanState.Eat || State == TitanState.HumanThrow)
                     UpdateEat();
                 else if (State == TitanState.Turn)
                     UpdateTurn();
@@ -706,8 +717,10 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     FixedUpdateAttack();
-                    if (Grounded)
+                    if (Grounded && AI)
                         SetDefaultVelocity();
+                    else if (Grounded && !AI)
+                        SetDefaultVelocityLerp();
                 }
                 else if (State == TitanState.Dead)
                 {
@@ -768,7 +781,7 @@ namespace Characters
                     _previousCoreLocalPosition = _furthestCoreLocalPosition;
                     _needFreshCore = false;
                 }
-                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
+                if (AI && _rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
                     && Cache.Animation[_currentStateAnimation].normalizedTime < _rootMotionAnimations[_currentStateAnimation])
                 {
                     Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
@@ -1030,6 +1043,7 @@ namespace Characters
         Eat,
         Turn,
         WallClimb,
-        CoverNape
+        CoverNape,
+        HumanThrow
     }
 }

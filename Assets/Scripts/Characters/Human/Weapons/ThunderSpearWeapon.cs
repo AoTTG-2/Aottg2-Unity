@@ -2,6 +2,7 @@
 using Effects;
 using Projectiles;
 using Settings;
+using SimpleJSONFixed;
 using System.Threading;
 using UI;
 using UnityEngine;
@@ -17,14 +18,16 @@ namespace Characters
         public float TravelTime;
         public float Delay;
         private float _delayTimeLeft;
+        private JSONNode TSInfo;
 
         public ThunderspearWeapon(BaseCharacter owner, int ammo, int ammoPerRound, float cooldown, float radius, float speed,
-            float travelTime, float delay) : base(owner, ammo, ammoPerRound, cooldown)
+            float travelTime, float delay, JSONNode tsInfo) : base(owner, ammo, ammoPerRound, cooldown)
         {
             Radius = radius;
             Speed = speed;
             TravelTime = travelTime;
             Delay = delay;
+            TSInfo = tsInfo;
         }
 
         protected override void Activate()
@@ -71,9 +74,18 @@ namespace Characters
                 human.TargetAngle = Quaternion.LookRotation(direction).eulerAngles.y;
                 human._targetRotation = Quaternion.Euler(0f, human.TargetAngle, 0f);
             }
+            var initialVelocity = (human.CarryState == HumanCarryState.Carry && human.Carrier != null) ? human.Carrier.CarryVelocity : human.Cache.Rigidbody.velocity;
+            float speed = Speed;
+            float travelTime = TravelTime;
+            if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+            {
+                speed = Speed + initialVelocity.magnitude * TSInfo["SpeedMultiplier"].AsFloat;
+                travelTime = (Mathf.Clamp(TSInfo["Range"].AsFloat + initialVelocity.magnitude * TSInfo["RangeMultiplier"].AsFloat,
+                TSInfo["RangeMin"].AsFloat, TSInfo["RangeMax"].AsFloat)) / speed;
+            }
             Current = (ThunderspearProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.Thunderspear, spawnPosition, Quaternion.LookRotation(spawnDirection),
-                spawnDirection * Speed, Vector3.zero, TravelTime, human.Cache.PhotonView.ViewID, "", new object[] {Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor()});
-            Current.InitialPlayerVelocity = (human.CarryState == HumanCarryState.Carry && human.Carrier != null) ? human.Carrier.CarryVelocity : human.Cache.Rigidbody.velocity;
+                spawnDirection * speed, Vector3.zero, travelTime, human.Cache.PhotonView.ViewID, "", new object[] { Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor() });
+            Current.InitialPlayerVelocity = initialVelocity;
             _delayTimeLeft = Delay;
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootTS();
         }

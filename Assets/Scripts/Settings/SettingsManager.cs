@@ -25,6 +25,8 @@ namespace Settings
         public static MapEditorSettings MapEditorSettings;
         public static SoundSettings SoundSettings;
 
+        public static event Action OnSettingsChanged;
+
         public static void Init()
         {
             MultiplayerSettings = new MultiplayerSettings();
@@ -43,6 +45,11 @@ namespace Settings
             InGameCharacterSettings = new InGameCharacterSettings();
             MapEditorSettings = new MapEditorSettings();
             SoundSettings = new SoundSettings();
+        }
+
+        public static void NotifySettingsChanged()
+        {
+            OnSettingsChanged?.Invoke();
         }
     }
 }
