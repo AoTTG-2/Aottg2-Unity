@@ -18,6 +18,7 @@ using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
 using Anticheat;
+using System.Globalization;
 
 namespace GameManagers
 {
@@ -507,6 +508,7 @@ namespace GameManagers
                 return;
             if (CurrentCharacter != null && !CurrentCharacter.Dead)
                 CurrentCharacter.GetKilled("");
+            string forced = string.Empty;
             UpdatePlayerName();
             List<string> characters = new List<string>();
             if (miscSettings.AllowAHSS.Value || miscSettings.AllowBlades.Value || miscSettings.AllowThunderspears.Value || miscSettings.AllowAPG.Value)

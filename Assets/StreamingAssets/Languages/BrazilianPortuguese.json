@@ -234,11 +234,6 @@
 		"General.FPSFOVMinTooltip": "Campo de visão quando parado e utilizando a distância de câmera 0",
 		"General.FPSFOVMax": "FOV FPS máximo",
 		"General.FPSFOVMaxTooltip": "Campo de visão quando estiver em altas velocidades e utilizando a distância de câmera 0",
-		"General.Deadzone": "Zona morta",
-		"General.CameraSpeed": "Velocidade da câmera",
-		"General.EnableAdvancedCamera": "Ativar configurações avançadas de câmera",
-		"General.EnableAdvancedCameraTooltip": "Personalize a zona morta e a velocidade da câmera para o modo de câmera original",
-	
 		"Sound.Volume": "Volume",
 		"Sound.Music": "Música",
 		"Sound.MuteMinimized": "Silenciar enquanto minimizado",

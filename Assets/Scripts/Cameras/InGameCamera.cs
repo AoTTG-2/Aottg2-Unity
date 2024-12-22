@@ -42,9 +42,6 @@ namespace Cameras
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
         private float _lastChangeSpectateID = 0;
-        public float Deadzone { get; set; } = SettingsManager.GeneralSettings.Deadzone.Value;
-        public float CameraSpeed { get; set; } = SettingsManager.GeneralSettings.CameraSpeed.Value;
-        public float RotationSpeed { get; set; } = SettingsManager.GeneralSettings.RotationSpeed.Value;
 
         private bool CheckSpectateRateLimit()
         {
@@ -72,10 +69,6 @@ namespace Cameras
         {
             ResetDistance();
             ResetCameraMode();
-
-            Deadzone = SettingsManager.GeneralSettings.Deadzone.Value;
-            CameraSpeed = SettingsManager.GeneralSettings.CameraSpeed.Value;
-            RotationSpeed = SettingsManager.GeneralSettings.RotationSpeed.Value;
         }
 
         public void ResetDistance()
@@ -332,12 +325,14 @@ namespace Cameras
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
             if (InGameMenu.InMenu())
                 sensitivity = 0f;
+            float deadzone = SettingsManager.GeneralSettings.OriginalCameraDeadzone.Value;
+            float cameraSpeed = SettingsManager.GeneralSettings.OriginalCameraSpeed.Value;
             if (CurrentCameraMode == CameraInputMode.Original)
             {
                 float screenWidth = Screen.width;
                 float centerX = screenWidth / 2;
-                float leftDeadzoneBoundary = screenWidth * ((1 - Deadzone) / 2);
-                float rightDeadzoneBoundary = screenWidth * ((1 + Deadzone) / 2);
+                float leftDeadzoneBoundary = screenWidth * ((1 - deadzone) / 2);
+                float rightDeadzoneBoundary = screenWidth * ((1 + deadzone) / 2);
 
                 float inputX = Input.mousePosition.x;
                 float inputY = Input.mousePosition.y;
@@ -348,24 +343,19 @@ namespace Cameras
                     if (inputX < leftDeadzoneBoundary)
                     {
                         t = (leftDeadzoneBoundary - inputX) / screenWidth;
-                        float angle = -t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        float angle = -t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
                         Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
                     }
                     else if (inputX > rightDeadzoneBoundary)
                     {
                         t = (inputX - rightDeadzoneBoundary) / screenWidth;
-                        float angle = t * CameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        float angle = t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
                         Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
                     }
                 }
                 float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-            }
-            if (!SettingsManager.GeneralSettings.EnableAdvancedCamera.Value)
-            {
-            Deadzone = 0.2f;
-            CameraSpeed = 60f;
             }
             if (_napeLock && (_napeLockTitan != null))
             {

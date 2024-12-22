@@ -44,7 +44,7 @@ namespace Projectiles
         Vector3 _startPosition = Vector3.zero;
         bool _isAA = false;
         float _embedTime;
-        Color _critColor = Color.blue;
+        public static Color CritColor = new Color(0.475f, 0.7f, 1f);
 
         protected override void SetupSettings(object[] settings)
         {
@@ -139,7 +139,7 @@ namespace Projectiles
                         {
                             _radius = _radius * GetStat("RadiusEmbed1Multiplier");
                             restrictAngle = GetStat("RestrictAngleEmbed1");
-                            color = _critColor;
+                            color = CritColor;
                         }
                         else
                         {
@@ -212,7 +212,7 @@ namespace Projectiles
                         else if (!_isEmbed && angle)
                         {
                             damage = 0;
-                            // titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
+                            titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
                         }
                         else if (angle)
                         {
@@ -224,7 +224,7 @@ namespace Projectiles
                         else if (_isEmbed)
                         {
                             damage = 0;
-                            // titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
+                            titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
                         }
                         if (damage >= titanHealth)
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.Kill);
@@ -279,8 +279,11 @@ namespace Projectiles
 
         int CalculateDamage()
         {
+            float multiplier = CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat;
+            if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                multiplier = 1f;
             int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
-                CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat), 10);
+            multiplier), 10);
             if (_owner != null && _owner is Human)
             {
                 var human = (Human)_owner;

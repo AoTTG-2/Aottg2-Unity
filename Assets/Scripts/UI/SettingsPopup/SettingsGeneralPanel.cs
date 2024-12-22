@@ -49,11 +49,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapshotsMinimumDamage, UIManager.GetLocale(cat, sub, "SnapshotsMinimumDamage"),
                 elementWidth: 100f);
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
-            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.EnableAdvancedCamera, 
-                UIManager.GetLocale(cat, sub, "EnableAdvancedCamera"),
-                UIManager.GetLocale(cat, sub, "EnableAdvancedCameraTooltip"));
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Deadzone, UIManager.GetLocale(cat, sub, "Deadzone"));
-            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.CameraSpeed, UIManager.GetLocale(cat, sub, "CameraSpeed"));
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraDeadzone, UIManager.GetLocale(cat, sub, "OriginalCameraDeadzone"));
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraSpeed, UIManager.GetLocale(cat, sub, "OriginalCameraSpeed"));
 }   
     }
 }

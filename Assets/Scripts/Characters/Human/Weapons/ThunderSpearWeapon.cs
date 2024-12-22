@@ -77,7 +77,7 @@ namespace Characters
             var initialVelocity = (human.CarryState == HumanCarryState.Carry && human.Carrier != null) ? human.Carrier.CarryVelocity : human.Cache.Rigidbody.velocity;
             float speed = Speed;
             float travelTime = TravelTime;
-            if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+            if (!SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
             {
                 speed = Speed + initialVelocity.magnitude * TSInfo["SpeedMultiplier"].AsFloat;
                 travelTime = (Mathf.Clamp(TSInfo["Range"].AsFloat + initialVelocity.magnitude * TSInfo["RangeMultiplier"].AsFloat,

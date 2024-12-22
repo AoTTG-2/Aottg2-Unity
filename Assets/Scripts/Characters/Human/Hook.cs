@@ -345,7 +345,7 @@ namespace Characters
                             {
                                 MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
-                                    SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
+                                    SetHooked(finalHit.point + new Vector3(0f, 0f, 0f));
                                 else if (mapObject.RuntimeCreated)
                                     SetHooked(finalHit.point, obj.transform);
                                 else

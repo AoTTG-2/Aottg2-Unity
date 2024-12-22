@@ -221,6 +221,15 @@
 			},
 			{
 				"Texture": ""
+			},
+			{
+				"Texture": "hair_zeke"
+			},
+			{
+				"Texture": "hair_zeke2"
+			},
+			{
+				"Texture": "hair_erwin"
 			}
 		],
 		"Female": [
@@ -259,6 +268,9 @@
 			{
 				"Texture": "hair_sasha",
 				"Cloth": "hair_sasha_cloth_0"
+			},
+			{
+				"Texture": "hair_mikasa2"
 			}
 		]
 	}
