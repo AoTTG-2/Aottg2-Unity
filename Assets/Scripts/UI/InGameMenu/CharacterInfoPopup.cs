@@ -42,7 +42,7 @@ namespace UI
         public void OnDestroy()
         {
             SettingsManager.OnSettingsChanged -= SettingsManager_OnSettingsChanged;
-            if (Character != null)
+            if (Character != null && !Character.AI)
                 Character.OnPlayerPropertiesChanged -= Character_OnPlayerPropertiesChanged;
         }
 
@@ -127,7 +127,8 @@ namespace UI
             Offset = offset;
             Range = range;
             _name = character.Name;
-            Character.OnPlayerPropertiesChanged += Character_OnPlayerPropertiesChanged;
+            if (!Character.AI)
+                Character.OnPlayerPropertiesChanged += Character_OnPlayerPropertiesChanged;
             SettingsManager_OnSettingsChanged();
         }
 
