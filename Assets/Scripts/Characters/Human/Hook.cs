@@ -35,7 +35,8 @@ namespace Characters
         protected float _tiling;
         protected float _lastLength;
         protected float _maxLiveTime;
-
+        protected BasicTitan _hookedTitan; //?
+        protected Collider _hookedTitanPart;
         public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
             GameObject obj = new GameObject();
@@ -166,8 +167,11 @@ namespace Characters
                 _hasHookParent = true;
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
-
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                if(HookCharacter is BasicTitan)
+                {
+                    _hookedTitan = (BasicTitan)HookCharacter;
+                }
+                else if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
                     {
@@ -202,8 +206,11 @@ namespace Characters
             _owner.Cache.PhotonView.RPC("SetHookedRPC", RpcTarget.Others, new object[] { _left, _id, position, viewId, objectId });
             OnSetHooked(position, t);
             _owner.OnHooked(_left, position);
-            if (t != null && t.GetComponent<Human>() != null)
-                _owner.OnHookedHuman(_left, position, t.GetComponent<Human>());
+            if (t != null)
+            {
+                if (t.GetComponent<Human>() != null)
+                    _owner.OnHookedHuman(_left, position, t.GetComponent<Human>());
+            }
         }
 
         protected void FinishDisable()
@@ -211,6 +218,12 @@ namespace Characters
             _renderer.positionCount = 0;
             State = HookState.Disabled;
             _endSprite.SetActive(false);
+            if(_hookedTitanPart != null)
+            {
+                _hookedTitan.RemoveHooked(_hookedTitanPart, _owner);
+                _hookedTitan = null; //?
+                _hookedTitanPart = null;
+            }
         }
 
         protected void UpdateHooking()
@@ -326,6 +339,14 @@ namespace Characters
                             Vector3 point = finalHit.point;
                             if (obj.layer == PhysicsLayer.Human)
                                 point = obj.transform.position + Vector3.up * 0.8f;
+                            if (obj.layer == PhysicsLayer.TitanPushbox && obj.GetComponentInParent<BasicTitan>() != null)
+                            {
+                                if(finalHit.collider.name == "chest" || finalHit.collider.name == "neck")
+                                {
+                                    _hookedTitanPart = finalHit.collider;
+                                }
+                                obj.GetComponentInParent<BasicTitan>().GetHooked(_hookedTitanPart, _owner);
+                            }
                             SetHooked(point, obj.transform, obj.transform.root.gameObject.GetPhotonView().ViewID);
                             return;
                         }

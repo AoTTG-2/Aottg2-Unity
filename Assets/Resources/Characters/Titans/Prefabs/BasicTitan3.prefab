@@ -405,6 +405,7 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0

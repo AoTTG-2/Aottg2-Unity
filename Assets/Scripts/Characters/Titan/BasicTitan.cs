@@ -12,6 +12,7 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
+using Photon.Voice.PUN.UtilityScripts;
 
 namespace Characters
 {
@@ -44,6 +45,11 @@ namespace Characters
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
         private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
 
+        private List<Human> _hookedHumansNeck;
+        private List<Human> _hookedHumansChest;
+        protected Dictionary<string, List<Human>> _hookedBy;
+        //protected List<> _hookedByH;
+
         public void Init(bool ai, string team, JSONNode data, int headPrefab)
         {
             HeadPrefab = headPrefab;
@@ -71,6 +77,8 @@ namespace Characters
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
             Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
+            _hookedBy.Add("neck", _hookedHumansNeck);
+            _hookedBy.Add("chest", _hookedHumansChest);
         }
 
         public override bool IsGrabAttack()
@@ -1266,6 +1274,28 @@ namespace Characters
             }
             else
                 base.CheckGround();
+        }
+        public void GetHooked(Collider coll, Human owner)
+        {
+            if (coll.name == "chest")
+            {
+                _hookedHumansChest.Add(owner);
+            }
+            else if (coll.name == "neck")
+            {
+                _hookedHumansNeck.Add(owner);
+            }
+        }
+        public void RemoveHooked(Collider coll, Human owner)
+        {
+            if (coll.name == "chest")
+            {
+                _hookedHumansChest.Remove(owner);
+            }
+            else if (coll.name == "neck")
+            {
+                _hookedHumansNeck.Remove(owner);
+            }
         }
     }
 }

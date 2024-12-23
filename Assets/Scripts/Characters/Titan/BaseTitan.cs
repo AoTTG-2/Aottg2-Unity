@@ -390,6 +390,11 @@ namespace Characters
             }
         }
 
+        public virtual void GrabHook()
+        {
+
+        }
+
         [PunRPC]
         public virtual void DecreaseAttackSpeedRPC(PhotonMessageInfo info)
         {
