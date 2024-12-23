@@ -62,7 +62,8 @@ namespace UI
             if (changedProps.ContainsKey(PlayerProperty.Name))
             {
                 newName = (string)changedProps[PlayerProperty.Name];
-                Character.Name = newName.StripIllegalRichText();
+                if (newName != null)
+                    Character.Name = newName.StripIllegalRichText();
             }
 
             SettingsManager_OnSettingsChanged();
