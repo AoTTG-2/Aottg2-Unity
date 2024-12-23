@@ -70,11 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ff1399f0740acc43937624018d106ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 2.7496295
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ff1399f0740acc43937624018d106ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 49.493336
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ff1399f0740acc43937624018d106ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
