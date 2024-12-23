@@ -71,6 +71,18 @@ namespace UI
             ClearExcessLines();
         }
 
+        public void ReplaceLastLine(string line)
+        {
+            if (_lines.Count == 0)
+                AddLine(line);
+            else
+            {
+                _lines[_lines.Count - 1].GetComponent<Text>().text = line;
+                Canvas.ForceUpdateCanvases();
+                ClearExcessLines();
+            }    
+        }
+
         public void AddLines(List<string> lines)
         {
             foreach (string line in lines)

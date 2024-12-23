@@ -26,20 +26,27 @@ namespace Settings
         public IntSetting Speedometer = new IntSetting((int)SpeedometerType.Off);
         public BoolSetting ShowInterpolation = new BoolSetting(false);
         public BoolSetting ShowCrosshairArrows = new BoolSetting(false);
-        public BoolSetting ShowKDR = new BoolSetting(false);
+        public IntSetting KDR = new IntSetting((int)KDRMode.Off);
         public BoolSetting ShowPing = new BoolSetting(false);
         public BoolSetting ShowEmotes = new BoolSetting(true);
         public BoolSetting ShowKeybindTip = new BoolSetting(true);
         public BoolSetting ShowGameTime = new BoolSetting(false);
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
-        public BoolSetting HighVisibilityNames = new BoolSetting(false);
+
+        public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);
+        public IntSetting NameOverrideTarget = new IntSetting((int)ShowMode.None);
+        public IntSetting NameBackgroundType = new IntSetting((int)NameStyleType.Off);
+        public ColorSetting ForceNameColor = new ColorSetting(new Utility.Color255(255, 255, 255));
+        public ColorSetting ForceBackgroundColor = new ColorSetting(new Utility.Color255(0, 0, 0, 100));
+
         public BoolSetting FadeMainMenu = new BoolSetting(false);
         public BoolSetting FadeLoadscreen = new BoolSetting(true);
         public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
         public BoolSetting JoinNotifications = new BoolSetting(true);
+        public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
 
         public override void Apply()
         {
@@ -47,10 +54,23 @@ namespace Settings
             if (UIManager.CurrentMenu != null)
             {
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
+
+                if (UIManager.CurrentMenu is InGameMenu)
+                {
+                    InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
+                    igm.ApplyUISettings();
+                }
+
             }
         }
     }
 
+    public enum NameStyleType
+    {
+        Off,
+        Outline,
+        Background
+    }
     public enum SpeedometerType
     {
         Off,
@@ -64,5 +84,19 @@ namespace Settings
         Mine,
         Others,
         None
+    }
+
+    public enum KDRMode
+    {
+        Off,
+        Mine,
+        All
+    }
+
+    public enum CoordinateMode
+    {
+        Off,
+        Minimap,
+        BottomRight
     }
 }

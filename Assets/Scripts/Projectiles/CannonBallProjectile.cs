@@ -28,8 +28,8 @@ namespace Projectiles
                 var handler = GetComponent<Collider>().gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "CannonBall", 100, "CannonBall", transform.position);
-                    return;
+                    int damage = CalculateDamage();
+                    handler.GetHit(_owner, _owner.Name, damage, "CannonBall", transform.position);
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {
@@ -37,10 +37,7 @@ namespace Projectiles
                         character.GetHit("CannonBall", 100, "CannonBall", collision.collider.name);
                     else
                     {
-                        var human = (Human)_owner;
-                        int damage = 100;
-                        if (human.CustomDamageEnabled)
-                            damage = human.CustomDamage;
+                        int damage = CalculateDamage();
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                         character.GetHit(_owner, damage, "CannonBall", collision.collider.name);
                     }
@@ -48,6 +45,19 @@ namespace Projectiles
                 EffectSpawner.Spawn(EffectPrefabs.Boom4, transform.position, Quaternion.LookRotation(_velocity), 0.5f);
                 DestroySelf();
             }
+        }
+
+        private int CalculateDamage()
+        {
+            int damage = 100;
+
+            if (_owner != null && _owner is BaseCharacter character)
+            {
+                if (character.CustomDamageEnabled)
+                    damage = character.CustomDamage;
+            }
+
+            return damage;
         }
     }
 }

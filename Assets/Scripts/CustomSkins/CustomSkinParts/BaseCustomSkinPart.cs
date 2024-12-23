@@ -54,6 +54,8 @@ namespace CustomSkins
         public IEnumerator LoadSkin(string url)
         {
             url = url.Trim();
+            if (url.Contains("http://"))
+                url = url.Replace("http://", "https://");
             if (!IsValidPart())
                 yield break;
             if (!TextureDownloader.ValidTextureURL(url))

@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using ApplicationManagers;
 using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using System.Collections.Generic;
 using Settings;
@@ -12,10 +10,7 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
-using GameProgress;
-using Photon.Voice.Unity;
-using Photon.Voice.PUN;
-using static Photon.Pun.UtilityScripts.PunTeams;
+using System;
 
 namespace Characters
 {
@@ -24,8 +19,22 @@ namespace Characters
         protected virtual int DefaultMaxHealth => 1;
         protected virtual Vector3 Gravity => Vector3.down * 20f;
         public virtual List<string> EmoteActions => new List<string>();
-        public string Name = "";
+        public string Name { 
+            get
+            {
+                return RichTextName;
+            }
+            set
+            {
+                RichTextName = value;
+                VisibleName = RichTextName.StripColor();
+            }
+        }
+        public string RichTextName = "";
+        public string VisibleName = "";
         public string Guild = "";
+        public string FeedKillerName = "";
+        public string FeedVictimName = "";
         public bool Dead;
         public bool CustomDamageEnabled;
         public int CustomDamage;
@@ -40,6 +49,7 @@ namespace Characters
         protected InGameManager _inGameManager;
         protected bool _cameraFPS = false;
         protected bool _wasMainCharacter = false;
+        public BaseMovementSync MovementSync;
 
         // movement
         public bool Grounded;
@@ -47,20 +57,33 @@ namespace Characters
         public float TargetAngle;
         public bool HasDirection;
         protected int _stepPhase = 0;
-
-        public virtual LayerMask GroundMask => PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
+        private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+
+        public virtual LayerMask GroundMask => GroundMaskLayers;
         protected virtual float GroundDistance => 0.3f;
 
         // Visuals
-        private Outline _outline = null;
+        protected Outline OutlineComponent = null;
+        public event Action<ExitGames.Client.Photon.Hashtable> OnPlayerPropertiesChanged;
+
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+        {
+            if (targetPlayer == photonView.Owner)
+            {
+                OnPlayerPropertiesChanged?.Invoke(changedProps);
+            }
+        }
+        public Vector3 GetVelocity()
+        {
+            if (!IsMine() && MovementSync != null)
+                return MovementSync._correctVelocity;
+            return Cache.Rigidbody.velocity;
+        }
 
         public void Reveal(float startDelay, float activeTime)
         {
-            if (_outline == null)
-            {
-                StartCoroutine(RevealAndRemove(startDelay, activeTime));
-            }
+            StartCoroutine(RevealAndRemove(startDelay, activeTime));
         }
 
         public void AddOutline()
@@ -75,20 +98,43 @@ namespace Characters
 
         public void AddOutlineWithColor(Color color, Outline.Mode mode)
         {
-            if (_outline == null)
+            if (OutlineComponent != null)
             {
-                _outline = gameObject.AddComponent<Outline>();
-                _outline.OutlineMode = mode;
+                OutlineComponent.OutlineMode = mode;
+                OutlineComponent.OutlineColor = color;
+                OutlineComponent.enabled = true;
             }
-            _outline.OutlineColor = color;
+        }
+
+        public void ChangeOutlineColor(Color color)
+        {
+            if (OutlineComponent != null)
+            {
+                OutlineComponent.OutlineColor = color;
+            }
+        }
+
+        public void ChangeOutlineMode(Outline.Mode mode)
+        {
+            if (OutlineComponent != null)
+            {
+                OutlineComponent.OutlineMode = mode;
+            }
+        }
+
+        public void ChangeOutlineWidth(float width)
+        {
+            if (OutlineComponent != null)
+            {
+                OutlineComponent.OutlineWidth = width;
+            }
         }
 
         public void RemoveOutline()
         {
-            if (_outline != null)
+            if (OutlineComponent != null)
             {
-                Destroy(_outline);
-                _outline = null;
+                OutlineComponent.enabled = false;
             }
         }
 
@@ -293,10 +339,16 @@ namespace Characters
                 PlayAnimation(animation, startTime);
         }
 
+        private object[] crossfadeCache = new object[3];
         public void CrossFade(string animation, float fadeTime = 0f, float startTime = 0f)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, new object[] { animation, fadeTime, startTime });
+            {
+                crossfadeCache[0] = animation;
+                crossfadeCache[1] = fadeTime;
+                crossfadeCache[2] = startTime;
+                Cache.PhotonView.RPC("CrossFadeRPC", RpcTarget.All, crossfadeCache);
+            }
         }
 
         public void CrossFadeWithSpeed(string animation, float speed, float fadeTime = 0f, float startTime = 0f)
@@ -400,7 +452,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, type});
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { viewId, name });
             }
         }
@@ -414,7 +467,8 @@ namespace Characters
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
             {
-                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
+                if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                    RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, damage, "" });
                 Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
             }
         }
@@ -425,7 +479,8 @@ namespace Characters
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
             SetCurrentHealth(0);
-            RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultShowKillFeed)
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { name, Name, 0, "" });
             Cache.PhotonView.RPC("NotifyDieRPC", RpcTarget.All, new object[] { -1, name });
         }
 
@@ -447,7 +502,7 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterKill(this);
             }
             if (CustomLogicManager.Evaluator == null)
@@ -467,13 +522,12 @@ namespace Characters
                 name = killer.Name;
             if (killer != null)
             {
-                if (killer.IsMainCharacter())
+                if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
             if (CustomLogicManager.Evaluator == null)
                 return;
-            if (damage > 0)
-                CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
+            CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
             if (SettingsManager.UISettings.GameFeed.Value)
             {
                 string keyword = " killed ";
@@ -518,6 +572,9 @@ namespace Characters
             CreateCache(null);
             SetColliders();
             CurrentHealth = MaxHealth = DefaultMaxHealth;
+            MovementSync = GetComponent<BaseMovementSync>();
+            OutlineComponent = gameObject.AddComponent<Outline>();
+            OutlineComponent.enabled = false;
         }
 
         protected virtual void CreateCharacterIcon()
@@ -532,14 +589,37 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            StartCoroutine(WaitAndNotifyCharacterSpawn());
+            StartCoroutine(WaitAndNotifySpawn());
         }
 
-        protected IEnumerator WaitAndNotifyCharacterSpawn()
+        protected IEnumerator WaitAndNotifySpawn()
         {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
+            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
             if (CustomLogicManager.Evaluator != null)
+            {
                 CustomLogicManager.Evaluator.OnCharacterSpawn(this);
+                if (!AI)
+                    CustomLogicManager.Evaluator.OnPlayerSpawn(this.Cache.PhotonView.Owner, this);
+            }
+        }
+
+        protected IEnumerator WaitAndNotifyReloaded()
+        {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicManager.Evaluator.OnCharacterReloaded(this);
+            }
         }
 
         public string GetCurrentAnimation()
@@ -655,15 +735,7 @@ namespace Characters
                 if (!_cameraFPS)
                 {
                     _cameraFPS = true;
-                    foreach (var renderer in GetFPSDisabledSkinnedRenderers())
-                    {
-                        var localbounds = renderer.localBounds;
-                        localbounds.center = Vector3.up * 100000f;
-                        renderer.localBounds = localbounds;
-                    }
                     foreach (var renderer in GetFPSDisabledRenderers())
-                        renderer.enabled = false;
-                    foreach (var renderer in GetFPSDisabledClothRenderers())
                         renderer.enabled = false;
                 }
             }
@@ -672,15 +744,7 @@ namespace Characters
                 _cameraFPS = false;
                 if (!Dead || !(this is Human))
                 {
-                    foreach (var renderer in GetFPSDisabledSkinnedRenderers())
-                    {
-                        var localbounds = renderer.localBounds;
-                        localbounds.center = Vector3.zero;
-                        renderer.localBounds = localbounds;
-                    }
                     foreach (var renderer in GetFPSDisabledRenderers())
-                        renderer.enabled = true;
-                    foreach (var renderer in GetFPSDisabledClothRenderers())
                         renderer.enabled = true;
                 }
             }
@@ -696,44 +760,17 @@ namespace Characters
             return "";
         }
 
-        protected virtual List<SkinnedMeshRenderer> GetFPSDisabledSkinnedRenderers()
-        {
-            return new List<SkinnedMeshRenderer>();
-        }
-
         protected virtual List<Renderer> GetFPSDisabledRenderers()
         {
             return new List<Renderer>();
         }
-
-        protected virtual List<SkinnedMeshRenderer> GetFPSDisabledClothRenderers()
-        {
-            return new List<SkinnedMeshRenderer>();
-        }
-
+     
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject go)
         {
-            if (go != null && go.GetComponent<Renderer>() != null)
-                renderers.Add(go.GetComponent<Renderer>());
-        }
-
-        protected void AddSkinnedRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)
-        {
             if (go != null)
             {
-                var renderer = go.GetComponent<SkinnedMeshRenderer>();
+                var renderer = go.GetComponentInChildren<Renderer>();
                 if (renderer != null)
-                    renderers.Add(renderer);
-            }
-        }
-
-        protected void AddClothRendererIfExists(List<SkinnedMeshRenderer> renderers, GameObject go)
-        {
-            if (go != null)
-            {
-                var renderer = go.GetComponent<SkinnedMeshRenderer>();
-                var cloth = go.GetComponent<Cloth>();
-                if (renderer != null && cloth != null)
                     renderers.Add(renderer);
             }
         }

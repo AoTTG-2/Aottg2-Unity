@@ -2,6 +2,9 @@
 	"EyeCount": 28,
 	"FaceCount": 13,
 	"GlassCount": 9,
+	"BackCount": 3,
+	"HeadCount": 8,
+	"HatCount": 14,
 	"Costume": {
 		"Male": [
 			{
@@ -218,6 +221,15 @@
 			},
 			{
 				"Texture": ""
+			},
+			{
+				"Texture": "hair_zeke"
+			},
+			{
+				"Texture": "hair_zeke2"
+			},
+			{
+				"Texture": "hair_erwin"
 			}
 		],
 		"Female": [
@@ -256,6 +268,9 @@
 			{
 				"Texture": "hair_sasha",
 				"Cloth": "hair_sasha_cloth_0"
+			},
+			{
+				"Texture": "hair_mikasa2"
 			}
 		]
 	}

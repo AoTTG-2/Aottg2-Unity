@@ -87,6 +87,7 @@ namespace Characters
                     human.PlaySound(HumanSounds.GetRandomAPGShot());
                     human.SpecialActionState(0.5f);
                 }
+                human.Cache.Rigidbody.velocity = Vector3.up * 30f;
             }
         }
     }

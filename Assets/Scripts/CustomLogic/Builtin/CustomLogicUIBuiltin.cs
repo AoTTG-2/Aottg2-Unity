@@ -6,6 +6,7 @@ using Photon.Realtime;
 using Settings;
 using System.Collections.Generic;
 using UI;
+using Utility;
 using UnityEngine;
 
 namespace CustomLogic
@@ -64,9 +65,7 @@ namespace CustomLogic
                 float time = parameters[2].UnboxToFloat();
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    if (!_lastSetLabels.ContainsKey(label) || message != _lastSetLabels[label])
-                        RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
-                    _lastSetLabels[label] = message;
+                     RPCManager.PhotonView.RPC("SetLabelRPC", RpcTarget.All, new object[] { label, message, time });
                 }
                 return null;
             }
@@ -144,6 +143,14 @@ namespace CustomLogic
             if (name == "GetLanguage")
             {
                 return SettingsManager.GeneralSettings.Language.Value;
+            }
+            if (name == "GetThemeColor")
+            {
+                string panel = (string)parameters[0];
+                string category = (string)parameters[1]; 
+                string item = (string)parameters[2];
+                Color255 color = new Color255(UIManager.GetThemeColor(panel, category, item));
+                return new CustomLogicColorBuiltin(color);
             }
             if (name == "ShowChangeCharacterMenu")
             {

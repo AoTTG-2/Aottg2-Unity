@@ -74,9 +74,33 @@
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
+					"Name": "Christmas Waves",
+					"MiscSettings": {
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
+					"Name": "Spooky Waves"
+				},
+				{
+					"Name": "Trick or Treat"
+				},
+				{
+					"Name": "Slender Titan",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowShifterSpecials": false,
+						"GlobalMinimapDisable": true
+					}
+				},
+				{
 					"Name": "Annie",
 					"MiscSettings": {
 						"AllowThunderspears": false,
+						"AllowAHSS": false,
+						"AllowAPG": false,
 						"AllowShifterSpecials": false
 					}
 				},
@@ -144,6 +168,9 @@
 			"Name": "PVP",
 			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
 			"Maps": [
+				{
+					"Name": "Cats Forest"
+				},
 				{
 					"Category": "General",
 					"Name": "Forest1"
@@ -411,6 +438,23 @@
 		},
 		{
 			"Name": "None"
+		}
+	],
+	"Duels": [
+		{
+			"Name": "1v1 Speed Duel",
+			"Icon": "TitanIcon",
+			"Players": 2
+		},
+		{
+			"Name": "1v1 Thunderspear PVP",
+			"Icon": "ThunderspearIcon",
+			"Players": 2
+		},
+		{
+			"Name": "1v1 Blade PVP",
+			"Icon": "BladeIcon",
+			"Players": 2
 		}
 	]
 }

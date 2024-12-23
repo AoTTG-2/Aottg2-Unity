@@ -3,7 +3,6 @@ using GameManagers;
 using System.Collections;
 using UnityEngine;
 using Spawnables;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 namespace Characters
 {

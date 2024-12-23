@@ -24,6 +24,9 @@ namespace Characters
         public GameObject _mount_weapon_r;
         public GameObject _mount_ts_l;
         public GameObject _mount_ts_r;
+        public GameObject _mount_back;
+        public GameObject _mount_head_decor;
+        public GameObject _mount_hat;
         public GameObject _part_3dmg;
         public GameObject _part_belt;
         public GameObject _part_gas_l;
@@ -56,6 +59,9 @@ namespace Characters
         public HumanSetupTextures _textures;
         public MeleeWeaponTrail LeftTrail;
         public MeleeWeaponTrail RightTrail;
+        public GameObject _part_back;
+        public GameObject _part_head_decor;
+        public GameObject _part_hat;
 
         // loaded settings from player spawning
         public HumanCustomSet CustomSet;
@@ -73,7 +79,9 @@ namespace Characters
         public static int CostumeFCount;
         public static int HairMCount;
         public static int HairFCount;
-        
+        public static int BackCount;
+        public static int HeadCount;
+        public static int HatCount;
 
         public static void Init()
         {
@@ -83,6 +91,9 @@ namespace Characters
             EyeCount = costume["EyeCount"].AsInt;
             FaceCount = costume["FaceCount"].AsInt;
             GlassCount = costume["GlassCount"].AsInt;
+            BackCount = costume["BackCount"].AsInt;
+            HatCount = costume["HatCount"].AsInt;
+            HeadCount = costume["HeadCount"].AsInt;
             CostumeMCount = CostumeInfo["Male"].Count;
             CostumeFCount = CostumeInfo["Female"].Count;
             HairMCount = HairInfo["Male"].Count;
@@ -94,9 +105,14 @@ namespace Characters
         {
             _meshes = new HumanSetupMeshes(this);
             _textures = new HumanSetupTextures(this);
-            _part_head = transform.Find("Armature/Core/Controller_Body/hip/spine/chest/neck/head/char_head").gameObject;
+            var hip = transform.Find("Armature/Core/Controller_Body/hip");
+            var head = hip.Find("spine/chest/neck/head");
+            _part_head = head.Find("char_head").gameObject;
             _part_leg = transform.Find("character_leg").gameObject;
             _part_chest = transform.Find("character_chest").gameObject;
+            _mount_back = hip.Find("spine/chest").gameObject;
+            _mount_hat = head.gameObject;
+            _mount_head_decor = head.gameObject;
             _mount_chest = CreateMount("spine/chest");
             _mount_3dmg = CreateMount("spine/chest");
             _mount_gas_l = CreateMount("spine");
@@ -194,12 +210,18 @@ namespace Characters
         {
             var bodyMaterial = HumanSetupMaterials.GetCostumeMaterial(_textures.GetBodyMainTexture(), _textures.GetBodyMaskTexture(),
                 _textures.GetBodyColorTexture(), _textures.GetBodyPantsTexture(), CustomSet.ShirtColor.Value.ToColor(), CustomSet.StrapsColor.Value.ToColor(), CustomSet.PantsColor.Value.ToColor(), CustomSet.JacketColor.Value.ToColor(), CustomSet.BootsColor.Value.ToColor());
-            CreateHead();
+            CreateHair();
+            CreateEye();
+            CreateFace();
+            CreateGlass();
             CreateUpperBody(bodyMaterial);
             CreateArms(bodyMaterial);
             CreateLowerBody(bodyMaterial);
             Create3dmg();
             CreateWeapon();
+            CreateBack();
+            CreateHat();
+            CreateHead();
         }
 
         public void DeleteParts()
@@ -231,6 +253,9 @@ namespace Characters
             DestroyIfExists(_part_gas_r);
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
+            DestroyIfExists(_part_back);
+            DestroyIfExists(_part_hat);
+            DestroyIfExists(_part_head_decor);
         }
 
         public void Create3dmg()
@@ -329,8 +354,8 @@ namespace Characters
             {
                 _part_hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, hairMesh, cached: true);
                 AttachToMount(_part_hair, _part_head);
-                _part_hair.GetComponent<Renderer>().material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
-                _part_hair.GetComponent<Renderer>().material.color = CustomSet.HairColor.Value.ToColor();
+                _part_hair.GetComponentInChildren<Renderer>().material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
+                _part_hair.GetComponentInChildren<Renderer>().material.color = CustomSet.HairColor.Value.ToColor();
             }
             string hairClothMesh = _meshes.GetHairClothMesh();
             if (hairClothMesh != string.Empty && !IsDeadBody)
@@ -371,12 +396,37 @@ namespace Characters
                 SetFacialTexture(_part_glass, -1, false);
         }
 
+        public void CreateBack()
+        {
+            DestroyIfExists(_part_back);
+            string back = CustomSet.Back.Value.Substring(4);
+            if (back != "None")
+            {
+                _part_back = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetBackPrefab(back), cached: true);
+                AttachToMount(_part_back, _mount_back, true);
+            }
+        }
+
         public void CreateHead()
         {
-            CreateHair();
-            CreateEye();
-            CreateFace();
-            CreateGlass();
+            DestroyIfExists(_part_head_decor);
+            string head = CustomSet.Head.Value.Substring(4);
+            if (head != "None")
+            {
+                _part_head_decor = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetHeadPrefab(head), cached: true);
+                AttachToMount(_part_head_decor, _mount_head_decor, true);
+            }
+        }
+
+        public void CreateHat()
+        {
+            DestroyIfExists(_part_hat);
+            string hat = CustomSet.Hat.Value.Substring(3);
+            if (hat != "None")
+            {
+                _part_hat = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetHatPrefab(hat), cached: true);
+                AttachToMount(_part_hat, _mount_hat, true);
+            }
         }
 
         public void CreateArms(Material bodyMaterial)
@@ -502,11 +552,13 @@ namespace Characters
             return newMeshRenderer.gameObject;
         }
 
-        private void AttachToMount(GameObject obj, GameObject mount)
+        private void AttachToMount(GameObject obj, GameObject mount, bool setScale = false)
         {
             obj.transform.SetParent(mount.transform);
             obj.transform.localPosition = Vector3.zero;
             obj.transform.localRotation = Quaternion.identity;
+            if (setScale)
+                obj.transform.localScale = Vector3.one;
         }
 
         private void DestroyIfExists(GameObject go)

@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Events;
 using GameManagers;
@@ -31,6 +31,9 @@ namespace CustomLogic
         public static Vector3 CameraPosition;
         public static Vector3 CameraRotation;
         public static Vector3 CameraVelocity;
+        public static CameraInputMode? CameraMode = null;
+        public static HashSet<KeybindSetting> KeybindDefaultDisabled = new HashSet<KeybindSetting>();
+        public static HashSet<KeybindSetting> KeybindHold = new HashSet<KeybindSetting>();
         public static Dictionary<string, object> RoomData = new Dictionary<string, object>();
         public static Dictionary<string, object> PersistentData = new Dictionary<string, object>();
         public static HashSet<string> GeneralComponents = new HashSet<string>();
@@ -78,7 +81,10 @@ namespace CustomLogic
             CameraPosition = Vector3.zero;
             CameraRotation = Vector3.zero;
             CameraVelocity = Vector3.zero;
+            CameraMode = null;
             CameraFOV = 0f;
+            KeybindDefaultDisabled.Clear();
+            KeybindHold.Clear();
         }
 
         public static void ToggleCutscene(bool cutscene)

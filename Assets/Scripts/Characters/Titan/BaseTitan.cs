@@ -13,6 +13,7 @@ using Settings;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.AI;
+using Cameras;
 
 namespace Characters
 {
@@ -46,6 +47,7 @@ namespace Characters
         protected virtual float DefaultJumpForce => 150f;
         protected virtual float DefaultRotateSpeed => 1f;
         protected virtual float SizeMultiplier => 1f;
+        protected virtual float DisableCooldown => 0f;
         public float AttackSpeedMultiplier = 1f;
         public float ConfusedTime = 0;
         public float PreviousAttackSpeedMultiplier = -1f;
@@ -58,16 +60,19 @@ namespace Characters
         public float RotateSpeed;
         public float TurnSpeed;
         protected override Vector3 Gravity => Vector3.down * 100f;
+        protected virtual float CheckGroundTime => 0.4f;
         protected Vector3 LastTargetDirection;
         protected Vector3 _wallClimbForward;
         protected Quaternion _turnStartRotation;
         protected Quaternion _turnTargetRotation;
-        protected Vector3 _jumpDirection;
+        public Vector3 _jumpDirection;
         protected float _maxTurnTime;
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
         protected float _currentFallTime;
+        protected float _disableCooldownLeft;
+        protected float _checkGroundTimeLeft;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -78,6 +83,7 @@ namespace Characters
         protected float _currentAttackSpeed;
         protected int _currentAttackStage;
         protected bool _needFreshCore;
+        protected Vector3 _attackVelocity;
         protected Vector3 _startCoreAttackPosition;
         protected Vector3 _previousCoreLocalPosition;
         protected Vector3 _furthestCoreLocalPosition;
@@ -183,7 +189,8 @@ namespace Characters
 
         public virtual void ResetAttackState(string attack)
         {
-            Cache.Rigidbody.velocity = Vector3.zero;
+            if (AI)
+                Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
             _currentAttackAnimation = AttackAnimations[attack];
             _currentAttackSpeed = GetAttackSpeed(attack);
@@ -294,7 +301,7 @@ namespace Characters
 
         public virtual void Blind()
         {
-            if (State != TitanState.Blind && State != TitanState.SitBlind && AI)
+            if (State != TitanState.Blind && State != TitanState.SitBlind && AI && _disableCooldownLeft <= 0f)
             {
                 if (State == TitanState.SitCripple || State == TitanState.SitIdle)
                 {
@@ -317,11 +324,12 @@ namespace Characters
 
         public virtual void Cripple(float time = 0f)
         {
-            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI)
+            if (BaseTitanAnimations.SitFall != "" && State != TitanState.SitCripple && AI && _disableCooldownLeft <= 0f)
             {
                 _currentCrippleTime = time > 0f ? time : DefaultCrippleTime;
                 StateAction(TitanState.SitFall, BaseTitanAnimations.SitFall);
                 DamagedGrunt();
+                _disableCooldownLeft = _currentCrippleTime + DisableCooldown;
             }
         }
 
@@ -348,10 +356,10 @@ namespace Characters
         public virtual void GrabRPC(int viewId, bool left, PhotonMessageInfo info)
         {
             var view = PhotonView.Find(viewId);
-            if (view.Owner != info.Sender)
+            if (view?.Owner != info.Sender)
                 return;
             var human = view.GetComponent<Human>();
-            if (this.Cache.PhotonView.Owner == PhotonNetwork.LocalPlayer)
+            if (this.IsMine())
                 HoldHuman = human;
             human.Grabber = this;
             if (left)
@@ -361,9 +369,16 @@ namespace Characters
         }
 
         [PunRPC]
-        public virtual void UngrabRPC(PhotonMessageInfo info)
+        public virtual void UngrabRPC(int viewId, PhotonMessageInfo info)
         {
-            HoldHuman = null;
+            var view = PhotonView.Find(viewId);
+            if (view?.Owner != info.Sender)
+                return;
+            var human = view.GetComponent<Human>();
+            if (this.IsMine())
+                HoldHuman = null;
+            human.Grabber = null;
+            human.GrabHand = null;
         }
 
         public virtual void Ungrab()
@@ -371,6 +386,7 @@ namespace Characters
             if (HoldHuman != null)
             {
                 HoldHuman.Cache.PhotonView.RPC("UngrabRPC", HoldHuman.Cache.PhotonView.Owner, new object[0]);
+                HoldHuman.GrabHand = null;
                 HoldHuman = null;
             }
         }
@@ -427,9 +443,11 @@ namespace Characters
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
         {
             _needFreshCore = true;
-            SetAnimationUpdateMode(state == TitanState.Jump);
-            if (state != TitanState.Eat)
+            SetAnimationUpdateMode(state == TitanState.Jump || state == TitanState.Attack);
+            if (state != TitanState.Eat && state != TitanState.HumanThrow)
+            {
                 Ungrab();
+            }
             if (deactivateHitboxes)
                 DeactivateAllHitboxes();
             if (state != TitanState.Idle || _currentStateAnimation != animation)
@@ -517,12 +535,21 @@ namespace Characters
             return BaseTitanAnimations.SitUp;
         }
 
+        protected void SetDefaultVelocityLerp()
+        {
+            float value = 1f;
+            if (this._currentAttack != "AttackBellyFlop" && this._currentAttack != "AttackRockThrow")
+                value = 1.47f;
+            Vector3 targetVelocity = Vector3.up * Cache.Rigidbody.velocity.y + Vector3.down * Mathf.Min(_currentGroundDistance * 100f, 100f);
+            Cache.Rigidbody.velocity = Vector3.Lerp(Cache.Rigidbody.velocity, targetVelocity, Time.deltaTime * value);
+        }
         protected virtual void Update()
         {
             UpdateDisableArm();
             UpdateAnimationColliders();
             if (IsMine())
             {
+                _disableCooldownLeft -= Time.deltaTime;
                 if (State == TitanState.Fall || State == TitanState.Jump)
                 {
                     if (!AI && HasDirection && IsSprint && CurrentSprintStamina > 1f)
@@ -546,13 +573,21 @@ namespace Characters
                 }
                 if (State == TitanState.Fall || State == TitanState.Dead || State == TitanState.Jump || State == TitanState.WallClimb)
                     return;
-                if (State == TitanState.Eat)
+                if (State == TitanState.Eat || State == TitanState.HumanThrow)
                     UpdateEat();
                 else if (State == TitanState.Turn)
                     UpdateTurn();
                 else if (State == TitanState.Attack)
                 {
                     UpdateAttack();
+                }
+                else if (State == TitanState.PreJump && !AI)
+                {
+                    Vector3 to = GetAimPoint() - BaseTitanCache.Head.position;
+                    float time = to.magnitude / JumpForce;
+                    float down = 0.5f * Gravity.magnitude * time * time;
+                    to.y += down;
+                    _jumpDirection = to;
                 }
                 _stateTimeLeft -= Time.deltaTime;
                 if (_stateTimeLeft > 0f)
@@ -642,7 +677,7 @@ namespace Characters
                     State = TitanState.Jump;
                 else if (State == TitanState.Attack || State == TitanState.Eat)
                     IdleWait(AttackPause);
-                else if (State == TitanState.Land)
+                else if (State == TitanState.Land || State == TitanState.CoverNape)
                     IdleWait(ActionPause);
                 else if (State == TitanState.Turn)
                     IdleWait(TurnPause);
@@ -666,7 +701,12 @@ namespace Characters
         {
             if (IsMine())
             {
-                CheckGround();
+                _checkGroundTimeLeft -= Time.fixedDeltaTime;
+                if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
+                {
+                    CheckGround();
+                    _checkGroundTimeLeft = CheckGroundTime;
+                }
                 if (State != TitanState.Fall)
                     _currentFallTime = 0f;
                 if (State == TitanState.Jump)
@@ -677,8 +717,10 @@ namespace Characters
                 else if (State == TitanState.Attack)
                 {
                     FixedUpdateAttack();
-                    if (Grounded)
+                    if (Grounded && AI)
                         SetDefaultVelocity();
+                    else if (Grounded && !AI)
+                        SetDefaultVelocityLerp();
                 }
                 else if (State == TitanState.Dead)
                 {
@@ -739,7 +781,7 @@ namespace Characters
                     _previousCoreLocalPosition = _furthestCoreLocalPosition;
                     _needFreshCore = false;
                 }
-                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
+                if (AI && _rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
                     && Cache.Animation[_currentStateAnimation].normalizedTime < _rootMotionAnimations[_currentStateAnimation])
                 {
                     Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
@@ -778,19 +820,9 @@ namespace Characters
         {
             if (IsMine())
             {
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
+                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
-                }
-                else if (State == TitanState.StartJump || State == TitanState.Jump)
-                {
-                    if (_jumpDirection.x != 0f || _jumpDirection.z != 0f)
-                    {
-                        var forward = _jumpDirection;
-                        forward.y = 0f;
-                        Quaternion rotation = Quaternion.LookRotation(forward.normalized);
-                        Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, rotation, Time.deltaTime * 10f);
-                    }
                 }
             }
             base.LateUpdate();
@@ -846,6 +878,9 @@ namespace Characters
             Size = size;
             SetSizeParticles(size);
             ScaleSounds(size);
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            if (camera._follow == this)
+                camera.SetFollow(this);
         }
 
         protected virtual void ScaleSounds(float size)
@@ -1007,6 +1042,8 @@ namespace Characters
         SitIdle,
         Eat,
         Turn,
-        WallClimb
+        WallClimb,
+        CoverNape,
+        HumanThrow
     }
 }

@@ -179,12 +179,12 @@ namespace CustomLogic
                 Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
                 Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
                 Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
-                float liveTime = (float)parameters[5];
+                float liveTime = parameters[5].UnboxToFloat();
                 string team = (string)parameters[6];
                 object[] settings = null;
                 if (projectileName == ProjectilePrefabs.Thunderspear)
                 {
-                    float radius = (float)parameters[7];
+                    float radius = parameters[7].UnboxToFloat();
                     Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
                     settings = new object[] { radius, color };
                 }
@@ -192,6 +192,11 @@ namespace CustomLogic
                 {
                     Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                     settings = new object[] { color };
+                }
+                else if (projectileName == ProjectilePrefabs.Rock1)
+                {
+                    float size = parameters[7].UnboxToFloat();
+                    settings = new object[] { size };
                 }
                 ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
                 return null;
@@ -203,12 +208,12 @@ namespace CustomLogic
                 Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
                 Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
                 Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
-                float liveTime = (float)parameters[5];
+                float liveTime = parameters[5].UnboxToFloat();
                 BaseCharacter character = ((CustomLogicCharacterBuiltin)parameters[6]).Character;
                 object[] settings = null;
                 if (projectileName == ProjectilePrefabs.Thunderspear)
                 {
-                    float radius = (float)parameters[7];
+                    float radius = parameters[7].UnboxToFloat();
                     Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
                     settings = new object[] { radius, color };
                 }
@@ -230,7 +235,7 @@ namespace CustomLogic
                 effectName = (string)field.GetValue(null);
                 Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
                 Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                float scale = (float)parameters[3];
+                float scale = parameters[3].UnboxToFloat();
                 object[] settings = null;
                 if (effectName == EffectPrefabs.ThunderspearExplode)
                 {
@@ -313,6 +318,30 @@ namespace CustomLogic
                 Color color = ((CustomLogicColorBuiltin)parameters[2]).Value.ToColor();
                 float duration = parameters[3].UnboxToFloat();
                 Debug.DrawRay(start, dir, color, duration);
+                return null;
+            }
+            if (name == "ShowKillScore")
+            {
+                int damage = parameters[0].UnboxToInt();
+                ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage, true);
+                return null;
+            }
+            if (name == "ShowKillFeed")
+            {
+                string killer = (string)parameters[0];
+                string victim = (string)parameters[1];
+                int score = parameters[2].UnboxToInt();
+                string weapon = (string)parameters[3];
+                ((InGameMenu)UIManager.CurrentMenu).ShowKillFeed(killer, victim, score, weapon);
+                return null;
+            }
+            if (name == "ShowKillFeedAll")
+            {
+                string killer = (string)parameters[0];
+                string victim = (string)parameters[1];
+                int score = parameters[2].UnboxToInt();
+                string weapon = (string)parameters[3];
+                RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { killer, victim, score, weapon });
                 return null;
             }
             return base.CallMethod(name, parameters);
@@ -470,6 +499,34 @@ namespace CustomLogic
                 result.List = loadouts.ConvertAll(x => (object)x);
                 return result;
             }
+            /*
+            if (name == "AllowedSpecials")
+            {
+                var result = new CustomLogicListBuiltin();
+                result.List = CustomLogicManager.Evaluator.AllowedSpecials.ConvertAll(x => (object)x);
+                return result;
+            }
+            if (name == "DisallowedSpecials")
+            {
+                var result = new CustomLogicListBuiltin();
+                result.List = CustomLogicManager.Evaluator.DisallowedSpecials.ConvertAll(x => (object)x);
+                return result;
+            }
+            */
+            if (name == "DefaultShowKillScore")
+                return CustomLogicManager.Evaluator.DefaultShowKillScore;
+            if (name == "DefaultShowKillFeed")
+                return CustomLogicManager.Evaluator.DefaultShowKillFeed;
+            if (name == "DefaultAddKillScore")
+                return CustomLogicManager.Evaluator.DefaultAddKillScore;
+            if (name == "ShowScoreboardStatus")
+                return CustomLogicManager.Evaluator.ShowScoreboardStatus;
+            if (name == "ShowScoreboardLoadout")
+                return CustomLogicManager.Evaluator.ShowScoreboardLoadout;
+            if (name == "ForcedCharacterType")
+                return CustomLogicManager.Evaluator.ForcedCharacterType;
+            if (name == "ForcedLoadout")
+                return CustomLogicManager.Evaluator.ForcedLoadout;
             return base.GetField(name);
         }
 
@@ -501,7 +558,44 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
-            base.SetField(name, value);
+            /*
+            if (name == "AllowedSpecials")
+            {
+                var allowed = CustomLogicManager.Evaluator.AllowedSpecials;
+                allowed.Clear();
+                var list = (CustomLogicListBuiltin)value;
+                foreach (string str in list.List)
+                {
+                    allowed.Add(str);
+                }
+            }
+            else if (name == "DisallowedSpecials")
+            {
+                var disallowed = CustomLogicManager.Evaluator.DisallowedSpecials;
+                disallowed.Clear();
+                var list = (CustomLogicListBuiltin)value;
+                foreach (string str in list.List)
+                {
+                    disallowed.Add(str);
+                }
+            }
+            */
+            if (name == "DefaultShowKillScore")
+                CustomLogicManager.Evaluator.DefaultShowKillScore = (bool)value;
+            else if (name == "DefaultShowKillFeed")
+                CustomLogicManager.Evaluator.DefaultShowKillFeed = (bool)value;
+            else if (name == "DefaultAddKillScore")
+                CustomLogicManager.Evaluator.DefaultAddKillScore = (bool)value;
+            else if (name == "ShowScoreboardLoadout")
+                CustomLogicManager.Evaluator.ShowScoreboardLoadout = (bool)value;
+            else if (name == "ShowScoreboardStatus")
+                CustomLogicManager.Evaluator.ShowScoreboardStatus = (bool)value;
+            else if (name == "ForcedCharacterType")
+                CustomLogicManager.Evaluator.ForcedCharacterType = (string)value;
+            else if (name == "ForcedLoadout")
+                CustomLogicManager.Evaluator.ForcedLoadout = (string)value;
+            else
+                base.SetField(name, value);
         }
     }
 }

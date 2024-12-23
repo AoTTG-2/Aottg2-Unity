@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Characters
 {
     class ShifterTransformSpecial : RechargeableUseable
     {
-        protected float LiveTime = 60f;
+        public float LiveTime = 60f;
         protected string _shifter;
         protected override float ActiveTime => 0.8f;
 

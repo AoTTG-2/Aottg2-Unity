@@ -74,8 +74,14 @@ namespace UI
                 ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Player"), FontStyle.Bold, TextAnchor.MiddleCenter);
                 ElementFactory.CreateDefaultLabel(_header, style, string.Empty, FontStyle.Bold, TextAnchor.MiddleCenter);
                 ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Action"), FontStyle.Bold, TextAnchor.MiddleCenter);
-                foreach (Transform t in _header)
-                    t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
+                ElementFactory.CreateDefaultLabel(_header, style, UIManager.GetLocale("ScoreboardPopup", "Scoreboard", "Ping"), FontStyle.Bold, TextAnchor.MiddleCenter);
+
+                _header.GetChild(0).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+                _header.GetChild(1).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+
+                _header.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+                _header.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+
                 CreateHorizontalDivider(SinglePanel);
             }
             string playerCount = " (" + currentPlayers.ToString() + "/" + maxPlayers.ToString() + ")";
@@ -100,8 +106,15 @@ namespace UI
             ElementFactory.CreateIconButton(actionRow, style, "Icons/Game/VolumeOffIcon", elementWidth: 30f, elementHeight: 30f, onClick: () => OnClickMute(index));
             if (PhotonNetwork.IsMasterClient)
                 ElementFactory.CreateIconButton(actionRow, style, "Icons/Navigation/CloseIcon", elementWidth: 24f, elementHeight: 24f, onClick: () => OnClickKick(index));
-            foreach (Transform t in row)
-                t.GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3f;
+
+            ElementFactory.CreateDefaultLabel(row, style, "0", FontStyle.Normal, TextAnchor.MiddleCenter);
+
+            row.GetChild(0).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+            row.GetChild(1).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 3;
+
+            row.GetChild(2).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+            row.GetChild(3).GetComponent<LayoutElement>().preferredWidth = GetPanelWidth() / 6;
+
             return row;
         }
 
@@ -126,7 +139,7 @@ namespace UI
             else
             {
                 List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                foreach (string property in new string[] {"Kills","Deaths","HighestDamage","TotalDamage"})
                 {
                     object value = player.GetCustomProperty(property);
                     string str = value != null ? value.ToString() : string.Empty;
@@ -137,13 +150,14 @@ namespace UI
             // update status icon
             Transform playerRow = row.GetChild(0);
             RawImage statusImage = playerRow.GetChild(0).GetComponent<RawImage>();
-            if (status == PlayerStatus.Spectating)
+            bool showStatus = CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ShowScoreboardStatus;
+            if (showStatus && status == PlayerStatus.Spectating)
             {
                 statusImage.gameObject.SetActive(true);
                 statusImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/SpectateIcon", true);
                 statusImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "SpectateColor");
             }
-            else if (status == PlayerStatus.Dead)
+            else if (showStatus && status == PlayerStatus.Dead)
             {
                 statusImage.gameObject.SetActive(true);
                 statusImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Quests/Skull1Icon", true);
@@ -152,6 +166,7 @@ namespace UI
             else
                 statusImage.gameObject.SetActive(false);
             // update loadout icon
+            bool showLoadout = CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.ShowScoreboardLoadout;
             RawImage loadoutImage = playerRow.GetChild(1).GetComponent<RawImage>();
             if (character == PlayerCharacter.Human)
             {
@@ -175,7 +190,7 @@ namespace UI
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutShifter");
                 loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ShifterIcon", true);
             }
-            if (status == PlayerStatus.Spectating)
+            if (!showLoadout || status == PlayerStatus.Spectating)
                 loadoutImage.gameObject.SetActive(false);
             else
                 loadoutImage.gameObject.SetActive(true);
@@ -190,6 +205,8 @@ namespace UI
             actionRow.GetChild(1).gameObject.SetActive(!isMine);
             if (actionRow.childCount > 2)
                 actionRow.GetChild(2).gameObject.SetActive(!isMine);
+
+            row.GetChild(3).GetComponent<Text>().text = player.GetIntProperty(PlayerProperty.Ping).ToString();
         }
 
         private void OnClickProfile(int index)

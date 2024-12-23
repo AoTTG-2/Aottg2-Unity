@@ -18,6 +18,7 @@ using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
 using Anticheat;
+using System.Globalization;
 
 namespace GameManagers
 {
@@ -54,6 +55,10 @@ namespace GameManagers
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
 
+        //ping related
+        private float pingUpdateInterval = 10f;
+        private float timeSinceLastPingUpdate = 0f;
+
         public HashSet<BaseCharacter> GetAllCharacters()
         {
             var characters = new HashSet<BaseCharacter>();
@@ -73,6 +78,25 @@ namespace GameManagers
                     characters.Add(shifter);
             }
             return characters;
+        }
+
+        public IEnumerable<BaseCharacter> GetAllCharactersEnumerable()
+        {
+            foreach (var human in Humans)
+            {
+                if (human != null && !human.Dead)
+                    yield return human;
+            }
+            foreach (var titan in Titans)
+            {
+                if (titan != null && !titan.Dead)
+                    yield return titan;
+            }
+            foreach (var shifter in Shifters)
+            {
+                if (shifter != null && !shifter.Dead)
+                    yield return shifter;
+            }
         }
 
         public HashSet<BaseCharacter> GetAllNonAICharacters()
@@ -204,6 +228,7 @@ namespace GameManagers
 
         public static void OnJoinRoom()
         {
+            AnticheatManager.Reset();
             ResetPersistentPlayerProperties();
             ResetPlayerInfo();
             _needSendPlayerInfo = true;
@@ -220,7 +245,8 @@ namespace GameManagers
             UpdateRoundPlayerProperties();
             if (CurrentCharacter == null)
                 return;
-            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
+            if (CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Deaths, PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.Deaths) + 1);
         }
 
         public void RegisterMainCharacterKill(BaseCharacter victim)
@@ -348,6 +374,8 @@ namespace GameManagers
             if (data.Length > 1000)
                 return;
             AllPlayerInfo[info.Sender.ActorNumber].DeserializeFromJsonString(StringCompression.Decompress(data));
+            if (AnticheatManager.BanList.Contains(AllPlayerInfo[info.Sender.ActorNumber].Profile.ID.Value))
+                AnticheatManager.KickPlayer(info.Sender, false);
         }
 
         public static void OnGameSettingsRPC(byte[] data, PhotonMessageInfo info)
@@ -399,9 +427,10 @@ namespace GameManagers
         {
             if (!IsFinishedLoading())
                 return;
-            
-            var isHuman = SettingsManager.InGameCharacterSettings.CharacterType.Value == PlayerCharacter.Human;
-
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                SettingsManager.InGameCharacterSettings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
+            string characterType = SettingsManager.InGameCharacterSettings.CharacterType.Value;
+            var isHuman = characterType == PlayerCharacter.Human;
             if (PhotonNetwork.LocalPlayer.HasSpawnPoint())
             {
                 var position = PhotonNetwork.LocalPlayer.GetSpawnPoint();
@@ -465,12 +494,13 @@ namespace GameManagers
 
         public void SpawnPlayerAt(bool force, Vector3 position, float rotationY)
         {
-            var rotation = Quaternion.Euler(0f, rotationY, 0f);
-            
             if (!IsFinishedLoading())
                 return;
+            var rotation = Quaternion.Euler(0f, rotationY, 0f);
             var settings = SettingsManager.InGameCharacterSettings;
-            var character = settings.CharacterType.Value;
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                settings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
+            string character = settings.CharacterType.Value;
             var miscSettings = SettingsManager.InGameCurrent.Misc;
             if (settings.ChooseStatus.Value != (int)ChooseCharacterStatus.Chosen)
                 return;
@@ -478,6 +508,7 @@ namespace GameManagers
                 return;
             if (CurrentCharacter != null && !CurrentCharacter.Dead)
                 CurrentCharacter.GetKilled("");
+            string forced = string.Empty;
             UpdatePlayerName();
             List<string> characters = new List<string>();
             if (miscSettings.AllowAHSS.Value || miscSettings.AllowBlades.Value || miscSettings.AllowThunderspears.Value || miscSettings.AllowAPG.Value)
@@ -505,6 +536,8 @@ namespace GameManagers
                     loadouts.Add(HumanLoadout.Blades);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
+                if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)
+                    settings.Loadout.Value = CustomLogicManager.Evaluator.ForcedLoadout;
                 var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
                     settings.Special.Value = HumanSpecials.DefaultSpecial;
@@ -515,14 +548,19 @@ namespace GameManagers
                     human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
             }
             else if (character == PlayerCharacter.Shifter)
+            {
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);
+            }
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
                 titan.Init(false, GetPlayerTeam(true), null, combo[1]);
-                SetupTitan(titan);
+                SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
                 float largeSize = 3f;
@@ -535,6 +573,9 @@ namespace GameManagers
                     mediumSize = 0.5f * (minSize + maxSize);
                     largeSize = maxSize;
                 }
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 if (settings.Loadout.Value == "Small")
                     titan.SetSize(smallSize);
                 else if (settings.Loadout.Value == "Medium")
@@ -545,7 +586,6 @@ namespace GameManagers
             }
             HasSpawned = true;
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CharacterViewId, CurrentCharacter.Cache.PhotonView.ViewID);
-            RPCManager.PhotonView.RPC("NotifyPlayerSpawnRPC", RpcTarget.All, new object[] { CurrentCharacter.Cache.PhotonView.ViewID });
             UpdateRoundPlayerProperties();
         }
         
@@ -664,6 +704,11 @@ namespace GameManagers
                         type = "Punk";
                 }
             }
+            else if (type == "Random")
+            {
+                string[] types = new string[]{ "Normal", "Abnormal", "Jumper", "Crawler", "Thrower" };
+                type = types[UnityEngine.Random.Range(0, types.Length)];
+            }
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
@@ -673,7 +718,7 @@ namespace GameManagers
             return titan;
         }
 
-        public void SetupTitan(BasicTitan titan)
+        public void SetupTitan(BasicTitan titan, bool ai=true)
         {
             var settings = SettingsManager.InGameCurrent.Titan;
             if (settings.TitanSizeEnabled.Value)
@@ -713,6 +758,10 @@ namespace GameManagers
                     health = Mathf.Max(health, 1);
                     titan.SetHealth(health);
                 }
+            }
+            else if (!ai)
+            {
+                titan.SetHealth(10);
             }
         }
 
@@ -923,6 +972,9 @@ namespace GameManagers
             }
             PhotonNetwork.Instantiate("Game/PhotonVoicePrefab", Vector3.zero, Quaternion.identity, 0);
             base.Start();
+            int currentPing = PhotonNetwork.GetPing();
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
+            PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
         }
 
         public override bool IsFinishedLoading()
@@ -937,6 +989,14 @@ namespace GameManagers
             UpdateCleanCharacters();
             EndTimeLeft -= Time.deltaTime;
             EndTimeLeft = Mathf.Max(EndTimeLeft, 0f);
+
+            timeSinceLastPingUpdate += Time.deltaTime;
+            if (timeSinceLastPingUpdate >= pingUpdateInterval)
+            {
+                int currentPing = PhotonNetwork.GetPing();
+                PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.Ping, currentPing);
+                timeSinceLastPingUpdate = 0f;
+            }
         }
 
         protected override void OnFinishLoading()

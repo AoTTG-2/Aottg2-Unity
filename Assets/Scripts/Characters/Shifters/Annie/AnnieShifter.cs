@@ -274,10 +274,11 @@ namespace Characters
 
         public override void Blind()
         {
-            if (_currentAttackAnimation != AnnieAnimations.AttackComboBlind)
+            if (_currentAttackAnimation != AnnieAnimations.AttackComboBlind && _disableCooldownLeft <= 0f)
             {
                 DamagedGrunt();
                 Attack("AttackComboBlind");
+                _disableCooldownLeft = DisableCooldown + 2f;
             }
         }
     }

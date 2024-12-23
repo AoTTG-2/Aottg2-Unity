@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CustomLogic;
 using SimpleJSONFixed;
 using UnityEngine;
 
@@ -68,8 +69,10 @@ namespace Settings
             return false;
         }
 
-        public bool GetKeyDown()
+        public bool GetKeyDown(bool cl = false)
         {
+            if (!cl && CustomLogicManager.KeybindDefaultDisabled.Contains(this))
+                return false;
             foreach (InputKey key in InputKeys)
             {
                 if (key.GetKeyDown())
@@ -78,8 +81,12 @@ namespace Settings
             return false;
         }
 
-        public bool GetKey()
+        public bool GetKey(bool cl = false)
         {
+            if (!cl && CustomLogicManager.KeybindDefaultDisabled.Contains(this))
+                return false;
+            if (CustomLogicManager.KeybindHold.Contains(this))
+                return true;
             foreach (InputKey key in InputKeys)
             {
                 if (key.GetKey())
@@ -88,8 +95,10 @@ namespace Settings
             return false;
         }
 
-        public bool GetKeyUp()
+        public bool GetKeyUp(bool cl = false)
         {
+            if (!cl && CustomLogicManager.KeybindDefaultDisabled.Contains(this))
+                return false;
             foreach (InputKey key in InputKeys)
             {
                 if (key.GetKeyUp())

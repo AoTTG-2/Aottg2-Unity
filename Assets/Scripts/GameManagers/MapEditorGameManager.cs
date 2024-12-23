@@ -185,17 +185,20 @@ namespace GameManagers
                 foreach (var gameObject in MapLoader.GoToMapObject.Keys)
                 {
                     var mapObject = MapLoader.GoToMapObject[gameObject];
-                    var renderer = gameObject.GetComponentInChildren<Renderer>();
-                    if (renderer != null)
+                    foreach (var renderer in gameObject.GetComponentsInChildren<Renderer>())
                     {
-                        Vector3 center = renderer.bounds.center;
-                        Vector2 screenPosition = camera.Camera.WorldToScreenPoint(center);
-                        if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane && 
-                            Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition) &&
-                            renderer.isVisible)
+                        if (renderer != null && renderer.gameObject.activeSelf)
                         {
-                            if (!SelectedObjects.Contains(mapObject))
-                                SelectObject(mapObject);
+                            Vector3 center = renderer.bounds.center;
+                            Vector2 screenPosition = camera.Camera.WorldToScreenPoint(center);
+                            if (Vector3.Distance(center, camera.Cache.Transform.position) < camera.Camera.farClipPlane &&
+                                Util.IsVectorBetween(screenPosition, (Vector2)_dragStart, (Vector2)Input.mousePosition) &&
+                                renderer.isVisible)
+                            {
+                                if (!SelectedObjects.Contains(mapObject))
+                                    SelectObject(mapObject);
+                                break;
+                            }
                         }
                     }
                 }
@@ -242,12 +245,22 @@ namespace GameManagers
             CurrentGizmo = _positionGizmo;
             if (MapLoader.Errors.Count > 0)
                 _menu.ErrorPopup.Show(string.Join("\n", MapLoader.Errors));
+            StartCoroutine(WaitAndAutosave());
         }
 
         protected override void Awake()
         {
             base.Awake();
             _input = SettingsManager.InputSettings.MapEditor;
+        }
+
+        private IEnumerator WaitAndAutosave()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(900f);
+                _menu._topPanel.Autosave();
+            }
         }
 
         protected void Update()

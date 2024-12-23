@@ -1,8 +1,10 @@
 ﻿using ApplicationManagers;
 using GameManagers;
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -30,6 +32,31 @@ namespace CustomLogic
                 RPCManager.PhotonView.RPC("SendMessageRPC", RpcTarget.Others, new object[] { (string)parameters[0] });
                 return null;
             }
+            if (name == "GetTimestampDifference")
+            {
+                // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
+                return Util.GetPhotonTimestampDifference(parameters[0].UnboxToDouble(), parameters[1].UnboxToDouble());
+            }
+            if (name == "KickPlayer")
+            {
+                Photon.Realtime.Player player = null;
+                if (parameters[0] is int)
+                    player = PhotonNetwork.CurrentRoom.GetPlayer(parameters[0].UnboxToInt(), true);
+                else if (parameters[0] is CustomLogicPlayerBuiltin)
+                    player = ((CustomLogicPlayerBuiltin)parameters[0]).Player;
+                else
+                    throw new ArgumentException($"Invalid player parameter type {parameters[0].GetType()}. Valid types are {nameof(CustomLogicPlayerBuiltin)}, int (id).");
+
+                string reason = ".";
+                if (parameters.Count >= 2)
+                    reason = (string)parameters[1];
+
+                if (PhotonNetwork.IsMasterClient)
+                    ChatManager.KickPlayer(player, reason: reason);
+                else
+                    throw new Exception("Only the master client can kick players.");
+                return null;
+            }
             return base.CallMethod(name, parameters);
         }
 
@@ -50,6 +77,10 @@ namespace CustomLogic
                 return new CustomLogicPlayerBuiltin(PhotonNetwork.MasterClient);
             if (name == "MyPlayer")
                 return new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
+            if (name == "NetworkTime")
+                return PhotonNetwork.Time;
+            if (name == "Ping")
+                return PhotonNetwork.GetPing();
             return base.GetField(name);
         }
 

@@ -89,6 +89,10 @@ namespace CustomLogic
                 return Player.GetIntProperty(PlayerProperty.HighestDamage);
             if (name == "TotalDamage")
                 return Player.GetIntProperty(PlayerProperty.TotalDamage);
+            if (name == "Ping")
+                return Player.GetIntProperty(PlayerProperty.Ping);
+            if (name == "SpectateID")
+                return Player.GetIntProperty(PlayerProperty.SpectateID);
             if (name == "SpawnPoint")
             {
                 if (Player.HasSpawnPoint())

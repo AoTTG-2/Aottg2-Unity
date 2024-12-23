@@ -1,5 +1,9 @@
 {
+	"EventBackgrounds": [
+		"MainBackground0Texture"
+	],
 	"MainBackgrounds": [
+		"MainBackground0Texture",
 		"MainBackground2Texture",
 		"MainBackground4Texture",
 		"MainBackground5Texture",
@@ -52,9 +56,14 @@
 		"MainBackground47Texture",
 		"MainBackground48Texture",
 		"MainBackground49Texture",
-		"MainBackground50Texture"
+		"MainBackground50Texture",
+		"MainBackground51Texture",
+		"MainBackground52Texture",
+		"MainBackground53Texture",
+		"MainBackground54Texture",
+		"MainBackground55Texture"
 	],
-	"AllBackgrounds": 50,
+	"AllBackgrounds": 56,
 	"Tips": [
 		"You can attack a titan's legs to cripple them.",
 		"You can blind a titan by attacking the eyes.",

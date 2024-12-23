@@ -29,6 +29,8 @@ namespace CustomLogic
             Symbols.Add("wait", (int)CustomLogicSymbol.Wait);
             Symbols.Add("null", (int)CustomLogicSymbol.Null);
             Symbols.Add("return", (int)CustomLogicSymbol.Return);
+            Symbols.Add("break", (int)CustomLogicSymbol.Break);
+            Symbols.Add("continue", (int)CustomLogicSymbol.Continue);
             Symbols.Add("if", (int)CustomLogicSymbol.If);
             Symbols.Add("else", (int)CustomLogicSymbol.Else);
             Symbols.Add("elif", (int)CustomLogicSymbol.ElseIf);
@@ -66,7 +68,7 @@ namespace CustomLogic
         private static void CategorizeSymbols()
         {
             foreach (string symbolName in new string[] { "class", "component", "extension", "cutscene", "function", "coroutine", "wait", "null", 
-                "return", "if", "else", "for", "while", "elif", "in" })
+                "return", "break", "continue", "if", "else", "for", "while", "elif", "in" })
                 AlphaSymbolNames.Add(symbolName);
             foreach (string symbolName in Symbols.Keys)
             {
@@ -108,6 +110,8 @@ namespace CustomLogic
         LeftParen,
         RightParen,
         Return,
+        Continue,
+        Break,
         Not,
         SetEquals,
         PlusEquals,

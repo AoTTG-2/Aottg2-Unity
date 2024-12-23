@@ -181,8 +181,16 @@ namespace Map
             }
         }
 
+
         public static void DeleteObject(MapObject obj)
         {
+            if (IdToMapObject.ContainsKey(obj.ScriptObject.Id) == false)
+            {
+                // Case for runtime made objects
+                GameObject.Destroy(obj.GameObject);
+                return;
+            }
+                
             int id = obj.ScriptObject.Id;
             DeleteObject(id);
         }
@@ -366,9 +374,9 @@ namespace Map
             _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
 
             // Create sources and bounds
-            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
+            var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
+                PhysicsLayer.MapObjectTitans);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
-
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
@@ -734,6 +742,8 @@ namespace Map
                 layer = PhysicsLayer.MapObjectCharacters;
             else if (collideWith == MapObjectCollideWith.Titans)
                 layer = PhysicsLayer.MapObjectTitans;
+            else if (collideWith == MapObjectCollideWith.Humans)
+                layer = PhysicsLayer.MapObjectHumans;
             else if (collideWith == MapObjectCollideWith.Projectiles)
                 layer = PhysicsLayer.MapObjectProjectiles;
             else if (collideWith == MapObjectCollideWith.Entities)
@@ -818,6 +828,7 @@ namespace Map
         public static string MapObjects = "MapObjects";
         public static string Characters = "Characters";
         public static string Titans = "Titans";
+        public static string Humans = "Humans";
         public static string Projectiles = "Projectiles";
         public static string Entities = "Entities";
         public static string Hitboxes = "Hitboxes";

@@ -54,8 +54,11 @@ namespace CustomLogic
                 if (oldPlayer != null)
                     oldOwner = new CustomLogicPlayerBuiltin(oldPlayer);
                 var newOwner = new CustomLogicPlayerBuiltin(Sync.photonView.Owner);
-                foreach (var instance in _classInstances)
-                    CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new List<object>() { oldOwner, newOwner });
+                if (MapObject.GameObject != null)
+                {
+                    foreach (var instance in _classInstances)
+                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new List<object>() { oldOwner, newOwner });
+                }
             }
         }
 
@@ -72,19 +75,21 @@ namespace CustomLogic
         public void OnNetworkStream(object[] objs)
         {
             _streamObjs = new List<object>(objs);
+            if (MapObject.GameObject == null)
+                return;
             foreach (var instance in _classInstances)
             {
                 CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkStream");
             }
         }
 
-        public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message)
+        public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message, double sentServerTime)
         {
-            if (CustomLogicManager.Evaluator == null)
+            if (CustomLogicManager.Evaluator == null || MapObject.GameObject == null)
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message });
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message, sentServerTime });
             }
         }
 

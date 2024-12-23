@@ -58,7 +58,8 @@ namespace Controllers
         {
             if (inMenu || _human.Dead || _human.State == HumanState.Stun)
             {
-                _human.HasDirection = false;
+                if (!_autorun)
+                    _human.HasDirection = false;
                 return;
             }
             _human.IsWalk = _humanInput.HorseWalk.GetKey();
@@ -72,6 +73,8 @@ namespace Controllers
             }
             int forward = 0;
             int right = 0;
+            if (_generalInput.Autorun.GetKeyDown())
+                _autorun = !_autorun;
             if (_generalInput.Forward.GetKey())
                 forward = 1;
             else if (_generalInput.Back.GetKey())
@@ -80,6 +83,13 @@ namespace Controllers
                 right = -1;
             else if (_generalInput.Right.GetKey())
                 right = 1;
+            if (forward != 0 || right != 0)
+                _autorun = false;
+            if (_autorun)
+            {
+                forward = 1;
+                right = 0;
+            }
             if (forward != 0 || right != 0)
             {
                 _character.TargetAngle = GetTargetAngle(forward, right);
@@ -139,7 +149,17 @@ namespace Controllers
                     originalSpeed /= 100f;
                     str += " | " + originalSpeed.ToString("F1") + "K";
                 }
-
+            }
+            if (SettingsManager.AbilitySettings.CursorCooldown.Value && SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value &&
+                _human.Weapon is ThunderspearWeapon)
+            {
+                if (str != string.Empty)
+                    str += "\n";
+                float cd = ((ThunderspearWeapon)_human.Weapon).GetCooldownLeft();
+                if (cd > 0)
+                    str += "<color=#FF0000>" + cd.ToString("F2") + "</color>";
+                else
+                    str += "<color=#008000>READY</color>";
             }
 
             CursorManager.SetCrosshairText(str);
@@ -176,6 +196,7 @@ namespace Controllers
 
         void UpdateHookInput(bool inMenu)
         {
+            //TestScore();
             if (inMenu)
                 return;
             bool canHook = _human.State != HumanState.Grab && _human.State != HumanState.Stun && _human.Stats.CurrentGas > 0f
@@ -215,7 +236,6 @@ namespace Controllers
                 if (_humanInput.HookLeft.GetKeyDown() || _humanInput.HookRight.GetKeyDown() || _humanInput.HookBoth.GetKeyDown())
                     _human.PlaySoundRPC(HumanSounds.NoGas, Util.CreateLocalPhotonInfo());
             }
-            // TestScore();
         }
 
         private void TestScore()
@@ -232,15 +252,16 @@ namespace Controllers
             }
         }
 
+        private HashSet<HumanState> _illegalWeaponStates = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
+            HumanState.SpecialAttack, HumanState.Stun };
+
         protected override void UpdateActionInput(bool inMenu)
         {
             base.UpdateActionInput(inMenu);
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            var states = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
-            HumanState.SpecialAttack, HumanState.Stun};
-            bool canWeapon = _human.MountState == HumanMountState.None && !states.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon = _human.MountState == HumanMountState.None && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)

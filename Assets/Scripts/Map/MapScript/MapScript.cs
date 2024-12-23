@@ -82,7 +82,12 @@ namespace Map
                     currentSectionItems.Clear();
                 }
                 else
-                    currentSectionItems.Add(trimmed);
+                {
+                    if (currentSection == "Logic")
+                        currentSectionItems.Add(items[i].Trim('\r', '\n'));
+                    else
+                        currentSectionItems.Add(trimmed);
+                }
             }
             DeserializeSection(currentSection, currentSectionItems);
         }

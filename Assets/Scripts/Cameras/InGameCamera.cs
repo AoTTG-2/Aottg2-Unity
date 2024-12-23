@@ -41,6 +41,16 @@ namespace Cameras
         private float _currentShakeDistance;
         private static LayerMask _clipMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities);
         private bool _freeCam = false;
+        private float _lastChangeSpectateID = 0;
+
+        private bool CheckSpectateRateLimit()
+        {
+            float timeElapsed = Time.time - _lastChangeSpectateID;
+            if (timeElapsed < 1f)
+                return false;
+            _lastChangeSpectateID = Time.time;
+            return true;
+        }
 
         public void SetCameraDistance(float distance)
         {
@@ -57,10 +67,20 @@ namespace Cameras
 
         public void ApplyGeneralSettings()
         {
+            ResetDistance();
+            ResetCameraMode();
+        }
+
+        public void ResetDistance()
+        {
             _cameraDistance = SettingsManager.GeneralSettings.CameraDistance.Value + 0.3f;
             PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.CameraDistance, _cameraDistance);
             if (SettingsManager.GeneralSettings.CameraDistance.Value == 0f)
                 _cameraDistance = 0f;
+        }
+
+        public void ResetCameraMode()
+        {
             CurrentCameraMode = (CameraInputMode)SettingsManager.GeneralSettings.CameraMode.Value;
         }
 
@@ -103,9 +123,12 @@ namespace Cameras
 
         public void SetFollow(BaseCharacter character, bool resetRotation = true)
         {
+            bool changed = _follow != character;
             _follow = character;
             if (_follow == null)
             {
+                if (PhotonNetwork.LocalPlayer.GetIntProperty(PlayerProperty.SpectateID, -1) != -1 && CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
                 _menu.HUDBottomHandler.SetBottomHUD();
                 return;
             }
@@ -132,9 +155,18 @@ namespace Cameras
                     ? Util.ConstrainedToY(_follow.Cache.Transform.rotation)
                     : Quaternion.Euler(0f, 0f, 0f);
             if (character.IsMine())
+            {
                 _menu.HUDBottomHandler.SetBottomHUD(character);
+                if (changed || CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, -1);
+            }
             else
+            {
                 _menu.HUDBottomHandler.SetBottomHUD();
+                if (changed || CheckSpectateRateLimit())
+                    PhotonNetwork.LocalPlayer.SetCustomProperty(PlayerProperty.SpectateID, character.Cache.PhotonView.Owner.ActorNumber);
+            }
+            _menu._spectateUpdateTimeLeft = 0f;
         }
 
         protected override void Awake()
@@ -201,7 +233,9 @@ namespace Cameras
                 else
                     _freeCam = false;
                 if (_freeCam)
-                    _follow = null;
+                {
+                    SetFollow(null);
+                }
                 else if (_follow == null)
                     FindNextSpectate();
                 if (_follow != null)
@@ -244,17 +278,23 @@ namespace Cameras
 
         private void UpdateMain()
         {
-
             if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
-                if (_input.ChangeCamera.GetKeyDown())
+                if (CustomLogicManager.CameraMode != null)
                 {
-                    if (CurrentCameraMode == CameraInputMode.TPS)
-                        CurrentCameraMode = CameraInputMode.Original;
-                    else if (CurrentCameraMode == CameraInputMode.Original)
-                        CurrentCameraMode = CameraInputMode.FPS;
-                    else
-                        CurrentCameraMode = CameraInputMode.TPS;
+                    CurrentCameraMode = CustomLogicManager.CameraMode.Value;
+                }
+                else
+                {
+                    if (_input.ChangeCamera.GetKeyDown())
+                    {
+                        if (CurrentCameraMode == CameraInputMode.TPS)
+                            CurrentCameraMode = CameraInputMode.Original;
+                        else if (CurrentCameraMode == CameraInputMode.Original)
+                            CurrentCameraMode = CameraInputMode.FPS;
+                        else
+                            CurrentCameraMode = CameraInputMode.TPS;
+                    }
                 }
                 if (SettingsManager.InputSettings.Human.NapeLock.GetKeyDown())
                 {
@@ -270,6 +310,8 @@ namespace Cameras
                             _napeLockTitan = titan;
                     }
                 }
+                if (_napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
+                    _napeLock = false;
             }
             var cameraDistance = GetCameraDistance();
             float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
@@ -283,33 +325,51 @@ namespace Cameras
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
             if (InGameMenu.InMenu())
                 sensitivity = 0f;
+            float deadzone = SettingsManager.GeneralSettings.OriginalCameraDeadzone.Value;
+            float cameraSpeed = SettingsManager.GeneralSettings.OriginalCameraSpeed.Value;
+            if (CurrentCameraMode == CameraInputMode.Original)
+            {
+                float screenWidth = Screen.width;
+                float centerX = screenWidth / 2;
+                float leftDeadzoneBoundary = screenWidth * ((1 - deadzone) / 2);
+                float rightDeadzoneBoundary = screenWidth * ((1 + deadzone) / 2);
+
+                float inputX = Input.mousePosition.x;
+                float inputY = Input.mousePosition.y;
+
+                if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
+                {
+                    float t = 0;
+                    if (inputX < leftDeadzoneBoundary)
+                    {
+                        t = (leftDeadzoneBoundary - inputX) / screenWidth;
+                        float angle = -t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
+                    else if (inputX > rightDeadzoneBoundary)
+                    {
+                        t = (inputX - rightDeadzoneBoundary) / screenWidth;
+                        float angle = t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
+                }
+                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
+                Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
+                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+            }
             if (_napeLock && (_napeLockTitan != null))
             {
                 float z = Cache.Transform.eulerAngles.z;
                 Transform neck = _napeLockTitan.BaseTitanCache.Neck;
                 Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
                 Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+                if (CurrentCameraMode != CameraInputMode.Original)
+                    Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
                 if (_napeLockTitan.Dead)
                 {
                     _napeLockTitan = null;
+                    _napeLock = false;
                 }
-            }
-            else if (CurrentCameraMode == CameraInputMode.Original)
-            {
-                if (Input.mousePosition.x < (Screen.width * 0.4f))
-                {
-                    float angle = -(((Screen.width * 0.4f) - Input.mousePosition.x) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
-                }
-                else if (Input.mousePosition.x > (Screen.width * 0.6f))
-                {
-                    float angle = ((Input.mousePosition.x - (Screen.width * 0.6f)) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
-                }
-                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
-                Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
             {
@@ -461,11 +521,12 @@ namespace Cameras
         {
             BaseTitan nearestTitan = null;
             float nearestDistance = Mathf.Infinity;
-            foreach (var character in _inGameManager.GetAllCharacters())
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {
-                    float distance = Vector3.Distance(_follow.Cache.Transform.position, character.Cache.Transform.position);
+                    var neck = ((BaseTitan)character).BaseTitanCache.Neck;
+                    float distance = Vector3.Distance(_follow.Cache.Transform.position, neck.position);
                     if (distance < nearestDistance)
                     {
                         nearestDistance = distance;
@@ -483,11 +544,16 @@ namespace Cameras
             {
                 if (!human.AI)
                     characters.Add(human);
-            } 
+            }
             foreach (var shifter in _inGameManager.Shifters)
             {
                 if (!shifter.AI)
                     characters.Add(shifter);
+            }
+            foreach (var titan in _inGameManager.Titans)
+            {
+                if (!titan.AI)
+                    characters.Add(titan);
             }
             return characters.OrderBy(x => x.Cache.PhotonView.Owner.ActorNumber).ToList();
         }

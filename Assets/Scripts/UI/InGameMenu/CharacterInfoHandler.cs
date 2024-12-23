@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using Settings;
 using Characters;
 using GameManagers;
 using ApplicationManagers;
 using Utility;
-using System.Collections;
 using Cameras;
+using Assets.Scripts.Utility;
+using UnityEngine.UIElements;
 
 namespace UI
 {
     class CharacterInfoHandler : MonoBehaviour
     {
-        protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-        protected const float HumanRange = 500f;
+        protected HashSet<SetItem<BaseCharacter, CharacterInfoPopup>> _characterInfoPopups = new HashSet<SetItem<BaseCharacter, CharacterInfoPopup>>();
+        //protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
         protected const float TitanRange = 250f;
         protected const float HumanOffset = 2f;
         protected const float TitanOffset = 20f;
@@ -25,6 +24,7 @@ namespace UI
         protected Color GreenColor = new Color(0.106f, 0.368f, 0.086f);
         protected LayerMask CullMask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectEntities, PhysicsLayer.TitanMovebox);
         private InGameManager _inGameManager;
+        private SetItem<BaseCharacter, CharacterInfoPopup> mockEntry = new SetItem<BaseCharacter, CharacterInfoPopup>(null, null);
 
         private void Awake()
         {
@@ -38,8 +38,9 @@ namespace UI
             bool inMenu = InGameMenu.InMenu() || ((InGameManager)SceneLoader.CurrentGameManager).State == GameState.Loading;
             ShowMode showNameMode = (ShowMode)SettingsManager.UISettings.ShowNames.Value;
             ShowMode showHealthMode = (ShowMode)SettingsManager.UISettings.ShowHealthbars.Value;
-            bool highlyVisible = SettingsManager.UISettings.HighVisibilityNames.Value;
-            foreach (KeyValuePair<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
+            ShowMode NameOverrideTarget = (ShowMode)SettingsManager.UISettings.NameOverrideTarget.Value;
+
+            foreach (SetItem<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
             {
                 var character = kv.Key;
                 var popup = kv.Value;
@@ -49,6 +50,10 @@ namespace UI
                     (showHealthMode == ShowMode.Others && !character.IsMainCharacter()));
                 bool toggleName = showName && !character.AI && !(character is BasicTitan);
                 bool toggleHealth = showHealth && character.MaxHealth > 1 && character.CurrentHealth < character.MaxHealth;
+
+                bool setNameToHighlyVisible = NameOverrideTarget == ShowMode.All || (NameOverrideTarget == ShowMode.Mine && character.IsMine()) ||
+                        (NameOverrideTarget == ShowMode.Others && !character.IsMine());
+
                 if (_inGameManager.Restarting || SettingsManager.InGameCurrent.Misc.RealismMode.Value || (character.IsMainCharacter() && camera.GetCameraDistance() <= 0f))
                     toggleName = toggleHealth = false;
                 if ((!toggleName && !toggleHealth) || inMenu)
@@ -57,9 +62,8 @@ namespace UI
                     continue;
                 }
                 Vector3 worldPosition = character.Cache.Transform.position + popup.Offset;
-                float range = popup.Range;
                 float distance = Vector3.Distance(camera.Cache.Transform.position, worldPosition);
-                if (distance > range && !highlyVisible)
+                if (distance > popup.Range)
                 {
                     popup.Hide();
                     if (popup.gameObject.activeSelf)
@@ -88,18 +92,12 @@ namespace UI
                 if (toggleName)
                 {
                     popup.ToggleName(true);
-                    string name = character.Name;
-                    if (character.Guild != "")
-                        name = character.Guild + "\n" + name;
-                    if (highlyVisible)
-                        name = name.ForceWhiteColorTag();
-                    popup.SetName(name);
                 }
                 else
                     popup.ToggleName(false);
                 Vector3 screenPosition = camera.Camera.WorldToScreenPoint(worldPosition);
                 popup.transform.position = screenPosition;
-                if (highlyVisible)
+                if (setNameToHighlyVisible)
                     popup.ShowImmediate();
                 else
                     popup.Show();
@@ -109,11 +107,11 @@ namespace UI
         protected CharacterInfoPopup CreateInfoPopup(BaseCharacter character)
         {
             Vector3 offset = Vector3.zero;
-            float range = HumanRange;
+            float range = TitanRange;
             if (character is Human)
             {
                 offset = Vector3.up * HumanOffset;
-                range = HumanRange;
+                range = SettingsManager.UISettings.HumanNameDistance.Value;
             }
             else if (character is BasicTitan)
             {
@@ -136,25 +134,26 @@ namespace UI
 
         protected void RefreshDict()
         {
-            Dictionary<BaseCharacter, CharacterInfoPopup> newDict = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-            foreach (KeyValuePair<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
+            _characterInfoPopups.RemoveWhere(e =>
             {
-                var character = kv.Key;
-                var popup = kv.Value;
-                if (character == null || character.Dead)
-                    Destroy(popup.gameObject);
-                else
-                    newDict.Add(character, popup);
-            }
-            foreach (var character in _inGameManager.GetAllCharacters())
+                if (!e.Key || e.Key.Dead)
+                {
+                    Destroy(e.Value.gameObject);
+                    return true;
+                }
+                return false;
+            });
+
+            
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
-                if (!newDict.ContainsKey(character))
+                mockEntry.Key = character;
+                if (!_characterInfoPopups.Contains(mockEntry) && !character == false && character.Dead == false)
                 {
                     var popup = CreateInfoPopup(character);
-                    newDict.Add(character, popup);
+                    _characterInfoPopups.Add(new SetItem<BaseCharacter, CharacterInfoPopup>(character, popup));
                 }
             }
-            _characterInfoPopups = newDict;
         }
     }
 }

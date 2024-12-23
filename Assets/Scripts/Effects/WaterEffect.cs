@@ -78,7 +78,8 @@ public class WaterEffect : MonoBehaviour
         Camera cam = SceneLoader.CurrentCamera.Camera;
 
         // If the camera is inside this objects collider, enable the post processing volume
-        if (_collider.bounds.Contains(cam.transform.position))
+        bool boundsContains = _collider.bounds.Contains(cam.transform.position);
+        if (boundsContains && PostProcessingVolume.gameObject.activeSelf == false)
         {
             PostProcessingVolume.gameObject.SetActive(true);
             _postProcessingManager.SetState(false);
@@ -87,7 +88,7 @@ public class WaterEffect : MonoBehaviour
                 _globalFog.enabled = true;
             }
         }
-        else
+        else if (!boundsContains && PostProcessingVolume.gameObject.activeSelf == true)
         {
             PostProcessingVolume.gameObject.SetActive(false);
             _postProcessingManager.SetState(true);

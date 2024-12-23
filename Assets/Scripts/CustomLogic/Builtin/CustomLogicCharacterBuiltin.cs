@@ -134,12 +134,18 @@ namespace CustomLogic
                 return Character.IsMine();
             if (name == "Name")
                 return Character.Name;
+            if (name == "Guild")
+                return Character.Guild;
             if (name == "IsMainCharacter")
                 return Character.IsMainCharacter();
+            if (name == "Transform")
+                return new CustomLogicTransformBuiltin(Character.Cache.Transform);
             if (name == "Position")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.position);
             if (name == "Rotation")
                 return new CustomLogicVector3Builtin(Character.Cache.Transform.rotation.eulerAngles);
+            if (name == "QuaternionRotation")
+                return new CustomLogicQuaternionBuiltin(Character.Cache.Transform.rotation);
             if (name == "Velocity")
                 return new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
             if (name == "Forward")
@@ -168,6 +174,8 @@ namespace CustomLogic
                 return Character.GetCurrentAnimation();
             if (name == "IsAI")
                 return Character.AI;
+            if (name == "Grounded")
+                return Character.Grounded;
             return base.GetField(name);
         }
 
@@ -179,6 +187,8 @@ namespace CustomLogic
                 Character.Cache.Transform.position = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Rotation")
                 Character.Cache.Transform.rotation = Quaternion.Euler(((CustomLogicVector3Builtin)value).Value);
+            else if (name == "QuaternionRotation")
+                Character.Cache.Transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
             else if (name == "Velocity")
                 Character.Cache.Rigidbody.velocity = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Forward")
@@ -197,6 +207,10 @@ namespace CustomLogic
                 Character.CustomDamageEnabled = (bool)value;
             else if (name == "CustomDamage")
                 Character.CustomDamage = value.UnboxToInt();
+            else if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             else
                 base.SetField(name, value);
         }

@@ -60,7 +60,10 @@ namespace GameManagers
                 Recorder.TransmitEnabled = false;
                 Recorder.VoiceDetection = SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.AutoDetect;
                 Recorder.MicrophoneType = Recorder.MicType.Unity;
-                Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                if (SettingsManager.SoundSettings.VoiceChatDevice.Value != UIManager.GetLocale("Common", "None"))
+                    Recorder.MicrophoneDevice = new DeviceInfo(SettingsManager.SoundSettings.VoiceChatDevice.Value);
+                else
+                    Recorder.MicrophoneDevice = new DeviceInfo(string.Empty);
                 MicAmplifier.AmplificationFactor = VoiceChatManager.GetInputVolume();
             }
             if (SettingsManager.InGameCurrent.Misc.VoiceChat.Value == (int)VoiceChatMode.Proximity)
@@ -79,9 +82,13 @@ namespace GameManagers
             var setting = SettingsManager.InGameCurrent.Misc.VoiceChat.Value;
             if (PhotonView.IsMine)
             {
-                if (inGameManager.CurrentCharacter != null)
+                var character = inGameManager.CurrentCharacter;
+                if (character != null)
                 {
-                    Transform.position = inGameManager.CurrentCharacter.GetCameraAnchor().position;
+                    if (character is BaseTitan)
+                        Transform.position = ((BaseTitan)character).BaseTitanCache.Head.position;
+                    else
+                        Transform.position = character.GetCameraAnchor().position;
                 }
                 bool alive = inGameManager.CurrentCharacter != null && !inGameManager.CurrentCharacter.Dead;
                 if (setting == (int)VoiceChatMode.Off || (setting == (int)VoiceChatMode.Proximity && !alive))
@@ -90,7 +97,7 @@ namespace GameManagers
                 }
                 else if (SettingsManager.SoundSettings.VoiceChatInput.Value == (int)VoiceChatInputMode.PushToTalk)
                 {
-                    if (SettingsManager.InputSettings.General.PushToTalk.GetKey())
+                    if (!ChatManager.IsChatActive() && SettingsManager.InputSettings.General.PushToTalk.GetKey())
                         Recorder.TransmitEnabled = true;
                     else
                         Recorder.TransmitEnabled = false;
@@ -119,16 +126,6 @@ namespace GameManagers
                 else
                 {
                     bool isSpeaking = VoiceView.IsSpeaking;
-                    if (SettingsManager.InGameCurrent.Misc.VoiceChat.Value == (int)VoiceChatMode.Proximity)
-                    {
-                        var mainCharacter = ((InGameManager)SceneLoader.CurrentGameManager).CurrentCharacter;
-                        if (mainCharacter != null)
-                        {
-                            var distance = Vector3.Distance(mainCharacter.Cache.Transform.position, Transform.position);
-                            var volume = this.AudioSource.volume;
-                            isSpeaking = isSpeaking && volume > 0f && distance <= SettingsManager.InGameCurrent.Misc.ProximityMaxDistance.Value;
-                        }
-                    }
                     ChatManager.IsTalking(this.photonView.Owner, isSpeaking);
                 }
             }

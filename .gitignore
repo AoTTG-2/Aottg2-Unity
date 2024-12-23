@@ -30,6 +30,12 @@ bin/
 obj/
 .suo
 
+# Visual Studio Code
+.vscode/
+
+# Jetbrains IDE
+.idea/
+
 # Gradle cache directory
 .gradle/
 

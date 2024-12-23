@@ -39,9 +39,11 @@ namespace ApplicationManagers
         private string _lastSongBeforeGrabbed = string.Empty;
         private float _lastTimeBeforeGrabbed = 0f;
         private bool _justEscapedGrab = false;
+        private float _lastCheckBattleMusic = 0f;
         private const float BattleTitanAnyDistance = 200f;
         private const float BattleTitanActiveDistance = 1000f;
         private const float BattleOtherAnyDistance = 500f;
+        private const float CheckBattleMusicDelay = 0.2f;
 
         public static void Init()
         {
@@ -371,6 +373,9 @@ namespace ApplicationManagers
 
         private bool ShouldPlayBattleMusic()
         {
+            if (Time.time < _lastCheckBattleMusic + CheckBattleMusicDelay)
+                return false;
+            _lastCheckBattleMusic = Time.time;
             if (SceneLoader.SceneName == SceneName.InGame && SceneLoader.CurrentCamera != null && SceneLoader.CurrentGameManager != null)
             {
                 if (SceneLoader.CurrentCamera is InGameCamera && SceneLoader.CurrentGameManager is InGameManager)
@@ -379,7 +384,7 @@ namespace ApplicationManagers
                     var inGameManager = (InGameManager)SceneLoader.CurrentGameManager;
                     if (follow == null)
                         return false;
-                    foreach (var character in inGameManager.GetAllCharacters())
+                    foreach (var character in inGameManager.GetAllCharactersEnumerable())
                     {
                         if (!TeamInfo.SameTeam(character, follow))
                         {

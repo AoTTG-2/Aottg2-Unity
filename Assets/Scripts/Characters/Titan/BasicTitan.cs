@@ -1,11 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
 using Utility;
 using Controllers;
-using CustomSkins;
 using System.Collections.Generic;
 using SimpleJSONFixed;
 using System.Collections;
@@ -16,9 +12,6 @@ using CustomLogic;
 using Photon.Pun;
 using Projectiles;
 using Spawnables;
-using UnityEditor;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 namespace Characters
 {
@@ -39,7 +32,7 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
-        public float RockThrow1Speed = 200f;
+        public float RockThrow1Speed = 150f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
@@ -49,6 +42,7 @@ namespace Characters
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
+        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
 
         public void Init(bool ai, string team, JSONNode data, int headPrefab)
         {
@@ -67,7 +61,7 @@ namespace Characters
             else
             {
                 int runAnimationType = 1;
-                if (data != null  && data.HasKey("RunAnimation"))
+                if (data != null && data.HasKey("RunAnimation"))
                     runAnimationType = data["RunAnimation"].AsInt;
                 if (runAnimationType == 0)
                     _runAnimation = BasicAnimations.Runs[UnityEngine.Random.Range(0, BasicAnimations.Runs.Length)];
@@ -76,6 +70,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
+            Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
         }
 
         public override bool IsGrabAttack()
@@ -92,7 +87,7 @@ namespace Characters
         protected override void SetSizeParticles(float size)
         {
             base.SetSizeParticles(size);
-            foreach (ParticleSystem system in new ParticleSystem[] {BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR})
+            foreach (ParticleSystem system in new ParticleSystem[] { BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR })
             {
                 system.startSize *= size;
                 system.startSpeed *= size;
@@ -189,6 +184,15 @@ namespace Characters
                     StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 1.4f));
                 }
                 StateAction(TitanState.Emote, anim);
+            }
+        }
+
+        public void CoverNape()
+        {
+            if (CanAction())
+            {
+                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, 
+                    Cache.Animation[BasicAnimations.CoverNape].length / Cache.Animation[BasicAnimations.CoverNape].speed);
             }
         }
 
@@ -349,6 +353,12 @@ namespace Characters
             BasicCache.MouthHitbox.Activate();
         }
 
+        public void JumpImmediate()
+        {
+            StartJump();
+            CrossFade(BasicAnimations.Jump, 0.1f, 0.85f);
+        }
+
         public override void Eat()
         {
             if (HoldHuman == null)
@@ -433,10 +443,10 @@ namespace Characters
                 dieAnimation = BasicAnimations.DieCrawler;
             else if (_currentStateAnimation == BasicAnimations.AttackBellyFlop || _currentStateAnimation == BasicAnimations.AttackBellyFlopGetup)
                 dieAnimation = BasicAnimations.DieGround;
-            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle 
+            else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
-            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
+            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.05f);
             yield return new WaitForSeconds(1.4f);
             PlaySound(TitanSounds.Fall);
             yield return new WaitForSeconds(1f);
@@ -520,6 +530,10 @@ namespace Characters
 
         public override void Attack(string attack)
         {
+            if (!Grounded && (attack == "AttackBellyFlop" || attack == "AttackRockThrow"))
+                return;
+            if (!AI)
+                _attackVelocity = new Vector3(Cache.Rigidbody.velocity.x, 0f, Cache.Rigidbody.velocity.z);
             ResetAttackState(attack);
             if (_currentAttackAnimation == BasicAnimations.AttackBellyFlop)
                 StateActionWithTime(TitanState.Attack, _currentAttackAnimation, BellyFlopTime, 0.1f);
@@ -768,7 +782,7 @@ namespace Characters
                     BasicCache.MouthHitbox.Activate(0f, GetHitboxTime(0.09f));
                     _currentAttackStage = 1;
                 }
-                else if (_currentAttackStage == 1  && animationTime > stage2Time)
+                else if (_currentAttackStage == 1 && animationTime > stage2Time)
                 {
                     var transform = BasicCache.MouthHitbox.transform;
                     var position = transform.position + transform.up * Size;
@@ -807,9 +821,9 @@ namespace Characters
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabStomachR)
                         BasicCache.HandRHitbox.Activate(GetHitboxTime(0.35f), GetHitboxTime(0.19f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackL)
-                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
+                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.05f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadBackR)
-                        BasicCache.HandRHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.04f));
+                        BasicCache.HandLHitbox.Activate(GetHitboxTime(0.46f), GetHitboxTime(0.05f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontL)
                         BasicCache.HandLHitbox.Activate(GetHitboxTime(0.42f), GetHitboxTime(0.25f));
                     else if (_currentStateAnimation == BasicAnimations.AttackGrabHeadFrontR)
@@ -845,13 +859,16 @@ namespace Characters
                     {
                         float distance = Vector3.Distance(hand, TargetEnemy.GetPosition());
                         float time = distance / RockThrow1Speed;
+                        float predictivePower = Mathf.Clamp(distance / 120f, 0f, 1f);
                         _rockThrowTarget = TargetEnemy.GetPosition();
                         if (TargetEnemy is BaseCharacter)
-                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).Cache.Rigidbody.velocity * time;
+                            _rockThrowTarget += ((BaseCharacter)TargetEnemy).GetVelocity() * time * predictivePower;
                     }
                     else
                         _rockThrowTarget = Cache.Transform.position + Cache.Transform.forward * 200f;
                 }
+                else
+                    _rockThrowTarget = GetAimPoint();
                 var flatTarget = _rockThrowTarget;
                 flatTarget.y = Cache.Transform.position.y;
                 var forward = (flatTarget - Cache.Transform.position).normalized;
@@ -874,12 +891,12 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (HoldHuman == null  && _stateTimeLeft > 4.72f)
+            if (State != TitanState.HumanThrow && HoldHuman == null && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
             }
-            if (_stateTimeLeft <= 4.72f)
+            if (State != TitanState.HumanThrow && _stateTimeLeft <= 4.72f)
             {
                 if (HoldHuman != null)
                 {
@@ -889,6 +906,27 @@ namespace Characters
                     HoldHuman.GetHit(this, damage, "TitanEat", "");
                     HoldHuman = null;
                 }
+            }
+            if (!AI && HoldHuman && !HoldHuman.Dead && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
+                UpdateThrowHuman();
+        }
+
+        private void UpdateThrowHuman()
+        {
+            if (State != TitanState.HumanThrow)
+                StateAction(TitanState.HumanThrow, BasicAnimations.AttackRockThrow);
+            var flatTarget = GetAimPoint();
+            flatTarget.y = Cache.Transform.position.y;
+            var forward = (flatTarget - Cache.Transform.position).normalized;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
+            if (GetAnimationTime() > 0.61f)
+            {
+                Human temp = HoldHuman;
+                Vector3 hand = BasicCache.HandRHitbox.transform.position;
+                Vector3 pos = (GetAimPoint() - hand).normalized * 150;
+                Ungrab();
+                if (temp.photonView.gameObject != null)
+                    temp.photonView.RPC("BlowAwayRPC", temp.photonView.Owner, new object[] { pos });
             }
         }
 
@@ -1093,7 +1131,7 @@ namespace Characters
                     var canTarget = false;
                     if (TargetEnemy != null && TargetEnemy.ValidTarget() && TargetEnemy is BaseCharacter)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
+                        BaseCharacter character = (BaseCharacter)TargetEnemy;
                         TargetViewId = character.Cache.PhotonView.ViewID;
                         canTarget = !IsCrawler && Util.DistanceIgnoreY(TargetEnemy.GetPosition(), BasicCache.Transform.position) < 100f && canLook;
                     }
@@ -1101,9 +1139,8 @@ namespace Characters
                         TargetViewId = -1;
                     if (canTarget)
                     {
-                        var character = (BaseCharacter)TargetEnemy;
                         LookAtTarget = true;
-                        LateUpdateHead(character);
+                        LateUpdateHead((BaseCharacter)TargetEnemy);
                     }
                     else
                     {
@@ -1166,7 +1203,7 @@ namespace Characters
             BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
             if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
             {
-                var body = BasicCache.Core.Find("Controller.Body");
+                var body = BasicCache.Body;
                 body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
                 BasicCache.Core.localPosition = new Vector3(0f, -0.05f, 0f);
             }
@@ -1219,7 +1256,7 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else
+            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
             {
                 if (IsCrawler)
                     collider.height = _originalCapsuleValue;

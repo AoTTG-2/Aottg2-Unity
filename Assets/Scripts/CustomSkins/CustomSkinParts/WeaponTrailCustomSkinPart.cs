@@ -9,7 +9,7 @@ namespace CustomSkins
          
         private List<MeleeWeaponTrail> _weaponTrails;
 
-        public WeaponTrailCustomSkinPart(BaseCustomSkinLoader loader, List<MeleeWeaponTrail> weaponTrails, string rendererId, int maxSize, Vector2? textureScale = null) : base(loader, null, rendererId, maxSize, textureScale)
+        public WeaponTrailCustomSkinPart(BaseCustomSkinLoader loader, List<MeleeWeaponTrail> weaponTrails, string rendererId, int maxSize, Vector2? textureScale = null) : base(loader, null, rendererId, maxSize, textureScale, true)
         {
             _weaponTrails = weaponTrails;
         }
@@ -20,8 +20,7 @@ namespace CustomSkins
 
         protected override void DisableRenderers()
         {
-            foreach (MeleeWeaponTrail trail in _weaponTrails)
-                trail.enabled = false;
+            SetMaterial(MaterialCache.TransparentMaterial);
         }
 
         protected override void SetMaterial(Material material)

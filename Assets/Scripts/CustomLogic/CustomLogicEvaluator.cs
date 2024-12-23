@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -24,7 +25,16 @@ namespace CustomLogic
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
         public string ScoreboardProperty = "";
+        //public List<string> AllowedSpecials = new List<string>();
+        //public List<string> DisallowedSpecials = new List<string>();
         private List<object> EmptyParameters = new List<object>();
+        public bool DefaultShowKillScore = true;
+        public bool DefaultShowKillFeed = true;
+        public bool DefaultAddKillScore = true;
+        public bool ShowScoreboardLoadout = true;
+        public bool ShowScoreboardStatus = true;
+        public string ForcedCharacterType = string.Empty;
+        public string ForcedLoadout = string.Empty;
 
         public CustomLogicEvaluator(CustomLogicStartAst start)
         {
@@ -209,6 +219,14 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterSpawn", new List<object>() { builtin });
         }
 
+        public void OnCharacterReloaded(BaseCharacter character)
+        {
+            var builtin = GetCharacterBuiltin(character);
+            if (builtin == null)
+                return;
+            EvaluateMethodForCallbacks("OnCharacterReloaded", new List<object>() { builtin });
+        }
+
         public void OnCharacterDie(BaseCharacter victim, BaseCharacter killer, string killerName)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);
@@ -243,10 +261,10 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnPlayerLeave", new List<object>() { playerBuiltin });
         }
 
-        public void OnNetworkMessage(Player sender, string message)
+        public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message });
+            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message, sentServerTimestamp });
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
@@ -299,6 +317,8 @@ namespace CustomLogic
             }
         }
 
+        private List<object> emptyList = new List<object>();
+
         private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
         {
             // for loop instead of foreach because the list might be modified during the loop
@@ -306,7 +326,13 @@ namespace CustomLogic
             {
                 var callback = _callbacks[methodName];
                 for (int i = 0; i < callback.Count; i++)
+                {
+                    // Init function should run even if the class (component) is disabled
+                    if (!callback[i].Enabled && methodName != "Init")
+                        continue;
+
                     EvaluateMethod(callback[i], methodName, parameters);
+                }
             }
         }
 
@@ -539,88 +565,49 @@ namespace CustomLogic
                 if (statement is CustomLogicAssignmentExpressionAst)
                 {
                     CustomLogicAssignmentExpressionAst assignment = (CustomLogicAssignmentExpressionAst)statement;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        if (localVariables.ContainsKey(variableName))
-                            localVariables[variableName] = value;
-                        else
-                            localVariables.Add(variableName, value);
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        if (fieldInstance is CustomLogicBaseBuiltin)
-                            ((CustomLogicBaseBuiltin)fieldInstance).SetField(fieldExpression.FieldName, value);
-                        else
-                        {
-                            if (fieldInstance.Variables.ContainsKey(fieldExpression.FieldName))
-                                fieldInstance.Variables[fieldExpression.FieldName] = value;
-                            else
-                                fieldInstance.Variables.Add(fieldExpression.FieldName, value);
-                        }
-                    }
+                    EvaluateAssignmentExpression(classInstance, localVariables, assignment);
                 }
                 else if (statement is CustomLogicCompoundAssignmentExpressionAst)
                 {
                     CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
-                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        object originalValue = localVariables[variableName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        localVariables[variableName] = newValue;
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.Variables[fieldExpression.FieldName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
-                    }
+                    EvaluateCompoundAssignmentExpression(classInstance, localVariables, assignment);
                 }
-                else if (statement is CustomLogicReturnExpressionAst)
+                else if (statement is CustomLogicReturnExpressionAst || statement is CustomLogicBreakExpressionAst || statement is CustomLogicContinueExpressionAst)
                 {
+                    yield return statement;
                     yield break;
                 }
-                else if (statement is CustomLogicWaitExpressionAst)
+                else if (statement is CustomLogicWaitExpressionAst waitExpressionAst)
                 {
-                    object value = EvaluateExpression(classInstance, localVariables, ((CustomLogicWaitExpressionAst)statement).WaitTime);
-                    string className = classInstance.ClassName;
-                    if ((int)_start.Classes[className].Token.Value == (int)CustomLogicSymbol.Cutscene)
+                    object value = EvaluateExpression(classInstance, localVariables, waitExpressionAst.WaitTime);
+                    bool isCutscene = (int)_start.Classes[classInstance.ClassName].Token.Value == (int)CustomLogicSymbol.Cutscene;
+
+                    if (value is null)
+                        yield return null;
+                    else if (waitExpressionAst.WaitTime is CustomLogicMethodCallExpressionAst methodCallExpressionAst)
                     {
-                        float time = value.UnboxToFloat();
-                        while (time > 0f && !CustomLogicManager.SkipCutscene)
-                        {
-                            yield return new WaitForSeconds(0.1f);
-                            time -= 0.1f;
-                        }
+                        if (isCutscene)
+                            value = null;
+
+                        if (value is Coroutine coroutine)
+                            yield return value;
+                        else
+                            yield return null;
                     }
                     else
-                        yield return new WaitForSeconds(value.UnboxToFloat());
+                    {
+                        if (isCutscene)
+                        {
+                            float time = value.UnboxToFloat();
+                            while (time > 0f && !CustomLogicManager.SkipCutscene)
+                            {
+                                yield return new WaitForSeconds(0.1f);
+                                time -= 0.1f;
+                            }
+                        }
+                        else
+                            yield return new WaitForSeconds(value.UnboxToFloat());
+                    }
                 }
                 else if (statement is CustomLogicConditionalBlockAst)
                 {
@@ -629,7 +616,11 @@ namespace CustomLogic
                     {
                         if ((bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
                         {
-                            yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            yield return cwd.Coroutine;
+                            yield return cwd.Result;
+                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                                yield break;
                             conditionalState = ConditionalEvalState.PassedIf;
                         }
                         else
@@ -639,16 +630,25 @@ namespace CustomLogic
                     {
                         while ((bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
                         {
-                            yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            yield return cwd.Coroutine;
+                            yield return cwd.Result;
+                            if (cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
+                                yield return null;
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst)
+                                yield break;
                         }
                         conditionalState = ConditionalEvalState.None;
                     }
                     else if ((int)conditional.Token.Value == (int)CustomLogicSymbol.Else)
                     {
-                        if ((conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf) &&
-                            (bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
+                        if (conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf)
                         {
-                            yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            yield return cwd.Coroutine;
+                            yield return cwd.Result;
+                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                                yield break;
                         }
                         conditionalState = ConditionalEvalState.None;
                     }
@@ -660,7 +660,11 @@ namespace CustomLogic
                         else if ((conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf) &&
                             (bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
                         {
-                            yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
+                            yield return cwd.Coroutine;
+                            yield return cwd.Result;
+                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                                yield break;
                             conditionalState = ConditionalEvalState.PassedElseIf;
                         }
                         else
@@ -677,7 +681,13 @@ namespace CustomLogic
                             localVariables[variableName] = variable;
                         else
                             localVariables.Add(variableName, variable);
-                        yield return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance, localVariables, forBlock.Statements));
+                        var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, forBlock.Statements));
+                        yield return cwd.Coroutine;
+                        yield return cwd.Result;
+                        if (cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
+                            yield return null;
+                        if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst)
+                            yield break;
                     }
                 }
                 else if (statement is CustomLogicBaseExpressionAst)
@@ -696,74 +706,23 @@ namespace CustomLogic
                 if (statement is CustomLogicAssignmentExpressionAst)
                 {
                     CustomLogicAssignmentExpressionAst assignment = (CustomLogicAssignmentExpressionAst)statement;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        if (localVariables.ContainsKey(variableName))
-                            localVariables[variableName] = value;
-                        else
-                            localVariables.Add(variableName, value);
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        if (fieldInstance is CustomLogicBaseBuiltin)
-                            ((CustomLogicBaseBuiltin)fieldInstance).SetField(fieldExpression.FieldName, value);
-                        else
-                        {
-                            if (fieldInstance.Variables.ContainsKey(fieldExpression.FieldName))
-                                fieldInstance.Variables[fieldExpression.FieldName] = value;
-                            else
-                                fieldInstance.Variables.Add(fieldExpression.FieldName, value);
-                        }
-                    }
+                    EvaluateAssignmentExpression(classInstance, localVariables, assignment);
                 }
                 else if (statement is CustomLogicCompoundAssignmentExpressionAst)
                 {
                     CustomLogicCompoundAssignmentExpressionAst assignment = (CustomLogicCompoundAssignmentExpressionAst)statement;
-                    CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
-                    object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
-
-                    if (assignment.Left is CustomLogicVariableExpressionAst)
-                    {
-                        string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
-                        object originalValue = localVariables[variableName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        localVariables[variableName] = newValue;
-                    }
-                    else if (assignment.Left is CustomLogicFieldExpressionAst)
-                    {
-                        CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
-                        CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
-                        object originalValue = fieldInstance.Variables[fieldExpression.FieldName];
-                        object newValue = op switch
-                        {
-                            CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
-                            CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
-                            CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
-                            CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
-                            _ => value,
-                        };
-                        fieldInstance.Variables[fieldExpression.FieldName] = newValue;
-                    }
+                    EvaluateCompoundAssignmentExpression(classInstance, localVariables, assignment);
                 }
                 else if (statement is CustomLogicReturnExpressionAst)
                 {
                     result[0] = true;
                     result[1] = EvaluateExpression(classInstance, localVariables, ((CustomLogicReturnExpressionAst)statement).ReturnValue);
+                    return result;
+                }
+                else if (statement is CustomLogicBreakExpressionAst || statement is CustomLogicContinueExpressionAst)
+                {
+                    result[0] = true;
+                    result[1] = statement;
                     return result;
                 }
                 else if (statement is CustomLogicConditionalBlockAst)
@@ -775,7 +734,10 @@ namespace CustomLogic
                         {
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
-                                return nextResult;
+                            {
+                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
+                                    return nextResult;
+                            }
                             conditionalState = ConditionalEvalState.PassedIf;
                         }
                         else
@@ -787,7 +749,12 @@ namespace CustomLogic
                         {
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
-                                return nextResult;
+                            {
+                                if (nextResult[1] is CustomLogicBreakExpressionAst)
+                                    break;
+                                else if (nextResult[1] is not CustomLogicContinueExpressionAst)
+                                    return nextResult;
+                            }
                         }
                         conditionalState = ConditionalEvalState.None;
                     }
@@ -797,7 +764,10 @@ namespace CustomLogic
                         {
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
-                                return nextResult;
+                            {
+                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
+                                    return nextResult;
+                            }
                         }
                         conditionalState = ConditionalEvalState.None;
                     }
@@ -811,7 +781,10 @@ namespace CustomLogic
                         {
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
-                                return nextResult;
+                            {
+                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
+                                    return nextResult;
+                            }
                             conditionalState = ConditionalEvalState.PassedElseIf;
                         }
                         else
@@ -830,7 +803,12 @@ namespace CustomLogic
                             localVariables.Add(variableName, variable);
                         object[] nextResult = EvaluateBlock(classInstance, localVariables, forBlock.Statements);
                         if ((bool)nextResult[0])
-                            return nextResult;
+                        {
+                            if (nextResult[1] is CustomLogicBreakExpressionAst)
+                                break;
+                            else if (nextResult[1] is not CustomLogicContinueExpressionAst)
+                                return nextResult;
+                        }
                     }
                 }
                 else if (statement is CustomLogicBaseExpressionAst)
@@ -839,6 +817,77 @@ namespace CustomLogic
                     conditionalState = ConditionalEvalState.None;
             }
             return result;
+        }
+
+        private void EvaluateAssignmentExpression(CustomLogicClassInstance classInstance, Dictionary<string, object> localVariables,
+            CustomLogicAssignmentExpressionAst assignment)
+        {
+            object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
+            if (assignment.Right is not CustomLogicClassInstantiateExpressionAst && value != null && value is CustomLogicStructBuiltin)
+                value = ((CustomLogicStructBuiltin)value).Copy();
+            if (assignment.Left is CustomLogicVariableExpressionAst)
+            {
+                string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
+                localVariables[variableName] = value;
+            }
+            else if (assignment.Left is CustomLogicFieldExpressionAst)
+            {
+                CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
+                CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
+                if (fieldInstance is CustomLogicBaseBuiltin)
+                    ((CustomLogicBaseBuiltin)fieldInstance).SetField(fieldExpression.FieldName, value);
+                else
+                    fieldInstance.Variables[fieldExpression.FieldName] = value;
+            }
+        }
+
+        private void EvaluateCompoundAssignmentExpression(CustomLogicClassInstance classInstance, Dictionary<string, object> localVariables,
+            CustomLogicCompoundAssignmentExpressionAst assignment)
+        {
+            CustomLogicSymbol op = (CustomLogicSymbol)assignment.Operator.Value;
+            object value = EvaluateExpression(classInstance, localVariables, assignment.Right);
+            if (assignment.Right is not CustomLogicClassInstantiateExpressionAst && value != null && value is CustomLogicStructBuiltin)
+                value = ((CustomLogicStructBuiltin)value).Copy();
+
+            if (assignment.Left is CustomLogicVariableExpressionAst)
+            {
+                string variableName = ((CustomLogicVariableExpressionAst)assignment.Left).Name;
+                object originalValue = localVariables[variableName];
+                object newValue = op switch
+                {
+                    CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                    CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                    CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                    CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                    _ => value,
+                };
+                localVariables[variableName] = newValue;
+            }
+            else if (assignment.Left is CustomLogicFieldExpressionAst)
+            {
+                CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)assignment.Left;
+                CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
+                var isBuiltinClass = fieldInstance is CustomLogicBaseBuiltin;
+                var builtinClass = isBuiltinClass ? (CustomLogicBaseBuiltin)fieldInstance : null;
+                object originalValue;
+                if (isBuiltinClass)
+                    originalValue = builtinClass.GetField(fieldExpression.FieldName);
+                else
+                    originalValue = fieldInstance.Variables[fieldExpression.FieldName];
+
+                object newValue = op switch
+                {
+                    CustomLogicSymbol.PlusEquals => AddValues(originalValue, value),
+                    CustomLogicSymbol.MinusEquals => SubtractValues(originalValue, value),
+                    CustomLogicSymbol.TimesEquals => MultiplyValues(originalValue, value),
+                    CustomLogicSymbol.DivideEquals => DivideValues(originalValue, value),
+                    _ => value,
+                };
+                if (isBuiltinClass)
+                    builtinClass.SetField(fieldExpression.FieldName, newValue);
+                else
+                    fieldInstance.Variables[fieldExpression.FieldName] = newValue;
+            }
         }
 
         public bool HasMethod(CustomLogicClassInstance classInstance, string methodName)
@@ -918,8 +967,6 @@ namespace CustomLogic
                     if (fieldInstance is CustomLogicBaseBuiltin)
                         return ((CustomLogicBaseBuiltin)fieldInstance).GetField(fieldExpression.FieldName);
                     object value = fieldInstance.Variables[fieldExpression.FieldName];
-                    if (value != null && value is CustomLogicStructBuiltin)
-                        value = ((CustomLogicStructBuiltin)value).Copy();
                     return value;
                 }
                 else if (expression.Type == CustomLogicAstType.NotExpression)
@@ -1028,7 +1075,12 @@ namespace CustomLogic
             else if (left is CustomLogicVector3Builtin)
                 return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
             else if (right is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+            {
+                if (left is CustomLogicQuaternionBuiltin)
+                    return new CustomLogicVector3Builtin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicVector3Builtin)right).Value);
+                else
+                    return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
+            }
             else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
                 return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
             else

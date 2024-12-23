@@ -38,11 +38,20 @@ namespace Projectiles
             PhysicsLayer.TitanPushbox, PhysicsLayer.Human);
         bool _wasImpact = false;
         bool _wasMaxRange = false;
+        bool _isEmbed = false;
+        Transform _embedParent = null;
+        Vector3 _embedPosition = Vector3.zero;
+        Vector3 _startPosition = Vector3.zero;
+        bool _isAA = false;
+        float _embedTime;
+        public static Color CritColor = new Color(0.475f, 0.7f, 1f);
+
         protected override void SetupSettings(object[] settings)
         {
             _radius = (float)settings[0];
             _color = (Color)settings[1];
             _lastPosition = transform.position;
+            _startPosition = transform.position;
         }
 
         protected override void RegisterObjects()
@@ -65,44 +74,94 @@ namespace Projectiles
         {
             if (photonView.IsMine && !Disabled)
             {
-                if (CharacterData.HumanWeaponInfo["Thunderspear"]["Ricochet"].AsBool)
-                    GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * _velocity.magnitude * CharacterData.HumanWeaponInfo["Thunderspear"]["RicochetSpeed"].AsFloat;
+                _wasImpact = true;
+                _rigidbody.velocity = Vector3.zero;
+                foreach (Collider c in _colliders)
+                    c.enabled = false;
+                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                {
+                    Explode();
+                }
                 else
                 {
-                    _wasImpact = true;
-                    Explode();
-                    _rigidbody.velocity = Vector3.zero;
+                    _isEmbed = true;
+                    _embedTime = Time.fixedTime;
+                    _velocity = (-collision.contacts[0].normal + _velocity.normalized).normalized;
+                    _embedParent = collision.transform;
+                    float embedDistance = 0.1f;
+                    if (collision.transform.root.GetComponent<BaseTitan>() != null)
+                        embedDistance = 0.5f;
+                    _embedPosition = collision.transform.InverseTransformPoint(collision.contacts[0].point + _velocity * embedDistance);
+                    _transform.position = collision.contacts[0].point + _velocity * embedDistance;
+                    _transform.rotation = Quaternion.LookRotation(_velocity);
+                    var travelDistance = Vector3.Distance(_startPosition, _transform.position);
+                    float embed1Time = GetStat("Embed1Time") + GetStat("Embed1TimeMultiplier") * InitialPlayerVelocity.magnitude;
+                    embed1Time = Mathf.Min(embed1Time, GetStat("Embed1TimeMax"));
+                    embed1Time = Mathf.Max(embed1Time, GetStat("Embed1TimeMin"));
+                    float embed2Time = Mathf.Max(GetStat("Embed2TimeTotal") - travelDistance * GetStat("Embed2TimeMultiplier"), 0f);
+                    _timeLeft = embed1Time + embed2Time;
+                    if (Vector3.Distance(_transform.position, _startPosition) < GetStat("AATriggerRange"))
+                    {
+                        _isAA = true;
+                    }
                 }
             }
         }
 
+
         protected override void OnExceedLiveTime()
         {
             _wasMaxRange = true;
-            Explode();
+            if (!_isEmbed)
+                Explode();
+            else
+                DestroySelf();
         }
 
         public void Explode()
         {
             if (!Disabled)
             {
-                float effectRadius = _radius * 4f;
+                float effectRadius;
+                float restrictAngle = GetStat("RestrictAngle");
+                Color color = _color;
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                     effectRadius = _radius * 2f;
+                else
+                {
+                    if (_isEmbed)
+                    {
+                        float timePassed = Time.fixedTime - _embedTime;
+                        float embed1Time = GetStat("Embed1Time") + GetStat("Embed1TimeMultiplier") * InitialPlayerVelocity.magnitude;
+                        embed1Time = Mathf.Min(embed1Time, GetStat("Embed1TimeMax"));
+                        embed1Time = Mathf.Max(embed1Time, GetStat("Embed1TimeMin"));
+                        if (timePassed <= embed1Time)
+                        {
+                            _radius = _radius * GetStat("RadiusEmbed1Multiplier");
+                            restrictAngle = GetStat("RestrictAngleEmbed1");
+                            color = CritColor;
+                        }
+                        else
+                        {
+                            _radius = _radius * GetStat("RadiusEmbed2Multiplier");
+                            restrictAngle = GetStat("RestrictAngleEmbed2");
+                        }
+                    }
+                    effectRadius = _radius * 4f;
+                }
                 int killedPlayer = KillPlayersInRadius(_radius);
-                int killedTitan = KillTitansInRadius(_radius);
+                int killedTitan = KillTitansInRadius(_radius, restrictAngle);
                 int currentPriority = _wasImpact ? (int)TSKillType.Ground : (int)TSKillType.Air;
                 currentPriority = Mathf.Max(currentPriority, (int)killedPlayer);
                 currentPriority = Mathf.Max(currentPriority, (int)killedTitan);
                 TSKillType soundPriority = (TSKillType)currentPriority;
-
                 EffectSpawner.Spawn(
                     EffectPrefabs.ThunderspearExplode,
                     transform.position,
                     transform.rotation,
                     effectRadius,
                     true,
-                    new object[] { _color, soundPriority, _wasImpact }
+                    new object[] { color, soundPriority, _wasImpact }
                 );
                 StunMyHuman();
                 DestroySelf();
@@ -115,32 +174,15 @@ namespace Projectiles
                 return;
             if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 return;
-            float radius = CharacterData.HumanWeaponInfo["Thunderspear"]["StunBlockRadius"].AsFloat;
             float range = CharacterData.HumanWeaponInfo["Thunderspear"]["StunRange"].AsFloat;
-            Vector3 direction = _owner.Cache.Transform.position - transform.position;
             RaycastHit hit;
             if (Vector3.Distance(_owner.Cache.Transform.position, transform.position) < range)
             {
-                if (((Human)_owner).Grounded)
-                {
-                    if (Physics.Raycast(transform.position + direction.normalized * 0.1f, direction.normalized, out hit, range, _blockMask))
-                    {
-                        if (hit.collider.transform.root.gameObject == _owner.gameObject)
-                            ((Human)_owner).GetStunnedByTS(transform.position);
-                    }
-                }
-                else
-                {
-                    if (Physics.SphereCast(transform.position, radius, direction.normalized, out hit, range, _blockMask))
-                    {
-                        if (hit.collider.transform.root.gameObject == _owner.gameObject)
-                            ((Human)_owner).GetStunnedByTS(transform.position);
-                    }
-                }
+                ((Human)_owner).GetStunnedByTS(transform.position);
             }
         }
 
-        int KillTitansInRadius(float radius)
+        int KillTitansInRadius(float radius, float restrictAngle)
         {
             var position = transform.position;
             var colliders = Physics.OverlapSphere(position, radius, PhysicsLayer.GetMask(PhysicsLayer.Hurtbox));
@@ -152,28 +194,43 @@ namespace Projectiles
                 var handler = collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
-                    handler.GetHit(_owner, "Thunderspear", 100, "Thunderspear", transform.position);
+                    var damage = CalculateDamage();
+                    handler.GetHit(_owner, _owner.Name, damage, "Thunderspear", transform.position);
                     continue;
                 }
                 if (titan != null && titan != _owner && !TeamInfo.SameTeam(titan, _team) && !titan.Dead)
                 {
-                    if (collider == titan.BaseTitanCache.NapeHurtbox && titan.CheckNapeAngle(position, CharacterData.HumanWeaponInfo["Thunderspear"]["RestrictAngle"].AsFloat))
+                    if (collider == titan.BaseTitanCache.NapeHurtbox)
                     {
+                        bool angle = titan.CheckNapeAngle(position, restrictAngle);
                         float titanHealth = titan.CurrentHealth;
+                        int damage = 100;
                         if (_owner == null || !(_owner is Human))
-                            titan.GetHit("Thunderspear", 100, "Thunderspear", collider.name);
-                        else
                         {
-                            var damage = CalculateDamage();
+                            titan.GetHit("Thunderspear", damage, "Thunderspear", collider.name);
+                        }
+                        else if (!_isEmbed && angle)
+                        {
+                            damage = 0;
+                            titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
+                        }
+                        else if (angle)
+                        {
+                            damage = CalculateDamage();
                             ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                             ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
                             titan.GetHit(_owner, damage, "Thunderspear", collider.name);
+                        }
+                        else if (_isEmbed)
+                        {
+                            damage = 0;
+                            titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
                         }
                         if(((Human)_owner).Special is RechargeableUseable)
                         {
                             ((RechargeableUseable)((Human)_owner).Special).ReduceCooldown();
                         }
-                        if (titan.CurrentHealth <= 0)
+                        if (damage >= titanHealth)
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.Kill);
                         else
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.ArmorHit);
@@ -226,8 +283,11 @@ namespace Projectiles
 
         int CalculateDamage()
         {
+            float multiplier = CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat;
+            if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                multiplier = 1f;
             int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
-                CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat), 10);
+            multiplier), 10);
             if (_owner != null && _owner is Human)
             {
                 var human = (Human)_owner;
@@ -242,8 +302,8 @@ namespace Projectiles
             base.Update();
             if (_photonView.IsMine)
             {
-                if (GetComponent<Rigidbody>().velocity.magnitude > 0f)
-                    transform.rotation = Quaternion.LookRotation(GetComponent<Rigidbody>().velocity);
+                if (_velocity.magnitude > 0f)
+                    transform.rotation = Quaternion.LookRotation(_velocity);
             }
         }
 
@@ -251,6 +311,17 @@ namespace Projectiles
         {
             if (_photonView.IsMine)
             {
+                if (_isEmbed)
+                {
+                    _rigidbody.velocity = Vector3.zero;
+                    if (_embedParent != null)
+                        _transform.position = _embedParent.TransformPoint(_embedPosition);
+                    if (_owner != null && _isAA)
+                    {
+                        Explode();
+                    }
+                    return;
+                }
                 RaycastHit hit;
                 Vector3 direction = (transform.position - _lastPosition);
                 if (Physics.SphereCast(_lastPosition, 0.5f, direction.normalized, out hit, direction.magnitude, _collideMask))
@@ -259,6 +330,11 @@ namespace Projectiles
                 }
                 _lastPosition = transform.position;
             }
+        }
+
+        float GetStat(string field)
+        {
+            return CharacterData.HumanWeaponInfo["Thunderspear"][field].AsFloat;
         }
     }
 }

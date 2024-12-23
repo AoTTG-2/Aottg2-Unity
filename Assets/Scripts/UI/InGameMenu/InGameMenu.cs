@@ -17,6 +17,7 @@ using Photon.Realtime;
 using UnityEngine.Rendering;
 using System.Linq;
 using Photon.Pun.UtilityScripts;
+using JetBrains.Annotations;
 
 namespace UI
 {
@@ -31,6 +32,10 @@ namespace UI
         public ChatPanel ChatPanel;
         public FeedPanel FeedPanel;
         public VoiceChatPanel VoiceChatPanel;
+        public GameObject TopLeftHud;
+        public GameObject KDRReference;
+        public KDRPanel KDRPanel;
+        public Telemetry TelemetryPanel;
         public BasePopup _settingsPopup;
         public BasePopup _createGamePopup;
         public BasePopup _pausePopup;
@@ -58,23 +63,28 @@ namespace UI
         private Text _bottomRightLabel;
         private Text _bottomCenterLabel;
         private bool _showingBlood;
-        private GameObject _minimapPanel;
+        public GameObject _minimapPanel;
         private List<BasePopup> _allPausePopups = new List<BasePopup>();
         private Dictionary<string, float> _labelTimeLeft = new Dictionary<string, float>();
         private Dictionary<string, bool> _labelHasTimeLeft = new Dictionary<string, bool>();
+        List<string> labelsToDeactivate = new List<string>();
         private float _killScoreTimeLeft;
         private float _snapshotTimeLeft;
         private string _middleCenterText;
         private string _bottomRightText;
         private string _bottomCenterText;
         private string _topLeftText;
+        public float _spectateUpdateTimeLeft;
+        public int _spectateCount;
         private InGameManager _gameManager;
         private Dictionary<string, BasePopup> _customPopups = new Dictionary<string, BasePopup>();
-        
+        private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
+
         public override void Setup()
         {
             base.Setup();
             SetupLoading();
+            SetupTopLeftHud();
             SetupLabels();
             EmoteHandler = gameObject.AddComponent<EmoteHandler>();
             ItemHandler = gameObject.AddComponent<ItemHandler>();
@@ -88,6 +98,21 @@ namespace UI
             SetupMinimap();
             SetupSnapshot();
             HideAllMenus();
+        }
+
+        public void ApplyUISettings()
+        {
+            TopLeftHud.GetComponent<TopLeftHUD>().ApplySettings();
+        }
+
+        public void SetupTopLeftHud()
+        {
+            // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
+            var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
+            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+            TopLeftHud = panel;
+            KDRReference = panel.GetComponent<TopLeftHUD>().kdrAndLabel;
+            panel.SetActive(true); // ????
         }
 
         public void ToggleUI(bool toggle)
@@ -146,6 +171,7 @@ namespace UI
                 VoiceChatPanel = ElementFactory.InstantiateAndSetupPanel<VoiceChatPanel>(transform, "Prefabs/InGame/VoiceChatPanel", true).GetComponent<VoiceChatPanel>();
                 ElementFactory.SetAnchor(VoiceChatPanel.gameObject, TextAnchor.MiddleLeft, TextAnchor.MiddleLeft, new Vector2(10, 10f));
             }
+
             ChatPanel = ElementFactory.InstantiateAndSetupPanel<ChatPanel>(transform, "Prefabs/InGame/ChatPanel", true).GetComponent<ChatPanel>();
             ElementFactory.SetAnchor(ChatPanel.gameObject, TextAnchor.LowerLeft, TextAnchor.LowerLeft, new Vector2(10f, 10f));
         }
@@ -155,7 +181,7 @@ namespace UI
             ElementStyle style = new ElementStyle(fontSize: 22);
             _topCenterLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>();
             ElementFactory.SetAnchor(_topCenterLabel.gameObject, TextAnchor.UpperCenter, TextAnchor.UpperCenter, new Vector2(0f, -10f));
-            _topLeftLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
+            _topLeftLabel = ElementFactory.CreateHUDLabel(KDRReference.transform, style, "", FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();
             ElementFactory.SetAnchor(_topLeftLabel.gameObject, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -10f));
             _topRightLabel = ElementFactory.CreateHUDLabel(transform, style, "", FontStyle.Normal, TextAnchor.MiddleRight).GetComponent<Text>();
             ElementFactory.SetAnchor(_topRightLabel.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
@@ -347,8 +373,10 @@ namespace UI
             popup.ShowImmediate(killer, victim, score, weapon, timeLeft);
         }
 
-        public void ShowKillScore(int score)
+        public void ShowKillScore(int score, bool force = false)
         {
+            if (!force && !CustomLogicManager.Evaluator.DefaultShowKillScore)
+                return;
             _killScorePopup.Show(score);
             _killScoreTimeLeft = 3f;
             StylebarHandler.OnHit(score);
@@ -408,22 +436,44 @@ namespace UI
             }
             else
                 _globalPauseGamePopup.Hide();
-            foreach (string label in new List<string>(_labelHasTimeLeft.Keys))
+            labelsToDeactivate.Clear();
+            foreach (var kvp in _labelHasTimeLeft)
             {
-                if (_labelHasTimeLeft[label])
+                if (kvp.Value)
                 {
-                    _labelTimeLeft[label] -= Time.deltaTime;
-                    if (_labelTimeLeft[label] <= 0f)
+                    _labelTimeLeft[kvp.Key] -= Time.deltaTime;
+                    if (_labelTimeLeft[kvp.Key] <= 0f)
                     {
-                        _labelHasTimeLeft[label] = false;
-                        SetLabelText(label, "");
+                        labelsToDeactivate.Add(kvp.Key);
+                        SetLabelText(kvp.Key, "");
                     }
                 }
+            }
+            foreach (var label in labelsToDeactivate)
+            {
+                _labelHasTimeLeft[label] = false;
             }
             if (_gameManager.IsEnding)
                 _middleCenterLabel.text = _middleCenterText + "\n" + "Restarting in " + ((int)_gameManager.EndTimeLeft).ToString();
             else
                 _middleCenterLabel.text = _middleCenterText;
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            _spectateUpdateTimeLeft -= Time.deltaTime;
+            if (_spectateUpdateTimeLeft <= 0f)
+            {
+                _spectateUpdateTimeLeft = 1f;
+                int spectateCount = 0;
+                if (camera._follow != null)
+                {
+                    int actorId = camera._follow.Cache.PhotonView.Owner.ActorNumber;
+                    foreach (var player in PhotonNetwork.PlayerList)
+                    {
+                        if (player.GetIntProperty(PlayerProperty.SpectateID, -1) == actorId)
+                            spectateCount++;
+                    }
+                }
+                _spectateCount = spectateCount;
+            }
             var inGame = SettingsManager.InGameCharacterSettings;
             if (inGame.ChooseStatus.Value == (int)ChooseCharacterStatus.Spectating || (_gameManager.CurrentCharacter == null || _gameManager.CurrentCharacter.Dead))
             {
@@ -436,17 +486,18 @@ namespace UI
                     spectating += "Join: " + ChatManager.GetColorString(input.ChangeCharacter.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Free Cam: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
                 }
-                var camera = (InGameCamera)SceneLoader.CurrentCamera;
                 if (camera._follow != null && camera._follow != _gameManager.CurrentCharacter)
-                    spectating = "Spectating " + camera._follow.Name + ". " + spectating;
+                {
+                    spectating = "Spectating " + camera._follow.Name + " (" + _spectateCount.ToString() + "). " + spectating;
+                }
                 else
                     spectating = "Spectating. " + spectating;
                 _bottomCenterLabel.text = _bottomCenterText + "\n" + spectating;
             }
             else
                 _bottomCenterLabel.text = _bottomCenterText;
-            _bottomRightLabel.text = (_bottomRightText + "\n" + GetKeybindStrings()).Trim();
-            _topLeftLabel.text = (GetTelemetricStrings().Trim() + "\n" + _topLeftText).Trim();
+            _bottomRightLabel.text = (_bottomRightText + "\n" + GetKeybindStrings());
+            _topLeftLabel.text = _topLeftText;
             _killFeedBigPopup.TimeLeft -= Time.deltaTime;
             if (_killFeedBigPopup.IsActive && _killFeedBigPopup.TimeLeft <= 0f)
                 _killFeedBigPopup.Hide();
@@ -467,6 +518,7 @@ namespace UI
         private string GetKeybindStrings()
         {
             string str = "";
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
             if (SettingsManager.UISettings.ShowInterpolation.Value)
             {
                 var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
@@ -478,14 +530,32 @@ namespace UI
                         str = "Interpolation: " + ChatManager.GetColorString("OFF", ChatTextColor.System);
                 }
             }
-            if (!SettingsManager.UISettings.ShowKeybindTip.Value)
-                return str;
-            var settings = SettingsManager.InputSettings;
-            if (str != "")
-                str += ", ";
-            str += "Pause: " + ChatManager.GetColorString(settings.General.Pause.ToString(), ChatTextColor.System);
-            str += ", " + "Scoreboard: " + ChatManager.GetColorString(settings.General.ToggleScoreboard.ToString(), ChatTextColor.System);
-            str += ", " + "Change Char: " + ChatManager.GetColorString(settings.General.ChangeCharacter.ToString(), ChatTextColor.System);
+            if (SettingsManager.UISettings.ShowKeybindTip.Value)
+            {
+                var settings = SettingsManager.InputSettings;
+                if (str != "")
+                    str += ", ";
+                str += "Pause: " + ChatManager.GetColorString(settings.General.Pause.ToString(), ChatTextColor.System);
+                str += ", " + "Scoreboard: " + ChatManager.GetColorString(settings.General.ToggleScoreboard.ToString(), ChatTextColor.System);
+                str += ", " + "Change Char: " + ChatManager.GetColorString(settings.General.ChangeCharacter.ToString(), ChatTextColor.System);
+            }
+            if (SettingsManager.UISettings.Coordinates.Value == (int)CoordinateMode.BottomRight)
+            {
+                var position = camera.Cache.Transform.position;
+                if (camera._follow != null)
+                    position = camera._follow.Cache.Transform.position;
+                string pos = "Position: " + position.x.ToString("F0") + ", " + position.y.ToString("F0") + ", " + position.z.ToString("F0");
+                if (str != "")
+                    pos += "\n";
+                str = pos + str;
+            }
+            if (camera._follow != null && _spectateCount > 0 && camera._follow.IsMainCharacter())
+            {
+                string spectate = "Spectating: " + _spectateCount.ToString();
+                if (str != "")
+                    spectate += "\n";
+                str = spectate + str;
+            }
             return str;
         }
 
@@ -568,14 +638,15 @@ namespace UI
             }
             else
             {
-                List<string> scoreList = new List<string>();
-                foreach (string property in new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" })
+                for (int i = 0; i < trackedProperties.Length; i++)
                 {
-                    object value = player.GetCustomProperty(property);
-                    string str = value != null ? value.ToString() : string.Empty;
-                    scoreList.Add(str);
+                    object value = player.GetCustomProperty(trackedProperties[i]);
+                    score += value != null ? value.ToString() : string.Empty;
+                    if (i < trackedProperties.Length - 1)
+                    {
+                        score += " / ";
+                    }
                 }
-                score = string.Join("/", scoreList.ToArray());
             }
             
             row = Util.SizeText($"{name}: {score}", 19);
@@ -604,7 +675,6 @@ namespace UI
         private string GetPlayerList()
         {
             string list = string.Empty;
-            var individuals = PhotonNetwork.PlayerList.Where(e => e.GetStringProperty(PlayerProperty.Team) == TeamInfo.None);
             foreach (var player in PhotonNetwork.PlayerList)
             {
                 list += GetPlayerListEntry(player) + "\n";
@@ -631,53 +701,6 @@ namespace UI
                 list += "\t" + GetPlayerListEntry(player) + "\n";
             }
             return list;
-        }
-
-        private string GetTelemetricStrings()
-        {
-            string timeLine = "";
-            string fpsLine = "";
-            string kdrLine = "";
-            if (SettingsManager.UISettings.ShowGameTime.Value)
-            {
-                if (CustomLogicManager.Evaluator != null)
-                    timeLine += "Game Time: " + ChatManager.GetColorString(Util.FormatFloat(CustomLogicManager.Evaluator.CurrentTime, 0), ChatTextColor.System);
-                else
-                    timeLine += "Game Time: " + ChatManager.GetColorString("0", ChatTextColor.System);
-                var dt = System.DateTime.Now;
-                timeLine += ", System: " + ChatManager.GetColorString(GetTimeString(dt.Hour) + ":" + GetTimeString(dt.Minute) + ":" + GetTimeString(dt.Second), ChatTextColor.System);
-            }
-            if (SettingsManager.GraphicsSettings.ShowFPS.Value)
-                fpsLine += "FPS:" + UIManager.GetFPS().ToString();
-            if (!PhotonNetwork.OfflineMode && SettingsManager.UISettings.ShowPing.Value)
-            {
-                if (fpsLine != "")
-                    fpsLine += ", ";
-                fpsLine += "Ping:" + PhotonNetwork.GetPing().ToString();
-            }
-            if (SettingsManager.UISettings.ShowKDR.Value)
-            {
-                if (SettingsManager.InGameCurrent.Misc.PVP.Value != (int)PVPMode.Team)
-                    kdrLine = GetPlayerList();
-                else
-                    kdrLine = GetPlayerListTeams();
-            }
-            string final = timeLine;
-            if (timeLine != "")
-                final += "\n";
-            final += fpsLine;
-            if (fpsLine != "")
-                final += "\n";
-            final += kdrLine;
-            return final;
-        }
-
-        private string GetTimeString(int time)
-        {
-            string str = time.ToString();
-            if (str.Length == 1)
-                str = "0" + str;
-            return str;
         }
 
         private void HideAllMenus()

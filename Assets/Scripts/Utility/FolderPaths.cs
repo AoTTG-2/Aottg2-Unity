@@ -6,7 +6,10 @@ namespace Utility
 {
     class FolderPaths
     {
-        public static string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Aottg2";
+        // MyDocuments returns $HOME on Linux, use XDG_DATA_HOME instead
+        public static string Documents = Application.platform == RuntimePlatform.LinuxPlayer
+        ? Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/Aottg2"
+        : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "/Aottg2";
         public static string StreamingAssetsPath = Application.streamingAssetsPath;
         public static string LanguagesPath = StreamingAssetsPath + "/Languages";
         public static string TesterData = StreamingAssetsPath + "/TesterData";
@@ -18,6 +21,7 @@ namespace Utility
         public static string PersistentData = Documents + "/PersistentData";
         public static string CustomLogic = Documents + "/CustomLogic";
         public static string CustomMap = Documents + "/CustomMap";
+        public static string CustomMapAutosave = Documents + "/CustomMap/Autosave";
         public static string CustomAssetsLocal = Documents + "/CustomAssets";
         public static string CustomAssetsWeb = Documents + "/CustomAssets/WebDownload";
     }

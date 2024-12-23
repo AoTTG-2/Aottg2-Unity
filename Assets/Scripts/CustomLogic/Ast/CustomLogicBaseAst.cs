@@ -26,6 +26,8 @@
         NotExpression,
         VariableExpression,
         ReturnExpression,
+        ContinueExpression,
+        BreakExpression,
         WaitExpression,
         ConditionalExpression,
         ForExpression

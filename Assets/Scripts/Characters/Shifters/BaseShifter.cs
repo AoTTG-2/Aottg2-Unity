@@ -25,6 +25,7 @@ namespace Characters
         protected override float DefaultJumpForce => 200f;
         protected override float SizeMultiplier => 3f;
         public override float DefaultCrippleTime => 3.5f;
+        protected override float DisableCooldown => 5f;
         protected bool _needRoar = true;
         public bool TransformingToHuman;
         public float PreviousHumanGas;
@@ -70,7 +71,10 @@ namespace Characters
             }
             else
             {
-                gameObject.AddComponent<ShifterPlayerController>();
+                if (this is ErenShifter)
+                    gameObject.AddComponent<ErenShifterPlayerController>();
+                else if (this is AnnieShifter)
+                    gameObject.AddComponent<AnnieShifterPlayerController>();
                 if (liveTime > 0f)
                     StartCoroutine(WaitAndBecomeHuman(liveTime));
             }
@@ -154,6 +158,8 @@ namespace Characters
             var victimChar = (BaseCharacter)victim;
             if (victimChar is BaseTitan)
             {
+                if (!victimChar.AI && victimChar.MaxHealth == 10)
+                    damage = 2;
                 if (firstHit)
                 {
                     EffectSpawner.Spawn(EffectPrefabs.PunchHit, hitbox.transform.position, Quaternion.identity);

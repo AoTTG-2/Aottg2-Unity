@@ -16,6 +16,7 @@ using Photon;
 using Photon.Pun;
 using System.Threading;
 using System.Globalization;
+using Assets.Scripts.ApplicationManagers;
 
 namespace ApplicationManagers
 {
@@ -42,13 +43,17 @@ namespace ApplicationManagers
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
             PhotonNetwork.MinimalTimeScaleToDispatchInFixedUpdate = 0;
-            DebugConsole.Init();
+            PhotonNetwork.UseRpcMonoBehaviourCache = true;
             ApplicationConfig.Init();
             AnticheatManager.Init();
             PhysicsLayer.Init();
             MaterialCache.Init();
             EventManager.Init();
             HumanSetup.Init();
+            if (Application.platform == RuntimePlatform.LinuxPlayer)
+            {
+                DataMigrator.MigrateLinuxSaves();
+            }
             SettingsManager.Init();
             FullscreenHandler.Init();
             UIManager.Init();
@@ -64,11 +69,16 @@ namespace ApplicationManagers
             MusicManager.Init();
             VoiceChatManager.Init();
             CustomSerialization.Init();
+
+            // debug
+            DebugConsole.Init();
+            DebugLagSim.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
                 DebugTesting.Init();
                 DebugTesting.RunTests();
             }
+
             BasicTitanSetup.Init();
             CharacterData.Init();
             MiscInfo.Init();
