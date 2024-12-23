@@ -454,7 +454,7 @@ namespace Characters
             else if (_currentStateAnimation == BasicAnimations.SitFall || _currentStateAnimation == BasicAnimations.SitIdle
                 || _currentStateAnimation == BasicAnimations.SitBlind)
                 dieAnimation = BasicAnimations.DieSit;
-            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.1f);
+            StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.05f);
             yield return new WaitForSeconds(1.4f);
             PlaySound(TitanSounds.Fall);
             yield return new WaitForSeconds(1f);
@@ -899,12 +899,12 @@ namespace Characters
 
         protected override void UpdateEat()
         {
-            if (HoldHuman == null && _stateTimeLeft > 4.72f)
+            if (State != TitanState.HumanThrow && HoldHuman == null && _stateTimeLeft > 4.72f)
             {
                 IdleWait(0.5f);
                 return;
             }
-            if (_stateTimeLeft <= 4.72f)
+            if (State != TitanState.HumanThrow && _stateTimeLeft <= 4.72f)
             {
                 if (HoldHuman != null)
                 {
@@ -914,6 +914,27 @@ namespace Characters
                     HoldHuman.GetHit(this, damage, "TitanEat", "");
                     HoldHuman = null;
                 }
+            }
+            if (!AI && HoldHuman && !HoldHuman.Dead && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
+                UpdateThrowHuman();
+        }
+
+        private void UpdateThrowHuman()
+        {
+            if (State != TitanState.HumanThrow)
+                StateAction(TitanState.HumanThrow, BasicAnimations.AttackRockThrow);
+            var flatTarget = GetAimPoint();
+            flatTarget.y = Cache.Transform.position.y;
+            var forward = (flatTarget - Cache.Transform.position).normalized;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
+            if (GetAnimationTime() > 0.61f)
+            {
+                Human temp = HoldHuman;
+                Vector3 hand = BasicCache.HandRHitbox.transform.position;
+                Vector3 pos = (GetAimPoint() - hand).normalized * 150;
+                Ungrab();
+                if (temp.photonView.gameObject != null)
+                    temp.photonView.RPC("BlowAwayRPC", temp.photonView.Owner, new object[] { pos });
             }
         }
 

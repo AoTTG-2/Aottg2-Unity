@@ -2192,6 +2192,64 @@ component TeleportRegion
     }
 }
 
+# general
+component GameEndRegion
+{
+    Team = "None";
+    Humans = true;
+    Titans = true;
+    Shifters = true;
+    EndMessage = "";
+    RestartTime = 10.0;
+    _showMessage = false;
+
+    function OnTick()
+    {
+        if (self.EndMessage != "" && self._showMessage && Game.IsEnding)
+        {
+            UI.SetLabelForTime("MiddleCenter", self.EndMessage, 0.1);
+        }
+    }
+
+    function OnCollisionEnter(other)
+    {
+        if (other.IsCharacter && other.IsMine && !Game.IsEnding)
+        {
+            if (other.Type == "Human" && !self.Humans)
+            {
+                return;
+            }
+            if (other.Type == "Titan" && !self.Titans)
+            {
+                return;
+            }
+            if (other.Type == "Shifter" && !self.Shifters)
+            {
+                return;
+            }
+            if (other.Team != self.Team && self.Team != "None")
+            {
+                return;
+            }
+
+            self.NetworkView.SendMessageAll("End");
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (message == "End" && !Game.IsEnding)
+        {
+            self._showMessage = true;
+
+            if (Network.IsMasterClient)
+            {
+                Game.End(self.RestartTime);
+            }
+        }
+    }
+}
+
 # internal
 component Dummy
 {
@@ -3279,7 +3337,7 @@ component SignalMover
                     self._GoalPosition = self._StartPosition - self.TargetPosition;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -3503,7 +3561,7 @@ component SignalArcMover
                     self._GoalPosition = self._StartPosition - self.TargetPosition;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -3742,7 +3800,7 @@ component SignalRotator
                     self._GoalRotation = self._StartRotation - self.Rotation;
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)
@@ -3958,7 +4016,7 @@ component SignalScaler
                     self._GoalScale = Vector3.Divide(self.MapObject.Scale, self.MultiplyScale);
                     if (self.ReverseFlipsCurve)
                     {
-                        self.Easing = ReverseEasing(self.Easing);
+                        self.Easing = self.ReverseEasing(self.Easing);
                     }
                 }
                 elif (!self._Forwards && self.Reverse == false)

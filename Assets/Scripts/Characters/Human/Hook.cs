@@ -368,9 +368,9 @@ namespace Characters
                                 if (mapObject.ScriptObject.Static)
                                     SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
                                 else if (mapObject.RuntimeCreated)
-                                    SetHooked(finalHit.point, go.transform);
+                                    SetHooked(finalHit.point, obj.transform);
                                 else
-                                    SetHooked(finalHit.point, go.transform, -1, mapObject.ScriptObject.Id);
+                                    SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
                                 var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
                                 if (collisionHandler != null)
                                     collisionHandler.GetHooked(_owner, finalHit.point, _left);

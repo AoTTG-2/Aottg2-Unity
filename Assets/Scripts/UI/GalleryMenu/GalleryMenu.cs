@@ -45,7 +45,7 @@ namespace UI
             if (isBackground)
             {
                 _picture.GetComponent<Image>().color = new Color(0.75f, 0.75f, 0.75f, 1f);
-                SetBackground("Backgrounds/MainBackground" + (index + 1).ToString() + "Texture");
+                SetBackground("Backgrounds/MainBackground" + (index).ToString() + "Texture");
             }
             else
             {

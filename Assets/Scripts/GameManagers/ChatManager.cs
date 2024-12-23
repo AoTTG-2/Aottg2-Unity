@@ -517,7 +517,7 @@ namespace GameManagers
             AddLine(help, ChatTextColor.System);
         }
 
-        public static void KickPlayer(Player player, bool print = true, bool ban = false)
+        public static void KickPlayer(Player player, bool print = true, bool ban = false, string reason = ".")
         {
             if (PhotonNetwork.IsMasterClient && player != PhotonNetwork.LocalPlayer)
             {
@@ -525,9 +525,9 @@ namespace GameManagers
                 if (print)
                 {
                     if (ban)
-                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been banned.", ChatTextColor.System);
+                        SendChatAll($"{player.GetStringProperty(PlayerProperty.Name)} has been banned{reason}", ChatTextColor.System);
                     else
-                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + " has been kicked.", ChatTextColor.System);
+                        SendChatAll($"{player.GetStringProperty(PlayerProperty.Name)} has been kicked{reason}", ChatTextColor.System);
                 }
             }
         }
@@ -608,7 +608,7 @@ namespace GameManagers
             return null;
         }
 
-        private static Player GetPlayer(string[] args)
+        public static Player GetPlayer(string[] args)
         {
             int id = -1;
             if (args.Length > 1 && int.TryParse(args[1], out id) && PhotonNetwork.CurrentRoom.GetPlayer(id, true) != null)

@@ -139,6 +139,13 @@ namespace Characters
         }
 
         [PunRPC]
+        public void BlowAwayRPC(Vector3 force, PhotonMessageInfo info)
+        {
+            if (info.photonView.IsMine)
+                Cache.Rigidbody.AddForce(force, ForceMode.Impulse);
+        }
+
+        [PunRPC]
         public override void MarkDeadRPC(PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
@@ -1369,13 +1376,10 @@ namespace Characters
                         Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
-            if (Cache.Animation.IsPlaying(HumanAnimations.Grabbed))
+            if (GrabHand != null)
             {
-                if (GrabHand != null)
-                {
-                    Cache.Transform.position = GrabHand.transform.position;
-                    Cache.Transform.rotation = GrabHand.transform.rotation;
-                }
+                Cache.Transform.position = GrabHand.transform.position;
+                Cache.Transform.rotation = GrabHand.transform.rotation;
             }
         }
 
@@ -1724,11 +1728,11 @@ namespace Characters
                     gravity = Gravity * Cache.Rigidbody.mass;
                 if (Grounded && State == HumanState.Attack)
                 {
-                    if (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2))
+                    if (ValidStockAttacks())
                     {
                         bool stockPivot = pivotLeft || pivotRight;
                         bool isStock = IsStock(stockPivot);
-                        if (isStock || !stockPivot)
+                        if (isStock && CanStockDueToBL() || !stockPivot && CanStockDueToBL())
                         {
                             _currentVelocity += Cache.Transform.forward * 4f / Mathf.Max(Cache.Rigidbody.mass, 0.001f);
                             Cache.Rigidbody.velocity = _currentVelocity;
@@ -1801,6 +1805,32 @@ namespace Characters
                 ReelInAxis = 0f;
             }
             EnableSmartTitans();
+        }
+        private bool CanStockDueToBL()
+        {
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (_almostSingleHook)
+                {
+                    return false;
+                }
+            }
+            else if (IsHookedLeft())
+            {
+                return false;
+            }
+            else if (IsHookedRight())
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private bool ValidStockAttacks()
+        {
+            return Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL1) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR1)
+                || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookL2) || Cache.Animation.IsPlaying(HumanAnimations.Attack1HookR2);
         }
 
         public bool HasGrabImmunity()
@@ -1998,10 +2028,15 @@ namespace Characters
 
         private void FixedUpdateWallSlide()
         {
+            
             if (_wallSlide)
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
-                    _canWallSlideJump = true;
+                    if (SettingsManager.InputSettings.Human.WallSlideDash.Value)
+                    {
+                        _canWallSlideJump = true;
+                    }
+                
 
                 if (Grounded)
                 {
@@ -2100,7 +2135,7 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - Cache.Rigidbody.position;
+            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2126,8 +2161,7 @@ namespace Characters
 
         private bool IsStock(bool pivot)
         {
-            return Grounded && State == HumanState.Attack && GetReelAxis() > 0f && pivot &&
-                (Cache.Animation.IsPlaying(HumanAnimations.Attack1) || Cache.Animation.IsPlaying(HumanAnimations.Attack2));
+            return Grounded && State == HumanState.Attack && pivot && ValidStockAttacks();
         }
 
         private void FixedUpdateSetHookedDirection()
@@ -2506,8 +2540,10 @@ namespace Characters
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
             
-            this.OutlineComponent.RefreshRenderers(namesToIgnore);
+            if (this.OutlineComponent != null)
+                this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
+            StartCoroutine(WaitAndNotifyReloaded());
         }
 
         protected void SetupWeapon(int humanWeapon)
@@ -2540,6 +2576,7 @@ namespace Characters
             }
             else if (humanWeapon == (int)HumanWeapon.Thunderspear)
             {
+                var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 {
                     int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
@@ -2556,7 +2593,7 @@ namespace Characters
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f,tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else
@@ -2564,10 +2601,9 @@ namespace Characters
                 }
                 else
                 {
-                    var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                     float travelTime = tsInfo["Range"].AsFloat / tsInfo["Speed"].AsFloat;
                     Weapon = new ThunderspearWeapon(this, Mathf.Clamp(Mathf.FloorToInt(Stats.Ammunition * 0.5f) - 20, 4, 30), tsInfo["AmmoRound"].AsInt, tsInfo["CD"].AsFloat, tsInfo["Radius"].AsFloat,
-                        tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat);
+                        tsInfo["Speed"].AsFloat, travelTime, tsInfo["Delay"].AsFloat, tsInfo);
                 }
             }
         }
@@ -2709,6 +2745,9 @@ namespace Characters
 
         public void OnHooked(bool left, Vector3 position)
         {
+            // If reel in holding is disabled, when the user launches a new hook, reset the wait for release flag.
+            if (!SettingsManager.InputSettings.Human.ReelInHolding.Value)
+                _reelInWaitForRelease = false;
             if (left)
             {
                 _launchLeft = true;
@@ -3175,7 +3214,7 @@ namespace Characters
                 Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
         }
 
-        private void ToggleBlades(bool toggle)
+        public void ToggleBlades(bool toggle)
         {
             if (IsMine())
                 Cache.PhotonView.RPC("ToggleBladesRPC", RpcTarget.All, new object[] { toggle });
