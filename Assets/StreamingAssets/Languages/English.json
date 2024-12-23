@@ -402,6 +402,8 @@
 		"Keybinds.Human.HorseJump": "Horse jump",
 		"Keybinds.Human.NapeLock": "Nape lock",
 		"Keybinds.Human.DashDoubleTap": "Double-tap to dash",
+		"Keybinds.Human.WallSlideDash": "Wall slide jump",
+		"Keybinds.Human.WallSlideDashTooltip": "Hold away from the wall to jump off",
 		"Keybinds.Human.AutoUseGas": "Auto use gas",
 		"Keybinds.Human.AutoUseGasTooltip": "Automatically holds Jump/Gas when in the air, hold Jump/Gas to stop using gas.",
 		"Keybinds.Human.ReelOutScrollSmoothing": "Reel out scroll smoothing",

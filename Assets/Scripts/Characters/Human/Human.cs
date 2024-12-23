@@ -2028,10 +2028,15 @@ namespace Characters
 
         private void FixedUpdateWallSlide()
         {
+            
             if (_wallSlide)
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
-                    _canWallSlideJump = true;
+                    if (SettingsManager.InputSettings.Human.WallSlideDash.Value)
+                    {
+                        _canWallSlideJump = true;
+                    }
+                
 
                 if (Grounded)
                 {
