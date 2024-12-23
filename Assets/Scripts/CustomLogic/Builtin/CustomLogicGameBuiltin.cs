@@ -193,6 +193,11 @@ namespace CustomLogic
                     Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                     settings = new object[] { color };
                 }
+                else if (projectileName == ProjectilePrefabs.Rock1)
+                {
+                    float size = parameters[7].UnboxToFloat();
+                    settings = new object[] { size };
+                }
                 ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
                 return null;
             }

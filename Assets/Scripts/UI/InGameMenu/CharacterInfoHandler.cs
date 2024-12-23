@@ -7,6 +7,7 @@ using ApplicationManagers;
 using Utility;
 using Cameras;
 using Assets.Scripts.Utility;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -14,7 +15,6 @@ namespace UI
     {
         protected HashSet<SetItem<BaseCharacter, CharacterInfoPopup>> _characterInfoPopups = new HashSet<SetItem<BaseCharacter, CharacterInfoPopup>>();
         //protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-        protected const float HumanRange = 500f;
         protected const float TitanRange = 250f;
         protected const float HumanOffset = 2f;
         protected const float TitanOffset = 20f;
@@ -39,13 +39,6 @@ namespace UI
             ShowMode showNameMode = (ShowMode)SettingsManager.UISettings.ShowNames.Value;
             ShowMode showHealthMode = (ShowMode)SettingsManager.UISettings.ShowHealthbars.Value;
             ShowMode NameOverrideTarget = (ShowMode)SettingsManager.UISettings.NameOverrideTarget.Value;
-            int nameRangeOverride = SettingsManager.UISettings.NameDistanceCutoff.Value;
-            if (nameRangeOverride == SettingsManager.UISettings.NameDistanceCutoff.MaxValue)
-                nameRangeOverride = int.MaxValue;
-
-            NameStyleType nameStyleType = (NameStyleType)SettingsManager.UISettings.NameBackgroundType.Value;
-            Color backgroundColor = SettingsManager.UISettings.ForceBackgroundColor.Value.ToColor();
-            Color nameColor = SettingsManager.UISettings.ForceNameColor.Value.ToColor();
 
             foreach (SetItem<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
             {
@@ -69,9 +62,8 @@ namespace UI
                     continue;
                 }
                 Vector3 worldPosition = character.Cache.Transform.position + popup.Offset;
-                float range = nameRangeOverride < 0 ? popup.Range : nameRangeOverride;
                 float distance = Vector3.Distance(camera.Cache.Transform.position, worldPosition);
-                if (distance > range)
+                if (distance > popup.Range)
                 {
                     popup.Hide();
                     if (popup.gameObject.activeSelf)
@@ -115,11 +107,11 @@ namespace UI
         protected CharacterInfoPopup CreateInfoPopup(BaseCharacter character)
         {
             Vector3 offset = Vector3.zero;
-            float range = HumanRange;
+            float range = TitanRange;
             if (character is Human)
             {
                 offset = Vector3.up * HumanOffset;
-                range = HumanRange;
+                range = SettingsManager.UISettings.HumanNameDistance.Value;
             }
             else if (character is BasicTitan)
             {
