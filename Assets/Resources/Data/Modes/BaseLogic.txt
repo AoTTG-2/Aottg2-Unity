@@ -4877,3 +4877,126 @@ component Vehicle
 
     }
 }
+
+# general
+component Chair
+{
+    Description = "Used to make custom chairs to sit on. Ensure this object is Networked. This component goes onto a 'chair' you would like to sit down on. Add a child object which is parented to this to be used as the seat position.";
+
+    _inUse = false;
+    _human = null;
+    _collidingHuman = null;
+    _collidingSitter = false;
+    _chair = null;
+    SeatPosObjectName = "";
+    SeatPosObjectNameTooltip = "Enter the name of the object you want to set the sitting position as. (Ensure that the SeatPos object is parented to the Chair that has this component. If empty, will use object this component is on.";
+    InteractionText = "to sit down in the chair.";
+    InteractionTextTooltip = "This is the text that appears when interacting with the object.";
+
+    function Init()
+    {
+
+        self._chair = self.MapObject.GetTransform(self.SeatPosObjectName);
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 5.0);
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient && self.NetworkView.Owner == Network.MyPlayer && !self._inUse && message == "request")
+        {
+            self.NetworkView.Transfer(sender);
+        }
+
+    }
+
+
+    function OnNetworkTransfer(oldOwner, newOwner) 
+    {
+        if (newOwner == Network.MasterClient && Network.IsMasterClient)
+        {
+            self._inUse = false;
+        }
+        elif(newOwner == Network.MyPlayer)
+        {
+            self._inUse = true;
+            human = Network.MyPlayer.Character;
+            if (human != null && human.Type == "Human")
+            {
+                human.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
+                self._human = human;
+                Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            if (!self._inUse)
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " " + self.InteractionText, 0.1);
+                self._collidingHuman = other;
+                self._collidingSitter = true;
+            }
+
+        }
+
+    }
+
+
+    function OnTick()
+    {
+        self._collidingHuman = null;
+        self._collidingSitter = false;
+
+    }
+
+    function OnFrame()
+    {
+        if (self.NetworkView.Owner == Network.MyPlayer)
+        {
+            if (self._inUse)
+            {
+                if (Input.GetKeyDown("Interaction/Interact"))
+                {
+                    self._human.Unmount();
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._chair)
+                {
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+            }
+
+        }
+        if (self._collidingHuman != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact"))
+            {
+                if (self._collidingSitter && !self._inUse)
+                {
+                    if (self.NetworkView.Owner == Network.MyPlayer)
+                    {
+                        self._inUse = true;
+                        self._collidingHuman.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
+                        self._human = self._collidingHuman;
+                        Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+
+                    }
+                    else
+                    {
+                        self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}
