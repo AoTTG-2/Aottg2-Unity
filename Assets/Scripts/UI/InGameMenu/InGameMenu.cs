@@ -137,6 +137,18 @@ namespace UI
             return (CustomPopup)_customPopups[name];
         }
 
+        public bool IsCustomPopupActive(string name)
+        {
+            if (!_customPopups.ContainsKey(name))
+                return false;
+            return _customPopups[name].IsActive;
+        }
+
+        public List<string> GetAllCustomPopups()
+        {
+            return _customPopups.Keys.ToList();
+        }
+
         public void SetupMinimap()
         {
             gameObject.AddComponent<MinimapHandler>();
