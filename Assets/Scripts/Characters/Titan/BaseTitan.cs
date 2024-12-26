@@ -797,7 +797,7 @@ namespace Characters
                         }
                         else
                         {
-                            v = Vector3.Lerp(Vector3.zero, v, 0.055f);
+                            v = Vector3.Lerp(Vector3.zero, v, 0.0435f);
                             v += Cache.Rigidbody.velocity;
                             Cache.Rigidbody.velocity = v;
                         }
