@@ -24,43 +24,15 @@ namespace CustomLogic
         public string Weapon
         {
             get => Human.Setup.Weapon.ToString();
-            set
-            {
-                // TODO: Why do we need this?
-                if (Human.IsMine())
-                {
-                    var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                    if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human)
-                    {
-                        var miscSettings = SettingsManager.InGameCurrent.Misc;
-                        if (!Human.Dead)
-                        {
-                            List<string> loadouts = new List<string>();
-                            if (miscSettings.AllowBlades.Value)
-                                loadouts.Add(HumanLoadout.Blades);
-                            if (miscSettings.AllowAHSS.Value)
-                                loadouts.Add(HumanLoadout.AHSS);
-                            if (miscSettings.AllowAPG.Value)
-                                loadouts.Add(HumanLoadout.APG);
-                            if (miscSettings.AllowThunderspears.Value)
-                                loadouts.Add(HumanLoadout.Thunderspears);
-                            if (loadouts.Count == 0)
-                                loadouts.Add(HumanLoadout.Blades);
-                            if (loadouts.Contains(value) && value != SettingsManager.InGameCharacterSettings.Loadout.Value)
-                            {
-                                SettingsManager.InGameCharacterSettings.Loadout.Value = value;
-                                var manager = (InGameManager)SceneLoader.CurrentGameManager;
-                                Human = (Human)gameManager.CurrentCharacter;
-                                Human.ReloadHuman(manager.GetSetHumanSettings());
-                            }
-                        }
-                    }
-                }
-            }
+            set => SetWeapon(value);
         }
 
         [CLProperty(description: "The current special the human is using")]
-        public string CurrentSpecial => Human.CurrentSpecial;
+        public string CurrentSpecial
+        {
+            get => Human.CurrentSpecial;
+            set => SetSpecial(value);
+        }
 
         [CLProperty(description: "The cooldown of the special")]
         public float SpecialCooldown
@@ -140,7 +112,16 @@ namespace CustomLogic
             set
             {
                 if (Human.Weapon is BladeWeapon bladeWeapon)
-                    bladeWeapon.CurrentDurability = Mathf.Min(bladeWeapon.MaxDurability, value);
+                {
+                    bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
+                    bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
+                    if (bladeWeapon.CurrentDurability == 0f)
+                    {
+                        Human.ToggleBlades(false);
+                        if (bladeWasEnabled)
+                            Human.PlaySound(HumanSounds.BladeBreak);
+                    }
+                }
             }
         }
 
