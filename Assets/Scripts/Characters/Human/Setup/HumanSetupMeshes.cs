@@ -52,12 +52,12 @@ namespace Characters
 
         public string Get3dmgMesh()
         {
-            return AccessoriesPath + ((_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG) ? "3dmg_2" : "3dmg");
+            return AccessoriesPath + ((_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG || _setup.Weapon == HumanWeapon.Thunderspear) ? "3dmg_2" : "3dmg");
         }
 
         public string GetBeltMesh()
         {
-            return  (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG) ? string.Empty : AccessoriesPath + "3dmg_belt";
+            return  (_setup.Weapon == HumanWeapon.AHSS || _setup.Weapon == HumanWeapon.APG || _setup.Weapon == HumanWeapon.Thunderspear) ? string.Empty : AccessoriesPath + "3dmg_belt";
         }
 
         public string GetGasMesh(bool left)
