@@ -19,7 +19,7 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Normal;
 
         [CLProperty("The collider that was hit", ReadOnly = true)]
-        public CustomLogicClassInstanceBuiltin Collider;
+        public CustomLogicColliderBuiltin Collider;
 
         public CustomLogicLineCastHitResultBuiltin() : base("LineCastHitResult")
         {

@@ -25,7 +25,15 @@ namespace CustomLogic
             {
                 jsonNode = new JSONString(jsonTrim);
             }
-            return LoadJSON(jsonNode);
+            try
+            {
+                return LoadJSON(jsonNode);
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         [CLMethod(description: "Saves a custom logic object into a json string")]

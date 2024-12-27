@@ -1,4 +1,5 @@
 using ApplicationManagers;
+using ExitGames.Client.Photon.StructWrapping;
 using GameManagers;
 using Map;
 using System.Collections.Generic;
@@ -45,6 +46,13 @@ namespace CustomLogic
                     listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
             }
             return listBuiltin;
+        }
+
+        [CLMethod(description: "Find all map objects by component")]
+        public CustomLogicMapObjectBuiltin FindMapObjectByComponent(string className)
+        {
+            CustomLogicListBuiltin listBuiltin = FindMapObjectsByComponent(className);
+            return (CustomLogicMapObjectBuiltin)(listBuiltin.Count > 0 ? listBuiltin.Get(0) : null);
         }
 
         [CLMethod(description: "Find all map objects by component")]

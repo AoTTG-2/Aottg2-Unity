@@ -307,5 +307,54 @@ namespace CustomLogic
             float fT = t.UnboxToFloat();
             return Mathf.SmoothStep(fA, fB, fT);
         }
+
+        // Eventually also add these as symbols to the language.
+        [CLMethod(description: "Perform a bitwise AND operation")]
+        public object BitwiseAnd(object a, object b)
+        {
+            int iA = a.UnboxToInt();
+            int iB = b.UnboxToInt();
+            return iA & iB;
+        }
+
+        [CLMethod(description: "Perform a bitwise OR operation")]
+        public object BitwiseOr(object a, object b)
+        {
+            int iA = a.UnboxToInt();
+            int iB = b.UnboxToInt();
+            return iA | iB;
+        }
+
+        [CLMethod(description: "Perform a bitwise XOR operation")]
+        public object BitwiseXor(object a, object b)
+        {
+            int iA = a.UnboxToInt();
+            int iB = b.UnboxToInt();
+            return iA ^ iB;
+        }
+
+        [CLMethod(description: "Perform a bitwise NOT operation")]
+        public object BitwiseNot(object value)
+        {
+            int iValue = value.UnboxToInt();
+            return ~iValue;
+        }
+
+        [CLMethod(description: "Shift bits to the left")]
+        public object BitwiseLeftShift(object value, object shift)
+        {
+            int iValue = value.UnboxToInt();
+            int iShift = shift.UnboxToInt();
+            return iValue << iShift;
+        }
+
+        [CLMethod(description: "Shift bits to the right")]
+        public object BitwiseRightShift(object value, object shift)
+        {
+            int iValue = value.UnboxToInt();
+            int iShift = shift.UnboxToInt();
+            return iValue >> iShift;
+        }
+
     }
 }

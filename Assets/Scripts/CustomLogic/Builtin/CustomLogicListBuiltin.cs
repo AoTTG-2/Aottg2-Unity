@@ -23,6 +23,11 @@ namespace CustomLogic
             List = list;
         }
 
+        public CustomLogicListBuiltin(CustomLogicSetBuiltin set) : base("List")
+        {
+            List = set.Set.ToList();
+        }
+
         [CLProperty(readOnly: true, description: "The number of elements in the list")]
         public int Count => List.Count;
 
@@ -87,6 +92,12 @@ namespace CustomLogic
             List = List.OrderBy(x => (r.Next())).ToList();
         }
 
+        [CLMethod(description: "Convert the list to a set")]
+        public CustomLogicSetBuiltin ToSet()
+        {
+            return new CustomLogicSetBuiltin(this);
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -106,10 +117,5 @@ namespace CustomLogic
             builder.Append("]");
             return builder.ToString();
         }
-
-        // public string __Str__()
-        // {
-        //     return ToString();
-        // }
     }
 }

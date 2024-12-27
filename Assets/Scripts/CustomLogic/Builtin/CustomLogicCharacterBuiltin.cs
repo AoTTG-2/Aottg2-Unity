@@ -197,6 +197,9 @@ namespace CustomLogic
         [CLProperty(Description = "Character's current playing animation.")]
         public string CurrentAnimation => Character.GetCurrentAnimation();
 
+        [CLProperty(Description = "Character's grounded status.")]
+        public bool Grounded => Character.Grounded;
+
         [CLMethod(Description = "Kills the character. Callable by non-owners.")]
         public void GetKilled(string killer) => Character.GetKilled(killer);
 

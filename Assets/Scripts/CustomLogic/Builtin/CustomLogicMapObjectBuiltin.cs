@@ -597,7 +597,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Get the corners of the bounds")]
-        public CustomLogicListBuiltin GetBoundsCorners()
+        public CustomLogicListBuiltin GetCorners()
         {
             if (Value.colliderCache.Length == 0)
             {

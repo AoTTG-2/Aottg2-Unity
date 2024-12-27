@@ -26,7 +26,7 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Position => new CustomLogicVector3Builtin(Value.GetPosition());
 
         [CLProperty(description: "Is the targetable enabled")]
-        public bool Enabled
+        public bool Enabled // This might cause an issue with the name overriding unity's Enabled property.
         {
             get => Value.Enabled;
             set => Value.Enabled = value;

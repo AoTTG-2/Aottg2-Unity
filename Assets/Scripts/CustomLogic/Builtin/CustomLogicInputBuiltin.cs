@@ -71,6 +71,13 @@ namespace CustomLogic
             return new CustomLogicVector3Builtin(target);
         }
 
+        [CLMethod(description: "Returns the ray the player is aiming at")]
+        public static CustomLogicVector3Builtin GetCursorAimDirection()
+        {
+            Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
+            return new CustomLogicVector3Builtin(ray.direction);
+        }
+
         [CLMethod(description: "Returns the speed of the mouse")]
         public static CustomLogicVector3Builtin GetMouseSpeed()
         {

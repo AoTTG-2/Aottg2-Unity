@@ -32,7 +32,7 @@ namespace CustomLogic
                         Point = new CustomLogicVector3Builtin(hit.point),
                         Normal = new CustomLogicVector3Builtin(hit.normal),
                         Distance = hit.distance,
-                        Collider = collider
+                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
                     };
                 }
             }

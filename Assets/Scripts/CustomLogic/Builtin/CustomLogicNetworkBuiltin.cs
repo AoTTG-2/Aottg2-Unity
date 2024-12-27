@@ -1,7 +1,9 @@
 ﻿using ApplicationManagers;
 using GameManagers;
 using Photon.Pun;
+using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using Utility;
 
@@ -40,6 +42,9 @@ namespace CustomLogic
         [CLProperty(description: "The network time")]
         public double NetworkTime => PhotonNetwork.Time;
 
+        [CLProperty(description: "The local player's ping")]
+        public int Ping => PhotonNetwork.GetPing();
+
         [CLMethod(description: "Send a message to a player")]
         public void SendMessage(CustomLogicPlayerBuiltin player, string message)
         {
@@ -65,10 +70,23 @@ namespace CustomLogic
             return Util.GetPhotonTimestampDifference(timestamp1, timestamp2);
         }
 
-        [CLMethod(description: "Get my ping :)")]
-        public int Ping()
+        [CLMethod(description: "Kick the given player by id or player reference.")]
+        public void KickPlayer(object target, string reason=".")
         {
-            return PhotonNetwork.GetPing();
+            Photon.Realtime.Player player = null;
+            if (target is int)
+                player = PhotonNetwork.CurrentRoom.GetPlayer(target.UnboxToInt(), true);
+            else if (target is CustomLogicPlayerBuiltin)
+                player = ((CustomLogicPlayerBuiltin)target).Player;
+            else
+                throw new ArgumentException($"Invalid player parameter type {target.GetType()}. Valid types are {nameof(CustomLogicPlayerBuiltin)}, int (id).");
+
+            if (PhotonNetwork.IsMasterClient)
+                ChatManager.KickPlayer(player, reason: reason);
+            else
+                throw new Exception("Only the master client can kick players.");
         }
+
+
     }
 }
