@@ -136,8 +136,7 @@ namespace CustomLogic
             get => Character.Name;
             set
             {
-                if (Character.IsMine())
-                    Character.Name = value;
+                Character.Name = value;
             }
         }
 
@@ -147,8 +146,7 @@ namespace CustomLogic
             get => Character.Guild;
             set
             {
-                if (Character.IsMine())
-                    Character.Guild = value;
+                Character.Guild = value;
             }
         }
 
