@@ -173,9 +173,19 @@ namespace Utility
             return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
         }
 
+        public static Vector2 MultiplyVectors(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x * b.x, a.y * b.y);
+        }
+
         public static Vector3 DivideVectors(Vector3 a, Vector3 b)
         {
             return new Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+        }
+
+        public static Vector2 DivideVectors(Vector2 a, Vector2 b)
+        {
+            return new Vector2(a.x / b.x, a.y / b.y);
         }
 
         public static List<List<T>> GroupItems<T>(List<T> items, int groupSize)
