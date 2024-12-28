@@ -10,18 +10,19 @@ namespace CustomLogic
     [CLType(Abstract = true)]
     class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public MapObject MapObject;
+        public readonly MapObject MapObject;
         public CustomLogicPhotonSync Sync;
         public int OwnerId = -1;
-        List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
-        List<object> _streamObjs;
+        
+        private List<object> _streamObjects;
+        private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
 
         public CustomLogicNetworkViewBuiltin(MapObject obj) : base("NetworkView")
         {
             MapObject = obj;
         }
 
-        [CLProperty("Gets the owner of the network view.")]
+        [CLProperty("The network view's owner.")]
         public CustomLogicPlayerBuiltin Owner
         {
             get
@@ -32,7 +33,6 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Handles per-second updates for the network view.")]
         public void OnSecond()
         {
             if (PhotonNetwork.IsMasterClient)
@@ -50,13 +50,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Registers a component instance with the network view.")]
         public void RegisterComponentInstance(CustomLogicComponentInstance instance)
         {
             _classInstances.Add(instance);
         }
 
-        [CLMethod("Sets the sync object for the network view.")]
         public void SetSync(CustomLogicPhotonSync sync)
         {
             int oldId = OwnerId;
@@ -77,21 +75,19 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Sends the network stream to the specified Photon stream.")]
         public void SendNetworkStream(PhotonStream stream)
         {
-            _streamObjs = new List<object>();
+            _streamObjects = new List<object>();
             foreach (var instance in _classInstances)
             {
                 CustomLogicManager.Evaluator.EvaluateMethod(instance, "SendNetworkStream");
             }
-            stream.SendNext(_streamObjs.ToArray());
+            stream.SendNext(_streamObjects.ToArray());
         }
 
-        [CLMethod("Handles the network stream received from the specified objects.")]
         public void OnNetworkStream(object[] objs)
         {
-            _streamObjs = new List<object>(objs);
+            _streamObjects = new List<object>(objs);
             if (MapObject.GameObject == null)
                 return;
             foreach (var instance in _classInstances)
@@ -100,7 +96,6 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Handles a network message from the specified player.")]
         public void OnNetworkMessage(CustomLogicPlayerBuiltin player, string message, double sentServerTime)
         {
             if (CustomLogicManager.Evaluator == null || MapObject.GameObject == null)
@@ -111,7 +106,7 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Transfers the network view to the specified player.")]
+        [CLMethod("Owner only. Transfer ownership of this NetworkView to another player.")]
         public void Transfer(CustomLogicPlayerBuiltin player)
         {
             if (Sync.photonView.IsMine)
@@ -124,52 +119,59 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Sends a message to the specified player.")]
+        [CLMethod("Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.")]
         public void SendMessage(CustomLogicPlayerBuiltin target, string msg)
         {
             Sync.SendMessage(target.Player, msg);
         }
 
-        [CLMethod("Sends a message to all players.")]
+        [CLMethod("Send a message to all players including myself.")]
         public void SendMessageAll(string msg)
         {
             Sync.SendMessageAll(msg);
         }
 
-        [CLMethod("Sends a message to all players except the sender.")]
+        [CLMethod("Send a message to players excluding myself.")]
         public void SendMessageOthers(string msg)
         {
             Sync.SendMessageOthers(msg);
         }
 
-        [CLMethod("Sends an object through the network stream.")]
+        /// <summary>
+        /// Send an object to the network sync stream.
+        /// This represents sending data from the object owner to all non-owner observers,
+        /// and should only be called in the SendNetworkStream callback in the attached component.
+        /// It only works with some object types: primitives and Vector3.
+        /// </summary>
+        [CLMethod]
         public void SendStream(object obj)
         {
             obj = SerializeStreamObj(obj);
-            _streamObjs.Add(obj);
+            _streamObjects.Add(obj);
         }
 
-        [CLMethod("Receives an object from the network stream.")]
+        /// <summary>
+        /// Receive an object through the network sync stream.
+        /// This represents receiving data from the object owner as a non-owner observer,
+        /// and should only be called in the OnNetworkStream callback.
+        /// </summary>
+        [CLMethod]
         public object ReceiveStream()
         {
-            var obj = _streamObjs[0];
+            var obj = _streamObjects[0];
             obj = DeserializeStreamObj(obj);
-            _streamObjs.RemoveAt(0);
+            _streamObjects.RemoveAt(0);
             return obj;
         }
 
-        protected object SerializeStreamObj(object obj)
+        private static object SerializeStreamObj(object obj)
         {
-            if (obj is CustomLogicVector3Builtin)
-                return ((CustomLogicVector3Builtin)obj).Value;
-            return obj;
+            return obj is CustomLogicVector3Builtin v3 ? v3.Value : obj;
         }
 
-        protected object DeserializeStreamObj(object obj)
+        private static object DeserializeStreamObj(object obj)
         {
-            if (obj is Vector3)
-                return new CustomLogicVector3Builtin((Vector3)obj);
-            return obj;
+            return obj is Vector3 v3 ? new CustomLogicVector3Builtin(v3) : obj;
         }
     }
 }

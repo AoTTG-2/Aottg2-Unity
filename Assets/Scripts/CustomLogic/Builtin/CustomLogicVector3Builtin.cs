@@ -188,9 +188,6 @@ namespace CustomLogic
         [CLMethod]
         public static CustomLogicVector3Builtin SmoothDamp(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, CustomLogicVector3Builtin currentVelocity, float smoothTime, float maxSpeed) => Vector3.SmoothDamp(current, target, ref currentVelocity.Value, smoothTime, maxSpeed);
         
-        /// <inheritdoc cref="Vector3.Normalize()"/>
-        [CLMethod] public CustomLogicVector3Builtin Normalize() => Value.normalized;
-        
         /// <inheritdoc cref="Vector3.Set"/>
         [CLMethod] public void Set(float x, float y, float z) => Value = new Vector3(x, y, z);
         
@@ -240,7 +237,7 @@ namespace CustomLogic
             if (other is CustomLogicVector3Builtin v3)
                 return new CustomLogicVector3Builtin(Value + v3.Value);
             
-            throw new Exception("Invalid operation, rhs was null.");
+            throw CustomLogicUtils.OperatorException(nameof(__Add__), this, other);
         }
         
         [CLMethod]
@@ -249,45 +246,43 @@ namespace CustomLogic
             if (other is CustomLogicVector3Builtin v3)
                 return new CustomLogicVector3Builtin(Value - v3.Value);
             
-            throw new Exception("Invalid operation, rhs was null.");
+            throw CustomLogicUtils.OperatorException(nameof(__Sub__), this, other);
         }
         
         [CLMethod]
         public object __Mul__(object other)
         {
-            if (other is float f)
-                return new CustomLogicVector3Builtin(Value * f);
-            
-            if (other is CustomLogicVector3Builtin v3)
-                return new CustomLogicVector3Builtin(Util.MultiplyVectors(this, v3));
-            
-            throw new Exception("Invalid operation, rhs was null.");
+            return other switch
+            {
+                float f => new CustomLogicVector3Builtin(Value * f),
+                CustomLogicVector3Builtin v3 => new CustomLogicVector3Builtin(Util.MultiplyVectors(this, v3)),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), this, other)
+            };
         }
         
         [CLMethod]
         public object __Div__(object other)
         {
-            if (other is float f)
-                return new CustomLogicVector3Builtin(Value / f);
-            
-            if (other is CustomLogicVector3Builtin v3)
-                return new CustomLogicVector3Builtin(Util.DivideVectors(this, v3));
-            
-            throw new Exception("Invalid operation, rhs was null.");
+            return other switch
+            {
+                float f => new CustomLogicVector3Builtin(Value / f),
+                CustomLogicVector3Builtin v3 => new CustomLogicVector3Builtin(Util.DivideVectors(this, v3)),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), this, other)
+            };
         }
         
         [CLMethod]
         public bool __Eq__(object other)
         {
-            if (other is not CustomLogicVector3Builtin)
+            if (other is not CustomLogicVector3Builtin v3)
                 return false;
             
-            return Value == ((CustomLogicVector3Builtin)other).Value;
+            return Value == v3.Value;
         }
         
         [CLMethod] public int __Hash__() => Value.GetHashCode();
 
         public static implicit operator Vector3(CustomLogicVector3Builtin v) => v.Value;
-        public static implicit operator CustomLogicVector3Builtin(Vector3 v) => new(v);
+        public static implicit operator CustomLogicVector3Builtin(Vector3 v) => new CustomLogicVector3Builtin(v);
     }
 }

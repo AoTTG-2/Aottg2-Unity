@@ -278,21 +278,21 @@ namespace CustomLogic
 
         // Add CLMethods
         [CLMethod(description: "Print a debug statement to the console")]
-        public void Debug(string message)
+        public void Debug(object message)
         {
-            DebugConsole.Log(message, true);
+            DebugConsole.Log(message.ToString(), true);
         }
 
         [CLMethod(description: "Print a message to the chat")]
-        public void Print(string message)
+        public void Print(object message)
         {
-            ChatManager.AddLine(message, ChatTextColor.System);
+            ChatManager.AddLine(message.ToString(), ChatTextColor.System);
         }
 
         [CLMethod(description: "Print a message to all players")]
-        public void PrintAll(string message)
+        public void PrintAll(object message)
         {
-            ChatManager.SendChatAll(message, ChatTextColor.System);
+            ChatManager.SendChatAll(message.ToString(), ChatTextColor.System);
         }
 
         [CLMethod(description: "Get a general setting")]

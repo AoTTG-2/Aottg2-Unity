@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-namespace CustomLogic
+﻿namespace CustomLogic
 {
     // todo: implement some kind of caching/pool for this
     // we really don't need to create a new list every time
     
-    [CLType(InheritBaseMembers = true)]
+    [CLType(InheritBaseMembers = false)]
     class CustomLogicRangeBuiltin: CustomLogicListBuiltin
     {
         public CustomLogicRangeBuiltin(object[] parameterValues) : base("Range")

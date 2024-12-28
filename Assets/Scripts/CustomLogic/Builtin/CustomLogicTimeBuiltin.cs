@@ -1,27 +1,22 @@
-﻿using ApplicationManagers;
-using GameManagers;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
+    [CLType(Static = true, Abstract = true)]
     class CustomLogicTimeBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicTimeBuiltin() : base("Time")
-        {
-        }
+        public CustomLogicTimeBuiltin() : base("Time") { }
 
-        [CLProperty("Gets the fixed tick time.")]
+        [CLProperty("Time between each tick (0.02 seconds)")]
         public static float TickTime => Time.fixedDeltaTime;
 
-        [CLProperty("Gets the frame time.")]
+        [CLProperty("Time between each frame.")]
         public static float FrameTime => Time.deltaTime;
 
-        [CLProperty("Gets the game time.")]
+        [CLProperty("Time since start of the round.")]
         public static float GameTime => CustomLogicManager.Evaluator.CurrentTime;
 
-        [CLProperty("Gets or sets the time scale.")]
+        [CLProperty("Changes the timescale of the game.")]
         public static float TimeScale
         {
             get => Time.timeScale;

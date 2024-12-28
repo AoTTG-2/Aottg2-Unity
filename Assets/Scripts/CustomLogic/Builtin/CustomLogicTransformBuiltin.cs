@@ -1,34 +1,41 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Map;
+﻿using UnityEngine;
 
 namespace CustomLogic
 {
     [CLType(Static = false)]
-    class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin
+    class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
-        public Transform Value;
+        public readonly Transform Value;
+        
         private Vector3 _internalRotation;
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
 
+        private readonly Animation _animation;
+        private readonly AudioSource _audioSource;
+        private readonly ParticleSystem _particleSystem;
+
         public CustomLogicTransformBuiltin(Transform transform) : base("Transform")
         {
             Value = transform;
+            
+            _animation = Value.GetComponent<Animation>();
+            _audioSource = Value.GetComponent<AudioSource>();
+            _particleSystem = Value.GetComponent<ParticleSystem>();
         }
 
         [CLProperty("Gets or sets the position of the transform.")]
         public CustomLogicVector3Builtin Position
         {
-            get => new CustomLogicVector3Builtin(Value.position);
+            get => Value.position;
             set => Value.position = value.Value;
         }
 
         [CLProperty("Gets or sets the local position of the transform.")]
         public CustomLogicVector3Builtin LocalPosition
         {
-            get => new CustomLogicVector3Builtin(Value.localPosition);
+            get => Value.localPosition;
             set => Value.localPosition = value.Value;
         }
 
@@ -42,7 +49,7 @@ namespace CustomLogic
                     _internalRotation = Value.rotation.eulerAngles;
                     _needSetRotation = false;
                 }
-                return new CustomLogicVector3Builtin(_internalRotation);
+                return _internalRotation;
             }
             set
             {
@@ -62,7 +69,7 @@ namespace CustomLogic
                     _internalLocalRotation = Value.localRotation.eulerAngles;
                     _needSetLocalRotation = false;
                 }
-                return new CustomLogicVector3Builtin(_internalLocalRotation);
+                return _internalLocalRotation;
             }
             set
             {
@@ -75,48 +82,56 @@ namespace CustomLogic
         [CLProperty("Gets or sets the quaternion rotation of the transform.")]
         public CustomLogicQuaternionBuiltin QuaternionRotation
         {
-            get => new CustomLogicQuaternionBuiltin(Value.rotation);
+            get => Value.rotation;
             set => Value.rotation = value.Value;
         }
 
         [CLProperty("Gets or sets the quaternion local rotation of the transform.")]
         public CustomLogicQuaternionBuiltin QuaternionLocalRotation
         {
-            get => new CustomLogicQuaternionBuiltin(Value.localRotation);
+            get => Value.localRotation;
             set => Value.localRotation = value.Value;
         }
 
         [CLProperty("Gets or sets the scale of the transform.")]
         public CustomLogicVector3Builtin Scale
         {
-            get => new CustomLogicVector3Builtin(Value.localScale);
+            get => Value.localScale;
             set => Value.localScale = value.Value;
         }
 
         [CLProperty("Gets the forward vector of the transform.")]
-        public CustomLogicVector3Builtin Forward => new CustomLogicVector3Builtin(Value.forward.normalized);
+        public CustomLogicVector3Builtin Forward
+        {
+            get => Value.forward;
+            set => Value.forward = value.Value;
+        }
 
         [CLProperty("Gets the up vector of the transform.")]
-        public CustomLogicVector3Builtin Up => new CustomLogicVector3Builtin(Value.up.normalized);
+        public CustomLogicVector3Builtin Up
+        {
+            get => Value.up;
+            set => Value.up = value.Value;
+        }
 
         [CLProperty("Gets the right vector of the transform.")]
-        public CustomLogicVector3Builtin Right => new CustomLogicVector3Builtin(Value.right.normalized);
+        public CustomLogicVector3Builtin Right
+        {
+            get => Value.right;
+            set => Value.right = value.Value;
+        }
 
         [CLMethod("Gets the transform of the specified child.")]
         public CustomLogicTransformBuiltin GetTransform(string name)
         {
-            Transform transform = Value.Find(name);
-            if (transform != null)
-            {
-                return new CustomLogicTransformBuiltin(transform);
-            }
-            return null;
+            var transform = Value.Find(name);
+            return transform != null ? new CustomLogicTransformBuiltin(transform) : null;
         }
 
         [CLMethod("Gets all child transforms.")]
         public CustomLogicListBuiltin GetTransforms()
         {
-            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            var listBuiltin = new CustomLogicListBuiltin();
             foreach (Transform transform in Value)
             {
                 listBuiltin.List.Add(new CustomLogicTransformBuiltin(transform));
@@ -127,85 +142,56 @@ namespace CustomLogic
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            var animation = Value.GetComponent<Animation>();
-            if (!animation.IsPlaying(anim))
-                animation.CrossFade(anim, fade);
+            if (!_animation.IsPlaying(anim))
+                _animation.CrossFade(anim, fade);
         }
 
         [CLMethod("Gets the length of the specified animation.")]
-        public float GetAnimationLength(string anim)
-        {
-            var animation = Value.GetComponent<Animation>();
-            return animation[anim].length;
-        }
+        public float GetAnimationLength(string anim) => _animation[anim].length;
 
         [CLMethod("Plays the sound.")]
         public void PlaySound()
         {
-            var sound = Value.GetComponent<AudioSource>();
-            if (!sound.isPlaying)
-                sound.Play();
+            if (!_audioSource.isPlaying)
+                _audioSource.Play();
         }
 
         [CLMethod("Stops the sound.")]
         public void StopSound()
         {
-            var sound = Value.GetComponent<AudioSource>();
-            if (sound.isPlaying)
-                sound.Stop();
+            if (_audioSource.isPlaying)
+                _audioSource.Stop();
         }
 
         [CLMethod("Toggles the particle system.")]
         public void ToggleParticle(bool enabled)
         {
-            var particle = Value.GetComponent<ParticleSystem>();
-            if (!particle.isPlaying)
-                particle.Play();
-            var emission = particle.emission;
+            if (!_particleSystem.isPlaying)
+                _particleSystem.Play();
+            var emission = _particleSystem.emission;
             emission.enabled = enabled;
         }
 
-        [CLMethod("Inverse transforms the direction.")]
-        public CustomLogicVector3Builtin InverseTransformDirection(CustomLogicVector3Builtin direction)
-        {
-            return new CustomLogicVector3Builtin(Value.InverseTransformDirection(direction.Value));
-        }
+        /// <inheritdoc cref="Transform.InverseTransformDirection(Vector3)"/>
+        [CLMethod] public CustomLogicVector3Builtin InverseTransformDirection(CustomLogicVector3Builtin direction) => Value.InverseTransformDirection(direction);
 
-        [CLMethod("Inverse transforms the point.")]
-        public CustomLogicVector3Builtin InverseTransformPoint(CustomLogicVector3Builtin point)
-        {
-            return new CustomLogicVector3Builtin(Value.InverseTransformPoint(point.Value));
-        }
+        /// <inheritdoc cref="Transform.InverseTransformPoint(Vector3)"/>
+        [CLMethod] public CustomLogicVector3Builtin InverseTransformPoint(CustomLogicVector3Builtin point) => Value.InverseTransformPoint(point);
 
-        [CLMethod("Transforms the direction.")]
-        public CustomLogicVector3Builtin TransformDirection(CustomLogicVector3Builtin direction)
-        {
-            return new CustomLogicVector3Builtin(Value.TransformDirection(direction.Value));
-        }
+        /// <inheritdoc cref="Transform.TransformDirection(Vector3)"/>
+        [CLMethod] public CustomLogicVector3Builtin TransformDirection(CustomLogicVector3Builtin direction) => Value.TransformDirection(direction);
 
-        [CLMethod("Transforms the point.")]
-        public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point)
-        {
-            return new CustomLogicVector3Builtin(Value.TransformPoint(point.Value));
-        }
+        /// <inheritdoc cref="Transform.TransformPoint(Vector3)"/>
+        [CLMethod] public CustomLogicVector3Builtin TransformPoint(CustomLogicVector3Builtin point) => Value.TransformPoint(point);
 
-        [CLMethod("Rotates the transform.")]
-        public void Rotate(CustomLogicVector3Builtin rotation)
-        {
-            Value.Rotate(rotation.Value);
-        }
+        /// <inheritdoc cref="Transform.Rotate(Vector3)"/>
+        [CLMethod] public void Rotate(CustomLogicVector3Builtin rotation) => Value.Rotate(rotation);
 
-        [CLMethod("Rotates the transform around a point and axis.")]
-        public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle)
-        {
-            Value.RotateAround(point.Value, axis.Value, angle);
-        }
-
-        [CLMethod("Looks at the target position.")]
-        public void LookAt(CustomLogicVector3Builtin target)
-        {
-            Value.LookAt(target.Value);
-        }
+        /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
+        [CLMethod] public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle) => Value.RotateAround(point.Value, axis.Value, angle);
+        
+        /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
+        [CLMethod] public void LookAt(CustomLogicVector3Builtin target) => Value.LookAt(target);
 
         [CLMethod("Sets the enabled state of all child renderers.")]
         public void SetRenderersEnabled(bool enabled)
@@ -213,14 +199,19 @@ namespace CustomLogic
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
         }
-
-        public override bool Equals(object obj)
+        
+        public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
+        public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
+        
+        public bool __Eq__(object other)
         {
-            if (obj == null)
-                return Value == null;
-            if (!(obj is CustomLogicTransformBuiltin))
+            if (other == null) return Value == null;
+            if (other is not CustomLogicTransformBuiltin t)
                 return false;
-            return Value == ((CustomLogicTransformBuiltin)obj).Value;
+            
+            return Value == t.Value;
         }
+
+        public int __Hash__() => Value == null ? 0 : Value.GetHashCode();
     }
 }
