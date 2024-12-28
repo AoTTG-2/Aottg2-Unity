@@ -881,6 +881,11 @@ namespace CustomLogic
                     return result[1];
                 }
             }
+            catch (TargetInvocationException e)
+            {
+                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                return null;
+            }
             catch (Exception e)
             {
                 DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.Message, true);
@@ -913,6 +918,11 @@ namespace CustomLogic
                     var result = EvaluateBlock(classInstance, localVariables, ast.Statements);
                     return result[1];
                 }
+            }
+            catch (TargetInvocationException e)
+            {
+                DebugConsole.Log("Custom logic runtime error at method " + methodName + " in class " + classInstance.ClassName + ": " + e.InnerException?.Message, true);
+                return null;
             }
             catch (Exception e)
             {
@@ -1072,8 +1082,6 @@ namespace CustomLogic
 
                 return left + (string)right;
             }
-            else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value + ((CustomLogicVector3Builtin)right).Value);
             else if (left is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Add__));
             else
@@ -1084,8 +1092,6 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)left - (int)right;
-            else if (left is CustomLogicVector3Builtin && right is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value - ((CustomLogicVector3Builtin)right).Value);
             else if (left is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Sub__));
             else
@@ -1096,12 +1102,6 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)((int)left * (int)right);
-            else if (left is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value * right.UnboxToFloat());
-            else if (right is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)right).Value * left.UnboxToFloat());
-            else if (left is CustomLogicQuaternionBuiltin && right is CustomLogicQuaternionBuiltin)
-                return new CustomLogicQuaternionBuiltin(((CustomLogicQuaternionBuiltin)left).Value * ((CustomLogicQuaternionBuiltin)right).Value);
             else if (left is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Mul__));
             else
@@ -1112,8 +1112,6 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)left / (int)right;
-            else if (left is CustomLogicVector3Builtin)
-                return new CustomLogicVector3Builtin(((CustomLogicVector3Builtin)left).Value / right.UnboxToFloat());
             else if (left is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Div__));
             else
