@@ -8,16 +8,16 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Abstract = true)]
-    class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin
+    class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
-        public Player Player;
+        public readonly Player Player;
 
         public CustomLogicPlayerBuiltin(Player player) : base("Player")
         {
             Player = player;
         }
 
-        [CLProperty("Gets the character associated with the player.")]
+        [CLProperty("Player's current character, if alive.")]
         public object Character
         {
             get
@@ -38,31 +38,34 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets a value indicating whether the player is connected.")]
+        [CLProperty("Player is still connected to the room.")]
         public bool Connected => Player != null;
 
-        [CLProperty("Gets the ID of the player.")]
+        [CLProperty("Player unique ID.")]
         public int ID => Player.ActorNumber;
 
-        [CLProperty("Gets the name of the player.")]
+        [CLProperty("Player name.")]
         public string Name => Player.GetStringProperty(PlayerProperty.Name);
 
-        [CLProperty("Gets the guild of the player.")]
+        [CLProperty("Player guild.")]
         public string Guild => Player.GetStringProperty(PlayerProperty.Guild);
 
-        [CLProperty("Gets the team of the player.")]
-        public string Team => Player.GetStringProperty(PlayerProperty.Team);
+        /// <summary>
+        /// Player's chosen team ("None", "Blue", "Red", "Titan", "Human").
+        /// Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.
+        /// </summary>
+        [CLProperty] public string Team => Player.GetStringProperty(PlayerProperty.Team);
 
-        [CLProperty("Gets the status of the player.")]
+        [CLProperty("Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").")]
         public string Status => Player.GetStringProperty(PlayerProperty.Status);
 
-        [CLProperty("Gets the character type of the player.")]
+        [CLProperty("Player's chosen character (\"Human\", \"Titan\", \"Shifter\")")]
         public string CharacterType => Player.GetStringProperty(PlayerProperty.Character);
 
-        [CLProperty("Gets the loadout of the player.")]
+        [CLProperty("Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").")]
         public string Loadout => Player.GetStringProperty(PlayerProperty.Loadout);
 
-        [CLProperty("Gets or sets the kills of the player.")]
+        [CLProperty("Player's kills.")]
         public int Kills
         {
             get => Player.GetIntProperty(PlayerProperty.Kills);
@@ -73,7 +76,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the deaths of the player.")]
+        [CLProperty("Player's deaths.")]
         public int Deaths
         {
             get => Player.GetIntProperty(PlayerProperty.Deaths);
@@ -84,7 +87,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the highest damage of the player.")]
+        [CLProperty("Player's highest damage.")]
         public int HighestDamage
         {
             get => Player.GetIntProperty(PlayerProperty.HighestDamage);
@@ -95,7 +98,7 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets or sets the total damage of the player.")]
+        [CLProperty("Player's total damage.")]
         public int TotalDamage
         {
             get => Player.GetIntProperty(PlayerProperty.TotalDamage);
@@ -106,13 +109,13 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty("Gets the ping of the player.")]
+        [CLProperty("The player's connection ping.")]
         public int Ping => Player.GetIntProperty(PlayerProperty.Ping);
 
-        [CLProperty("Gets the spectate ID of the player.")]
+        [CLProperty("The player's spectating ID. If not spectating anyone, returns -1.")]
         public int SpectateID => Player.GetIntProperty(PlayerProperty.SpectateID);
 
-        [CLProperty("Gets or sets the spawn point of the player.")]
+        [CLProperty("Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.")]
         public CustomLogicVector3Builtin SpawnPoint
         {
             get
@@ -137,24 +140,24 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Gets a custom property of the player.")]
+        [CLMethod("Get a custom property at given key. Must be a primitive type. This is synced to all clients.")]
         public object GetCustomProperty(string property)
         {
             return Player.GetCustomProperty("CL:" + property);
         }
 
-        [CLMethod("Sets a custom property of the player.")]
+        [CLMethod("Sets a custom property at given key. Must be a primitive type. This is synced to all clients.")]
         public void SetCustomProperty(string property, object value)
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
                 return;
-            if (!(value is float || value is int || value is string || value is bool))
+            if (value is not (float or int or string or bool))
                 throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
             CheckPropertyRateLimit("CL:" + property);
             Player.SetCustomProperty("CL:" + property, value);
         }
 
-        [CLMethod("Clears the kill-death ratio properties of the player.")]
+        [CLMethod("Clears kills, deaths, highestdamage, and totaldamage properties.")]
         public void ClearKDR()
         {
             if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
@@ -195,5 +198,9 @@ namespace CustomLogic
             var other = ((CustomLogicPlayerBuiltin)obj).Player;
             return Player == other;
         }
+
+        public bool __Eq__(object other) => Equals(other);
+
+        public int __Hash__() => Player.GetHashCode();
     }
 }
