@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 namespace CustomLogic
 {
@@ -152,7 +155,9 @@ namespace CustomLogic
             //     return method.Invoke(instance, args.ToArray());
 
             var paramInfos = method.GetCachedParemeters();
-            var finalParameters = new object[paramInfos.Length];
+
+            
+            var finalParameters = ArrayPool<object>.New(paramInfos.Length);
 
             for (int i = 0; i < paramInfos.Length; i++)
             {
@@ -170,7 +175,9 @@ namespace CustomLogic
                 }
             }
 
-            return method.Invoke(instance, finalParameters);
+            var result = method.Invoke(instance, finalParameters);
+            ArrayPool<object>.Free(finalParameters);
+            return result;
         }
     }
 }
