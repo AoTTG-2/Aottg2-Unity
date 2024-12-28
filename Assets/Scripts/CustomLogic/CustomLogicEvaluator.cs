@@ -291,14 +291,9 @@ namespace CustomLogic
             foreach (var staticType in CustomLogicBuiltinTypes.StaticTypes)
             {
                 var instance = CustomLogicActivator.CreateInstance(staticType, EmptyArgs);
-                if (staticType == "UI")
-                    Debug.Log("UI created");
                 _staticClasses[staticType] = instance;
             }
             
-            // foreach (string name in new string[] {"Game", "Vector3", "Color", "Quaternion", "Convert", "Cutscene", "Time", "Network", "UI", "Input", "Math", "Map",
-            // "Random", "String", "Camera", "RoomData", "PersistentData", "Json", "Physics", "LineRenderer"})
-            //     CreateStaticClass(name);
             foreach (string className in new List<string>(_start.Classes.Keys))
             {
                 if (className == "Main")
@@ -419,45 +414,7 @@ namespace CustomLogic
         {
             if (!_staticClasses.ContainsKey(className))
             {
-                CustomLogicClassInstance instance;
-                // if (className == "Game")
-                //     instance = new CustomLogicGameBuiltin();
-                // else if (className == "Convert")
-                //     instance = new CustomLogicConvertBuiltin();
-                // else if (className == "Cutscene")
-                //     instance = new CustomLogicCutsceneBuiltin();
-                // else if (className == "Time")
-                //     instance = new CustomLogicTimeBuiltin();
-                // else if (className == "Network")
-                //     instance = new CustomLogicNetworkBuiltin();
-                // // else if (className == "UI")
-                // //     instance = new CustomLogicUIBuiltin();
-                // else if (className == "Input")
-                //     instance = new CustomLogicInputBuiltin();
-                // else if (className == "Math")
-                //     instance = new CustomLogicMathBuiltin();
-                // else if (className == "Quaternion")
-                //     instance = new CustomLogicQuaternionBuiltin(new List<object>());
-                // else if (className == "Map")
-                //     instance = new CustomLogicMapBuiltin();
-                // else if (className == "String")
-                //     instance = new CustomLogicStringBuiltin();
-                // else if (className == "Random")
-                //     instance = new CustomLogicRandomBuiltin(new List<object>());
-                // else if (className == "Camera")
-                //     instance = new CustomLogicCameraBuiltin();
-                // else if (className == "RoomData")
-                //     instance = new CustomLogicRoomDataBuiltin();
-                // else if (className == "PersistentData")
-                //     instance = new CustomLogicPersistentDataBuiltin();
-                // else if (className == "Json")
-                //     instance = new CustomLogicJsonBuiltin();
-                // else if (className == "Physics")
-                //     instance = new CustomLogicPhysicsBuiltin();
-                // else if (className == "LineRenderer")
-                //     instance = new CustomLogicLineRendererBuiltin();
-                // else
-                    instance = CreateClassInstance(className, new List<object>(), false);
+                var instance = CreateClassInstance(className, new List<object>(), false);
                 _staticClasses.Add(className, instance);
             }
         }
