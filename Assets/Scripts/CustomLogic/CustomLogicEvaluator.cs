@@ -849,7 +849,7 @@ namespace CustomLogic
             }
         }
 
-        private object EvaluateMethod(UserMethod userMethod, List<object> parameterValues = null)
+        public object EvaluateMethod(UserMethod userMethod, List<object> parameterValues = null)
         {
             var ast = userMethod.Ast;
             var methodName = userMethod.Ast.Name;

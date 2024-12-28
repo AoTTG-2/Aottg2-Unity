@@ -1,5 +1,7 @@
 ﻿using Characters;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CustomLogic
@@ -262,10 +264,16 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor")]
-        public void AddOutline(CustomLogicColorBuiltin color, string mode)
+        public void AddOutline(List<object> parameters)
         {
-            Outline.Mode outlineMode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), mode);
-            Character.AddOutlineWithColor(color.Value.ToColor(), outlineMode);
+            Color color = Color.white;
+            Outline.Mode mode = Outline.Mode.OutlineAll;
+            if (parameters.Count > 0)
+                color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+            if (parameters.Count > 1)
+                mode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), (string)parameters[1]);
+
+            Character.AddOutlineWithColor(color, mode);
         }
 
         [CLMethod(Description = "Removes the outline effect from the character.")]
