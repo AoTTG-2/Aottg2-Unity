@@ -1,6 +1,6 @@
 ﻿namespace CustomLogic
 {
-    // todo: implement some kind of caching/pool for this
+    // todo: implement some kind of catching/pool for this
     // we really don't need to create a new list every time
     
     [CLType(InheritBaseMembers = false)]
