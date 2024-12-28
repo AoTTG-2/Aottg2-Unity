@@ -1,6 +1,4 @@
-﻿using ApplicationManagers;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility;
 
 namespace CustomLogic
@@ -9,7 +7,7 @@ namespace CustomLogic
     class CustomLogicRandomBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Unity.Mathematics.Random Rand;
-        public bool UseInstanceRandom = false;
+        public readonly bool UseInstanceRandom;
 
         public CustomLogicRandomBuiltin(object[] parameterValues) : base("Random")
         {
@@ -26,16 +24,16 @@ namespace CustomLogic
         [CLMethod("Generates a random float between the specified range.")]
         public float RandomFloat(float min, float max) => UseInstanceRandom ? Rand.NextFloat(min, max) : Random.Range(min, max);
 
-        [CLMethod("Generates a random boolean value.")]
+        [CLMethod("Returns random boolean.")]
         public bool RandomBool() => UseInstanceRandom ? Rand.NextBool() : RandomGen.GetRandomBool();
 
         [CLMethod("Generates a random Vector3 between the specified ranges.")]
         public CustomLogicVector3Builtin RandomVector3(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => new CustomLogicVector3Builtin(new Vector3(RandomFloat(a.Value.x, b.Value.x), RandomFloat(a.Value.y, b.Value.y), RandomFloat(a.Value.z, b.Value.z)));
 
-        [CLMethod("Generates a random direction vector. If flat is true, the y component will be zero.")]
+        [CLMethod("Generates a random normalized direction vector. If flat is true, the y component will be zero.")]
         public CustomLogicVector3Builtin RandomDirection(bool flat = false)
         {
-            Vector3 v = new(RandomFloat(-1f, 1f), RandomFloat(-1f, 1f), RandomFloat(-1f, 1f));
+            var v = new Vector3(RandomFloat(-1f, 1f), RandomFloat(-1f, 1f), RandomFloat(-1f, 1f));
             if (flat)
                 v.y = 0f;
             return new CustomLogicVector3Builtin(v.normalized);
@@ -44,7 +42,7 @@ namespace CustomLogic
         [CLMethod("Generates a random sign, either 1 or -1.")]
         public int RandomSign() => RandomBool() ? 1 : -1;
 
-        [CLMethod("Calculates Perlin noise for the specified coordinates.")]
+        [CLMethod("Returns a point sampled from generated 2d perlin noise. (see Unity Mathf.PerlinNoise for more information)")]
         public float PerlinNoise(float x, float y) => Mathf.PerlinNoise(x, y);
     }
 }
