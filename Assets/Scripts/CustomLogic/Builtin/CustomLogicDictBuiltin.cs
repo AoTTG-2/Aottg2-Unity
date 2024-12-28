@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
@@ -34,18 +35,16 @@ namespace CustomLogic
         [CLMethod(description: "Gets a value from the dictionary")]
         public object Get(object key, object defaultValue = null)
         {
-            var dictKey = GetDictKey(key);
-            if (dictKey != null)
-                return Dict[dictKey];
+            if (Dict.ContainsKey(key))
+                return Dict[key];
             return defaultValue;
         }
 
         [CLMethod(description: "Sets a value in the dictionary")]
         public void Set(object key, object value)
         {
-            var dictKey = GetDictKey(key);
-            if (dictKey != null)
-                Dict[dictKey] = value;
+            if (Dict.ContainsKey(key))
+                Dict[key] = value;
             else
                 Dict.Add(key, value);
         }
@@ -53,25 +52,14 @@ namespace CustomLogic
         [CLMethod(description: "Removes a value from the dictionary")]
         public void Remove(object key)
         {
-            var dictKey = GetDictKey(key);
-            if (dictKey != null)
-                Dict.Remove(dictKey);
+            if (Dict.ContainsKey(key))
+                Dict.Remove(key);
         }
 
         [CLMethod(description: "Checks if the dictionary contains a key")]
         public bool Contains(object key)
         {
-            return GetDictKey(key) != null;
-        }
-
-        private object GetDictKey(object key)
-        {
-            foreach (var dictKey in Dict.Keys)
-            {
-                if (CustomLogicManager.Evaluator.CheckEquals(dictKey, key))
-                    return dictKey;
-            }
-            return null;
+            return Dict.ContainsKey(key);
         }
 
         public override string ToString()

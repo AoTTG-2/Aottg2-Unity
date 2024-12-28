@@ -85,6 +85,34 @@ namespace CustomLogic
             List.Sort();
         }
 
+        [CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
+        public void SortCustom(UserMethod method)
+        {
+            List.Sort((a, b) => (int)CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { a, b }));
+        }
+
+        // Add linq operations using UserMethod as the function
+
+        [CLMethod(description: "Filter the list using a custom method, expects a method with the signature bool method(element)")]
+        public CustomLogicListBuiltin Filter(UserMethod method)
+        {
+            var newList = List.Where(e => (bool)CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { e })).ToList();
+            return new CustomLogicListBuiltin(newList);
+        }
+
+        [CLMethod(description: "Map the list using a custom method, expects a method with the signature object method(element)")]
+        public CustomLogicListBuiltin Map(UserMethod method)
+        {
+            var newList = List.Select(e => CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { e })).ToList();
+            return new CustomLogicListBuiltin(newList);
+        }
+
+        [CLMethod(description: "Reduce the list using a custom method, expects a method with the signature object method(acc, element)")]
+        public object Reduce(UserMethod method, object initialValue)
+        {
+            return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { acc, e }));
+        }
+
         [CLMethod(description: "Randomize the list")]
         public void Randomize()
         {
