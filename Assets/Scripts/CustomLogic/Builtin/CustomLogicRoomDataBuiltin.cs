@@ -1,34 +1,28 @@
-﻿using ApplicationManagers;
-using GameManagers;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
+    [CLType(Static = true, Abstract = true)]
     class CustomLogicRoomDataBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicRoomDataBuiltin() : base("RoomData")
-        {
-        }
+        public CustomLogicRoomDataBuiltin() : base("RoomData") { }
 
-        [CLMethod("Sets a property in the room data.")]
+        [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(string property, object value)
         {
-            if (!(value == null || value is float || value is int || value is string || value is bool))
+            if (value is not (null or float or int or string or bool))
                 throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
+            
             CustomLogicManager.RoomData[property] = value;
         }
 
-        [CLMethod("Gets a property from the room data.")]
+        [CLMethod("Gets the property with given name. If property does not exist, returns defaultValue.")]
         public static object GetProperty(string property, object defaultValue)
         {
-            if (CustomLogicManager.RoomData.ContainsKey(property))
-                return CustomLogicManager.RoomData[property];
-            return defaultValue;
+            return CustomLogicManager.RoomData.GetValueOrDefault(property, defaultValue);
         }
 
-        [CLMethod("Clears all properties from the room data.")]
+        [CLMethod("Clears all room data.")]
         public static void Clear()
         {
             CustomLogicManager.RoomData.Clear();
