@@ -151,12 +151,7 @@ namespace CustomLogic
         /// </summary>
         public static object InvokeMethod(MethodInfo method, object instance, List<object> args, Dictionary<string, object> kwargs)
         {
-            // if (kwargs.Count == 0)
-            //     return method.Invoke(instance, args.ToArray());
-
             var paramInfos = method.GetCachedParemeters();
-
-            
             var finalParameters = ArrayPool<object>.New(paramInfos.Length);
 
             for (int i = 0; i < paramInfos.Length; i++)

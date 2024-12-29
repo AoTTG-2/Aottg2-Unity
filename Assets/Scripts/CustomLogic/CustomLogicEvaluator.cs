@@ -53,7 +53,7 @@ namespace CustomLogic
                 Dictionary<string, BaseSetting> settings = new Dictionary<string, BaseSetting>();
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_"))
+                    if (!variableName.StartsWith("_") && variableName != "Type")
                     {
                         object value = instance.Variables[variableName];
                         if (value is float)

@@ -428,9 +428,10 @@ namespace CustomLogic
             CustomLogicVector3Builtin gravity,
             float liveTime,
             string team,
-            object[] settings = null)
+            params object[] settings)
         {
             // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
+            settings = settings.Length == 0 ? null : settings;
             ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, -1, team, settings);
         }
 
@@ -443,16 +444,17 @@ namespace CustomLogic
             CustomLogicVector3Builtin gravity,
             float liveTime,
             CustomLogicCharacterBuiltin character,
-            object[] settings = null)
+            params object[] settings)
         {
             // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
+            settings = settings.Length == 0 ? null : settings;
             ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, character.Character.photonView.ViewID, character.Character.Team, settings);
         }
 
         [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] settings = null)
-        // TODO: Modify this to work with Kwargs (TS and Flare require optional params Color And Sound)
+        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, params object[] settings)
         {
+            // TODO: Modify this to work with Kwargs (TS and Flare require optional params Color And Sound)
             EffectSpawner.Spawn(effectName, position.Value, Quaternion.Euler(rotation.Value), scale, true, settings);
         }
 
