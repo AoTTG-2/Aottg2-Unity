@@ -157,7 +157,7 @@ namespace CustomLogic
             throw new NotImplementedException();
         }
 
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
             throw new NotImplementedException();
         }

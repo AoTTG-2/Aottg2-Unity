@@ -104,29 +104,29 @@ namespace CustomLogic
         }
 
         [CLMethod]
-        public object __Add__(object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), this, other);
+        public object __Add__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other);
         [CLMethod]
-        public object __Sub__(object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), this, other);
+        public object __Sub__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other);
 
         [CLMethod]
-        public object __Mul__(object other)
+        public object __Mul__(object self, object other)
         {
-            return other switch
+            return (self, other) switch
             {
-                CustomLogicVector3Builtin v3 => new CustomLogicVector3Builtin(Value * v3.Value),
-                CustomLogicQuaternionBuiltin quat => new CustomLogicQuaternionBuiltin(Value * quat.Value),
-                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), this, other)
+                (CustomLogicQuaternionBuiltin a, CustomLogicQuaternionBuiltin b) => new CustomLogicQuaternionBuiltin(a.Value * b.Value),
+                (CustomLogicQuaternionBuiltin a, CustomLogicVector3Builtin b) => new CustomLogicVector3Builtin(a.Value * b.Value),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
             };
         }
 
         [CLMethod]
-        public object __Div__(object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), this, other);
+        public object __Div__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other);
 
         [CLMethod]
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            if (other is CustomLogicQuaternionBuiltin quat)
-                return Value == quat.Value;
+            if (other is CustomLogicQuaternionBuiltin quat && self is CustomLogicQuaternionBuiltin quat2)
+                return quat2.Value == quat.Value;
             
             return false;
         }

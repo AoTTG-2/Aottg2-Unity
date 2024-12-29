@@ -203,13 +203,14 @@ namespace CustomLogic
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
         public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
         
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            if (other == null) return Value == null;
-            if (other is not CustomLogicTransformBuiltin t)
-                return false;
-            
-            return Value == t.Value;
+            return (self, other) switch
+            {
+                (null, null) => true,
+                (CustomLogicTransformBuiltin selfTransform, CustomLogicTransformBuiltin otherTransform) => selfTransform.Value == otherTransform.Value,
+                _ => false
+            };
         }
 
         public int __Hash__() => Value == null ? 0 : Value.GetHashCode();

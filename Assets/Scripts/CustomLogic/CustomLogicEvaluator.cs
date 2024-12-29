@@ -9,7 +9,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace CustomLogic
 {
@@ -1013,15 +1015,18 @@ namespace CustomLogic
 
         private object ClassMathOperation(object left, object right, string method)
         {
-            CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
-            if (leftInstance.HasVariable(method))
+            CustomLogicClassInstance instance = left is CustomLogicClassInstance ? (CustomLogicClassInstance)left : (CustomLogicClassInstance)right;
+            if (instance.HasVariable(method))
             {
-                Parameters.Clear();
-                Parameters.Add(right);
-                return EvaluateMethod(leftInstance, method, Parameters);
+                using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                {
+                    Parameters.Add(left);
+                    Parameters.Add(right);
+                    return EvaluateMethod(instance, method, Parameters);
+                }
             }
             else
-                throw new Exception($"No {method} method found in class " + leftInstance.ClassName);
+                throw new Exception($"No {method} method found in class " + instance.ClassName);
         }
 
         private object AddValues(object left, object right)
@@ -1038,7 +1043,7 @@ namespace CustomLogic
 
                 return left + (string)right;
             }
-            else if (left is CustomLogicClassInstance)
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Add__));
             else
                 return left.UnboxToFloat() + right.UnboxToFloat();
@@ -1048,7 +1053,7 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)left - (int)right;
-            else if (left is CustomLogicClassInstance)
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Sub__));
             else
                 return left.UnboxToFloat() - right.UnboxToFloat();
@@ -1058,7 +1063,7 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)((int)left * (int)right);
-            else if (left is CustomLogicClassInstance)
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Mul__));
             else
                 return left.UnboxToFloat() * right.UnboxToFloat();
@@ -1068,7 +1073,7 @@ namespace CustomLogic
         {
             if (left is int && right is int)
                 return (int)left / (int)right;
-            else if (left is CustomLogicClassInstance)
+            else if (left is CustomLogicClassInstance || right is CustomLogicClassInstance)
                 return ClassMathOperation(left, right, nameof(ICustomLogicMathOperators.__Div__));
             else
                 return left.UnboxToFloat() / right.UnboxToFloat();
@@ -1083,9 +1088,23 @@ namespace CustomLogic
                 CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
                 if (leftInstance.HasVariable(nameof(ICustomLogicEquals.__Eq__)))
                 {
-                    Parameters.Clear();
-                    Parameters.Add(right);
-                    return (bool)EvaluateMethod(leftInstance, nameof(ICustomLogicEquals.__Eq__), Parameters);
+                    using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                    {
+                        Parameters.Add(right);
+                        return (bool)EvaluateMethod(leftInstance, nameof(ICustomLogicEquals.__Eq__), Parameters);
+                    }
+                }
+            }
+            else if (right is CustomLogicClassInstance)
+            {
+                CustomLogicClassInstance rightInstance = (CustomLogicClassInstance)right;
+                if (rightInstance.HasVariable(nameof(ICustomLogicEquals.__Eq__)))
+                {
+                    using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                    {
+                        Parameters.Add(left);
+                        return (bool)EvaluateMethod(rightInstance, nameof(ICustomLogicEquals.__Eq__), Parameters);
+                    }
                 }
             }
             if (left != null)

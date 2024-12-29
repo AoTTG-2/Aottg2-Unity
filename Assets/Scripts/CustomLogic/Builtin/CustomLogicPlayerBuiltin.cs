@@ -199,7 +199,7 @@ namespace CustomLogic
             return Player == other;
         }
 
-        public bool __Eq__(object other) => Equals(other);
+        public bool __Eq__(object self, object other) => self.Equals(other);
 
         public int __Hash__() => Player.GetHashCode();
     }

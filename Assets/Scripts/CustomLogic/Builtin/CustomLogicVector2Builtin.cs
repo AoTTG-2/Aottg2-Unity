@@ -141,52 +141,56 @@ namespace CustomLogic
         }
 
         [CLMethod]
-        public object __Add__(object other)
+        public object __Add__(object self, object other)
         {
-            if (other is CustomLogicVector2Builtin v3)
-                return new CustomLogicVector2Builtin(_value + v3._value);
-            
-            throw CustomLogicUtils.OperatorException(nameof(__Add__), this, other);
-        }
-        
-        [CLMethod]
-        public object __Sub__(object other)
-        {
-            if (other is CustomLogicVector2Builtin v3)
-                return new CustomLogicVector2Builtin(_value - v3._value);
-            
-            throw CustomLogicUtils.OperatorException(nameof(__Sub__), this, other);
-        }
-        
-        [CLMethod]
-        public object __Mul__(object other)
-        {
-            return other switch
+            return (self, other) switch
             {
-                float f => new CustomLogicVector2Builtin(_value * f),
-                CustomLogicVector2Builtin v3 => new CustomLogicVector2Builtin(Util.MultiplyVectors(this, v3)),
-                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), this, other)
+                (CustomLogicVector2Builtin a, CustomLogicVector2Builtin b) => new CustomLogicVector2Builtin(a._value + b._value),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other)
             };
         }
         
         [CLMethod]
-        public object __Div__(object other)
+        public object __Sub__(object self, object other)
         {
-            return other switch
+            return (self, other) switch
             {
-                float f => new CustomLogicVector2Builtin(_value / f),
-                CustomLogicVector2Builtin v3 => new CustomLogicVector2Builtin(Util.DivideVectors(this, v3)),
-                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), this, other)
+                (CustomLogicVector2Builtin a, CustomLogicVector2Builtin b) => new CustomLogicVector2Builtin(a._value - b._value),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other)
+            };
+        }
+        
+        [CLMethod]
+        public object __Mul__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicVector2Builtin a, CustomLogicVector2Builtin b) => new CustomLogicVector2Builtin(a._value * b._value),
+                (CustomLogicVector2Builtin a, float f) => new CustomLogicVector2Builtin(a._value * f),
+                (float f, CustomLogicVector2Builtin a) => new CustomLogicVector2Builtin(a._value * f),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
+            };
+        }
+        
+        [CLMethod]
+        public object __Div__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicVector2Builtin a, CustomLogicVector2Builtin b) => new CustomLogicVector2Builtin(a._value / b._value),
+                (CustomLogicVector2Builtin a, float f) => new CustomLogicVector2Builtin(a._value / f),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
             };
         }
 
         [CLMethod]
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            if (other is not CustomLogicVector2Builtin v2)
-                return false;
-            
-            return _value == v2._value;
+            return (self, other) switch
+            {
+                (CustomLogicVector2Builtin a, CustomLogicVector2Builtin b) => a._value == b._value,
+                _ => false
+            };
         }
 
         [CLMethod]

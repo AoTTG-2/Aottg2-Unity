@@ -116,16 +116,13 @@ namespace CustomLogic
             return new CustomLogicColorBuiltin(value);
         }
 
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            if (other is CustomLogicColorBuiltin otherColor)
+            return (self, other) switch
             {
-                return Value.R == otherColor.Value.R &&
-                       Value.G == otherColor.Value.G &&
-                       Value.B == otherColor.Value.B &&
-                       Value.A == otherColor.Value.A;
-            }
-            return false;
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => a.Value == b.Value,
+                _ => false
+            };
         }
 
         public int __Hash__()
@@ -143,60 +140,60 @@ namespace CustomLogic
             return ToString();
         }
 
-        public object __Add__(object other)
+        public object __Add__(object self, object other)
         {
-            if (other is CustomLogicColorBuiltin otherColor)
+            return (self, other) switch
             {
-                return new CustomLogicColorBuiltin(new Color255(
-                    Mathf.Clamp(Value.R + otherColor.Value.R, 0, 255),
-                    Mathf.Clamp(Value.G + otherColor.Value.G, 0, 255),
-                    Mathf.Clamp(Value.B + otherColor.Value.B, 0, 255),
-                    Mathf.Clamp(Value.A + otherColor.Value.A, 0, 255)
-                ));
-            }
-            throw new System.ArgumentException("Invalid type for addition");
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R + b.R, 0, 255),
+                    Mathf.Clamp(a.G + b.G, 0, 255),
+                    Mathf.Clamp(a.B + b.B, 0, 255),
+                    Mathf.Clamp(a.A + b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other)
+            };
         }
 
-        public object __Sub__(object other)
+        public object __Sub__(object self, object other)
         {
-            if (other is CustomLogicColorBuiltin otherColor)
+            return (self, other) switch
             {
-                return new CustomLogicColorBuiltin(new Color255(
-                    Mathf.Clamp(Value.R - otherColor.Value.R, 0, 255),
-                    Mathf.Clamp(Value.G - otherColor.Value.G, 0, 255),
-                    Mathf.Clamp(Value.B - otherColor.Value.B, 0, 255),
-                    Mathf.Clamp(Value.A - otherColor.Value.A, 0, 255)
-                ));
-            }
-            throw new System.ArgumentException("Invalid type for subtraction");
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R - b.R, 0, 255),
+                    Mathf.Clamp(a.G - b.G, 0, 255),
+                    Mathf.Clamp(a.B - b.B, 0, 255),
+                    Mathf.Clamp(a.A - b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other)
+            };
         }
 
-        public object __Mul__(object other)
+        public object __Mul__(object self, object other)
         {
-            if (other is CustomLogicColorBuiltin otherColor)
+            return (self, other) switch
             {
-                return new CustomLogicColorBuiltin(new Color255(
-                    Mathf.Clamp(Value.R * otherColor.Value.R / 255, 0, 255),
-                    Mathf.Clamp(Value.G * otherColor.Value.G / 255, 0, 255),
-                    Mathf.Clamp(Value.B * otherColor.Value.B / 255, 0, 255),
-                    Mathf.Clamp(Value.A * otherColor.Value.A / 255, 0, 255)
-                ));
-            }
-            throw new System.ArgumentException("Invalid type for multiplication");
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R * b.R, 0, 255),
+                    Mathf.Clamp(a.G * b.G, 0, 255),
+                    Mathf.Clamp(a.B * b.B, 0, 255),
+                    Mathf.Clamp(a.A * b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
+            };
         }
 
-        public object __Div__(object other)
+        public object __Div__(object self, object other)
         {
-            if (other is CustomLogicColorBuiltin otherColor)
+            return (self, other) switch
             {
-                return new CustomLogicColorBuiltin(new Color255(
-                    otherColor.Value.R == 0 ? 255 : Mathf.Clamp(Value.R / otherColor.Value.R, 0, 255),
-                    otherColor.Value.G == 0 ? 255 : Mathf.Clamp(Value.G / otherColor.Value.G, 0, 255),
-                    otherColor.Value.B == 0 ? 255 : Mathf.Clamp(Value.B / otherColor.Value.B, 0, 255),
-                    otherColor.Value.A == 0 ? 255 : Mathf.Clamp(Value.A / otherColor.Value.A, 0, 255)
-                ));
-            }
-            throw new System.ArgumentException("Invalid type for division");
+                (CustomLogicColorBuiltin a, CustomLogicColorBuiltin b) => new CustomLogicColorBuiltin(new Color255(
+                    Mathf.Clamp(a.R / b.R, 0, 255),
+                    Mathf.Clamp(a.G / b.G, 0, 255),
+                    Mathf.Clamp(a.B / b.B, 0, 255),
+                    Mathf.Clamp(a.A / b.A, 0, 255)
+                )),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
+            };
         }
     }
 }

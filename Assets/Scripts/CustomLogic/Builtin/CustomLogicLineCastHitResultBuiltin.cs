@@ -43,14 +43,15 @@ namespace CustomLogic
             return Copy();
         }
 
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            if (other is CustomLogicLineCastHitResultBuiltin otherLineCastHitResult)
+            return (self, other) switch
             {
-                return Point.__Eq__(otherLineCastHitResult.Point) &&
-                       Normal.__Eq__(otherLineCastHitResult.Normal);
-            }
-            return false;
+                (CustomLogicLineCastHitResultBuiltin selfLineCastHitResult, CustomLogicLineCastHitResultBuiltin otherLineCastHitResult) =>
+                     selfLineCastHitResult.Point.__Eq__(selfLineCastHitResult.Point, otherLineCastHitResult.Point) &&
+                     selfLineCastHitResult.Normal.__Eq__(selfLineCastHitResult.Normal, otherLineCastHitResult.Normal),
+                _ => false
+            };
         }
 
         public int __Hash__()

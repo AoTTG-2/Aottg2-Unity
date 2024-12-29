@@ -291,9 +291,9 @@ namespace CustomLogic
 
 
 
-        public bool __Eq__(object other)
+        public bool __Eq__(object self, object other)
         {
-            return Equals(other);
+            return self.Equals(other);
         }
 
         public int __Hash__()

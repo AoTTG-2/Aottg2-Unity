@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
@@ -208,7 +209,31 @@ namespace CustomLogic
             
             throw new Exception("Parameter must be a float or a Vector3.");
         }
-        
+
+        /// <summary>
+        /// Returns the multiplication of two Vector3s.
+        /// </summary>
+        /// <param name="a">Vector3</param>
+        /// <param name="b">Vector3</param>
+        /// <returns>Vector3</returns>
+        [CLMethod, Obsolete("Use multiply operator instead")]
+        public CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
+        {
+            return new CustomLogicVector3Builtin(Util.MultiplyVectors(a, b));
+        }
+
+        /// <summary>
+        /// Returns the division of two Vector3s.
+        /// </summary>
+        /// <param name="a">Vector3</param>
+        /// <param name="b">Vector3</param>
+        /// <returns>Vector3</returns>
+        [CLMethod, Obsolete("Use divide operator instead")]
+        public CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
+        {
+            return new CustomLogicVector3Builtin(Util.DivideVectors(a, b));
+        }
+
         /// <summary>
         /// Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
         /// </summary>
@@ -232,47 +257,50 @@ namespace CustomLogic
         }
         
         [CLMethod]
-        public object __Add__(object other)
+        public object __Add__(object self, object other)
         {
-            if (other is CustomLogicVector3Builtin v3)
-                return new CustomLogicVector3Builtin(Value + v3.Value);
-            
-            throw CustomLogicUtils.OperatorException(nameof(__Add__), this, other);
-        }
-        
-        [CLMethod]
-        public object __Sub__(object other)
-        {
-            if (other is CustomLogicVector3Builtin v3)
-                return new CustomLogicVector3Builtin(Value - v3.Value);
-            
-            throw CustomLogicUtils.OperatorException(nameof(__Sub__), this, other);
-        }
-        
-        [CLMethod]
-        public object __Mul__(object other)
-        {
-            return other switch
+            return (self, other) switch
             {
-                float f => new CustomLogicVector3Builtin(Value * f),
-                CustomLogicVector3Builtin v3 => new CustomLogicVector3Builtin(Util.MultiplyVectors(this, v3)),
-                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), this, other)
+                (CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => new CustomLogicVector3Builtin(a.Value + b.Value),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other)
             };
         }
         
         [CLMethod]
-        public object __Div__(object other)
+        public object __Sub__(object self, object other)
         {
-            return other switch
+            return (self, other) switch
             {
-                float f => new CustomLogicVector3Builtin(Value / f),
-                CustomLogicVector3Builtin v3 => new CustomLogicVector3Builtin(Util.DivideVectors(this, v3)),
-                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), this, other)
+                (CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => new CustomLogicVector3Builtin(a.Value - b.Value),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other)
             };
         }
         
         [CLMethod]
-        public bool __Eq__(object other)
+        public object __Mul__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicVector3Builtin v3, float f) => new CustomLogicVector3Builtin(v3.Value * f),
+                (float f, CustomLogicVector3Builtin v3) => new CustomLogicVector3Builtin(v3.Value * f),
+                (CustomLogicVector3Builtin v3, CustomLogicVector3Builtin v3Other) => new CustomLogicVector3Builtin(Util.MultiplyVectors(v3, v3Other)),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
+            };
+        }
+        
+        [CLMethod]
+        public object __Div__(object self, object other)
+        {
+            return (self, other) switch
+            {
+                (CustomLogicVector3Builtin v3, float f) => new CustomLogicVector3Builtin(v3.Value / f),
+                (CustomLogicVector3Builtin v3, CustomLogicVector3Builtin v3Other) => new CustomLogicVector3Builtin(Util.DivideVectors(v3, v3Other)),
+                _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
+            };
+        }
+        
+        [CLMethod]
+        public bool __Eq__(object self, object other)
         {
             if (other is not CustomLogicVector3Builtin v3)
                 return false;

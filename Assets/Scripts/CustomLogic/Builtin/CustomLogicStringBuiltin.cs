@@ -13,9 +13,9 @@ namespace CustomLogic
         public static string Newline => "\n";
 
         [CLMethod("Formats a float to a string with the specified number of decimal places.")]
-        public static string FormatFloat(string str, int decimals)
+        public static string FormatFloat(float val, int decimals)
         {
-            return Util.FormatFloat(str.UnboxToFloat(), decimals);
+            return Util.FormatFloat(val, decimals);
         }
         
         [CLMethod("Equivalent to C# string.format(string, List<string>).")]
