@@ -420,42 +420,93 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn a projectile")]
-        public void SpawnProjectile(
-            string projectileName,
-            CustomLogicVector3Builtin position,
-            CustomLogicVector3Builtin rotation,
-            CustomLogicVector3Builtin velocity,
-            CustomLogicVector3Builtin gravity,
-            float liveTime,
-            string team,
-            params object[] settings)
+        public void SpawnProjectile(object[] parameters)
         {
-            // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
-            settings = settings.Length == 0 ? null : settings;
-            ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, -1, team, settings);
+            string projectileName = (string)parameters[0];
+            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
+            Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
+            Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
+            float liveTime = parameters[5].UnboxToFloat();
+            string team = (string)parameters[6];
+            object[] settings = null;
+            if (projectileName == ProjectilePrefabs.Thunderspear)
+            {
+                float radius = parameters[7].UnboxToFloat();
+                Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
+                settings = new object[] { radius, color };
+            }
+            else if (projectileName == ProjectilePrefabs.Flare)
+            {
+                Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
+                settings = new object[] { color };
+            }
+            else if (projectileName == ProjectilePrefabs.Rock1)
+            {
+                float size = parameters[7].UnboxToFloat();
+                settings = new object[] { size };
+            }
+            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, -1, team, settings);
         }
 
         [CLMethod(description: "Spawn a projectile with an owner")]
-        public void SpawnProjectileWithOwner(
-            string projectileName,
-            CustomLogicVector3Builtin position,
-            CustomLogicVector3Builtin rotation,
-            CustomLogicVector3Builtin velocity,
-            CustomLogicVector3Builtin gravity,
-            float liveTime,
-            CustomLogicCharacterBuiltin character,
-            params object[] settings)
+        public void SpawnProjectileWithOwner(object[] parameters)
         {
-            // TODO: Modify this to work with Kwargs (TS and Flare require optional params)
-            settings = settings.Length == 0 ? null : settings;
-            ProjectileSpawner.Spawn(projectileName, position.Value, Quaternion.Euler(rotation.Value), velocity.Value, gravity.Value, liveTime, character.Character.photonView.ViewID, character.Character.Team, settings);
+            string projectileName = (string)parameters[0];
+            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
+            Vector3 velocity = ((CustomLogicVector3Builtin)parameters[3]).Value;
+            Vector3 gravity = ((CustomLogicVector3Builtin)parameters[4]).Value;
+            float liveTime = parameters[5].UnboxToFloat();
+            BaseCharacter character = ((CustomLogicCharacterBuiltin)parameters[6]).Character;
+            object[] settings = null;
+            if (projectileName == ProjectilePrefabs.Thunderspear)
+            {
+                float radius = parameters[7].UnboxToFloat();
+                Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
+                settings = new object[] { radius, color };
+            }
+            else if (projectileName == ProjectilePrefabs.Flare)
+            {
+                Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
+                settings = new object[] { color };
+            }
+            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID, 
+                character.Team, settings);
         }
 
         [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, params object[] settings)
+        public void SpawnEffect(object[] parameters)
         {
-            // TODO: Modify this to work with Kwargs (TS and Flare require optional params Color And Sound)
-            EffectSpawner.Spawn(effectName, position.Value, Quaternion.Euler(rotation.Value), scale, true, settings);
+            string effectName = (string)parameters[0];
+            var field = typeof(EffectPrefabs).GetField(effectName);
+            if (field == null)
+                return null;
+            effectName = (string)field.GetValue(null);
+            Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
+            Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
+            float scale = parameters[3].UnboxToFloat();
+            object[] settings = null;
+            if (effectName == EffectPrefabs.ThunderspearExplode)
+            {
+                Color color = ((CustomLogicColorBuiltin)parameters[4]).Value.ToColor();
+                TSKillType killSound = TSKillType.Kill;
+                if (parameters.Count > 5)
+                {
+                    string killSoundName = (string)(parameters[5]);
+                    killSound = killSoundName switch
+                    {
+                        "Air" => TSKillType.Air,
+                        "Ground" => TSKillType.Ground,
+                        "ArmorHit" => TSKillType.ArmorHit,
+                        "CloseShot" => TSKillType.CloseShot,
+                        "MaxRangeShot" => TSKillType.MaxRangeShot,
+                        _ => TSKillType.Kill
+                    };
+                }
+                settings = new object[] { color, killSound };
+            }
+            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
         }
 
         [CLMethod(description: "Spawn a player")]

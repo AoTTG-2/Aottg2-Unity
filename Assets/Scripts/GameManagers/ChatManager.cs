@@ -608,7 +608,7 @@ namespace GameManagers
             return null;
         }
 
-        private static Player GetPlayer(string[] args)
+        public static Player GetPlayer(string[] args)
         {
             int id = -1;
             if (args.Length > 1 && int.TryParse(args[1], out id) && PhotonNetwork.CurrentRoom.GetPlayer(id, true) != null)

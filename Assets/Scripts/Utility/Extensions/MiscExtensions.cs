@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utility;
 
@@ -14,12 +15,14 @@ static class MiscExtensions
 {
     static readonly string HexPattern = @"(\[)[\w]{6}(\])";
     static readonly string ColorTagPattern = @"(<color=#)[\w]{6}(\>)";
+    static readonly string ColorEndPattern = @"(</color>)";
     static readonly string TagPattern = @"<\/?[^>]+>";
     static readonly string SizePattern = @"<\/?size.*?>";
     static readonly string MaterialPattern = @"<\/?material.*?>";
     static readonly string QuadPattern = @"<\/?quad.*?>";
     static readonly Regex HexRegex = new Regex(HexPattern);
     static readonly Regex ColorTagRegex = new Regex(ColorTagPattern);
+    static readonly Regex ColorEndRegex = new Regex(ColorEndPattern);
     static readonly Regex TagRegex = new Regex(TagPattern);
     static readonly Regex IllegalStyleRegex = new Regex(SizePattern + "|" + MaterialPattern + "|" + QuadPattern);
 
@@ -115,6 +118,30 @@ static class MiscExtensions
     public static string ForceWhiteColorTag(this string text)
     {
         return ColorTagRegex.Replace(text, "<color=#FFFFFF>");
+    }
+
+    public static string StripColor(this string text)
+    {
+        text = ColorTagRegex.Replace(text, "");
+        text = ColorEndRegex.Replace(text, "");
+        return text;
+    }
+
+    public static string ForceColor(this string text, Color color)
+    {
+        text = StripColor(text);
+        string colorHex = color.ToHexString();
+        if (colorHex.Length <= 2)
+            return text;
+        else
+            colorHex = colorHex.Substring(0, colorHex.Length - 2);
+        return $"<color=#{colorHex}>{text}</color>";
+    }
+
+    public static string ForceColor(this string text, string colorHex)
+    {
+        text = StripColor(text);
+        return $"<color=#{colorHex}>{text}</color>";
     }
 
     public static string TruncateRichText(this string text, int length)
