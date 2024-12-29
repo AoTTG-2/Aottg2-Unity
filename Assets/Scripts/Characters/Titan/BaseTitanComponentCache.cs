@@ -2,6 +2,8 @@
 using Utility;
 using ApplicationManagers;
 using System.Collections.Generic;
+using Settings;
+using UnityEditor;
 
 namespace Characters
 {
@@ -36,6 +38,34 @@ namespace Characters
             {
                 GameObject go = c.gameObject;
                 string name = go.name;
+
+                if (name == "Bone")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 0)
+                    {
+                        Component.Destroy(go.GetComponent<BoxCollider>());
+                        continue;
+                    }
+                }
+
+                if (name == "MouthCollider1")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 1)
+                    {
+                        GameObject.Destroy(go);
+                        continue;
+                    }
+                }
+
+                if (name == "MouthCollider2")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 2)
+                    {
+                        GameObject.Destroy(go);
+                        continue;
+                    }
+                }
+
                 if (go.layer == PhysicsLayer.TitanPushbox || go.layer == PhysicsLayer.Hurtbox)
                 {
                     if (name != "SitPushbox")

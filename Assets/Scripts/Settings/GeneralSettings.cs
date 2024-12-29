@@ -29,6 +29,10 @@ namespace Settings
         public FloatSetting FPSFOVMax = new FloatSetting(100f, minValue: 1f, maxValue: 120f);
         public FloatSetting OriginalCameraDeadzone = new FloatSetting(0.2f, minValue: 0.0f, maxValue: 0.99f);
         public FloatSetting OriginalCameraSpeed = new FloatSetting(60f, minValue: 0.1f, maxValue: 200f);
+        public IntSetting ColliderFix = new IntSetting(0);
+        public BoolSetting OnCollisionEnterFix = new BoolSetting(true);
+        public BoolSetting WallSlideFix = new BoolSetting(true);
+
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is InGameCamera)

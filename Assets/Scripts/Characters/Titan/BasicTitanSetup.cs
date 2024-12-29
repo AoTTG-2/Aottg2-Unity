@@ -11,6 +11,7 @@ using SimpleJSONFixed;
 using System.Collections;
 using System.IO;
 using Settings;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Characters
 {
@@ -121,6 +122,39 @@ namespace Characters
             int col = eyeTexture / 8;
             int row = eyeTexture % 8;
             eyes.GetComponent<MeshRenderer>().material.mainTextureOffset = new Vector2(0.25f * col, -0.125f * row);
+
+            foreach (Collider c in gameObject.GetComponentsInChildren<Collider>())
+            {
+                GameObject go = c.gameObject;
+                string name = go.name;
+
+                if (name == "Bone")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 0)
+                    {
+                        Component.Destroy(go.GetComponent<BoxCollider>());
+                        continue;
+                    }
+                }
+
+                if (name == "MouthCollider1")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 1)
+                    {
+                        GameObject.Destroy(go);
+                        continue;
+                    }
+                }
+
+                if (name == "MouthCollider2")
+                {
+                    if (SettingsManager.GeneralSettings.ColliderFix.Value != 2)
+                    {
+                        GameObject.Destroy(go);
+                        continue;
+                    }
+                }
+            }
         }
 
         protected void CopyColliders(Transform from, Transform to, bool capsule, bool moveTransform)
