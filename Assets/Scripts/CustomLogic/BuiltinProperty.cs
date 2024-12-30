@@ -16,7 +16,16 @@ namespace CustomLogic
             IsReadOnly = _setter == null;
         }
 
-        public object GetValue(object instance) => _getter?.Invoke(instance);
-        public void SetValue(object instance, object value) => _setter?.Invoke(instance, value);
+        public object GetValue(object instance)
+        {
+            if (_getter == null)
+                return null;
+            return _getter(instance);
+        }
+        public void SetValue(object instance, object value)
+        {
+            if (_setter != null)
+                _setter(instance, value);
+        }
     }
 }

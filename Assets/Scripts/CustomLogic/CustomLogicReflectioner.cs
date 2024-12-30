@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace CustomLogic
 {
@@ -12,33 +13,35 @@ namespace CustomLogic
     internal class CustomLogicReflectioner
     {
         private const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
-        
+
         private static CustomLogicReflectioner instance;
         private static CustomLogicReflectioner Instance => instance ??= new CustomLogicReflectioner();
 
-        private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _fields = new();
-        private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _properties = new();
-        private readonly Dictionary<string, Dictionary<string, BuiltinMethod>> _methods = new();
+        private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _fields = new(8);
+        private readonly Dictionary<string, Dictionary<string, BuiltinProperty>> _properties = new(32);
+        private readonly Dictionary<string, Dictionary<string, BuiltinMethod>> _methods = new(32);
+
+        private readonly Dictionary<string, HashSet<string>> _visited = new();
 
         #region Converter MethodInfos
-        
+
         /*
          * The static converter methods (below) as reflection MethodInfo.
          * These method infos are not generic yet.
          */
 
-        private static readonly Type ThisType = typeof(CustomLogicReflectioner); 
-        
+        private static readonly Type ThisType = typeof(CustomLogicReflectioner);
+
         private static readonly MethodInfo GetMethodInfo = ThisType.GetMethod(nameof(InstanceGetDelegate), Flags);
         private static readonly MethodInfo SetMethodInfo = ThisType.GetMethod(nameof(InstanceSetDelegate), Flags);
-        
+
         private static readonly MethodInfo StaticGetMethodInfo = ThisType.GetMethod(nameof(StaticGetDelegate), Flags);
         private static readonly MethodInfo StaticSetMethodInfo = ThisType.GetMethod(nameof(StaticSetDelegate), Flags);
 
         #endregion
 
         #region Converters
-        
+
         /*
          * Converters for converting generic Func and Action to Func and Action of object.
          * Func<TClass, TResult>        ->      Func<object, object>
@@ -47,9 +50,10 @@ namespace CustomLogic
          * Action<TResult>              ->      Action<object>
          */
 
-        private static Func<object, object> InstanceGetDelegate<TClass, TResult>(Func<TClass, TResult> func) 
-            => classInstance => func((TClass)classInstance);
-        
+        private static Func<object, object> InstanceGetDelegate<TClass, TResult>(Func<TClass, TResult> func)
+        {
+            return classInstance => func((TClass)classInstance);
+        }
         private static Action<object, object> InstanceSetDelegate<TClass, TResult>(Action<TClass, TResult> func)
         {
             return (classInstance, result) =>
@@ -57,7 +61,7 @@ namespace CustomLogic
                 func((TClass)classInstance, CustomLogicEvaluator.ConvertTo<TResult>(result));
             };
         }
-        
+
         private static Func<object> StaticGetDelegate<TResult>(Func<TResult> func) => () => func();
         private static Action<object> StaticSetDelegate<TResult>(Action<TResult> func)
         {
@@ -69,7 +73,12 @@ namespace CustomLogic
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Fields => Instance._fields;
         public static Dictionary<string, Dictionary<string, BuiltinProperty>> Properties => Instance._properties;
         public static Dictionary<string, Dictionary<string, BuiltinMethod>> Methods => Instance._methods;
-        
+
+        private static bool IsCached(string typeName, string variableName)
+        {
+            return Instance._visited.ContainsKey(typeName) && Instance._visited[typeName].Contains(variableName);
+        }
+
         /// <summary>
         /// Tries to create a BuiltinField from a field of a builtin type
         /// </summary>
@@ -87,13 +96,21 @@ namespace CustomLogic
                     return true;
                 }
             }
-            
+
+            if (IsCached(typeName, fieldName))
+            {
+                field = default;
+                return false;
+            }
+
             if (CustomLogicBuiltinTypes.TypeMemberNames[typeName].Contains(fieldName) == false)
             {
                 field = default;
                 return false;
             }
-            
+
+            // Debug.Log($"Field {typeName}.{fieldName} not found, creating.");
+
             var type = CustomLogicBuiltinTypes.Types[typeName];
             var fieldInfo = type.GetField(fieldName, Flags);
 
@@ -102,17 +119,21 @@ namespace CustomLogic
                 field = default;
                 return false;
             }
-            
+
             var attribute = fieldInfo.GetCustomAttribute<CLPropertyAttribute>();
             attribute.ClearDescription();
-                
+
             var hasSetter = fieldInfo.IsInitOnly == false && fieldInfo.IsLiteral == false && attribute.ReadOnly == false;
             var builtinField = new BuiltinProperty(Getter, hasSetter ? Setter : null);
-            
+
             if (Instance._fields.ContainsKey(typeName) == false)
                 Instance._fields[typeName] = new Dictionary<string, BuiltinProperty>();
-            
-            Instance._fields[typeName][fieldInfo.Name] = builtinField;
+
+            if (Instance._visited.ContainsKey(typeName) == false)
+                Instance._visited[typeName] = new HashSet<string>();
+
+            Instance._visited[typeName].Add(fieldName);
+            Instance._fields[typeName][fieldName] = builtinField;
             field = builtinField;
             return true;
 
@@ -138,12 +159,18 @@ namespace CustomLogic
                 }
             }
 
+            if (IsCached(typeName, propertyName))
+            {
+                property = default;
+                return false;
+            }
+
             if (CustomLogicBuiltinTypes.TypeMemberNames[typeName].Contains(propertyName) == false)
             {
                 property = default;
                 return false;
             }
-            
+
             var type = CustomLogicBuiltinTypes.Types[typeName];
             var propertyInfo = type.GetProperty(propertyName, Flags);
 
@@ -152,16 +179,16 @@ namespace CustomLogic
                 property = default;
                 return false;
             }
-            
+
             var attribute = propertyInfo.GetCustomAttribute<CLPropertyAttribute>();
             attribute.ClearDescription();
-                
+
             var getMethod = propertyInfo.GetGetMethod();
             var setMethod = propertyInfo.GetSetMethod();
-                
+
             var hasGetter = getMethod != null;
             var hasSetter = setMethod != null && attribute.ReadOnly == false;
-            
+
             Func<object, object> getter = null;
             Action<object, object> setter = null;
 
@@ -185,7 +212,7 @@ namespace CustomLogic
                 else
                     getter = (Func<object, object>)genericGetMethod.Invoke(null, new object[] { getterDelegate });
             }
-            
+
             if (hasSetter)
             {
                 var setterType = setMethod.IsStatic
@@ -195,9 +222,9 @@ namespace CustomLogic
                 var genericSetMethod = setMethod.IsStatic
                     ? StaticSetMethodInfo.MakeGenericMethod(propertyInfo.PropertyType)
                     : SetMethodInfo.MakeGenericMethod(type, propertyInfo.PropertyType);
-                
+
                 var setterDelegate = setMethod.CreateDelegate(setterType);
-                
+
                 if (setMethod.IsStatic)
                 {
                     var staticSetter = (Action<object>)genericSetMethod.Invoke(null, new object[] { setterDelegate });
@@ -206,17 +233,22 @@ namespace CustomLogic
                 else
                     setter = (Action<object, object>)genericSetMethod.Invoke(null, new object[] { setterDelegate });
             }
-            
+
             property = new BuiltinProperty(getter, setter);
-            
+
             if (Instance._properties.ContainsKey(typeName) == false)
                 Instance._properties[typeName] = new Dictionary<string, BuiltinProperty>();
-            
-            Instance._properties[typeName][propertyInfo.Name] = property;
-            
+
+            if (Instance._visited.ContainsKey(typeName) == false)
+                Instance._visited[typeName] = new HashSet<string>();
+
+            Instance._visited[typeName].Add(propertyName);
+
+            Instance._properties[typeName][propertyName] = property;
+
             return true;
         }
-        
+
         /// <summary>
         /// Tries to create a BuiltinMethod from a method of a builtin type
         /// </summary>
@@ -235,30 +267,43 @@ namespace CustomLogic
                 }
             }
 
+            if (IsCached(typeName, methodName))
+            {
+                method = default;
+                return false;
+            }
+
             if (CustomLogicBuiltinTypes.TypeMemberNames[typeName].Contains(methodName) == false)
             {
                 method = default;
                 return false;
             }
-            
+
+            // Debug.Log($"Method {typeName}.{methodName} not found, creating.");
+
             var type = CustomLogicBuiltinTypes.Types[typeName];
             var methodInfo = type.GetMethods(Flags)
                 .FirstOrDefault(x => x.Name == methodName && x.HasAttribute<CLMethodAttribute>());
-            
+
             if (methodInfo == null)
             {
                 method = default;
                 return false;
             }
-            
+
             methodInfo.GetCustomAttribute<CLMethodAttribute>().ClearDescription();
-                
+
             method = new BuiltinMethod((classInstance, args, kwargs) => CustomLogicClassInstance.InvokeMethod(methodInfo, classInstance, args, kwargs));
-            
+
             if (Instance._methods.ContainsKey(typeName) == false)
                 Instance._methods[typeName] = new Dictionary<string, BuiltinMethod>();
-            
-            Instance._methods[typeName][methodInfo.Name] = method;
+
+            if (Instance._visited.ContainsKey(typeName) == false)
+                Instance._visited[typeName] = new HashSet<string>();
+
+            Instance._visited[typeName].Add(methodName);
+
+            Instance._methods[typeName][methodName] = method;
             return true;
         }
     }

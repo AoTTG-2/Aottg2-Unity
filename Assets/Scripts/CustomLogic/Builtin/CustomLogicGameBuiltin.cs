@@ -476,12 +476,12 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(object[] parameters)
+        public void SpawnEffect(params object[] parameters)
         {
             string effectName = (string)parameters[0];
             var field = typeof(EffectPrefabs).GetField(effectName);
             if (field == null)
-                return null;
+                return;
             effectName = (string)field.GetValue(null);
             Vector3 position = ((CustomLogicVector3Builtin)parameters[1]).Value;
             Vector3 rotation = ((CustomLogicVector3Builtin)parameters[2]).Value;
@@ -491,9 +491,39 @@ namespace CustomLogic
             {
                 Color color = ((CustomLogicColorBuiltin)parameters[4]).Value.ToColor();
                 TSKillType killSound = TSKillType.Kill;
-                if (parameters.Count > 5)
+                if (parameters.Length > 5)
                 {
                     string killSoundName = (string)(parameters[5]);
+                    killSound = killSoundName switch
+                    {
+                        "Air" => TSKillType.Air,
+                        "Ground" => TSKillType.Ground,
+                        "ArmorHit" => TSKillType.ArmorHit,
+                        "CloseShot" => TSKillType.CloseShot,
+                        "MaxRangeShot" => TSKillType.MaxRangeShot,
+                        _ => TSKillType.Kill
+                    };
+                }
+                settings = new object[] { color, killSound };
+            }
+            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
+        }
+
+        [CLMethod(description: "Spawn an effect")]
+        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] parameters)
+        {
+            var field = typeof(EffectPrefabs).GetField(effectName);
+            if (field == null)
+                return;
+            effectName = (string)field.GetValue(null);
+            object[] settings = null;
+            if (effectName == EffectPrefabs.ThunderspearExplode)
+            {
+                Color color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+                TSKillType killSound = TSKillType.Kill;
+                if (parameters.Length > 1)
+                {
+                    string killSoundName = (string)(parameters[1]);
                     killSound = killSoundName switch
                     {
                         "Air" => TSKillType.Air,
