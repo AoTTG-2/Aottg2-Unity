@@ -15,12 +15,19 @@ using System.Collections;
 
 namespace GameManagers
 {
+    enum GizmoMode
+    {
+        Center,
+        Local
+    }
+
     class MapEditorGameManager : BaseGameManager
     {
         public MapScript MapScript;
         public CustomLogicEvaluator LogicEvaluator;
         public HashSet<MapObject> SelectedObjects = new HashSet<MapObject>();
         public BaseGizmo CurrentGizmo;
+        public GizmoMode CurrentGizmoMode;
         public bool Snap;
         private List<BaseCommand> _undoCommands = new List<BaseCommand>();
         private List<BaseCommand> _redoCommands = new List<BaseCommand>();
@@ -379,6 +386,12 @@ namespace GameManagers
                 CurrentGizmo = _rotationGizmo;
             else
                 CurrentGizmo = _scaleGizmo;
+            SyncGizmos();
+        }
+
+        public void SetGizmoMode(GizmoMode mode)
+        {
+            CurrentGizmoMode = mode;
             SyncGizmos();
         }
 
