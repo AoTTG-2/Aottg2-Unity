@@ -150,6 +150,7 @@ namespace MapEditor
         private void ResetCenter()
         {
             Vector3 totalPosition = new Vector3();
+            _transform.rotation = Quaternion.identity;
             foreach (MapObject obj in _gameManager.SelectedObjects)
             {
                 totalPosition += obj.GameObject.transform.position;
