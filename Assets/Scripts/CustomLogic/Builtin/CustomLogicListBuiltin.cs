@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(InheritBaseMembers = true)]
-    class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "List", InheritBaseMembers = true)]
+    partial class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin
     {
         public List<object> List = new List<object>();
 
-        public CustomLogicListBuiltin(string type): base(type)
+        public CustomLogicListBuiltin(string type) : base(type)
         {
         }
 
-        public CustomLogicListBuiltin(): base("List")
+        public CustomLogicListBuiltin() : base("List")
         {
         }
 
@@ -88,7 +88,7 @@ namespace CustomLogic
         [CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
         public void SortCustom(UserMethod method)
         {
-            List.Sort((a, b) => (int)CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { a, b }));
+            List.Sort((a, b) => (int)CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { a, b }));
         }
 
         // Add linq operations using UserMethod as the function
@@ -96,21 +96,21 @@ namespace CustomLogic
         [CLMethod(description: "Filter the list using a custom method, expects a method with the signature bool method(element)")]
         public CustomLogicListBuiltin Filter(UserMethod method)
         {
-            var newList = List.Where(e => (bool)CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { e })).ToList();
+            var newList = List.Where(e => (bool)CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { e })).ToList();
             return new CustomLogicListBuiltin(newList);
         }
 
         [CLMethod(description: "Map the list using a custom method, expects a method with the signature object method(element)")]
         public CustomLogicListBuiltin Map(UserMethod method)
         {
-            var newList = List.Select(e => CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { e })).ToList();
+            var newList = List.Select(e => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { e })).ToList();
             return new CustomLogicListBuiltin(newList);
         }
 
         [CLMethod(description: "Reduce the list using a custom method, expects a method with the signature object method(acc, element)")]
         public object Reduce(UserMethod method, object initialValue)
         {
-            return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new List<object>() { acc, e }));
+            return List.Aggregate(initialValue, (acc, e) => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { acc, e }));
         }
 
         [CLMethod(description: "Randomize the list")]

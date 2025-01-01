@@ -3,8 +3,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
-    class CustomLogicRandomBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Random", Static = true)]
+    partial class CustomLogicRandomBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Unity.Mathematics.Random Rand;
         public readonly bool UseInstanceRandom;

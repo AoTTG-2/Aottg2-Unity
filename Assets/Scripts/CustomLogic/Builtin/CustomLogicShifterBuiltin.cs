@@ -3,8 +3,8 @@ using Controllers;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Shifter", Abstract = true)]
+    partial class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BaseShifter Shifter;
         public readonly BaseTitanAIController Controller;

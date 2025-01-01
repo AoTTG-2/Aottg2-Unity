@@ -3,8 +3,8 @@ using Controllers;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Titan", Abstract = true)]
+    partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BasicTitan Titan;
         public readonly BaseTitanAIController Controller;
@@ -91,14 +91,14 @@ namespace CustomLogic
             get => Titan.TurnPause;
             set { if (Titan.IsMine()) Titan.TurnPause = value; }
         }
-        
+
         [CLProperty("PT stamina.")]
         public float Stamina
         {
             get => Titan.CurrentSprintStamina;
             set { if (Titan.IsMine()) Titan.CurrentSprintStamina = value; }
         }
-        
+
         [CLProperty("PT max stamina.")]
         public float MaxStamina
         {
@@ -182,7 +182,7 @@ namespace CustomLogic
         {
             if (IsAlive() && Titan.AI == false)
                 return;
-            
+
             ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value
                                     : ((CustomLogicCharacterBuiltin)enemyObj).Character;
@@ -213,10 +213,10 @@ namespace CustomLogic
         [CLMethod("Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.")]
         public void Cripple(float time)
         {
-            if (IsAlive()) 
+            if (IsAlive())
                 Titan.Cripple(time);
         }
-        
+
         private bool IsAlive() => Titan.IsMine() && Titan.Dead == false;
     }
 }

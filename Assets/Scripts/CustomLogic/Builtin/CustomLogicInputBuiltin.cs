@@ -9,10 +9,10 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicInputBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Input", Abstract = true, Static = true, InheritBaseMembers = true)]
+    partial class CustomLogicInputBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicInputBuiltin(): base("Input")
+        public CustomLogicInputBuiltin() : base("Input")
         {
         }
 

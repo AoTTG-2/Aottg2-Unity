@@ -2,6 +2,9 @@
 
 namespace CustomLogic
 {
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class BuiltinTypeManagerAttribute : Attribute { }
+
     /// <summary>
     /// Custom logic builtin types must be marked with this attribute,
     /// they must also either have a parameterless constructor or
@@ -10,11 +13,6 @@ namespace CustomLogic
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     internal class CLTypeAttribute : CLBaseAttribute
     {
-        /// <summary>
-        /// Should be set to true if the type has static members
-        /// </summary>
-        public bool Static { get; set; } = false;
-
         /// <summary>
         /// Should be set to true if the type shouldn't be instantiated
         /// </summary>

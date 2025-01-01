@@ -7,13 +7,13 @@ using Photon.Pun;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "NetworkView", Abstract = true)]
+    partial class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
     {
         public readonly MapObject MapObject;
         public CustomLogicPhotonSync Sync;
         public int OwnerId = -1;
-        
+
         private List<object> _streamObjects;
         private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
 
@@ -70,7 +70,7 @@ namespace CustomLogic
                 if (MapObject.GameObject != null)
                 {
                     foreach (var instance in _classInstances)
-                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new List<object>() { oldOwner, newOwner });
+                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace CustomLogic
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message, sentServerTime });
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new object[] { player, message, sentServerTime });
             }
         }
 

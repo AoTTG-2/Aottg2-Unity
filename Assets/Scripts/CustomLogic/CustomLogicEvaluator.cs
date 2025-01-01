@@ -47,7 +47,7 @@ namespace CustomLogic
 
         public Dictionary<string, BaseSetting> GetModeSettings()
         {
-            var instance = CreateClassInstance("Main", new List<object>(), false);
+            var instance = CreateClassInstance("Main", EmptyArgs, false);
             try
             {
                 RunAssignmentsClassInstance(instance);
@@ -82,7 +82,7 @@ namespace CustomLogic
             Dictionary<string, string> parameterDict = new Dictionary<string, string>();
             try
             {
-                var instance = CreateClassInstance(component, new List<object>(), false);
+                var instance = CreateClassInstance(component, EmptyArgs, false);
                 RunAssignmentsClassInstance(instance);
                 foreach (string str in parameters)
                 {
@@ -201,7 +201,7 @@ namespace CustomLogic
 
         public void OnButtonClick(string name)
         {
-            EvaluateMethodForCallbacks("OnButtonClick", new List<object>() { name });
+            EvaluateMethodForCallbacks("OnButtonClick", new object[] { name });
         }
 
         public void OnPlayerSpawn(Player player, BaseCharacter character)
@@ -211,7 +211,7 @@ namespace CustomLogic
             if (characterBuiltin == null)
                 return;
 
-            EvaluateMethodForCallbacks("OnPlayerSpawn", new List<object>() { playerBuiltin, characterBuiltin });
+            EvaluateMethodForCallbacks("OnPlayerSpawn", new object[] { playerBuiltin, characterBuiltin });
         }
 
         public void OnCharacterSpawn(BaseCharacter character)
@@ -220,7 +220,7 @@ namespace CustomLogic
             if (builtin == null)
                 return;
 
-            EvaluateMethodForCallbacks("OnCharacterSpawn", new List<object>() { builtin });
+            EvaluateMethodForCallbacks("OnCharacterSpawn", new object[] { builtin });
         }
 
         public void OnCharacterReloaded(BaseCharacter character)
@@ -228,7 +228,7 @@ namespace CustomLogic
             var builtin = GetCharacterBuiltin(character);
             if (builtin == null)
                 return;
-            EvaluateMethodForCallbacks("OnCharacterReloaded", new List<object>() { builtin });
+            EvaluateMethodForCallbacks("OnCharacterReloaded", new object[] { builtin });
         }
 
         public void OnCharacterDie(BaseCharacter victim, BaseCharacter killer, string killerName)
@@ -236,7 +236,7 @@ namespace CustomLogic
             var victimBuiltin = GetCharacterBuiltin(victim);
             var killerBuiltin = GetCharacterBuiltin(killer);
 
-            EvaluateMethodForCallbacks("OnCharacterDie", new List<object>() { victimBuiltin, killerBuiltin, killerName });
+            EvaluateMethodForCallbacks("OnCharacterDie", new object[] { victimBuiltin, killerBuiltin, killerName });
         }
 
         public void OnCharacterDamaged(BaseCharacter victim, BaseCharacter killer, string killerName, int damage)
@@ -244,31 +244,31 @@ namespace CustomLogic
             var victimBuiltin = GetCharacterBuiltin(victim);
             var killerBuiltin = GetCharacterBuiltin(killer);
 
-            EvaluateMethodForCallbacks("OnCharacterDamaged", new List<object>() { victimBuiltin, killerBuiltin, killerName, damage });
+            EvaluateMethodForCallbacks("OnCharacterDamaged", new object[] { victimBuiltin, killerBuiltin, killerName, damage });
         }
 
         public object OnChatInput(string message)
         {
-            return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new List<object>() { message });
+            return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
         }
 
         public void OnPlayerJoin(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
-            EvaluateMethodForCallbacks("OnPlayerJoin", new List<object>() { playerBuiltin });
+            EvaluateMethodForCallbacks("OnPlayerJoin", new object[] { playerBuiltin });
             ((CustomLogicUIBuiltin)_staticClasses["UI"]).OnPlayerJoin(player);
         }
 
         public void OnPlayerLeave(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
-            EvaluateMethodForCallbacks("OnPlayerLeave", new List<object>() { playerBuiltin });
+            EvaluateMethodForCallbacks("OnPlayerLeave", new object[] { playerBuiltin });
         }
 
         public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new List<object>() { playerBuiltin, message, sentServerTimestamp });
+            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new object[] { playerBuiltin, message, sentServerTimestamp });
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
@@ -326,7 +326,7 @@ namespace CustomLogic
 
         private List<object> emptyList = new List<object>();
 
-        private void EvaluateMethodForCallbacks(string methodName, List<object> parameters = null)
+        private void EvaluateMethodForCallbacks(string methodName, object[] parameters = null)
         {
             // for loop instead of foreach because the list might be modified during the loop
             if (_callbacks.ContainsKey(methodName))
@@ -425,7 +425,7 @@ namespace CustomLogic
         {
             if (!_staticClasses.ContainsKey(className))
             {
-                var instance = CreateClassInstance(className, new List<object>(), false);
+                var instance = CreateClassInstance(className, EmptyArgs, false);
                 _staticClasses.Add(className, instance);
             }
         }
@@ -480,30 +480,34 @@ namespace CustomLogic
             return null;
         }
 
-        public CustomLogicClassInstance CreateClassInstance(string className, List<object> parameterValues, bool init = true)
+        public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
-            if (CustomLogicBuiltinTypes.IsBuiltinType(className))
-            {
-                if (CustomLogicBuiltinTypes.AbstractTypes.Contains(className))
-                    throw new Exception("Cannot instantiate abstract type " + className);
+            // if (CustomLogicBuiltinTypes.IsBuiltinType(className))
+            // {
+            //     if (CustomLogicBuiltinTypes.AbstractTypes.Contains(className))
+            //         throw new Exception("Cannot instantiate abstract type " + className);
 
-                return CustomLogicActivator.CreateInstance(className, parameterValues.ToArray());
-            }
+            //     return CustomLogicActivator.CreateInstance(className, parameterValues.ToArray());
+            // }
 
             CustomLogicClassInstance classInstance;
-            // if (className == "Dict")
-            //     classInstance = new CustomLogicDictBuiltin();
-            // else if (className == "List")
-            //     classInstance = new CustomLogicListBuiltin();
-            // else if (className == "Color")
-            //     classInstance = new CustomLogicColorBuiltin(parameterValues);
-            // else if (className == "Quaternion")
-            //     classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
-            // else if (className == "Range")
-            //     classInstance = new CustomLogicRangeBuiltin(parameterValues);
-            // else if (className == "Random")
-            //     classInstance = new CustomLogicRandomBuiltin(parameterValues);
-            // else
+            if (className == "Dict")
+                classInstance = new CustomLogicDictBuiltin();
+            else if (className == "List")
+                classInstance = new CustomLogicListBuiltin();
+            else if (className == "Color")
+                classInstance = new CustomLogicColorBuiltin(parameterValues);
+            else if (className == "Vector2")
+                classInstance = new CustomLogicVector2Builtin(parameterValues);
+            else if (className == "Vector3")
+                classInstance = new CustomLogicVector3Builtin(parameterValues);
+            else if (className == "Quaternion")
+                classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
+            else if (className == "Range")
+                classInstance = new CustomLogicRangeBuiltin(parameterValues);
+            else if (className == "Random")
+                classInstance = new CustomLogicRandomBuiltin(parameterValues);
+            else
             {
                 if (_start.Classes.ContainsKey(className) == false)
                     return null;
@@ -756,7 +760,7 @@ namespace CustomLogic
                         else if ((conditionalState == ConditionalEvalState.FailedIf || conditionalState == ConditionalEvalState.FailedElseIf) &&
                             (bool)EvaluateExpression(classInstance, localVariables, conditional.Condition))
                         {
-                            bool nextIter= EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
+                            bool nextIter = EvaluateBlock(classInstance, localVariables, conditional.Statements, out object nextResult);
                             if (nextIter)
                             {
                                 if (nextResult is not CustomLogicContinueExpressionAst && nextResult is not CustomLogicBreakExpressionAst)
@@ -816,7 +820,7 @@ namespace CustomLogic
                 if (value is CustomLogicClassInstance instance)
                 {
                     if (instance.HasVariable(copy))
-                        value = EvaluateMethod(instance, copy, emptyList);
+                        value = EvaluateMethod(instance, copy);
                 }
             }
 
@@ -850,7 +854,7 @@ namespace CustomLogic
                 if (isCompoundAssignment)
                 {
                     var originalValue = fieldInstance.GetVariable(fieldName);
-                    if (originalValue is BuiltinProperty property)
+                    if (originalValue is CLPropertyBinding property)
                         originalValue = property.GetValue(fieldInstance);
                     newValue = op switch
                     {
@@ -864,14 +868,14 @@ namespace CustomLogic
 
                 if (fieldInstance.TryGetVariable(fieldName, out var field))
                 {
-                    if (field is BuiltinProperty property)
+                    if (field is CLPropertyBinding property)
                     {
                         if (property.IsReadOnly)
                             throw new Exception($"Cannot reassign read-only field '{fieldInstance.ClassName}.{fieldName}'");
 
                         property.SetValue(fieldInstance, newValue);
                     }
-                    else if (field is BuiltinMethod)
+                    else if (field is CLMethodBinding)
                         throw new Exception($"Cannot reassign built-in method '{fieldInstance.ClassName}.{fieldName}'");
                     else
                         fieldInstance.Variables[fieldName] = newValue;
@@ -888,15 +892,15 @@ namespace CustomLogic
 
         Dictionary<string, object> EmptyKwargs = new Dictionary<string, object>();
 
-        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, List<object> parameterValues = null)
+        public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, object[] parameterValues = null)
         {
             if (parameterValues == null)
-                parameterValues = EmptyParameters;
+                parameterValues = EmptyArgs;
             try
             {
-                if (classInstance.TryGetVariable(methodName, out var variable) && variable is BuiltinMethod method)
+                if (classInstance.TryGetVariable(methodName, out var variable) && variable is CLMethodBinding method)
                 {
-                    return method.Call(classInstance, parameterValues, EmptyKwargs);
+                    return method.Call(classInstance, parameterValues);
                 }
 
                 if (classInstance is CustomLogicClassInstanceBuiltin)
@@ -917,7 +921,7 @@ namespace CustomLogic
                 if (methodAst.Coroutine)
                 {
                     Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                    int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
+                    int maxValues = Math.Min(parameterValues.Length, methodAst.ParameterNames.Count);
                     for (int i = 0; i < maxValues; i++)
                         localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
                     return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance,
@@ -926,7 +930,7 @@ namespace CustomLogic
                 else
                 {
                     Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
-                    int maxValues = Math.Min(parameterValues.Count, methodAst.ParameterNames.Count);
+                    int maxValues = Math.Min(parameterValues.Length, methodAst.ParameterNames.Count);
                     for (int i = 0; i < maxValues; i++)
                         localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
                     EvaluateBlock(classInstance, localVariables, methodAst.Statements, out object result);
@@ -945,19 +949,19 @@ namespace CustomLogic
             }
         }
 
-        public object EvaluateMethod(UserMethod userMethod, List<object> parameterValues = null)
+        public object EvaluateMethod(UserMethod userMethod, object[] parameterValues = null)
         {
             var ast = userMethod.Ast;
             var methodName = userMethod.Ast.Name;
             var classInstance = userMethod.Owner;
 
             if (parameterValues == null)
-                parameterValues = EmptyParameters;
+                parameterValues = EmptyArgs;
 
             try
             {
                 Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                int maxValues = Math.Min(parameterValues.Count, ast.ParameterNames.Count);
+                int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
                 for (int i = 0; i < maxValues; i++)
                     localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
                 if (ast.Coroutine)
@@ -1007,10 +1011,11 @@ namespace CustomLogic
                 else if (expression.Type == CustomLogicAstType.ClassInstantiateExpression)
                 {
                     CustomLogicClassInstantiateExpressionAst instantiate = (CustomLogicClassInstantiateExpressionAst)expression;
-                    List<object> parameters = new List<object>();
-                    foreach (CustomLogicBaseAst ast in instantiate.Parameters)
+                    var parameters = new object[instantiate.Parameters.Count];
+                    for (int i = 0; i < instantiate.Parameters.Count; i++)
                     {
-                        parameters.Add(EvaluateExpression(classInstance, localVariables, (CustomLogicBaseExpressionAst)ast));
+                        CustomLogicBaseAst ast = instantiate.Parameters[i];
+                        parameters[i] = EvaluateExpression(classInstance, localVariables, (CustomLogicBaseExpressionAst)ast);
                     }
 
                     // todo: Replace null check with:
@@ -1021,9 +1026,9 @@ namespace CustomLogic
                         return newClassInstance;
 
                     // If no class was found with that name, interpret the expression as local method call
-                    if (localVariables.ContainsKey(instantiate.Name) && localVariables[instantiate.Name] is BuiltinMethod method)
+                    if (localVariables.ContainsKey(instantiate.Name) && localVariables[instantiate.Name] is CLMethodBinding method)
                     {
-                        return method.Call(classInstance, parameters, new Dictionary<string, object>());
+                        return method.Call(classInstance, parameters);
                     }
 
                     var userMethod = (UserMethod)localVariables[instantiate.Name];
@@ -1034,7 +1039,7 @@ namespace CustomLogic
                     CustomLogicFieldExpressionAst fieldExpression = (CustomLogicFieldExpressionAst)expression;
                     CustomLogicClassInstance fieldInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, fieldExpression.Left);
                     object value = fieldInstance.GetVariable(fieldExpression.FieldName);
-                    if (value is BuiltinProperty builtinField)
+                    if (value is CLPropertyBinding builtinField)
                         return builtinField.GetValue(fieldInstance);
                     return value;
                 }
@@ -1046,10 +1051,11 @@ namespace CustomLogic
                 {
                     CustomLogicMethodCallExpressionAst methodCallExpression = (CustomLogicMethodCallExpressionAst)expression;
                     CustomLogicClassInstance methodCallInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, methodCallExpression.Left);
-                    List<object> parameters = new List<object>();
-                    foreach (CustomLogicBaseExpressionAst parameterExpression in methodCallExpression.Parameters)
+                    var parameters = new object[methodCallExpression.Parameters.Count];
+                    for (int i = 0; i < methodCallExpression.Parameters.Count; i++)
                     {
-                        parameters.Add(EvaluateExpression(classInstance, localVariables, parameterExpression));
+                        CustomLogicBaseExpressionAst parameterExpression = (CustomLogicBaseExpressionAst)methodCallExpression.Parameters[i];
+                        parameters[i] = EvaluateExpression(classInstance, localVariables, parameterExpression);
                     }
                     return EvaluateMethod(methodCallInstance, methodCallExpression.Name, parameters);
                 }
@@ -1107,17 +1113,22 @@ namespace CustomLogic
             return null;
         }
 
+        public readonly object[] Parameters3 = new object[2];
+
         private object ClassMathOperation(object left, object right, string method)
         {
             CustomLogicClassInstance instance = left is CustomLogicClassInstance ? (CustomLogicClassInstance)left : (CustomLogicClassInstance)right;
             if (instance.HasVariable(method))
             {
-                using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                {
-                    Parameters.Add(left);
-                    Parameters.Add(right);
-                    return EvaluateMethod(instance, method, Parameters);
-                }
+                Parameters3[0] = left;
+                Parameters3[1] = right;
+                return EvaluateMethod(instance, method, Parameters3);
+                // using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                // {
+                //     Parameters.Add(left);
+                //     Parameters.Add(right);
+                //     return EvaluateMethod(instance, method, Parameters);
+                // }
             }
             else
                 throw new Exception($"No {method} method found in class " + instance.ClassName);
@@ -1127,7 +1138,7 @@ namespace CustomLogic
         string sub = nameof(ICustomLogicMathOperators.__Sub__);
         string mul = nameof(ICustomLogicMathOperators.__Mul__);
         string div = nameof(ICustomLogicMathOperators.__Div__);
-        
+
         string eq = nameof(ICustomLogicEquals.__Eq__);
         string copy = nameof(ICustomLogicCopyable.__Copy__);
 
@@ -1191,11 +1202,13 @@ namespace CustomLogic
                 CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
                 if (leftInstance.HasVariable(eq))
                 {
-                    using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                    {
-                        Parameters.Add(right);
-                        return (bool)EvaluateMethod(leftInstance, eq, Parameters);
-                    }
+                    Parameters3[0] = right;
+                    return (bool)EvaluateMethod(leftInstance, eq, Parameters3);
+                    // using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                    // {
+                    //     Parameters.Add(right);
+                    //     return (bool)EvaluateMethod(leftInstance, eq, Parameters);
+                    // }
                 }
             }
             else if (right is CustomLogicClassInstance)
@@ -1203,11 +1216,13 @@ namespace CustomLogic
                 CustomLogicClassInstance rightInstance = (CustomLogicClassInstance)right;
                 if (rightInstance.HasVariable(eq))
                 {
-                    using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                    {
-                        Parameters.Add(left);
-                        return (bool)EvaluateMethod(rightInstance, eq, Parameters);
-                    }
+                    Parameters3[0] = left;
+                    return (bool)EvaluateMethod(rightInstance, eq, Parameters3);
+                    // using (CollectionPool<List<object>, object>.Get(out var Parameters))
+                    // {
+                    //     Parameters.Add(left);
+                    //     return (bool)EvaluateMethod(rightInstance, eq, Parameters);
+                    // }
                 }
             }
             if (left != null)

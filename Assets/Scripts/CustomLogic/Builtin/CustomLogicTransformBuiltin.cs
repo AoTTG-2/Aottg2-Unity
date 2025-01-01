@@ -2,11 +2,11 @@
 
 namespace CustomLogic
 {
-    [CLType(Static = false)]
-    class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Transform", Static = false)]
+    partial class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
         public readonly Transform Value;
-        
+
         private Vector3 _internalRotation;
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
@@ -19,7 +19,7 @@ namespace CustomLogic
         public CustomLogicTransformBuiltin(Transform transform) : base("Transform")
         {
             Value = transform;
-            
+
             _animation = Value.GetComponent<Animation>();
             _audioSource = Value.GetComponent<AudioSource>();
             _particleSystem = Value.GetComponent<ParticleSystem>();
@@ -189,7 +189,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Transform.RotateAround(Vector3, Vector3, float)"/>
         [CLMethod] public void RotateAround(CustomLogicVector3Builtin point, CustomLogicVector3Builtin axis, float angle) => Value.RotateAround(point.Value, axis.Value, angle);
-        
+
         /// <inheritdoc cref="Transform.LookAt(Vector3)"/>
         [CLMethod] public void LookAt(CustomLogicVector3Builtin target) => Value.LookAt(target);
 
@@ -199,10 +199,10 @@ namespace CustomLogic
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
         }
-        
+
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
         public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
-        
+
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch

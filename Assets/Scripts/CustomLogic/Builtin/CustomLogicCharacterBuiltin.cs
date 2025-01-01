@@ -7,12 +7,12 @@ using UnityEngine;
 namespace CustomLogic
 {
     // todo: all property setters should check IsMine()
-    [CLType(Abstract = true)]
-    abstract class CustomLogicCharacterBuiltin: CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Character", Abstract = true)]
+    abstract partial class CustomLogicCharacterBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
     {
         public readonly BaseCharacter Character;
-        
-        protected CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character"): base(type)
+
+        protected CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character") : base(type)
         {
             Character = character;
             Variables["IsCharacter"] = true;
@@ -26,10 +26,10 @@ namespace CustomLogic
 
         [CLProperty(Description = "Network view ID of the character.")]
         public int ViewID => Character.Cache.PhotonView.ViewID;
-        
+
         [CLProperty(Description = "Is this character mine?")]
         public bool IsMine => Character.IsMine();
-        
+
         [CLProperty]
         public bool IsMainCharacter => Character.IsMainCharacter();
 
@@ -40,7 +40,8 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
-            set {
+            set
+            {
                 if (Character.IsMine())
                     Character.Cache.Transform.position = value.Value;
             }
@@ -55,7 +56,7 @@ namespace CustomLogic
                 if (Character.IsMine())
                     Character.Cache.Transform.rotation = Quaternion.Euler(value.Value);
             }
-            
+
         }
 
         [CLProperty(Description = "Quaternion rotation of the character.")]

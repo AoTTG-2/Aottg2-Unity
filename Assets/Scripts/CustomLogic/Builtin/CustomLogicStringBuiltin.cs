@@ -4,8 +4,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, Abstract = true)]
-    class CustomLogicStringBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "String", Static = true, Abstract = true)]
+    partial class CustomLogicStringBuiltin : CustomLogicClassInstanceBuiltin
     {
         public CustomLogicStringBuiltin() : base("String") { }
 
@@ -17,7 +17,7 @@ namespace CustomLogic
         {
             return Util.FormatFloat(val, decimals);
         }
-        
+
         [CLMethod("Equivalent to C# string.format(string, List<string>).")]
         public static string FormatFromList(string str, CustomLogicListBuiltin list)
         {

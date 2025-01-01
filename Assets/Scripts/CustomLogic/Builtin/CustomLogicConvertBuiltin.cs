@@ -6,10 +6,10 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicConvertBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Convert", Abstract = true, Static = true, InheritBaseMembers = true)]
+    partial class CustomLogicConvertBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicConvertBuiltin(): base("Convert")
+        public CustomLogicConvertBuiltin() : base("Convert")
         {
         }
 
@@ -111,35 +111,35 @@ namespace CustomLogic
         }
 
         [CLMethod("Checks if the class instance has a variable")]
-        public bool HasVariable(CustomLogicClassInstance classInstance, string variableName)
+        public bool HasVariable(CustomLogicClassInstance cInstance, string variableName)
         {
-            return classInstance.HasVariable(variableName);
+            return cInstance.HasVariable(variableName);
         }
 
         [CLMethod("Defines a variable for the class instance")]
-        public void DefineVariable(CustomLogicClassInstance classInstance, string variableName, object value)
+        public void DefineVariable(CustomLogicClassInstance cInstance, string variableName, object value)
         {
             // Add the variable to the class instance if it doesn't exist
-            if (!classInstance.HasVariable(variableName))
+            if (!cInstance.HasVariable(variableName))
             {
-                classInstance.Variables[variableName] = value;
+                cInstance.Variables[variableName] = value;
             }
         }
 
         [CLMethod("Removes a variable from the class instance")]
-        public void RemoveVariable(CustomLogicClassInstance classInstance, string variableName)
+        public void RemoveVariable(CustomLogicClassInstance cInstance, string variableName)
         {
             // Remove the variable from the class instance if it exists
-            if (classInstance.HasVariable(variableName))
+            if (cInstance.HasVariable(variableName))
             {
-                classInstance.Variables.Remove(variableName);
+                cInstance.Variables.Remove(variableName);
             }
         }
 
         [CLMethod("Gets the type of the class instance")]
-        public string GetType(CustomLogicClassInstance classInstance)
+        public string GetType(CustomLogicClassInstance cInstance)
         {
-            return classInstance.ClassName;
+            return cInstance.ClassName;
         }
 
 

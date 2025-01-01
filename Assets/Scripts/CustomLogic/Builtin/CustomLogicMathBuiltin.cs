@@ -7,10 +7,10 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true, Static = true)]
-    class CustomLogicMathBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Math", Abstract = true, InheritBaseMembers = true, Static = true)]
+    partial class CustomLogicMathBuiltin : CustomLogicClassInstanceBuiltin
     {
-        public CustomLogicMathBuiltin(): base("Math")
+        public CustomLogicMathBuiltin() : base("Math")
         {
         }
 

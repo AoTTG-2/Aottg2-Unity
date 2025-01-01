@@ -1,7 +1,7 @@
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true)]
-    class CustomLogicLineCastHitResultBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
+    [CLType(Name = "LineCastHitResult", Abstract = true, InheritBaseMembers = true)]
+    partial class CustomLogicLineCastHitResultBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
     {
         [CLProperty("true if the linecast hit a character", ReadOnly = true)]
         public bool IsCharacter;

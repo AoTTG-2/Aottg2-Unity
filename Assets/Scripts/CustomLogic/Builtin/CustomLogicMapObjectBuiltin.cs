@@ -11,8 +11,8 @@ using CustomLogic;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicMapObjectBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "MapObject", Abstract = true)]
+    partial class CustomLogicMapObjectBuiltin : CustomLogicClassInstanceBuiltin
     {
         public MapObject Value;
         private Vector3 _internalRotation;
@@ -20,7 +20,7 @@ namespace CustomLogic
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
 
-        public CustomLogicMapObjectBuiltin(MapObject obj): base("MapObject")
+        public CustomLogicMapObjectBuiltin(MapObject obj) : base("MapObject")
         {
             Value = obj;
         }
@@ -628,7 +628,8 @@ namespace CustomLogic
             var signs = new List<int> { -1, 1 };
             signs.ForEach(signX =>
                 signs.ForEach(signY =>
-                    signs.ForEach(signZ => {
+                    signs.ForEach(signZ =>
+                    {
                         var vector = new Vector3(size.x * signX, size.y * signY, size.z * signZ);
                         result.List.Add(new CustomLogicVector3Builtin(boxCollider.transform.TransformPoint(boxCollider.center + vector * 0.5f)));
                     })));
@@ -643,7 +644,7 @@ namespace CustomLogic
             {
                 var light = Value.GameObject.AddComponent<Light>();
                 light.type = LightType.Directional;
-                light.color = ((CustomLogicColorBuiltin) parameter1).Value.ToColor();
+                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
                 light.intensity = parameter2.UnboxToFloat();
                 light.shadows = LightShadows.Soft;
                 light.shadowStrength = 0.8f;
@@ -656,7 +657,7 @@ namespace CustomLogic
             {
                 var light = Value.GameObject.AddComponent<Light>();
                 light.type = LightType.Point;
-                light.color = ((CustomLogicColorBuiltin) parameter1).Value.ToColor();
+                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
                 light.intensity = parameter2.UnboxToFloat();
                 light.range = parameter3.UnboxToFloat();
                 light.shadows = LightShadows.None;

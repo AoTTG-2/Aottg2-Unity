@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true)]
-    class CustomLogicCollisionBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
+    [CLType(Name = "Collision", Abstract = true, InheritBaseMembers = true)]
+    partial class CustomLogicCollisionBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
     {
         public Collision collision;
 

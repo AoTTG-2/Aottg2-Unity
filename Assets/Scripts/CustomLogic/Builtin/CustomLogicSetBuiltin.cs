@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CustomLogic
 {
-    [CLType(InheritBaseMembers = true)]
-    class CustomLogicSetBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Set", InheritBaseMembers = true)]
+    partial class CustomLogicSetBuiltin : CustomLogicClassInstanceBuiltin
     {
         public HashSet<object> Set = new HashSet<object>();
         public CustomLogicSetBuiltin() : base("Set")

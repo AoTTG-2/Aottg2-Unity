@@ -49,7 +49,7 @@ namespace CustomLogic
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
+            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other });
         }
 
         public void OnCollisionEnter(CustomLogicClassInstanceBuiltin other)
@@ -57,7 +57,7 @@ namespace CustomLogic
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new List<object>() { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other });
         }
 
         public void OnCollisionExit(CustomLogicClassInstanceBuiltin other)
@@ -65,7 +65,7 @@ namespace CustomLogic
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new List<object>() { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other });
         }
 
         public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, Vector3 position)
@@ -73,7 +73,7 @@ namespace CustomLogic
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new List<object>() { character, name, damage, type, position });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new object[] { character, name, damage, type, position });
         }
 
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
@@ -81,7 +81,7 @@ namespace CustomLogic
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new List<object>() { human, position, left });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new object[] { human, position, left });
         }
 
         public static object DeserializeValue(object obj, string value)

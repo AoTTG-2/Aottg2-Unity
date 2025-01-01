@@ -60,7 +60,7 @@ namespace CustomLogic
 
             if (evaluator != null && HasVariable(methodName))
             {
-                return (bool)evaluator.EvaluateMethod(this, methodName, new List<object> { obj });
+                return (bool)evaluator.EvaluateMethod(this, methodName, new object[] { obj });
             }
 
             return base.Equals(obj);
@@ -90,16 +90,22 @@ namespace CustomLogic
 
             if (CustomLogicBuiltinTypes.IsBuiltinType(ClassName) && CustomLogicBuiltinTypes.TypeMemberNames[ClassName].Contains(name))
             {
-                var isField = CustomLogicReflectioner.GetOrCreateField(ClassName, name, out var field);
-                var isProperty = CustomLogicReflectioner.GetOrCreateProperty(ClassName, name, out var property);
-                var isMethod = CustomLogicReflectioner.GetOrCreateMethod(ClassName, name, out var method);
-
-                if (isField || isProperty || isMethod)
+                if (CLBindingCache.GetOrCreateBinding(ClassName, name, out var binding))
                 {
-                    variable = isField ? field : isProperty ? property : method;
-                    Variables[name] = variable;
+                    variable = binding;
+                    Variables[name] = binding;
                     return true;
                 }
+                // var isField = CLBindingCache.GetOrCreateField(ClassName, name, out var field);
+                // var isProperty = CLBindingCache.GetOrCreateProperty(ClassName, name, out var property);
+                // var isMethod = CLBindingCache.GetOrCreateMethod(ClassName, name, out var method);
+
+                // if (isField || isProperty || isMethod)
+                // {
+                //     variable = isField ? field : isProperty ? property : method;
+                //     Variables[name] = variable;
+                //     return true;
+                // }
             }
 
             var c = ClassName;
@@ -110,16 +116,22 @@ namespace CustomLogic
                 c = CustomLogicBuiltinTypes.BaseTypeNames[c];
                 if (CustomLogicBuiltinTypes.TypeMemberNames[c].Contains(name))
                 {
-                    var isField = CustomLogicReflectioner.GetOrCreateField(c, name, out var field);
-                    var isProperty = CustomLogicReflectioner.GetOrCreateProperty(c, name, out var property);
-                    var isMethod = CustomLogicReflectioner.GetOrCreateMethod(c, name, out var method);
-
-                    if (isField || isProperty || isMethod)
+                    if (CLBindingCache.GetOrCreateBinding(c, name, out var binding))
                     {
-                        variable = isField ? field : isProperty ? property : method;
-                        Variables[name] = variable;
+                        variable = binding;
+                        Variables[name] = binding;
                         return true;
                     }
+                    // var isField = CLBindingCache.GetOrCreateField(c, name, out var field);
+                    // var isProperty = CLBindingCache.GetOrCreateProperty(c, name, out var property);
+                    // var isMethod = CLBindingCache.GetOrCreateMethod(c, name, out var method);
+
+                    // if (isField || isProperty || isMethod)
+                    // {
+                    //     variable = isField ? field : isProperty ? property : method;
+                    //     Variables[name] = variable;
+                    //     return true;
+                    // }
                 }
             }
 

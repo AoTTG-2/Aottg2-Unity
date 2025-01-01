@@ -6,8 +6,8 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
-    class CustomLogicPhysicsBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Physics", Static = true)]
+    partial class CustomLogicPhysicsBuiltin : CustomLogicClassInstanceBuiltin
     {
         public CustomLogicPhysicsBuiltin() : base("Physics")
         {

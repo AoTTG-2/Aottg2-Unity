@@ -6,12 +6,12 @@ using UnityEngine.Rendering;
 namespace CustomLogic
 {
     // TODO: Make dict lookup constant time
-    [CLType(Static = false, InheritBaseMembers = true)]
-    class CustomLogicDictBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Dict", Static = false, InheritBaseMembers = true)]
+    partial class CustomLogicDictBuiltin : CustomLogicClassInstanceBuiltin
     {
         public Dictionary<object, object> Dict = new Dictionary<object, object>();
 
-        public CustomLogicDictBuiltin(): base("Dict")
+        public CustomLogicDictBuiltin() : base("Dict")
         {
         }
 
@@ -76,10 +76,10 @@ namespace CustomLogic
 
                 if (i != Dict.Count - 1)
                     builder.Append(", ");
-                
+
                 i++;
             }
-            
+
             builder.Append("}");
             return builder.ToString();
 

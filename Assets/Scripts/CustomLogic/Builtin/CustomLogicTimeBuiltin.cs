@@ -2,8 +2,8 @@
 
 namespace CustomLogic
 {
-    [CLType(Static = true, Abstract = true)]
-    class CustomLogicTimeBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Time", Static = true, Abstract = true)]
+    partial class CustomLogicTimeBuiltin : CustomLogicClassInstanceBuiltin
     {
         public CustomLogicTimeBuiltin() : base("Time") { }
 

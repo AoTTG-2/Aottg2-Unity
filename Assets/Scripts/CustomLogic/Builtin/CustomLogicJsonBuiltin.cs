@@ -5,8 +5,8 @@ using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, InheritBaseMembers = true)]
-    class CustomLogicJsonBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Json", Static = true, InheritBaseMembers = true)]
+    partial class CustomLogicJsonBuiltin : CustomLogicClassInstanceBuiltin
     {
         public CustomLogicJsonBuiltin() : base("Json")
         {
@@ -33,7 +33,7 @@ namespace CustomLogic
             {
                 return null;
             }
-            
+
         }
 
         [CLMethod(description: "Saves a custom logic object into a json string")]

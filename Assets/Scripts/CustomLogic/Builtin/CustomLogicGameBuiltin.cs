@@ -14,13 +14,13 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicGameBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Game", Abstract = true, Static = true, InheritBaseMembers = true)]
+    partial class CustomLogicGameBuiltin : CustomLogicClassInstanceBuiltin
     {
         private string _lastSetTopLabel = string.Empty;
         private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();
 
-        public CustomLogicGameBuiltin(): base("Game")
+        public CustomLogicGameBuiltin() : base("Game")
         {
         }
 
@@ -471,7 +471,7 @@ namespace CustomLogic
                 Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                 settings = new object[] { color };
             }
-            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID, 
+            ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID,
                 character.Team, settings);
         }
 
@@ -509,35 +509,35 @@ namespace CustomLogic
             EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
         }
 
-        [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] parameters)
-        {
-            var field = typeof(EffectPrefabs).GetField(effectName);
-            if (field == null)
-                return;
-            effectName = (string)field.GetValue(null);
-            object[] settings = null;
-            if (effectName == EffectPrefabs.ThunderspearExplode)
-            {
-                Color color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
-                TSKillType killSound = TSKillType.Kill;
-                if (parameters.Length > 1)
-                {
-                    string killSoundName = (string)(parameters[1]);
-                    killSound = killSoundName switch
-                    {
-                        "Air" => TSKillType.Air,
-                        "Ground" => TSKillType.Ground,
-                        "ArmorHit" => TSKillType.ArmorHit,
-                        "CloseShot" => TSKillType.CloseShot,
-                        "MaxRangeShot" => TSKillType.MaxRangeShot,
-                        _ => TSKillType.Kill
-                    };
-                }
-                settings = new object[] { color, killSound };
-            }
-            EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
-        }
+        // [CLMethod(description: "Spawn an effect")]
+        // public void SpawnEffect(string effectName, CustomLogicVector3Builtin position, CustomLogicVector3Builtin rotation, float scale, object[] parameters)
+        // {
+        //     var field = typeof(EffectPrefabs).GetField(effectName);
+        //     if (field == null)
+        //         return;
+        //     effectName = (string)field.GetValue(null);
+        //     object[] settings = null;
+        //     if (effectName == EffectPrefabs.ThunderspearExplode)
+        //     {
+        //         Color color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
+        //         TSKillType killSound = TSKillType.Kill;
+        //         if (parameters.Length > 1)
+        //         {
+        //             string killSoundName = (string)(parameters[1]);
+        //             killSound = killSoundName switch
+        //             {
+        //                 "Air" => TSKillType.Air,
+        //                 "Ground" => TSKillType.Ground,
+        //                 "ArmorHit" => TSKillType.ArmorHit,
+        //                 "CloseShot" => TSKillType.CloseShot,
+        //                 "MaxRangeShot" => TSKillType.MaxRangeShot,
+        //                 _ => TSKillType.Kill
+        //             };
+        //         }
+        //         settings = new object[] { color, killSound };
+        //     }
+        //     EffectSpawner.Spawn(effectName, position, Quaternion.Euler(rotation), scale, true, settings);
+        // }
 
         [CLMethod(description: "Spawn a player")]
         public void SpawnPlayer(CustomLogicPlayerBuiltin player, bool force)
@@ -607,8 +607,8 @@ namespace CustomLogic
         public void ShowKillFeedAll(string killer, string victim, int score, string weapon)
         {
             RPCManager.PhotonView.RPC("ShowKillFeedRPC", RpcTarget.All, new object[] { killer, victim, score, weapon });
-        }   
-        private bool NeedRefreshList<T>(string cacheKey, HashSet<T> currentSet, bool includeAI, bool includeNonAI, bool isShifter) where T: BaseCharacter
+        }
+        private bool NeedRefreshList<T>(string cacheKey, HashSet<T> currentSet, bool includeAI, bool includeNonAI, bool isShifter) where T : BaseCharacter
         {
             if (!_cachedLists.ContainsKey(cacheKey))
                 return true;
