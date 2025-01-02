@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
-using Utility;
 
 namespace CustomLogic
 {
     [CLType(Name = "Vector2", Static = true)]
-    partial class CustomLogicVector2Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
+    partial class CustomLogicVector2Builtin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         private Vector2 _value;
 
-        public CustomLogicVector2Builtin(object[] parameterValues) : base("Vector2")
+        [CLConstructor]
+        public CustomLogicVector2Builtin(object[] parameterValues)
         {
             float x = 0;
             float y = 0;
@@ -28,7 +28,7 @@ namespace CustomLogic
 
         }
 
-        public CustomLogicVector2Builtin(Vector2 value) : base("Vector2")
+        public CustomLogicVector2Builtin(Vector2 value)
         {
             _value = value;
         }

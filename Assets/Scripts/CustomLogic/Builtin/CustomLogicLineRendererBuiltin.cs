@@ -1,15 +1,31 @@
 using ApplicationManagers;
-using Map;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "LineRenderer", InheritBaseMembers = true, Static = true)]
-    partial class CustomLogicLineRendererBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "LineRenderer", Static = true)]
+    partial class CustomLogicLineRendererBuiltin : BuiltinClassInstance
     {
         public LineRenderer Value = null;
+
+        [CLConstructor]
+        public CustomLogicLineRendererBuiltin(object[] parameterValues)
+        {
+            Value = new GameObject().AddComponent<LineRenderer>();
+            Value.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/TransparentMaterial", true);
+            Value.material.color = Color.black;
+            Value.startWidth = 1f;
+            Value.endWidth = 1f;
+            Value.positionCount = 0;
+            Value.enabled = false;
+        }
+
+        public CustomLogicLineRendererBuiltin(LineRenderer value)
+        {
+            Value = value;
+        }
 
         [CLProperty(description: "The width of the line at the start")]
         public float StartWidth
@@ -218,24 +234,6 @@ namespace CustomLogic
         {
             get => Value.colorGradient.mode.ToString();
             set => Value.colorGradient.mode = (GradientMode)System.Enum.Parse(typeof(GradientMode), value);
-        }
-
-
-
-        public CustomLogicLineRendererBuiltin(object[] parameterValues) : base("LineRenderer")
-        {
-            Value = new GameObject().AddComponent<LineRenderer>();
-            Value.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/TransparentMaterial", true);
-            Value.material.color = Color.black;
-            Value.startWidth = 1f;
-            Value.endWidth = 1f;
-            Value.positionCount = 0;
-            Value.enabled = false;
-        }
-
-        public CustomLogicLineRendererBuiltin(LineRenderer value) : base("LineRenderer")
-        {
-            Value = value;
         }
 
         [CLMethod(description: "[Obselete] Create a new LineRenderer")]

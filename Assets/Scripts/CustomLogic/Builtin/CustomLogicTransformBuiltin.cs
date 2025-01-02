@@ -2,8 +2,8 @@
 
 namespace CustomLogic
 {
-    [CLType(Name = "Transform", Static = false)]
-    partial class CustomLogicTransformBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Transform")]
+    partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Transform Value;
 
@@ -16,7 +16,7 @@ namespace CustomLogic
         private readonly AudioSource _audioSource;
         private readonly ParticleSystem _particleSystem;
 
-        public CustomLogicTransformBuiltin(Transform transform) : base("Transform")
+        public CustomLogicTransformBuiltin(Transform transform)
         {
             Value = transform;
 

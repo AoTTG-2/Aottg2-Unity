@@ -14,13 +14,14 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Game", Abstract = true, Static = true, InheritBaseMembers = true)]
-    partial class CustomLogicGameBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Game", Abstract = true, Static = true)]
+    partial class CustomLogicGameBuiltin : BuiltinClassInstance
     {
         private string _lastSetTopLabel = string.Empty;
         private Dictionary<string, CustomLogicListBuiltin> _cachedLists = new Dictionary<string, CustomLogicListBuiltin>();
 
-        public CustomLogicGameBuiltin() : base("Game")
+        [CLConstructor]
+        public CustomLogicGameBuiltin()
         {
         }
 
@@ -476,7 +477,7 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Spawn an effect")]
-        public void SpawnEffect(params object[] parameters)
+        public void SpawnEffect(object[] parameters)
         {
             string effectName = (string)parameters[0];
             var field = typeof(EffectPrefabs).GetField(effectName);

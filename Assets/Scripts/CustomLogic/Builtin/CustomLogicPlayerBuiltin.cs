@@ -8,11 +8,12 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Name = "Player", Abstract = true)]
-    partial class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Player Player;
 
-        public CustomLogicPlayerBuiltin(Player player) : base("Player")
+        [CLConstructor]
+        public CustomLogicPlayerBuiltin(Player player)
         {
             Player = player;
         }

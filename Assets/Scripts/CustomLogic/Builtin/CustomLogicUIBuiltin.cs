@@ -12,7 +12,7 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Name = "UI", Static = true, Abstract = true)]
-    partial class CustomLogicUIBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicUIBuiltin : BuiltinClassInstance
     {
         private static readonly Dictionary<string, string> LastSetLabels = new();
 
@@ -21,7 +21,8 @@ namespace CustomLogic
 
         private static InGameMenu Menu => (InGameMenu)UIManager.CurrentMenu;
 
-        public CustomLogicUIBuiltin() : base("UI")
+        [CLConstructor]
+        public CustomLogicUIBuiltin()
         {
         }
 

@@ -3,18 +3,19 @@
 namespace CustomLogic
 {
     [CLType(Name = "Quaternion", Static = true)]
-    partial class CustomLogicQuaternionBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
+    partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
-        public CustomLogicQuaternionBuiltin(object[] parameterValues) : base("Quaternion")
+        [CLConstructor]
+        public CustomLogicQuaternionBuiltin(object[] parameterValues)
         {
             if (parameterValues.Length == 0)
                 return;
             Value = new Quaternion(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat(), parameterValues[3].UnboxToFloat());
         }
 
-        public CustomLogicQuaternionBuiltin(Quaternion value) : base("Quaternion")
+        public CustomLogicQuaternionBuiltin(Quaternion value)
         {
             Value = value;
         }

@@ -10,13 +10,13 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Collider", Abstract = true, InheritBaseMembers = true)]
-    partial class CustomLogicColliderBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
+    [CLType(Name = "Collider", Abstract = true)]
+    partial class CustomLogicColliderBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         public Collider collider;
 
-        public CustomLogicColliderBuiltin() : base("Collider") { }
-        public CustomLogicColliderBuiltin(object[] parameters) : base("Collider")
+        public CustomLogicColliderBuiltin() { }
+        public CustomLogicColliderBuiltin(object[] parameters)
         {
             collider = (Collider)parameters[0];
         }
@@ -147,7 +147,7 @@ namespace CustomLogic
             return null;
         }
 
-        public CustomLogicClassInstanceBuiltin Copy()
+        public BuiltinClassInstance Copy()
         {
             return new CustomLogicColliderBuiltin(new object[] { collider });
         }

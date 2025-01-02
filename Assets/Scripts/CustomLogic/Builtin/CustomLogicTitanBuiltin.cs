@@ -9,7 +9,7 @@ namespace CustomLogic
         public readonly BasicTitan Titan;
         public readonly BaseTitanAIController Controller;
 
-        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan, "Titan")
+        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan)
         {
             Titan = titan;
             Controller = Titan.GetComponent<BaseTitanAIController>();

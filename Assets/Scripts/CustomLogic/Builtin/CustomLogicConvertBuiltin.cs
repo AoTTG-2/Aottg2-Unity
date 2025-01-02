@@ -6,10 +6,11 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Convert", Abstract = true, Static = true, InheritBaseMembers = true)]
-    partial class CustomLogicConvertBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Convert", Abstract = true, Static = true)]
+    partial class CustomLogicConvertBuiltin : BuiltinClassInstance
     {
-        public CustomLogicConvertBuiltin() : base("Convert")
+        [CLConstructor]
+        public CustomLogicConvertBuiltin()
         {
         }
 

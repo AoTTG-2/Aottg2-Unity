@@ -7,9 +7,10 @@ using System.Linq;
 namespace CustomLogic
 {
     [CLType(Name = "PersistentData", Static = true, Abstract = true)]
-    partial class CustomLogicPersistentDataBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {
-        public CustomLogicPersistentDataBuiltin() : base("PersistentData")
+        [CLConstructor]
+        public CustomLogicPersistentDataBuiltin()
         {
         }
 

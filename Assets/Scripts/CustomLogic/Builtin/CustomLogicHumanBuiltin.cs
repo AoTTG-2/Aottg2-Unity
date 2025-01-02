@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Human", Abstract = true, Static = false, InheritBaseMembers = true)]
+    [CLType(Name = "Human", Abstract = true)]
     partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;
 
-        public CustomLogicHumanBuiltin(Human human) : base(human, "Human")
+        public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
         }

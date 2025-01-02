@@ -2,9 +2,6 @@
 
 namespace CustomLogic
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public sealed class BuiltinTypeManagerAttribute : Attribute { }
-
     /// <summary>
     /// Custom logic builtin types must be marked with this attribute,
     /// they must also either have a parameterless constructor or

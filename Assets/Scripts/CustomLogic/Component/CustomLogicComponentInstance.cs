@@ -6,7 +6,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicComponentInstance : CustomLogicClassInstance
+    class CustomLogicComponentInstance : UserClassInstance
     {
         public CustomLogicMapObjectBuiltin MapObject;
         public CustomLogicNetworkViewBuiltin NetworkView;
@@ -15,7 +15,6 @@ namespace CustomLogic
         public CustomLogicComponentInstance(string name, MapObject obj, MapScriptComponent script,
             CustomLogicNetworkViewBuiltin networkView) : base(name)
         {
-            ClassName = name;
             MapObject = new CustomLogicMapObjectBuiltin(obj);
             _script = script;
             NetworkView = networkView;
@@ -44,7 +43,7 @@ namespace CustomLogic
             return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit");
         }
 
-        public void OnCollisionStay(CustomLogicClassInstanceBuiltin other)
+        public void OnCollisionStay(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;
@@ -52,7 +51,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other });
         }
 
-        public void OnCollisionEnter(CustomLogicClassInstanceBuiltin other)
+        public void OnCollisionEnter(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;
@@ -60,7 +59,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other });
         }
 
-        public void OnCollisionExit(CustomLogicClassInstanceBuiltin other)
+        public void OnCollisionExit(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;

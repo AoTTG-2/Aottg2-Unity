@@ -10,9 +10,10 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Name = "Camera", Abstract = true, Static = true, Description = "References the main game camera.")]
-    partial class CustomLogicCameraBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicCameraBuiltin : BuiltinClassInstance
     {
-        public CustomLogicCameraBuiltin() : base("Camera")
+        [CLConstructor]
+        public CustomLogicCameraBuiltin()
         {
         }
 

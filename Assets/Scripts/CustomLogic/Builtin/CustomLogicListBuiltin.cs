@@ -1,29 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "List", InheritBaseMembers = true)]
-    partial class CustomLogicListBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "List")]
+    partial class CustomLogicListBuiltin : BuiltinClassInstance
     {
         public List<object> List = new List<object>();
 
-        public CustomLogicListBuiltin(string type) : base(type)
+        [CLConstructor]
+        public CustomLogicListBuiltin()
         {
         }
 
-        public CustomLogicListBuiltin() : base("List")
-        {
-        }
-
-        public CustomLogicListBuiltin(List<object> list) : base("List")
+        public CustomLogicListBuiltin(List<object> list)
         {
             List = list;
         }
 
-        public CustomLogicListBuiltin(CustomLogicSetBuiltin set) : base("List")
+        [CLConstructor]
+        public CustomLogicListBuiltin(CustomLogicSetBuiltin set)
         {
             List = set.Set.ToList();
         }

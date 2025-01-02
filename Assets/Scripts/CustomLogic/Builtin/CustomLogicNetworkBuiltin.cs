@@ -9,10 +9,11 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Network", Static = true)]
-    partial class CustomLogicNetworkBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Network", Static = true, Abstract = true)]
+    partial class CustomLogicNetworkBuiltin : BuiltinClassInstance
     {
-        public CustomLogicNetworkBuiltin() : base("Network")
+        [CLConstructor]
+        public CustomLogicNetworkBuiltin()
         {
         }
 

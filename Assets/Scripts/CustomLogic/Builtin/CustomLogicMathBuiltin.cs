@@ -1,16 +1,12 @@
-using ApplicationManagers;
-using GameManagers;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Math", Abstract = true, InheritBaseMembers = true, Static = true)]
-    partial class CustomLogicMathBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Math", Abstract = true, Static = true)]
+    partial class CustomLogicMathBuiltin : BuiltinClassInstance
     {
-        public CustomLogicMathBuiltin() : base("Math")
+        [CLConstructor]
+        public CustomLogicMathBuiltin()
         {
         }
 

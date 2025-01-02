@@ -6,12 +6,13 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Color", InheritBaseMembers = true, Static = true, Description = "")]
-    partial class CustomLogicColorBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
+    [CLType(Name = "Color", Static = true, Description = "")]
+    partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
         public Color255 Value = new Color255();
 
-        public CustomLogicColorBuiltin(object[] parameterValues) : base("Color")
+        [CLConstructor]
+        public CustomLogicColorBuiltin(object[] parameterValues)
         {
             var color = new Color255();
 
@@ -33,7 +34,7 @@ namespace CustomLogic
             Value = color;
         }
 
-        public CustomLogicColorBuiltin(Color255 value) : base("Color")
+        public CustomLogicColorBuiltin(Color255 value)
         {
             Value = value;
         }

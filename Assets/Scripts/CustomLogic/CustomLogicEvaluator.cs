@@ -30,8 +30,6 @@ namespace CustomLogic
         //public List<string> AllowedSpecials = new List<string>();
         //public List<string> DisallowedSpecials = new List<string>();
         public static readonly object[] EmptyArgs = Array.Empty<object>();
-        private List<object> EmptyParameters = new List<object>();
-        private List<object> Parameters = new List<object>();
         public bool DefaultShowKillScore = true;
         public bool DefaultShowKillFeed = true;
         public bool DefaultAddKillScore = true;
@@ -299,13 +297,13 @@ namespace CustomLogic
 
         private void Init()
         {
-            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypes)
+            foreach (var staticType in CustomLogicBuiltinTypes.StaticTypeNames)
             {
-                var instance = CustomLogicActivator.CreateInstance(staticType, EmptyArgs);
+                var instance = CustomLogicBuiltinTypes.CreateClassInstance(staticType, EmptyArgs);
                 _staticClasses[staticType] = instance;
             }
 
-            foreach (string className in new List<string>(_start.Classes.Keys))
+            foreach (string className in _start.Classes.Keys)
             {
                 if (className == "Main")
                     CreateStaticClass(className);
@@ -314,7 +312,7 @@ namespace CustomLogic
             }
             foreach (CustomLogicClassInstance instance in _staticClasses.Values)
             {
-                if (!(instance is CustomLogicClassInstanceBuiltin))
+                if (instance is not BuiltinClassInstance)
                     RunAssignmentsClassInstance(instance);
             }
             foreach (int id in MapLoader.IdToMapObject.Keys)
@@ -482,42 +480,19 @@ namespace CustomLogic
 
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
-            // if (CustomLogicBuiltinTypes.IsBuiltinType(className))
-            // {
-            //     if (CustomLogicBuiltinTypes.AbstractTypes.Contains(className))
-            //         throw new Exception("Cannot instantiate abstract type " + className);
-
-            //     return CustomLogicActivator.CreateInstance(className, parameterValues.ToArray());
-            // }
-
-            CustomLogicClassInstance classInstance;
-            if (className == "Dict")
-                classInstance = new CustomLogicDictBuiltin();
-            else if (className == "List")
-                classInstance = new CustomLogicListBuiltin();
-            else if (className == "Color")
-                classInstance = new CustomLogicColorBuiltin(parameterValues);
-            else if (className == "Vector2")
-                classInstance = new CustomLogicVector2Builtin(parameterValues);
-            else if (className == "Vector3")
-                classInstance = new CustomLogicVector3Builtin(parameterValues);
-            else if (className == "Quaternion")
-                classInstance = new CustomLogicQuaternionBuiltin(parameterValues);
-            else if (className == "Range")
-                classInstance = new CustomLogicRangeBuiltin(parameterValues);
-            else if (className == "Random")
-                classInstance = new CustomLogicRandomBuiltin(parameterValues);
-            else
+            if (CustomLogicBuiltinTypes.IsBuiltinType(className))
             {
-                if (_start.Classes.ContainsKey(className) == false)
-                    return null;
+                if (CustomLogicBuiltinTypes.IsAbstract(className))
+                    throw new Exception("Cannot instantiate abstract type " + className);
 
-                classInstance = new CustomLogicClassInstance(className);
-                if (init)
-                {
-                    RunAssignmentsClassInstance(classInstance);
-                    EvaluateMethod(classInstance, "Init", parameterValues);
-                }
+                return CustomLogicBuiltinTypes.CreateClassInstance(className, parameterValues);
+            }
+
+            var classInstance = new UserClassInstance(className);
+            if (init)
+            {
+                RunAssignmentsClassInstance(classInstance);
+                EvaluateMethod(classInstance, "Init", parameterValues);
             }
             return classInstance;
         }
@@ -890,8 +865,6 @@ namespace CustomLogic
             return _start.Classes[classInstance.ClassName].Methods.ContainsKey(methodName);
         }
 
-        Dictionary<string, object> EmptyKwargs = new Dictionary<string, object>();
-
         public object EvaluateMethod(CustomLogicClassInstance classInstance, string methodName, object[] parameterValues = null)
         {
             if (parameterValues == null)
@@ -903,7 +876,7 @@ namespace CustomLogic
                     return method.Call(classInstance, parameterValues);
                 }
 
-                if (classInstance is CustomLogicClassInstanceBuiltin)
+                if (classInstance is BuiltinClassInstance)
                     throw new Exception($"Method {methodName} not found in class {classInstance.ClassName}");
 
                 CustomLogicMethodDefinitionAst methodAst;
@@ -1018,12 +991,10 @@ namespace CustomLogic
                         parameters[i] = EvaluateExpression(classInstance, localVariables, (CustomLogicBaseExpressionAst)ast);
                     }
 
-                    // todo: Replace null check with:
-                    // CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) == false && _start.Classes.ContainsKey(instantiate.Name) == false
-                    // once all the builtin types have been converted to the new format
-                    var newClassInstance = CreateClassInstance(instantiate.Name, parameters, true);
-                    if (newClassInstance != null)
-                        return newClassInstance;
+                    if (CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) || _start.Classes.ContainsKey(instantiate.Name))
+                    {
+                        return CreateClassInstance(instantiate.Name, parameters, true);
+                    }
 
                     // If no class was found with that name, interpret the expression as local method call
                     if (localVariables.ContainsKey(instantiate.Name) && localVariables[instantiate.Name] is CLMethodBinding method)

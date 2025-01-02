@@ -8,11 +8,11 @@ namespace CustomLogic
 {
     // todo: all property setters should check IsMine()
     [CLType(Name = "Character", Abstract = true)]
-    abstract partial class CustomLogicCharacterBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    abstract partial class CustomLogicCharacterBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly BaseCharacter Character;
 
-        protected CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character") : base(type)
+        protected CustomLogicCharacterBuiltin(BaseCharacter character)
         {
             Character = character;
             Variables["IsCharacter"] = true;

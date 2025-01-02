@@ -6,7 +6,8 @@
     [CLType(Name = "Range", InheritBaseMembers = false)]
     partial class CustomLogicRangeBuiltin : CustomLogicListBuiltin
     {
-        public CustomLogicRangeBuiltin(object[] parameterValues) : base("Range")
+        [CLConstructor]
+        public CustomLogicRangeBuiltin(object[] parameterValues)
         {
             if (parameterValues.Length < 3)
                 return;

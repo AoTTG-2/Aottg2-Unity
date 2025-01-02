@@ -5,9 +5,10 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Name = "String", Static = true, Abstract = true)]
-    partial class CustomLogicStringBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {
-        public CustomLogicStringBuiltin() : base("String") { }
+        [CLConstructor]
+        public CustomLogicStringBuiltin() { }
 
         [CLProperty("Returns the newline character.")]
         public static string Newline => "\n";

@@ -8,7 +8,7 @@ using Photon.Pun;
 namespace CustomLogic
 {
     [CLType(Name = "NetworkView", Abstract = true)]
-    partial class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicNetworkViewBuiltin : BuiltinClassInstance
     {
         public readonly MapObject MapObject;
         public CustomLogicPhotonSync Sync;
@@ -17,7 +17,8 @@ namespace CustomLogic
         private List<object> _streamObjects;
         private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
 
-        public CustomLogicNetworkViewBuiltin(MapObject obj) : base("NetworkView")
+        [CLConstructor]
+        public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
         }

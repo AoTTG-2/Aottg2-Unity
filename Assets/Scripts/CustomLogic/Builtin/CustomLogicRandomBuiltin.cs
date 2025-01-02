@@ -3,13 +3,14 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Random", Static = true)]
-    partial class CustomLogicRandomBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Random", Static = true, Abstract = true)]
+    partial class CustomLogicRandomBuiltin : BuiltinClassInstance
     {
         public Unity.Mathematics.Random Rand;
         public readonly bool UseInstanceRandom;
 
-        public CustomLogicRandomBuiltin(object[] parameterValues) : base("Random")
+        [CLConstructor]
+        public CustomLogicRandomBuiltin(object[] parameterValues)
         {
             if (parameterValues.Length == 1)
             {

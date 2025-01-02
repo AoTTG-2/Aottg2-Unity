@@ -2,17 +2,16 @@ using ApplicationManagers;
 using Characters;
 using GameManagers;
 using Settings;
-using System.Collections.Generic;
 using UI;
 using UnityEngine;
-using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Input", Abstract = true, Static = true, InheritBaseMembers = true)]
-    partial class CustomLogicInputBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Input", Abstract = true, Static = true)]
+    partial class CustomLogicInputBuiltin : BuiltinClassInstance
     {
-        public CustomLogicInputBuiltin() : base("Input")
+        [CLConstructor]
+        public CustomLogicInputBuiltin()
         {
         }
 

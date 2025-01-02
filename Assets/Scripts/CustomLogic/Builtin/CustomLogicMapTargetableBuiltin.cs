@@ -4,12 +4,12 @@ using UnityEngine;
 namespace CustomLogic
 {
     [CLType(Name = "MapTargetable", Abstract = true)]
-    partial class CustomLogicMapTargetableBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicMapTargetableBuiltin : BuiltinClassInstance
     {
         public GameObject GameObject { get; }
         public MapTargetable Value { get; }
 
-        public CustomLogicMapTargetableBuiltin(GameObject gameObject, MapTargetable mapTargetable) : base("MapTargetable")
+        public CustomLogicMapTargetableBuiltin(GameObject gameObject, MapTargetable mapTargetable)
         {
             GameObject = gameObject;
             Value = mapTargetable;

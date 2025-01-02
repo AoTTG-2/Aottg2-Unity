@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility;
 using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Json", Static = true, InheritBaseMembers = true)]
-    partial class CustomLogicJsonBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Json", Static = true, Abstract = true)]
+    partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
-        public CustomLogicJsonBuiltin() : base("Json")
+        [CLConstructor]
+        public CustomLogicJsonBuiltin()
         {
         }
 

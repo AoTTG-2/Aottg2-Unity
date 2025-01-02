@@ -9,7 +9,7 @@ namespace CustomLogic
         public readonly BaseShifter Shifter;
         public readonly BaseTitanAIController Controller;
 
-        public CustomLogicShifterBuiltin(BaseShifter shifter) : base(shifter, "Shifter")
+        public CustomLogicShifterBuiltin(BaseShifter shifter) : base(shifter)
         {
             Shifter = shifter;
             Controller = shifter.GetComponent<BaseTitanAIController>();

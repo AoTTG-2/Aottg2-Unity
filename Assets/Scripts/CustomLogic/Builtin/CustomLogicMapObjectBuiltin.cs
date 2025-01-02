@@ -12,7 +12,7 @@ using CustomLogic;
 namespace CustomLogic
 {
     [CLType(Name = "MapObject", Abstract = true)]
-    partial class CustomLogicMapObjectBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
         public MapObject Value;
         private Vector3 _internalRotation;
@@ -20,7 +20,7 @@ namespace CustomLogic
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
 
-        public CustomLogicMapObjectBuiltin(MapObject obj) : base("MapObject")
+        public CustomLogicMapObjectBuiltin(MapObject obj)
         {
             Value = obj;
         }

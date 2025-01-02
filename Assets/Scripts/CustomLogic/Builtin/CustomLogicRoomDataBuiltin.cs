@@ -3,9 +3,10 @@
 namespace CustomLogic
 {
     [CLType(Name = "RoomData", Static = true, Abstract = true)]
-    partial class CustomLogicRoomDataBuiltin : CustomLogicClassInstanceBuiltin
+    partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {
-        public CustomLogicRoomDataBuiltin() : base("RoomData") { }
+        [CLConstructor]
+        public CustomLogicRoomDataBuiltin() { }
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(string property, object value)

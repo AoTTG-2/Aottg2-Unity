@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Set", InheritBaseMembers = true)]
-    partial class CustomLogicSetBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Set")]
+    partial class CustomLogicSetBuiltin : BuiltinClassInstance
     {
         public HashSet<object> Set = new HashSet<object>();
-        public CustomLogicSetBuiltin() : base("Set")
+
+        [CLConstructor]
+        public CustomLogicSetBuiltin()
         {
         }
 
-        public CustomLogicSetBuiltin(CustomLogicListBuiltin list) : base("Set")
+        [CLConstructor]
+        public CustomLogicSetBuiltin(CustomLogicListBuiltin list)
         {
             foreach (var item in list.List)
             {

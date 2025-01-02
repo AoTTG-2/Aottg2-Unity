@@ -7,38 +7,35 @@ using Utility;
 namespace CustomLogic
 {
     [CLType(Name = "Vector3", Static = true)]
-    partial class CustomLogicVector3Builtin : CustomLogicClassInstanceBuiltin, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
+    partial class CustomLogicVector3Builtin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Vector3 Value;
 
-        public CustomLogicVector3Builtin(object[] parameterValues) : base("Vector3")
+        [CLConstructor]
+        public CustomLogicVector3Builtin()
         {
-            var x = 0f;
-            var y = 0f;
-            var z = 0f;
+            Value = new Vector3();
+        }
 
-            if (parameterValues.Length == 1)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = parameterValues[0].UnboxToFloat();
-                z = parameterValues[0].UnboxToFloat();
-            }
-            else if (parameterValues.Length == 2)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = parameterValues[1].UnboxToFloat();
-            }
-            else if (parameterValues.Length == 3)
-            {
-                x = parameterValues[0].UnboxToFloat();
-                y = parameterValues[1].UnboxToFloat();
-                z = parameterValues[2].UnboxToFloat();
-            }
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float xyz)
+        {
+            Value = new Vector3(xyz, xyz, xyz);
+        }
 
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float x, float y)
+        {
+            Value = new Vector3(x, y, 0);
+        }
+
+        [CLConstructor]
+        public CustomLogicVector3Builtin(float x, float y, float z)
+        {
             Value = new Vector3(x, y, z);
         }
 
-        public CustomLogicVector3Builtin(Vector3 value) : base("Vector3")
+        public CustomLogicVector3Builtin(Vector3 value)
         {
             Value = value;
         }
@@ -193,12 +190,6 @@ namespace CustomLogic
         /// <inheritdoc cref="Vector3.Set"/>
         [CLMethod] public void Set(float x, float y, float z) => Value = new Vector3(x, y, z);
 
-        [CLMethod]
-        public CustomLogicVector3Builtin With(float? x = null, float? y = null, float? z = null)
-        {
-            return new CustomLogicVector3Builtin(new Vector3(x ?? Value.x, y ?? Value.y, z ?? Value.z));
-        }
-
         /// <summary>
         /// Returns the Vector3 multiplied by scale.
         /// </summary>
@@ -320,75 +311,4 @@ namespace CustomLogic
         public static implicit operator Vector3(CustomLogicVector3Builtin v) => v.Value;
         public static implicit operator CustomLogicVector3Builtin(Vector3 v) => new CustomLogicVector3Builtin(v);
     }
-
-    // partial class CustomLogicVector3Builtin
-    // {
-    //     public static CLPropertyBinding<CustomLogicVector3Builtin> CreateProperty__X()
-    //     {
-    //         Func<CustomLogicVector3Builtin, object> getter = (instance) => instance.X;
-    //         Action<CustomLogicVector3Builtin, object> setter = (instance, value) => instance.X = CustomLogicEvaluator.ConvertTo<float>(value);
-    //         return new CLPropertyBinding<CustomLogicVector3Builtin>(getter, setter);
-    //     }
-
-    //     public static CLPropertyBinding<CustomLogicVector3Builtin> CreateProperty__Y()
-    //     {
-    //         Func<CustomLogicVector3Builtin, object> getter = (instance) => instance.Y;
-    //         Action<CustomLogicVector3Builtin, object> setter = (instance, value) => instance.Y = CustomLogicEvaluator.ConvertTo<float>(value);
-    //         return new CLPropertyBinding<CustomLogicVector3Builtin>(getter, setter);
-    //     }
-
-    //     public static CLMethodBinding<CustomLogicVector3Builtin> CreateMethod__Lerp()
-    //     {
-    //         return new CLMethodBinding<CustomLogicVector3Builtin>((classInstance, args) =>
-    //         {
-    //             var a = CustomLogicEvaluator.ConvertTo<CustomLogicVector3Builtin>(args[0]);
-    //             var b = CustomLogicEvaluator.ConvertTo<CustomLogicVector3Builtin>(args[1]);
-    //             var t = CustomLogicEvaluator.ConvertTo<float>(args[2]);
-    //             return CustomLogicVector3Builtin.Lerp(a, b, 2);
-    //         });
-    //     }
-
-    //     public static CLMethodBinding<CustomLogicVector3Builtin> CreateMethod__Set()
-    //     {
-    //         return new CLMethodBinding<CustomLogicVector3Builtin>((classInstance, args) =>
-    //         {
-    //             var x = CustomLogicEvaluator.ConvertTo<float>(args[0]);
-    //             var y = CustomLogicEvaluator.ConvertTo<float>(args[1]);
-    //             var z = CustomLogicEvaluator.ConvertTo<float>(args[2]);
-    //             classInstance.Set(x, y, z);
-    //             return null;
-    //         });
-    //     }
-
-    //     public static CLMethodBinding<CustomLogicVector3Builtin> CreateMethod__With()
-    //     {
-    //         return new CLMethodBinding<CustomLogicVector3Builtin>((classInstance, args) =>
-    //         {
-    //             var x = CustomLogicEvaluator.ConvertTo<float>(GetAtIndexOrNull(args, 0));
-    //             var y = CustomLogicEvaluator.ConvertTo<float>(GetAtIndexOrNull(args, 1));
-    //             var z = CustomLogicEvaluator.ConvertTo<float>(GetAtIndexOrNull(args, 2));
-    //             return classInstance.With(x, y, z);
-    //         });
-    //     }
-
-    //     private static object GetAtIndexOrNull(List<object> objects, int index)
-    //     {
-    //         if (index < objects.Count)
-    //         {
-    //             return objects[index];
-    //         }
-
-    //         return null;
-    //     }
-
-    //     public static ICLMemberBinding CreateBinding(string name) => name switch
-    //     {
-    //         "X" => CreateProperty__X(),
-    //         "Y" => CreateProperty__Y(),
-    //         "Lerp" => CreateMethod__Lerp(),
-    //         "Set" => CreateMethod__Set(),
-    //         "With" => CreateMethod__With(),
-    //         _ => throw new Exception($"Binding for '{name}' in CustomLogicVector3Builtin")
-    //     };
-    // }
 }

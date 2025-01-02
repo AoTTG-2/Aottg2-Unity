@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Cutscene", Abstract = true, Static = true, InheritBaseMembers = true)]
-    partial class CustomLogicCutsceneBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Cutscene", Abstract = true, Static = true)]
+    partial class CustomLogicCutsceneBuiltin : BuiltinClassInstance
     {
-        public CustomLogicCutsceneBuiltin() : base("Cutscene")
+        [CLConstructor]
+        public CustomLogicCutsceneBuiltin()
         {
         }
 

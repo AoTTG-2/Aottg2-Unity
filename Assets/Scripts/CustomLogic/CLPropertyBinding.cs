@@ -7,6 +7,7 @@ namespace CustomLogic
         public abstract bool IsReadOnly { get; }
         public abstract object GetValue(object instance);
         public abstract void SetValue(object instance, object value);
+        public abstract void SetValueSafe(object instance, object value);
     }
 
     internal class CLPropertyBinding<T> : CLPropertyBinding where T : CustomLogicClassInstance
@@ -25,6 +26,12 @@ namespace CustomLogic
         public override bool IsReadOnly => _isReadOnly;
 
         public override object GetValue(object instance) => _getter((T)instance);
-        public override void SetValue(object instance, object value) => _setter?.Invoke((T)instance, value);
+        public override void SetValue(object instance, object value) => _setter((T)instance, value);
+
+        public override void SetValueSafe(object instance, object value)
+        {
+            if (_isReadOnly == false)
+                _setter((T)instance, value);
+        }
     }
 }

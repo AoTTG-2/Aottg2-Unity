@@ -1,7 +1,7 @@
 namespace CustomLogic
 {
-    [CLType(Name = "LineCastHitResult", Abstract = true, InheritBaseMembers = true)]
-    partial class CustomLogicLineCastHitResultBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
+    [CLType(Name = "LineCastHitResult", Abstract = true)]
+    partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         [CLProperty("true if the linecast hit a character", ReadOnly = true)]
         public bool IsCharacter;
@@ -21,11 +21,11 @@ namespace CustomLogic
         [CLProperty("The collider that was hit", ReadOnly = true)]
         public CustomLogicColliderBuiltin Collider;
 
-        public CustomLogicLineCastHitResultBuiltin() : base("LineCastHitResult")
+        public CustomLogicLineCastHitResultBuiltin()
         {
         }
 
-        public CustomLogicClassInstanceBuiltin Copy()
+        public BuiltinClassInstance Copy()
         {
             return new CustomLogicLineCastHitResultBuiltin()
             {
