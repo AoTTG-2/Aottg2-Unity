@@ -64,7 +64,18 @@ namespace GameManagers
             }
             else
                 prefab = (MapScriptSceneObject)BuiltinMapPrefabs.AllPrefabs[name];
-            var position = SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * 50f;
+            var position = SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * SettingsManager.MapEditorSettings.PlacementDistance.Value;
+
+            // Shoot a ray towards position and if something hits, change the position to the hit
+            if (SettingsManager.MapEditorSettings.PlaceOnFirstSurface.Value)
+            {
+                RaycastHit hit;
+                Ray ray = new Ray(SceneLoader.CurrentCamera.Cache.Transform.position, position - SceneLoader.CurrentCamera.Cache.Transform.position);
+                if (Physics.Raycast(ray, out hit, SettingsManager.MapEditorSettings.PlacementDistance.Value, PhysicsLayer.GetMask(PhysicsLayer.MapEditorObject)))
+                    position = hit.point;
+            }
+            
+
             // if snap is enabled, round the position to the nearest snap distance
             if (((MapEditorGameManager)SceneLoader.CurrentGameManager).Snap)
             {
