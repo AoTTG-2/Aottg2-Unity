@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = false, InheritBaseMembers = true)]
-    class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Human", Abstract = true)]
+    partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;
 
-        public CustomLogicHumanBuiltin(Human human) : base(human, "Human")
+        public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
         }
@@ -428,6 +428,6 @@ namespace CustomLogic
             if (Human.IsMine())
                 Human.Stats.DisablePerks();
         }
-        
+
     }
 }

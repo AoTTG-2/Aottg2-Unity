@@ -9,14 +9,15 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = true, Description = "References the main game camera.")]
-    class CustomLogicCameraBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Camera", Abstract = true, Static = true, Description = "References the main game camera.")]
+    partial class CustomLogicCameraBuiltin : BuiltinClassInstance
     {
-        public CustomLogicCameraBuiltin(): base("Camera")
+        [CLConstructor]
+        public CustomLogicCameraBuiltin()
         {
         }
 
-        public static InGameCamera CurrentCamera => (InGameCamera)SceneLoader.CurrentCamera;   
+        public static InGameCamera CurrentCamera => (InGameCamera)SceneLoader.CurrentCamera;
 
         [CLProperty(Description = "Is camera in manual mode.")]
         public static bool IsManual => CustomLogicManager.ManualCamera;

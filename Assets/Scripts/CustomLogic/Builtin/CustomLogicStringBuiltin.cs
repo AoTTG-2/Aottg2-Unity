@@ -4,10 +4,11 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, Abstract = true)]
-    class CustomLogicStringBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "String", Static = true, Abstract = true)]
+    partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {
-        public CustomLogicStringBuiltin() : base("String") { }
+        [CLConstructor]
+        public CustomLogicStringBuiltin() { }
 
         [CLProperty("Returns the newline character.")]
         public static string Newline => "\n";
@@ -17,7 +18,7 @@ namespace CustomLogic
         {
             return Util.FormatFloat(val, decimals);
         }
-        
+
         [CLMethod("Equivalent to C# string.format(string, List<string>).")]
         public static string FormatFromList(string str, CustomLogicListBuiltin list)
         {

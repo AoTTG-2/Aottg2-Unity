@@ -9,10 +9,11 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
-    class CustomLogicNetworkBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Network", Static = true, Abstract = true)]
+    partial class CustomLogicNetworkBuiltin : BuiltinClassInstance
     {
-        public CustomLogicNetworkBuiltin(): base("Network")
+        [CLConstructor]
+        public CustomLogicNetworkBuiltin()
         {
         }
 
@@ -71,7 +72,7 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Kick the given player by id or player reference.")]
-        public void KickPlayer(object target, string reason=".")
+        public void KickPlayer(object target, string reason = ".")
         {
             Photon.Realtime.Player player = null;
             if (target is int)

@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Player", Abstract = true)]
+    partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Player Player;
 
-        public CustomLogicPlayerBuiltin(Player player) : base("Player")
+        [CLConstructor]
+        public CustomLogicPlayerBuiltin(Player player)
         {
             Player = player;
         }
