@@ -781,7 +781,7 @@ namespace Characters
                     _previousCoreLocalPosition = _furthestCoreLocalPosition;
                     _needFreshCore = false;
                 }
-                if (AI && _rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
+                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
                     && Cache.Animation[_currentStateAnimation].normalizedTime < _rootMotionAnimations[_currentStateAnimation])
                 {
                     Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
@@ -790,8 +790,17 @@ namespace Characters
                         Vector3 v = -1f * (coreLocalPosition - _previousCoreLocalPosition) / Time.fixedDeltaTime;
                         _furthestCoreLocalPosition = coreLocalPosition;
                         _previousCoreLocalPosition = coreLocalPosition;
-                        v.y = Cache.Rigidbody.velocity.y;
-                        Cache.Rigidbody.velocity = v;
+
+                        if (AI)
+                        {
+                            Cache.Rigidbody.velocity = v;
+                        }
+                        else
+                        {
+                            v = Vector3.Lerp(Vector3.zero, v, 0.0435f);
+                            v += Cache.Rigidbody.velocity;
+                            Cache.Rigidbody.velocity = v;
+                        }
                     }
                 }
                 if (State != TitanState.WallClimb)
