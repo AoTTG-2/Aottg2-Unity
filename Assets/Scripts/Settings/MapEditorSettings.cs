@@ -17,6 +17,8 @@ namespace Settings
         public FloatSetting SnapMove = new FloatSetting(10f, minValue: 0f);
         public FloatSetting SnapRotate = new FloatSetting(15f, minValue: 0f);
         public FloatSetting SnapScale = new FloatSetting(0.1f, minValue: 0f);
+        public FloatSetting PlacementDistance = new FloatSetting(50f, minValue: 0f);
+        public BoolSetting PlaceOnFirstSurface = new BoolSetting(true);
 
         public override void Apply()
         {

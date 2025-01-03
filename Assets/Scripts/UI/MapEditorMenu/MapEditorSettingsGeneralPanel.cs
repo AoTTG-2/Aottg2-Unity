@@ -26,6 +26,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapMove, UIManager.GetLocale(cat, sub, "SnapMove"), elementWidth: 120f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapRotate, UIManager.GetLocale(cat, sub, "SnapRotate"), elementWidth: 120f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.SnapScale, UIManager.GetLocale(cat, sub, "SnapScale"), elementWidth: 120f);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.PlacementDistance, UIManager.GetLocale(cat, sub, "PlacementDistance"), elementWidth: 120f);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.PlaceOnFirstSurface, UIManager.GetLocale(cat, sub, "PlaceOnFirstSurface"));
 
         }
     }
