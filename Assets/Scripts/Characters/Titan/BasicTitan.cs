@@ -903,8 +903,9 @@ namespace Characters
                     int damage = 100;
                     if (CustomDamageEnabled)
                         damage = CustomDamage;
-                    HoldHuman.GetHit(this, damage, "TitanEat", "");
-                    HoldHuman = null;
+                    var tempHoldHuman = HoldHuman;
+                    Ungrab();
+                    tempHoldHuman.GetHit(this, damage, "TitanEat", "");
                 }
             }
             if (!AI && HoldHuman && !HoldHuman.Dead && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
