@@ -520,7 +520,7 @@ namespace Characters
             if (initiatorView.Owner != info.Sender)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null)
+            if (initiator == null) 
                 return;
             _lastCarryRPCSender = initiatorViewId;
             if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
@@ -536,10 +536,10 @@ namespace Characters
             if (_lastCarryRPCSender != initiatorViewId)
                 return;
             var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView == null)
+            if (initiatorView == null) 
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null)
+            if (initiator == null) 
                 return;
             Carrier = initiator;
             Carrier.BackHuman = this;
@@ -1601,7 +1601,7 @@ namespace Characters
                                 else if (!Cache.Animation.IsPlaying(HumanAnimations.Air2Backward))
                                     CrossFade(HumanAnimations.Air2Backward, 0.2f);
                             }
-                            else if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear)
+                            else if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
                             {
                                 if (IsHookedLeft())
                                 {
@@ -2028,7 +2028,7 @@ namespace Characters
 
         private void FixedUpdateWallSlide()
         {
-
+            
             if (_wallSlide)
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
@@ -2036,7 +2036,7 @@ namespace Characters
                     {
                         _canWallSlideJump = true;
                     }
-
+                
 
                 if (Grounded)
                 {
@@ -2175,7 +2175,7 @@ namespace Characters
                 if (hookDiff.sqrMagnitude < 4f)
                 {
                     TargetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-                    if ((Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear) && State != HumanState.Attack)
+                    if ((Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG) && State != HumanState.Attack)
                     {
                         float current = -Mathf.Atan2(Cache.Rigidbody.velocity.z, Cache.Rigidbody.velocity.x) * Mathf.Rad2Deg;
                         float target = -Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
@@ -2220,7 +2220,7 @@ namespace Characters
                     float angle1 = -Mathf.Atan2(Cache.Rigidbody.velocity.z, Cache.Rigidbody.velocity.x) * Mathf.Rad2Deg;
                     float angle2 = -Mathf.Atan2(v.z, v.x) * Mathf.Rad2Deg;
                     float delta = -Mathf.DeltaAngle(angle1, angle2);
-                    if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear)
+                    if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
                         TargetAngle += delta;
                     else
                     {
@@ -2241,7 +2241,7 @@ namespace Characters
         {
             float z = 0f;
             _needLean = false;
-            if (Setup.Weapon != HumanWeapon.AHSS && Setup.Weapon != HumanWeapon.APG && Setup.Weapon != HumanWeapon.Thunderspear && State == HumanState.Attack && !IsFiringThunderspear())
+            if (Setup.Weapon != HumanWeapon.AHSS && Setup.Weapon != HumanWeapon.APG && State == HumanState.Attack && !IsFiringThunderspear())
             {
                 Vector3 v = Cache.Rigidbody.velocity;
                 float diag = Mathf.Sqrt((v.x * v.x) + (v.z * v.z));
@@ -2404,7 +2404,7 @@ namespace Characters
 
         private void LateUpdateGun()
         {
-            if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear)
+            if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
             {
                 if (!Grounded)
                 {
@@ -2510,7 +2510,7 @@ namespace Characters
                 Stats.ResetGas();
                 Stats.UpdateStats();
             }
-            bool isGun = humanWeapon == (int)HumanWeapon.AHSS || humanWeapon == (int)HumanWeapon.APG || humanWeapon == (int)HumanWeapon.Thunderspear;
+            bool isGun = humanWeapon == (int)HumanWeapon.AHSS || humanWeapon == (int)HumanWeapon.APG;
 
             if (HookLeft != null)
                 HookLeft.LocalClearAllHooks();
@@ -2539,7 +2539,7 @@ namespace Characters
             FinishSetup = true;
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
-
+            
             if (this.OutlineComponent != null)
                 this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
@@ -2593,7 +2593,7 @@ namespace Characters
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f, tsInfo);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f,tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else
@@ -2774,7 +2774,7 @@ namespace Characters
             {
                 FalseAttack();
                 Idle();
-                if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear)
+                if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
                     CrossFade(HumanAnimations.AHSSHookForwardBoth, 0.1f);
                 else if (left && !IsHookedRight())
                     CrossFade(HumanAnimations.AirHookLJust, 0.1f);
@@ -2937,7 +2937,7 @@ namespace Characters
             if (State != HumanState.Attack)
                 angle = Mathf.Min(angle, 80f);
             _leanLeft = delta > 0f;
-            if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear)
+            if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
                 return angle * (delta >= 0f ? 1f : -1f);
             float multiplier = 0.5f;
             if ((left && delta < 0f) || (!left && delta > 0f))
@@ -3364,7 +3364,7 @@ namespace Characters
                 if (!Grounded)
                     Grounded = JustGrounded = true;
             }
-            else if (_needLean && (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG || Setup.Weapon == HumanWeapon.Thunderspear))
+            else if (_needLean && (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG))
             {
                 if (CheckRaycastIgnoreTriggers(HumanCache.GroundLeft.position + Vector3.up * 0.1f, -Vector3.up, GroundDistance, GroundMask.value))
                 {

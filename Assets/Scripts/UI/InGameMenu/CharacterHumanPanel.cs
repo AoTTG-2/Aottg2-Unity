@@ -54,7 +54,6 @@ namespace UI
             {
                 charSettings.CustomSet.Value = 0;
             }
-
             ElementFactory.CreateIconPickSetting(DoublePanelLeft, dropdownStyle, charSettings.CustomSet, UIManager.GetLocale(LocaleCategory, sub, "Character"),
                 options, GetCharIcons(options), UIManager.CurrentMenu.IconPickPopup, elementWidth: 180f, elementHeight: 40f, onSelect: () => SyncStatBars());
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, dropdownStyle, charSettings.Costume, UIManager.GetLocale(LocaleCategory, sub, "Costume"),

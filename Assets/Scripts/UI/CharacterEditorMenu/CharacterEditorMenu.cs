@@ -64,7 +64,7 @@ namespace UI
         public void ResetCharacter(bool changeAnimation = false)
         {
             var newSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
-            Character.Setup.Load(newSet, (HumanWeapon)Weapon.Value,false);
+            Character.Setup.Load(newSet, (HumanWeapon)Weapon.Value, false);
             if (changeAnimation)
                 Character.Idle();
         }

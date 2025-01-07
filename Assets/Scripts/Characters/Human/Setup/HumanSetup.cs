@@ -6,7 +6,6 @@ using Settings;
 using CustomSkins;
 using GameManagers;
 using System.Globalization;
-using System;
 
 namespace Characters
 {
