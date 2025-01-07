@@ -42,7 +42,10 @@ namespace Characters
             bool twoShot = IsTwoShotMode();
             if ((hasLeft && cross < 0f && human.State != HumanState.Land) || !hasRight)
             {
-                spawnPosition = human.Setup._part_blade_l.transform.position;
+                if(human.CurrentSpecial == "Thunderspears")
+                    spawnPosition = human.Setup._part_ts_l.transform.position;
+                else
+                    spawnPosition = human.Setup._part_blade_l.transform.position;
                 human.PlaySound(HumanSounds.GetRandomTSLaunch());
                 human.SetThunderspears(false, hasRight || !twoShot);
                 if (human.Grounded)
@@ -52,7 +55,10 @@ namespace Characters
             }
             else
             {
-                spawnPosition = human.Setup._part_blade_r.transform.position;
+                if(human.CurrentSpecial == "Thunderspears")
+                    spawnPosition = human.Setup._part_ts_r.transform.position;
+                else
+                    spawnPosition = human.Setup._part_blade_r.transform.position;
                 human.PlaySound(HumanSounds.GetRandomTSLaunch());
                 human.SetThunderspears(hasLeft || !twoShot, false);
                 if (human.Grounded)
@@ -142,15 +148,28 @@ namespace Characters
 
         private bool IsModelActive(Human human, bool left)
         {
-            if (left)
+            if (left) { 
+                if(human.CurrentSpecial == "Thunderspears")
+                    return human.Setup._part_ts_l.activeSelf;
                 return human.Setup._part_blade_l.activeSelf;
-            else
+            }
+            else {
+                if (human.CurrentSpecial == "Thunderspears")
+                    return human.Setup._part_ts_r.activeSelf;
                 return human.Setup._part_blade_r.activeSelf;
+            }
         }
 
         private bool IsTwoShotMode()
         {
             return !SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value && MaxRound == 2;
+        }
+        public override void Reset()
+        {
+            base.Reset();
+            var human = (Human)_owner;
+            RoundLeft = 2;
+            human.SetThunderspears(true, true);
         }
     }
 }
