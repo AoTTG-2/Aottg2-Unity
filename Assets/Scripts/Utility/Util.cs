@@ -385,7 +385,7 @@ namespace Utility
                 && fileName.Length < 50;
         }
 
-        public static double GetPhotonTimestampDifference(double sentTime, double serverTime)
+        public static float GetPhotonTimestampDifference(float sentTime, float serverTime)
         {
             if (serverTime >= sentTime)
             {
@@ -393,7 +393,7 @@ namespace Utility
             }
 
             // Handle wrap-around
-            return (4294967.295 - sentTime) + serverTime;
+            return (4294967.295f - sentTime) + serverTime;
         }
     }
 }
