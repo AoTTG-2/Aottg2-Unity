@@ -37,6 +37,11 @@ namespace CustomLogic
                 // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
                 return Util.GetPhotonTimestampDifference(parameters[0].UnboxToFloat(), parameters[1].UnboxToFloat());
             }
+            if (name == "GetMillisecondTimestampDifference")
+            {
+                // Handle the wrap around case photon timestamps have for the user since most will likely ignore it otherwise.
+                return Util.GetPhotonMillisecondTimestampDifference(parameters[0].UnboxToInt(), parameters[1].UnboxToInt());
+            }
             if (name == "KickPlayer")
             {
                 Photon.Realtime.Player player = null;
@@ -79,6 +84,8 @@ namespace CustomLogic
                 return new CustomLogicPlayerBuiltin(PhotonNetwork.LocalPlayer);
             if (name == "NetworkTime")
                 return (float)PhotonNetwork.Time;
+            if (name == "NetworkMillisecondTime")
+                return PhotonNetwork.ServerTimestamp;
             if (name == "Ping")
                 return PhotonNetwork.GetPing();
             return base.GetField(name);

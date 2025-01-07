@@ -395,5 +395,21 @@ namespace Utility
             // Handle wrap-around
             return (4294967.295f - sentTime) + serverTime;
         }
+
+        public static int GetPhotonMillisecondTimestampDifference(int sentTime, int serverTime)
+        {
+            unchecked
+            {
+                uint uSentTime = (uint)sentTime;
+                uint uServerTime = (uint)serverTime;
+                if (uServerTime >= uSentTime)
+                {
+                    return (int)(uServerTime - uSentTime);
+                }
+
+                // Handle wrap-around
+                return (int)((uint.MaxValue - uSentTime) + uServerTime);
+            }
+        }
     }
 }
