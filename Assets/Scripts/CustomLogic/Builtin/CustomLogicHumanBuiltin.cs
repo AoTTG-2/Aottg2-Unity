@@ -250,6 +250,8 @@ namespace CustomLogic
                 return Human.IsInvincible;
             if (name == "InvincibleTimeLeft")
                 return Human.InvincibleTimeLeft;
+            if (name == "IsCarried")
+                return Human.CarryState == HumanCarryState.Carry;
             return base.GetField(name);
         }
 
