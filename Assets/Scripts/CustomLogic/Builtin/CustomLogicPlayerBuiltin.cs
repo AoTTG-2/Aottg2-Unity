@@ -19,7 +19,7 @@ namespace CustomLogic
         }
 
         [CLProperty("Player's current character, if alive.")]
-        public object Character
+        public CustomLogicCharacterBuiltin Character
         {
             get
             {
