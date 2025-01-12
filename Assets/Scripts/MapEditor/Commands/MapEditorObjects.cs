@@ -21,28 +21,28 @@ public class MapEditorObjects : IQueryable
             _objects.Add(objectID, obj);
         }
     }
-
-    public List<string> Query(string query)
+    
+    public Dictionary<int, string> Query(string query)
     {
 
 
         query = query.ToLower();
-        var results = new List<string>();
+        var results = new Dictionary<int, string>();
 
         foreach (var obj in _objects.Values)
         {
             if (obj.ScriptObject.Name.ToLower().Contains(query))
-                results.Add($"{obj.ScriptObject.Name} (ID: {obj.ScriptObject.Id})");
+                results.Add(obj.ScriptObject.Id, $"{obj.ScriptObject.Name} (ID: {obj.ScriptObject.Id})");
         }
 
         return results;
     }
 
-    public List<string> GetAll()
+    public Dictionary<int, string> GetAll()
     {
-        var all = new List<string>();
+        var all = new Dictionary<int, string>();
         foreach (var obj in _objects.Values)
-            all.Add($"{obj.ScriptObject.Name} (ID: {obj.ScriptObject.Id})");
+            all.Add(obj.ScriptObject.Id, $"{obj.ScriptObject.Name} (ID: {obj.ScriptObject.Id})");
         return all;
     }
 }

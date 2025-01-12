@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using Settings;
 using Map;
+using System.Linq;
 
 namespace UI
 {
@@ -21,10 +22,13 @@ namespace UI
         protected virtual float ItemButtonWidth => 450f;
         protected virtual float DeleteButtonSize => 20f;
 
+        protected override string ThemePanel => "SelectListPopup";
 
         private MapEditorObjects _mapEditorObjects = new MapEditorObjects();
 
         private List<GameObject> _gameObjects = new List<GameObject>();
+
+        private List<int> _selectedObjectIDs = new List<int>();
 
 
 
@@ -45,48 +49,60 @@ namespace UI
 
         public void Sync()
         {
+            _selectedObjectIDs.Clear();
             foreach (GameObject go in _gameObjects)
                 Destroy(go);
             _gameObjects.Clear();
             _mapEditorObjects.Sync();
-            
-            List<string> items = _mapEditorObjects.GetAll();
+
+            Dictionary<int, string> items = _mapEditorObjects.GetAll();
             Debug.Log(items.Count);
             CreateList(items);
         }
 
-        protected void CreateList(List<string> items)
+        protected void CreateList(Dictionary<int, string> items)
         {
-            
-            foreach (string item in items)
+
+            foreach (int item in items.Keys)
             {
+                string itemValue = items[item];
                 Debug.Log("item:");
                 Debug.Log(item);
-                ElementStyle style = new ElementStyle(fontSize: 18, titleWidth: 80f, spacing: 10f, themePanel: ThemePanel);
-
-                GameObject button = ElementFactory.CreateDefaultButton(SinglePanel, style, item);
+                GameObject button = ElementFactory.InstantiateAndBind(SinglePanel, "Prefabs/Misc/SelectListButton");
 
                 _gameObjects.Add(button);
 
                 // _itemButtons.Add(button);
-                // Button itemButton = button.transform.Find("ItemButton").GetComponent<Button>();
-                // Button deleteButton = button.transform.Find("DeleteButton").GetComponent<Button>();
-                // itemButton.onClick.AddListener(() => OnItemClick(item));
-                // itemButton.transform.Find("Text").GetComponent<Text>().text = item;
-                // itemButton.transform.Find("Text").GetComponent<Text>().fontSize = ItemFontSize;
-                // itemButton.colors = UIManager.GetThemeColorBlock(ThemePanel, "ItemButton", "");
-                // itemButton.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor(ThemePanel, "ItemButton", "TextColor");
-                // itemButton.GetComponent<LayoutElement>().preferredWidth = ItemButtonWidth + DeleteButtonSize + 10f;
-                // deleteButton.gameObject.SetActive(false);
+                Button itemButton = button.transform.Find("ItemButton").GetComponent<Button>();
+                Button deleteButton = button.transform.Find("DeleteButton").GetComponent<Button>();
+                itemButton.onClick.AddListener(() => OnItemClick(item));
+                itemButton.transform.Find("Text").GetComponent<Text>().text = itemValue;
+                itemButton.transform.Find("Text").GetComponent<Text>().fontSize = ItemFontSize;
+                itemButton.colors = UIManager.GetThemeColorBlock(ThemePanel, "ItemButton", "");
+                itemButton.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor(ThemePanel, "ItemButton", "TextColor");
+                itemButton.GetComponent<LayoutElement>().preferredWidth = ItemButtonWidth + DeleteButtonSize + 10f;
+                deleteButton.gameObject.SetActive(false);
 
-                
+
             }
 
         }
 
-        private void OnItemClick(string name)
+        private void OnItemClick(int objectID)
         {
-            Debug.Log("hello");
+            if (_selectedObjectIDs.Contains(objectID))
+            {
+                _selectedObjectIDs.Remove(objectID);
+            }
+            else
+            {
+                _selectedObjectIDs.Add(objectID);
+            }
+        }
+
+        public List<int> getSelectedObjectsIDs()
+        {
+            return _selectedObjectIDs;
         }
 
         private void OnButtonClick(string name)
@@ -99,6 +115,7 @@ namespace UI
             {
 
                 Hide();
+                Debug.Log(string.Join("/", _selectedObjectIDs));
             }
         }
     }

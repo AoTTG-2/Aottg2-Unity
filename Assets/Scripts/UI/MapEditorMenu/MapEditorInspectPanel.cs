@@ -206,6 +206,9 @@ namespace UI
                     else if (key.EndsWith("ObjectIDSelector")) 
                     {
                         ElementFactory.CreateDefaultButton(SinglePanel, style, "Select Object", onClick: () => OnButtonClick("ShowObjectSelectPopup"));
+                        // get the query of object id selector
+                        string query = ((StringSetting)setting).Value;
+                        Debug.Log("Query = " + query);
                     }
                 }
                 foreach (string key in settings.Keys)

@@ -815,7 +815,9 @@ component DestructibleTrigger
     TargetIDs = "0";
     TargetIDsTooltip = "Slash (/) separated list of Target IDs to destroy on trigger.";
 
-    ObjectIDSelector = "0";
+    
+    exampleID = -1;
+    ObjectIDSelector = "hasCompnent";
    
 
     ReplacementIDs = "0";

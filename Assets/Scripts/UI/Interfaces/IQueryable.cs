@@ -9,11 +9,11 @@ namespace Utility
         /// </summary>
         /// <param name="query">The search query.</param>
         /// <returns>A list of results matching the query.</returns>
-        List<string> Query(string query);
+        Dictionary<int, string> Query(string query);
 
         /// <summary>
         /// Returns the full list of queryable objects.
         /// </summary>
-        List<string> GetAll();
+        Dictionary<int, string> GetAll();
     }
 }
