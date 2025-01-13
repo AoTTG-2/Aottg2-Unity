@@ -11,11 +11,6 @@ namespace CustomLogic
     internal class CLTypeAttribute : CLBaseAttribute
     {
         /// <summary>
-        /// Should be set to true if the type has static members
-        /// </summary>
-        public bool Static { get; set; } = false;
-
-        /// <summary>
         /// Should be set to true if the type shouldn't be instantiated
         /// </summary>
         public bool Abstract { get; set; } = false;

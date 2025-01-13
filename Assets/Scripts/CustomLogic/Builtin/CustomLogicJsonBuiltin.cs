@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Utility;
 using SimpleJSONFixed;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, InheritBaseMembers = true)]
-    class CustomLogicJsonBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Json", Static = true, Abstract = true)]
+    partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {
-        public CustomLogicJsonBuiltin() : base("Json")
+        [CLConstructor]
+        public CustomLogicJsonBuiltin()
         {
         }
 
@@ -33,7 +33,7 @@ namespace CustomLogic
             {
                 return null;
             }
-            
+
         }
 
         [CLMethod(description: "Saves a custom logic object into a json string")]

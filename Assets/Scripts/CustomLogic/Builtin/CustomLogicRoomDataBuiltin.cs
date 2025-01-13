@@ -2,17 +2,18 @@
 
 namespace CustomLogic
 {
-    [CLType(Static = true, Abstract = true)]
-    class CustomLogicRoomDataBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "RoomData", Static = true, Abstract = true)]
+    partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {
-        public CustomLogicRoomDataBuiltin() : base("RoomData") { }
+        [CLConstructor]
+        public CustomLogicRoomDataBuiltin() { }
 
         [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
         public static void SetProperty(string property, object value)
         {
             if (value is not (null or float or int or string or bool))
                 throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
-            
+
             CustomLogicManager.RoomData[property] = value;
         }
 

@@ -13,5 +13,8 @@
             Owner = owner;
             Ast = ast;
         }
+
+        public object Call(params object[] parameterValues) => Call(parameterValues);
+        public object Call(CustomLogicEvaluator evaluator, params object[] parameterValues) => Call(evaluator, parameterValues);
     }
 }

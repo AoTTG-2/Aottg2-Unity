@@ -6,10 +6,11 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = true, InheritBaseMembers = true)]
-    class CustomLogicCutsceneBuiltin: CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Cutscene", Abstract = true, Static = true)]
+    partial class CustomLogicCutsceneBuiltin : BuiltinClassInstance
     {
-        public CustomLogicCutsceneBuiltin(): base("Cutscene")
+        [CLConstructor]
+        public CustomLogicCutsceneBuiltin()
         {
         }
 
@@ -48,7 +49,7 @@ namespace CustomLogic
 
         private IEnumerator StartCutscene(string name, bool full)
         {
-            var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, new List<object>(), true);
+            var instance = CustomLogicManager.Evaluator.CreateClassInstance(name, CustomLogicEvaluator.EmptyArgs, true);
             CustomLogicManager.ToggleCutscene(full);
             yield return CustomLogicManager.Evaluator.EvaluateMethod(instance, "Start");
             CustomLogicManager.ToggleCutscene(false);
