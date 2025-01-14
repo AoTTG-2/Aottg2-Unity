@@ -550,6 +550,12 @@ namespace Characters
             if (IsMine())
             {
                 _disableCooldownLeft -= Time.deltaTime;
+
+                if (!AI && (State == TitanState.Sprint || State == TitanState.Run || State == TitanState.Walk) && IsSit && State != TitanState.SitDown && State != TitanState.SitIdle && State != TitanState.SitUp)
+                {
+                    StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);
+                    return;
+                }
                 if (State == TitanState.Fall || State == TitanState.Jump)
                 {
                     if (!AI && HasDirection && IsSprint && CurrentSprintStamina > 1f)
@@ -709,7 +715,11 @@ namespace Characters
                 }
                 if (State != TitanState.Fall)
                     _currentFallTime = 0f;
-                if (State == TitanState.Jump)
+                if (!AI && (State == TitanState.PreJump || State == TitanState.CoverNape || State == TitanState.SitDown || State == TitanState.Dead))
+                {
+                    SetDefaultVelocityLerp();
+                }
+                else if (State == TitanState.Jump)
                 {
                     if (Cache.Rigidbody.velocity.y <= 1f)
                         Fall();
