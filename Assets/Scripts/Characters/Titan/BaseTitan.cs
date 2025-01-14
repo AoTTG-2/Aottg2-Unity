@@ -385,7 +385,7 @@ namespace Characters
         {
             if (HoldHuman != null)
             {
-                HoldHuman.Cache.PhotonView.RPC("UngrabRPC", HoldHuman.Cache.PhotonView.Owner, new object[0]);
+                HoldHuman.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[0]);
                 HoldHuman.GrabHand = null;
                 HoldHuman = null;
             }
