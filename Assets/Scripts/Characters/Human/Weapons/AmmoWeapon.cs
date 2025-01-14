@@ -63,10 +63,13 @@ namespace Characters
             if (RoundLeft >= 0)
                 RoundLeft--;
         }
-
         public override bool CanUse()
         {
             return base.CanUse() && (RoundLeft > 0 || RoundLeft == -1);
+        }
+        public override bool HasDurability()
+        {
+            return (RoundLeft > 0 || RoundLeft == -1);
         }
     }
 }
