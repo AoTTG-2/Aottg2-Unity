@@ -35,6 +35,8 @@ namespace Characters
         public GameObject _part_arm_r;
         public GameObject _part_blade_l;
         public GameObject _part_blade_r;
+        public GameObject _part_ts_l;
+        public GameObject _part_ts_r;
         public GameObject _part_brand_1;
         public GameObject _part_brand_2;
         public GameObject _part_brand_3;
@@ -82,6 +84,7 @@ namespace Characters
         public static int BackCount;
         public static int HeadCount;
         public static int HatCount;
+        public static string Special;
 
         public static void Init()
         {
@@ -144,6 +147,7 @@ namespace Characters
             int setIndex = settings.CustomSet.Value;
             int costumeIndex = settings.Costume.Value;
             int preCount = SettingsManager.HumanCustomSettings.Costume1Sets.Sets.GetCount();
+            Special = settings.Special.Value;
             if (setIndex < preCount)
             {
                 if (costumeIndex == 1)
@@ -253,6 +257,8 @@ namespace Characters
             DestroyIfExists(_part_gas_r);
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
+            DestroyIfExists(_part_ts_l);
+            DestroyIfExists(_part_ts_r);
             DestroyIfExists(_part_back);
             DestroyIfExists(_part_hat);
             DestroyIfExists(_part_head_decor);
@@ -293,16 +299,22 @@ namespace Characters
         {
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
+            DestroyIfExists(_part_ts_l);
+            DestroyIfExists(_part_ts_r);
             Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
             string weaponLMesh = _meshes.GetWeaponMesh(left: true);
             if (weaponLMesh != string.Empty)
             {
                 _part_blade_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, weaponLMesh, cached: true);
+                if(Special == "Thunderspears")
+                    _part_ts_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Parts/Weapons/Prefabs/thunderspear_l", cached: true);
                 if (weaponLMesh.Contains("thunderspear"))
                     AttachToMount(_part_blade_l, _mount_ts_l);
                 else
                 {
                     AttachToMount(_part_blade_l, _mount_weapon_l);
+                    if(Special == "Thunderspears")
+                        AttachToMount(_part_ts_l, _mount_ts_l);
                     _part_blade_l.GetComponent<Renderer>().material = material;
                 }
                 if (_part_blade_l.GetComponentInChildren<MeleeWeaponTrail>() != null)
@@ -316,11 +328,15 @@ namespace Characters
             if (weaponRMesh != string.Empty)
             {
                 _part_blade_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, weaponRMesh, cached: true);
+                if(Special == "Thunderspears")
+                    _part_ts_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Parts/Weapons/Prefabs/thunderspear_r", cached: true);
                 if (weaponRMesh.Contains("thunderspear"))
                     AttachToMount(_part_blade_r, _mount_ts_r);
                 else
                 {
                     AttachToMount(_part_blade_r, _mount_weapon_r);
+                    if(Special == "Thunderspears")
+                        AttachToMount(_part_ts_r, _mount_ts_r);
                     _part_blade_r.GetComponent<Renderer>().material = material;
                 }
                 if (_part_blade_r.GetComponentInChildren<MeleeWeaponTrail>() != null)
