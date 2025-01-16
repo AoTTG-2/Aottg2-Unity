@@ -181,6 +181,10 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Character.IsMine())
                 return;
             if (name == "Position")

@@ -1,7 +1,10 @@
+using ApplicationManagers;
 using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Utility;
+
 
 namespace Characters
 {
@@ -16,12 +19,26 @@ namespace Characters
 
         protected override void SendCustomStream(PhotonStream stream)
         {
-            stream.SendNext(_human.LateUpdateHeadRotation);
+            if (_human.LateUpdateHeadRotation.HasValue)
+            {
+                var rotation = _human.LateUpdateHeadRotation.Value;
+                stream.SendNext(unchecked((int)QuaternionCompression.CompressQuaternion(ref rotation)));
+            }
+            else
+                stream.SendNext(null);
         }
 
         protected override void ReceiveCustomStream(PhotonStream stream)
         {
-            _human.LateUpdateHeadRotationRecv = (Quaternion?)stream.ReceiveNext();
+            int? compressed = (int?)stream.ReceiveNext();
+            if (compressed.HasValue)
+            {
+                var rotation = Quaternion.identity;
+                QuaternionCompression.DecompressQuaternion(ref rotation, unchecked((uint)compressed.Value));
+                _human.LateUpdateHeadRotationRecv = rotation;
+            }
+            else
+                _human.LateUpdateHeadRotationRecv = null;
         }
 
         protected override void Update()
@@ -44,9 +61,13 @@ namespace Characters
                 {
                     _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                     _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
-                    _correctPosition += _correctVelocity * Time.deltaTime;
                     if(_human.BackHuman != null)
                         _human.CarryVelocity = _correctVelocity;
+                    if (_timeSinceLastMessage < MaxPredictionTime)
+                    {
+                        _correctPosition += _correctVelocity * Time.deltaTime;
+                        _timeSinceLastMessage += Time.deltaTime;
+                    }
                 }
             }
         }

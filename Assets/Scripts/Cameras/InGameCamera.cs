@@ -392,8 +392,8 @@ namespace Cameras
         {
             var cameraDistance = GetCameraDistance();
             float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
-            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _follow.GetComponent<BaseMovementSync>()._correctCamera,
-                Time.deltaTime * 10f);
+            var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
             Cache.Transform.position = _follow.GetCameraAnchor().position;
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance;
