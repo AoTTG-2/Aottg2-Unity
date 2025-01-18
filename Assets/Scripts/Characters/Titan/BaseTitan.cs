@@ -459,10 +459,7 @@ namespace Characters
 
         protected void SetAnimationUpdateMode(bool always)
         {
-            if (always)
-                Animation.Animation.cullingType = AnimationCullingType.AlwaysAnimate;
-            else
-                Animation.Animation.cullingType = AnimationCullingType.BasedOnRenderers;
+            Animation.SetCullingType(always);
         }
 
         protected override void Awake()
@@ -792,7 +789,7 @@ namespace Characters
                     _needFreshCore = false;
                 }
                 if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Animation.IsPlaying(_currentStateAnimation)
-                    && Animation.GetNormalizedTime(_currentStateAnimation) < _rootMotionAnimations[_currentStateAnimation])
+                    && Animation.GetCurrentNormalizedTime() < _rootMotionAnimations[_currentStateAnimation])
                 {
                     Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
                     if (coreLocalPosition.magnitude >= _furthestCoreLocalPosition.magnitude)
@@ -930,7 +927,7 @@ namespace Characters
 
         protected virtual float GetAnimationTime()
         {
-            return Animation.GetNormalizedTime(_currentStateAnimation);
+            return Animation.GetCurrentNormalizedTime();
         }
 
         protected virtual float GetHitboxTime(float normalizedLength)
@@ -1006,12 +1003,12 @@ namespace Characters
         {
             if (BaseTitanAnimations.Run != "" && Animation.IsPlaying(BaseTitanAnimations.Run))
             {
-                float time = Animation.GetNormalizedTime(BaseTitanAnimations.Run) % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0f && time < 0.5f) ? 0 : 1;
             }
             else if (BaseTitanAnimations.Walk != "" && Animation.IsPlaying(BaseTitanAnimations.Walk))
             {
-                float time = Animation.GetNormalizedTime(BaseTitanAnimations.Walk) % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             return _stepPhase;

@@ -1222,13 +1222,13 @@ namespace Characters
         {
             if (Animation.IsPlaying(BasicAnimations.Walk))
             {
-                float time = Animation.GetNormalizedTime(BasicAnimations.Walk) % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             string run = GetPlayingRunAnimation();
             if (run != "")
             {
-                float time = Animation.GetNormalizedTime(run) % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0f && time < 0.5f) ? 0 : 1;
             }
             return _stepPhase;

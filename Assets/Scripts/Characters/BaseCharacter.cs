@@ -299,7 +299,7 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTeamRPC", player, new object[] { Team });
                 string currentAnimation = GetCurrentAnimation();
                 if (currentAnimation != "")
-                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Animation.GetNormalizedTime(currentAnimation) });
+                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Animation.GetCurrentNormalizedTime() });
             }
         }
 
@@ -320,9 +320,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Animation.Play(animation);
-            if (startTime > 0f)
-                Animation.SetNormalizedTime(animation, startTime);
+            Animation.Play(animation, startTime);
         }
 
         [PunRPC]
@@ -330,8 +328,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Animation.Play(animation);
-            Animation.SetNormalizedTime(animation, 0f);
+            Animation.Play(animation, 0f);
         }
 
         public void PlayAnimationIfNotPlaying(string animation, float startTime = 0f)
@@ -369,9 +366,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Animation.CrossFade(animation, fadeTime);
-            if (startTime > 0f)
-                Animation.SetNormalizedTime(animation, startTime);
+            Animation.CrossFade(animation, fadeTime, startTime);
         }
 
         [PunRPC]
@@ -380,9 +375,7 @@ namespace Characters
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             Animation.SetSpeed(animation, speed);
-            Animation.CrossFade(animation, fadeTime);
-            if (startTime > 0f)
-                Animation.SetNormalizedTime(animation, startTime);
+            Animation.CrossFade(animation, fadeTime, startTime);
         }
 
         public void PlaySound(string sound)

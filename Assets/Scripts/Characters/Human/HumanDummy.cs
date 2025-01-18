@@ -50,7 +50,7 @@ namespace Characters
                 animation = male ? HumanAnimations.IdleTSM : HumanAnimations.IdleTSF;
             else
                 animation = male ? HumanAnimations.IdleM : HumanAnimations.IdleF;
-            Animation.CrossFade(animation, 0.1f);
+            Animation.CrossFade(animation, 0.1f, 0f);
         }
 
         public void EmoteAction(string emote)
@@ -71,7 +71,7 @@ namespace Characters
             else if (emote == "Eat")
                 animation = HumanAnimations.SpecialSasha;
             State = HumanState.EmoteAction;
-            Animation.CrossFade(animation, 0.1f);
+            Animation.CrossFade(animation, 0.1f, 0f);
             _stateTimeLeft = Animation.GetLength(animation);
         }
 
