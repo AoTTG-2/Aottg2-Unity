@@ -111,12 +111,12 @@ namespace Characters
             return _currentAnimation == name;
         }
 
-        public void Play(string name, float startTime)
+        public void Play(string name, float startTime, bool reset = false)
         {
             if (_isLegacy)
             {
                 Animation.Play(name);
-                if (startTime > 0f)
+                if (startTime > 0f || reset)
                     Animation[name].normalizedTime = startTime;
             }
             else

@@ -328,7 +328,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Animation.Play(animation, 0f);
+            Animation.Play(animation, 0f, true);
         }
 
         public void PlayAnimationIfNotPlaying(string animation, float startTime = 0f)

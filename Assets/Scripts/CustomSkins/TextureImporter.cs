@@ -167,7 +167,7 @@ namespace CustomSkins
             Texture2D tex = new Texture2D(texData.width, texData.height, TextureFormat.BGRA32, texData.mipLevels, false);
             tex.filterMode = FilterMode.Bilinear;
             tex.LoadRawTextureData(texData.data);
-            tex.Apply(false, false);
+            tex.Apply(false, true);
             return tex;
         }
 
