@@ -1930,6 +1930,7 @@ namespace Characters
 
         protected override void LateUpdate()
         {
+            base.LateUpdate();
             if (IsMine() && State != HumanState.Grab)
             {
                 if (MountState == HumanMountState.None)
@@ -1960,7 +1961,6 @@ namespace Characters
                     _oldHeadRotation = HumanCache.Head.localRotation;
                 }
             }
-            base.LateUpdate();
         }
 
         protected override void LateUpdateFPS()

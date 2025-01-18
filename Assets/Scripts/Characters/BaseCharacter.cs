@@ -698,9 +698,9 @@ namespace Characters
 
         protected virtual void LateUpdate()
         {
+            Animation.OnLateUpdate();
             LateUpdateFootstep();
             LateUpdateFPS();
-            Animation.OnLateUpdate();
         }
 
         protected virtual void LateUpdateFootstep()

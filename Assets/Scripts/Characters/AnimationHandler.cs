@@ -1,18 +1,7 @@
 using System;
 using UnityEngine;
 using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
-using Utility;
 using System.Collections.Generic;
-using Settings;
-using System.Collections;
-using CustomLogic;
-using UI;
-using Cameras;
-using Photon.Pun;
-using Photon.Realtime;
-using GameProgress;
 
 namespace Characters
 {
@@ -20,15 +9,19 @@ namespace Characters
     {
         private Animation Animation;
         private Animator Animator;
-        private const float UpdateDelay = 0.1f;
-        private const float CullFrameDelay = 0.2f;
-        private const float CullDistance = 500f;
+        private const float LODUpdateDelay = 0.1f;
+        private const float LODMinDistance = 200f;
+        private const float LODDelayMultiplier = 0.0001f;
+        private const float LODMinDelay = 0.02f;
+        private const float LODMaxDelay = 0.5f;
         private Dictionary<string, float> _animationSpeed = new Dictionary<string, float>();
-        private bool _manual = false;
-        private float _currentUpdateTime = 0f;
-        private float _currentCullTime = 0f;
+        private bool _isLOD = false;
+        private float _currentLODUpdateTime = 0f;
+        private float _currentLODDelayTime = 0f;
+        private float _nextLODDelay = 0f;
         private Transform _transform;
         private string _currentAnimation = string.Empty;
+        private float _currentAnimationStartTime = 0f;
         private bool _isLegacy;
         private Dictionary<string, AnimationClip> _animatorClips = new Dictionary<string, AnimationClip>();
         private Dictionary<string, string> _animatorStateNames = new Dictionary<string, string>();
@@ -101,7 +94,12 @@ namespace Characters
         {
             if (_isLegacy)
                 return Animation[_currentAnimation].normalizedTime;
-            return Animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            else
+            {
+                float deltaTime = Time.time - _currentAnimationStartTime;
+                float normalizedTime = deltaTime / GetTotalTime(_currentAnimation);
+                return normalizedTime;
+            }
         }
 
         public bool IsPlaying(string name)
@@ -125,28 +123,26 @@ namespace Characters
                 Animator.speed = GetSpeed(name);
             }
             _currentAnimation = name;
+            _currentAnimationStartTime = Time.time;
         }
 
         public void CrossFade(string name, float fade, float startTime)
         {
             if (_isLegacy)
             {
-                if (_manual)
-                    Animation.Play(name);
-                else
-                    Animation.CrossFade(name, fade);
+                Animation.CrossFade(name, fade);
                 if (startTime > 0f)
                     Animation[name].normalizedTime = startTime;
             }
             else
             {
-                if (_manual)
-                    Animator.Play(_animatorStateNames[name], 0, startTime);
-                else
-                    Animator.CrossFade(_animatorStateNames[name], fade, 0, startTime);
+                if (_currentAnimation != string.Empty)
+                    fade = fade / GetLength(_currentAnimation);
+                Animator.CrossFade(_animatorStateNames[name], fade, 0, startTime);
                 Animator.speed = GetSpeed(name);
             }
             _currentAnimation = name;
+            _currentAnimationStartTime = Time.time;
         }
 
         public void ManuallyStepAnimator(float time)
@@ -199,7 +195,10 @@ namespace Characters
             else
             {
                 if (alwaysAnimate)
+                {
                     Animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                    _isLOD = false;
+                }
                 else
                     Animator.cullingMode = AnimatorCullingMode.CullCompletely;
             }
@@ -209,36 +208,44 @@ namespace Characters
         {
             if (_isLegacy)
                 return;
-            if (_manual)
+            if (_isLOD)
             {
-                _currentCullTime += Time.deltaTime;
-                if (_currentCullTime > CullFrameDelay)
+                _currentLODDelayTime += Time.deltaTime;
+                if (_currentLODDelayTime > _nextLODDelay)
                 {
-                    ManuallyStepAnimator(_currentCullTime);
-                    _currentCullTime = 0f;
+                    ManuallyStepAnimator(_currentLODDelayTime);
+                    _currentLODDelayTime = 0f;
                 }
             }
             else
-                ManuallyStepAnimator(Time.deltaTime);
-
-            _currentUpdateTime += Time.deltaTime;
-            if (_currentUpdateTime < UpdateDelay)
+            {
+                if (_currentLODDelayTime > 0f)
+                {
+                    ManuallyStepAnimator(Time.deltaTime + _currentLODDelayTime);
+                    _currentLODDelayTime = 0f;
+                }
+                else
+                    ManuallyStepAnimator(Time.deltaTime);
+            }
+            _currentLODUpdateTime += Time.deltaTime;
+            if (_currentLODUpdateTime < LODUpdateDelay)
                 return;
-            _currentUpdateTime = 0;
+            _currentLODUpdateTime = 0;
             var cameraPosition = SceneLoader.CurrentCamera.Cache.Transform.position;
             float distance = Vector3.Distance(cameraPosition, _transform.position);
-            if (distance > CullDistance)
-                SetManual(true);
+            if (distance > LODMinDistance && Animator.cullingMode != AnimatorCullingMode.AlwaysAnimate)
+            {
+                if (!_isLOD)
+                {
+                    _isLOD = true;
+                    _currentLODDelayTime = 0f;
+                }
+                _nextLODDelay = Mathf.Clamp(distance * LODDelayMultiplier, LODMinDelay, LODMaxDelay);
+            }
             else
-                SetManual(false);
-        }
-
-        private void SetManual(bool manual)
-        {
-            if (_manual == manual)
-                return;
-            _manual = manual;
-            _currentCullTime = 0f;
+            {
+                _isLOD = false;
+            }
         }
     }
 }

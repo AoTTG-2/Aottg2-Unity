@@ -834,6 +834,7 @@ namespace Characters
 
         protected override void LateUpdate()
         {
+            base.LateUpdate();
             if (IsMine())
             {
                 if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
@@ -841,7 +842,6 @@ namespace Characters
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
                 }
             }
-            base.LateUpdate();
         }
 
         protected bool IsPlayingClip(string clip)

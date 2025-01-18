@@ -515,6 +515,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cd3b6d73fbfa32d448642b2d308572dd, type: 2}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_Animation
       value: 
