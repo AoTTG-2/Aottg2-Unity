@@ -60,7 +60,7 @@ namespace Characters
             {
                 stream.SendNext(_transform.position);
                 var rotation = _transform.rotation;
-                stream.SendNext(unchecked((int)QuaternionCompression.CompressQuaternion(ref rotation)));
+                stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
                 if (_syncVelocity)
                     stream.SendNext(_rigidbody.velocity);
                 if (!_character.AI)
@@ -68,7 +68,7 @@ namespace Characters
                     if (((InGameMenu)UIManager.CurrentMenu)._spectateCount > 0)
                     {
                         var camRotation = SceneLoader.CurrentCamera.Cache.Transform.rotation;
-                        stream.SendNext(unchecked((int)QuaternionCompression.CompressQuaternion(ref camRotation)));
+                        stream.SendNext(QuaternionCompression.CompressQuaternion(ref camRotation));
                     }
                     else
                         stream.SendNext(null);
@@ -78,14 +78,14 @@ namespace Characters
             else
             {
                 _correctPosition = (Vector3)stream.ReceiveNext();
-                QuaternionCompression.DecompressQuaternion(ref _correctRotation, unchecked((uint)((int)stream.ReceiveNext())));
+                QuaternionCompression.DecompressQuaternion(ref _correctRotation, (int)stream.ReceiveNext());
                 if (_syncVelocity)
                     _correctVelocity = (Vector3)stream.ReceiveNext();
                 if (!_character.AI)
                 {
                     int? compressed = (int?)stream.ReceiveNext();
                     if (compressed.HasValue)
-                        QuaternionCompression.DecompressQuaternion(ref _correctCamera, unchecked((uint)compressed.Value));
+                        QuaternionCompression.DecompressQuaternion(ref _correctCamera, compressed.Value);
                 }
                 ReceiveCustomStream(stream);
                 _timeSinceLastMessage = 0f;

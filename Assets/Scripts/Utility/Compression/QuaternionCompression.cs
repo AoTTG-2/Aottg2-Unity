@@ -51,7 +51,7 @@ namespace Utility
         /// <param name="quaternion">the <see cref="Quaternion"/> to be compressed</param>
         /// <returns>the <see cref="Quaternion"/> compressed as an unsigned integer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint CompressQuaternion(ref Quaternion quaternion)
+        public static int CompressQuaternion(ref Quaternion quaternion)
         {
             // Store off the absolute value for each Quaternion element
             s_QuatAbsValues[0] = Mathf.Abs(quaternion[0]);
@@ -88,7 +88,7 @@ namespace Utility
             compressed = currentIndex != indexToSkip ? (compressed << 10) | (uint)((quaternion[currentIndex] < 0 ? k_True : k_False) != quatMaxSign ? k_True : k_False) << k_ShiftNegativeBit | (ushort)Mathf.Round(k_CompressionEcodingMask * s_QuatAbsValues[currentIndex]) : compressed;
 
             // Return the compress quaternion
-            return compressed;
+            return unchecked((int)compressed);
         }
 
         /// <summary>
@@ -97,8 +97,9 @@ namespace Utility
         /// <param name="quaternion">quaternion to store the decompressed values within</param>
         /// <param name="compressed">the compressed quaternion</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void DecompressQuaternion(ref Quaternion quaternion, uint compressed)
+        public static void DecompressQuaternion(ref Quaternion quaternion, int rawCompressed)
         {
+            uint compressed = unchecked((uint)rawCompressed);
             // Get the last two bits for the index to skip (0-3)
             var indexToSkip = (int)(compressed >> 30);
 

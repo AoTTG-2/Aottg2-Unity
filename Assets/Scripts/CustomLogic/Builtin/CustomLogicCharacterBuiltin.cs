@@ -49,7 +49,7 @@ namespace CustomLogic
             if (name == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
-                return Character.Cache.Animation[anim].length;
+                return Character.Animation.GetLength(anim);
             }
             if (name == "PlaySound")
             {

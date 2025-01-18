@@ -22,7 +22,7 @@ namespace Characters
             if (_human.LateUpdateHeadRotation.HasValue)
             {
                 var rotation = _human.LateUpdateHeadRotation.Value;
-                stream.SendNext(unchecked((int)QuaternionCompression.CompressQuaternion(ref rotation)));
+                stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
             }
             else
                 stream.SendNext(null);
@@ -34,7 +34,7 @@ namespace Characters
             if (compressed.HasValue)
             {
                 var rotation = Quaternion.identity;
-                QuaternionCompression.DecompressQuaternion(ref rotation, unchecked((uint)compressed.Value));
+                QuaternionCompression.DecompressQuaternion(ref rotation, compressed.Value);
                 _human.LateUpdateHeadRotationRecv = rotation;
             }
             else

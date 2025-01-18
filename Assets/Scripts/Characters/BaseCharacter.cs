@@ -50,6 +50,7 @@ namespace Characters
         protected bool _cameraFPS = false;
         protected bool _wasMainCharacter = false;
         public BaseMovementSync MovementSync;
+        public AnimationHandler Animation;
 
         // movement
         public bool Grounded;
@@ -298,7 +299,7 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTeamRPC", player, new object[] { Team });
                 string currentAnimation = GetCurrentAnimation();
                 if (currentAnimation != "")
-                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Cache.Animation[currentAnimation].normalizedTime });
+                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Animation.GetNormalizedTime(currentAnimation) });
             }
         }
 
@@ -319,9 +320,9 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.Play(animation);
+            Animation.Play(animation);
             if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+                Animation.SetNormalizedTime(animation, startTime);
         }
 
         [PunRPC]
@@ -329,13 +330,13 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.Play(animation);
-            Cache.Animation[animation].normalizedTime = 0f;
+            Animation.Play(animation);
+            Animation.SetNormalizedTime(animation, 0f);
         }
 
         public void PlayAnimationIfNotPlaying(string animation, float startTime = 0f)
         {
-            if (!Cache.Animation.IsPlaying(animation))
+            if (!Animation.IsPlaying(animation))
                 PlayAnimation(animation, startTime);
         }
 
@@ -359,7 +360,7 @@ namespace Characters
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
         {
-            if (!Cache.Animation.IsPlaying(animation))
+            if (!Animation.IsPlaying(animation))
                 CrossFade(animation, fadeTime, startTime);
         }
 
@@ -368,9 +369,9 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.CrossFade(animation, fadeTime);
+            Animation.CrossFade(animation, fadeTime);
             if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+                Animation.SetNormalizedTime(animation, startTime);
         }
 
         [PunRPC]
@@ -378,10 +379,10 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation[animation].speed = speed;
-            Cache.Animation.CrossFade(animation, fadeTime);
+            Animation.SetSpeed(animation, speed);
+            Animation.CrossFade(animation, fadeTime);
             if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+                Animation.SetNormalizedTime(animation, startTime);
         }
 
         public void PlaySound(string sound)
@@ -575,6 +576,7 @@ namespace Characters
             MovementSync = GetComponent<BaseMovementSync>();
             OutlineComponent = gameObject.AddComponent<Outline>();
             OutlineComponent.enabled = false;
+            Animation = new AnimationHandler(gameObject);
         }
 
         protected virtual void CreateCharacterIcon()
@@ -624,12 +626,7 @@ namespace Characters
 
         public string GetCurrentAnimation()
         {
-            foreach (AnimationState state in Cache.Animation)
-            {
-                if (Cache.Animation.IsPlaying(state.name))
-                    return state.name;
-            }
-            return "";
+            return Animation.GetCurrentAnimation();
         }
 
         public virtual Quaternion GetTargetRotation()
@@ -710,6 +707,7 @@ namespace Characters
         {
             LateUpdateFootstep();
             LateUpdateFPS();
+            Animation.OnLateUpdate();
         }
 
         protected virtual void LateUpdateFootstep()

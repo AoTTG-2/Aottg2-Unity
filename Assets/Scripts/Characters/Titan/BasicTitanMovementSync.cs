@@ -27,7 +27,7 @@ namespace Characters
                 if (rotation.HasValue)
                 {
                     var rotationValue = rotation.Value;
-                    stream.SendNext(unchecked((int)QuaternionCompression.CompressQuaternion(ref rotationValue)));
+                    stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotationValue));
                 }
                 else
                     stream.SendNext(null);
@@ -47,7 +47,7 @@ namespace Characters
                 if (compressed.HasValue)
                 {
                     Quaternion recv = Quaternion.identity;
-                    QuaternionCompression.DecompressQuaternion(ref recv, unchecked((uint)compressed.Value));
+                    QuaternionCompression.DecompressQuaternion(ref recv, compressed.Value);
                     _titan.LateUpdateHeadRotationRecv = recv;
                 }
                 else

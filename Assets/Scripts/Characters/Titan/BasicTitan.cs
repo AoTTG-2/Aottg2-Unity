@@ -70,7 +70,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
-            Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
+            Animation.SetSpeed(BasicAnimations.CoverNape, 1.5f);
         }
 
         public override bool IsGrabAttack()
@@ -191,8 +191,7 @@ namespace Characters
         {
             if (CanAction())
             {
-                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, 
-                    Cache.Animation[BasicAnimations.CoverNape].length / Cache.Animation[BasicAnimations.CoverNape].speed);
+                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, Animation.GetTotalTime(BasicAnimations.CoverNape));
             }
         }
 
@@ -331,7 +330,7 @@ namespace Characters
             }
             else
             {
-                float stateTime = Cache.Animation[BasicAnimations.Jump].length / 2f;
+                float stateTime = Animation.GetLength(BasicAnimations.Jump) / 2f;
                 StateActionWithTime(TitanState.PreJump, BaseTitanAnimations.Jump, stateTime, 0.1f);
             }
         }
@@ -420,7 +419,7 @@ namespace Characters
             _turnStartRotation = Cache.Transform.rotation;
             _turnTargetRotation = Quaternion.LookRotation(targetDirection);
             _currentTurnTime = 0f;
-            _maxTurnTime = Cache.Animation[animation].length * 0.71f / Cache.Animation[animation].speed;
+            _maxTurnTime = Animation.GetLength(animation) * 0.71f / Animation.GetSpeed(animation);
             StateActionWithTime(TitanState.Turn, animation, _maxTurnTime, 0.1f);
         }
 
@@ -461,7 +460,7 @@ namespace Characters
         {
             base.Awake();
             Setup = gameObject.AddComponent<BasicTitanSetup>();
-            Cache.Animation[BasicAnimations.Jump].speed = 2f;
+            Animation.SetSpeed(BasicAnimations.Jump, 2f);
         }
 
         [PunRPC]
@@ -1202,7 +1201,7 @@ namespace Characters
                 BasicCache.ForearmR.localScale = Vector3.one;
             BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
             BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
-            if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+            if (!AI && Animation.IsPlaying(BasicAnimations.RunCrawler))
             {
                 var body = BasicCache.Body;
                 body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
@@ -1221,15 +1220,15 @@ namespace Characters
 
         protected override int GetFootstepPhase()
         {
-            if (Cache.Animation.IsPlaying(BasicAnimations.Walk))
+            if (Animation.IsPlaying(BasicAnimations.Walk))
             {
-                float time = Cache.Animation[BasicAnimations.Walk].normalizedTime % 1f;
+                float time = Animation.GetNormalizedTime(BasicAnimations.Walk) % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             string run = GetPlayingRunAnimation();
             if (run != "")
             {
-                float time = Cache.Animation[run].normalizedTime % 1f;
+                float time = Animation.GetNormalizedTime(run) % 1f;
                 return (time >= 0f && time < 0.5f) ? 0 : 1;
             }
             return _stepPhase;
@@ -1237,11 +1236,11 @@ namespace Characters
 
         protected string GetPlayingRunAnimation()
         {
-            if (Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+            if (Animation.IsPlaying(BasicAnimations.RunCrawler))
                 return BasicAnimations.RunCrawler;
             foreach (string anim in BasicAnimations.Runs)
             {
-                if (Cache.Animation.IsPlaying(anim))
+                if (Animation.IsPlaying(anim))
                     return anim;
             }
             return "";

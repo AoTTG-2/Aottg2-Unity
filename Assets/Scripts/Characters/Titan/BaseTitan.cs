@@ -126,9 +126,9 @@ namespace Characters
                 {
                     TurnSpeed = data["TurnSpeed"].AsFloat;
                     if (BaseTitanAnimations.Turn90L != "")
-                        Cache.Animation[BaseTitanAnimations.Turn90L].speed *= TurnSpeed;
+                        Animation.SetSpeed(BaseTitanAnimations.Turn90L, Animation.GetSpeed(BaseTitanAnimations.Turn90L) * TurnSpeed);
                     if (BaseTitanAnimations.Turn90R != "")
-                        Cache.Animation[BaseTitanAnimations.Turn90R].speed *= TurnSpeed;
+                        Animation.SetSpeed(BaseTitanAnimations.Turn90R, Animation.GetSpeed(BaseTitanAnimations.Turn90R) * TurnSpeed);
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace Characters
             _turnStartRotation = Cache.Transform.rotation;
             _turnTargetRotation = Quaternion.LookRotation(targetDirection);
             _currentTurnTime = 0f;
-            _maxTurnTime = Cache.Animation[animation].length / Cache.Animation[animation].speed;
+            _maxTurnTime = Animation.GetTotalTime(animation);
             StateActionWithTime(TitanState.Turn, animation, _maxTurnTime, 0.1f);
         }
 
@@ -424,7 +424,7 @@ namespace Characters
 
         protected void StateAction(TitanState state, string animation, float fade = 0.1f, bool deactivateHitboxes = true)
         {
-            StateActionWithTime(state, animation, Cache.Animation[animation].length, fade, deactivateHitboxes);
+            StateActionWithTime(state, animation, Animation.GetLength(animation), fade, deactivateHitboxes);
         }
 
         protected void StateAttack(string animation, float fade = 0.1f, bool deactivateHitboxes = true)
@@ -437,7 +437,7 @@ namespace Characters
             CrossFadeWithSpeed(animation, _currentAttackSpeed, fade);
             State = TitanState.Attack;
             _currentStateAnimation = animation;
-            _stateTimeLeft = Cache.Animation[animation].length / _currentAttackSpeed;
+            _stateTimeLeft = Animation.GetLength(animation) / _currentAttackSpeed;
         }
 
         protected void StateActionWithTime(TitanState state, string animation, float stateTime, float fade = 0.1f, bool deactivateHitboxes = true)
@@ -460,9 +460,9 @@ namespace Characters
         protected void SetAnimationUpdateMode(bool always)
         {
             if (always)
-                Cache.Animation.cullingType = AnimationCullingType.AlwaysAnimate;
+                Animation.Animation.cullingType = AnimationCullingType.AlwaysAnimate;
             else
-                Cache.Animation.cullingType = AnimationCullingType.BasedOnRenderers;
+                Animation.Animation.cullingType = AnimationCullingType.BasedOnRenderers;
         }
 
         protected override void Awake()
@@ -791,8 +791,8 @@ namespace Characters
                     _previousCoreLocalPosition = _furthestCoreLocalPosition;
                     _needFreshCore = false;
                 }
-                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Cache.Animation.IsPlaying(_currentStateAnimation)
-                    && Cache.Animation[_currentStateAnimation].normalizedTime < _rootMotionAnimations[_currentStateAnimation])
+                if (_rootMotionAnimations.ContainsKey(_currentStateAnimation) && Animation.IsPlaying(_currentStateAnimation)
+                    && Animation.GetNormalizedTime(_currentStateAnimation) < _rootMotionAnimations[_currentStateAnimation])
                 {
                     Vector3 coreLocalPosition = BaseTitanCache.Core.position - BaseTitanCache.Transform.position;
                     if (coreLocalPosition.magnitude >= _furthestCoreLocalPosition.magnitude)
@@ -849,7 +849,7 @@ namespace Characters
 
         protected bool IsPlayingClip(string clip)
         {
-            return clip != "" && Cache.Animation.IsPlaying(clip);
+            return clip != "" && Animation.IsPlaying(clip);
         }
 
         protected override void CheckGround()
@@ -930,12 +930,12 @@ namespace Characters
 
         protected virtual float GetAnimationTime()
         {
-            return Cache.Animation[_currentStateAnimation].normalizedTime;
+            return Animation.GetNormalizedTime(_currentStateAnimation);
         }
 
         protected virtual float GetHitboxTime(float normalizedLength)
         {
-            return Cache.Animation[_currentStateAnimation].length * normalizedLength / _currentAttackSpeed;
+            return Animation.GetLength(_currentStateAnimation) * normalizedLength / _currentAttackSpeed;
         }
 
         protected virtual void DamagedGrunt(float chance = 1f)
@@ -1004,14 +1004,14 @@ namespace Characters
 
         protected override int GetFootstepPhase()
         {
-            if (BaseTitanAnimations.Run != "" && Cache.Animation.IsPlaying(BaseTitanAnimations.Run))
+            if (BaseTitanAnimations.Run != "" && Animation.IsPlaying(BaseTitanAnimations.Run))
             {
-                float time = Cache.Animation[BaseTitanAnimations.Run].normalizedTime % 1f;
+                float time = Animation.GetNormalizedTime(BaseTitanAnimations.Run) % 1f;
                 return (time >= 0f && time < 0.5f) ? 0 : 1;
             }
-            else if (BaseTitanAnimations.Walk != "" && Cache.Animation.IsPlaying(BaseTitanAnimations.Walk))
+            else if (BaseTitanAnimations.Walk != "" && Animation.IsPlaying(BaseTitanAnimations.Walk))
             {
-                float time = Cache.Animation[BaseTitanAnimations.Walk].normalizedTime % 1f;
+                float time = Animation.GetNormalizedTime(BaseTitanAnimations.Walk) % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             return _stepPhase;
