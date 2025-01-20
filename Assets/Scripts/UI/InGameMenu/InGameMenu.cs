@@ -496,7 +496,7 @@ namespace UI
                     spectating = "Prev: " + ChatManager.GetColorString(input.SpectatePreviousPlayer.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Next: " + ChatManager.GetColorString(input.SpectateNextPlayer.ToString(), ChatTextColor.System) + ", ";
                     spectating += "Join: " + ChatManager.GetColorString(input.ChangeCharacter.ToString(), ChatTextColor.System) + ", ";
-                    spectating += "Free Cam: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
+                    spectating += $"{camera.SpecMode.Current()}: " + ChatManager.GetColorString(input.ChangeCamera.ToString(), ChatTextColor.System);
                 }
                 if (camera._follow != null && camera._follow != _gameManager.CurrentCharacter)
                 {

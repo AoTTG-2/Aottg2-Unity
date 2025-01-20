@@ -139,6 +139,8 @@ namespace Controllers
                     speed = (int)(speed * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
                 else if (_human.Weapon is APGWeapon)
                     speed = (int)(speed * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is ThunderspearWeapon && !SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat);
                 speed = Mathf.Max(speed, 10f);
                 speed /= 100f;
                 str += speed.ToString("F1") + "K";
