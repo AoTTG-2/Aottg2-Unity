@@ -60,9 +60,8 @@ namespace MapEditor
 
         protected void Update()
         {
+            base.Update();
             var camera = SceneLoader.CurrentCamera;
-            float distance = Vector3.Distance(camera.Cache.Transform.position, _transform.position);
-            _transform.localScale = Vector3.one * distance / 200f;
             var mouseKey = SettingsManager.InputSettings.MapEditor.Select;
             if (_activeLine == null)
             {
