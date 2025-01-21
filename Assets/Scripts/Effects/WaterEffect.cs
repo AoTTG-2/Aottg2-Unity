@@ -1,7 +1,5 @@
 using ApplicationManagers;
 using Settings;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityStandardAssets.ImageEffects;
@@ -16,10 +14,10 @@ public class WaterEffect : MonoBehaviour
     private ColorGrading _colorGrading;
     private GlobalFog _globalFog;
     private bool _fogEnabled;
+    private bool _isInWater;
 
     void Start()
     {
-        // Get gameobject with component PostProcessingMananger script
         if (_postProcessingManager == null)
             _postProcessingManager = FindFirstObjectByType<PostProcessingManager>();
 
@@ -27,13 +25,40 @@ public class WaterEffect : MonoBehaviour
         _globalFog = cam.GetComponent<GlobalFog>();
 
         _collider = GetComponent<Collider>();
+        _collider.isTrigger = true;
+        
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _colorGrading);
-        //_volume.profile.TryGetSettings(out _depthOfField);
+        
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
         if (settings != null)
             ApplySettings((WaterFXLevel)settings.WaterFX.Value);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("MainCamera"))
+        {
+            _isInWater = true;
+            PostProcessingVolume.gameObject.SetActive(true);
+            _postProcessingManager.SetState(false);
+            if (_fogEnabled)
+            {
+                _globalFog.enabled = true;
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other) 
+    {
+        if (other.CompareTag("MainCamera"))
+        {
+            _isInWater = false;
+            PostProcessingVolume.gameObject.SetActive(false);
+            _postProcessingManager.SetState(true);
+            _globalFog.enabled = false;
+        }
     }
 
     public void ApplySettings(WaterFXLevel wfxl)
@@ -42,13 +67,12 @@ public class WaterEffect : MonoBehaviour
         {
             PostProcessingVolume.gameObject.SetActive(false);
             this.enabled = false;
-        } 
-        else {
-            PostProcessingVolume.gameObject.SetActive(true);
+        }
+        else
+        {
+            PostProcessingVolume.gameObject.SetActive(_isInWater);
             this.enabled = true;
         }
-
-
 
         switch (wfxl)
         {
@@ -63,36 +87,10 @@ public class WaterEffect : MonoBehaviour
                 _colorGrading.enabled.value = true;
                 break;
             case WaterFXLevel.Medium:
-                _fogEnabled = true;
-                _colorGrading.enabled.value = true;
-                break;
             case WaterFXLevel.High:
                 _fogEnabled = true;
                 _colorGrading.enabled.value = true;
                 break;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        Camera cam = SceneLoader.CurrentCamera.Camera;
-
-        // If the camera is inside this objects collider, enable the post processing volume
-        bool boundsContains = _collider.bounds.Contains(cam.transform.position);
-        if (boundsContains && PostProcessingVolume.gameObject.activeSelf == false)
-        {
-            PostProcessingVolume.gameObject.SetActive(true);
-            _postProcessingManager.SetState(false);
-            if (_fogEnabled)
-            {
-                _globalFog.enabled = true;
-            }
-        }
-        else if (!boundsContains && PostProcessingVolume.gameObject.activeSelf == true)
-        {
-            PostProcessingVolume.gameObject.SetActive(false);
-            _postProcessingManager.SetState(true);
-            _globalFog.enabled = false;
         }
     }
 }
