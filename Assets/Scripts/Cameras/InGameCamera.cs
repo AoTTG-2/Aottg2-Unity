@@ -238,6 +238,10 @@ namespace Cameras
                     if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKeyDown())
                         SpecMode.Next();
                 }
+                else
+                {
+                    SpecMode.Set(SpecateMode.LiveSpectate);
+                }
                 if (SpecMode.Current() == SpecateMode.FreeCam)
                 {
                     SetFollow(null);
