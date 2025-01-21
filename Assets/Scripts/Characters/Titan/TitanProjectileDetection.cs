@@ -7,22 +7,21 @@ using Unity.VisualScripting;
 
 namespace Characters
 {
-    class TitanEntityDetection: MonoBehaviour
+    class TitanProjectileDetection: MonoBehaviour
     {
         public HashSet<GameObject> _entities = new HashSet<GameObject>();
-        public HashSet<GameObject> _humans = new HashSet<GameObject>();
         public HashSet<Hook> _hooks = new HashSet<Hook>();
         public BaseTitan Owner;
         public bool Detect = false;
 
-        public static TitanEntityDetection Create(BaseTitan owner)
+        public static TitanProjectileDetection Create(BaseTitan owner)
         {
             GameObject go = new GameObject();
             Collider move = owner.BaseTitanCache.Movebox;
             go.transform.SetParent(move.transform);
             go.transform.localPosition = Vector3.zero;
-            TitanEntityDetection entity = go.AddComponent<TitanEntityDetection>();
-            go.layer = PhysicsLayer.EntityDetection;
+            TitanProjectileDetection entity = go.AddComponent<TitanProjectileDetection>();
+            go.layer = PhysicsLayer.ProjectileDetection;
             if (move is CapsuleCollider)
             {
                 CapsuleCollider capsuleMove = (CapsuleCollider)move;
@@ -44,17 +43,6 @@ namespace Characters
         protected void OnTriggerEnter(Collider other)
         {
             GameObject obj = other.transform.root.gameObject;
-            BaseCharacter character = obj.GetComponent<BaseCharacter>();
-            if (character != null && character is Human && !TeamInfo.SameTeam(character, Owner))
-            {
-                _humans.Add(obj);
-            }
-            if (character != null && character.IsMine() && (character is Human || !TeamInfo.SameTeam(character, Owner)))
-            {
-                _entities.Add(obj);
-                Detect = true;
-                return;
-            }
             BaseProjectile projectile = obj.GetComponent<BaseProjectile>();
             if (projectile != null && projectile.IsMine())
             {
@@ -69,17 +57,16 @@ namespace Characters
             GameObject obj = other.transform.root.gameObject;
             if (_entities.Contains(obj))
                 _entities.Remove(obj);
-            if (_humans.Contains(obj))
-                _humans.Remove(obj);
             if (_entities.Count == 0 && _hooks.Count == 0)
                 Detect = false;
         }
 
         protected void FixedUpdate()
         {
-            _entities = Util.RemoveNull(_entities);
-            _humans = Util.RemoveNull(_humans);
-            _hooks.RemoveWhere(hook => !hook || (hook.State != HookState.Hooking && hook.State != HookState.Hooked));
+            if (_entities.Count > 0)
+                _entities = Util.RemoveNull(_entities);
+            if (_hooks.Count > 0)
+                _hooks.RemoveWhere(hook => !hook || (hook.State != HookState.Hooking && hook.State != HookState.Hooked));
             if (_entities.Count == 0 && _hooks.Count == 0)
                 Detect = false;
         }

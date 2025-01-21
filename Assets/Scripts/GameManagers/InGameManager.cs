@@ -54,10 +54,23 @@ namespace GameManagers
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
+        public HashSet<BaseDetection> Detections = new HashSet<BaseDetection>();
 
         //ping related
         private float pingUpdateInterval = 10f;
         private float timeSinceLastPingUpdate = 0f;
+
+        public void RegisterCharacter(BaseCharacter character)
+        {
+            if (character is Human)
+                Humans.Add((Human)character);
+            else if (character is BasicTitan)
+                Titans.Add((BasicTitan)character);
+            else if (character is BaseShifter)
+                Shifters.Add((BaseShifter)character);
+            foreach (var detection in Detections)
+                detection.OnCharacterSpawned(character);
+        }
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -1089,6 +1102,7 @@ namespace GameManagers
             Humans = Util.RemoveNullOrDead(Humans);
             Titans = Util.RemoveNullOrDead(Titans);
             Shifters = Util.RemoveNullOrDeadShifters(Shifters);
+            Detections = Util.RemoveNullOrDeadDetections(Detections);
         }
 
         protected void LoadSkin()
