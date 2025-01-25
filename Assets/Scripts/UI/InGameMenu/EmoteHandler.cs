@@ -196,7 +196,6 @@ namespace UI
                     {
                         string emoji = AvailableEmojis[selected];
                         RPCManager.PhotonView.RPC("EmoteEmojiRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
-                        Debug.Log(emoji.ToString());
                     }
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Action)
