@@ -2,8 +2,10 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Settings;
 using GameManagers;
+using System;
 
 namespace UI
 {
@@ -11,10 +13,12 @@ namespace UI
     {
         private InputField _inputField;
         private GameObject _panel;
-        private List<GameObject> _lines = new List<GameObject>();
+        private Text _chatDisplay;
+        private List<string> _allLines = new List<string>();
         protected override string ThemePanel => "ChatPanel";
         protected Transform _caret;
         public bool IgnoreNextActivation;
+        private bool isAutocompleting = false;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -27,20 +31,57 @@ namespace UI
             _inputField.selectionColor = UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputSelectionColor");
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
             _inputField.onEndEdit.AddListener((string text) => OnEndEdit(text));
+            _inputField.onValueChanged.AddListener((string text) => OnInputValueChanged(text));
             _inputField.text = "";
             if (SettingsManager.UISettings.ChatWidth.Value == 0f)
             {
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
+
+            // Create chat display text
+            var textStyle = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
+            _chatDisplay = ElementFactory.CreateDefaultLabel(_panel.transform, textStyle, "", alignment: TextAnchor.LowerLeft).GetComponent<Text>();
+            _chatDisplay.supportRichText = true;
+            
             Sync();
+        }
+
+        public void AddLine(string line)
+        {
+            _allLines.Add(line);
+            UpdateText();
+        }
+
+        public void AddLines(List<string> lines)
+        {
+            _allLines.AddRange(lines);
+            UpdateText();
+        }
+
+        public void ReplaceLastLine(string line)
+        {
+            if (_allLines.Count > 0)
+            {
+                _allLines[_allLines.Count - 1] = line;
+            }
+            else
+            {
+                _allLines.Add(line);
+            }
+            UpdateText();
+        }
+
+        private void UpdateText()
+        {
+            _chatDisplay.text = string.Join("\n", _allLines);
+            Canvas.ForceUpdateCanvases();
         }
 
         public void Sync()
         {
-            foreach (GameObject go in _lines)
-                Destroy(go);
-            _lines.Clear();
-            AddLines(ChatManager.Lines);
+            _allLines.Clear();
+            _allLines.AddRange(ChatManager.Lines);
+            UpdateText();
         }
 
         public void Activate()
@@ -64,49 +105,19 @@ namespace UI
             ChatManager.HandleInput(input);
         }
 
-        public void AddLine(string line)
+        private void OnInputValueChanged(string text)
         {
-            _lines.Add(CreateLine(line));
-            Canvas.ForceUpdateCanvases();
-            ClearExcessLines();
-        }
+            if (isAutocompleting)
+                return;
 
-        public void ReplaceLastLine(string line)
-        {
-            if (_lines.Count == 0)
-                AddLine(line);
-            else
+            string suggestion = ChatManager.GetAutocompleteSuggestion(text);
+            if (suggestion != null)
             {
-                _lines[_lines.Count - 1].GetComponent<Text>().text = line;
-                Canvas.ForceUpdateCanvases();
-                ClearExcessLines();
-            }    
-        }
-
-        public void AddLines(List<string> lines)
-        {
-            foreach (string line in lines)
-                _lines.Add(CreateLine(line));
-            Canvas.ForceUpdateCanvases();
-            ClearExcessLines();
-        }
-
-        protected void ClearExcessLines()
-        {
-            int maxHeight = SettingsManager.UISettings.ChatHeight.Value;
-            float currentHeight = 0;
-            for (int i = 0; i < _lines.Count; i++)
-                currentHeight += _lines[i].GetComponent<RectTransform>().sizeDelta.y;
-            float heightToRemove = Mathf.Max(currentHeight - maxHeight, 0f);
-            while (heightToRemove > 0f && _lines.Count > 0)
-            {
-                float height = _lines[0].GetComponent<RectTransform>().sizeDelta.y;
-                heightToRemove -= height;
-                if (heightToRemove > 0f)
-                {
-                    Destroy(_lines[0]);
-                    _lines.RemoveAt(0);
-                }
+                isAutocompleting = true;
+                int caretPos = _inputField.caretPosition;
+                _inputField.text = suggestion;
+                _inputField.caretPosition = caretPos;
+                isAutocompleting = false;
             }
         }
 
@@ -122,14 +133,46 @@ namespace UI
                         _caret.gameObject.AddComponent<Image>();
                 }
             }
+
+            if (Input.GetMouseButtonDown(0)) // Left mouse button
+            {
+                if (!IsPointerOverChatUI())
+                {
+                    // Deactivate chat input if clicked outside
+                    if (IsInputActive())
+                    {
+                        _inputField.DeactivateInputField();
+                    }
+                }
+            }
         }
 
-        protected GameObject CreateLine(string text)
+        public bool IsPointerOverChatUI()
         {
-            var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
-            GameObject line = ElementFactory.CreateDefaultLabel(_panel.transform, style, text, alignment: TextAnchor.MiddleLeft);
-            line.GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
-            return line;
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Vector2 mousePosition = Input.mousePosition;
+
+                RectTransform chatPanelRect = _panel.GetComponent<RectTransform>();
+                RectTransform inputFieldRect = _inputField.GetComponent<RectTransform>();
+
+                if (RectTransformUtility.RectangleContainsScreenPoint(chatPanelRect, mousePosition) || 
+                    RectTransformUtility.RectangleContainsScreenPoint(inputFieldRect, mousePosition))
+                {
+                    if (IsInputActive())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Activate();
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
+
+

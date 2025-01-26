@@ -55,6 +55,8 @@ namespace GameManagers
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
         private static string LastException;
         private static int LastExceptionCount;
+        private static string _lastPartialName = "";
+        private static int _lastSuggestionCount = 0;
 
         public static void Init()
         {
@@ -240,7 +242,7 @@ namespace GameManagers
                 voiceChatPanel.RemovePlayer(player);
         }
 
-        protected static void LoadTheme()
+        public static void LoadTheme()
         {
             ColorTags.Clear();
             foreach (ChatTextColor color in Util.EnumToList<ChatTextColor>())
@@ -268,8 +270,131 @@ namespace GameManagers
             else
             {
                 string name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
-                SendChatAll(name + ": " + input);
+                string processedMessage = ProcessMentions(input);
+                SendChatAll(name + ": " + processedMessage);
             }
+        }
+
+        public static string GetAutocompleteSuggestion(string currentInput)
+        {
+            // Check if we're in a mention context
+            int lastAtSymbol = currentInput.LastIndexOf('@');
+            if (lastAtSymbol == -1)
+            {
+                // Clear any existing suggestions when @ context ends
+                ClearLastSuggestions();
+                return null;
+            }
+
+            // Get the partial name after the @ symbol
+            string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
+            
+            // Find matching players
+            var matchingPlayers = PhotonNetwork.PlayerList
+                .Where(p => 
+                {
+                    string playerName = p.GetStringProperty(PlayerProperty.Name)
+                        .FilterSizeTag()
+                        .StripRichText()
+                        .ToLower();
+                    
+                    return playerName.StartsWith(partialName);
+                })
+                .ToList();
+
+            // Update suggestions if they've changed
+            if (partialName != _lastPartialName || _lastSuggestionCount == 0)
+            {
+                ClearLastSuggestions();
+                _lastPartialName = partialName;
+                
+                // Add new suggestions if there are matches
+                if (matchingPlayers.Count > 0)
+                {
+                    AddLine("Matching players:", ChatTextColor.System);
+                    foreach (var player in matchingPlayers)
+                    {
+                        AddLine("- " + player.GetStringProperty(PlayerProperty.Name).FilterSizeTag(), ChatTextColor.System);
+                    }
+                    _lastSuggestionCount = matchingPlayers.Count + 1; // +1 for the header line
+                }
+
+                // Update chat panel if available
+                if (IsChatAvailable())
+                {
+                    var panel = GetChatPanel();
+                    if (panel != null)
+                        panel.Sync();
+                }
+            }
+
+            return null;
+        }
+
+        private static void ClearLastSuggestions()
+        {
+            if (_lastSuggestionCount > 0)
+            {
+                for (int i = 0; i < _lastSuggestionCount; i++)
+                {
+                    if (Lines.Count > 0)
+                        Lines.RemoveAt(Lines.Count - 1);
+                }
+                _lastSuggestionCount = 0;
+                _lastPartialName = "";
+                
+                if (IsChatAvailable())
+                {
+                    var panel = GetChatPanel();
+                    if (panel != null)
+                        panel.Sync();
+                }
+            }
+        }
+
+        private static string ProcessMentions(string message)
+        {
+            // Split message into words to process each potential mention
+            string[] words = message.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].StartsWith("@"))
+                {
+                    string mention = words[i].Substring(1); // Remove @ symbol
+                    Player mentionedPlayer = null;
+
+                    // Try to parse as ID first
+                    if (int.TryParse(mention, out int id))
+                    {
+                        mentionedPlayer = PhotonNetwork.CurrentRoom.GetPlayer(id, true);
+                    }
+                    
+                    // If not found by ID, try to find by username
+                    if (mentionedPlayer == null)
+                    {
+                        mentionedPlayer = PhotonNetwork.PlayerList
+                            .FirstOrDefault(p => 
+                            {
+                                string playerName = p.GetStringProperty(PlayerProperty.Name);
+                                // Remove rich text formatting and compare case insensitive
+                                string cleanPlayerName = playerName.FilterSizeTag().StripRichText();
+                                string cleanMention = mention.FilterSizeTag().StripRichText();
+                                return cleanPlayerName.Equals(cleanMention, StringComparison.OrdinalIgnoreCase);
+                            });
+                    }
+
+                    // If player found, replace mention with colored name
+                    if (mentionedPlayer != null)
+                    {
+                        string playerName = mentionedPlayer.GetStringProperty(PlayerProperty.Name);
+                        string coloredName = GetColorString("@" + playerName, 
+                            mentionedPlayer.IsLocal ? ChatTextColor.MyPlayer : ChatTextColor.ID);
+                        words[i] = coloredName;
+                    }
+                }
+            }
+
+            return string.Join(' ', words);
         }
 
         private static void HandleCommand(string[] args)
