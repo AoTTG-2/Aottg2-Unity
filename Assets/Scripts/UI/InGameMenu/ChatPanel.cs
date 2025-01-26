@@ -38,7 +38,6 @@ namespace UI
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
 
-            // Create chat display text
             var textStyle = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
             _chatDisplay = ElementFactory.CreateDefaultLabel(_panel.transform, textStyle, "", alignment: TextAnchor.LowerLeft).GetComponent<Text>();
             _chatDisplay.supportRichText = true;
@@ -80,7 +79,10 @@ namespace UI
         public void Sync()
         {
             _allLines.Clear();
-            _allLines.AddRange(ChatManager.Lines);
+            foreach (var message in ChatManager.Lines)
+            {
+                _allLines.Add(message.GetFormattedMessage());
+            }
             UpdateText();
         }
 
@@ -174,5 +176,3 @@ namespace UI
         }
     }
 }
-
-

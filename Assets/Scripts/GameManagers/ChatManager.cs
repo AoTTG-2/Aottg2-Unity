@@ -48,7 +48,7 @@ namespace GameManagers
     class ChatManager : MonoBehaviour
     {
         private static ChatManager _instance;
-        public static List<string> Lines = new List<string>();
+        public static List<ChatMessage> Lines = new List<ChatMessage>();
         public static List<string> FeedLines = new List<string>();
         private static readonly int MaxLines = 30;
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
@@ -130,7 +130,8 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             message = GetColorString(message, color);
-            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { message });
+            string utcTimestamp = DateTime.UtcNow.ToString("o");  // ISO 8601 format
+            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { message, utcTimestamp });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
@@ -139,18 +140,78 @@ namespace GameManagers
             RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { message });
         }
 
-        public static void OnChatRPC(string message, PhotonMessageInfo info)
+        public static void OnChatRPC(string message, string utcTimestamp, PhotonMessageInfo info)
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
-            AddLine(message, info.Sender.ActorNumber);
+            
+            var chatMessage = new ChatMessage
+            {
+                RawMessage = GetIDString(info.Sender.ActorNumber) + message,
+                SenderID = info.Sender.ActorNumber,
+                IsSystem = false,
+                UtcTimestamp = DateTime.Parse(utcTimestamp)
+            };
+            
+            Lines.Add(chatMessage);
+            if (Lines.Count > MaxLines)
+                Lines.RemoveAt(0);
+            
+            if (IsChatAvailable())
+            {
+                var panel = GetChatPanel();
+                if (panel != null)
+                    panel.AddLine(chatMessage.GetFormattedMessage());
+            }
         }
 
-        public static void OnAnnounceRPC(string message) => AddLine(message);
-
-        public static void AddLine(string line, ChatTextColor color)
+        public static void OnAnnounceRPC(string message)
         {
-            AddLine(GetColorString(line, color));
+            var chatMessage = new ChatMessage
+            {
+                RawMessage = message,
+                IsSystem = true,
+                Color = ChatTextColor.System,
+                UtcTimestamp = DateTime.UtcNow
+            };
+            AddLine(chatMessage);
+        }
+
+        public static void AddLine(string line)
+        {
+            AddLine(line, ChatTextColor.Default);
+        }
+
+        public static void AddLine(string line, bool hasTimestamp)
+        {
+            AddLine(line, ChatTextColor.Default, hasTimestamp);
+        }
+
+        public static void AddLine(string line, ChatTextColor color, bool hasTimestamp = false)
+        {
+            line = line.FilterSizeTag();
+            var chatMessage = new ChatMessage
+            {
+                RawMessage = GetColorString(line, color),
+                Color = color,
+                IsSystem = true,
+                UtcTimestamp = DateTime.UtcNow
+            };
+            
+            AddLine(chatMessage);
+        }
+
+        private static void AddLine(ChatMessage message)
+        {
+            Lines.Add(message);
+            if (Lines.Count > MaxLines)
+                Lines.RemoveAt(0);
+            if (IsChatAvailable())
+            {
+                var panel = GetChatPanel();
+                if (panel != null)
+                    panel.AddLine(message.GetFormattedMessage());
+            }
         }
 
         public static void AddException(string line)
@@ -158,57 +219,59 @@ namespace GameManagers
             if (LastException == line)
             {
                 LastExceptionCount++;
-                ReplaceLastLine(GetColorString(line + "(" + LastExceptionCount.ToString() + ")", ChatTextColor.Error));
+                var message = new ChatMessage
+                {
+                    RawMessage = GetColorString(line + "(" + LastExceptionCount.ToString() + ")", ChatTextColor.Error),
+                    Color = ChatTextColor.Error,
+                    IsSystem = true,
+                    UtcTimestamp = DateTime.UtcNow
+                };
+                ReplaceLastLine(message);
             }
             else
             {
                 LastException = line;
                 LastExceptionCount = 0;
-                AddLine(GetColorString(line, ChatTextColor.Error), true);
+                AddLine(GetColorString(line, ChatTextColor.Error), ChatTextColor.Error);
             }
         }
 
-        public static void ReplaceLastLine(string line)
+        public static void ReplaceLastLine(ChatMessage message)
         {
             if (Lines.Count > 0)
             {
-                line = line.FilterSizeTag();
-                Lines[Lines.Count - 1] = line;
+                Lines[Lines.Count - 1] = message;
                 if (IsChatAvailable())
                 {
                     var panel = GetChatPanel();
                     if (panel != null)
-                        panel.ReplaceLastLine(line);
+                        panel.ReplaceLastLine(message.GetFormattedMessage());
                 }
             }
             else
             {
-                AddLine(line, true);
+                AddLine(message);
             }
         }
 
         public static void AddLine(string line, int senderID)
         {
-            line = GetIDString(senderID) + line;
-            AddLine(line);
-        }
-
-        public static void AddLine(string line, bool exception = false)
-        {
-            if (!exception)
-            {
-                LastException = string.Empty;
-                LastExceptionCount = 0;
-            }
             line = line.FilterSizeTag();
-            Lines.Add(line);
+            var message = new ChatMessage
+            {
+                RawMessage = GetIDString(senderID) + line,
+                SenderID = senderID,
+                IsSystem = false
+            };
+            
+            Lines.Add(message);
             if (Lines.Count > MaxLines)
                 Lines.RemoveAt(0);
             if (IsChatAvailable())
             {
                 var panel = GetChatPanel();
                 if (panel != null)
-                    panel.AddLine(line);
+                    panel.AddLine(message.GetFormattedMessage());
             }
         }
 
@@ -277,49 +340,33 @@ namespace GameManagers
 
         public static string GetAutocompleteSuggestion(string currentInput)
         {
-            // Check if we're in a mention context
             int lastAtSymbol = currentInput.LastIndexOf('@');
             if (lastAtSymbol == -1)
             {
-                // Clear any existing suggestions when @ context ends
                 ClearLastSuggestions();
                 return null;
             }
-
-            // Get the partial name after the @ symbol
             string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
-            
-            // Find matching players
             var matchingPlayers = PhotonNetwork.PlayerList
-                .Where(p => 
-                {
-                    string playerName = p.GetStringProperty(PlayerProperty.Name)
-                        .FilterSizeTag()
-                        .StripRichText()
-                        .ToLower();
-                    
+                .Where(p => {string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower(); 
                     return playerName.StartsWith(partialName);
                 })
                 .ToList();
 
-            // Update suggestions if they've changed
             if (partialName != _lastPartialName || _lastSuggestionCount == 0)
             {
                 ClearLastSuggestions();
                 _lastPartialName = partialName;
-                
-                // Add new suggestions if there are matches
                 if (matchingPlayers.Count > 0)
                 {
-                    AddLine("Matching players:", ChatTextColor.System);
+                    AddLine("Matching players:", ChatTextColor.System, hasTimestamp: true);
                     foreach (var player in matchingPlayers)
                     {
-                        AddLine("- " + player.GetStringProperty(PlayerProperty.Name).FilterSizeTag(), ChatTextColor.System);
+                        AddLine("- " + player.GetStringProperty(PlayerProperty.Name).FilterSizeTag(), 
+                            ChatTextColor.System, hasTimestamp: true);
                     }
-                    _lastSuggestionCount = matchingPlayers.Count + 1; // +1 for the header line
+                    _lastSuggestionCount = matchingPlayers.Count + 1;
                 }
-
-                // Update chat panel if available
                 if (IsChatAvailable())
                 {
                     var panel = GetChatPanel();
@@ -327,7 +374,6 @@ namespace GameManagers
                         panel.Sync();
                 }
             }
-
             return null;
         }
 
@@ -342,7 +388,6 @@ namespace GameManagers
                 }
                 _lastSuggestionCount = 0;
                 _lastPartialName = "";
-                
                 if (IsChatAvailable())
                 {
                     var panel = GetChatPanel();
@@ -354,36 +399,28 @@ namespace GameManagers
 
         private static string ProcessMentions(string message)
         {
-            // Split message into words to process each potential mention
             string[] words = message.Split(' ');
             for (int i = 0; i < words.Length; i++)
             {
                 if (words[i].StartsWith("@"))
                 {
-                    string mention = words[i].Substring(1); // Remove @ symbol
+                    string mention = words[i].Substring(1);
                     Player mentionedPlayer = null;
-
-                    // Try to parse as ID first
                     if (int.TryParse(mention, out int id))
                     {
                         mentionedPlayer = PhotonNetwork.CurrentRoom.GetPlayer(id, true);
                     }
-                    
-                    // If not found by ID, try to find by username
                     if (mentionedPlayer == null)
                     {
                         mentionedPlayer = PhotonNetwork.PlayerList
                             .FirstOrDefault(p => 
                             {
                                 string playerName = p.GetStringProperty(PlayerProperty.Name);
-                                // Remove rich text formatting and compare case insensitive
                                 string cleanPlayerName = playerName.FilterSizeTag().StripRichText();
                                 string cleanMention = mention.FilterSizeTag().StripRichText();
                                 return cleanPlayerName.Equals(cleanMention, StringComparison.OrdinalIgnoreCase);
                             });
                     }
-
-                    // If player found, replace mention with colored name
                     if (mentionedPlayer != null)
                     {
                         string playerName = mentionedPlayer.GetStringProperty(PlayerProperty.Name);
@@ -393,7 +430,6 @@ namespace GameManagers
                     }
                 }
             }
-
             return string.Join(' ', words);
         }
 
@@ -406,7 +442,6 @@ namespace GameManagers
                 {
                     info.Invoke(null, new object[1] { args });
                 }
-
                 else
                 {
                     info.Invoke(_instance, new object[1] { args });
@@ -790,12 +825,9 @@ namespace GameManagers
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 
-        public static string GetTimeString(int time)
+        private static string GetTimeString(DateTime time)
         {
-            string str = time.ToString();
-            if (str.Length == 1)
-                str = "0" + str;
-            return str;
+            return time.ToString("HH:mm");
         }
 
         private void Update()
@@ -815,7 +847,7 @@ namespace GameManagers
         }
     }
 
-    enum ChatTextColor
+    public enum ChatTextColor
     {
         Default,
         ID,
@@ -824,5 +856,27 @@ namespace GameManagers
         Error,
         TeamRed,
         TeamBlue
+    }
+
+    public class ChatMessage
+    {
+        public string RawMessage { get; set; }
+        public int SenderID { get; set; }
+        public ChatTextColor Color { get; set; }
+        public bool IsSystem { get; set; }
+        public DateTime UtcTimestamp { get; set; }
+
+        public string GetFormattedMessage()
+        {
+            string result = RawMessage;
+            if (SettingsManager.UISettings.ShowChatTimestamp.Value)
+            {
+                DateTime localTime = UtcTimestamp.ToLocalTime();
+                string timestamp = localTime.ToString("HH:mm");
+                string timestampStr = ChatManager.GetColorString($"[{timestamp}] ", ChatTextColor.System);
+                result = timestampStr + result;
+            }
+            return result;
+        }
     }
 }
