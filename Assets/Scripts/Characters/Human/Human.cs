@@ -94,7 +94,7 @@ namespace Characters
         private Vector3 _lastPosition;
         private Vector3 _lastVelocity;
         private Vector3 _currentVelocity;
-        private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.EntityDetection);
+        private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.ProjectileDetection);
         private LayerMask HumanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
             PhysicsLayer.MapObjectAll);
         public override LayerMask GroundMask => HumanGroundMaskLayers;
@@ -126,6 +126,11 @@ namespace Characters
         private float _hookHumanConstantTimeLeft;
         private bool _isReelingOut;
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
+
+        protected override void CreateDetection()
+        {
+            Detection = new HumanDetection(this);
+        }
 
         public void DieChangeCharacter()
         {
@@ -1001,7 +1006,7 @@ namespace Characters
 
         protected override void Start()
         {
-            _inGameManager.Humans.Add(this);
+            _inGameManager.RegisterCharacter(this);
             base.Start();
             SetInterpolation(true);
             if (IsMine())
@@ -1383,8 +1388,9 @@ namespace Characters
             }
         }
 
-        protected void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (IsMine())
             {
                 FixedUpdateLookTitan();
@@ -2317,7 +2323,7 @@ namespace Characters
             int maxCount = Math.Min(hitList.Count, 3);
             for (int i = 0; i < maxCount; i++)
             {
-                var entity = hitList[i].collider.GetComponent<TitanEntityDetection>();
+                var entity = hitList[i].collider.GetComponent<TitanProjectileDetection>();
                 entity.Owner.TitanColliderToggler.RegisterLook();
             }
         }
@@ -3317,7 +3323,8 @@ namespace Characters
             {
                 foreach (var titan in _inGameManager.Titans)
                 {
-                    if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
+                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this 
+                        && Vector3.Distance(Cache.Transform.position, titan.Cache.Transform.position) < titan.GetColliderToggleRadius())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
                         currSmartTitans += 1;
@@ -3327,7 +3334,8 @@ namespace Characters
                 }
                 foreach (var titan in _inGameManager.Shifters)
                 {
-                    if (titan != null && !titan.Dead && titan.AI && titan.TitanColliderToggler._entity._humans.Contains(gameObject) && titan.IsMine())
+                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this
+                        && Vector3.Distance(Cache.Transform.position, titan.Cache.Transform.position) < titan.GetColliderToggleRadius())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
                         currSmartTitans += 1;
@@ -3335,19 +3343,6 @@ namespace Characters
                             return;
                     }
                 }
-                /*
-                RaycastHit hit;
-                Vector3 velocity = GetVelocity();
-                if (Physics.Raycast(Cache.Transform.position, velocity.normalized, out hit, velocity.magnitude, TitanDetectionMask.value))
-                {
-                    if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
-                    {
-                        var titan = hit.collider.gameObject.GetComponent<BaseTitan>();
-                        if (titan != null && !titan.Dead && titan.AI && titan.IsMine())
-                            titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
-                    }
-                }
-                */
             }
         }
 

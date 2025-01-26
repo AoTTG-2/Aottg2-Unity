@@ -14,6 +14,8 @@ namespace Characters
         public bool HumanOnly;
         public bool MapObject;
         public bool FarOnly;
+        public bool LeftArm;
+        public bool RightArm;
         public Vector3 MinRange;
         public Vector3 MaxRange;
         public bool HasKeyframes = false;
@@ -24,6 +26,8 @@ namespace Characters
             HumanOnly = attackInfo["HumanOnly"].AsBool;
             MapObject = !attackInfo.HasKey("MapObject") || attackInfo["MapObject"].AsBool;
             FarOnly = attackInfo["Far"].AsBool;
+            LeftArm = attackInfo.HasKey("LeftArm") && attackInfo["LeftArm"].AsBool;
+            RightArm = attackInfo.HasKey("RightArm") && attackInfo["RightArm"].AsBool;
             if (attackInfo.HasKey("Ranges"))
             {
                 var range = attackInfo["Ranges"];

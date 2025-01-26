@@ -169,8 +169,9 @@ namespace Characters
             }
         }
 
-        private void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (IsMine())
             {
                 if (_owner == null || _owner.Dead)

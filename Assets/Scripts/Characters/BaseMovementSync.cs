@@ -96,7 +96,6 @@ namespace Characters
         {
             if (!Disabled && !_photonView.IsMine)
             {
-                _rigidbody.velocity = Vector3.zero;
                 _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                 _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
                 if (_syncVelocity && _timeSinceLastMessage < MaxPredictionTime)

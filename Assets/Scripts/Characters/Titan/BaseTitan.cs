@@ -59,6 +59,8 @@ namespace Characters
         public float JumpForce;
         public float RotateSpeed;
         public float TurnSpeed;
+        public bool LeftArmDisabled;
+        public bool RightArmDisabled;
         protected override Vector3 Gravity => Vector3.down * 100f;
         protected virtual float CheckGroundTime => 0.4f;
         protected Vector3 LastTargetDirection;
@@ -133,6 +135,11 @@ namespace Characters
             }
         }
 
+        protected override void CreateDetection()
+        {
+            Detection = new TitanDetection(this);
+        }
+
         protected virtual Dictionary<string, float> GetRootMotionAnimations()
         {
             return new Dictionary<string, float>();
@@ -171,6 +178,7 @@ namespace Characters
 
         public virtual void StartJump()
         {
+            SetKinematic(false);
             State = TitanState.StartJump;
             _stateTimeLeft = 0.2f;
             Cache.Rigidbody.AddForce(_jumpDirection.normalized * JumpForce, ForceMode.VelocityChange);
@@ -189,6 +197,7 @@ namespace Characters
 
         public virtual void ResetAttackState(string attack)
         {
+            SetKinematic(false);
             if (AI)
                 Cache.Rigidbody.velocity = Vector3.zero;
             _currentAttack = attack;
@@ -700,11 +709,24 @@ namespace Characters
             Idle(0.2f);
         }
 
-        protected virtual void FixedUpdate()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (IsMine())
             {
                 _checkGroundTimeLeft -= Time.fixedDeltaTime;
+                bool isKinematic = Cache.Rigidbody.isKinematic;
+                if ((State == TitanState.Idle || State == TitanState.SitIdle) && AI && Grounded && CurrentSpeed <= 0.1f && _disableKinematicTimeLeft <= 0f)
+                {
+                    if (!isKinematic)
+                        SetKinematic(true);
+                    return;
+                }
+                else
+                {
+                    if (isKinematic)
+                        SetKinematic(false);
+                }
                 if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
                 {
                     CheckGround();
@@ -813,13 +835,9 @@ namespace Characters
                 if (State != TitanState.WallClimb)
                     Cache.Rigidbody.AddForce(Gravity, ForceMode.Acceleration);
                 if (ConfusedTime > 0)
-                {
                     ConfusedTime -= Time.fixedDeltaTime;
-                }
                 else
-                {
                     ResetAttackSpeed();
-                }
             }
         }
 
@@ -966,7 +984,7 @@ namespace Characters
         {
             while (time > 0f)
             {
-                if (Cache.Rigidbody.velocity.magnitude > maxSpeed)
+                if (!Cache.Rigidbody.isKinematic && Cache.Rigidbody.velocity.magnitude > maxSpeed)
                     Cache.Rigidbody.velocity = Cache.Rigidbody.velocity.normalized * maxSpeed;
                 time -= Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
@@ -1028,6 +1046,16 @@ namespace Characters
             var nape = BaseTitanCache.Head.transform;
             Vector3 direction = (hitPosition - nape.position).normalized;
             return Vector3.Angle(-nape.forward, direction) < maxAngle;
+        }
+
+        public override Vector3 GetCenterPosition()
+        {
+            return BaseTitanCache.Hip.position;
+        }
+
+        public virtual float GetColliderToggleRadius()
+        {
+            return Size * SizeMultiplier * 20f;
         }
     }
 

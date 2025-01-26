@@ -45,7 +45,6 @@ namespace Characters
         {
             if (!Disabled && !_photonView.IsMine)
             {
-                _rigidbody.velocity = Vector3.zero;
                 if (_human.MountState == HumanMountState.MapObject && _human.MountedTransform != null)
                 {
                     _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);

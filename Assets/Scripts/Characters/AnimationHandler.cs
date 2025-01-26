@@ -9,17 +9,10 @@ namespace Characters
     {
         private Animation Animation;
         private Animator Animator;
-        private const float LODUpdateDelay = 0.1f;
-        private const float LODMinDistance = 200f;
-        private const float LODDelayMultiplier = 0.0001f;
-        private const float LODMinDelay = 0.02f;
-        private const float LODMaxDelay = 0.5f;
+        private SkinnedMeshRenderer Renderer;
+        private const float LODBone2Distance = 500f;
+        private const float LODBone1Distance = 1000f;
         private Dictionary<string, float> _animationSpeed = new Dictionary<string, float>();
-        private bool _isLOD = false;
-        private float _currentLODUpdateTime = 0f;
-        private float _currentLODDelayTime = 0f;
-        private float _nextLODDelay = 0f;
-        private Transform _transform;
         private string _currentAnimation = string.Empty;
         private float _currentAnimationStartTime = 0f;
         private bool _isLegacy;
@@ -44,9 +37,9 @@ namespace Characters
                     _animatorClips[clip.name] = clip;
                     _animationSpeed[clip.name] = 1f;
                 }
-                Animator.playableGraph.SetTimeUpdateMode(UnityEngine.Playables.DirectorUpdateMode.Manual);
+                Animator.playableGraph.SetTimeUpdateMode(UnityEngine.Playables.DirectorUpdateMode.GameTime);
             }
-            _transform = owner.transform;
+            Renderer = owner.GetComponentInChildren<SkinnedMeshRenderer>();
         }
 
         public string GetCurrentAnimation()
@@ -145,11 +138,6 @@ namespace Characters
             _currentAnimationStartTime = Time.time;
         }
 
-        public void ManuallyStepAnimator(float time)
-        {
-            Animator.playableGraph.Evaluate(time);
-        }
-
         public void SetSpeed(string name, float speed)
         {
             _animationSpeed[name] = speed;
@@ -195,56 +183,38 @@ namespace Characters
             else
             {
                 if (alwaysAnimate)
-                {
                     Animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-                    _isLOD = false;
-                }
                 else
                     Animator.cullingMode = AnimatorCullingMode.CullCompletely;
             }
         }
 
-        public void OnLateUpdate()
+        public void OnDistanceUpdate(float distance)
         {
-            if (_isLegacy)
-                return;
-            if (_isLOD)
-            {
-                _currentLODDelayTime += Time.deltaTime;
-                if (_currentLODDelayTime > _nextLODDelay)
-                {
-                    ManuallyStepAnimator(_currentLODDelayTime);
-                    _currentLODDelayTime = 0f;
-                }
-            }
+            if (distance > LODBone1Distance)
+                SetQuality(SkinQuality.Bone1);
+            else if (distance > LODBone2Distance)
+                SetQuality(SkinQuality.Bone2);
             else
+                SetQuality(SkinQuality.Bone4);
+            SetShadows(distance < LODBone1Distance);
+        }
+
+        private void SetQuality(SkinQuality quality)
+        {
+            if (Renderer != null && Renderer.quality != quality)
+                Renderer.quality = quality;
+        }
+
+        private void SetShadows(bool shadows)
+        {
+            if (Renderer != null && Renderer.receiveShadows != shadows)
             {
-                if (_currentLODDelayTime > 0f)
-                {
-                    ManuallyStepAnimator(Time.deltaTime + _currentLODDelayTime);
-                    _currentLODDelayTime = 0f;
-                }
+                Renderer.receiveShadows = shadows;
+                if (shadows)
+                    Renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
                 else
-                    ManuallyStepAnimator(Time.deltaTime);
-            }
-            _currentLODUpdateTime += Time.deltaTime;
-            if (_currentLODUpdateTime < LODUpdateDelay)
-                return;
-            _currentLODUpdateTime = 0;
-            var cameraPosition = SceneLoader.CurrentCamera.Cache.Transform.position;
-            float distance = Vector3.Distance(cameraPosition, _transform.position);
-            if (distance > LODMinDistance && Animator.cullingMode != AnimatorCullingMode.AlwaysAnimate)
-            {
-                if (!_isLOD)
-                {
-                    _isLOD = true;
-                    _currentLODDelayTime = 0f;
-                }
-                _nextLODDelay = Mathf.Clamp(distance * LODDelayMultiplier, LODMinDelay, LODMaxDelay);
-            }
-            else
-            {
-                _isLOD = false;
+                    Renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             }
         }
     }
