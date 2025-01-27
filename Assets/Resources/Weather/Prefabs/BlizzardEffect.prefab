@@ -5470,7 +5470,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 10
+    maxNumParticles: 50
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -5736,7 +5736,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 250
+      scalar: 25
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -9668,7 +9668,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 500
+  m_MaxParticleSize: 50000
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 1.1
