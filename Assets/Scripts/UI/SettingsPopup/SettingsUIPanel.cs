@@ -49,6 +49,8 @@ namespace UI
                 UIManager.GetLocaleArray(cat, sub, "NameBackgroundTypeOptions"), elementWidth: 160f);
             ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceNameColor, UIManager.GetLocale(cat, sub, "ForceNameColor"), UIManager.CurrentMenu.ColorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceBackgroundColor, UIManager.GetLocale(cat, sub, "ForceBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.MinNameLength, UIManager.GetLocale(cat, sub, "MinNameLength"), elementWidth: 160f);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.MaxNameLength, UIManager.GetLocale(cat, sub, "MaxNameLength"), elementWidth: 160f);
 
             // Crosshair
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.CrosshairStyle, UIManager.GetLocale(cat, sub, "CrosshairStyle"),

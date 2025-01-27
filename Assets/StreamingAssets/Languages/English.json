@@ -334,6 +334,8 @@
 		"UI.NameBackgroundTypeOptions": ["Off", "Outline", "Background"],
 		"UI.ForceNameColor": "Force name color",
 		"UI.ForceBackgroundColor": "Name background color",
+		"UI.MinNameLength": "Min name length",
+		"UI.MaxNameLength": "Max name length",
 		"UI.CrosshairStyle": "Crosshair style",
 		"UI.CrosshairStyleOptions": [ "Default", "Square", "Plus", "Target", "Dot" ],
 		"UI.CrosshairScale": "Crosshair scale",
