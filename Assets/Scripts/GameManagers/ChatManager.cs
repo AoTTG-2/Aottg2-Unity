@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Linq;
 using Map;
 using System.Collections;
+using System.IO;
 
 
 namespace GameManagers
@@ -844,6 +845,27 @@ namespace GameManagers
                         chatPanel.Activate();
                 }
             }
+        }
+
+        [CommandAttribute("verify", "/verify [hash]: Verify a chat history file using its hash")]
+        private static void Verify(string[] args)
+        {
+            if (args.Length != 2)
+            {
+                AddLine("Usage: /verify [hash]", ChatTextColor.Error);
+                return;
+            }
+
+            string hash = args[1].ToLower();
+            var chatPanel = GetChatPanel();
+            
+            if (!chatPanel._hashHistory.TryGetValue(hash, out DateTime timestamp))
+            {
+                AddLine("No chat history found with that hash.", ChatTextColor.Error);
+                return;
+            }
+
+            AddLine($"Chat history verified! Generated on {timestamp:yyyy-MM-dd HH:mm:ss UTC}", ChatTextColor.System);
         }
     }
 
