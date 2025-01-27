@@ -250,11 +250,17 @@ namespace CustomLogic
                 return Human.IsInvincible;
             if (name == "InvincibleTimeLeft")
                 return Human.InvincibleTimeLeft;
+            if (name == "IsCarried")
+                return Human.CarryState == HumanCarryState.Carry;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Human.IsMine())
                 return;
             BladeWeapon bladeWeapon = null;
@@ -288,7 +294,16 @@ namespace CustomLogic
             else if (name == "CurrentBladeDurability")
             {
                 if (bladeWeapon != null)
-                    bladeWeapon.CurrentDurability = Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat());
+                {
+                    bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
+                    bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
+                    if (bladeWeapon.CurrentDurability == 0f)
+                    {
+                        Human.ToggleBlades(false);
+                        if (bladeWasEnabled)
+                            Human.PlaySound(HumanSounds.BladeBreak);
+                    }
+                }
             }
             else if (name == "MaxBladeDurability")
             {

@@ -49,7 +49,7 @@ namespace CustomLogic
             if (name == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
-                return Character.Cache.Animation[anim].length;
+                return Character.Animation.GetLength(anim);
             }
             if (name == "PlaySound")
             {
@@ -95,8 +95,12 @@ namespace CustomLogic
                     case "VelocityChange":
                         mode = ForceMode.VelocityChange;
                         break;
-                }   
-                Character.Cache.Rigidbody.AddForce(force, mode);
+                }
+                if (Character.IsMine())
+                {
+                    Character.SetKinematic(false, 1f);
+                    Character.Cache.Rigidbody.AddForce(force, mode);
+                }
                 return null;
             }
             if (name == "Reveal")
@@ -174,11 +178,17 @@ namespace CustomLogic
                 return Character.GetCurrentAnimation();
             if (name == "IsAI")
                 return Character.AI;
+            if (name == "Grounded")
+                return Character.Grounded;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Character.IsMine())
                 return;
             if (name == "Position")
@@ -188,7 +198,10 @@ namespace CustomLogic
             else if (name == "QuaternionRotation")
                 Character.Cache.Transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
             else if (name == "Velocity")
+            {
+                Character.SetKinematic(false, 1f);
                 Character.Cache.Rigidbody.velocity = ((CustomLogicVector3Builtin)value).Value;
+            }
             else if (name == "Forward")
                 Character.Cache.Transform.forward = ((CustomLogicVector3Builtin)value).Value;
             else if (name == "Right")

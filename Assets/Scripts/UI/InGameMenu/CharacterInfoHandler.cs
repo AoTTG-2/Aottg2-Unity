@@ -7,6 +7,7 @@ using ApplicationManagers;
 using Utility;
 using Cameras;
 using Assets.Scripts.Utility;
+using UnityEngine.UIElements;
 
 namespace UI
 {
@@ -14,7 +15,6 @@ namespace UI
     {
         protected HashSet<SetItem<BaseCharacter, CharacterInfoPopup>> _characterInfoPopups = new HashSet<SetItem<BaseCharacter, CharacterInfoPopup>>();
         //protected Dictionary<BaseCharacter, CharacterInfoPopup> _characterInfoPopups = new Dictionary<BaseCharacter, CharacterInfoPopup>();
-        protected const float HumanRange = 500f;
         protected const float TitanRange = 250f;
         protected const float HumanOffset = 2f;
         protected const float TitanOffset = 20f;
@@ -38,7 +38,8 @@ namespace UI
             bool inMenu = InGameMenu.InMenu() || ((InGameManager)SceneLoader.CurrentGameManager).State == GameState.Loading;
             ShowMode showNameMode = (ShowMode)SettingsManager.UISettings.ShowNames.Value;
             ShowMode showHealthMode = (ShowMode)SettingsManager.UISettings.ShowHealthbars.Value;
-            bool highlyVisible = SettingsManager.UISettings.HighVisibilityNames.Value;
+            ShowMode NameOverrideTarget = (ShowMode)SettingsManager.UISettings.NameOverrideTarget.Value;
+
             foreach (SetItem<BaseCharacter, CharacterInfoPopup> kv in _characterInfoPopups)
             {
                 var character = kv.Key;
@@ -49,6 +50,10 @@ namespace UI
                     (showHealthMode == ShowMode.Others && !character.IsMainCharacter()));
                 bool toggleName = showName && !character.AI && !(character is BasicTitan);
                 bool toggleHealth = showHealth && character.MaxHealth > 1 && character.CurrentHealth < character.MaxHealth;
+
+                bool setNameToHighlyVisible = NameOverrideTarget == ShowMode.All || (NameOverrideTarget == ShowMode.Mine && character.IsMine()) ||
+                        (NameOverrideTarget == ShowMode.Others && !character.IsMine());
+
                 if (_inGameManager.Restarting || SettingsManager.InGameCurrent.Misc.RealismMode.Value || (character.IsMainCharacter() && camera.GetCameraDistance() <= 0f))
                     toggleName = toggleHealth = false;
                 if ((!toggleName && !toggleHealth) || inMenu)
@@ -57,9 +62,8 @@ namespace UI
                     continue;
                 }
                 Vector3 worldPosition = character.Cache.Transform.position + popup.Offset;
-                float range = popup.Range;
                 float distance = Vector3.Distance(camera.Cache.Transform.position, worldPosition);
-                if (distance > range && !highlyVisible)
+                if (distance > popup.Range)
                 {
                     popup.Hide();
                     if (popup.gameObject.activeSelf)
@@ -88,19 +92,12 @@ namespace UI
                 if (toggleName)
                 {
                     popup.ToggleName(true);
-                    string name = character.Name;
-
-                    if (highlyVisible)
-                        name = character.VisibleName;
-                    if (character.Guild != "")
-                        name = character.Guild + "\n" + name;
-                    popup.SetName(name, highlyVisible);
                 }
                 else
                     popup.ToggleName(false);
                 Vector3 screenPosition = camera.Camera.WorldToScreenPoint(worldPosition);
                 popup.transform.position = screenPosition;
-                if (highlyVisible)
+                if (setNameToHighlyVisible)
                     popup.ShowImmediate();
                 else
                     popup.Show();
@@ -110,11 +107,11 @@ namespace UI
         protected CharacterInfoPopup CreateInfoPopup(BaseCharacter character)
         {
             Vector3 offset = Vector3.zero;
-            float range = HumanRange;
+            float range = TitanRange;
             if (character is Human)
             {
                 offset = Vector3.up * HumanOffset;
-                range = HumanRange;
+                range = SettingsManager.UISettings.HumanNameDistance.Value;
             }
             else if (character is BasicTitan)
             {

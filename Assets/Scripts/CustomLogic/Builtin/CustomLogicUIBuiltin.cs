@@ -6,6 +6,7 @@ using Photon.Realtime;
 using Settings;
 using System.Collections.Generic;
 using UI;
+using Utility;
 using UnityEngine;
 
 namespace CustomLogic
@@ -77,6 +78,18 @@ namespace CustomLogic
                 menu.CreateCustomPopup(popupName, title, width, height);
                 return null;
             }
+            if (name == "IsPopupActive")
+            {
+                string popupName = (string)parameters[0];
+                return menu.GetCustomPopup(popupName).IsActive;
+            }
+            if (name == "Popups")
+            {
+                var result = new CustomLogicListBuiltin();
+                foreach (var popup in menu.GetAllCustomPopups())
+                    result.List.Add(popup);
+                return result;
+            }
             if (name == "ShowPopup")
             {
                 string popupName = (string)parameters[0];
@@ -142,6 +155,14 @@ namespace CustomLogic
             if (name == "GetLanguage")
             {
                 return SettingsManager.GeneralSettings.Language.Value;
+            }
+            if (name == "GetThemeColor")
+            {
+                string panel = (string)parameters[0];
+                string category = (string)parameters[1]; 
+                string item = (string)parameters[2];
+                Color255 color = new Color255(UIManager.GetThemeColor(panel, category, item));
+                return new CustomLogicColorBuiltin(color);
             }
             if (name == "ShowChangeCharacterMenu")
             {

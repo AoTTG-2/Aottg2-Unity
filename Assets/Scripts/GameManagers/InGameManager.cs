@@ -18,6 +18,7 @@ using System.Linq;
 using Controllers;
 using Photon.Voice.PUN;
 using Anticheat;
+using System.Globalization;
 
 namespace GameManagers
 {
@@ -53,10 +54,23 @@ namespace GameManagers
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
+        public HashSet<BaseDetection> Detections = new HashSet<BaseDetection>();
 
         //ping related
         private float pingUpdateInterval = 10f;
         private float timeSinceLastPingUpdate = 0f;
+
+        public void RegisterCharacter(BaseCharacter character)
+        {
+            if (character is Human)
+                Humans.Add((Human)character);
+            else if (character is BasicTitan)
+                Titans.Add((BasicTitan)character);
+            else if (character is BaseShifter)
+                Shifters.Add((BaseShifter)character);
+            foreach (var detection in Detections)
+                detection.OnCharacterSpawned(character);
+        }
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -426,10 +440,9 @@ namespace GameManagers
         {
             if (!IsFinishedLoading())
                 return;
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                SettingsManager.InGameCharacterSettings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
             string characterType = SettingsManager.InGameCharacterSettings.CharacterType.Value;
-            string forced = CustomLogicManager.Evaluator.ForcedCharacterType;
-            if (forced != string.Empty)
-                characterType = forced;
             var isHuman = characterType == PlayerCharacter.Human;
             if (PhotonNetwork.LocalPlayer.HasSpawnPoint())
             {
@@ -498,10 +511,9 @@ namespace GameManagers
                 return;
             var rotation = Quaternion.Euler(0f, rotationY, 0f);
             var settings = SettingsManager.InGameCharacterSettings;
+            if (CustomLogicManager.Evaluator.ForcedCharacterType != string.Empty)
+                settings.CharacterType.Value = CustomLogicManager.Evaluator.ForcedCharacterType;
             string character = settings.CharacterType.Value;
-            string forced = CustomLogicManager.Evaluator.ForcedCharacterType;
-            if (forced != string.Empty)
-                character = forced;
             var miscSettings = SettingsManager.InGameCurrent.Misc;
             if (settings.ChooseStatus.Value != (int)ChooseCharacterStatus.Chosen)
                 return;
@@ -509,6 +521,7 @@ namespace GameManagers
                 return;
             if (CurrentCharacter != null && !CurrentCharacter.Dead)
                 CurrentCharacter.GetKilled("");
+            string forced = string.Empty;
             UpdatePlayerName();
             List<string> characters = new List<string>();
             if (miscSettings.AllowAHSS.Value || miscSettings.AllowBlades.Value || miscSettings.AllowThunderspears.Value || miscSettings.AllowAPG.Value)
@@ -519,7 +532,7 @@ namespace GameManagers
                 characters.Add(PlayerCharacter.Shifter);
             if (characters.Count == 0)
                 characters.Add(PlayerCharacter.Human);
-            if (forced != string.Empty && !characters.Contains(character))
+            if (!characters.Contains(character))
                 character = characters[0];
             if (character == PlayerCharacter.Human)
             {
@@ -536,9 +549,8 @@ namespace GameManagers
                     loadouts.Add(HumanLoadout.Blades);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
-                forced = CustomLogicManager.Evaluator.ForcedLoadout;
-                if (forced != string.Empty)
-                    settings.Loadout.Value = forced;
+                if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)
+                    settings.Loadout.Value = CustomLogicManager.Evaluator.ForcedLoadout;
                 var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
                 if (!specials.Contains(settings.Special.Value))
                     settings.Special.Value = HumanSpecials.DefaultSpecial;
@@ -549,7 +561,12 @@ namespace GameManagers
                     human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
             }
             else if (character == PlayerCharacter.Shifter)
+            {
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 SpawnPlayerShifterAt(settings.Loadout.Value, 0f, position, rotationY);
+            }
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
@@ -569,6 +586,9 @@ namespace GameManagers
                     mediumSize = 0.5f * (minSize + maxSize);
                     largeSize = maxSize;
                 }
+                forced = CustomLogicManager.Evaluator.ForcedLoadout;
+                if (forced != string.Empty)
+                    settings.Loadout.Value = forced;
                 if (settings.Loadout.Value == "Small")
                     titan.SetSize(smallSize);
                 else if (settings.Loadout.Value == "Medium")
@@ -696,6 +716,11 @@ namespace GameManagers
                     else if (roll < punk)
                         type = "Punk";
                 }
+            }
+            else if (type == "Random")
+            {
+                string[] types = new string[]{ "Normal", "Abnormal", "Jumper", "Crawler", "Thrower" };
+                type = types[UnityEngine.Random.Range(0, types.Length)];
             }
             var data = CharacterData.GetTitanAI((GameDifficulty)SettingsManager.InGameCurrent.General.Difficulty.Value, type);
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
@@ -1077,65 +1102,24 @@ namespace GameManagers
             Humans = Util.RemoveNullOrDead(Humans);
             Titans = Util.RemoveNullOrDead(Titans);
             Shifters = Util.RemoveNullOrDeadShifters(Shifters);
+            Detections = Util.RemoveNullOrDeadDetections(Detections);
         }
 
         protected void LoadSkin()
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value && !SettingsManager.CustomSkinSettings.Skybox.SkinsLocal.Value)
             {
-                if (SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value)
-                {
-                    var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
-                    string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
+                var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
+                string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
                                               set.Up.Value, set.Down.Value});
-                    RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
-                }
-                /*
-                string indices = string.Empty;
-                string urls1 = string.Empty;
-                string urls2 = string.Empty;
-                bool send = false;
-                var settings = SettingsManager.InGameCurrent.General;
-                if (settings.MapCategory.Value == "General" && settings.MapName.Value == "City" && SettingsManager.CustomSkinSettings.City.SkinsEnabled.Value)
-                {
-                    CityCustomSkinSet set = (CityCustomSkinSet)SettingsManager.CustomSkinSettings.City.GetSelectedSet();
-                    List<string> houses = new List<string>();
-                    foreach (StringSetting house in set.Houses.GetItems())
-                        houses.Add(house.Value);
-                    urls1 = string.Join(",", houses.ToArray());
-                    for (int i = 0; i < 300; i++)
-                        indices = indices + Convert.ToString((int)UnityEngine.Random.Range(0f, 8f));
-                    urls2 = string.Join(",", new string[] { set.Ground.Value, set.Wall.Value, set.Gate.Value });
-                    if (urls1.Replace(",", "").Trim() != "" || urls2.Replace(",", "").Trim() != "")
-                        send = true;
-                }
-                else if (settings.MapCategory.Value == "General" && settings.MapName.Value == "Forest" && SettingsManager.CustomSkinSettings.Forest.SkinsEnabled.Value)
-                {
-                    ForestCustomSkinSet set = (ForestCustomSkinSet)SettingsManager.CustomSkinSettings.Forest.GetSelectedSet();
-                    List<string> trees = new List<string>();
-                    foreach (StringSetting tree in set.TreeTrunks.GetItems())
-                        trees.Add(tree.Value);
-                    urls1 = string.Join(",", trees.ToArray());
-                    List<string> leafs = new List<string>();
-                    foreach (StringSetting leaf in set.TreeLeafs.GetItems())
-                        leafs.Add(leaf.Value);
-                    leafs.Add(set.Ground.Value);
-                    urls2 = string.Join(",", leafs.ToArray());
-                    for (int i = 0; i < 150; i++)
-                    {
-                        string str = Convert.ToString((int)UnityEngine.Random.Range((float)0f, (float)8f));
-                        indices = indices + str;
-                        if (!set.RandomizedPairs.Value)
-                            indices = indices + str;
-                        else
-                            indices = indices + Convert.ToString((int)UnityEngine.Random.Range((float)0f, (float)8f));
-                    }
-                    if (urls1.Replace(",", "").Trim() != "" || urls2.Replace(",", "").Trim() != "")
-                        send = true;
-                }
-                if (send)
-                    RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
-                */
+                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                // send empty strings for the values
+                string urls = string.Join(",", new string[] {string.Empty, string.Empty, string.Empty , string.Empty ,
+                                              string.Empty, string.Empty});
+                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
             }
         }
 
@@ -1146,6 +1130,16 @@ namespace GameManagers
             {
                 yield return StartCoroutine(_skyboxCustomSkinLoader.LoadSkinsFromRPC(urls));
                 StartCoroutine(ReloadSkybox());
+            }
+            else if (settings.SkinsEnabled.Value && settings.SkinsLocal.Value)
+            {
+                var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
+                string[] localUrls = new string[] { set.Front.Value, set.Back.Value, set.Left.Value, set.Right.Value, set.Up.Value, set.Down.Value };
+                if (IsValidSkybox(localUrls))
+                {
+                    yield return StartCoroutine(_skyboxCustomSkinLoader.LoadSkinsFromRPC(localUrls));
+                    StartCoroutine(ReloadSkybox());
+                }
             }
         }
 

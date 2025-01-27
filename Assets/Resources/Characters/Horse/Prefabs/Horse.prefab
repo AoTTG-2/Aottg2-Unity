@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 456616}
-  - component: {fileID: 11156738}
   - component: {fileID: 11456736}
   - component: {fileID: 5456738}
   - component: {fileID: 11456738}
@@ -17,6 +16,7 @@ GameObject:
   - component: {fileID: 13615476}
   - component: {fileID: 3030115793356935824}
   - component: {fileID: 6250696981385339825}
+  - component: {fileID: 2567481804670520662}
   m_Layer: 17
   m_Name: Horse
   m_TagString: Untagged
@@ -42,29 +42,6 @@ Transform:
   - {fileID: 480154}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &11156738
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156616}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400012, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  m_Animations:
-  - {fileID: 7400000, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400002, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400004, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400006, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400008, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400010, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400012, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!114 &11456736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,6 +66,7 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -136,7 +114,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -224,6 +202,28 @@ MonoBehaviour:
   Disabled: 0
   _correctVelocity: {x: 0, y: 0, z: 0}
   _correctCamera: {x: 0, y: 0, z: 0, w: 1}
+--- !u!95 &2567481804670520662
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156616}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
+  m_Controller: {fileID: 9100000, guid: b8b7dbebb1cc5bc45913f0545ad5e405, type: 2}
+  m_CullingMode: 2
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &156618
 GameObject:
   m_ObjectHideFlags: 0

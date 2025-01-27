@@ -96,7 +96,7 @@ namespace UI
             }
         }
 
-        private void AddPlayer(Player player, bool redoLayout=false)
+        private void AddPlayer(Player player, bool redoLayout=false, bool isVisible=true)
         {
             if (player == null)
                 return;
@@ -104,7 +104,9 @@ namespace UI
                 return;
 
             var playerRow = ElementFactory.CreatePlayerKDRRow(transform, _style, player);
-            var playerKDRRow = playerRow.GetComponent<PlayerKDRRow>();  
+            var playerKDRRow = playerRow.GetComponent<PlayerKDRRow>();
+            if (!isVisible)
+                playerKDRRow.gameObject.SetActive(false);
             _players.Add(player.ActorNumber, playerKDRRow);
 
             if (_pvpMode == PVPMode.Team)
@@ -115,6 +117,7 @@ namespace UI
                 {
                     GameObject header = ElementFactory.CreateTeamKDRRow(transform, _style, team);
                     TeamKDRRow teamKDRRow = header.GetComponent<TeamKDRRow>();
+                    header.SetActive(SettingsManager.UISettings.KDR.Value != (int)KDRMode.Off);
                     _teamHeaders.Add(team, teamKDRRow);
                 }
 
@@ -137,6 +140,10 @@ namespace UI
             if (_pvpMode == PVPMode.Team)
             {
                 string team = _players[player.ActorNumber].team;
+                if (!_teamHeaders.ContainsKey(team))
+                {
+                    team = _defaultTeam;
+                }
                 if (_teamHeaders.ContainsKey(team))
                 {
                     var header = _teamHeaders[team];
@@ -177,17 +184,15 @@ namespace UI
             }
             _teamHeaders.Clear();
 
-            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
-                return;
+            bool isVisible = SettingsManager.UISettings.KDR.Value != (int)KDRMode.Off;
 
-            AddPlayer(PhotonNetwork.LocalPlayer);
+            AddPlayer(PhotonNetwork.LocalPlayer, isVisible: isVisible);
 
-            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Mine)
-                return;
+            isVisible = isVisible && SettingsManager.UISettings.KDR.Value != (int)KDRMode.Mine;
             // Create rows for all other players and set them
             foreach (var player in PhotonNetwork.PlayerListOthers)
             {
-                AddPlayer(player);
+                AddPlayer(player, isVisible: isVisible);
             }
 
             ReorganizeLayout();
@@ -195,10 +200,8 @@ namespace UI
 
         public void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (SettingsManager.UISettings.KDR.Value != (int)KDRMode.All || newPlayer == null)
-                return;
-
-            AddPlayer(newPlayer, redoLayout: true);
+            bool isVisible = !(SettingsManager.UISettings.KDR.Value != (int)KDRMode.All || newPlayer == null);
+            AddPlayer(newPlayer, redoLayout: true, isVisible);
         }
 
         public void OnPlayerLeftRoom(Player otherPlayer)
@@ -210,11 +213,7 @@ namespace UI
 
         public void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
         {
-            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Off)
-                return;
-
-            if (SettingsManager.UISettings.KDR.Value == (int)KDRMode.Mine && targetPlayer != PhotonNetwork.LocalPlayer)
-                return;
+            bool isVisible = SettingsManager.UISettings.KDR.Value != (int)KDRMode.Off && (SettingsManager.UISettings.KDR.Value != (int)KDRMode.Mine || targetPlayer == PhotonNetwork.LocalPlayer);
 
             // if hashtable contains team prop, swap team
             changedProps.TryGetValue(PlayerProperty.Team, out object team);
@@ -222,7 +221,7 @@ namespace UI
             if (team != null)
             {
                 RemovePlayer(targetPlayer);
-                AddPlayer(targetPlayer, redoLayout: true);
+                AddPlayer(targetPlayer, redoLayout: true, isVisible);
             }
             else
             {

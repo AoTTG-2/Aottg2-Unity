@@ -21,6 +21,7 @@ namespace UI
         public BasePopup _settingsPopup;
         public BasePopup _toolsPopup;
         public BasePopup _multiplayerRoomListPopup;
+        public BasePopup _duelPopup;
         public BasePopup _editProfilePopup;
         public BasePopup _leaderboardPopup;
         public BasePopup _socialPopup;
@@ -87,6 +88,7 @@ namespace UI
             _questPopup = ElementFactory.CreateHeadedPanel<QuestPopup>(transform).GetComponent<BasePopup>();
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
             _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
+            _duelPopup = ElementFactory.CreateDefaultPopup<DuelPopup>(transform).GetComponent<DuelPopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -100,6 +102,7 @@ namespace UI
             _popups.Add(_tutorialPopup);
             _popups.Add(_selectMapPopup);
             _popups.Add(_outdatedPopup);
+            _popups.Add(_duelPopup);
         }
 
         private RectTransform _introPanelRect;

@@ -26,7 +26,12 @@ namespace UI
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
+            Sync();
         }
-       
+
+        public void Sync()
+        {
+        }
+
     }
 }

@@ -18,6 +18,8 @@ namespace Controllers
         protected BasicTitan _titan;
         protected TitanInputSettings _titanInput;
         protected float _enemyTimeLeft;
+        protected float RockCooldown = 5f;
+        protected float _rockCooldownLeft;
 
         protected override void Awake()
         {
@@ -50,6 +52,7 @@ namespace Controllers
 
         protected override void UpdateActionInput(bool inMenu)
         {
+            _rockCooldownLeft -= Time.deltaTime;
             base.UpdateActionInput(inMenu);
             if (inMenu)
                 return;
@@ -86,6 +89,14 @@ namespace Controllers
                     AttackGrabHigh();
                 else if (_titanInput.AttackBrushChest.GetKeyDown())
                     AttackBrushChest();
+                else if (_titanInput.AttackRockThrow.GetKeyDown())
+                {
+                    if (_rockCooldownLeft <= 0f && _titan.Grounded)
+                    {
+                        _titan.Attack("AttackRockThrow");
+                        _rockCooldownLeft = RockCooldown;
+                    }
+                }
                 else
                 {
                     foreach (string settingName in _titanInput.Settings.Keys)
