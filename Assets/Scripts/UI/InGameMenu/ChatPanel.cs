@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using Utility;
 using ApplicationManagers;
+using TMPro;
+using System.Text.RegularExpressions;
 
 namespace UI
 {
@@ -17,7 +19,7 @@ namespace UI
     {
         private InputField _inputField;
         private GameObject _panel;
-        private Text _chatDisplay;
+        private TMP_InputField _chatDisplay;
         private List<string> _allLines = new List<string>();
         protected override string ThemePanel => "ChatPanel";
         protected Transform _caret;
@@ -39,59 +41,7 @@ namespace UI
             var layoutElement = content.GetComponent<LayoutElement>();
             layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
             
-            // Create Scrollbar if it doesn't exist
-            var scrollbar = content.Find("Scrollbar")?.GetComponent<Scrollbar>();
-            if (scrollbar == null)
-            {
-                // Create Scrollbar GameObject with RectTransform
-                var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
-                scrollbarGo.transform.SetParent(content, false);
-                var scrollbarRect = scrollbarGo.GetComponent<RectTransform>();
-                scrollbarRect.anchorMin = new Vector2(1, 0);
-                scrollbarRect.anchorMax = new Vector2(1, 1);
-                scrollbarRect.pivot = new Vector2(1, 0.5f);
-                scrollbarRect.sizeDelta = new Vector2(10, 0);
-                
-                // Add Scrollbar component
-                scrollbar = scrollbarGo.AddComponent<Scrollbar>();
-                
-                // Create Sliding Area
-                var slidingArea = new GameObject("Sliding Area", typeof(RectTransform));
-                slidingArea.transform.SetParent(scrollbarGo.transform, false);
-                var slidingAreaRect = slidingArea.GetComponent<RectTransform>();
-                slidingAreaRect.anchorMin = Vector2.zero;
-                slidingAreaRect.anchorMax = Vector2.one;
-                slidingAreaRect.sizeDelta = Vector2.zero;
-                
-                // Create Handle
-                var handle = new GameObject("Handle", typeof(RectTransform), typeof(Image));
-                handle.transform.SetParent(slidingArea.transform, false);
-                var handleRect = handle.GetComponent<RectTransform>();
-                handleRect.anchorMin = Vector2.zero;
-                handleRect.anchorMax = Vector2.one;
-                handleRect.sizeDelta = Vector2.zero;
-                
-                // Setup handle image
-                var handleImage = handle.GetComponent<Image>();
-                handleImage.color = new Color(1f, 1f, 1f, 0.5f);
-                
-                // Configure scrollbar
-                scrollbar.handleRect = handleRect;
-                scrollbar.targetGraphic = handleImage;
-                scrollbar.direction = Scrollbar.Direction.BottomToTop;
-            }
             
-            // Add custom ScrollRect to Content
-            var scrollRect = content.gameObject.AddComponent<ChatScrollRect>();
-            scrollRect.vertical = true;
-            scrollRect.horizontal = false;
-            scrollRect.viewport = contentRect;
-            scrollRect.content = _panel.GetComponent<RectTransform>();
-            scrollRect.verticalScrollbar = scrollbar;
-            scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
-            scrollRect.verticalScrollbarSpacing = -3;  // Negative value to expand viewport
-            
-            // Adjust panel width to account for scrollbar
             var panelRect = _panel.GetComponent<RectTransform>();
             panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);  // 15 pixels from right edge for scrollbar
             
@@ -113,10 +63,93 @@ namespace UI
             // Adjust input field rect to make room for button
             var inputRect = _inputField.GetComponent<RectTransform>();
             inputRect.offsetMax = new Vector2(-35, inputRect.offsetMax.y);  // 35 pixels from right edge
+            inputRect.offsetMin = new Vector2(inputRect.offsetMin.x, 10f);  // Add 10 pixels padding at the top
             
-            var textStyle = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
-            _chatDisplay = ElementFactory.CreateDefaultLabel(_panel.transform, textStyle, "", alignment: TextAnchor.LowerLeft).GetComponent<Text>();
-            _chatDisplay.supportRichText = true;
+            var chatGO = new GameObject("ChatDisplay", typeof(RectTransform));
+            chatGO.transform.SetParent(_panel.transform, false);
+            _chatDisplay = chatGO.AddComponent<TMP_InputField>();
+
+            // Set up the visual components required by TMP_InputField
+            var textArea = new GameObject("Text Area", typeof(RectTransform));
+            textArea.transform.SetParent(chatGO.transform, false);
+            var textComponent = textArea.AddComponent<TextMeshProUGUI>();
+
+            _chatDisplay.textComponent = textComponent;
+            _chatDisplay.textViewport = textArea.GetComponent<RectTransform>();
+
+            // Configure the input field
+            _chatDisplay.readOnly = true;
+            _chatDisplay.richText = true;
+            _chatDisplay.onFocusSelectAll = false;
+            _chatDisplay.resetOnDeActivation = false;
+            _chatDisplay.restoreOriginalTextOnEscape = false;
+            _chatDisplay.textComponent.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+            _chatDisplay.textComponent.color = Color.white;
+            _chatDisplay.textComponent.alignment = TextAlignmentOptions.BottomLeft;
+            _chatDisplay.textComponent.enableWordWrapping = true;
+            _chatDisplay.interactable = true;  // Make sure the input field is interactable
+
+            // Make sure the RectTransform fills the panels
+            var rectTransform = chatGO.GetComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.sizeDelta = Vector2.zero;
+            rectTransform.anchoredPosition = Vector2.zero;
+
+            var textAreaRect = textArea.GetComponent<RectTransform>();
+            textAreaRect.anchorMin = Vector2.zero;
+            textAreaRect.anchorMax = Vector2.one;
+            textAreaRect.sizeDelta = Vector2.zero;
+            textAreaRect.anchoredPosition = Vector2.zero;
+
+            // Create Scrollbar GameObject with RectTransform
+            var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
+            scrollbarGo.transform.SetParent(content, false);
+            scrollbarGo.SetActive(true);  // Explicitly enable the scrollbar
+            var scrollbarRect = scrollbarGo.GetComponent<RectTransform>();
+            scrollbarRect.anchorMin = new Vector2(1, 0);
+            scrollbarRect.anchorMax = new Vector2(1, 1);
+            scrollbarRect.pivot = new Vector2(1, 0.5f);
+            scrollbarRect.sizeDelta = new Vector2(10, 0);
+            
+            // Add Scrollbar component
+            var scrollbar = scrollbarGo.AddComponent<Scrollbar>();
+            
+            // Create Sliding Area
+            var slidingArea = new GameObject("Sliding Area", typeof(RectTransform));
+            slidingArea.transform.SetParent(scrollbarGo.transform, false);
+            var slidingAreaRect = slidingArea.GetComponent<RectTransform>();
+            slidingAreaRect.anchorMin = Vector2.zero;
+            slidingAreaRect.anchorMax = Vector2.one;
+            slidingAreaRect.sizeDelta = Vector2.zero;
+            
+            // Create Handle
+            var handle = new GameObject("Handle", typeof(RectTransform), typeof(Image));
+            handle.transform.SetParent(slidingArea.transform, false);
+            var handleRect = handle.GetComponent<RectTransform>();
+            handleRect.anchorMin = Vector2.zero;
+            handleRect.anchorMax = Vector2.one;
+            handleRect.sizeDelta = Vector2.zero;
+            
+            // Setup handle image
+            var handleImage = handle.GetComponent<Image>();
+            handleImage.color = new Color(0.8f, 0.8f, 0.8f, 0.4f);
+            
+            // Configure scrollbar
+            scrollbar.handleRect = handleRect;
+            scrollbar.targetGraphic = handleImage;
+            scrollbar.direction = Scrollbar.Direction.BottomToTop;
+            
+            // Add custom ScrollRect to Content
+            var scrollRect = content.gameObject.AddComponent<ChatScrollRect>();
+            scrollRect.vertical = true;
+            scrollRect.horizontal = false;
+            scrollRect.viewport = contentRect;
+            scrollRect.content = _panel.GetComponent<RectTransform>();
+            scrollRect.verticalScrollbar = scrollbar;
+            scrollRect.verticalScrollbarSpacing = -3;  // Negative value to expand viewport
+            
+            // Adjust panel width to account for scrollbar
             
             // Create download button
             var buttonGo = new GameObject("DownloadButton", typeof(RectTransform), typeof(Image), typeof(Button));
@@ -221,6 +254,18 @@ namespace UI
             if (isAutocompleting)
                 return;
 
+            // Strip any rich text tags from input
+            string cleanText = Regex.Replace(text, @"<[^>]+>|</[^>]+>", string.Empty);
+            if (cleanText != text)
+            {
+                isAutocompleting = true;
+                int caretPos = _inputField.caretPosition;
+                _inputField.text = cleanText;
+                _inputField.caretPosition = Mathf.Min(caretPos, cleanText.Length);
+                isAutocompleting = false;
+                text = cleanText;
+            }
+
             string suggestion = ChatManager.GetAutocompleteSuggestion(text);
             if (suggestion != null)
             {
@@ -271,10 +316,15 @@ namespace UI
                 RectTransform scrollbarRect = transform.Find("Content/Scrollbar")?.GetComponent<RectTransform>();
 
                 // Check if mouse is over any of the chat UI elements
-                if (RectTransformUtility.RectangleContainsScreenPoint(chatPanelRect, mousePosition) || 
-                    RectTransformUtility.RectangleContainsScreenPoint(inputFieldRect, mousePosition) ||
-                    RectTransformUtility.RectangleContainsScreenPoint(contentRect, mousePosition) ||
-                    (scrollbarRect != null && RectTransformUtility.RectangleContainsScreenPoint(scrollbarRect, mousePosition)))
+                if (RectTransformUtility.RectangleContainsScreenPoint(chatPanelRect, mousePosition))
+                {
+                    // If over chat display area, make it the selected object for copy to work
+                    EventSystem.current.SetSelectedGameObject(_chatDisplay.gameObject);
+                    return true;
+                }
+                else if (RectTransformUtility.RectangleContainsScreenPoint(inputFieldRect, mousePosition) ||
+                        RectTransformUtility.RectangleContainsScreenPoint(contentRect, mousePosition) ||
+                        (scrollbarRect != null && RectTransformUtility.RectangleContainsScreenPoint(scrollbarRect, mousePosition)))
                 {
                     if (IsInputActive())
                     {
