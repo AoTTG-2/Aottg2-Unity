@@ -1,111 +1,83 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using Settings;
 using GameManagers;
-using System;
-using System.IO;
-using System.Linq;
-using Utility;
-using ApplicationManagers;
 using TMPro;
-using System.Text.RegularExpressions;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
     class ChatPanel : BasePanel
     {
+        private const int POOL_SIZE = 20;
+
         private InputField _inputField;
         private GameObject _panel;
-        private TMP_InputField _chatDisplay;
-        private List<string> _allLines = new List<string>();
+
+        private readonly List<TMP_InputField> _linesPool = new List<TMP_InputField>();
+
+        private int _oldestIndex = 0;
+
+        private List<string> _allMessages = new List<string>();  // Store all messages
+        private ChatScrollRect _scrollRect;
+
         protected override string ThemePanel => "ChatPanel";
         protected Transform _caret;
         public bool IgnoreNextActivation;
-        private bool isAutocompleting = false;
-        private Button _downloadButton;
-        public string LastDownloadedFile { get; private set; }
-        public string LastFileHash { get; private set; }
-        public readonly Dictionary<string, DateTime> _hashHistory = new Dictionary<string, DateTime>();
 
+        /// <summary>
+        /// Initializes the chat panel, creating the pool of text objects but keeping them hidden initially.
+        /// </summary>
         public override void Setup(BasePanel parent = null)
         {
+            // Find references in the hierarchy
             _inputField = transform.Find("InputField").GetComponent<InputField>();
             _panel = transform.Find("Content/Panel").gameObject;
-            
-            // Setup Content size and ScrollRect
-            var content = transform.Find("Content");
-            var contentRect = content.GetComponent<RectTransform>();
-            var layoutElement = content.GetComponent<LayoutElement>();
-            layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
-            
-            
-            var panelRect = _panel.GetComponent<RectTransform>();
-            panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);  // 15 pixels from right edge for scrollbar
-            
-            // The Content object already has a Mask component
-            
+
+            // Set chat window height
+            transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
+
+            // Theming & style
             var style = new ElementStyle(fontSize: 20, themePanel: ThemePanel);
             _inputField.colors = UIManager.GetThemeColorBlock(style.ThemePanel, "InputField", "Input");
-            _inputField.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputTextColor");
-            _inputField.selectionColor = UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputSelectionColor");
+            _inputField.transform.Find("Text").GetComponent<Text>().color =
+                UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputTextColor");
+            _inputField.selectionColor =
+                UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputSelectionColor");
+
+            // Adjust width
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
+
+            // Hook up the input field event
             _inputField.onEndEdit.AddListener((string text) => OnEndEdit(text));
-            _inputField.onValueChanged.AddListener((string text) => OnInputValueChanged(text));
             _inputField.text = "";
             if (SettingsManager.UISettings.ChatWidth.Value == 0f)
             {
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
 
-            // Adjust input field rect to make room for button
-            var inputRect = _inputField.GetComponent<RectTransform>();
-            inputRect.offsetMax = new Vector2(-35, inputRect.offsetMax.y);  // 35 pixels from right edge
-            inputRect.offsetMin = new Vector2(inputRect.offsetMin.x, 10f);  // Add 10 pixels padding at the top
-            
-            var chatGO = new GameObject("ChatDisplay", typeof(RectTransform));
-            chatGO.transform.SetParent(_panel.transform, false);
-            _chatDisplay = chatGO.AddComponent<TMP_InputField>();
+            // Pre-create our fixed-size pool of line objects
+            for (int i = 0; i < POOL_SIZE; i++)
+            {
+                TMP_InputField lineObj = CreateLine(string.Empty);
+                lineObj.gameObject.SetActive(false); // Hide until needed
+                _linesPool.Add(lineObj);
+            }
 
-            // Set up the visual components required by TMP_InputField
-            var textArea = new GameObject("Text Area", typeof(RectTransform));
-            textArea.transform.SetParent(chatGO.transform, false);
-            var textComponent = textArea.AddComponent<TextMeshProUGUI>();
+            // Populate from ChatManager lines (if any)
+            Sync();
 
-            _chatDisplay.textComponent = textComponent;
-            _chatDisplay.textViewport = textArea.GetComponent<RectTransform>();
-
-            // Configure the input field
-            _chatDisplay.readOnly = true;
-            _chatDisplay.richText = true;
-            _chatDisplay.onFocusSelectAll = false;
-            _chatDisplay.resetOnDeActivation = false;
-            _chatDisplay.restoreOriginalTextOnEscape = false;
-            _chatDisplay.textComponent.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-            _chatDisplay.textComponent.color = Color.white;
-            _chatDisplay.textComponent.alignment = TextAlignmentOptions.BottomLeft;
-            _chatDisplay.textComponent.enableWordWrapping = true;
-            _chatDisplay.interactable = true;  // Make sure the input field is interactable
-
-            // Make sure the RectTransform fills the panels
-            var rectTransform = chatGO.GetComponent<RectTransform>();
-            rectTransform.anchorMin = Vector2.zero;
-            rectTransform.anchorMax = Vector2.one;
-            rectTransform.sizeDelta = Vector2.zero;
-            rectTransform.anchoredPosition = Vector2.zero;
-
-            var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.anchorMin = Vector2.zero;
-            textAreaRect.anchorMax = Vector2.one;
-            textAreaRect.sizeDelta = Vector2.zero;
-            textAreaRect.anchoredPosition = Vector2.zero;
+            // Setup Content size and ScrollRect
+            var content = transform.Find("Content");
+            var contentRect = content.GetComponent<RectTransform>();
+            var layoutElement = content.GetComponent<LayoutElement>();
+            layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
 
             // Create Scrollbar GameObject with RectTransform
             var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
             scrollbarGo.transform.SetParent(content, false);
-            scrollbarGo.SetActive(true);  // Explicitly enable the scrollbar
+            scrollbarGo.SetActive(true);
             var scrollbarRect = scrollbarGo.GetComponent<RectTransform>();
             scrollbarRect.anchorMin = new Vector2(1, 0);
             scrollbarRect.anchorMax = new Vector2(1, 1);
@@ -140,36 +112,14 @@ namespace UI
             scrollbar.targetGraphic = handleImage;
             scrollbar.direction = Scrollbar.Direction.BottomToTop;
             
-            // Add custom ScrollRect to Content
+            // Add ChatScrollRect to Content
             var scrollRect = content.gameObject.AddComponent<ChatScrollRect>();
             scrollRect.vertical = true;
             scrollRect.horizontal = false;
             scrollRect.viewport = contentRect;
             scrollRect.content = _panel.GetComponent<RectTransform>();
             scrollRect.verticalScrollbar = scrollbar;
-            scrollRect.verticalScrollbarSpacing = -3;  // Negative value to expand viewport
-            
-            // Adjust panel width to account for scrollbar
-            
-            // Create download button
-            var buttonGo = new GameObject("DownloadButton", typeof(RectTransform), typeof(Image), typeof(Button));
-            buttonGo.transform.SetParent(transform, false);
-            _downloadButton = buttonGo.GetComponent<Button>();
-            
-            // Position the button next to input field
-            var buttonRect = buttonGo.GetComponent<RectTransform>();
-            buttonRect.anchorMin = new Vector2(1, 0);
-            buttonRect.anchorMax = new Vector2(1, 0);
-            buttonRect.pivot = new Vector2(1, 0);
-            buttonRect.sizeDelta = new Vector2(25, 25);
-            buttonRect.anchoredPosition = new Vector2(-5, 5);
-            
-            // Set button image
-            var buttonImage = buttonGo.GetComponent<Image>();
-            buttonImage.color = new Color(0.8f, 0.8f, 0.8f, 0.5f);  // RGBA: semi-transparent grey
-            
-            // Add click listener
-            _downloadButton.onClick.AddListener(DownloadChatHistory);
+            scrollRect.verticalScrollbarSpacing = -3;
             
             // Add event triggers for mouse enter/exit
             var eventTrigger = content.gameObject.AddComponent<EventTrigger>();
@@ -184,48 +134,22 @@ namespace UI
             exitEntry.callback.AddListener((data) => { scrollRect.OnMouseExit(); });
             eventTrigger.triggers.Add(exitEntry);
 
-            Sync();
+            // Adjust panel rect for scrollbar
+            var panelRect = _panel.GetComponent<RectTransform>();
+            panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);
         }
 
-        public void AddLine(string line)
-        {
-            _allLines.Add(line);
-            UpdateText();
-        }
-
-        public void AddLines(List<string> lines)
-        {
-            _allLines.AddRange(lines);
-            UpdateText();
-        }
-
-        public void ReplaceLastLine(string line)
-        {
-            if (_allLines.Count > 0)
-            {
-                _allLines[_allLines.Count - 1] = line;
-            }
-            else
-            {
-                _allLines.Add(line);
-            }
-            UpdateText();
-        }
-
-        private void UpdateText()
-        {
-            _chatDisplay.text = string.Join("\n", _allLines);
-            Canvas.ForceUpdateCanvases();
-        }
-
+    
         public void Sync()
         {
-            _allLines.Clear();
-            foreach (var message in ChatManager.Lines)
+            _allMessages.Clear();
+            
+            foreach (var line in ChatManager.Lines)
             {
-                _allLines.Add(message.GetFormattedMessage());
+                _allMessages.Add(line.GetFormattedMessage());
             }
-            UpdateText();
+            
+            UpdateVisibleMessages();
         }
 
         public void Activate()
@@ -243,37 +167,43 @@ namespace UI
         {
             if (!Input.GetKeyDown(KeyCode.Return) && !Input.GetKeyDown(KeyCode.KeypadEnter))
                 return;
+
             string input = _inputField.text;
             _inputField.text = "";
             IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
             ChatManager.HandleInput(input);
         }
 
-        private void OnInputValueChanged(string text)
+        public void AddLine(string line)
         {
-            if (isAutocompleting)
-                return;
+            _allMessages.Add(line);
+            
+            UpdateVisibleMessages();
+        }
 
-            // Strip any rich text tags from input
-            string cleanText = Regex.Replace(text, @"<[^>]+>|</[^>]+>", string.Empty);
-            if (cleanText != text)
+        public void ReplaceLastLine(string line)
+        {
+            int lastIndex = _oldestIndex - 1;
+            if (lastIndex < 0)
+                lastIndex = POOL_SIZE - 1;
+
+            TMP_InputField lineObj = _linesPool[lastIndex];
+            if (!lineObj.gameObject.activeSelf)
             {
-                isAutocompleting = true;
-                int caretPos = _inputField.caretPosition;
-                _inputField.text = cleanText;
-                _inputField.caretPosition = Mathf.Min(caretPos, cleanText.Length);
-                isAutocompleting = false;
-                text = cleanText;
+                AddLine(line);
             }
-
-            string suggestion = ChatManager.GetAutocompleteSuggestion(text);
-            if (suggestion != null)
+            else
             {
-                isAutocompleting = true;
-                int caretPos = _inputField.caretPosition;
-                _inputField.text = suggestion;
-                _inputField.caretPosition = caretPos;
-                isAutocompleting = false;
+                lineObj.text = line;
+                Canvas.ForceUpdateCanvases();
+            }
+        }
+
+        public void AddLines(List<string> lines)
+        {
+            foreach (var line in lines)
+            {
+                AddLine(line);
             }
         }
 
@@ -289,101 +219,128 @@ namespace UI
                         _caret.gameObject.AddComponent<Image>();
                 }
             }
-
-            if (Input.GetMouseButtonDown(0)) // Left mouse button
-            {
-                if (!IsPointerOverChatUI())
-                {
-                    // Deactivate chat input if clicked outside
-                    if (IsInputActive())
-                    {
-                        _inputField.DeactivateInputField();
-                    }
-                }
-            }
         }
 
-        public bool IsPointerOverChatUI()
+        
+        protected TMP_InputField CreateLine(string text)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                Vector2 mousePosition = Input.mousePosition;
+            var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
+            
+            // Create the main GameObject for the line
+            var lineGO = new GameObject("ChatLine", typeof(RectTransform));
+            lineGO.transform.SetParent(_panel.transform, false);
+            var inputField = lineGO.AddComponent<TMP_InputField>();
 
-                // Get all relevant RectTransforms
-                RectTransform chatPanelRect = _panel.GetComponent<RectTransform>();
-                RectTransform inputFieldRect = _inputField.GetComponent<RectTransform>();
-                RectTransform contentRect = transform.Find("Content").GetComponent<RectTransform>();
-                RectTransform scrollbarRect = transform.Find("Content/Scrollbar")?.GetComponent<RectTransform>();
+            // Create text area
+            var textArea = new GameObject("Text Area", typeof(RectTransform));
+            textArea.transform.SetParent(lineGO.transform, false);
+            var textComponent = textArea.AddComponent<TextMeshProUGUI>();
 
-                // Check if mouse is over any of the chat UI elements
-                if (RectTransformUtility.RectangleContainsScreenPoint(chatPanelRect, mousePosition))
-                {
-                    // If over chat display area, make it the selected object for copy to work
-                    EventSystem.current.SetSelectedGameObject(_chatDisplay.gameObject);
-                    return true;
-                }
-                else if (RectTransformUtility.RectangleContainsScreenPoint(inputFieldRect, mousePosition) ||
-                        RectTransformUtility.RectangleContainsScreenPoint(contentRect, mousePosition) ||
-                        (scrollbarRect != null && RectTransformUtility.RectangleContainsScreenPoint(scrollbarRect, mousePosition)))
-                {
-                    if (IsInputActive())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Activate();
-                        return true;
-                    }
-                }
-            }
-            return false;
+            // Configure the TMP_InputField
+            inputField.textComponent = textComponent;
+            inputField.textViewport = textArea.GetComponent<RectTransform>();
+            inputField.readOnly = true;
+            inputField.richText = true;
+            inputField.onFocusSelectAll = false;
+            inputField.resetOnDeActivation = false;
+            inputField.restoreOriginalTextOnEscape = false;
+            
+            // Configure the text component
+            textComponent.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+            textComponent.color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
+            textComponent.alignment = TextAlignmentOptions.Left;
+            textComponent.enableWordWrapping = true;
+            
+            // Set up RectTransforms
+            var rectTransform = lineGO.GetComponent<RectTransform>();
+            rectTransform.anchorMin = new Vector2(0, 1);  // Anchor to top
+            rectTransform.anchorMax = new Vector2(1, 1);
+            rectTransform.pivot = new Vector2(0.5f, 1);   // Pivot at top
+            rectTransform.sizeDelta = new Vector2(0, 30); // Fixed height
+            
+            var textAreaRect = textArea.GetComponent<RectTransform>();
+            textAreaRect.anchorMin = Vector2.zero;
+            textAreaRect.anchorMax = Vector2.one;
+            textAreaRect.sizeDelta = Vector2.zero;
+            textAreaRect.anchoredPosition = Vector2.zero;
+
+            // Set initial text
+            inputField.text = text;
+            
+            return inputField;
         }
 
-        private void DownloadChatHistory()
+        private void UpdateVisibleMessages()
         {
-            try
+            if (_allMessages.Count == 0)
             {
-                DateTime timestamp = DateTime.UtcNow;
-                string filename = $"chat_history_{timestamp:yyyy-MM-dd_HH-mm-ss}.txt";
-                
-                string downloadsPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    "Downloads"
-                );
-                string filePath = Path.Combine(downloadsPath, filename);
-                
-                // Collect chat content
-                string chatContent = string.Join("\n", _allLines.Select(line => 
-                    System.Text.RegularExpressions.Regex.Replace(line, "<.*?>", string.Empty)
-                ));
-                
-                // Calculate hash of content
-                string hash;
-                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                // Hide all pool objects if there are no messages
+                foreach (var lineObj in _linesPool)
                 {
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chatContent);
-                    byte[] hashBytes = sha256.ComputeHash(bytes);
-                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                    lineObj.gameObject.SetActive(false);
                 }
                 
-                // Store hash and timestamp
-                _hashHistory[hash] = timestamp;
-                
-                // Create file content with hash header
-                string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
-                
-                // Write to file
-                File.WriteAllText(filePath, fileContent);
-                File.SetAttributes(filePath, FileAttributes.ReadOnly);
-                
-                // Notify user
-                ChatManager.AddLine($"<color=#FFC800>Chat history saved to Downloads/{filename}</color>");
+                // Update scrollbar size
+                if (_scrollRect && _scrollRect.verticalScrollbar)
+                {
+                    _scrollRect.verticalScrollbar.size = 1;
+                }
+                return;
             }
-            catch (Exception e)
+
+            float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
+            int totalMessages = _allMessages.Count;
+            
+            // Update scrollbar size based on content
+            if (_scrollRect && _scrollRect.verticalScrollbar)
             {
-                ChatManager.AddLine("<color=#FF0000>Failed to save chat history.</color>");
+                float size = Mathf.Min(1f, (float)POOL_SIZE / totalMessages);
+                _scrollRect.verticalScrollbar.size = size;
             }
+            
+            // Calculate start index with bounds checking
+            int startIndex = 0;
+            if (totalMessages > POOL_SIZE)
+            {
+                int maxStartIndex = totalMessages - POOL_SIZE;
+                if (scrollPos > 0f)
+                {
+                    startIndex = Mathf.Clamp(
+                        Mathf.FloorToInt((1f - scrollPos) * maxStartIndex),
+                        0,
+                        maxStartIndex
+                    );
+                }
+                else
+                {
+                    startIndex = maxStartIndex;  // Show most recent messages when at bottom
+                }
+            }
+
+            // Update pool objects
+            for (int i = 0; i < POOL_SIZE; i++)
+            {
+                var lineObj = _linesPool[i];
+                int messageIndex = startIndex + i;
+                
+                if (messageIndex < totalMessages)
+                {
+                    lineObj.gameObject.SetActive(true);
+                    lineObj.text = _allMessages[messageIndex];
+                    lineObj.transform.SetSiblingIndex(i);
+                }
+                else
+                {
+                    lineObj.gameObject.SetActive(false);
+                }
+            }
+
+            Canvas.ForceUpdateCanvases();
+        }
+
+        private void OnScroll(Vector2 scrollPosition)
+        {
+            UpdateVisibleMessages();
         }
     }
 }

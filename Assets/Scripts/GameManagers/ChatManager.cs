@@ -678,6 +678,50 @@ namespace GameManagers
             AddLine(help, ChatTextColor.System);
         }
 
+        [CommandAttribute("save", "/save: Save chat history to Downloads folder")]
+        private static void SaveChatHistory(string[] args)
+        {
+            try
+            {
+                DateTime timestamp = DateTime.UtcNow;
+                string filename = $"chat_history_{timestamp:yyyy-MM-dd_HH-mm-ss}.txt";
+                
+                string downloadsPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "Downloads"
+                );
+                string filePath = Path.Combine(downloadsPath, filename);
+                
+                // Collect chat content
+                string chatContent = string.Join("\n", Lines.Select(line => 
+                    System.Text.RegularExpressions.Regex.Replace(line.GetFormattedMessage(), "<.*?>", string.Empty)
+                ));
+                
+                // Calculate hash of content
+                string hash;
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chatContent);
+                    byte[] hashBytes = sha256.ComputeHash(bytes);
+                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                }
+                
+                // Create file content with hash header
+                string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
+                
+                // Write to file
+                File.WriteAllText(filePath, fileContent);
+                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+                
+                // Notify user
+                AddLine($"Chat history saved to Downloads/{filename}", ChatTextColor.System);
+            }
+            catch (Exception e)
+            {
+                AddLine("Failed to save chat history.", ChatTextColor.Error);
+            }
+        }
+
         public static void KickPlayer(Player player, bool print = true, bool ban = false, string reason = ".")
         {
             if (PhotonNetwork.IsMasterClient && player != PhotonNetwork.LocalPlayer)
@@ -847,26 +891,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("verify", "/verify [hash]: Verify a chat history file using its hash")]
-        private static void Verify(string[] args)
-        {
-            if (args.Length != 2)
-            {
-                AddLine("Usage: /verify [hash]", ChatTextColor.Error);
-                return;
-            }
-
-            string hash = args[1].ToLower();
-            var chatPanel = GetChatPanel();
-            
-            if (!chatPanel._hashHistory.TryGetValue(hash, out DateTime timestamp))
-            {
-                AddLine("No chat history found with that hash.", ChatTextColor.Error);
-                return;
-            }
-
-            AddLine($"Chat history verified! Generated on {timestamp:yyyy-MM-dd HH:mm:ss UTC}", ChatTextColor.System);
-        }
+        
     }
 
     public enum ChatTextColor

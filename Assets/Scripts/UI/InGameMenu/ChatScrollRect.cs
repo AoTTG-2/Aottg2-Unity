@@ -15,16 +15,28 @@ namespace UI
         {
             base.Start();
             _chatPanel = GetComponentInParent<ChatPanel>();
-            if (verticalScrollbar != null && verticalScrollbar.handleRect != null)
+            if (verticalScrollbar != null)
             {
                 verticalScrollbarVisibility = ScrollbarVisibility.AutoHide;
                 handleImage = verticalScrollbar.handleRect.GetComponent<Image>();
                 
+                // Add listener for scrollbar value changes
+                verticalScrollbar.onValueChanged.AddListener(OnScrollbarValueChanged);
+                
+                // Make sure scrollbar and handle are initially enabled if needed
+                verticalScrollbar.gameObject.SetActive(true);
                 if (handleImage != null)
                 {
-                    handleImage.enabled = false;
+                    handleImage.enabled = true;
                 }
             }
+        }
+
+        private void OnScrollbarValueChanged(float value)
+        {
+            // This ensures the content updates when using the scrollbar directly
+            if (onValueChanged != null)
+                onValueChanged.Invoke(new Vector2(0, value));
         }
 
         protected override void LateUpdate()
