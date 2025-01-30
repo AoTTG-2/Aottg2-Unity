@@ -61,7 +61,7 @@ namespace UI
                 var manager = (InGameManager)SceneLoader.CurrentGameManager;
                 var chatPanel = ((InGameMenu)UIManager.CurrentMenu).ChatPanel;
                 if (InGameMenu.InMenu() || !manager.IsFinishedLoading() || manager.GlobalPause || manager.Restarting || 
-                    (chatPanel != null && (chatPanel.IsInputActive())))
+                    (chatPanel != null && (chatPanel.IsInputActive() || chatPanel.IsPointerOverChatUI())))
                     SetPointer();
                 else if (manager.CurrentCharacter != null && (manager.CurrentCharacter is Human || manager.CurrentCharacter is BasicTitan) && !manager.CurrentCharacter.Dead && !CustomLogicManager.Cutscene)
                 {

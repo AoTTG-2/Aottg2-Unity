@@ -17,6 +17,8 @@ using System.Linq;
 using Map;
 using System.Collections;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 
 namespace GameManagers
@@ -58,6 +60,8 @@ namespace GameManagers
         private static int LastExceptionCount;
         private static string _lastPartialName = "";
         private static int _lastSuggestionCount = 0;
+        private static List<string> _currentSuggestions = new List<string>();
+        private static int _currentSuggestionIndex = -1;
 
         public static void Init()
         {
@@ -347,48 +351,65 @@ namespace GameManagers
                 ClearLastSuggestions();
                 return null;
             }
+            
             string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
             var matchingPlayers = PhotonNetwork.PlayerList
-                .Where(p => {string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower(); 
+                .Where(p => 
+                {
+                    string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower(); 
                     return playerName.StartsWith(partialName);
                 })
                 .ToList();
 
+            // Only update suggestions if we have a new partial name or no current suggestions
             if (partialName != _lastPartialName || _lastSuggestionCount == 0)
             {
                 ClearLastSuggestions();
                 _lastPartialName = partialName;
+                
                 if (matchingPlayers.Count > 0)
                 {
-                    AddLine("Matching players:", ChatTextColor.System, hasTimestamp: true);
+                    // Add header
+                    AddLine("Matching players:", ChatTextColor.System);
+                    
+                    // Add each matching player
                     foreach (var player in matchingPlayers)
                     {
                         AddLine("- " + player.GetStringProperty(PlayerProperty.Name).FilterSizeTag(), 
-                            ChatTextColor.System, hasTimestamp: true);
+                            ChatTextColor.System);
                     }
+
+                    // Update count (header + player lines)
                     _lastSuggestionCount = matchingPlayers.Count + 1;
-                }
-                if (IsChatAvailable())
-                {
-                    var panel = GetChatPanel();
-                    if (panel != null)
-                        panel.Sync();
+
+                    // Update UI
+                    if (IsChatAvailable())
+                    {
+                        var panel = GetChatPanel();
+                        if (panel != null)
+                            panel.Sync();
+                    }
                 }
             }
+            
+            // If we have exactly one match and the partial name is long enough, return it for autocomplete
+            if (matchingPlayers.Count == 1 && partialName.Length >= 2)
+            {
+                string fullName = matchingPlayers[0].GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText();
+                return fullName;
+            }
+            
             return null;
         }
 
-        private static void ClearLastSuggestions()
+        public static void ClearLastSuggestions()
         {
             if (_lastSuggestionCount > 0)
             {
-                for (int i = 0; i < _lastSuggestionCount; i++)
-                {
-                    if (Lines.Count > 0)
-                        Lines.RemoveAt(Lines.Count - 1);
-                }
+                Lines.RemoveRange(Lines.Count - _lastSuggestionCount, _lastSuggestionCount);
                 _lastSuggestionCount = 0;
                 _lastPartialName = "";
+                
                 if (IsChatAvailable())
                 {
                     var panel = GetChatPanel();
@@ -707,18 +728,100 @@ namespace GameManagers
                 }
                 
                 // Create file content with hash header
-                string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
+                string fileContent = $"[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
                 
-                // Write to file
+                // Write file
                 File.WriteAllText(filePath, fileContent);
+                
+                // Set file as read-only
                 File.SetAttributes(filePath, FileAttributes.ReadOnly);
+                
+                // Store hash in chat panel
+                var chatPanel = GetChatPanel();
+                if (chatPanel != null)
+                {
+                    chatPanel._hashHistory[hash] = timestamp;
+                }
                 
                 // Notify user
                 AddLine($"Chat history saved to Downloads/{filename}", ChatTextColor.System);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                AddLine("Failed to save chat history.", ChatTextColor.Error);
+                AddLine($"Failed to save chat history: {ex.Message}", ChatTextColor.Error);
+            }
+        }
+
+        [CommandAttribute("verify", "/verify [filename]: Verify if a chat history file has been modified")]
+        private static void VerifyChatHistory(string[] args)
+        {
+            if (args.Length != 2)
+            {
+                AddLine("Usage: /verify [filename]", ChatTextColor.Error);
+                return;
+            }
+
+            try
+            {
+                string filename = args[1];
+                string downloadsPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "Downloads"
+                );
+                string filePath = Path.Combine(downloadsPath, filename);
+
+                if (!File.Exists(filePath))
+                {
+                    AddLine("File not found.", ChatTextColor.Error);
+                    return;
+                }
+
+                // Read file content
+                string[] lines = File.ReadAllLines(filePath);
+                string storedHash = "";
+                string content = "";
+                bool contentStarted = false;
+
+                // Extract stored hash and content
+                foreach (string line in lines)
+                {
+                    if (line.StartsWith("[HASH:"))
+                    {
+                        storedHash = line.Substring(6, line.Length - 7);
+                        continue;
+                    }
+                    if (contentStarted)
+                    {
+                        content += line + "\n";
+                    }
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        contentStarted = true;
+                    }
+                }
+
+                // Calculate hash of current content
+                string currentHash;
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(content.TrimEnd('\n'));
+                    byte[] hashBytes = sha256.ComputeHash(bytes);
+                    currentHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                }
+
+                // Compare hashes
+                if (currentHash == storedHash)
+                {
+                    AddLine("File verification successful - content has not been modified.", ChatTextColor.System);
+                }
+                else
+                {
+                    AddLine("Warning: File has been modified!", ChatTextColor.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                AddLine($"Failed to verify file: {ex.Message}", ChatTextColor.Error);
             }
         }
 
@@ -891,7 +994,50 @@ namespace GameManagers
             }
         }
 
-        
+        public static string GetNextTabCompletion(string currentInput)
+        {
+            int lastAtSymbol = currentInput.LastIndexOf('@');
+            if (lastAtSymbol == -1)
+            {
+                _currentSuggestionIndex = -1;
+                _currentSuggestions.Clear();
+                return null;
+            }
+
+            string beforeAt = currentInput.Substring(0, lastAtSymbol);
+            string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
+
+            // Only refresh suggestions if we don't have any or if partial name changed
+            if (_currentSuggestions.Count == 0 || !partialName.Equals(_lastPartialName))
+            {
+                _currentSuggestions = PhotonNetwork.PlayerList
+                    .Where(p => 
+                    {
+                        string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower();
+                        return playerName.StartsWith(partialName);
+                    })
+                    .Select(p => p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText())
+                    .ToList();
+                _currentSuggestionIndex = -1;
+                _lastPartialName = partialName;
+            }
+
+            if (_currentSuggestions.Count > 0)
+            {
+                _currentSuggestionIndex = (_currentSuggestionIndex + 1) % _currentSuggestions.Count;
+                string suggestion = _currentSuggestions[_currentSuggestionIndex];
+                return beforeAt + "@" + suggestion;
+            }
+
+            return null;
+        }
+
+        public static void ResetTabCompletion()
+        {
+            _currentSuggestionIndex = -1;
+            _currentSuggestions.Clear();
+            _lastPartialName = "";
+        }
     }
 
     public enum ChatTextColor
