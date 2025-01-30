@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using Utility;
 
 namespace Characters
 {
@@ -22,7 +23,14 @@ namespace Characters
             }
             else
             {
-                stream.SendNext(_titan.LateUpdateHeadRotation);
+                var rotation = _titan.LateUpdateHeadRotation;
+                if (rotation.HasValue)
+                {
+                    var rotationValue = rotation.Value;
+                    stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotationValue));
+                }
+                else
+                    stream.SendNext(null);
             }
         }
 
@@ -35,7 +43,15 @@ namespace Characters
             }
             else
             {
-                _titan.LateUpdateHeadRotationRecv = (Quaternion?)stream.ReceiveNext();
+                int? compressed = (int?)stream.ReceiveNext();
+                if (compressed.HasValue)
+                {
+                    Quaternion recv = Quaternion.identity;
+                    QuaternionCompression.DecompressQuaternion(ref recv, compressed.Value);
+                    _titan.LateUpdateHeadRotationRecv = recv;
+                }
+                else
+                    _titan.LateUpdateHeadRotationRecv = null;
             }
         }
     }

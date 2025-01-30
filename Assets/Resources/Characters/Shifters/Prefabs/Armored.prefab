@@ -841,7 +841,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -876,8 +876,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f85064de1bdcc84789e96032e30ec45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  RichTextName: 
+  VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
@@ -885,6 +888,7 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -905,8 +909,9 @@ MonoBehaviour:
   SprintStaminaRecover: 0.5
   SprintStaminaConsumption: 1
   CurrentSprintStamina: 5
-  TargetEnemy: {fileID: 0}
   AttackSpeedMultiplier: 1
+  ConfusedTime: 0
+  PreviousAttackSpeedMultiplier: -1
   RunSpeedBase: 0
   WalkSpeedBase: 0
   RunSpeedPerLevel: 0
@@ -914,6 +919,7 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0

@@ -34,7 +34,7 @@ namespace Settings
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
 
-        public IntSetting NameDistanceCutoff = new IntSetting(0, minValue: -1, maxValue: 30_000);
+        public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);
         public IntSetting NameOverrideTarget = new IntSetting((int)ShowMode.None);
         public IntSetting NameBackgroundType = new IntSetting((int)NameStyleType.Off);
         public ColorSetting ForceNameColor = new ColorSetting(new Utility.Color255(255, 255, 255));

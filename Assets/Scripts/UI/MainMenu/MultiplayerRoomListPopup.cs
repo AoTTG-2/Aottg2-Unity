@@ -44,6 +44,8 @@ namespace UI
             string cat = "MainMenu";
             string sub = "MultiplayerRoomListPopup";
             ElementStyle buttonStyle = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
+            //ElementFactory.CreateTextButton(BottomBar, buttonStyle, UIManager.GetLocaleCommon("Duel"),
+            //    onClick: () => OnButtonClick("Duel"));
             ElementFactory.CreateTextButton(BottomBar, buttonStyle, UIManager.GetLocaleCommon("Create"),
                 onClick: () => OnButtonClick("Create"));
             ElementFactory.CreateTextButton(BottomBar, buttonStyle, UIManager.GetLocaleCommon("Back"),
@@ -249,6 +251,10 @@ namespace UI
                 case "Create":
                     HideNoDisconnect();
                     ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show(true);
+                    break;
+                case "Duel":
+                    HideNoDisconnect();
+                    ((DuelPopup)((MainMenu)UIManager.CurrentMenu)._duelPopup).Show();
                     break;
                 case "Filter":
                     _multiplayerFilterPopup.Show();

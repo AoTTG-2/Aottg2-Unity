@@ -24,11 +24,11 @@ namespace Cameras
         private InGameManager _inGameManager;
         private InGameMenu _menu;
         private GeneralInputSettings _input;
+        private CameraDetection _detection;
         public CameraInputMode CurrentCameraMode;
         public float _cameraDistance;
         private float _heightDistance;
         private float _anchorDistance;
-        private float _headOffset;
         private const float DistanceMultiplier = 10f;
         private bool _napeLock;
         private BaseTitan _napeLockTitan;
@@ -135,7 +135,6 @@ namespace Cameras
             if (character is Human)
             {
                 _anchorDistance = _heightDistance = 0.64f;
-                _headOffset = 0f;
             }
             else if (character is BaseShifter)
             {
@@ -176,6 +175,7 @@ namespace Cameras
             ApplyGeneralSettings();
             if (SettingsManager.GeneralSettings.SnapshotsEnabled.Value)
                 _snapshotHandler = gameObject.AddComponent<SnapshotHandler>();
+            _detection = new CameraDetection(this);
         }
 
         public void TakeSnapshot(Vector3 position, int damage)
@@ -211,6 +211,7 @@ namespace Cameras
         protected void FixedUpdate()
         {
             UpdateMapLights();
+            _detection.OnFixedUpdate();
         }
 
         protected override void LateUpdate()
@@ -325,19 +326,35 @@ namespace Cameras
             int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
             if (InGameMenu.InMenu())
                 sensitivity = 0f;
+            float deadzone = SettingsManager.GeneralSettings.OriginalCameraDeadzone.Value;
+            float cameraSpeed = SettingsManager.GeneralSettings.OriginalCameraSpeed.Value;
             if (CurrentCameraMode == CameraInputMode.Original)
             {
-                if (Input.mousePosition.x < (Screen.width * 0.4f))
+                float screenWidth = Screen.width;
+                float centerX = screenWidth / 2;
+                float leftDeadzoneBoundary = screenWidth * ((1 - deadzone) / 2);
+                float rightDeadzoneBoundary = screenWidth * ((1 + deadzone) / 2);
+
+                float inputX = Input.mousePosition.x;
+                float inputY = Input.mousePosition.y;
+
+                if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
                 {
-                    float angle = -(((Screen.width * 0.4f) - Input.mousePosition.x) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    float t = 0;
+                    if (inputX < leftDeadzoneBoundary)
+                    {
+                        t = (leftDeadzoneBoundary - inputX) / screenWidth;
+                        float angle = -t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
+                    else if (inputX > rightDeadzoneBoundary)
+                    {
+                        t = (inputX - rightDeadzoneBoundary) / screenWidth;
+                        float angle = t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                    }
                 }
-                else if (Input.mousePosition.x > (Screen.width * 0.6f))
-                {
-                    float angle = ((Input.mousePosition.x - (Screen.width * 0.6f)) / Screen.width) * 0.4f * 150f * GetSensitivityDeltaTime(sensitivity);
-                    Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
-                }
-                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - Input.mousePosition.y)) / Screen.height;
+                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                 Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
@@ -352,6 +369,7 @@ namespace Cameras
                 if (_napeLockTitan.Dead)
                 {
                     _napeLockTitan = null;
+                    _napeLock = false;
                 }
             }
             else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
@@ -375,8 +393,8 @@ namespace Cameras
         {
             var cameraDistance = GetCameraDistance();
             float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
-            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _follow.GetComponent<BaseMovementSync>()._correctCamera,
-                Time.deltaTime * 10f);
+            var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
             Cache.Transform.position = _follow.GetCameraAnchor().position;
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance;
@@ -508,7 +526,8 @@ namespace Cameras
             {
                 if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
                 {
-                    float distance = Vector3.Distance(_follow.Cache.Transform.position, character.Cache.Transform.position);
+                    var neck = ((BaseTitan)character).BaseTitanCache.Neck;
+                    float distance = Vector3.Distance(_follow.Cache.Transform.position, neck.position);
                     if (distance < nearestDistance)
                     {
                         nearestDistance = distance;
@@ -531,6 +550,11 @@ namespace Cameras
             {
                 if (!shifter.AI)
                     characters.Add(shifter);
+            }
+            foreach (var titan in _inGameManager.Titans)
+            {
+                if (!titan.AI)
+                    characters.Add(titan);
             }
             return characters.OrderBy(x => x.Cache.PhotonView.Owner.ActorNumber).ToList();
         }

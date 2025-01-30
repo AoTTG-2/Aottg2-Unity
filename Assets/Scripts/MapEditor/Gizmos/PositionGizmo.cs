@@ -89,12 +89,22 @@ namespace MapEditor
                         drag += previousRay.normalized * Vector3.Dot(drag, camera.Cache.Transform.up) * 2f;
                     drag = _activeLine.right * Vector3.Dot(drag, _activeLine.right);
                     Vector3 frameDelta = Vector3.zero;
-                    if (_activeLine == _lineX)
-                        frameDelta.x = drag.x;
-                    else if (_activeLine == _lineY)
-                        frameDelta.y = drag.y;
-                    else if (_activeLine == _lineZ)
-                        frameDelta.z = drag.z;
+
+                    if (_gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Center)
+                    {
+                        if (_activeLine == _lineX)
+                            frameDelta.x = drag.x;
+                        else if (_activeLine == _lineY)
+                            frameDelta.y = drag.y;
+                        else if (_activeLine == _lineZ)
+                            frameDelta.z = drag.z;
+                    }
+                    else if (_gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Local)
+                    {
+                        frameDelta = drag;
+                    }
+
+                    
                     if (_gameManager.Snap)
                     {
                         float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
@@ -140,8 +150,13 @@ namespace MapEditor
         private void ResetCenter()
         {
             Vector3 totalPosition = new Vector3();
+            _transform.rotation = Quaternion.identity;
             foreach (MapObject obj in _gameManager.SelectedObjects)
+            {
                 totalPosition += obj.GameObject.transform.position;
+                if (_gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Local)
+                    _transform.rotation = obj.GameObject.transform.rotation;
+            }
             Vector3 center = totalPosition / _gameManager.SelectedObjects.Count;
             _transform.position = center;
         }

@@ -447,11 +447,6 @@
 			"Players": 2
 		},
 		{
-			"Name": "1v1 Damage Duel",
-			"Icon": "TitanIcon",
-			"Players": 2
-		},
-		{
 			"Name": "1v1 Thunderspear PVP",
 			"Icon": "ThunderspearIcon",
 			"Players": 2
@@ -460,26 +455,6 @@
 			"Name": "1v1 Blade PVP",
 			"Icon": "BladeIcon",
 			"Players": 2
-		},
-		{
-			"Name": "2v2 Speed Duel",
-			"Icon": "TitanIcon",
-			"Players": 4
-		},
-		{
-			"Name": "2v2 Damage Duel",
-			"Icon": "TitanIcon",
-			"Players": 4
-		},
-		{
-			"Name": "2v2 Thunderspear PVP",
-			"Icon": "ThunderspearIcon",
-			"Players": 4
-		},
-		{
-			"Name": "2v2 Blade PVP",
-			"Icon": "BladeIcon",
-			"Players": 4
 		}
 	]
 }

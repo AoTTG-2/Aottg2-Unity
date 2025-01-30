@@ -15,12 +15,19 @@ using System.Collections;
 
 namespace GameManagers
 {
+    enum GizmoMode
+    {
+        Center,
+        Local
+    }
+
     class MapEditorGameManager : BaseGameManager
     {
         public MapScript MapScript;
         public CustomLogicEvaluator LogicEvaluator;
         public HashSet<MapObject> SelectedObjects = new HashSet<MapObject>();
         public BaseGizmo CurrentGizmo;
+        public GizmoMode CurrentGizmoMode;
         public bool Snap;
         private List<BaseCommand> _undoCommands = new List<BaseCommand>();
         private List<BaseCommand> _redoCommands = new List<BaseCommand>();
@@ -57,7 +64,18 @@ namespace GameManagers
             }
             else
                 prefab = (MapScriptSceneObject)BuiltinMapPrefabs.AllPrefabs[name];
-            var position = SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * 50f;
+            var position = SceneLoader.CurrentCamera.Cache.Transform.position + SceneLoader.CurrentCamera.Cache.Transform.forward * SettingsManager.MapEditorSettings.PlacementDistance.Value;
+
+            // Shoot a ray towards position and if something hits, change the position to the hit
+            if (SettingsManager.MapEditorSettings.PlaceOnFirstSurface.Value)
+            {
+                RaycastHit hit;
+                Ray ray = new Ray(SceneLoader.CurrentCamera.Cache.Transform.position, position - SceneLoader.CurrentCamera.Cache.Transform.position);
+                if (Physics.Raycast(ray, out hit, SettingsManager.MapEditorSettings.PlacementDistance.Value, PhysicsLayer.GetMask(PhysicsLayer.MapEditorObject)))
+                    position = hit.point;
+            }
+            
+
             // if snap is enabled, round the position to the nearest snap distance
             if (((MapEditorGameManager)SceneLoader.CurrentGameManager).Snap)
             {
@@ -245,12 +263,22 @@ namespace GameManagers
             CurrentGizmo = _positionGizmo;
             if (MapLoader.Errors.Count > 0)
                 _menu.ErrorPopup.Show(string.Join("\n", MapLoader.Errors));
+            StartCoroutine(WaitAndAutosave());
         }
 
         protected override void Awake()
         {
             base.Awake();
             _input = SettingsManager.InputSettings.MapEditor;
+        }
+
+        private IEnumerator WaitAndAutosave()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(900f);
+                _menu._topPanel.Autosave();
+            }
         }
 
         protected void Update()
@@ -369,6 +397,12 @@ namespace GameManagers
                 CurrentGizmo = _rotationGizmo;
             else
                 CurrentGizmo = _scaleGizmo;
+            SyncGizmos();
+        }
+
+        public void SetGizmoMode(GizmoMode mode)
+        {
+            CurrentGizmoMode = mode;
             SyncGizmos();
         }
 
