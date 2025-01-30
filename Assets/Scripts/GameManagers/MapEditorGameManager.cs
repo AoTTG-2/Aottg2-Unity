@@ -509,10 +509,13 @@ namespace GameManagers
                 {
                     LayerOption.All => true,
                     LayerOption.Visible => sceneObject.Visible,
+                    LayerOption.Invisible => !sceneObject.Visible,
                     LayerOption.Active => sceneObject.Active,
+                    LayerOption.Inactive => !sceneObject.Active,
                     LayerOption.Static => sceneObject.Static,
                     LayerOption.NonStatic => !sceneObject.Static,
                     LayerOption.Networked => sceneObject.Networked,
+                    LayerOption.NonNetworked => !sceneObject.Networked,
                     LayerOption.Triggers => sceneObject.CollideMode == "Region",
                     LayerOption.Colliders => sceneObject.CollideMode == "Physical",
                     LayerOption.NoColliders => sceneObject.CollideMode == "None",

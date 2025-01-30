@@ -22,13 +22,16 @@ namespace UI
         {
             All,
             Active,
+            Inactive,
             Visible,
+            Invisible,
             Static,
             NonStatic,
             Colliders,
             Triggers,
             NoColliders,
-            Networked
+            Networked,
+            NonNetworked,
         }
 
         protected override float Width => 1960f;
