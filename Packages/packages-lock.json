@@ -222,13 +222,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.yasirkula.runtimescenegizmo": {
-      "version": "https://github.com/yasirkula/UnityRuntimeSceneGizmo.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "7f1355c8b397f9e063ddfdc600b408a6a0c03bbd"
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

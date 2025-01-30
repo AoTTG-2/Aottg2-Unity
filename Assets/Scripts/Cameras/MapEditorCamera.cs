@@ -57,7 +57,7 @@ namespace Cameras
         {
             if (_menu == null)
                 return;
-            if (!_menu.IsMouseUI)
+            if (!_menu.IsInputFocused)
                 UpdateMovement();
             UpdateRotation();
         }
