@@ -84,7 +84,7 @@ namespace Characters
                 TSInfo["RangeMin"].AsFloat, TSInfo["RangeMax"].AsFloat)) / speed;
             }
             Current = (ThunderspearProjectile)ProjectileSpawner.Spawn(ProjectilePrefabs.Thunderspear, spawnPosition, Quaternion.LookRotation(spawnDirection),
-                spawnDirection * speed, Vector3.zero, travelTime, human.Cache.PhotonView.ViewID, "", new object[] { Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor() });
+                spawnDirection * speed, Vector3.zero, travelTime, human.Cache.PhotonView.ViewID, "", new object[] { Radius, SettingsManager.AbilitySettings.BombColor.Value.ToColor(), true });
             Current.InitialPlayerVelocity = initialVelocity;
             _delayTimeLeft = Delay;
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootTS();

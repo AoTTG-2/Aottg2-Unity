@@ -186,7 +186,7 @@ namespace CustomLogic
                 {
                     float radius = parameters[7].UnboxToFloat();
                     Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
-                    settings = new object[] { radius, color };
+                    settings = new object[] { radius, color, false };
                 }
                 else if (projectileName == ProjectilePrefabs.Flare)
                 {
@@ -215,7 +215,7 @@ namespace CustomLogic
                 {
                     float radius = parameters[7].UnboxToFloat();
                     Color color = ((CustomLogicColorBuiltin)parameters[8]).Value.ToColor();
-                    settings = new object[] { radius, color };
+                    settings = new object[] { radius, color, false };
                 }
                 else if (projectileName == ProjectilePrefabs.Flare)
                 {

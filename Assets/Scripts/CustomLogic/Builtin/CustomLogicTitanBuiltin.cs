@@ -172,6 +172,10 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Titan.IsMine())
                 return;
             if (name == "Size")

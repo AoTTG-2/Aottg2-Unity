@@ -159,6 +159,8 @@ namespace CustomLogic
         {
             if (obj is CustomLogicVector3Builtin)
                 return ((CustomLogicVector3Builtin)obj).Value;
+            if (obj is CustomLogicQuaternionBuiltin)
+                return ((CustomLogicQuaternionBuiltin)obj).Value;
             return obj;
         }
 
@@ -166,6 +168,8 @@ namespace CustomLogic
         {
             if (obj is Vector3)
                 return new CustomLogicVector3Builtin((Vector3)obj);
+            if (obj is CustomLogicQuaternionBuiltin)
+                return new CustomLogicQuaternionBuiltin((Quaternion)obj);
             return obj;
         }
     }

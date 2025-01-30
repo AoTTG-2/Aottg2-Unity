@@ -44,12 +44,14 @@ namespace Projectiles
         Vector3 _startPosition = Vector3.zero;
         bool _isAA = false;
         float _embedTime;
+        bool _usesEmbed = false;
         public static Color CritColor = new Color(0.475f, 0.7f, 1f);
 
         protected override void SetupSettings(object[] settings)
         {
             _radius = (float)settings[0];
             _color = (Color)settings[1];
+            _usesEmbed = (bool)settings[2];
             _lastPosition = transform.position;
             _startPosition = transform.position;
         }
@@ -78,7 +80,7 @@ namespace Projectiles
                 _rigidbody.velocity = Vector3.zero;
                 foreach (Collider c in _colliders)
                     c.enabled = false;
-                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value || !_usesEmbed)
                 {
                     Explode();
                 }

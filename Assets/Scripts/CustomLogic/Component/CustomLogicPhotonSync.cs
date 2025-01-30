@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -117,7 +118,8 @@ namespace CustomLogic
                 if (_inited && _mapObject.GameObject != null)
                 {
                     stream.SendNext(GetPosition());
-                    stream.SendNext(GetRotation());
+                    var rotation = GetRotation();
+                    stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
                     if (_syncVelocity)
                     {
                         stream.SendNext(GetVelocity());
@@ -130,7 +132,7 @@ namespace CustomLogic
                 if (_inited)
                 {
                     _correctPosition = (Vector3)stream.ReceiveNext();
-                    _correctRotation = (Quaternion)stream.ReceiveNext();
+                    QuaternionCompression.DecompressQuaternion(ref _correctRotation, (int)stream.ReceiveNext());
                     if (_syncVelocity)
                         _correctVelocity = (Vector3)stream.ReceiveNext();
                     _streamObjs = (object[])stream.ReceiveNext();

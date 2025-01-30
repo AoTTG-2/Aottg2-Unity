@@ -250,11 +250,17 @@ namespace CustomLogic
                 return Human.IsInvincible;
             if (name == "InvincibleTimeLeft")
                 return Human.InvincibleTimeLeft;
+            if (name == "IsCarried")
+                return Human.CarryState == HumanCarryState.Carry;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Human.IsMine())
                 return;
             BladeWeapon bladeWeapon = null;
