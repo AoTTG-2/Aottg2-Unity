@@ -728,7 +728,7 @@ namespace GameManagers
                 }
                 
                 // Create file content with hash header
-                string fileContent = $"[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
+                string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
                 
                 // Write file
                 File.WriteAllText(filePath, fileContent);
@@ -736,14 +736,6 @@ namespace GameManagers
                 // Set file as read-only
                 File.SetAttributes(filePath, FileAttributes.ReadOnly);
                 
-                // Store hash in chat panel
-                var chatPanel = GetChatPanel();
-                if (chatPanel != null)
-                {
-                    chatPanel._hashHistory[hash] = timestamp;
-                }
-                
-                // Notify user
                 AddLine($"Chat history saved to Downloads/{filename}", ChatTextColor.System);
             }
             catch (Exception ex)
@@ -772,39 +764,36 @@ namespace GameManagers
 
                 if (!File.Exists(filePath))
                 {
-                    AddLine("File not found.", ChatTextColor.Error);
+                    AddLine($"File not found: {filename}", ChatTextColor.Error);
                     return;
                 }
 
                 // Read file content
                 string[] lines = File.ReadAllLines(filePath);
-                string storedHash = "";
-                string content = "";
-                bool contentStarted = false;
-
-                // Extract stored hash and content
-                foreach (string line in lines)
+                
+                // File must have at least 4 lines (hash, time, blank line, and content)
+                if (lines.Length < 4)
                 {
-                    if (line.StartsWith("[HASH:"))
-                    {
-                        storedHash = line.Substring(6, line.Length - 7);
-                        continue;
-                    }
-                    if (contentStarted)
-                    {
-                        content += line + "\n";
-                    }
-                    if (string.IsNullOrEmpty(line))
-                    {
-                        contentStarted = true;
-                    }
+                    AddLine("Invalid file format.", ChatTextColor.Error);
+                    return;
                 }
+
+                // Extract stored hash
+                if (!lines[0].StartsWith("[HASH:") || !lines[0].EndsWith("]"))
+                {
+                    AddLine("Invalid file format: missing hash header.", ChatTextColor.Error);
+                    return;
+                }
+                string storedHash = lines[0].Substring(6, lines[0].Length - 7);
+
+                // Get content (everything after the blank line)
+                string content = string.Join("\n", lines.Skip(3));
 
                 // Calculate hash of current content
                 string currentHash;
                 using (var sha256 = System.Security.Cryptography.SHA256.Create())
                 {
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(content.TrimEnd('\n'));
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(content);
                     byte[] hashBytes = sha256.ComputeHash(bytes);
                     currentHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
                 }
