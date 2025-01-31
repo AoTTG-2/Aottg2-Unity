@@ -135,8 +135,7 @@ namespace GameManagers
         public static void SendChatAll(string message, ChatTextColor color = ChatTextColor.Default)
         {
             message = GetColorString(message, color);
-            string utcTimestamp = DateTime.UtcNow.ToString("o");  // ISO 8601 format
-            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { message, utcTimestamp });
+            RPCManager.PhotonView.RPC("ChatRPC", RpcTarget.All, new object[] { message });
         }
 
         public static void SendChat(string message, Player player, ChatTextColor color = ChatTextColor.Default)
@@ -145,7 +144,7 @@ namespace GameManagers
             RPCManager.PhotonView.RPC("ChatRPC", player, new object[] { message });
         }
 
-        public static void OnChatRPC(string message, string utcTimestamp, PhotonMessageInfo info)
+        public static void OnChatRPC(string message, PhotonMessageInfo info)
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
@@ -155,7 +154,7 @@ namespace GameManagers
                 RawMessage = GetIDString(info.Sender.ActorNumber) + message,
                 SenderID = info.Sender.ActorNumber,
                 IsSystem = false,
-                UtcTimestamp = DateTime.Parse(utcTimestamp)
+                UtcTimestamp = DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time))
             };
             
             Lines.Add(chatMessage);
@@ -345,114 +344,178 @@ namespace GameManagers
 
         public static string GetAutocompleteSuggestion(string currentInput)
         {
-            int lastAtSymbol = currentInput.LastIndexOf('@');
-            if (lastAtSymbol == -1)
+            if (currentInput.StartsWith("/"))
             {
-                ClearLastSuggestions();
-                return null;
+                return HandleCommandSuggestions(currentInput);
             }
             
-            string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
-            var matchingPlayers = PhotonNetwork.PlayerList
-                .Where(p => 
-                {
-                    string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower(); 
-                    return playerName.StartsWith(partialName);
-                })
-                .ToList();
-
-            // Only update suggestions if we have a new partial name or no current suggestions
-            if (partialName != _lastPartialName || _lastSuggestionCount == 0)
+            int lastAtSymbol = currentInput.LastIndexOf('@');
+            if (lastAtSymbol != -1)
             {
+                return HandlePlayerMentionSuggestions(currentInput, lastAtSymbol);
+            }
+
+            ClearLastSuggestions();
+            return null;
+        }
+
+        private static string HandleCommandSuggestions(string input)
+        {
+            string[] parts = input.Split(' ');
+            
+            // First part - command name completion
+            if (parts.Length == 1)
+            {
+                return HandleCommandNameSuggestions(input.Substring(1).ToLower());
+            }
+            // Second part - player ID completion for relevant commands
+            else if (parts.Length == 2 && IsPlayerIdCommand(parts[0].Substring(1)))
+            {
+                return HandlePlayerIdSuggestions(parts[0], parts[1]);
+            }
+
+            ClearLastSuggestions();
+            return null;
+        }
+
+        private static string HandleCommandNameSuggestions(string partialCommand)
+        {
+            var matchingCommands = CommandsCache
+                .Where(cmd => 
+                    !cmd.Value.IsAlias && 
+                    cmd.Key.ToLower().StartsWith(partialCommand) &&
+                    !CommandsCache.Any(other => 
+                        other.Value.IsAlias && 
+                        other.Value.Name == cmd.Key && 
+                        other.Key.ToLower().StartsWith(partialCommand)))
+                    .OrderBy(cmd => cmd.Key)
+                    .ToList();
+
+            if (partialCommand != _lastPartialName || _lastSuggestionCount == 0)
+            {
+                _lastPartialName = partialCommand;
                 ClearLastSuggestions();
-                _lastPartialName = partialName;
                 
-                if (matchingPlayers.Count > 0)
+                if (matchingCommands.Count > 0)
                 {
-                    // Add header
-                    AddLine("Matching players:", ChatTextColor.System);
-                    
-                    // Add each matching player
-                    foreach (var player in matchingPlayers)
+                    foreach (var cmd in matchingCommands)
                     {
-                        AddLine("- " + player.GetStringProperty(PlayerProperty.Name).FilterSizeTag(), 
-                            ChatTextColor.System);
+                        string description = cmd.Value.Description;
+                        string prefix = "/" + cmd.Key + ": ";
+                        if (description.StartsWith(prefix))
+                        {
+                            description = description.Substring(prefix.Length);
+                        }
+                        
+                        AddLine(new ChatMessage {
+                            RawMessage = GetColorString($"/{cmd.Key}: {description}", ChatTextColor.System),
+                            Color = ChatTextColor.System,
+                            IsSystem = true,
+                            IsSuggestion = true,
+                            UtcTimestamp = DateTime.UtcNow
+                        });
                     }
 
-                    // Update count (header + player lines)
-                    _lastSuggestionCount = matchingPlayers.Count + 1;
-
-                    // Update UI
-                    if (IsChatAvailable())
-                    {
-                        var panel = GetChatPanel();
-                        if (panel != null)
-                            panel.Sync();
-                    }
+                    _lastSuggestionCount = matchingCommands.Count;
+                    UpdateChatPanel();
                 }
             }
             
-            // If we have exactly one match and the partial name is long enough, return it for autocomplete
-            if (matchingPlayers.Count == 1 && partialName.Length >= 2)
+            if (matchingCommands.Count == 1 && partialCommand.Length >= 2)
             {
-                string fullName = matchingPlayers[0].GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText();
-                return fullName;
+                return "/" + matchingCommands[0].Key;
             }
             
             return null;
         }
 
-        public static void ClearLastSuggestions()
+        private static string HandlePlayerIdSuggestions(string command, string partialId)
         {
-            if (_lastSuggestionCount > 0)
+            if (partialId != _lastPartialName || _lastSuggestionCount == 0)
             {
-                Lines.RemoveRange(Lines.Count - _lastSuggestionCount, _lastSuggestionCount);
-                _lastSuggestionCount = 0;
-                _lastPartialName = "";
-                
-                if (IsChatAvailable())
+                ShowPlayerSuggestions(partialId.ToLower());
+            }
+            
+            var matchingPlayers = GetMatchingPlayers(partialId);
+            if (matchingPlayers.Count == 1 && !string.IsNullOrEmpty(partialId) && partialId.Length >= 1)
+            {
+                return command + " " + matchingPlayers[0].ActorNumber;
+            }
+            
+            return null;
+        }
+
+        private static string HandlePlayerMentionSuggestions(string input, int lastAtSymbol)
+        {
+            string partialName = input.Substring(lastAtSymbol + 1).ToLower();
+            
+            if (partialName != _lastPartialName || _lastSuggestionCount == 0)
+            {
+                ShowPlayerSuggestions(partialName);
+            }
+            
+            var matchingPlayers = GetMatchingPlayers(partialName);
+            if (matchingPlayers.Count == 1 && partialName.Length >= 2)
+            {
+                return matchingPlayers[0].GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText();
+            }
+            
+            return null;
+        }
+
+        private static List<Player> GetMatchingPlayers(string partial)
+        {
+            return PhotonNetwork.PlayerList
+                .Where(p => 
                 {
-                    var panel = GetChatPanel();
-                    if (panel != null)
-                        panel.Sync();
+                    if (string.IsNullOrEmpty(partial)) return true;
+                    string playerId = p.ActorNumber.ToString();
+                    string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower();
+                    return playerId.StartsWith(partial.ToLower()) || playerName.StartsWith(partial.ToLower());
+                })
+                .ToList();
+        }
+
+        private static void ShowPlayerSuggestions(string partial)
+        {
+            ClearLastSuggestions();
+            _lastPartialName = partial;
+            
+            var players = GetMatchingPlayers(partial);
+            if (players.Count > 0)
+            {
+                AddLine(new ChatMessage {
+                    RawMessage = GetColorString("Matching players:", ChatTextColor.System),
+                    Color = ChatTextColor.System,
+                    IsSystem = true,
+                    IsSuggestion = true,
+                    UtcTimestamp = DateTime.UtcNow
+                });
+                
+                foreach (var player in players)
+                {
+                    AddLine(new ChatMessage {
+                        RawMessage = GetColorString($"{player.ActorNumber}: {player.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}", ChatTextColor.System),
+                        Color = ChatTextColor.System,
+                        IsSystem = true,
+                        IsSuggestion = true,
+                        UtcTimestamp = DateTime.UtcNow
+                    });
                 }
+
+                _lastSuggestionCount = players.Count + 1;
+                UpdateChatPanel();
             }
         }
 
-        private static string ProcessMentions(string message)
+        public static void UpdateChatPanel()
         {
-            string[] words = message.Split(' ');
-            for (int i = 0; i < words.Length; i++)
+            if (IsChatAvailable())
             {
-                if (words[i].StartsWith("@"))
-                {
-                    string mention = words[i].Substring(1);
-                    Player mentionedPlayer = null;
-                    if (int.TryParse(mention, out int id))
-                    {
-                        mentionedPlayer = PhotonNetwork.CurrentRoom.GetPlayer(id, true);
-                    }
-                    if (mentionedPlayer == null)
-                    {
-                        mentionedPlayer = PhotonNetwork.PlayerList
-                            .FirstOrDefault(p => 
-                            {
-                                string playerName = p.GetStringProperty(PlayerProperty.Name);
-                                string cleanPlayerName = playerName.FilterSizeTag().StripRichText();
-                                string cleanMention = mention.FilterSizeTag().StripRichText();
-                                return cleanPlayerName.Equals(cleanMention, StringComparison.OrdinalIgnoreCase);
-                            });
-                    }
-                    if (mentionedPlayer != null)
-                    {
-                        string playerName = mentionedPlayer.GetStringProperty(PlayerProperty.Name);
-                        string coloredName = GetColorString("@" + playerName, 
-                            mentionedPlayer.IsLocal ? ChatTextColor.MyPlayer : ChatTextColor.ID);
-                        words[i] = coloredName;
-                    }
-                }
+                var panel = GetChatPanel();
+                if (panel != null)
+                    panel.Sync();
             }
-            return string.Join(' ', words);
         }
 
         private static void HandleCommand(string[] args)
@@ -983,49 +1046,161 @@ namespace GameManagers
             }
         }
 
-        public static string GetNextTabCompletion(string currentInput)
-        {
-            int lastAtSymbol = currentInput.LastIndexOf('@');
-            if (lastAtSymbol == -1)
-            {
-                _currentSuggestionIndex = -1;
-                _currentSuggestions.Clear();
-                return null;
-            }
-
-            string beforeAt = currentInput.Substring(0, lastAtSymbol);
-            string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
-
-            // Only refresh suggestions if we don't have any or if partial name changed
-            if (_currentSuggestions.Count == 0 || !partialName.Equals(_lastPartialName))
-            {
-                _currentSuggestions = PhotonNetwork.PlayerList
-                    .Where(p => 
-                    {
-                        string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower();
-                        return playerName.StartsWith(partialName);
-                    })
-                    .Select(p => p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText())
-                    .ToList();
-                _currentSuggestionIndex = -1;
-                _lastPartialName = partialName;
-            }
-
-            if (_currentSuggestions.Count > 0)
-            {
-                _currentSuggestionIndex = (_currentSuggestionIndex + 1) % _currentSuggestions.Count;
-                string suggestion = _currentSuggestions[_currentSuggestionIndex];
-                return beforeAt + "@" + suggestion;
-            }
-
-            return null;
-        }
-
         public static void ResetTabCompletion()
         {
             _currentSuggestionIndex = -1;
             _currentSuggestions.Clear();
             _lastPartialName = "";
+        }
+
+        public static void ClearLastSuggestions()
+        {
+            if (_lastSuggestionCount > 0 && Lines.Count >= _lastSuggestionCount)
+            {
+                Lines.RemoveRange(Lines.Count - _lastSuggestionCount, _lastSuggestionCount);
+                _lastSuggestionCount = 0;
+                _lastPartialName = "";
+                
+                if (IsChatAvailable())
+                {
+                    var panel = GetChatPanel();
+                    if (panel != null)
+                        panel.Sync();
+                }
+            }
+        }
+
+        public static string GetNextTabCompletion(string currentInput)
+        {
+            if (currentInput.StartsWith("/"))
+            {
+                string[] parts = currentInput.Split(' ');
+                
+                // If we're on the first part, handle command completion
+                if (parts.Length == 1)
+                {
+                    string partialCommand = currentInput.Substring(1).ToLower();
+                    
+                    // Only refresh suggestions if we don't have any or if partial command changed
+                    if (_currentSuggestions.Count == 0 || !partialCommand.Equals(_lastPartialName))
+                    {
+                        _currentSuggestions = CommandsCache
+                            .Where(cmd => !cmd.Value.IsAlias && cmd.Key.ToLower().StartsWith(partialCommand))
+                            .Select(cmd => "/" + cmd.Key)
+                            .OrderBy(cmd => cmd)
+                            .ToList();
+                        _currentSuggestionIndex = -1;
+                        _lastPartialName = partialCommand;
+                    }
+
+                    if (_currentSuggestions.Count > 0)
+                    {
+                        _currentSuggestionIndex = (_currentSuggestionIndex + 1) % _currentSuggestions.Count;
+                        return _currentSuggestions[_currentSuggestionIndex];
+                    }
+                }
+                // If we're on the second part and the command requires a player ID
+                else if (parts.Length == 2 && IsPlayerIdCommand(parts[0].Substring(1)))
+                {
+                    string partialId = parts[1].ToLower();
+                    string beforeId = parts[0] + " ";
+                    
+                    // Only refresh suggestions if we don't have any or if partial id changed
+                    if (_currentSuggestions.Count == 0 || !partialId.Equals(_lastPartialName))
+                    {
+                        _currentSuggestions = GetMatchingPlayers(partialId)
+                            .Select(p => beforeId + p.ActorNumber)
+                            .ToList();
+                        _currentSuggestionIndex = -1;
+                        _lastPartialName = partialId;
+                    }
+
+                    if (_currentSuggestions.Count > 0)
+                    {
+                        _currentSuggestionIndex = (_currentSuggestionIndex + 1) % _currentSuggestions.Count;
+                        return _currentSuggestions[_currentSuggestionIndex];
+                    }
+                }
+            }
+            else
+            {
+                // Handle @ mentions
+                int lastAtSymbol = currentInput.LastIndexOf('@');
+                if (lastAtSymbol != -1)
+                {
+                    string beforeAt = currentInput.Substring(0, lastAtSymbol + 1);
+                    string partialName = currentInput.Substring(lastAtSymbol + 1).ToLower();
+                    
+                    // Only refresh suggestions if we don't have any or if partial name changed
+                    if (_currentSuggestions.Count == 0 || !partialName.Equals(_lastPartialName))
+                    {
+                        _currentSuggestions = GetMatchingPlayers(partialName)
+                            .Select(p => beforeAt + p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText())
+                            .ToList();
+                        _currentSuggestionIndex = -1;
+                        _lastPartialName = partialName;
+                    }
+
+                    if (_currentSuggestions.Count > 0)
+                    {
+                        _currentSuggestionIndex = (_currentSuggestionIndex + 1) % _currentSuggestions.Count;
+                        return _currentSuggestions[_currentSuggestionIndex];
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static bool IsPlayerIdCommand(string command)
+        {
+            // List of commands that take a player ID as their first argument
+            string[] playerIdCommands = new string[] {
+                "pm", "kick", "ban", "mute", "unmute", "revive"
+            };
+            return playerIdCommands.Contains(command.ToLower());
+        }
+
+        private static string ProcessMentions(string message)
+        {
+            int index = message.IndexOf('@');
+            while (index != -1)
+            {
+                // Find the end of the mention (space or end of string)
+                int endIndex = message.IndexOf(' ', index);
+                if (endIndex == -1)
+                    endIndex = message.Length;
+
+                // Get the mentioned name
+                string mention = message.Substring(index + 1, endIndex - index - 1);
+
+                // Find matching player
+                var matchingPlayers = PhotonNetwork.PlayerList
+                    .Where(p => p.GetStringProperty(PlayerProperty.Name)
+                        .FilterSizeTag()
+                        .StripRichText()
+                        .ToLower()
+                        .StartsWith(mention.ToLower()))
+                    .ToList();
+
+                // If exactly one match, replace with colored name
+                if (matchingPlayers.Count == 1)
+                {
+                    string playerName = matchingPlayers[0].GetStringProperty(PlayerProperty.Name).FilterSizeTag();
+                    string coloredName = GetColorString("@" + playerName, ChatTextColor.System);
+                    message = message.Substring(0, index) + coloredName + message.Substring(endIndex);
+                    
+                    // Update index to continue search after the replacement
+                    index = message.IndexOf('@', index + coloredName.Length);
+                }
+                else
+                {
+                    // No unique match, continue searching after this @
+                    index = message.IndexOf('@', index + 1);
+                }
+            }
+            
+            return message;
         }
     }
 
@@ -1047,11 +1222,12 @@ namespace GameManagers
         public ChatTextColor Color { get; set; }
         public bool IsSystem { get; set; }
         public DateTime UtcTimestamp { get; set; }
+        public bool IsSuggestion { get; set; }
 
         public string GetFormattedMessage()
         {
             string result = RawMessage;
-            if (SettingsManager.UISettings.ShowChatTimestamp.Value)
+            if (SettingsManager.UISettings.ShowChatTimestamp.Value && !IsSuggestion)
             {
                 DateTime localTime = UtcTimestamp.ToLocalTime();
                 string timestamp = localTime.ToString("HH:mm");

@@ -232,9 +232,9 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void ChatRPC(string message, string utcTimestamp, PhotonMessageInfo info)
+        public void ChatRPC(string message, PhotonMessageInfo info)
         {
-            ChatManager.OnChatRPC(message, utcTimestamp, info);
+            ChatManager.OnChatRPC(message, info);
         }
 
         [PunRPC]
