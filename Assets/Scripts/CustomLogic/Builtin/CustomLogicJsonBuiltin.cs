@@ -20,6 +20,24 @@ namespace CustomLogic
             try
             {
                 jsonNode = JSON.Parse(json);
+                // string str = ((string)parameters[0]).Trim();
+                // JSONNode json;
+                // try
+                // {
+                //     json = JSON.Parse((string)parameters[0]);
+                // }
+                // catch
+                // {
+                //     json = new JSONString(str);
+                // }
+                // try
+                // {
+                //     return LoadJSON(json);
+                // }
+                // catch
+                // {
+                //     return null;
+                // }
             }
             catch
             {

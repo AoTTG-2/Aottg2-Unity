@@ -40,11 +40,15 @@ namespace Characters
             return material;
         }
 
-        public static Material GetPartMaterial(string texture)
+        public static Material GetPartMaterial(string texture, bool isOneSided = false)
         {
             if (!PartMaterials.ContainsKey(texture))
             {
-                var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, MaterialPath + "HumanPartMat", true);
+                Material material;
+                if (isOneSided)
+                    material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, MaterialPath + "HumanPart1SMat", true);
+                else
+                    material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, MaterialPath + "HumanPartMat", true);
                 var mainTexture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, TexturePath + texture);
                 material.mainTexture = mainTexture;
                 PartMaterials[texture] = material;

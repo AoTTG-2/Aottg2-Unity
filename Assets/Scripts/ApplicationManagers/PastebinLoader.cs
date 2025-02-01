@@ -14,7 +14,7 @@ namespace ApplicationManagers
     public class PastebinLoader : MonoBehaviour
     {
         public static JSONNode Leaderboard;
-        public static JSONNode Changelog;
+        public static string Changelog;
         public static JSONNode Version;
         public static PastebinStatus Status = PastebinStatus.Loading;
         static PastebinLoader _instance;
@@ -22,9 +22,8 @@ namespace ApplicationManagers
         // consts
         static readonly string VersionURL = "https://pastebin.com/raw/txV4YVcr";
         static readonly string LeaderboardURL = "https://pastebin.com/raw/zptDi9T6";
-        static readonly string ChangelogURL = "https://pastebin.com/raw/i8SL3cY1";
+        static readonly string ChangelogURL = "https://pastebin.com/raw/Lw47FLT5";
         static readonly string PlatformURL = "https://aottgrc.com/Aottg2/Version.json";
-        private static JSONNode[] _nodes;
 
         public static void Init()
         {
@@ -39,10 +38,11 @@ namespace ApplicationManagers
         IEnumerator LoadPastebinCoroutine()
         {
             Status = PastebinStatus.Loading;
-            string[] urls = new string[] { VersionURL, LeaderboardURL, ChangelogURL, PlatformURL };
-            _nodes = new JSONNode[urls.Length];
+            string[] urls = new string[] { VersionURL, LeaderboardURL, PlatformURL, ChangelogURL };
+            string changelog = string.Empty;
+            JSONNode[] nodes = new JSONNode[urls.Length];
             for (int i = 0; i < urls.Length; i++)
-                _nodes[i] = null;
+                nodes[i] = null;
             for (int i = 0; i < urls.Length; i++)
             {
                 using (WWW www = new WWW(urls[i]))
@@ -52,7 +52,10 @@ namespace ApplicationManagers
                     {
                         try
                         {
-                            _nodes[i] = JSON.Parse(www.text);
+                            if (i == urls.Length - 1) // changelog is text only
+                                changelog = www.text;
+                            else
+                                nodes[i] = JSON.Parse(www.text);
                         }
                         catch (Exception e)
                         {
@@ -66,9 +69,9 @@ namespace ApplicationManagers
                     }
                 }
             }
-            Version = _nodes[0];
-            Leaderboard = _nodes[1];
-            Changelog = _nodes[2];
+            Version = nodes[0];
+            Leaderboard = nodes[1];
+            Changelog = changelog;
             if (Leaderboard != null && Changelog != null && Version != null)
                 Status = PastebinStatus.Loaded;
             else

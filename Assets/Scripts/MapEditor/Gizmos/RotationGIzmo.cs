@@ -6,6 +6,7 @@ using CustomSkins;
 using ApplicationManagers;
 using Map;
 using Settings;
+using GameManagers;
 
 namespace MapEditor
 {
@@ -121,11 +122,11 @@ namespace MapEditor
         private Vector3 GetAxis()
         {
             if (_activeCircle == _circleX)
-                return Vector3.right;
+                return _transform.right;
             else if (_activeCircle == _circleY)
-                return Vector3.up;
+                return _transform.up;
             else
-                return Vector3.forward;
+                return _transform.forward;
         }
 
         private void RotateSelectedObjects(Vector3 center, Vector3 axis, float angle)
@@ -139,8 +140,16 @@ namespace MapEditor
         private void ResetCenter()
         {
             Vector3 totalPosition = new Vector3();
+            _transform.rotation = Quaternion.identity;
             foreach (MapObject obj in _gameManager.SelectedObjects)
+            {
+                if (_gameManager.CurrentGizmoMode == GizmoMode.Local && _gameManager.SelectedObjects.Count == 1)
+                {
+                    _transform.rotation = obj.GameObject.transform.rotation;
+                }
                 totalPosition += obj.GameObject.transform.position;
+            }
+                
             Vector3 center = totalPosition / _gameManager.SelectedObjects.Count;
             _transform.position = center;
         }

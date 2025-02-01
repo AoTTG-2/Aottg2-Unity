@@ -267,7 +267,7 @@ namespace Characters
             Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
             _part_3dmg = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.Get3dmgMesh(), cached: true);
             AttachToMount(_part_3dmg, _mount_3dmg);
-            _part_3dmg.GetComponent<Renderer>().material = material;
+            _part_3dmg.GetComponentInChildren<Renderer>().material = material;
             string beltMesh = _meshes.GetBeltMesh();
             if (beltMesh != string.Empty)
             {
@@ -275,25 +275,28 @@ namespace Characters
                 _part_belt.GetComponent<Renderer>().material = material;
                 AttachToMount(_part_belt, _mount_3dmg);
             }
-            _part_gas_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: true), cached: true);
-            _part_gas_l.GetComponent<Renderer>().material = material;
-            if (Weapon == HumanWeapon.AHSS || Weapon == HumanWeapon.APG)
-                AttachToMount(_part_gas_l, _mount_gun_mag_l);
-            else
-                AttachToMount(_part_gas_l, _mount_gas_l);
-            _part_gas_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: false), cached: true);
-            _part_gas_r.GetComponent<Renderer>().material = material;
-            if (Weapon == HumanWeapon.AHSS || Weapon == HumanWeapon.APG)
-                AttachToMount(_part_gas_r, _mount_gun_mag_r);
-            else
-                AttachToMount(_part_gas_r, _mount_gas_r);
+            if (Weapon != HumanWeapon.APG)
+            {
+                _part_gas_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: true), cached: true);
+                _part_gas_l.GetComponent<Renderer>().material = material;
+                if (Weapon == HumanWeapon.AHSS)
+                    AttachToMount(_part_gas_l, _mount_gun_mag_l);
+                else
+                    AttachToMount(_part_gas_l, _mount_gas_l);
+                _part_gas_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: false), cached: true);
+                _part_gas_r.GetComponent<Renderer>().material = material;
+                if (Weapon == HumanWeapon.AHSS)
+                    AttachToMount(_part_gas_r, _mount_gun_mag_r);
+                else
+                    AttachToMount(_part_gas_r, _mount_gas_r);
+            }
         }
 
         public void CreateWeapon()
         {
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
-            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
+            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture(), Weapon == HumanWeapon.APG);
             string weaponLMesh = _meshes.GetWeaponMesh(left: true);
             if (weaponLMesh != string.Empty)
             {
@@ -303,7 +306,7 @@ namespace Characters
                 else
                 {
                     AttachToMount(_part_blade_l, _mount_weapon_l);
-                    _part_blade_l.GetComponent<Renderer>().material = material;
+                    _part_blade_l.GetComponentInChildren<Renderer>().material = material;
                 }
                 if (_part_blade_l.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {
@@ -321,7 +324,7 @@ namespace Characters
                 else
                 {
                     AttachToMount(_part_blade_r, _mount_weapon_r);
-                    _part_blade_r.GetComponent<Renderer>().material = material;
+                    _part_blade_r.GetComponentInChildren<Renderer>().material = material;
                 }
                 if (_part_blade_r.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {

@@ -30,7 +30,7 @@ namespace Characters
         protected float _currentLiveTime = 0f;
         protected ParticleSystem _particles;
         protected GameObject _endSprite;
-        private static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.TitanPushbox, PhysicsLayer.EntityDetection,
+        private static LayerMask HookMask = PhysicsLayer.GetMask(PhysicsLayer.Human, PhysicsLayer.TitanPushbox, PhysicsLayer.ProjectileDetection,
             PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll);
         protected float _tiling;
         protected float _lastLength;
@@ -303,9 +303,9 @@ namespace Characters
                     RaycastHit finalHit = hitArr[0];
                     foreach (RaycastHit hit in hitArr)
                     {
-                        if (hit.collider.gameObject.layer == PhysicsLayer.EntityDetection)
+                        if (hit.collider.gameObject.layer == PhysicsLayer.ProjectileDetection)
                         {
-                            hit.collider.gameObject.GetComponent<TitanEntityDetection>().RegisterHook(this);
+                            hit.collider.gameObject.GetComponent<TitanProjectileDetection>().RegisterHook(this);
                             continue;
                         }
                         if (hit.collider.gameObject == _owner.gameObject)

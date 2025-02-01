@@ -112,6 +112,122 @@ namespace CustomLogic
             set
             {
                 if (Human.Weapon is BladeWeapon bladeWeapon)
+        //         if (bladeWeapon != null)
+        //             return bladeWeapon.MaxDurability;
+        //         return 0f;
+        //     }
+        //     if (name == "CurrentBlade")
+        //     {
+        //         if (bladeWeapon != null)
+        //             return bladeWeapon.BladesLeft;
+        //         return 0;
+        //     }
+        //     if (name == "MaxBlade")
+        //     {
+        //         if (bladeWeapon != null)
+        //             return bladeWeapon.MaxBlades;
+        //         return 0;
+        //     }
+        //     if (name == "CurrentAmmoRound")
+        //     {
+        //         if (ammoWeapon != null)
+        //             return ammoWeapon.RoundLeft;
+        //         return 0;
+        //     }
+        //     if (name == "MaxAmmoRound")
+        //     {
+        //         if (ammoWeapon != null)
+        //             return ammoWeapon.MaxRound;
+        //         return 0;
+        //     }
+        //     if (name == "CurrentAmmoLeft")
+        //     {
+        //         if (ammoWeapon != null)
+        //             return ammoWeapon.AmmoLeft;
+        //         return 0;
+        //     }
+        //     if (name == "MaxAmmoTotal")
+        //     {
+        //         if (ammoWeapon != null)
+        //             return ammoWeapon.MaxAmmo;
+        //         return 0;
+        //     }
+        //     if (name == "LeftHookEnabled")
+        //         return Human.HookLeft.Enabled;
+        //     if (name == "RightHookEnabled")
+        //         return Human.HookRight.Enabled;
+        //     if (name == "IsMounted")
+        //         return Human.MountState == HumanMountState.MapObject;
+        //     if (name == "MountedMapObject")
+        //     {
+        //         if (Human.MountedMapObject == null)
+        //             return null;
+        //         return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
+        //     }
+        //     if (name == "MountedTransform")
+        //     {
+        //         if (Human.MountedTransform == null)
+        //             return null;
+        //         return new CustomLogicTransformBuiltin(Human.MountedTransform);
+        //     }
+        //     if (name == "AutoRefillGas")
+        //     {
+        //         if (Human != null && Human.IsMine())
+        //             return SettingsManager.InputSettings.Human.AutoRefillGas.Value;
+        //         return false;
+        //     }
+        //     if (name == "State")
+        //         return Human.State.ToString();
+        //     if (name == "CanDodge")
+        //         return Human.CanDodge;
+        //     if (name == "IsInvincible")
+        //         return Human.IsInvincible;
+        //     if (name == "InvincibleTimeLeft")
+        //         return Human.InvincibleTimeLeft;
+        //     if (name == "IsCarried")
+        //         return Human.CarryState == HumanCarryState.Carry;
+        //     return base.GetField(name);
+        // }
+
+        // public override void SetField(string name, object value)
+        // {
+        //     if (name == "Name")
+        //         Character.Name = (string)value;
+        //     else if (name == "Guild")
+        //         Character.Guild = (string)value;
+        //     if (!Human.IsMine())
+        //         return;
+        //     BladeWeapon bladeWeapon = null;
+        //     AmmoWeapon ammoWeapon = null;
+        //     if (Human.Weapon is BladeWeapon)
+        //         bladeWeapon = (BladeWeapon)Human.Weapon;
+        //     else if (Human.Weapon is AmmoWeapon)
+        //         ammoWeapon = (AmmoWeapon)Human.Weapon;
+        //     if (name == "SpecialCooldown")
+        //     {
+        //         if (Human.Special == null) return;
+
+        //         var v = Mathf.Max(0f, value.UnboxToFloat());
+        //         Human.Special.Cooldown = v;
+        //     }
+        //     else if (name == "ShifterLiveTime")
+        //     {
+        //         if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+        //             special.LiveTime = value.UnboxToFloat();
+        //     }
+        //     else if (name == "CurrentGas")
+        //         Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
+        //     else if (name == "MaxGas")
+        //         Human.Stats.MaxGas = value.UnboxToFloat();
+        //     else if (name == "Acceleration")
+        //         Human.Stats.Acceleration = value.UnboxToInt();
+        //     else if (name == "Speed")
+        //         Human.Stats.Speed = value.UnboxToInt();
+        //     else if (name == "HorseSpeed")
+        //         Human.Stats.HorseSpeed = value.UnboxToFloat();
+        //     else if (name == "CurrentBladeDurability")
+        //     {
+        //         if (bladeWeapon != null)
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
                     bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);

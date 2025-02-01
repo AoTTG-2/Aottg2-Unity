@@ -4557,3 +4557,446 @@ component Rope
         }
     }
 }
+
+# general
+component Vehicle
+{
+    MoveForce = 30.0;
+    MaxMoveSpeed = 60.0;
+    RotateSpeed = 5.0;
+
+    _inUse = false;
+    _human = null;
+
+    _collidingHuman = null;
+    _collidingDrive = false;
+
+    _rigidbody = null;
+    _transform = null;
+
+    Cooldown = 3.0;
+    CooldownTooltip = "Horn cooldown.";
+    _cooldownLeft = 0.0;
+    HornSound = "Checkpoint";
+    HornSoundTooltip = "What sound will be played by the horn activated";
+
+    PilotSeatOffset = Vector3(0, 0, 0);
+    PilotSeatOffsetTooltip = "Offset position for the pilot seat";
+    CanFly = false;
+    CanFlyTooltip = "Enable to allow flight using Gas/Dodge keys for UP/DOWN.";
+    CustomFOV = false;
+    CustomFOVTooltip = "Enable to allow custom camera distance when using this vehicle.";
+    CameraDistance = 10.0;
+    CameraDistanceTooltip = "How far the camera zooms out for the player who is driving this vehicle.";
+
+    InteractText = "ride this thing.";
+    InteractTextTooltip = "The text shown when the player is in range of the vehicle to interact with.";
+    InteractRadius = 2.5;
+    InteractRadiusTooltip = "Radius to interact with this vehicle.";
+
+    ChildrenIDs = "0";
+    ChildrenIDsTooltip = "Slash (/) separated list of IDs of objects to become children of the parent of this object.";
+    _stuff = List();
+
+    HasWheels = false;
+    HasWheelsTooltip = "Enable if this object has wheels to use wheels.";
+    WheelIDs = "0";
+    WheelIDsTooltip = "Slash (/) separated list of IDs of WHEELS to rotate when driving.";
+    _wheels = List();
+
+    _currentWheelSpeed = 0.0;
+    WheelMaxSpeed = 40.0;
+    WWheelMaxSpeedTooltip = "Max rotation speed of wheels.";
+    WheelRotateSpeedModifyer = 0.1;
+    WheelRotateSpeedModifyerTooltip = "Value influences how fast wheels spin up to reach max rotate speed";
+    WheelSlowdown = 0.1;
+    WheelSlowdownTooltip = "Value influences how quickly wheels come to a stop.";
+
+
+    function Init()
+    {
+        self._transform = self.MapObject.Transform;
+        self._stuff = self.PopulateMapObjectList(self.ChildrenIDs);
+        self._wheels = self.PopulateWheelList(self.WheelIDs);
+
+        self.ItsParentingTime(self._stuff, self._transform);
+        self.ItsParentingTimeWheels(self._wheels, self._transform);
+
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, self.InteractRadius);
+        self._rigidbody = self.MapObject.GetComponent("Rigidbody");
+    }
+
+    function OnTick()
+    {
+        self._collidingHuman = null;
+        self._collidingDrive = false;
+
+        if (self.HasWheels)
+        {
+            self.youSpinMeRoundAndRound(self._wheels);
+        }
+    }
+
+    function OnNetworkTransfer(oldOwner, newOwner) 
+    {
+        if (newOwner == Network.MasterClient && Network.IsMasterClient)
+        {
+            self._inUse = false;
+        }
+        elif(newOwner == Network.MyPlayer)
+        {
+            self._inUse = true;
+            human = Network.MyPlayer.Character;
+            if (human != null && human.Type == "Human")
+            {
+                human.MountTransform(self._transform, self.PilotSeatOffset, Vector3.Zero);
+                self._human = human;
+            }
+        }
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient && self.NetworkView.Owner == Network.MyPlayer && !self._inUse && message == "request")
+        {
+            self.NetworkView.Transfer(sender);
+        }
+        if (message == "Honkers")
+        {
+            self._human.PlaySound(self.HornSound);
+        }
+        if (message == "Wheeling")
+        {
+            self.Wheeling();
+        }
+        if (message == "Unwheeling")
+        {
+            self.UnWheeling();
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            if (!self._inUse)
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to " + self.InteractText, 0.1);
+                self._collidingHuman = other;
+                self._collidingDrive = true;
+            }
+        }
+    }
+
+    function OnFrame()
+    {
+        self._cooldownLeft = self._cooldownLeft - Time.FrameTime;
+
+        if (self.NetworkView.Owner == Network.MyPlayer)
+        {
+            if (self._inUse)
+            {
+                if (self.CustomFOV)
+                {
+                    Camera.FollowDistance = self.CameraDistance;
+                }
+
+                if (self._human.HasTargetDirection)
+                {
+                    self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
+                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce);
+                    velocity = self._rigidbody.GetVelocity();
+                    self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
+                    self.NetworkView.SendMessageAll("Wheeling");
+                }
+                else
+                {
+                    self.NetworkView.SendMessageAll("Unwheeling");
+                    velocity = self._rigidbody.GetVelocity();
+                    if (velocity.Magnitude < 1)
+                    {
+                        self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                    }
+                    else
+                    {
+                        self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                    }
+                }
+                if (Input.GetKeyDown("Interaction/Interact"))
+                {
+                    Camera.ResetDistance();
+                    self._human.Unmount();
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+                if (Input.GetKeyHold("Human/Jump") && self.CanFly)
+                {
+                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce);
+                }
+                if (Input.GetKeyHold("Human/Dodge") && self.CanFly)
+                {
+                    self._rigidbody.AddForce(self.MapObject.Up * self.MoveForce * -1);
+                }
+                if (self._cooldownLeft <= 0.0 && Input.GetKeyHold("Human/AttackDefault"))
+                {
+                    self.horn();
+                }
+                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._transform)
+                {
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+            }
+            else
+            {
+                velocity = self._rigidbody.GetVelocity();
+                if (velocity.Magnitude < 1)
+                {
+                    self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
+                }
+                else
+                {
+                    self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                }
+            }
+        }
+        if (self._collidingHuman != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact"))
+            {
+                if (self._collidingDrive && !self._inUse)
+                {
+                    if (self.NetworkView.Owner == Network.MyPlayer)
+                    {
+                        self._inUse = true;
+                        self._collidingHuman.MountTransform(self._transform, self.PilotSeatOffset, Vector3.Zero);
+                        self._human = self._collidingHuman;
+                    }
+                    else
+                    {
+                        self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
+                    }
+                }
+
+            }
+        }
+    }
+
+    function horn()
+    {
+        self._cooldownLeft = self.Cooldown;
+        self.NetworkView.SendMessageAll("Honkers");
+    }
+
+    function PopulateMapObjectList(strList)
+    {
+        results = List();
+        target = null;
+        ssl = String.Split(strList, "/");
+        for (value in ssl)
+        {
+            target = Map.FindMapObjectByID(Convert.ToInt(value));
+
+            if (target != null)
+            {
+                results.Add(target);
+            }
+        }
+        return results;
+    }
+
+    function ItsParentingTime(objectList, _transform)
+    {
+        for (obj in objectList)
+        {
+            obj.Parent = _transform;
+        }
+    }
+
+    function PopulateWheelList(strList)
+    {
+        results = List();
+        target = null;
+        ssl = String.Split(strList, "/");
+        for (value in ssl)
+        {
+            target = Map.FindMapObjectByID(Convert.ToInt(value));
+
+            if (target != null)
+            {
+                results.Add(target);
+            }
+        }
+        return results;
+    }
+
+    function ItsParentingTimeWheels(objectList, _transform)
+    {
+        for (obj in objectList)
+        {
+            obj.Parent = _transform;
+        }
+    }
+
+    function Rotation(objectList)
+    {
+        for (obj in objectList)
+        {
+            obj.Parent = _transform;
+        }
+    }
+
+    function youSpinMeRoundAndRound(objectList)
+    {
+
+        for (obj in objectList)
+        {
+            obj.Transform.Rotate(Vector3(self._currentWheelSpeed, 0, 0));
+        }
+    }
+
+    function Wheeling()
+    {
+
+        self._currentWheelSpeed = self._currentWheelSpeed + self.WheelRotateSpeedModifyer;
+        if (self._currentWheelSpeed >= self.WheelMaxSpeed)
+        {
+            self._currentWheelSpeed = self.WheelMaxSpeed;
+        }
+    }
+
+    function UnWheeling()
+    {
+        self._currentWheelSpeed = self._currentWheelSpeed - self.WheelSlowdown;
+        if(self._currentWheelSpeed <= 0)
+        {
+            self._currentWheelSpeed = 0;
+        }
+
+    }
+}
+
+# general
+component Chair
+{
+    Description = "Used to make custom chairs to sit on. Ensure this object is Networked. This component goes onto a 'chair' you would like to sit down on. Add a child object which is parented to this to be used as the seat position.";
+
+    _inUse = false;
+    _human = null;
+    _collidingHuman = null;
+    _collidingSitter = false;
+    _chair = null;
+    SeatPosObjectName = "";
+    SeatPosObjectNameTooltip = "Enter the name of the object you want to set the sitting position as. (Ensure that the SeatPos object is parented to the Chair that has this component. If empty, will use object this component is on.";
+    InteractionText = "to sit down in the chair.";
+    InteractionTextTooltip = "This is the text that appears when interacting with the object.";
+
+    function Init()
+    {
+
+        self._chair = self.MapObject.GetTransform(self.SeatPosObjectName);
+        self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 5.0);
+    }
+
+    function OnNetworkMessage(sender, message)
+    {
+        if (Network.IsMasterClient && self.NetworkView.Owner == Network.MyPlayer && !self._inUse && message == "request")
+        {
+            self.NetworkView.Transfer(sender);
+        }
+
+    }
+
+
+    function OnNetworkTransfer(oldOwner, newOwner) 
+    {
+        if (newOwner == Network.MasterClient && Network.IsMasterClient)
+        {
+            self._inUse = false;
+        }
+        elif(newOwner == Network.MyPlayer)
+        {
+            self._inUse = true;
+            human = Network.MyPlayer.Character;
+            if (human != null && human.Type == "Human")
+            {
+                human.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
+                self._human = human;
+                Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+            }
+        }
+    }
+
+    function OnCollisionStay(other)
+    {
+        if (other.Type == "Human" && other.IsMine)
+        {
+            if (!self._inUse)
+            {
+                UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " " + self.InteractionText, 0.1);
+                self._collidingHuman = other;
+                self._collidingSitter = true;
+            }
+
+        }
+
+    }
+
+
+    function OnTick()
+    {
+        self._collidingHuman = null;
+        self._collidingSitter = false;
+
+    }
+
+    function OnFrame()
+    {
+        if (self.NetworkView.Owner == Network.MyPlayer)
+        {
+            if (self._inUse)
+            {
+                if (Input.GetKeyDown("Interaction/Interact"))
+                {
+                    self._human.Unmount();
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._chair)
+                {
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
+            }
+
+        }
+        if (self._collidingHuman != null)
+        {
+            if (Input.GetKeyDown("Interaction/Interact"))
+            {
+                if (self._collidingSitter && !self._inUse)
+                {
+                    if (self.NetworkView.Owner == Network.MyPlayer)
+                    {
+                        self._inUse = true;
+                        self._collidingHuman.MountTransform(self._chair, Vector3(0, 0, 0), Vector3.Zero);
+                        self._human = self._collidingHuman;
+                        Network.MyPlayer.Character.PlayAnimation("Armature|horse_idle");
+
+                    }
+                    else
+                    {
+                        self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}

@@ -181,6 +181,11 @@ namespace CustomLogic
         public void Target(object enemyObj, float focus)
         {
             if (IsAlive() && Titan.AI == false)
+            // if (name == "Name")
+            //     Character.Name = (string)value;
+            // else if (name == "Guild")
+            //     Character.Guild = (string)value;
+            // if (!Titan.IsMine())
                 return;
 
             ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable

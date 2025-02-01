@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityStandardAssets.ImageEffects;
+using Utility;
 
 public class WaterEffect : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class WaterEffect : MonoBehaviour
     private ColorGrading _colorGrading;
     private GlobalFog _globalFog;
     private bool _fogEnabled;
+    private string _tag = "MainCamera";
+    private bool _enabled;
 
     void Start()
     {
@@ -73,13 +76,10 @@ public class WaterEffect : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void OnTriggerStay(Collider other)
     {
-        Camera cam = SceneLoader.CurrentCamera.Camera;
-
-        // If the camera is inside this objects collider, enable the post processing volume
-        bool boundsContains = _collider.bounds.Contains(cam.transform.position);
-        if (boundsContains && PostProcessingVolume.gameObject.activeSelf == false)
+        
+        if (other.gameObject.CompareTag(_tag))
         {
             PostProcessingVolume.gameObject.SetActive(true);
             _postProcessingManager.SetState(false);
@@ -87,12 +87,19 @@ public class WaterEffect : MonoBehaviour
             {
                 _globalFog.enabled = true;
             }
+            _enabled = true;
         }
-        else if (!boundsContains && PostProcessingVolume.gameObject.activeSelf == true)
+    }
+
+    private void FixedUpdate()
+    {
+        if (_enabled == false)
         {
             PostProcessingVolume.gameObject.SetActive(false);
             _postProcessingManager.SetState(true);
             _globalFog.enabled = false;
         }
+
+        _enabled = false;
     }
 }
