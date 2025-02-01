@@ -162,26 +162,25 @@ namespace CustomLogic
             var obj = _streamObjects[0];
             obj = DeserializeStreamObj(obj);
             _streamObjects.RemoveAt(0);
-            // if (obj is CustomLogicVector3Builtin)
-            //     return ((CustomLogicVector3Builtin)obj).Value;
-            // if (obj is CustomLogicQuaternionBuiltin)
-            //     return ((CustomLogicQuaternionBuiltin)obj).Value;
             return obj;
         }
 
         private static object SerializeStreamObj(object obj)
         {
-            return obj is CustomLogicVector3Builtin v3 ? v3.Value : obj;
+            if (obj is CustomLogicVector3Builtin)
+                return ((CustomLogicVector3Builtin)obj).Value;
+            if (obj is CustomLogicQuaternionBuiltin)
+                return ((CustomLogicQuaternionBuiltin)obj).Value;
+            return obj;
         }
 
         private static object DeserializeStreamObj(object obj)
         {
-            return obj is Vector3 v3 ? new CustomLogicVector3Builtin(v3) : obj;
-            // if (obj is Vector3)
-            //     return new CustomLogicVector3Builtin((Vector3)obj);
-            // if (obj is CustomLogicQuaternionBuiltin)
-            //     return new CustomLogicQuaternionBuiltin((Quaternion)obj);
-            // return obj;
+            if (obj is Vector3)
+                return new CustomLogicVector3Builtin((Vector3)obj);
+            if (obj is CustomLogicQuaternionBuiltin)
+                return new CustomLogicQuaternionBuiltin((Quaternion)obj);
+            return obj;
         }
     }
 }

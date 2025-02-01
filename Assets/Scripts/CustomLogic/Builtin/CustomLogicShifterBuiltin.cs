@@ -15,6 +15,20 @@ namespace CustomLogic
             Controller = shifter.GetComponent<BaseTitanAIController>();
         }
 
+        [CLProperty("Shifter's name.")]
+        public string Name
+        {
+            get => Shifter.Name;
+            set => Shifter.Name = value;
+        }
+
+        [CLProperty("Shifter's guild.")]
+        public string Guild
+        {
+            get => Shifter.Guild;
+            set => Shifter.Guild = value;
+        }
+
         [CLProperty("Shifter's size.")]
         public float Size
         {
@@ -154,35 +168,6 @@ namespace CustomLogic
         public void Target(object enemyObj, float focus)
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
-            // if (name == "Name")
-            //     Character.Name = (string)value;
-            // else if (name == "Guild")
-            //     Character.Guild = (string)value;
-            // if (!Shifter.IsMine())
-            //     return;
-            // if (name == "Size")
-            //     Shifter.SetSize(value.UnboxToFloat());
-            // else if (name == "RunSpeedBase")
-            //     Shifter.RunSpeedBase = value.UnboxToFloat();
-            // else if (name == "WalkSpeedBase")
-            //     Shifter.WalkSpeedBase = value.UnboxToFloat();
-            // else if (name == "RunSpeedPerLevel")
-            //     Shifter.RunSpeedPerLevel = value.UnboxToFloat();
-            // else if (name == "WalkSpeedPerLevel")
-            //     Shifter.WalkSpeedPerLevel = value.UnboxToFloat();
-            // else if (name == "TurnSpeed")
-            //     Shifter.TurnSpeed = value.UnboxToFloat();
-            // else if (name == "RotateSpeed")
-            //     Shifter.RotateSpeed = value.UnboxToFloat();
-            // else if (name == "JumpForce")
-            //     Shifter.JumpForce = value.UnboxToFloat();
-            // else if (name == "ActionPause")
-            //     Shifter.ActionPause = value.UnboxToFloat();
-            // else if (name == "AttackPause")
-            //     Shifter.AttackPause = value.UnboxToFloat();
-            // else if (name == "TurnPause")
-            //     Shifter.TurnPause = value.UnboxToFloat();
-            // else if (name == "DetectRange")
             {
                 ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value

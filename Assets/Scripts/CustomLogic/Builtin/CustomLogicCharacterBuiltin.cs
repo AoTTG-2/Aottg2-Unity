@@ -18,110 +18,24 @@ namespace CustomLogic
             Variables["IsCharacter"] = true;
         }
 
+        [CLProperty(Description = "Character's name.")]
+        public string Name {
+            get => Character.Name;
+            set {
+                Character.Name = value;
+            }
+        }
+
+        [CLProperty(Description = "Character's guild.")]
+        public string Guild {
+            get => Character.Guild;
+            set {
+                Character.Guild = value;
+            }
+        }
+
         [CLProperty(Description = "Player who owns this character.")]
         public CustomLogicPlayerBuiltin Player => new CustomLogicPlayerBuiltin(Character.Cache.PhotonView.Owner);
-        // public override object CallMethod(string name, List<object> parameters)
-        // {
-        //     if (name == "GetKilled")
-        //     {
-        //         string killer = (string)parameters[0];
-        //         Character.GetKilled(killer);
-        //         return null;
-        //     }
-        //     if (name == "GetDamaged")
-        //     {
-        //         string killer = (string)parameters[0];
-        //         int damage = parameters[1].UnboxToInt();
-        //         Character.GetDamaged(killer, damage);
-        //         return null;
-        //     }
-        //     if (name == "Emote")
-        //     {
-        //         string emote = (string)parameters[0];
-        //         if (Character.IsMine() && !Character.Dead)
-        //             Character.Emote(emote);
-        //         return null;
-        //     }
-        //     if (name == "PlayAnimation")
-        //     {
-        //         string anim = (string)parameters[0];
-        //         float fade = 0.1f;
-        //         if (parameters.Count > 1)
-        //             fade = (float)parameters[1];
-        //         if (Character.IsMine() && !Character.Dead)
-        //             Character.CrossFadeIfNotPlaying(anim, fade);
-        //         return null;
-        //     }
-        //     if (name == "GetAnimationLength")
-        //     {
-        //         string anim = (string)parameters[0];
-        //         return Character.Animation.GetLength(anim);
-        //     }
-        //     if (name == "PlaySound")
-        //     {
-        //         string sound = (string)parameters[0];
-        //         if (Character.IsMine() && !Character.Dead && !Character.IsPlayingSound(sound))
-        //             Character.PlaySound(sound);
-        //         return null;
-        //     }
-        //     if (name == "StopSound")
-        //     {
-        //         string sound = (string)parameters[0];
-        //         if (Character.IsMine() && !Character.Dead && Character.IsPlayingSound(sound))
-        //             Character.StopSound(sound);
-        //         return null;
-        //     }
-        //     if (name == "LookAt")
-        //     {
-        //         Vector3 position = ((CustomLogicVector3Builtin)parameters[0]).Value;
-        //         if (Character.IsMine() && !Character.Dead)
-        //             Character.Cache.Transform.LookAt(position);
-        //         return null;
-        //     }
-        //     if (name == "AddForce")
-        //     {
-        //         Vector3 force = ((CustomLogicVector3Builtin)parameters[0]).Value;
-        //         string forceMode = "Acceleration";
-        //         if (parameters.Count > 1)
-        //         {
-        //             forceMode = (string)parameters[1];
-        //         }
-        //         ForceMode mode = ForceMode.Acceleration;
-        //         switch (forceMode)
-        //         {
-        //             case "Force":
-        //                 mode = ForceMode.Force;
-        //                 break;
-        //             case "Acceleration":
-        //                 mode = ForceMode.Acceleration;
-        //                 break;
-        //             case "Impulse":
-        //                 mode = ForceMode.Impulse;
-        //                 break;
-        //             case "VelocityChange":
-        //                 mode = ForceMode.VelocityChange;
-        //                 break;
-        //         }
-        //         if (Character.IsMine())
-        //         {
-        //             Character.SetKinematic(false, 1f);
-        //             Character.Cache.Rigidbody.AddForce(force, mode);
-        //         }
-        //         return null;
-        //     }
-        //     if (name == "Reveal")
-        //     {
-        //         Character.Reveal(0, parameters[0].UnboxToFloat());
-        //         return null;
-        //     }
-        //     if (name == "AddOutline")
-        //     {
-        //         Color color = Color.white;
-        //         Outline.Mode mode = Outline.Mode.OutlineAll;
-        //         if (parameters.Count > 0)
-        //             color = ((CustomLogicColorBuiltin)parameters[0]).Value.ToColor();
-        //         if (parameters.Count > 1)
-        //             mode = (Outline.Mode)Enum.Parse(typeof(Outline.Mode), (string)parameters[1]);
 
         [CLProperty(Description = "Is this character AI?")]
         public bool IsAI => Character.AI;
@@ -178,8 +92,9 @@ namespace CustomLogic
             get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
             set
             {
-                if (Character.IsMine())
-                    Character.Cache.Rigidbody.velocity = value.Value;
+                if (!Character.IsMine()) return;
+                Character.SetKinematic(false, 1f);
+                Character.Cache.Rigidbody.velocity = value.Value;
             }
         }
 
@@ -326,7 +241,7 @@ namespace CustomLogic
         [CLMethod(Description = "Gets the length of animation.")]
         public float GetAnimationLength(string animation)
         {
-            return Character.Cache.Animation[animation].length;
+            return Character.Animation.GetLength(animation);
         }
 
         [CLMethod(Description = "Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]
@@ -353,7 +268,8 @@ namespace CustomLogic
         [CLMethod(Description = "Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.")]
         public void AddForce(CustomLogicVector3Builtin force, string mode = "Acceleration")
         {
-            // parse mode as Forcemode enum
+            if (!Character.IsMine()) return;
+            Character.SetKinematic(false, 1f);
             var useForceMode = Enum.TryParse(mode, out ForceMode forceMode) ? forceMode : ForceMode.Acceleration;
             Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
         }
@@ -380,45 +296,6 @@ namespace CustomLogic
         public void RemoveOutline()
         {
             Character.RemoveOutline();
-            // if (name == "Name")
-            //     Character.Name = (string)value;
-            // else if (name == "Guild")
-            //     Character.Guild = (string)value;
-            // if (!Character.IsMine())
-            //     return;
-            // if (name == "Position")
-            //     Character.Cache.Transform.position = ((CustomLogicVector3Builtin)value).Value;
-            // else if (name == "Rotation")
-            //     Character.Cache.Transform.rotation = Quaternion.Euler(((CustomLogicVector3Builtin)value).Value);
-            // else if (name == "QuaternionRotation")
-            //     Character.Cache.Transform.rotation = ((CustomLogicQuaternionBuiltin)value).Value;
-            // else if (name == "Velocity")
-            // {
-            //     Character.SetKinematic(false, 1f);
-            //     Character.Cache.Rigidbody.velocity = ((CustomLogicVector3Builtin)value).Value;
-            // }
-            // else if (name == "Forward")
-            //     Character.Cache.Transform.forward = ((CustomLogicVector3Builtin)value).Value;
-            // else if (name == "Right")
-            //     Character.Cache.Transform.right = ((CustomLogicVector3Builtin)value).Value;
-            // else if (name == "Up")
-            //     Character.Cache.Transform.up = ((CustomLogicVector3Builtin)value).Value;
-            // else if (name == "Health")
-            //     Character.SetCurrentHealth(value.UnboxToInt());
-            // else if (name == "MaxHealth")
-            //     Character.SetMaxHealth(value.UnboxToInt());
-            // else if (name == "Team")
-            //     Character.SetTeam((string)value);
-            // else if (name == "CustomDamageEnabled")
-            //     Character.CustomDamageEnabled = (bool)value;
-            // else if (name == "CustomDamage")
-            //     Character.CustomDamage = value.UnboxToInt();
-            // else if (name == "Name")
-            //     Character.Name = (string)value;
-            // else if (name == "Guild")
-            //     Character.Guild = (string)value;
-            // else
-            //     base.SetField(name, value);
         }
 
         public override bool Equals(object other)

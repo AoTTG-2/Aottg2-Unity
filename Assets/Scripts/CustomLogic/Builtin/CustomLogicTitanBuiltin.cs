@@ -15,6 +15,20 @@ namespace CustomLogic
             Controller = Titan.GetComponent<BaseTitanAIController>();
         }
 
+        [CLProperty("Titans's name.")]
+        public string Name
+        {
+            get => Titan.Name;
+            set => Titan.Name = value;
+        }
+
+        [CLProperty("Titans's guild.")]
+        public string Guild
+        {
+            get => Titan.Guild;
+            set => Titan.Guild = value;
+        }
+
         [CLProperty("Titan's size.")]
         public float Size
         {
