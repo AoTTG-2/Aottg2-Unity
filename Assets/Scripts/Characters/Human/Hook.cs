@@ -171,7 +171,7 @@ namespace Characters
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
                     {
-                        HookCharacter.GetKilled(_owner.Name + "'s hook");
+                        HookCharacter.GetDamaged(_owner.Name + "'s hook", 10 + (int)_owner.CurrentSpeed);
                     }
                 }
             }

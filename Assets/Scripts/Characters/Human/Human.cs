@@ -2014,7 +2014,7 @@ namespace Characters
             float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
             if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
             {
-                GetKilled("Impact");
+                GetDamaged("Impact", (int)speedDiff);
                 return;
             }
         }
