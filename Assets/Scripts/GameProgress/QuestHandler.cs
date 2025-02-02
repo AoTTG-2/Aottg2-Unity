@@ -5,7 +5,6 @@ using ApplicationManagers;
 using System;
 using Utility;
 using Characters;
-using System.Globalization;
 
 namespace GameProgress
 {
@@ -15,7 +14,7 @@ namespace GameProgress
         protected Dictionary<string, List<QuestItem>> _activeQuests = new Dictionary<string, List<QuestItem>>();
         const int DailyQuestCount = 3;
         const int WeeklyQuestCount = 3;
-        
+
         // caching categories for performance
         protected string[] TitanKillCategories = new string[] { "KillTitan" };
         protected string[] HumanKillCategories = new string[] { "KillHuman" };
@@ -52,7 +51,7 @@ namespace GameProgress
                 int day = (t.Days - 1) % 7;
                 int daysLeft = 6 - day;
                 int hoursLeft = 24 - t.Hours;
-                return string.Format("Resets in: {0} {1}, {2} {3}", daysLeft, daysLeft == 1 ? "day": "days", hoursLeft, hoursLeft == 1 ? "hour" : "hours");
+                return string.Format("Resets in: {0} {1}, {2} {3}", daysLeft, daysLeft == 1 ? "day" : "days", hoursLeft, hoursLeft == 1 ? "hour" : "hours");
             }
         }
 
@@ -171,52 +170,58 @@ namespace GameProgress
             return true;
         }
 
-        public override void RegisterTitanKill(BasicTitan victim, KillMethod method)
+        // I wish C# gave me a way to do this more easily without unnecessary allocations
+        private static readonly IEnumerable<string> TargetKillTitanCategory = new[] { "KillTitan" };
+        private static readonly IEnumerable<string> TargetKillHumanCategory = new[] { "KillHuman" };
+
+        public override void RegisterKill(BaseCharacter player, BaseCharacter enemy)
         {
-            foreach (string category in TitanKillCategories)
-            {
-                if (!_activeQuests.ContainsKey(category))
-                    continue;
-                foreach (QuestItem item in _activeQuests[category])
-                {
-                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
-                        continue;
-                    if (category == "KillTitan")
-                        item.AddProgress();
-                }
-            }
+            // Remember kids; optimize for the most common case
+            if (enemy is BasicTitan)
+                RegisterProgress(GetWeapon(player), TitanKillCategories, TargetKillTitanCategory);
+            else if (enemy is Human)
+                RegisterProgress(GetWeapon(player), HumanKillCategories, TargetKillHumanCategory);
         }
 
-        public override void RegisterHumanKill(Human victim, KillMethod method)
+        private static KillWeapon GetWeapon(BaseCharacter player) => player switch
         {
-            foreach (string category in HumanKillCategories)
+            Human human => human.Setup.Weapon switch
             {
-                if (!_activeQuests.ContainsKey(category))
-                    continue;
-                foreach (QuestItem item in _activeQuests[category])
-                {
-                    if (!CheckKillConditions(item.Conditions.Value, method.Weapon))
-                        continue;
-                    if (category == "KillHuman")
-                        item.AddProgress();
-                }
-            }
-        }
+                HumanWeapon.Blade => KillWeapon.Blade,
+                HumanWeapon.AHSS => KillWeapon.AHSS,
+                HumanWeapon.Thunderspear => KillWeapon.Thunderspear,
+                HumanWeapon.APG => KillWeapon.APG,
+                _ => KillWeapon.Other,
+            },
+            BaseShifter => KillWeapon.Shifter,
+            BasicTitan => KillWeapon.Titan,
+            _ => KillWeapon.Other,
+        };
 
-        public override void RegisterDamage(GameObject victim, KillMethod method, int damage)
+        private static readonly IEnumerable<string> TargetDamageCategories = new[] { "HitDamage", "DealDamage" };
+
+        public override void RegisterDamage(BaseCharacter player, BaseCharacter enemy, int damage) =>
+            RegisterProgress(GetWeapon(player), DamageCategories, TargetDamageCategories);
+
+        private void RegisterProgress(KillWeapon weapon, IEnumerable<string> categories, IEnumerable<string> targetCategories)
         {
-            foreach (string category in DamageCategories)
+            foreach (string category in categories)
             {
                 if (!_activeQuests.ContainsKey(category))
                     continue;
                 foreach (QuestItem item in _activeQuests[category])
                 {
-                    if (!CheckDamageConditions(item.Conditions.Value, method.Weapon, damage))
+                    if (!CheckKillConditions(item.Conditions.Value, weapon))
                         continue;
-                    if (category == "HitDamage")
-                        item.AddProgress();
-                    else if (category == "DealDamage")
-                        item.AddProgress(damage);
+
+                    foreach (var targetCategory in targetCategories)
+                    {
+                        if (category == targetCategory)
+                        {
+                            item.AddProgress();
+                            break;
+                        }
+                    }
                 }
             }
         }
