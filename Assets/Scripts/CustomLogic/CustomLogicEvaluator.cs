@@ -1,4 +1,4 @@
-using ApplicationManagers;
+    using ApplicationManagers;
 using Characters;
 using GameManagers;
 using Map;
@@ -13,6 +13,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using Utility;
+
 
 namespace CustomLogic
 {
@@ -199,7 +200,10 @@ namespace CustomLogic
 
         public void OnButtonClick(string name)
         {
-            EvaluateMethodForCallbacks("OnButtonClick", new object[] { name });
+            var parameters = ArrayPool<object>.New(1);
+            parameters[0] = name;
+            EvaluateMethodForCallbacks("OnButtonClick", parameters);
+            ArrayPool<object>.Free(parameters);
         }
 
         public void OnPlayerSpawn(Player player, BaseCharacter character)
@@ -984,7 +988,7 @@ namespace CustomLogic
                 else if (expression.Type == CustomLogicAstType.ClassInstantiateExpression)
                 {
                     CustomLogicClassInstantiateExpressionAst instantiate = (CustomLogicClassInstantiateExpressionAst)expression;
-                    var parameters = new object[instantiate.Parameters.Count];
+                    var parameters = ArrayPool<object>.New(instantiate.Parameters.Count);
                     for (int i = 0; i < instantiate.Parameters.Count; i++)
                     {
                         CustomLogicBaseAst ast = instantiate.Parameters[i];
@@ -993,17 +997,23 @@ namespace CustomLogic
 
                     if (CustomLogicBuiltinTypes.IsBuiltinType(instantiate.Name) || _start.Classes.ContainsKey(instantiate.Name))
                     {
-                        return CreateClassInstance(instantiate.Name, parameters, true);
+                        var result = CreateClassInstance(instantiate.Name, parameters, true);
+                        ArrayPool<object>.Free(parameters);
+                        return result;
                     }
 
                     // If no class was found with that name, interpret the expression as local method call
                     if (localVariables.ContainsKey(instantiate.Name) && localVariables[instantiate.Name] is CLMethodBinding method)
                     {
-                        return method.Call(classInstance, parameters);
+                        var result = method.Call(classInstance, parameters);
+                        ArrayPool<object>.Free(parameters);
+                        return result;
                     }
 
                     var userMethod = (UserMethod)localVariables[instantiate.Name];
-                    return EvaluateMethod(userMethod, parameters);
+                    var evalResult = EvaluateMethod(userMethod, parameters);
+                    ArrayPool<object>.Free(parameters);
+                    return evalResult;
                 }
                 else if (expression.Type == CustomLogicAstType.FieldExpression)
                 {
@@ -1022,13 +1032,15 @@ namespace CustomLogic
                 {
                     CustomLogicMethodCallExpressionAst methodCallExpression = (CustomLogicMethodCallExpressionAst)expression;
                     CustomLogicClassInstance methodCallInstance = (CustomLogicClassInstance)EvaluateExpression(classInstance, localVariables, methodCallExpression.Left);
-                    var parameters = new object[methodCallExpression.Parameters.Count];
+                    var parameters = ArrayPool<object>.New(methodCallExpression.Parameters.Count); // new object[methodCallExpression.Parameters.Count];
                     for (int i = 0; i < methodCallExpression.Parameters.Count; i++)
                     {
                         CustomLogicBaseExpressionAst parameterExpression = (CustomLogicBaseExpressionAst)methodCallExpression.Parameters[i];
                         parameters[i] = EvaluateExpression(classInstance, localVariables, parameterExpression);
                     }
-                    return EvaluateMethod(methodCallInstance, methodCallExpression.Name, parameters);
+                    var result = EvaluateMethod(methodCallInstance, methodCallExpression.Name, parameters);
+                    ArrayPool<object>.Free(parameters);
+                    return result;
                 }
                 else if (expression.Type == CustomLogicAstType.BinopExpression)
                 {
