@@ -6,6 +6,17 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Constructor for the Color class
+    /// <example>
+    /// <code>
+    /// color = Color() # Creates a white color
+    /// color = Color(150) # Creates a gray color
+    /// color = Color(255, 0, 0) # Creates a red color
+    /// color = Color(255, 0, 0, 100) # Creates a red color with transparency
+    /// </code>
+    /// </example>
+    /// </summary>
     [CLType(Name = "Color", Static = true, Description = "")]
     partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {
@@ -34,6 +45,7 @@ namespace CustomLogic
             Value = color;
         }
 
+        
         public CustomLogicColorBuiltin(Color255 value)
         {
             Value = value;

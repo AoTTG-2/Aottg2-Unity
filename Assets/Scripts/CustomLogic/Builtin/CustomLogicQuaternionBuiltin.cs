@@ -54,7 +54,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Quaternion.eulerAngles"/>
         [CLProperty]
-        public CustomLogicVector3Builtin EulerAngles
+        public CustomLogicVector3Builtin Euler
         {
             get => Value.eulerAngles;
             set => Value = Quaternion.Euler(value);
@@ -81,7 +81,12 @@ namespace CustomLogic
         [CLMethod] public static CustomLogicQuaternionBuiltin FromEuler(CustomLogicVector3Builtin euler) => Quaternion.Euler(euler);
 
         /// <inheritdoc cref="Quaternion.LookRotation(Vector3, Vector3)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards) => Quaternion.LookRotation(forward, upwards);
+        [CLMethod] public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
+        {
+            if (upwards == null)
+                return Quaternion.LookRotation(forward);
+            return Quaternion.LookRotation(forward, upwards);
+        }
 
         /// <inheritdoc cref="Quaternion.FromToRotation(Vector3, Vector3)"/>
         [CLMethod] public static CustomLogicQuaternionBuiltin FromToRotation(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => Quaternion.FromToRotation(a, b);

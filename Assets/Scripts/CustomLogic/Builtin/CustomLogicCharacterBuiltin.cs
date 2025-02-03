@@ -148,26 +148,6 @@ namespace CustomLogic
             }
         }
 
-        [CLProperty(Description = "The display name of the character.")]
-        public string Name
-        {
-            get => Character.Name;
-            set
-            {
-                Character.Name = value;
-            }
-        }
-
-        [CLProperty(Description = "The guild name of the character.")]
-        public string Guild
-        {
-            get => Character.Guild;
-            set
-            {
-                Character.Guild = value;
-            }
-        }
-
         [CLProperty(Description = "Character's current health.")]
         public float Health
         {

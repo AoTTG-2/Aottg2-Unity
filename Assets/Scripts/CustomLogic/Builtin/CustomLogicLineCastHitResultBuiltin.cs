@@ -4,22 +4,22 @@ namespace CustomLogic
     partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         [CLProperty("true if the linecast hit a character", ReadOnly = true)]
-        public bool IsCharacter;
+        public bool IsCharacter { get; set; }
 
         [CLProperty("true if the linecast hit a map object", ReadOnly = true)]
-        public bool IsMapObject;
+        public bool IsMapObject { get; set; }
 
         [CLProperty("The distance to the hit point", ReadOnly = true)]
-        public float Distance;
+        public float Distance { get; set; }
 
         [CLProperty("The point in world space where the linecast hit", ReadOnly = true)]
-        public CustomLogicVector3Builtin Point;
+        public CustomLogicVector3Builtin Point { get; set; }
 
         [CLProperty("The normal of the surface the linecast hit", ReadOnly = true)]
-        public CustomLogicVector3Builtin Normal;
+        public CustomLogicVector3Builtin Normal { get; set; }
 
         [CLProperty("The collider that was hit", ReadOnly = true)]
-        public CustomLogicColliderBuiltin Collider;
+        public CustomLogicColliderBuiltin Collider { get; set; }
 
         public CustomLogicLineCastHitResultBuiltin()
         {

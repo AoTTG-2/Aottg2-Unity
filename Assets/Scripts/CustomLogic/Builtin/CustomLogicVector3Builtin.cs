@@ -281,6 +281,8 @@ namespace CustomLogic
             {
                 (CustomLogicVector3Builtin v3, float f) => new CustomLogicVector3Builtin(v3.Value * f),
                 (float f, CustomLogicVector3Builtin v3) => new CustomLogicVector3Builtin(v3.Value * f),
+                (CustomLogicVector3Builtin v3, int f) => new CustomLogicVector3Builtin(v3.Value * f),
+                (int f, CustomLogicVector3Builtin v3) => new CustomLogicVector3Builtin(v3.Value * f),
                 (CustomLogicVector3Builtin v3, CustomLogicVector3Builtin v3Other) => new CustomLogicVector3Builtin(Util.MultiplyVectors(v3, v3Other)),
                 _ => throw CustomLogicUtils.OperatorException(nameof(__Mul__), self, other)
             };
@@ -292,6 +294,7 @@ namespace CustomLogic
             return (self, other) switch
             {
                 (CustomLogicVector3Builtin v3, float f) => new CustomLogicVector3Builtin(v3.Value / f),
+                (CustomLogicVector3Builtin v3, int f) => new CustomLogicVector3Builtin(v3.Value / f),
                 (CustomLogicVector3Builtin v3, CustomLogicVector3Builtin v3Other) => new CustomLogicVector3Builtin(Util.DivideVectors(v3, v3Other)),
                 _ => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other)
             };
