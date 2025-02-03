@@ -60,10 +60,18 @@ namespace UI
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
 
+            // Load the font asset once
+            var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
+
             // Pre-create our fixed-size pool of line objects
             for (int i = 0; i < POOL_SIZE; i++)
             {
                 TMP_InputField lineObj = CreateLine(string.Empty);
+                // Apply the font to each pooled line
+                var textComponent = lineObj.textComponent as TextMeshProUGUI;
+                textComponent.font = fontAsset;
+                lineObj.fontAsset = fontAsset;
+                
                 lineObj.gameObject.SetActive(false);
                 _linesPool.Add(lineObj);
             }
