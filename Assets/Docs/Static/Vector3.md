@@ -50,10 +50,10 @@ Inherits from object
 |Multiply(a : [Vector3](../Static/Vector3.md), b : [Vector3](../Static/Vector3.md))|[Vector3](../Static/Vector3.md)|Returns the multiplication of two Vector3s.|
 |Divide(a : [Vector3](../Static/Vector3.md), b : [Vector3](../Static/Vector3.md))|[Vector3](../Static/Vector3.md)|Returns the division of two Vector3s.|
 |GetRotationDirection(a : [Vector3](../Static/Vector3.md), b : [Vector3](../Static/Vector3.md))|[Vector3](../Static/Vector3.md)|Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.|
-|\_\_Copy\_\_()|Object||
-|\_\_Add\_\_(self : Object, other : Object)|Object||
-|\_\_Sub\_\_(self : Object, other : Object)|Object||
-|\_\_Mul\_\_(self : Object, other : Object)|Object||
-|\_\_Div\_\_(self : Object, other : Object)|Object||
-|\_\_Eq\_\_(self : Object, other : Object)|bool||
-|\_\_Hash\_\_()|int||
+|\_\_Copy\_\_()|Object|Override to deepcopy object on assignment, used for structs. Ex: copy = original is equivalent to copy = original.\_\_Copy\_\_()|
+|\_\_Add\_\_(self : Object, other : Object)|Object|Override to implement addition, used for + operator. Ex: a + b is equivalent to a.\_\_Add\_\_(a, b)|
+|\_\_Sub\_\_(self : Object, other : Object)|Object|Override to implement subtraction, used for - operator. Ex: a - b is equivalent to a.\_\_Sub\_\_(a, b)|
+|\_\_Mul\_\_(self : Object, other : Object)|Object|Override to implement multiplication, used for * operator. Ex: a * b is equivalent to a.\_\_Mul\_\_(a, b)|
+|\_\_Div\_\_(self : Object, other : Object)|Object|Override to implement division, used for / operator. Ex: a / b is equivalent to a.\_\_Div\_\_(a, b)|
+|\_\_Eq\_\_(self : Object, other : Object)|bool|Override to implement equality comparison, used for == and != operators. Ex: a == b is equivalent to a.\_\_Eq\_\_(a, b)|
+|\_\_Hash\_\_()|int|Override to implement hashing, used for GetHashCode - Used for Dictionaries/Sets. Ex: hash = obj.GetHashCode() is equivalent to hash = obj.\_\_Hash\_\_()|

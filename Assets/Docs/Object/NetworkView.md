@@ -12,4 +12,4 @@ Inherits from object
 |SendMessageAll(msg : [String](../Static/String.md))|none|Send a message to all players including myself.|
 |SendMessageOthers(msg : [String](../Static/String.md))|none|Send a message to players excluding myself.|
 |SendStream(obj : Object)|none|Send an object to the network sync stream.             This represents sending data from the object owner to all non-owner observers,             and should only be called in the SendNetworkStream callback in the attached component.             It only works with some object types: primitives and Vector3.|
-|ReceiveStream()|Object||
+|ReceiveStream()|Object|Receive an object through the network sync stream.             This represents receiving data from the object owner as a non-owner observer,             and should only be called in the OnNetworkStream callback.|

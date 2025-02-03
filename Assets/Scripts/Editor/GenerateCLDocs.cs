@@ -133,23 +133,30 @@ public class GenerateCLDocs : EditorWindow
 
         foreach (System.Xml.XmlNode inheritDoc in inheritDocs)
         {
-            var cref = inheritDoc.Attributes["cref"].Value;
-            var resolved = ResolveInheritDoc(cref);
-
-            if (resolved == null)
+            try
             {
-                Debug.LogError($"Could not resolve cref {cref}");
-                continue;
+                var cref = inheritDoc.Attributes["cref"].Value;
+                var resolved = ResolveInheritDoc(cref);
+
+                if (resolved == null)
+                {
+                    Debug.LogError($"Could not resolve cref {cref}");
+                    continue;
+                }
+
+                Debug.Log("Resolved cref " + cref);
+
+                //necessary for crossing XmlDocument contexts
+                XmlNode importNode = inheritDoc.ParentNode.OwnerDocument.ImportNode(resolved, true);
+
+                if (resolved != null)
+                {
+                    inheritDoc.ParentNode.ReplaceChild(importNode, inheritDoc);
+                }
             }
-            
-            Debug.Log("Resolved cref " + cref);
-
-            //necessary for crossing XmlDocument contexts
-            XmlNode importNode = inheritDoc.ParentNode.OwnerDocument.ImportNode(resolved, true);
-
-            if (resolved != null)
+            catch (System.Exception e)
             {
-                inheritDoc.ParentNode.ReplaceChild(importNode, inheritDoc);
+                Debug.LogError($"Error resolving cref {e.Message}");
             }
         }
 
@@ -285,17 +292,47 @@ public class GenerateCLDocs : EditorWindow
         var methodName = method.Name;
 
         // Create params signature with fully qualified name
-        string qualifiedParameters = string.Join(",", method.GetParameters().Select(x => x.ParameterType.FullName));
-        var methodNameWithParams = $"M:{type.FullName}.{methodName}({qualifiedParameters})";
+        string qualifiedParameters = string.Empty;
+        if (method.GetParameters().Length > 0)
+            qualifiedParameters = "(" + string.Join(",", method.GetParameters().Select(x => x.ParameterType.FullName)) + ")";
+        var methodNameWithParams = $"M:{type.FullName}.{methodName}{qualifiedParameters}";
         string path = $"//member[@name=\"{methodNameWithParams}\"]";
         var methodNode = XMLdoc.SelectSingleNode(path);
+
+        bool found = false;
         if (methodNode != null)
         {
             // search for any child node called summary
             var summary = methodNode.SelectSingleNode(".//summary");
             if (summary != null)
             {
+                found = true;
                 description = summary.InnerText;
+            }
+        }
+
+        if (!found)
+        {
+            // Check if the method is implementing an interface and find if there is a description on that
+            var interfaces = type.GetInterfaces();
+            foreach (var inter in interfaces)
+            {
+                var interMethod = inter.GetMethod(methodName);
+                if (interMethod != null)
+                {
+                    var interMethodNameWithParams = $"M:{inter.FullName}.{methodName}{qualifiedParameters}";
+                    path = $"//member[@name=\"{interMethodNameWithParams}\"]";
+                    methodNode = XMLdoc.SelectSingleNode(path);
+                    if (methodNode != null)
+                    {
+                        // search for any child node called summary
+                        var summary = methodNode.SelectSingleNode(".//summary");
+                        if (summary != null)
+                        {
+                            description = summary.InnerText;
+                        }
+                    }
+                }
             }
         }
         return DelimitStyled(description);

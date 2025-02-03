@@ -33,8 +33,8 @@ Inherits from object
 |AddPopupButtons(popupName : [String](../Static/String.md), labels : [List](../Object/List.md), callbacks : [List](../Object/List.md))|none|Adds a list of buttons in a row to the popup.|
 |WrapStyleTag(text : [String](../Static/String.md), style : [String](../Static/String.md), arg : [String](../Static/String.md) = )|[String](../Static/String.md)|Returns a wrapped string given style and args.|
 |GetLocale(cat : [String](../Static/String.md), sub : [String](../Static/String.md), key : [String](../Static/String.md))|[String](../Static/String.md)|Gets translated locale from the current Language.json file with given category, subcategory, and key pattern.|
-|GetLanguage()|[String](../Static/String.md)||
-|ShowChangeCharacterMenu()|none||
+|GetLanguage()|[String](../Static/String.md)|Returns the current language (e.g. "English" or "简体中文").|
+|ShowChangeCharacterMenu()|none|Shows the change character menu if main character is Human.|
 |SetScoreboardHeader(header : [String](../Static/String.md))|none|Sets the display of the scoreboard header (default "Kills / Deaths...")|
 |SetScoreboardProperty(property : [String](../Static/String.md))|none|Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default "Kills / Deaths..." display.|
 |GetThemeColor(panel : [String](../Static/String.md), category : [String](../Static/String.md), item : [String](../Static/String.md))|[Color](../Static/Color.md)|Gets the color of the specified item. See theme json for reference.|
