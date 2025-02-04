@@ -130,29 +130,21 @@ public class GenerateCLDocs : EditorWindow
 
         // For all inheritdoc tags, attempt to resolve them using script.xml and any other xml files in the same folder
         var inheritDocs = XMLdoc.SelectNodes("//inheritdoc");
-
         foreach (System.Xml.XmlNode inheritDoc in inheritDocs)
         {
             try
             {
                 var cref = inheritDoc.Attributes["cref"].Value;
                 var resolved = ResolveInheritDoc(cref);
-
                 if (resolved == null)
                 {
                     Debug.LogError($"Could not resolve cref {cref}");
                     continue;
                 }
 
-                Debug.Log("Resolved cref " + cref);
-
-                //necessary for crossing XmlDocument contexts
                 XmlNode importNode = inheritDoc.ParentNode.OwnerDocument.ImportNode(resolved, true);
-
                 if (resolved != null)
-                {
                     inheritDoc.ParentNode.ReplaceChild(importNode, inheritDoc);
-                }
             }
             catch (System.Exception e)
             {
@@ -165,6 +157,10 @@ public class GenerateCLDocs : EditorWindow
             .SelectMany(x => x.GetTypes())
             .Where(x => x.Namespace == "CustomLogic" && x.GetCustomAttributes(typeof(CLTypeAttribute), false).Length > 0)
             .ToArray();
+
+        // Clear the existing files in Object and Static folders
+        System.IO.Directory.Delete($"{output}/Object", true);
+        System.IO.Directory.Delete($"{output}/Static", true);
 
         // Update Type reference dictionary with the class names and their paths.
         TypeReference.Clear();
@@ -192,7 +188,6 @@ public class GenerateCLDocs : EditorWindow
 
             // create folders if they dont exist
             System.IO.Directory.CreateDirectory(folder);
-
             string path = $"{folder}/{className}.md";
             GenerateClassDoc(path, cl, XMLdoc);
         }

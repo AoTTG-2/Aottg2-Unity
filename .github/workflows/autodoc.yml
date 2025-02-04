@@ -1,0 +1,49 @@
+name: Sync Files to Another Repo
+
+on:
+  push:
+    branches:
+      - Thyme-TestBranch # Source branch
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+        with:
+          repository: AoTTG-2/Aottg2-Unity
+          ref: Thyme-TestBranch
+
+      - name: Filter and copy .md files
+        run: |
+          mkdir -p temp-dir/objects temp-dir/static
+          find Assets/Docs/object -name '*.md' -exec cp {} temp-dir/objects/ \;
+          find Assets/Docs/static -name '*.md' -exec cp {} temp-dir/static/ \;
+
+      - name: Checkout target repository
+        uses: actions/checkout@v2
+        with:
+          repository: AoTTG-2/CustomLogicDocumentation
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: integration
+
+      - name: Delete existing files in target folders
+        run: |
+          rm -rf reference/objects/*
+          rm -rf reference/static/*
+
+      - name: Copy files to target repository
+        run: |
+          cp -R temp-dir/objects/* reference/objects/
+          cp -R temp-dir/static/* reference/static/
+
+      - name: Commit and push changes
+        run: |
+          cd reference
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Sync .md files from source repo"
+          git push origin integration
