@@ -30,11 +30,13 @@ namespace UI
         private int _currentLineIndex = 0;
         protected override string ThemePanel => "ChatPanel";
         public bool IgnoreNextActivation;
-        private GameObject _suggestionsObject;
-        private string _lastInputText = "";
 
         // Cache this regex pattern as static readonly field at class level
         private static readonly Regex _richTextPattern = new Regex(@"<[^>]+>|</[^>]+>", RegexOptions.Compiled);
+
+        private float _lastTypeTime = 0f;
+        private const float TYPING_DEBOUNCE = 0.2f;
+        private bool _requestCanvasUpdate;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -56,6 +58,7 @@ namespace UI
                 UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputSelectionColor");
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
             _inputField.onEndEdit.AddListener((string text) => OnEndEdit(text));
+            _inputField.onValueChanged.AddListener(OnValueChanged);
             _inputField.text = "";
             if (SettingsManager.UISettings.ChatWidth.Value == 0f)
             {
@@ -147,10 +150,6 @@ namespace UI
             // Adjust panel rect for scrollbar
             var panelRect = _panel.GetComponent<RectTransform>();
             panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);
-
-            // Create minimal suggestions object (invisible)
-            _suggestionsObject = new GameObject("SuggestionsObject");
-            _suggestionsObject.transform.SetParent(transform, false);
         }
 
     
@@ -189,19 +188,8 @@ namespace UI
             string input = _inputField.text;
             _inputField.text = "";
             
-            // Clear suggestions before handling input
-            ChatManager.ClearLastSuggestions();
-            ChatManager.ResetTabCompletion();
-            UpdateVisibleMessages(); // Force update to clear suggestions from display
-            
             IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
             ChatManager.HandleInput(input);
-        }
-
-        // Also clear suggestions when input is deactivated
-        public void OnDeactivate()
-        {
-            ChatManager.ClearLastSuggestions();
         }
 
         public void AddLine(string line)
@@ -276,27 +264,23 @@ namespace UI
                 CleanClipboardIfNeeded();
             }
 
-            // Only process input-related features when input is active
-            if (isInputActive)
+            // Handle tab completion
+            if (IsInputActive() && Input.GetKeyDown(KeyCode.Tab))
             {
-                // Tab completion
-                if (Input.GetKeyDown(KeyCode.Tab))
-                {
-                    string completion = ChatManager.GetNextTabCompletion(_inputField.text);
-                    if (completion != null)
-                    {
-                        _inputField.text = completion;
-                        _inputField.caretPosition = _inputField.text.Length;
-                    }
-                    return;
-                }
+                ChatManager.HandleTabComplete();
+            }
 
-                // Only update suggestions when text changes
-                if (_lastInputText != _inputField.text)
-                {
-                    _lastInputText = _inputField.text;
-                    ChatManager.GetAutocompleteSuggestion(_lastInputText);
-                }
+            // Debounced typing handler
+            if (Time.unscaledTime - _lastTypeTime >= TYPING_DEBOUNCE)
+            {
+                ChatManager.HandleTyping(_inputField.text);
+            }
+
+            // Handle any pending canvas updates
+            if (_requestCanvasUpdate)
+            {
+                _requestCanvasUpdate = false;
+                Canvas.ForceUpdateCanvases();
             }
         }
 
@@ -421,6 +405,8 @@ namespace UI
                     ? Mathf.Clamp(Mathf.FloorToInt((1f - scrollPos) * maxStartIndex), 0, maxStartIndex)
                     : maxStartIndex;
             }
+
+            bool needsCanvasUpdate = false;
             for (int i = 0; i < POOL_SIZE; i++)
             {
                 var lineObj = _linesPool[i];
@@ -428,19 +414,38 @@ namespace UI
                 
                 if (messageIndex < totalMessages)
                 {
-                    if (!lineObj.gameObject.activeSelf)
+                    bool wasActive = lineObj.gameObject.activeSelf;
+                    string newText = _allMessages[messageIndex];
+                    
+                    if (!wasActive)
                     {
                         lineObj.gameObject.SetActive(true);
+                        needsCanvasUpdate = true;
                     }
-                    lineObj.text = _allMessages[messageIndex];
-                    lineObj.transform.SetSiblingIndex(i);
+                    
+                    if (lineObj.text != newText)
+                    {
+                        lineObj.text = newText;
+                        needsCanvasUpdate = true;
+                    }
+                    
+                    if (lineObj.transform.GetSiblingIndex() != i)
+                    {
+                        lineObj.transform.SetSiblingIndex(i);
+                        needsCanvasUpdate = true;
+                    }
                 }
                 else if (lineObj.gameObject.activeSelf)
                 {
                     lineObj.gameObject.SetActive(false);
+                    needsCanvasUpdate = true;
                 }
             }
-            Canvas.ForceUpdateCanvases();
+
+            if (needsCanvasUpdate)
+            {
+                _requestCanvasUpdate = true;
+            }
         }
 
         private void OnScroll(Vector2 scrollPosition)
@@ -466,5 +471,29 @@ namespace UI
         {
             _cachedInputFields.Clear();
         }
+
+        private void OnValueChanged(string text)
+        {
+            _lastTypeTime = Time.unscaledTime;
+            ChatManager.HandleTyping(text);
+        }
+
+        public string GetInputText()
+        {
+            return _inputField.text;
+        }
+
+        public void SetInputText(string newText)
+        {
+            _inputField.text = newText;
+        }
+
+        public void MoveCaretToEnd()
+        {
+            _inputField.caretPosition = _inputField.text.Length;
+            _inputField.selectionAnchorPosition = _inputField.caretPosition;
+            _inputField.selectionFocusPosition = _inputField.caretPosition;
+        }
     }
 }
+
