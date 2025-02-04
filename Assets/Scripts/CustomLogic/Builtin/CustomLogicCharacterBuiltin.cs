@@ -7,15 +7,31 @@ using UnityEngine;
 namespace CustomLogic
 {
     // todo: all property setters should check IsMine()
-    [CLType(Abstract = true)]
-    abstract class CustomLogicCharacterBuiltin: CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Character", Abstract = true)]
+    abstract partial class CustomLogicCharacterBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly BaseCharacter Character;
-        
-        protected CustomLogicCharacterBuiltin(BaseCharacter character, string type = "Character"): base(type)
+
+        protected CustomLogicCharacterBuiltin(BaseCharacter character)
         {
             Character = character;
             Variables["IsCharacter"] = true;
+        }
+
+        [CLProperty(Description = "Character's name.")]
+        public string Name {
+            get => Character.Name;
+            set {
+                Character.Name = value;
+            }
+        }
+
+        [CLProperty(Description = "Character's guild.")]
+        public string Guild {
+            get => Character.Guild;
+            set {
+                Character.Guild = value;
+            }
         }
 
         [CLProperty(Description = "Player who owns this character.")]
@@ -26,10 +42,10 @@ namespace CustomLogic
 
         [CLProperty(Description = "Network view ID of the character.")]
         public int ViewID => Character.Cache.PhotonView.ViewID;
-        
+
         [CLProperty(Description = "Is this character mine?")]
         public bool IsMine => Character.IsMine();
-        
+
         [CLProperty]
         public bool IsMainCharacter => Character.IsMainCharacter();
 
@@ -40,7 +56,8 @@ namespace CustomLogic
         public CustomLogicVector3Builtin Position
         {
             get => new CustomLogicVector3Builtin(Character.Cache.Transform.position);
-            set {
+            set
+            {
                 if (Character.IsMine())
                     Character.Cache.Transform.position = value.Value;
             }
@@ -55,7 +72,7 @@ namespace CustomLogic
                 if (Character.IsMine())
                     Character.Cache.Transform.rotation = Quaternion.Euler(value.Value);
             }
-            
+
         }
 
         [CLProperty(Description = "Quaternion rotation of the character.")]
@@ -75,8 +92,9 @@ namespace CustomLogic
             get => new CustomLogicVector3Builtin(Character.Cache.Rigidbody.velocity);
             set
             {
-                if (Character.IsMine())
-                    Character.Cache.Rigidbody.velocity = value.Value;
+                if (!Character.IsMine()) return;
+                Character.SetKinematic(false, 1f);
+                Character.Cache.Rigidbody.velocity = value.Value;
             }
         }
 
@@ -127,26 +145,6 @@ namespace CustomLogic
             {
                 if (Character.IsMine())
                     Character.SetTeam(value);
-            }
-        }
-
-        [CLProperty(Description = "The display name of the character.")]
-        public string Name
-        {
-            get => Character.Name;
-            set
-            {
-                Character.Name = value;
-            }
-        }
-
-        [CLProperty(Description = "The guild name of the character.")]
-        public string Guild
-        {
-            get => Character.Guild;
-            set
-            {
-                Character.Guild = value;
             }
         }
 
@@ -223,7 +221,7 @@ namespace CustomLogic
         [CLMethod(Description = "Gets the length of animation.")]
         public float GetAnimationLength(string animation)
         {
-            return Character.Cache.Animation[animation].length;
+            return Character.Animation.GetLength(animation);
         }
 
         [CLMethod(Description = "Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]
@@ -250,7 +248,8 @@ namespace CustomLogic
         [CLMethod(Description = "Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.")]
         public void AddForce(CustomLogicVector3Builtin force, string mode = "Acceleration")
         {
-            // parse mode as Forcemode enum
+            if (!Character.IsMine()) return;
+            Character.SetKinematic(false, 1f);
             var useForceMode = Enum.TryParse(mode, out ForceMode forceMode) ? forceMode : ForceMode.Acceleration;
             Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
         }

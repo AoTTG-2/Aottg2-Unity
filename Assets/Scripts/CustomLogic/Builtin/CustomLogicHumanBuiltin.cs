@@ -9,14 +9,26 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, Static = false, InheritBaseMembers = true)]
-    class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Human", Abstract = true)]
+    partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;
 
-        public CustomLogicHumanBuiltin(Human human) : base(human, "Human")
+        public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
+        }
+
+        [CLProperty(description: "The human's name")]
+        public string Name {
+            get => Human.Name;
+            set => Human.Name = value;
+        }
+
+        [CLProperty(description: "The human's guild")]
+        public string Guild {
+            get => Human.Guild;
+            set => Human.Guild = value;
         }
 
         // Add CLProperties for the above setField/getField 
@@ -311,6 +323,9 @@ namespace CustomLogic
             set => Human.InvincibleTimeLeft = value;
         }
 
+        [CLProperty(description: "If the human is carried.")]
+        public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
+
         // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
         public bool Refill()
@@ -428,6 +443,6 @@ namespace CustomLogic
             if (Human.IsMine())
                 Human.Stats.DisablePerks();
         }
-        
+
     }
 }

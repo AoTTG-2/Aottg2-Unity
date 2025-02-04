@@ -101,6 +101,12 @@ namespace Utility
             return set;
         }
 
+        public static HashSet<T> RemoveNullOrDeadDetections<T>(HashSet<T> set) where T : BaseDetection
+        {
+            set.RemoveWhere(e => e.IsNullOrDead());
+            return set;
+        }
+
         public static HashSet<BaseShifter> RemoveNullOrDeadShifters(HashSet<BaseShifter> set)
         {
             set.RemoveWhere(e => !e || (e.Dead && !e.TransformingToHuman));

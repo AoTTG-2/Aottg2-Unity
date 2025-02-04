@@ -7,17 +7,18 @@ using Photon.Pun;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicNetworkViewBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "NetworkView", Abstract = true)]
+    partial class CustomLogicNetworkViewBuiltin : BuiltinClassInstance
     {
         public readonly MapObject MapObject;
         public CustomLogicPhotonSync Sync;
         public int OwnerId = -1;
-        
+
         private List<object> _streamObjects;
         private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
 
-        public CustomLogicNetworkViewBuiltin(MapObject obj) : base("NetworkView")
+        [CLConstructor]
+        public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
         }
@@ -70,7 +71,7 @@ namespace CustomLogic
                 if (MapObject.GameObject != null)
                 {
                     foreach (var instance in _classInstances)
-                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new List<object>() { oldOwner, newOwner });
+                        CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
             }
         }
@@ -102,7 +103,7 @@ namespace CustomLogic
                 return;
             foreach (var instance in _classInstances)
             {
-                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new List<object>() { player, message, sentServerTime });
+                CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkMessage", new object[] { player, message, sentServerTime });
             }
         }
 
@@ -166,12 +167,20 @@ namespace CustomLogic
 
         private static object SerializeStreamObj(object obj)
         {
-            return obj is CustomLogicVector3Builtin v3 ? v3.Value : obj;
+            if (obj is CustomLogicVector3Builtin)
+                return ((CustomLogicVector3Builtin)obj).Value;
+            if (obj is CustomLogicQuaternionBuiltin)
+                return ((CustomLogicQuaternionBuiltin)obj).Value;
+            return obj;
         }
 
         private static object DeserializeStreamObj(object obj)
         {
-            return obj is Vector3 v3 ? new CustomLogicVector3Builtin(v3) : obj;
+            if (obj is Vector3)
+                return new CustomLogicVector3Builtin((Vector3)obj);
+            if (obj is CustomLogicQuaternionBuiltin)
+                return new CustomLogicQuaternionBuiltin((Quaternion)obj);
+            return obj;
         }
     }
 }

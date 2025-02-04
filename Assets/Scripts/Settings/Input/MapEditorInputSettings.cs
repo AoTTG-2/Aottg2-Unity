@@ -25,5 +25,10 @@
         public KeybindSetting Undo = new KeybindSetting(new string[] { "LeftControl+Z", "None" });
         public KeybindSetting Redo = new KeybindSetting(new string[] { "LeftControl+Y", "None" });
         public KeybindSetting SaveMap = new KeybindSetting(new string[] { "LeftControl+S", "None" });
+        public KeybindSetting SnapCameraLeft = new KeybindSetting(new string[] { "LeftArrow", "None" });
+        public KeybindSetting SnapCameraRight = new KeybindSetting(new string[] { "RightArrow", "None" });
+        public KeybindSetting SnapCameraUp = new KeybindSetting(new string[] { "UpArrow", "None" });
+        public KeybindSetting SnapCameraDown = new KeybindSetting(new string[] { "DownArrow", "None" });
+        public KeybindSetting ToggleOrthographic = new KeybindSetting(new string[] { "O", "None" });
     }
 }

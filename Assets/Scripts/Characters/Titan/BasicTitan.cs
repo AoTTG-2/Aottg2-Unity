@@ -27,8 +27,6 @@ namespace Characters
         public Quaternion? LateUpdateHeadRotationRecv = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
         public float BellyFlopTime = 5.5f;
-        protected bool _leftArmDisabled;
-        protected bool _rightArmDisabled;
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
@@ -70,7 +68,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
-            Cache.Animation[BasicAnimations.CoverNape].speed = 1.5f;
+            Animation.SetSpeed(BasicAnimations.CoverNape, 1.5f);
         }
 
         public override bool IsGrabAttack()
@@ -134,7 +132,7 @@ namespace Characters
 
         protected override void Start()
         {
-            _inGameManager.Titans.Add(this);
+            _inGameManager.RegisterCharacter(this);
             base.Start();
             if (IsMine())
             {
@@ -191,8 +189,7 @@ namespace Characters
         {
             if (CanAction())
             {
-                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, 
-                    Cache.Animation[BasicAnimations.CoverNape].length / Cache.Animation[BasicAnimations.CoverNape].speed);
+                StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, Animation.GetTotalTime(BasicAnimations.CoverNape));
             }
         }
 
@@ -200,7 +197,7 @@ namespace Characters
         {
             if (!AI)
                 return;
-            if (left && !_leftArmDisabled)
+            if (left && !LeftArmDisabled)
             {
                 Cache.PhotonView.RPC("DisableArmRPC", RpcTarget.All, new object[] { left });
                 if (HoldHuman != null && HoldHumanLeft)
@@ -214,7 +211,7 @@ namespace Characters
                     StateAction(TitanState.ArmHurt, BasicAnimations.ArmHurtL);
                 DamagedGrunt();
             }
-            else if (!left && !_rightArmDisabled)
+            else if (!left && !RightArmDisabled)
             {
                 Cache.PhotonView.RPC("DisableArmRPC", RpcTarget.All, new object[] { left });
                 if (HoldHuman != null && !HoldHumanLeft)
@@ -232,7 +229,7 @@ namespace Characters
 
         public override bool CanAttack()
         {
-            return base.CanAttack() && !_leftArmDisabled && !_rightArmDisabled;
+            return base.CanAttack();
         }
 
         [PunRPC]
@@ -244,13 +241,13 @@ namespace Characters
             {
                 BasicCache.ForearmBloodL.Play(true);
                 _leftArmDisabledTimeLeft = ArmDisableTime;
-                _leftArmDisabled = true;
+                LeftArmDisabled = true;
             }
             else
             {
                 BasicCache.ForearmBloodR.Play(true);
                 _rightArmDisabledTimeLeft = ArmDisableTime;
-                _rightArmDisabled = true;
+                RightArmDisabled = true;
             }
         }
 
@@ -284,25 +281,25 @@ namespace Characters
 
         protected override void UpdateDisableArm()
         {
-            if (_leftArmDisabled)
+            if (LeftArmDisabled)
             {
                 _leftArmDisabledTimeLeft -= Time.deltaTime;
                 if (ArmDisableTime - _leftArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeL.isPlaying)
                     BasicCache.ForearmSmokeL.Play();
                 if (_leftArmDisabledTimeLeft <= 0f)
                 {
-                    _leftArmDisabled = false;
+                    LeftArmDisabled = false;
                     BasicCache.ForearmSmokeL.Stop();
                 }
             }
-            if (_rightArmDisabled)
+            if (RightArmDisabled)
             {
                 _rightArmDisabledTimeLeft -= Time.deltaTime;
                 if (ArmDisableTime - _rightArmDisabledTimeLeft > 2.5f && !BasicCache.ForearmSmokeR.isPlaying)
                     BasicCache.ForearmSmokeR.Play();
                 if (_rightArmDisabledTimeLeft <= 0f)
                 {
-                    _rightArmDisabled = false;
+                    RightArmDisabled = false;
                     BasicCache.ForearmSmokeR.Stop();
                 }
             }
@@ -331,7 +328,7 @@ namespace Characters
             }
             else
             {
-                float stateTime = Cache.Animation[BasicAnimations.Jump].length / 2f;
+                float stateTime = Animation.GetLength(BasicAnimations.Jump) / 2f;
                 StateActionWithTime(TitanState.PreJump, BaseTitanAnimations.Jump, stateTime, 0.1f);
             }
         }
@@ -420,7 +417,7 @@ namespace Characters
             _turnStartRotation = Cache.Transform.rotation;
             _turnTargetRotation = Quaternion.LookRotation(targetDirection);
             _currentTurnTime = 0f;
-            _maxTurnTime = Cache.Animation[animation].length * 0.71f / Cache.Animation[animation].speed;
+            _maxTurnTime = Animation.GetLength(animation) * 0.71f / Animation.GetSpeed(animation);
             StateActionWithTime(TitanState.Turn, animation, _maxTurnTime, 0.1f);
         }
 
@@ -461,7 +458,7 @@ namespace Characters
         {
             base.Awake();
             Setup = gameObject.AddComponent<BasicTitanSetup>();
-            Cache.Animation[BasicAnimations.Jump].speed = 2f;
+            Animation.SetSpeed(BasicAnimations.Jump, 2f);
         }
 
         [PunRPC]
@@ -619,17 +616,35 @@ namespace Characters
             }
             else if (_currentAttackAnimation == BasicAnimations.AttackPunch)
             {
-                if (_currentAttackStage == 0 && animationTime > 0.22f)
+                if (AI)
                 {
-                    PlaySound(TitanSounds.Swing1);
-                    BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(0.04f));
-                    _currentAttackStage = 1;
+                    if (_currentAttackStage == 0 && animationTime > 0.22f)
+                    {
+                        PlaySound(TitanSounds.Swing1);
+                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(0.04f));
+                        _currentAttackStage = 1;
+                    }
+                    else if (_currentAttackStage == 1 && animationTime > 0.505f)
+                    {
+                        PlaySound(TitanSounds.Swing2);
+                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(0.04f));
+                        _currentAttackStage = 2;
+                    }
                 }
-                else if (_currentAttackStage == 1 && animationTime > 0.505f)
+                else
                 {
-                    PlaySound(TitanSounds.Swing2);
-                    BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(0.04f));
-                    _currentAttackStage = 2;
+                    if (_currentAttackStage == 0 && animationTime > 0.2f)
+                    {
+                        PlaySound(TitanSounds.Swing1);
+                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(0.06f));
+                        _currentAttackStage = 1;
+                    }
+                    else if (_currentAttackStage == 1 && animationTime > 0.49f)
+                    {
+                        PlaySound(TitanSounds.Swing2);
+                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(0.06f));
+                        _currentAttackStage = 2;
+                    }
                 }
             }
             else if (_currentAttackAnimation == BasicAnimations.AttackSlam)
@@ -696,14 +711,21 @@ namespace Characters
             }
             else if (_currentAttack.StartsWith("AttackSlap"))
             {
-                if (_currentAttackStage == 0 && animationTime > 0.33f)
+                float t1 = 0.33f;
+                float t2 = 0.14f;
+                if (!AI)
+                {
+                    t1 = 0.3f;
+                    t2 = 0.2f;
+                }
+                if (_currentAttackStage == 0 && animationTime > t1)
                 {
                     PlaySound(TitanSounds.Swing1);
                     if (_currentStateAnimation == BasicAnimations.AttackSlapL || _currentStateAnimation == BasicAnimations.AttackSlapHighL ||
                         _currentStateAnimation == BasicAnimations.AttackSlapLowL)
-                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(0.14f));
+                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(t2));
                     else
-                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(0.14f));
+                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(t2));
                     _currentAttackStage = 1;
                 }
             }
@@ -770,12 +792,27 @@ namespace Characters
             }
             else if (_currentAttack.StartsWith("AttackBite"))
             {
-                float stage1Time = 0.33f;
-                float stage2Time = 0.42f;
+                float stage1Time;
+                float stage2Time;
                 if (_currentStateAnimation == BasicAnimations.AttackBiteF)
                 {
                     stage1Time = 0.53f;
                     stage2Time = 0.62f;
+                    if (!AI)
+                    {
+                        stage1Time = 0.47f;
+                        stage2Time = 0.63f;
+                    }
+                }
+                else
+                {
+                    stage1Time = 0.33f;
+                    stage2Time = 0.42f;
+                    if (!AI)
+                    {
+                        stage1Time = 0.28f;
+                        stage2Time = 0.43f;
+                    }
                 }
                 if (_currentAttackStage == 0 && animationTime > stage1Time)
                 {
@@ -793,13 +830,20 @@ namespace Characters
             }
             else if (_currentAttack.StartsWith("AttackBrush"))
             {
-                if (_currentAttackStage == 0 && animationTime > 0.55f)
+                float t1 = 0.55f;
+                float t2 = 0.1f;
+                if (!AI)
+                {
+                    t1 = 0.37f;
+                    t2 = 0.28f;
+                }
+                if (_currentAttackStage == 0 && animationTime > t1)
                 {
                     PlaySound(TitanSounds.Swing1);
                     if (_currentStateAnimation == BasicAnimations.AttackBrushChestL)
-                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(0.1f));
+                        BasicCache.HandLHitbox.Activate(0f, GetHitboxTime(t2));
                     else
-                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(0.1f));
+                        BasicCache.HandRHitbox.Activate(0f, GetHitboxTime(t2));
                     _currentAttackStage = 1;
                 }
             }
@@ -903,8 +947,9 @@ namespace Characters
                     int damage = 100;
                     if (CustomDamageEnabled)
                         damage = CustomDamage;
-                    HoldHuman.GetHit(this, damage, "TitanEat", "");
-                    HoldHuman = null;
+                    var tempHoldHuman = HoldHuman;
+                    Ungrab();
+                    tempHoldHuman.GetHit(this, damage, "TitanEat", "");
                 }
             }
             if (!AI && HoldHuman && !HoldHuman.Dead && !HoldHumanLeft && (Input.anyKeyDown || State == TitanState.HumanThrow))
@@ -1185,14 +1230,14 @@ namespace Characters
                     }
                 }
             }
-            if (_leftArmDisabled)
+            if (LeftArmDisabled)
             {
                 BasicCache.ForearmL.localScale = new Vector3(0.01f, 0.01f, 0.01f);
                 BasicCache.ForearmL.localRotation = Quaternion.identity;
             }
             else
                 BasicCache.ForearmL.localScale = Vector3.one;
-            if (_rightArmDisabled)
+            if (RightArmDisabled)
             {
                 BasicCache.ForearmR.localScale = new Vector3(0.01f, 0.01f, 0.01f);
                 BasicCache.ForearmR.localRotation = Quaternion.identity;
@@ -1201,7 +1246,7 @@ namespace Characters
                 BasicCache.ForearmR.localScale = Vector3.one;
             BasicCache.ForearmSmokeL.transform.position = BasicCache.ForearmL.position;
             BasicCache.ForearmSmokeR.transform.position = BasicCache.ForearmR.position;
-            if (!AI && Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+            if (!AI && Animation.IsPlaying(BasicAnimations.RunCrawler))
             {
                 var body = BasicCache.Body;
                 body.localRotation = Quaternion.Euler(-90f, 0f, 0f);
@@ -1220,15 +1265,15 @@ namespace Characters
 
         protected override int GetFootstepPhase()
         {
-            if (Cache.Animation.IsPlaying(BasicAnimations.Walk))
+            if (Animation.IsPlaying(BasicAnimations.Walk))
             {
-                float time = Cache.Animation[BasicAnimations.Walk].normalizedTime % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0.1f && time < 0.6f) ? 1 : 0;
             }
             string run = GetPlayingRunAnimation();
             if (run != "")
             {
-                float time = Cache.Animation[run].normalizedTime % 1f;
+                float time = Animation.GetCurrentNormalizedTime() % 1f;
                 return (time >= 0f && time < 0.5f) ? 0 : 1;
             }
             return _stepPhase;
@@ -1236,11 +1281,11 @@ namespace Characters
 
         protected string GetPlayingRunAnimation()
         {
-            if (Cache.Animation.IsPlaying(BasicAnimations.RunCrawler))
+            if (Animation.IsPlaying(BasicAnimations.RunCrawler))
                 return BasicAnimations.RunCrawler;
             foreach (string anim in BasicAnimations.Runs)
             {
-                if (Cache.Animation.IsPlaying(anim))
+                if (Animation.IsPlaying(anim))
                     return anim;
             }
             return "";

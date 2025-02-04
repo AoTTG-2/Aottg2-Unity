@@ -40,7 +40,6 @@ namespace Controllers
         protected float _rangedCooldownLeft;
         protected float _attackRange;
         protected ITargetable _enemy;
-        protected AICharacterDetection _detection;
         protected string _attack;
         protected float _attackCooldownLeft;
         protected float _waitAttackTimeLeft;
@@ -163,13 +162,11 @@ namespace Controllers
                 else
                     AttackChances.Add(attack, chance);
             }
-            _detection = AICharacterDetection.Create(_titan, DetectRange);
             _waitAttackTimeLeft = AttackWait;
         }
 
         public void SetDetectRange(float range)
         {
-            _detection.SetRange(range);
             DetectRange = range;
         }
 
@@ -252,7 +249,7 @@ namespace Controllers
                     {
                         if (AIState == TitanAIState.Idle)
                         {
-                            if (!IsCrawler() && !IsShifter() && RandomGen.Roll(0.3f))
+                            if (!IsCrawler() && !IsShifter() && RandomGen.Roll(0.33f))
                                 Sit();
                             else
                                 Wander();
@@ -531,7 +528,7 @@ namespace Controllers
             AIState = TitanAIState.Idle;
             _titan.HasDirection = false;
             _titan.IsSit = false;
-            _stateTimeLeft = Random.Range(2f, 6f);
+            _stateTimeLeft = Random.Range(4f, 8f);
         }
 
         protected void Wander()
@@ -546,14 +543,14 @@ namespace Controllers
             float angle = Vector3.Angle(_titan.Cache.Transform.forward, _titan.GetTargetDirection());
             if (Mathf.Abs(angle) > 60f)
                 _titan.Turn(_titan.GetTargetDirection());
-            _stateTimeLeft = Random.Range(2f, 8f);
+            _stateTimeLeft = Random.Range(2f, 6f);
         }
 
         protected void Sit()
         {
             AIState = TitanAIState.SitIdle;
             _titan.IsSit = true;
-            _stateTimeLeft = Random.Range(6f, 12f);
+            _stateTimeLeft = Random.Range(8f, 14f);
         }
 
         protected void MoveToEnemy(bool avoidCollisions = true)
@@ -623,10 +620,9 @@ namespace Controllers
             Vector3 position = _titan.Cache.Transform.position;
             float nearestDistance = float.PositiveInfinity;
             ITargetable nearestCharacter = null;
-            foreach (BaseCharacter character in _detection.Enemies)
+            var character = _titan.Detection.ClosestEnemy;
+            if (character != null && !character.Dead)
             {
-                if (character == null || character.Dead)
-                    continue;
                 float distance = Vector3.Distance(character.Cache.Transform.position, position);
                 if (distance < nearestDistance && distance < DetectRange)
                 {
@@ -723,6 +719,10 @@ namespace Controllers
                 if (farOnly && !attackInfo.FarOnly)
                     continue;
                 if (attackInfo.FarOnly && _rangedCooldownLeft > 0f)
+                    continue;
+                if (attackInfo.LeftArm && _titan.LeftArmDisabled)
+                    continue;
+                if (attackInfo.RightArm && _titan.RightArmDisabled)
                     continue;
                 if (!SmartAttack || attackInfo.FarOnly || !isHuman || !attackInfo.HasKeyframes)
                 {

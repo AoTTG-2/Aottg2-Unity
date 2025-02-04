@@ -35,7 +35,7 @@ namespace Characters
 
         protected override void Start()
         {
-            _inGameManager.Shifters.Add(this);
+            _inGameManager.RegisterCharacter(this);
             base.Start();
             if (IsMine())
             {

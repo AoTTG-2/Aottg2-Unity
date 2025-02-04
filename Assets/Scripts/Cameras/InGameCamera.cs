@@ -24,11 +24,11 @@ namespace Cameras
         private InGameManager _inGameManager;
         private InGameMenu _menu;
         private GeneralInputSettings _input;
+        private CameraDetection _detection;
         public CameraInputMode CurrentCameraMode;
         public float _cameraDistance;
         private float _heightDistance;
         private float _anchorDistance;
-        private float _headOffset;
         private const float DistanceMultiplier = 10f;
         private bool _napeLock;
         private BaseTitan _napeLockTitan;
@@ -135,7 +135,6 @@ namespace Cameras
             if (character is Human)
             {
                 _anchorDistance = _heightDistance = 0.64f;
-                _headOffset = 0f;
             }
             else if (character is BaseShifter)
             {
@@ -176,6 +175,7 @@ namespace Cameras
             ApplyGeneralSettings();
             if (SettingsManager.GeneralSettings.SnapshotsEnabled.Value)
                 _snapshotHandler = gameObject.AddComponent<SnapshotHandler>();
+            _detection = new CameraDetection(this);
         }
 
         public void TakeSnapshot(Vector3 position, int damage)
@@ -211,6 +211,7 @@ namespace Cameras
         protected void FixedUpdate()
         {
             UpdateMapLights();
+            _detection.OnFixedUpdate();
         }
 
         protected override void LateUpdate()
@@ -392,8 +393,8 @@ namespace Cameras
         {
             var cameraDistance = GetCameraDistance();
             float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
-            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _follow.GetComponent<BaseMovementSync>()._correctCamera,
-                Time.deltaTime * 10f);
+            var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
+            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
             Cache.Transform.position = _follow.GetCameraAnchor().position;
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance;

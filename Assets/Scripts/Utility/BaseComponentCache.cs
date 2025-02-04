@@ -13,7 +13,6 @@ namespace Utility
         public Transform Transform;
         public Rigidbody Rigidbody;
         public PhotonView PhotonView;
-        public Animation Animation;
         public List<Collider> Colliders = new List<Collider>();
         public Dictionary<string, AudioSource> AudioSources = new Dictionary<string, AudioSource>();
 
@@ -22,7 +21,6 @@ namespace Utility
             Transform = owner.transform;
             Rigidbody = owner.GetComponent<Rigidbody>();
             PhotonView = owner.GetComponent<PhotonView>();
-            Animation = owner.GetComponent<Animation>();
             foreach (var collider in owner.GetComponentsInChildren<Collider>())
                 Colliders.Add(collider);
         }

@@ -6,10 +6,11 @@ using Utility;
 
 namespace CustomLogic
 {
-    [CLType(Static = true)]
-    class CustomLogicPhysicsBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "Physics", Static = true)]
+    partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
-        public CustomLogicPhysicsBuiltin() : base("Physics")
+        [CLConstructor]
+        public CustomLogicPhysicsBuiltin()
         {
         }
 

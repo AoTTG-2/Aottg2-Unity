@@ -7,18 +7,19 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicPlayerBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicEquals
+    [CLType(Name = "Player", Abstract = true)]
+    partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Player Player;
 
-        public CustomLogicPlayerBuiltin(Player player) : base("Player")
+        [CLConstructor]
+        public CustomLogicPlayerBuiltin(Player player)
         {
             Player = player;
         }
 
         [CLProperty("Player's current character, if alive.")]
-        public object Character
+        public CustomLogicCharacterBuiltin Character
         {
             get
             {

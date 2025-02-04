@@ -3,16 +3,30 @@ using Controllers;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Titan", Abstract = true)]
+    partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BasicTitan Titan;
         public readonly BaseTitanAIController Controller;
 
-        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan, "Titan")
+        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan)
         {
             Titan = titan;
             Controller = Titan.GetComponent<BaseTitanAIController>();
+        }
+
+        [CLProperty("Titans's name.")]
+        public string Name
+        {
+            get => Titan.Name;
+            set => Titan.Name = value;
+        }
+
+        [CLProperty("Titans's guild.")]
+        public string Guild
+        {
+            get => Titan.Guild;
+            set => Titan.Guild = value;
         }
 
         [CLProperty("Titan's size.")]
@@ -91,14 +105,14 @@ namespace CustomLogic
             get => Titan.TurnPause;
             set { if (Titan.IsMine()) Titan.TurnPause = value; }
         }
-        
+
         [CLProperty("PT stamina.")]
         public float Stamina
         {
             get => Titan.CurrentSprintStamina;
             set { if (Titan.IsMine()) Titan.CurrentSprintStamina = value; }
         }
-        
+
         [CLProperty("PT max stamina.")]
         public float MaxStamina
         {
@@ -181,8 +195,13 @@ namespace CustomLogic
         public void Target(object enemyObj, float focus)
         {
             if (IsAlive() && Titan.AI == false)
+            // if (name == "Name")
+            //     Character.Name = (string)value;
+            // else if (name == "Guild")
+            //     Character.Guild = (string)value;
+            // if (!Titan.IsMine())
                 return;
-            
+
             ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value
                                     : ((CustomLogicCharacterBuiltin)enemyObj).Character;
@@ -213,10 +232,10 @@ namespace CustomLogic
         [CLMethod("Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.")]
         public void Cripple(float time)
         {
-            if (IsAlive()) 
+            if (IsAlive())
                 Titan.Cripple(time);
         }
-        
+
         private bool IsAlive() => Titan.IsMine() && Titan.Dead == false;
     }
 }

@@ -13,7 +13,7 @@ namespace Utility
         public static int TitanPushbox = 12;
         public static int Hurtbox = 13;
         public static int Projectile = 14;
-        public static int EntityDetection = 15;
+        public static int ProjectileDetection = 15;
         public static int CharacterDetection = 16;
         public static int NPC = 17;
         public static int MapObjectMapObjects = 20;
@@ -33,12 +33,12 @@ namespace Utility
         {
             SetLayerCollisions(NoCollision, new int[0]);
             SetLayerCollisions(Hitbox, new int[] { Human, TitanPushbox, Hurtbox });
-            SetLayerCollisions(Human, new int[] { Hitbox, TitanPushbox, Projectile, EntityDetection, CharacterDetection, 
+            SetLayerCollisions(Human, new int[] { Hitbox, TitanPushbox, Projectile, CharacterDetection, 
                 MapObjectAll, MapObjectEntities, MapObjectCharacters, MapObjectHumans});
-            SetLayerCollisions(TitanMovebox, new int[] { TitanMovebox, EntityDetection, CharacterDetection, MapObjectAll, MapObjectEntities, MapObjectCharacters, MapObjectTitans });
+            SetLayerCollisions(TitanMovebox, new int[] { TitanMovebox, CharacterDetection, MapObjectAll, MapObjectEntities, MapObjectCharacters, MapObjectTitans });
             SetLayerCollisions(TitanPushbox, new int[] { Hitbox, Human, Projectile, NPC });
-            SetLayerCollisions(Projectile, new int[] { Human, TitanPushbox, EntityDetection, MapObjectEntities, MapObjectAll, MapObjectProjectiles });
-            SetLayerCollisions(EntityDetection, new int[] { Human, TitanMovebox, Projectile });
+            SetLayerCollisions(Projectile, new int[] { Human, TitanPushbox, ProjectileDetection, MapObjectEntities, MapObjectAll, MapObjectProjectiles });
+            SetLayerCollisions(ProjectileDetection, new int[] { Projectile });
             SetLayerCollisions(CharacterDetection, new int[] { Human, TitanMovebox });
             SetLayerCollisions(NPC, new int[] {TitanPushbox, MapObjectCharacters, MapObjectEntities, MapObjectAll});
             SetLayerCollisions(Hurtbox, new int[] { Hitbox });

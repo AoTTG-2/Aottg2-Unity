@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true, InheritBaseMembers = true)]
-    class CustomLogicCollisionBuiltin : CustomLogicClassInstanceBuiltin, ICustomLogicCopyable, ICustomLogicEquals
+    [CLType(Name = "Collision", Abstract = true)]
+    partial class CustomLogicCollisionBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
         public Collision collision;
 
-        public CustomLogicCollisionBuiltin() : base("Collision") { }
+        public CustomLogicCollisionBuiltin() { }
 
-        public CustomLogicCollisionBuiltin(object[] parameters) : base("Collision")
+        public CustomLogicCollisionBuiltin(object[] parameters)
         {
             collision = (Collision)parameters[0];
         }

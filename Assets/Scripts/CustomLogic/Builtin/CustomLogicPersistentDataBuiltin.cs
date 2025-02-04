@@ -6,10 +6,11 @@ using System.Linq;
 
 namespace CustomLogic
 {
-    [CLType(Static = true, Abstract = true)]
-    class CustomLogicPersistentDataBuiltin : CustomLogicClassInstanceBuiltin
+    [CLType(Name = "PersistentData", Static = true, Abstract = true)]
+    partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {
-        public CustomLogicPersistentDataBuiltin() : base("PersistentData")
+        [CLConstructor]
+        public CustomLogicPersistentDataBuiltin()
         {
         }
 
@@ -18,7 +19,7 @@ namespace CustomLogic
         {
             if (value is not (null or float or int or string or bool))
                 throw new System.Exception("PersistentData.SetProperty only supports null, float, int, string, or bool values.");
-            
+
             CustomLogicManager.PersistentData[property] = value;
         }
 

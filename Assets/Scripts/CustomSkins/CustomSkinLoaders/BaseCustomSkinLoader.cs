@@ -36,7 +36,7 @@ namespace CustomSkins
         protected void AddRendererIfExists(List<Renderer> renderers, GameObject obj)
         {
             if (obj != null)
-                renderers.Add(obj.GetComponent<Renderer>());
+                renderers.Add(obj.GetComponentInChildren<Renderer>());
         }
 
         protected void AddAllRenderers(List<Renderer> renderers, GameObject obj)

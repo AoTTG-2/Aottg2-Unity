@@ -3,16 +3,30 @@ using Controllers;
 
 namespace CustomLogic
 {
-    [CLType(Abstract = true)]
-    class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
+    [CLType(Name = "Shifter", Abstract = true)]
+    partial class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {
         public readonly BaseShifter Shifter;
         public readonly BaseTitanAIController Controller;
 
-        public CustomLogicShifterBuiltin(BaseShifter shifter) : base(shifter, "Shifter")
+        public CustomLogicShifterBuiltin(BaseShifter shifter) : base(shifter)
         {
             Shifter = shifter;
             Controller = shifter.GetComponent<BaseTitanAIController>();
+        }
+
+        [CLProperty("Shifter's name.")]
+        public string Name
+        {
+            get => Shifter.Name;
+            set => Shifter.Name = value;
+        }
+
+        [CLProperty("Shifter's guild.")]
+        public string Guild
+        {
+            get => Shifter.Guild;
+            set => Shifter.Guild = value;
         }
 
         [CLProperty("Shifter's size.")]
