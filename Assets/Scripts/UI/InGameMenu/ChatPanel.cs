@@ -16,35 +16,37 @@ namespace UI
         private const int POOL_SIZE = 20;
         private InputField _inputField;
         private GameObject _panel;
-        private readonly List<TMP_InputField> _linesPool = new List<TMP_InputField>();
-        private int _oldestIndex = 0;
-        private List<string> _allMessages = new List<string>();
         private ChatScrollRect _scrollRect;
-        protected override string ThemePanel => "ChatPanel";
-        protected Transform _caret;
-        public bool IgnoreNextActivation;
-        private bool _caretInitialized = false;
-        private GameObject _currentSelectedObject;
-        
-        // Cache these regex patterns as static readonly fields at class level
-        private static readonly Regex _richTextPattern = new Regex(@"<[^>]+>|</[^>]+>", RegexOptions.Compiled);
-
-        // Cache RectTransforms used in IsPointerOverChatUI
         private RectTransform _chatPanelRect;
         private RectTransform _inputFieldRect;
         private RectTransform _contentRect;
         private RectTransform _scrollbarRect;
-
-        // Add this field at class level
-        public Dictionary<string, DateTime> _hashHistory = new Dictionary<string, DateTime>();
-
-        // Add just this one field
+        private Transform _caret;
+        private readonly List<TMP_InputField> _linesPool = new List<TMP_InputField>();
+        private readonly Dictionary<GameObject, TMP_InputField> _cachedInputFields = new Dictionary<GameObject, TMP_InputField>();
+        private readonly List<string> _allMessages = new List<string>();
+        private GameObject _currentSelectedObject;
+        private bool _caretInitialized;
+        private int _currentLineIndex = 0;
+        protected override string ThemePanel => "ChatPanel";
+        public bool IgnoreNextActivation;
         private GameObject _suggestionsObject;
+        private string _lastInputText = "";
+
+        // Cache this regex pattern as static readonly field at class level
+        private static readonly Regex _richTextPattern = new Regex(@"<[^>]+>|</[^>]+>", RegexOptions.Compiled);
 
         public override void Setup(BasePanel parent = null)
         {
+            // Cache all components at startup
             _inputField = transform.Find("InputField").GetComponent<InputField>();
             _panel = transform.Find("Content/Panel").gameObject;
+            _chatPanelRect = _panel.GetComponent<RectTransform>();
+            _inputFieldRect = _inputField.GetComponent<RectTransform>();
+            _contentRect = transform.Find("Content").GetComponent<RectTransform>();
+            _scrollbarRect = transform.Find("Content/Scrollbar")?.GetComponent<RectTransform>();
+            _scrollRect = GetComponentInChildren<ChatScrollRect>();
+            
             transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
             var style = new ElementStyle(fontSize: 20, themePanel: ThemePanel);
             _inputField.colors = UIManager.GetThemeColorBlock(style.ThemePanel, "InputField", "Input");
@@ -146,12 +148,6 @@ namespace UI
             var panelRect = _panel.GetComponent<RectTransform>();
             panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);
 
-            // Cache RectTransforms
-            _chatPanelRect = _panel.GetComponent<RectTransform>();
-            _inputFieldRect = _inputField.GetComponent<RectTransform>();
-            _contentRect = transform.Find("Content").GetComponent<RectTransform>();
-            _scrollbarRect = transform.Find("Content/Scrollbar")?.GetComponent<RectTransform>();
-
             // Create minimal suggestions object (invisible)
             _suggestionsObject = new GameObject("SuggestionsObject");
             _suggestionsObject.transform.SetParent(transform, false);
@@ -162,9 +158,13 @@ namespace UI
         {
             _allMessages.Clear();
             
-            foreach (var line in ChatManager.Lines)
+            for (int i = 0; i < ChatManager.RawMessages.Count; i++)
             {
-                _allMessages.Add(line.GetFormattedMessage());
+                DateTime timestamp = ChatManager.SuggestionFlags[i] ? DateTime.MinValue : ChatManager.Timestamps[i];
+                _allMessages.Add(ChatManager.GetFormattedMessage(
+                    ChatManager.RawMessages[i], 
+                    timestamp,
+                    ChatManager.SuggestionFlags[i]));
             }
             
             UpdateVisibleMessages();
@@ -188,8 +188,12 @@ namespace UI
 
             string input = _inputField.text;
             _inputField.text = "";
-            ChatManager.ResetTabCompletion(); // Reset tab completion state
-            ChatManager.ClearLastSuggestions(); // Add this to clear suggestions
+            
+            // Clear suggestions before handling input
+            ChatManager.ClearLastSuggestions();
+            ChatManager.ResetTabCompletion();
+            UpdateVisibleMessages(); // Force update to clear suggestions from display
+            
             IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
             ChatManager.HandleInput(input);
         }
@@ -203,16 +207,12 @@ namespace UI
         public void AddLine(string line)
         {
             _allMessages.Add(line);
-            
             UpdateVisibleMessages();
         }
 
         public void ReplaceLastLine(string line)
         {
-            int lastIndex = _oldestIndex - 1;
-            if (lastIndex < 0)
-                lastIndex = POOL_SIZE - 1;
-
+            int lastIndex = (_currentLineIndex - 1 + POOL_SIZE) % POOL_SIZE;
             TMP_InputField lineObj = _linesPool[lastIndex];
             if (!lineObj.gameObject.activeSelf)
             {
@@ -235,14 +235,15 @@ namespace UI
 
         private void InitializeCaret()
         {
-            if (_inputField != null)
+            if (_inputField != null && !_caretInitialized)
             {
                 _caret = _inputField.transform.Find(_inputField.transform.name + " Input Caret");
                 if (_caret)
                 {
-                    var graphic = _caret.GetComponent<Graphic>();
-                    if (!graphic)
+                    if (!_caret.TryGetComponent<Graphic>(out _))
+                    {
                         _caret.gameObject.AddComponent<Image>();
+                    }
                     _caretInitialized = true;
                 }
             }
@@ -250,45 +251,58 @@ namespace UI
 
         private void Update()
         {
-            // Only initialize caret once
+            // One-time caret initialization
             if (!_caretInitialized && _inputField != null)
             {
                 InitializeCaret();
+                return;
             }
 
-            // Add mouse click handling
-            if (Input.GetMouseButtonDown(0) && !IsPointerOverChatUI() && IsInputActive())
+            // Cache input active state once
+            bool isInputActive = IsInputActive();
+
+            // Handle mouse click (only when input is active)
+            if (isInputActive && Input.GetMouseButtonDown(0) && !IsPointerOverChatUI())
             {
                 _inputField.DeactivateInputField();
+                return;
             }
 
-            // Cache and check selected object only when it changes
+            // Handle selected object changes
             GameObject newSelectedObject = EventSystem.current.currentSelectedGameObject;
             if (newSelectedObject != _currentSelectedObject)
             {
                 _currentSelectedObject = newSelectedObject;
+                // Only process if it's a new object within the chat panel
+                if (_currentSelectedObject != null && 
+                    _currentSelectedObject.transform.IsChildOf(_panel.transform) &&
+                    _cachedInputFields.TryGetValue(_currentSelectedObject, out var chatField) &&
+                    chatField != null)
+                {
+                    CleanClipboardIfNeeded();
+                }
             }
 
-            // Only clean clipboard if we're copying from a chat line
-            if (_currentSelectedObject != null && 
-                _currentSelectedObject.GetComponent<TMP_InputField>() != null && 
-                _currentSelectedObject.transform.IsChildOf(_panel.transform))
+            // Only process input-related features when input is active
+            if (isInputActive)
             {
-                CleanClipboardIfNeeded();
-            }
-            // Add this back to get dynamic suggestions
-            if (IsInputActive() )
-            {
-                ChatManager.GetAutocompleteSuggestion(_inputField.text);
-            }
-            // Handle tab completion
-            if (IsInputActive() && Input.GetKeyDown(KeyCode.Tab))
-            {
-                string completion = ChatManager.GetNextTabCompletion(_inputField.text);
-                if (completion != null)
+                // Tab completion
+                if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    _inputField.text = completion;
-                    _inputField.caretPosition = _inputField.text.Length;
+                    string completion = ChatManager.GetNextTabCompletion(_inputField.text);
+                    if (completion != null)
+                    {
+                        _inputField.text = completion;
+                        _inputField.caretPosition = _inputField.text.Length;
+                    }
+                    return;
+                }
+
+                // Only update suggestions when text changes
+                if (_lastInputText != _inputField.text)
+                {
+                    _lastInputText = _inputField.text;
+                    ChatManager.GetAutocompleteSuggestion(_lastInputText);
                 }
             }
         }
@@ -342,18 +356,13 @@ namespace UI
         protected TMP_InputField CreateLine(string text)
         {
             var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
-            
-            // Create the main GameObject for the line
             var lineGO = new GameObject("ChatLine", typeof(RectTransform));
             lineGO.transform.SetParent(_panel.transform, false);
             var inputField = lineGO.AddComponent<TMP_InputField>();
-
-            // Create text area
             var textArea = new GameObject("Text Area", typeof(RectTransform));
             textArea.transform.SetParent(lineGO.transform, false);
             var textComponent = textArea.AddComponent<TextMeshProUGUI>();
 
-            // Configure the chatlines (TMP_InputField)
             inputField.textComponent = textComponent;
             inputField.textViewport = textArea.GetComponent<RectTransform>();
             inputField.readOnly = true;
@@ -361,25 +370,24 @@ namespace UI
             inputField.onFocusSelectAll = false;
             inputField.resetOnDeActivation = false;
             inputField.restoreOriginalTextOnEscape = false;
-            
+
             textComponent.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
             textComponent.color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
             textComponent.alignment = TextAlignmentOptions.Left;
             textComponent.enableWordWrapping = true;
-            
+
             var rectTransform = lineGO.GetComponent<RectTransform>();
             rectTransform.anchorMin = new Vector2(0, 1);
             rectTransform.anchorMax = new Vector2(1, 1);
             rectTransform.pivot = new Vector2(0.5f, 1);
             rectTransform.sizeDelta = new Vector2(0, 30);
-            
             var textAreaRect = textArea.GetComponent<RectTransform>();
+
             textAreaRect.anchorMin = Vector2.zero;
             textAreaRect.anchorMax = Vector2.one;
             textAreaRect.sizeDelta = Vector2.zero;
             textAreaRect.anchoredPosition = Vector2.zero;
             inputField.text = text;
-            
             return inputField;
         }
 
@@ -400,15 +408,11 @@ namespace UI
 
             float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
             int totalMessages = _allMessages.Count;
-            
-            // Cache pool size calculations
             float size = Mathf.Min(1f, (float)POOL_SIZE / totalMessages);
             if (_scrollRect && _scrollRect.verticalScrollbar)
             {
                 _scrollRect.verticalScrollbar.size = size;
             }
-            
-            // Calculate start index with bounds checking
             int startIndex = 0;
             if (totalMessages > POOL_SIZE)
             {
@@ -417,8 +421,6 @@ namespace UI
                     ? Mathf.Clamp(Mathf.FloorToInt((1f - scrollPos) * maxStartIndex), 0, maxStartIndex)
                     : maxStartIndex;
             }
-
-            // Update pool objects
             for (int i = 0; i < POOL_SIZE; i++)
             {
                 var lineObj = _linesPool[i];
@@ -438,13 +440,31 @@ namespace UI
                     lineObj.gameObject.SetActive(false);
                 }
             }
-
             Canvas.ForceUpdateCanvases();
         }
 
         private void OnScroll(Vector2 scrollPosition)
         {
             UpdateVisibleMessages();
+        }
+
+        private TMP_InputField GetCachedInputField(GameObject obj)
+        {
+            if (obj == null) return null;
+            
+            if (!_cachedInputFields.TryGetValue(obj, out TMP_InputField inputField))
+            {
+                inputField = obj.GetComponent<TMP_InputField>();
+                if (inputField != null)
+                {
+                    _cachedInputFields[obj] = inputField;
+                }
+            }
+            return inputField;
+        }
+        private void OnDestroy()
+        {
+            _cachedInputFields.Clear();
         }
     }
 }
