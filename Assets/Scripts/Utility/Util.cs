@@ -329,6 +329,7 @@ namespace Utility
 
         public static NavMeshBuildSettings GetAgentSettingsCorrected(float size)
         {
+            // determine the size to use based on if the size is greater than the current size but less than the next
             string name = "minTitan";
             float sizeToUse = 0.5f;
             for (int i = 0; i < _titanSizes.Count; i++)
@@ -400,6 +401,138 @@ namespace Utility
 
             // Handle wrap-around
             return (4294967.295 - sentTime) + serverTime;
+        }
+
+        public static (bool success, string message) SaveChatHistory(IEnumerable<string> messages)
+        {
+            try
+            {
+                DateTime timestamp = DateTime.UtcNow;
+                string baseFilename = $"chat_history_{timestamp:yyyy-MM-dd_HH-mm-ss}";
+                
+                if (!IsValidFileName(baseFilename))
+                    return (false, "Invalid filename generated.");
+                    
+                string filename = baseFilename + ".txt";
+                string downloadsPath = GetDownloadsPath();
+                if (downloadsPath == null)
+                    return (false, "Could not locate Downloads folder.");
+                    
+                string filePath = Path.Combine(downloadsPath, filename);
+                // Ensure the final path is still within Downloads directory
+                if (!IsPathInDirectory(filePath, downloadsPath))
+                    return (false, "Invalid file path.");
+                
+                // Collect chat content
+                string chatContent = string.Join("\n", messages);
+                
+                // Calculate hash of content
+                string hash;
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(chatContent);
+                    byte[] hashBytes = sha256.ComputeHash(bytes);
+                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                }
+                
+                // Create file content with hash header
+                string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
+                
+                // Write file
+                File.WriteAllText(filePath, fileContent);
+                
+                // Set file as read-only
+                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+                
+                return (true, $"Chat history saved to Downloads/{filename}");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Failed to save chat history: {ex.Message}");
+            }
+        }
+
+        public static (bool success, string message) VerifyChatHistory(string filename)
+        {
+            if (!IsValidFileName(Path.GetFileNameWithoutExtension(filename)))
+                return (false, "Invalid filename.");
+                
+            try
+            {
+                string downloadsPath = GetDownloadsPath();
+                if (downloadsPath == null)
+                    return (false, "Could not locate Downloads folder.");
+                    
+                string filePath = Path.Combine(downloadsPath, filename);
+                // Ensure the final path is still within Downloads directory
+                if (!IsPathInDirectory(filePath, downloadsPath))
+                    return (false, "Invalid file path.");
+                    
+                if (!File.Exists(filePath))
+                    return (false, $"File not found: {filename}");
+
+                // Read file content
+                string[] lines = File.ReadAllLines(filePath);
+                
+                // File must have at least 4 lines (hash, time, blank line, and content)
+                if (lines.Length < 4)
+                    return (false, "Invalid file format.");
+
+                // Extract stored hash
+                if (!lines[0].StartsWith("[HASH:") || !lines[0].EndsWith("]"))
+                    return (false, "Invalid file format: missing hash header.");
+
+                string storedHash = lines[0].Substring(6, lines[0].Length - 7);
+
+                // Get content (everything after the blank line)
+                string content = string.Join("\n", lines.Skip(3));
+
+                // Calculate hash of current content
+                string currentHash;
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(content);
+                    byte[] hashBytes = sha256.ComputeHash(bytes);
+                    currentHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                }
+
+                return currentHash == storedHash
+                    ? (true, "File verification successful - content has not been modified.")
+                    : (false, "Warning: File has been modified!");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Failed to verify file: {ex.Message}");
+            }
+        }
+
+        private static string GetDownloadsPath()
+        {
+            try
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                    "Downloads"
+                );
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static bool IsPathInDirectory(string path, string directory)
+        {
+            // Convert both to full paths
+            string fullPath = Path.GetFullPath(path);
+            string fullDir = Path.GetFullPath(directory);
+            
+            // Check if the full path starts with the full directory path
+            return fullPath.StartsWith(fullDir, StringComparison.OrdinalIgnoreCase) &&
+                   // Ensure there's either a directory separator or end of string after the directory path
+                   (fullPath.Length == fullDir.Length || 
+                    fullPath[fullDir.Length] == Path.DirectorySeparatorChar ||
+                    fullPath[fullDir.Length] == Path.AltDirectorySeparatorChar);
         }
     }
 }
