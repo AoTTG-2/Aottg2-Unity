@@ -267,10 +267,15 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnPlayerLeave", new object[] { playerBuiltin });
         }
 
+        /// caching this object[] since its potentially heavily used.
+        private object[] _networkCallback = new object[3];
         public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
-            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", new object[] { playerBuiltin, message, sentServerTimestamp });
+            _networkCallback[0] = playerBuiltin;
+            _networkCallback[1] = message;
+            _networkCallback[2] = sentServerTimestamp;
+            EvaluateMethod(_staticClasses["Main"], "OnNetworkMessage", _networkCallback);
         }
 
         public static CustomLogicCharacterBuiltin GetCharacterBuiltin(BaseCharacter character)
