@@ -261,26 +261,19 @@ namespace UI
             // Cache input active state once
             bool isInputActive = IsInputActive();
 
-            // Handle mouse click (only when input is active)
-            if (isInputActive && Input.GetMouseButtonDown(0) && !IsPointerOverChatUI())
-            {
-                _inputField.DeactivateInputField();
-                return;
-            }
-
-            // Handle selected object changes
+            // Cache and check selected object only when it changes
             GameObject newSelectedObject = EventSystem.current.currentSelectedGameObject;
             if (newSelectedObject != _currentSelectedObject)
             {
                 _currentSelectedObject = newSelectedObject;
-                // Only process if it's a new object within the chat panel
-                if (_currentSelectedObject != null && 
-                    _currentSelectedObject.transform.IsChildOf(_panel.transform) &&
-                    _cachedInputFields.TryGetValue(_currentSelectedObject, out var chatField) &&
-                    chatField != null)
-                {
-                    CleanClipboardIfNeeded();
-                }
+            }
+
+            // Only clean clipboard if we're copying from a chat line
+            if (_currentSelectedObject != null && 
+                _currentSelectedObject.GetComponent<TMP_InputField>() != null && 
+                _currentSelectedObject.transform.IsChildOf(_panel.transform))
+            {
+                CleanClipboardIfNeeded();
             }
 
             // Only process input-related features when input is active
@@ -305,6 +298,13 @@ namespace UI
                     ChatManager.GetAutocompleteSuggestion(_lastInputText);
                 }
             }
+        }
+
+        private IEnumerator CleanClipboardAfterCopy()
+        {
+            // Wait a frame to let the copy operation complete
+            yield return new WaitForEndOfFrame();
+            CleanClipboardIfNeeded();
         }
 
         private void CleanClipboardIfNeeded()
