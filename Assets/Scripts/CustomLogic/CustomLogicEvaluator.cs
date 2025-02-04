@@ -182,22 +182,26 @@ namespace CustomLogic
             }
         }
 
+        [CLCallbackAttribute]
         public void OnTick()
         {
             EvaluateMethodForCallbacks("OnTick");
             CurrentTime += Time.fixedDeltaTime;
         }
 
+        [CLCallbackAttribute]
         public void OnFrame()
         {
             EvaluateMethodForCallbacks("OnFrame");
         }
 
+        [CLCallbackAttribute]
         public void OnLateFrame()
         {
             EvaluateMethodForCallbacks("OnLateFrame");
         }
 
+        [CLCallbackAttribute]
         public void OnButtonClick(string name)
         {
             var parameters = ArrayPool<object>.New(1);
@@ -206,6 +210,7 @@ namespace CustomLogic
             ArrayPool<object>.Free(parameters);
         }
 
+        [CLCallbackAttribute]
         public void OnPlayerSpawn(Player player, BaseCharacter character)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
@@ -216,6 +221,7 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnPlayerSpawn", new object[] { playerBuiltin, characterBuiltin });
         }
 
+        [CLCallbackAttribute]
         public void OnCharacterSpawn(BaseCharacter character)
         {
             var builtin = GetCharacterBuiltin(character);
@@ -225,6 +231,7 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterSpawn", new object[] { builtin });
         }
 
+        [CLCallbackAttribute]
         public void OnCharacterReloaded(BaseCharacter character)
         {
             var builtin = GetCharacterBuiltin(character);
@@ -233,6 +240,7 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterReloaded", new object[] { builtin });
         }
 
+        [CLCallbackAttribute]
         public void OnCharacterDie(BaseCharacter victim, BaseCharacter killer, string killerName)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);
@@ -241,6 +249,7 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterDie", new object[] { victimBuiltin, killerBuiltin, killerName });
         }
 
+        [CLCallbackAttribute]
         public void OnCharacterDamaged(BaseCharacter victim, BaseCharacter killer, string killerName, int damage)
         {
             var victimBuiltin = GetCharacterBuiltin(victim);
@@ -249,11 +258,13 @@ namespace CustomLogic
             EvaluateMethodForCallbacks("OnCharacterDamaged", new object[] { victimBuiltin, killerBuiltin, killerName, damage });
         }
 
+        [CLCallbackAttribute]
         public object OnChatInput(string message)
         {
             return EvaluateMethod(_staticClasses["Main"], "OnChatInput", new object[] { message });
         }
 
+        [CLCallbackAttribute]
         public void OnPlayerJoin(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
@@ -261,6 +272,7 @@ namespace CustomLogic
             ((CustomLogicUIBuiltin)_staticClasses["UI"]).OnPlayerJoin(player);
         }
 
+        [CLCallbackAttribute]
         public void OnPlayerLeave(Player player)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(player);
@@ -269,6 +281,7 @@ namespace CustomLogic
 
         /// caching this object[] since its potentially heavily used.
         private object[] _networkCallback = new object[3];
+        [CLCallbackAttribute]
         public void OnNetworkMessage(Player sender, string message, double sentServerTimestamp)
         {
             var playerBuiltin = new CustomLogicPlayerBuiltin(sender);
@@ -289,6 +302,7 @@ namespace CustomLogic
             return null;
         }
 
+        [CLCallbackAttribute]
         private IEnumerator OnSecond()
         {
             while (true)

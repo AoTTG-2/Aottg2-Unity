@@ -57,7 +57,7 @@ public class GenerateCLDocs : EditorWindow
         if (GUILayout.Button("Generate Docs"))
         {
             // Generate docs in the project folder/Docs
-            GenerateDocs("Assets/Docs");
+            GenerateDocs("Docs/");
         }
     }
 
@@ -159,8 +159,12 @@ public class GenerateCLDocs : EditorWindow
             .ToArray();
 
         // Clear the existing files in Object and Static folders
-        System.IO.Directory.Delete($"{output}/Object", true);
-        System.IO.Directory.Delete($"{output}/Static", true);
+        if (System.IO.Directory.Exists($"{output}/objects"))
+            System.IO.Directory.Delete($"{output}/objects", true);
+        if (System.IO.Directory.Exists($"{output}/static"))
+            System.IO.Directory.Delete($"{output}/static", true);
+        if (System.IO.File.Exists($"{output}/callbacks"))
+            System.IO.File.Delete($"{output}/callbacks");
 
         // Update Type reference dictionary with the class names and their paths.
         TypeReference.Clear();
@@ -169,21 +173,20 @@ public class GenerateCLDocs : EditorWindow
             // Map the className to the folder it will be in
             var clType = (CLTypeAttribute)type.GetCustomAttributes(typeof(CLTypeAttribute), false)[0];
             var className = clType.Name;
-            var isStatic = clType.Static;
-            string subfolder = isStatic ? "Static" : "Object";
+            bool isInStatic = clType.Static && clType.Abstract;
+            string subfolder = isInStatic ? "static" : "objects";
             string path = $"[{className}](../{subfolder}/{className}.md)";
             Debug.Log($"{type.Name}, {path}");
             TypeReference.Add(type.Name, path);
             TypeReference.Add(className, path);
         }
 
-        // iterate
         foreach (var cl in classes)
         {
             var clType = (CLTypeAttribute)cl.GetCustomAttributes(typeof(CLTypeAttribute), false).First();
             var className = clType.Name;
-            var isStatic = clType.Static;
-            string subfolder = isStatic ? "Static" : "Object";
+            bool isInStatic = clType.Static && clType.Abstract;
+            string subfolder = isInStatic ? "static" : "objects";
             string folder = $"{output}/{subfolder}";
 
             // create folders if they dont exist
@@ -191,6 +194,10 @@ public class GenerateCLDocs : EditorWindow
             string path = $"{folder}/{className}.md";
             GenerateClassDoc(path, cl, XMLdoc);
         }
+
+        // Create README.md files in both Object and Static with text # Object / # Static
+        System.IO.File.WriteAllText($"{output}/objects/README.md", "# Objects");
+        System.IO.File.WriteAllText($"{output}/static/README.md", "# Static");
     }
 
     private void GenerateClassDoc(string path, System.Type type, System.Xml.XmlDocument XMLdoc)
@@ -215,7 +222,8 @@ public class GenerateCLDocs : EditorWindow
             doc += GenerateInitializers(type, className, XMLdoc);
         }
         doc += GenerateFields(type, XMLdoc);
-        doc += GenerateMethods(type, XMLdoc);
+        doc += GenerateMethods(type, XMLdoc, isStatic: false);
+        doc += GenerateMethods(type, XMLdoc, isStatic: true);
         System.IO.File.WriteAllText(path, doc);
     }
 
@@ -475,25 +483,38 @@ public class GenerateCLDocs : EditorWindow
         return doc;
     }
 
-    private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc)
+    private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc, bool isStatic=false)
     {
         string doc = string.Empty;
         var methods = type.GetMethods()
             .Where(x => x.GetCustomAttributes(typeof(CLMethodAttribute), false).Length > 0)
             .ToArray();
+
+        string header = "## Methods";
+        // Filter out static methods
+        if (isStatic)
+        {
+            methods = methods.Where(x => x.IsStatic).ToArray();
+            header = "## Static Methods";
+        }
+        else
+        {
+            methods = methods.Where(x => !x.IsStatic).ToArray();
+        }
+
         if (methods.Length > 0)
         {
-            doc += "## Methods\n";
+            doc += $"{header}\n";
             List<string> headers = new List<string> { "Function", "Returns", "Description" };
+            List<float> sizing = new List<float> { 30, 20, 50 };
             List<List<string>> rows = new List<List<string>>();
             foreach (var method in methods)
             {
                 var clMethod = (CLMethodAttribute)method.GetCustomAttributes(typeof(CLMethodAttribute), false)[0];
                 var methodName = DelimitStyled(method.Name);
-                // methodName should look like name(param1 : type1, param2 : type2)
-                // optional params look like name(param1: type1, param2 : type2 = defaultValue)
                 var parameters = method.GetParameters();
                 string signature = $"{methodName}(";
+
                 for (int i = 0; i < parameters.Length; i++)
                 {
                     var param = parameters[i];
@@ -503,15 +524,15 @@ public class GenerateCLDocs : EditorWindow
                     else
                         signature += $"{param.Name} : {paramType}";
                     if (i < parameters.Length - 1)
-                        signature += ", ";
+                        signature += ",";
                 }
                 signature += ")";
-                methodName = signature;
                 var returnType = ResolveType(method.ReturnType.Name);
                 var description = ResolveMethodDescription(type, method, XMLdoc, clMethod.Description);
-                rows.Add(new List<string> { methodName, returnType, description });
+                rows.Add(new List<string> { signature, returnType, description });
             }
-            doc += CreateTable(headers, rows);
+
+            doc += CreateHTMLTable(headers, rows, sizing);
         }
         return doc;
     }
@@ -529,6 +550,44 @@ public class GenerateCLDocs : EditorWindow
         return code;
     }
 
+
+    private string CreateHTMLTable(List<string> headers, List<List<string>> rows, List<float> columnWidths)
+    {
+        string table = string.Empty;
+        table += "<table>\n";
+        table += "<colgroup>";
+        foreach (var width in columnWidths)
+        {
+            table += $"<col style=\"width: {width}%\"/>\n";
+        }
+        table += "</colgroup>\n";
+
+        // header
+        table += "<thead>\n";
+        table += "<tr>\n";
+        foreach (var header in headers)
+        {
+            table += $"<th>{header}</th>\n";
+        }
+        table += "</tr>\n";
+        table += "</thead>\n";
+
+        // body
+        table += "<tbody>\n";
+        foreach (var row in rows)
+        {
+            table += "<tr>\n";
+            foreach (var cell in row)
+            {
+                table += $"<td>{cell}</td>\n";
+            }
+            table += "</tr>\n";
+        }
+        table += "</tbody>\n";
+        table += "</table>\n";
+        return table;
+    }
+
     /// <summary>
     /// Create a markdown table
     /// </summary>
@@ -537,11 +596,12 @@ public class GenerateCLDocs : EditorWindow
     /// <returns></returns>
     private string CreateTable(List<string> headers, List<List<string>> rows)
     {
+             
         string table = string.Empty;
         table += "|";
         foreach (var header in headers)
         {
-            table += header + "|";
+            table += $"{header}|";
         }
         table += "\n";
         table += "|";

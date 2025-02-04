@@ -43,6 +43,7 @@ namespace CustomLogic
             return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit");
         }
 
+        [CLCallbackAttribute]
         public void OnCollisionStay(BuiltinClassInstance other)
         {
             if (!Enabled)
@@ -51,6 +52,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other });
         }
 
+        [CLCallbackAttribute]
         public void OnCollisionEnter(BuiltinClassInstance other)
         {
             if (!Enabled)
@@ -59,6 +61,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other });
         }
 
+        [CLCallbackAttribute]
         public void OnCollisionExit(BuiltinClassInstance other)
         {
             if (!Enabled)
@@ -67,6 +70,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other });
         }
 
+        [CLCallbackAttribute]
         public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, Vector3 position)
         {
             if (!Enabled)
@@ -75,6 +79,7 @@ namespace CustomLogic
             CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new object[] { character, name, damage, type, position });
         }
 
+        [CLCallbackAttribute]
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
         {
             if (!Enabled)
