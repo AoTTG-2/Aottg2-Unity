@@ -3,7 +3,7 @@ name: Sync Files to Another Repo
 on:
   push:
     branches:
-      - Thyme-TestBranch # Source branch
+      - Thyme-DocTestBranch # Source branch
 
 jobs:
   sync:
