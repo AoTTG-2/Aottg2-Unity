@@ -42,6 +42,9 @@ namespace Characters
         public ITargetable TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
         protected override float GroundDistance => 1f;
+        private LayerMask TitanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
+                PhysicsLayer.MapObjectTitans, PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+        public override LayerMask GroundMask => TitanGroundMaskLayers;
         protected virtual float DefaultRunSpeed => 15f;
         protected virtual float DefaultWalkSpeed => 5f;
         protected virtual float DefaultJumpForce => 150f;
