@@ -247,7 +247,7 @@ public class GenerateCLDocs : EditorWindow
         return string.Empty;
     }
 
-    private string ResolveType(string type)
+    private string ResolveType(string type, bool isReturned = false)
     {
         if (TypeReference.ContainsKey(type))
         {
@@ -257,6 +257,9 @@ public class GenerateCLDocs : EditorWindow
         {
             type = CSTypeReference[type];
         }
+
+        if (isReturned && (type.ToLower() == "null" || type.ToLower() == "none"))
+            type = "void";
 
         return DelimitStyled(type);
     }
@@ -483,6 +486,15 @@ public class GenerateCLDocs : EditorWindow
         return doc;
     }
 
+    /// <summary>
+    /// Generates methods in the format
+    /// ### ret MethodName(param1 : param1Type, param2 : param2Type = DefaultValue...)
+    /// - **Description:** Description of the method
+    /// - **Parameters:**
+    ///   - `param1`: Description of param1
+    ///   - `param2`: *(Optional)* Description of param2
+    /// - **Returns:** Return type of the method
+    /// </summary>
     private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc, bool isStatic=false)
     {
         string doc = string.Empty;
@@ -514,7 +526,6 @@ public class GenerateCLDocs : EditorWindow
                 var methodName = DelimitStyled(method.Name);
                 var parameters = method.GetParameters();
                 string signature = $"{methodName}(";
-
                 for (int i = 0; i < parameters.Length; i++)
                 {
                     var param = parameters[i];
@@ -527,9 +538,18 @@ public class GenerateCLDocs : EditorWindow
                         signature += ",";
                 }
                 signature += ")";
-                var returnType = ResolveType(method.ReturnType.Name);
+                var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
                 var description = ResolveMethodDescription(type, method, XMLdoc, clMethod.Description);
                 rows.Add(new List<string> { signature, returnType, description });
+
+                doc += $"### {type} {signature}\n";
+                doc += $"- **Description:** {description}\n";
+
+                if (method != methods.Last())
+                {
+                    doc += "\n---\n";
+                }
+
             }
 
             doc += CreateHTMLTable(headers, rows, sizing);
