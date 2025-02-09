@@ -494,6 +494,13 @@ namespace Map
                     var renderer = filter.GetComponent<Renderer>();
                     if (renderer == null || renderer.sharedMaterials.Length > 1)
                         continue;
+                    if (filter?.sharedMesh == null)
+                    {
+
+                        Debug.LogError($"Could not find MeshFilter or SharedMesh on object {mapObject.ScriptObject.Name}");
+                        continue;
+                    }
+
                     string hash = filter.sharedMesh.GetHashCode().ToString();
                     hash += positionHash;
                     if (renderer.enabled)
