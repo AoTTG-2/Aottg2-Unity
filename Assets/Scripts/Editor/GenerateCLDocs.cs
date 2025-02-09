@@ -530,29 +530,30 @@ public class GenerateCLDocs : EditorWindow
                 {
                     var param = parameters[i];
                     var paramType = ResolveType(param.ParameterType.Name);
+                    var paramDefaultValue = param.DefaultValue == null? "null" : param.DefaultValue;
+
                     if (param.HasDefaultValue)
-                        signature += $"{param.Name} : {paramType} = {param.DefaultValue}";
+                        signature += $"{paramType} {param.Name} = {paramDefaultValue}";
                     else
-                        signature += $"{param.Name} : {paramType}";
+                        signature += $"{paramType} {param.Name}";
                     if (i < parameters.Length - 1)
-                        signature += ",";
+                        signature += ", ";
                 }
                 signature += ")";
                 var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
                 var description = ResolveMethodDescription(type, method, XMLdoc, clMethod.Description);
-                rows.Add(new List<string> { signature, returnType, description });
 
-                doc += $"### {type} {signature}\n";
+                doc += $"#### {returnType} {signature}\n";
                 doc += $"- **Description:** {description}\n";
 
                 if (method != methods.Last())
                 {
-                    doc += "\n---\n";
+                    doc += "\n---\n\n";
                 }
 
             }
 
-            doc += CreateHTMLTable(headers, rows, sizing);
+            //doc += CreateHTMLTable(headers, rows, sizing);
         }
         return doc;
     }

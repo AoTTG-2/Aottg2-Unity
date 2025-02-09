@@ -1,73 +1,55 @@
 # Input
 Inherits from object
 ## Static Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GetKeyName(key : [String](../static/String.md))</td>
-<td>[String](../static/String.md)</td>
-<td>Gets the key name the player assigned to the key setting</td>
-</tr>
-<tr>
-<td>GetKeyHold(key : [String](../static/String.md))</td>
-<td>bool</td>
-<td>Returns true if the key is being held down</td>
-</tr>
-<tr>
-<td>GetKeyDown(key : [String](../static/String.md))</td>
-<td>bool</td>
-<td>Returns true if the key was pressed down this frame</td>
-</tr>
-<tr>
-<td>GetKeyUp(key : [String](../static/String.md))</td>
-<td>bool</td>
-<td>Returns true if the key was released this frame</td>
-</tr>
-<tr>
-<td>GetMouseAim()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Returns the position the player is aiming at</td>
-</tr>
-<tr>
-<td>GetCursorAimDirection()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Returns the ray the player is aiming at</td>
-</tr>
-<tr>
-<td>GetMouseSpeed()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Returns the speed of the mouse</td>
-</tr>
-<tr>
-<td>GetMousePosition()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Returns the position of the mouse</td>
-</tr>
-<tr>
-<td>GetScreenDimensions()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Returns the dimensions of the screen</td>
-</tr>
-<tr>
-<td>SetKeyDefaultEnabled(key : [String](../static/String.md),enabled : bool)</td>
-<td>none</td>
-<td>Sets whether the key is enabled by default</td>
-</tr>
-<tr>
-<td>SetKeyHold(key : [String](../static/String.md),enabled : bool)</td>
-<td>none</td>
-<td>Sets whether the key is being held down</td>
-</tr>
-</tbody>
-</table>
+#### [String](../static/String.md) GetKeyName([String](../static/String.md) key)
+- **Description:** Gets the key name the player assigned to the key setting
+
+---
+
+#### bool GetKeyHold([String](../static/String.md) key)
+- **Description:** Returns true if the key is being held down
+
+---
+
+#### bool GetKeyDown([String](../static/String.md) key)
+- **Description:** Returns true if the key was pressed down this frame
+
+---
+
+#### bool GetKeyUp([String](../static/String.md) key)
+- **Description:** Returns true if the key was released this frame
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetMouseAim()
+- **Description:** Returns the position the player is aiming at
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetCursorAimDirection()
+- **Description:** Returns the ray the player is aiming at
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetMouseSpeed()
+- **Description:** Returns the speed of the mouse
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetMousePosition()
+- **Description:** Returns the position of the mouse
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetScreenDimensions()
+- **Description:** Returns the dimensions of the screen
+
+---
+
+#### void SetKeyDefaultEnabled([String](../static/String.md) key, bool enabled)
+- **Description:** Sets whether the key is enabled by default
+
+---
+
+#### void SetKeyHold([String](../static/String.md) key, bool enabled)
+- **Description:** Sets whether the key is being held down

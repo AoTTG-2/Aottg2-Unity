@@ -20,33 +20,15 @@ Inherits from object
 |SpectateID|int|False|The player's spectating ID. If not spectating anyone, returns -1.|
 |SpawnPoint|[Vector3](../objects/Vector3.md)|False|Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GetCustomProperty(property : [String](../static/String.md))</td>
-<td>Object</td>
-<td>Get a custom property at given key. Must be a primitive type. This is synced to all clients.</td>
-</tr>
-<tr>
-<td>SetCustomProperty(property : [String](../static/String.md),value : Object)</td>
-<td>none</td>
-<td>Sets a custom property at given key. Must be a primitive type. This is synced to all clients.</td>
-</tr>
-<tr>
-<td>ClearKDR()</td>
-<td>none</td>
-<td>Clears kills, deaths, highestdamage, and totaldamage properties.</td>
-</tr>
-</tbody>
-</table>
+#### Object GetCustomProperty([String](../static/String.md) property)
+- **Description:** Get a custom property at given key. Must be a primitive type. This is synced to all clients.
+
+---
+
+#### void SetCustomProperty([String](../static/String.md) property, Object value)
+- **Description:** Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
+
+---
+
+#### void ClearKDR()
+- **Description:** Clears kills, deaths, highestdamage, and totaldamage properties.

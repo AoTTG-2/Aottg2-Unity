@@ -14,63 +14,45 @@ Inherits from object
 |Up|[Vector3](../objects/Vector3.md)|False|Up vector of the camera.|
 |FollowDistance|float|False|Distance from the camera to the character.|
 ## Static Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SetManual(manual : bool)</td>
-<td>none</td>
-<td>Sets the camera manual mode. If true, camera will only be controlled by custom logic. If false, camera will follow the spawned or spectated player and read input.</td>
-</tr>
-<tr>
-<td>SetPosition(position : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Sets camera position.</td>
-</tr>
-<tr>
-<td>SetRotation(rotation : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Sets camera rotation.</td>
-</tr>
-<tr>
-<td>SetVelocity(velocity : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Sets camera velocity.</td>
-</tr>
-<tr>
-<td>LookAt(position : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Sets the camera forward direction such that it is looking at a world position.</td>
-</tr>
-<tr>
-<td>SetFOV(fov : float)</td>
-<td>none</td>
-<td>Sets the camera field of view. Use 0 to use the default field of view.</td>
-</tr>
-<tr>
-<td>SetCameraMode(mode : [String](../static/String.md))</td>
-<td>none</td>
-<td>Forces the player to use a certain camera mode, taking priority over their camera setting. Accepted values are TPS, Original, FPS.</td>
-</tr>
-<tr>
-<td>ResetDistance()</td>
-<td>none</td>
-<td>Resets the follow distance to player's settings.</td>
-</tr>
-<tr>
-<td>ResetCameraMode()</td>
-<td>none</td>
-<td>Resets the camera mode to player's settings.</td>
-</tr>
-</tbody>
-</table>
+#### void SetManual(bool manual)
+- **Description:** Sets the camera manual mode. If true, camera will only be controlled by custom logic. If false, camera will follow the spawned or spectated player and read input.
+
+---
+
+#### void SetPosition([Vector3](../objects/Vector3.md) position)
+- **Description:** Sets camera position.
+
+---
+
+#### void SetRotation([Vector3](../objects/Vector3.md) rotation)
+- **Description:** Sets camera rotation.
+
+---
+
+#### void SetVelocity([Vector3](../objects/Vector3.md) velocity)
+- **Description:** Sets camera velocity.
+
+---
+
+#### void LookAt([Vector3](../objects/Vector3.md) position)
+- **Description:** Sets the camera forward direction such that it is looking at a world position.
+
+---
+
+#### void SetFOV(float fov)
+- **Description:** Sets the camera field of view. Use 0 to use the default field of view.
+
+---
+
+#### void SetCameraMode([String](../static/String.md) mode)
+- **Description:** Forces the player to use a certain camera mode, taking priority over their camera setting. Accepted values are TPS, Original, FPS.
+
+---
+
+#### void ResetDistance()
+- **Description:** Resets the follow distance to player's settings.
+
+---
+
+#### void ResetCameraMode()
+- **Description:** Resets the camera mode to player's settings.

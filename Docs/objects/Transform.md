@@ -17,93 +17,75 @@ Inherits from object
 |Up|[Vector3](../objects/Vector3.md)|False|Gets the up vector of the transform.|
 |Right|[Vector3](../objects/Vector3.md)|False|Gets the right vector of the transform.|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GetTransform(name : [String](../static/String.md))</td>
-<td>[Transform](../objects/Transform.md)</td>
-<td>Gets the transform of the specified child.</td>
-</tr>
-<tr>
-<td>GetTransforms()</td>
-<td>[List](../objects/List.md)</td>
-<td>Gets all child transforms.</td>
-</tr>
-<tr>
-<td>PlayAnimation(anim : [String](../static/String.md),fade : float = 0.1)</td>
-<td>none</td>
-<td>Plays the specified animation.</td>
-</tr>
-<tr>
-<td>GetAnimationLength(anim : [String](../static/String.md))</td>
-<td>float</td>
-<td>Gets the length of the specified animation.</td>
-</tr>
-<tr>
-<td>PlaySound()</td>
-<td>none</td>
-<td>Plays the sound.</td>
-</tr>
-<tr>
-<td>StopSound()</td>
-<td>none</td>
-<td>Stops the sound.</td>
-</tr>
-<tr>
-<td>ToggleParticle(enabled : bool)</td>
-<td>none</td>
-<td>Toggles the particle system.</td>
-</tr>
-<tr>
-<td>InverseTransformDirection(direction : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.</td>
-</tr>
-<tr>
-<td>InverseTransformPoint(point : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Transforms position from world space to local space.</td>
-</tr>
-<tr>
-<td>TransformDirection(direction : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Transforms direction from local space to world space.</td>
-</tr>
-<tr>
-<td>TransformPoint(point : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Transforms position from local space to world space.</td>
-</tr>
-<tr>
-<td>Rotate(rotation : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).</td>
-</tr>
-<tr>
-<td>RotateAround(point : [Vector3](../objects/Vector3.md),axis : [Vector3](../objects/Vector3.md),angle : float)</td>
-<td>none</td>
-<td>Rotates the transform about axis passing through point in world coordinates by angle degrees.</td>
-</tr>
-<tr>
-<td>LookAt(target : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Rotates the transform so the forward vector points at worldPosition.</td>
-</tr>
-<tr>
-<td>SetRenderersEnabled(enabled : bool)</td>
-<td>none</td>
-<td>Sets the enabled state of all child renderers.</td>
-</tr>
-</tbody>
-</table>
+#### [Transform](../objects/Transform.md) GetTransform([String](../static/String.md) name)
+- **Description:** Gets the transform of the specified child.
+
+---
+
+#### [List](../objects/List.md) GetTransforms()
+- **Description:** Gets all child transforms.
+
+---
+
+#### void PlayAnimation([String](../static/String.md) anim, float fade = 0.1)
+- **Description:** Plays the specified animation.
+
+---
+
+#### float GetAnimationLength([String](../static/String.md) anim)
+- **Description:** Gets the length of the specified animation.
+
+---
+
+#### void PlaySound()
+- **Description:** Plays the sound.
+
+---
+
+#### void StopSound()
+- **Description:** Stops the sound.
+
+---
+
+#### void ToggleParticle(bool enabled)
+- **Description:** Toggles the particle system.
+
+---
+
+#### [Vector3](../objects/Vector3.md) InverseTransformDirection([Vector3](../objects/Vector3.md) direction)
+- **Description:** Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.
+
+---
+
+#### [Vector3](../objects/Vector3.md) InverseTransformPoint([Vector3](../objects/Vector3.md) point)
+- **Description:** Transforms position from world space to local space.
+
+---
+
+#### [Vector3](../objects/Vector3.md) TransformDirection([Vector3](../objects/Vector3.md) direction)
+- **Description:** Transforms direction from local space to world space.
+
+---
+
+#### [Vector3](../objects/Vector3.md) TransformPoint([Vector3](../objects/Vector3.md) point)
+- **Description:** Transforms position from local space to world space.
+
+---
+
+#### void Rotate([Vector3](../objects/Vector3.md) rotation)
+- **Description:** Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).
+
+---
+
+#### void RotateAround([Vector3](../objects/Vector3.md) point, [Vector3](../objects/Vector3.md) axis, float angle)
+- **Description:** Rotates the transform about axis passing through point in world coordinates by angle degrees.
+
+---
+
+#### void LookAt([Vector3](../objects/Vector3.md) target)
+- **Description:** Rotates the transform so the forward vector points at worldPosition.
+
+---
+
+#### void SetRenderersEnabled(bool enabled)
+- **Description:** Sets the enabled state of all child renderers.

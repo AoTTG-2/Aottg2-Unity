@@ -11,43 +11,25 @@ example = Dict()
 |Keys|[List](../objects/List.md)|False|Keys in the dictionary|
 |Values|[List](../objects/List.md)|False|Values in the dictionary|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Clear()</td>
-<td>none</td>
-<td>Clears the dictionary</td>
-</tr>
-<tr>
-<td>Get(key : Object,defaultValue : Object = )</td>
-<td>Object</td>
-<td>Gets a value from the dictionary</td>
-</tr>
-<tr>
-<td>Set(key : Object,value : Object)</td>
-<td>none</td>
-<td>Sets a value in the dictionary</td>
-</tr>
-<tr>
-<td>Remove(key : Object)</td>
-<td>none</td>
-<td>Removes a value from the dictionary</td>
-</tr>
-<tr>
-<td>Contains(key : Object)</td>
-<td>bool</td>
-<td>Checks if the dictionary contains a key</td>
-</tr>
-</tbody>
-</table>
+#### void Clear()
+- **Description:** Clears the dictionary
+
+---
+
+#### Object Get(Object key, Object defaultValue = null)
+- **Description:** Gets a value from the dictionary
+
+---
+
+#### void Set(Object key, Object value)
+- **Description:** Sets a value in the dictionary
+
+---
+
+#### void Remove(Object key)
+- **Description:** Removes a value from the dictionary
+
+---
+
+#### bool Contains(Object key)
+- **Description:** Checks if the dictionary contains a key

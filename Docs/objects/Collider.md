@@ -16,33 +16,15 @@ Inherits from object
 |Transform|[Transform](../objects/Transform.md)|False||
 |GameObjectTransform|[Transform](../objects/Transform.md)|False||
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ClosestPoint(position : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td></td>
-</tr>
-<tr>
-<td>ClosestPointOnBounds(position : [Vector3](../objects/Vector3.md))</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td></td>
-</tr>
-<tr>
-<td>Raycast(start : [Vector3](../objects/Vector3.md),end : [Vector3](../objects/Vector3.md),maxDistance : float,collideWith : [String](../static/String.md))</td>
-<td>[LineCastHitResult](../objects/LineCastHitResult.md)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+#### [Vector3](../objects/Vector3.md) ClosestPoint([Vector3](../objects/Vector3.md) position)
+- **Description:** 
+
+---
+
+#### [Vector3](../objects/Vector3.md) ClosestPointOnBounds([Vector3](../objects/Vector3.md) position)
+- **Description:** 
+
+---
+
+#### [LineCastHitResult](../objects/LineCastHitResult.md) Raycast([Vector3](../objects/Vector3.md) start, [Vector3](../objects/Vector3.md) end, float maxDistance, [String](../static/String.md) collideWith)
+- **Description:** 

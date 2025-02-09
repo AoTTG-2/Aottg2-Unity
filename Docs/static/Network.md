@@ -10,43 +10,25 @@ Inherits from object
 |NetworkTime|double|False|The network time|
 |Ping|int|False|The local player's ping|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SendMessage(player : [Player](../objects/Player.md),message : [String](../static/String.md))</td>
-<td>none</td>
-<td>Send a message to a player</td>
-</tr>
-<tr>
-<td>SendMessageAll(message : [String](../static/String.md))</td>
-<td>none</td>
-<td>Send a message to all players</td>
-</tr>
-<tr>
-<td>SendMessageOthers(message : [String](../static/String.md))</td>
-<td>none</td>
-<td>Send a message to all players except the sender</td>
-</tr>
-<tr>
-<td>GetTimestampDifference(timestamp1 : double,timestamp2 : double)</td>
-<td>double</td>
-<td>Get the difference between two photon timestamps</td>
-</tr>
-<tr>
-<td>KickPlayer(target : Object,reason : [String](../static/String.md) = .)</td>
-<td>none</td>
-<td>Kick the given player by id or player reference.</td>
-</tr>
-</tbody>
-</table>
+#### void SendMessage([Player](../objects/Player.md) player, [String](../static/String.md) message)
+- **Description:** Send a message to a player
+
+---
+
+#### void SendMessageAll([String](../static/String.md) message)
+- **Description:** Send a message to all players
+
+---
+
+#### void SendMessageOthers([String](../static/String.md) message)
+- **Description:** Send a message to all players except the sender
+
+---
+
+#### double GetTimestampDifference(double timestamp1, double timestamp2)
+- **Description:** Get the difference between two photon timestamps
+
+---
+
+#### void KickPlayer(Object target, [String](../static/String.md) reason = .)
+- **Description:** Kick the given player by id or player reference.

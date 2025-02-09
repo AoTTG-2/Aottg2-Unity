@@ -14,118 +14,100 @@ Inherits from object
 |BottomRight|[String](../static/String.md)|False|"BottomRight" constant|
 |Popups|[List](../objects/List.md)|False|Returns a list of all popups|
 ## Static Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SetLabel(label : [String](../static/String.md),message : [String](../static/String.md))</td>
-<td>none</td>
-<td>Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight", "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".</td>
-</tr>
-<tr>
-<td>SetLabelForTime(label : [String](../static/String.md),message : [String](../static/String.md),time : float)</td>
-<td>none</td>
-<td>Sets the label for a certain time, after which it will be cleared.</td>
-</tr>
-<tr>
-<td>SetLabelAll(label : [String](../static/String.md),message : [String](../static/String.md))</td>
-<td>none</td>
-<td>Sets the label for all players. Master client only. Be careful not to call this often.</td>
-</tr>
-<tr>
-<td>SetLabelForTimeAll(label : [String](../static/String.md),message : [String](../static/String.md),time : float)</td>
-<td>none</td>
-<td>Sets the label for all players for a certain time. Master client only.</td>
-</tr>
-<tr>
-<td>CreatePopup(popupName : [String](../static/String.md),title : [String](../static/String.md),width : int,height : int)</td>
-<td>[String](../static/String.md)</td>
-<td>Creates a new popup. This popup is hidden until shown.</td>
-</tr>
-<tr>
-<td>ShowPopup(popupName : [String](../static/String.md))</td>
-<td>none</td>
-<td>Shows the popup with given name.</td>
-</tr>
-<tr>
-<td>HidePopup(popupName : [String](../static/String.md))</td>
-<td>none</td>
-<td>Hides the popup with given name.</td>
-</tr>
-<tr>
-<td>ClearPopup(popupName : [String](../static/String.md))</td>
-<td>none</td>
-<td>Clears all elements in popup with given name.</td>
-</tr>
-<tr>
-<td>AddPopupLabel(popupName : [String](../static/String.md),label : [String](../static/String.md))</td>
-<td>none</td>
-<td>Adds a text row to the popup with label as content.</td>
-</tr>
-<tr>
-<td>AddPopupButton(popupName : [String](../static/String.md),label : [String](../static/String.md),callback : [String](../static/String.md))</td>
-<td>none</td>
-<td>Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.</td>
-</tr>
-<tr>
-<td>AddPopupBottomButton(popupName : [String](../static/String.md),label : [String](../static/String.md),callback : [String](../static/String.md))</td>
-<td>none</td>
-<td>Adds a button to the bottom bar of the popup.</td>
-</tr>
-<tr>
-<td>AddPopupButtons(popupName : [String](../static/String.md),labels : [List](../objects/List.md),callbacks : [List](../objects/List.md))</td>
-<td>none</td>
-<td>Adds a list of buttons in a row to the popup.</td>
-</tr>
-<tr>
-<td>WrapStyleTag(text : [String](../static/String.md),style : [String](../static/String.md),arg : [String](../static/String.md) = )</td>
-<td>[String](../static/String.md)</td>
-<td>Returns a wrapped string given style and args.</td>
-</tr>
-<tr>
-<td>GetLocale(cat : [String](../static/String.md),sub : [String](../static/String.md),key : [String](../static/String.md))</td>
-<td>[String](../static/String.md)</td>
-<td>Gets translated locale from the current Language.json file with given category, subcategory, and key pattern.</td>
-</tr>
-<tr>
-<td>GetLanguage()</td>
-<td>[String](../static/String.md)</td>
-<td>Returns the current language (e.g. "English" or "简体中文").</td>
-</tr>
-<tr>
-<td>ShowChangeCharacterMenu()</td>
-<td>none</td>
-<td>Shows the change character menu if main character is Human.</td>
-</tr>
-<tr>
-<td>SetScoreboardHeader(header : [String](../static/String.md))</td>
-<td>none</td>
-<td>Sets the display of the scoreboard header (default "Kills / Deaths...")</td>
-</tr>
-<tr>
-<td>SetScoreboardProperty(property : [String](../static/String.md))</td>
-<td>none</td>
-<td>Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default "Kills / Deaths..." display.</td>
-</tr>
-<tr>
-<td>GetThemeColor(panel : [String](../static/String.md),category : [String](../static/String.md),item : [String](../static/String.md))</td>
-<td>[Color](../objects/Color.md)</td>
-<td>Gets the color of the specified item. See theme json for reference.</td>
-</tr>
-<tr>
-<td>IsPopupActive(popupName : [String](../static/String.md))</td>
-<td>bool</td>
-<td>Returns if the given popup is active</td>
-</tr>
-</tbody>
-</table>
+#### void SetLabel([String](../static/String.md) label, [String](../static/String.md) message)
+- **Description:** Sets the label at a certain location. Valid types: "TopCenter", "TopLeft", "TopRight", "MiddleCenter", "MiddleLeft", "MiddleRight", "BottomLeft", "BottomRight", "BottomCenter".
+
+---
+
+#### void SetLabelForTime([String](../static/String.md) label, [String](../static/String.md) message, float time)
+- **Description:** Sets the label for a certain time, after which it will be cleared.
+
+---
+
+#### void SetLabelAll([String](../static/String.md) label, [String](../static/String.md) message)
+- **Description:** Sets the label for all players. Master client only. Be careful not to call this often.
+
+---
+
+#### void SetLabelForTimeAll([String](../static/String.md) label, [String](../static/String.md) message, float time)
+- **Description:** Sets the label for all players for a certain time. Master client only.
+
+---
+
+#### [String](../static/String.md) CreatePopup([String](../static/String.md) popupName, [String](../static/String.md) title, int width, int height)
+- **Description:** Creates a new popup. This popup is hidden until shown.
+
+---
+
+#### void ShowPopup([String](../static/String.md) popupName)
+- **Description:** Shows the popup with given name.
+
+---
+
+#### void HidePopup([String](../static/String.md) popupName)
+- **Description:** Hides the popup with given name.
+
+---
+
+#### void ClearPopup([String](../static/String.md) popupName)
+- **Description:** Clears all elements in popup with given name.
+
+---
+
+#### void AddPopupLabel([String](../static/String.md) popupName, [String](../static/String.md) label)
+- **Description:** Adds a text row to the popup with label as content.
+
+---
+
+#### void AddPopupButton([String](../static/String.md) popupName, [String](../static/String.md) label, [String](../static/String.md) callback)
+- **Description:** Adds a button row to the popup with given button name and display text. When button is pressed, OnButtonClick is called in Main with buttonName parameter.
+
+---
+
+#### void AddPopupBottomButton([String](../static/String.md) popupName, [String](../static/String.md) label, [String](../static/String.md) callback)
+- **Description:** Adds a button to the bottom bar of the popup.
+
+---
+
+#### void AddPopupButtons([String](../static/String.md) popupName, [List](../objects/List.md) labels, [List](../objects/List.md) callbacks)
+- **Description:** Adds a list of buttons in a row to the popup.
+
+---
+
+#### [String](../static/String.md) WrapStyleTag([String](../static/String.md) text, [String](../static/String.md) style, [String](../static/String.md) arg = null)
+- **Description:** Returns a wrapped string given style and args.
+
+---
+
+#### [String](../static/String.md) GetLocale([String](../static/String.md) cat, [String](../static/String.md) sub, [String](../static/String.md) key)
+- **Description:** Gets translated locale from the current Language.json file with given category, subcategory, and key pattern.
+
+---
+
+#### [String](../static/String.md) GetLanguage()
+- **Description:** Returns the current language (e.g. "English" or "简体中文").
+
+---
+
+#### void ShowChangeCharacterMenu()
+- **Description:** Shows the change character menu if main character is Human.
+
+---
+
+#### void SetScoreboardHeader([String](../static/String.md) header)
+- **Description:** Sets the display of the scoreboard header (default "Kills / Deaths...")
+
+---
+
+#### void SetScoreboardProperty([String](../static/String.md) property)
+- **Description:** Sets which Player custom property to read from to display on the scoreboard. If set to empty string, will use the default "Kills / Deaths..." display.
+
+---
+
+#### [Color](../objects/Color.md) GetThemeColor([String](../static/String.md) panel, [String](../static/String.md) category, [String](../static/String.md) item)
+- **Description:** Gets the color of the specified item. See theme json for reference.
+
+---
+
+#### bool IsPopupActive([String](../static/String.md) popupName)
+- **Description:** Returns if the given popup is active

@@ -28,138 +28,120 @@ Inherits from object
 |Tag|[String](../static/String.md)|False|The tag of the object|
 |Layer|int|False|The layer of the object|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AddComponent(name : [String](../static/String.md))</td>
-<td>CustomLogicComponentInstance</td>
-<td>Add a component to the object</td>
-</tr>
-<tr>
-<td>RemoveComponent(name : [String](../static/String.md))</td>
-<td>none</td>
-<td>Remove a component from the object</td>
-</tr>
-<tr>
-<td>GetComponent(name : [String](../static/String.md))</td>
-<td>CustomLogicComponentInstance</td>
-<td>Get a component from the object</td>
-</tr>
-<tr>
-<td>SetComponentEnabled(name : [String](../static/String.md),enabled : bool)</td>
-<td>none</td>
-<td>Set whether a component is enabled</td>
-</tr>
-<tr>
-<td>SetComponentsEnabled(enabled : bool)</td>
-<td>none</td>
-<td>Set whether all components are enabled</td>
-</tr>
-<tr>
-<td>AddSphereCollider(collideMode : [String](../static/String.md),collideWith : [String](../static/String.md),center : [Vector3](../objects/Vector3.md),radius : float)</td>
-<td>none</td>
-<td>Add a sphere collider to the object</td>
-</tr>
-<tr>
-<td>AddBoxCollider(collideMode : [String](../static/String.md),collideWith : [String](../static/String.md),center : [Vector3](../objects/Vector3.md) = ,size : [Vector3](../objects/Vector3.md) = )</td>
-<td>none</td>
-<td>Add a box collider to the object</td>
-</tr>
-<tr>
-<td>AddSphereTarget(team : [String](../static/String.md),center : [Vector3](../objects/Vector3.md),radius : float)</td>
-<td>[MapTargetable](../objects/MapTargetable.md)</td>
-<td>Add a sphere target to the object</td>
-</tr>
-<tr>
-<td>AddBoxTarget(team : [String](../static/String.md),center : [Vector3](../objects/Vector3.md),size : [Vector3](../objects/Vector3.md))</td>
-<td>[MapTargetable](../objects/MapTargetable.md)</td>
-<td>Add a box target to the object</td>
-</tr>
-<tr>
-<td>GetChild(name : [String](../static/String.md))</td>
-<td>[MapObject](../objects/MapObject.md)</td>
-<td>Get a child object by name</td>
-</tr>
-<tr>
-<td>GetChildren()</td>
-<td>[List](../objects/List.md)</td>
-<td>Get all child objects</td>
-</tr>
-<tr>
-<td>GetTransform(name : [String](../static/String.md))</td>
-<td>[Transform](../objects/Transform.md)</td>
-<td>Get a child transform by name</td>
-</tr>
-<tr>
-<td>SetColorAll(color : [Color](../objects/Color.md))</td>
-<td>none</td>
-<td>Set the color of all renderers on the object</td>
-</tr>
-<tr>
-<td>InBounds(position : [Vector3](../objects/Vector3.md))</td>
-<td>bool</td>
-<td>Check if a position is within the object's bounds</td>
-</tr>
-<tr>
-<td>GetBoundsAverageCenter()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds average center</td>
-</tr>
-<tr>
-<td>GetBoundsCenter()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds center</td>
-</tr>
-<tr>
-<td>GetBoundsSize()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds size</td>
-</tr>
-<tr>
-<td>GetBoundsMin()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds min</td>
-</tr>
-<tr>
-<td>GetBoundsMax()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds max</td>
-</tr>
-<tr>
-<td>GetBoundsExtents()</td>
-<td>[Vector3](../objects/Vector3.md)</td>
-<td>Get the bounds extents</td>
-</tr>
-<tr>
-<td>GetCorners()</td>
-<td>[List](../objects/List.md)</td>
-<td>Get the corners of the bounds</td>
-</tr>
-<tr>
-<td>AddBuiltinComponent(parameter0 : Object = ,parameter1 : Object = ,parameter2 : Object = ,parameter3 : Object = ,parameter4 : Object = )</td>
-<td>none</td>
-<td>[OBSELETE] Add builtin component</td>
-</tr>
-<tr>
-<td>ReadBuiltinComponent(name : [String](../static/String.md),param : [String](../static/String.md))</td>
-<td>Object</td>
-<td>[OBSELETE] Read a builtin component</td>
-</tr>
-<tr>
-<td>UpdateBuiltinComponent(parameter0 : Object = ,parameter1 : Object = ,parameter2 : Object = ,parameter3 : Object = ,parameter4 : Object = )</td>
-<td>none</td>
-<td>[OBSELETE] Update a builtin component</td>
-</tr>
-</tbody>
-</table>
+#### CustomLogicComponentInstance AddComponent([String](../static/String.md) name)
+- **Description:** Add a component to the object
+
+---
+
+#### void RemoveComponent([String](../static/String.md) name)
+- **Description:** Remove a component from the object
+
+---
+
+#### CustomLogicComponentInstance GetComponent([String](../static/String.md) name)
+- **Description:** Get a component from the object
+
+---
+
+#### void SetComponentEnabled([String](../static/String.md) name, bool enabled)
+- **Description:** Set whether a component is enabled
+
+---
+
+#### void SetComponentsEnabled(bool enabled)
+- **Description:** Set whether all components are enabled
+
+---
+
+#### void AddSphereCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center, float radius)
+- **Description:** Add a sphere collider to the object
+
+---
+
+#### void AddBoxCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center = null, [Vector3](../objects/Vector3.md) size = null)
+- **Description:** Add a box collider to the object
+
+---
+
+#### [MapTargetable](../objects/MapTargetable.md) AddSphereTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, float radius)
+- **Description:** Add a sphere target to the object
+
+---
+
+#### [MapTargetable](../objects/MapTargetable.md) AddBoxTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, [Vector3](../objects/Vector3.md) size)
+- **Description:** Add a box target to the object
+
+---
+
+#### [MapObject](../objects/MapObject.md) GetChild([String](../static/String.md) name)
+- **Description:** Get a child object by name
+
+---
+
+#### [List](../objects/List.md) GetChildren()
+- **Description:** Get all child objects
+
+---
+
+#### [Transform](../objects/Transform.md) GetTransform([String](../static/String.md) name)
+- **Description:** Get a child transform by name
+
+---
+
+#### void SetColorAll([Color](../objects/Color.md) color)
+- **Description:** Set the color of all renderers on the object
+
+---
+
+#### bool InBounds([Vector3](../objects/Vector3.md) position)
+- **Description:** Check if a position is within the object's bounds
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsAverageCenter()
+- **Description:** Get the bounds average center
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsCenter()
+- **Description:** Get the bounds center
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsSize()
+- **Description:** Get the bounds size
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsMin()
+- **Description:** Get the bounds min
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsMax()
+- **Description:** Get the bounds max
+
+---
+
+#### [Vector3](../objects/Vector3.md) GetBoundsExtents()
+- **Description:** Get the bounds extents
+
+---
+
+#### [List](../objects/List.md) GetCorners()
+- **Description:** Get the corners of the bounds
+
+---
+
+#### void AddBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
+- **Description:** [OBSELETE] Add builtin component
+
+---
+
+#### Object ReadBuiltinComponent([String](../static/String.md) name, [String](../static/String.md) param)
+- **Description:** [OBSELETE] Read a builtin component
+
+---
+
+#### void UpdateBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
+- **Description:** [OBSELETE] Update a builtin component

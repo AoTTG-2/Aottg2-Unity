@@ -28,78 +28,60 @@ Inherits from object
 |CurrentAnimation|[String](../static/String.md)|False|Character's current playing animation.|
 |Grounded|bool|False|Character's grounded status.|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GetKilled(killer : [String](../static/String.md))</td>
-<td>none</td>
-<td>Kills the character. Callable by non-owners.</td>
-</tr>
-<tr>
-<td>GetDamaged(killer : [String](../static/String.md),damage : int)</td>
-<td>none</td>
-<td>Damages the character and kills it if its health reaches 0. Callable by non-owners.</td>
-</tr>
-<tr>
-<td>Emote(emote : [String](../static/String.md))</td>
-<td>none</td>
-<td>Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.</td>
-</tr>
-<tr>
-<td>PlayAnimation(animation : [String](../static/String.md),fade : float = 0.1)</td>
-<td>none</td>
-<td>Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.</td>
-</tr>
-<tr>
-<td>GetAnimationLength(animation : [String](../static/String.md))</td>
-<td>float</td>
-<td>Gets the length of animation.</td>
-</tr>
-<tr>
-<td>PlaySound(sound : [String](../static/String.md))</td>
-<td>none</td>
-<td>Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.</td>
-</tr>
-<tr>
-<td>StopSound(sound : [String](../static/String.md))</td>
-<td>none</td>
-<td>Stops the sound.</td>
-</tr>
-<tr>
-<td>LookAt(position : [Vector3](../objects/Vector3.md))</td>
-<td>none</td>
-<td>Rotates the character such that it is looking towards a world position.</td>
-</tr>
-<tr>
-<td>AddForce(force : [Vector3](../objects/Vector3.md),mode : [String](../static/String.md) = Acceleration)</td>
-<td>none</td>
-<td>Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.</td>
-</tr>
-<tr>
-<td>Reveal(delay : float)</td>
-<td>none</td>
-<td>Reveaal the titan for a set number of seconds.</td>
-</tr>
-<tr>
-<td>AddOutline(color : [Color](../objects/Color.md) = ,mode : [String](../static/String.md) = OutlineAll)</td>
-<td>none</td>
-<td>Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor</td>
-</tr>
-<tr>
-<td>RemoveOutline()</td>
-<td>none</td>
-<td>Removes the outline effect from the character.</td>
-</tr>
-</tbody>
-</table>
+#### void GetKilled([String](../static/String.md) killer)
+- **Description:** Kills the character. Callable by non-owners.
+
+---
+
+#### void GetDamaged([String](../static/String.md) killer, int damage)
+- **Description:** Damages the character and kills it if its health reaches 0. Callable by non-owners.
+
+---
+
+#### void Emote([String](../static/String.md) emote)
+- **Description:** Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
+
+---
+
+#### void PlayAnimation([String](../static/String.md) animation, float fade = 0.1)
+- **Description:** Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
+
+---
+
+#### float GetAnimationLength([String](../static/String.md) animation)
+- **Description:** Gets the length of animation.
+
+---
+
+#### void PlaySound([String](../static/String.md) sound)
+- **Description:** Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
+
+---
+
+#### void StopSound([String](../static/String.md) sound)
+- **Description:** Stops the sound.
+
+---
+
+#### void LookAt([Vector3](../objects/Vector3.md) position)
+- **Description:** Rotates the character such that it is looking towards a world position.
+
+---
+
+#### void AddForce([Vector3](../objects/Vector3.md) force, [String](../static/String.md) mode = Acceleration)
+- **Description:** Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
+
+---
+
+#### void Reveal(float delay)
+- **Description:** Reveaal the titan for a set number of seconds.
+
+---
+
+#### void AddOutline([Color](../objects/Color.md) color = null, [String](../static/String.md) mode = OutlineAll)
+- **Description:** Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
+
+---
+
+#### void RemoveOutline()
+- **Description:** Removes the outline effect from the character.

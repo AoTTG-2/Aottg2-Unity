@@ -23,163 +23,145 @@ Inherits from object
 |ForcedCharacterType|[String](../static/String.md)|False|Forced character type|
 |ForcedLoadout|[String](../static/String.md)|False|Forced loadout|
 ## Methods
-<table>
-<colgroup><col style="width: 30%"/>
-<col style="width: 20%"/>
-<col style="width: 50%"/>
-</colgroup>
-<thead>
-<tr>
-<th>Function</th>
-<th>Returns</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Debug(message : Object)</td>
-<td>none</td>
-<td>Print a debug statement to the console</td>
-</tr>
-<tr>
-<td>Print(message : Object)</td>
-<td>none</td>
-<td>Print a message to the chat</td>
-</tr>
-<tr>
-<td>PrintAll(message : Object)</td>
-<td>none</td>
-<td>Print a message to all players</td>
-</tr>
-<tr>
-<td>GetGeneralSetting(settingName : [String](../static/String.md))</td>
-<td>Object</td>
-<td>Get a general setting</td>
-</tr>
-<tr>
-<td>GetTitanSetting(settingName : [String](../static/String.md))</td>
-<td>Object</td>
-<td>Get a titan setting</td>
-</tr>
-<tr>
-<td>GetMiscSetting(settingName : [String](../static/String.md))</td>
-<td>Object</td>
-<td>Get a misc setting</td>
-</tr>
-<tr>
-<td>End(delay : float)</td>
-<td>none</td>
-<td>End the game</td>
-</tr>
-<tr>
-<td>FindCharacterByViewID(viewID : int)</td>
-<td>[Character](../objects/Character.md)</td>
-<td>Find a character by view ID</td>
-</tr>
-<tr>
-<td>SpawnTitan(type : [String](../static/String.md))</td>
-<td>[Titan](../objects/Titan.md)</td>
-<td>Spawn a titan</td>
-</tr>
-<tr>
-<td>SpawnTitanAt(type : [String](../static/String.md),position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>[Titan](../objects/Titan.md)</td>
-<td>Spawn a titan at a position</td>
-</tr>
-<tr>
-<td>SpawnTitans(type : [String](../static/String.md),count : int)</td>
-<td>[List](../objects/List.md)</td>
-<td>Spawn titans</td>
-</tr>
-<tr>
-<td>SpawnTitansAsync(type : [String](../static/String.md),count : int)</td>
-<td>none</td>
-<td>Spawn titans asynchronously</td>
-</tr>
-<tr>
-<td>SpawnTitansAt(type : [String](../static/String.md),count : int,position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>[List](../objects/List.md)</td>
-<td>Spawn titans at a position</td>
-</tr>
-<tr>
-<td>SpawnTitansAtAsync(type : [String](../static/String.md),count : int,position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>none</td>
-<td>Spawn titans at a position asynchronously</td>
-</tr>
-<tr>
-<td>SpawnShifter(type : [String](../static/String.md))</td>
-<td>[Shifter](../objects/Shifter.md)</td>
-<td>Spawn a shifter</td>
-</tr>
-<tr>
-<td>SpawnShifterAt(type : [String](../static/String.md),position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>[Shifter](../objects/Shifter.md)</td>
-<td>Spawn a shifter at a position</td>
-</tr>
-<tr>
-<td>SpawnProjectile(parameters : Object[])</td>
-<td>none</td>
-<td>Spawn a projectile</td>
-</tr>
-<tr>
-<td>SpawnProjectileWithOwner(parameters : Object[])</td>
-<td>none</td>
-<td>Spawn a projectile with an owner</td>
-</tr>
-<tr>
-<td>SpawnEffect(parameters : Object[])</td>
-<td>none</td>
-<td>Spawn an effect</td>
-</tr>
-<tr>
-<td>SpawnPlayer(player : [Player](../objects/Player.md),force : bool)</td>
-<td>none</td>
-<td>Spawn a player</td>
-</tr>
-<tr>
-<td>SpawnPlayerAll(force : bool)</td>
-<td>none</td>
-<td>Spawn a player for all players</td>
-</tr>
-<tr>
-<td>SpawnPlayerAt(player : [Player](../objects/Player.md),force : bool,position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>none</td>
-<td>Spawn a player at a position</td>
-</tr>
-<tr>
-<td>SpawnPlayerAtAll(force : bool,position : [Vector3](../objects/Vector3.md),rotationY : float = 0)</td>
-<td>none</td>
-<td>Spawn a player at a position for all players</td>
-</tr>
-<tr>
-<td>SetPlaylist(playlist : [String](../static/String.md))</td>
-<td>none</td>
-<td>Set the music playlist</td>
-</tr>
-<tr>
-<td>SetSong(song : [String](../static/String.md))</td>
-<td>none</td>
-<td>Set the music song</td>
-</tr>
-<tr>
-<td>DrawRay(start : [Vector3](../objects/Vector3.md),dir : [Vector3](../objects/Vector3.md),color : [Color](../objects/Color.md),duration : float)</td>
-<td>none</td>
-<td>Draw a ray</td>
-</tr>
-<tr>
-<td>ShowKillScore(damage : int)</td>
-<td>none</td>
-<td>Show the kill score</td>
-</tr>
-<tr>
-<td>ShowKillFeed(killer : [String](../static/String.md),victim : [String](../static/String.md),score : int,weapon : [String](../static/String.md))</td>
-<td>none</td>
-<td>Show the kill feed</td>
-</tr>
-<tr>
-<td>ShowKillFeedAll(killer : [String](../static/String.md),victim : [String](../static/String.md),score : int,weapon : [String](../static/String.md))</td>
-<td>none</td>
-<td>Show the kill feed for all players</td>
-</tr>
-</tbody>
-</table>
+#### void Debug(Object message)
+- **Description:** Print a debug statement to the console
+
+---
+
+#### void Print(Object message)
+- **Description:** Print a message to the chat
+
+---
+
+#### void PrintAll(Object message)
+- **Description:** Print a message to all players
+
+---
+
+#### Object GetGeneralSetting([String](../static/String.md) settingName)
+- **Description:** Get a general setting
+
+---
+
+#### Object GetTitanSetting([String](../static/String.md) settingName)
+- **Description:** Get a titan setting
+
+---
+
+#### Object GetMiscSetting([String](../static/String.md) settingName)
+- **Description:** Get a misc setting
+
+---
+
+#### void End(float delay)
+- **Description:** End the game
+
+---
+
+#### [Character](../objects/Character.md) FindCharacterByViewID(int viewID)
+- **Description:** Find a character by view ID
+
+---
+
+#### [Titan](../objects/Titan.md) SpawnTitan([String](../static/String.md) type)
+- **Description:** Spawn a titan
+
+---
+
+#### [Titan](../objects/Titan.md) SpawnTitanAt([String](../static/String.md) type, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn a titan at a position
+
+---
+
+#### [List](../objects/List.md) SpawnTitans([String](../static/String.md) type, int count)
+- **Description:** Spawn titans
+
+---
+
+#### void SpawnTitansAsync([String](../static/String.md) type, int count)
+- **Description:** Spawn titans asynchronously
+
+---
+
+#### [List](../objects/List.md) SpawnTitansAt([String](../static/String.md) type, int count, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn titans at a position
+
+---
+
+#### void SpawnTitansAtAsync([String](../static/String.md) type, int count, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn titans at a position asynchronously
+
+---
+
+#### [Shifter](../objects/Shifter.md) SpawnShifter([String](../static/String.md) type)
+- **Description:** Spawn a shifter
+
+---
+
+#### [Shifter](../objects/Shifter.md) SpawnShifterAt([String](../static/String.md) type, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn a shifter at a position
+
+---
+
+#### void SpawnProjectile(Object[] parameters)
+- **Description:** Spawn a projectile
+
+---
+
+#### void SpawnProjectileWithOwner(Object[] parameters)
+- **Description:** Spawn a projectile with an owner
+
+---
+
+#### void SpawnEffect(Object[] parameters)
+- **Description:** Spawn an effect
+
+---
+
+#### void SpawnPlayer([Player](../objects/Player.md) player, bool force)
+- **Description:** Spawn a player
+
+---
+
+#### void SpawnPlayerAll(bool force)
+- **Description:** Spawn a player for all players
+
+---
+
+#### void SpawnPlayerAt([Player](../objects/Player.md) player, bool force, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn a player at a position
+
+---
+
+#### void SpawnPlayerAtAll(bool force, [Vector3](../objects/Vector3.md) position, float rotationY = 0)
+- **Description:** Spawn a player at a position for all players
+
+---
+
+#### void SetPlaylist([String](../static/String.md) playlist)
+- **Description:** Set the music playlist
+
+---
+
+#### void SetSong([String](../static/String.md) song)
+- **Description:** Set the music song
+
+---
+
+#### void DrawRay([Vector3](../objects/Vector3.md) start, [Vector3](../objects/Vector3.md) dir, [Color](../objects/Color.md) color, float duration)
+- **Description:** Draw a ray
+
+---
+
+#### void ShowKillScore(int damage)
+- **Description:** Show the kill score
+
+---
+
+#### void ShowKillFeed([String](../static/String.md) killer, [String](../static/String.md) victim, int score, [String](../static/String.md) weapon)
+- **Description:** Show the kill feed
+
+---
+
+#### void ShowKillFeedAll([String](../static/String.md) killer, [String](../static/String.md) victim, int score, [String](../static/String.md) weapon)
+- **Description:** Show the kill feed for all players
