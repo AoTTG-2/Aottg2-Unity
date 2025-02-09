@@ -117,6 +117,10 @@ namespace CustomLogic
                 return Titan.AttackPause;
             if (name == "TurnPause")
                 return Titan.TurnPause;
+            if (name == "Stamina")
+                return Titan.CurrentSprintStamina;
+            if (name == "MaxStamina")
+                return Titan.MaxSprintStamina;
             if (name == "NapePosition")
                 return new CustomLogicVector3Builtin(Titan.BasicCache.NapeHurtbox.transform.position);
             if (name == "IsCrawler")
@@ -168,6 +172,10 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Titan.IsMine())
                 return;
             if (name == "Size")
@@ -192,6 +200,10 @@ namespace CustomLogic
                 Titan.AttackPause = value.UnboxToFloat();
             else if (name == "TurnPause")
                 Titan.TurnPause = value.UnboxToFloat();
+            else if (name == "Stamina")
+                Titan.CurrentSprintStamina = value.UnboxToFloat();
+            else if (name == "MaxStamina")
+                Titan.MaxSprintStamina = value.UnboxToFloat();
             else if (name == "DetectRange")
             {
                 if (Titan.AI)

@@ -19,15 +19,7 @@ namespace UI
             ElementStyle style = new ElementStyle(titleWidth: 100f, themePanel: ThemePanel, fontSize: 20);
             if (PastebinLoader.Status == PastebinStatus.Loaded)
             {
-                foreach (JSONNode node in PastebinLoader.Changelog)
-                {
-                    ElementFactory.CreateDefaultLabel(SinglePanel, style, "Version " + node["Version"].Value + ":", FontStyle.Bold, TextAnchor.MiddleLeft);
-                    foreach (JSONNode change in node["Changes"])
-                    {
-                        ElementFactory.CreateDefaultLabel(SinglePanel, style, "- " + change.Value, alignment: TextAnchor.MiddleLeft);
-                    }
-                    CreateHorizontalDivider(SinglePanel);
-                }
+                ElementFactory.CreateDefaultLabel(SinglePanel, style, PastebinLoader.Changelog, FontStyle.Normal, TextAnchor.MiddleLeft);
             }
             else
                 ElementFactory.CreateDefaultLabel(SinglePanel, style, "Loading changelog...", alignment: TextAnchor.MiddleCenter);

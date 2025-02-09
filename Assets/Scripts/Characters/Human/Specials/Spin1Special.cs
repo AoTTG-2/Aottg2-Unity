@@ -26,7 +26,7 @@ namespace Characters
         protected override void ActiveFixedUpdate()
         {
             base.ActiveFixedUpdate();
-            if (!_human.Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
+            if (!_human.Animation.IsPlaying(HumanAnimations.SpecialLevi))
                 return;
             float time = GetAnimationTime();
             if (_stage == 0 && time > AnimationLoopStartTime)
@@ -51,7 +51,7 @@ namespace Characters
 
         protected float GetAnimationTime()
         {
-            return _human.Cache.Animation[HumanAnimations.SpecialLevi].normalizedTime;
+            return _human.Animation.GetNormalizedTime(HumanAnimations.SpecialLevi);
         }
     }
 }

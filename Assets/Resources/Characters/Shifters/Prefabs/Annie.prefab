@@ -969,11 +969,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4195183095372977575}
   - component: {fileID: 2453394004567123860}
-  - component: {fileID: 4195183095378432087}
   - component: {fileID: 33568358018806499}
   - component: {fileID: 561230232209052193}
   - component: {fileID: 1070449533235202943}
   - component: {fileID: 1903268225831242728}
+  - component: {fileID: 7281895295400627717}
   m_Layer: 11
   m_Name: Annie
   m_TagString: Untagged
@@ -1022,67 +1022,6 @@ CapsuleCollider:
   m_Height: 54.398026
   m_Direction: 1
   m_Center: {x: 0, y: 27.2, z: 1.3}
---- !u!111 &4195183095378432087
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4195183095372679559}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400080, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400002, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400004, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400008, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400010, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400012, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400014, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400016, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400018, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400020, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400022, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400026, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400028, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400030, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400032, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400034, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400036, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400068, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400038, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400040, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400042, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400072, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400074, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400076, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400078, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400044, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400046, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400048, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400050, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400052, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400054, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400056, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400058, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400060, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400062, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400064, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400066, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 7400006, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 3573016297810798530, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 3334919516700390176, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: -4165809326435788271, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: 2336447888740095275, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: -7558733365360669113, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  - {fileID: -4203844692903478855, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 1
 --- !u!114 &33568358018806499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,6 +1037,8 @@ MonoBehaviour:
   RichTextName: 
   VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
@@ -1105,6 +1046,7 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -1135,6 +1077,7 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0
@@ -1196,7 +1139,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -1204,6 +1147,28 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!95 &7281895295400627717
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4195183095372679559}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: a34deef405e1a4845b1913cd36ad01d6, type: 3}
+  m_Controller: {fileID: 9100000, guid: 679c34792e323ec4cbc26fd50d854a9d, type: 2}
+  m_CullingMode: 2
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4195183095372679561
 GameObject:
   m_ObjectHideFlags: 0

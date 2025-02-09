@@ -32,7 +32,7 @@ namespace Characters
         {
             _human.Stats.RunSpeed = _oldSpeed;
             _human.RunAnimation = _human.Weapon is ThunderspearWeapon? HumanAnimations.RunTS : HumanAnimations.Run;
-            if (_human.Cache.Animation.IsPlaying(HumanAnimations.RunBuffed))
+            if (_human.Animation.IsPlaying(HumanAnimations.RunBuffed))
                 _human.CrossFade(_human.RunAnimation, 0.1f);
         }
     }

@@ -124,6 +124,8 @@ namespace UI
             statbar.Find("ProgressBar").GetComponent<Slider>().value = percentage;
             statbar.Find("ProgressBar/Background").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarBackgroundColor");
             statbar.Find("ProgressBar/Fill Area/Fill").GetComponent<Image>().color = UIManager.GetThemeColor("QuestPopup", "QuestItem", "ProgressBarFillColor");
+            statbar.Find("Value").GetComponent<Text>().text = value.ToString();
+            statbar.Find("Value").GetComponent<Text>().color = UIManager.GetThemeColor(ThemePanel, "DefaultLabel", "TextColor");
             _statBars.Add(statbar.gameObject);
         }
 

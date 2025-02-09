@@ -2053,6 +2053,19 @@ namespace Photon.Pun
                         return true;
                     }
                 }
+                else if (one is object[])
+                {
+                    object[] a = (object[])one;
+                    object[] b = (object[])two;
+                    if (a.Length != b.Length)
+                        return false;
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        if (!AlmostEquals(a[i], b[i]))
+                            return false;
+                    }
+                    return true;
+                }
 
                 // one does not equal two
                 return false;

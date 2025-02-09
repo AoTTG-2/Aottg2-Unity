@@ -19,6 +19,7 @@
         public KeybindSetting HorseJump = new KeybindSetting(new string[] { "Space", "None" });
         public KeybindSetting NapeLock = new KeybindSetting(new string[] { "None", "None" });
         public BoolSetting DashDoubleTap = new BoolSetting(true);
+        public BoolSetting WallSlideDash = new BoolSetting(true);
         public FloatSetting ReelOutScrollSmoothing = new FloatSetting(0.2f, minValue: 0f, maxValue: 1f);
         public BoolSetting SwapTSAttackSpecial = new BoolSetting(false);
         public BoolSetting AutoRefillGas = new BoolSetting(false);

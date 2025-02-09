@@ -10,6 +10,7 @@ using UI;
 using Cameras;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 namespace Characters
 {
@@ -26,7 +27,7 @@ namespace Characters
             set
             {
                 RichTextName = value;
-                VisibleName = RichTextName.ForceWhiteColorTag();
+                VisibleName = RichTextName.StripColor();
             }
         }
         public string RichTextName = "";
@@ -49,6 +50,7 @@ namespace Characters
         protected bool _cameraFPS = false;
         protected bool _wasMainCharacter = false;
         public BaseMovementSync MovementSync;
+        public AnimationHandler Animation;
 
         // movement
         public bool Grounded;
@@ -64,7 +66,15 @@ namespace Characters
 
         // Visuals
         protected Outline OutlineComponent = null;
+        public event Action<ExitGames.Client.Photon.Hashtable> OnPlayerPropertiesChanged;
 
+        public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+        {
+            if (targetPlayer == photonView.Owner)
+            {
+                OnPlayerPropertiesChanged?.Invoke(changedProps);
+            }
+        }
         public Vector3 GetVelocity()
         {
             if (!IsMine() && MovementSync != null)
@@ -289,7 +299,7 @@ namespace Characters
                 Cache.PhotonView.RPC("SetTeamRPC", player, new object[] { Team });
                 string currentAnimation = GetCurrentAnimation();
                 if (currentAnimation != "")
-                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Cache.Animation[currentAnimation].normalizedTime });
+                    Cache.PhotonView.RPC("PlayAnimationRPC", player, new object[] { currentAnimation, Animation.GetCurrentNormalizedTime() });
             }
         }
 
@@ -310,9 +320,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.Play(animation);
-            if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+            Animation.Play(animation, startTime);
         }
 
         [PunRPC]
@@ -320,13 +328,12 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.Play(animation);
-            Cache.Animation[animation].normalizedTime = 0f;
+            Animation.Play(animation, 0f, true);
         }
 
         public void PlayAnimationIfNotPlaying(string animation, float startTime = 0f)
         {
-            if (!Cache.Animation.IsPlaying(animation))
+            if (!Animation.IsPlaying(animation))
                 PlayAnimation(animation, startTime);
         }
 
@@ -350,7 +357,7 @@ namespace Characters
 
         public void CrossFadeIfNotPlaying(string animation, float fadeTime = 0f, float startTime = 0f)
         {
-            if (!Cache.Animation.IsPlaying(animation))
+            if (!Animation.IsPlaying(animation))
                 CrossFade(animation, fadeTime, startTime);
         }
 
@@ -359,9 +366,7 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation.CrossFade(animation, fadeTime);
-            if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+            Animation.CrossFade(animation, fadeTime, startTime);
         }
 
         [PunRPC]
@@ -369,10 +374,8 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Cache.Animation[animation].speed = speed;
-            Cache.Animation.CrossFade(animation, fadeTime);
-            if (startTime > 0f)
-                Cache.Animation[animation].normalizedTime = startTime;
+            Animation.SetSpeed(animation, speed);
+            Animation.CrossFade(animation, fadeTime, startTime);
         }
 
         public void PlaySound(string sound)
@@ -564,6 +567,9 @@ namespace Characters
             SetColliders();
             CurrentHealth = MaxHealth = DefaultMaxHealth;
             MovementSync = GetComponent<BaseMovementSync>();
+            OutlineComponent = gameObject.AddComponent<Outline>();
+            OutlineComponent.enabled = false;
+            Animation = new AnimationHandler(gameObject);
         }
 
         protected virtual void CreateCharacterIcon()
@@ -578,8 +584,6 @@ namespace Characters
         {
 
             MinimapHandler.CreateMinimapIcon(this);
-            OutlineComponent = gameObject.AddComponent<Outline>();
-            OutlineComponent.enabled = false;
             StartCoroutine(WaitAndNotifySpawn());
         }
 
@@ -599,14 +603,23 @@ namespace Characters
             }
         }
 
+        protected IEnumerator WaitAndNotifyReloaded()
+        {
+            while (CustomLogicManager.Evaluator == null)
+                yield return new WaitForEndOfFrame();
+
+            // Wait one frame after evaluator is initialized so that Main and Component Init calls can be done first.
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicManager.Evaluator.OnCharacterReloaded(this);
+            }
+        }
+
         public string GetCurrentAnimation()
         {
-            foreach (AnimationState state in Cache.Animation)
-            {
-                if (Cache.Animation.IsPlaying(state.name))
-                    return state.name;
-            }
-            return "";
+            return Animation.GetCurrentAnimation();
         }
 
         public virtual Quaternion GetTargetRotation()
@@ -685,6 +698,7 @@ namespace Characters
 
         protected virtual void LateUpdate()
         {
+            Animation.OnLateUpdate();
             LateUpdateFootstep();
             LateUpdateFPS();
         }

@@ -62,6 +62,7 @@ namespace UI
         {
             var obj = ElementFactory.CreateDefaultButton(SinglePanel, _style, title, 
                 onClick: () => OnButtonClick(name));
+            _items.Add(obj);
         }
 
         public void AddButtons(List<object> names, List<object> titles)

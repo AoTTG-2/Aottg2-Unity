@@ -25,7 +25,14 @@ namespace CustomLogic
                 {
                     json = new JSONString(str);
                 }
-                return LoadJSON(json);
+                try
+                {
+                    return LoadJSON(json);
+                }
+                catch
+                {
+                    return null;
+                }
             }
             if (methodName == "SaveToString")
             {

@@ -34,7 +34,7 @@ namespace UI
                 ElementFactory.CreateDropdownSetting(DoublePanelLeft, new ElementStyle(titleWidth: 53f, themePanel: ThemePanel), SelectedMap,
                 UIManager.GetLocale(cat, sub, "File"), maps, elementWidth: 269f);
                 GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelLeft, 10f, TextAnchor.UpperLeft);
-                foreach (string button in new string[] { "New", "Delete", "Import", "Export" })
+                foreach (string button in new string[] { "New", "Delete", "Export" })
                 {
                     GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                         onClick: () => OnCustomButtonClick(button, true));
@@ -65,7 +65,7 @@ namespace UI
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 53f, themePanel: ThemePanel), SelectedLogic,
                 UIManager.GetLocale(cat, sub, "File"), logics, elementWidth: 269f);
                 GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelRight, 10f, TextAnchor.UpperLeft);
-                foreach (string button in new string[] { "New", "Delete", "Import", "Export" })
+                foreach (string button in new string[] { "New", "Delete", "Export" })
                 {
                     GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                         onClick: () => OnCustomButtonClick(button, false));
@@ -99,7 +99,7 @@ namespace UI
                         UIManager.GetLocaleCommon("Delete"));
                     break;
                 case "Import":
-                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnCustomOperationFinish(name, isMap));
+                    // UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnCustomOperationFinish(name, isMap));
                     break;
                 case "Export":
                     if (isMap)

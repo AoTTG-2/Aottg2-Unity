@@ -82,7 +82,7 @@ namespace Characters
             _idleTimeLeft -= Time.deltaTime;
             if (_idleTimeLeft > 0f)
                 return;
-            if (!Cache.Animation.IsPlaying(HorseAnimations.Idle0))
+            if (!Animation.IsPlaying(HorseAnimations.Idle0))
             {
                 CrossFade(HorseAnimations.Idle0, 0.1f);
                 _idleTimeLeft = UnityEngine.Random.Range(6f, 9f);
@@ -114,7 +114,7 @@ namespace Characters
         private void IdleOneShot(string animation)
         {
             CrossFade(animation, 0.1f);
-            _idleTimeLeft = Cache.Animation[animation].length;
+            _idleTimeLeft = Animation.GetLength(animation);
         }
 
         private void Update()
@@ -238,7 +238,7 @@ namespace Characters
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseIdle, 0.1f);
                 }
             }
-            if (Cache.Animation.IsPlaying(HorseAnimations.Run) && Grounded)
+            if (Animation.IsPlaying(HorseAnimations.Run) && Grounded)
             {
                 ToggleDust(true);
                 if (SettingsManager.SoundSettings.HorseSoundEffect.Value)

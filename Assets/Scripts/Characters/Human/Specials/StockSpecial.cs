@@ -23,7 +23,7 @@ namespace Characters
         protected override void ActiveFixedUpdate()
         {
             base.ActiveFixedUpdate();
-            if (_human.Cache.Animation[_human.AttackAnimation].normalizedTime >= 0.32f)
+            if (_human.Animation.GetNormalizedTime(_human.AttackAnimation) >= 0.32f)
                 _human.PauseAnimation();
             if (_human.Grounded)
             {

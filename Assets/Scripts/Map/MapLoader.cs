@@ -7,10 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UI;
-using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 using Utility;
 using Weather;
 using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
@@ -377,8 +375,13 @@ namespace Map
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
                 PhysicsLayer.MapObjectTitans);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
+
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
+
+            // filter navmeshsources for only static objects
+            _navMeshSources = _navMeshSources.Where(source => source.component.gameObject.isStatic).ToList();
+
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
             _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
         }
@@ -465,6 +468,14 @@ namespace Map
                 if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
                     continue;
                 var position = mapObject.GameObject.transform.position;
+
+                // change object and all children to static:
+                mapObject.GameObject.isStatic = true;
+                foreach (var child in mapObject.GameObject.GetComponentsInChildren<Transform>())
+                {
+                    child.gameObject.isStatic = true;
+                }
+
                 string positionHash = ((int)(position.x / 1000f)).ToString() + "-" + ((int)(position.y / 1000f)).ToString() + "-" + ((int)(position.z / 1000f)).ToString();
                 foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
                 {
@@ -486,6 +497,7 @@ namespace Map
                     {
                         var go = new GameObject();
                         go.layer = PhysicsLayer.MapObjectEntities;
+                        go.isStatic = true;
                         roots.Add(hash, go);
                         shared.Add(hash, new List<GameObject>());
                     }

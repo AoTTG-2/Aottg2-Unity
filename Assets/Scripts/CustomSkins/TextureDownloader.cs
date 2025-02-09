@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utility;
-using System.Threading;
-using ApplicationManagers;
 
 namespace CustomSkins
 {
@@ -110,7 +107,7 @@ namespace CustomSkins
                     yield break;
                 }
                 OnStopTextureDownload();
-                CoroutineWithData cwd = new CoroutineWithData(obj, CreateTextureFromData(obj, www, mipmap));
+                CoroutineWithData cwd = new CoroutineWithData(obj, CreateTextureFromData(obj, www, mipmap, url));
                 yield return cwd.Coroutine;
                 yield return cwd.Result;
             }
@@ -147,55 +144,24 @@ namespace CustomSkins
             return closestPower;
         }
 
-        private static Texture2D CreateBlankTexture(bool mipmap, bool compressed = false)
+        private static Texture2D CreateBlankTexture(bool mipmap)
         {
-            if (compressed)
-                return new Texture2D(4, 4, TextureFormat.DXT5, mipmap);
-            else
-                return new Texture2D(4, 4, TextureFormat.RGBA32, mipmap);
+            return new Texture2D(4, 4, TextureFormat.RGBA32, mipmap);
         }
 
-        private static Texture2D DecodeTexture(WWW www, bool mipmap)
+        private static FREE_IMAGE_FORMAT GetTextureFormat(string url)
         {
-            Texture2D texture = CreateBlankTexture(mipmap, false);
-            try
-            {
-                texture.LoadImage(www.bytes);
-            }
-            catch
-            {
-                // mipmapping failed, try loading without mipmap
-                texture = CreateBlankTexture(false, false);
-                texture.LoadImage(www.bytes);
-            }
-            return texture;
+            if (url.EndsWith(".png"))
+                return FREE_IMAGE_FORMAT.FIF_PNG;
+            return FREE_IMAGE_FORMAT.FIF_JPEG;
         }
 
-        private static IEnumerator CreateTextureFromData(MonoBehaviour obj, WWW www, bool mipmap)
+        private static IEnumerator CreateTextureFromData(MonoBehaviour obj, WWW www, bool mipmap, string url)
         {
-            int resizedSize = 0;
-            Texture2D texture = DecodeTexture(www, mipmap);
-            yield return obj.StartCoroutine(Util.WaitForFrames(2));
-            int downloadedWidth = texture.width;
-            int downloadedHeight = texture.height;
-            if (!IsPowerOfTwo(downloadedWidth))
-                resizedSize = GetClosestPowerOfTwo(downloadedWidth);
-            else if (!IsPowerOfTwo(downloadedHeight))
-                resizedSize = GetClosestPowerOfTwo(downloadedHeight);
-            if (resizedSize == 0)
-            {
-                texture.Compress(true);
-                yield return obj.StartCoroutine(Util.WaitForFrames(2));
-                yield return texture;
-            }
-            else
-            {
-                yield return obj.StartCoroutine(TextureScaler.Scale(texture, resizedSize, resizedSize));
-                yield return obj.StartCoroutine(Util.WaitForFrames(2));
-                texture.Compress(true);
-                yield return obj.StartCoroutine(Util.WaitForFrames(2));
-                yield return texture;
-            }
+            var importer = new TextureImporter();
+            yield return obj.StartCoroutine(importer.ImportTexture(www.bytes, GetTextureFormat(url), mipmap));
+            var texture = importer.texture;
+            yield return texture;
         }
     }
 }

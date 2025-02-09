@@ -99,6 +99,7 @@ namespace UI
                         setting.Save();
                     if (SceneLoader.SceneName == SceneName.InGame)
                     {
+                        SettingsManager.NotifySettingsChanged();
                         ((InGameMenu)UIManager.CurrentMenu)._pausePopup.Show();
                         Hide();
                     }

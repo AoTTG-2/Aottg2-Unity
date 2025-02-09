@@ -28,9 +28,9 @@ namespace Effects
                 var main = particle.main;
                 main.startSizeMultiplier *= SizeMultiplier;
             }
-            if (SettingsManager.AbilitySettings.ShowBombColors.Value)
+            var c = (Color)(settings[0]);
+            if (SettingsManager.AbilitySettings.ShowBombColors.Value || c == ThunderspearProjectile.CritColor)
             {
-                var c = (Color)(settings[0]);
                 var main = particle.main;
                 main.startColor = new Color(c.r, c.g, c.b, Mathf.Max(c.a, 0.5f));
             }

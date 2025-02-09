@@ -49,7 +49,7 @@ namespace CustomLogic
             if (name == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
-                return Character.Cache.Animation[anim].length;
+                return Character.Animation.GetLength(anim);
             }
             if (name == "PlaySound")
             {
@@ -174,11 +174,17 @@ namespace CustomLogic
                 return Character.GetCurrentAnimation();
             if (name == "IsAI")
                 return Character.AI;
+            if (name == "Grounded")
+                return Character.Grounded;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Character.IsMine())
                 return;
             if (name == "Position")

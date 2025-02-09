@@ -18,6 +18,7 @@ namespace Characters
         public HumanComponentCache Cache;
         public HumanState State = HumanState.Idle;
         public HumanSetup Setup;
+        public AnimationHandler Animation;
 
         // actions
         private float _stateTimeLeft = 0f;
@@ -31,6 +32,7 @@ namespace Characters
             Setup = gameObject.GetComponent<HumanSetup>();
             if (Setup == null)
                 Setup = gameObject.AddComponent<HumanSetup>();
+            Animation = new AnimationHandler(gameObject);
         }
 
         protected void Start()
@@ -48,7 +50,7 @@ namespace Characters
                 animation = male ? HumanAnimations.IdleTSM : HumanAnimations.IdleTSF;
             else
                 animation = male ? HumanAnimations.IdleM : HumanAnimations.IdleF;
-            Cache.Animation.CrossFade(animation, 0.1f);
+            Animation.CrossFade(animation, 0.1f, 0f);
         }
 
         public void EmoteAction(string emote)
@@ -69,8 +71,8 @@ namespace Characters
             else if (emote == "Eat")
                 animation = HumanAnimations.SpecialSasha;
             State = HumanState.EmoteAction;
-            Cache.Animation.CrossFade(animation, 0.1f);
-            _stateTimeLeft = Cache.Animation[animation].length;
+            Animation.CrossFade(animation, 0.1f, 0f);
+            _stateTimeLeft = Animation.GetLength(animation);
         }
 
         protected void Update()

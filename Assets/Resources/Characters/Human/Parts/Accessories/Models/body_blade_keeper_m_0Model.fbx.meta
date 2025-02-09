@@ -1,120 +1,290 @@
 fileFormatVersion: 2
 guid: 1caa681e41e61214bbd9727fbe156940
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: character_body_blade_keeper_m_0
-    100004: chest
-    100006: Controller_Body
-    100008: Core
-    100010: foot_L
-    100012: foot_R
-    100014: forearm_L
-    100016: forearm_R
-    100018: hand_L
-    100020: hand_R
-    100022: head
-    100024: hip
-    100026: IK_L
-    100028: IK_R
-    100030: knee.L
-    100032: knee.R
-    100034: neck
-    100036: shin_L
-    100038: shin_R
-    100040: shoulder_L
-    100042: shoulder_R
-    100044: spine
-    100046: thigh_L
-    100048: thigh_R
-    100050: upper_arm_L
-    100052: upper_arm_R
-    400000: //RootNode
-    400002: character_body_blade_keeper_m_0
-    400004: chest
-    400006: Controller_Body
-    400008: Core
-    400010: foot_L
-    400012: foot_R
-    400014: forearm_L
-    400016: forearm_R
-    400018: hand_L
-    400020: hand_R
-    400022: head
-    400024: hip
-    400026: IK_L
-    400028: IK_R
-    400030: knee.L
-    400032: knee.R
-    400034: neck
-    400036: shin_L
-    400038: shin_R
-    400040: shoulder_L
-    400042: shoulder_R
-    400044: spine
-    400046: thigh_L
-    400048: thigh_R
-    400050: upper_arm_L
-    400052: upper_arm_R
-    2300000: character_body_blade_keeper_m_0
-    2300002: //RootNode
-    3300000: character_body_blade_keeper_m_0
-    3300002: //RootNode
-    4300000: character_body_blade_keeper_m_0
-    9500000: //RootNode
-    11100000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: character_body_blade_keeper_m_0
+  - first:
+      1: 100004
+    second: chest
+  - first:
+      1: 100006
+    second: Controller_Body
+  - first:
+      1: 100008
+    second: Core
+  - first:
+      1: 100010
+    second: foot_L
+  - first:
+      1: 100012
+    second: foot_R
+  - first:
+      1: 100014
+    second: forearm_L
+  - first:
+      1: 100016
+    second: forearm_R
+  - first:
+      1: 100018
+    second: hand_L
+  - first:
+      1: 100020
+    second: hand_R
+  - first:
+      1: 100022
+    second: head
+  - first:
+      1: 100024
+    second: hip
+  - first:
+      1: 100026
+    second: IK_L
+  - first:
+      1: 100028
+    second: IK_R
+  - first:
+      1: 100030
+    second: knee.L
+  - first:
+      1: 100032
+    second: knee.R
+  - first:
+      1: 100034
+    second: neck
+  - first:
+      1: 100036
+    second: shin_L
+  - first:
+      1: 100038
+    second: shin_R
+  - first:
+      1: 100040
+    second: shoulder_L
+  - first:
+      1: 100042
+    second: shoulder_R
+  - first:
+      1: 100044
+    second: spine
+  - first:
+      1: 100046
+    second: thigh_L
+  - first:
+      1: 100048
+    second: thigh_R
+  - first:
+      1: 100050
+    second: upper_arm_L
+  - first:
+      1: 100052
+    second: upper_arm_R
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: character_body_blade_keeper_m_0
+  - first:
+      4: 400004
+    second: chest
+  - first:
+      4: 400006
+    second: Controller_Body
+  - first:
+      4: 400008
+    second: Core
+  - first:
+      4: 400010
+    second: foot_L
+  - first:
+      4: 400012
+    second: foot_R
+  - first:
+      4: 400014
+    second: forearm_L
+  - first:
+      4: 400016
+    second: forearm_R
+  - first:
+      4: 400018
+    second: hand_L
+  - first:
+      4: 400020
+    second: hand_R
+  - first:
+      4: 400022
+    second: head
+  - first:
+      4: 400024
+    second: hip
+  - first:
+      4: 400026
+    second: IK_L
+  - first:
+      4: 400028
+    second: IK_R
+  - first:
+      4: 400030
+    second: knee.L
+  - first:
+      4: 400032
+    second: knee.R
+  - first:
+      4: 400034
+    second: neck
+  - first:
+      4: 400036
+    second: shin_L
+  - first:
+      4: 400038
+    second: shin_R
+  - first:
+      4: 400040
+    second: shoulder_L
+  - first:
+      4: 400042
+    second: shoulder_R
+  - first:
+      4: 400044
+    second: spine
+  - first:
+      4: 400046
+    second: thigh_L
+  - first:
+      4: 400048
+    second: thigh_R
+  - first:
+      4: 400050
+    second: upper_arm_L
+  - first:
+      4: 400052
+    second: upper_arm_R
+  - first:
+      23: 2300000
+    second: character_body_blade_keeper_m_0
+  - first:
+      23: 2300002
+    second: //RootNode
+  - first:
+      33: 3300000
+    second: character_body_blade_keeper_m_0
+  - first:
+      33: 3300002
+    second: //RootNode
+  - first:
+      43: 4300000
+    second: character_body_blade_keeper_m_0
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      111: 11100000
+    second: //RootNode
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
-    animationRotationError: .5
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: 0.01
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.01
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

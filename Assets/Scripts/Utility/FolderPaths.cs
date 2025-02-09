@@ -21,6 +21,7 @@ namespace Utility
         public static string PersistentData = Documents + "/PersistentData";
         public static string CustomLogic = Documents + "/CustomLogic";
         public static string CustomMap = Documents + "/CustomMap";
+        public static string CustomMapAutosave = Documents + "/CustomMap/Autosave";
         public static string CustomAssetsLocal = Documents + "/CustomAssets";
         public static string CustomAssetsWeb = Documents + "/CustomAssets/WebDownload";
     }

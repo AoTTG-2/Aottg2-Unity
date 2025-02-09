@@ -33,7 +33,13 @@ namespace Settings
         public BoolSetting ShowGameTime = new BoolSetting(false);
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
-        public BoolSetting HighVisibilityNames = new BoolSetting(false);
+
+        public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);
+        public IntSetting NameOverrideTarget = new IntSetting((int)ShowMode.None);
+        public IntSetting NameBackgroundType = new IntSetting((int)NameStyleType.Off);
+        public ColorSetting ForceNameColor = new ColorSetting(new Utility.Color255(255, 255, 255));
+        public ColorSetting ForceBackgroundColor = new ColorSetting(new Utility.Color255(0, 0, 0, 100));
+
         public BoolSetting FadeMainMenu = new BoolSetting(false);
         public BoolSetting FadeLoadscreen = new BoolSetting(true);
         public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
@@ -59,6 +65,12 @@ namespace Settings
         }
     }
 
+    public enum NameStyleType
+    {
+        Off,
+        Outline,
+        Background
+    }
     public enum SpeedometerType
     {
         Off,
