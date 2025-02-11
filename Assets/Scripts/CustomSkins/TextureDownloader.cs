@@ -15,6 +15,7 @@ namespace CustomSkins
             "i.imgur.com/",
             "imgur.com/",
             "image.ibb.co/",
+            "i.ibb.co/",
             "i.reddit.it/",
             "cdn.discordapp.com/attachments/",
             "media.discordapp.net/attachments/",
