@@ -1997,9 +1997,9 @@ namespace Characters
         protected override void LateUpdate()
         {
             base.LateUpdate();
-            FixedUpdateSetHookedDirection();
             if (IsMine() && State != HumanState.Grab)
             {
+                FixedUpdateSetHookedDirection();
                 if (MountState == HumanMountState.None)
                 {
                     LateUpdateTilt();
@@ -3177,6 +3177,7 @@ namespace Characters
         {
             if (!_animationStopped)
                 return;
+            _animationStopped = false;
             Cache.PhotonView.RPC("ContinueAnimationRPC", RpcTarget.All, new object[0]);
         }
 
