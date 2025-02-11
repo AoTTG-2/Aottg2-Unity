@@ -121,6 +121,41 @@ namespace Characters
             int col = eyeTexture / 8;
             int row = eyeTexture % 8;
             eyes.GetComponent<MeshRenderer>().material.mainTextureOffset = new Vector2(0.25f * col, -0.125f * row);
+
+            // Collider modes
+            if (SettingsManager.GeneralSettings.MouthCollider.Value == 0)
+            {
+                // Original
+                var mouth1 = head.Find("MouthCollider1");
+                var mouth2 = head.Find("MouthCollider2");
+
+                // Remove mouth colliders
+                Destroy(mouth1);
+                Destroy(mouth2);
+            }
+
+            else if (SettingsManager.GeneralSettings.MouthCollider.Value == 1)
+            {
+                // Original
+                var mouth2 = head.Find("MouthCollider2");
+                var mouth1 = head.Find("Bone");
+
+                // Remove mouth colliders
+                Destroy(mouth1.GetComponent<BoxCollider>());
+                Destroy(mouth2);
+            }
+
+            else if (SettingsManager.GeneralSettings.MouthCollider.Value == 2)
+            {
+                // Original
+                var mouth2 = head.Find("MouthCollider1");
+                var mouth1 = head.Find("Bone");
+
+                // Remove mouth colliders
+                Destroy(mouth1.GetComponent<BoxCollider>());
+                Destroy(mouth2);
+            }
+
         }
 
         protected void CopyColliders(Transform from, Transform to, bool capsule, bool moveTransform)

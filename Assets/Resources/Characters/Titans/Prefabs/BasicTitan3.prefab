@@ -415,6 +415,8 @@ MonoBehaviour:
   JustGrounded: 0
   TargetAngle: 0
   HasDirection: 0
+  RightInput: 0
+  ForwardInput: 0
   State: 0
   TitanColliderToggler: {fileID: 0}
   IsWalk: 0

@@ -90,6 +90,10 @@ namespace Controllers
                 forward = 1;
                 right = 0;
             }
+
+            _character.RightInput = right;
+            _character.ForwardInput = forward;
+
             if (forward != 0 || right != 0)
             {
                 _character.TargetAngle = GetTargetAngle(forward, right);

@@ -1388,11 +1388,49 @@ namespace Characters
             }
         }
 
+        private void OnGUI()
+        {
+            // display the animation name
+            GUI.Label(new Rect(100, 500, 400, 40), Animation.GetCurrentAnimation());
+        }
+
+
+        public Vector3 GetGlobalFacingVector3(float angle)
+        {
+            float num = -angle + 90f;
+            return new Vector3(Mathf.Cos(num * 0.01745329f), 0f, Mathf.Sin(num * 0.01745329f));
+        }
+
+        private Vector3 GetGlobalFacingVector3(float horizontal, float vertical)
+        {
+            float num = -GetGlobalFacingDirection(horizontal, vertical) + 90f;
+            return new Vector3(Mathf.Cos(num * 0.01745329f), 0f, Mathf.Sin(num * 0.01745329f));
+        }
+
+        public float GetGlobalFacingDirection(float horizontal, float vertical)
+        {
+            if (vertical == 0f && horizontal == 0f)
+            {
+                return this.Cache.Transform.rotation.eulerAngles.y;
+            }
+            float y = SceneLoader.CurrentCamera.Camera.transform.rotation.eulerAngles.y;
+            float num = Mathf.Atan2(vertical, horizontal) * 57.29578f;
+            num = -num + 90f;
+            return y + num;
+        }
+
+        public float ClampDirectionalInput(Vector3 direction)
+        {
+            return (direction.magnitude <= 0.95f) ? ((direction.magnitude >= 0.25f) ? direction.magnitude : 0f) : 1f;
+        }
+
+
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
             if (IsMine())
             {
+                FixedUpdateBodyLean();
                 FixedUpdateLookTitan();
                 FixedUpdateUseables();
                 _isReelingOut = false;
@@ -1448,7 +1486,8 @@ namespace Characters
                 {
                     rotationSpeed = 10f;
                 }
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
+                // DIFF: if using a gun, lerp T rotation towards shot with smoothing 30
+                Cache.Rigidbody.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
@@ -1492,10 +1531,17 @@ namespace Characters
                     }
                     else if (State == HumanState.Idle)
                     {
+                        Vector3 directionalInput = new Vector3(RightInput, 0f, ForwardInput);
+                        float resultAngle = GetGlobalFacingDirection(RightInput, ForwardInput);
+                        float clampedMovement = ClampDirectionalInput(directionalInput);
+
                         newVelocity = Vector3.zero;
+                        newVelocity = GetGlobalFacingVector3(resultAngle);
+                        newVelocity *= clampedMovement;
+                        newVelocity *= Stats.RunSpeed;
+
                         if (HasDirection)
                         {
-                            newVelocity = GetTargetDirection() * TargetMagnitude * Stats.RunSpeed;
                             if (!Animation.IsPlaying(HumanAnimations.Run) && !Animation.IsPlaying(HumanAnimations.Jump) &&
                                 !Animation.IsPlaying(HumanAnimations.RunBuffed) && (!Animation.IsPlaying(HumanAnimations.HorseMount) ||
                                 Animation.GetNormalizedTime(HumanAnimations.HorseMount) >= 0.5f))
@@ -1504,11 +1550,15 @@ namespace Characters
                                 _stepPhase = 0;
                             }
                             if (!Animation.IsPlaying(HumanAnimations.WallRun))
+                            {
+                                TargetAngle = resultAngle;
                                 _targetRotation = GetTargetRotation();
+                            }
                         }
                         else if (!(Animation.IsPlaying(StandAnimation) || State == HumanState.Land || Animation.IsPlaying(HumanAnimations.Jump) || Animation.IsPlaying(HumanAnimations.HorseMount) || Animation.IsPlaying(HumanAnimations.Grabbed)))
                         {
                             CrossFade(StandAnimation, 0.1f);
+                            newVelocity = Vector3.zero;
                         }
                     }
                     else if (State == HumanState.Land)
@@ -1517,7 +1567,8 @@ namespace Characters
                     }
                     else if (State == HumanState.Slide)
                     {
-                        newVelocity = Cache.Rigidbody.velocity * 0.985f;
+                        if (!_wallSlide)
+                            newVelocity = Cache.Rigidbody.velocity * 0.985f;
                         if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
@@ -1664,7 +1715,7 @@ namespace Characters
                             PlayAnimation(HumanAnimations.AirRise);
                         }
                     }
-                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero() || SettingsManager.InputSettings.Human.Jump.GetKey() || SettingsManager.InputSettings.Human.HookLeft.GetKey() || SettingsManager.InputSettings.Human.HookRight.GetKey() || SettingsManager.InputSettings.Human.HookBoth.GetKey() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
+                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero(RightInput, ForwardInput) || SettingsManager.InputSettings.Human.Jump.GetKey() || SettingsManager.InputSettings.Human.HookLeft.GetKey() || SettingsManager.InputSettings.Human.HookRight.GetKey() || SettingsManager.InputSettings.Human.HookBoth.GetKey() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
                     {
                         CrossFade(HumanAnimations.WallRun, 0.1f);
                         _wallRunTime = 0f;
@@ -1688,14 +1739,24 @@ namespace Characters
                     }
                     else if (!Animation.IsPlaying(HumanAnimations.Dash) && !Animation.IsPlaying(HumanAnimations.Jump) && !IsFiringThunderspear())
                     {
-                        Vector3 targetDirection = GetTargetDirection() * TargetMagnitude * ((float)Stats.Acceleration * 2f - 50f) / 5f;
+
+                        Vector3 directionalInput = new Vector3(RightInput, 0f, ForwardInput);
+                        float angle = GetGlobalFacingDirection(RightInput, ForwardInput);
+                        Vector3 targetDirection = GetGlobalFacingVector3(angle);
+                        float targetMagnitude = ClampDirectionalInput(directionalInput);
+                        targetDirection *= targetMagnitude;
+                        targetDirection *= ((float)Stats.Acceleration * 2f - 50f) / 5f;
+
                         if (!HasDirection)
                         {
                             if (State == HumanState.Attack)
                                 targetDirection = Vector3.zero;
                         }
                         else
-                            _targetRotation = GetTargetRotation();
+                        {
+                            TargetAngle = angle;
+                            _targetRotation = Quaternion.Euler(0, TargetAngle, 0);
+                        }
                         bool isUsingGas = SettingsManager.InputSettings.Human.Jump.GetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
                         if (((!pivotLeft && !pivotRight) && (MountState == HumanMountState.None && isUsingGas)) && (Stats.CurrentGas > 0f))
                         {
@@ -1729,7 +1790,7 @@ namespace Characters
                     lowerGravity = true;
                 Vector3 gravity;
                 if (lowerGravity)
-                    gravity = Gravity * 0.5f * Cache.Rigidbody.mass;
+                    gravity = 0.5f * Cache.Rigidbody.mass * Gravity;
                 else
                     gravity = Gravity * Cache.Rigidbody.mass;
                 if (Grounded && State == HumanState.Attack)
@@ -1794,8 +1855,7 @@ namespace Characters
                 }
                 else if (windEmission.enabled)
                     windEmission.enabled = false;
-                FixedUpdateSetHookedDirection();
-                FixedUpdateBodyLean();
+
                 if (_useFixedUpdateClipping)
                 {
                     FixedUpdateClippingCheck();
@@ -1937,6 +1997,7 @@ namespace Characters
         protected override void LateUpdate()
         {
             base.LateUpdate();
+            FixedUpdateSetHookedDirection();
             if (IsMine() && State != HumanState.Grab)
             {
                 if (MountState == HumanMountState.None)
@@ -2021,7 +2082,7 @@ namespace Characters
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun))
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
                 _wallSlide = true;
                 _wallSlideGround = collision.contacts[0].normal.normalized;
@@ -2059,7 +2120,9 @@ namespace Characters
                 }
                 else if (IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f) && _canWallSlideJump) //pressing away from the wall
                 {
-                    Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f, ForceMode.Impulse);
+                    // Get mouse aim direction
+                    Ray ray = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition());
+                    Cache.Rigidbody.AddForce(_wallSlideGround * Stats.RunSpeed * 0.75f + new Vector3(0, 3, 0), ForceMode.Impulse);
                     DodgeWall();
                 }
                 else if (IsPressDirectionRelativeToWall(-_wallSlideGround, 0.8f)) //pressing towards the wall
@@ -2141,7 +2204,7 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
+            Vector3 v = position - (Cache.Rigidbody.position); // 0.020F gives the player the original aottg1 clipping
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2193,7 +2256,8 @@ namespace Characters
                 {
                     Vector3 left = Cache.Transform.position - HookLeft.GetHookPosition();
                     Vector3 right = Cache.Transform.position - HookRight.GetHookPosition();
-                    if (Vector3.Angle(-direction, left) < 30f && Vector3.Angle(-direction, right) < 30f)
+                    Vector3 newDirection = Cache.Transform.position - (HookLeft.GetHookPosition() + HookRight.GetHookPosition()) * 0.5f;
+                    if (Vector3.Angle(newDirection, left) < 30f && Vector3.Angle(newDirection, right) < 30f)
                     {
                         _almostSingleHook = true;
                         TargetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
@@ -2213,13 +2277,16 @@ namespace Characters
             else
             {
                 _almostSingleHook = true;
-                Vector3 v;
-                if (IsHookedLeft())
-                    v = HookLeft.GetHookPosition() - Cache.Transform.position;
-                else if (IsHookedRight())
+                Vector3 v = Vector3.zero;
+
+                if (IsHookedRight())
                     v = HookRight.GetHookPosition() - Cache.Transform.position;
                 else
-                    return;
+                {
+                    if (!IsHookedLeft())
+                        return;
+                    v = HookLeft.GetHookPosition() - Cache.Transform.position;
+                }
                 TargetAngle = Mathf.Atan2(v.x, v.z) * Mathf.Rad2Deg;
                 if (State != HumanState.Attack)
                 {
@@ -2250,7 +2317,7 @@ namespace Characters
             if (Setup.Weapon != HumanWeapon.AHSS && Setup.Weapon != HumanWeapon.APG && State == HumanState.Attack && !IsFiringThunderspear())
             {
                 Vector3 v = Cache.Rigidbody.velocity;
-                float diag = Mathf.Sqrt((v.x * v.x) + (v.z * v.z));
+                float diag = Mathf.Sqrt(v.x * v.x + v.z * v.z);
                 float angle = Mathf.Atan2(v.y, diag) * Mathf.Rad2Deg;
                 _targetRotation = Quaternion.Euler(-angle * (1f - (Vector3.Angle(v, Cache.Transform.forward) / 90f)), TargetAngle, 0f);
                 if (IsHookedAny())
@@ -3110,7 +3177,6 @@ namespace Characters
         {
             if (!_animationStopped)
                 return;
-            _animationStopped = false;
             Cache.PhotonView.RPC("ContinueAnimationRPC", RpcTarget.All, new object[0]);
         }
 
@@ -3190,6 +3256,13 @@ namespace Characters
             if (!HasDirection)
                 return false;
             return (Mathf.Abs(Mathf.DeltaAngle(TargetAngle, Cache.Transform.rotation.eulerAngles.y)) < 45f);
+        }
+
+        private bool IsPressDirectionTowardsHero(float horizontal, float vertical)
+        {
+            if (!HasDirection)
+                return false;
+            return (Mathf.Abs(Mathf.DeltaAngle(GetGlobalFacingDirection(horizontal, vertical), base.transform.rotation.eulerAngles.y)) < 45f);
         }
 
         private bool IsPressDirectionRelativeToWall(Vector3 wallNormal, float dotValue)

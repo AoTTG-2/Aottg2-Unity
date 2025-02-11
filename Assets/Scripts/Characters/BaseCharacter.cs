@@ -65,6 +65,8 @@ namespace Characters
         public bool JustGrounded;
         public float TargetAngle;
         public bool HasDirection;
+        public float RightInput;
+        public float ForwardInput;
         protected int _stepPhase = 0;
         private LayerMask GroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
                 PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
