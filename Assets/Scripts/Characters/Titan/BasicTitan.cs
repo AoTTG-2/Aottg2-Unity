@@ -18,7 +18,7 @@ namespace Characters
     class BasicTitan : BaseTitan
     {
         public BasicTitanComponentCache BasicCache;
-        protected BasicTitanAnimations BasicAnimations;
+        public BasicTitanAnimations BasicAnimations;
         public bool IsCrawler;
         protected string _runAnimation;
         public BasicTitanSetup Setup;
@@ -74,6 +74,15 @@ namespace Characters
         public override bool IsGrabAttack()
         {
             return _currentAttack.StartsWith("AttackGrab");
+        }
+
+        public float DeathTimeElapsed()
+        {
+            if (Animation.IsPlaying(BasicAnimations.Die) || Animation.IsPlaying(BasicAnimations.DieBack) || Animation.IsPlaying(BasicAnimations.DieFront))
+            {
+                return Animation.GetCurrentNormalizedTime() * Animation.GetLength(_currentStateAnimation);
+            }
+            return -1f;
         }
 
         protected override Dictionary<string, float> GetRootMotionAnimations()

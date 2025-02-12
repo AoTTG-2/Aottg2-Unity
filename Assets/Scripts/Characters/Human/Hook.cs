@@ -2,6 +2,7 @@
 using CustomLogic;
 using GameManagers;
 using Map;
+using NUnit.Framework.Interfaces;
 using Photon.Pun;
 using Settings;
 using System.Collections;
@@ -35,6 +36,17 @@ namespace Characters
         protected float _tiling;
         protected float _lastLength;
         protected float _maxLiveTime;
+
+        private bool _usingDeathTimer = false;
+        private Vector3 _lastGoodHookPoint = Vector3.zero;
+        private bool _firstDeathFrame = true;
+
+        private void ResetState()
+        {
+            _usingDeathTimer = false;
+            _lastGoodHookPoint = Vector3.zero;
+            _firstDeathFrame = true;
+        }
 
         public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
@@ -161,6 +173,7 @@ namespace Characters
             _hasHookParent = false;
             if (transform != null)
             {
+                ResetState();
                 HookParent = transform;
                 _hookPosition = transform.InverseTransformPoint(position);
                 _hasHookParent = true;
@@ -386,9 +399,10 @@ namespace Characters
                 UpdateSkin();
         }
 
-
+        
         protected void FixedUpdate()
         {
+            _usingDeathTimer = false;
             if (State == HookState.Hooking)
                 FixedUpdateHooking();
             if (State == HookState.Hooking || State == HookState.Hooked)
@@ -399,6 +413,26 @@ namespace Characters
                 {
                     if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
                         SetHookState(HookState.DisablingHooked);
+
+                    // Hook timer for titan death
+                    if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                    {
+                        if (titan.Dead)
+                        {
+                            float timer = titan.DeathTimeElapsed();
+                            if (timer >=0 && timer < SettingsManager.GeneralSettings.DeathTimer.Value)
+                            {
+                                if (_firstDeathFrame)
+                                {
+                                    _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                    _lastWorldHookPosition = _lastGoodHookPoint;
+                                    _firstDeathFrame = false;
+                                }
+                                _usingDeathTimer = true;
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -408,7 +442,10 @@ namespace Characters
             if (_hasHookParent)
             {
                 if (HookParent != null)
-                    _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
+                    if (_usingDeathTimer)
+                        _lastWorldHookPosition = _lastGoodHookPoint;
+                    else
+                        _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
                 return _lastWorldHookPosition;
             }
             return _hookPosition;

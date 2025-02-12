@@ -32,6 +32,8 @@ namespace Settings
 
         public IntSetting MouthCollider = new IntSetting((int)ColliderMode.Original);
 
+        public FloatSetting DeathTimer = new FloatSetting(1f, minValue: 0f);
+
         public override void Apply()
         {
             if (SceneLoader.CurrentCamera is InGameCamera)

@@ -1388,13 +1388,6 @@ namespace Characters
             }
         }
 
-        private void OnGUI()
-        {
-            // display the animation name
-            GUI.Label(new Rect(100, 500, 400, 40), Animation.GetCurrentAnimation());
-        }
-
-
         public Vector3 GetGlobalFacingVector3(float angle)
         {
             float num = -angle + 90f;
