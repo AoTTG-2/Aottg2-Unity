@@ -42,6 +42,7 @@ namespace Controllers
             _titan.BasicCache.FootLHitbox.ScaleSphereCollider(1.5f);
             _titan.BasicCache.FootRHitbox.ScaleSphereCollider(1.5f);
             _titan.BasicCache.MouthHitbox.ScaleSphereCollider(1.2f);
+            _titan.AttackSpeeds["AttackGrabAirL"] = 0.7f;
         }
 
         protected override void UpdateUI(bool inMenu)

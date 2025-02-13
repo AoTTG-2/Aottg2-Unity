@@ -17,6 +17,7 @@ namespace Settings
         public KeybindSetting ChangeCharacter = new KeybindSetting(new string[] { "T", "None" });
         public KeybindSetting RestartGame = new KeybindSetting(new string[] { "F5", "None" });
         public KeybindSetting ToggleScoreboard = new KeybindSetting(new string[] { "Tab", "None" });
+        public KeybindSetting ToggleMap = new KeybindSetting(new string[] { "M", "None" });
         public KeybindSetting Chat = new KeybindSetting(new string[] { "Return", "None" });
         public KeybindSetting PushToTalk = new KeybindSetting(new string[] { "V", "None" });
         public KeybindSetting ChangeCamera = new KeybindSetting(new string[] { "C", "None" });
@@ -26,7 +27,7 @@ namespace Settings
         public KeybindSetting SpectateNextPlayer = new KeybindSetting(new string[] { "2", "None" });
         public KeybindSetting SkipCutscene = new KeybindSetting(new string[] { "Y", "None" });
         public BoolSetting TapScoreboard = new BoolSetting(true);
+        public BoolSetting TapMap = new BoolSetting(true);
         public KeybindSetting HideUI = new KeybindSetting(new string[] { "F6", "None" });
-
     }
 }

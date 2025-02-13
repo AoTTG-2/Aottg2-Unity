@@ -54,6 +54,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af90dbbe94a53d741b9fa1c7a76eebdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootstepsEnabled: 1
+  SoundsEnabled: 1
+  MaxFootstepDistance: 200
+  MaxSoundDistance: 500
   RichTextName: 
   VisibleName: 
   Guild: 
@@ -67,6 +71,7 @@ MonoBehaviour:
   CurrentHealth: 0
   Team: 
   MovementSync: {fileID: 0}
+  CurrentSpeed: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0

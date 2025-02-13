@@ -8,17 +8,19 @@ namespace Map
         public Light Light;
         public float MaxIntensity;
         private Transform _transform;
+        private bool _isDaylight;
 
-        public MapLight(Light light)
+        public MapLight(Light light, bool isDaylight)
         {
             Light = light;
             MaxIntensity = light.intensity;
             _transform = light.transform;
+            _isDaylight = isDaylight;
         }
 
         public void UpdateCull(Transform cameraPosition)
         {
-            if (_transform == null || Light == null)
+            if (_transform == null || Light == null || _isDaylight)
                 return;
             float distance = Vector3.Distance(cameraPosition.position, _transform.position);
             float lightDistance = SettingsManager.GraphicsSettings.LightDistance.Value;
