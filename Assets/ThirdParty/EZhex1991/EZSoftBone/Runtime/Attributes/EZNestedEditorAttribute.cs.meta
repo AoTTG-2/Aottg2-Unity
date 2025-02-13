@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 98a9780768d3c934cb8526b2f4020d54
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Runtime/Attributes/EZNestedEditorAttribute.cs
+  uploadId: 458587

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d0a816d64a591274ca69e63d3e547399
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Runtime/EZSoftBoneCollider.cs
+  uploadId: 458587
