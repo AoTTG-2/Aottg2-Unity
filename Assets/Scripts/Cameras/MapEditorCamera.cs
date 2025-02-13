@@ -22,6 +22,8 @@ namespace Cameras
         private MapEditorMenu _menu;
         private Camera _uiCamera;
         private bool _wasRotating;
+        private bool _startDrag;
+        private Vector3 _lastDragPosition;
 
         protected override void Awake()
         {
@@ -55,7 +57,7 @@ namespace Cameras
         {
             if (_menu == null)
                 return;
-            if (!_menu.IsMouseUI)
+            if (!_menu.IsInputFocused)
                 UpdateMovement();
             UpdateRotation();
         }
@@ -83,6 +85,60 @@ namespace Cameras
             else if (_input.Fast.GetKey())
                 speed = _settings.CameraFastMoveSpeed.Value;
              Cache.Transform.position += direction * Time.deltaTime * speed;
+            UpdateDragMovement(speed);
+            UpdateZoomMovement(speed);
+
+            if (_input.ToggleOrthographic.GetKeyDown())
+            {
+                Camera.orthographic = !Camera.orthographic;
+                if (Camera.orthographic)
+                {
+                    Camera.orthographicSize = 0.25f * Screen.height;
+                }
+            }
+        }
+
+        private void UpdateDragMovement(float speed)
+        {
+            if (_input.Pan.GetKeyDown())
+            {
+                _startDrag = true;
+                _lastDragPosition = Input.mousePosition;
+            }
+            else if (_input.Pan.GetKey())
+            {
+                if (_startDrag)
+                {
+                    Vector2 delta = Input.mousePosition - _lastDragPosition;
+                    _lastDragPosition = Input.mousePosition;
+                    Cache.Transform.position -= Cache.Transform.right * delta.x * Time.deltaTime * speed;
+                    Cache.Transform.position -= Cache.Transform.up * delta.y * Time.deltaTime * speed;
+                }
+            }
+            else if (_input.Pan.GetKeyUp())
+            {
+                _startDrag = false;
+            }
+        }
+
+        /// TODO: Use scale aware zooming speed when object is selected.
+        private void UpdateZoomMovement(float speed)
+        {
+            if (!Camera.orthographic)
+            {
+                if (_input.ZoomIn.GetKey())
+                    Cache.Transform.position += Cache.Transform.forward * Time.deltaTime * speed * 2;
+                else if (_input.ZoomOut.GetKey())
+                    Cache.Transform.position -= Cache.Transform.forward * Time.deltaTime * speed * 2;
+            }
+            else
+            {
+                if (_input.ZoomIn.GetKey())
+                    Camera.orthographicSize -= Time.deltaTime * speed * 2;
+                else if (_input.ZoomOut.GetKey())
+                    Camera.orthographicSize += Time.deltaTime * speed * 2;
+            }
+            
         }
 
         private void UpdateRotation()
@@ -113,7 +169,9 @@ namespace Cameras
 
         private bool AlignedWithWorldAxis()
         {
-            return Cache.Transform.forward == Vector3.forward || Cache.Transform.forward == Vector3.back || Cache.Transform.forward == Vector3.left || Cache.Transform.forward == Vector3.right;
+            return Cache.Transform.forward == Vector3.forward || Cache.Transform.forward == Vector3.back
+                || Cache.Transform.forward == Vector3.left || Cache.Transform.forward == Vector3.right
+                || Cache.Transform.forward == Vector3.up || Cache.Transform.forward == Vector3.down;
         }
 
         private void AlignToWorldAxis()
@@ -188,25 +246,18 @@ namespace Cameras
             {
                 Debug.Log("Not aligned with world axis");
                 AlignToWorldAxis();
+                return;
             }
 
-            // Rotate the camera 90 degrees in the given direction
-            Cache.Transform.RotateAround(position, direction, 90f);
+            // Rotate the camera 90 degrees in the given direction relative to the current forward vector
+            Quaternion rotation = Quaternion.AngleAxis(90f, Cache.Transform.TransformDirection(direction));
+            Cache.Transform.rotation = rotation * Cache.Transform.rotation;
 
             // Set position to the same distance from the target
             Cache.Transform.position = position - Cache.Transform.forward * distance;
 
             // Ensure the camera is facing the right direction
             Cache.Transform.LookAt(position);
-
-            if (_input.ToggleOrthographic.GetKeyDown())
-            {
-                Camera.orthographic = !Camera.orthographic;
-                if (Camera.orthographic)
-                {
-                    Camera.orthographicSize = distance / 2f; // Adjust this value as needed
-                }
-            }
         }
 
         protected override void SetDefaultCameraPosition()

@@ -3262,7 +3262,7 @@ namespace Characters
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
-            if (Setup == null)
+            if (Setup == null || Setup?.LeftTrail == null || Setup?.RightTrail == null)
                 return;
             bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
                                 || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());

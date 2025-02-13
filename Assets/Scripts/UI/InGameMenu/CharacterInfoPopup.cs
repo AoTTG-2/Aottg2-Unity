@@ -27,6 +27,8 @@ namespace UI
         private bool _settingsApplyToMe = false;
         private bool _teamsEnabled = false;
         private string _name = string.Empty;
+        private int _minNameLength = 0;
+        private int _maxNameLength = 0;
 
         public override void Setup(BasePanel parent = null)
         {
@@ -78,6 +80,8 @@ namespace UI
             _settingsBackgroundColor = SettingsManager.UISettings.ForceBackgroundColor.Value.ToColor();
             _settingsNameColor = SettingsManager.UISettings.ForceNameColor.Value.ToColor();
             _teamsEnabled = SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team;
+            _minNameLength = SettingsManager.UISettings.MinNameLength.Value;
+            _maxNameLength = SettingsManager.UISettings.MaxNameLength.Value;
 
             _name = Character.Name;
             if (_settingsApplyToMe)
@@ -87,13 +91,19 @@ namespace UI
                 _textOutline.effectColor = _settingsBackgroundColor;
                 _nameBackground.color = _settingsBackgroundColor;
                 _nameLabel.color = _settingsNameColor;
+
+                string newName = Character.VisibleName.Trim();
+                if (newName.Length < _minNameLength)
+                    newName = newName + new string('▩', _minNameLength - newName.Length);
+                else if (newName.Length > _maxNameLength)
+                    newName = newName.Substring(0, _maxNameLength);
+
                 if (!_teamsEnabled)
-                    _name = Character.VisibleName;
+                    _name = newName;
                 else
                 {
-                    _name = Character.VisibleName;
                     string color = TeamInfo.GetTeamColor(Character.Team);
-                    _name = $"<color={color}>{_name}</color>";
+                    _name = $"<color={color}>{newName}</color>";
 
                 }
             }
