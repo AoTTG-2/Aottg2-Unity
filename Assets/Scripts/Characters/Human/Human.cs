@@ -918,6 +918,15 @@ namespace Characters
             }
         }
 
+        public override void ForceAnimation(string animation, float fade)
+        {
+            if (State == HumanState.Attack)
+                FalseAttack();
+            State = HumanState.EmoteAction;
+            CrossFade(animation, fade);
+            _stateTimeLeft = Animation.GetTotalTime(animation);
+        }
+
         public void EmoteAnimation(string animation)
         {
             State = HumanState.EmoteAction;
@@ -2654,6 +2663,8 @@ namespace Characters
                     else
                         Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                 }
+                else
+                    _customSkinLoader.Finished = true;
             }
         }
 

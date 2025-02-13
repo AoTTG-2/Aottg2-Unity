@@ -72,9 +72,11 @@ namespace Characters
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
-        protected float _currentFallTime;
+        protected float _currentFallTotalTime;
+        protected float _currentFallStuckTime;
         protected float _disableCooldownLeft;
         protected float _checkGroundTimeLeft;
+        protected Vector3 _startPosition;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -344,6 +346,11 @@ namespace Characters
 
         public override void Emote(string emote)
         {
+        }
+
+        public override void ForceAnimation(string animation, float fade)
+        {
+            StateAction(TitanState.Emote, animation, fade);
         }
 
         protected override IEnumerator WaitAndDie()
@@ -733,7 +740,10 @@ namespace Characters
                     _checkGroundTimeLeft = CheckGroundTime;
                 }
                 if (State != TitanState.Fall)
-                    _currentFallTime = 0f;
+                {
+                    _currentFallTotalTime = 0f;
+                    _currentFallStuckTime = 0f;
+                }
                 if (!AI && (State == TitanState.PreJump || State == TitanState.CoverNape || State == TitanState.SitDown || State == TitanState.Dead))
                 {
                     SetDefaultVelocityLerp();
@@ -775,10 +785,15 @@ namespace Characters
                 }
                 else if (State == TitanState.Fall)
                 {
+                    _currentFallTotalTime += Time.fixedDeltaTime;
+                    if (_currentFallTotalTime > 10f)
+                    {
+                        Cache.Transform.position = _startPosition;
+                    }
                     if (Cache.Rigidbody.velocity.y >= -1f)
                     {
-                        _currentFallTime += Time.fixedDeltaTime;
-                        if (_currentFallTime > 0.5f)
+                        _currentFallStuckTime += Time.fixedDeltaTime;
+                        if (_currentFallStuckTime > 0.5f)
                             Land();
                     }
                 }
@@ -978,6 +993,7 @@ namespace Characters
                     StartCoroutine(HandleSpawnCollisionCoroutine(2f, 20f));
                 Idle();
             }
+            _startPosition = Cache.Transform.position;
         }
 
         protected IEnumerator HandleSpawnCollisionCoroutine(float time, float maxSpeed)

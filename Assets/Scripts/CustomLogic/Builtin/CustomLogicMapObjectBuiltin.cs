@@ -40,6 +40,7 @@ namespace CustomLogic
                     bool weatherControlled = (bool)parameters[3];
                     if (weatherControlled)
                         MapLoader.Daylight.Add(light);
+                    MapLoader.RegisterMapLight(light, true);
                 }
                 else if (name == "PointLight")
                 {
@@ -51,7 +52,7 @@ namespace CustomLogic
                     light.shadows = LightShadows.None;
                     light.renderMode = LightRenderMode.ForcePixel;
                     light.bounceIntensity = 0f;
-                    MapLoader.RegisterMapLight(light);
+                    MapLoader.RegisterMapLight(light, false);
                 }
                 else if (name == "Tag")
                 {

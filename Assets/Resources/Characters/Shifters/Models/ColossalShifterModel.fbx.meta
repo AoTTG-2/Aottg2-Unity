@@ -1,228 +1,642 @@
 fileFormatVersion: 2
 guid: 820e0d72f75c9b2479564c9073bc1bfb
 ModelImporter:
-  serializedVersion: 16
-  fileIDToRecycleName:
-    100000: abs
-    100002: abs_end
-    100004: Armature_VER2
-    100006: Bone
-    100008: Bone_end
-    100010: breast.L
-    100012: breast.L_end
-    100014: breast.R
-    100016: breast.R_end
-    100018: chest
-    100020: Colossal_VER2
-    100022: Controller_Body
-    100024: Core
-    100026: foot_L
-    100028: foot_R
-    100030: forearm_L
-    100032: forearm_R
-    100034: hand_L
-    100036: hand_L_001.001.L
-    100038: hand_L_001.001.R
-    100040: hand_L_001.002.L
-    100042: hand_L_001.002.L_end
-    100044: hand_L_001.002.R
-    100046: hand_L_001.002.R_end
-    100048: hand_L_001.L
-    100050: hand_L_001.R
-    100052: hand_L_004.001.L
-    100054: hand_L_004.001.R
-    100056: hand_L_004.002.L
-    100058: hand_L_004.002.L_end
-    100060: hand_L_004.002.R
-    100062: hand_L_004.002.R_end
-    100064: hand_L_004.L
-    100066: hand_L_004.R
-    100068: hand_L_007.001.L
-    100070: hand_L_007.001.R
-    100072: hand_L_007.002.L
-    100074: hand_L_007.002.L_end
-    100076: hand_L_007.002.R
-    100078: hand_L_007.002.R_end
-    100080: hand_L_007.L
-    100082: hand_L_007.R
-    100084: hand_L_011.001.L
-    100086: hand_L_011.001.R
-    100088: hand_L_011.002.L
-    100090: hand_L_011.002.L_end
-    100092: hand_L_011.002.R
-    100094: hand_L_011.002.R_end
-    100096: hand_L_011.L
-    100098: hand_L_011.R
-    100100: hand_L_013.001.L
-    100102: hand_L_013.001.R
-    100104: hand_L_013.002.L
-    100106: hand_L_013.002.L_end
-    100108: hand_L_013.002.R
-    100110: hand_L_013.002.R_end
-    100112: hand_L_013.L
-    100114: hand_L_013.R
-    100116: hand_R
-    100118: head
-    100120: hip
-    100122: IK.L
-    100124: IK.R
-    100126: IK_Elbow_L
-    100128: IK_Elbow_L_end
-    100130: IK_Elbow_R
-    100132: IK_Elbow_R_end
-    100134: IK_hand_L
-    100136: IK_hand_R
-    100138: IK_stable_L
-    100140: IK_stable_L_end
-    100142: IK_stable_R
-    100144: IK_stable_R_end
-    100146: knee.L
-    100148: knee.L_end
-    100150: knee.R
-    100152: knee.R_end
-    100154: neck
-    100156: shin_L
-    100158: shin_R
-    100160: shoulder_L
-    100162: shoulder_R
-    100164: spine
-    100166: thigh_L
-    100168: thigh_R
-    100170: //RootNode
-    100172: toe.L
-    100174: toe.L_end
-    100176: toe.R
-    100178: toe.R_end
-    100180: upper_arm_L
-    100182: upper_arm_R
-    100184: upperchest
-    400000: abs
-    400002: abs_end
-    400004: Armature_VER2
-    400006: Bone
-    400008: Bone_end
-    400010: breast.L
-    400012: breast.L_end
-    400014: breast.R
-    400016: breast.R_end
-    400018: chest
-    400020: Colossal_VER2
-    400022: Controller_Body
-    400024: Core
-    400026: foot_L
-    400028: foot_R
-    400030: forearm_L
-    400032: forearm_R
-    400034: hand_L
-    400036: hand_L_001.001.L
-    400038: hand_L_001.001.R
-    400040: hand_L_001.002.L
-    400042: hand_L_001.002.L_end
-    400044: hand_L_001.002.R
-    400046: hand_L_001.002.R_end
-    400048: hand_L_001.L
-    400050: hand_L_001.R
-    400052: hand_L_004.001.L
-    400054: hand_L_004.001.R
-    400056: hand_L_004.002.L
-    400058: hand_L_004.002.L_end
-    400060: hand_L_004.002.R
-    400062: hand_L_004.002.R_end
-    400064: hand_L_004.L
-    400066: hand_L_004.R
-    400068: hand_L_007.001.L
-    400070: hand_L_007.001.R
-    400072: hand_L_007.002.L
-    400074: hand_L_007.002.L_end
-    400076: hand_L_007.002.R
-    400078: hand_L_007.002.R_end
-    400080: hand_L_007.L
-    400082: hand_L_007.R
-    400084: hand_L_011.001.L
-    400086: hand_L_011.001.R
-    400088: hand_L_011.002.L
-    400090: hand_L_011.002.L_end
-    400092: hand_L_011.002.R
-    400094: hand_L_011.002.R_end
-    400096: hand_L_011.L
-    400098: hand_L_011.R
-    400100: hand_L_013.001.L
-    400102: hand_L_013.001.R
-    400104: hand_L_013.002.L
-    400106: hand_L_013.002.L_end
-    400108: hand_L_013.002.R
-    400110: hand_L_013.002.R_end
-    400112: hand_L_013.L
-    400114: hand_L_013.R
-    400116: hand_R
-    400118: head
-    400120: hip
-    400122: IK.L
-    400124: IK.R
-    400126: IK_Elbow_L
-    400128: IK_Elbow_L_end
-    400130: IK_Elbow_R
-    400132: IK_Elbow_R_end
-    400134: IK_hand_L
-    400136: IK_hand_R
-    400138: IK_stable_L
-    400140: IK_stable_L_end
-    400142: IK_stable_R
-    400144: IK_stable_R_end
-    400146: knee.L
-    400148: knee.L_end
-    400150: knee.R
-    400152: knee.R_end
-    400154: neck
-    400156: shin_L
-    400158: shin_R
-    400160: shoulder_L
-    400162: shoulder_R
-    400164: spine
-    400166: thigh_L
-    400168: thigh_R
-    400170: //RootNode
-    400172: toe.L
-    400174: toe.L_end
-    400176: toe.R
-    400178: toe.R_end
-    400180: upper_arm_L
-    400182: upper_arm_R
-    400184: upperchest
-    4300000: Colossal_VER2
-    7400000: Armature_VER2|T-pose
-    7400002: Armature_VER2|wall_attack_slap1_L
-    7400004: Armature_VER2|wall_attack_slap1_R
-    7400006: Armature_VER2|wall_attack_slap2_L
-    7400008: Armature_VER2|wall_attack_slap2_R
-    7400010: Armature_VER2|wall_attack_steam
-    7400012: Armature_VER2|wall_attack_sweep
-    7400014: Armature_VER2|wall_attack_sweep_verticle
-    7400016: Armature_VER2|wall_colossal_idle
-    7400018: Armature_VER2|wall_colossal_kick
-    7400020: Armature_VER2|wall_to_roaming_1
-    7400022: Armature_VER2|wall_to_roaming_2
-    9500000: //RootNode
-    13700000: Colossal_VER2
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: abs
+  - first:
+      1: 100002
+    second: abs_end
+  - first:
+      1: 100004
+    second: Armature_VER2
+  - first:
+      1: 100006
+    second: Bone
+  - first:
+      1: 100008
+    second: Bone_end
+  - first:
+      1: 100010
+    second: breast.L
+  - first:
+      1: 100012
+    second: breast.L_end
+  - first:
+      1: 100014
+    second: breast.R
+  - first:
+      1: 100016
+    second: breast.R_end
+  - first:
+      1: 100018
+    second: chest
+  - first:
+      1: 100020
+    second: Colossal_VER2
+  - first:
+      1: 100022
+    second: Controller_Body
+  - first:
+      1: 100024
+    second: Core
+  - first:
+      1: 100026
+    second: foot_L
+  - first:
+      1: 100028
+    second: foot_R
+  - first:
+      1: 100030
+    second: forearm_L
+  - first:
+      1: 100032
+    second: forearm_R
+  - first:
+      1: 100034
+    second: hand_L
+  - first:
+      1: 100036
+    second: hand_L_001.001.L
+  - first:
+      1: 100038
+    second: hand_L_001.001.R
+  - first:
+      1: 100040
+    second: hand_L_001.002.L
+  - first:
+      1: 100042
+    second: hand_L_001.002.L_end
+  - first:
+      1: 100044
+    second: hand_L_001.002.R
+  - first:
+      1: 100046
+    second: hand_L_001.002.R_end
+  - first:
+      1: 100048
+    second: hand_L_001.L
+  - first:
+      1: 100050
+    second: hand_L_001.R
+  - first:
+      1: 100052
+    second: hand_L_004.001.L
+  - first:
+      1: 100054
+    second: hand_L_004.001.R
+  - first:
+      1: 100056
+    second: hand_L_004.002.L
+  - first:
+      1: 100058
+    second: hand_L_004.002.L_end
+  - first:
+      1: 100060
+    second: hand_L_004.002.R
+  - first:
+      1: 100062
+    second: hand_L_004.002.R_end
+  - first:
+      1: 100064
+    second: hand_L_004.L
+  - first:
+      1: 100066
+    second: hand_L_004.R
+  - first:
+      1: 100068
+    second: hand_L_007.001.L
+  - first:
+      1: 100070
+    second: hand_L_007.001.R
+  - first:
+      1: 100072
+    second: hand_L_007.002.L
+  - first:
+      1: 100074
+    second: hand_L_007.002.L_end
+  - first:
+      1: 100076
+    second: hand_L_007.002.R
+  - first:
+      1: 100078
+    second: hand_L_007.002.R_end
+  - first:
+      1: 100080
+    second: hand_L_007.L
+  - first:
+      1: 100082
+    second: hand_L_007.R
+  - first:
+      1: 100084
+    second: hand_L_011.001.L
+  - first:
+      1: 100086
+    second: hand_L_011.001.R
+  - first:
+      1: 100088
+    second: hand_L_011.002.L
+  - first:
+      1: 100090
+    second: hand_L_011.002.L_end
+  - first:
+      1: 100092
+    second: hand_L_011.002.R
+  - first:
+      1: 100094
+    second: hand_L_011.002.R_end
+  - first:
+      1: 100096
+    second: hand_L_011.L
+  - first:
+      1: 100098
+    second: hand_L_011.R
+  - first:
+      1: 100100
+    second: hand_L_013.001.L
+  - first:
+      1: 100102
+    second: hand_L_013.001.R
+  - first:
+      1: 100104
+    second: hand_L_013.002.L
+  - first:
+      1: 100106
+    second: hand_L_013.002.L_end
+  - first:
+      1: 100108
+    second: hand_L_013.002.R
+  - first:
+      1: 100110
+    second: hand_L_013.002.R_end
+  - first:
+      1: 100112
+    second: hand_L_013.L
+  - first:
+      1: 100114
+    second: hand_L_013.R
+  - first:
+      1: 100116
+    second: hand_R
+  - first:
+      1: 100118
+    second: head
+  - first:
+      1: 100120
+    second: hip
+  - first:
+      1: 100122
+    second: IK.L
+  - first:
+      1: 100124
+    second: IK.R
+  - first:
+      1: 100126
+    second: IK_Elbow_L
+  - first:
+      1: 100128
+    second: IK_Elbow_L_end
+  - first:
+      1: 100130
+    second: IK_Elbow_R
+  - first:
+      1: 100132
+    second: IK_Elbow_R_end
+  - first:
+      1: 100134
+    second: IK_hand_L
+  - first:
+      1: 100136
+    second: IK_hand_R
+  - first:
+      1: 100138
+    second: IK_stable_L
+  - first:
+      1: 100140
+    second: IK_stable_L_end
+  - first:
+      1: 100142
+    second: IK_stable_R
+  - first:
+      1: 100144
+    second: IK_stable_R_end
+  - first:
+      1: 100146
+    second: knee.L
+  - first:
+      1: 100148
+    second: knee.L_end
+  - first:
+      1: 100150
+    second: knee.R
+  - first:
+      1: 100152
+    second: knee.R_end
+  - first:
+      1: 100154
+    second: neck
+  - first:
+      1: 100156
+    second: shin_L
+  - first:
+      1: 100158
+    second: shin_R
+  - first:
+      1: 100160
+    second: shoulder_L
+  - first:
+      1: 100162
+    second: shoulder_R
+  - first:
+      1: 100164
+    second: spine
+  - first:
+      1: 100166
+    second: thigh_L
+  - first:
+      1: 100168
+    second: thigh_R
+  - first:
+      1: 100170
+    second: //RootNode
+  - first:
+      1: 100172
+    second: toe.L
+  - first:
+      1: 100174
+    second: toe.L_end
+  - first:
+      1: 100176
+    second: toe.R
+  - first:
+      1: 100178
+    second: toe.R_end
+  - first:
+      1: 100180
+    second: upper_arm_L
+  - first:
+      1: 100182
+    second: upper_arm_R
+  - first:
+      1: 100184
+    second: upperchest
+  - first:
+      4: 400000
+    second: abs
+  - first:
+      4: 400002
+    second: abs_end
+  - first:
+      4: 400004
+    second: Armature_VER2
+  - first:
+      4: 400006
+    second: Bone
+  - first:
+      4: 400008
+    second: Bone_end
+  - first:
+      4: 400010
+    second: breast.L
+  - first:
+      4: 400012
+    second: breast.L_end
+  - first:
+      4: 400014
+    second: breast.R
+  - first:
+      4: 400016
+    second: breast.R_end
+  - first:
+      4: 400018
+    second: chest
+  - first:
+      4: 400020
+    second: Colossal_VER2
+  - first:
+      4: 400022
+    second: Controller_Body
+  - first:
+      4: 400024
+    second: Core
+  - first:
+      4: 400026
+    second: foot_L
+  - first:
+      4: 400028
+    second: foot_R
+  - first:
+      4: 400030
+    second: forearm_L
+  - first:
+      4: 400032
+    second: forearm_R
+  - first:
+      4: 400034
+    second: hand_L
+  - first:
+      4: 400036
+    second: hand_L_001.001.L
+  - first:
+      4: 400038
+    second: hand_L_001.001.R
+  - first:
+      4: 400040
+    second: hand_L_001.002.L
+  - first:
+      4: 400042
+    second: hand_L_001.002.L_end
+  - first:
+      4: 400044
+    second: hand_L_001.002.R
+  - first:
+      4: 400046
+    second: hand_L_001.002.R_end
+  - first:
+      4: 400048
+    second: hand_L_001.L
+  - first:
+      4: 400050
+    second: hand_L_001.R
+  - first:
+      4: 400052
+    second: hand_L_004.001.L
+  - first:
+      4: 400054
+    second: hand_L_004.001.R
+  - first:
+      4: 400056
+    second: hand_L_004.002.L
+  - first:
+      4: 400058
+    second: hand_L_004.002.L_end
+  - first:
+      4: 400060
+    second: hand_L_004.002.R
+  - first:
+      4: 400062
+    second: hand_L_004.002.R_end
+  - first:
+      4: 400064
+    second: hand_L_004.L
+  - first:
+      4: 400066
+    second: hand_L_004.R
+  - first:
+      4: 400068
+    second: hand_L_007.001.L
+  - first:
+      4: 400070
+    second: hand_L_007.001.R
+  - first:
+      4: 400072
+    second: hand_L_007.002.L
+  - first:
+      4: 400074
+    second: hand_L_007.002.L_end
+  - first:
+      4: 400076
+    second: hand_L_007.002.R
+  - first:
+      4: 400078
+    second: hand_L_007.002.R_end
+  - first:
+      4: 400080
+    second: hand_L_007.L
+  - first:
+      4: 400082
+    second: hand_L_007.R
+  - first:
+      4: 400084
+    second: hand_L_011.001.L
+  - first:
+      4: 400086
+    second: hand_L_011.001.R
+  - first:
+      4: 400088
+    second: hand_L_011.002.L
+  - first:
+      4: 400090
+    second: hand_L_011.002.L_end
+  - first:
+      4: 400092
+    second: hand_L_011.002.R
+  - first:
+      4: 400094
+    second: hand_L_011.002.R_end
+  - first:
+      4: 400096
+    second: hand_L_011.L
+  - first:
+      4: 400098
+    second: hand_L_011.R
+  - first:
+      4: 400100
+    second: hand_L_013.001.L
+  - first:
+      4: 400102
+    second: hand_L_013.001.R
+  - first:
+      4: 400104
+    second: hand_L_013.002.L
+  - first:
+      4: 400106
+    second: hand_L_013.002.L_end
+  - first:
+      4: 400108
+    second: hand_L_013.002.R
+  - first:
+      4: 400110
+    second: hand_L_013.002.R_end
+  - first:
+      4: 400112
+    second: hand_L_013.L
+  - first:
+      4: 400114
+    second: hand_L_013.R
+  - first:
+      4: 400116
+    second: hand_R
+  - first:
+      4: 400118
+    second: head
+  - first:
+      4: 400120
+    second: hip
+  - first:
+      4: 400122
+    second: IK.L
+  - first:
+      4: 400124
+    second: IK.R
+  - first:
+      4: 400126
+    second: IK_Elbow_L
+  - first:
+      4: 400128
+    second: IK_Elbow_L_end
+  - first:
+      4: 400130
+    second: IK_Elbow_R
+  - first:
+      4: 400132
+    second: IK_Elbow_R_end
+  - first:
+      4: 400134
+    second: IK_hand_L
+  - first:
+      4: 400136
+    second: IK_hand_R
+  - first:
+      4: 400138
+    second: IK_stable_L
+  - first:
+      4: 400140
+    second: IK_stable_L_end
+  - first:
+      4: 400142
+    second: IK_stable_R
+  - first:
+      4: 400144
+    second: IK_stable_R_end
+  - first:
+      4: 400146
+    second: knee.L
+  - first:
+      4: 400148
+    second: knee.L_end
+  - first:
+      4: 400150
+    second: knee.R
+  - first:
+      4: 400152
+    second: knee.R_end
+  - first:
+      4: 400154
+    second: neck
+  - first:
+      4: 400156
+    second: shin_L
+  - first:
+      4: 400158
+    second: shin_R
+  - first:
+      4: 400160
+    second: shoulder_L
+  - first:
+      4: 400162
+    second: shoulder_R
+  - first:
+      4: 400164
+    second: spine
+  - first:
+      4: 400166
+    second: thigh_L
+  - first:
+      4: 400168
+    second: thigh_R
+  - first:
+      4: 400170
+    second: //RootNode
+  - first:
+      4: 400172
+    second: toe.L
+  - first:
+      4: 400174
+    second: toe.L_end
+  - first:
+      4: 400176
+    second: toe.R
+  - first:
+      4: 400178
+    second: toe.R_end
+  - first:
+      4: 400180
+    second: upper_arm_L
+  - first:
+      4: 400182
+    second: upper_arm_R
+  - first:
+      4: 400184
+    second: upperchest
+  - first:
+      43: 4300000
+    second: Colossal_VER2
+  - first:
+      74: 7400000
+    second: Armature_VER2|T-pose
+  - first:
+      74: 7400002
+    second: Armature_VER2|wall_attack_slap1_L
+  - first:
+      74: 7400004
+    second: Armature_VER2|wall_attack_slap1_R
+  - first:
+      74: 7400006
+    second: Armature_VER2|wall_attack_slap2_L
+  - first:
+      74: 7400008
+    second: Armature_VER2|wall_attack_slap2_R
+  - first:
+      74: 7400010
+    second: Armature_VER2|wall_attack_steam
+  - first:
+      74: 7400012
+    second: Armature_VER2|wall_attack_sweep
+  - first:
+      74: 7400014
+    second: Armature_VER2|wall_attack_sweep_verticle
+  - first:
+      74: 7400016
+    second: Armature_VER2|wall_colossal_idle
+  - first:
+      74: 7400018
+    second: Armature_VER2|wall_colossal_kick
+  - first:
+      74: 7400020
+    second: Armature_VER2|wall_to_roaming_1
+  - first:
+      74: 7400022
+    second: Armature_VER2|wall_to_roaming_2
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Colossal_VER2
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
-    animationRotationError: .100000001
-    animationPositionError: .5
-    animationScaleError: .5
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Armature_VER2|T-pose
       takeName: Armature_VER2|T-pose
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -230,6 +644,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -432,9 +847,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_slap1_L
       takeName: Armature_VER2|wall_attack_slap1_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 131
       wrapMode: 0
@@ -442,6 +859,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -644,9 +1062,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_slap1_R
       takeName: Armature_VER2|wall_attack_slap1_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 131
       wrapMode: 0
@@ -654,6 +1074,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -856,9 +1277,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_slap2_L
       takeName: Armature_VER2|wall_attack_slap2_L
+      internalID: 0
       firstFrame: 0
       lastFrame: 131
       wrapMode: 0
@@ -866,6 +1289,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1068,9 +1492,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_slap2_R
       takeName: Armature_VER2|wall_attack_slap2_R
+      internalID: 0
       firstFrame: 0
       lastFrame: 131
       wrapMode: 0
@@ -1078,6 +1504,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1280,9 +1707,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_steam
       takeName: Armature_VER2|wall_attack_steam
+      internalID: 0
       firstFrame: 0
       lastFrame: 139
       wrapMode: 0
@@ -1290,7 +1719,8 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 1
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1492,9 +1922,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_sweep
       takeName: Armature_VER2|wall_attack_sweep
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -1502,6 +1934,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1704,9 +2137,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_attack_sweep_verticle
       takeName: Armature_VER2|wall_attack_sweep_verticle
+      internalID: 0
       firstFrame: 0
       lastFrame: 130
       wrapMode: 0
@@ -1714,6 +2149,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -1916,9 +2352,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_colossal_idle
       takeName: Armature_VER2|wall_colossal_idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 119
       wrapMode: 0
@@ -1926,6 +2364,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2128,9 +2567,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_colossal_kick
       takeName: Armature_VER2|wall_colossal_kick
+      internalID: 0
       firstFrame: 0
       lastFrame: 158
       wrapMode: 0
@@ -2138,6 +2579,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2340,9 +2782,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_to_roaming_1
       takeName: Armature_VER2|wall_to_roaming_1
+      internalID: 0
       firstFrame: 0
       lastFrame: 95
       wrapMode: 0
@@ -2350,6 +2794,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2552,9 +2997,11 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature_VER2|wall_to_roaming_2
       takeName: Armature_VER2|wall_to_roaming_2
+      internalID: 0
       firstFrame: 0
       lastFrame: 59
       wrapMode: 0
@@ -2562,6 +3009,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -2764,41 +3212,79 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 1
     normalImportMode: 0
-    tangentImportMode: 1
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
+    serializedVersion: 3
     human: []
     skeleton: []
-    armTwist: .5
-    foreArmTwist: .5
-    upperLegTwist: .5
-    legTwist: .5
-    armStretch: .0500000007
-    legStretch: .0500000007
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

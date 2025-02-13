@@ -400,21 +400,29 @@ namespace Cameras
             float height = cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
             Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-            if (_inGameManager.Humans.Count > 0 && !InGameMenu.InMenu() && !ChatManager.IsChatActive())
+            if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
             {
                 if (_input.SpectateNextPlayer.GetKeyDown())
                 {
-                    int nextSpectateIndex = GetSpectateIndex() + 1;
-                    if (nextSpectateIndex >= _inGameManager.Humans.Count)
-                        nextSpectateIndex = 0;
-                    SetFollow(GetSortedCharacters()[nextSpectateIndex]);
+                    var characters = GetSortedCharacters();
+                    if (characters.Count > 0)
+                    {
+                        int nextSpectateIndex = GetSpectateIndex(characters) + 1;
+                        if (nextSpectateIndex >= characters.Count)
+                            nextSpectateIndex = 0;
+                        SetFollow(characters[nextSpectateIndex]);
+                    }
                 }
                 if (_input.SpectatePreviousPlayer.GetKeyDown())
                 {
-                    int nextSpectateIndex = GetSpectateIndex() - 1;
-                    if (nextSpectateIndex < 0)
-                        nextSpectateIndex = _inGameManager.Humans.Count - 1;
-                    SetFollow(GetSortedCharacters()[nextSpectateIndex]);
+                    var characters = GetSortedCharacters();
+                    if (characters.Count > 0)
+                    {
+                        int nextSpectateIndex = GetSpectateIndex(characters) - 1;
+                        if (nextSpectateIndex < 0)
+                            nextSpectateIndex = characters.Count - 1;
+                        SetFollow(characters[nextSpectateIndex]);
+                    }
                 }
             }
         }
@@ -500,14 +508,13 @@ namespace Cameras
                 SetFollow(null);
         }
 
-        private int GetSpectateIndex()
+        private int GetSpectateIndex(List<BaseCharacter> characters)
         {
             if (_follow == null)
                 return -1;
-            var humans = GetSortedCharacters();
-            for (int i = 0; i < humans.Count; i++)
+            for (int i = 0; i < characters.Count; i++)
             {
-                if (humans[i] == _follow)
+                if (characters[i] == _follow)
                     return i;
             }
             return -1;

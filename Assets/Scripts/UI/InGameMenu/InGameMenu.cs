@@ -42,6 +42,7 @@ namespace UI
         public BasePopup _characterPopup;
         public BasePopup _characterChangePopup;
         public BasePopup _scoreboardPopup;
+        public BasePopup _mapPopup;
         public BasePopup _selectMapPopup;
         public SkillTooltipPopup SkillTooltipPopup;
         public CustomAssetUrlPopup _customAssetUrlPopup;
@@ -151,16 +152,11 @@ namespace UI
 
         public void SetupMinimap()
         {
+            _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
+            ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
+            _minimapPanel.AddComponent<MinimapScaler>();
+            _minimapPanel.SetActive(false);
             gameObject.AddComponent<MinimapHandler>();
-            if (SettingsManager.GeneralSettings.MinimapEnabled.Value)
-            {
-                _minimapPanel = ElementFactory.InstantiateAndBind(transform, "Minimap/Prefabs/MinimapPanel");
-                ElementFactory.SetAnchor(_minimapPanel, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-10f, -10f));
-                _minimapPanel.AddComponent<MinimapScaler>();
-                _minimapPanel.SetActive(false);
-            }
-            else
-                GetComponent<MinimapHandler>().Disable();
         }
 
         public void SetupSnapshot()
@@ -215,7 +211,8 @@ namespace UI
             _killFeedBigPopup = ElementFactory.CreateDefaultPopup<KillFeedBigPopup>(transform);
             _killFeedBigPopup.gameObject.AddComponent<KillFeedScaler>();
             ElementFactory.SetAnchor(_killFeedBigPopup.gameObject, TextAnchor.UpperCenter, TextAnchor.MiddleCenter, new Vector2(0f, -120f));
-            for (int i = 0; i < 4; i++)
+            int feedCount = SettingsManager.UISettings.KillFeedCount.Value - 1;
+            for (int i = 0; i < feedCount; i++)
             {
                 float y = -162f - i * 35f;
                 var popup = ElementFactory.CreateDefaultPopup<KillFeedSmallPopup>(transform);
@@ -237,18 +234,20 @@ namespace UI
         {
             _characterPopup = ElementFactory.CreateDefaultPopup<CharacterPopup>(transform);
             _scoreboardPopup = ElementFactory.CreateDefaultPopup<ScoreboardPopup>(transform);
+            _mapPopup = ElementFactory.CreateDefaultPopup<MapPopup>(transform);
             _cutsceneDialoguePanel = ElementFactory.CreateDefaultPopup<CutsceneDialoguePanel>(transform);
             ElementFactory.SetAnchor(_cutsceneDialoguePanel.gameObject, TextAnchor.LowerCenter, TextAnchor.LowerCenter, new Vector2(0f, 100f));
             _popups.Add(_characterPopup);
             _popups.Add(_scoreboardPopup);
+            _popups.Add(_mapPopup);
             _gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-            if (_minimapPanel != null)
-            {
-                if (SettingsManager.GeneralSettings.MinimapEnabled.Value && !SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value)
-                    _minimapPanel.SetActive(true);
-                else
-                    GetComponent<MinimapHandler>().Disable();
-            }
+            if (_minimapPanel != null && SettingsManager.GeneralSettings.MinimapEnabled.Value && AllowMap())
+                _minimapPanel.SetActive(true);
+        }
+
+        public bool AllowMap()
+        {
+            return (!SettingsManager.InGameCurrent.Misc.GlobalMinimapDisable.Value && !SettingsManager.InGameCurrent.Misc.RealismMode.Value);
         }
 
         public static bool InMenu()
@@ -293,6 +292,27 @@ namespace UI
             else if (!enabled)
             {
                 _scoreboardPopup.Hide();
+                if (fromClick)
+                    SkipAHSSInput = true;
+            }
+        }
+
+        public void ToggleMapMenu()
+        {
+            SetMapMenu(!_mapPopup.gameObject.activeSelf, false);
+            ToggleUI(true);
+        }
+
+        public void SetMapMenu(bool enabled, bool fromClick)
+        {
+            if (enabled && !InMenu() && AllowMap())
+            {
+                HideAllMenus();
+                _mapPopup.Show();
+            }
+            else if (!enabled)
+            {
+                _mapPopup.Hide();
                 if (fromClick)
                     SkipAHSSInput = true;
             }
@@ -367,6 +387,9 @@ namespace UI
 
         public void ShowKillFeed(string killer, string victim, int score, string weapon)
         {
+            int feedCount = SettingsManager.UISettings.KillFeedCount.Value;
+            if (feedCount <= 0)
+                return;
             if (_killFeedBigPopup.TimeLeft > 0f)
             {
                 ShowKillFeedPushSmall(_killFeedBigPopup.Killer, _killFeedBigPopup.Victim, _killFeedBigPopup.Score, 
