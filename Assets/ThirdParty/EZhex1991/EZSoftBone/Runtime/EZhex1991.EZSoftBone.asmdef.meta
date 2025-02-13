@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d146492440dd9f84296b8a1d48932228
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Runtime/EZhex1991.EZSoftBone.asmdef
+  uploadId: 458587

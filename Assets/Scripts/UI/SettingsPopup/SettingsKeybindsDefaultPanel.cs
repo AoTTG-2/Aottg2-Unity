@@ -48,6 +48,8 @@ namespace UI
             {
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapScoreboard,
                     UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboard"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboardTooltip"));
+                ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapMap,
+                    UIManager.GetLocale(cat, "Keybinds.General", "TapMap"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapMapTooltip"));
             }
         }
 

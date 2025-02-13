@@ -46,6 +46,16 @@ namespace CustomLogic
                     Character.CrossFadeIfNotPlaying(anim, fade);
                 return null;
             }
+            if (name == "ForceAnimation")
+            {
+                string anim = (string)parameters[0];
+                float fade = 0.1f;
+                if (parameters.Count > 1)
+                    fade = (float)parameters[1];
+                if (Character.IsMine() && !Character.Dead)
+                    Character.ForceAnimation(anim, fade);
+                return null;
+            }
             if (name == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];

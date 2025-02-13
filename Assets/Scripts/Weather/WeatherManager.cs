@@ -157,8 +157,8 @@ namespace Weather
             _instance._skyboxCameras.Add(SceneLoader.CurrentCamera.Camera);
             if (SceneLoader.SceneName == SceneName.InGame)
             {
-                if (MinimapHandler.CameraTransform != null && MinimapHandler.CameraTransform.gameObject.activeSelf)
-                    _instance._skyboxCameras.Add(MinimapHandler.CameraTransform.GetComponent<Camera>());
+                //if (MinimapHandler.CameraTransform != null && MinimapHandler.CameraTransform.gameObject.activeSelf)
+                //    _instance._skyboxCameras.Add(MinimapHandler.CameraTransform.GetComponent<Camera>());
             }
         }
 

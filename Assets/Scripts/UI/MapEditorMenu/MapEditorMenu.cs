@@ -11,6 +11,8 @@ using GameManagers;
 using Map;
 using System.Collections;
 using Utility;
+using RuntimeSceneGizmo;
+using UnityEditor.VersionControl;
 
 namespace UI
 {
@@ -30,8 +32,10 @@ namespace UI
         public MapEditorErrorPopup ErrorPopup;
         public MapEditorCustomAssetPopup CustomAssetsPopup;
         public MapEditorWeatherPopup WeatherPopup;
+        public SceneGizmoRenderer OrientationGizmo;
         public Image DragImage;
         public bool IsMouseUI;
+        public bool IsInputFocused;
 
         public override void Setup()
         {
@@ -60,6 +64,10 @@ namespace UI
             ErrorPopup = ElementFactory.CreateDefaultPopup<MapEditorErrorPopup>(transform);
             CustomAssetsPopup = ElementFactory.CreateDefaultPopup<MapEditorCustomAssetPopup>(transform);
             WeatherPopup = ElementFactory.CreateDefaultPopup<MapEditorWeatherPopup>(transform);
+
+            //GameObject gizmoObj = ElementFactory.InstantiateAndBind(transform, "Prefabs/Misc/GizmoRenderer");
+            //OrientationGizmo = gizmoObj.GetComponent<SceneGizmoRenderer>(); - ignore this for now until map editor UI is fully redone (required for our use case)
+            
             _popups.Add(AddObjectPopup);
             _popups.Add(AddVariantPopup);
             _popups.Add(TexturePopup);
@@ -162,6 +170,7 @@ namespace UI
         private void Update()
         {
             UpdateMouseUI();
+            IsInputFocused = EventSystem.current.currentSelectedGameObject != null;
         }
 
         public bool IsPopupActive()

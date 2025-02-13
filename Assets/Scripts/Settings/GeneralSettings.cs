@@ -19,7 +19,7 @@ namespace Settings
         public BoolSetting SnapshotsShowInGame = new BoolSetting(false);
         public IntSetting SnapshotsMinimumDamage = new IntSetting(0, minValue: 0);
         public BoolSetting MinimapEnabled = new BoolSetting(true);
-        public FloatSetting MinimapHeight = new FloatSetting(500, minValue: 1);
+        public FloatSetting MinimapCameraHeight = new FloatSetting(1000, minValue: 100);
         public IntSetting CameraMode = new IntSetting((int)CameraInputMode.TPS);
         public BoolSetting SkipCutscenes = new BoolSetting(false);
         public BoolSetting CameraClipping = new BoolSetting(false);
