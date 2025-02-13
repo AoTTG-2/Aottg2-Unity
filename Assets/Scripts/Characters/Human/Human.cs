@@ -96,7 +96,7 @@ namespace Characters
         private Vector3 _currentVelocity;
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.ProjectileDetection);
         private LayerMask HumanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
-            PhysicsLayer.MapObjectAll);
+            PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectHumans, PhysicsLayer.MapObjectAll);
         public override LayerMask GroundMask => HumanGroundMaskLayers;
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
@@ -525,7 +525,7 @@ namespace Characters
             if (initiatorView.Owner != info.Sender)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             _lastCarryRPCSender = initiatorViewId;
             if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
@@ -541,10 +541,10 @@ namespace Characters
             if (_lastCarryRPCSender != initiatorViewId)
                 return;
             var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView == null) 
+            if (initiatorView == null)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             Carrier = initiator;
             Carrier.BackHuman = this;
@@ -2043,7 +2043,7 @@ namespace Characters
 
         private void FixedUpdateWallSlide()
         {
-            
+
             if (_wallSlide)
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
@@ -2051,7 +2051,7 @@ namespace Characters
                     {
                         _canWallSlideJump = true;
                     }
-                
+
 
                 if (Grounded)
                 {
@@ -2554,7 +2554,7 @@ namespace Characters
             FinishSetup = true;
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
-            
+
             if (this.OutlineComponent != null)
                 this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
@@ -2608,7 +2608,7 @@ namespace Characters
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f,tsInfo);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f, tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else
@@ -3334,7 +3334,7 @@ namespace Characters
             {
                 foreach (var titan in _inGameManager.Titans)
                 {
-                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this 
+                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this
                         && Vector3.Distance(Cache.Transform.position, titan.Cache.Transform.position) < titan.GetColliderToggleRadius())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
