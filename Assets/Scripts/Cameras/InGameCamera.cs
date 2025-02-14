@@ -23,7 +23,7 @@ namespace Cameras
         public enum SpecateMode
         {
             LiveSpectate,
-            OrbitSpecate,
+            OrbitSpectate,
             FreeCam
         }
 
@@ -236,7 +236,7 @@ namespace Cameras
                     SetFollow(_inGameManager.CurrentCharacter);
                 if (_inGameManager.CurrentCharacter == null)
                 {
-                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKeyDown())
+                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKey())
                         SpecMode.Next();
                 }
                 else
@@ -266,7 +266,7 @@ namespace Cameras
                 }
                 else if (SpecMode.Current() == SpecateMode.FreeCam)
                     UpdateFreeCam();
-                else if (SpecMode.Current() == SpecateMode.LiveSpectate || SpecMode.Current() == SpecateMode.OrbitSpecate)
+                else if (SpecMode.Current() == SpecateMode.LiveSpectate || SpecMode.Current() == SpecateMode.OrbitSpectate)
                     SpecMode.Set(SpecateMode.FreeCam);
             }
             UpdateFOV();
@@ -406,7 +406,7 @@ namespace Cameras
             var cameraDistance = GetCameraDistance();
             float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
             var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
-            if (SpecMode.Current() == SpecateMode.OrbitSpecate)
+            if (SpecMode.Current() == SpecateMode.OrbitSpectate)
             {
                 Cache.Transform.position = _follow.GetCameraAnchor().position;
                 Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
@@ -469,7 +469,7 @@ namespace Cameras
         {
             if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
             {
-                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKey())
+                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKeyDown())
                 {
                     SpecMode.Next();
                     return;
