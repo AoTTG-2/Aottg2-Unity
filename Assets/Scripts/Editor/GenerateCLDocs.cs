@@ -546,7 +546,7 @@ public class GenerateCLDocs : EditorWindow
                 doc += $"##### {returnType} {signature}\n";
                 doc += $"- **Description:** {description}\n";
 
-                if (method != methods.Last())
+                if (method == methods.Last())
                 {
                     doc += "\n---\n\n";
                 }
