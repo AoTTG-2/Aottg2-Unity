@@ -543,7 +543,7 @@ public class GenerateCLDocs : EditorWindow
                 var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
                 var description = ResolveMethodDescription(type, method, XMLdoc, clMethod.Description);
 
-                doc += $"#### {returnType} {signature}\n";
+                doc += $"##### {returnType} {signature}\n";
                 doc += $"- **Description:** {description}\n";
 
                 if (method != methods.Last())
