@@ -255,7 +255,7 @@ namespace GameManagers
             if (input == string.Empty)
                 return;
             var response = CustomLogicManager.Evaluator.OnChatInput(input);
-            if (response is bool && ((bool)response == true))
+            if (response is bool && ((bool)response == false))
                 return;
             if (input.StartsWith("/"))
             {

@@ -11,6 +11,8 @@ namespace CustomLogic
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
+        private string _currentAnimation;
+        private Dictionary<string, AnimationClip> _animatorClips;
 
         private readonly Animation _animation;
         private readonly AudioSource _audioSource;
@@ -142,12 +144,43 @@ namespace CustomLogic
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            if (!_animation.IsPlaying(anim))
-                _animation.CrossFade(anim, fade);
+            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
+            if (animation != null) {
+                if (!animation.IsPlaying(anim))
+                    animation.CrossFade(anim, fade);
+                return;
+            }
+            var animator = Value.GetComponent<Animator>();
+            if (animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    animator.CrossFade(anim, fade);
+                    _currentAnimation = anim;
+                }
+            }
         }
 
         [CLMethod("Gets the length of the specified animation.")]
-        public float GetAnimationLength(string anim) => _animation[anim].length;
+        public float GetAnimationLength(string anim) => {
+            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
+            if (animation != null)
+                return animation[anim].length;
+            var animator = Value.GetComponent<Animator>();  // TODO: Cache this value or find a way to avoid calling GetComponent every time.
+            if (animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_animatorClips == null)
+                {
+                    _animatorClips = new Dictionary<string, AnimationClip>();
+                    foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+                        _animatorClips[clip.name.Replace('.', '_')] = clip;
+                }
+                return _animatorClips[anim].length;
+            }
+            return null;
+        }
 
         [CLMethod("Plays the sound.")]
         public void PlaySound()

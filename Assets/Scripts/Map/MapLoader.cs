@@ -109,9 +109,9 @@ namespace Map
         }
         */
 
-        public static void RegisterMapLight(Light light)
+        public static void RegisterMapLight(Light light, bool isDaylight)
         {
-            MapLights.Add(new MapLight(light));
+            MapLights.Add(new MapLight(light, isDaylight));
         }
 
         public static MapObject FindObjectFromCollider(Collider collider)

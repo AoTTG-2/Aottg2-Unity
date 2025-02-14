@@ -41,7 +41,7 @@ public class PostProcessingManager : MonoBehaviour
             ApplySettings(
                 (AmbientOcclusionLevel)settings.AmbientOcclusion.Value,
                 (BloomLevel)settings.Bloom.Value,
-                (ChromaticAberrationLevel)settings.ChromaticAberration.Value,
+                (ChromaticAberrationLevel)settings.ChromaticAberrationFX.Value,
                 (ColorGradingLevel)settings.ColorGrading.Value,
                 (AutoExposureLevel)settings.AutoExposure.Value,
                 (DepthOfFieldLevel)settings.DepthOfField.Value,

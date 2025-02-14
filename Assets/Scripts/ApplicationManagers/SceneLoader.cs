@@ -25,6 +25,7 @@ namespace ApplicationManagers
         public static SceneName SceneName = SceneName.Startup;
         public static BaseGameManager CurrentGameManager;
         public static BaseCamera CurrentCamera;
+        public static MinimapCamera MinimapCamera;
 
         public static void Init()
         {
@@ -74,7 +75,10 @@ namespace ApplicationManagers
                 return;
             var go = ResourceManager.InstantiateAsset<GameObject>("", "Game/MainCamera");
             if (SceneName == SceneName.InGame)
+            {
                 CurrentCamera = go.AddComponent<InGameCamera>();
+                MinimapCamera = Util.CreateObj<MinimapCamera>();
+            }
             else if (SceneName == SceneName.MapEditor)
                 CurrentCamera = go.AddComponent<MapEditorCamera>();
             else if (SceneName == SceneName.CharacterEditor)

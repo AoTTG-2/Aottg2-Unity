@@ -237,6 +237,10 @@ namespace Characters
         {
         }
 
+        public virtual void ForceAnimation(string animation, float fade)
+        {
+        }
+
         [PunRPC]
         public void InitRPC(bool ai, string name, string guild)
         {

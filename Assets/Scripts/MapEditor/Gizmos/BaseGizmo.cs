@@ -6,6 +6,7 @@ using CustomSkins;
 using ApplicationManagers;
 using Map;
 using GameManagers;
+using Cameras;
 
 namespace MapEditor
 {
@@ -25,6 +26,16 @@ namespace MapEditor
             _gameManager = ((MapEditorGameManager)SceneLoader.CurrentGameManager);
             _menu = (MapEditorMenu)UIManager.CurrentMenu;
             _transform = transform;
+        }
+
+        protected virtual void Update()
+        {
+            float distance = Vector3.Distance(SceneLoader.CurrentCamera.Cache.Transform.position, _transform.position) / 200f;
+            if (SceneLoader.CurrentCamera.Camera.orthographic)
+            {
+                distance = 10f * SceneLoader.CurrentCamera.Camera.orthographicSize / Screen.height;
+            }
+            _transform.localScale = Vector3.one * distance;
         }
 
         public virtual void OnSelectionChange()

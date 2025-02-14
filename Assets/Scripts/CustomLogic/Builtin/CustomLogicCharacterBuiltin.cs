@@ -218,6 +218,13 @@ namespace CustomLogic
                 Character.CrossFadeIfNotPlaying(animation, fade);
         }
 
+        [CLMethod(Description = "Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.")]
+        public void ForceAnimation(string animation, float fade = 0.1f)
+        {
+            if (Character.IsMine() && !Character.Dead)
+                Character.ForceAnimation(animation, fade);
+        }
+
         [CLMethod(Description = "Gets the length of animation.")]
         public float GetAnimationLength(string animation)
         {

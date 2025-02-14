@@ -13,8 +13,8 @@ using Utility;
 
 static class MiscExtensions
 {
-    static readonly string HexPattern = @"(\[)[\w]{6}(\])";
-    static readonly string ColorTagPattern = @"(<color=#)[\w]{6}(\>)";
+    static readonly string HexPattern = @"(\[)([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})(\])";
+    static readonly string ColorTagPattern = @"(<color=#)([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})(>)";
     static readonly string ColorEndPattern = @"(</color>)";
     static readonly string TagPattern = @"<\/?[^>]+>";
     static readonly string SizePattern = @"<\/?size.*?>";
