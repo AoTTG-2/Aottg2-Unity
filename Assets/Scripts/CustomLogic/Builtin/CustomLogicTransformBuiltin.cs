@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CustomLogic
 {
@@ -163,7 +164,8 @@ namespace CustomLogic
         }
 
         [CLMethod("Gets the length of the specified animation.")]
-        public float GetAnimationLength(string anim) => {
+        public float GetAnimationLength(string anim)
+        {
             var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
             if (animation != null)
                 return animation[anim].length;
@@ -179,7 +181,7 @@ namespace CustomLogic
                 }
                 return _animatorClips[anim].length;
             }
-            return null;
+            return -1;
         }
 
         [CLMethod("Plays the sound.")]

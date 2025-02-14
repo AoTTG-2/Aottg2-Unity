@@ -77,7 +77,7 @@ namespace GameManagers
                         {
                             cmdAttr.Command = info;
 
-                            CommandsCache.Add(cmdAttr.Name, cmdAttr);
+                            CommandsCache.Add(cmdAttr.Name.ToLower(), cmdAttr);
 
                             // Create second mapping from alias to cmd, has to be a separate object flagged as alias.
                             // This lets us ignore alias's later on in the help function.
@@ -85,7 +85,7 @@ namespace GameManagers
                             {
                                 CommandAttribute alias = new CommandAttribute(cmdAttr);
                                 alias.IsAlias = true;
-                                CommandsCache.Add(alias.Alias, alias);
+                                CommandsCache.Add(alias.Alias.ToLower(), alias);
                             }
                         }
                     }
@@ -274,7 +274,7 @@ namespace GameManagers
 
         private static void HandleCommand(string[] args)
         {
-            if (CommandsCache.TryGetValue(args[0], out CommandAttribute cmdAttr))
+            if (CommandsCache.TryGetValue(args[0].ToLower(), out CommandAttribute cmdAttr))
             {
                 MethodInfo info = cmdAttr.Command;
                 if (info.IsStatic)
