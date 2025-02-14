@@ -28,120 +28,54 @@ Inherits from object
 |Tag|[String](../static/String.md)|False|The tag of the object|
 |Layer|int|False|The layer of the object|
 ## Methods
-#### CustomLogicComponentInstance AddComponent([String](../static/String.md) name)
+##### CustomLogicComponentInstance AddComponent([String](../static/String.md) name)
 - **Description:** Add a component to the object
-
----
-
-#### void RemoveComponent([String](../static/String.md) name)
+##### void RemoveComponent([String](../static/String.md) name)
 - **Description:** Remove a component from the object
-
----
-
-#### CustomLogicComponentInstance GetComponent([String](../static/String.md) name)
+##### CustomLogicComponentInstance GetComponent([String](../static/String.md) name)
 - **Description:** Get a component from the object
-
----
-
-#### void SetComponentEnabled([String](../static/String.md) name, bool enabled)
+##### void SetComponentEnabled([String](../static/String.md) name, bool enabled)
 - **Description:** Set whether a component is enabled
-
----
-
-#### void SetComponentsEnabled(bool enabled)
+##### void SetComponentsEnabled(bool enabled)
 - **Description:** Set whether all components are enabled
-
----
-
-#### void AddSphereCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center, float radius)
+##### void AddSphereCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center, float radius)
 - **Description:** Add a sphere collider to the object
-
----
-
-#### void AddBoxCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center = null, [Vector3](../objects/Vector3.md) size = null)
+##### void AddBoxCollider([String](../static/String.md) collideMode, [String](../static/String.md) collideWith, [Vector3](../objects/Vector3.md) center = null, [Vector3](../objects/Vector3.md) size = null)
 - **Description:** Add a box collider to the object
-
----
-
-#### [MapTargetable](../objects/MapTargetable.md) AddSphereTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, float radius)
+##### [MapTargetable](../objects/MapTargetable.md) AddSphereTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, float radius)
 - **Description:** Add a sphere target to the object
-
----
-
-#### [MapTargetable](../objects/MapTargetable.md) AddBoxTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, [Vector3](../objects/Vector3.md) size)
+##### [MapTargetable](../objects/MapTargetable.md) AddBoxTarget([String](../static/String.md) team, [Vector3](../objects/Vector3.md) center, [Vector3](../objects/Vector3.md) size)
 - **Description:** Add a box target to the object
-
----
-
-#### [MapObject](../objects/MapObject.md) GetChild([String](../static/String.md) name)
+##### [MapObject](../objects/MapObject.md) GetChild([String](../static/String.md) name)
 - **Description:** Get a child object by name
-
----
-
-#### [List](../objects/List.md) GetChildren()
+##### [List](../objects/List.md) GetChildren()
 - **Description:** Get all child objects
-
----
-
-#### [Transform](../objects/Transform.md) GetTransform([String](../static/String.md) name)
+##### [Transform](../objects/Transform.md) GetTransform([String](../static/String.md) name)
 - **Description:** Get a child transform by name
-
----
-
-#### void SetColorAll([Color](../objects/Color.md) color)
+##### void SetColorAll([Color](../objects/Color.md) color)
 - **Description:** Set the color of all renderers on the object
-
----
-
-#### bool InBounds([Vector3](../objects/Vector3.md) position)
+##### bool InBounds([Vector3](../objects/Vector3.md) position)
 - **Description:** Check if a position is within the object's bounds
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsAverageCenter()
+##### [Vector3](../objects/Vector3.md) GetBoundsAverageCenter()
 - **Description:** Get the bounds average center
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsCenter()
+##### [Vector3](../objects/Vector3.md) GetBoundsCenter()
 - **Description:** Get the bounds center
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsSize()
+##### [Vector3](../objects/Vector3.md) GetBoundsSize()
 - **Description:** Get the bounds size
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsMin()
+##### [Vector3](../objects/Vector3.md) GetBoundsMin()
 - **Description:** Get the bounds min
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsMax()
+##### [Vector3](../objects/Vector3.md) GetBoundsMax()
 - **Description:** Get the bounds max
-
----
-
-#### [Vector3](../objects/Vector3.md) GetBoundsExtents()
+##### [Vector3](../objects/Vector3.md) GetBoundsExtents()
 - **Description:** Get the bounds extents
-
----
-
-#### [List](../objects/List.md) GetCorners()
+##### [List](../objects/List.md) GetCorners()
 - **Description:** Get the corners of the bounds
-
----
-
-#### void AddBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
+##### void AddBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
 - **Description:** [OBSELETE] Add builtin component
-
----
-
-#### Object ReadBuiltinComponent([String](../static/String.md) name, [String](../static/String.md) param)
+##### Object ReadBuiltinComponent([String](../static/String.md) name, [String](../static/String.md) param)
 - **Description:** [OBSELETE] Read a builtin component
+##### void UpdateBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
+- **Description:** [OBSELETE] Update a builtin component
 
 ---
 
-#### void UpdateBuiltinComponent(Object parameter0 = null, Object parameter1 = null, Object parameter2 = null, Object parameter3 = null, Object parameter4 = null)
-- **Description:** [OBSELETE] Update a builtin component

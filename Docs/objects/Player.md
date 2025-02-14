@@ -20,15 +20,12 @@ Inherits from object
 |SpectateID|int|False|The player's spectating ID. If not spectating anyone, returns -1.|
 |SpawnPoint|[Vector3](../objects/Vector3.md)|False|Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.|
 ## Methods
-#### Object GetCustomProperty([String](../static/String.md) property)
+##### Object GetCustomProperty([String](../static/String.md) property)
 - **Description:** Get a custom property at given key. Must be a primitive type. This is synced to all clients.
-
----
-
-#### void SetCustomProperty([String](../static/String.md) property, Object value)
+##### void SetCustomProperty([String](../static/String.md) property, Object value)
 - **Description:** Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
+##### void ClearKDR()
+- **Description:** Clears kills, deaths, highestdamage, and totaldamage properties.
 
 ---
 
-#### void ClearKDR()
-- **Description:** Clears kills, deaths, highestdamage, and totaldamage properties.

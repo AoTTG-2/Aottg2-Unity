@@ -16,15 +16,12 @@ Inherits from object
 |Transform|[Transform](../objects/Transform.md)|False||
 |GameObjectTransform|[Transform](../objects/Transform.md)|False||
 ## Methods
-#### [Vector3](../objects/Vector3.md) ClosestPoint([Vector3](../objects/Vector3.md) position)
+##### [Vector3](../objects/Vector3.md) ClosestPoint([Vector3](../objects/Vector3.md) position)
+- **Description:** 
+##### [Vector3](../objects/Vector3.md) ClosestPointOnBounds([Vector3](../objects/Vector3.md) position)
+- **Description:** 
+##### [LineCastHitResult](../objects/LineCastHitResult.md) Raycast([Vector3](../objects/Vector3.md) start, [Vector3](../objects/Vector3.md) end, float maxDistance, [String](../static/String.md) collideWith)
 - **Description:** 
 
 ---
 
-#### [Vector3](../objects/Vector3.md) ClosestPointOnBounds([Vector3](../objects/Vector3.md) position)
-- **Description:** 
-
----
-
-#### [LineCastHitResult](../objects/LineCastHitResult.md) Raycast([Vector3](../objects/Vector3.md) start, [Vector3](../objects/Vector3.md) end, float maxDistance, [String](../static/String.md) collideWith)
-- **Description:** 

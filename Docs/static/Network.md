@@ -10,25 +10,16 @@ Inherits from object
 |NetworkTime|double|False|The network time|
 |Ping|int|False|The local player's ping|
 ## Methods
-#### void SendMessage([Player](../objects/Player.md) player, [String](../static/String.md) message)
+##### void SendMessage([Player](../objects/Player.md) player, [String](../static/String.md) message)
 - **Description:** Send a message to a player
-
----
-
-#### void SendMessageAll([String](../static/String.md) message)
+##### void SendMessageAll([String](../static/String.md) message)
 - **Description:** Send a message to all players
-
----
-
-#### void SendMessageOthers([String](../static/String.md) message)
+##### void SendMessageOthers([String](../static/String.md) message)
 - **Description:** Send a message to all players except the sender
-
----
-
-#### double GetTimestampDifference(double timestamp1, double timestamp2)
+##### double GetTimestampDifference(double timestamp1, double timestamp2)
 - **Description:** Get the difference between two photon timestamps
+##### void KickPlayer(Object target, [String](../static/String.md) reason = .)
+- **Description:** Kick the given player by id or player reference.
 
 ---
 
-#### void KickPlayer(Object target, [String](../static/String.md) reason = .)
-- **Description:** Kick the given player by id or player reference.
