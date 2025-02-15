@@ -10,7 +10,7 @@ namespace Map
         [Order(1)] public string Type;
         [Order(2)] public string Asset = "None";
         [Order(3)] public int Id;
-        [Order(4)] public int Parent = 0;
+        [Order(4)] public int Parent = -1;
         [Order(5)] public bool Active = true;
         [Order(6)] public bool Static = true;
         [Order(7)] public bool Visible = true;

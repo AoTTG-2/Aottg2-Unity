@@ -337,6 +337,7 @@ namespace UI
             bool needRefresh = false;
             var script = (MapScriptSceneObject)_mapObject.ScriptObject;
             bool nameChange = script.Name != _name.Value;
+            bool parentChange = script.Parent != _parent.Value;
             script.Name = _name.Value;
             script.Active = _active.Value;
             script.Static = _static.Value;
@@ -457,7 +458,7 @@ namespace UI
             _gameManager.SyncGizmos();
             if (needRefresh)
                 _menu.ShowInspector(_mapObject);
-            if (nameChange)
+            if (nameChange || parentChange)
                 _menu.SyncHierarchyPanel();
         }
 
