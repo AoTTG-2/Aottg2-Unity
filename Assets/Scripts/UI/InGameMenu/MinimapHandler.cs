@@ -113,6 +113,7 @@ namespace UI
 
         private void Update()
         {
+            RemoveOldIcons();
             if (_minimapPanel.activeSelf)
             {
                 var camera = (InGameCamera)SceneLoader.CurrentCamera;
@@ -164,18 +165,28 @@ namespace UI
                 _positionLabel.text = "";
         }
 
-        private void UpdateIcons(Vector3 position, float y)
+        private void RemoveOldIcons()
         {
             _iconsToRemove.Clear();
             foreach (var transform in _icons.Keys)
             {
-                var icon = _icons[transform];
                 if (transform == null)
                 {
+                    var icon = _icons[transform];
                     _iconsToRemove.Add(transform);
                     Destroy(icon.gameObject);
                 }
-                else
+            }
+            foreach (var transfrom in _iconsToRemove)
+                _icons.Remove(transfrom);
+        }
+
+        private void UpdateIcons(Vector3 position, float y)
+        {
+            foreach (var transform in _icons.Keys)
+            {
+                var icon = _icons[transform];
+                if (transform != null)
                 {
                     var relativePosition = new Vector3(transform.position.x - position.x, transform.position.z - position.z, 0f);
                     relativePosition *= (MinimapCamera.MinimapSize / _height);
@@ -192,10 +203,6 @@ namespace UI
                         icon.rotation = Quaternion.identity;
                     }
                 }
-            }
-            foreach (var transfrom in _iconsToRemove)
-            {
-                _icons.Remove(transfrom);
             }
         }
 

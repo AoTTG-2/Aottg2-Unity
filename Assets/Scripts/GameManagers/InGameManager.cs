@@ -487,15 +487,15 @@ namespace GameManagers
 
             List<string> loadouts = new List<string>();
             if (miscSettings.AllowBlades.Value)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (miscSettings.AllowAHSS.Value)
                 loadouts.Add(HumanLoadout.AHSS);
             if (miscSettings.AllowAPG.Value)
                 loadouts.Add(HumanLoadout.APG);
             if (miscSettings.AllowThunderspears.Value)
-                loadouts.Add(HumanLoadout.Thunderspears);
+                loadouts.Add(HumanLoadout.Thunderspear);
             if (loadouts.Count == 0)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (!loadouts.Contains(settings.Loadout.Value))
                 settings.Loadout.Value = loadouts[0];
             var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
@@ -538,15 +538,15 @@ namespace GameManagers
             {
                 List<string> loadouts = new List<string>();
                 if (miscSettings.AllowBlades.Value)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (miscSettings.AllowAHSS.Value)
                     loadouts.Add(HumanLoadout.AHSS);
                 if (miscSettings.AllowAPG.Value)
                     loadouts.Add(HumanLoadout.APG);
                 if (miscSettings.AllowThunderspears.Value)
-                    loadouts.Add(HumanLoadout.Thunderspears);
+                    loadouts.Add(HumanLoadout.Thunderspear);
                 if (loadouts.Count == 0)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
                 if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)

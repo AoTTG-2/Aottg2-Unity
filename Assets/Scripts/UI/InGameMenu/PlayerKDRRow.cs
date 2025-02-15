@@ -203,13 +203,13 @@ namespace UI
             if (character == PlayerCharacter.Human)
             {
                 // return based off loadout
-                if (loadout == HumanLoadout.Blades)
+                if (loadout == HumanLoadout.Blade)
                     return (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/BladeIcon", true);
                 else if (loadout == HumanLoadout.AHSS)
                     return (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/AHSSIcon", true);
                 else if (loadout == HumanLoadout.APG)
                     return (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/APGIcon", true);
-                else if (loadout == HumanLoadout.Thunderspears)
+                else if (loadout == HumanLoadout.Thunderspear)
                     return (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ThunderSpearIcon", true);
             }
             else

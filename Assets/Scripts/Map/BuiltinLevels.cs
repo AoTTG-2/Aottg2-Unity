@@ -66,7 +66,10 @@ namespace Map
                 if (gameMode["Name"] == name)
                     return ResourceManager.TryLoadText(ResourcePaths.Modes, name + "Logic");
             }
-            string path = CustomLogicFolderPath + "/" + name + ".txt";
+            string path = CustomLogicFolderPath + "/" + name + ".acl";
+            if (File.Exists(path))
+                return File.ReadAllText(path);
+            path = CustomLogicFolderPath + "/" + name + ".txt";
             if (File.Exists(path))
                 return File.ReadAllText(path);
             return string.Empty;
@@ -133,6 +136,7 @@ namespace Map
         public static void DeleteCustomLogic(string name)
         {
             File.Delete(CustomLogicFolderPath + "/" + name + ".txt");
+            File.Delete(CustomLogicFolderPath + "/" + name + ".acl");
         }
 
         public static void SaveCustomMap(string name, MapScript script)
@@ -147,16 +151,7 @@ namespace Map
 
         public static void SaveCustomLogic(string name, string script)
         {
-            File.WriteAllText(CustomLogicFolderPath + "/" + name + ".txt", script);
-        }
-
-        public static string[] GetCustomGameModes()
-        {
-            List<string> gameModes = new List<string>();
-            string[] files = GetTxtFiles(CustomLogicFolderPath);
-            foreach (string file in files)
-                gameModes.Add(file.Replace(".txt", ""));
-            return gameModes.ToArray();
+            File.WriteAllText(CustomLogicFolderPath + "/" + name + ".acl", script);
         }
 
         public static string[] GetGameModes(string category, string mapName, bool hasMapLogic)
@@ -199,10 +194,9 @@ namespace Map
                     }
                 }
             }
-            string[] files = GetTxtFiles(CustomLogicFolderPath);
-            foreach (string file in files)
+            string[] names = GetCustomModes();
+            foreach (string name in names)
             {
-                string name = file.Replace(".txt", "");
                 if (!gameModes.Contains(name))
                     gameModes.Add(name);
             }
@@ -235,6 +229,37 @@ namespace Map
             if (Directory.Exists(path))
                 return Directory.GetFiles(path, "*.txt", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
             return new string[0];
+        }
+
+        private static string[] GetAclFiles(string path)
+        {
+            if (Directory.Exists(path))
+                return Directory.GetFiles(path, "*.acl", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
+            return new string[0];
+        }
+
+        public static string[] GetCustomModes()
+        {
+            List<string> modes = new List<string>();
+            HashSet<string> foundModes = new HashSet<string>();
+            string[] aclFiles = GetAclFiles(CustomLogicFolderPath);
+            string[] txtFiles = GetTxtFiles(CustomLogicFolderPath);
+            foreach (string file in aclFiles)
+            {
+                string name = file.Replace(".acl", "");
+                modes.Add(name);
+                foundModes.Add(name);
+            }
+            foreach (string file in txtFiles)
+            {
+                string name = file.Replace(".txt", "");
+                if (!foundModes.Contains(name))
+                {
+                    modes.Add(name);
+                    foundModes.Add(name);
+                }
+            }
+            return modes.ToArray();
         }
 
         private static Dictionary<string, JSONNode> GetMiscSettings(string category, string mapName, string gameMode)
