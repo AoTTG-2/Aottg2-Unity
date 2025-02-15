@@ -12,6 +12,8 @@ using CustomLogic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections;
+using static UI.MapEditorTopPanel;
+using System;
 
 namespace GameManagers
 {
@@ -420,6 +422,109 @@ namespace GameManagers
                 max = Mathf.Max(max, id);
             }
             return max;
+        }
+        
+        private bool _lightsOn = false;
+
+        private T TryGetSetting<T>(Dictionary<string, BaseSetting> settings, string key, T Default) where T : BaseSetting
+        {
+            if (settings.ContainsKey(key))
+            {
+                if (settings[key] is T)
+                    return (T)settings[key];
+            }
+            return Default;
+        }
+
+        public void ToggleLights()
+        {
+            if (_lightsOn)
+            {
+                foreach (var obj in MapLoader.IdToMapObject.Values)
+                {
+                    if (obj.GameObject.GetComponent<Light>() != null)
+                        obj.GameObject.GetComponent<Light>().enabled = false;
+                }
+                _lightsOn = false;
+                return;
+            }
+            _lightsOn = true;
+            var manager = (MapEditorGameManager)SceneLoader.CurrentGameManager;
+            foreach (var obj in MapLoader.IdToMapObject.Values)
+            {
+                if (obj.GameObject.GetComponent<Light>() != null)
+                {
+                    obj.GameObject.GetComponent<Light>().enabled = true;
+                    continue;
+                }
+                if (obj.ScriptObject is MapScriptSceneObject)
+                {
+                    var sceneObject = (MapScriptSceneObject)obj.ScriptObject;
+                    var components = sceneObject.Components;
+                    foreach (var component in components)
+                    {
+                        var settings = manager.LogicEvaluator.GetComponentSettings(component.ComponentName, component.Parameters);
+                        if (component.ComponentName == "Daylight")
+                        {
+                            var colorSetting = TryGetSetting<ColorSetting>(settings, "Color", null);
+                            var intensitySetting = TryGetSetting<FloatSetting>(settings, "Intensity", null);
+                            if (colorSetting != null && intensitySetting != null)
+                            {
+                                var light = obj.GameObject.AddComponent<Light>();
+                                light.type = LightType.Directional;
+                                light.color = colorSetting.Value.ToColor();
+                                light.intensity = intensitySetting.Value;
+                                break;
+                            }
+                        }
+                        else if (component.ComponentName == "PointLight")
+                        {
+                            var colorSetting = TryGetSetting<ColorSetting>(settings, "Color", null);
+                            var intensitySetting = TryGetSetting<FloatSetting>(settings, "Intensity", null);
+                            var rangeSetting = TryGetSetting<FloatSetting>(settings, "Range", null);
+                            if (colorSetting != null && intensitySetting != null && rangeSetting != null)
+                            {
+                                var light = obj.GameObject.AddComponent<Light>();
+                                light.type = LightType.Point;
+                                light.color = colorSetting.Value.ToColor();
+                                light.intensity = intensitySetting.Value;
+                                light.range = rangeSetting.Value;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SetLayerVisibility(MapEditorTopPanel.LayerOption index)
+        {
+            foreach (var obj in MapLoader.IdToMapObject.Values)
+            {
+                if (!(obj.ScriptObject is MapScriptSceneObject))
+                    continue;
+
+                var sceneObject = (MapScriptSceneObject)obj.ScriptObject;
+                bool matchesFilter = index switch
+                {
+                    LayerOption.All => true,
+                    LayerOption.Visible => sceneObject.Visible,
+                    LayerOption.Invisible => !sceneObject.Visible,
+                    LayerOption.Active => sceneObject.Active,
+                    LayerOption.Inactive => !sceneObject.Active,
+                    LayerOption.Static => sceneObject.Static,
+                    LayerOption.NonStatic => !sceneObject.Static,
+                    LayerOption.Networked => sceneObject.Networked,
+                    LayerOption.NonNetworked => !sceneObject.Networked,
+                    LayerOption.Triggers => sceneObject.CollideMode == "Region",
+                    LayerOption.Colliders => sceneObject.CollideMode == "Physical",
+                    LayerOption.NoColliders => sceneObject.CollideMode == "None",
+                    _ => true,
+                };
+
+                obj.GameObject.SetActive(matchesFilter);
+
+            }
         }
     }
 }

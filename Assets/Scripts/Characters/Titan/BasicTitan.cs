@@ -1301,12 +1301,18 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
+            else
             {
                 if (IsCrawler)
-                    collider.height = _originalCapsuleValue;
+                {
+                    if (collider.height != _originalCapsuleValue)
+                        collider.height = _originalCapsuleValue;
+                }
                 else
-                    collider.radius = _originalCapsuleValue;
+                {
+                    if (collider.radius != _originalCapsuleValue)
+                        collider.radius = _originalCapsuleValue;
+                }
             }
             if (IsCrawler)
             {

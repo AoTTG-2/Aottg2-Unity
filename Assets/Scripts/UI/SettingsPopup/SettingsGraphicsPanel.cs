@@ -58,7 +58,7 @@ namespace UI
                UIManager.GetLocaleArray(cat, sub, "AmbientOcclusionOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.Bloom, UIManager.GetLocale(cat, sub, "Bloom"),
                UIManager.GetLocaleArray(cat, sub, "BloomOptions"), elementWidth: 200f);
-            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ChromaticAberration, UIManager.GetLocale(cat, sub, "ChromaticAberration"),
+            ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ChromaticAberrationFX, UIManager.GetLocale(cat, sub, "ChromaticAberration"),
                UIManager.GetLocaleArray(cat, sub, "ChromaticAberrationOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ColorGrading, UIManager.GetLocale(cat, sub, "ColorGrading"),
                UIManager.GetLocaleArray(cat, sub, "ColorGradingOptions"), elementWidth: 200f);

@@ -20,7 +20,15 @@ namespace Cameras
 {
     class InGameCamera : BaseCamera
     {
+        public enum SpecateMode
+        {
+            LiveSpectate,
+            OrbitSpectate,
+            FreeCam
+        }
+
         public BaseCharacter _follow;
+        public Cycle<SpecateMode> SpecMode = new Cycle<SpecateMode>();
         private InGameManager _inGameManager;
         private InGameMenu _menu;
         private GeneralInputSettings _input;
@@ -228,12 +236,14 @@ namespace Cameras
                     SetFollow(_inGameManager.CurrentCharacter);
                 if (_inGameManager.CurrentCharacter == null)
                 {
-                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKeyDown())
-                        _freeCam = !_freeCam;
+                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKey())
+                        SpecMode.Next();
                 }
                 else
-                    _freeCam = false;
-                if (_freeCam)
+                {
+                    SpecMode.Set(SpecateMode.LiveSpectate);
+                }
+                if (SpecMode.Current() == SpecateMode.FreeCam)
                 {
                     SetFollow(null);
                 }
@@ -254,8 +264,10 @@ namespace Cameras
                     if (_follow.Dead)
                         _menu.HUDBottomHandler.SetBottomHUD();
                 }
-                else if (_freeCam)
+                else if (SpecMode.Current() == SpecateMode.FreeCam)
                     UpdateFreeCam();
+                else if (SpecMode.Current() == SpecateMode.LiveSpectate || SpecMode.Current() == SpecateMode.OrbitSpectate)
+                    SpecMode.Set(SpecateMode.FreeCam);
             }
             UpdateFOV();
             UpdateNapeLockImage();
@@ -394,27 +406,61 @@ namespace Cameras
             var cameraDistance = GetCameraDistance();
             float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
             var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
-            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
-            Cache.Transform.position = _follow.GetCameraAnchor().position;
-            Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
-            float height = cameraDistance;
-            Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
-            Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-            if (_inGameManager.Humans.Count > 0 && !InGameMenu.InMenu() && !ChatManager.IsChatActive())
+            if (SpecMode.Current() == SpecateMode.OrbitSpectate)
+            {
+                Cache.Transform.position = _follow.GetCameraAnchor().position;
+                Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
+                float height = cameraDistance == 0f ? 0.6f : cameraDistance;
+                Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
+                float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
+                int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
+                if (InGameMenu.InMenu())
+                    sensitivity = 0f;
+
+                float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
+                float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
+                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX);
+                float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
+                float sumY = inputY + angleY;
+                bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
+                bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
+                if (rotateUp && rotateDown)
+                    Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
+                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+
+            }
+            else
+            {
+                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
+                Cache.Transform.position = _follow.GetCameraAnchor().position;
+                Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
+                float height = cameraDistance;
+                Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
+                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
+            }
+            if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
             {
                 if (_input.SpectateNextPlayer.GetKeyDown())
                 {
-                    int nextSpectateIndex = GetSpectateIndex() + 1;
-                    if (nextSpectateIndex >= _inGameManager.Humans.Count)
-                        nextSpectateIndex = 0;
-                    SetFollow(GetSortedCharacters()[nextSpectateIndex]);
+                    var characters = GetSortedCharacters();
+                    if (characters.Count > 0)
+                    {
+                        int nextSpectateIndex = GetSpectateIndex(characters) + 1;
+                        if (nextSpectateIndex >= characters.Count)
+                            nextSpectateIndex = 0;
+                        SetFollow(characters[nextSpectateIndex]);
+                    }
                 }
                 if (_input.SpectatePreviousPlayer.GetKeyDown())
                 {
-                    int nextSpectateIndex = GetSpectateIndex() - 1;
-                    if (nextSpectateIndex < 0)
-                        nextSpectateIndex = _inGameManager.Humans.Count - 1;
-                    SetFollow(GetSortedCharacters()[nextSpectateIndex]);
+                    var characters = GetSortedCharacters();
+                    if (characters.Count > 0)
+                    {
+                        int nextSpectateIndex = GetSpectateIndex(characters) - 1;
+                        if (nextSpectateIndex < 0)
+                            nextSpectateIndex = characters.Count - 1;
+                        SetFollow(characters[nextSpectateIndex]);
+                    }
                 }
             }
         }
@@ -423,12 +469,17 @@ namespace Cameras
         {
             if (!InGameMenu.InMenu() && !ChatManager.IsChatActive())
             {
-                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKey())
+                if (_input.SpectateNextPlayer.GetKeyDown() || _input.SpectatePreviousPlayer.GetKeyDown())
                 {
-                    _freeCam = false;
+                    SpecMode.Next();
                     return;
                 }
                 Vector3 direction = Vector3.zero;
+
+                float speed = 200f;
+                if (_input.Modifier.GetKey())
+                    speed *= 2f;
+
                 if (_input.Forward.GetKey())
                     direction += Cache.Transform.forward;
                 else if (_input.Back.GetKey())
@@ -441,11 +492,12 @@ namespace Cameras
                     direction += Cache.Transform.up;
                 else if (_input.Down.GetKey())
                     direction -= Cache.Transform.up;
-                Cache.Transform.position += direction * Time.deltaTime * 200f;
+                Cache.Transform.position += direction * Time.deltaTime * speed;
                 float inputX = Input.GetAxis("Mouse X");
                 float inputY = Input.GetAxis("Mouse Y");
-                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * Time.deltaTime * 200f);
-                Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, -inputY * Time.deltaTime * 200f);
+                float camSpeed = 50f * GetSensitivityDeltaTime(SettingsManager.GeneralSettings.MouseSpeed.Value);
+                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX * camSpeed);
+                Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, -inputY * camSpeed);
             }
         }
 
@@ -500,14 +552,13 @@ namespace Cameras
                 SetFollow(null);
         }
 
-        private int GetSpectateIndex()
+        private int GetSpectateIndex(List<BaseCharacter> characters)
         {
             if (_follow == null)
                 return -1;
-            var humans = GetSortedCharacters();
-            for (int i = 0; i < humans.Count; i++)
+            for (int i = 0; i < characters.Count; i++)
             {
-                if (humans[i] == _follow)
+                if (characters[i] == _follow)
                     return i;
             }
             return -1;

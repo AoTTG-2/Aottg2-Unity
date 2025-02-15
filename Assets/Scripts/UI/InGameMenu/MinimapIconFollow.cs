@@ -13,31 +13,29 @@ namespace UI
     class MinimapIconFollow : MonoBehaviour
     {
         private BaseCharacter _character;
-        private Transform _cameraTransform;
         private float _scaleOffset;
         private bool _isStatic;
 
-        public void Init(Transform camera, BaseCharacter character)
+        /*
+        public void Init(float height, BaseCharacter character)
         {
-            Setup(camera);
+            Setup(height);
             _character = character;
             _isStatic = false;
         }
 
-        public void Init(Transform camera, Transform staticTransform)
+        public void Init(float height, Transform staticTransform)
         {
-            Setup(camera);
+            Setup(height);
             _isStatic = true;
             var position = staticTransform.position;
             transform.position = new Vector3(position.x, _cameraTransform.position.y - _scaleOffset * 0.5f - 10, position.z);
         }
 
-        private void Setup(Transform camera)
+        private void Setup(float height)
         {
-            _cameraTransform = camera;
-            var cam = _cameraTransform.GetComponent<Camera>();
-            _scaleOffset = cam.orthographicSize * 0.1f;
-            transform.localScale = Vector3.one * cam.orthographicSize * 0.1f;
+            _scaleOffset = height * 0.1f;
+            transform.localScale = Vector3.one * height;
         }
 
         private void Update()
@@ -55,5 +53,7 @@ namespace UI
             transform.rotation = _cameraTransform.rotation;
             transform.RotateAround(transform.position, Vector3.up, 180f);
         }
+        */
+
     }
 }

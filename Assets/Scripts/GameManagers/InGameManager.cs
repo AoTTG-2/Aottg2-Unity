@@ -1068,6 +1068,18 @@ namespace GameManagers
                 else
                     _inGameMenu.SetScoreboardMenu(false, false);
             }
+            if (_generalInputSettings.TapMap.Value)
+            {
+                if (_generalInputSettings.ToggleMap.GetKeyDown())
+                    _inGameMenu.ToggleMapMenu();
+            }
+            else
+            {
+                if (_generalInputSettings.ToggleMap.GetKey())
+                    _inGameMenu.SetMapMenu(true, false);
+                else
+                    _inGameMenu.SetMapMenu(false, false);
+            }
             if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {
                 _inGameMenu.ToggleUI(!_inGameMenu.IsActive());
