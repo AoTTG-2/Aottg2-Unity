@@ -83,7 +83,7 @@ namespace UI
         
         public void SetNesting(int level)
         {
-            LayoutGroup.padding = new RectOffset(10 + (level * 10), 0, 0, 0);
+            LayoutGroup.padding = new RectOffset(10 + (level * 20), 0, 0, 0);
         }
 
         public void SetExpanded(bool isExpanded, bool hasChildren)
