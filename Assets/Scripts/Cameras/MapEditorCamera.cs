@@ -124,6 +124,8 @@ namespace Cameras
         /// TODO: Use scale aware zooming speed when object is selected.
         private void UpdateZoomMovement(float speed)
         {
+            if (_menu.IsMouseUI)
+                return;
             if (!Camera.orthographic)
             {
                 if (_input.ZoomIn.GetKey())

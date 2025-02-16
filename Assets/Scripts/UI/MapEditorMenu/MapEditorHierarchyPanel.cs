@@ -10,132 +10,19 @@ using ApplicationManagers;
 using GameManagers;
 using Characters;
 using Map;
-using log4net.Core;
+using MapEditor;
+
 
 namespace UI
 {
-    public class VirtualTreeView
-    {
-        public List<VirtualTreeViewItem> Items = new List<VirtualTreeViewItem>();
-        private Dictionary<int, VirtualTreeViewItem> itemDictionary = new Dictionary<int, VirtualTreeViewItem>();
-
-        public void Clear()
-        {
-            Items.Clear();
-            itemDictionary.Clear();
-        }
-
-        // Method to add an item to the tree
-        public void AddItem(VirtualTreeViewItem item)
-        {
-            // Set the level based on the parent's level
-            if (item.ParentID == -1)
-            {
-                item.Level = 0; // Root level
-            }
-            else if (itemDictionary.TryGetValue(item.ParentID, out var parent))
-            {
-                item.Level = parent.Level + 2;
-            }
-            else
-            {
-                item.Level = 0; // Default to root level if parent not found
-            }
-
-            Items.Add(item);
-            itemDictionary[item.ID] = item;
-        }
-
-        // Method to get the flattened tree
-        public List<VirtualTreeViewItem> GetFlattenedTree()
-        {
-            List<VirtualTreeViewItem> flattenedTree = new List<VirtualTreeViewItem>();
-
-            // Get all root elements
-            List<VirtualTreeViewItem> rootElements = Items.Where(item => item.Level == 0).ToList();
-
-            foreach (var item in rootElements)
-            {
-                if (item.Level == 0)
-                {
-                    flattenedTree.Add(item);
-                    if (item.Expanded)
-                    {
-                        AddChildren(item, flattenedTree);
-                    }
-                }
-            }
-            return flattenedTree;
-        }
-
-        // Optimized method to check if the parent of an item is expanded
-        private bool IsParentExpanded(VirtualTreeViewItem item)
-        {
-            if (item.ParentID == -1) return true; // Root items are always considered expanded
-            return itemDictionary.TryGetValue(item.ParentID, out var parent) && parent.Expanded;
-        }
-
-        // Helper method to add children of an item to the flattened tree
-        private void AddChildren(VirtualTreeViewItem parent, List<VirtualTreeViewItem> flattenedTree)
-        {
-            foreach (var item in Items)
-            {
-                if (item.ParentID == parent.ID)
-                {
-                    flattenedTree.Add(item);
-                    if (item.Expanded)
-                    {
-                        AddChildren(item, flattenedTree);
-                    }
-                }
-            }
-        }
-
-        public List<VirtualTreeViewItem> GetChildrenRecursive(VirtualTreeViewItem parent)
-        {
-            List<VirtualTreeViewItem> children = new List<VirtualTreeViewItem>();
-            foreach (var item in Items)
-            {
-                if (item.ParentID == parent.ID)
-                {
-                    children.Add(item);
-                    children.AddRange(GetChildrenRecursive(item));
-                }
-            }
-            return children;
-        }
-
-        // Method to check if an item has children
-        public bool HasChildren(VirtualTreeViewItem item)
-        {
-            foreach (var child in Items)
-            {
-                if (child.ParentID == item.ID)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-
-    public class VirtualTreeViewItem
-    {
-        public int ID;
-        public int ParentID;
-        public int SiblingID;
-        public int Level;
-        public bool Expanded;
-        public GameObject GameObject;
-    }
-
+    
 
     class MapEditorHierarchyPanel: HeadedPanel
     {
         protected override float Width => 300f;
         protected override float Height => 1005f;
-        protected override float TopBarHeight => 0f;
-        protected override float BottomBarHeight => 0f;
+        protected override float TopBarHeight => 50f;
+        protected override float BottomBarHeight => 50f;
         protected override float VerticalSpacing => 10f;
         protected override int HorizontalPadding => 20;
         protected override int VerticalPadding => 10;
@@ -156,21 +43,16 @@ namespace UI
         private InputSettingElement _searchInput;
         private StringSetting _searchSetting = new StringSetting(string.Empty);
         private Text _pageLabel;
-        private int _currentPage;
-        private const int ObjectsPerPage = 30;
         private Transform _topGroup;
-        private Transform _bottomGroup;
-
-        // Resize
-        private bool _isResizing = false;
-        private Vector2 _resizeStartMousePosition;
-        private Vector2 _resizeStartPanelSize;
-        private RectTransform _rectTransform;
 
         // Pooling
         private const int MaxVisibleObjects = 35;
         private int _visibleIndex = 0;
         private VirtualTreeView _treeView = new VirtualTreeView();
+        //private GameObject _scroll;
+        //private Scrollbar _scrollBar;
+        private List<VirtualTreeViewItem> _visibleTreeViewItems = new List<VirtualTreeViewItem>();
+        private ScrollRect _scrollRect;
         private GameObject _scroll;
         private Scrollbar _scrollBar;
 
@@ -181,24 +63,43 @@ namespace UI
             _menu = (MapEditorMenu)UIManager.CurrentMenu;
             _style = new ElementStyle(fontSize: 18, titleWidth: 0f, themePanel: ThemePanel);
             var style = new ElementStyle(fontSize: 18, titleWidth: 0f, themePanel: ThemePanel);
-            _topGroup = ElementFactory.CreateHorizontalGroup(SinglePanel, 10f, TextAnchor.MiddleLeft).transform;
+
+            TopBar.Find("Label").gameObject.SetActive(false);
+
+            _topGroup = ElementFactory.CreateHorizontalGroup(TopBar, 10f, TextAnchor.MiddleLeft).transform;
             _searchInput = ElementFactory.CreateInputSetting(_topGroup, style, _searchSetting, "", elementWidth: 100f, elementHeight: 32f,
                 onEndEdit: () => Sync()).GetComponent<InputSettingElement>();
-            ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowLeftIcon", onClick: () => OnPageClick(true), elementHeight: 18f, elementWidth: 18f);
-            ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowRightIcon", onClick: () => OnPageClick(false), elementHeight: 18f, elementWidth: 18f);
-            CreateHorizontalDivider(SinglePanel);
+            //ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowLeftIcon", onClick: () => OnPageClick(true), elementHeight: 18f, elementWidth: 18f);
+            //ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowRightIcon", onClick: () => OnPageClick(false), elementHeight: 18f, elementWidth: 18f);
+            // CreateHorizontalDivider(SinglePanel);
             _pageLabel = ElementFactory.CreateDefaultLabel(_topGroup, style, "0/0").GetComponent<Text>();
+            _topGroup.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(10, 0, 0, 0);
 
-            // Create a scrollable bottom group
-            _bottomGroup = ElementFactory.CreateVerticalGroup(SinglePanel, 0f, TextAnchor.UpperLeft).transform;
+            var panel = transform.Find("SinglePanelContent(Clone)");
 
-
-            _scroll = transform.Find("SinglePanelContent(Clone)/Scrollbar").gameObject;
+            _scrollRect = panel.GetComponent<ScrollRect>();
+            _scroll = panel.Find("Scrollbar").gameObject;
             _scrollBar = _scroll.GetComponent<Scrollbar>();
+
+            _scrollRect.onValueChanged.AddListener(OnScrollChanged);
+            _scrollRect.scrollSensitivity = 10f;
 
             InitializePooledElements();
 
             Sync();
+        }
+
+        /// <summary>
+        /// Called when the scroll bar is moved.
+        /// Use to determine the position in the virtual list to being drawing.
+        /// </summary>
+        /// <param name="vec"></param>
+        public void OnScrollChanged(Vector2 vec)
+        {
+            // Find the _visibleIndex based on the scroll position
+            _visibleIndex = (int)((1f - vec.y) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
+            _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x, _visibleTreeViewItems.Count * 25f);
+            _scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleTreeViewItems.Count));
         }
 
         public override void Show()
@@ -206,57 +107,28 @@ namespace UI
             base.Show();
         }
 
+        private void OnScroll()
+        {
+            int startIndex = Mathf.Max(0, _visibleIndex);
+            int endIndex = Mathf.Min(startIndex + MaxVisibleObjects, _visibleTreeViewItems.Count);
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                var item = _visibleTreeViewItems[i];
+                bool hasChildren = _treeView.HasChildren(item);
+                var go = _items[i - startIndex];
+                go.SetActive(true);
+                RedrawPooled(go.GetComponent<MapEditorHirarchyButton>(), MapLoader.IdToMapObject[item.ID], item.Level, item.SiblingID, item.Expanded, hasChildren);
+                if (!_idToItem.ContainsKey(item.ID))
+                    _idToItem.Add(item.ID, go);
+            }
+
+            _pageLabel.text = $"{endIndex - startIndex}/{MapLoader.IdToMapObject.Values.Count} ({startIndex}-{endIndex})";
+        }
+
         private void Update()
         {
-            //HandleResize();  // We can do this later but this breaks right now as the panels are obnoxiously nested to the point any resize breaks them.
-
-            // For pooling, calculate the visible index based on scroll position using the scrollbar
-            _scrollBar.numberOfSteps = MapLoader.IdToMapObject.Values.Count;
-            _scrollBar.size = (float)MaxVisibleObjects / MapLoader.IdToMapObject.Values.Count;
-            // Calculate the visible index based on scroll position
-            _visibleIndex = (int)((1f - _scrollBar.value) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
-            Sync();
+            OnScroll();
         }
-
-        /*private void HandleResize()
-        {
-            if (_isResizing)
-            {
-                Vector2 currentMousePosition = Input.mousePosition;
-                Vector2 sizeDelta = currentMousePosition - _resizeStartMousePosition;
-                _rectTransform.sizeDelta = _resizeStartPanelSize + new Vector2(sizeDelta.x, -sizeDelta.y);
-
-                if (Input.GetMouseButtonUp(0))
-                {
-                    _isResizing = false;
-                }
-            }
-            else
-            {
-                if (IsMouseOnResizableEdge())
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        _isResizing = true;
-                        _resizeStartMousePosition = Input.mousePosition;
-                        _resizeStartPanelSize = _rectTransform.sizeDelta;
-                    }
-                }
-            }
-        }
-
-        private bool IsMouseOnResizableEdge()
-        {
-            Vector2 localMousePosition = _rectTransform.InverseTransformPoint(Input.mousePosition);
-            Rect rect = _rectTransform.rect;
-            float edgeThickness = 10f; // Thickness of the resizable edge
-
-            return localMousePosition.x >= rect.width - edgeThickness || localMousePosition.y <= -rect.height + edgeThickness;
-        }*/
-
-
-        // Virtual Tree view.
-
 
         /// <summary>
         /// Create a fixed number of MapHierarchyButtons for reuse, disabled by default.
@@ -303,30 +175,7 @@ namespace UI
 
             }
 
-            // Get the flattened tree
-            var flattenedTree = _treeView.GetFlattenedTree();
-            // Calculate the start index based on scroll position
-            int startIndex = _visibleIndex;
-            // Calculate the end index based on the number of objects to display
-            int endIndex = Mathf.Min(startIndex + MaxVisibleObjects, flattenedTree.Count);
-            // Activate only the items that are within the current view
-            for (int i = startIndex; i < endIndex; i++)
-            {
-                var item = flattenedTree[i];
-                bool hasChildren = _treeView.HasChildren(item);
-                var go = _items[i - startIndex];
-                go.SetActive(true);
-                RedrawPooled(go.GetComponent<MapEditorHirarchyButton>(), MapLoader.IdToMapObject[item.ID], item.Level, item.SiblingID, item.Expanded, hasChildren);
-
-                _idToItem.Add(item.ID, go);
-            }
-
-            _pageLabel.text = $"{endIndex - startIndex}/{MapLoader.IdToMapObject.Values.Count} ({startIndex}-{endIndex})";
-
-            if (flattenedTree.Count > 0)
-                _topGroup.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(10, 0, 0, 0);
-            else
-                _topGroup.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(0, 0, 0, 0);
+            _visibleTreeViewItems = _treeView.GetFlattenedTree();
         }
 
 
@@ -399,10 +248,6 @@ namespace UI
 
         private void OnPageClick(bool left)
         {
-            if (left)
-                _currentPage--;
-            else
-                _currentPage++;
             Sync();
         }
 
@@ -421,13 +266,14 @@ namespace UI
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    _treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
+                    // TODO: Add a subselection so that we can move child elements with the parent.
+                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange();
                 }
                 else if (multi)
                 {
                     _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
-                    _treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.DeselectObject(MapLoader.IdToMapObject[item.ID]));
+                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.DeselectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange();
                 }
                 else
@@ -441,14 +287,14 @@ namespace UI
                 if (_selected.Count == 0 || multi)
                 {
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    _treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
+                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange();
                 }
                 else if (_selected.Count > 0 && !multi)
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    _treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
+                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange();
                 }
             }
