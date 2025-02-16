@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3941480469578123255}
   m_Layer: 0
-  m_Name: Shootingrange
+  m_Name: Shootingrange1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

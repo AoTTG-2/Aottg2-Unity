@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2143248271693354708}
   m_Layer: 0
-  m_Name: Plate
+  m_Name: Plate1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
