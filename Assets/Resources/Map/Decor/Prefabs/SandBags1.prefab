@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3777486495953737750}
   m_Layer: 0
-  m_Name: SandBags
+  m_Name: SandBags1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,12 +41,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 3777486495953737750}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -124,7 +136,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3076902359146784017, guid: 0a9f879a6e32aed46978654b185ddce8, type: 3}
 --- !u!4 &4477900289046750329 stripped

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4004931353155793925}
   m_Layer: 0
-  m_Name: Candle
+  m_Name: Candle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,12 +41,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 4004931353155793925}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d8efad1d630e5c41bc058e03b3a2093, type: 3}
       propertyPath: m_LocalPosition.z

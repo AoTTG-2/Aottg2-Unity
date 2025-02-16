@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8496271843240903639}
   m_Layer: 0
-  m_Name: Haybale
+  m_Name: Haybale1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,6 +41,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 8496271843240903639}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
@@ -50,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 41e52c5bd096e6248a545dcb8803bb22, type: 3}
       propertyPath: m_LocalRotation.w

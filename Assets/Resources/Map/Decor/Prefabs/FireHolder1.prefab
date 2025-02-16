@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1129688676093284893}
   m_Layer: 0
-  m_Name: FireHolder
+  m_Name: FireHolder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,12 +41,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1129688676093284893}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 81004c405111da542baca95e35e1a8da, type: 3}
       propertyPath: m_LocalPosition.z

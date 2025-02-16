@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7786725371249965656}
   m_Layer: 0
-  m_Name: Watchtower
+  m_Name: Watchtower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,12 +41,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 7786725371249965656}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4210ad3b8542902498997889820858a4, type: 3}
       propertyPath: m_LocalPosition.z
