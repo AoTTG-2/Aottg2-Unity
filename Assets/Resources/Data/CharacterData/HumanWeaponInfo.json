@@ -81,6 +81,7 @@
 		"InitialPullForce": 0.1,
 		"ConstantPullForce": 0.0,
 		"InitialVelocityLoss": 0.9,
-		"ConstantVelocityLoss": 0.2
+		"ConstantVelocityLoss": 0.2,
+		"DamageMultiplier": 1.0
 	}
 }
