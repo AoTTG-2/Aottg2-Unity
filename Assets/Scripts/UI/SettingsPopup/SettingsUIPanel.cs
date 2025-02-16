@@ -49,6 +49,8 @@ namespace UI
                 UIManager.GetLocaleArray(cat, sub, "NameBackgroundTypeOptions"), elementWidth: 160f);
             ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceNameColor, UIManager.GetLocale(cat, sub, "ForceNameColor"), UIManager.CurrentMenu.ColorPickPopup);
             ElementFactory.CreateColorSetting(DoublePanelLeft, style, SettingsManager.UISettings.ForceBackgroundColor, UIManager.GetLocale(cat, sub, "ForceBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.MinNameLength, UIManager.GetLocale(cat, sub, "MinNameLength"), elementWidth: 160f);
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, SettingsManager.UISettings.MaxNameLength, UIManager.GetLocale(cat, sub, "MaxNameLength"), elementWidth: 160f);
 
             // Crosshair
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, SettingsManager.UISettings.CrosshairStyle, UIManager.GetLocale(cat, sub, "CrosshairStyle"),
@@ -70,6 +72,7 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.FadeLoadscreen, UIManager.GetLocale(cat, sub, "FadeLoadscreen"), tooltip: UIManager.GetLocale(cat, sub, "FadeLoadscreenTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowInterpolation, UIManager.GetLocale(cat, sub, "ShowInterpolation"), tooltip: UIManager.GetLocale(cat, sub, "ShowInterpolationTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowKeybindTip, UIManager.GetLocale(cat, sub, "ShowKeybindTip"), tooltip: UIManager.GetLocale(cat, sub, "ShowKeybindTooltip"));
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.KillFeedCount, UIManager.GetLocale(cat, sub, "KillFeedCount"), tooltip: UIManager.GetLocale(cat, sub, "KillFeedCountTooltip"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatWidth, UIManager.GetLocale(cat, sub, "ChatWidth"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatHeight, UIManager.GetLocale(cat, sub, "ChatHeight"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatFontSize, UIManager.GetLocale(cat, sub, "ChatFontSize"), elementWidth: 100f);

@@ -156,13 +156,13 @@ namespace Characters
             else
                 CustomSet = (HumanCustomSet)customSets.Sets.GetItemAt(setIndex - preCount);
             var loadout = settings.Loadout.Value;
-            if (loadout == HumanLoadout.Blades)
+            if (loadout == HumanLoadout.Blade)
                 Weapon = HumanWeapon.Blade;
             else if (loadout == HumanLoadout.AHSS)
                 Weapon = HumanWeapon.AHSS;
             else if (loadout == HumanLoadout.APG)
                 Weapon = HumanWeapon.APG;
-            else if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.Thunderspear)
                 Weapon = HumanWeapon.Thunderspear;
         }
 
