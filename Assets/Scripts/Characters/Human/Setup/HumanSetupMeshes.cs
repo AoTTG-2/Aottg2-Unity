@@ -13,6 +13,7 @@ namespace Characters
         private string AccessoriesPath = "Human/Parts/Accessories/Prefabs/";
         private string HairsPath = "Human/Parts/Hairs/Prefabs/";
         private string WeaponsPath = "Human/Parts/Weapons/Prefabs/";
+        private string FacePath = "Human/Parts/Face/Prefabs/";
 
         public HumanSetupMeshes(HumanSetup setup)
         {
@@ -113,17 +114,17 @@ namespace Characters
 
         public string GetEyeMesh()
         {
-            return AccessoriesPath + "char_eyes";
+            return FacePath + "char_eyes";
         }
 
         public string GetFaceMesh()
         {
-            return AccessoriesPath + "char_face";
+            return FacePath + "char_face";
         }
 
         public string GetGlassMesh()
         {
-            return AccessoriesPath + "char_glasses";
+            return FacePath + "char_glasses";
         }
 
         public string GetHairMesh()

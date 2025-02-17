@@ -12,13 +12,12 @@ namespace Characters
     {
         public static Dictionary<string, Material> HairMaterials = new Dictionary<string, Material>();
         public static Dictionary<string, Material> PartMaterials = new Dictionary<string, Material>();
-        public static Material FaceMaterial;
+        public static Dictionary<string, Material> FaceMaterials = new Dictionary<string, Material>();
         public static string TexturePath = "Human/Parts/Costumes/Textures/";
         public static string MaterialPath = "Human/Parts/Costumes/Materials/";
 
         public static void Init()
         {
-            FaceMaterial = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Accessories/Materials/HumanFaceMat");
         }
 
         public static Material GetCostumeMaterial(string mainTexture, string maskTexture, string colorTexture, string pantsTexture, Color shirt, Color straps, Color pants, Color jacket, Color boots)
@@ -71,6 +70,18 @@ namespace Characters
                 HairMaterials[texture] = material;
             }
             return HairMaterials[texture];
+        }
+
+        public static Material GetFaceMaterial(string texture)
+        {
+            if (!FaceMaterials.ContainsKey(texture))
+            {
+                var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Face/Materials/HumanFaceMat", true);
+                var mainTexture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, "Human/Parts/Face/Textures/" + texture);
+                material.mainTexture = mainTexture;
+                FaceMaterials[texture] = material;
+            }
+            return FaceMaterials[texture];
         }
 
         public static Material GetSkinMaterial(string texture, Color color)

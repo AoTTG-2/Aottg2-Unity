@@ -1,10 +1,10 @@
 {
-	"EyeCount": 28,
+	"EyeCount": 33,
 	"FaceCount": 13,
 	"GlassCount": 9,
 	"BackCount": 3,
 	"HeadCount": 8,
-	"HatCount": 14,
+	"HatCount": 15,
 	"Costume": {
 		"Male": [
 			{
@@ -230,6 +230,18 @@
 			},
 			{
 				"Texture": "hair_erwin"
+			},
+			{
+				"Texture": "hair_kuklo"
+			},
+			{
+				"Texture": "hair_marlowe"
+			},
+			{
+				"Texture": "hair_bertholdt"
+			},
+			{
+				"Texture": "hair_eld"
 			}
 		],
 		"Female": [
@@ -271,6 +283,9 @@
 			},
 			{
 				"Texture": "hair_mikasa2"
+			},
+			{
+				"Texture": "hair_historia"
 			}
 		]
 	}

@@ -117,6 +117,7 @@ namespace UI
                 var go = Instantiate(icons[transform].gameObject);
                 go.transform.SetParent(_background.transform);
                 go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = Vector3.one;
                 go.transform.rotation = Quaternion.identity;
                 go.SetActive(false);
                 _icons.Add(transform, go.transform);
