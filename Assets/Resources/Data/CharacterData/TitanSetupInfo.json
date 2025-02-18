@@ -11,7 +11,13 @@
 		"hair_marco",
 		"hair_mikasa",
 		"hair_mike",
-		"hair_petra"
+		"hair_petra",
+		"hair_rico",
+		"hair_mikasa2",
+		"hair_zeke",
+		"hair_zeke2",
+		"hair_erwin",
+		"hair_bertholdt"
 	],
 	"HairColors": [
 		[35, 18, 11, 255],
@@ -33,5 +39,5 @@
 		[40, 40, 40, 255],
 		[130, 50, 50, 255]
 	],
-	"EyeTextureCount": 11
+	"EyeTextureCount": 49
 }

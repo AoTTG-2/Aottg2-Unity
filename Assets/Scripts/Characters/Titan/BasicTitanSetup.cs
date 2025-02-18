@@ -113,14 +113,10 @@ namespace Characters
             // eyes
             string eyesAsset = "TitanEyes" + headIndex.ToString();
             int eyeTexture = json["EyeTexture"].AsInt;
-            if (eyeTexture == 7)
-                eyeTexture = 0;
             var eyes = head.Find("Eyes");
             var eyesRef = ((GameObject)ResourceManager.LoadAsset(ResourcePaths.Characters, "Titans/Heads/Prefabs/" + eyesAsset, true)).transform;
             eyes.GetComponent<MeshFilter>().sharedMesh = eyesRef.GetComponent<MeshFilter>().sharedMesh;
-            int col = eyeTexture / 8;
-            int row = eyeTexture % 8;
-            eyes.GetComponent<MeshRenderer>().material.mainTextureOffset = new Vector2(0.25f * col, -0.125f * row);
+            eyes.GetComponent<MeshRenderer>().material = HumanSetupMaterials.GetTitanEyeMaterial("Eye" + eyeTexture.ToString());
         }
 
         protected void CopyColliders(Transform from, Transform to, bool capsule, bool moveTransform)

@@ -13,6 +13,7 @@ namespace Characters
         public static Dictionary<string, Material> HairMaterials = new Dictionary<string, Material>();
         public static Dictionary<string, Material> PartMaterials = new Dictionary<string, Material>();
         public static Dictionary<string, Material> FaceMaterials = new Dictionary<string, Material>();
+        public static Dictionary<string, Material> TitanEyeMaterials = new Dictionary<string, Material>();
         public static string TexturePath = "Human/Parts/Costumes/Textures/";
         public static string MaterialPath = "Human/Parts/Costumes/Materials/";
 
@@ -82,6 +83,18 @@ namespace Characters
                 FaceMaterials[texture] = material;
             }
             return FaceMaterials[texture];
+        }
+
+        public static Material GetTitanEyeMaterial(string texture)
+        {
+            if (!TitanEyeMaterials.ContainsKey(texture))
+            {
+                var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Titans/Heads/Materials/TitanEyesMat", true);
+                var mainTexture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, "Titans/Heads/Textures/" + texture);
+                material.mainTexture = mainTexture;
+                TitanEyeMaterials[texture] = material;
+            }
+            return TitanEyeMaterials[texture];
         }
 
         public static Material GetSkinMaterial(string texture, Color color)
