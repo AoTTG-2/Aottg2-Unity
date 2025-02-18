@@ -100,7 +100,7 @@ namespace GameManagers
         }
 
         private static readonly string[] PlayerIdCommands = new string[] {
-            "kick", "ban", "mute", "unmute", "revive"
+            "kick", "ban", "mute", "unmute", "revive", "pm"
         };
 
         // Add new lists for PM tracking
@@ -1091,7 +1091,7 @@ namespace GameManagers
 
         private static bool IsPlayerIdCommand(string command)
         {
-            return command == "kick" || command == "ban" || command == "mute" || command == "unmute" || command == "revive";
+            return command == "kick" || command == "ban" || command == "mute" || command == "unmute" || command == "revive" || command == "pm";
         }
 
         public static void SendPrivateMessage(Player target, string message)
