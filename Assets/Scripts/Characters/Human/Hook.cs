@@ -65,8 +65,7 @@ namespace Characters
         protected void Awake()
         {
             _renderer = gameObject.AddComponent<LineRenderer>();
-            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Map, "Materials/BasicMaterial", true);
-            _renderer.material.color = Color.black;
+            _renderer.material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Particles/Materials/HookMat", true);
             _renderer.positionCount = 0;
             _particles = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Human/Particles/Prefabs/HookParticle", true)
                 .GetComponent<ParticleSystem>();
