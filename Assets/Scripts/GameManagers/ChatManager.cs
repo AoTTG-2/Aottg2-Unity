@@ -1184,6 +1184,39 @@ namespace GameManagers
             string clickableId = $"<link=\"{player.ActorNumber}\">{GetColorString($"[{player.ActorNumber}]", ChatTextColor.ID)}</link>";
             return $"{clickableId} {player.GetStringProperty(PlayerProperty.Name)}";
         }
+
+        [CommandAttribute("pm", "/pm [ID]: Send a private message to player with ID")]
+        private static void PM(string[] args)
+        {
+            if (args.Length < 2)
+            {
+                AddLine("Usage: /pm [ID] [message]", ChatTextColor.Error);
+                return;
+            }
+
+            var player = GetPlayer(args);
+            if (player != null)
+            {
+                if (player == PhotonNetwork.LocalPlayer)
+                {
+                    AddLine("Cannot send private messages to yourself.", ChatTextColor.Error);
+                    return;
+                }
+
+                var chatPanel = GetChatPanel();
+                if (chatPanel != null)
+                {
+                    chatPanel.EnterPMMode(player);
+                    
+                    // If a message was provided, send it
+                    if (args.Length > 2)
+                    {
+                        string message = string.Join(" ", args.Skip(2));
+                        SendPrivateMessage(player, message);
+                    }
+                }
+            }
+        }
     }
 
     public enum ChatTextColor
