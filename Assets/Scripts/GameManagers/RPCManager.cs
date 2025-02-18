@@ -257,6 +257,12 @@ namespace GameManagers
             Debug.Log(c);
         }
 
+        [PunRPC]
+        public void PrivateChatRPC(string senderName, string message, int senderID, int targetID)
+        {
+            ChatManager.OnPrivateChatRPC(senderName, message, senderID, targetID);
+        }
+
         void Awake()
         {
             PhotonView = GetComponent<PhotonView>();

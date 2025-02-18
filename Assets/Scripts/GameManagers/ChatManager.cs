@@ -100,8 +100,12 @@ namespace GameManagers
         }
 
         private static readonly string[] PlayerIdCommands = new string[] {
-            "pm", "kick", "ban", "mute", "unmute", "revive"
+            "kick", "ban", "mute", "unmute", "revive"
         };
+
+        // Add new lists for PM tracking
+        public static List<bool> PrivateFlags = new List<bool>();
+        public static List<int> PMPartnerIDs = new List<int>();
 
         public static void Init()
         {
@@ -173,7 +177,8 @@ namespace GameManagers
 
         public static bool IsChatActive()
         {
-            return GetChatPanel().IsInputActive();
+            var chatPanel = GetChatPanel();
+            return chatPanel != null && chatPanel.IsInputActive();
         }
 
         public static bool IsChatAvailable()
@@ -197,10 +202,9 @@ namespace GameManagers
         {
             if (InGameManager.MuteText.Contains(info.Sender.ActorNumber))
                 return;
-            
-            string formattedMessage = GetIDString(info.Sender.ActorNumber) + FormatChatMessage(message);
+            string clickableId = $"<link=\"{info.Sender.ActorNumber}\">{GetColorString($"[{info.Sender.ActorNumber}]", ChatTextColor.ID)}</link>";
+            string formattedMessage = $"{clickableId} {message}";
             DateTime timestamp = DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time));
-            
             AddLine(formattedMessage, ChatTextColor.Default, false, timestamp, info.Sender.ActorNumber);
         }
 
@@ -209,20 +213,19 @@ namespace GameManagers
             AddLine(message, ChatTextColor.System, true);
         }
 
-        public static void AddLine(string message, ChatTextColor color = ChatTextColor.Default, bool isSystem = false, DateTime? timestamp = null, int senderID = -1, bool isSuggestion = false)
+        public static void AddLine(string message, ChatTextColor color = ChatTextColor.Default, bool isSystem = false, DateTime? timestamp = null, int senderID = -1, bool isSuggestion = false, bool isPM = false, int pmPartnerID = -1)
         {
             message = message.FilterSizeTag();
             string formattedMessage = GetColorString(message, color);
             DateTime messageTime = timestamp ?? DateTime.UtcNow;
-
-            // Add to history
             RawMessages.Add(formattedMessage);
             Colors.Add(color);
             SystemFlags.Add(isSystem);
             Timestamps.Add(messageTime);
             SenderIDs.Add(senderID);
             SuggestionFlags.Add(isSuggestion);
-
+            PrivateFlags.Add(isPM);
+            PMPartnerIDs.Add(pmPartnerID);
             if (RawMessages.Count > MaxLines)
             {
                 RawMessages.RemoveAt(0);
@@ -231,9 +234,9 @@ namespace GameManagers
                 Timestamps.RemoveAt(0);
                 SenderIDs.RemoveAt(0);
                 SuggestionFlags.RemoveAt(0);
+                PrivateFlags.RemoveAt(0);
+                PMPartnerIDs.RemoveAt(0);
             }
-
-            // Update UI if available
             if (IsChatAvailable())
             {
                 var panel = GetChatPanel();
@@ -248,10 +251,7 @@ namespace GameManagers
             {
                 LastExceptionCount++;
                 MessageBuilder.Clear();
-                MessageBuilder.Append(line)
-                            .Append('(')
-                            .Append(LastExceptionCount)
-                            .Append(')');
+                MessageBuilder.Append(line).Append('(').Append(LastExceptionCount).Append(')');
                 string formattedMessage = GetColorString(MessageBuilder.ToString(), ChatTextColor.Error);
                 ReplaceLastLine(formattedMessage, ChatTextColor.Error, true);
             }
@@ -276,6 +276,8 @@ namespace GameManagers
                 Timestamps[lastIndex] = timestamp;
                 SenderIDs[lastIndex] = -1;
                 SuggestionFlags[lastIndex] = false;
+                PrivateFlags[lastIndex] = false;
+                PMPartnerIDs[lastIndex] = -1;
 
                 if (IsChatAvailable())
                 {
@@ -294,20 +296,11 @@ namespace GameManagers
         {
             if (!SettingsManager.UISettings.ShowChatTimestamp.Value || isSuggestion)
                 return message;
-
             MessageBuilder.Clear();
             TimeBuilder.Clear();
-            
             DateTime localTime = timestamp.ToLocalTime();
-            TimeBuilder.Append('[')
-                      .Append(localTime.Hour.ToString("D2"))
-                      .Append(':')
-                      .Append(localTime.Minute.ToString("D2"))
-                      .Append("] ");
-            
-            MessageBuilder.Append(GetColorString(TimeBuilder.ToString(), ChatTextColor.System))
-                         .Append(message);
-            
+            TimeBuilder.Append('[').Append(localTime.Hour.ToString("D2")).Append(':').Append(localTime.Minute.ToString("D2")).Append("] ");
+            MessageBuilder.Append(GetColorString(TimeBuilder.ToString(), ChatTextColor.System)).Append(message);
             return MessageBuilder.ToString();
         }
 
@@ -378,36 +371,25 @@ namespace GameManagers
         {
             int index = message.IndexOf('@');
             if (index == -1) return message;
-            
             MentionBuilder.Clear();
             MentionBuilder.Append(message);
-            
             while (index != -1)
             {
                 int endIndex = MentionBuilder.ToString().IndexOf(' ', index);
                 if (endIndex == -1)
                     endIndex = MentionBuilder.Length;
-
                 string mention = MentionBuilder.ToString(index + 1, endIndex - index - 1);
-                
-                // Skip empty mentions or mentions that start with space
                 if (string.IsNullOrWhiteSpace(mention))
                 {
                     index = MentionBuilder.ToString().IndexOf('@', index + 1);
                     continue;
                 }
-
                 var matchingPlayers = PhotonNetwork.PlayerList
                     .Where(p => 
                     {
                         string playerId = p.ActorNumber.ToString();
-                        string playerName = p.GetStringProperty(PlayerProperty.Name)
-                                           .FilterSizeTag()
-                                           .StripRichText()
-                                           .ToLower();
+                        string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower();
                         mention = mention.ToLower();
-                        
-                        // Only match if it's an exact match with ID or full name
                         return playerId == mention || playerName == mention;
                     })
                     .ToList();
@@ -431,19 +413,6 @@ namespace GameManagers
 
         private static string FormatChatMessage(string message)
         {
-            // Format player names in the message
-            foreach (var player in PhotonNetwork.PlayerList)
-            {
-                string playerName = player.GetStringProperty(PlayerProperty.Name);
-                if (message.Contains(playerName))
-                {
-                    string colorTag = player.IsLocal ? ColorTags[ChatTextColor.MyPlayer] : ColorTags[ChatTextColor.ID];
-                    message = message.Replace(
-                        playerName, 
-                        $"<color=#{colorTag}>{playerName}</color>"
-                    );
-                }
-            }
             return message;
         }
 
@@ -534,21 +503,6 @@ namespace GameManagers
                     SendChat("You have been revived by master client.", player, ChatTextColor.System);
                     AddLine(player.GetStringProperty(PlayerProperty.Name) + " has been revived.", ChatTextColor.System);
                 }
-            }
-        }
-
-        [CommandAttribute("pm", "/pm [ID]: Private message player with ID")]
-        private static void PrivateMessage(string[] args)
-        {
-            var player = GetPlayer(args);
-            if (args.Length > 2 && player != null)
-            {
-                string[] msgArgs = new string[args.Length - 2];
-                Array.ConstrainedCopy(args, 2, msgArgs, 0, msgArgs.Length);
-                string message = string.Join(' ', msgArgs);
-
-                SendChat("From " + PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name) + ": " + message, player);
-                AddLine("To " + player.GetStringProperty(PlayerProperty.Name) + ": " + message);
             }
         }
 
@@ -902,40 +856,28 @@ namespace GameManagers
 
         public static void HandleTyping(string input)
         {
-            // Early exit conditions remain unchanged
             if (string.IsNullOrEmpty(input) || input == "@" || input == "/")
             {
                 ClearLastSuggestions();
                 return;
             }
-
-            // Show command suggestions
             if (input.StartsWith("/"))
             {
                 int spaceIndex = input.IndexOf(' ');
-                string command = spaceIndex == -1 
-                    ? input.Substring(1).ToLower() 
-                    : input.Substring(1, spaceIndex - 1).ToLower();
-
-                // Don't show suggestions for just "/"
+                string command = spaceIndex == -1 ? input.Substring(1).ToLower() : input.Substring(1, spaceIndex - 1).ToLower();
                 if (string.IsNullOrEmpty(command))
                 {
                     ClearLastSuggestions();
                     return;
                 }
-
-                // Handle player ID commands
                 if (spaceIndex != -1 && IsPlayerIdCommand(command))
                 {
                     string partial = input.Substring(spaceIndex + 1);
-                    
                     if (partial != SuggestionState.PartialText)
                     {
                         ClearLastSuggestions();
                         SuggestionState.PartialText = partial;
                         SuggestionState.Type = SuggestionType.PlayerID;
-
-                        // Reuse list to avoid allocations
                         var players = new List<Player>();
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
@@ -956,7 +898,6 @@ namespace GameManagers
                                 AddLine($"{player.ActorNumber}. {name}", ChatTextColor.MyPlayer, true, isSuggestion: true);
                             }
                             
-                            // Reuse list for suggestions
                             SuggestionState.Suggestions.Clear();
                             foreach (var player in players)
                             {
@@ -965,7 +906,6 @@ namespace GameManagers
                         }
                     }
                 }
-                // Regular command suggestions
                 else if (spaceIndex == -1)
                 {
                     if (command != SuggestionState.PartialText)
@@ -973,8 +913,6 @@ namespace GameManagers
                         ClearLastSuggestions();
                         SuggestionState.PartialText = command;
                         SuggestionState.Type = SuggestionType.Command;
-
-                        // Reuse lists to avoid allocations
                         var matchingCommands = new List<KeyValuePair<string, CommandAttribute>>();
                         foreach (var cmd in CommandsCache)
                         {
@@ -984,7 +922,6 @@ namespace GameManagers
                             }
                         }
                         matchingCommands.Sort((a, b) => string.Compare(a.Key, b.Key, StringComparison.Ordinal));
-
                         if (matchingCommands.Count > 0)
                         {
                             foreach (var cmd in matchingCommands)
@@ -1001,11 +938,8 @@ namespace GameManagers
                                         MessageBuilder.Append('[').Append(cmd.Value.Parameters[i]).Append(']');
                                     }
                                 }
-                                
                                 AddLine(MessageBuilder.ToString(), ChatTextColor.MyPlayer, true, isSuggestion: true);
                             }
-                            
-                            // Reuse list for suggestions
                             SuggestionState.Suggestions.Clear();
                             foreach (var cmd in matchingCommands)
                             {
@@ -1015,30 +949,25 @@ namespace GameManagers
                     }
                 }
             }
-            // Show player suggestions for mentions
             else if (input.Contains("@"))
             {
                 int lastAt = input.LastIndexOf('@');
                 string partial = input.Substring(lastAt + 1);
                 int spaceIdx = partial.IndexOf(' ');
-                
                 if (spaceIdx >= 0 || string.IsNullOrWhiteSpace(partial))
                 {
                     ClearLastSuggestions();
                     SuggestionState.PartialText = "";
                     return;
                 }
-
                 if (partial != SuggestionState.PartialText)
                 {
                     ClearLastSuggestions();
                     SuggestionState.PartialText = partial;
                     SuggestionState.Type = SuggestionType.Mention;
-
                     var players = new List<Player>();
                     string partialLower = partial.ToLower();
                     bool isNumeric = partial.All(char.IsDigit);
-
                     foreach (var p in PhotonNetwork.PlayerList)
                     {
                         if (isNumeric)
@@ -1057,22 +986,15 @@ namespace GameManagers
                         }
                     }
                     players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
-
                     if (players.Count > 0)
                     {
                         AddLine("Matching players:", ChatTextColor.MyPlayer, true, isSuggestion: true);
-                        
-                        // Reuse list for suggestions
                         SuggestionState.Suggestions.Clear();
                         foreach (var player in players)
                         {
                             string name = player.GetStringProperty(PlayerProperty.Name).FilterSizeTag();
                             AddLine($"{player.ActorNumber}. {name}", ChatTextColor.MyPlayer, true, isSuggestion: true);
-                            SuggestionState.Suggestions.Add(
-                                player.GetStringProperty(PlayerProperty.Name)
-                                      .FilterSizeTag()
-                                      .StripRichText()
-                            );
+                            SuggestionState.Suggestions.Add(player.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText());
                         }
                     }
                 }
@@ -1088,13 +1010,9 @@ namespace GameManagers
             if (SuggestionState.Type == SuggestionType.None || 
                 SuggestionState.Suggestions.Count == 0)
                 return;
-
             var chatPanel = GetChatPanel();
             if (chatPanel == null) return;
-
             string currentInput = chatPanel.GetInputText();
-            
-            // Reset suggestion state if switching between command and mention contexts
             if ((currentInput.StartsWith("/") && SuggestionState.Type == SuggestionType.Mention) ||
                 (!currentInput.StartsWith("/") && (SuggestionState.Type == SuggestionType.Command || SuggestionState.Type == SuggestionType.PlayerID)))
             {
@@ -1103,13 +1021,10 @@ namespace GameManagers
                 SuggestionState.CurrentIndex = -1;
                 return;
             }
-
             SuggestionState.CurrentIndex++;
             if (SuggestionState.CurrentIndex >= SuggestionState.Suggestions.Count)
                 SuggestionState.CurrentIndex = 0;
-
             string chosen = SuggestionState.Suggestions[SuggestionState.CurrentIndex];
-
             switch (SuggestionState.Type)
             {
                 case SuggestionType.PlayerID:
@@ -1120,7 +1035,6 @@ namespace GameManagers
                         chatPanel.SetInputText($"{command} {chosen}");
                     }
                     break;
-                    
                 case SuggestionType.Command:
                     int firstSpace = currentInput.IndexOf(' ');
                     if (firstSpace < 0) firstSpace = currentInput.Length;
@@ -1128,7 +1042,6 @@ namespace GameManagers
                     string suffix = firstSpace < currentInput.Length ? currentInput.Substring(firstSpace) : "";
                     chatPanel.SetInputText(prefix + chosen + suffix);
                     break;
-
                 case SuggestionType.Mention:
                     if (!currentInput.StartsWith("/"))
                     {
@@ -1140,8 +1053,7 @@ namespace GameManagers
                             int spaceAfterAt = currentInput.IndexOf(' ', lastAt);
                             if (spaceAfterAt >= 0)
                                 afterMention = currentInput.Substring(spaceAfterAt);
-                            
-                            // Remove any spaces and ensure we're using the player name
+    
                             string playerName = chosen.Trim();
                             chatPanel.SetInputText(beforeAt + playerName + afterMention);
                         }
@@ -1153,7 +1065,6 @@ namespace GameManagers
 
         public static void ClearLastSuggestions()
         {
-            // Remove all previous suggestions
             for (int i = RawMessages.Count - 1; i >= 0; i--)
             {
                 if (SuggestionFlags[i])
@@ -1164,10 +1075,10 @@ namespace GameManagers
                     Timestamps.RemoveAt(i);
                     SenderIDs.RemoveAt(i);
                     SuggestionFlags.RemoveAt(i);
+                    PrivateFlags.RemoveAt(i);
+                    PMPartnerIDs.RemoveAt(i);
                 }
             }
-            
-            // Reset suggestion state completely
             SuggestionState.Clear();
 
             if (IsChatAvailable())
@@ -1180,8 +1091,98 @@ namespace GameManagers
 
         private static bool IsPlayerIdCommand(string command)
         {
-            return command == "pm" || command == "kick" || command == "ban" || 
-                   command == "mute" || command == "unmute" || command == "revive";
+            return command == "kick" || command == "ban" || command == "mute" || command == "unmute" || command == "revive";
+        }
+
+        public static void SendPrivateMessage(Player target, string message)
+        {
+            if (target == null)
+            {
+                AddLine("Invalid private message target.", ChatTextColor.Error);
+                return;
+            }
+            
+            string senderName = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
+            RPCManager.PhotonView.RPC("PrivateChatRPC", RpcTarget.All,
+                new object[] { senderName, message, PhotonNetwork.LocalPlayer.ActorNumber, target.ActorNumber });
+        }
+
+        public static void OnPrivateChatRPC(string senderName, string message, int senderID, int targetID)
+        {
+            int localID = PhotonNetwork.LocalPlayer.ActorNumber;
+            
+            if (localID == senderID)
+            {
+                Player targetPlayer = PhotonNetwork.CurrentRoom.GetPlayer(targetID);
+                if (targetPlayer != null)
+                {
+                    string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
+                    AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}", 
+                        ChatTextColor.Default, false, DateTime.UtcNow, senderID, false, true, targetID);
+                    
+                    var panel = GetChatPanel();
+                    if (panel != null && !panel.IsInPMMode())
+                    {
+                        panel.EnterPMMode(targetPlayer);
+                    }
+                }
+            }
+            else if (localID == targetID)
+            {
+                // Add the actual PM message
+                AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}", 
+                    ChatTextColor.Default, false, DateTime.UtcNow, senderID, false, true, senderID);
+                    
+                var panel = GetChatPanel();
+                if (panel != null)
+                {
+                    Player senderPlayer = PhotonNetwork.CurrentRoom.GetPlayer(senderID);
+                    if (senderPlayer != null)
+                    {
+                        panel.AddPMPartner(senderPlayer);
+                        if (!panel.IsInPMMode() || panel.GetCurrentPMTarget().ActorNumber != senderPlayer.ActorNumber)
+                        {
+                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{senderName}{GetColorString(". Press Esc to view conversation.", ChatTextColor.System)}", 
+                                ChatTextColor.Default, true, DateTime.UtcNow, -1, false, false, -1);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ResetAllPMState()
+        {
+            var chatPanel = GetChatPanel();
+            if (chatPanel != null)
+            {
+                chatPanel.ResetPMState();
+            }
+            PrivateFlags.Clear();
+            PMPartnerIDs.Clear();
+        }
+
+        public static void SyncPMPartnersOnJoin()
+        {
+            var chatPanel = GetChatPanel();
+            if (chatPanel == null) return;
+            chatPanel.ResetPMState();
+            for (int i = 0; i < RawMessages.Count; i++)
+            {
+                if (PrivateFlags[i])
+                {
+                    int partnerId = PMPartnerIDs[i];
+                    var partner = PhotonNetwork.CurrentRoom.GetPlayer(partnerId);
+                    if (partner != null)
+                    {
+                        chatPanel.AddPMPartner(partner);
+                    }
+                }
+            }
+        }
+        public static string GetPlayerIdentifier(Player player)
+        {
+            string clickableId = $"<link=\"{player.ActorNumber}\">{GetColorString($"[{player.ActorNumber}]", ChatTextColor.ID)}</link>";
+            return $"{clickableId} {player.GetStringProperty(PlayerProperty.Name)}";
         }
     }
 
