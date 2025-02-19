@@ -846,8 +846,8 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.CustomProperties.Clear();
             var properties = new Dictionary<string, object>
             {
-                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.HexColor() },
-                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.HexColor() },
+                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor() },
+                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.FilterBadWords().HexColor() },
                 { PlayerProperty.Team, null },
                 { PlayerProperty.CharacterViewId, -1 },
                 { PlayerProperty.CustomMapHash, null },
@@ -899,7 +899,7 @@ namespace GameManagers
 
         public static void UpdatePlayerName()
         {
-            string name = MyPlayerInfo.Profile.Name.Value.HexColor();
+            string name = MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor();
             if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
             {
                 if (SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue)

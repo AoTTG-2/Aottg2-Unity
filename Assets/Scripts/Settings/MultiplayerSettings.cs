@@ -1,3 +1,4 @@
+using Anticheat;
 using ApplicationManagers;
 using Discord;
 using GameManagers;
@@ -117,7 +118,7 @@ namespace Settings
         public void StartRoom()
         {
             InGameSet settings = SettingsManager.InGameCurrent;
-            string roomName = settings.General.RoomName.Value;
+            string roomName = settings.General.RoomName.Value.FilterBadWords();
             string mapName = settings.General.MapName.Value;
             string gameMode = settings.General.GameMode.Value;
             int maxPlayers = settings.General.MaxPlayers.Value;

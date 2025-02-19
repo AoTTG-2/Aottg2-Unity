@@ -26,10 +26,13 @@ namespace UI
         public static LoadingMenu LoadingMenu;
         public static float CurrentCanvasScale = 1f;
         public static List<string> AvailableProfileIcons = new List<string>();
-        public static float LastFrameTime = 0.0f;
         public static bool NeedResizeText = false;
         public static bool NeedResizeTextSecondFrame = false;
         private static Dictionary<string, AudioSource> _sounds = new Dictionary<string, AudioSource>();
+        private static int _lastFPS = 0;
+        private static float _currentFrameTime = 0f;
+        private static float _currentFrameCount = 0;
+        private static float _maxFrameTime = 0.5f;
 
         public static void Init()
         {
@@ -349,7 +352,14 @@ namespace UI
 
         private void Update()
         {
-            LastFrameTime += (Time.unscaledDeltaTime - LastFrameTime) * 0.1f;
+            _currentFrameTime += Time.deltaTime;
+            _currentFrameCount += 1;
+            if (_currentFrameTime >= _maxFrameTime)
+            {
+                _lastFPS = (int)Math.Round(_currentFrameCount / _currentFrameTime);
+                _currentFrameTime = 0f;
+                _currentFrameCount = 0;
+            }
             if (CurrentMenu != null && NeedResizeText && CurrentMenu.gameObject != null)
             {
                 NeedResizeText = false;
@@ -370,9 +380,7 @@ namespace UI
 
         public static int GetFPS()
         {
-            if (LastFrameTime <= 0)
-                return 0;
-            return (int)Math.Round(1.0f / LastFrameTime);
+            return _lastFPS;
         }
     }
 

@@ -46,6 +46,7 @@ namespace ApplicationManagers
             PhotonNetwork.UseRpcMonoBehaviourCache = true;
             ApplicationConfig.Init();
             AnticheatManager.Init();
+            ChatFilter.Init();
             PhysicsLayer.Init();
             MaterialCache.Init();
             EventManager.Init();
