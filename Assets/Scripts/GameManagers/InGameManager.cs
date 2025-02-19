@@ -373,8 +373,7 @@ namespace GameManagers
             }
             if (SettingsManager.UISettings.JoinNotifications.Value)
             {
-                string line = $"{player.GetStringProperty(PlayerProperty.Name)} [{player.ActorNumber}]" + 
-                    ChatManager.GetColorString(" has left the room.", ChatTextColor.System);
+                string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has left the room.", ChatTextColor.System);
                 ChatManager.AddLine(line);
             }
             if (CustomLogicManager.Evaluator != null)

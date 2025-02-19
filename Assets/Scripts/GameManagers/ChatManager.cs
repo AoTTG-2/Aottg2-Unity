@@ -1142,7 +1142,7 @@ namespace GameManagers
                         panel.AddPMPartner(senderPlayer);
                         if (!panel.IsInPMMode() || panel.GetCurrentPMTarget().ActorNumber != senderPlayer.ActorNumber)
                         {
-                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{senderName}{GetColorString(". Press Esc to view conversation.", ChatTextColor.System)}", 
+                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{senderName}{GetColorString(" (Esc)", ChatTextColor.System)}", 
                                 ChatTextColor.Default, true, DateTime.UtcNow, -1, false, false, -1);
                         }
                     }
