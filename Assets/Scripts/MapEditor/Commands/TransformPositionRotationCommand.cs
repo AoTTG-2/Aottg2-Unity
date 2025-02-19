@@ -8,7 +8,7 @@ using GameManagers;
 
 namespace MapEditor
 {
-    class TransformPositionRotationCommand: BaseCommand
+    class TransformPositionRotationCommand: InspectorCommand
     {
         private List<Vector3> _oldPositions = new List<Vector3>();
         private List<Vector3> _newPositions = new List<Vector3>();

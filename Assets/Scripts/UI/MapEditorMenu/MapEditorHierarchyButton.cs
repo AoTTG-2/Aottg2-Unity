@@ -13,6 +13,7 @@ using Map;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using log4net.Core;
+using System.Runtime.CompilerServices;
 
 namespace UI
 {
@@ -23,19 +24,24 @@ namespace UI
         public LayoutElement TextLayoutElement;
         public LayoutElement LayoutElement;
         public HorizontalLayoutGroup LayoutGroup;
+        public GameObject TopBar;
+        public GameObject BottomBar;
         public int BoundID = -1;
 
         private UnityAction _onButtonRelease;
+        private UnityAction _onButtonDown;
+        private UnityAction _onMove;
         private GameObject ArrowClosed;
         private GameObject ArrowExpanded;
 
         public void Setup(
             float Width,
             UnityAction onButtonClick,
-            UnityAction onButtonRelease,
             UnityAction onExpand,
             UnityAction onCollapse)
         {
+
+            #region Styling
             Highlight = transform.Find("Highlight").gameObject;
             Highlight.SetActive(false);
 
@@ -53,19 +59,25 @@ namespace UI
             LayoutElement.minWidth = Width;
             LayoutElement.preferredWidth = Width;
 
-            onClick.AddListener(onButtonClick);
-            _onButtonRelease = onButtonRelease;
-            transition = Transition.None;
-
+            // Tree view buttons
             ArrowClosed = transform.Find("ArrowRightButton").gameObject;
             ArrowExpanded = transform.Find("ArrowDownButton").gameObject;
             ArrowClosed.SetActive(true);
             ArrowExpanded.SetActive(false);
+            #endregion
+
+            onClick.AddListener(onButtonClick);
+            transition = Transition.None;
+
+            _onButtonRelease = onButtonRelease;
+            _onButtonDown = onButtonDown;
+            _onMove = onMove;
 
             Button arrowClosed = ArrowClosed.GetComponent<Button>();
             arrowClosed.onClick.AddListener(onExpand);
             Button arrowExpanded = ArrowExpanded.GetComponent<Button>();
             arrowExpanded.onClick.AddListener(onCollapse);
+
         }
 
         public void Bind(string name, int id, int level, bool isSelected)
@@ -74,6 +86,24 @@ namespace UI
             BoundID = id;
             SetNesting(level);
             SetHighlight(isSelected);
+        }
+
+        public void HighlightTopBorder(bool active)
+        {
+            TopBar.SetActive(active);
+            BottomBar.SetActive(!active);
+        }
+
+        public void HighlightBottomBorder(bool active)
+        {
+            BottomBar.SetActive(active);
+            TopBar.SetActive(!active);
+        }
+
+        public void SetBarHighlight(bool active)
+        {
+            TopBar.SetActive(active);
+            BottomBar.SetActive(active);
         }
 
         public void SetHighlight(bool highlight)
@@ -96,6 +126,19 @@ namespace UI
         {
             base.OnPointerUp(eventData);
             _onButtonRelease.Invoke();
+        }
+
+        public override void OnPointerDown(PointerEventData eventData)
+        {
+            base.OnPointerDown(eventData);
+            _onButtonDown.Invoke();
+        }
+
+        public override void OnMove(AxisEventData eventData)
+        {
+            base.OnMove(eventData);
+            Debug.Log(eventData.moveVector);
+            _onMove.Invoke();
         }
     }
 }

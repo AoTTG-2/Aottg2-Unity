@@ -11,6 +11,7 @@ using GameManagers;
 using Characters;
 using Map;
 using MapEditor;
+using Assets.Scripts.ApplicationManagers;
 
 
 namespace UI
@@ -33,6 +34,8 @@ namespace UI
         private Dictionary<int, int> _idToIndex = new Dictionary<int, int>();
         private Dictionary<int, int> _indexToId = new Dictionary<int, int>();
         private HashSet<int> _selected = new HashSet<int>();
+
+
         private int _lastClickedItem = -1;
         private float _lastclickedTime = 0f;
         private bool _draggingItem = false;
@@ -88,6 +91,66 @@ namespace UI
 
             Sync();
         }
+
+        #region TreeViewAlgorithms
+        /// <summary>
+        /// This code returns a flattened list of mapobjects to draw to the hierarchy as well as their order.
+        /// This code will be rerun every resync and needs to be efficient.
+        /// </summary>
+        /// <returns>A list of ids that should be shown in the hierarchy panel.</returns>
+        public List<int> GetVisibleItems()
+        {
+            // foreach (MapObject obj in MapLoader.IdToMapObject.Values)
+            List<int> items = new List<int>();
+            GetOrderedChildren(-1, items);
+
+            // For now so that we can check other maps,
+            if (items.Count == 0) GetOrderedChildren(0, items); // TODO: Remove this when map migration is added.
+
+            return items;
+        }
+
+        private void GetOrderedChildren(int parent, List<int> items)
+        {
+            if (MapLoader.IdToChildren.ContainsKey(parent) == false)
+                return;
+
+            IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
+            foreach (int child in orderedChildren)
+            {
+                items.Add(child);
+                if (MapLoader.IdToMapObject[child].Expanded)
+                    GetOrderedChildren(child, items);
+            }
+        }
+
+        public void MoveMapObject(int id, int newParent, int newSiblingIndex)
+        {
+            // TODO: this might be needed to kick off the command.
+
+        }
+
+        /// <summary>
+        /// Remove the element from its parent and reorder the sibling indices.
+        /// </summary>
+        /// <param name="id"></param>
+        public void RemoveFromParent(int id)
+        {
+            MapObject obj = MapLoader.IdToMapObject[id];
+            if (obj == null)
+                return;
+
+            int parent = obj.Parent;
+            int siblingIndex = obj.SiblingIndex;
+
+            MapLoader.IdToMapObject[id].Parent = -1;
+            MapLoader
+            IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
+
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Called when the scroll bar is moved.
@@ -203,7 +266,6 @@ namespace UI
             button.Setup(
                 Width,
                 () => OnButtonClick(button.BoundID),
-                () => OnButtonRelease(button.BoundID),
                 () => { OnElementCallback(button.BoundID, true); },
                 () => { OnElementCallback(button.BoundID, false); }
             );
@@ -251,9 +313,15 @@ namespace UI
             Sync();
         }
 
-        private void OnButtonRelease(int id)
+        private int holding = -1;
+        private void OnButtonDown(int id)
         {
+            holding = id;
+            Debug.Log("Holding");
         }
+
+        List<MapEditorHirarchyButton> _previouslyHighlighted = new List<MapEditorHirarchyButton>();
+
 
         private void OnButtonClick(int id)
         {

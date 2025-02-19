@@ -8,7 +8,7 @@ using GameManagers;
 
 namespace MapEditor
 {
-    class TransformScaleCommand : BaseCommand
+    class TransformScaleCommand : InspectorCommand
     {
         private List<Vector3> _oldScales = new List<Vector3>();
         private List<Vector3> _newScales = new List<Vector3>();

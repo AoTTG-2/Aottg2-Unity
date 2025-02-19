@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Map
 {
@@ -16,6 +17,18 @@ namespace Map
         public Renderer[] renderCache;
         public Collider[] colliderCache;
         public bool RuntimeCreated = false;
+
+        /// New fields for serialization
+        // Editor
+        public int SiblingIndex = 0;
+        public bool Expanded = false;
+        
+        // Networking
+        public bool NetworkedMovement = false;
+
+        // Rendering
+        public ShadowCastingMode ShadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        public bool ReceiveShadows = true;
 
         public MapObject(int parent, GameObject gameObject, MapScriptBaseObject scriptObject)
         {

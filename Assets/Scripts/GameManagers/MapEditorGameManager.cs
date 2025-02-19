@@ -247,7 +247,7 @@ namespace GameManagers
             command.Execute();
             _undoCommands.Add(command);
             _redoCommands.Clear();
-            if (command is TransformPositionCommand || command is TransformPositionRotationCommand || command is TransformScaleCommand )
+            if (command is InspectorCommand)
                 _menu.SyncInspector();
         }
 

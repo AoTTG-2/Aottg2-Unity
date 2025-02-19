@@ -20,6 +20,8 @@ namespace Map
         public static Dictionary<int, MapObject> IdToMapObject = new Dictionary<int, MapObject>();
         public static Dictionary<int, HashSet<int>> IdToChildren = new Dictionary<int, HashSet<int>>();
         public static Dictionary<GameObject, MapObject> GoToMapObject = new Dictionary<GameObject, MapObject>();
+
+
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
         public static List<Light> Daylight = new List<Light>();
         public static List<MapLight> MapLights = new List<MapLight>();
@@ -81,33 +83,8 @@ namespace Map
             HighestObjectId = 1;
             HasWeather = !editor && options != null && options.HasWeather;
             Weather = weather;
-            /*
-            if (options != null)
-                LoadBackground(options.Background, options.BackgroundPosition, options.BackgroundRotation);
-            */
             _instance.StartCoroutine(_instance.LoadObjectsCoroutine(customAssets, objects, editor));
         }
-
-        /*
-        public static void LoadBackground(string background, Vector3 position, Vector3 rotation)
-        {
-            if (_background != null)
-                Destroy(_background);
-            try
-            {
-                if (background == "None")
-                    return;
-                _background = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Map, "Background/Prefabs/" + background);
-                var center = _background.transform.Find("Center").localPosition;
-                _background.transform.position = position - center;
-                _background.transform.rotation = Quaternion.Euler(rotation);
-            }
-            catch
-            {
-                Debug.Log("Error loading map background: " + background);
-            }
-        }
-        */
 
         public static void RegisterMapLight(Light light, bool isDaylight)
         {
@@ -135,6 +112,7 @@ namespace Map
                 go = LoadSceneObject((MapScriptSceneObject)scriptObject, editor);
             MapObject mapObject = new MapObject(scriptObject.Parent, go, scriptObject);
             HighestObjectId = Mathf.Max(mapObject.ScriptObject.Id, HighestObjectId);
+            mapObject.SiblingIndex = mapObject.ScriptObject.Id;
             if (IdToMapObject.ContainsKey(scriptObject.Id))
             {
                 DebugConsole.Log("Map load error: map object with duplicate ID found (" + scriptObject.Id.ToString() + ")", true);
@@ -177,6 +155,146 @@ namespace Map
                 else
                     IdToChildren.Add(obj.Parent, new HashSet<int>() { obj.ScriptObject.Id });
             }
+        }
+
+        /// <summary>
+        /// Moves the object into the new position in the hierarchy.
+        /// If newSiblingIndex is null, the object will be placed at the start of the list.
+        /// This will rebalance the old and new parent's children's sibling indices.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newParent"></param>
+        /// <param name="newSiblingIndex"></param>
+        public static void MoveToParent(int id, int newParent, int? newSiblingIndex)
+        {
+            if (IdToMapObject.ContainsKey(id) == false)
+                return;
+            var obj = IdToMapObject[id];
+            int oldParent = obj.Parent;
+            int oldSiblingIndex = obj.SiblingIndex;
+
+            int siblingIndexTarget = newSiblingIndex ?? 0;
+
+            // Clean up the old parent
+            if (IdToChildren.ContainsKey(oldParent))
+            {
+                IdToChildren[oldParent].Remove(id);
+
+                if (IdToChildren[oldParent].Count == 0)
+                    IdToChildren.Remove(oldParent);
+                else
+                {
+                    // Rebalance the old parent's children
+                    var oldSiblings = IdToChildren[oldParent].OrderBy(e => IdToMapObject[e].SiblingIndex);
+                    int i = 0;
+                    foreach (int childId in oldSiblings)
+                    {
+                        IdToMapObject[childId].SiblingIndex = i;
+                        i++;
+                    }
+                }
+            }
+
+            // Set the new parent
+            if (!IdToChildren.ContainsKey(newParent))
+            {
+                IdToChildren.Add(newParent, new HashSet<int>());
+            }
+
+            var newSiblings = IdToChildren[newParent].OrderBy(e => IdToMapObject[e].SiblingIndex);
+
+            int j = 0;
+            foreach (int childId in newSiblings)
+            {
+                if (j >= siblingIndexTarget)
+                    IdToMapObject[childId].SiblingIndex++;
+                j++;
+            }
+            IdToMapObject[id].SiblingIndex = siblingIndexTarget;
+            IdToChildren[newParent].Add(id);
+
+
+
+            // TODO: consider if we're adding before the sibling or after the sibling.
+            // What happens if we add multiple elements from the same parent, the order would be reversed.
+            // We need to ensure that elements on the same level are placed in the right order.
+            // Likewise, if we move to something like placeBeforeSiblingIndex, we need to ensure that when undoing, the order is correctly preserved.
+
+        }
+
+        /// <summary>
+        /// Moves the object into the new position in the hierarchy.
+        /// This should handle add object, paste, paste as child, and duplicate.
+        /// Adds the element in the correct place and updates the sibling index of the parent's children its placed under.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newParent"></param>
+        /// <param name="newSiblingIndex"></param>
+        public static void HandleAddObjectParenting(int id, int newParent, int? newSiblingIndex)
+        {
+            int siblingIndexTarget = newSiblingIndex ?? 0;
+            if (!IdToChildren.ContainsKey(newParent))
+            {
+                IdToChildren.Add(newParent, new HashSet<int>());
+            }
+
+            var newSiblings = IdToChildren[newParent].OrderBy(e => IdToMapObject[e].SiblingIndex);
+
+            int j = 0;
+            foreach (int childId in newSiblings)
+            {
+                if (j >= siblingIndexTarget)
+                    IdToMapObject[childId].SiblingIndex++;
+                j++;
+            }
+            IdToMapObject[id].SiblingIndex = siblingIndexTarget;
+            IdToChildren[newParent].Add(id);
+        }
+
+        /// <summary>
+        /// When an object is deleted, this will handle rebalancing the parent's children's sibling indices.
+        /// </summary>
+        /// <param name="id"></param>
+        public static void HandleDeleteObjectParenting(int id)
+        {
+            if (IdToMapObject.ContainsKey(id) == false)
+                return;
+            var obj = IdToMapObject[id];
+            int oldParent = obj.Parent;
+            int oldSiblingIndex = obj.SiblingIndex;
+
+            // Clean up the old parent
+            if (IdToChildren.ContainsKey(oldParent))
+            {
+                IdToChildren[oldParent].Remove(id);
+
+                if (IdToChildren[oldParent].Count == 0)
+                    IdToChildren.Remove(oldParent);
+                else
+                {
+                    // Rebalance the old parent's children
+                    var oldSiblings = IdToChildren[oldParent].OrderBy(e => IdToMapObject[e].SiblingIndex);
+                    int i = 0;
+                    foreach (int childId in oldSiblings)
+                    {
+                        IdToMapObject[childId].SiblingIndex = i;
+                        i++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Take the given id, get the MapObject of the parent and children,
+        /// We should require a root object that has a normalized transform Vector.Zero, Quaternion.Identity, Vector.One.
+        /// Calculate offsets on this root node, normalize the parent ids and sibling ids so that we can later spawn this in cleanly,
+        /// and finally save a list of serialized mapscript strings.
+        /// </summary>
+        /// <param name="id"></param>
+        public static void CreatePrefab(int id, string folder, string name)
+        {
+            // TODO: add infrastructure (ui) for saving/loading prefabs into the editor.
+            // TODO: add a task for a prefab editor? (would only affect the stored version, not the used instances)
         }
 
 
