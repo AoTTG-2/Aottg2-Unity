@@ -17,7 +17,7 @@ using System.Runtime.CompilerServices;
 
 namespace UI
 {
-    class MapEditorHirarchyButton: Button
+    class MapEditorHierarchyButton : Button
     {
         public GameObject Highlight;
         public Text Name;
@@ -28,17 +28,18 @@ namespace UI
         public GameObject BottomBar;
         public int BoundID = -1;
 
-        private UnityAction _onButtonRelease;
-        private UnityAction _onButtonDown;
-        private UnityAction _onMove;
         private GameObject ArrowClosed;
         private GameObject ArrowExpanded;
+
+        private UnityAction _onMouseOver;
+        private UnityAction _onMouseDown;
 
         public void Setup(
             float Width,
             UnityAction onButtonClick,
             UnityAction onExpand,
-            UnityAction onCollapse)
+            UnityAction onCollapse
+            )
         {
 
             #region Styling
@@ -68,10 +69,6 @@ namespace UI
 
             onClick.AddListener(onButtonClick);
             transition = Transition.None;
-
-            _onButtonRelease = onButtonRelease;
-            _onButtonDown = onButtonDown;
-            _onMove = onMove;
 
             Button arrowClosed = ArrowClosed.GetComponent<Button>();
             arrowClosed.onClick.AddListener(onExpand);
@@ -120,25 +117,6 @@ namespace UI
         {
             ArrowClosed.SetActive(!isExpanded && hasChildren);
             ArrowExpanded.SetActive(isExpanded && hasChildren);
-        }
-
-        public override void OnPointerUp(PointerEventData eventData)
-        {
-            base.OnPointerUp(eventData);
-            _onButtonRelease.Invoke();
-        }
-
-        public override void OnPointerDown(PointerEventData eventData)
-        {
-            base.OnPointerDown(eventData);
-            _onButtonDown.Invoke();
-        }
-
-        public override void OnMove(AxisEventData eventData)
-        {
-            base.OnMove(eventData);
-            Debug.Log(eventData.moveVector);
-            _onMove.Invoke();
         }
     }
 }

@@ -161,6 +161,14 @@ namespace GameManagers
             OnSelectionChange();
         }
 
+        public void SetParent(int newParent, int? newSiblingID = null)
+        {
+            if (SelectedObjects.Count == 0)
+                return;
+            NewCommand(new SetParentCommand(new List<MapObject>(SelectedObjects), newParent, newSiblingID));
+            _menu.SyncHierarchyPanel();
+        }
+
         public void Select(bool multi)
         {
             var camera = SceneLoader.CurrentCamera;

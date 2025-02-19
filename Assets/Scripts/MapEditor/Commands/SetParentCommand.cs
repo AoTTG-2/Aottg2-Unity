@@ -31,7 +31,7 @@ namespace MapEditor
         public override void Execute()
         {
             foreach (int id in _ids)
-                MapLoader.MoveToParent(id, _newParent, _newSiblingIndex);
+                MapLoader.EditorOnMoveObject(id, _newParent, _newSiblingIndex);
         }
 
         public override void Unexecute()
@@ -40,7 +40,7 @@ namespace MapEditor
             Assert.AreEqual(_ids.Count, _previousSiblingIndices.Count);
 
             for (int i = 0; i < _ids.Count; i++)
-                MapLoader.MoveToParent(_ids[i], _previousParents[i], _previousSiblingIndices[i]);
+                MapLoader.EditorOnMoveObject(_ids[i], _previousParents[i], _previousSiblingIndices[i]);
         }
     }
 }

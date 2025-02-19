@@ -20,7 +20,7 @@ namespace Map
         public static Dictionary<int, MapObject> IdToMapObject = new Dictionary<int, MapObject>();
         public static Dictionary<int, HashSet<int>> IdToChildren = new Dictionary<int, HashSet<int>>();
         public static Dictionary<GameObject, MapObject> GoToMapObject = new Dictionary<GameObject, MapObject>();
-
+        public static readonly int ROOT = -1;
 
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
         public static List<Light> Daylight = new List<Light>();
@@ -143,7 +143,7 @@ namespace Map
                 IdToChildren[obj.Parent].Remove(obj.ScriptObject.Id);
             if (parent == null)
             {
-                obj.Parent = 0;
+                obj.Parent = ROOT;
                 obj.GameObject.transform.SetParent(null);
             }
             else if (obj != parent && parent.Parent != obj.ScriptObject.Id)
@@ -165,7 +165,7 @@ namespace Map
         /// <param name="id"></param>
         /// <param name="newParent"></param>
         /// <param name="newSiblingIndex"></param>
-        public static void MoveToParent(int id, int newParent, int? newSiblingIndex)
+        public static void EditorOnMoveObject(int id, int newParent, int? newSiblingIndex)
         {
             if (IdToMapObject.ContainsKey(id) == false)
                 return;
@@ -212,14 +212,6 @@ namespace Map
             }
             IdToMapObject[id].SiblingIndex = siblingIndexTarget;
             IdToChildren[newParent].Add(id);
-
-
-
-            // TODO: consider if we're adding before the sibling or after the sibling.
-            // What happens if we add multiple elements from the same parent, the order would be reversed.
-            // We need to ensure that elements on the same level are placed in the right order.
-            // Likewise, if we move to something like placeBeforeSiblingIndex, we need to ensure that when undoing, the order is correctly preserved.
-
         }
 
         /// <summary>
@@ -230,7 +222,7 @@ namespace Map
         /// <param name="id"></param>
         /// <param name="newParent"></param>
         /// <param name="newSiblingIndex"></param>
-        public static void HandleAddObjectParenting(int id, int newParent, int? newSiblingIndex)
+        public static void EditorOnAddObject(int id, int newParent, int? newSiblingIndex)
         {
             int siblingIndexTarget = newSiblingIndex ?? 0;
             if (!IdToChildren.ContainsKey(newParent))
@@ -255,7 +247,7 @@ namespace Map
         /// When an object is deleted, this will handle rebalancing the parent's children's sibling indices.
         /// </summary>
         /// <param name="id"></param>
-        public static void HandleDeleteObjectParenting(int id)
+        public static void EditorOnDeleteObject(int id)
         {
             if (IdToMapObject.ContainsKey(id) == false)
                 return;

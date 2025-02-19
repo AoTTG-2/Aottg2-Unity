@@ -12,6 +12,8 @@ using Characters;
 using Map;
 using MapEditor;
 using Assets.Scripts.ApplicationManagers;
+using UnityEngine.EventSystems;
+using ExitGames.Client.Photon.StructWrapping;
 
 
 namespace UI
@@ -124,12 +126,6 @@ namespace UI
             }
         }
 
-        public void MoveMapObject(int id, int newParent, int newSiblingIndex)
-        {
-            // TODO: this might be needed to kick off the command.
-
-        }
-
         /// <summary>
         /// Remove the element from its parent and reorder the sibling indices.
         /// </summary>
@@ -144,7 +140,6 @@ namespace UI
             int siblingIndex = obj.SiblingIndex;
 
             MapLoader.IdToMapObject[id].Parent = -1;
-            MapLoader
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
 
         }
@@ -180,7 +175,7 @@ namespace UI
                 bool hasChildren = _treeView.HasChildren(item);
                 var go = _items[i - startIndex];
                 go.SetActive(true);
-                RedrawPooled(go.GetComponent<MapEditorHirarchyButton>(), MapLoader.IdToMapObject[item.ID], item.Level, item.SiblingID, item.Expanded, hasChildren);
+                RedrawPooled(go.GetComponent<MapEditorHierarchyButton>(), MapLoader.IdToMapObject[item.ID], item.Level, item.SiblingID, item.Expanded, hasChildren);
                 if (!_idToItem.ContainsKey(item.ID))
                     _idToItem.Add(item.ID, go);
             }
@@ -248,7 +243,7 @@ namespace UI
             SyncSelectedItems();
         }
 
-        private void RedrawPooled(MapEditorHirarchyButton element, MapObject obj, int level, int siblingID, bool expanded, bool hasChildren)
+        private void RedrawPooled(MapEditorHierarchyButton element, MapObject obj, int level, int siblingID, bool expanded, bool hasChildren)
         {
             element.Bind(obj.ScriptObject.Name, obj.ScriptObject.Id, level, _selected.Contains(obj.ScriptObject.Id));
             element.SetExpanded(expanded, hasChildren);
@@ -262,12 +257,12 @@ namespace UI
         private GameObject CreatePooledItem()
         {
             var go = ElementFactory.InstantiateAndBind(SinglePanel, "Prefabs/Misc/MapEditorHierarchyButton");
-            var button = go.AddComponent<MapEditorHirarchyButton>();
+            var button = go.AddComponent<MapEditorHierarchyButton>();
             button.Setup(
                 Width,
                 () => OnButtonClick(button.BoundID),
-                () => { OnElementCallback(button.BoundID, true); },
-                () => { OnElementCallback(button.BoundID, false); }
+                () => OnElementCallback(button.BoundID, true),
+                () => OnElementCallback(button.BoundID, false)
             );
             button.Bind(string.Empty, -1, -1, false);
             return go;
@@ -312,16 +307,6 @@ namespace UI
         {
             Sync();
         }
-
-        private int holding = -1;
-        private void OnButtonDown(int id)
-        {
-            holding = id;
-            Debug.Log("Holding");
-        }
-
-        List<MapEditorHirarchyButton> _previouslyHighlighted = new List<MapEditorHirarchyButton>();
-
 
         private void OnButtonClick(int id)
         {
