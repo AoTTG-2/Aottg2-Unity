@@ -4,10 +4,12 @@ using GameManagers;
 using Map;
 using Photon.Pun;
 using Settings;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
+using UI;
 
 namespace Characters
 {
@@ -170,7 +172,9 @@ namespace Characters
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
                     {
-                        HookCharacter.GetKilled(_owner.Name + "'s hook");
+                        var damage = Math.Max(10, (int)(_owner.CurrentSpeed * CharacterData.HumanWeaponInfo["Hook"]["DamageMultiplier"]));
+                        ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                        HookCharacter.GetHit(_owner, damage, "Hook", "");
                     }
                 }
             }
@@ -242,7 +246,7 @@ namespace Characters
                 float noise = (midpoint - midDiff) / (float)midpoint;
                 noise = Mathf.Pow(noise, 0.5f);
                 float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
-                Vector3 noisePosition = Anchor.position + new Vector3(Random.Range(-max, max), Random.Range(-max, max), Random.Range(-max, max));
+                Vector3 noisePosition = Anchor.position + new Vector3(UnityEngine.Random.Range(-max, max), UnityEngine.Random.Range(-max, max), UnityEngine.Random.Range(-max, max));
                 noisePosition += (v1 * ((float)i / (float)vertex)) - (Vector3.up * rndFactor * 0.05f * noise) - (velocity * 0.001f * noise * rndFactor);
                 _renderer.SetPosition(i, noisePosition);
             }

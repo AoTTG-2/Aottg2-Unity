@@ -1063,6 +1063,11 @@ namespace Characters
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
                 Grab(titan, type);
             }
+            else if (type == "Hook")
+            {
+                var killerName = Util.FindCharacterByViewId(viewId).Name + "'s Hook";
+                base.GetHitRPC(viewId, killerName, damage, type, collider);
+            }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
@@ -2020,7 +2025,7 @@ namespace Characters
             float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
             if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
             {
-                GetKilled("Impact");
+                GetHit("Impact", (int)speedDiff, "Impact", "");
                 return;
             }
         }
