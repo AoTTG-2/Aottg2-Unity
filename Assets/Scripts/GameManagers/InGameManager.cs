@@ -242,8 +242,8 @@ namespace GameManagers
         public static void OnJoinRoom()
         {
             AnticheatManager.Reset();
-            ResetPersistentPlayerProperties();
             ResetPlayerInfo();
+            ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);

@@ -357,8 +357,12 @@ namespace Characters
             {
                 _part_hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, hairMesh, cached: true);
                 AttachToMount(_part_hair, _part_head);
-                _part_hair.GetComponentInChildren<Renderer>().material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
-                _part_hair.GetComponentInChildren<Renderer>().material.color = CustomSet.HairColor.Value.ToColor();
+                foreach (var renderer in _part_hair.GetComponentsInChildren<Renderer>())
+                {
+                    renderer.material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
+                    if (!renderer.name.Contains("IgnoreColor"))
+                        renderer.material.color = CustomSet.HairColor.Value.ToColor();
+                }
             }
             string hairClothMesh = _meshes.GetHairClothMesh();
             if (hairClothMesh != string.Empty && !IsDeadBody)

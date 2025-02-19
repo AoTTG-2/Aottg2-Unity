@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3322274}
   - component: {fileID: 2322274}
   m_Layer: 0
-  m_Name: hair_rico
+  m_Name: hair_rico2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

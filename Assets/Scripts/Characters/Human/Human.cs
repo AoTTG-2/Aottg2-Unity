@@ -765,15 +765,12 @@ namespace Characters
             {
                 if (((AmmoWeapon)Weapon).AmmoLeft <= 0)
                     return;
-                if (Weapon is AHSSWeapon || Weapon is APGWeapon)
+                if (Weapon is AHSSWeapon)
                 {
                     ToggleBlades(false);
-                    if (Weapon is AHSSWeapon)
-                    {
-                        CancelHookLeftKey = true;
-                        CancelHookRightKey = true;
-                        CancelHookBothKey = true;
-                    }
+                    CancelHookLeftKey = true;
+                    CancelHookRightKey = true;
+                    CancelHookBothKey = true;
                 }
                 else if (Weapon is ThunderspearWeapon)
                 {

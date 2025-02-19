@@ -67,13 +67,13 @@ namespace CustomSkins
                     return new HumanHairCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, texture);
                 case HumanCustomSkinPartId.Eye:
                     AddRendererIfExists(renderers, human.Setup._part_eye);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, null, true);
                 case HumanCustomSkinPartId.Glass:
                     AddRendererIfExists(renderers, human.Setup._part_glass);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, null, true);
                 case HumanCustomSkinPartId.Face:
                     AddRendererIfExists(renderers, human.Setup._part_face);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, new Vector2(8f, 8f), true);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeSmall, null, true);
                 case HumanCustomSkinPartId.Skin:
                     AddRendererIfExists(renderers, human.Setup._part_hand_l);
                     AddRendererIfExists(renderers, human.Setup._part_hand_r);
