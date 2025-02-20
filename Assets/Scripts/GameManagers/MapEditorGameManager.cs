@@ -256,7 +256,11 @@ namespace GameManagers
             _undoCommands.Add(command);
             _redoCommands.Clear();
             if (command is InspectorCommand)
+            {
                 _menu.SyncInspector();
+                _menu.SyncHierarchyPanel();
+            }
+                
         }
 
         protected override void OnFinishLoading()

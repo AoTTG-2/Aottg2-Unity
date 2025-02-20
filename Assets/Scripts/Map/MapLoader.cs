@@ -170,7 +170,7 @@ namespace Map
             if (IdToMapObject.ContainsKey(id) == false)
                 return;
             var obj = IdToMapObject[id];
-            int oldParent = obj.Parent;
+            int oldParent = obj.ScriptObject.Parent;
             int oldSiblingIndex = obj.SiblingIndex;
 
             int siblingIndexTarget = newSiblingIndex ?? 0;
@@ -210,6 +210,7 @@ namespace Map
                     IdToMapObject[childId].SiblingIndex++;
                 j++;
             }
+            IdToMapObject[id].ScriptObject.Parent = newParent;
             IdToMapObject[id].SiblingIndex = siblingIndexTarget;
             IdToChildren[newParent].Add(id);
         }
@@ -252,7 +253,7 @@ namespace Map
             if (IdToMapObject.ContainsKey(id) == false)
                 return;
             var obj = IdToMapObject[id];
-            int oldParent = obj.Parent;
+            int oldParent = obj.ScriptObject.Parent;
             int oldSiblingIndex = obj.SiblingIndex;
 
             // Clean up the old parent

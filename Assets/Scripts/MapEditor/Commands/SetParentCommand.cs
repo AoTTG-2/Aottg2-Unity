@@ -10,15 +10,15 @@ namespace MapEditor
 {
     class SetParentCommand : InspectorCommand
     {
-        private List<int> _previousParents;
-        private List<int> _previousSiblingIndices;
+        private List<int> _previousParents = new List<int>();
+        private List<int> _previousSiblingIndices = new List<int>();
         private int _newParent;
         private int? _newSiblingIndex;
         private List<int> _ids = new List<int>();
 
         public SetParentCommand(List<MapObject> objs, int newParent, int? newSiblingIndex)
         {
-            Assert.AreEqual(objs.Count, 0); // TODO: for now only allow single element moving.
+            Assert.AreEqual(objs.Count, 1); // TODO: for now only allow single element moving.
             _newParent = newParent;
             foreach (MapObject obj in objs)
             {

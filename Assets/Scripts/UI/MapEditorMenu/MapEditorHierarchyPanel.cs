@@ -139,7 +139,7 @@ namespace UI
             int parent = obj.Parent;
             int siblingIndex = obj.SiblingIndex;
 
-            MapLoader.IdToMapObject[id].Parent = -1;
+            MapLoader.IdToMapObject[id].ScriptObject.Parent = -1;
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
 
         }
@@ -183,10 +183,76 @@ namespace UI
             _pageLabel.text = $"{endIndex - startIndex}/{MapLoader.IdToMapObject.Values.Count} ({startIndex}-{endIndex})";
         }
 
+        int _targetID = -1;
+        int _targetParent = -1;
+        int? _targetSibling = null;
+        MapEditorHierarchyButton _lastHighlighted = null;
+
         private void Update()
         {
             OnScroll();
+
+            if (_lastHighlighted != null)
+                _lastHighlighted.SetHighlight(false);
+
+            // mouse down, mouse hold, mouse up
+            if (Input.GetMouseButtonDown(0))
+            {
+                _draggingItem = false;
+                _targetID = -1;
+                _targetParent = -1;
+                _targetSibling = null;
+                _lastHighlighted = FindButtonMouseOver();
+                if (_lastHighlighted != null)
+                {
+                    _lastHighlighted.SetHighlight(true);
+                    _draggingItem = true;
+                    _targetID = _lastHighlighted.BoundID;
+                }
+            }
+            else if (Input.GetMouseButton(0) && _draggingItem)
+            {
+                _lastHighlighted = FindButtonMouseOver();
+                if (_lastHighlighted != null)
+                {
+                    _lastHighlighted.SetHighlight(true);
+                }
+            }
+            else if (Input.GetMouseButtonUp(0) && _draggingItem)
+            {
+                _lastHighlighted = FindButtonMouseOver();
+                if (_lastHighlighted != null)
+                {
+                    _lastHighlighted.SetHighlight(false);
+                    _draggingItem = false;
+                    _targetParent = _lastHighlighted.BoundID;
+                    _targetSibling = 0;
+
+                    if (_targetID != _targetParent)
+                    {
+                        _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
+                    }
+                }
+            }
+
         }
+
+
+        /// <summary>
+        /// Using the button sizes, find the button the mouse is currently over.
+        /// </summary>
+        /// <returns></returns>
+        private MapEditorHierarchyButton FindButtonMouseOver()
+        {
+            Vector2 mouse = Input.mousePosition;
+            foreach (var item in _items)
+            {
+                if (RectTransformUtility.RectangleContainsScreenPoint(item.GetComponent<RectTransform>(), mouse))
+                    return item.GetComponent<MapEditorHierarchyButton>();
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Create a fixed number of MapHierarchyButtons for reuse, disabled by default.
