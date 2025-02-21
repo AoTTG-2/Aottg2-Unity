@@ -12,21 +12,17 @@ using Characters;
 
 namespace UI
 {
-    class CharacterEditorPreviewPanel: HeadedPanel
+    class CharacterEditorHumanCategoryPanel: CharacterEditorCategoryPanel
     {
-        protected override string Title => UIManager.GetLocale("CharacterEditor", "Preview", "Title");
-        protected override float Width => 330f;
-        protected override float Height => 280f;
-        protected override float VerticalSpacing => 20f;
-        protected override int HorizontalPadding => 25;
-        protected override int VerticalPadding => 25;
-        private CharacterEditorMenu _menu;
+        protected override string Title => UIManager.GetLocaleCommon("Editor");
+        protected override float Height => 340f;
+        private CharacterEditorHumanMenu _menu;
         private StringSetting _emote = new StringSetting("Salute");
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
-            _menu = (CharacterEditorMenu)UIManager.CurrentMenu;
+            _menu = (CharacterEditorHumanMenu)UIManager.CurrentMenu;
             ElementStyle style = new ElementStyle(titleWidth: 95f, themePanel: ThemePanel);
             HumanCustomSettings settings = SettingsManager.HumanCustomSettings;
             float dropdownWidth = 160f;
@@ -42,7 +38,7 @@ namespace UI
 
         private void OnEmote()
         {
-            _menu.Character.EmoteAction(_emote.Value);
+            _gameManager.Character.EmoteAction(_emote.Value);
         }
     }
 }

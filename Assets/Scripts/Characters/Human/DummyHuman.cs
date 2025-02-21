@@ -13,18 +13,14 @@ using Controllers;
 
 namespace Characters
 {
-    class HumanDummy: MonoBehaviour
+    class DummyHuman: DummyCharacter
     {
         public HumanComponentCache Cache;
-        public HumanState State = HumanState.Idle;
         public HumanSetup Setup;
-        public AnimationHandler Animation;
 
-        // actions
-        private float _stateTimeLeft = 0f;
-
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Cache = new HumanComponentCache(gameObject);
             Cache.Rigidbody.freezeRotation = true;
             Cache.Rigidbody.useGravity = false;
@@ -32,16 +28,10 @@ namespace Characters
             Setup = gameObject.GetComponent<HumanSetup>();
             if (Setup == null)
                 Setup = gameObject.AddComponent<HumanSetup>();
-            Animation = new AnimationHandler(gameObject);
         }
 
-        protected void Start()
+        protected override string GetIdleAnimation()
         {
-        }
-
-        public void Idle()
-        {
-            State = HumanState.Idle;
             bool male = Setup.CustomSet.Sex.Value == (int)HumanSex.Male;
             string animation;
             if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.APG)
@@ -50,10 +40,10 @@ namespace Characters
                 animation = male ? HumanAnimations.IdleTSM : HumanAnimations.IdleTSF;
             else
                 animation = male ? HumanAnimations.IdleM : HumanAnimations.IdleF;
-            Animation.CrossFade(animation, 0.1f, 0f);
+            return animation;
         }
 
-        public void EmoteAction(string emote)
+        protected override string GetEmoteAnimation(string emote)
         {
             string animation = HumanAnimations.EmoteSalute;
             if (emote == "Salute")
@@ -70,25 +60,7 @@ namespace Characters
                 animation = HumanAnimations.EmoteNo;
             else if (emote == "Eat")
                 animation = HumanAnimations.SpecialSasha;
-            State = HumanState.EmoteAction;
-            Animation.CrossFade(animation, 0.1f, 0f);
-            _stateTimeLeft = Animation.GetLength(animation);
-        }
-
-        protected void Update()
-        {
-            if (State != HumanState.Idle)
-            {
-                _stateTimeLeft -= Time.deltaTime;
-                if (_stateTimeLeft <= 0f)
-                {
-                    Idle();
-                }
-            }
-        }
-
-        protected void FixedUpdate()
-        {
+            return animation;
         }
     }
 }

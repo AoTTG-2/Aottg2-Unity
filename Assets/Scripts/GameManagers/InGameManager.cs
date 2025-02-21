@@ -19,6 +19,7 @@ using Controllers;
 using Photon.Voice.PUN;
 using Anticheat;
 using System.Globalization;
+using Codice.CM.Common.Tree;
 
 namespace GameManagers
 {
@@ -570,9 +571,22 @@ namespace GameManagers
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
+                TitanCustomSet selectedSet = null;
+                int selectedSetIndex = settings.CustomSet.Value;
+                if (selectedSetIndex > 0)
+                {
+                    selectedSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.Sets.GetItemAt(selectedSetIndex - 1);
+                    combo[0] = selectedSet.Body.Value;
+                    combo[1] = selectedSet.Head.Value;
+                }
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-                titan.Init(false, GetPlayerTeam(true), null, combo[1]);
+                TitanCustomSet currentSet;
+                if (selectedSetIndex == 0)
+                    currentSet = titan.Setup.CreateRandomSet(combo[1]);
+                else
+                    currentSet = selectedSet;
+                titan.Init(false, GetPlayerTeam(true), null, currentSet);
                 SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
@@ -726,7 +740,7 @@ namespace GameManagers
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
             var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-            titan.Init(true, TeamInfo.Titan, data, combo[1]);
+            titan.Init(true, TeamInfo.Titan, data, titan.Setup.CreateRandomSet(combo[1]));
             SetupTitan(titan);
             return titan;
         }

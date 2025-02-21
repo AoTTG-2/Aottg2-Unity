@@ -62,7 +62,8 @@
 		"Duel": "Duel",
 		"Play": "Play",
 		"Spectate": "Spectate",
-		"LoadAutosave": "Load Autosave"
+		"LoadAutosave": "Load Autosave",
+		"Editor": "Editor"
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",
@@ -130,7 +131,7 @@
 		"Titans.Punk": "Punk",
 		"Titans.SizeEnabled": "Custom sizes",
 		"Titans.MinSize": "Min size",
-		"Titans.MaxSize": "MaxSize",
+		"Titans.MaxSize": "Max size",
 		"Titans.HealthMode": "Custom health",
 		"Titans.HealthOptions": ["Off", "Fixed", "Scaled"],
 		"Titans.MinHealth": "Min health",
@@ -390,6 +391,7 @@
 		"Keybinds.General.TapMap": "Map tap",
 		"Keybinds.General.TapMapTooltip": "If enabled, tap to toggle map. Otherwise hold to toggle.",
 		"Keybinds.General.HideCursor": "Hide cursor",
+		"Keybinds.General.Modifier": "Modifier",
 		"Keybinds.Human.AttackDefault": "Normal attack",
 		"Keybinds.Human.AttackSpecial": "Special attack",
 		"Keybinds.Human.HookLeft": "Hook left",
@@ -516,6 +518,7 @@
 		"General.Costume": "Costume",
 		"General.Loadout": "Loadout",
 		"General.Special": "Special",
+		"General.Size": "Size",
 		"SpecialTooltip.Distract": "Causes enemies to switch their focus to you",
 		"SpecialTooltip.Escape": "Lets you escape the grasp of a titan - just once",
 		"SpecialTooltip.Dance": "Make titans around you laugh, holding them in place",
@@ -552,6 +555,7 @@
 		"Costume.Logo": "Logo",
 		"Costume.Hat": "Hat",
 		"Costume.Head": "Head",
+		"Costume.Body": "Body",
 		"Costume.Back": "Back",
 		"Costume.SkinColor": "Skin color",
 		"Costume.HairColor": "Hair color",

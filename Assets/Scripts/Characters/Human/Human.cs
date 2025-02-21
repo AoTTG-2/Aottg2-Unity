@@ -3391,7 +3391,7 @@ namespace Characters
                 AddRendererIfExists(renderers, Setup._part_hat);
                 AddRendererIfExists(renderers, Setup._part_back);
                 AddRendererIfExists(renderers, Setup._part_head_decor);
-                AddRendererIfExists(renderers, Setup._part_hair);
+                AddRendererIfExists(renderers, Setup._part_hair, multiple: true);
                 AddRendererIfExists(renderers, Setup._part_eye);
                 AddRendererIfExists(renderers, Setup._part_glass);
                 AddRendererIfExists(renderers, Setup._part_face);

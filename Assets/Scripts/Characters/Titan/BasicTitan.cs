@@ -35,16 +35,16 @@ namespace Characters
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
         public bool LookAtTarget = false;
-        public int HeadPrefab;
         public override bool CanSprint => true;
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
         private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
+        private TitanCustomSet _customSet;
 
-        public void Init(bool ai, string team, JSONNode data, int headPrefab)
+        public void Init(bool ai, string team, JSONNode data, TitanCustomSet customSet)
         {
-            HeadPrefab = headPrefab;
+            _customSet = customSet;
             if (ai)
             {
                 var controller = gameObject.AddComponent<BaseTitanAIController>();
@@ -136,7 +136,7 @@ namespace Characters
             base.Start();
             if (IsMine())
             {
-                string setup = Setup.CreateRandomSetupJson(HeadPrefab);
+                string setup = _customSet.SerializeToJsonString();
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { setup });
                 EffectSpawner.Spawn(EffectPrefabs.TitanSpawn, Cache.Transform.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize());
             }
@@ -147,7 +147,9 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Setup.Load(json);
+            var set = new TitanCustomSet();
+            set.DeserializeFromJsonString(json);
+            Setup.Load(set);
         }
 
         protected override void CreateCache(BaseComponentCache cache)

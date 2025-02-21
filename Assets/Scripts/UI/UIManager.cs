@@ -118,7 +118,12 @@ namespace UI
             else if (sceneName == SceneName.InGame)
                 CurrentMenu = ElementFactory.CreateDefaultMenu<InGameMenu>();
             else if (sceneName == SceneName.CharacterEditor)
-                CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorMenu>();
+            {
+                if (CharacterEditorGameManager.HumanMode)
+                    CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorHumanMenu>();
+                else
+                    CurrentMenu = ElementFactory.CreateDefaultMenu<CharacterEditorTitanMenu>();
+            }
             else if (sceneName == SceneName.MapEditor)
                 CurrentMenu = ElementFactory.CreateDefaultMenu<MapEditorMenu>();
             else if (sceneName == SceneName.SnapshotViewer)

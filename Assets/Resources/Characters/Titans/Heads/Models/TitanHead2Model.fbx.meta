@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e8868f7a2b709ce4f974259fb22d124f
+guid: 5bb305ec01955e942843521c8807326e
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -27,7 +27,7 @@ ModelImporter:
     100042: Controller.Leg.L
     100044: Controller.Leg.R
     100046: Core
-    100048: eyes_4
+    100048: eyes_3
     100050: foot.L
     100052: foot.R
     100054: forearm.L
@@ -51,7 +51,7 @@ ModelImporter:
     100090: hand.R.006
     100092: hand.R.006_end
     100094: head
-    100096: head_4
+    100096: head_3
     100098: hip
     100100: IK_ElbowController.L
     100102: IK_ElbowController.L_end
@@ -102,7 +102,7 @@ ModelImporter:
     400042: Controller.Leg.L
     400044: Controller.Leg.R
     400046: Core
-    400048: eyes_4
+    400048: eyes_3
     400050: foot.L
     400052: foot.R
     400054: forearm.L
@@ -126,7 +126,7 @@ ModelImporter:
     400090: hand.R.006
     400092: hand.R.006_end
     400094: head
-    400096: head_4
+    400096: head_3
     400098: hip
     400100: IK_ElbowController.L
     400102: IK_ElbowController.L_end
@@ -153,12 +153,16 @@ ModelImporter:
     400144: toe.R_end
     400146: upper_arm.L
     400148: upper_arm.R
-    4300000: head_4
-    4300002: eyes_4
+    2300000: eyes_3
+    2300002: head_3
+    3300000: eyes_3
+    3300002: head_3
+    4300000: head_3
+    4300002: eyes_3
     9500000: //RootNode
     11100000: //RootNode
-    13700000: eyes_4
-    13700002: head_4
+    13700000: eyes_3
+    13700002: head_3
   materials:
     importMaterials: 0
     materialName: 0
