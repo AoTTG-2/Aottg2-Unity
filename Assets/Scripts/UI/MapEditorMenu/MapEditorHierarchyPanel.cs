@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using System.Collections;
 using ApplicationManagers;
 using GameManagers;
-using Characters;
 using Map;
 using MapEditor;
-using Assets.Scripts.ApplicationManagers;
-using UnityEngine.EventSystems;
-using ExitGames.Client.Photon.StructWrapping;
+using Unity.VisualScripting;
 
 
 namespace UI
@@ -29,19 +23,16 @@ namespace UI
         protected override float VerticalSpacing => 10f;
         protected override int HorizontalPadding => 20;
         protected override int VerticalPadding => 10;
+        protected int ButtomMaskPadding => 50;
         protected override bool ScrollBar => true;
 
-        private List<GameObject> _items = new List<GameObject>();
         private Dictionary<int, GameObject> _idToItem = new Dictionary<int, GameObject>();
-        private Dictionary<int, int> _idToIndex = new Dictionary<int, int>();
-        private Dictionary<int, int> _indexToId = new Dictionary<int, int>();
         private HashSet<int> _selected = new HashSet<int>();
 
 
         private int _lastClickedItem = -1;
         private float _lastclickedTime = 0f;
         private bool _draggingItem = false;
-        private const float DoubleClickTime = 0.5f;
         private MapEditorMenu _menu;
         private ElementStyle _style;
         private MapEditorGameManager _gameManager;
@@ -51,15 +42,27 @@ namespace UI
         private Transform _topGroup;
 
         // Pooling
-        private const int MaxVisibleObjects = 35;
+        private const int MaxVisibleObjects = 100;
         private int _visibleIndex = 0;
         private VirtualTreeView _treeView = new VirtualTreeView();
-        //private GameObject _scroll;
-        //private Scrollbar _scrollBar;
         private List<VirtualTreeViewItem> _visibleTreeViewItems = new List<VirtualTreeViewItem>();
         private ScrollRect _scrollRect;
         private GameObject _scroll;
         private Scrollbar _scrollBar;
+        private GameObject _scrollView;
+
+        private List<MapEditorHierarchyButton> _elementsPool = new();
+        private Dictionary<int, MapEditorHierarchyButton> _idToElement = new();
+        private List<MapObject> _visibleObjects = new();
+
+        public int TotalElementCount => MapLoader.IdToMapObject.Count;
+
+        // Selectors
+        int _targetID = -1;
+        int _targetParent = -1;
+        int? _targetSibling = null;
+        MapEditorHierarchyButton _lastHighlighted = null;
+
 
         public override void Setup(BasePanel parent = null)
         {
@@ -72,37 +75,46 @@ namespace UI
             TopBar.Find("Label").gameObject.SetActive(false);
 
             _topGroup = ElementFactory.CreateHorizontalGroup(TopBar, 10f, TextAnchor.MiddleLeft).transform;
+
+            var selector = ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/CheckIcon", onClick: () => SelectAllInHierarchy(), elementHeight: 32f, elementWidth: 32f);
             _searchInput = ElementFactory.CreateInputSetting(_topGroup, style, _searchSetting, "", elementWidth: 100f, elementHeight: 32f,
                 onEndEdit: () => Sync()).GetComponent<InputSettingElement>();
-            //ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowLeftIcon", onClick: () => OnPageClick(true), elementHeight: 18f, elementWidth: 18f);
-            //ElementFactory.CreateIconButton(_topGroup, _style, "Icons/Navigation/ArrowRightIcon", onClick: () => OnPageClick(false), elementHeight: 18f, elementWidth: 18f);
-            // CreateHorizontalDivider(SinglePanel);
-            _pageLabel = ElementFactory.CreateDefaultLabel(_topGroup, style, "0/0").GetComponent<Text>();
+            _pageLabel = ElementFactory.CreateDefaultLabel(_topGroup, style, "0").GetComponent<Text>();
             _topGroup.GetComponent<HorizontalLayoutGroup>().padding = new RectOffset(10, 0, 0, 0);
 
             var panel = transform.Find("SinglePanelContent(Clone)");
 
+            #region CustomScrollRectSetup
             _scrollRect = panel.GetComponent<ScrollRect>();
+            _scrollView = panel.Find("ScrollView").gameObject;
             _scroll = panel.Find("Scrollbar").gameObject;
             _scrollBar = _scroll.GetComponent<Scrollbar>();
-
+            DestroyImmediate(_scrollRect);  // potentially bad - honestly if more stuff pops up, please just remake the prefab.
+            _scrollRect = panel.AddComponent<PooledScrollRect>();
+            _scrollRect.content = _scrollView.GetComponent<RectTransform>();
+            _scrollRect.horizontal = false;
+            _scrollRect.vertical = true;
+            _scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            _scrollRect.inertia = false;
+            _scrollRect.scrollSensitivity = 10;
+            _scrollRect.verticalScrollbar = _scrollBar;
+            _scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.Permanent;
             _scrollRect.onValueChanged.AddListener(OnScrollChanged);
-            _scrollRect.scrollSensitivity = 10f;
+            #endregion
 
             InitializePooledElements();
 
             Sync();
         }
 
-        #region TreeViewAlgorithms
-        /// <summary>
-        /// This code returns a flattened list of mapobjects to draw to the hierarchy as well as their order.
-        /// This code will be rerun every resync and needs to be efficient.
-        /// </summary>
-        /// <returns>A list of ids that should be shown in the hierarchy panel.</returns>
-        public List<int> GetVisibleItems()
+        public override void Show()
         {
-            // foreach (MapObject obj in MapLoader.IdToMapObject.Values)
+            base.Show();
+        }
+
+        #region TreeViewAlgorithms
+        public List<int> GetVisibleIds()
+        {
             List<int> items = new List<int>();
             GetOrderedChildren(-1, items);
 
@@ -112,7 +124,13 @@ namespace UI
             return items;
         }
 
-        private void GetOrderedChildren(int parent, List<int> items)
+        public List<MapObject> GetVisibleItems()
+        {
+            List<int> ids = GetVisibleIds();
+            return ids.Select(id => MapLoader.IdToMapObject[id]).ToList();
+        }
+
+        private void GetOrderedChildren(int parent, List<int> items, int level = 0)
         {
             if (MapLoader.IdToChildren.ContainsKey(parent) == false)
                 return;
@@ -120,16 +138,13 @@ namespace UI
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
             foreach (int child in orderedChildren)
             {
+                MapLoader.IdToMapObject[child].Level = level;
                 items.Add(child);
                 if (MapLoader.IdToMapObject[child].Expanded)
-                    GetOrderedChildren(child, items);
+                    GetOrderedChildren(child, items, level + 1);
             }
         }
 
-        /// <summary>
-        /// Remove the element from its parent and reorder the sibling indices.
-        /// </summary>
-        /// <param name="id"></param>
         public void RemoveFromParent(int id)
         {
             MapObject obj = MapLoader.IdToMapObject[id];
@@ -146,52 +161,44 @@ namespace UI
 
         #endregion
 
+        private void Update()
+        {
+            OnScroll();
+            HandleElementDrag();
+        }
 
-        /// <summary>
-        /// Called when the scroll bar is moved.
-        /// Use to determine the position in the virtual list to being drawing.
-        /// </summary>
-        /// <param name="vec"></param>
         public void OnScrollChanged(Vector2 vec)
         {
             // Find the _visibleIndex based on the scroll position
             _visibleIndex = (int)((1f - vec.y) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
             _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x, _visibleTreeViewItems.Count * 25f);
-            _scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleTreeViewItems.Count));
-        }
-
-        public override void Show()
-        {
-            base.Show();
+            _scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleObjects.Count));
         }
 
         private void OnScroll()
         {
             int startIndex = Mathf.Max(0, _visibleIndex);
-            int endIndex = Mathf.Min(startIndex + MaxVisibleObjects, _visibleTreeViewItems.Count);
+            int endIndex = Mathf.Min(startIndex + MaxVisibleObjects, _visibleObjects.Count);
+
+            foreach (var item in _elementsPool)
+                item.gameObject.SetActive(false);
+
             for (int i = startIndex; i < endIndex; i++)
             {
-                var item = _visibleTreeViewItems[i];
-                bool hasChildren = _treeView.HasChildren(item);
-                var go = _items[i - startIndex];
-                go.SetActive(true);
-                RedrawPooled(go.GetComponent<MapEditorHierarchyButton>(), MapLoader.IdToMapObject[item.ID], item.Level, item.SiblingID, item.Expanded, hasChildren);
-                if (!_idToItem.ContainsKey(item.ID))
-                    _idToItem.Add(item.ID, go);
+                var item = _visibleObjects[i];
+                bool hasChildren = MapLoader.IdToChildren.ContainsKey(item.ScriptObject.Id) && MapLoader.IdToChildren[item.ScriptObject.Id].Count > 0;
+                var btn = _elementsPool[i - startIndex];
+                btn.gameObject.SetActive(true);
+                RedrawPooled(btn, MapLoader.IdToMapObject[item.ScriptObject.Id], item.Level, item.SiblingIndex, item.Expanded, hasChildren);
+                if (!_idToItem.ContainsKey(item.ScriptObject.Id))
+                    _idToItem.Add(item.ScriptObject.Id, btn.gameObject);
             }
 
-            _pageLabel.text = $"{endIndex - startIndex}/{MapLoader.IdToMapObject.Values.Count} ({startIndex}-{endIndex})";
+            _pageLabel.text = $"{startIndex}/{endIndex} {MapLoader.IdToMapObject.Values.Count}";
         }
 
-        int _targetID = -1;
-        int _targetParent = -1;
-        int? _targetSibling = null;
-        MapEditorHierarchyButton _lastHighlighted = null;
-
-        private void Update()
+        private void HandleElementDrag()
         {
-            OnScroll();
-
             if (_lastHighlighted != null)
                 _lastHighlighted.SetHighlight(false);
 
@@ -234,21 +241,16 @@ namespace UI
                     }
                 }
             }
-
         }
 
-
-        /// <summary>
-        /// Using the button sizes, find the button the mouse is currently over.
-        /// </summary>
-        /// <returns></returns>
         private MapEditorHierarchyButton FindButtonMouseOver()
         {
             Vector2 mouse = Input.mousePosition;
-            foreach (var item in _items)
+            foreach (var item in _elementsPool)
             {
-                if (RectTransformUtility.RectangleContainsScreenPoint(item.GetComponent<RectTransform>(), mouse))
-                    return item.GetComponent<MapEditorHierarchyButton>();
+                if (item.gameObject.activeSelf)
+                    if (RectTransformUtility.RectangleContainsScreenPoint(item.GetComponent<RectTransform>(), mouse))
+                        return item.GetComponent<MapEditorHierarchyButton>();
             }
             return null;
         }
@@ -263,7 +265,7 @@ namespace UI
             {
                 var go = CreatePooledItem();
                 go.SetActive(false);
-                _items.Add(go);
+                _elementsPool.Add(go.GetComponent<MapEditorHierarchyButton>());
             }
         }
 
@@ -273,39 +275,26 @@ namespace UI
         /// </summary>
         public void SyncPooled()
         {
-            // Clear and repopulate the treeview
-            foreach (GameObject go in _items)
-                go.SetActive(false);
+            // Clear and repopulate the view
+            foreach (var btn in _elementsPool) btn.gameObject.SetActive(false);
+
+            var expandedIds = MapLoader.IdToMapObject.Values.Where(e => e.Expanded).Select(e => e.ScriptObject.Id).ToList();
+            string searchTerm = _searchSetting.Value.ToLower();
+            var searchResult = MapLoader.Query(searchTerm);
+
             _idToItem.Clear();
-            _idToIndex.Clear();
-            _indexToId.Clear();
             _selected.Clear();
+            _visibleObjects.Clear();
 
-            // Copy what ids were expanded
-            var expandedIds = _treeView.Items.Where(item => item.Expanded).Select(item => item.ID).ToList();
-
-            _treeView.Clear();
-            foreach (MapObject obj in MapLoader.IdToMapObject.Values)
-            {
-                // if the obj is not in the treeview, add it
-                _treeView.AddItem(new VirtualTreeViewItem()
-                {
-                    ID = obj.ScriptObject.Id,
-                    ParentID = obj.ScriptObject.Parent,
-                    Level = 0,
-                    GameObject = null,
-                    Expanded = expandedIds.Contains(obj.ScriptObject.Id)
-                });
-
-            }
-
-            _visibleTreeViewItems = _treeView.GetFlattenedTree();
+            _visibleObjects = GetVisibleItems();
+            foreach (var obj in _visibleObjects) obj.Expanded = expandedIds.Contains(obj.ScriptObject.Id);
         }
 
 
         public void Sync()
         {
             SyncPooled();
+            OnScroll();
             SyncSelectedItems();
         }
 
@@ -325,7 +314,7 @@ namespace UI
             var go = ElementFactory.InstantiateAndBind(SinglePanel, "Prefabs/Misc/MapEditorHierarchyButton");
             var button = go.AddComponent<MapEditorHierarchyButton>();
             button.Setup(
-                Width,
+                Width - ButtomMaskPadding,
                 () => OnButtonClick(button.BoundID),
                 () => OnElementCallback(button.BoundID, true),
                 () => OnElementCallback(button.BoundID, false)
@@ -345,33 +334,12 @@ namespace UI
 
         private void OnElementExpand(int id)
         {
-            Debug.Log("Expand");
-            MapObject obj = MapLoader.IdToMapObject[id];
-            if (obj == null)
-                return;
-
-            // find the virtual element and set expanded to true
-            var item = _treeView.Items.FirstOrDefault(i => i.ID == id);
-            if (item != null)
-            {
-                item.Expanded = true;
-            }
+            MapLoader.IdToMapObject[id].Expanded = true;
         }
 
         private void OnElementClose(int id)
         {
-            Debug.Log("Close");
-            // find the virtual element and set expanded to false
-            var item = _treeView.Items.FirstOrDefault(i => i.ID == id);
-            if (item != null)
-            {
-                item.Expanded = false;
-            }
-        }
-
-        private void OnPageClick(bool left)
-        {
-            Sync();
+            MapLoader.IdToMapObject[id].Expanded = false;
         }
 
         private void OnButtonClick(int id)
@@ -445,5 +413,18 @@ namespace UI
             }
         }
 
+        public void SelectAllInHierarchy()
+        {
+            _gameManager.DeselectAll();
+            if (_gameManager.SelectedObjects.Count == _visibleObjects.Count)
+            {
+                return;
+            }
+            foreach (var element in _visibleObjects)
+            {
+                _gameManager.SelectObject(MapLoader.IdToMapObject[element.ScriptObject.Id]);
+            }
+            _gameManager.OnSelectionChange();
+        }
     }
 }

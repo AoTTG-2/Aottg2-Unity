@@ -21,6 +21,7 @@ namespace Map
         /// New fields for serialization
         // Editor
         public int SiblingIndex = 0;
+        public int Level = 0;
         public bool Expanded = false;
         
         // Networking

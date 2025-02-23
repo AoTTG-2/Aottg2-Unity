@@ -120,7 +120,7 @@ namespace Map
             }
             IdToMapObject.Add(scriptObject.Id, mapObject);
             GoToMapObject.Add(go, mapObject);
-            if (scriptObject.Parent > 0)
+            if (scriptObject.Parent >= -1)
             {
                 if (IdToChildren.ContainsKey(scriptObject.Parent))
                     IdToChildren[scriptObject.Parent].Add(scriptObject.Id);
@@ -309,6 +309,14 @@ namespace Map
             var mapObject = IdToMapObject[id];
             IdToMapObject.Remove(id);
             GoToMapObject.Remove(mapObject.GameObject);
+
+            if (IdToChildren.ContainsKey(mapObject.ScriptObject.Parent))
+            {
+                IdToChildren[mapObject.ScriptObject.Parent].Remove(id);
+                if (IdToChildren[mapObject.ScriptObject.Parent].Count == 0)
+                    IdToChildren.Remove(mapObject.ScriptObject.Parent);
+            }
+
             if (IdToChildren.ContainsKey(id))
             {
                 foreach (int child in new List<int>(IdToChildren[id]))
@@ -876,6 +884,65 @@ namespace Map
             else if (collideWith == MapObjectCollideWith.Hitboxes)
                 layer = PhysicsLayer.Hurtbox;
             return layer;
+        }
+        
+        public static IEnumerable<int> Query(string queryString)
+        {
+            Dictionary<string, string> query = GetQuery(queryString);
+            IEnumerable<MapObject> result = IdToMapObject.Values.ToList();
+            foreach (var filter in query)
+            {
+                result = filter.Key switch
+                {
+                    "id" => result.Where(e => e.ScriptObject.Id == int.Parse(filter.Value)),
+                    "name" => result.Where(e => e.ScriptObject.Name.ToLower() == filter.Value.ToLower()),
+                    "component" => result.Where(e => e.ComponentInstances.Where(e => e.ClassName.ToLower() == filter.Value.ToLower()).Any()),
+                    "parent" => result.Where(e => e.ScriptObject.Parent == int.Parse(filter.Value)),
+                    "visible" => result.Where(e => e.ScriptObject.Visible == bool.Parse(filter.Value)),
+                    "active" => result.Where(e => e.ScriptObject.Active == bool.Parse(filter.Value)),
+                    "static" => result.Where(e => e.ScriptObject.Static == bool.Parse(filter.Value)),
+                    "networked" => result.Where(e => e.ScriptObject.Networked == bool.Parse(filter.Value)),
+                    _ => Enumerable.Empty<MapObject>()
+                };
+            }
+
+            return result.Select(e => e.ScriptObject.Id);
+        }
+
+        /// <summary>
+        /// Query string format:
+        /// (type): (value) -> check if tag is supported
+        /// (value) -> raw search for name
+        /// Tags: id, name, tag, component, parent, visible, active, static, networked
+        /// Ex: "tag: Wall, component: Cannon" -> { tag: Wall, component: Cannon }
+        /// Ex: "Cannon1" -> { name: Cannon1 }
+        /// </summary>
+        /// <param name="queryString">The query string to break down.</param>
+        /// <returns>A dictionary of key-value (type->value).</returns>
+        public static Dictionary<string, string> GetQuery(string queryString)
+        {
+            var queryDictionary = new Dictionary<string, string>();
+            var querySegments = queryString.Split(',');
+            foreach (var segment in querySegments)
+            {
+                var trimmedSegment = segment.Trim();
+                var keyValue = trimmedSegment.Split(':');
+
+                // Check if the segment has both a key and value
+                if (keyValue.Length == 2)
+                {
+                    var key = keyValue[0].Trim();
+                    var value = keyValue[1].Trim();
+                    queryDictionary[key] = value;
+                }
+                else
+                {
+                    // If no key is provided, treat the entire segment as a name
+                    queryDictionary["name"] = trimmedSegment;
+                }
+            }
+
+            return queryDictionary;
         }
 
         private static Object LoadAssetCached(string path, string asset)

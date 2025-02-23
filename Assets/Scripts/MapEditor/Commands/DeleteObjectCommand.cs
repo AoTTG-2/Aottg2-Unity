@@ -16,7 +16,14 @@ namespace MapEditor
         {
             var scriptObjects = new MapScriptObjects();
             foreach (MapObject obj in objs)
+            {
                 scriptObjects.Objects.Add(obj.ScriptObject);
+                if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
+                {
+                    foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
+                        scriptObjects.Objects.Add(MapLoader.IdToMapObject[child].ScriptObject);
+                }
+            }
             _script = scriptObjects.Serialize();
         }
 
