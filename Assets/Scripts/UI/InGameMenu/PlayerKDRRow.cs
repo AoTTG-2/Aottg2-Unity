@@ -42,9 +42,11 @@ namespace UI
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
         private const string _deadStatus = " <color=red>*dead*</color> ";
         private StringBuilder _scoreBuilder = new StringBuilder();
+        private KDRPanel _kdrPanel;
+
         #endregion
 
-        public void Setup(ElementStyle style, Player player)
+        public void Setup(ElementStyle style, Player player, KDRPanel panel)
         {
             // HUD
             id = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
@@ -61,7 +63,7 @@ namespace UI
             team = string.Empty;
             isSet = false;
             this.player = player;
-
+            _kdrPanel = panel;
             UpdateRow();
         }
 
@@ -191,15 +193,15 @@ namespace UI
 
         public string GetPlayerStatus(string status)
         {
-            if (status == PlayerStatus.Dead || status == PlayerStatus.Spectating)
-            {
+            if (_kdrPanel._showScoreboardStatus && (status == PlayerStatus.Dead || status == PlayerStatus.Spectating))
                 return _deadStatus;
-            }
             return string.Empty;
         }
 
         public Texture GetPlayerIcon(string character, string loadout)
         {
+            if (!_kdrPanel._showScoreboardLoadout)
+                return (Texture)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Specials/NoneSpecialIcon", true);
             if (character == PlayerCharacter.Human)
             {
                 // return based off loadout

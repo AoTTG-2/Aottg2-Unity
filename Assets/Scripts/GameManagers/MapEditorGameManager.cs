@@ -242,13 +242,16 @@ namespace GameManagers
             SelectedObjects.Add(obj);
         }
 
-        public void NewCommand(BaseCommand command)
+        public void NewCommand(BaseCommand command, bool syncInspector = true)
         {
             command.Execute();
             _undoCommands.Add(command);
             _redoCommands.Clear();
-            if (command is TransformPositionCommand || command is TransformPositionRotationCommand || command is TransformScaleCommand )
-                _menu.SyncInspector();
+            if (command is TransformPositionCommand || command is TransformPositionRotationCommand || command is TransformScaleCommand)
+            {
+                if (syncInspector)
+                    _menu.SyncInspector();
+            }
         }
 
         protected override void OnFinishLoading()

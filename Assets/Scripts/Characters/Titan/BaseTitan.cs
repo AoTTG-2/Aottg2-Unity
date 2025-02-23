@@ -789,7 +789,7 @@ namespace Characters
                 else if (State == TitanState.Fall)
                 {
                     _currentFallTotalTime += Time.fixedDeltaTime;
-                    if (_currentFallTotalTime > 10f)
+                    if (_currentFallTotalTime > 10f && AI)
                     {
                         Cache.Transform.position = _startPosition;
                     }

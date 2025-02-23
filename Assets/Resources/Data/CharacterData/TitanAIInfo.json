@@ -212,6 +212,8 @@
 				"AttackBite*": 0.1,
 				"AttackHit*": 0.1,
 				"AttackPunchCombo": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1,
 				"AttackJump": 0.5
 			}
 		},
@@ -307,7 +309,9 @@
 				"AttackPunchCombo": 0.1,
 				"AttackSlap*": 0.1,
 				"AttackBrush*": 0.1,
-				"AttackSwing*": 0.1
+				"AttackSwing*": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1
 			}
 		},
 		"Training": {
@@ -349,6 +353,8 @@
 				"AttackBite*": 0.1,
 				"AttackHit*": 0.1,
 				"AttackPunchCombo": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1,
 				"AttackRockThrow": 0.5
 			}
 		},

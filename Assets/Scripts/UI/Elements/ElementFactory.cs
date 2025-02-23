@@ -389,7 +389,7 @@ namespace UI
         {
             GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
             PlayerKDRRow rowComponent = row.AddComponent<PlayerKDRRow>();
-            rowComponent.Setup(style, player);
+            rowComponent.Setup(style, player, parent.GetComponent<KDRPanel>());
             return row;
         }
 

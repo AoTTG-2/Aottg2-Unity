@@ -266,8 +266,6 @@ namespace Cameras
                 }
                 else if (SpecMode.Current() == SpecateMode.FreeCam)
                     UpdateFreeCam();
-                else if (SpecMode.Current() == SpecateMode.LiveSpectate || SpecMode.Current() == SpecateMode.OrbitSpectate)
-                    SpecMode.Set(SpecateMode.FreeCam);
             }
             UpdateFOV();
             UpdateNapeLockImage();

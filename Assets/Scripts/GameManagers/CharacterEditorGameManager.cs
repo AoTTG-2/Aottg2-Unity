@@ -73,6 +73,8 @@ namespace GameManagers
             platform.SetActive(false);
             if (HumanMode)
                 StartCoroutine(GenerateHumanPreviewsCoroutine());
+            else
+                StartCoroutine(GenerateTitanPreviewsCoroutine());
         }
 
         private IEnumerator GenerateHumanPreviewsCoroutine()
@@ -186,6 +188,43 @@ namespace GameManagers
                 Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.Name.Value);
             }
             Screenshot(450f, 360f, 128f, 128f, "PresetNone");
+        }
+
+        private IEnumerator GenerateTitanPreviewsCoroutine()
+        {
+            var set = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.EyeCount; i++)
+            {
+                set.Eye.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(876f, 570f, 172f, 172f, "Eye" + i.ToString());
+            }
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.HeadCount; i++)
+            {
+                set.Head.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(852f, 580f, 220f, 220f, "Head" + i.ToString());
+            }
+            set.SetDefault();
+            foreach (string hair in BasicTitanSetup.AllHairs)
+            {
+                set.Hair.Value = hair;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(820f, 560f, 280f, 280f, hair);
+            }
+            set.SetDefault();
+            for (int i = 0; i < BasicTitanSetup.BodyCount; i++)
+            {
+                set.Body.Value = i;
+                ReinstantiateCharacter();
+                yield return new WaitForEndOfFrame();
+                Screenshot(766f, 220f, 380f, 380f, "Body" + i.ToString());
+            }
         }
 
         private void Screenshot(float x, float y, float w, float h, string file)

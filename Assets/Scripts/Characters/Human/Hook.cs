@@ -331,6 +331,9 @@ namespace Characters
                         else
                         {
                             var go = obj;
+                            var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
+                            if (collisionHandler != null)
+                                collisionHandler.GetHooked(_owner, finalHit.point, _left);
                             while (!MapLoader.GoToMapObject.ContainsKey(go))
                             {
                                 if (go == null)
@@ -349,9 +352,6 @@ namespace Characters
                                     SetHooked(finalHit.point, obj.transform);
                                 else
                                     SetHooked(finalHit.point, obj.transform, -1, mapObject.ScriptObject.Id);
-                                var collisionHandler = mapObject.GameObject.GetComponent<CustomLogicCollisionHandler>();
-                                if (collisionHandler != null)
-                                    collisionHandler.GetHooked(_owner, finalHit.point, _left);
                             }
                             else
                                 SetHooked(finalHit.point);
