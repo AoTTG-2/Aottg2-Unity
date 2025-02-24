@@ -28,7 +28,7 @@ namespace UI
                 return;
             var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
             string playerName = ChatManager.GetIDString(player.ActorNumber) + player.GetStringProperty(PlayerProperty.Name);
-            GameObject line = ElementFactory.CreateDefaultLabel(_panel.transform, style, playerName, alignment: TextAnchor.MiddleLeft);
+            GameObject line = ElementFactory.CreateWhiteLabel(_panel.transform, style, playerName, alignment: TextAnchor.MiddleLeft);
             line.GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
             _playersTalking.Add(player.ActorNumber, line);
             Canvas.ForceUpdateCanvases();
@@ -47,7 +47,7 @@ namespace UI
         protected GameObject CreateLine(string text)
         {
             var style = new ElementStyle(fontSize: SettingsManager.UISettings.ChatFontSize.Value, themePanel: ThemePanel);
-            GameObject line = ElementFactory.CreateDefaultLabel(_panel.transform, style, text, alignment: TextAnchor.MiddleLeft);
+            GameObject line = ElementFactory.CreateWhiteLabel(_panel.transform, style, text, alignment: TextAnchor.MiddleLeft);
             line.GetComponent<Text>().color = UIManager.GetThemeColor(style.ThemePanel, "TextColor", "Default");
             return line;
         }

@@ -202,6 +202,7 @@
 			{"Name": "Building3"},
 			{"Name": "Building4"},
 			{"Name": "Building5"},
+			{"Name": "Building5a", "Variant": "Building5"},
 			{"Name": "Building5b", "Variant": "Building5"},
 			{"Name": "Building6"},
 			{"Name": "Building6b", "Variant": "Building6"},

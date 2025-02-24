@@ -49,10 +49,10 @@ namespace UI
         public void Setup(ElementStyle style, Player player, KDRPanel panel)
         {
             // HUD
-            id = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
+            id = ElementFactory.CreateWhiteLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();      // host, id (0)
             weapon = ElementFactory.CreateRawImage(this.transform, style, "Icons/Game/BladeIcon", 24f, 24f).GetComponent<RawImage>();                                 // loadout/character type   (1)
-            playerName = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
-            score = ElementFactory.CreateDefaultLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
+            playerName = ElementFactory.CreateWhiteLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleLeft).GetComponent<Text>();    // status, name   (2)
+            score = ElementFactory.CreateWhiteLabel(this.transform, style, string.Empty, FontStyle.Normal, TextAnchor.MiddleCenter).GetComponent<Text>(); // score    (3)
 
             // Save player information
             isMasterClient = player.IsMasterClient;
