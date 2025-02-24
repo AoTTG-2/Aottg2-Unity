@@ -2,7 +2,7 @@
 	"EyeCount": 49,
 	"BodyCount": 5,
 	"HeadCount":  4,
-	"AIExcludedEyes": [47, 48],
+	"AIExcludedEyes": [2, 9, 21, 26, 43, 46, 47],
 	"HairM": [
 		"hair_boy1",
 		"hair_boy2",
