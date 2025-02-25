@@ -482,6 +482,12 @@ namespace Map
                     var renderer = filter.GetComponent<Renderer>();
                     if (renderer == null || renderer.sharedMaterials.Length > 1)
                         continue;
+                    if (filter?.sharedMesh == null)
+                    {
+                        DebugConsole.Log($"Map load error: object {mapObject.ScriptObject.Name} with missing mesh", true);
+                        Errors.Add("Failed to load static object with no MeshFilter or SharedMesh: " + mapObject.ScriptObject.Name);
+                        continue;
+                    }
                     string hash = filter.sharedMesh.GetHashCode().ToString();
                     hash += positionHash;
                     if (renderer.enabled)

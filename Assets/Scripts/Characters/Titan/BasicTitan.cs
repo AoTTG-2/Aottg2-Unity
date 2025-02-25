@@ -71,6 +71,15 @@ namespace Characters
             Animation.SetSpeed(BasicAnimations.CoverNape, 1.5f);
         }
 
+        public float DeathTimeElapsed()
+        {
+            if (Animation.IsPlaying(BasicAnimations.Die) || Animation.IsPlaying(BasicAnimations.DieBack) || Animation.IsPlaying(BasicAnimations.DieFront))
+            {
+                return Animation.GetCurrentNormalizedTime() * Animation.GetLength(_currentStateAnimation);
+            }
+            return -1f;
+        }
+
         public override bool IsGrabAttack()
         {
             return _currentAttack.StartsWith("AttackGrab");
