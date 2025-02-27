@@ -171,7 +171,7 @@ namespace Settings
         {
             if (!IsConnectedToPublic())
                 return string.Empty;
-            return str;
+            return ApplicationVersion.GetHashKey(str);
         }
 
         public string GetHashCode(string str)

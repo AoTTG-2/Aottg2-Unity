@@ -16,5 +16,10 @@ namespace ApplicationManagers
         {
             return string.Empty;
         }
+
+        public static string GetHashKey(string key)
+        {
+            return string.Empty;
+        }
     }
 }
