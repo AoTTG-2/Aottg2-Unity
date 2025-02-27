@@ -7,6 +7,8 @@ namespace ApplicationManagers
 {
     class ApplicationVersion
     {
+        public static bool UseServerHash = false;
+
         public static NetworkCredential GetVersion()
         {
             return new NetworkCredential("TestVersion", "TestVersion");
@@ -19,6 +21,8 @@ namespace ApplicationManagers
 
         public static string GetHashKey(string key)
         {
+            if (UseServerHash)
+                return key;
             return string.Empty;
         }
     }
