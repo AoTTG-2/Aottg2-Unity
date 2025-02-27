@@ -21,7 +21,7 @@
 		{"Name": "Grass4", "TilingX": 5, "TilingY": 5},
 		{"Name": "Grass5", "TilingX": 3, "TilingY": 3},
 		{"Name": "Grass6", "TilingX": 1, "TilingY": 1},
-		{"Name": "Leaves", "TilingX": 2, "TilingY": 2}
+		{"Name": "Leaves1", "TilingX": 2, "TilingY": 2}
 	],
 	"Brick": [
 		{"Name": "Brick1", "TilingX": 2, "TilingY": 2},

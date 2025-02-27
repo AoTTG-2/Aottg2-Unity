@@ -11,6 +11,7 @@ namespace CustomLogic
 
         public string ClassName;
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        public bool Inited = false;
 
         public CustomLogicClassInstance(string name)
         {

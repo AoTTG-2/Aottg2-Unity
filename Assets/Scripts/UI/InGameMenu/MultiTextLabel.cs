@@ -19,7 +19,7 @@ namespace UI
             texts = new Text[numberOfLabels];
             for (int i = 0; i < numberOfLabels; i++)
             {
-                texts[i] = ElementFactory.CreateDefaultLabel(transform, style, string.Empty, fontStyle, anchor).GetComponent<Text>();
+                texts[i] = ElementFactory.CreateWhiteLabel(transform, style, string.Empty, fontStyle, anchor).GetComponent<Text>();
                 texts[i].supportRichText = richText;
             }
         }

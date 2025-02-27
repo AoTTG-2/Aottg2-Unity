@@ -44,6 +44,9 @@
 		"DefaultLabel": {
 			"TextColor": [240, 240, 240, 255]
 		},
+		"WhiteLabel": {
+			"TextColor": [240, 240, 240, 255]
+		},
 		"DefaultSetting": {
 			"TextColor": [240, 240, 240, 255],
 			"IconNormalColor": [200, 200, 200, 255],

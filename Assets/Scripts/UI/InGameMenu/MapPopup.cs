@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using UnityEngine.Windows.Speech;
 using System.Collections.Generic;
 using Cameras;
 using ApplicationManagers;
+using Characters;
 
 namespace UI
 {
@@ -60,7 +60,13 @@ namespace UI
             foreach (var transform in _icons.Keys)
             {
                 var icon = _icons[transform];
-                if (transform == null)
+                bool dead = false;
+                if (transform != null)
+                {
+                    var character = transform.GetComponent<BaseCharacter>();
+                    dead = character != null && character.Dead;
+                }
+                if (transform == null || dead)
                 {
                     _iconsToRemove.Add(transform);
                     Destroy(icon.gameObject);
@@ -117,6 +123,7 @@ namespace UI
                 var go = Instantiate(icons[transform].gameObject);
                 go.transform.SetParent(_background.transform);
                 go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = Vector3.one;
                 go.transform.rotation = Quaternion.identity;
                 go.SetActive(false);
                 _icons.Add(transform, go.transform);

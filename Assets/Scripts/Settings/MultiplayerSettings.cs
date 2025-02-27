@@ -1,8 +1,10 @@
+using Anticheat;
 using ApplicationManagers;
 using Discord;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
@@ -117,7 +119,7 @@ namespace Settings
         public void StartRoom()
         {
             InGameSet settings = SettingsManager.InGameCurrent;
-            string roomName = settings.General.RoomName.Value;
+            string roomName = settings.General.RoomName.Value.FilterBadWords();
             string mapName = settings.General.MapName.Value;
             string gameMode = settings.General.GameMode.Value;
             int maxPlayers = settings.General.MaxPlayers.Value;
@@ -133,7 +135,7 @@ namespace Settings
                 { RoomProperty.GameMode, gameMode },
                 { RoomProperty.Password, password },
                 { RoomProperty.PasswordHash, passwordHash },
-                { "Hash", GetHashCode(roomId + roomName)}
+                { "HashKey", GetHashKey(roomId + roomName)}
             };
             string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
             var roomOptions = new RoomOptions();
@@ -163,6 +165,13 @@ namespace Settings
             PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName));
             if (!PhotonNetwork.OfflineMode)
                 VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName));
+        }
+
+        public string GetHashKey(string str)
+        {
+            if (!IsConnectedToPublic())
+                return string.Empty;
+            return ApplicationVersion.GetHashKey(str);
         }
 
         public string GetHashCode(string str)

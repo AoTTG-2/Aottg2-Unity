@@ -63,7 +63,7 @@ namespace Characters
                 stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
                 if (_syncVelocity)
                     stream.SendNext(_rigidbody.velocity);
-                if (!_character.AI)
+                if (_character != null && !_character.AI)
                 {
                     if (((InGameMenu)UIManager.CurrentMenu)._spectateCount > 0)
                     {
@@ -81,7 +81,7 @@ namespace Characters
                 QuaternionCompression.DecompressQuaternion(ref _correctRotation, (int)stream.ReceiveNext());
                 if (_syncVelocity)
                     _correctVelocity = (Vector3)stream.ReceiveNext();
-                if (!_character.AI)
+                if (_character != null && !_character.AI)
                 {
                     int? compressed = (int?)stream.ReceiveNext();
                     if (compressed.HasValue)

@@ -120,7 +120,7 @@ namespace UI
         public void SyncInspector()
         {
             if (InspectPanel != null)
-                InspectPanel.SyncSettings();
+                ShowInspector(InspectPanel._mapObject);
         }
 
         public void ShowHierarchyPanel()

@@ -654,7 +654,7 @@ namespace UI
                 loadout = " APG ";
             else if (loadout == HumanLoadout.AHSS)
                 loadout = " AHSS ";
-            else if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.Thunderspear)
                 loadout = " TS ";
             else
                 loadout = string.Empty;

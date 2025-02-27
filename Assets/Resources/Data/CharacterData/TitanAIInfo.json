@@ -84,24 +84,24 @@
 		"BodyHeadCombos": [
 			{"Body": 0, "Head": 0, "Chance": 0.1},
 			{"Body": 0, "Head": 1, "Chance": 0.1},
+			{"Body": 0, "Head": 2, "Chance": 0.1},
 			{"Body": 0, "Head": 3, "Chance": 0.1},
-			{"Body": 0, "Head": 4, "Chance": 0.1},
 			{"Body": 1, "Head": 0, "Chance": 0.1},
 			{"Body": 1, "Head": 1, "Chance": 0.1},
+			{"Body": 1, "Head": 2, "Chance": 0.1},
 			{"Body": 1, "Head": 3, "Chance": 0.1},
-			{"Body": 1, "Head": 4, "Chance": 0.1},
 			{"Body": 2, "Head": 0, "Chance": 0.1},
 			{"Body": 2, "Head": 1, "Chance": 0.1},
+			{"Body": 2, "Head": 2, "Chance": 0.1},
 			{"Body": 2, "Head": 3, "Chance": 0.1},
-			{"Body": 2, "Head": 4, "Chance": 0.1},
 			{"Body": 3, "Head": 0, "Chance": 0.1},
 			{"Body": 3, "Head": 1, "Chance": 0.1},
+			{"Body": 3, "Head": 2, "Chance": 0.1},
 			{"Body": 3, "Head": 3, "Chance": 0.1},
-			{"Body": 3, "Head": 4, "Chance": 0.1},
 			{"Body": 4, "Head": 0, "Chance": 0.1},
 			{"Body": 4, "Head": 1, "Chance": 0.1},
-			{"Body": 4, "Head": 3, "Chance": 0.1},
-			{"Body": 4, "Head": 4, "Chance": 0.1}
+			{"Body": 4, "Head": 2, "Chance": 0.1},
+			{"Body": 4, "Head": 3, "Chance": 0.1}
 		],
 		"AttackSpeedMultiplier": 1.0,
 		"AttackSpeeds": {
@@ -212,6 +212,8 @@
 				"AttackBite*": 0.1,
 				"AttackHit*": 0.1,
 				"AttackPunchCombo": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1,
 				"AttackJump": 0.5
 			}
 		},
@@ -307,7 +309,9 @@
 				"AttackPunchCombo": 0.1,
 				"AttackSlap*": 0.1,
 				"AttackBrush*": 0.1,
-				"AttackSwing*": 0.1
+				"AttackSwing*": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1
 			}
 		},
 		"Training": {
@@ -349,6 +353,8 @@
 				"AttackBite*": 0.1,
 				"AttackHit*": 0.1,
 				"AttackPunchCombo": 0.1,
+				"AttackKick": 0.1,
+				"AttackStomp": 0.1,
 				"AttackRockThrow": 0.5
 			}
 		},

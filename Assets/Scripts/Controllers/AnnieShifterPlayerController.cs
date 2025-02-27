@@ -112,10 +112,12 @@ namespace Controllers
         {
             float x = GetAimAngles()[0];
             string attack;
-            if (x > 0)
+            if (x > 45f)
                 attack = "AttackGrabUpRight";
-            else
+            else if (x < -45f)
                 attack = "AttackGrabUpLeft";
+            else
+                attack = "AttackGrabUp";
             _shifter.Attack(attack);
         }
     }
