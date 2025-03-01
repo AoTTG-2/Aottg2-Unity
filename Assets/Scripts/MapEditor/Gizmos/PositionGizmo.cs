@@ -125,6 +125,16 @@ namespace MapEditor
                         if (frameDelta.magnitude >= snap)
                             _previousMousePoint = mousePoint;
                     }
+                    else if (_gameManager.Snap && _gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Local)
+                    {
+                        // Snap along drag direction instead of grid.
+                        float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
+                        float magnitude = frameDelta.magnitude;
+                        float snapMagnitude = Mathf.Round(magnitude / snap) * snap;
+                        frameDelta = frameDelta.normalized * snapMagnitude;
+                        if (frameDelta.magnitude >= snap)
+                            _previousMousePoint = mousePoint;
+                    }
                     else
                         _previousMousePoint = mousePoint;
                     MoveSelectedObjects(frameDelta);
