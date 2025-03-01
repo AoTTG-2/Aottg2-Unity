@@ -104,7 +104,7 @@ namespace MapEditor
                     }
 
                     
-                    if (_gameManager.Snap)
+                    if (_gameManager.Snap && _gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Center)
                     {
                         float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
                         if (_activeLine == _lineX)
