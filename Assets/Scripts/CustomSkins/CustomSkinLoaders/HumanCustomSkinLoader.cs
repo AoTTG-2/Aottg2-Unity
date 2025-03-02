@@ -130,6 +130,15 @@ namespace CustomSkins
                     if (human.Setup.Weapon == HumanWeapon.Thunderspear && human.Setup._part_blade_r != null)
                         AddRendererIfExists(renderers, human.Setup._part_blade_r);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
+                case HumanCustomSkinPartId.Back:
+                    AddAllRenderersIfExists(renderers, human.Setup._part_back);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
+                case HumanCustomSkinPartId.Head:
+                    AddAllRenderersIfExists(renderers, human.Setup._part_head);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
+                case HumanCustomSkinPartId.Hat:
+                    AddAllRenderersIfExists(renderers, human.Setup._part_hat);
+                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
                 case HumanCustomSkinPartId.HookL:
                     return new HookCustomSkinPart(this, human.HookLeft.GetRenderers(), GetRendererId(partId), MaxSizeSmall, _hookLTiling);
                 case HumanCustomSkinPartId.HookR:
@@ -160,6 +169,9 @@ namespace CustomSkins
         HookLTiling,
         HookL,
         HookRTiling,
-        HookR
+        HookR,
+        Hat,
+        Head,
+        Back
     }
 }
