@@ -21,6 +21,7 @@ namespace Characters
         public Transform HookParent;
         protected bool _hasHookParent;
         public LineRenderer _renderer;
+        public bool HasOffset = false;
         protected bool _left;
         protected Human _owner;
         protected int _id;
@@ -37,6 +38,19 @@ namespace Characters
         protected float _tiling;
         protected float _lastLength;
         protected float _maxLiveTime;
+
+
+        private bool _usingDeathTimer = false;
+        private Vector3 _lastGoodHookPoint = Vector3.zero;
+        private bool _firstDeathFrame = true;
+        private float _deathTimerOffset = 0.6f;
+
+        private void ResetState()
+        {
+            _usingDeathTimer = false;
+            _lastGoodHookPoint = Vector3.zero;
+            _firstDeathFrame = true;
+        }
 
         public static Hook CreateHook(Human owner, bool left, int id, float maxLiveTime, bool gun = false)
         {
@@ -162,6 +176,7 @@ namespace Characters
             _hasHookParent = false;
             if (transform != null)
             {
+                ResetState();
                 HookParent = transform;
                 _hookPosition = transform.InverseTransformPoint(position);
                 _hasHookParent = true;
@@ -293,6 +308,7 @@ namespace Characters
         {
             if (_owner.IsMine())
             {
+                HasOffset = false;
                 _hookPosition += _baseVelocity * Time.deltaTime * 50f + _relativeVelocity * Time.deltaTime;
                 Vector3 start = _nodes[_nodes.Count - 1];
                 if (_nodes.Count > 1)
@@ -351,7 +367,13 @@ namespace Characters
                             {
                                 MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
-                                    SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));
+                                {
+                                    HasOffset = Vector3.Angle(Vector3.up, finalHit.normal) < 10f;
+                                    if (HasOffset)
+                                        SetHooked(finalHit.point + new Vector3(0f, 0.1f, 0f));  // Try and only add the offset if directly on a flat plane.
+                                    else
+                                        SetHooked(finalHit.point);
+                                }
                                 else if (mapObject.RuntimeCreated)
                                     SetHooked(finalHit.point, obj.transform);
                                 else
@@ -392,6 +414,7 @@ namespace Characters
 
         protected void FixedUpdate()
         {
+            _usingDeathTimer = false;
             if (State == HookState.Hooking)
                 FixedUpdateHooking();
             if (State == HookState.Hooking || State == HookState.Hooked)
@@ -402,6 +425,25 @@ namespace Characters
                 {
                     if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
                         SetHookState(HookState.DisablingHooked);
+
+                    // Hook timer for titan death
+                    if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                    {
+                        if (titan.Dead)
+                        {
+                            float timer = titan.DeathTimeElapsed();
+                            if (timer >= 0 && timer < _deathTimerOffset)
+                            {
+                                if (_firstDeathFrame)
+                                {
+                                    _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                    _lastWorldHookPosition = _lastGoodHookPoint;
+                                    _firstDeathFrame = false;
+                                }
+                                _usingDeathTimer = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -411,7 +453,10 @@ namespace Characters
             if (_hasHookParent)
             {
                 if (HookParent != null)
-                    _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
+                    if (_usingDeathTimer)
+                        _lastWorldHookPosition = _lastGoodHookPoint;
+                    else
+                        _lastWorldHookPosition = HookParent.TransformPoint(_hookPosition);
                 return _lastWorldHookPosition;
             }
             return _hookPosition;
