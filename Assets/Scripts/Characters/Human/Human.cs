@@ -2019,15 +2019,22 @@ namespace Characters
                 if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
-            float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f); // This is also likely different on titans as titans and mapobjects have different frictions.
-            float speed = _lastVelocity.magnitude * speedMultiplier;
-            Cache.Rigidbody.velocity = velocity.normalized * speed;
-            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude; // This is probably flawed on titans.
-            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+            if (_lastVelocity.magnitude > 0f)
             {
-                GetHit("Impact", (int)speedDiff, "Impact", "");
-                return;
+                var titan = collision.transform.root.GetComponent<BaseTitan>();
+                if (titan == null || titan.AI || titan.GetVelocity().magnitude <= 1f)
+                {
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                    float speed = _lastVelocity.magnitude * speedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
+                }
+                float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+                {
+                    GetHit("Impact", (int)speedDiff, "Impact", "");
+                    return;
+                }
             }
         }
 

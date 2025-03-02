@@ -68,7 +68,7 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
-            Animation.SetSpeed(BasicAnimations.CoverNape, 1.5f);
+            Animation.SetSpeed(BasicAnimations.CoverNape, 1.2f);
         }
 
         public float DeathTimeElapsed()
@@ -201,6 +201,14 @@ namespace Characters
             if (CanAction())
             {
                 StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, Animation.GetTotalTime(BasicAnimations.CoverNape));
+            }
+        }
+
+        public void UncoverNape()
+        {
+            if (State == TitanState.CoverNape)
+            {
+                Idle(0.3f);
             }
         }
 

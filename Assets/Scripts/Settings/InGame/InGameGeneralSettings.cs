@@ -6,7 +6,7 @@ namespace Settings
     {
         public StringSetting MapCategory = new StringSetting("General");
         public StringSetting MapName = new StringSetting("Forest");
-        public StringSetting GameMode = new StringSetting("Survive");
+        public StringSetting GameMode = new StringSetting("Waves");
         public StringSetting PrevGameMode = new StringSetting("");
         public IntSetting Difficulty = new IntSetting((int)GameDifficulty.Normal);
 
