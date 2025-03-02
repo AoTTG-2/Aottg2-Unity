@@ -1063,6 +1063,11 @@ namespace Characters
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
                 Grab(titan, type);
             }
+            else if (type == "Hook")
+            {
+                var killerName = Util.FindCharacterByViewId(viewId).Name + "'s Hook";
+                base.GetHitRPC(viewId, killerName, damage, type, collider);
+            }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
@@ -1523,7 +1528,8 @@ namespace Characters
                     }
                     else if (State == HumanState.Slide)
                     {
-                        newVelocity = Cache.Rigidbody.velocity * 0.985f;
+                        if (!_wallSlide)
+                            newVelocity = Cache.Rigidbody.velocity * 0.985f;
                         if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
@@ -2014,20 +2020,20 @@ namespace Characters
                     return;
             }
             float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f); // This is also likely different on titans as titans and mapobjects have different frictions.
             float speed = _lastVelocity.magnitude * speedMultiplier;
             Cache.Rigidbody.velocity = velocity.normalized * speed;
-            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude; // This is probably flawed on titans.
             if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
             {
-                GetKilled("Impact");
+                GetHit("Impact", (int)speedDiff, "Impact", "");
                 return;
             }
         }
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun))
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
                 _wallSlide = true;
                 _wallSlideGround = collision.contacts[0].normal.normalized;
@@ -2147,7 +2153,16 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
+
+            Vector3 v = position - Cache.Rigidbody.position;
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (HookLeft.IsHookOffset() && HookRight.IsHookOffset())
+                {
+                    v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping required for bounce.
+                }
+            }
+           
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
