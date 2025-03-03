@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 2990131104850520956}
   - component: {fileID: 7551657862136108313}
   m_Layer: 0
-  m_Name: Doll1Model
+  m_Name: Back6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
