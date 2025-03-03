@@ -379,8 +379,23 @@ namespace Map
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
 
+            // Create hashset of all gameobjects under MapObjects that are marked as static.
+            HashSet<GameObject> staticObjects = new HashSet<GameObject>();
+            foreach (var mapObject in IdToMapObject.Values)
+            {
+                if (mapObject.ScriptObject.Static)
+                {
+                    // Add all gameobjects under the mapobject to the hashset
+                    foreach (Transform child in mapObject.GameObject.GetComponentsInChildren<Transform>())
+                    {
+                        staticObjects.Add(child.gameObject);
+                    }
+                }
+            }
+
             // filter navmeshsources for only static objects
-            _navMeshSources = _navMeshSources.Where(source => source.component.gameObject.isStatic).ToList();
+            _navMeshSources = _navMeshSources.Where(source => staticObjects.Contains(source.component.gameObject)).ToList();
+            staticObjects.Clear();
 
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
             _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
@@ -459,6 +474,7 @@ namespace Map
             Dictionary<string, List<GameObject>> shared = new Dictionary<string, List<GameObject>>();
             Dictionary<GameObject, Transform> oldParents = new Dictionary<GameObject, Transform>();
             Dictionary<string, int> hashCounts = new Dictionary<string, int>();
+            GameObject batchRoot = new GameObject("Batched Meshes");
             foreach (int id in IdToMapObject.Keys)
             {
                 var mapObject = IdToMapObject[id];
@@ -469,19 +485,18 @@ namespace Map
                     continue;
                 var position = mapObject.GameObject.transform.position;
 
-                // change object and all children to static:
-                mapObject.GameObject.isStatic = true;
-                foreach (var child in mapObject.GameObject.GetComponentsInChildren<Transform>())
-                {
-                    child.gameObject.isStatic = true;
-                }
-
                 string positionHash = ((int)(position.x / 1000f)).ToString() + "-" + ((int)(position.y / 1000f)).ToString() + "-" + ((int)(position.z / 1000f)).ToString();
                 foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
                 {
                     var renderer = filter.GetComponent<Renderer>();
                     if (renderer == null || renderer.sharedMaterials.Length > 1)
                         continue;
+                    if (filter?.sharedMesh == null)
+                    {
+                        DebugConsole.Log($"Map load error: object {mapObject.ScriptObject.Name} with missing mesh", true);
+                        Errors.Add("Failed to load static object with no MeshFilter or SharedMesh: " + mapObject.ScriptObject.Name);
+                        continue;
+                    }
                     string hash = filter.sharedMesh.GetHashCode().ToString();
                     hash += positionHash;
                     if (renderer.enabled)
@@ -496,8 +511,9 @@ namespace Map
                     if (!roots.ContainsKey(hash))
                     {
                         var go = new GameObject();
+                        go.name = mapObject.ScriptObject.Name + " (Batched)";
                         go.layer = PhysicsLayer.MapObjectEntities;
-                        go.isStatic = true;
+                        go.transform.parent = batchRoot.transform;
                         roots.Add(hash, go);
                         shared.Add(hash, new List<GameObject>());
                     }

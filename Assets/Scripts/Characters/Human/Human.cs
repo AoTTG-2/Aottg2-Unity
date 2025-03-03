@@ -1063,6 +1063,11 @@ namespace Characters
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
                 Grab(titan, type);
             }
+            else if (type == "Hook")
+            {
+                var killerName = Util.FindCharacterByViewId(viewId).Name + "'s Hook";
+                base.GetHitRPC(viewId, killerName, damage, type, collider);
+            }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
@@ -1523,7 +1528,8 @@ namespace Characters
                     }
                     else if (State == HumanState.Slide)
                     {
-                        newVelocity = Cache.Rigidbody.velocity * 0.985f;
+                        if (!_wallSlide)
+                            newVelocity = Cache.Rigidbody.velocity * 0.985f;
                         if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
@@ -2013,21 +2019,28 @@ namespace Characters
                 if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
-            float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-            float speed = _lastVelocity.magnitude * speedMultiplier;
-            Cache.Rigidbody.velocity = velocity.normalized * speed;
-            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
-            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+            if (_lastVelocity.magnitude > 0f)
             {
-                GetKilled("Impact");
-                return;
+                var titan = collision.transform.root.GetComponent<BaseTitan>();
+                if (titan == null || titan.AI || titan.GetVelocity().magnitude <= 1f)
+                {
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                    float speed = _lastVelocity.magnitude * speedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
+                }
+                float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+                {
+                    GetHit("Impact", (int)speedDiff, "Impact", "");
+                    return;
+                }
             }
         }
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun))
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
                 _wallSlide = true;
                 _wallSlideGround = collision.contacts[0].normal.normalized;
@@ -2147,7 +2160,16 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
+
+            Vector3 v = position - Cache.Rigidbody.position;
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (HookLeft.IsHookOffset() && HookRight.IsHookOffset())
+                {
+                    v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping required for bounce.
+                }
+            }
+           
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2649,7 +2671,7 @@ namespace Characters
                     string url = string.Join(",", new string[] { set.Horse.Value, set.Hair.Value, set.Eye.Value, set.Glass.Value, set.Face.Value,
                 set.Skin.Value, set.Costume.Value, set.Logo.Value, set.GearL.Value, set.GearR.Value, set.Gas.Value, set.Hoodie.Value,
                     set.WeaponTrail.Value, set.ThunderspearL.Value, set.ThunderspearR.Value, set.HookLTiling.Value.ToString(), set.HookL.Value,
-                    set.HookRTiling.Value.ToString(), set.HookR.Value });
+                    set.HookRTiling.Value.ToString(), set.HookR.Value, set.Hat.Value, set.Head.Value, set.Back.Value });
                     int viewID = -1;
                     if (Horse != null)
                     {

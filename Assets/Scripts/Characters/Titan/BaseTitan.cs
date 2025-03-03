@@ -737,16 +737,21 @@ namespace Characters
                     if (isKinematic)
                         SetKinematic(false);
                 }
+                if (Cache.Rigidbody.velocity.y >= 0f)
+                    _currentFallTotalTime = 0f;
+                else
+                    _currentFallTotalTime += Time.fixedDeltaTime;
+                if (AI & _currentFallTotalTime >= 10f && Cache.Rigidbody.velocity.y <= Gravity.y * 10f)
+                {
+                    GetKilledRPC("Gravity");
+                }
                 if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
                 {
                     CheckGround();
                     _checkGroundTimeLeft = CheckGroundTime;
                 }
                 if (State != TitanState.Fall)
-                {
-                    _currentFallTotalTime = 0f;
                     _currentFallStuckTime = 0f;
-                }
                 if (!AI && (State == TitanState.PreJump || State == TitanState.CoverNape || State == TitanState.SitDown || State == TitanState.Dead))
                 {
                     SetDefaultVelocityLerp();
@@ -788,11 +793,6 @@ namespace Characters
                 }
                 else if (State == TitanState.Fall)
                 {
-                    _currentFallTotalTime += Time.fixedDeltaTime;
-                    if (_currentFallTotalTime > 10f && AI)
-                    {
-                        Cache.Transform.position = _startPosition;
-                    }
                     if (Cache.Rigidbody.velocity.y >= -1f)
                     {
                         _currentFallStuckTime += Time.fixedDeltaTime;

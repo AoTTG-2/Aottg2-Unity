@@ -63,6 +63,8 @@ namespace UI
             {
                 BaseSetting setting = (BaseSetting)entry.Value;
                 string name = (string)entry.Key;
+                if (isTitan && name == "CoverNape1")
+                    name = "CoverNape";
                 if (setting.GetType() == typeof(KeybindSetting))
                 {
                     Transform side = count < (container.Settings.Count / 2) ? DoublePanelLeft : DoublePanelRight;

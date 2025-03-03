@@ -61,6 +61,8 @@ namespace Controllers
             _titan.IsSit = _titanInput.Sit.GetKey();
             _titan.IsSprint = _titanInput.Sprint.GetKey();
             _enemyTimeLeft -= Time.deltaTime;
+            if (_titanInput.CoverNape1.GetKeyUp())
+                _titan.UncoverNape();
             if (_titan.CanAction())
             {
                 if (_titanInput.Jump.GetKeyDown())
@@ -68,7 +70,7 @@ namespace Controllers
                     _titan.JumpForce = 200f;
                     _titan.Attack("AttackJump");
                 }
-                else if (_titanInput.CoverNape.GetKeyDown())
+                else if (_titanInput.CoverNape1.GetKeyDown())
                     _titan.CoverNape();
                 else if (_titanInput.Kick.GetKeyDown())
                     _titan.Attack("AttackKick");

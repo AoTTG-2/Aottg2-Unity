@@ -349,13 +349,13 @@
 	],
 	"GameModes": [
 		{
-			"Name": "Survive"
-		},
-		{
 			"Name": "Waves",
 			"MiscSettings": {
 				"AllowPlayerTitans": false
 			}
+		},
+		{
+			"Name": "Survive"
 		},
 		{
 			"Name": "Endless"
