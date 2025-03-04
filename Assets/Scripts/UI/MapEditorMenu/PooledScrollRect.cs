@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -28,8 +29,32 @@ namespace UI
             this.horizontalScrollbarSpacing = rect.horizontalScrollbarSpacing;
             this.verticalScrollbarSpacing = rect.verticalScrollbarSpacing;
         }
-        public override void OnDrag(PointerEventData eventData){}
+
+        protected override void Start()
+        {
+            base.Start();
+            if (verticalScrollbar != null)
+            {
+                verticalScrollbar.onValueChanged.AddListener(OnScrollbarValueChanged);
+            }
+        }
+
+        protected override void LateUpdate()
+        {
+            base.LateUpdate();
+            // verticalNormalizedPosition = 0f;
+        }
+
+        public override void OnDrag(PointerEventData eventData) { }
+
         public override void OnEndDrag(PointerEventData eventData) { }
+
         public override void OnInitializePotentialDrag(PointerEventData eventData) { }
+
+        private void OnScrollbarValueChanged(float value)
+        {
+            if (onValueChanged != null)
+                onValueChanged.Invoke(new Vector2(0, value));
+        }
     }
 }

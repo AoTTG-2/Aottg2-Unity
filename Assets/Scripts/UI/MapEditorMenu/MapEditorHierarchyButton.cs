@@ -77,6 +77,30 @@ namespace UI
 
         }
 
+        public bool IsCorrectlyBound(MapObject obj, bool isSelected)
+        {
+            return obj.ScriptObject.Id == BoundID && obj.Level == Level && ExpandStateValid(obj.Expanded, obj.HasChildren) && Highlight.activeSelf == isSelected;
+        }
+
+        public void Bind(MapObject obj = null, bool isSelected = false)
+        {
+            if (obj == null)
+            {
+                Name.text = string.Empty;
+                BoundID = -1;
+                SetNesting(0);
+                SetExpanded(false, false);
+                SetHighlight(false);
+                return;
+            }
+
+            Name.text = obj.ScriptObject.Name;
+            BoundID = obj.ScriptObject.Id;
+            SetNesting(obj.Level);
+            SetExpanded(obj.Expanded, obj.HasChildren);
+            SetHighlight(isSelected);
+        }
+
         public void Bind(string name, int id, int level, bool isSelected)
         {
             Name.text = name;
@@ -113,10 +137,17 @@ namespace UI
             LayoutGroup.padding = new RectOffset(10 + (level * 20), 0, 0, 0);
         }
 
+        public float Level => (LayoutGroup.padding.left / 20) - 10;
+
         public void SetExpanded(bool isExpanded, bool hasChildren)
         {
             ArrowClosed.SetActive(!isExpanded && hasChildren);
             ArrowExpanded.SetActive(isExpanded && hasChildren);
+        }
+
+        public bool ExpandStateValid(bool isExpanded, bool hasChildren)
+        {
+            return ArrowClosed.activeSelf == !isExpanded && hasChildren && ArrowExpanded.activeSelf == isExpanded && hasChildren;
         }
     }
 }

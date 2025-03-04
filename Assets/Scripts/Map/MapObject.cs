@@ -23,7 +23,8 @@ namespace Map
         public int SiblingIndex = 0;
         public int Level = 0;
         public bool Expanded = false;
-        
+        public bool HasChildren => MapLoader.IdToChildren.ContainsKey(ScriptObject.Id) && MapLoader.IdToChildren[ScriptObject.Id].Count > 0;
+
         // Networking
         public bool NetworkedMovement = false;
 

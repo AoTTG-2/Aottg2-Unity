@@ -8,6 +8,7 @@ using GameManagers;
 using Map;
 using MapEditor;
 using Unity.VisualScripting;
+using PlasticPipe.PlasticProtocol.Messages;
 
 
 namespace UI
@@ -42,7 +43,7 @@ namespace UI
         private Transform _topGroup;
 
         // Pooling
-        private const int MaxVisibleObjects = 100;
+        private const int MaxVisibleObjects = 40;
         private int _visibleIndex = 0;
         private VirtualTreeView _treeView = new VirtualTreeView();
         private List<VirtualTreeViewItem> _visibleTreeViewItems = new List<VirtualTreeViewItem>();
@@ -54,6 +55,7 @@ namespace UI
         private List<MapEditorHierarchyButton> _elementsPool = new();
         private Dictionary<int, MapEditorHierarchyButton> _idToElement = new();
         private List<MapObject> _visibleObjects = new();
+        private float _buttonSize = 25f;
 
         public int TotalElementCount => MapLoader.IdToMapObject.Count;
 
@@ -96,10 +98,11 @@ namespace UI
             _scrollRect.vertical = true;
             _scrollRect.movementType = ScrollRect.MovementType.Clamped;
             _scrollRect.inertia = false;
-            _scrollRect.scrollSensitivity = 10;
+            _scrollRect.scrollSensitivity = 11;
             _scrollRect.verticalScrollbar = _scrollBar;
             _scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.Permanent;
             _scrollRect.onValueChanged.AddListener(OnScrollChanged);
+            _scrollBar.onValueChanged.AddListener(OnScroll);
             #endregion
 
             InitializePooledElements();
@@ -163,38 +166,82 @@ namespace UI
 
         private void Update()
         {
-            OnScroll();
             HandleElementDrag();
+            if (_requestRedraw)
+            {
+                _requestRedraw = false;
+                Canvas.ForceUpdateCanvases();
+            }
+        }
+
+        public void OnScroll(float x)
+        {
+            //UpdateVIsibleElements();
         }
 
         public void OnScrollChanged(Vector2 vec)
         {
             // Find the _visibleIndex based on the scroll position
-            _visibleIndex = (int)((1f - vec.y) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
-            _scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x, _visibleTreeViewItems.Count * 25f);
-            _scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleObjects.Count));
+            //_visibleIndex = (int)((1f - vec.y) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
+            //_scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x, _visibleTreeViewItems.Count * 25f);
+            //_scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleObjects.Count));
+            UpdateVIsibleElements();
         }
 
-        private void OnScroll()
+        private void RedrawElement (MapEditorHierarchyButton element, MapObject obj)
         {
-            int startIndex = Mathf.Max(0, _visibleIndex);
-            int endIndex = Mathf.Min(startIndex + MaxVisibleObjects, _visibleObjects.Count);
+            element.Bind(obj, _selected.Contains(obj.ScriptObject.Id));
+        }
 
-            foreach (var item in _elementsPool)
-                item.gameObject.SetActive(false);
+        private bool _requestRedraw = true;
+        public void UpdateVIsibleElements()
+        {
+            float scrollPos = _scrollRect.verticalNormalizedPosition;
+            int totalElements = _visibleObjects.Count;
+            float size = Mathf.Min(1f, (float)MaxVisibleObjects / totalElements);
+            _scrollRect.verticalScrollbar.size = size;
 
-            for (int i = startIndex; i < endIndex; i++)
+            int startIndex = 0;
+            if (totalElements > MaxVisibleObjects)
             {
-                var item = _visibleObjects[i];
-                bool hasChildren = MapLoader.IdToChildren.ContainsKey(item.ScriptObject.Id) && MapLoader.IdToChildren[item.ScriptObject.Id].Count > 0;
-                var btn = _elementsPool[i - startIndex];
-                btn.gameObject.SetActive(true);
-                RedrawPooled(btn, MapLoader.IdToMapObject[item.ScriptObject.Id], item.Level, item.SiblingIndex, item.Expanded, hasChildren);
-                if (!_idToItem.ContainsKey(item.ScriptObject.Id))
-                    _idToItem.Add(item.ScriptObject.Id, btn.gameObject);
+                int maxStartIndex = totalElements - MaxVisibleObjects;
+                startIndex = scrollPos > 0f ? Mathf.Clamp(Mathf.FloorToInt((1f - scrollPos) * maxStartIndex), 0, maxStartIndex) : maxStartIndex;
             }
 
-            _pageLabel.text = $"{startIndex}/{endIndex} {MapLoader.IdToMapObject.Values.Count}";
+            bool _requestRedraw = false;
+            for (int i = 0; i < MaxVisibleObjects; i++)
+            {
+                var element = _elementsPool[i];
+                int elementIndex = startIndex + i;
+                if (elementIndex < totalElements)
+                {
+                    bool wasActive = element.gameObject.activeSelf;
+                    var mapObject = _visibleObjects[elementIndex];
+                    int siblingIndex = element.transform.GetSiblingIndex();
+                    bool isCorrectlyBound = element.IsCorrectlyBound(mapObject, _selected.Contains(mapObject.ScriptObject.Id));
+                    _requestRedraw = !wasActive || isCorrectlyBound || siblingIndex != i;
+                    if (!wasActive)
+                    {
+                        element.gameObject.SetActive(true);
+                    }
+
+                    if (!isCorrectlyBound)
+                    {
+                        element.Bind(mapObject, _selected.Contains(mapObject.ScriptObject.Id));
+                    }
+
+                    if (siblingIndex != i)
+                    {
+                        element.transform.SetSiblingIndex(i);
+                    }
+                }
+                else if (element.gameObject.activeSelf)
+                {
+                    element.gameObject.SetActive(false);
+                    _requestRedraw = true;
+                }
+            }
+            _pageLabel.text = $"{startIndex} - {startIndex + MaxVisibleObjects} ({MapLoader.IdToMapObject.Values.Count})";
         }
 
         private void HandleElementDrag()
@@ -263,20 +310,21 @@ namespace UI
         {
             for (int i = 0; i < MaxVisibleObjects; i++)
             {
-                var go = CreatePooledItem();
+                var go = CreatePooledElement();
                 go.SetActive(false);
                 _elementsPool.Add(go.GetComponent<MapEditorHierarchyButton>());
             }
+            _buttonSize = _elementsPool[0].GetComponent<RectTransform>().sizeDelta.y;
         }
 
         /// <summary>
         /// We will be removing the concept of pagination and instead rendering a fixed number of objects from the virtual tree view.
         /// We need to figure out the item offset based on the scroll position and then draw the next X items.
         /// </summary>
-        public void SyncPooled()
+        public void UpdateDataSource()
         {
             // Clear and repopulate the view
-            foreach (var btn in _elementsPool) btn.gameObject.SetActive(false);
+            // foreach (var btn in _elementsPool) btn.gameObject.SetActive(false);
 
             var expandedIds = MapLoader.IdToMapObject.Values.Where(e => e.Expanded).Select(e => e.ScriptObject.Id).ToList();
             string searchTerm = _searchSetting.Value.ToLower();
@@ -290,26 +338,14 @@ namespace UI
             foreach (var obj in _visibleObjects) obj.Expanded = expandedIds.Contains(obj.ScriptObject.Id);
         }
 
-
         public void Sync()
         {
-            SyncPooled();
-            OnScroll();
+            UpdateDataSource();
+            UpdateVIsibleElements();
             SyncSelectedItems();
         }
 
-        private void RedrawPooled(MapEditorHierarchyButton element, MapObject obj, int level, int siblingID, bool expanded, bool hasChildren)
-        {
-            element.Bind(obj.ScriptObject.Name, obj.ScriptObject.Id, level, _selected.Contains(obj.ScriptObject.Id));
-            element.SetExpanded(expanded, hasChildren);
-
-            if (_selected.Contains(obj.ScriptObject.Id))
-                element.Highlight.SetActive(true);
-            else
-                element.Highlight.SetActive(false);
-        }
-
-        private GameObject CreatePooledItem()
+        private GameObject CreatePooledElement()
         {
             var go = ElementFactory.InstantiateAndBind(SinglePanel, "Prefabs/Misc/MapEditorHierarchyButton");
             var button = go.AddComponent<MapEditorHierarchyButton>();
@@ -325,10 +361,8 @@ namespace UI
 
         private void OnElementCallback(int id, bool expanded)
         {
-            if (expanded)
-                OnElementExpand(id);
-            else
-                OnElementClose(id);
+            if (expanded) OnElementExpand(id);
+            else OnElementClose(id);
             Sync();
         }
 
@@ -344,8 +378,7 @@ namespace UI
 
         private void OnButtonClick(int id)
         {
-            if (_menu.IsPopupActive())
-                return;
+            if (_menu.IsPopupActive()) return;
             bool multi = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
             if (_selected.Contains(id))
             {
@@ -398,8 +431,7 @@ namespace UI
                 if (!_gameManager.SelectedObjects.Contains(value))
                 {
                     _selected.Remove(selected);
-                    if (_idToItem.ContainsKey(selected))
-                        _idToItem[selected].transform.Find("Highlight").gameObject.SetActive(false);
+                    if (_idToItem.ContainsKey(selected)) _idToItem[selected].transform.Find("Highlight").gameObject.SetActive(false);
                 }
             }
             foreach (MapObject obj in _gameManager.SelectedObjects)
@@ -407,8 +439,7 @@ namespace UI
                 if (!_selected.Contains(obj.ScriptObject.Id))
                 {
                     _selected.Add(obj.ScriptObject.Id);
-                    if (_idToItem.ContainsKey(obj.ScriptObject.Id))
-                        _idToItem[obj.ScriptObject.Id].transform.Find("Highlight").gameObject.SetActive(true);
+                    if (_idToItem.ContainsKey(obj.ScriptObject.Id)) _idToItem[obj.ScriptObject.Id].transform.Find("Highlight").gameObject.SetActive(true);
                 }
             }
         }
@@ -416,14 +447,8 @@ namespace UI
         public void SelectAllInHierarchy()
         {
             _gameManager.DeselectAll();
-            if (_gameManager.SelectedObjects.Count == _visibleObjects.Count)
-            {
-                return;
-            }
-            foreach (var element in _visibleObjects)
-            {
-                _gameManager.SelectObject(MapLoader.IdToMapObject[element.ScriptObject.Id]);
-            }
+            if (_gameManager.SelectedObjects.Count == _visibleObjects.Count) return;
+            foreach (var element in _visibleObjects) _gameManager.SelectObject(MapLoader.IdToMapObject[element.ScriptObject.Id]);
             _gameManager.OnSelectionChange();
         }
     }
