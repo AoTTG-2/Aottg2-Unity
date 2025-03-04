@@ -4073,13 +4073,7 @@ MonoBehaviour:
   m_FontFeatureTable:
     m_GlyphPairAdjustmentRecords: []
   fallbackFontAssets: []
-  m_FallbackFontAssetTable:
-  - {fileID: 11400000, guid: 1feca609e01774126a4db281a59dd0c3, type: 2}
-  - {fileID: 11400000, guid: 9d9abfdf309784bac9b24843919f0206, type: 2}
-  - {fileID: 11400000, guid: 6639460cbafa648f8bcb034c8f5913bc, type: 2}
-  - {fileID: 11400000, guid: 434efed979ef94401bc3aa84f152e6de, type: 2}
-  - {fileID: 11400000, guid: 652d3a6f5b8bc473d93dfa23d1328ba4, type: 2}
-  - {fileID: 11400000, guid: 07e675caf6f384cffbd0385be474d1b5, type: 2}
+  m_FallbackFontAssetTable: []
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: db27241ae4e0aca4291d889c00153892
