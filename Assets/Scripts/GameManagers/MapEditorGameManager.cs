@@ -250,7 +250,7 @@ namespace GameManagers
             SelectedObjects.Add(obj);
         }
 
-        public void NewCommand(BaseCommand command)
+        public void NewCommand(BaseCommand command, bool syncInspector = true)
         {
             command.Execute();
             _undoCommands.Add(command);
@@ -260,7 +260,6 @@ namespace GameManagers
                 _menu.SyncInspector();
                 _menu.SyncHierarchyPanel();
             }
-                
         }
 
         protected override void OnFinishLoading()

@@ -236,7 +236,7 @@ namespace Cameras
                     SetFollow(_inGameManager.CurrentCharacter);
                 if (_inGameManager.CurrentCharacter == null)
                 {
-                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKey())
+                    if (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && _input.ChangeCamera.GetKeyDown())
                         SpecMode.Next();
                 }
                 else
@@ -266,8 +266,6 @@ namespace Cameras
                 }
                 else if (SpecMode.Current() == SpecateMode.FreeCam)
                     UpdateFreeCam();
-                else if (SpecMode.Current() == SpecateMode.LiveSpectate || SpecMode.Current() == SpecateMode.OrbitSpectate)
-                    SpecMode.Set(SpecateMode.FreeCam);
             }
             UpdateFOV();
             UpdateNapeLockImage();

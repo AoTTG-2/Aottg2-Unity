@@ -66,7 +66,7 @@ namespace Map
                 if (gameMode["Name"] == name)
                     return ResourceManager.TryLoadText(ResourcePaths.Modes, name + "Logic");
             }
-            string path = CustomLogicFolderPath + "/" + name + ".acl";
+            string path = CustomLogicFolderPath + "/" + name + ".cl";
             if (File.Exists(path))
                 return File.ReadAllText(path);
             path = CustomLogicFolderPath + "/" + name + ".txt";
@@ -136,7 +136,7 @@ namespace Map
         public static void DeleteCustomLogic(string name)
         {
             File.Delete(CustomLogicFolderPath + "/" + name + ".txt");
-            File.Delete(CustomLogicFolderPath + "/" + name + ".acl");
+            File.Delete(CustomLogicFolderPath + "/" + name + ".cl");
         }
 
         public static void SaveCustomMap(string name, MapScript script)
@@ -151,7 +151,7 @@ namespace Map
 
         public static void SaveCustomLogic(string name, string script)
         {
-            File.WriteAllText(CustomLogicFolderPath + "/" + name + ".acl", script);
+            File.WriteAllText(CustomLogicFolderPath + "/" + name + ".cl", script);
         }
 
         public static string[] GetGameModes(string category, string mapName, bool hasMapLogic)
@@ -231,10 +231,10 @@ namespace Map
             return new string[0];
         }
 
-        private static string[] GetAclFiles(string path)
+        private static string[] GetClFiles(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetFiles(path, "*.acl", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
+                return Directory.GetFiles(path, "*.cl", SearchOption.TopDirectoryOnly).Select(f => Path.GetFileName(f)).ToArray();
             return new string[0];
         }
 
@@ -242,11 +242,11 @@ namespace Map
         {
             List<string> modes = new List<string>();
             HashSet<string> foundModes = new HashSet<string>();
-            string[] aclFiles = GetAclFiles(CustomLogicFolderPath);
+            string[] clFiles = GetClFiles(CustomLogicFolderPath);
             string[] txtFiles = GetTxtFiles(CustomLogicFolderPath);
-            foreach (string file in aclFiles)
+            foreach (string file in clFiles)
             {
-                string name = file.Replace(".acl", "");
+                string name = file.Replace(".cl", "");
                 modes.Add(name);
                 foundModes.Add(name);
             }

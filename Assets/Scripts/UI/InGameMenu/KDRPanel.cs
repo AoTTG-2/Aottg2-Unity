@@ -29,6 +29,8 @@ namespace UI
         private KDRMode _kdrMode = KDRMode.Off;
         private PVPMode _pvpMode = PVPMode.Off;
         private string _defaultTeam = "Individuals";
+        public bool _showScoreboardLoadout = false;
+        public bool _showScoreboardStatus = false;
         public void Setup(ElementStyle style)
         {
             _style = style;
@@ -60,7 +62,16 @@ namespace UI
                 _pvpMode = (PVPMode)SettingsManager.InGameCurrent.Misc.PVP.Value;
                 DestroyAndRecreate();
             }
-
+            var evaluator = CustomLogicManager.Evaluator;
+            if (evaluator != null)
+            {
+                if (_showScoreboardStatus != evaluator.ShowScoreboardStatus || _showScoreboardLoadout != evaluator.ShowScoreboardLoadout)
+                {
+                    _showScoreboardLoadout = evaluator.ShowScoreboardLoadout;
+                    _showScoreboardStatus = evaluator.ShowScoreboardStatus;
+                    DestroyAndRecreate();
+                }
+            }
             _currentSyncDelay = MaxSyncDelay;
         }
 

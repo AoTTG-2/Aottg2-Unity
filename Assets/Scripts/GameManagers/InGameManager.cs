@@ -242,8 +242,8 @@ namespace GameManagers
         public static void OnJoinRoom()
         {
             AnticheatManager.Reset();
-            ResetPersistentPlayerProperties();
             ResetPlayerInfo();
+            ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
@@ -570,9 +570,22 @@ namespace GameManagers
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
+                TitanCustomSet selectedSet = null;
+                int selectedSetIndex = settings.CustomSet.Value;
+                if (selectedSetIndex > 0)
+                {
+                    selectedSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.Sets.GetItemAt(selectedSetIndex - 1);
+                    combo[0] = selectedSet.Body.Value;
+                    combo[1] = selectedSet.Head.Value;
+                }
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-                titan.Init(false, GetPlayerTeam(true), null, combo[1]);
+                TitanCustomSet currentSet;
+                if (selectedSetIndex == 0)
+                    currentSet = titan.Setup.CreateRandomSet(combo[1]);
+                else
+                    currentSet = selectedSet;
+                titan.Init(false, GetPlayerTeam(true), null, currentSet);
                 SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
@@ -726,7 +739,7 @@ namespace GameManagers
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
             var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-            titan.Init(true, TeamInfo.Titan, data, combo[1]);
+            titan.Init(true, TeamInfo.Titan, data, titan.Setup.CreateRandomSet(combo[1]));
             SetupTitan(titan);
             return titan;
         }
@@ -846,8 +859,8 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.CustomProperties.Clear();
             var properties = new Dictionary<string, object>
             {
-                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.HexColor() },
-                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.HexColor() },
+                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor() },
+                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.FilterBadWords().HexColor() },
                 { PlayerProperty.Team, null },
                 { PlayerProperty.CharacterViewId, -1 },
                 { PlayerProperty.CustomMapHash, null },
@@ -899,7 +912,7 @@ namespace GameManagers
 
         public static void UpdatePlayerName()
         {
-            string name = MyPlayerInfo.Profile.Name.Value.HexColor();
+            string name = MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor();
             if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
             {
                 if (SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue)

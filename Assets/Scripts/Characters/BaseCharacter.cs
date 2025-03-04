@@ -264,9 +264,10 @@ namespace Characters
         {
             if (info.Sender == photonView.Owner)
             {
+                string previousTeam = Team;
                 Team = team;
-                if (Detection != null)
-                    Detection.OnCharacterSpawned(this);
+                if (Detection != null && team != previousTeam)
+                    Detection.OnTeamChanged();
             }
         }
 
@@ -797,13 +798,24 @@ namespace Characters
             return new List<Renderer>();
         }
      
-        protected void AddRendererIfExists(List<Renderer> renderers, GameObject go)
+        protected void AddRendererIfExists(List<Renderer> renderers, GameObject go, bool multiple=false)
         {
             if (go != null)
             {
-                var renderer = go.GetComponentInChildren<Renderer>();
-                if (renderer != null)
-                    renderers.Add(renderer);
+                if (multiple)
+                {
+                    foreach (var renderer in go.GetComponentsInChildren<Renderer>())
+                    {
+                        if (renderer != null)
+                            renderers.Add(renderer);
+                    }
+                }
+                else
+                {
+                    var renderer = go.GetComponentInChildren<Renderer>();
+                    if (renderer != null)
+                        renderers.Add(renderer);
+                }
             }
         }
 

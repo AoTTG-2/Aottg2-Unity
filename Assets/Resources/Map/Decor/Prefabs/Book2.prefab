@@ -41,6 +41,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 7608680860427260477}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7188baaac15f8e745812e63ddd8a0f42, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7188baaac15f8e745812e63ddd8a0f42, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7188baaac15f8e745812e63ddd8a0f42, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7188baaac15f8e745812e63ddd8a0f42, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -124,7 +136,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -66333826979096818, guid: 7188baaac15f8e745812e63ddd8a0f42, type: 3}
 --- !u!4 &8820542997513877472 stripped

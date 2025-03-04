@@ -32,7 +32,7 @@ namespace UI
         protected override bool ScrollBar => true;
         private MapEditorGameManager _gameManager;
         private MapEditorMenu _menu;
-        private MapObject _mapObject;
+        public MapObject _mapObject;
         private IntSetting _parent = new IntSetting();
         private StringSetting _name = new StringSetting();
         private BoolSetting _active = new BoolSetting();
@@ -356,19 +356,19 @@ namespace UI
             if (script.GetPosition() != newPosition)
             {
                 _mapObject.GameObject.transform.position = newPosition;
-                _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }), false);
             }
             var newRotation = new Vector3(_rotationX.Value, _rotationY.Value, _rotationZ.Value);
             if (script.GetRotation() != newRotation)
             {
                 _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
-                _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }), false);
             }
             var newScale = new Vector3(_scaleX.Value, _scaleY.Value, _scaleZ.Value);
             if (script.GetScale() != newScale)
             {
                 _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
-                _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }));
+                _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }), false);
             }
             script.CollideMode = _collideMode.Value;
             script.CollideWith = _collideWith.Value;
@@ -483,58 +483,6 @@ namespace UI
                 return string.Join("/", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
             }
             return string.Empty;
-        }
-
-        private void Update()
-        {
-            return;
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                var system = EventSystem.current;
-                var selected = system.currentSelectedGameObject;
-                if (selected == null || (selected.transform.parent != SinglePanel && selected.transform.parent.parent != SinglePanel)
-                    || selected.GetComponent<InputField>() == null)
-                    return;
-                var selectable = selected.GetComponent<Selectable>();
-                if (selectable == null)
-                    return;
-                var nextRight = selectable.FindSelectableOnRight();
-                var nextDown = selectable.FindSelectableOnDown();
-                while (nextRight != null || nextDown != null)
-                {
-                    Debug.Log(nextRight);
-                    if (nextRight != null)
-                    {
-                        var inputField = nextRight.GetComponent<InputField>();
-                        if (inputField != null)
-                        {
-                            inputField.OnPointerClick(new PointerEventData(system));
-                            system.SetSelectedGameObject(nextRight.gameObject, new BaseEventData(system));
-                            return;
-                        }
-                    }
-                    else if (nextDown != null)
-                    {
-                        var inputField = nextDown.GetComponent<InputField>();
-                        if (inputField != null)
-                        {
-                            inputField.OnPointerClick(new PointerEventData(system));
-                            system.SetSelectedGameObject(nextDown.gameObject, new BaseEventData(system));
-                            return;
-                        }
-                    }
-                    if (nextRight != null)
-                    {
-                        nextRight = nextRight.FindSelectableOnRight();
-                        nextDown = nextRight.FindSelectableOnDown();
-                    }
-                    else
-                    {
-                        nextRight = nextDown.FindSelectableOnRight();
-                        nextDown = nextDown.FindSelectableOnDown();
-                    }
-                }
-            }
         }
     }
 }
