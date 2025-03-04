@@ -181,11 +181,6 @@ namespace UI
             UpdateVIsibleElements();
         }
 
-        private void RedrawElement (MapEditorHierarchyButton element, MapObject obj)
-        {
-            element.Bind(obj, _selected.Contains(obj.ScriptObject.Id));
-        }
-
         private bool _requestRedraw = true;
         public void UpdateVIsibleElements()
         {
