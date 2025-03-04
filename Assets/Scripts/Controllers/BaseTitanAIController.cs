@@ -16,7 +16,8 @@ namespace Controllers
         public bool SmartAttack = false;
         public float DetectRange;
         public float CloseAttackRange;
-        public float FarAttackRange;
+        public float FarAttackMinRange;
+        public float FarAttackMaxRange;
         public float FarAttackCooldown;
         public float FocusRange;
         public float FocusTime;
@@ -132,7 +133,8 @@ namespace Controllers
         {
             DetectRange = data["DetectRange"].AsFloat;
             CloseAttackRange = data["CloseAttackRange"].AsFloat;
-            FarAttackRange = data["FarAttackRange"].AsFloat;
+            FarAttackMinRange = data["FarAttackMinRange"].AsFloat;
+            FarAttackMaxRange = data["FarAttackMaxRange"].AsFloat;
             FarAttackCooldown = data["FarAttackCooldown"].AsFloat;
             FocusRange = data["FocusRange"].AsFloat;
             FocusTime = data["FocusTime"].AsFloat;
@@ -310,7 +312,7 @@ namespace Controllers
                     else
                     {
                         var validAttacks = GetValidAttacks(true);
-                        if (_enemyDistance <= FarAttackRange && validAttacks.Count > 0)
+                        if (_enemyDistance <= FarAttackMaxRange && _enemyDistance >= FarAttackMinRange && validAttacks.Count > 0)
                             Attack(validAttacks);
                         else if (HasClearLineOfSight(_enemy.GetPosition()))
                             TargetEnemy();

@@ -30,7 +30,7 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
-        public float RockThrow1Speed = 150f;
+        public float RockThrow1Speed = 140f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
@@ -39,7 +39,6 @@ namespace Characters
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
-        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
         private TitanCustomSet _customSet;
 
         public void Init(bool ai, string team, JSONNode data, TitanCustomSet customSet)
@@ -1214,6 +1213,7 @@ namespace Characters
                 }
                 else
                 {
+                    // canLook = canLook && (State == TitanState.Idle || State == TitanState.Walk);
                     if (canLook)
                         LateUpdateHeadPosition(GetAimPoint());
                     else
@@ -1222,9 +1222,6 @@ namespace Characters
                         _oldHeadRotation = BasicCache.Head.localRotation;
                     }
                 }
-
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
-                    Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
             }
             else
             {
