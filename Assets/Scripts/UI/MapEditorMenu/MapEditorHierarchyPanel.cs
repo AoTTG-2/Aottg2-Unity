@@ -174,17 +174,10 @@ namespace UI
             }
         }
 
-        public void OnScroll(float x)
-        {
-            //UpdateVIsibleElements();
-        }
+        public void OnScroll(float x) { }
 
         public void OnScrollChanged(Vector2 vec)
         {
-            // Find the _visibleIndex based on the scroll position
-            //_visibleIndex = (int)((1f - vec.y) * (MapLoader.IdToMapObject.Values.Count - MaxVisibleObjects));
-            //_scrollRect.content.sizeDelta = new Vector2(_scrollRect.content.sizeDelta.x, _visibleTreeViewItems.Count * 25f);
-            //_scrollRect.verticalScrollbar.size = Mathf.Min(1f, (MaxVisibleObjects / (float)_visibleObjects.Count));
             UpdateVIsibleElements();
         }
 
