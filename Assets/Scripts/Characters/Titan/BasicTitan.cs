@@ -333,6 +333,9 @@ namespace Characters
 
         public override void WallClimb()
         {
+            if (!CanWallClimb || _climbCooldownLeft > 0f)
+                return;
+            _climbCooldownLeft = ClimbCooldown;
             _stepPhase = 0;
             StateActionWithTime(TitanState.WallClimb, BasicAnimations.RunCrawler, 0f, 0.1f);
         }

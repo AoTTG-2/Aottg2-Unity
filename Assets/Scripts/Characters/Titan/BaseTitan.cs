@@ -31,6 +31,7 @@ namespace Characters
         public virtual float DefaultCrippleTime => 8f;
         public virtual bool CanWallClimb => false;
         public virtual bool CanSprint => false;
+        public float ClimbCooldown = 0.5f;
         public float StunTime = 0.3f;
         public float ActionPause = 0.2f;
         public float AttackPause = 0.2f;
@@ -79,6 +80,7 @@ namespace Characters
         protected float _currentFallStuckTime;
         protected float _disableCooldownLeft;
         protected float _checkGroundTimeLeft;
+        protected float _climbCooldownLeft;
         protected Vector3 _startPosition;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
@@ -246,8 +248,9 @@ namespace Characters
 
         public virtual void WallClimb()
         {
-            if (!CanWallClimb)
+            if (!CanWallClimb || _climbCooldownLeft > 0f)
                 return;
+            _climbCooldownLeft = ClimbCooldown;
             _stepPhase = 0;
             StateActionWithTime(TitanState.WallClimb, BaseTitanAnimations.Run, 0f, 0.1f);
         }
@@ -566,7 +569,7 @@ namespace Characters
             if (IsMine())
             {
                 _disableCooldownLeft -= Time.deltaTime;
-
+                _climbCooldownLeft -= Time.deltaTime;
                 if (!AI && (State == TitanState.Sprint || State == TitanState.Run || State == TitanState.Walk) && IsSit && State != TitanState.SitDown && State != TitanState.SitIdle && State != TitanState.SitUp)
                 {
                     StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);

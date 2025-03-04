@@ -264,9 +264,10 @@ namespace Characters
         {
             if (info.Sender == photonView.Owner)
             {
+                string previousTeam = Team;
                 Team = team;
-                if (Detection != null)
-                    Detection.OnCharacterSpawned(this);
+                if (Detection != null && team != previousTeam)
+                    Detection.OnTeamChanged();
             }
         }
 

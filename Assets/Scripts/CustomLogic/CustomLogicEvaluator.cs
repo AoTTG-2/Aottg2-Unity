@@ -636,7 +636,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                             conditionalState = ConditionalEvalState.PassedIf;
                         }
@@ -664,7 +664,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                         }
                         conditionalState = ConditionalEvalState.None;
@@ -680,7 +680,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                             conditionalState = ConditionalEvalState.PassedElseIf;
                         }
@@ -752,8 +752,7 @@ namespace CustomLogic
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
                             {
-                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
-                                    return nextResult;
+                                return nextResult;
                             }
                             conditionalState = ConditionalEvalState.PassedIf;
                         }
@@ -782,8 +781,7 @@ namespace CustomLogic
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
                             {
-                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
-                                    return nextResult;
+                                return nextResult;
                             }
                         }
                         conditionalState = ConditionalEvalState.None;
@@ -799,8 +797,7 @@ namespace CustomLogic
                             object[] nextResult = EvaluateBlock(classInstance, localVariables, conditional.Statements);
                             if ((bool)nextResult[0])
                             {
-                                if (nextResult[1] is not CustomLogicContinueExpressionAst && nextResult[1] is not CustomLogicBreakExpressionAst)
-                                    return nextResult;
+                                return nextResult;
                             }
                             conditionalState = ConditionalEvalState.PassedElseIf;
                         }

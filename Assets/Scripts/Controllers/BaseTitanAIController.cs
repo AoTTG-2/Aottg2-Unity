@@ -6,6 +6,7 @@ using SimpleJSONFixed;
 using Utility;
 using UnityEngine.AI;
 using Map;
+using GameManagers;
 
 namespace Controllers
 {
@@ -228,10 +229,9 @@ namespace Controllers
                     _enemy = enemy;
                 else if (_enemy != null)
                 {
-                    if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
+                    if (TeamInfo.SameTeam(_titan.Team, _enemy.GetTeam()) || Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
                         _enemy = null;
                 }
-
                 if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false && !(_moveToActive && _moveToIgnoreEnemies))
                     SetAgentDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
