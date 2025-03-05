@@ -3404,6 +3404,17 @@ namespace Characters
                 Grounded = false;
         }
 
+        public override bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
+        {
+            var hit = RaycastIgnoreTriggers(origin, direction, distance, layerMask);
+            if (!hit.HasValue)
+                return false;
+            var mapObject = MapLoader.GetMapObject(hit.Value.collider.gameObject);
+            if (mapObject != null && MapLoader.HasTag(mapObject, "HumanIgnoreGround"))
+                return false;
+            return true;
+        }
+
         protected override List<Renderer> GetFPSDisabledRenderers()
         {
             List<Renderer> renderers = new List<Renderer>();

@@ -565,6 +565,11 @@ namespace CustomLogic
                         })));                
                 return result;
             }
+            if (methodName == "HasTag")
+            {
+                string tag = (string)parameters[0];
+                return MapLoader.HasTag(Value, tag);
+            }
             return base.CallMethod(methodName, parameters);
         }
 

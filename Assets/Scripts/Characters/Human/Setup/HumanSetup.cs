@@ -6,6 +6,7 @@ using Settings;
 using CustomSkins;
 using GameManagers;
 using System.Globalization;
+using EZhex1991.EZSoftBone;
 
 namespace Characters
 {
@@ -411,6 +412,9 @@ namespace Characters
             {
                 _part_back = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetBackPrefab(back), cached: true);
                 AttachToMount(_part_back, _mount_back, true);
+                var ezSoftBone = _part_back.GetComponentInChildren<EZSoftBone>();
+                if (ezSoftBone != null)
+                    ezSoftBone.simulateSpace = transform;
             }
         }
 

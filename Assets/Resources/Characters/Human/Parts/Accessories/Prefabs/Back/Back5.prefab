@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Gravity: {x: 0, y: 0, z: 0}
   m_ForceModule: {fileID: 0}
   m_ForceScale: 1
-  m_SimulateSpace: {fileID: 401914, guid: 4458014eb64e44940a53ec1d308fb8ce, type: 3}
+  m_SimulateSpace: {fileID: 6592692507307744518}
 --- !u!1 &4943398846892692431
 GameObject:
   m_ObjectHideFlags: 0

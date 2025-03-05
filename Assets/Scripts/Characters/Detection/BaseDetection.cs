@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using GameManagers;
 using ApplicationManagers;
-using UnityEngine.TextCore.Text;
 
 // Optimized radius-based detection between pairs of characters. An alternative to Unity physics sweep-and-prune.
 

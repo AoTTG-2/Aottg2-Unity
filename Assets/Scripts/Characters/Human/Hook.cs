@@ -354,18 +354,9 @@ namespace Characters
                             var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                             if (collisionHandler != null)
                                 collisionHandler.GetHooked(_owner, finalHit.point, _left);
-                            while (!MapLoader.GoToMapObject.ContainsKey(go))
+                            var mapObject = MapLoader.GetMapObject(go);
+                            if (mapObject != null)
                             {
-                                if (go == null)
-                                    break;
-                                var parent = go.transform.parent;
-                                if (parent == null)
-                                    break;
-                                go = parent.gameObject;
-                            }
-                            if (MapLoader.GoToMapObject.ContainsKey(go))
-                            {
-                                MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
                                 {
                                     HasOffset = Vector3.Angle(Vector3.up, finalHit.normal) < 10f;

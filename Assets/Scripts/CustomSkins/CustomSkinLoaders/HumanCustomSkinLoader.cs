@@ -134,7 +134,7 @@ namespace CustomSkins
                     AddAllRenderersIfExists(renderers, human.Setup._part_back);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
                 case HumanCustomSkinPartId.Head:
-                    AddAllRenderersIfExists(renderers, human.Setup._part_head);
+                    AddAllRenderersIfExists(renderers, human.Setup._part_head_decor);
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
                 case HumanCustomSkinPartId.Hat:
                     AddAllRenderersIfExists(renderers, human.Setup._part_hat);
