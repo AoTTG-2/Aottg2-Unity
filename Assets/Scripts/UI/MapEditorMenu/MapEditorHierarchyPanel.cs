@@ -8,7 +8,6 @@ using GameManagers;
 using Map;
 using MapEditor;
 using Unity.VisualScripting;
-using PlasticPipe.PlasticProtocol.Messages;
 
 
 namespace UI
@@ -64,6 +63,9 @@ namespace UI
         int _targetParent = -1;
         int? _targetSibling = null;
         MapEditorHierarchyButton _lastHighlighted = null;
+
+        // State
+        public bool IsTreeView = true;
 
 
         public override void Setup(BasePanel parent = null)
@@ -178,11 +180,11 @@ namespace UI
 
         public void OnScrollChanged(Vector2 vec)
         {
-            UpdateVIsibleElements();
+            UpdateVisibleElements();
         }
 
         private bool _requestRedraw = true;
-        public void UpdateVIsibleElements()
+        public void UpdateVisibleElements()
         {
             float scrollPos = _scrollRect.verticalNormalizedPosition;
             int totalElements = _visibleObjects.Count;
@@ -316,20 +318,22 @@ namespace UI
 
             var expandedIds = MapLoader.IdToMapObject.Values.Where(e => e.Expanded).Select(e => e.ScriptObject.Id).ToList();
             string searchTerm = _searchSetting.Value.ToLower();
-            var searchResult = MapLoader.Query(searchTerm);
 
             _idToItem.Clear();
             _selected.Clear();
             _visibleObjects.Clear();
 
-            _visibleObjects = GetVisibleItems();
+            IsTreeView = searchTerm == string.Empty;
+            if (!IsTreeView) _visibleObjects = MapLoader.Query(searchTerm).Select(id => MapLoader.IdToMapObject[id]).ToList();
+            else _visibleObjects = GetVisibleItems();
+
             foreach (var obj in _visibleObjects) obj.Expanded = expandedIds.Contains(obj.ScriptObject.Id);
         }
 
         public void Sync()
         {
             UpdateDataSource();
-            UpdateVIsibleElements();
+            UpdateVisibleElements();
             SyncSelectedItems();
         }
 
