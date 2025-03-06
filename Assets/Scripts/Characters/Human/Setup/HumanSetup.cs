@@ -413,7 +413,7 @@ namespace Characters
                 _part_back = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetBackPrefab(back), cached: true);
                 AttachToMount(_part_back, _mount_back, true);
                 var ezSoftBone = _part_back.GetComponentInChildren<EZSoftBone>();
-                if (ezSoftBone != null)
+                if (ezSoftBone != null && ezSoftBone.simulateSpace != null)
                     ezSoftBone.simulateSpace = transform;
             }
         }
