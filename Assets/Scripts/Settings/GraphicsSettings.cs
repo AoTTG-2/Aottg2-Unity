@@ -29,6 +29,8 @@ namespace Settings
         public IntSetting AnisotropicFiltering = new IntSetting((int)AnisotropicLevel.Low);
         public IntSetting WeatherEffects = new IntSetting((int)WeatherEffectLevel.High);
         public IntSetting WeaponTrail = new IntSetting((int)WeaponTrailMode.All);
+        public BoolSetting WeaponTrailHold = new BoolSetting(false);
+        public BoolSetting WeaponFireEffect = new BoolSetting(true);
         public BoolSetting WindEffectEnabled = new BoolSetting(true);
         public BoolSetting BloodSplatterEnabled = new BoolSetting(true);
         public BoolSetting NapeBloodEnabled = new BoolSetting(true);

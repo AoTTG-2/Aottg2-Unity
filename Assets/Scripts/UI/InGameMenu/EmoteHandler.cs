@@ -8,14 +8,12 @@ using GameManagers;
 using ApplicationManagers;
 using Utility;
 using Photon.Pun;
+using Anticheat;
 
 namespace UI
 {
     class EmoteHandler : MonoBehaviour
     {
-        public static Dictionary<string, Texture2D> EmojiTextures = new Dictionary<string, Texture2D>();
-        public static List<string> AvailableEmojis = new List<string>() { "Smile", "ThumbsUp", "Cool", "Love", "Shocked", "Crying", "Annoyed", "Angry" };
-        public static List<string> AvailableText = new List<string>() { "Help", "Thanks", "Sorry", "Titan here", "Good game", "Nice hit", "Oops", "Welcome" };
         private List<EmoteTextPopup> _emoteTextPopups = new List<EmoteTextPopup>();
         private List<EmoteTextPopup> _emoteEmojiPopups = new List<EmoteTextPopup>();
         private BasePopup _emoteWheelPopup;
@@ -53,7 +51,7 @@ namespace UI
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
             if (c != null && handler != null)
-                handler.ShowEmoteText(text, c);
+                handler.ShowEmoteText(text.FilterBadWords(), c);
         }
 
         public static void OnEmoteEmojiRPC(int viewId, string emoji, PhotonMessageInfo info)
@@ -184,19 +182,13 @@ namespace UI
             {
                 if (_currentEmoteWheelState == EmoteWheelState.Text)
                 {
-                    if (selected < AvailableText.Count)
-                    {
-                        string text = AvailableText[selected];
-                        RPCManager.PhotonView.RPC("EmoteTextRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, text });
-                    }
+                    string text = ((NameSetting)SettingsManager.EmoteSettings.TextEmotes.GetItemAt(selected)).Value;
+                    RPCManager.PhotonView.RPC("EmoteTextRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, text });
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Emoji)
                 {
-                    if (selected < AvailableEmojis.Count)
-                    {
-                        string emoji = AvailableEmojis[selected];
-                        RPCManager.PhotonView.RPC("EmoteEmojiRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
-                    }
+                    string emoji = ((StringSetting)SettingsManager.EmoteSettings.EmojiEmotes.GetItemAt(selected)).Value;
+                    RPCManager.PhotonView.RPC("EmoteEmojiRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, emoji });
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Action)
                 {
@@ -215,9 +207,19 @@ namespace UI
         private List<string> GetEmoteWheelOptions(EmoteWheelState state)
         {
             if (state == EmoteWheelState.Text)
-                return AvailableText;
+            {
+                var list = new List<string>();
+                foreach (var item in SettingsManager.EmoteSettings.TextEmotes.Value)
+                    list.Add(item.Value);
+                return list;
+            }
             else if (state == EmoteWheelState.Emoji)
-                return AvailableEmojis;
+            {
+                var list = new List<string>();
+                foreach (var item in SettingsManager.EmoteSettings.EmojiEmotes.Value)
+                    list.Add(item.Value);
+                return list;
+            }
             else
             {
                 if (_inGameManager.CurrentCharacter == null)

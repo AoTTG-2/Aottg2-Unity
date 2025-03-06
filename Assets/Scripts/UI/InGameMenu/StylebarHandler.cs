@@ -39,6 +39,11 @@ namespace UI
                 Letters[i] = "<color=#" + ColorTags[i] + ">" + Letters[i] + "</color>";
         }
 
+        public int GetRank()
+        {
+            return _rank;
+        }
+
         public void OnHit(int damage)
         {
             if (!SettingsManager.UISettings.ShowStylebar.Value)

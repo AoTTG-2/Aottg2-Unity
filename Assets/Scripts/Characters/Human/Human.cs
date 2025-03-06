@@ -65,6 +65,8 @@ namespace Characters
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
         private float _grabIFrames = 0f;
+        private bool _bladeTrailActive;
+        private int _bladeFireState;
 
         // physics
         public float ReelInAxis = 0f;
@@ -1222,6 +1224,7 @@ namespace Characters
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
                 UpdateIFrames();
+                UpdateBladeFire();
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1294,7 +1297,9 @@ namespace Characters
                             startTime = 0.5f;
                             endTime = 0.85f;
                         }
-                        if (Animation.GetNormalizedTime(AttackAnimation) > startTime && Animation.GetNormalizedTime(AttackAnimation) < endTime)
+                        bool hold = SettingsManager.GraphicsSettings.WeaponTrailHold.Value;
+                        float currTime = Animation.GetNormalizedTime(AttackAnimation);
+                        if (currTime > startTime && currTime < endTime)
                         {
                             if (!HumanCache.BladeHitLeft.IsActive())
                             {
@@ -1306,7 +1311,8 @@ namespace Characters
                                     int random = UnityEngine.Random.Range(1, 5);
                                     PlaySound("BladeSwing" + random.ToString());
                                 }
-                                ToggleBladeTrails(true);
+                                if (!hold)
+                                    ToggleBladeTrails(true);
                             }
                             if (!HumanCache.BladeHitRight.IsActive())
                                 HumanCache.BladeHitRight.Activate();
@@ -1315,7 +1321,15 @@ namespace Characters
                         {
                             HumanCache.BladeHitLeft.Deactivate();
                             HumanCache.BladeHitRight.Deactivate();
-                            ToggleBladeTrails(false);
+                            if (!hold)
+                                ToggleBladeTrails(false);
+                        }
+                        if (hold)
+                        {
+                            if (currTime > 0f && currTime < endTime)
+                                ToggleBladeTrails(true);
+                            else
+                                ToggleBladeTrails(false);
                         }
                         if (Animation.GetNormalizedTime(AttackAnimation) >= 1f)
                             Idle();
@@ -1868,6 +1882,19 @@ namespace Characters
                 IsInvincible = false;
             if (_grabIFrames > 0)
                 _grabIFrames -= Time.deltaTime;
+        }
+
+        private void UpdateBladeFire()
+        {
+            if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
+                return;
+            int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
+            if (rank >= 4)
+                ToggleBladeFire(1);
+            else if (rank >= 6)
+                ToggleBladeFire(2);
+            else
+                ToggleBladeFire(0);
         }
 
         private void lookAtTarget(Vector3 target)
@@ -3245,10 +3272,24 @@ namespace Characters
             return Setup.Weapon == HumanWeapon.Thunderspear && (Animation.IsPlaying(HumanAnimations.TSShootL) || Animation.IsPlaying(HumanAnimations.TSShootR) || Animation.IsPlaying(HumanAnimations.TSShootLAir) || Animation.IsPlaying(HumanAnimations.TSShootRAir));
         }
 
+        private void ToggleBladeFire(int state)
+        {
+            if (IsMine())
+            {
+                if (state != _bladeFireState)
+                    Cache.PhotonView.RPC("ToggleBladeFireRPC", RpcTarget.All, new object[] { state });
+                _bladeFireState = state;
+            }
+        }
+
         private void ToggleBladeTrails(bool toggle)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+            {
+                if (toggle != _bladeTrailActive)
+                    Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+                _bladeTrailActive = toggle;
+            }
         }
 
         public void ToggleBlades(bool toggle)
@@ -3286,7 +3327,7 @@ namespace Characters
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
-            if (Setup == null || Setup?.LeftTrail == null || Setup?.RightTrail == null)
+            if (Setup == null || Setup.LeftTrail == null || Setup.RightTrail == null)
                 return;
             bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
                                 || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
@@ -3313,6 +3354,40 @@ namespace Characters
             {
                 Setup.LeftTrail.enabled = true;
                 Setup.RightTrail.enabled = true;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBladeFireRPC(int state, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (Setup == null || Setup.Weapon != HumanWeapon.Blade || Setup._part_blade_l == null || Setup._part_blade_r == null)
+                return;
+            var leftFire1 = Setup._part_blade_l.transform.Find("Fire1");
+            var leftFire2 = Setup._part_blade_l.transform.Find("Fire2");
+            var rightFire1 = Setup._part_blade_r.transform.Find("Fire1");
+            var rightFire2 = Setup._part_blade_r.transform.Find("Fire2");
+            if (state == 0 || !SettingsManager.GraphicsSettings.WeaponFireEffect.Value)
+            {
+                leftFire1.gameObject.SetActive(false);
+                rightFire1.gameObject.SetActive(false);
+                leftFire2.gameObject.SetActive(false);
+                rightFire2.gameObject.SetActive(false);
+            }
+            else if (state == 1)
+            {
+                leftFire1.gameObject.SetActive(true);
+                rightFire1.gameObject.SetActive(true);
+                leftFire2.gameObject.SetActive(false);
+                rightFire2.gameObject.SetActive(false);
+            }
+            else if (state == 2)
+            {
+                leftFire1.gameObject.SetActive(false);
+                rightFire1.gameObject.SetActive(false);
+                leftFire2.gameObject.SetActive(true);
+                rightFire2.gameObject.SetActive(true);
             }
         }
 
