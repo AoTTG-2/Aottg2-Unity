@@ -2013,6 +2013,8 @@ namespace Characters
 
         protected void OnCollisionEnter(Collision collision)
         {
+            if (!IsMine())
+                return;
             var velocity = Cache.Rigidbody.velocity;
             if (Special != null && Special is SwitchbackSpecial)
             {
@@ -2021,19 +2023,22 @@ namespace Characters
             }
             if (_lastVelocity.magnitude > 0f)
             {
-                var titan = collision.transform.root.GetComponent<BaseTitan>();
-                if (titan == null || titan.AI || titan.GetVelocity().magnitude <= 1f)
-                {
-                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-                    float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-                    float speed = _lastVelocity.magnitude * speedMultiplier;
-                    Cache.Rigidbody.velocity = velocity.normalized * speed;
-                }
+                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                float speed = _lastVelocity.magnitude * speedMultiplier;
+                Cache.Rigidbody.velocity = velocity.normalized * speed;
                 float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
-                {
                     GetHit("Impact", (int)speedDiff, "Impact", "");
-                    return;
+            }
+            var titan = collision.transform.root.GetComponent<BaseTitan>();
+            if (titan != null && !titan.AI)
+            {
+                var normal = collision.contacts[0].normal;
+                var titanVel = titan.GetVelocity();
+                if (titanVel.magnitude > 0f && Vector3.Angle(titanVel, normal) < 70f)
+                {
+                    Cache.Rigidbody.velocity += titanVel;
                 }
             }
         }
