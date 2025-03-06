@@ -1890,9 +1890,9 @@ namespace Characters
                 return;
             int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
             if (rank >= 4)
-                ToggleBladeFire(2);
-            else if (rank >= 6)
                 ToggleBladeFire(1);
+            else if (rank >= 6)
+                ToggleBladeFire(2);
             else
                 ToggleBladeFire(0);
         }
