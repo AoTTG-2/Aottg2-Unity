@@ -13,7 +13,7 @@ namespace UI
     {
         protected override string Title => string.Empty;
         protected override float Width => 730f;
-        protected override float Height => 690f;
+        protected override float Height => 770f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "Profile";

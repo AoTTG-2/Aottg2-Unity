@@ -9,6 +9,7 @@ namespace UI
     class EditProfileEmotePanel: CategoryPanel
     {
         protected override bool ScrollBar => true;
+        protected override float VerticalSpacing => 20f;
 
         public override void Setup(BasePanel parent = null)
         {

@@ -1889,10 +1889,10 @@ namespace Characters
             if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
                 return;
             int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
-            if (rank >= 4)
-                ToggleBladeFire(1);
-            else if (rank >= 6)
+            if (rank >= 6)
                 ToggleBladeFire(2);
+            else if (rank >= 4)
+                ToggleBladeFire(1);
             else
                 ToggleBladeFire(0);
         }
@@ -2075,7 +2075,7 @@ namespace Characters
             if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
                 _wallSlide = true;
-                _wallSlideGround = collision.contacts[0].normal.normalized;
+                _wallSlideGround = collision.GetContact(0).normal.normalized;
             }
             if (Special != null && Special is SwitchbackSpecial)
             {
