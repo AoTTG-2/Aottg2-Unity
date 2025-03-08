@@ -74,7 +74,7 @@ namespace Characters
         {
             if (Animation.IsPlaying(BasicAnimations.Die) || Animation.IsPlaying(BasicAnimations.DieBack) || Animation.IsPlaying(BasicAnimations.DieFront))
             {
-                return Animation.GetCurrentNormalizedTime() * Animation.GetLength(_currentStateAnimation);
+                return Animation.GetCurrentNormalizedTime() * Animation.GetLength(Animation.GetCurrentAnimation());
             }
             return -1f;
         }

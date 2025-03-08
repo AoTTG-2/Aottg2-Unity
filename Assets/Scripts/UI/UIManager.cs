@@ -39,7 +39,6 @@ namespace UI
             _instance = SingletonFactory.CreateSingleton(_instance);
             LoadLanguages();
             LoadUIThemes();
-            LoadEmojis();
             LoadProfileIcons();
             _currentUITheme = SettingsManager.UISettings.UITheme.Value;
             LoadingMenu = ElementFactory.CreateMenu<LoadingMenu>("Prefabs/Panels/BackgroundMenu");
@@ -79,14 +78,6 @@ namespace UI
             if (_lastCategories.ContainsKey(t))
                 return _lastCategories[t];
             return string.Empty;
-        }
-
-        private static void LoadEmojis()
-        {
-            foreach (string emoji in EmoteHandler.AvailableEmojis)
-                EmoteHandler.EmojiTextures.Add(emoji, ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/Emoji" + emoji) as Texture2D);
-
-            EmoteHandler.EmojiTextures.Add("Speaking", ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Emojis/" + "Speaking") as Texture2D);
         }
 
         private static void LoadProfileIcons()

@@ -38,6 +38,8 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.BloodSplatterEnabled, UIManager.GetLocale(cat, sub, "BloodSplatterEnabled"));
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, settings.WeaponTrail, UIManager.GetLocale(cat, sub, "WeaponTrail"),
                 UIManager.GetLocaleArray(cat, sub, "WeaponTrailOptions"), elementWidth: 200f);
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponTrailHold, UIManager.GetLocale(cat, sub, "WeaponTrailHold"), tooltip: UIManager.GetLocale(cat, sub, "WeaponTrailHoldTooltip"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.WeaponFireEffect, UIManager.GetLocale(cat, sub, "WeaponFireEffect"), tooltip: UIManager.GetLocale(cat, sub, "WeaponFireEffectTooltip"));
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.TextureQuality, UIManager.GetLocale(cat, sub, "TextureQuality"),
                 UIManager.GetLocaleArray(cat, sub, "TextureQualityOptions"), elementWidth: 200f);
             ElementFactory.CreateDropdownSetting(DoublePanelRight, style, settings.ShadowQuality, UIManager.GetLocale(cat, sub, "ShadowQuality"),

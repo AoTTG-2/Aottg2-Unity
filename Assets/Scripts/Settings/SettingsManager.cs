@@ -25,6 +25,7 @@ namespace Settings
         public static InGameCharacterSettings InGameCharacterSettings;
         public static MapEditorSettings MapEditorSettings;
         public static SoundSettings SoundSettings;
+        public static EmoteSettings EmoteSettings;
 
         public static event Action OnSettingsChanged;
 
@@ -47,6 +48,7 @@ namespace Settings
             InGameCharacterSettings = new InGameCharacterSettings();
             MapEditorSettings = new MapEditorSettings();
             SoundSettings = new SoundSettings();
+            EmoteSettings = new EmoteSettings();
         }
 
         public static void NotifySettingsChanged()

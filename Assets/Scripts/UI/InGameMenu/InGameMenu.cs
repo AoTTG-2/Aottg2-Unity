@@ -14,10 +14,7 @@ using Cameras;
 using CustomLogic;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.Rendering;
 using System.Linq;
-using Photon.Pun.UtilityScripts;
-using JetBrains.Annotations;
 
 namespace UI
 {
@@ -415,6 +412,13 @@ namespace UI
             _killScorePopup.Show(score);
             _killScoreTimeLeft = 3f;
             StylebarHandler.OnHit(score);
+        }
+
+        public int GetStylebarRank()
+        {
+            if (StylebarHandler != null)
+                return StylebarHandler.GetRank();
+            return 0;
         }
 
         public void SetLabel(string label, string message, float time)
