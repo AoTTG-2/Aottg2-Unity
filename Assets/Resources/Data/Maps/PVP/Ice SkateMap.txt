@@ -1,5 +1,7 @@
 /// Options
-EditorVersion:1.0|Description:Ice arena for skate PVP, created by MCSkyRaid.
+EditorVersion:1.0|Description:Ice arena for skate PVP, created by MCSkyRaid.|HasWeather:0
+/// CustomAssets
+
 /// Objects
 Scene,Geometry/Cuboid,1,0,1,1,1,0,Unnamed,-7.76,-32.03,5.333,0,0,0,134.286,6.407,134.286,Physical,Entities,Default,Basic|172/174/166/255|Nature/Grass1|50/50|0/0,;
 Scene,None,2,0,1,1,1,0,Daylight,0,0,0,50.3,121.9,1.399998,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Daylight|;
@@ -74,7 +76,7 @@ Scene,None,70,0,1,1,1,0,Human SpawnPoint (blue),-411.5,39.24503,-155.9905,0,0,0,
 Scene,None,71,0,1,1,1,0,Human SpawnPoint (blue),-417.1696,39.34762,-132.8681,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
 Scene,None,72,0,1,1,1,0,Human SpawnPoint (blue),-423.0308,39.18786,-110.7565,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPointBlue;
 Scene,Geometry/Cuboid,73,0,1,1,1,0,Cuboid,2685.259,-4.66728,868.7895,0,71.91238,0,1000,1,1000,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal3|1000/1000|0/0,;
-Scene,Geometry/Cuboid,74,0,1,1,0,0,Barrier,1358.32,-4.416837,2507.84,0,30.65751,0,1000,1,1000,Physical,Characters,Default,Default|255/255/255/255,;
+Scene,Geometry/Cuboid,74,0,1,1,0,0,Barrier,1358.32,-4.416837,2507.84,0,30.65751,0,1000,1,1000,Physical,Characters,Default,Default|255/255/255/255,Tag|Name:HumanIgnoreGround;
 Scene,Geometry/Cylinder,75,0,1,1,1,0,Cylinder,-59.2895,8.959438,82.08843,0,135.126,0,3,1,3,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal3|1000/1000|0/0,;
 Scene,Geometry/Cylinder,76,0,1,0,1,0,Racing Start Barrier Cylinder,2647.814,84.02752,750.3315,0,73.6318,0,1000,0.1,1000,Physical,Entities,Default,Transparent|0/97/255/122|None|1/1|0/0,Tag|Name:RacingStartBarrier;
 Scene,Geometry/Cylinder,77,0,1,1,1,0,Cylinder,5.4022,9.505834,-117.8959,0,24.62656,0,3,1,3,Physical,Entities,Default,Basic|255/255/255/255|Metal/Metal3|1000/1000|0/0,;
@@ -130,3 +132,62 @@ Scene,Geometry/Cuboid,126,0,1,1,0,0,Barrier,0,745.8,700,0,0,0,160,160,10,Physica
 Scene,Geometry/Cuboid,127,0,1,1,0,0,Barrier,700,745.8,0.01,0,0,0,10,160,160,Physical,Characters,Default,Default|255/255/255/255,;
 Scene,Geometry/Cuboid,128,0,1,1,0,0,Barrier,-2.23,1253.07,17.889,0,0,0,160,10,160,Physical,Characters,Default,Default|255/255/255/255,
 /// Logic
+
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

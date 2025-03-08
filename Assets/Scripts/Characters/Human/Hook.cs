@@ -388,6 +388,34 @@ namespace Characters
             }
         }
 
+        protected void FixedUpdateHooked()
+        {
+            if (_owner.IsMine() && _hasHookParent)
+            {
+                if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
+                    SetHookState(HookState.DisablingHooked);
+
+                // Hook timer for titan death
+                if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                {
+                    if (titan.Dead)
+                    {
+                        float timer = titan.DeathTimeElapsed();
+                        if (timer >= 0 && timer < _deathTimerOffset)
+                        {
+                            if (_firstDeathFrame)
+                            {
+                                _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                _lastWorldHookPosition = _lastGoodHookPoint;
+                                _firstDeathFrame = false;
+                            }
+                            _usingDeathTimer = true;
+                        }
+                    }
+                }
+            }
+        }
+
         protected void Update()
         {
             if (State == HookState.Hooking)
@@ -411,32 +439,7 @@ namespace Characters
             if (State == HookState.Hooking || State == HookState.Hooked)
                 _particles.transform.position = GetHookPosition();
             if (State == HookState.Hooked)
-            {
-                if (_hasHookParent)
-                {
-                    if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
-                        SetHookState(HookState.DisablingHooked);
-
-                    // Hook timer for titan death
-                    if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
-                    {
-                        if (titan.Dead)
-                        {
-                            float timer = titan.DeathTimeElapsed();
-                            if (timer >= 0 && timer < _deathTimerOffset)
-                            {
-                                if (_firstDeathFrame)
-                                {
-                                    _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
-                                    _lastWorldHookPosition = _lastGoodHookPoint;
-                                    _firstDeathFrame = false;
-                                }
-                                _usingDeathTimer = true;
-                            }
-                        }
-                    }
-                }
-            }
+                FixedUpdateHooked();
         }
 
         public Vector3 GetHookPosition()
