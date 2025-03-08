@@ -87,7 +87,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Slackness: 0.62
+  m_Slackness: 0
   m_SlacknessCurve:
     serializedVersion: 2
     m_Curve:
