@@ -6,7 +6,6 @@ using Utility;
 using System.Diagnostics;
 using GameManagers;
 using Assets.Scripts.ApplicationManagers;
-using UnityEditor.VersionControl;
 
 namespace ApplicationManagers
 {
