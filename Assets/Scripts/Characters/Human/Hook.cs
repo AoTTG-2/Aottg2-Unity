@@ -185,7 +185,7 @@ namespace Characters
 
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
                 {
-                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
+                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
                         var damage = Math.Max(10, (int)(_owner.CurrentSpeed * CharacterData.HumanWeaponInfo["Hook"]["DamageMultiplier"]));
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
