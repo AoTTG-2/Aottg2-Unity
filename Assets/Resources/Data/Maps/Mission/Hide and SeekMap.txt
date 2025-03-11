@@ -1764,14 +1764,14 @@ Scene,Geometry/Plane1,1759,0,1,0,1,1,seekerBlock,-195.1534,63.81358,291.3034,0,0
 /// Logic
 class Main
 {
-    minPlayer = 2;
+    Description = "players are divided into two teams: Hiders and Seekers. The objective for the Hiders is to stay hidden and survive within the game’s environment until the timer runs out. The Seekers must track down and capture all the Hiders before time expires";
+    MinPlayers = 2;
     Seeker = 1;
-    FPV = false;
+    ForceFPSCam = false;
     TimeLimit = 300;
     StartTimer = 20.0;
-    CantHidersMove = false;
-    hidingTime = 60.0;
-    Description = "players are divided into two teams: Hiders and Seekers. The objective for the Hiders is to stay hidden and survive within the game’s environment until the timer runs out. The Seekers must track down and capture all the Hiders before time expires";
+    HidingTime = 60.0;
+    HiderGas = 10;
 
     _GameStart = false;
     _GameStarted = false;
@@ -1790,12 +1790,10 @@ class Main
     _SeekerWin = "";
     _seekerList = List();
     _seekerLeftGame = false;
-    _r2 = 0;
 
     #Avoiding people to be seeker 2 times in the same game
     SeekerFound = List();
-    _r = 0;
-    #_Found = false;
+    _myPlayerIsSeeker = false;
 
 
     function StartGame()
@@ -1805,11 +1803,10 @@ class Main
             return;
         }
 
-        #ResetUI
+        # ResetUI
         UI.SetLabelAll("MiddleCenter", "");
         
-        #Pick a random player and announce it to the other players
-
+        # Pick a random player and announce it to the other players
         for(p in Network.Players)
         {
             if (p.Status == "Alive")
@@ -1818,35 +1815,13 @@ class Main
             }
         }
 
-        #Set Music for the player
-        self._r2 = Random.RandomInt(0,2);
-        Game.Print(self._r2);
-        if (self._r2 == 1)
-        {
-        #    Network.SendMessageAll("EventD");
-        #    music1 = Map.FindMapObjectsByName("audio1");
-        #    for (audio in music1)
-        #    {
-        #        audio.Active = true;
-        #    }
-        }
-        else
-        {
-           # music1 = Map.FindMapObjectsByName("audio2");
-        #     Network.SendMessageAll("EventE");
-        #    for (audio in music1)
-        #    {
-        #        audio.Active = true;
-        #    }
-        }
-
         for (i in Range(0, self.Seeker, 1))
         {
             r = Random.RandomInt(0, self.SeekerFound.Count);
             self._seekerPlayer = self.SeekerFound.Get(r);
 
             Network.SendMessageAll("The seeker is " + "<color=red> <b>" +  self._seekerPlayer.Name + "</b></color>");
-            Network.SendMessage(self._seekerPlayer, "setSeeker");
+            Network.SendMessage(self._seekerPlayer, "SetSeeker");
 
             self.SeekerFound.RemoveAt(r);
             Game.Print("Removed ->" + r " ( " + self._seekerPlayer.Name + " )");
@@ -1861,10 +1836,10 @@ class Main
             if (player.ID == leftSeeker)
             {
                 self.Seeker = self.Seeker - 1;
-                Game.Print("<color=red>Seeker Quitted </color>");
+                Game.Print("<color=red>Seeker Quit </color>");
                 if (self.Seeker == 0)
                 {
-                    Game.Print("<color=red><b>All the seeker quitted the game, restarting...</b></color>");
+                    Game.Print("<color=red><b>All seekers quit the game, restarting...</b></color>");
                     self._seekerLeftGame = true;
                 }
             }
@@ -1893,72 +1868,41 @@ class Main
 
     function OnNetworkMessage(sender, message)
     {
-        if (message != "setSeeker" && message != "EventA" && message != "EventB" && message != "EventC" && message != "EventD" && message != "EventE")
+        if (message != "SetSeeker" && message != "SetHidingTime" && message != "AddMeToSeeker" && message != "StartSeekingTime")
         {
             #ChatInteractions.Clear();
             Game.Print("<color=orange>[Server] </color>" + "<color=white>" + message + "</color>");
         }
-        if (message == "EventA")
+        if (message == "SetHidingTime")
         {
-            self._seekerTimer = self.hidingTime + Time.GameTime;
+            self._seekerTimer = self.HidingTime + Time.GameTime;
             self._HidingTimeStart = true;
         }
 
-        if (message == "EventB")
+        if (message == "AddMeToSeeker")
         {
             self._seekerList.Add(sender.ID);
         }
 
-        if (message == "EventC")
+        if (message == "StartSeekingTime")
         {
-            # isSeeker = false;
-            # _Character = Network.MyPlayer;
-            # #for (Player in Network.Players)
-            # #{ 
-            #     for (seeker in self._seekerList)
-            #     {
-            #         if (_Character.ID != seeker && self.CantHidersMove == true && !isSeeker)
-            #         {
-            #             Game.Print(_Character.ID + " non è " + seeker);
-            #             _Character.Character.Acceleration = 50;
-            #             _Character.Character.Velocity = new Vector3(0,0,0);
-            #             _Character.Character.Speed = 50;
-            #         }
-            #         else
-            #         {
-            #             isSeeker = true;
-            #         }
-            #     }
-            #     #if (Player.ID != self._seekerList.Get(0) && Player.ID != self._seekerList.Get(1))
-            #     #{
-            #     #    Player.Character.Acceleration = 50;
-            #     #    Player.Character.Velocity = new Vector3(0,0,0);
-            #     #    Player.Character.Speed = 50;
-            #     #}
-            # #}    
-            # 
-        }
+            # Modify hiders so that they have limited mobility.
+            if (self._myPlayerIsSeeker) {
+                return;
+            }
 
-       #if(message == "EventD")
-       #{
-       #    music1 = Map.FindMapObjectsByName("audio1");
-       #    for (audio in music1)
-       #    {
-       #        audio.Active = true;
-       #    }
-       #}
-       #
-       #if(message == "EventE")
-       #{
-       #    music1 = Map.FindMapObjectsByName("audio2");
-       #    for (audio in music1)
-       #    {
-       #        audio.Active = true;
-       #    }
-       #}
-        if(message == "setSeeker")
+            _Character = Network.MyPlayer.Character;
+            _Character.Acceleration = 30;
+            _Character.Velocity = new Vector3(0,0,0);
+            _Character.Speed = 70;
+            _Character.MaxGas = self.HiderGas;
+            _Character.CurrentGas = self.HiderGas;
+        }
+        
+        if(message == "SetSeeker")
         {
             _Character = Network.MyPlayer.Character;
+            self._myPlayerIsSeeker = true;
             #Set Weapons
             _Character.SetWeapon("AHSS");
             _Character.Team = "Red";
@@ -1971,8 +1915,8 @@ class Main
             _Character.CurrentAmmoRound = 999;
             _Character.MaxGas = 999999;
             _Character.CurrentGas = 999999;
-            Network.SendMessageAll("EventA");
-            Network.SendMessageAll("EventB");
+            Network.SendMessageAll("SetHidingTime");
+            Network.SendMessageAll("AddMeToSeeker");
 
             #Teleport Player
             _Character.ClearHooks();
@@ -1981,114 +1925,109 @@ class Main
         }
     }
 
-    function RestartGame()
-    {
-        #Game.Print("Restarted game");
-        #self._GameStart = false;
-        #self._GameStarted = false;
-    }
-
     function OnTick()
     {
+        if (Game.GetMiscSetting("GlobalMinimapDisable") == false) {
+            UI.SetLabelAll("MiddleCenter", "<color=red>Disable the minimap to play this gamemode</color>");
+            return;
+        }
+
         if (Input.GetKeyHold("Interaction/Interact"))
         {
             Network.MyPlayer.Character.PlaySound("WaterSplash");
         }
-        if (Game.GetMiscSetting("GlobalMinimapDisable") == true)
+
+        if (self.ForceFPSCam)
         {
-            if (self.FPV)
-            {
             Camera.FollowDistance = 0.0;
-            }
-            if (self._HidingTimeStart == true && self._stopallUI == false) 
+        }
+        if (self._HidingTimeStart == true && self._stopallUI == false) 
+        {
+            UI.SetLabelAll("MiddleCenter", "Hiding time : " + String.FormatFloat(self._seekerTimer - Time.GameTime, 2));
+            if (self._seekerTimer - Time.GameTime <= 0)
             {
-                UI.SetLabelAll("MiddleCenter", "Hiding time : " + String.FormatFloat(self._seekerTimer - Time.GameTime, 2));
-                if (self._seekerTimer - Time.GameTime <= 0)
-                {
                 self._startBarriers = Map.FindMapObjectsByName("seekerBlock");
                 for (barrier in self._startBarriers)
                 {
                     barrier.Active = false;
                 }
-                Network.SendMessageAll("EventC");
+                Network.SendMessageAll("StartSeekingTime");
                 self._HidingTimeStart = false;
                 self._hasTimerStarted = true;
-                }
-            }
-            else
-            {
-                UI.SetLabelAll("MiddleCenter", "");
-            }
-
-            numPlayers = Game.Humans.Count;
-            if (!self._GameStart)
-            {
-                if (numPlayers >= self.minPlayer)
-                {
-                    self._CurrentTimer = self.StartTimer + Time.GameTime;
-                    self._GameStart = true;
-                }
-                else
-                {
-                    _CurrentTimer = 99999;
-                    UI.SetLabelAll("MiddleCenter", "Waiting for players...");
-                }
-            }
-
-            if (self._GameStart && numPlayers < self.minPlayer)
-            {
-                self._GameStart = false;
-                #self.RestartGame();
-            }
-
-            if (self._GameStart && !self._GameStarted)
-            {
-                UI.SetLabelAll("MiddleCenter", "Match starting in : " + String.FormatFloat(self._CurrentTimer - Time.GameTime, 2));
-            }
-            if (self._CurrentTimer - Time.GameTime <= 0.0 && !self._GameStarted && self._GameStart)
-            {
-                self._GameStarted = true;
-                self.StartGame();
-            }
-            if (self._GameStarted)
-            {
-                if (self._hasTimerStarted && self._stopallUI == false)
-                {
-                self._lastTimer = self.TimeLimit + Time.GameTime;
-                self._moving = true;
-                self._hasTimerStarted = false;
-                }
-                HumansAlive = Game.Humans.Count - self.Seeker;
-                if (self._moving && !self._stopallUI)
-                {
-                UI.SetLabelAll("TopCenter", "<color=light_green>Humans alive: </color>" + HumansAlive + "                  " + String.FormatFloat(self._lastTimer - Time.GameTime, 2) + "                  " + "<color=red>Seeker Alive: " + "</color>"  + self.Seeker);
-                }
-                elif (!self._moving && !self._stopallUI)
-                {
-                self._lastTimer = self.TimeLimit;
-                UI.SetLabelAll("TopCenter", "<color=light_green>Humans alive: </color>" + HumansAlive + "                  " + self._lastTimer + "                  " + "<color=red>Seeker Alive: " + "</color>"  + self.Seeker);
-                }
-                if (HumansAlive == 0 && self._HumanityWin != "X")
-                {
-                    UI.SetLabelAll("TopCenter", "<color=light_green>Humans alive: </color>" + HumansAlive + "                  " + "FINISH" + "                  " + "<color=red>Seeker Alive: " + "</color>"  + self.Seeker);
-                    self.ResetGame(2);
-                }
-
-                if (self._lastTimer - Time.GameTime  <= 0 && self._moving && self._SeekerWin != "X")
-                {
-                    self.ResetGame(1);
-                    UI.SetLabelAll("TopCenter", "<color=light_green>Humans alive: </color>" + HumansAlive + "                  " + "FINISH" + "                  " + "<color=red>Seeker Alive: " + "</color>"  + self.Seeker);
-                }
-            }
-            if (self._seekerLeftGame)
-            {
-                self.ResetGame(3);
             }
         }
         else
         {
-            UI.SetLabelAll("MiddleCenter", "<color=red>Disable the minimap to play this gamemode</color>");
+            UI.SetLabelAll("MiddleCenter", "");
         }
+
+        numPlayers = Game.Humans.Count;
+        if (!self._GameStart)
+        {
+            if (numPlayers >= self.MinPlayers)
+            {
+                self._CurrentTimer = self.StartTimer + Time.GameTime;
+                self._GameStart = true;
+            }
+            else
+            {
+                _CurrentTimer = 99999;
+                UI.SetLabelAll("MiddleCenter", "Waiting for players...");
+            }
+        }
+
+        if (self._GameStart && numPlayers < self.MinPlayers)
+        {
+            self._GameStart = false;
+        }
+
+        if (self._GameStart && !self._GameStarted)
+        {
+            UI.SetLabelAll("MiddleCenter", "Match starting in : " + String.FormatFloat(self._CurrentTimer - Time.GameTime, 2));
+        }
+        if (self._CurrentTimer - Time.GameTime <= 0.0 && !self._GameStarted && self._GameStart)
+        {
+            self._GameStarted = true;
+            self.StartGame();
+        }
+        if (self._GameStarted)
+        {
+            if (self._hasTimerStarted && self._stopallUI == false)
+            {
+                self._lastTimer = self.TimeLimit + Time.GameTime;
+                self._moving = true;
+                self._hasTimerStarted = false;
+            }
+            HumansAlive = Game.Humans.Count - self.Seeker;
+            if (self._moving && !self._stopallUI)
+            {
+                self.ShowGameStateUI("TopCenter", HumansAlive, String.FormatFloat(self._lastTimer - Time.GameTime, 2), self.Seeker);
+            }
+            elif (!self._moving && !self._stopallUI)
+            {
+                self._lastTimer = self.TimeLimit;
+                self.ShowGameStateUI("TopCenter", HumansAlive, self._lastTimer, self.Seeker);
+            }
+            if (HumansAlive == 0 && self._HumanityWin != "X")
+            {
+                self.ShowGameStateUI("TopCenter", HumansAlive, "FINISH", self.Seeker);
+                self.ResetGame(2);
+            }
+
+            if (self._lastTimer - Time.GameTime  <= 0 && self._moving && self._SeekerWin != "X")
+            {
+                self.ResetGame(1);
+                self.ShowGameStateUI("TopCenter", HumansAlive, "FINISH", self.Seeker);
+            }
+        }
+        if (self._seekerLeftGame)
+        {
+            self.ResetGame(3);
+        }
+    }
+
+    function ShowGameStateUI(location, humansAlive, timeStr, SeekerStr) {
+        UI.SetLabel(location, "<color=light_green>Humans alive: </color>" + humansAlive + "                  " + timeStr + "                  " + "<color=red>Seeker Alive: " + "</color>"  + SeekerStr);
     }
 
     function ResetGame(value)
