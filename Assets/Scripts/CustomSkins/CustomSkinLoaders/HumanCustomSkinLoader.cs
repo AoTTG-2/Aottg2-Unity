@@ -132,13 +132,13 @@ namespace CustomSkins
                     return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, useTransparentMaterial: true);
                 case HumanCustomSkinPartId.Back:
                     AddAllRenderersIfExists(renderers, human.Setup._part_back);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
+                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null);
                 case HumanCustomSkinPartId.Head:
-                    AddAllRenderersIfExists(renderers, human.Setup._part_head);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
+                    AddAllRenderersIfExists(renderers, human.Setup._part_head_decor);
+                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null);
                 case HumanCustomSkinPartId.Hat:
                     AddAllRenderersIfExists(renderers, human.Setup._part_hat);
-                    return new BaseCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null, true);
+                    return new HumanCostumeCustomSkinPart(this, renderers, GetRendererId(partId), MaxSizeMedium, null);
                 case HumanCustomSkinPartId.HookL:
                     return new HookCustomSkinPart(this, human.HookLeft.GetRenderers(), GetRendererId(partId), MaxSizeSmall, _hookLTiling);
                 case HumanCustomSkinPartId.HookR:

@@ -147,6 +147,7 @@ namespace GameManagers
                 else
                     set.Back.Value = "Back" + i.ToString();
                 Human.Setup.Load(set, HumanWeapon.Blade, false);
+                yield return new WaitForSeconds(1f);
                 yield return new WaitForEndOfFrame();
                 Screenshot(776f, 300f, 360f, 360f, set.Back.Value);
             }

@@ -63,7 +63,10 @@
 		"Play": "Play",
 		"Spectate": "Spectate",
 		"LoadAutosave": "Load Autosave",
-		"Editor": "Editor"
+		"Editor": "Editor",
+		"Emote": "Emote",
+		"Text": "Text",
+		"Emoji": "Emoji"
 	},
 	"MainMenu": {
 		"Intro.TutorialButton": "Tutorial",
@@ -303,6 +306,10 @@
 		"Graphics.HDRTooltip": "HDR lighting for high dynamic range monitors.",
 		"Graphics.WeaponTrail": "Weapon trail",
 		"Graphics.WeaponTrailOptions": ["Off", "Mine", "All"],
+		"Graphics.WeaponTrailHold": "Weapon trail hold",
+		"Graphics.WeaponTrailHoldTooltip": "Activate the weapon trail when held down instead of only during release.",
+		"Graphics.WeaponFireEffect": "Weapon fire effect",
+		"Graphics.WeaponFireEffectTooltip": "Show special effect on weapons when reaching high StyleBar scores.",
 		"Graphics.WindEffectEnabled": "Wind effect",
 		"Graphics.BloodSplatterEnabled": "Blood splatter",
 		"Graphics.NapeBloodEnabled": "Nape blood",

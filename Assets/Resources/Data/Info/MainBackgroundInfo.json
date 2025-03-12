@@ -2,7 +2,6 @@
 	"EventBackgrounds": [
 	],
 	"MainBackgrounds": [
-		"MainBackground0Texture",
 		"MainBackground2Texture",
 		"MainBackground4Texture",
 		"MainBackground5Texture",
@@ -15,8 +14,10 @@
 		"MainBackground17Texture"
 	],
 	"LoadingBackgrounds": [
+		"MainBackground0Texture",
 		"MainBackground1Texture",
 		"MainBackground2Texture",
+		"MainBackground3Texture",
 		"MainBackground4Texture",
 		"MainBackground5Texture",
 		"MainBackground6Texture",
@@ -31,6 +32,14 @@
 		"MainBackground15Texture",
 		"MainBackground16Texture",
 		"MainBackground17Texture",
+		"MainBackground18Texture",
+		"MainBackground19Texture",
+		"MainBackground20Texture",
+		"MainBackground21Texture",
+		"MainBackground22Texture",
+		"MainBackground23Texture",
+		"MainBackground24Texture",
+		"MainBackground25Texture",
 		"MainBackground26Texture",
 		"MainBackground27Texture",
 		"MainBackground28Texture",

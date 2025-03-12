@@ -185,7 +185,7 @@ namespace Characters
 
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
                 {
-                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner))
+                    if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
                         var damage = Math.Max(10, (int)(_owner.CurrentSpeed * CharacterData.HumanWeaponInfo["Hook"]["DamageMultiplier"]));
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
@@ -354,18 +354,9 @@ namespace Characters
                             var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                             if (collisionHandler != null)
                                 collisionHandler.GetHooked(_owner, finalHit.point, _left);
-                            while (!MapLoader.GoToMapObject.ContainsKey(go))
+                            var mapObject = MapLoader.GetMapObject(go);
+                            if (mapObject != null)
                             {
-                                if (go == null)
-                                    break;
-                                var parent = go.transform.parent;
-                                if (parent == null)
-                                    break;
-                                go = parent.gameObject;
-                            }
-                            if (MapLoader.GoToMapObject.ContainsKey(go))
-                            {
-                                MapObject mapObject = MapLoader.GoToMapObject[go];
                                 if (mapObject.ScriptObject.Static)
                                 {
                                     HasOffset = Vector3.Angle(Vector3.up, finalHit.normal) < 10f;
@@ -397,6 +388,34 @@ namespace Characters
             }
         }
 
+        protected void FixedUpdateHooked()
+        {
+            if (_owner.IsMine() && _hasHookParent)
+            {
+                if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
+                    SetHookState(HookState.DisablingHooked);
+
+                // Hook timer for titan death
+                if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
+                {
+                    if (titan.Dead)
+                    {
+                        float timer = titan.DeathTimeElapsed();
+                        if (timer >= 0 && timer < _deathTimerOffset)
+                        {
+                            if (_firstDeathFrame)
+                            {
+                                _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
+                                _lastWorldHookPosition = _lastGoodHookPoint;
+                                _firstDeathFrame = false;
+                            }
+                            _usingDeathTimer = true;
+                        }
+                    }
+                }
+            }
+        }
+
         protected void Update()
         {
             if (State == HookState.Hooking)
@@ -420,32 +439,7 @@ namespace Characters
             if (State == HookState.Hooking || State == HookState.Hooked)
                 _particles.transform.position = GetHookPosition();
             if (State == HookState.Hooked)
-            {
-                if (_hasHookParent)
-                {
-                    if (HookParent == null || (HookCharacter != null && HookCharacter.Dead && HookCharacter is Human))
-                        SetHookState(HookState.DisablingHooked);
-
-                    // Hook timer for titan death
-                    if (HookParent != null && HookCharacter != null && HookCharacter is BasicTitan titan)
-                    {
-                        if (titan.Dead)
-                        {
-                            float timer = titan.DeathTimeElapsed();
-                            if (timer >= 0 && timer < _deathTimerOffset)
-                            {
-                                if (_firstDeathFrame)
-                                {
-                                    _lastGoodHookPoint = HookParent.TransformPoint(_hookPosition);
-                                    _lastWorldHookPosition = _lastGoodHookPoint;
-                                    _firstDeathFrame = false;
-                                }
-                                _usingDeathTimer = true;
-                            }
-                        }
-                    }
-                }
-            }
+                FixedUpdateHooked();
         }
 
         public Vector3 GetHookPosition()

@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using CustomLogic;
 using Events;
 using Photon.Pun;
 using Settings;
@@ -23,6 +24,7 @@ namespace Map
         public static readonly int ROOT = -1;
 
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
+        public static Dictionary<MapObject, HashSet<string>> MapObjectToTags = new Dictionary<MapObject, HashSet<string>>();
         public static List<Light> Daylight = new List<Light>();
         public static List<MapLight> MapLights = new List<MapLight>();
         public static List<MapTargetable> MapTargetables = new List<MapTargetable>();
@@ -80,6 +82,7 @@ namespace Map
             MapTargetables.Clear();
             _assetCache.Clear();
             Tags.Clear();
+            MapObjectToTags.Clear();
             HighestObjectId = 1;
             HasWeather = !editor && options != null && options.HasWeather;
             Weather = weather;
@@ -677,7 +680,33 @@ namespace Map
         {
             if (!Tags.ContainsKey(tag))
                 Tags.Add(tag, new List<MapObject>());
+            if (!MapObjectToTags.ContainsKey(obj))
+                MapObjectToTags.Add(obj, new HashSet<string>());
             Tags[tag].Add(obj);
+            MapObjectToTags[obj].Add(tag);
+        }
+
+        public static bool HasTag(MapObject obj, string tag)
+        {
+            return MapObjectToTags.ContainsKey(obj) && MapObjectToTags[obj].Contains(tag);
+        }
+
+        public static MapObject GetMapObject(GameObject obj)
+        {
+            if (obj == null)
+                return null;
+            while (!GoToMapObject.ContainsKey(obj))
+            {
+                if (obj == null)
+                    break;
+                var parent = obj.transform.parent;
+                if (parent == null)
+                    break;
+                obj = parent.gameObject;
+            }
+            if (GoToMapObject.ContainsKey(obj))
+                return GoToMapObject[obj];
+            return null;
         }
 
         private static GameObject LoadSceneObject(MapScriptSceneObject obj, bool editor)

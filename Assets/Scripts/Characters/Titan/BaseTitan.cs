@@ -38,7 +38,7 @@ namespace Characters
         public float TurnPause = 0.2f;
         public float MaxSprintStamina = 5f;
         public float SprintStaminaRecover = 0.7f;
-        public float SprintStaminaConsumption = 1f;
+        public float SprintStaminaConsumption = 0.85f;
         public float CurrentSprintStamina = 5f;
         public ITargetable TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
