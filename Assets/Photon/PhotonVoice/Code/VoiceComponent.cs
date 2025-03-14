@@ -65,6 +65,8 @@ namespace Photon.Voice.Unity
 
             private void Log(DebugLevel level, string fmt, params object[] args)
             {
+                if (level > DebugLevel.WARNING)
+                    return;
                 if (voiceLogger != null)
                 {
                     if (voiceLogger.LogLevel >= level)

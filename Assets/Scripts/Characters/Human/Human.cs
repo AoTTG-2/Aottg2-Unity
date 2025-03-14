@@ -65,6 +65,8 @@ namespace Characters
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
         private float _grabIFrames = 0f;
+        private bool _bladeTrailActive;
+        private int _bladeFireState;
 
         // physics
         public float ReelInAxis = 0f;
@@ -96,7 +98,7 @@ namespace Characters
         private Vector3 _currentVelocity;
         private static LayerMask TitanDetectionMask = PhysicsLayer.GetMask(PhysicsLayer.ProjectileDetection);
         private LayerMask HumanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanPushbox, PhysicsLayer.MapObjectEntities,
-            PhysicsLayer.MapObjectAll);
+            PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectHumans, PhysicsLayer.MapObjectAll);
         public override LayerMask GroundMask => HumanGroundMaskLayers;
         private Quaternion _oldHeadRotation = Quaternion.identity;
         public Vector2 LastGoodHeadAngle = Vector2.zero;
@@ -525,7 +527,7 @@ namespace Characters
             if (initiatorView.Owner != info.Sender)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             _lastCarryRPCSender = initiatorViewId;
             if (Cache.PhotonView.IsMine && IsCarryableBy(initiator))
@@ -541,10 +543,10 @@ namespace Characters
             if (_lastCarryRPCSender != initiatorViewId)
                 return;
             var initiatorView = PhotonView.Find(initiatorViewId);
-            if (initiatorView == null) 
+            if (initiatorView == null)
                 return;
             var initiator = initiatorView.GetComponent<Human>();
-            if (initiator == null) 
+            if (initiator == null)
                 return;
             Carrier = initiator;
             Carrier.BackHuman = this;
@@ -765,15 +767,12 @@ namespace Characters
             {
                 if (((AmmoWeapon)Weapon).AmmoLeft <= 0)
                     return;
-                if (Weapon is AHSSWeapon || Weapon is APGWeapon)
+                if (Weapon is AHSSWeapon)
                 {
                     ToggleBlades(false);
-                    if (Weapon is AHSSWeapon)
-                    {
-                        CancelHookLeftKey = true;
-                        CancelHookRightKey = true;
-                        CancelHookBothKey = true;
-                    }
+                    CancelHookLeftKey = true;
+                    CancelHookRightKey = true;
+                    CancelHookBothKey = true;
                 }
                 else if (Weapon is ThunderspearWeapon)
                 {
@@ -918,6 +917,15 @@ namespace Characters
             }
         }
 
+        public override void ForceAnimation(string animation, float fade)
+        {
+            if (State == HumanState.Attack)
+                FalseAttack();
+            State = HumanState.EmoteAction;
+            CrossFade(animation, fade);
+            _stateTimeLeft = Animation.GetTotalTime(animation);
+        }
+
         public void EmoteAnimation(string animation)
         {
             State = HumanState.EmoteAction;
@@ -1056,6 +1064,11 @@ namespace Characters
                     return;
                 var titan = (BaseTitan)Util.FindCharacterByViewId(viewId);
                 Grab(titan, type);
+            }
+            else if (type == "Hook")
+            {
+                var killerName = Util.FindCharacterByViewId(viewId).Name + "'s Hook";
+                base.GetHitRPC(viewId, killerName, damage, type, collider);
             }
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
@@ -1211,6 +1224,7 @@ namespace Characters
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
                 UpdateIFrames();
+                UpdateBladeFire();
                 if (_needFinishReload)
                 {
                     _reloadTimeLeft -= Time.deltaTime;
@@ -1283,7 +1297,9 @@ namespace Characters
                             startTime = 0.5f;
                             endTime = 0.85f;
                         }
-                        if (Animation.GetNormalizedTime(AttackAnimation) > startTime && Animation.GetNormalizedTime(AttackAnimation) < endTime)
+                        bool hold = SettingsManager.GraphicsSettings.WeaponTrailHold.Value;
+                        float currTime = Animation.GetNormalizedTime(AttackAnimation);
+                        if (currTime > startTime && currTime < endTime)
                         {
                             if (!HumanCache.BladeHitLeft.IsActive())
                             {
@@ -1295,7 +1311,8 @@ namespace Characters
                                     int random = UnityEngine.Random.Range(1, 5);
                                     PlaySound("BladeSwing" + random.ToString());
                                 }
-                                ToggleBladeTrails(true);
+                                if (!hold)
+                                    ToggleBladeTrails(true);
                             }
                             if (!HumanCache.BladeHitRight.IsActive())
                                 HumanCache.BladeHitRight.Activate();
@@ -1304,7 +1321,15 @@ namespace Characters
                         {
                             HumanCache.BladeHitLeft.Deactivate();
                             HumanCache.BladeHitRight.Deactivate();
-                            ToggleBladeTrails(false);
+                            if (!hold)
+                                ToggleBladeTrails(false);
+                        }
+                        if (hold)
+                        {
+                            if (currTime > 0f && currTime < endTime)
+                                ToggleBladeTrails(true);
+                            else
+                                ToggleBladeTrails(false);
                         }
                         if (Animation.GetNormalizedTime(AttackAnimation) >= 1f)
                             Idle();
@@ -1517,7 +1542,8 @@ namespace Characters
                     }
                     else if (State == HumanState.Slide)
                     {
-                        newVelocity = Cache.Rigidbody.velocity * 0.985f;
+                        if (!_wallSlide)
+                            newVelocity = Cache.Rigidbody.velocity * 0.985f;
                         if (_currentVelocity.magnitude < Stats.RunSpeed * 1.2f)
                         {
                             Idle();
@@ -1858,6 +1884,19 @@ namespace Characters
                 _grabIFrames -= Time.deltaTime;
         }
 
+        private void UpdateBladeFire()
+        {
+            if (Setup == null || Setup.Weapon != HumanWeapon.Blade)
+                return;
+            int rank = ((InGameMenu)UIManager.CurrentMenu).GetStylebarRank();
+            if (rank >= 6)
+                ToggleBladeFire(2);
+            else if (rank >= 4)
+                ToggleBladeFire(1);
+            else
+                ToggleBladeFire(0);
+        }
+
         private void lookAtTarget(Vector3 target)
         {
             Transform chestT = HumanCache.Chest;
@@ -2001,30 +2040,42 @@ namespace Characters
 
         protected void OnCollisionEnter(Collision collision)
         {
+            if (!IsMine())
+                return;
             var velocity = Cache.Rigidbody.velocity;
             if (Special != null && Special is SwitchbackSpecial)
             {
                 if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
-            float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-            float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-            float speed = _lastVelocity.magnitude * speedMultiplier;
-            Cache.Rigidbody.velocity = velocity.normalized * speed;
-            float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
-            if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+            if (_lastVelocity.magnitude > 0f)
             {
-                GetKilled("Impact");
-                return;
+                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                float speed = _lastVelocity.magnitude * speedMultiplier;
+                Cache.Rigidbody.velocity = velocity.normalized * speed;
+                float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+                    GetHit("Impact", (int)speedDiff, "Impact", "");
+            }
+            var titan = collision.transform.root.GetComponent<BaseTitan>();
+            if (titan != null && !titan.AI)
+            {
+                var normal = collision.contacts[0].normal;
+                var titanVel = titan.GetVelocity();
+                if (titanVel.magnitude > 0f && Vector3.Angle(titanVel, normal) < 70f)
+                {
+                    Cache.Rigidbody.velocity += titanVel;
+                }
             }
         }
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun))
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
                 _wallSlide = true;
-                _wallSlideGround = collision.contacts[0].normal.normalized;
+                _wallSlideGround = collision.GetContact(0).normal.normalized;
             }
             if (Special != null && Special is SwitchbackSpecial)
             {
@@ -2034,7 +2085,7 @@ namespace Characters
 
         private void FixedUpdateWallSlide()
         {
-            
+
             if (_wallSlide)
             {
                 if (!_canWallSlideJump && !IsPressDirectionRelativeToWall(_wallSlideGround, 0.5f))
@@ -2042,7 +2093,7 @@ namespace Characters
                     {
                         _canWallSlideJump = true;
                     }
-                
+
 
                 if (Grounded)
                 {
@@ -2141,7 +2192,16 @@ namespace Characters
             if (Grounded)
                 addSpeed = -0.01f;
             float newSpeed = _currentVelocity.magnitude + addSpeed;
-            Vector3 v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping
+
+            Vector3 v = position - Cache.Rigidbody.position;
+            if (IsHookedLeft() && IsHookedRight())
+            {
+                if (HookLeft.IsHookOffset() && HookRight.IsHookOffset())
+                {
+                    v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping required for bounce.
+                }
+            }
+           
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2545,7 +2605,7 @@ namespace Characters
             FinishSetup = true;
             // ignore if name contains char_eyes, char_face, char_glasses
             List<string> namesToIgnore = new List<string> { "char_eyes", "char_face", "char_glasses" };
-            
+
             if (this.OutlineComponent != null)
                 this.OutlineComponent.RefreshRenderers(namesToIgnore);
             CustomAnimationSpeed();
@@ -2599,7 +2659,7 @@ namespace Characters
                     float radius = (radiusStat * 4f) + 20f;
                     float cd = ((cdStat + 4) * -0.4f) + 5f;
                     float speed = (speedStat * 60f) + 200f;
-                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f,tsInfo);
+                    Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f, tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);
                     else
@@ -2643,7 +2703,7 @@ namespace Characters
                     string url = string.Join(",", new string[] { set.Horse.Value, set.Hair.Value, set.Eye.Value, set.Glass.Value, set.Face.Value,
                 set.Skin.Value, set.Costume.Value, set.Logo.Value, set.GearL.Value, set.GearR.Value, set.Gas.Value, set.Hoodie.Value,
                     set.WeaponTrail.Value, set.ThunderspearL.Value, set.ThunderspearR.Value, set.HookLTiling.Value.ToString(), set.HookL.Value,
-                    set.HookRTiling.Value.ToString(), set.HookR.Value });
+                    set.HookRTiling.Value.ToString(), set.HookR.Value, set.Hat.Value, set.Head.Value, set.Back.Value });
                     int viewID = -1;
                     if (Horse != null)
                     {
@@ -2654,6 +2714,8 @@ namespace Characters
                     else
                         Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                 }
+                else
+                    _customSkinLoader.Finished = true;
             }
         }
 
@@ -3210,10 +3272,24 @@ namespace Characters
             return Setup.Weapon == HumanWeapon.Thunderspear && (Animation.IsPlaying(HumanAnimations.TSShootL) || Animation.IsPlaying(HumanAnimations.TSShootR) || Animation.IsPlaying(HumanAnimations.TSShootLAir) || Animation.IsPlaying(HumanAnimations.TSShootRAir));
         }
 
+        private void ToggleBladeFire(int state)
+        {
+            if (IsMine())
+            {
+                if (state != _bladeFireState)
+                    Cache.PhotonView.RPC("ToggleBladeFireRPC", RpcTarget.All, new object[] { state });
+                _bladeFireState = state;
+            }
+        }
+
         private void ToggleBladeTrails(bool toggle)
         {
             if (IsMine())
-                Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+            {
+                if (toggle != _bladeTrailActive)
+                    Cache.PhotonView.RPC("ToggleBladeTrailsRPC", RpcTarget.All, new object[] { toggle });
+                _bladeTrailActive = toggle;
+            }
         }
 
         public void ToggleBlades(bool toggle)
@@ -3251,7 +3327,7 @@ namespace Characters
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
-            if (Setup == null)
+            if (Setup == null || Setup.LeftTrail == null || Setup.RightTrail == null)
                 return;
             bool canShowTrail = SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.All
                                 || (SettingsManager.GraphicsSettings.WeaponTrail.Value == (int)WeaponTrailMode.Mine && IsMine());
@@ -3278,6 +3354,40 @@ namespace Characters
             {
                 Setup.LeftTrail.enabled = true;
                 Setup.RightTrail.enabled = true;
+            }
+        }
+
+        [PunRPC]
+        protected void ToggleBladeFireRPC(int state, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (Setup == null || Setup.Weapon != HumanWeapon.Blade || Setup._part_blade_l == null || Setup._part_blade_r == null)
+                return;
+            var leftFire1 = Setup._part_blade_l.transform.Find("Fire1");
+            var leftFire2 = Setup._part_blade_l.transform.Find("Fire2");
+            var rightFire1 = Setup._part_blade_r.transform.Find("Fire1");
+            var rightFire2 = Setup._part_blade_r.transform.Find("Fire2");
+            if (state == 0 || !SettingsManager.GraphicsSettings.WeaponFireEffect.Value)
+            {
+                leftFire1.gameObject.SetActive(false);
+                rightFire1.gameObject.SetActive(false);
+                leftFire2.gameObject.SetActive(false);
+                rightFire2.gameObject.SetActive(false);
+            }
+            else if (state == 1)
+            {
+                leftFire1.gameObject.SetActive(true);
+                rightFire1.gameObject.SetActive(true);
+                leftFire2.gameObject.SetActive(false);
+                rightFire2.gameObject.SetActive(false);
+            }
+            else if (state == 2)
+            {
+                leftFire1.gameObject.SetActive(false);
+                rightFire1.gameObject.SetActive(false);
+                leftFire2.gameObject.SetActive(true);
+                rightFire2.gameObject.SetActive(true);
             }
         }
 
@@ -3323,7 +3433,7 @@ namespace Characters
             {
                 foreach (var titan in _inGameManager.Titans)
                 {
-                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this 
+                    if (titan != null && !titan.Dead && titan.AI && titan.IsMine() && titan.Detection.ClosestEnemy == this
                         && Vector3.Distance(Cache.Transform.position, titan.Cache.Transform.position) < titan.GetColliderToggleRadius())
                     {
                         titan.GetComponent<BaseTitanAIController>().SmartAttack = true;
@@ -3374,6 +3484,17 @@ namespace Characters
                 Grounded = false;
         }
 
+        public override bool CheckRaycastIgnoreTriggers(Vector3 origin, Vector3 direction, float distance, int layerMask)
+        {
+            var hit = RaycastIgnoreTriggers(origin, direction, distance, layerMask);
+            if (!hit.HasValue)
+                return false;
+            var mapObject = MapLoader.GetMapObject(hit.Value.collider.gameObject);
+            if (mapObject != null && MapLoader.HasTag(mapObject, "HumanIgnoreGround"))
+                return false;
+            return true;
+        }
+
         protected override List<Renderer> GetFPSDisabledRenderers()
         {
             List<Renderer> renderers = new List<Renderer>();
@@ -3383,7 +3504,7 @@ namespace Characters
                 AddRendererIfExists(renderers, Setup._part_hat);
                 AddRendererIfExists(renderers, Setup._part_back);
                 AddRendererIfExists(renderers, Setup._part_head_decor);
-                AddRendererIfExists(renderers, Setup._part_hair);
+                AddRendererIfExists(renderers, Setup._part_hair, multiple: true);
                 AddRendererIfExists(renderers, Setup._part_eye);
                 AddRendererIfExists(renderers, Setup._part_glass);
                 AddRendererIfExists(renderers, Setup._part_face);

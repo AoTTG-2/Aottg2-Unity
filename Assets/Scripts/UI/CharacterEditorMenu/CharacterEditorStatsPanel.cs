@@ -56,26 +56,26 @@ namespace UI
         {
             if (button == "EditStats")
             {
-                if (!((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.IsActive)
+                if (!((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editStatsPopup.IsActive)
                 {
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Show();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editStatsPopup.Show();
                 }
                 else
                 {
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
                 }
             }
             else if (button == "EditPerks")
             {
-                if (!((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.IsActive)
+                if (!((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editPerksPopup.IsActive)
                 {
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Show();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editStatsPopup.Hide();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editPerksPopup.Show();
                 }
                 else
                 {
-                    ((CharacterEditorMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
+                    ((CharacterEditorHumanMenu)UIManager.CurrentMenu)._editPerksPopup.Hide();
                 }
             }
         }

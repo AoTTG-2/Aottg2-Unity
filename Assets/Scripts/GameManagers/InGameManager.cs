@@ -248,8 +248,8 @@ namespace GameManagers
         public static void OnJoinRoom()
         {
             AnticheatManager.Reset();
-            ResetPersistentPlayerProperties();
             ResetPlayerInfo();
+            ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
             
             // Add this line to sync PM state
@@ -506,15 +506,15 @@ namespace GameManagers
 
             List<string> loadouts = new List<string>();
             if (miscSettings.AllowBlades.Value)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (miscSettings.AllowAHSS.Value)
                 loadouts.Add(HumanLoadout.AHSS);
             if (miscSettings.AllowAPG.Value)
                 loadouts.Add(HumanLoadout.APG);
             if (miscSettings.AllowThunderspears.Value)
-                loadouts.Add(HumanLoadout.Thunderspears);
+                loadouts.Add(HumanLoadout.Thunderspear);
             if (loadouts.Count == 0)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (!loadouts.Contains(settings.Loadout.Value))
                 settings.Loadout.Value = loadouts[0];
             var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
@@ -557,15 +557,15 @@ namespace GameManagers
             {
                 List<string> loadouts = new List<string>();
                 if (miscSettings.AllowBlades.Value)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (miscSettings.AllowAHSS.Value)
                     loadouts.Add(HumanLoadout.AHSS);
                 if (miscSettings.AllowAPG.Value)
                     loadouts.Add(HumanLoadout.APG);
                 if (miscSettings.AllowThunderspears.Value)
-                    loadouts.Add(HumanLoadout.Thunderspears);
+                    loadouts.Add(HumanLoadout.Thunderspear);
                 if (loadouts.Count == 0)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
                 if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)
@@ -589,9 +589,22 @@ namespace GameManagers
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
+                TitanCustomSet selectedSet = null;
+                int selectedSetIndex = settings.CustomSet.Value;
+                if (selectedSetIndex > 0)
+                {
+                    selectedSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.Sets.GetItemAt(selectedSetIndex - 1);
+                    combo[0] = selectedSet.Body.Value;
+                    combo[1] = selectedSet.Head.Value;
+                }
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-                titan.Init(false, GetPlayerTeam(true), null, combo[1]);
+                TitanCustomSet currentSet;
+                if (selectedSetIndex == 0)
+                    currentSet = titan.Setup.CreateRandomSet(combo[1]);
+                else
+                    currentSet = selectedSet;
+                titan.Init(false, GetPlayerTeam(true), null, currentSet);
                 SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
@@ -745,7 +758,7 @@ namespace GameManagers
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
             var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-            titan.Init(true, TeamInfo.Titan, data, combo[1]);
+            titan.Init(true, TeamInfo.Titan, data, titan.Setup.CreateRandomSet(combo[1]));
             SetupTitan(titan);
             return titan;
         }
@@ -865,8 +878,8 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.CustomProperties.Clear();
             var properties = new Dictionary<string, object>
             {
-                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.HexColor() },
-                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.HexColor() },
+                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor() },
+                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.FilterBadWords().HexColor() },
                 { PlayerProperty.Team, null },
                 { PlayerProperty.CharacterViewId, -1 },
                 { PlayerProperty.CustomMapHash, null },
@@ -918,8 +931,7 @@ namespace GameManagers
 
         public static void UpdatePlayerName()
         {
-            string name = MyPlayerInfo.Profile.Name.Value.HexColor();
-            
+            string name = MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor();
             if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
             {
                 if (SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue)
@@ -1087,6 +1099,18 @@ namespace GameManagers
                     _inGameMenu.SetScoreboardMenu(true, false);
                 else
                     _inGameMenu.SetScoreboardMenu(false, false);
+            }
+            if (_generalInputSettings.TapMap.Value)
+            {
+                if (_generalInputSettings.ToggleMap.GetKeyDown())
+                    _inGameMenu.ToggleMapMenu();
+            }
+            else
+            {
+                if (_generalInputSettings.ToggleMap.GetKey())
+                    _inGameMenu.SetMapMenu(true, false);
+                else
+                    _inGameMenu.SetMapMenu(false, false);
             }
             if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {

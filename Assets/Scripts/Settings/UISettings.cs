@@ -37,18 +37,19 @@ namespace Settings
         public BoolSetting ShowGameTime = new BoolSetting(false);
         public IntSetting ShowNames = new IntSetting(0);
         public IntSetting ShowHealthbars = new IntSetting(0);
-
         public IntSetting HumanNameDistance = new IntSetting(500, minValue: 0, maxValue: 100000);
         public IntSetting NameOverrideTarget = new IntSetting((int)ShowMode.None);
         public IntSetting NameBackgroundType = new IntSetting((int)NameStyleType.Off);
         public ColorSetting ForceNameColor = new ColorSetting(new Utility.Color255(255, 255, 255));
         public ColorSetting ForceBackgroundColor = new ColorSetting(new Utility.Color255(0, 0, 0, 100));
-
+        public IntSetting MinNameLength = new IntSetting(0, minValue: 0, maxValue: 100);
+        public IntSetting MaxNameLength = new IntSetting(20, minValue: 0, maxValue: 100);
         public BoolSetting FadeMainMenu = new BoolSetting(false);
         public BoolSetting FadeLoadscreen = new BoolSetting(true);
         public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
+        public IntSetting KillFeedCount = new IntSetting(3, minValue: 0, maxValue: 10);
         public BoolSetting JoinNotifications = new BoolSetting(true);
         public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
         public BoolSetting ShowChatTimestamp = new BoolSetting(false);

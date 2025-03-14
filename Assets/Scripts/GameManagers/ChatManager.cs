@@ -268,7 +268,9 @@ namespace GameManagers
             {
                 DateTime timestamp = DateTime.UtcNow;
                 int lastIndex = RawMessages.Count - 1;
-                
+
+                message = message.FilterSizeTag().FilterBadWords();
+
                 RawMessages[lastIndex] = message;
                 Colors[lastIndex] = color;
                 SystemFlags[lastIndex] = isSystem;
@@ -302,7 +304,7 @@ namespace GameManagers
             MessageBuilder.Append(GetColorString(TimeBuilder.ToString(), ChatTextColor.System)).Append(message);
             return MessageBuilder.ToString();
         }
-
+        
         public static void AddFeed(string line)
         {
             if (!IsChatAvailable())
@@ -313,7 +315,7 @@ namespace GameManagers
                 AddLine(line);
                 return;
             }
-            line = line.FilterSizeTag();
+            line = line.FilterSizeTag().FilterBadWords();
             FeedLines.Add(line);
             if (FeedLines.Count > MaxLines)
                 FeedLines.RemoveAt(0);
@@ -348,7 +350,7 @@ namespace GameManagers
             if (input == string.Empty)
                 return;
             var response = CustomLogicManager.Evaluator.OnChatInput(input);
-            if (response is bool && ((bool)response == true))
+            if (response is bool && ((bool)response == false))
                 return;
             if (input.StartsWith("/"))
             {

@@ -13,7 +13,7 @@ namespace UI
     {
         protected override string Title => string.Empty;
         protected override float Width => 730f;
-        protected override float Height => 690f;
+        protected override float Height => 770f;
         protected override bool CategoryPanel => true;
         protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "Profile";
@@ -28,7 +28,7 @@ namespace UI
         protected override void SetupTopButtons()
         {
             ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-            foreach (string buttonName in new string[] { "Profile", "Stats" })
+            foreach (string buttonName in new string[] { "Profile", "Emote", "Stats" })
             {
                 GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, UIManager.GetLocaleCommon(buttonName),
                     onClick: () => SetCategoryPanel(buttonName));
@@ -40,6 +40,7 @@ namespace UI
         protected override void RegisterCategoryPanels()
         {
             _categoryPanelTypes.Add("Profile", typeof(EditProfileProfilePanel));
+            _categoryPanelTypes.Add("Emote", typeof(EditProfileEmotePanel));
             _categoryPanelTypes.Add("Stats", typeof(EditProfileStatsPanel));
         }
 
@@ -64,6 +65,7 @@ namespace UI
             {
                 case "Save":
                     SettingsManager.ProfileSettings.Save();
+                    SettingsManager.EmoteSettings.Save();
                     Hide();
                     break;
             }

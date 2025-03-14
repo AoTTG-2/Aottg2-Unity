@@ -6,6 +6,7 @@ using SimpleJSONFixed;
 using Utility;
 using UnityEngine.AI;
 using Map;
+using GameManagers;
 
 namespace Controllers
 {
@@ -16,7 +17,8 @@ namespace Controllers
         public bool SmartAttack = false;
         public float DetectRange;
         public float CloseAttackRange;
-        public float FarAttackRange;
+        public float FarAttackMinRange;
+        public float FarAttackMaxRange;
         public float FarAttackCooldown;
         public float FocusRange;
         public float FocusTime;
@@ -132,7 +134,8 @@ namespace Controllers
         {
             DetectRange = data["DetectRange"].AsFloat;
             CloseAttackRange = data["CloseAttackRange"].AsFloat;
-            FarAttackRange = data["FarAttackRange"].AsFloat;
+            FarAttackMinRange = data["FarAttackMinRange"].AsFloat;
+            FarAttackMaxRange = data["FarAttackMaxRange"].AsFloat;
             FarAttackCooldown = data["FarAttackCooldown"].AsFloat;
             FocusRange = data["FocusRange"].AsFloat;
             FocusTime = data["FocusTime"].AsFloat;
@@ -226,10 +229,9 @@ namespace Controllers
                     _enemy = enemy;
                 else if (_enemy != null)
                 {
-                    if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
+                    if (TeamInfo.SameTeam(_titan.Team, _enemy.GetTeam()) || Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
                         _enemy = null;
                 }
-
                 if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false && !(_moveToActive && _moveToIgnoreEnemies))
                     SetAgentDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
@@ -310,7 +312,7 @@ namespace Controllers
                     else
                     {
                         var validAttacks = GetValidAttacks(true);
-                        if (_enemyDistance <= FarAttackRange && validAttacks.Count > 0)
+                        if (_enemyDistance <= FarAttackMaxRange && _enemyDistance >= FarAttackMinRange && validAttacks.Count > 0)
                             Attack(validAttacks);
                         else if (HasClearLineOfSight(_enemy.GetPosition()))
                             TargetEnemy();

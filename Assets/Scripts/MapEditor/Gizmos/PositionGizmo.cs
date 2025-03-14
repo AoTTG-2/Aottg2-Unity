@@ -58,11 +58,10 @@ namespace MapEditor
             }
         }
 
-        protected void Update()
+        protected override void Update()
         {
+            base.Update();
             var camera = SceneLoader.CurrentCamera;
-            float distance = Vector3.Distance(camera.Cache.Transform.position, _transform.position);
-            _transform.localScale = Vector3.one * distance / 200f;
             var mouseKey = SettingsManager.InputSettings.MapEditor.Select;
             if (_activeLine == null)
             {
@@ -105,7 +104,7 @@ namespace MapEditor
                     }
 
                     
-                    if (_gameManager.Snap)
+                    if (_gameManager.Snap && _gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Center)
                     {
                         float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
                         if (_activeLine == _lineX)
@@ -123,6 +122,16 @@ namespace MapEditor
                             float z = Mathf.Round((_transform.position.z + frameDelta.z) / snap) * snap;
                             frameDelta.z = z - _transform.position.z;
                         }
+                        if (frameDelta.magnitude >= snap)
+                            _previousMousePoint = mousePoint;
+                    }
+                    else if (_gameManager.Snap && _gameManager.CurrentGizmoMode == GameManagers.GizmoMode.Local)
+                    {
+                        // Snap along drag direction instead of grid.
+                        float snap = SettingsManager.MapEditorSettings.SnapMove.Value;
+                        float magnitude = frameDelta.magnitude;
+                        float snapMagnitude = Mathf.Round(magnitude / snap) * snap;
+                        frameDelta = frameDelta.normalized * snapMagnitude;
                         if (frameDelta.magnitude >= snap)
                             _previousMousePoint = mousePoint;
                     }

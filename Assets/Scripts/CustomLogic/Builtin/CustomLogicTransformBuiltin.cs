@@ -11,6 +11,8 @@ namespace CustomLogic
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
+        private string _currentAnimation;
+        private Dictionary<string, AnimationClip> _animatorClips;
 
         public CustomLogicTransformBuiltin(Transform transform): base("Transform")
         {
@@ -38,23 +40,51 @@ namespace CustomLogic
                 }
                 return listBuiltin;
             }
-
             if (methodName == "PlayAnimation")
             {
                 string anim = (string)parameters[0];
-                var animation = Value.GetComponent<Animation>();
                 float fade = 0.1f;
                 if (parameters.Count > 1)
                     fade = (float)parameters[1];
-                if (!animation.IsPlaying(anim))
-                    animation.CrossFade(anim, fade);
+                var animation = Value.GetComponent<Animation>();
+                if (animation != null)
+                {
+                    
+                    if (!animation.IsPlaying(anim))
+                        animation.CrossFade(anim, fade);
+                    return null;
+                }
+                var animator = Value.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    anim = anim.Replace('.', '_');
+                    if (_currentAnimation != anim)
+                    {
+                        animator.CrossFade(anim, fade);
+                        _currentAnimation = anim;
+                    }
+                }
                 return null;
             }
             if (methodName == "GetAnimationLength")
             {
                 string anim = (string)parameters[0];
                 var animation = Value.GetComponent<Animation>();
-                return animation[anim].length;
+                if (animation != null)
+                    return animation[anim].length;
+                var animator = Value.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    anim = anim.Replace('.', '_');
+                    if (_animatorClips == null)
+                    {
+                        _animatorClips = new Dictionary<string, AnimationClip>();
+                        foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+                            _animatorClips[clip.name.Replace('.', '_')] = clip;
+                    }
+                    return _animatorClips[anim].length;
+                }
+                return null;
             }
             if (methodName == "PlaySound")
             {

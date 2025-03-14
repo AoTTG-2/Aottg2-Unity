@@ -20,6 +20,9 @@
 					"Name": "City2"
 				},
 				{
+					"Name": "Trost1"
+				},
+				{
 					"Name": "Utgard1"
 				},
 				{
@@ -62,7 +65,7 @@
 					"Name": "Shiganshina"
 				},
 				{
-					"Name": "Trost"
+					"Name": "Trost2"
 				},
 				{
 					"Name": "Futuristic Forest"
@@ -349,13 +352,13 @@
 	],
 	"GameModes": [
 		{
-			"Name": "Survive"
-		},
-		{
 			"Name": "Waves",
 			"MiscSettings": {
 				"AllowPlayerTitans": false
 			}
+		},
+		{
+			"Name": "Survive"
 		},
 		{
 			"Name": "Endless"

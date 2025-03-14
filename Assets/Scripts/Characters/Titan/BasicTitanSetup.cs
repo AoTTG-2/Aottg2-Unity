@@ -17,10 +17,46 @@ namespace Characters
     class BasicTitanSetup: MonoBehaviour
     {
         public static JSONNode Info;
+        public static int BodyCount;
+        public static int HeadCount;
+        public static int EyeCount;
+        public static int HairMCount;
+        public static int HairFCount;
+        private static Dictionary<string, string> HairPrefabs = new Dictionary<string, string>();
+        public static List<string> AllHairs = new List<string>();
+        public static List<int> AIEyes = new List<int>();
+        public static List<Color255> AIHairColors = new List<Color255>();
 
         public static void Init()
         {
             Info = JSON.Parse(ResourceManager.TryLoadText(ResourcePaths.CharacterData, "TitanSetupInfo"));
+            BodyCount = Info["BodyCount"].AsInt;
+            HeadCount = Info["HeadCount"].AsInt;
+            EyeCount = Info["EyeCount"].AsInt;
+            HairMCount = Info["HairM"].Count;
+            HairFCount = Info["HairF"].Count;
+            for (int i = 0; i < HairMCount; i++)
+            {
+                string hair = "HairM" + i;
+                AllHairs.Add(hair);
+                HairPrefabs[hair] = Info["HairM"][i];
+            }
+            for (int i = 0; i < HairFCount; i++)
+            {
+                string hair = "HairF" + i;
+                AllHairs.Add(hair);
+                HairPrefabs[hair] = Info["HairF"][i];
+            }
+            foreach (JSONNode node in Info["HairColors"].AsArray)
+                AIHairColors.Add(new Color255(node[0].AsInt, node[1].AsInt, node[2].AsInt, node[3].AsInt));
+            var excludedEyes = new HashSet<int>();
+            foreach (JSONNode node in Info["AIExcludedEyes"].AsArray)
+                excludedEyes.Add(node.AsInt);
+            for (int i = 0; i < EyeCount; i++)
+            {
+                if (!excludedEyes.Contains(i))
+                    AIEyes.Add(i);
+            }
         }
 
         public static int[] GetRandomBodyHeadCombo(JSONNode node = null)
@@ -48,36 +84,36 @@ namespace Characters
             return result;
         }
 
-        public string CreateRandomSetupJson(int headPrefab)
+        public TitanCustomSet CreateRandomSet(int headPrefab)
         {
-            var json = new JSONObject();
-            json.Add("HeadPrefab", headPrefab);
-            json.Add("HairPrefab", Info["HairPrefabs"].GetRandomItem());
-            json.Add("HairColor", Info["HairColors"].GetRandomItem());
-            json.Add("EyeTexture", UnityEngine.Random.Range(0, Info["EyeTextureCount"].AsInt));
-            return json.ToString();
+            var set = new TitanCustomSet();
+            set.Head.Value = headPrefab;
+            set.Hair.Value = AllHairs.GetRandomItem();
+            set.HairColor.Value = AIHairColors.GetRandomItem();
+            set.Eye.Value = AIEyes.GetRandomItem();
+            int gray = UnityEngine.Random.Range(160, 256);
+            set.SkinColor.Value = new Color255(gray, gray, gray, 255);
+            return set;
         }
 
-        public void Load(string jsonString)
+        public void Load(TitanCustomSet set)
         {
-            var json = JSON.Parse(jsonString);
             var head = transform.Find("Amarture_VER2/Core/Controller.Body/hip/spine/chest/neck/head");
-            var headIndex = json["HeadPrefab"].AsInt;
-            float gray = UnityEngine.Random.Range(0.7f, 1f);
-            var bodyColor = new Color(gray, gray, gray);
+            var headIndex = set.Head.Value;
+            var bodyColor = set.SkinColor.Value.ToColor();
             transform.Find("Body").GetComponent<SkinnedMeshRenderer>().material.color = bodyColor;
 
             // hair
             var hairSocket = head.Find("HairSocket");
-            var hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Titans/Hairs/Prefabs/" + json["HairPrefab"].Value, true);
+            var hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Titans/Hairs/Prefabs/" + HairPrefabs[set.Hair.Value], true);
             hair.transform.SetParent(hairSocket);
             hair.transform.localPosition = Vector3.zero;
             hair.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
             hair.transform.localScale = Vector3.one;
             foreach (Renderer renderer in hair.GetComponentsInChildren<Renderer>())
             {
-                renderer.material = HumanSetupMaterials.GetHairMaterial(json["HairPrefab"].Value);
-                renderer.material.color = json["HairColor"].ToColor();
+                renderer.material = HumanSetupMaterials.GetHairMaterial(HairPrefabs[set.Hair.Value]);
+                renderer.material.color = set.HairColor.Value.ToColor();
             }
 
             // head
@@ -112,15 +148,11 @@ namespace Characters
 
             // eyes
             string eyesAsset = "TitanEyes" + headIndex.ToString();
-            int eyeTexture = json["EyeTexture"].AsInt;
-            if (eyeTexture == 7)
-                eyeTexture = 0;
+            int eyeTexture = set.Eye.Value;
             var eyes = head.Find("Eyes");
             var eyesRef = ((GameObject)ResourceManager.LoadAsset(ResourcePaths.Characters, "Titans/Heads/Prefabs/" + eyesAsset, true)).transform;
             eyes.GetComponent<MeshFilter>().sharedMesh = eyesRef.GetComponent<MeshFilter>().sharedMesh;
-            int col = eyeTexture / 8;
-            int row = eyeTexture % 8;
-            eyes.GetComponent<MeshRenderer>().material.mainTextureOffset = new Vector2(0.25f * col, -0.125f * row);
+            eyes.GetComponent<MeshRenderer>().material = HumanSetupMaterials.GetTitanEyeMaterial("Eye" + eyeTexture.ToString());
         }
 
         protected void CopyColliders(Transform from, Transform to, bool capsule, bool moveTransform)

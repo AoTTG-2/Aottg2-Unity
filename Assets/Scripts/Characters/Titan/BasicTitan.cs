@@ -30,21 +30,20 @@ namespace Characters
         protected float _leftArmDisabledTimeLeft;
         protected float _rightArmDisabledTimeLeft;
         protected float ArmDisableTime = 12f;
-        public float RockThrow1Speed = 150f;
+        public float RockThrow1Speed = 140f;
         protected Vector3 _rockThrowTarget;
         protected float _originalCapsuleValue;
         public int TargetViewId = -1;
         public bool LookAtTarget = false;
-        public int HeadPrefab;
         public override bool CanSprint => true;
         public override bool CanWallClimb => true;
 
         public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
-        private Vector3 _cutHandSize = new Vector3(0.01f, 0.01f, 0.01f);
+        private TitanCustomSet _customSet;
 
-        public void Init(bool ai, string team, JSONNode data, int headPrefab)
+        public void Init(bool ai, string team, JSONNode data, TitanCustomSet customSet)
         {
-            HeadPrefab = headPrefab;
+            _customSet = customSet;
             if (ai)
             {
                 var controller = gameObject.AddComponent<BaseTitanAIController>();
@@ -68,7 +67,16 @@ namespace Characters
             }
             Cache.PhotonView.RPC("SetCrawlerRPC", RpcTarget.AllBuffered, new object[] { IsCrawler });
             base.Init(ai, team, data);
-            Animation.SetSpeed(BasicAnimations.CoverNape, 1.5f);
+            Animation.SetSpeed(BasicAnimations.CoverNape, 1.2f);
+        }
+
+        public float DeathTimeElapsed()
+        {
+            if (Animation.IsPlaying(BasicAnimations.Die) || Animation.IsPlaying(BasicAnimations.DieBack) || Animation.IsPlaying(BasicAnimations.DieFront))
+            {
+                return Animation.GetCurrentNormalizedTime() * Animation.GetLength(Animation.GetCurrentAnimation());
+            }
+            return -1f;
         }
 
         public override bool IsGrabAttack()
@@ -136,7 +144,7 @@ namespace Characters
             base.Start();
             if (IsMine())
             {
-                string setup = Setup.CreateRandomSetupJson(HeadPrefab);
+                string setup = _customSet.SerializeToJsonString();
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.AllBuffered, new object[] { setup });
                 EffectSpawner.Spawn(EffectPrefabs.TitanSpawn, Cache.Transform.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize());
             }
@@ -147,7 +155,9 @@ namespace Characters
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            Setup.Load(json);
+            var set = new TitanCustomSet();
+            set.DeserializeFromJsonString(json);
+            Setup.Load(set);
         }
 
         protected override void CreateCache(BaseComponentCache cache)
@@ -190,6 +200,14 @@ namespace Characters
             if (CanAction())
             {
                 StateActionWithTime(TitanState.CoverNape, BasicAnimations.CoverNape, Animation.GetTotalTime(BasicAnimations.CoverNape));
+            }
+        }
+
+        public void UncoverNape()
+        {
+            if (State == TitanState.CoverNape)
+            {
+                Idle(0.3f);
             }
         }
 
@@ -315,6 +333,9 @@ namespace Characters
 
         public override void WallClimb()
         {
+            if (!CanWallClimb || _climbCooldownLeft > 0f)
+                return;
+            _climbCooldownLeft = ClimbCooldown;
             _stepPhase = 0;
             StateActionWithTime(TitanState.WallClimb, BasicAnimations.RunCrawler, 0f, 0.1f);
         }
@@ -1195,6 +1216,7 @@ namespace Characters
                 }
                 else
                 {
+                    // canLook = canLook && (State == TitanState.Idle || State == TitanState.Walk);
                     if (canLook)
                         LateUpdateHeadPosition(GetAimPoint());
                     else
@@ -1203,9 +1225,6 @@ namespace Characters
                         _oldHeadRotation = BasicCache.Head.localRotation;
                     }
                 }
-
-                if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint) && HasDirection)
-                    Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
             }
             else
             {
@@ -1301,12 +1320,18 @@ namespace Characters
                 else
                     collider.radius = _originalCapsuleValue * 0.7f;
             }
-            else if (collider.height != _originalCapsuleValue || collider.radius != _originalCapsuleValue)
+            else
             {
                 if (IsCrawler)
-                    collider.height = _originalCapsuleValue;
+                {
+                    if (collider.height != _originalCapsuleValue)
+                        collider.height = _originalCapsuleValue;
+                }
                 else
-                    collider.radius = _originalCapsuleValue;
+                {
+                    if (collider.radius != _originalCapsuleValue)
+                        collider.radius = _originalCapsuleValue;
+                }
             }
             if (IsCrawler)
             {

@@ -8,7 +8,7 @@
         public KeybindSetting Sit = new KeybindSetting(new string[] { "Z", "None" });
         public KeybindSetting Walk = new KeybindSetting(new string[] { "LeftAlt", "None" });
         public KeybindSetting Sprint = new KeybindSetting(new string[] { "LeftShift", "None" });
-        public KeybindSetting CoverNape = new KeybindSetting(new string[] { "WheelDown", "None" });
+        public KeybindSetting CoverNape1 = new KeybindSetting(new string[] { "Mouse2", "None" });
         public KeybindSetting AttackPunch = new KeybindSetting(new string[] { "Mouse0", "None" });
         public KeybindSetting AttackBellyFlop = new KeybindSetting(new string[] { "Mouse1", "None" });
         public KeybindSetting AttackSlapL = new KeybindSetting(new string[] { "Q", "None" });

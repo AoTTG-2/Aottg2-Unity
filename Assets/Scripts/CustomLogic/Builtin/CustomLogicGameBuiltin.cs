@@ -222,6 +222,11 @@ namespace CustomLogic
                     Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                     settings = new object[] { color };
                 }
+                else if (projectileName == ProjectilePrefabs.Rock1)
+                {
+                    float size = parameters[7].UnboxToFloat();
+                    settings = new object[] { size };
+                }
                 ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID, 
                     character.Team, settings);
                 return null;
@@ -485,15 +490,15 @@ namespace CustomLogic
                 var miscSettings = SettingsManager.InGameCurrent.Misc;
                 List<string> loadouts = new List<string>();
                 if (miscSettings.AllowBlades.Value)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (miscSettings.AllowAHSS.Value)
                     loadouts.Add(HumanLoadout.AHSS);
                 if (miscSettings.AllowAPG.Value)
                     loadouts.Add(HumanLoadout.APG);
                 if (miscSettings.AllowThunderspears.Value)
-                    loadouts.Add(HumanLoadout.Thunderspears);
+                    loadouts.Add(HumanLoadout.Thunderspear);
                 if (loadouts.Count == 0)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
 
                 var result = new CustomLogicListBuiltin();
                 result.List = loadouts.ConvertAll(x => (object)x);

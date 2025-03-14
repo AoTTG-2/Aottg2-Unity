@@ -212,7 +212,7 @@ namespace CustomLogic
             {
                 Shifter.AttackSpeedMultiplier = value.UnboxToFloat();
             }
-            if (name == "DeathAnimLength")
+            else if (name == "DeathAnimLength")
             {
                 Shifter.DeathAnimationLength = value.UnboxToFloat();
             }

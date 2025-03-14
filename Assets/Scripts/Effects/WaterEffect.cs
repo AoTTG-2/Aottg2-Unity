@@ -4,35 +4,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.UIElements;
 using UnityStandardAssets.ImageEffects;
 using Utility;
 
 public class WaterEffect : MonoBehaviour
 {
     [SerializeField] GameObject PostProcessingVolume;
-    Collider _collider;
-
     private PostProcessingManager _postProcessingManager;
     private PostProcessVolume _volume;
     private ColorGrading _colorGrading;
     private GlobalFog _globalFog;
+    private BoxCollider _boxCollider;
     private bool _fogEnabled;
-    private string _tag = "MainCamera";
-    private bool _enabled;
 
     void Start()
     {
-        // Get gameobject with component PostProcessingMananger script
         if (_postProcessingManager == null)
             _postProcessingManager = FindFirstObjectByType<PostProcessingManager>();
 
         Camera cam = SceneLoader.CurrentCamera.Camera;
         _globalFog = cam.GetComponent<GlobalFog>();
-
-        _collider = GetComponent<Collider>();
+        _boxCollider = GetComponent<BoxCollider>();
+        if (_boxCollider == null )
+        {
+            Debug.Log("Unsupported Object for Water Effect (must have box collider).");
+            this.enabled = false;
+            return;
+        }
         _volume = PostProcessingVolume.GetComponent<PostProcessVolume>();
         _volume.profile.TryGetSettings(out _colorGrading);
-        //_volume.profile.TryGetSettings(out _depthOfField);
         Settings.GraphicsSettings settings = SettingsManager.GraphicsSettings;
 
         if (settings != null)
@@ -76,10 +77,16 @@ public class WaterEffect : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    bool IsInsideBounds(Vector3 worldPos, BoxCollider bc)
     {
-        
-        if (other.gameObject.CompareTag(_tag))
+        Vector3 localPos = bc.transform.InverseTransformPoint(worldPos);
+        Vector3 delta = localPos - bc.center + bc.size * 0.5f;
+        return Vector3.Max(Vector3.zero, delta) == Vector3.Min(delta, bc.size);
+    }
+
+    private void FixedUpdate()
+    {
+        if (IsInsideBounds(SceneLoader.CurrentCamera.Camera.transform.position, _boxCollider))
         {
             PostProcessingVolume.gameObject.SetActive(true);
             _postProcessingManager.SetState(false);
@@ -87,19 +94,12 @@ public class WaterEffect : MonoBehaviour
             {
                 _globalFog.enabled = true;
             }
-            _enabled = true;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (_enabled == false)
+        else
         {
             PostProcessingVolume.gameObject.SetActive(false);
             _postProcessingManager.SetState(true);
             _globalFog.enabled = false;
         }
-
-        _enabled = false;
     }
 }
