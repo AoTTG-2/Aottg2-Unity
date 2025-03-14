@@ -1,7 +1,7 @@
 {
-	"EyeCount": 33,
-	"FaceCount": 13,
-	"GlassCount": 9,
+	"EyeCount": 48,
+	"FaceCount": 14,
+	"GlassCount": 10,
 	"BackCount": 6,
 	"HeadCount": 8,
 	"HatCount": 15,
@@ -288,5 +288,9 @@
 				"Texture": "hair_historia"
 			}
 		]
-	}
+	},
+	"UniqueItem": [
+		"Glass9",
+		"Face13"
+	]
 }

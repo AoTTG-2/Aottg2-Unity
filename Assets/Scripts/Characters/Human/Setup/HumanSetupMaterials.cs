@@ -73,11 +73,14 @@ namespace Characters
             return HairMaterials[texture];
         }
 
-        public static Material GetFaceMaterial(string texture)
+        public static Material GetFaceMaterial(string texture, bool untiled)
         {
             if (!FaceMaterials.ContainsKey(texture))
             {
-                var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Face/Materials/HumanFaceMat", true);
+                string name = "HumanFaceMat";
+                if (untiled)
+                    name = "HumanFaceUntiledMat";
+                var material = ResourceManager.InstantiateAsset<Material>(ResourcePaths.Characters, "Human/Parts/Face/Materials/" + name, true);
                 var mainTexture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.Characters, "Human/Parts/Face/Textures/" + texture);
                 material.mainTexture = mainTexture;
                 FaceMaterials[texture] = material;
