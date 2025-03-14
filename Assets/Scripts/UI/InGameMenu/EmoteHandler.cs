@@ -19,7 +19,7 @@ namespace UI
         private BasePopup _emoteWheelPopup;
         private EmoteWheelState _currentEmoteWheelState = EmoteWheelState.Text;
         private float _currentEmoteCooldown;
-        public const float EmoteCooldown = 4f;
+        public const float EmoteCooldown = 3f;
         public bool IsActive;
         private InGameManager _inGameManager;
         protected const float Range = 500f;
@@ -51,7 +51,7 @@ namespace UI
             EmoteHandler handler = UIManager.CurrentMenu.GetComponent<EmoteHandler>();
             BaseCharacter c = Util.FindCharacterByViewId(viewId);
             if (c != null && handler != null)
-                handler.ShowEmoteText(text.FilterBadWords(), c);
+                handler.ShowEmoteText(SanitizeText(text), c);
         }
 
         public static void OnEmoteEmojiRPC(int viewId, string emoji, PhotonMessageInfo info)
@@ -85,8 +85,6 @@ namespace UI
         private void ShowEmoteText(string text, BaseCharacter character)
         {
             EmoteTextPopup popup = (EmoteTextPopup)GetAvailablePopup(_emoteTextPopups);
-            if (text.Length > 20)
-                text = text.Substring(0, 20);
             popup.Load(text, ShowTime, character, GetOffset(character));
         }
 
@@ -182,7 +180,7 @@ namespace UI
             {
                 if (_currentEmoteWheelState == EmoteWheelState.Text)
                 {
-                    string text = ((NameSetting)SettingsManager.EmoteSettings.TextEmotes.GetItemAt(selected)).Value;
+                    string text = ((StringSetting)SettingsManager.EmoteSettings.TextEmotes.GetItemAt(selected)).Value;
                     RPCManager.PhotonView.RPC("EmoteTextRPC", RpcTarget.All, new object[] { character.Cache.PhotonView.ViewID, text });
                 }
                 else if (_currentEmoteWheelState == EmoteWheelState.Emoji)
@@ -210,7 +208,7 @@ namespace UI
             {
                 var list = new List<string>();
                 foreach (var item in SettingsManager.EmoteSettings.TextEmotes.Value)
-                    list.Add(item.Value);
+                    list.Add(SanitizeText(item.Value));
                 return list;
             }
             else if (state == EmoteWheelState.Emoji)
@@ -284,6 +282,15 @@ namespace UI
                 UpdatePopup(popup, inMenu);
             foreach(var popup in _emoteEmojiPopups)
                 UpdatePopup(popup, inMenu);
+        }
+
+        public static string SanitizeText(string value)
+        {
+            value = value.FilterBadWords().FilterSizeTag();
+            int maxLength = 20;
+            if (value.Length > maxLength)
+                return value.Substring(0, maxLength);
+            return value;
         }
     }
 
