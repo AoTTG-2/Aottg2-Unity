@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ccf9975a420a64448946aeb82c1abcc4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148136
+  packageName: EZSoftBone
+  packageVersion: 1.6.0
+  assetPath: Assets/EZhex1991/EZSoftBone/Editor/EZSoftBoneForceEditor.cs
+  uploadId: 458587

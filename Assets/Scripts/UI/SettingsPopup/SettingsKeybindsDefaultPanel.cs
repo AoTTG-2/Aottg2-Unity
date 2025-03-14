@@ -48,6 +48,8 @@ namespace UI
             {
                 ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapScoreboard,
                     UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboard"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapScoreboardTooltip"));
+                ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.InputSettings.General.TapMap,
+                    UIManager.GetLocale(cat, "Keybinds.General", "TapMap"), tooltip: UIManager.GetLocale(cat, "Keybinds.General", "TapMapTooltip"));
             }
         }
 
@@ -61,6 +63,8 @@ namespace UI
             {
                 BaseSetting setting = (BaseSetting)entry.Value;
                 string name = (string)entry.Key;
+                if (isTitan && name == "CoverNape1")
+                    name = "CoverNape";
                 if (setting.GetType() == typeof(KeybindSetting))
                 {
                     Transform side = count < (container.Settings.Count / 2) ? DoublePanelLeft : DoublePanelRight;

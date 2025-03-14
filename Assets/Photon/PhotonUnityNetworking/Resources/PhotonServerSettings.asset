@@ -133,6 +133,7 @@ MonoBehaviour:
   - ConfirmCarryRPC
   - BlowAwayRPC
   - PrivateChatRPC
+  - ToggleBladeFireRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

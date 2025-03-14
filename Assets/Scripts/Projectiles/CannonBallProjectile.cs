@@ -25,7 +25,7 @@ namespace Projectiles
             if (photonView.IsMine && !Disabled)
             {
                 var character = collision.collider.gameObject.transform.root.GetComponent<BaseCharacter>();
-                var handler = GetComponent<Collider>().gameObject.GetComponent<CustomLogicCollisionHandler>();
+                var handler = collision.collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 if (handler != null)
                 {
                     int damage = CalculateDamage();

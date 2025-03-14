@@ -54,6 +54,13 @@ namespace Characters
             return Vector3.zero;
         }
 
+        public bool IsHookOffset()
+        {
+            if (_activeHook != null)
+                return _activeHook.HasOffset;
+            return false;
+        }
+
         public Transform GetHookParent()
         {
             return _activeHook.HookParent;

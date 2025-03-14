@@ -6941,8 +6941,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 459196}
-  - component: {fileID: 11159074}
   - component: {fileID: 6559074}
+  - component: {fileID: 8312342249082230201}
   m_Layer: 23
   m_Name: Horse
   m_TagString: Untagged
@@ -6967,29 +6967,6 @@ Transform:
   - {fileID: 459192}
   m_Father: {fileID: 459198}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &11159074
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159196}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400012, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  m_Animations:
-  - {fileID: 7400000, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400002, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400004, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400006, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400008, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400010, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  - {fileID: 7400012, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!65 &6559074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7011,6 +6988,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1, y: 2.2, z: 2.2}
   m_Center: {x: 0, y: 1.1, z: 0}
+--- !u!95 &8312342249082230201
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159196}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 3981388d924781a419ed3eca2e0a7450, type: 3}
+  m_Controller: {fileID: 9100000, guid: b8b7dbebb1cc5bc45913f0545ad5e405, type: 2}
+  m_CullingMode: 2
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &159198
 GameObject:
   m_ObjectHideFlags: 0

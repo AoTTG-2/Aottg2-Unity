@@ -52,7 +52,7 @@ namespace UI
             CreateStatLabel(DoublePanelRight, style, "APG", stat.HumansKilledAPG.Value.ToString());
             CreateStatLabel(DoublePanelRight, style, "Thunder spear", stat.HumansKilledThunderspear.Value.ToString());
             CreateStatLabel(DoublePanelRight, style, "Titan", stat.HumansKilledTitan.Value.ToString());
-            CreateStatLabel(DoublePanelRight, style, "Other", stat.TitansKilledOther.Value.ToString());
+            CreateStatLabel(DoublePanelRight, style, "Other", stat.HumansKilledOther.Value.ToString());
         }
 
         protected void CreateStatLabel(Transform panel, ElementStyle style, string title, string value)

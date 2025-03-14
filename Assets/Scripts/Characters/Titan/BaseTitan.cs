@@ -31,17 +31,21 @@ namespace Characters
         public virtual float DefaultCrippleTime => 8f;
         public virtual bool CanWallClimb => false;
         public virtual bool CanSprint => false;
+        public float ClimbCooldown = 0.5f;
         public float StunTime = 0.3f;
         public float ActionPause = 0.2f;
         public float AttackPause = 0.2f;
         public float TurnPause = 0.2f;
         public float MaxSprintStamina = 5f;
         public float SprintStaminaRecover = 0.7f;
-        public float SprintStaminaConsumption = 1f;
+        public float SprintStaminaConsumption = 0.85f;
         public float CurrentSprintStamina = 5f;
         public ITargetable TargetEnemy = null;
         protected BaseTitanAnimations BaseTitanAnimations;
         protected override float GroundDistance => 1f;
+        private LayerMask TitanGroundMaskLayers = PhysicsLayer.GetMask(PhysicsLayer.TitanMovebox, PhysicsLayer.MapObjectEntities,
+                PhysicsLayer.MapObjectTitans, PhysicsLayer.MapObjectCharacters, PhysicsLayer.MapObjectAll);
+        public override LayerMask GroundMask => TitanGroundMaskLayers;
         protected virtual float DefaultRunSpeed => 15f;
         protected virtual float DefaultWalkSpeed => 5f;
         protected virtual float DefaultJumpForce => 150f;
@@ -72,9 +76,12 @@ namespace Characters
         protected float _currentTurnTime;
         protected float _currentGroundDistance;
         protected float _currentCrippleTime;
-        protected float _currentFallTime;
+        protected float _currentFallTotalTime;
+        protected float _currentFallStuckTime;
         protected float _disableCooldownLeft;
         protected float _checkGroundTimeLeft;
+        protected float _climbCooldownLeft;
+        protected Vector3 _startPosition;
         protected LayerMask MapObjectMask => PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities);
 
         // attacks
@@ -241,8 +248,9 @@ namespace Characters
 
         public virtual void WallClimb()
         {
-            if (!CanWallClimb)
+            if (!CanWallClimb || _climbCooldownLeft > 0f)
                 return;
+            _climbCooldownLeft = ClimbCooldown;
             _stepPhase = 0;
             StateActionWithTime(TitanState.WallClimb, BaseTitanAnimations.Run, 0f, 0.1f);
         }
@@ -344,6 +352,11 @@ namespace Characters
 
         public override void Emote(string emote)
         {
+        }
+
+        public override void ForceAnimation(string animation, float fade)
+        {
+            StateAction(TitanState.Emote, animation, fade);
         }
 
         protected override IEnumerator WaitAndDie()
@@ -556,7 +569,7 @@ namespace Characters
             if (IsMine())
             {
                 _disableCooldownLeft -= Time.deltaTime;
-
+                _climbCooldownLeft -= Time.deltaTime;
                 if (!AI && (State == TitanState.Sprint || State == TitanState.Run || State == TitanState.Walk) && IsSit && State != TitanState.SitDown && State != TitanState.SitIdle && State != TitanState.SitUp)
                 {
                     StateAction(TitanState.SitDown, BaseTitanAnimations.SitDown);
@@ -727,13 +740,21 @@ namespace Characters
                     if (isKinematic)
                         SetKinematic(false);
                 }
+                if (Cache.Rigidbody.velocity.y >= 0f)
+                    _currentFallTotalTime = 0f;
+                else
+                    _currentFallTotalTime += Time.fixedDeltaTime;
+                if (AI & _currentFallTotalTime >= 10f && Cache.Rigidbody.velocity.y <= Gravity.y * 10f)
+                {
+                    GetKilledRPC("Gravity");
+                }
                 if (_checkGroundTimeLeft <= 0f || !AI || State == TitanState.Fall || State == TitanState.StartJump)
                 {
                     CheckGround();
                     _checkGroundTimeLeft = CheckGroundTime;
                 }
                 if (State != TitanState.Fall)
-                    _currentFallTime = 0f;
+                    _currentFallStuckTime = 0f;
                 if (!AI && (State == TitanState.PreJump || State == TitanState.CoverNape || State == TitanState.SitDown || State == TitanState.Dead))
                 {
                     SetDefaultVelocityLerp();
@@ -768,7 +789,7 @@ namespace Characters
                         if (State == TitanState.Run)
                             Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size);
                         else if (State == TitanState.Sprint)
-                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size) * 1.7f;
+                            Cache.Rigidbody.velocity += Cache.Transform.forward * (RunSpeedBase + RunSpeedPerLevel * Size) * 1.5f;
                         else if (State == TitanState.Walk)
                             Cache.Rigidbody.velocity += Cache.Transform.forward * (WalkSpeedBase + WalkSpeedPerLevel * Size);
                     }
@@ -777,8 +798,8 @@ namespace Characters
                 {
                     if (Cache.Rigidbody.velocity.y >= -1f)
                     {
-                        _currentFallTime += Time.fixedDeltaTime;
-                        if (_currentFallTime > 0.5f)
+                        _currentFallStuckTime += Time.fixedDeltaTime;
+                        if (_currentFallStuckTime > 0.5f)
                             Land();
                     }
                 }
@@ -857,6 +878,9 @@ namespace Characters
             {
                 if ((State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint || State == TitanState.Jump || State == TitanState.Fall) && HasDirection)
                 {
+                    float rotateSpeed = RotateSpeed;
+                    if (IsSprint)
+                        rotateSpeed *= 0.3f;
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, GetTargetRotation(), Time.deltaTime * RotateSpeed);
                 }
             }
@@ -978,6 +1002,7 @@ namespace Characters
                     StartCoroutine(HandleSpawnCollisionCoroutine(2f, 20f));
                 Idle();
             }
+            _startPosition = Cache.Transform.position;
         }
 
         protected IEnumerator HandleSpawnCollisionCoroutine(float time, float maxSpeed)

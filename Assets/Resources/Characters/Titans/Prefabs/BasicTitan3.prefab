@@ -423,6 +423,7 @@ MonoBehaviour:
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
   Size: 1
+  ClimbCooldown: 0.5
   StunTime: 0.3
   ActionPause: 0.2
   AttackPause: 0.2
@@ -441,6 +442,8 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  LeftArmDisabled: 0
+  RightArmDisabled: 0
   _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
   IsCrawler: 0
@@ -451,7 +454,6 @@ MonoBehaviour:
   RockThrow1Speed: 200
   TargetViewId: -1
   LookAtTarget: 0
-  HeadPrefab: 0
 --- !u!114 &11477454
 MonoBehaviour:
   m_ObjectHideFlags: 0

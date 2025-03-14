@@ -40,6 +40,7 @@ namespace ApplicationManagers
         {
             _instance = SingletonFactory.CreateSingleton(_instance);
             Client = _instance.AddComponent<PunVoiceClient>();
+            Client.VoiceLogger.LogLevel = ExitGames.Client.Photon.DebugLevel.ERROR;
             Client.AutoConnectAndJoin = false;
         }
         
