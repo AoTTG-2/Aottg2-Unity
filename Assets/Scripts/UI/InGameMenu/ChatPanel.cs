@@ -37,7 +37,6 @@ namespace UI
         private const float TYPING_DEBOUNCE = 0.2f;
         private bool _requestCanvasUpdate;
         private Player _currentPMTarget;
-        private string _pmPrefix;
         private bool _inPMMode;
         private List<Player> _pmPartners = new List<Player>();
         private int _currentPMIndex = -1;
@@ -47,7 +46,6 @@ namespace UI
         private bool _emojiPanelActive = false;
         private Button _emojiButton;
 
-        // First, expand UIAnchors with all needed combinations
         private static class UIAnchors
         {
             // Stretch anchors
@@ -70,14 +68,9 @@ namespace UI
 
         public override void Setup(BasePanel parent = null)
         {
-            // Find the existing InputField
             var oldInputField = transform.Find("InputField").GetComponent<InputField>();
-            
-            // Create a new TMP_InputField to replace it
             var inputFieldGO = new GameObject("TMPInputField", typeof(RectTransform), typeof(TMP_InputField));
             inputFieldGO.transform.SetParent(transform, false);
-            
-            // Copy the RectTransform properties
             var oldRect = oldInputField.GetComponent<RectTransform>();
             var newRect = inputFieldGO.GetComponent<RectTransform>();
             newRect.anchorMin = oldRect.anchorMin;
@@ -85,22 +78,14 @@ namespace UI
             newRect.pivot = oldRect.pivot;
             newRect.sizeDelta = oldRect.sizeDelta;
             newRect.anchoredPosition = oldRect.anchoredPosition;
-            
-            // Setup the TMP_InputField
             _inputField = inputFieldGO.GetComponent<TMP_InputField>();
-            
-            // Create text area with RectMask2D
             var textArea = new GameObject("Text Area", typeof(RectTransform));
             textArea.transform.SetParent(inputFieldGO.transform, false);
             var textAreaRect = textArea.GetComponent<RectTransform>();
             textAreaRect.anchorMin = UIAnchors.FullStretchStart;
             textAreaRect.anchorMax = UIAnchors.FullStretch;
             textAreaRect.sizeDelta = Vector2.zero;
-            
-            // Add RectMask2D to prevent text overflow
             textArea.AddComponent<RectMask2D>();
-            
-            // Create text component with proper settings
             var textComponent = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
             textComponent.transform.SetParent(textArea.transform, false);
             var textRect = textComponent.GetComponent<RectTransform>();
@@ -108,76 +93,53 @@ namespace UI
             textRect.anchorMax = UIAnchors.FullStretch;
             textRect.sizeDelta = Vector2.zero;
             var tmpText = textComponent.GetComponent<TextMeshProUGUI>();
-            
-            // Configure TextMeshPro settings with UI settings font size
             tmpText.enableWordWrapping = false;
             tmpText.overflowMode = TextOverflowModes.ScrollRect;
             tmpText.horizontalAlignment = HorizontalAlignmentOptions.Left;
             tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmpText.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
-            
-            // Setup TMP_InputField with proper settings
             _inputField.textViewport = textAreaRect;
             _inputField.textComponent = tmpText;
             _inputField.lineType = TMP_InputField.LineType.SingleLine;
             _inputField.inputType = TMP_InputField.InputType.Standard;
             _inputField.scrollSensitivity = 60f;
-            
-            // Modify the paste event handler and add escape key handling
+            // Add paste handler to strip rich text (except sprites) and line breaks
             _inputField.onValidateInput += (text, charIndex, addedChar) =>
             {
-                // Replace any line break characters or escape with nothing
                 if (addedChar == '\n' || addedChar == '\r' || addedChar == '\u001B' || addedChar == (char)27)
-                    return '\0';  // Return null character which will be ignored
+                    return '\0';
                 return addedChar;
             };
-            
-            // Add paste handler to strip rich text (except sprites) and line breaks
-            _inputField.onFocusSelectAll = false;  // Prevent auto-selecting all text on focus
+            _inputField.onFocusSelectAll = false;
             _inputField.onSelect.AddListener((value) => {
                 if (GUIUtility.systemCopyBuffer.Length > 0)
                 {
                     string clipText = GUIUtility.systemCopyBuffer;
-                    // Keep sprite tags but remove other rich text tags and escape characters
-                    clipText = Regex.Replace(clipText, @"<(?!sprite=)[^>]+>|</[^>]+>", string.Empty)
+                    clipText = Regex.Replace(clipText, @"<(?!sprite=)[^>]+>|</[^>]+>", string.Empty) // Keep sprite tags
                         .Replace("\n", string.Empty)
                         .Replace("\r", string.Empty)
-                        .Replace("\u001B", string.Empty); // Remove escape character
+                        .Replace("\u001B", string.Empty);
                     GUIUtility.systemCopyBuffer = clipText;
                 }
             });
-            
-            // Disable navigation as a backup measure
             var nav = _inputField.navigation;
             nav.mode = Navigation.Mode.None;
             _inputField.navigation = nav;
-            
-            // Add event listeners
             _inputField.onValueChanged.AddListener(OnValueChanged);
             _inputField.onEndEdit.AddListener(OnEndEdit);
-            
-            // Set a fixed height for the input field
             _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 30);
-            
-            // Ensure the text area has proper masking and layout
             var textAreaRectMask = textArea.GetComponent<RectMask2D>();
             if (textAreaRectMask == null)
             {
                 textAreaRectMask = textArea.AddComponent<RectMask2D>();
             }
-            
-            // Adjust text area padding to prevent text from touching the edges
             textAreaRect.offsetMin = new Vector2(5, 2);
             textAreaRect.offsetMax = new Vector2(-40, -2);
-            
-            // Copy colors from old input field
             var style = new ElementStyle(fontSize: 20, themePanel: ThemePanel);
             var colors = UIManager.GetThemeColorBlock(style.ThemePanel, "InputField", "Input");
             _inputField.colors = colors;
             tmpText.color = UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputTextColor");
             _inputField.selectionColor = UIManager.GetThemeColor(style.ThemePanel, "InputField", "InputSelectionColor");
-            
-            // Set background image
             var backgroundGO = new GameObject("Background", typeof(RectTransform), typeof(Image));
             backgroundGO.transform.SetParent(inputFieldGO.transform, false);
             backgroundGO.transform.SetAsFirstSibling();
@@ -187,11 +149,7 @@ namespace UI
             bgRect.sizeDelta = Vector2.zero;
             var bgImage = backgroundGO.GetComponent<Image>();
             bgImage.color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
-            
-            // Destroy the old input field
             Destroy(oldInputField.gameObject);
-            
-            // Continue with the rest of the setup
             _panel = transform.Find("Content/Panel").gameObject;
             _chatPanelRect = _panel.GetComponent<RectTransform>();
             _inputFieldRect = _inputField.GetComponent<RectTransform>();
@@ -199,17 +157,14 @@ namespace UI
             _scrollbarRect = transform.Find("Content/Scrollbar")?.GetComponent<RectTransform>();
             _scrollRect = GetComponentInChildren<ChatScrollRect>();
             transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
-            
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
             _inputField.text = "";
             if (SettingsManager.UISettings.ChatWidth.Value == 0f)
             {
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
-            
-            // Setup emoji button after input field is initialized
             SetupEmojiButton();
-            
+
             var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
             for (int i = 0; i < POOL_SIZE; i++)
             {
@@ -274,7 +229,6 @@ namespace UI
 
         private void SetupEmojiButton()
         {
-            // Create emoji button
             var emojiButtonGo = new GameObject("EmojiButton", typeof(RectTransform), typeof(Image), typeof(Button));
             emojiButtonGo.transform.SetParent(_inputField.transform, false);
             var emojiButtonRect = emojiButtonGo.GetComponent<RectTransform>();
@@ -283,106 +237,68 @@ namespace UI
             emojiButtonRect.pivot = UIAnchors.RightCenter;
             emojiButtonRect.sizeDelta = new Vector2(30, 30);
             emojiButtonRect.anchoredPosition = new Vector2(0, 0);
-            
-            // Set button appearance
             var emojiButtonImage = emojiButtonGo.GetComponent<Image>();
             emojiButtonImage.color = new Color(0.0f, 0.0f, 0.0f, 0.6f);
-            
-            // Add click handler
             _emojiButton = emojiButtonGo.GetComponent<Button>();
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
-            
-            // Adjust the text area to make room for the button
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.offsetMax = new Vector2(-40, textAreaRect.offsetMax.y); // Add right padding for the button
-            
-            // Create emoji panel (initially inactive)
+            textAreaRect.offsetMax = new Vector2(-40, textAreaRect.offsetMax.y);
             CreateEmojiPanel();
         }
 
         private void CreateEmojiPanel()
         {
-            // Create panel as a direct child of the canvas
             _emojiPanel = new GameObject("EmojiPanel", typeof(RectTransform), typeof(Image));
             _emojiPanel.transform.SetParent(UIManager.CurrentMenu.transform, false);
             var emojiPanelRect = _emojiPanel.GetComponent<RectTransform>();
-            
-            // Position it with bottom-left pivot
             emojiPanelRect.anchorMin = UIAnchors.BottomLeft;
             emojiPanelRect.anchorMax = UIAnchors.BottomLeft;
             emojiPanelRect.pivot = UIAnchors.BottomLeft;
-            
-            // Calculate panel size based on grid content and padding
             float cellSize = 40f;
             float spacing = 5f;
-            float padding = 15f; // Consistent padding for all sides
-            float gridWidth = (cellSize * 4) + (spacing * 3); // 4 columns with 3 spaces between
-            float gridHeight = (cellSize * 4) + (spacing * 3); // 4 rows with 3 spaces between
-            float totalWidth = gridWidth + (padding * 2); // Add padding to both sides
-            float totalHeight = gridHeight + (padding * 2); // Add padding to top and bottom
-            
-            // Set panel size to accommodate grid and padding
+            float padding = 15f;
+            float gridWidth = (cellSize * 4) + (spacing * 3);
+            float gridHeight = (cellSize * 4) + (spacing * 3);
+            float totalWidth = gridWidth + (padding * 2);
+            float totalHeight = gridHeight + (padding * 2);
             emojiPanelRect.sizeDelta = new Vector2(totalWidth, totalHeight);
-            
-            // Set panel appearance with dark background
             var emojiPanelImage = _emojiPanel.GetComponent<Image>();
             emojiPanelImage.color = new Color(0.118f, 0.118f, 0.118f, 0.95f);
-            
-            // Add emoji grid
             var emojiGrid = new GameObject("EmojiGrid", typeof(RectTransform), typeof(GridLayoutGroup));
             emojiGrid.transform.SetParent(_emojiPanel.transform, false);
             var gridRect = emojiGrid.GetComponent<RectTransform>();
             gridRect.anchorMin = UIAnchors.FullStretchStart;
             gridRect.anchorMax = UIAnchors.FullStretch;
             gridRect.sizeDelta = Vector2.zero;
-            
-            // Set consistent padding on all sides
             gridRect.offsetMin = new Vector2(padding, padding);
             gridRect.offsetMax = new Vector2(-padding, -padding);
-            
             var gridLayout = emojiGrid.GetComponent<GridLayoutGroup>();
             gridLayout.cellSize = new Vector2(cellSize, cellSize);
             gridLayout.spacing = new Vector2(spacing, spacing);
             gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             gridLayout.constraintCount = 4;
-            
-            // Add emoji buttons
             AddEmojiButtons(emojiGrid.transform);
-            
-            // Initially hide the panel
             _emojiPanel.SetActive(false);
         }
 
         private void AddEmojiButtons(Transform parent)
         {
-            // Load the sprite asset once
             var spriteAsset = Resources.Load<TMP_SpriteAsset>("UI/Emojis/EmojiOne.asset");
-            
-            // Create buttons for sprite indices 0-15
             for (int i = 0; i < 16; i++)
             {
                 var emojiButtonGo = new GameObject($"EmojiButton_{i}", typeof(RectTransform), typeof(Button), typeof(Image));
                 emojiButtonGo.transform.SetParent(parent, false);
-                
-                // Set button appearance
                 var emojiButtonImage = emojiButtonGo.GetComponent<Image>();
                 emojiButtonImage.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
-                
-                // Create text component with sprite
                 var emojiText = new GameObject("EmojiText", typeof(RectTransform), typeof(TextMeshProUGUI));
                 emojiText.transform.SetParent(emojiButtonGo.transform, false);
                 var emojiTextRect = emojiText.GetComponent<RectTransform>();
-                
-                // Set proper anchors and pivot
                 emojiTextRect.anchorMin = UIAnchors.CenterMiddle;
                 emojiTextRect.anchorMax = UIAnchors.CenterMiddle;
                 emojiTextRect.pivot = UIAnchors.CenterMiddle;
-                
-                // Set a fixed size for the text area
                 emojiTextRect.sizeDelta = new Vector2(30, 30);
                 emojiTextRect.anchoredPosition = Vector2.zero;
-                
                 var tmpText = emojiText.GetComponent<TextMeshProUGUI>();
                 tmpText.text = $"<sprite={i}>";
                 tmpText.fontSize = 24;
@@ -394,8 +310,6 @@ namespace UI
                 tmpText.margin = new Vector4(0, 0, 0, 0);
                 tmpText.spriteAsset = spriteAsset;
                 tmpText.richText = true;
-                
-                // Add click handler
                 var button = emojiButtonGo.GetComponent<Button>();
                 int spriteIndex = i;
                 button.onClick.AddListener(() => InsertEmoji(spriteIndex.ToString()));
@@ -409,59 +323,42 @@ namespace UI
             
             if (_emojiPanelActive)
             {
-                // Get the emoji button's position in screen space
                 RectTransform buttonRect = _emojiButton.GetComponent<RectTransform>();
                 Vector3[] corners = new Vector3[4];
                 buttonRect.GetWorldCorners(corners);
-                
-                // Position panel to the right of the button, aligned with its bottom
                 _emojiPanel.transform.position = new Vector3(
                     corners[2].x, // Right side of button
                     corners[0].y, // Bottom of button
                     corners[2].z
                 );
-                
-                // Make sure panel is in front
                 _emojiPanel.transform.SetAsLastSibling();
             }
         }
 
         private void InsertEmoji(string spriteTag)
         {
-            // Make sure input field is active and focused
             _inputField.ActivateInputField();
             _inputField.Select();
-            
-            // Get current text and insert emoji
             string text = _inputField.text;
             string formattedTag = $"<sprite={spriteTag}>";
             int insertPosition = _inputField.isFocused ? _inputField.caretPosition : text.Length;
             string newText = text.Insert(insertPosition, formattedTag);
-            
-            // Check length limits
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
             if (newText.Length > maxLength)
             {
                 return;
             }
-            
-            // Set the text without triggering notifications
             _inputField.SetTextWithoutNotify(newText);
-            
-            // Update caret position
             int newCaretPos = insertPosition + formattedTag.Length;
             _inputField.caretPosition = newCaretPos;
             _inputField.selectionAnchorPosition = newCaretPos;
             _inputField.selectionFocusPosition = newCaretPos;
-            
-            // Keep input field focused
             _inputField.ActivateInputField();
         }
 
         public void Sync()
         {
             ValidatePMState();
-            // Don't clear _allMessages, just refresh the display
             RefreshDisplayedMessages();
         }
 
@@ -471,7 +368,6 @@ namespace UI
             
             if (_inPMMode && _currentPMTarget != null)
             {
-                // Add PM header
                 linesToShow.Add(ChatManager.GetFormattedMessage(
                     $"{ChatManager.GetColorString("Private chat with ", ChatTextColor.System)}{ChatManager.GetPlayerIdentifier(_currentPMTarget)}", 
                     DateTime.Now, 
@@ -528,7 +424,6 @@ namespace UI
                 }
                 return;
             }
-
             float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
             int totalMessages = lines.Count;
             float size = Mathf.Min(1f, (float)POOL_SIZE / totalMessages);
@@ -536,14 +431,12 @@ namespace UI
             {
                 _scrollRect.verticalScrollbar.size = size;
             }
-            
             int startIndex = 0;
             if (totalMessages > POOL_SIZE)
             {
                 int maxStartIndex = totalMessages - POOL_SIZE;
                 startIndex = scrollPos > 0f ? Mathf.Clamp(Mathf.FloorToInt((1f - scrollPos) * maxStartIndex), 0, maxStartIndex) : maxStartIndex;
             }
-            
             bool needsCanvasUpdate = false;
             for (int i = 0; i < POOL_SIZE; i++)
             {
@@ -596,7 +489,6 @@ namespace UI
 
         public void OnEndEdit(string text)
         {
-            // Only process if Enter/Return was pressed
             if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter))
             {
                 IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
@@ -605,7 +497,6 @@ namespace UI
 
             string input = _inputField.text;
             
-            // Don't process empty messages
             if (string.IsNullOrWhiteSpace(input))
             {
                 IgnoreNextActivation = true;
@@ -613,7 +504,6 @@ namespace UI
                 return;
             }
 
-            // Send message based on mode (PM or normal)
             if (_inPMMode && _currentPMTarget != null)
             {
                 ChatManager.SendPrivateMessage(_currentPMTarget, input);
@@ -623,23 +513,17 @@ namespace UI
                 ChatManager.HandleInput(input);
             }
 
-            // Clear input and deactivate field
             _inputField.text = "";
             _inputField.DeactivateInputField();
             
-            // Update the chat display
             Sync();
             
-            // Set ignore flag for next activation
             IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
         }
 
         public void AddLine(string line)
         {
-            // Simply add to master list
             _allMessages.Add(line);
-            
-            // Refresh display using current mode logic
             RefreshDisplayedMessages();
         }
 
@@ -735,7 +619,6 @@ namespace UI
             bool isInputActive = IsInputActive();
             GameObject newSelectedObject = EventSystem.current.currentSelectedGameObject;
             
-            // Close emoji panel when cursor is not in pointer mode
             if (_emojiPanelActive && CursorManager.State != CursorState.Pointer)
             {
                 CloseEmojiPanel();
@@ -762,7 +645,6 @@ namespace UI
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 Vector2 mousePosition = Input.mousePosition;
-                // Add check for emoji panel
                 if (_emojiPanel != null && _emojiPanel.activeSelf && 
                     RectTransformUtility.RectangleContainsScreenPoint(_emojiPanel.GetComponent<RectTransform>(), mousePosition))
                 {
@@ -913,30 +795,12 @@ namespace UI
             {
                 _inputField.text = newText;
                 
-                // Force immediate update of text and caret
                 _inputField.textComponent.ForceMeshUpdate();
                 _inputField.caretPosition = newText.Length;
                 _inputField.selectionAnchorPosition = newText.Length;
                 _inputField.selectionFocusPosition = newText.Length;
                 
-                // Ensure focus and visual state are correct
                 _inputField.ActivateInputField();
-                _inputField.ForceLabelUpdate();
-                
-                // Schedule a delayed final caret update
-                StartCoroutine(DelayedCaretUpdate());
-            }
-        }
-
-        private IEnumerator DelayedCaretUpdate()
-        {
-            yield return new WaitForEndOfFrame();
-            
-            if (_inputField != null)
-            {
-                _inputField.caretPosition = _inputField.text.Length;
-                _inputField.selectionAnchorPosition = _inputField.text.Length;
-                _inputField.selectionFocusPosition = _inputField.text.Length;
                 _inputField.ForceLabelUpdate();
             }
         }
@@ -1064,14 +928,12 @@ namespace UI
                 StopCoroutine(_pmToggleCoroutine);
         }
 
-        // Change CloseEmojiPanel from private to public
         public void CloseEmojiPanel()
         {
             _emojiPanelActive = false;
             _emojiPanel.SetActive(false);
         }
 
-        // Add this method to handle cursor state changes
         public void HandleCursorStateChange(CursorState newState)
         {
             if (newState != CursorState.Pointer && _emojiPanelActive)
@@ -1080,7 +942,6 @@ namespace UI
             }
         }
 
-        // Add this method back, but make it just call SetInputText
         public void MoveCaretToEnd()
         {
             if (_inputField != null)

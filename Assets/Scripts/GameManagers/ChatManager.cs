@@ -102,10 +102,6 @@ namespace GameManagers
             PlayerID
         }
 
-        private static readonly string[] PlayerIdCommands = new string[] {
-            "kick", "ban", "mute", "unmute", "revive", "pm"
-        };
-
         // Add new lists for PM tracking
         public static List<bool> PrivateFlags = new List<bool>();
         public static List<int> PMPartnerIDs = new List<int>();
@@ -836,11 +832,6 @@ namespace GameManagers
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 
-        private static string GetTimeString(DateTime time)
-        {
-            return time.ToString("HH:mm");
-        }
-
         private void Update()
         {
             if (IsChatAvailable() && !InGameMenu.InMenu() && !DebugConsole.Enabled)
@@ -1128,7 +1119,6 @@ namespace GameManagers
             }
             else if (localID == targetID)
             {
-                // Add the actual PM message
                 AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}", 
                     ChatTextColor.Default, false, DateTime.UtcNow, senderID, false, true, senderID);
                     
@@ -1192,7 +1182,6 @@ namespace GameManagers
                 AddLine("Usage: /pm [ID] [message]", ChatTextColor.Error);
                 return;
             }
-
             var player = GetPlayer(args);
             if (player != null)
             {
@@ -1201,13 +1190,10 @@ namespace GameManagers
                     AddLine("Cannot send private messages to yourself.", ChatTextColor.Error);
                     return;
                 }
-
                 var chatPanel = GetChatPanel();
                 if (chatPanel != null)
                 {
                     chatPanel.EnterPMMode(player);
-                    
-                    // If a message was provided, send it
                     if (args.Length > 2)
                     {
                         string message = string.Join(" ", args.Skip(2));

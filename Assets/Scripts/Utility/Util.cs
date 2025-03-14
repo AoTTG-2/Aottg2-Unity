@@ -419,14 +419,10 @@ namespace Utility
                     return (false, "Could not locate Downloads folder.");
                     
                 string filePath = Path.Combine(downloadsPath, filename);
-                // Ensure the final path is still within Downloads directory
                 if (!IsPathInDirectory(filePath, downloadsPath))
                     return (false, "Invalid file path.");
-                
-                // Collect chat content
+
                 string chatContent = string.Join("\n", messages);
-                
-                // Calculate hash of content
                 string hash;
                 using (var sha256 = System.Security.Cryptography.SHA256.Create())
                 {
@@ -434,16 +430,9 @@ namespace Utility
                     byte[] hashBytes = sha256.ComputeHash(bytes);
                     hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
                 }
-                
-                // Create file content with hash header
                 string fileContent = $"[HASH:{hash}]\n[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
-                
-                // Write file
                 File.WriteAllText(filePath, fileContent);
-                
-                // Set file as read-only
                 File.SetAttributes(filePath, FileAttributes.ReadOnly);
-                
                 return (true, $"Chat history saved to Downloads/{filename}");
             }
             catch (Exception ex)
@@ -464,30 +453,22 @@ namespace Utility
                     return (false, "Could not locate Downloads folder.");
                     
                 string filePath = Path.Combine(downloadsPath, filename);
-                // Ensure the final path is still within Downloads directory
                 if (!IsPathInDirectory(filePath, downloadsPath))
                     return (false, "Invalid file path.");
                     
                 if (!File.Exists(filePath))
                     return (false, $"File not found: {filename}");
 
-                // Read file content
                 string[] lines = File.ReadAllLines(filePath);
                 
-                // File must have at least 4 lines (hash, time, blank line, and content)
                 if (lines.Length < 4)
                     return (false, "Invalid file format.");
 
-                // Extract stored hash
                 if (!lines[0].StartsWith("[HASH:") || !lines[0].EndsWith("]"))
                     return (false, "Invalid file format: missing hash header.");
 
                 string storedHash = lines[0].Substring(6, lines[0].Length - 7);
-
-                // Get content (everything after the blank line)
                 string content = string.Join("\n", lines.Skip(3));
-
-                // Calculate hash of current content
                 string currentHash;
                 using (var sha256 = System.Security.Cryptography.SHA256.Create())
                 {
@@ -535,8 +516,6 @@ namespace Utility
                         }
                     }
                 }
-
-                // Fallback to default Downloads folder for Windows/MacOS or if XDG config not found
                 string homeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 if (string.IsNullOrWhiteSpace(homeFolder))
                     return null;
@@ -553,13 +532,9 @@ namespace Utility
 
         private static bool IsPathInDirectory(string path, string directory)
         {
-            // Convert both to full paths
             string fullPath = Path.GetFullPath(path);
             string fullDir = Path.GetFullPath(directory);
-            
-            // Check if the full path starts with the full directory path
             return fullPath.StartsWith(fullDir, StringComparison.OrdinalIgnoreCase) &&
-                   // Ensure there's either a directory separator or end of string after the directory path
                    (fullPath.Length == fullDir.Length || 
                     fullPath[fullDir.Length] == Path.DirectorySeparatorChar ||
                     fullPath[fullDir.Length] == Path.AltDirectorySeparatorChar);

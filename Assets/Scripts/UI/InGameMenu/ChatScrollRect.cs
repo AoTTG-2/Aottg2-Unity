@@ -19,11 +19,7 @@ namespace UI
             {
                 verticalScrollbarVisibility = ScrollbarVisibility.AutoHide;
                 handleImage = verticalScrollbar.handleRect.GetComponent<Image>();
-                
-                // Add listener for scrollbar value changes
                 verticalScrollbar.onValueChanged.AddListener(OnScrollbarValueChanged);
-                
-                // Make sure scrollbar and handle are initially enabled if needed
                 verticalScrollbar.gameObject.SetActive(true);
                 if (handleImage != null)
                 {
@@ -34,7 +30,6 @@ namespace UI
 
         private void OnScrollbarValueChanged(float value)
         {
-            // This ensures the content updates when using the scrollbar directly
             if (onValueChanged != null)
                 onValueChanged.Invoke(new Vector2(0, value));
         }
@@ -50,12 +45,9 @@ namespace UI
 
             if (verticalScrollbar != null)
             {
-                
-                // Force refresh visibility state
                 ScrollbarVisibility currentVisibility = verticalScrollbarVisibility;
                 verticalScrollbarVisibility = ScrollbarVisibility.Permanent;
                 verticalScrollbarVisibility = ScrollbarVisibility.AutoHide;
-                
                 if (isDragging)
                 {
                     handleImage.enabled = true;
@@ -72,7 +64,6 @@ namespace UI
         public void OnMouseExit()
         {
             isMouseOver = false;
-            // Only disable the handle if we're not dragging
             if (handleImage != null && !isDragging)
             {
                 handleImage.enabled = false;
