@@ -510,13 +510,43 @@ namespace Utility
         {
             try
             {
-                return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                    "Downloads"
-                );
+                // Check if we're on Linux
+                if (Application.platform == RuntimePlatform.LinuxPlayer || Application.platform == RuntimePlatform.LinuxEditor)
+                {
+                    // Try XDG user directory first
+                    string xdgConfig = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                        ".config/user-dirs.dirs"
+                    );
+                    
+                    if (File.Exists(xdgConfig))
+                    {
+                        string[] lines = File.ReadAllLines(xdgConfig);
+                        foreach (string line in lines)
+                        {
+                            if (line.StartsWith("XDG_DOWNLOAD_DIR="))
+                            {
+                                // Parse the XDG path, typically in format: XDG_DOWNLOAD_DIR="$HOME/Downloads"
+                                string path = line.Split('=')[1].Trim('"').Replace("$HOME", 
+                                    Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                                if (Directory.Exists(path))
+                                    return path;
+                            }
+                        }
+                    }
+                }
+
+                // Fallback to default Downloads folder for Windows/MacOS or if XDG config not found
+                string homeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                if (string.IsNullOrWhiteSpace(homeFolder))
+                    return null;
+                    
+                string downloadsPath = Path.Combine(homeFolder, "Downloads");
+                return Directory.Exists(downloadsPath) ? downloadsPath : null;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.LogError($"Failed to determine Downloads path: {ex.Message}");
                 return null;
             }
         }

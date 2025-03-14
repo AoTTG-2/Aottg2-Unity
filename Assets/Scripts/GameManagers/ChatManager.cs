@@ -37,6 +37,7 @@ namespace GameManagers
             public MethodInfo Command { get; set; } = null;
             public bool IsAlias { get; set; } = false;
             public string[] Parameters { get; private set; }
+            public AutofillType AutofillType { get; set; } = AutofillType.None;
 
             public CommandAttribute(CommandAttribute commandAttribute)
             {
@@ -44,12 +45,14 @@ namespace GameManagers
                 Description = commandAttribute.Description;
                 Alias = commandAttribute.Alias;
                 Command = commandAttribute.Command;
+                AutofillType = commandAttribute.AutofillType;
             }
 
-            public CommandAttribute(string name, string description)
+            public CommandAttribute(string name, string description, AutofillType autofillType = AutofillType.None)
             {
                 Name = name;
                 Description = description;
+                AutofillType = autofillType;
                 Parameters = ParamRegex.Matches(description)
                                      .Cast<Match>()
                                      .Select(m => m.Groups[1].Value)
@@ -491,7 +494,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("revive", "/revive [ID]: Revives the player with ID", Alias = "rv")]
+        [CommandAttribute("revive", "/revive [ID]: Revives the player with ID", AutofillType.PlayerID, Alias = "rv")]
         private static void Revive(string[] args)
         {
             if (CheckMC())
@@ -506,7 +509,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("kick", "/kick [ID]: Kick the player with ID")]
+        [CommandAttribute("kick", "/kick [ID]: Kick the player with ID", AutofillType.PlayerID)]
         private static void Kick(string[] args)
         {
             var player = GetPlayer(args);
@@ -517,7 +520,7 @@ namespace GameManagers
                 RPCManager.PhotonView.RPC(nameof(RPCManager.VoteKickRPC), RpcTarget.MasterClient, new object[] { player.ActorNumber });
         }
 
-        [CommandAttribute("ban", "/ban [ID]: Ban the player with ID")]
+        [CommandAttribute("ban", "/ban [ID]: Ban the player with ID", AutofillType.PlayerID)]
         private static void Ban(string[] args)
         {
             var player = GetPlayer(args);
@@ -562,7 +565,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("mute", "/mute [ID]: Mute player with ID.")]
+        [CommandAttribute("mute", "/mute [ID]: Mute player with ID.", AutofillType.PlayerID)]
         private static void Mute(string[] args)
         {
             var player = GetPlayer(args);
@@ -574,7 +577,7 @@ namespace GameManagers
             }
         }
 
-        [CommandAttribute("unmute", "/unmute [ID]: Unmute player with ID.")]
+        [CommandAttribute("unmute", "/unmute [ID]: Unmute player with ID.", AutofillType.PlayerID)]
         private static void Unmute(string[] args)
         {
             var player = GetPlayer(args);
@@ -870,7 +873,8 @@ namespace GameManagers
                     ClearLastSuggestions();
                     return;
                 }
-                if (spaceIndex != -1 && IsPlayerIdCommand(command))
+                if (spaceIndex != -1 && CommandsCache.TryGetValue(command, out CommandAttribute cmdAttr) && 
+                    cmdAttr.AutofillType == AutofillType.PlayerID)
                 {
                     string partial = input.Substring(spaceIndex + 1);
                     if (partial != SuggestionState.PartialText)
@@ -1089,11 +1093,6 @@ namespace GameManagers
             }
         }
 
-        private static bool IsPlayerIdCommand(string command)
-        {
-            return command == "kick" || command == "ban" || command == "mute" || command == "unmute" || command == "revive" || command == "pm";
-        }
-
         public static void SendPrivateMessage(Player target, string message)
         {
             if (target == null)
@@ -1142,7 +1141,7 @@ namespace GameManagers
                         panel.AddPMPartner(senderPlayer);
                         if (!panel.IsInPMMode() || panel.GetCurrentPMTarget().ActorNumber != senderPlayer.ActorNumber)
                         {
-                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{senderName}{GetColorString(" (Esc)", ChatTextColor.System)}", 
+                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(" (Esc)", ChatTextColor.System)}", 
                                 ChatTextColor.Default, true, DateTime.UtcNow, -1, false, false, -1);
                         }
                     }
@@ -1185,7 +1184,7 @@ namespace GameManagers
             return $"{clickableId} {player.GetStringProperty(PlayerProperty.Name)}";
         }
 
-        [CommandAttribute("pm", "/pm [ID]: Send a private message to player with ID")]
+        [CommandAttribute("pm", "/pm [ID]: Send a private message to player with ID", AutofillType.PlayerID)]
         private static void PM(string[] args)
         {
             if (args.Length < 2)
@@ -1228,5 +1227,12 @@ namespace GameManagers
         Error,
         TeamRed,
         TeamBlue
+    }
+
+    public enum AutofillType
+    {
+        None,
+        PlayerID,
+        // Add more autofill types as needed
     }
 }

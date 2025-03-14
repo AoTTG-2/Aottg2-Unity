@@ -97,6 +97,8 @@ namespace UI
             {
                 Cursor.visible = false;
                 State = CursorState.Hidden;
+                if (UIManager.CurrentMenu is InGameMenu menu && menu.ChatPanel != null)
+                    menu.ChatPanel.CloseEmojiPanel();
             }
             var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
             if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
@@ -114,6 +116,8 @@ namespace UI
             {
                 Cursor.visible = false;
                 State = CursorState.Crosshair;
+                if (UIManager.CurrentMenu is InGameMenu menu && menu.ChatPanel != null)
+                    menu.ChatPanel.CloseEmojiPanel();
             }
             var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
             if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)

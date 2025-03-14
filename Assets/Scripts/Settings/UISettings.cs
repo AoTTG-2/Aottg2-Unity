@@ -63,6 +63,10 @@ namespace Settings
                 {
                     InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
                     igm.ApplyUISettings();
+                    if (igm.ChatPanel != null)
+                    {
+                        igm.ChatPanel.Sync();
+                    }
                 }
             }
         }
