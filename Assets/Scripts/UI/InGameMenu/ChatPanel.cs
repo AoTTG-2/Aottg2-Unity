@@ -79,6 +79,7 @@ namespace UI
             newRect.sizeDelta = oldRect.sizeDelta;
             newRect.anchoredPosition = oldRect.anchoredPosition;
             _inputField = inputFieldGO.GetComponent<TMP_InputField>();
+            _inputField.characterLimit = 500;
             var textArea = new GameObject("Text Area", typeof(RectTransform));
             textArea.transform.SetParent(inputFieldGO.transform, false);
             var textAreaRect = textArea.GetComponent<RectTransform>();
