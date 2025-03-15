@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -35,12 +36,23 @@ namespace UI
             Sync();
         }
 
+        private void OnDestroy()
+        {
+            ChatManager.MessageDraft = _inputField.text;
+        }
+
         public void Sync()
         {
             foreach (GameObject go in _lines)
                 Destroy(go);
             _lines.Clear();
             AddLines(ChatManager.Lines);
+
+            if (!string.IsNullOrEmpty(ChatManager.MessageDraft))
+            {
+                _inputField.text = ChatManager.MessageDraft;
+                Activate();
+            }
         }
 
         public void Activate()

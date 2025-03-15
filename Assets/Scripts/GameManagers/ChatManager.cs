@@ -55,6 +55,7 @@ namespace GameManagers
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
         private static string LastException;
         private static int LastExceptionCount;
+        public static string MessageDraft = string.Empty;
 
         public static void Init()
         {
@@ -100,6 +101,7 @@ namespace GameManagers
             LastException = string.Empty;
             LastExceptionCount = 0;
             FeedLines.Clear();
+            MessageDraft = string.Empty;
             LoadTheme();
         }
 
