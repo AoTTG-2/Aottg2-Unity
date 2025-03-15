@@ -59,7 +59,9 @@ namespace UI
                 if (UIManager.CurrentMenu == null || !(UIManager.CurrentMenu is InGameMenu))
                     return;
                 var manager = (InGameManager)SceneLoader.CurrentGameManager;
-                if (InGameMenu.InMenu() || !manager.IsFinishedLoading() || manager.GlobalPause || manager.Restarting)
+                var chatPanel = ((InGameMenu)UIManager.CurrentMenu).ChatPanel;
+                if (InGameMenu.InMenu() || !manager.IsFinishedLoading() || manager.GlobalPause || manager.Restarting || 
+                    (chatPanel != null && (chatPanel.IsInputActive() || chatPanel.IsPointerOverChatUI())))
                     SetPointer();
                 else if (manager.CurrentCharacter != null && (manager.CurrentCharacter is Human || manager.CurrentCharacter is BasicTitan) && !manager.CurrentCharacter.Dead && !CustomLogicManager.Cutscene)
                 {
@@ -95,6 +97,8 @@ namespace UI
             {
                 Cursor.visible = false;
                 State = CursorState.Hidden;
+                if (UIManager.CurrentMenu is InGameMenu menu && menu.ChatPanel != null)
+                    menu.ChatPanel.CloseEmojiPanel();
             }
             var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
             if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
@@ -112,6 +116,8 @@ namespace UI
             {
                 Cursor.visible = false;
                 State = CursorState.Crosshair;
+                if (UIManager.CurrentMenu is InGameMenu menu && menu.ChatPanel != null)
+                    menu.ChatPanel.CloseEmojiPanel();
             }
             var cameraMode = ((InGameCamera)SceneLoader.CurrentCamera).CurrentCameraMode;
             if (cameraMode == CameraInputMode.TPS || cameraMode == CameraInputMode.FPS)
