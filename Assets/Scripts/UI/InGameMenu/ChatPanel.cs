@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -33,6 +34,11 @@ namespace UI
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
             Sync();
+        }
+
+        private void OnDestroy()
+        {
+            ChatManager.MessageDraft = _inputField.text;
         }
 
         public void Sync()
