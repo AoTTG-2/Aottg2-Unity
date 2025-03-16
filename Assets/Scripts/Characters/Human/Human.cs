@@ -63,7 +63,7 @@ namespace Characters
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
         
-        public bool ActOnHorseback = false;
+        public bool HorsebackCombat = false;
         public bool IsAttackableState;
         public bool IsRefillable;
         private object[] _lastMountMessage = null;
@@ -1224,9 +1224,9 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
-                ActOnHorseback = MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.ActOnHorseback.Value;
-                IsAttackableState = MountState == HumanMountState.None || ActOnHorseback;
-                IsRefillable = State == HumanState.Idle && (Grounded || ActOnHorseback);
+                HorsebackCombat = MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
+                IsAttackableState = MountState == HumanMountState.None || HorsebackCombat;
+                IsRefillable = State == HumanState.Idle && (Grounded || HorsebackCombat);
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
