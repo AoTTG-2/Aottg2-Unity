@@ -3053,7 +3053,7 @@ namespace Characters
 
         public void StartBladeSwing()
         {
-            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked()))
+            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState == HumanMountState.Horse))
             {
                 if (SettingsManager.InputSettings.General.Left.GetKey())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
