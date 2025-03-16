@@ -1266,7 +1266,10 @@ namespace Characters
                     else
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
-                        Cache.Transform.rotation = Horse.Cache.Transform.rotation;
+                        if (!IsAttackableState || (_state != HumanState.Attack && _state != HumanState.SpecialAttack && _state != HumanState.SpecialAction))
+                        {
+                            Cache.Transform.rotation = Horse.Cache.Transform.rotation;
+                        }
                     }
                 }
 
@@ -1275,6 +1278,24 @@ namespace Characters
                     if (Setup.Weapon == HumanWeapon.Blade)
                     {
                         var bladeWeapon = (BladeWeapon)Weapon;
+                        if (MountState == HumanMountState.Horse && IsAttackableState)
+                        {
+                            // This allows bladers to attack enemies on a different plane
+                            var target = GetAimPoint();
+                            var start = Cache.Transform.position + Cache.Transform.up * 0.8f;
+                            var direction = (target - start).normalized;
+                            var forward = Cache.Transform.forward;
+                            float maxAngle = 60f;
+                            float angle = Vector3.Angle(forward, direction);
+
+                            if (angle > maxAngle)
+                            {
+                                // Rotate the direction vector to the legal range
+                                Quaternion rotation = Quaternion.AngleAxis(maxAngle * Mathf.Sign(Vector3.SignedAngle(forward, direction, Vector3.up)), Vector3.up);
+                                direction = rotation * forward;
+                            }
+                            Cache.Transform.rotation = Quaternion.LookRotation(direction);
+                        }
                         if (!bladeWeapon.IsActive)
                             _attackButtonRelease = true;
                         if (!_attackRelease)
