@@ -216,7 +216,7 @@ namespace Characters
             base.LateUpdate();
             if (IsMine())
             {
-                if (_owner == null || _owner.Dead)
+                if (_owner == null || _owner.Dead || _owner.State != HumanState.Idle)
                     return;
                 if (Cache.Rigidbody.velocity.magnitude > 8f)
                 {

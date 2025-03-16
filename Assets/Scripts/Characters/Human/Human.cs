@@ -62,6 +62,8 @@ namespace Characters
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
+
+        public bool IsAttackableState;
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
         private float _grabIFrames = 0f;
@@ -1220,6 +1222,7 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
+                IsAttackableState = MountState == HumanMountState.None || (MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.ActOnHorseback.Value);
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
@@ -1266,7 +1269,8 @@ namespace Characters
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
                     }
                 }
-                else if (State == HumanState.Attack)
+
+                if (State == HumanState.Attack)
                 {
                     if (Setup.Weapon == HumanWeapon.Blade)
                     {
@@ -1440,7 +1444,10 @@ namespace Characters
                 if (MountState == HumanMountState.Horse)
                 {
                     Cache.Rigidbody.velocity = Horse.Cache.Rigidbody.velocity;
-                    return;
+                    if (!IsAttackableState)
+                    {
+                        return;
+                    }
                 }
                 if (MountState == HumanMountState.MapObject)
                 {
@@ -1981,8 +1988,11 @@ namespace Characters
                 if (MountState == HumanMountState.None)
                 {
                     LateUpdateTilt();
-                    LateUpdateGun();
                     LateUpdateReelOut();
+                }
+                if (IsAttackableState)
+                {
+                    LateUpdateGun();
                 }
                 bool validState = State == HumanState.Idle || State == HumanState.Run || State == HumanState.Slide;
                 if (Grounded && validState && !_cameraFPS)

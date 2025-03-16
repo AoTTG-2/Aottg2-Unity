@@ -263,7 +263,7 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            bool canWeapon = _human.MountState == HumanMountState.None && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon =  _human.IsAttackableState && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)
@@ -277,6 +277,7 @@ namespace Controllers
                 if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 &&
                     !(_human.Weapon is ThunderspearWeapon && ((ThunderspearWeapon)_human.Weapon).HasActiveProjectile()))
                 {
+                    Debug.Log("Reload state " + _human.State);
                     if (attackInput.GetKeyDown() && _human.State == HumanState.Idle)
                         _human.Reload();
                 }
@@ -304,10 +305,10 @@ namespace Controllers
                 _human.Weapon.SetInput(false);
             if (_human.Special != null)
             {
-                bool canSpecial = _human.MountState == HumanMountState.None &&
+                bool canSpecial = _human.IsAttackableState &&
                     (_human.Special is EscapeSpecial || _human.Special is ShifterTransformSpecial || _human.State != HumanState.Grab) && _human.CarryState != HumanCarryState.Carry
                     && _human.State != HumanState.EmoteAction && _human.State != HumanState.Attack && _human.State != HumanState.SpecialAttack && !inMenu && !_human.Dead;
-                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && (_human.State != HumanState.Attack || _human.Special is StockSpecial) &&
+                bool canSpecialHold = _human.Special is BaseHoldAttackSpecial && _human.IsAttackableState && _human.State != HumanState.Grab && (_human.State != HumanState.Attack || _human.Special is StockSpecial) &&
                     _human.State != HumanState.EmoteAction && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry && !inMenu && !_human.Dead;
                 if (canSpecial || canSpecialHold)
                 {
@@ -356,6 +357,12 @@ namespace Controllers
                     _human.Unmount(false);
                 else if (_humanInput.HorseJump.GetKeyDown())
                     _human.Horse.Jump();
+
+                if (_human.State == HumanState.Idle && _human.IsAttackableState)
+                {
+                    if (_humanInput.Reload.GetKeyDown())
+                        _human.Reload();
+                }
             }
         }
 
