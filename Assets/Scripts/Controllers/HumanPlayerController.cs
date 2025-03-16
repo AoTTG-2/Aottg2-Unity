@@ -277,7 +277,6 @@ namespace Controllers
                 if (_human.Weapon is AmmoWeapon && ((AmmoWeapon)_human.Weapon).RoundLeft == 0 &&
                     !(_human.Weapon is ThunderspearWeapon && ((ThunderspearWeapon)_human.Weapon).HasActiveProjectile()))
                 {
-                    Debug.Log("Reload state " + _human.State);
                     if (attackInput.GetKeyDown() && _human.State == HumanState.Idle)
                         _human.Reload();
                 }
