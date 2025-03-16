@@ -1288,8 +1288,8 @@ namespace Characters
                             var target = GetAimPoint();
                             var start = Cache.Transform.position + Cache.Transform.up * 0.8f;
                             var direction = (target - start).normalized;
-                            var forward = Cache.Transform.forward;
-                            float maxAngle = 60f;
+                            var forward = Horse.Cache.Transform.forward;
+                            float maxAngle = 70f;
                             float angle = Vector3.Angle(forward, direction);
 
                             if (angle > maxAngle)
@@ -1298,7 +1298,7 @@ namespace Characters
                                 Quaternion rotation = Quaternion.AngleAxis(maxAngle * Mathf.Sign(Vector3.SignedAngle(forward, direction, Vector3.up)), Vector3.up);
                                 direction = rotation * forward;
                             }
-                            Cache.Transform.rotation = Quaternion.LookRotation(direction);
+                            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 10.0f);
                         }
                         if (!bladeWeapon.IsActive)
                             _attackButtonRelease = true;
@@ -1505,7 +1505,10 @@ namespace Characters
                 {
                     rotationSpeed = 10f;
                 }
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
+                if (MountState != HumanMountState.Horse)
+                {
+                    Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
+                }
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
