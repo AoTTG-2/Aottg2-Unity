@@ -62,8 +62,10 @@ namespace Characters
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
-
+        
+        public bool ActOnHorseback = false;
         public bool IsAttackableState;
+        public bool IsRefillable;
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
         private float _grabIFrames = 0f;
@@ -834,7 +836,7 @@ namespace Characters
 
         public bool Refill()
         {
-            if (!Grounded || State != HumanState.Idle)
+            if (!IsRefillable)
                 return false;
             State = HumanState.Refill;
             if (Special is SupplySpecial)
@@ -849,7 +851,7 @@ namespace Characters
         }
         public bool SupplySpawnableRefill()
         {
-            if (!Grounded || State != HumanState.Idle)
+            if (!IsRefillable)
                 return false;
             State = HumanState.Refill;
             ToggleSparks(false);
@@ -1222,7 +1224,9 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
-                IsAttackableState = MountState == HumanMountState.None || (MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.ActOnHorseback.Value);
+                ActOnHorseback = MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.ActOnHorseback.Value;
+                IsAttackableState = MountState == HumanMountState.None || ActOnHorseback;
+                IsRefillable = State == HumanState.Idle && (Grounded || ActOnHorseback);
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
