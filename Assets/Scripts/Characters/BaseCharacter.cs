@@ -44,6 +44,8 @@ namespace Characters
         public bool Dead;
         public bool CustomDamageEnabled;
         public int CustomDamage;
+        public bool CustomDamageReceivedEnabled;
+        public int CustomDamageReceived;
 
         // setup
         public BaseComponentCache Cache;
@@ -461,14 +463,20 @@ namespace Characters
         {
             if (Dead)
                 return;
+            var killer = Util.FindCharacterByViewId(viewId);
+            if (killer != null && name == "")
+                name = killer.Name;
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
+                if (CustomDamageReceivedEnabled)
+                {
+                    damage = CustomDamageReceived;
+                    CustomDamageReceivedEnabled = false;
+                }
+            }
             if (damage == 0)
                 return;
-            if (name == "")
-            {
-                var killer = Util.FindCharacterByViewId(viewId);
-                if (killer != null)
-                    name = killer.Name;
-            }
             TakeDamage(damage);
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { viewId, name, damage });
             if (CurrentHealth <= 0f)
@@ -484,6 +492,17 @@ namespace Characters
         {
             if (!Cache.PhotonView.IsMine || Dead)
                 return;
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicManager.Evaluator.OnCharacterDamaged(this, null, name, damage);
+                if (CustomDamageReceivedEnabled)
+                {
+                    damage = CustomDamageReceived;
+                    CustomDamageReceivedEnabled = false;
+                    if (damage == 0)
+                        return;
+                }
+            }
             TakeDamage(damage);
             Cache.PhotonView.RPC("NotifyDamagedRPC", RpcTarget.All, new object[] { -1, name, damage });
             if (CurrentHealth <= 0f)
@@ -546,9 +565,10 @@ namespace Characters
                 if (killer.IsMainCharacter() && CustomLogicManager.Evaluator != null && CustomLogicManager.Evaluator.DefaultAddKillScore)
                     _inGameManager.RegisterMainCharacterDamage(this, damage);
             }
-            if (CustomLogicManager.Evaluator == null)
-                return;
-            CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
+            if (CustomLogicManager.Evaluator != null && !Cache.PhotonView.IsMine)
+            {
+                CustomLogicManager.Evaluator.OnCharacterDamaged(this, killer, name, damage);
+            }
             if (SettingsManager.UISettings.GameFeed.Value)
             {
                 string keyword = " killed ";

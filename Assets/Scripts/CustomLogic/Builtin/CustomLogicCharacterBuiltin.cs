@@ -184,6 +184,10 @@ namespace CustomLogic
                 return Character.CustomDamageEnabled;
             if (name == "CustomDamage")
                 return Character.CustomDamage;
+            if (name == "CustomDamageReceivedEnabled")
+                return Character.CustomDamageReceivedEnabled;
+            if (name == "CustomDamageReceived")
+                return Character.CustomDamageReceived;
             if (name == "CurrentAnimation")
                 return Character.GetCurrentAnimation();
             if (name == "IsAI")
@@ -228,6 +232,10 @@ namespace CustomLogic
                 Character.CustomDamageEnabled = (bool)value;
             else if (name == "CustomDamage")
                 Character.CustomDamage = value.UnboxToInt();
+            else if (name == "CustomDamageReceivedEnabled")
+                Character.CustomDamageReceivedEnabled = (bool)value;
+            else if (name == "CustomDamageReceived")
+                Character.CustomDamageReceived = value.UnboxToInt();
             else if (name == "Name")
                 Character.Name = (string)value;
             else if (name == "Guild")
