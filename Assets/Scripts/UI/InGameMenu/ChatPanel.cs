@@ -15,7 +15,7 @@ namespace UI
 {
     class ChatPanel : BasePanel
     {
-        private const int POOL_SIZE = 20;
+        private int POOL_SIZE => SettingsManager.UISettings.ChatPoolSize.Value;
         private TMP_InputField _inputField;
         private GameObject _panel;
         private ChatScrollRect _scrollRect;
@@ -45,6 +45,8 @@ namespace UI
         private GameObject _emojiPanel;
         private bool _emojiPanelActive = false;
         private Button _emojiButton;
+        private bool _wasChatUIClicked = false;
+        private bool _isInteractingWithChatUI = false;
 
         private static class UIAnchors
         {
@@ -98,7 +100,7 @@ namespace UI
             tmpText.overflowMode = TextOverflowModes.ScrollRect;
             tmpText.horizontalAlignment = HorizontalAlignmentOptions.Left;
             tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
-            tmpText.fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+            tmpText.fontSize = 20.0f;
             _inputField.textViewport = textAreaRect;
             _inputField.textComponent = tmpText;
             _inputField.lineType = TMP_InputField.LineType.SingleLine;
@@ -165,8 +167,13 @@ namespace UI
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
             }
             SetupEmojiButton();
-
             var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
+            foreach (var lineObj in _linesPool)
+            {
+                if (lineObj != null && lineObj.gameObject != null)
+                    Destroy(lineObj.gameObject);
+            }
+            _linesPool.Clear();
             for (int i = 0; i < POOL_SIZE; i++)
             {
                 TMP_InputField lineObj = CreateLine(string.Empty);
@@ -177,7 +184,6 @@ namespace UI
                 _linesPool.Add(lineObj);
             }
             Sync();
-
             var content = transform.Find("Content");
             var contentRect = content.GetComponent<RectTransform>();
             var layoutElement = content.GetComponent<LayoutElement>();
@@ -359,6 +365,7 @@ namespace UI
 
         public void Sync()
         {
+            RefreshPoolSize();
             ValidatePMState();
             RefreshDisplayedMessages();
         }
@@ -373,8 +380,6 @@ namespace UI
                     $"{ChatManager.GetColorString("Private chat with ", ChatTextColor.System)}{ChatManager.GetPlayerIdentifier(_currentPMTarget)}", 
                     DateTime.Now, 
                     true));
-                    
-                // Filter for PM messages with current target
                 for (int i = 0; i < ChatManager.RawMessages.Count; i++)
                 {
                     if (ChatManager.PrivateFlags[i] && 
@@ -390,7 +395,6 @@ namespace UI
             }
             else
             {
-                // Show non-private and system messages
                 for (int i = 0; i < ChatManager.RawMessages.Count; i++)
                 {
                     if (!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i])
@@ -411,8 +415,16 @@ namespace UI
             UpdateVisibleMessages(_allMessages);
         }
 
+        private int GetEffectivePoolSize()
+        {
+            int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
+            return configuredSize == 0 ? _linesPool.Count : configuredSize;
+        }
+
         private void UpdateVisibleMessages(List<string> lines)
         {
+            int effectivePoolSize = GetEffectivePoolSize();
+            
             if (lines.Count == 0)
             {
                 foreach (var lineObj in _linesPool)
@@ -427,19 +439,19 @@ namespace UI
             }
             float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
             int totalMessages = lines.Count;
-            float size = Mathf.Min(1f, (float)POOL_SIZE / totalMessages);
+            float size = Mathf.Min(1f, (float)effectivePoolSize / totalMessages);
             if (_scrollRect && _scrollRect.verticalScrollbar)
             {
                 _scrollRect.verticalScrollbar.size = size;
             }
             int startIndex = 0;
-            if (totalMessages > POOL_SIZE)
+            if (totalMessages > effectivePoolSize)
             {
-                int maxStartIndex = totalMessages - POOL_SIZE;
+                int maxStartIndex = totalMessages - effectivePoolSize;
                 startIndex = scrollPos > 0f ? Mathf.Clamp(Mathf.FloorToInt((1f - scrollPos) * maxStartIndex), 0, maxStartIndex) : maxStartIndex;
             }
             bool needsCanvasUpdate = false;
-            for (int i = 0; i < POOL_SIZE; i++)
+            for (int i = 0; i < _linesPool.Count; i++)
             {
                 var lineObj = _linesPool[i];
                 int messageIndex = startIndex + i;
@@ -495,16 +507,13 @@ namespace UI
                 IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
                 return;
             }
-
             string input = _inputField.text;
-            
             if (string.IsNullOrWhiteSpace(input))
             {
                 IgnoreNextActivation = true;
                 _inputField.DeactivateInputField();
                 return;
             }
-
             if (_inPMMode && _currentPMTarget != null)
             {
                 ChatManager.SendPrivateMessage(_currentPMTarget, input);
@@ -513,12 +522,9 @@ namespace UI
             {
                 ChatManager.HandleInput(input);
             }
-
             _inputField.text = "";
             _inputField.DeactivateInputField();
-            
             Sync();
-            
             IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
         }
 
@@ -587,8 +593,6 @@ namespace UI
                         {
                             ChatManager.HandleTabComplete();
                         }
-                        
-                        SetInputText(_inputField.text);
                     }
                     else if (e.keyCode == KeyCode.Escape)
                     {
@@ -619,17 +623,14 @@ namespace UI
             }
             bool isInputActive = IsInputActive();
             GameObject newSelectedObject = EventSystem.current.currentSelectedGameObject;
-            
             if (_emojiPanelActive && CursorManager.State != CursorState.Pointer)
             {
                 CloseEmojiPanel();
             }
-            
             if (newSelectedObject != _currentSelectedObject)
             {
                 _currentSelectedObject = newSelectedObject;
             }
-
             if (Time.unscaledTime - _lastTypeTime >= TYPING_DEBOUNCE)
             {
                 ChatManager.HandleTyping(_inputField.text);
@@ -639,38 +640,70 @@ namespace UI
                 _requestCanvasUpdate = false;
                 Canvas.ForceUpdateCanvases();
             }
+            if (Input.GetMouseButtonDown(0) && !_wasChatUIClicked && EventSystem.current.IsPointerOverGameObject())
+            {
+                _isInteractingWithChatUI = false;
+            }
+            UpdateChatInteractionState();
         }
 
         public bool IsPointerOverChatUI()
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            Vector2 mousePosition = Input.mousePosition;
+            bool isOverUI = EventSystem.current.IsPointerOverGameObject();
+            
+            bool isOverChatUI = isOverUI && (
+                IsMouseOverAnyChatElement(mousePosition) ||
+                (_emojiPanel != null && _emojiPanel.activeSelf && 
+                 RectTransformUtility.RectangleContainsScreenPoint(_emojiPanel.GetComponent<RectTransform>(), mousePosition))
+            );
+            if (Input.GetMouseButtonDown(0))
             {
-                Vector2 mousePosition = Input.mousePosition;
-                if (_emojiPanel != null && _emojiPanel.activeSelf && 
-                    RectTransformUtility.RectangleContainsScreenPoint(_emojiPanel.GetComponent<RectTransform>(), mousePosition))
+                _wasChatUIClicked = isOverChatUI;
+                
+                if (!isOverChatUI)
                 {
-                    return true;
-                }
-                if (RectTransformUtility.RectangleContainsScreenPoint(_chatPanelRect, mousePosition))
-                {
-                    return true;
-                }
-                else if (RectTransformUtility.RectangleContainsScreenPoint(_inputFieldRect, mousePosition) ||
-                        RectTransformUtility.RectangleContainsScreenPoint(_contentRect, mousePosition) ||
-                        (_scrollbarRect != null && RectTransformUtility.RectangleContainsScreenPoint(_scrollbarRect, mousePosition)))
-                {
-                    if (IsInputActive())
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Activate();
-                        return true;
-                    }
+                    _isInteractingWithChatUI = false;
                 }
             }
+            if (isOverChatUI)
+            {
+                _isInteractingWithChatUI = true;
+            }
+            return _isInteractingWithChatUI;
+        }
+        
+        private bool IsMouseOverAnyChatElement(Vector2 mousePosition)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(_chatPanelRect, mousePosition) ||
+                RectTransformUtility.RectangleContainsScreenPoint(_inputFieldRect, mousePosition) ||
+                RectTransformUtility.RectangleContainsScreenPoint(_contentRect, mousePosition) ||
+                (_scrollbarRect != null && RectTransformUtility.RectangleContainsScreenPoint(_scrollbarRect, mousePosition)))
+            {
+                return true;
+            }
+            foreach (var line in _linesPool)
+            {
+                if (line.gameObject.activeSelf && 
+                    RectTransformUtility.RectangleContainsScreenPoint(line.GetComponent<RectTransform>(), mousePosition))
+                {
+                    return true;
+                }
+            }
+            if (_emojiButton != null && 
+                RectTransformUtility.RectangleContainsScreenPoint(_emojiButton.GetComponent<RectTransform>(), mousePosition))
+            {
+                return true;
+            }
             return false;
+        }
+        
+        public void UpdateChatInteractionState()
+        {
+            if (IsInputActive() || _emojiPanelActive)
+            {
+                _isInteractingWithChatUI = true;
+            }
         }
 
         protected TMP_InputField CreateLine(string text)
@@ -719,13 +752,11 @@ namespace UI
         {
             private TextMeshProUGUI _textComponent;
             private TMP_InputField _chatInput;
-
             public void Initialize(TextMeshProUGUI textComponent, TMP_InputField chatInput)
             {
                 _textComponent = textComponent;
                 _chatInput = chatInput;
             }
-
             public void OnPointerClick(PointerEventData eventData)
             {
                 int linkIndex = TMP_TextUtilities.FindIntersectingLink(_textComponent, eventData.position, null);
@@ -733,7 +764,6 @@ namespace UI
                 {
                     TMP_LinkInfo linkInfo = _textComponent.textInfo.linkInfo[linkIndex];
                     string linkID = linkInfo.GetLinkID();
-                    
                     if (int.TryParse(linkID, out int playerID))
                     {
                         if (playerID == PhotonNetwork.LocalPlayer.ActorNumber)
@@ -760,7 +790,6 @@ namespace UI
         private TMP_InputField GetCachedInputField(GameObject obj)
         {
             if (obj == null) return null;
-            
             if (!_cachedInputFields.TryGetValue(obj, out TMP_InputField inputField))
             {
                 inputField = obj.GetComponent<TMP_InputField>();
@@ -792,18 +821,7 @@ namespace UI
 
         public void SetInputText(string newText)
         {
-            if (_inputField != null)
-            {
-                _inputField.text = newText;
-                
-                _inputField.textComponent.ForceMeshUpdate();
-                _inputField.caretPosition = newText.Length;
-                _inputField.selectionAnchorPosition = newText.Length;
-                _inputField.selectionFocusPosition = newText.Length;
-                
-                _inputField.ActivateInputField();
-                _inputField.ForceLabelUpdate();
-            }
+            SetTextAndPositionCaret(newText);
         }
 
         public void EnterPMMode(Player target)
@@ -947,7 +965,95 @@ namespace UI
         {
             if (_inputField != null)
             {
-                SetInputText(_inputField.text);
+                string text = _inputField.text;
+                int endPos = text.Length;
+                _inputField.caretPosition = endPos;
+                _inputField.selectionAnchorPosition = endPos;
+                _inputField.selectionFocusPosition = endPos;
+                _inputField.textComponent.ForceMeshUpdate();
+                _inputField.ActivateInputField();
+                _inputField.ForceLabelUpdate();
+                Canvas.ForceUpdateCanvases();
+            }
+        }
+
+        public bool ShouldBlockGameInput()
+        {
+            return IsInputActive() || _emojiPanelActive || _isInteractingWithChatUI;
+        }
+
+        public bool ShouldBlockKeybind(KeyCode keyCode)
+        {
+            if (!ShouldBlockGameInput())
+                return false;
+                
+            if (keyCode == KeyCode.Return || keyCode == KeyCode.KeypadEnter || 
+                keyCode == KeyCode.Escape || keyCode == KeyCode.Tab)
+                return false;
+                
+            return true;
+        }
+
+        public void RefreshPoolSize()
+        {
+            int currentPoolSize = _linesPool.Count;
+            int userDefinedPoolSize = SettingsManager.UISettings.ChatPoolSize.Value;
+            int targetPoolSize = userDefinedPoolSize;
+            
+            if (userDefinedPoolSize == 0)
+            {
+                float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
+                float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+                float lineHeight = 30f * (fontSize / 18f);
+                targetPoolSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
+                targetPoolSize = Mathf.Max(targetPoolSize, 10);
+            }
+            
+            if (currentPoolSize == targetPoolSize)
+                return;
+            if (currentPoolSize > targetPoolSize)
+            {
+                for (int i = currentPoolSize - 1; i >= targetPoolSize; i--)
+                {
+                    if (_linesPool[i] != null && _linesPool[i].gameObject != null)
+                        Destroy(_linesPool[i].gameObject);
+                    _linesPool.RemoveAt(i);
+                }
+            }
+            else if (currentPoolSize < targetPoolSize)
+            {
+                var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
+                for (int i = currentPoolSize; i < targetPoolSize; i++)
+                {
+                    TMP_InputField lineObj = CreateLine(string.Empty);
+                    var textComponent2 = lineObj.textComponent as TextMeshProUGUI;
+                    textComponent2.font = fontAsset;
+                    lineObj.fontAsset = fontAsset;
+                    lineObj.gameObject.SetActive(false);
+                    _linesPool.Add(lineObj);
+                }
+            }
+            RefreshDisplayedMessages();
+        }
+
+        public bool IsInteractingWithChatUI()
+        {
+            return _isInteractingWithChatUI || IsInputActive() || _emojiPanelActive;
+        }
+
+        public void SetTextAndPositionCaret(string newText)
+        {
+            if (_inputField != null)
+            {
+                _inputField.text = newText;
+                _inputField.textComponent.ForceMeshUpdate();
+                int endPos = newText.Length;
+                _inputField.caretPosition = endPos;
+                _inputField.selectionAnchorPosition = endPos;
+                _inputField.selectionFocusPosition = endPos;
+                _inputField.ActivateInputField();
+                _inputField.ForceLabelUpdate();
+                Canvas.ForceUpdateCanvases();
             }
         }
     }

@@ -10,6 +10,8 @@ namespace UI
         private bool isDragging = false;
         private Image handleImage;
         private ChatPanel _chatPanel;
+        private float lastScrollTime = 0f;
+        private const float SCROLL_INTERACTION_TIMEOUT = 1.0f;
 
         protected override void Start()
         {
@@ -37,12 +39,10 @@ namespace UI
         protected override void LateUpdate()
         {
             base.LateUpdate();
-            
-            if (_chatPanel != null && !_chatPanel.IsInputActive() && !isDragging && !isMouseOver)
+            if (_chatPanel != null && !_chatPanel.IsInteractingWithChatUI() && !isDragging && !isMouseOver && Time.time > lastScrollTime + SCROLL_INTERACTION_TIMEOUT)
             {
                 verticalNormalizedPosition = 0f;
             }
-
             if (verticalScrollbar != null)
             {
                 ScrollbarVisibility currentVisibility = verticalScrollbarVisibility;
@@ -108,7 +108,20 @@ namespace UI
 
         public override void OnScroll(PointerEventData data)
         {
-            // Disable scroll wheel by not calling base
+            if (isMouseOver)
+            {
+                data.scrollDelta *= 1.5f;
+                base.OnScroll(data);
+                lastScrollTime = Time.time;
+                if (_chatPanel != null)
+                {
+                    _chatPanel.UpdateChatInteractionState();
+                }
+                if (handleImage != null)
+                {
+                    handleImage.enabled = true;
+                }
+            }
         }
     }
 } 

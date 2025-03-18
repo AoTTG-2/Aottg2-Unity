@@ -68,7 +68,24 @@ namespace GameManagers
         public static List<DateTime> Timestamps = new List<DateTime>();
         public static List<bool> SuggestionFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
-        private static readonly int MaxLines = 30;
+        private static int MaxLines 
+        {
+            get
+            {
+                int configuredSize = SettingsManager.UISettings.ChatPoolSize.Value;
+                if (configuredSize == 0)
+                {
+                    // Use a larger default size for message storage when auto-adjusting
+                    // (lines will be displayed based on the dynamic calculation in ChatPanel)
+                    float chatHeight = SettingsManager.UISettings.ChatHeight.Value;
+                    float fontSize = SettingsManager.UISettings.ChatFontSize.Value;
+                    float lineHeight = 30f * (fontSize / 18f);
+                    int calculatedSize = Mathf.CeilToInt((chatHeight * 2f) / lineHeight);
+                    return Mathf.Max(calculatedSize, 50); // Ensure ample buffer for scrolling
+                }
+                return configuredSize;
+            }
+        }
         public static Dictionary<ChatTextColor, string> ColorTags = new Dictionary<ChatTextColor, string>();
         private static readonly Dictionary<string, CommandAttribute> CommandsCache = new Dictionary<string, CommandAttribute>();
         private static string LastException;
@@ -177,7 +194,7 @@ namespace GameManagers
         public static bool IsChatActive()
         {
             var chatPanel = GetChatPanel();
-            return chatPanel != null && chatPanel.IsInputActive();
+            return chatPanel != null && (chatPanel.IsInputActive() || chatPanel.IsInteractingWithChatUI());
         }
 
         public static bool IsChatAvailable()
@@ -1022,6 +1039,7 @@ namespace GameManagers
             if (SuggestionState.CurrentIndex >= SuggestionState.Suggestions.Count)
                 SuggestionState.CurrentIndex = 0;
             string chosen = SuggestionState.Suggestions[SuggestionState.CurrentIndex];
+            string newText = currentInput;
             switch (SuggestionState.Type)
             {
                 case SuggestionType.PlayerID:
@@ -1029,7 +1047,7 @@ namespace GameManagers
                     if (parts.Length > 0)
                     {
                         string command = parts[0];
-                        chatPanel.SetInputText($"{command} {chosen}");
+                        newText = $"{command} {chosen}";
                     }
                     break;
                 case SuggestionType.Command:
@@ -1037,7 +1055,7 @@ namespace GameManagers
                     if (firstSpace < 0) firstSpace = currentInput.Length;
                     string prefix = currentInput.Substring(0, 1);
                     string suffix = firstSpace < currentInput.Length ? currentInput.Substring(firstSpace) : "";
-                    chatPanel.SetInputText(prefix + chosen + suffix);
+                    newText = prefix + chosen + suffix;
                     break;
                 case SuggestionType.Mention:
                     if (!currentInput.StartsWith("/"))
@@ -1050,14 +1068,14 @@ namespace GameManagers
                             int spaceAfterAt = currentInput.IndexOf(' ', lastAt);
                             if (spaceAfterAt >= 0)
                                 afterMention = currentInput.Substring(spaceAfterAt);
-    
+
                             string playerName = chosen.Trim();
-                            chatPanel.SetInputText(beforeAt + playerName + afterMention);
+                            newText = beforeAt + playerName + afterMention;
                         }
                     }
                     break;
             }
-            chatPanel.MoveCaretToEnd();
+            chatPanel.SetTextAndPositionCaret(newText);
         }
 
         public static void ClearLastSuggestions()
@@ -1077,7 +1095,6 @@ namespace GameManagers
                 }
             }
             SuggestionState.Clear();
-
             if (IsChatAvailable())
             {
                 var panel = GetChatPanel();
@@ -1221,6 +1238,5 @@ namespace GameManagers
     {
         None,
         PlayerID,
-        // Add more autofill types as needed
     }
 }
