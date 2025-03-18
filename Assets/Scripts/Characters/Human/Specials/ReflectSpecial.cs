@@ -5,21 +5,22 @@ using UnityEngine;
 
 namespace Characters
 {
-    class SwitchbackSpecial : ExtendedUseable
+    class ReflectSpecial : SwitchbackSpecial
     {
         private const float GrabIFrameDuration = 0.5f;
         protected override float ActiveTime => 0.3f;
 
-        public SwitchbackSpecial(BaseCharacter owner): base(owner)
+        public ReflectSpecial(BaseCharacter owner) : base(owner)
         {
             Cooldown = 2f;
         }
 
-        virtual public bool RegisterCollision(Human human, Collision collision, float speed)
+        override public bool RegisterCollision(Human human, Collision collision, float speed)
         {
             if (IsActive)
             {
-                human.Cache.Rigidbody.velocity = collision.contacts[0].normal.normalized * Mathf.Max(speed, 20f);
+                Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                human.Cache.Rigidbody.velocity = cameraRay.direction.normalized * Mathf.Max(speed, 20f);
                 _activeTimeLeft = 0f;
                 IsActive = false;
                 human.PlaySound(HumanSounds.Switchback);

@@ -473,8 +473,34 @@ namespace Controllers
                         }
                     }
                 }
-                if (currentDirection != HumanDashDirection.None)
-                    _human.Dash(GetDashAngle(currentDirection));
+
+                bool isOmniDash = false;
+                if (_human.Special is AirAcrobaticsSpecial)
+                {
+                    if (_human.Special.IsActive)
+                        isOmniDash = true;
+                }
+
+
+                if (isOmniDash)
+                {
+                    if (currentDirection == HumanDashDirection.Forward)
+                    {
+                        Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
+                        _human.DashVertical(GetTargetAngle(direction), direction);
+                        ((AirAcrobaticsSpecial)_human.Special).RegisterDash();
+                    }
+                    else if (currentDirection != HumanDashDirection.None)
+                    {
+                        _human.Dash(GetDashAngle(currentDirection));
+                        ((AirAcrobaticsSpecial)_human.Special).RegisterDash();
+                    }
+                }
+                else
+                {
+                    if (currentDirection != HumanDashDirection.None)
+                        _human.Dash(GetDashAngle(currentDirection));
+                }
             }
         }
 

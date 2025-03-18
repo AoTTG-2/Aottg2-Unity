@@ -413,7 +413,6 @@ namespace Characters
                     //Cache.Rigidbody.rotation = _targetRotation;
                     CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 }
-
                 else
                     PlayAnimation(HumanAnimations.Dodge, 0.2f);
                 EffectSpawner.Spawn(EffectPrefabs.GasBurst, Cache.Transform.position, Cache.Transform.rotation);
