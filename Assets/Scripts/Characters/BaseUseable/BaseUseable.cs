@@ -31,17 +31,14 @@ namespace Characters
         {
             UsesLeft = MaxUses;
         }
-
         public void SetCooldownLeft(float cooldownLeft)
         {
             _lastUseTime = Time.time - Cooldown + cooldownLeft;
         }
-
         public float GetCooldownLeft()
         {
             return Mathf.Clamp(Cooldown - (Time.time - _lastUseTime), 0f, Cooldown);
         }
-
         public float GetCooldownRatio()
         {
             if (!HasUsesLeft())
@@ -67,7 +64,10 @@ namespace Characters
         {
             return (Time.time - _lastUseTime) >= Cooldown && (UsesLeft == -1 || UsesLeft > 0);
         }
-
+        public virtual bool HasDurability()
+        {
+            return false;
+        }
         protected virtual void OnUse()
         {
             if (UsesLeft > 0)
