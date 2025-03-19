@@ -218,6 +218,7 @@ namespace GameManagers
 
         public static void LeaveRoom()
         {
+            ChatManager.ResetAllPMState();
             ResetPersistentPlayerProperties();
             if (PhotonNetwork.IsMasterClient)
                 PhotonNetwork.DestroyAll();
@@ -234,6 +235,11 @@ namespace GameManagers
         {
             if (PhotonNetwork.IsConnected)
             {
+                var chatPanel = UIManager.CurrentMenu?.GetComponent<InGameMenu>()?.ChatPanel;
+                if (chatPanel != null)
+                {
+                    chatPanel.ResetPMState();
+                }
                 LeaveRoom();
                 MainMenuGameManager.JustLeftRoom = true;
             }
@@ -245,6 +251,10 @@ namespace GameManagers
             ResetPlayerInfo();
             ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
+            
+            // Add this line to sync PM state
+            ChatManager.SyncPMPartnersOnJoin();
+            
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
             else
@@ -350,6 +360,17 @@ namespace GameManagers
 
         public override void OnPlayerLeftRoom(Player player)
         {
+            base.OnPlayerLeftRoom(player);
+            var chatPanel = UIManager.CurrentMenu?.GetComponent<InGameMenu>()?.ChatPanel;
+            if (chatPanel != null)
+            {
+                chatPanel.RemovePMPartner(player);
+                chatPanel.Sync();
+            }
+            if (AllPlayerInfo.ContainsKey(player.ActorNumber))
+            {
+                AllPlayerInfo.Remove(player.ActorNumber);
+            }
             if (SettingsManager.UISettings.JoinNotifications.Value)
             {
                 string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has left the room.", ChatTextColor.System);
@@ -357,8 +378,6 @@ namespace GameManagers
             }
             if (CustomLogicManager.Evaluator != null)
                 CustomLogicManager.Evaluator.OnPlayerLeave(player);
-
-            // Clear the mute lists for the player that left (only if they are in the lists)
             if (MuteEmote.Contains(player.ActorNumber))
                 MuteEmote.Remove(player.ActorNumber);
             if (MuteText.Contains(player.ActorNumber))
