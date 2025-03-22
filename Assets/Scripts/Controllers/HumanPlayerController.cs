@@ -352,7 +352,7 @@ namespace Controllers
             }
             else if (_human.MountState == HumanMountState.Horse)
             {
-                if (_humanInput.HorseMount.GetKeyDown())
+                if (_humanInput.HorseMount.GetKeyDown() && _human.State == HumanState.Idle)
                     _human.Unmount(false);
                 else if (_humanInput.HorseJump.GetKeyDown())
                     _human.Horse.Jump();
