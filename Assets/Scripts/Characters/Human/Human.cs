@@ -62,6 +62,10 @@ namespace Characters
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
+        
+        public bool HorsebackCombat = false;
+        public bool IsAttackableState;
+        public bool IsRefillable;
         private object[] _lastMountMessage = null;
         private int _lastCarryRPCSender = -1;
         private float _grabIFrames = 0f;
@@ -832,7 +836,7 @@ namespace Characters
 
         public bool Refill()
         {
-            if (!Grounded || State != HumanState.Idle)
+            if (!IsRefillable)
                 return false;
             State = HumanState.Refill;
             if (Special is SupplySpecial)
@@ -847,7 +851,7 @@ namespace Characters
         }
         public bool SupplySpawnableRefill()
         {
-            if (!Grounded || State != HumanState.Idle)
+            if (!IsRefillable)
                 return false;
             State = HumanState.Refill;
             ToggleSparks(false);
@@ -936,7 +940,7 @@ namespace Characters
 
         public bool CanEmote()
         {
-            return !Dead && State != HumanState.Grab && CarryState != HumanCarryState.Carry && State != HumanState.AirDodge && State != HumanState.EmoteAction && State != HumanState.SpecialAttack && MountState == HumanMountState.None
+            return !Dead && State != HumanState.Grab && CarryState != HumanCarryState.Carry && State != HumanState.AirDodge && State != HumanState.EmoteAction && State != HumanState.SpecialAttack && IsAttackableState
                 && State != HumanState.Stun;
         }
 
@@ -1220,6 +1224,9 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
+                HorsebackCombat = MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
+                IsAttackableState = MountState == HumanMountState.None || HorsebackCombat;
+                IsRefillable = State == HumanState.Idle && (Grounded || HorsebackCombat);
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
@@ -1263,14 +1270,36 @@ namespace Characters
                     else
                     {
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
-                        Cache.Transform.rotation = Horse.Cache.Transform.rotation;
+                        if (!IsAttackableState || (_state != HumanState.Attack && _state != HumanState.SpecialAttack && _state != HumanState.SpecialAction))
+                        {
+                            Cache.Transform.rotation = Horse.Cache.Transform.rotation;
+                        }
                     }
                 }
-                else if (State == HumanState.Attack)
+
+                if (State == HumanState.Attack)
                 {
                     if (Setup.Weapon == HumanWeapon.Blade)
                     {
                         var bladeWeapon = (BladeWeapon)Weapon;
+                        if (MountState == HumanMountState.Horse && IsAttackableState)
+                        {
+                            // This allows bladers to attack enemies on a different plane
+                            var target = GetAimPoint();
+                            var start = Cache.Transform.position + Cache.Transform.up * 0.8f;
+                            var direction = (target - start).normalized;
+                            var forward = Horse.Cache.Transform.forward;
+                            float maxAngle = 70f;
+                            float angle = Vector3.Angle(forward, direction);
+
+                            if (angle > maxAngle)
+                            {
+                                // Rotate the direction vector to the legal range
+                                Quaternion rotation = Quaternion.AngleAxis(maxAngle * Mathf.Sign(Vector3.SignedAngle(forward, direction, Vector3.up)), Vector3.up);
+                                direction = rotation * forward;
+                            }
+                            Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 10.0f);
+                        }
                         if (!bladeWeapon.IsActive)
                             _attackButtonRelease = true;
                         if (!_attackRelease)
@@ -1440,7 +1469,10 @@ namespace Characters
                 if (MountState == HumanMountState.Horse)
                 {
                     Cache.Rigidbody.velocity = Horse.Cache.Rigidbody.velocity;
-                    return;
+                    if (!IsAttackableState)
+                    {
+                        return;
+                    }
                 }
                 if (MountState == HumanMountState.MapObject)
                 {
@@ -1473,7 +1505,10 @@ namespace Characters
                 {
                     rotationSpeed = 10f;
                 }
-                Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
+                if (MountState != HumanMountState.Horse)
+                {
+                    Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
+                }
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
@@ -1981,8 +2016,11 @@ namespace Characters
                 if (MountState == HumanMountState.None)
                 {
                     LateUpdateTilt();
-                    LateUpdateGun();
                     LateUpdateReelOut();
+                }
+                if (IsAttackableState)
+                {
+                    LateUpdateGun();
                 }
                 bool validState = State == HumanState.Idle || State == HumanState.Run || State == HumanState.Slide;
                 if (Grounded && validState && !_cameraFPS)
@@ -3043,7 +3081,7 @@ namespace Characters
 
         public void StartBladeSwing()
         {
-            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked()))
+            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState == HumanMountState.Horse))
             {
                 if (SettingsManager.InputSettings.General.Left.GetKey())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;

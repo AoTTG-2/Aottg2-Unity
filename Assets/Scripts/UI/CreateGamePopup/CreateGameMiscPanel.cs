@@ -26,6 +26,7 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.CustomPerks, UIManager.GetLocale(cat, sub, "CustomPerks"), UIManager.GetLocale(cat, sub, "CustomPerksTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismMode, UIManager.GetLocale(cat, sub, "RealismMode"), UIManager.GetLocale(cat, sub, "RealismModeTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
+            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.HorsebackCombat, UIManager.GetLocale(cat, sub, "HorsebackCombat"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.EndlessRespawnEnabled, UIManager.GetLocale(cat, sub, "EndlessRespawnEnabled"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.EndlessRespawnTime, UIManager.GetLocale(cat, sub, "EndlessRespawnTime"), elementWidth: inputWidth);
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.AllowSpawnTime, UIManager.GetLocale(cat, sub, "AllowSpawnTime"), UIManager.GetLocale(cat, sub, "AllowSpawnTimeTooltip"), elementWidth: inputWidth);

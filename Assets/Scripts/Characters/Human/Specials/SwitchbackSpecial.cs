@@ -29,6 +29,22 @@ namespace Characters
             return false;
         }
 
+        public override void SetInput(bool key)
+        {
+            if (key && CanUse() && !IsActive)
+            {
+                var human = ((Human)_owner);
+                if (human.MountState == HumanMountState.Horse && human.IsAttackableState)
+                {
+                    human.Unmount(false);
+                }
+                IsActive = true;
+                _activeTimeLeft = GetActiveTime();
+                Activate();
+                OnUse();
+            }
+        }
+
         protected override void Activate()
         {
             ((Human)_owner).StartGrabImmunity(GrabIFrameDuration);

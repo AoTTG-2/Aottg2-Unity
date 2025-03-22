@@ -7,9 +7,9 @@ namespace Spawnables
 {
     class SupplySpawnable: BaseSpawnable
     {
-        protected void OnCollisionStay(Collision collision)
+        protected void OnTriggerStay(Collider other)
         {
-            var go = collision.transform.root.gameObject;
+            var go = other.transform.root.gameObject;
             var human = go.GetComponent<Human>();
             if (human != null && human.IsMine() && human.NeedRefill(false))
                 human.SupplySpawnableRefill();
