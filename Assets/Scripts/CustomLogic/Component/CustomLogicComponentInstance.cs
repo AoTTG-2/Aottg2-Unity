@@ -40,7 +40,7 @@ namespace CustomLogic
         public bool UsesCollider()
         {
             var eval = CustomLogicManager.Evaluator;
-            return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit");
+            return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit") || eval.HasMethod(this, "OnGetHooked");
         }
 
         [CLCallbackAttribute]

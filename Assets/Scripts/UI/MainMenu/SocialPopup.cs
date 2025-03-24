@@ -12,8 +12,8 @@ namespace UI
     class SocialPopup: BasePopup
     {
         protected override string Title => UIManager.GetLocaleCommon("Social");
-        protected override float Width => 630f;
-        protected override float Height => 400f;
+        protected override float Width => 650f;
+        protected override float Height => 440f;
         protected override bool DoublePanel => false;
 
         protected override int HorizontalPadding => 35;

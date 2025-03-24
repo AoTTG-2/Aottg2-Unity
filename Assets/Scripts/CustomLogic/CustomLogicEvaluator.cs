@@ -1,4 +1,4 @@
-    using ApplicationManagers;
+using ApplicationManagers;
 using Characters;
 using GameManagers;
 using Map;
@@ -147,7 +147,10 @@ namespace CustomLogic
                         main.Variables[variableName] = ((BoolSetting)setting).Value;
                 }
                 foreach (var instance in _staticClasses.Values)
+                {
                     EvaluateMethod(instance, "Init");
+                    instance.Inited = true;
+                }
                 EvaluateMethodForCallbacks("Init");
                 AddCallbacks(_staticClasses["Main"]);
                 EvaluateMethodForCallbacks("OnGameStart");
@@ -355,10 +358,13 @@ namespace CustomLogic
                 var callback = _callbacks[methodName];
                 for (int i = 0; i < callback.Count; i++)
                 {
-                    // Init function should run even if the class (component) is disabled
-                    if (!callback[i].Enabled && methodName != "Init")
+                    if (methodName == "Init")
+                    {
+                        if (callback[i].Inited)
+                            continue;
+                    }
+                    else if (!callback[i].Enabled)
                         continue;
-
                     EvaluateMethod(callback[i], methodName, parameters);
                 }
             }
@@ -380,6 +386,7 @@ namespace CustomLogic
                         if (init)
                         {
                             EvaluateMethod(instance, "Init");
+                            instance.Inited = true;
                         }
                         if (component.ComponentName == "Rigidbody")
                             rigidbody = true;
@@ -424,6 +431,7 @@ namespace CustomLogic
                 CustomLogicComponentInstance instance = CreateComponentInstance(componentName, obj, component);
                 obj.RegisterComponentInstance(instance);
                 EvaluateMethod(instance, "Init");
+                instance.Inited = true;
                 if (photonView != null)
                     photonView.Init(obj.ScriptObject.Id, componentName == "Rigidbody");
                 else if (componentName == "Rigidbody" && IdToNetworkView.TryGetValue(instance.MapObject.Value.ScriptObject.Id, out var networkView))
@@ -465,14 +473,9 @@ namespace CustomLogic
             AddCallbacks(classInstance);
             if (classInstance.UsesCollider())
             {
-                HashSet<GameObject> children = new HashSet<GameObject>();
-                children.Add(obj.GameObject);
-                foreach (var collider in obj.GameObject.GetComponentsInChildren<Collider>())
-                {
-                    if (!children.Contains(collider.gameObject))
-                        children.Add(collider.gameObject);
-                }
-                foreach (var go in children)
+                HashSet<GameObject> colliders = new HashSet<GameObject>();
+                FindSubcolliders(obj.GameObject.transform, colliders);
+                foreach (var go in colliders)
                 {
                     var collisionHandler = go.GetComponent<CustomLogicCollisionHandler>();
                     if (collisionHandler == null)
@@ -481,6 +484,18 @@ namespace CustomLogic
                 }
             }
             return classInstance;
+        }
+
+        private void FindSubcolliders(Transform t, HashSet<GameObject> set)
+        {
+            if (t.GetComponent<Collider>() != null)
+                set.Add(t.gameObject);
+            foreach (Transform child in t)
+            {
+                if (MapLoader.GoToMapObject.ContainsKey(child.gameObject))
+                    continue;
+                FindSubcolliders(child, set);
+            }
         }
 
         public CustomLogicPhotonSync SetupNetworking(MapObject obj)
@@ -516,6 +531,13 @@ namespace CustomLogic
             {
                 RunAssignmentsClassInstance(classInstance);
                 EvaluateMethod(classInstance, "Init", parameterValues);
+                classInstance = new CustomLogicClassInstance(className);
+                if (init)
+                {
+                    RunAssignmentsClassInstance(classInstance);
+                    EvaluateMethod(classInstance, "Init", parameterValues);
+                    classInstance.Inited = true;
+                }
             }
             return classInstance;
         }
@@ -582,6 +604,7 @@ namespace CustomLogic
                         }
                         else
                             yield return new WaitForSeconds(value.UnboxToFloat());
+                        yield return null;
                     }
                 }
                 else if (statement is CustomLogicConditionalBlockAst)
@@ -594,7 +617,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                             conditionalState = ConditionalEvalState.PassedIf;
                         }
@@ -622,7 +645,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                         }
                         conditionalState = ConditionalEvalState.None;
@@ -638,7 +661,7 @@ namespace CustomLogic
                             var cwd = new CoroutineWithData(CustomLogicManager._instance, EvaluateBlockCoroutine(classInstance, localVariables, conditional.Statements));
                             yield return cwd.Coroutine;
                             yield return cwd.Result;
-                            if (cwd.Result is CustomLogicReturnExpressionAst)
+                            if (cwd.Result is CustomLogicReturnExpressionAst || cwd.Result is CustomLogicBreakExpressionAst || cwd.Result is CustomLogicContinueExpressionAst)
                                 yield break;
                             conditionalState = ConditionalEvalState.PassedElseIf;
                         }

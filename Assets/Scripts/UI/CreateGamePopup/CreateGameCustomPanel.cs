@@ -54,7 +54,7 @@ namespace UI
                 "Custom maps can be found in Documents/Aottg2/CustomMap. ", alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
                "To use a custom map, select the Custom map category under the General section.", alignment: TextAnchor.MiddleLeft);
-            var logics = BuiltinLevels.GetCustomGameModes();
+            var logics = BuiltinLevels.GetCustomModes();
             ElementFactory.CreateDefaultLabel(DoublePanelRight, style, UIManager.GetLocale(cat, sub, "CustomLogic"), FontStyle.Bold, alignment: TextAnchor.MiddleLeft);
             CreateHorizontalDivider(DoublePanelRight);
             CurrentLogicNames = logics;

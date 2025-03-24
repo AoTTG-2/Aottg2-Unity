@@ -342,7 +342,7 @@ namespace EZhex1991.EZSoftBone
 
         private List<Bone> m_Structures = new List<Bone>();
 
-        private void Awake()
+        private void Start()
         {
             InitStructures();
         }

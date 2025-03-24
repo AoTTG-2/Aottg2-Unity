@@ -14,10 +14,7 @@ using Cameras;
 using CustomLogic;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.Rendering;
 using System.Linq;
-using Photon.Pun.UtilityScripts;
-using JetBrains.Annotations;
 
 namespace UI
 {
@@ -417,6 +414,13 @@ namespace UI
             StylebarHandler.OnHit(score);
         }
 
+        public int GetStylebarRank()
+        {
+            if (StylebarHandler != null)
+                return StylebarHandler.GetRank();
+            return 0;
+        }
+
         public void SetLabel(string label, string message, float time)
         {
             SetLabelText(label, message);
@@ -654,7 +658,7 @@ namespace UI
                 loadout = " APG ";
             else if (loadout == HumanLoadout.AHSS)
                 loadout = " AHSS ";
-            else if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.Thunderspear)
                 loadout = " TS ";
             else
                 loadout = string.Empty;

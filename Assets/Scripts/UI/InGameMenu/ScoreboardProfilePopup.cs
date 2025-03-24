@@ -8,6 +8,7 @@ using Settings;
 using System.Collections;
 using GameManagers;
 using Photon.Realtime;
+using Anticheat;
 
 namespace UI
 {
@@ -39,13 +40,13 @@ namespace UI
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 25f, TextAnchor.MiddleCenter).transform;
             _items.Add(group.gameObject);
             ElementFactory.CreateRawImage(group, style, "Icons/Profile/" + UIManager.GetProfileIcon(_profile.ProfileIcon.Value), 256, 256);
-            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Name") + ": </b>" + _profile.Name.Value.HexColor(),
+            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Name") + ": </b>" + _profile.Name.Value.FilterBadWords().HexColor(),
                 alignment: TextAnchor.MiddleLeft));
-            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Guild") + ": </b>" + _profile.Guild.Value.HexColor(),
+            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Guild") + ": </b>" + _profile.Guild.Value.FilterBadWords().HexColor(),
                 alignment: TextAnchor.MiddleLeft));
-            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Social") + ": </b>" + _profile.Social.Value.HexColor(),
+            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("Social") + ": </b>" + _profile.Social.Value.FilterBadWords().HexColor(),
                 alignment: TextAnchor.MiddleLeft));
-            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("About") + ": </b>" + _profile.About.Value.HexColor(),
+            _items.Add(ElementFactory.CreateDefaultLabel(SinglePanel, style, "<b>" + UIManager.GetLocaleCommon("About") + ": </b>" + _profile.About.Value.FilterBadWords().HexColor(),
                 alignment: TextAnchor.MiddleLeft));
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using Utility;
 
 namespace CustomSkins
@@ -98,19 +99,40 @@ namespace CustomSkins
             while (!CanStartTextureDownload())
                 yield return blankTexture;
             OnStartTextureDownload();
-            using (WWW www = new WWW(url))
+            if (mipmap)
             {
-                yield return www;
-                if (www.error != null || www.bytesDownloaded > maxSize)
+                using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(url))
                 {
+                    yield return uwr.SendWebRequest();
+                    if (uwr.result != UnityWebRequest.Result.Success || uwr.downloadedBytes > (ulong)maxSize)
+                    {
+                        OnStopTextureDownload();
+                        yield return blankTexture;
+                        yield break;
+                    }
                     OnStopTextureDownload();
-                    yield return blankTexture;
-                    yield break;
+                    var texture = DownloadHandlerTexture.GetContent(uwr);
+                    if (texture != null)
+                        yield return texture;
+                    else
+                        yield return blankTexture;
                 }
-                OnStopTextureDownload();
-                CoroutineWithData cwd = new CoroutineWithData(obj, CreateTextureFromData(obj, www, mipmap, url));
-                yield return cwd.Coroutine;
-                yield return cwd.Result;
+            }
+            else
+            {
+                using (UnityWebRequest uwr = UnityWebRequest.Get(url))
+                {
+                    yield return uwr.SendWebRequest();
+                    if (uwr.result != UnityWebRequest.Result.Success || uwr.downloadedBytes > (ulong)maxSize)
+                    {
+                        OnStopTextureDownload();
+                        yield return blankTexture;
+                        yield break;
+                    }
+                    OnStopTextureDownload();
+                    Texture2D texture = DecodeTexture(uwr, mipmap);
+                    yield return texture;
+                }
             }
         }
 
@@ -150,19 +172,22 @@ namespace CustomSkins
             return new Texture2D(4, 4, TextureFormat.RGBA32, mipmap);
         }
 
-        private static FREE_IMAGE_FORMAT GetTextureFormat(string url)
+        private static Texture2D DecodeTexture(UnityWebRequest uwr, bool mipmap)
         {
-            if (url.EndsWith(".png"))
-                return FREE_IMAGE_FORMAT.FIF_PNG;
-            return FREE_IMAGE_FORMAT.FIF_JPEG;
-        }
-
-        private static IEnumerator CreateTextureFromData(MonoBehaviour obj, WWW www, bool mipmap, string url)
-        {
-            var importer = new TextureImporter();
-            yield return obj.StartCoroutine(importer.ImportTexture(www.bytes, GetTextureFormat(url), mipmap));
-            var texture = importer.texture;
-            yield return texture;
+            Texture2D texture = CreateBlankTexture(mipmap);
+            try
+            {
+                texture.LoadImage(uwr.downloadHandler.data);
+            }
+            catch
+            {
+                if (mipmap)
+                {
+                    texture = CreateBlankTexture(false);
+                    texture.LoadImage(uwr.downloadHandler.data);
+                }
+            }
+            return texture;
         }
     }
 }

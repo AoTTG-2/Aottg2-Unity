@@ -190,6 +190,12 @@ namespace CustomLogic
         [CLProperty("Returns a list of all popups")]
         public static CustomLogicListBuiltin Popups
         {
+            // if (name == "IsPopupActive")
+            // {
+            //     string popupName = (string)parameters[0];
+            //     return menu.GetCustomPopup(popupName).IsActive;
+            // }
+            // if (name == "GetPopups")
             get
             {
                 var result = new CustomLogicListBuiltin();

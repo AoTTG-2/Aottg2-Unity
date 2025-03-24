@@ -26,7 +26,7 @@ namespace CustomLogic
             else if (character is BaseShifter)
                 builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
             foreach (var classInstance in _classInstances)
-                classInstance.OnGetHit(builtin, name, damage, type, position);
+                classInstance.OnGetHit(builtin, name, damage, type, new CustomLogicVector3Builtin(position));
         }
 
         public void GetHooked(Human human, Vector3 position, bool left)

@@ -2,10 +2,10 @@
 using UnityEngine.UI;
 using UnityEngine;
 using Settings;
-using UnityEngine.Windows.Speech;
 using System.Collections.Generic;
 using Cameras;
 using ApplicationManagers;
+using Characters;
 
 namespace UI
 {
@@ -20,6 +20,7 @@ namespace UI
         private float _height = 2000f;
         private Dictionary<Transform, Transform> _icons = new Dictionary<Transform, Transform>();
         private RawImage _background;
+        private Text _label;
         private Texture2D _texture;
         private const float SyncDelay = 1f;
         private float _syncTimeLeft = 1f;
@@ -33,7 +34,8 @@ namespace UI
             _background = ElementFactory.CreateRawImage(transform, new ElementStyle(), "", MinimapCamera.MapSize, MinimapCamera.MapSize).GetComponent<RawImage>();
             _background.GetComponent<LayoutElement>().ignoreLayout = true;
             _background.GetComponent<RectTransform>().sizeDelta = new Vector2(MinimapCamera.MapSize, MinimapCamera.MapSize);
-
+            _label = ElementFactory.CreateWhiteLabel(transform, new ElementStyle(), "").GetComponent<Text>();
+            ElementFactory.SetAnchor(_label.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-15f, -75f));
         }
 
         public override void Show()
@@ -45,6 +47,11 @@ namespace UI
 
         private void Update()
         {
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            var position = camera.Cache.Transform.position;
+            if (camera._follow != null)
+                position = camera._follow.Cache.Transform.position;
+            _label.text = position.x.ToString("F0") + ", " + position.y.ToString("F0") + ", " + position.z.ToString("F0");
             _syncTimeLeft -= Time.deltaTime;
             if (_syncTimeLeft <= 0f)
             {
@@ -60,7 +67,13 @@ namespace UI
             foreach (var transform in _icons.Keys)
             {
                 var icon = _icons[transform];
-                if (transform == null)
+                bool dead = false;
+                if (transform != null)
+                {
+                    var character = transform.GetComponent<BaseCharacter>();
+                    dead = character != null && character.Dead;
+                }
+                if (transform == null || dead)
                 {
                     _iconsToRemove.Add(transform);
                     Destroy(icon.gameObject);
@@ -117,6 +130,7 @@ namespace UI
                 var go = Instantiate(icons[transform].gameObject);
                 go.transform.SetParent(_background.transform);
                 go.transform.localPosition = Vector3.zero;
+                go.transform.localScale = Vector3.one;
                 go.transform.rotation = Quaternion.identity;
                 go.SetActive(false);
                 _icons.Add(transform, go.transform);

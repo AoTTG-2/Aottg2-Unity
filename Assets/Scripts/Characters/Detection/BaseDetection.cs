@@ -48,6 +48,14 @@ namespace Characters
             return Owner == null || Owner.Dead;
         }
 
+        public void OnTeamChanged()
+        {
+            foreach (var character in _inGameManager.GetAllCharactersEnumerable())
+                OnCharacterSpawned(character);
+            foreach (var detection in _inGameManager.Detections)
+                detection.OnCharacterSpawned(Owner);
+        }
+
         public void OnCharacterSpawned(BaseCharacter character)
         {
             if (character == Owner || character == null || character.Dead)
@@ -101,6 +109,8 @@ namespace Characters
 
         private void Recalculate(HashSet<BaseCharacter> characters, Vector3 myPosition, float mySpeed)
         {
+            if (ClosestEnemy != null && !IsValidTeam(ClosestEnemy))
+                ClosestEnemy = null;
             foreach (var character in characters)
             {
                 if (character == null || character.Dead || !IsValidTeam(character))

@@ -93,7 +93,7 @@ namespace UI
         private void CreateTip()
         {
             ElementStyle tipStyle = new ElementStyle();
-            GameObject tipObject = ElementFactory.CreateDefaultLabel(transform, tipStyle, "Hold LMB or Space to fast forward, and RMB to go backwards");
+            GameObject tipObject = ElementFactory.CreateWhiteLabel(transform, tipStyle, "Hold LMB or Space to fast forward, and RMB to go backwards");
             _tipText = tipObject.GetComponent<Text>();
             _tipText.fontSize = 20;
             _tipText.alignment = TextAnchor.MiddleCenter;
@@ -157,7 +157,7 @@ namespace UI
             RectTransform bgRect = bgObject.GetComponent<RectTransform>();
 
             // Create text
-            GameObject textObj = ElementFactory.CreateDefaultLabel(container.transform, new ElementStyle(), content);
+            GameObject textObj = ElementFactory.CreateWhiteLabel(container.transform, new ElementStyle(), content);
             Text textComponent = textObj.GetComponent<Text>();
             textComponent.font = _categoryFont;
             textComponent.fontSize = 32;
@@ -226,7 +226,7 @@ namespace UI
                 bgImage.color = GetNextCategoryColor();
                 RectTransform bgRect = bgObject.GetComponent<RectTransform>();
 
-                GameObject textObj = ElementFactory.CreateDefaultLabel(container.transform, style, content);
+                GameObject textObj = ElementFactory.CreateWhiteLabel(container.transform, style, content);
                 Text textComponent = textObj.GetComponent<Text>();
                 textComponent.font = _categoryFont;
                 textComponent.fontSize = 32;
@@ -267,7 +267,7 @@ namespace UI
                 if (lines.Length <= 8)
                 {
                     // Create single-column text
-                    GameObject textObj = ElementFactory.CreateDefaultLabel(_contentTransform, style, content);
+                    GameObject textObj = ElementFactory.CreateWhiteLabel(_contentTransform, style, content);
                     Text textComponent = textObj.GetComponent<Text>();
                     textComponent.fontSize = 18;
                     textComponent.alignment = TextAnchor.UpperCenter;
@@ -330,7 +330,7 @@ namespace UI
 
         private void CreateColumnText(Transform parent, string content, ElementStyle style, TextAnchor alignment)
         {
-            GameObject textObj = ElementFactory.CreateDefaultLabel(parent, style, content);
+            GameObject textObj = ElementFactory.CreateWhiteLabel(parent, style, content);
             Text textComponent = textObj.GetComponent<Text>();
             textComponent.fontSize = 18;
             textComponent.alignment = alignment;

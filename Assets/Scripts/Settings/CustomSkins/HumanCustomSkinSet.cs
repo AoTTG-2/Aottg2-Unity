@@ -20,6 +20,9 @@
         public StringSetting HookL = new StringSetting(string.Empty, maxLength: 200);
         public FloatSetting HookLTiling = new FloatSetting(1f);
         public StringSetting HookR = new StringSetting(string.Empty, maxLength: 200);
-        public FloatSetting HookRTiling = new FloatSetting(1);
+        public FloatSetting HookRTiling = new FloatSetting(1f);
+        public StringSetting Hat = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting Head = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting Back = new StringSetting(string.Empty, maxLength: 200);
     }
 }

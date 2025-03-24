@@ -36,6 +36,7 @@ namespace UI
         private HashSet<Tuple<int, int>> _finishedTiles = new HashSet<Tuple<int, int>>();
         private Tuple<int, int> _currentTile = new Tuple<int, int>(0, 0);
         private Dictionary<Transform, Transform> _icons = new Dictionary<Transform, Transform>();
+        private Dictionary<Transform, BaseCharacter> _characters = new Dictionary<Transform, BaseCharacter>();
         private List<Transform> _iconsToRemove = new List<Transform>();
         private Vector3 _currentTileCenter = new Vector3();
         private bool _needUpdateTiles = true;
@@ -105,6 +106,9 @@ namespace UI
             image.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, texture, true);
             image.color = color;
             Instance._icons.Add(transform, go.transform);
+            var character = transform.gameObject.GetComponent<BaseCharacter>();
+            if (character != null)
+                Instance._characters.Add(transform, character);
             go.transform.SetParent(Instance._maskTransform);
             go.transform.localPosition = Vector3.zero;
             go.transform.rotation = Quaternion.identity;
@@ -113,6 +117,7 @@ namespace UI
 
         private void Update()
         {
+            RemoveOldIcons();
             if (_minimapPanel.activeSelf)
             {
                 var camera = (InGameCamera)SceneLoader.CurrentCamera;
@@ -164,18 +169,39 @@ namespace UI
                 _positionLabel.text = "";
         }
 
-        private void UpdateIcons(Vector3 position, float y)
+        private void RemoveOldIcons()
         {
             _iconsToRemove.Clear();
             foreach (var transform in _icons.Keys)
             {
-                var icon = _icons[transform];
-                if (transform == null)
+                bool dead = false;
+                if (_characters.ContainsKey(transform))
                 {
+                    var character = _characters[transform];
+                    if (character == null || character.Dead)
+                        dead = true;
+                }
+                if (transform == null || dead)
+                {
+                    var icon = _icons[transform];
                     _iconsToRemove.Add(transform);
                     Destroy(icon.gameObject);
                 }
-                else
+            }
+            foreach (var transfrom in _iconsToRemove)
+            {
+                _icons.Remove(transfrom);
+                if (_characters.ContainsKey(transform))
+                    _characters.Remove(transform);
+            }
+        }
+
+        private void UpdateIcons(Vector3 position, float y)
+        {
+            foreach (var transform in _icons.Keys)
+            {
+                var icon = _icons[transform];
+                if (transform != null)
                 {
                     var relativePosition = new Vector3(transform.position.x - position.x, transform.position.z - position.z, 0f);
                     relativePosition *= (MinimapCamera.MinimapSize / _height);
@@ -192,10 +218,6 @@ namespace UI
                         icon.rotation = Quaternion.identity;
                     }
                 }
-            }
-            foreach (var transfrom in _iconsToRemove)
-            {
-                _icons.Remove(transfrom);
             }
         }
 
