@@ -1,10 +1,10 @@
 {
-	"EyeCount": 33,
-	"FaceCount": 13,
-	"GlassCount": 9,
-	"BackCount": 6,
+	"EyeCount": 48,
+	"FaceCount": 14,
+	"GlassCount": 10,
+	"BackCount": 8,
 	"HeadCount": 8,
-	"HatCount": 15,
+	"HatCount": 17,
 	"Costume": {
 		"Male": [
 			{
@@ -288,5 +288,9 @@
 				"Texture": "hair_historia"
 			}
 		]
-	}
+	},
+	"UniqueItem": [
+		"Glass9",
+		"Face13"
+	]
 }
