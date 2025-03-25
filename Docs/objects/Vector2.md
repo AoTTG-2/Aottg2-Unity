@@ -1,5 +1,10 @@
 # Vector2
 Inherits from object
+## Initialization
+```csharp
+# Vector2(Object[])
+example = Vector2(Object[])
+```
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -20,52 +25,73 @@ Inherits from object
 |NegativeInfinity|[Vector2](../objects/Vector2.md)|False|Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).|
 |PositiveInfinity|[Vector2](../objects/Vector2.md)|False|Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).|
 ## Methods
-##### void Set(float x, float y)
-- **Description:** Set x and y components of an existing Vector2.
-##### void Normalize()
-- **Description:** Makes this vector have a magnitude of 1.
-##### Object \_\_Copy\_\_()
-- **Description:** Override to deepcopy object on assignment, used for structs. Ex: copy = original is equivalent to copy = original.\_\_Copy\_\_()
-##### Object \_\_Add\_\_(Object self, Object other)
-- **Description:** Override to implement addition, used for + operator. Ex: a + b is equivalent to a.\_\_Add\_\_(a, b)
-##### Object \_\_Sub\_\_(Object self, Object other)
-- **Description:** Override to implement subtraction, used for - operator. Ex: a - b is equivalent to a.\_\_Sub\_\_(a, b)
-##### Object \_\_Mul\_\_(Object self, Object other)
-- **Description:** Override to implement multiplication, used for * operator. Ex: a * b is equivalent to a.\_\_Mul\_\_(a, b)
-##### Object \_\_Div\_\_(Object self, Object other)
-- **Description:** Override to implement division, used for / operator. Ex: a / b is equivalent to a.\_\_Div\_\_(a, b)
-##### bool \_\_Eq\_\_(Object self, Object other)
-- **Description:** Override to implement equality comparison, used for == and != operators. Ex: a == b is equivalent to a.\_\_Eq\_\_(a, b)
-##### int \_\_Hash\_\_()
-- **Description:** Override to implement hashing, used for GetHashCode - Used for Dictionaries/Sets. Ex: hash = obj.GetHashCode() is equivalent to hash = obj.\_\_Hash\_\_()
+#### function <mark style="color:yellow;">Set</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">void</mark>
+> Set x and y components of an existing Vector2.
+
+#### function <mark style="color:yellow;">Normalize</mark>() -> <mark style="color:blue;">void</mark>
+> Makes this vector have a magnitude of 1.
+
+#### function <mark style="color:yellow;">\_\_Copy\_\_</mark>() -> <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Add\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Sub\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Mul\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Div\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Eq\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">bool</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
+#### function <mark style="color:yellow;">\_\_Hash\_\_</mark>() -> <mark style="color:blue;">int</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
 
 ---
 
 ## Static Methods
-##### float Angle([Vector2](../objects/Vector2.md) from, [Vector2](../objects/Vector2.md) to)
-- **Description:** Gets the unsigned angle in degrees between from and to.
-##### [Vector2](../objects/Vector2.md) ClampMagnitude([Vector2](../objects/Vector2.md) vector, float maxLength)
-- **Description:** Returns a copy of vector with its magnitude clamped to maxLength.
-##### float Distance([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b)
-- **Description:** Returns the distance between a and b.
-##### float Dot([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b)
-- **Description:** Dot Product of two vectors.
-##### [Vector2](../objects/Vector2.md) Lerp([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b, float t)
-- **Description:** Linearly interpolates between vectors a and b by t.
-##### [Vector2](../objects/Vector2.md) LerpUnclamped([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b, float t)
-- **Description:** Linearly interpolates between vectors a and b by t.
-##### [Vector2](../objects/Vector2.md) Max([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b)
-- **Description:** Returns a vector that is made from the largest components of two vectors.
-##### [Vector2](../objects/Vector2.md) Min([Vector2](../objects/Vector2.md) a, [Vector2](../objects/Vector2.md) b)
-- **Description:** Returns a vector that is made from the smallest components of two vectors.
-##### [Vector2](../objects/Vector2.md) MoveTowards([Vector2](../objects/Vector2.md) current, [Vector2](../objects/Vector2.md) target, float maxDistanceDelta)
-- **Description:** Moves a point current towards target.
-##### [Vector2](../objects/Vector2.md) Reflect([Vector2](../objects/Vector2.md) inDirection, [Vector2](../objects/Vector2.md) inNormal)
-- **Description:** Reflects a vector off the vector defined by a normal.
-##### float SignedAngle([Vector2](../objects/Vector2.md) from, [Vector2](../objects/Vector2.md) to)
-- **Description:** Gets the signed angle in degrees between from and to.
-##### [Vector2](../objects/Vector2.md) SmoothDamp([Vector2](../objects/Vector2.md) current, [Vector2](../objects/Vector2.md) target, [Vector2](../objects/Vector2.md) currentVelocity, float smoothTime, float maxSpeed)
-- **Description:** 
+#### function <mark style="color:yellow;">Angle</mark>(from: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, to: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">float</mark>
+> Gets the unsigned angle in degrees between from and to.
+
+#### function <mark style="color:yellow;">ClampMagnitude</mark>(vector: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, maxLength: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Returns a copy of vector with its magnitude clamped to maxLength.
+
+#### function <mark style="color:yellow;">Distance</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">float</mark>
+> Returns the distance between a and b.
+
+#### function <mark style="color:yellow;">Dot</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">float</mark>
+> Dot Product of two vectors.
+
+#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, t: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Linearly interpolates between vectors a and b by t.
+
+#### function <mark style="color:yellow;">LerpUnclamped</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, t: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Linearly interpolates between vectors a and b by t.
+
+#### function <mark style="color:yellow;">Max</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Returns a vector that is made from the largest components of two vectors.
+
+#### function <mark style="color:yellow;">Min</mark>(a: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, b: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Returns a vector that is made from the smallest components of two vectors.
+
+#### function <mark style="color:yellow;">MoveTowards</mark>(current: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, target: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, maxDistanceDelta: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Moves a point current towards target.
+
+#### function <mark style="color:yellow;">Reflect</mark>(inDirection: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, inNormal: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> Reflects a vector off the vector defined by a normal.
+
+#### function <mark style="color:yellow;">SignedAngle</mark>(from: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, to: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>) -> <mark style="color:blue;">float</mark>
+> Gets the signed angle in degrees between from and to.
+
+#### function <mark style="color:yellow;">SmoothDamp</mark>(current: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, target: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, currentVelocity: <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>, smoothTime: <mark style="color:blue;">float</mark>, maxSpeed: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Vector2](../objects/Vector2.md)</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+
 
 ---
 

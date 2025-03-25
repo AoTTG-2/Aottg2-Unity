@@ -1,28 +1,39 @@
 # Input
 Inherits from object
 ## Static Methods
-##### [String](../static/String.md) GetKeyName([String](../static/String.md) key)
-- **Description:** Gets the key name the player assigned to the key setting
-##### bool GetKeyHold([String](../static/String.md) key)
-- **Description:** Returns true if the key is being held down
-##### bool GetKeyDown([String](../static/String.md) key)
-- **Description:** Returns true if the key was pressed down this frame
-##### bool GetKeyUp([String](../static/String.md) key)
-- **Description:** Returns true if the key was released this frame
-##### [Vector3](../objects/Vector3.md) GetMouseAim()
-- **Description:** Returns the position the player is aiming at
-##### [Vector3](../objects/Vector3.md) GetCursorAimDirection()
-- **Description:** Returns the ray the player is aiming at
-##### [Vector3](../objects/Vector3.md) GetMouseSpeed()
-- **Description:** Returns the speed of the mouse
-##### [Vector3](../objects/Vector3.md) GetMousePosition()
-- **Description:** Returns the position of the mouse
-##### [Vector3](../objects/Vector3.md) GetScreenDimensions()
-- **Description:** Returns the dimensions of the screen
-##### void SetKeyDefaultEnabled([String](../static/String.md) key, bool enabled)
-- **Description:** Sets whether the key is enabled by default
-##### void SetKeyHold([String](../static/String.md) key, bool enabled)
-- **Description:** Sets whether the key is being held down
+#### function <mark style="color:yellow;">GetKeyName</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Gets the key name the player assigned to the key setting
+
+#### function <mark style="color:yellow;">GetKeyHold</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Returns true if the key is being held down
+
+#### function <mark style="color:yellow;">GetKeyDown</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Returns true if the key was pressed down this frame
+
+#### function <mark style="color:yellow;">GetKeyUp</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Returns true if the key was released this frame
+
+#### function <mark style="color:yellow;">GetMouseAim</mark>() -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Returns the position the player is aiming at
+
+#### function <mark style="color:yellow;">GetCursorAimDirection</mark>() -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Returns the ray the player is aiming at
+
+#### function <mark style="color:yellow;">GetMouseSpeed</mark>() -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Returns the speed of the mouse
+
+#### function <mark style="color:yellow;">GetMousePosition</mark>() -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Returns the position of the mouse
+
+#### function <mark style="color:yellow;">GetScreenDimensions</mark>() -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Returns the dimensions of the screen
+
+#### function <mark style="color:yellow;">SetKeyDefaultEnabled</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>, enabled: <mark style="color:blue;">bool</mark>) -> <mark style="color:blue;">void</mark>
+> Sets whether the key is enabled by default
+
+#### function <mark style="color:yellow;">SetKeyHold</mark>(key: <mark style="color:blue;">[String](../static/String.md)</mark>, enabled: <mark style="color:blue;">bool</mark>) -> <mark style="color:blue;">void</mark>
+> Sets whether the key is being held down
+
 
 ---
 

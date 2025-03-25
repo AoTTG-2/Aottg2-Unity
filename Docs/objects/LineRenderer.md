@@ -1,5 +1,10 @@
 # LineRenderer
 Inherits from object
+## Initialization
+```csharp
+# LineRenderer(Object[])
+example = LineRenderer(Object[])
+```
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -22,16 +27,19 @@ Inherits from object
 |WidthMultiplier|float|False|The width multiplier of the line renderer|
 |ColorGradientMode|[String](../static/String.md)|False|The color gradient mode of the line renderer|
 ## Methods
-##### [Vector3](../objects/Vector3.md) GetPosition(int index)
-- **Description:** Get the position of a point in the line renderer
-##### void SetPosition(int index, [Vector3](../objects/Vector3.md) position)
-- **Description:** Set the position of a point in the line renderer
+#### function <mark style="color:yellow;">GetPosition</mark>(index: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> Get the position of a point in the line renderer
+
+#### function <mark style="color:yellow;">SetPosition</mark>(index: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Set the position of a point in the line renderer
+
 
 ---
 
 ## Static Methods
-##### [LineRenderer](../objects/LineRenderer.md) CreateLineRenderer()
-- **Description:** [Obselete] Create a new LineRenderer
+#### function <mark style="color:yellow;">CreateLineRenderer</mark>() -> <mark style="color:blue;">[LineRenderer](../objects/LineRenderer.md)</mark>
+> [Obselete] Create a new LineRenderer
+
 
 ---
 

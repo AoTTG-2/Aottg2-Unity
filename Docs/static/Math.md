@@ -10,82 +10,120 @@ Inherits from object
 |Deg2RadConstant|float|False|The value of Deg2Rad constant|
 |Epsilon|float|False|The value of Epsilon|
 ## Methods
-##### Object Clamp(Object value, Object min, Object max)
-- **Description:** Clamp a value between a minimum and maximum value
-##### Object Max(Object a, Object b)
-- **Description:** Get the maximum of two values
-##### Object Min(Object a, Object b)
-- **Description:** Get the minimum of two values
-##### Object Pow(Object a, Object b)
-- **Description:** Raise a value to the power of another value
-##### Object Abs(Object value)
-- **Description:** Get the absolute value of a number
-##### Object Sqrt(Object value)
-- **Description:** Get the square root of a number
-##### Object Mod(Object a, Object b)
-- **Description:** Get the remainder of a division operation
-##### Object Sin(Object angle)
-- **Description:** Get the sine of an angle in degrees
-##### Object Cos(Object angle)
-- **Description:** Get the cosine of an angle in degrees
-##### Object Tan(Object angle)
-- **Description:** Get the tangent of an angle in degrees
-##### Object Asin(Object value)
-- **Description:** Get the arcsine of a value in degrees
-##### Object Acos(Object value)
-- **Description:** Get the arccosine of a value in degrees
-##### Object Atan(Object value)
-- **Description:** Get the arctangent of a value in degrees
-##### Object Atan2(Object a, Object b)
-- **Description:** Get the arctangent of a value in degrees
-##### Object Ceil(Object value)
-- **Description:** Get the smallest integer greater than or equal to a value
-##### Object Floor(Object value)
-- **Description:** Get the largest integer less than or equal to a value
-##### Object Round(Object value)
-- **Description:** Round a value to the nearest integer
-##### Object Deg2Rad(Object angle)
-- **Description:** Convert an angle from degrees to radians
-##### Object Rad2Deg(Object angle)
-- **Description:** Convert an angle from radians to degrees
-##### Object Lerp(Object a, Object b, Object t)
-- **Description:** Linearly interpolate between two values
-##### Object LerpUnclamped(Object a, Object b, Object t)
-- **Description:** Linearly interpolate between two values without clamping
-##### Object Sign(Object value)
-- **Description:** Get the sign of a value
-##### Object InverseLerp(Object a, Object b, Object value)
-- **Description:** Get the inverse lerp of two values
-##### Object LerpAngle(Object a, Object b, Object t)
-- **Description:** Linearly interpolate between two angles
-##### Object Log(Object value)
-- **Description:** Get the natural logarithm of a value
-##### Object MoveTowards(Object current, Object target, Object maxDelta)
-- **Description:** Move a value towards a target value
-##### Object MoveTowardsAngle(Object current, Object target, Object maxDelta)
-- **Description:** Move an angle towards a target angle
-##### Object PingPong(Object t, Object length)
-- **Description:** Get the ping pong value of a time value
-##### Object SmoothDamp(Object current, Object target, Object currentVelocity, Object smoothTime, Object maxSpeed, Object deltaTime)
-- **Description:** Smoothly damp a value towards a target value
-##### Object Exp(Object value)
-- **Description:** Get the exponential value of a number
-##### Object SmoothDampAngle(Object current, Object target, Object currentVelocity, Object smoothTime, Object maxSpeed, Object deltaTime)
-- **Description:** Smoothly damp an angle towards a target angle
-##### Object SmoothStep(Object a, Object b, Object t)
-- **Description:** Smoothly step between two values
-##### Object BitwiseAnd(Object a, Object b)
-- **Description:** Perform a bitwise AND operation
-##### Object BitwiseOr(Object a, Object b)
-- **Description:** Perform a bitwise OR operation
-##### Object BitwiseXor(Object a, Object b)
-- **Description:** Perform a bitwise XOR operation
-##### Object BitwiseNot(Object value)
-- **Description:** Perform a bitwise NOT operation
-##### Object BitwiseLeftShift(Object value, Object shift)
-- **Description:** Shift bits to the left
-##### Object BitwiseRightShift(Object value, Object shift)
-- **Description:** Shift bits to the right
+#### function <mark style="color:yellow;">Clamp</mark>(value: <mark style="color:blue;">Object</mark>, min: <mark style="color:blue;">Object</mark>, max: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Clamp a value between a minimum and maximum value
+
+#### function <mark style="color:yellow;">Max</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the maximum of two values
+
+#### function <mark style="color:yellow;">Min</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the minimum of two values
+
+#### function <mark style="color:yellow;">Pow</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Raise a value to the power of another value
+
+#### function <mark style="color:yellow;">Abs</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the absolute value of a number
+
+#### function <mark style="color:yellow;">Sqrt</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the square root of a number
+
+#### function <mark style="color:yellow;">Mod</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the remainder of a division operation
+
+#### function <mark style="color:yellow;">Sin</mark>(angle: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the sine of an angle in degrees
+
+#### function <mark style="color:yellow;">Cos</mark>(angle: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the cosine of an angle in degrees
+
+#### function <mark style="color:yellow;">Tan</mark>(angle: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the tangent of an angle in degrees
+
+#### function <mark style="color:yellow;">Asin</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the arcsine of a value in degrees
+
+#### function <mark style="color:yellow;">Acos</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the arccosine of a value in degrees
+
+#### function <mark style="color:yellow;">Atan</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the arctangent of a value in degrees
+
+#### function <mark style="color:yellow;">Atan2</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the arctangent of a value in degrees
+
+#### function <mark style="color:yellow;">Ceil</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the smallest integer greater than or equal to a value
+
+#### function <mark style="color:yellow;">Floor</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the largest integer less than or equal to a value
+
+#### function <mark style="color:yellow;">Round</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Round a value to the nearest integer
+
+#### function <mark style="color:yellow;">Deg2Rad</mark>(angle: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Convert an angle from degrees to radians
+
+#### function <mark style="color:yellow;">Rad2Deg</mark>(angle: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Convert an angle from radians to degrees
+
+#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>, t: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Linearly interpolate between two values
+
+#### function <mark style="color:yellow;">LerpUnclamped</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>, t: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Linearly interpolate between two values without clamping
+
+#### function <mark style="color:yellow;">Sign</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the sign of a value
+
+#### function <mark style="color:yellow;">InverseLerp</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>, value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the inverse lerp of two values
+
+#### function <mark style="color:yellow;">LerpAngle</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>, t: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Linearly interpolate between two angles
+
+#### function <mark style="color:yellow;">Log</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the natural logarithm of a value
+
+#### function <mark style="color:yellow;">MoveTowards</mark>(current: <mark style="color:blue;">Object</mark>, target: <mark style="color:blue;">Object</mark>, maxDelta: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Move a value towards a target value
+
+#### function <mark style="color:yellow;">MoveTowardsAngle</mark>(current: <mark style="color:blue;">Object</mark>, target: <mark style="color:blue;">Object</mark>, maxDelta: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Move an angle towards a target angle
+
+#### function <mark style="color:yellow;">PingPong</mark>(t: <mark style="color:blue;">Object</mark>, length: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the ping pong value of a time value
+
+#### function <mark style="color:yellow;">SmoothDamp</mark>(current: <mark style="color:blue;">Object</mark>, target: <mark style="color:blue;">Object</mark>, currentVelocity: <mark style="color:blue;">Object</mark>, smoothTime: <mark style="color:blue;">Object</mark>, maxSpeed: <mark style="color:blue;">Object</mark>, deltaTime: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Smoothly damp a value towards a target value
+
+#### function <mark style="color:yellow;">Exp</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Get the exponential value of a number
+
+#### function <mark style="color:yellow;">SmoothDampAngle</mark>(current: <mark style="color:blue;">Object</mark>, target: <mark style="color:blue;">Object</mark>, currentVelocity: <mark style="color:blue;">Object</mark>, smoothTime: <mark style="color:blue;">Object</mark>, maxSpeed: <mark style="color:blue;">Object</mark>, deltaTime: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Smoothly damp an angle towards a target angle
+
+#### function <mark style="color:yellow;">SmoothStep</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>, t: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Smoothly step between two values
+
+#### function <mark style="color:yellow;">BitwiseAnd</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Perform a bitwise AND operation
+
+#### function <mark style="color:yellow;">BitwiseOr</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Perform a bitwise OR operation
+
+#### function <mark style="color:yellow;">BitwiseXor</mark>(a: <mark style="color:blue;">Object</mark>, b: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Perform a bitwise XOR operation
+
+#### function <mark style="color:yellow;">BitwiseNot</mark>(value: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Perform a bitwise NOT operation
+
+#### function <mark style="color:yellow;">BitwiseLeftShift</mark>(value: <mark style="color:blue;">Object</mark>, shift: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Shift bits to the left
+
+#### function <mark style="color:yellow;">BitwiseRightShift</mark>(value: <mark style="color:blue;">Object</mark>, shift: <mark style="color:blue;">Object</mark>) -> <mark style="color:blue;">Object</mark>
+> Shift bits to the right
+
 
 ---
 

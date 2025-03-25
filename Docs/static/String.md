@@ -5,40 +5,57 @@ Inherits from object
 |---|---|---|---|
 |Newline|[String](../static/String.md)|False|Returns the newline character.|
 ## Static Methods
-##### [String](../static/String.md) FormatFloat(float val, int decimals)
-- **Description:** Formats a float to a string with the specified number of decimal places.
-##### [String](../static/String.md) FormatFromList([String](../static/String.md) str, [List](../objects/List.md) list)
-- **Description:** Equivalent to C# string.format(string, List<string>).
-##### [List](../objects/List.md) Split([String](../static/String.md) toSplit, Object splitter, bool removeEmptyEntries = False)
-- **Description:** Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
-##### [String](../static/String.md) Join([List](../objects/List.md) list, [String](../static/String.md) separator)
-- **Description:** Joins a list of strings into a single string with the specified separator.
-##### [String](../static/String.md) Substring([String](../static/String.md) str, int startIndex)
-- **Description:** Returns a substring starting from the specified index.
-##### [String](../static/String.md) SubstringWithLength([String](../static/String.md) str, int startIndex, int length)
-- **Description:** Returns a substring of the specified length starting from the specified start index.
-##### int Length([String](../static/String.md) str)
-- **Description:** Length of the string.
-##### [String](../static/String.md) Replace([String](../static/String.md) str, [String](../static/String.md) replace, [String](../static/String.md) with)
-- **Description:** Replaces all occurrences of a substring with another substring.
-##### bool Contains([String](../static/String.md) str, [String](../static/String.md) match)
-- **Description:** Checks if the string contains the specified substring.
-##### bool StartsWith([String](../static/String.md) str, [String](../static/String.md) match)
-- **Description:** Checks if the string starts with the specified substring.
-##### bool EndsWith([String](../static/String.md) str, [String](../static/String.md) match)
-- **Description:** Checks if the string ends with the specified substring.
-##### [String](../static/String.md) Trim([String](../static/String.md) str)
-- **Description:** Trims whitespace from the start and end of the string.
-##### [String](../static/String.md) Insert([String](../static/String.md) str, [String](../static/String.md) insert, int index)
-- **Description:** Inserts a substring at the specified index.
-##### [String](../static/String.md) Capitalize([String](../static/String.md) str)
-- **Description:** Capitalizes the first letter of the string.
-##### [String](../static/String.md) ToUpper([String](../static/String.md) str)
-- **Description:** Converts the string to uppercase.
-##### [String](../static/String.md) ToLower([String](../static/String.md) str)
-- **Description:** Converts the string to lowercase.
-##### int IndexOf([String](../static/String.md) str, [String](../static/String.md) substring)
-- **Description:** Returns the index of the given string.
+#### function <mark style="color:yellow;">FormatFloat</mark>(val: <mark style="color:blue;">float</mark>, decimals: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Formats a float to a string with the specified number of decimal places.
+
+#### function <mark style="color:yellow;">FormatFromList</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, list: <mark style="color:blue;">[List](../objects/List.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Equivalent to C# string.format(string, List<string>).
+
+#### function <mark style="color:yellow;">Split</mark>(toSplit: <mark style="color:blue;">[String](../static/String.md)</mark>, splitter: <mark style="color:blue;">Object</mark>, removeEmptyEntries: <mark style="color:blue;">bool</mark> = <mark style="color:blue;">False</mark>) -> <mark style="color:blue;">[List](../objects/List.md)</mark>
+> Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
+
+#### function <mark style="color:yellow;">Join</mark>(list: <mark style="color:blue;">[List](../objects/List.md)</mark>, separator: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Joins a list of strings into a single string with the specified separator.
+
+#### function <mark style="color:yellow;">Substring</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, startIndex: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Returns a substring starting from the specified index.
+
+#### function <mark style="color:yellow;">SubstringWithLength</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, startIndex: <mark style="color:blue;">int</mark>, length: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Returns a substring of the specified length starting from the specified start index.
+
+#### function <mark style="color:yellow;">Length</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">int</mark>
+> Length of the string.
+
+#### function <mark style="color:yellow;">Replace</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, replace: <mark style="color:blue;">[String](../static/String.md)</mark>, with: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Replaces all occurrences of a substring with another substring.
+
+#### function <mark style="color:yellow;">Contains</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, match: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Checks if the string contains the specified substring.
+
+#### function <mark style="color:yellow;">StartsWith</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, match: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Checks if the string starts with the specified substring.
+
+#### function <mark style="color:yellow;">EndsWith</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, match: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">bool</mark>
+> Checks if the string ends with the specified substring.
+
+#### function <mark style="color:yellow;">Trim</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Trims whitespace from the start and end of the string.
+
+#### function <mark style="color:yellow;">Insert</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, insert: <mark style="color:blue;">[String](../static/String.md)</mark>, index: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Inserts a substring at the specified index.
+
+#### function <mark style="color:yellow;">Capitalize</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Capitalizes the first letter of the string.
+
+#### function <mark style="color:yellow;">ToUpper</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Converts the string to uppercase.
+
+#### function <mark style="color:yellow;">ToLower</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Converts the string to lowercase.
+
+#### function <mark style="color:yellow;">IndexOf</mark>(str: <mark style="color:blue;">[String](../static/String.md)</mark>, substring: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">int</mark>
+> Returns the index of the given string.
+
 
 ---
 

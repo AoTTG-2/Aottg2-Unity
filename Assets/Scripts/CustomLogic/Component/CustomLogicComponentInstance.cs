@@ -71,7 +71,7 @@ namespace CustomLogic
         }
 
         [CLCallbackAttribute]
-        public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, Vector3 position)
+        public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, CustomLogicVector3Builtin position)
         {
             if (!Enabled)
                 return;

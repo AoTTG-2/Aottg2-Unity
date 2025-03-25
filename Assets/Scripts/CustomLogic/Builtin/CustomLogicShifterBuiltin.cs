@@ -203,40 +203,5 @@ namespace CustomLogic
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.Cripple(time);
         }
-            // else if (name == "FocusRange")
-            // {
-            //     if (Shifter.AI)
-            //         Shifter.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
-            // }
-            // else if (name == "FocusTime")
-            // {
-            //     if (Shifter.AI)
-            //         Shifter.GetComponent<BaseTitanAIController>().FocusTime = value.UnboxToFloat();
-            // }
-            // else if (name == "FarAttackCooldown")
-            // {
-            //     if (Shifter.AI)
-            //         Shifter.GetComponent<BaseTitanAIController>().FarAttackCooldown = value.UnboxToFloat();
-            // }
-            // else if (name == "AttackWait")
-            // {
-            //     if (Shifter.AI)
-            //         Shifter.GetComponent<BaseTitanAIController>().AttackWait = value.UnboxToFloat();
-            // }
-            // else if (name == "AttackSpeedMultiplier")
-            // {
-            //     Shifter.AttackSpeedMultiplier = value.UnboxToFloat();
-            // }
-            // else if (name == "DeathAnimLength")
-            // {
-            //     Shifter.DeathAnimationLength = value.UnboxToFloat();
-            // }
-            // else if (name == "UsePathfinding")
-            // {
-            //     if (Shifter.AI)
-            //         Shifter.GetComponent<BaseTitanAIController>()._usePathfinding = (bool)value;
-            // }
-            // else
-            //     base.SetField(name, value);
     }
 }

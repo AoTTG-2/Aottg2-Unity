@@ -11,12 +11,24 @@ namespace CustomLogic
     {
         public Vector3 Value;
 
+        /// <summary>
+        /// Default constructor. Initializes the Vector3 to (0, 0, 0).
+        /// </summary>
+        /// <code>
+        /// myVector3 = Vector3();
+        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin()
         {
             Value = new Vector3();
         }
 
+        /// <summary>
+        /// Default constructor. Initializes the Vector3 to (xyz, xyz, xyz).
+        /// </summary>
+        /// <code>
+        /// myVector3 = Vector3(10); # -> Vector3(10, 10, 10)
+        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin(float xyz)
         {
@@ -150,10 +162,6 @@ namespace CustomLogic
         /// <inheritdoc cref="Vector3.OrthoNormalize(ref Vector3, ref Vector3)"/>
         [CLMethod]
         public static void OrthoNormalize(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => Vector3.OrthoNormalize(ref a.Value, ref b.Value);
-
-        // /// <inheritdoc cref="Vector3.OrthoNormalize(ref Vector3, ref Vector3, ref Vector3)"/>
-        // [CLMethod]
-        // public static void OrthoNormalize(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, CustomLogicVector3Builtin c) => Vector3.OrthoNormalize(ref a.Value, ref b.Value, ref c.Value);
 
         /// <inheritdoc cref="Vector3.Project"/>
         [CLMethod]

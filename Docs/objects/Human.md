@@ -57,56 +57,81 @@ Inherits from [Character](../objects/Character.md)
 |CurrentAnimation|[String](../static/String.md)|False|Character's current playing animation.|
 |Grounded|bool|False|Character's grounded status.|
 ## Methods
-##### bool Refill()
-- **Description:** Refills the gas of the human
-##### void RefillImmediate()
-- **Description:** Refills the gas of the human immediately
-##### void ClearHooks()
-- **Description:** Clears all hooks
-##### void ClearLeftHook()
-- **Description:** Clears the left hook
-##### void ClearRightHook()
-- **Description:** Clears the right hook
-##### void MountMapObject([MapObject](../objects/MapObject.md) mapObject, [Vector3](../objects/Vector3.md) positionOffset, [Vector3](../objects/Vector3.md) rotationOffset)
-- **Description:** Mounts the human on a map object
-##### void MountTransform([Transform](../objects/Transform.md) transform, [Vector3](../objects/Vector3.md) positionOffset, [Vector3](../objects/Vector3.md) rotationOffset)
-- **Description:** Mounts the human on a transform
-##### void Unmount()
-- **Description:** Unmounts the human
-##### void SetSpecial([String](../static/String.md) special)
-- **Description:** Sets the special of the human
-##### void ActivateSpecial()
-- **Description:** Activates the special of the human
-##### void SetWeapon([String](../static/String.md) weapon)
-- **Description:** Sets the weapon of the human
-##### void DisablePerks()
-- **Description:** Disables all perks of the human
-##### void GetKilled([String](../static/String.md) killer)
-- **Description:** Kills the character. Callable by non-owners.
-##### void GetDamaged([String](../static/String.md) killer, int damage)
-- **Description:** Damages the character and kills it if its health reaches 0. Callable by non-owners.
-##### void Emote([String](../static/String.md) emote)
-- **Description:** Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
-##### void PlayAnimation([String](../static/String.md) animation, float fade = 0.1)
-- **Description:** Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
-##### void ForceAnimation([String](../static/String.md) animation, float fade = 0.1)
-- **Description:** Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
-##### float GetAnimationLength([String](../static/String.md) animation)
-- **Description:** Gets the length of animation.
-##### void PlaySound([String](../static/String.md) sound)
-- **Description:** Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
-##### void StopSound([String](../static/String.md) sound)
-- **Description:** Stops the sound.
-##### void LookAt([Vector3](../objects/Vector3.md) position)
-- **Description:** Rotates the character such that it is looking towards a world position.
-##### void AddForce([Vector3](../objects/Vector3.md) force, [String](../static/String.md) mode = Acceleration)
-- **Description:** Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
-##### void Reveal(float delay)
-- **Description:** Reveaal the titan for a set number of seconds.
-##### void AddOutline([Color](../objects/Color.md) color = null, [String](../static/String.md) mode = OutlineAll)
-- **Description:** Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
-##### void RemoveOutline()
-- **Description:** Removes the outline effect from the character.
+#### function <mark style="color:yellow;">Refill</mark>() -> <mark style="color:blue;">bool</mark>
+> Refills the gas of the human
+
+#### function <mark style="color:yellow;">RefillImmediate</mark>() -> <mark style="color:blue;">void</mark>
+> Refills the gas of the human immediately
+
+#### function <mark style="color:yellow;">ClearHooks</mark>() -> <mark style="color:blue;">void</mark>
+> Clears all hooks
+
+#### function <mark style="color:yellow;">ClearLeftHook</mark>() -> <mark style="color:blue;">void</mark>
+> Clears the left hook
+
+#### function <mark style="color:yellow;">ClearRightHook</mark>() -> <mark style="color:blue;">void</mark>
+> Clears the right hook
+
+#### function <mark style="color:yellow;">MountMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Mounts the human on a map object
+
+#### function <mark style="color:yellow;">MountTransform</mark>(transform: <mark style="color:blue;">[Transform](../objects/Transform.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Mounts the human on a transform
+
+#### function <mark style="color:yellow;">Unmount</mark>() -> <mark style="color:blue;">void</mark>
+> Unmounts the human
+
+#### function <mark style="color:yellow;">SetSpecial</mark>(special: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Sets the special of the human
+
+#### function <mark style="color:yellow;">ActivateSpecial</mark>() -> <mark style="color:blue;">void</mark>
+> Activates the special of the human
+
+#### function <mark style="color:yellow;">SetWeapon</mark>(weapon: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Sets the weapon of the human
+
+#### function <mark style="color:yellow;">DisablePerks</mark>() -> <mark style="color:blue;">void</mark>
+> Disables all perks of the human
+
+#### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Kills the character. Callable by non-owners.
+
+#### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">[String](../static/String.md)</mark>, damage: <mark style="color:blue;">int</mark>) -> <mark style="color:blue;">void</mark>
+> Damages the character and kills it if its health reaches 0. Callable by non-owners.
+
+#### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
+
+#### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">[String](../static/String.md)</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) -> <mark style="color:blue;">void</mark>
+> Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
+
+#### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">[String](../static/String.md)</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) -> <mark style="color:blue;">void</mark>
+> Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
+
+#### function <mark style="color:yellow;">GetAnimationLength</mark>(animation: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">float</mark>
+> Gets the length of animation.
+
+#### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
+
+#### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">[String](../static/String.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Stops the sound.
+
+#### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) -> <mark style="color:blue;">void</mark>
+> Rotates the character such that it is looking towards a world position.
+
+#### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">[String](../static/String.md)</mark> = <mark style="color:blue;">Acceleration</mark>) -> <mark style="color:blue;">void</mark>
+> Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
+
+#### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">void</mark>
+> Reveaal the titan for a set number of seconds.
+
+#### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">[String](../static/String.md)</mark> = <mark style="color:blue;">OutlineAll</mark>) -> <mark style="color:blue;">void</mark>
+> Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
+
+#### function <mark style="color:yellow;">RemoveOutline</mark>() -> <mark style="color:blue;">void</mark>
+> Removes the outline effect from the character.
+
 
 ---
 

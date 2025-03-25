@@ -10,6 +10,8 @@ namespace CustomLogic
         // avoid an extra type check in the evaluator
         public bool Enabled = true;
 
+        public bool Inited = false;
+
         public readonly Dictionary<string, object> Variables;
 
         protected CustomLogicClassInstance()

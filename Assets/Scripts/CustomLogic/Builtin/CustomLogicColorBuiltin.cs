@@ -8,15 +8,16 @@ namespace CustomLogic
 {
     /// <summary>
     /// Constructor for the Color class
+    /// </summary>
     /// <example>
+    /// Game.Print(color.ToHexString()) // Prints the color in hex format
+    /// </example>
     /// <code>
     /// color = Color() # Creates a white color
     /// color = Color(150) # Creates a gray color
     /// color = Color(255, 0, 0) # Creates a red color
     /// color = Color(255, 0, 0, 100) # Creates a red color with transparency
     /// </code>
-    /// </example>
-    /// </summary>
     [CLType(Name = "Color", Static = true, Description = "")]
     partial class CustomLogicColorBuiltin : BuiltinClassInstance, ICustomLogicEquals, ICustomLogicCopyable, ICustomLogicMathOperators, ICustomLogicToString
     {

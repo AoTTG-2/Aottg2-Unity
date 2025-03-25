@@ -78,7 +78,6 @@ namespace Photon.Voice.Unity
                 {
                     UnityLogger.Log(level, obj, tag, objName, fmt, args);
                 }
-#endif
             }
 
             public void LogError(string fmt, params object[] args)

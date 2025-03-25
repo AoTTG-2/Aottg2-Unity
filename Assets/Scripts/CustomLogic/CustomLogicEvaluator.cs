@@ -531,7 +531,7 @@ namespace CustomLogic
             {
                 RunAssignmentsClassInstance(classInstance);
                 EvaluateMethod(classInstance, "Init", parameterValues);
-                classInstance = new CustomLogicClassInstance(className);
+                classInstance = new UserClassInstance(className);
                 if (init)
                 {
                     RunAssignmentsClassInstance(classInstance);

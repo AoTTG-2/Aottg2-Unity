@@ -1,5 +1,20 @@
 # Color
 Inherits from object
+## Initialization
+> Constructor for the Color class
+> Constructors:
+```csharp
+
+color = Color() # Creates a white color
+color = Color(150) # Creates a gray color
+color = Color(255, 0, 0) # Creates a red color
+color = Color(255, 0, 0, 100) # Creates a red color with transparency
+```
+> Example:
+```csharp
+
+Game.Print(color.ToHexString()) // Prints the color in hex format
+```
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -8,16 +23,19 @@ Inherits from object
 |B|int|False|Blue component of the color|
 |A|int|False|Alpha component of the color|
 ## Methods
-##### [String](../static/String.md) ToHexString()
-- **Description:** Converts the color to a hex string
+#### function <mark style="color:yellow;">ToHexString</mark>() -> <mark style="color:blue;">[String](../static/String.md)</mark>
+> Converts the color to a hex string
+
 
 ---
 
 ## Static Methods
-##### [Color](../objects/Color.md) Lerp([Color](../objects/Color.md) a, [Color](../objects/Color.md) b, float t)
-- **Description:** Linearly interpolates between colors a and b by t
-##### [Color](../objects/Color.md) Gradient([Color](../objects/Color.md) a, [Color](../objects/Color.md) b, float t)
-- **Description:** Creates a gradient color from two colors
+#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Color](../objects/Color.md)</mark>
+> Linearly interpolates between colors a and b by t
+
+#### function <mark style="color:yellow;">Gradient</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) -> <mark style="color:blue;">[Color](../objects/Color.md)</mark>
+> Creates a gradient color from two colors
+
 
 ---
 

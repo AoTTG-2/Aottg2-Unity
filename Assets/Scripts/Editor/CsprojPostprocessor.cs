@@ -11,6 +11,12 @@ namespace Assets.Scripts.Editor
 #if UNITY_EDITOR
     public class CsprojPostprocessor : AssetPostprocessor
     {
+        /// <summary>
+        /// This method is called when a .csproj file is generated.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public static string OnGeneratedCSProject(string path, string content)
         {
             if (!path.EndsWith("Scripts.csproj"))

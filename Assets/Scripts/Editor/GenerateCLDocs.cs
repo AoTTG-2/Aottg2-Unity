@@ -12,6 +12,8 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using System.Xml;
 using NUnit.Framework.Internal;
 using UnityEngine.Rendering;
+using Utility;
+using System;
 
 #if UNITY_EDITOR
 public static class PropertyInfoExtensions
@@ -208,6 +210,8 @@ public class GenerateCLDocs : EditorWindow
         var isStatic = clType.Static;
         var isAbstract = clType.Abstract;
         var inheritBaseMembers = clType.InheritBaseMembers;
+        var constructorCount = type.GetConstructors()
+            .Where(x => x.GetCustomAttributes(typeof(CLConstructorAttribute), false).Length > 0).Count();
 
         string doc = string.Empty;
         doc += $"# {className}\n";
@@ -217,7 +221,7 @@ public class GenerateCLDocs : EditorWindow
             doc += GenerateInheritance(type.BaseType);
         }
 
-        if (!isStatic && !isAbstract)
+        if (!isAbstract && (!isStatic || constructorCount > 0))
         {
             doc += GenerateInitializers(type, className, XMLdoc);
         }
@@ -237,14 +241,21 @@ public class GenerateCLDocs : EditorWindow
         return val;
     }
 
-    private string ResolveXMLPropertyDescription(string xmlcontents)
+    private string DelimitForTable(string val)
     {
-        return string.Empty;
-    }
+        // This is used for delimiting values in a table
+        // Remove new lines, tabs and pipes
+        val = val.Replace("\r", ""); // remove carriage returns
+        val = val.Replace("\n", " ");
+        val = val.Replace("\t", "");
+        val = val.Replace("|", "\\|"); // modify pipes
+        val = val.Trim();
 
-    private string ResolveXMLMethodDescription(string xmlcontents)
-    {
-        return string.Empty;
+        // Replace all multiple whitespace occurences with a single space
+        // This ensures that we don't have multiple spaces in the output
+        val = System.Text.RegularExpressions.Regex.Replace(val, @"\s+", " ");
+
+        return val;
     }
 
     private string ResolveType(string type, bool isReturned = false)
@@ -290,10 +301,7 @@ public class GenerateCLDocs : EditorWindow
         return DelimitStyled(description);
     }
 
-    /// <summary>
-    /// TODO: This will work for now but will need to be replaced if we ever add function overloading.
-    /// </summary>
-    private string ResolveMethodDescription(System.Type type, MethodInfo method, System.Xml.XmlDocument XMLdoc, string description)
+    private string GetFullyQualifiedMethod(MethodBase method)
     {
         var methodName = method.Name;
 
@@ -301,47 +309,78 @@ public class GenerateCLDocs : EditorWindow
         string qualifiedParameters = string.Empty;
         if (method.GetParameters().Length > 0)
             qualifiedParameters = "(" + string.Join(",", method.GetParameters().Select(x => x.ParameterType.FullName)) + ")";
-        var methodNameWithParams = $"M:{type.FullName}.{methodName}{qualifiedParameters}";
+        var methodNameWithParams = $"{methodName}{qualifiedParameters}";
+        return methodNameWithParams;
+    }
+
+    /// <summary>
+    /// TODO: This will work for now but will need to be replaced if we ever add function overloading.
+    /// </summary>
+    private string ResolveMethodNodeText(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType="summary", string defaultText="")
+    {
+        var fqn = GetFullyQualifiedMethod(method);
+        var methodNameWithParams = $"M:{type.FullName}.{fqn}";
         string path = $"//member[@name=\"{methodNameWithParams}\"]";
         var methodNode = XMLdoc.SelectSingleNode(path);
 
-        bool found = false;
-        if (methodNode != null)
+        var node = ResolveMethodNode(type, method, XMLdoc, nodeType);
+
+        if (node != null)
         {
-            // search for any child node called summary
-            var summary = methodNode.SelectSingleNode(".//summary");
-            if (summary != null)
-            {
-                found = true;
-                description = summary.InnerText;
-            }
+            return node.InnerText;
         }
 
-        if (!found)
+        // Check if the method is implementing an interface and find if there is a description on that
+        var interfaces = type.GetInterfaces();
+        foreach (var inter in interfaces)
         {
-            // Check if the method is implementing an interface and find if there is a description on that
-            var interfaces = type.GetInterfaces();
-            foreach (var inter in interfaces)
+            var interMethod = inter.GetMethod(method.Name);
+            if (interMethod != null)
             {
-                var interMethod = inter.GetMethod(methodName);
-                if (interMethod != null)
+                node = ResolveMethodNode(type, interMethod, XMLdoc, nodeType);
+                if (node != null)
                 {
-                    var interMethodNameWithParams = $"M:{inter.FullName}.{methodName}{qualifiedParameters}";
-                    path = $"//member[@name=\"{interMethodNameWithParams}\"]";
-                    methodNode = XMLdoc.SelectSingleNode(path);
-                    if (methodNode != null)
-                    {
-                        // search for any child node called summary
-                        var summary = methodNode.SelectSingleNode(".//summary");
-                        if (summary != null)
-                        {
-                            description = summary.InnerText;
-                        }
-                    }
+                    return node.InnerText;
                 }
             }
         }
-        return DelimitStyled(description);
+        return defaultText;
+    }
+
+    private string ResolveClassNodeText(System.Type type, System.Xml.XmlDocument XMLdoc, string nodeType = "summary", string defaultText = "")
+    {
+        var typeInfo = $"T:{type.FullName}";
+        string path = $"//member[@name=\"{typeInfo}\"]";
+        var node = XMLdoc.SelectSingleNode(path);
+
+        if (node != null)
+        {
+            node = node.SelectSingleNode($".//{nodeType}");
+            if (node != null)
+            {
+                return node.InnerText;
+            }
+        }
+
+        return defaultText;
+    }
+
+    private XmlNode ResolveMethodNode(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType="summary")
+    {
+        var methodName = method.Name;
+        // Create params signature with fully qualified name
+        string qualifiedParameters = string.Empty;
+        if (method.GetParameters().Length > 0)
+            qualifiedParameters = "(" + string.Join(",", method.GetParameters().Select(x => x.ParameterType.FullName)) + ")";
+        var methodNameWithParams = $"M:{type.FullName}.{methodName}{qualifiedParameters}";
+        string path = $"//member[@name=\"{methodNameWithParams}\"]";
+        var methodNode = XMLdoc.SelectSingleNode(path);
+        if (methodNode != null)
+        {
+            // search for any child node called summary
+            return methodNode.SelectSingleNode($".//{nodeType}");
+        }
+        return null;
     }
 
     private string GenerateInheritance(System.Type parentType)
@@ -379,49 +418,48 @@ public class GenerateCLDocs : EditorWindow
             .Where(x => x.GetCustomAttributes(typeof(CLConstructorAttribute), false).Length > 0)
             .ToArray();
 
-        // create code examples for each constructor
-        List<string> lines = new List<string>();
-        foreach (var constructor in constructors)
+
+        string typeSummary = DelimitStyled(ResolveClassNodeText(type, XMLdoc, "summary"));
+        string codeSnippet = ResolveClassNodeText(type, XMLdoc, "code");
+        string codeExample = ResolveClassNodeText(type, XMLdoc, "example");
+
+        if (typeSummary != string.Empty)
         {
-            string constructorDoc = string.Empty;
-
-            var parameters = constructor.GetParameters();
-            var parameterNames = parameters.Select(x => x.Name).ToList();
-            var parameterTypes = parameters.Select(x => x.ParameterType.Name).ToList();
-            var parameterValues = parameters.Select(x => $"({x.ParameterType.Name})").ToList();
-            var constructorSignature = $"example = {className}({string.Join(", ", parameterValues)})";
-
-            constructorDoc += constructorSignature;
-
-            //// check if constructor is in the generated xml doc
-            //var constructorName = constructor.Name;
-            //var constructorNode = XMLdoc.SelectSingleNode($"//member[@name='M:{type.FullName}.{constructorName}");
-            //if (constructorNode != null)
-            //{
-
-
-            //    // if there is a summary, grab the text inside, then if inside summary there is example.code, grab the code inner text as well
-            //    var summary = constructorNode.SelectSingleNode("summary");
-            //    if (summary != null)
-            //    {
-            //        var summaryText = summary.InnerText;
-            //        constructorName += summaryText + "\n";
-            //        var exampleCode = summary.SelectSingleNode("example.code");
-            //        if (exampleCode != null)
-            //        {
-            //            var codeText = exampleCode.InnerText;
-            //            constructorDoc += CreateCodeExample(new List<string>() { codeText });
-            //            lines.Add(constructorDoc);
-            //        }
-            //    }
-
-            //}
-
-
-            lines.Add(constructorSignature);
+            doc += $"> {typeSummary}\n";
         }
 
-        doc += CreateCodeExample(lines);
+        if (codeSnippet != string.Empty)
+        {
+            doc += $"> Constructors:\n";
+            doc += CreateCodeExample(codeSnippet);
+        }
+        else
+        {
+            // create code examples for each constructor
+            codeSnippet = string.Empty;
+            foreach (var constructor in constructors)
+            {
+                var parameters = constructor.GetParameters();
+                var parameterNames = parameters.Select(x => x.Name).ToList();
+                var parameterTypes = parameters.Select(x => ResolveType(x.ParameterType.Name)).ToList();
+                var parameterValues = parameters.Select(x => $"{x.ParameterType.Name}").ToList();
+                var constructorSignature = $"example = {className}({string.Join(", ", parameterValues)})";
+
+                codeSnippet += $"# {className}({string.Join(", ", parameterValues)})\n";
+                codeSnippet += $"example = {className}({string.Join(", ", parameterValues)})\n";
+                codeSnippet += "\n";
+            }
+
+            if (codeSnippet == string.Empty) doc += WrapColor("No constructor given, object can only be accessed via builtins.", "red");
+            else doc += CreateCodeExample(codeSnippet);
+        }
+
+        if (codeExample != string.Empty)
+        {
+            doc += $"> Example:\n";
+            doc += CreateCodeExample(codeExample);
+        }
+
         return doc;
     }
 
@@ -494,6 +532,9 @@ public class GenerateCLDocs : EditorWindow
     ///   - `param1`: Description of param1
     ///   - `param2`: *(Optional)* Description of param2
     /// - **Returns:** Return type of the method
+    /// Signature - dcdcaa
+    /// Param Type - 509cd4
+    /// Param name - 9cdcfe
     /// </summary>
     private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc, bool isStatic=false)
     {
@@ -523,34 +564,52 @@ public class GenerateCLDocs : EditorWindow
             foreach (var method in methods)
             {
                 var clMethod = (CLMethodAttribute)method.GetCustomAttributes(typeof(CLMethodAttribute), false)[0];
+                var obselete = method.GetCustomAttributes(typeof(ObsoleteAttribute), false);
                 var methodName = DelimitStyled(method.Name);
                 var parameters = method.GetParameters();
-                string signature = $"{methodName}(";
+                string signature = $"{WrapColor(methodName, "yellow")}(";
                 for (int i = 0; i < parameters.Length; i++)
                 {
                     var param = parameters[i];
                     var paramType = ResolveType(param.ParameterType.Name);
-                    var paramDefaultValue = param.DefaultValue == null? "null" : param.DefaultValue;
+                    string paramDefaultValue = param.DefaultValue == null? "null" : param.DefaultValue.ToString();
 
                     if (param.HasDefaultValue)
-                        signature += $"{paramType} {param.Name} = {paramDefaultValue}";
+                        signature += $"{param.Name}: {WrapColor(paramType, "blue")} = {WrapColor(paramDefaultValue, "blue")}";
                     else
-                        signature += $"{paramType} {param.Name}";
+                        signature += $"{param.Name}: {WrapColor(paramType, "blue")}";
                     if (i < parameters.Length - 1)
                         signature += ", ";
                 }
                 signature += ")";
                 var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
-                var description = ResolveMethodDescription(type, method, XMLdoc, clMethod.Description);
+                var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
+                var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
 
-                doc += $"##### {returnType} {signature}\n";
-                doc += $"- **Description:** {description}\n";
+                doc += $"#### function {signature} -> {WrapColor(returnType, "blue")}\n";
 
-                if (method == methods.Last())
+                if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
+
+                if (obselete.Length > 0)
                 {
-                    doc += "\n---\n\n";
+                    // If obsolete, add a note
+                    var obsoleteAttr = (ObsoleteAttribute)obselete[0];
+                    string warningStr = WrapColor("This method is obselete", "red");
+                    if (!string.IsNullOrEmpty(obsoleteAttr.Message))
+                    {
+                        doc += $"> {warningStr}: {obsoleteAttr.Message}\n\n";
+                    }
+                    else doc += $"> {warningStr}\n\n";
+                }
+                doc += $"> {description}\n\n";
+
+                if (codeExample != string.Empty)
+                {
+                    doc += $"> Example:\n";
+                    doc += CreateCodeExample(codeExample);
                 }
 
+                if (method == methods.Last()) doc += "\n---\n\n";
             }
 
             //doc += CreateHTMLTable(headers, rows, sizing);
@@ -558,6 +617,11 @@ public class GenerateCLDocs : EditorWindow
         return doc;
     }
 
+
+    private string WrapColor(string text, string color)
+    {
+        return $"<mark style=\"color:{color};\">{text}</mark>";
+    }
 
     private string CreateCodeExample(List<string> lines)
     {
@@ -568,6 +632,43 @@ public class GenerateCLDocs : EditorWindow
             code += line + "\n";
         }
         code += "```\n";
+        return code;
+    }
+
+    private string CreateCodeExample(string lines)
+    {
+        // Split the input into individual lines
+        var lineSplit = lines.Split("\n");
+
+        // Calculate the minimum shared indentation (spaces + tabs), ignoring empty lines
+        int minIndent = int.MaxValue;
+        foreach (var line in lineSplit)
+        {
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                int spaceCount = line.Length - line.TrimStart(' ').Length;
+                int tabCount = line.Length - line.TrimStart('\t').Length;
+                int totalIndent = spaceCount + tabCount; // Combine spaces and tabs for total indentation
+                minIndent = Math.Min(minIndent, totalIndent);
+            }
+        }
+
+        // Remove the minimum shared indentation from all lines
+        var adjustedLines = lineSplit.Select(line =>
+        {
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                int actualRemove = Math.Min(minIndent, line.Length);
+                return line.Substring(actualRemove);
+            }
+            return line; // Preserve empty lines as they are
+        });
+
+        // Combine adjusted lines into a formatted code block
+        string code = string.Empty;
+        code += "```csharp\n";
+        code += string.Join("\n", adjustedLines).TrimEnd(); // Trim trailing whitespace
+        code += "\n```\n";
         return code;
     }
 
@@ -588,7 +689,7 @@ public class GenerateCLDocs : EditorWindow
         table += "<tr>\n";
         foreach (var header in headers)
         {
-            table += $"<th>{header}</th>\n";
+            table += $"<th>{DelimitForTable(header)}</th>\n";
         }
         table += "</tr>\n";
         table += "</thead>\n";
@@ -600,7 +701,7 @@ public class GenerateCLDocs : EditorWindow
             table += "<tr>\n";
             foreach (var cell in row)
             {
-                table += $"<td>{cell}</td>\n";
+                table += $"<td>{DelimitForTable(cell)}</td>\n";
             }
             table += "</tr>\n";
         }
@@ -622,7 +723,7 @@ public class GenerateCLDocs : EditorWindow
         table += "|";
         foreach (var header in headers)
         {
-            table += $"{header}|";
+            table += $"{DelimitForTable(header)}|";
         }
         table += "\n";
         table += "|";
@@ -636,7 +737,7 @@ public class GenerateCLDocs : EditorWindow
             table += "|";
             foreach (var cell in row)
             {
-                table += cell + "|";
+                table += DelimitForTable(cell) + "|";
             }
             table += "\n";
         }
