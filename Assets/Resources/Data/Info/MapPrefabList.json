@@ -947,6 +947,7 @@
 			{"Name": "MistFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "MistFX1a", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "MistFX1"},
 			{"Name": "MistFX1b", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|", "Variant": "MistFX1"},
+			{"Name": "MistLayer1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "NPCFX1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PaperDebrisFX1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "PumpkinFX1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
