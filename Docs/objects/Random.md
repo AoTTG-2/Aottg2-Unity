@@ -6,25 +6,25 @@ Inherits from object
 example = Random(Object[])
 ```
 ## Methods
-#### function <mark style="color:yellow;">RandomInt</mark>(min: <mark style="color:blue;">int</mark>, max: <mark style="color:blue;">int</mark>) 薔 <mark style="color:blue;">int</mark>
+#### function <mark style="color:yellow;">RandomInt</mark>(min: <mark style="color:blue;">int</mark>, max: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">int</mark>
 > Generates a random integer between the specified range.
 
-#### function <mark style="color:yellow;">RandomFloat</mark>(min: <mark style="color:blue;">float</mark>, max: <mark style="color:blue;">float</mark>) 薔 <mark style="color:blue;">float</mark>
+#### function <mark style="color:yellow;">RandomFloat</mark>(min: <mark style="color:blue;">float</mark>, max: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">float</mark>
 > Generates a random float between the specified range.
 
-#### function <mark style="color:yellow;">RandomBool</mark>() 薔 <mark style="color:blue;">bool</mark>
+#### function <mark style="color:yellow;">RandomBool</mark>() → <mark style="color:blue;">bool</mark>
 > Returns random boolean.
 
-#### function <mark style="color:yellow;">RandomVector3</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) 薔 <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+#### function <mark style="color:yellow;">RandomVector3</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Generates a random Vector3 between the specified ranges.
 
-#### function <mark style="color:yellow;">RandomDirection</mark>(flat: <mark style="color:blue;">bool</mark> = <mark style="color:blue;">False</mark>) 薔 <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+#### function <mark style="color:yellow;">RandomDirection</mark>(flat: <mark style="color:blue;">bool</mark> = <mark style="color:blue;">False</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Generates a random normalized direction vector. If flat is true, the y component will be zero.
 
-#### function <mark style="color:yellow;">RandomSign</mark>() 薔 <mark style="color:blue;">int</mark>
+#### function <mark style="color:yellow;">RandomSign</mark>() → <mark style="color:blue;">int</mark>
 > Generates a random sign, either 1 or -1.
 
-#### function <mark style="color:yellow;">PerlinNoise</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>) 薔 <mark style="color:blue;">float</mark>
+#### function <mark style="color:yellow;">PerlinNoise</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">float</mark>
 > Returns a point sampled from generated 2d perlin noise. (see Unity Mathf.PerlinNoise for more information)
 
 

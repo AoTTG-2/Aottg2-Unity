@@ -23,17 +23,17 @@ Game.Print(color.ToHexString()) // Prints the color in hex format
 |B|int|False|Blue component of the color|
 |A|int|False|Alpha component of the color|
 ## Methods
-#### function <mark style="color:yellow;">ToHexString</mark>() 薔 <mark style="color:blue;">string</mark>
+#### function <mark style="color:yellow;">ToHexString</mark>() → <mark style="color:blue;">string</mark>
 > Converts the color to a hex string
 
 
 ---
 
 ## Static Methods
-#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) 薔 <mark style="color:blue;">[Color](../objects/Color.md)</mark>
+#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Color](../objects/Color.md)</mark>
 > Linearly interpolates between colors a and b by t
 
-#### function <mark style="color:yellow;">Gradient</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) 薔 <mark style="color:blue;">[Color](../objects/Color.md)</mark>
+#### function <mark style="color:yellow;">Gradient</mark>(a: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, b: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Color](../objects/Color.md)</mark>
 > Creates a gradient color from two colors
 
 

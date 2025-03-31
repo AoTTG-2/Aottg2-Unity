@@ -601,7 +601,7 @@ public class GenerateCLDocs : EditorWindow
                 var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
                 var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
 
-                doc += $"#### function {signature} \u8594 {WrapColor(returnType, "blue")}\n";
+                doc += $"#### function {signature} \u2192 {WrapColor(returnType, "blue")}\n";
 
                 if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
 
