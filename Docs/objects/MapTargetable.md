@@ -1,8 +1,9 @@
 # MapTargetable
 Inherits from object
-## Fields
+## Initialization
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
-|Team|[String](../static/String.md)|False|The team of the targetable|
-|Position|[Vector3](../objects/Vector3.md)|False|The position of the targetable|
+|Team|string|False|The team of the targetable|
+|Position|[Vector3](../objects/Vector3.md)|True|The position of the targetable|
 |Enabled|bool|False|Is the targetable enabled|

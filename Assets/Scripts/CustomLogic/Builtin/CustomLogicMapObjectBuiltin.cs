@@ -636,10 +636,33 @@ namespace CustomLogic
             return result;
         }
 
-        [CLMethod(description: "[OBSELETE] Add builtin component")]
-        public void AddBuiltinComponent(object parameter0 = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
+        /// <summary>
+        /// Add a builtin component to the object.
+        /// Components: Daylight, PointLight, Tag, Rigidbody, CustomPhysicsMaterial, NavMeshObstacle
+        /// </summary>
+        /// <example>
+        /// # Add a Daylight component
+        /// AddBuiltinComponent("Daylight", new Color(255, 255, 255), 1.0f, true);
+        /// 
+        /// # Add a PointLight component
+        /// AddBuiltinComponent("PointLight", new Color(255, 255, 255), 1.0f, 10.0f);
+        /// 
+        /// # Add a Tag component
+        /// AddBuiltinComponent("Tag", "MyTag");
+        /// 
+        /// # Add a Rigidbody component
+        /// AddBuiltinComponent("Rigidbody", 1.0f, new Vector3(0, -9.81f, 0), true, true);
+        /// 
+        /// # Add a CustomPhysicsMaterial component
+        /// AddBuiltinComponent("CustomPhysicsMaterial", true);
+        /// 
+        /// # Add a NavMeshObstacle component
+        /// AddBuiltinComponent("NavMeshObstacle", true);
+        /// </example>
+        [CLMethod(description: "Add builtin component")]
+        public void AddBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
         {
-            string name = (string)parameter0;
+            string name = (string)componentName;
             if (name == "Daylight")
             {
                 var light = Value.GameObject.AddComponent<Light>();
@@ -694,30 +717,25 @@ namespace CustomLogic
             }
             else if (name == "NavMeshObstacle")
             {
-                // Add a navmesh obstacle and size to the objects bounds
                 bool carveOnlyStationary = (bool)parameter1;
                 var navMeshObstacleGo = new GameObject("NavMeshObstacle");
                 navMeshObstacleGo.transform.parent = Value.GameObject.transform;
 
-                // Set local position to zero
                 navMeshObstacleGo.transform.localPosition = Vector3.zero;
 
                 var navMeshObstacle = navMeshObstacleGo.AddComponent<NavMeshObstacle>();
                 navMeshObstacle.carving = true;
                 navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
 
-                // Value.ColliderCache contains the colliders of the object, merge all colliders to find the bounds
                 Bounds bounds = Value.colliderCache[0].bounds;
                 foreach (var collider in Value.colliderCache)
                 {
                     bounds.Encapsulate(collider.bounds);
                 }
 
-                // Set size and center based on bounds
                 navMeshObstacle.size = bounds.size;
                 navMeshObstacle.center = bounds.center;
 
-                // change bounds center to local position
                 navMeshObstacle.center = navMeshObstacle.center - Value.GameObject.transform.position;
 
             }
@@ -729,7 +747,7 @@ namespace CustomLogic
             return MapLoader.HasTag(Value, tag);
         }
 
-        [CLMethod(Description = "[OBSELETE] Read a builtin component")]
+        [CLMethod(Description = "Read a builtin component")]
         public object ReadBuiltinComponent(string name, string param)
         {
             if (name == "Rigidbody")
@@ -747,10 +765,10 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod(description: "[OBSELETE] Update a builtin component")]
-        public void UpdateBuiltinComponent(object parameter0 = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
+        [CLMethod(description: "Update a builtin component")]
+        public void UpdateBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
         {
-            string name = (string)parameter0;
+            string name = (string)componentName;
             string param = (string)parameter1;
             if (name == "Rigidbody")
             {

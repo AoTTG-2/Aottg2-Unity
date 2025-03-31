@@ -1,6 +1,7 @@
 # LineCastHitResult
 Inherits from object
-## Fields
+## Initialization
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
 |IsCharacter|bool|True|true if the linecast hit a character|

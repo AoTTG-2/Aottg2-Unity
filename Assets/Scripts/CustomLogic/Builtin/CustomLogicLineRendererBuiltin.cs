@@ -1,4 +1,5 @@
 using ApplicationManagers;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utility;
@@ -236,7 +237,7 @@ namespace CustomLogic
             set => Value.colorGradient.mode = (GradientMode)System.Enum.Parse(typeof(GradientMode), value);
         }
 
-        [CLMethod(description: "[Obselete] Create a new LineRenderer")]
+        [CLMethod(description: "Create a new LineRenderer"), Obsolete("Create a new instance with LineRenderer() instead.")]
         public static CustomLogicLineRendererBuiltin CreateLineRenderer()
         {
             GameObject obj = new GameObject();

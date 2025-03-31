@@ -44,7 +44,11 @@ public class GenerateCLDocs : EditorWindow
         { "Double", "double" },
         { "Boolean", "bool" },
         { "String", "string" },
-        { "Void", "none" },
+        { "Void", "null" },
+        { "void", "null" },
+        { nameof(UserMethod), "function" },
+        { nameof(CustomLogicComponentInstance), "Component" }
+
     };
 
 
@@ -225,6 +229,17 @@ public class GenerateCLDocs : EditorWindow
         {
             doc += GenerateInitializers(type, className, XMLdoc);
         }
+        else if (isAbstract)
+        {
+            doc += "## Initialization\n";
+            doc += WrapColor("This class is abstract and cannot be instantiated.", "red");
+        }
+        else if (isStatic && constructorCount == 0)
+        {
+            doc += "## Initialization\n";
+            doc += WrapColor("This class is static and cannot be instantiated.", "red");
+        }
+
         doc += GenerateFields(type, XMLdoc);
         doc += GenerateMethods(type, XMLdoc, isStatic: false);
         doc += GenerateMethods(type, XMLdoc, isStatic: true);
@@ -260,17 +275,17 @@ public class GenerateCLDocs : EditorWindow
 
     private string ResolveType(string type, bool isReturned = false)
     {
-        if (TypeReference.ContainsKey(type))
-        {
-            type = TypeReference[type];
-        }
-        else if (CSTypeReference.ContainsKey(type))
+        if (CSTypeReference.ContainsKey(type))
         {
             type = CSTypeReference[type];
         }
+        else if (TypeReference.ContainsKey(type))
+        {
+            type = TypeReference[type];
+        }
 
-        if (isReturned && (type.ToLower() == "null" || type.ToLower() == "none"))
-            type = "void";
+        if (isReturned && (type.ToLower() == "null" || type.ToLower() == "none") || type.ToLower() == "void")
+            type = "null";
 
         return DelimitStyled(type);
     }
@@ -485,7 +500,7 @@ public class GenerateCLDocs : EditorWindow
             var isStatic = property.IsStatic();
             var field = DelimitStyled(property.Name);
             var varType = ResolveType(property.PropertyType.Name);
-            var readOnly = clProperty.ReadOnly;
+            var readOnly = clProperty.ReadOnly || !property.CanWrite;
             var description = ResolvePropertyDescription(type, property, XMLdoc, clProperty.Description);
 
 
@@ -586,7 +601,7 @@ public class GenerateCLDocs : EditorWindow
                 var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
                 var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
 
-                doc += $"#### function {signature} -> {WrapColor(returnType, "blue")}\n";
+                doc += $"#### function {signature} \u8594 {WrapColor(returnType, "blue")}\n";
 
                 if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
 

@@ -6,6 +6,20 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Physics class for custom logic.
+    /// </summary>
+    /// <example>
+    /// start = Vector3(0);
+    /// end = Vector3(10);
+    /// result = Physics.LineCast(start, end, "Entities");
+    /// Game.Print(result.IsCharacter);
+    /// Game.Print(result.IsMapObject);
+    /// Game.Print(result.Point);
+    /// Game.Print(result.Normal);
+    /// Game.Print(result.Distance);
+    /// Game.Print(result.Collider);
+    /// </example>
     [CLType(Name = "Physics", Static = true)]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
@@ -14,8 +28,9 @@ namespace CustomLogic
         {
         }
 
-        [CLMethod("Performs a line cast between two points.")]
-        public static object LineCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
+
+        [CLMethod("Performs a line cast between two points, returns a LineCastHitResult object")]
+        public static CustomLogicLineCastHitResultBuiltin LineCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
             RaycastHit hit;
             var startPosition = start.Value;
@@ -40,7 +55,7 @@ namespace CustomLogic
             return null;
         }
 
-        [CLMethod("Performs a sphere cast between two points.")]
+        [CLMethod("Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).")]
         public static object SphereCast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, string collideWith)
         {
             RaycastHit hit;

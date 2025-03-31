@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    [CLType(Name = "Transform")]
+    [CLType(Name = "Transform", Abstract = true)]
     partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
         public readonly Transform Value;
@@ -238,6 +238,7 @@ namespace CustomLogic
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
         public static implicit operator Transform(CustomLogicTransformBuiltin value) => value.Value;
 
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -248,6 +249,7 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public int __Hash__() => Value == null ? 0 : Value.GetHashCode();
     }
 }
