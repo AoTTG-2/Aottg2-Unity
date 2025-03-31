@@ -5,6 +5,7 @@ using System.Collections;
 using Settings;
 using Photon.Realtime;
 using Projectiles;
+using Utility;
 
 namespace Effects
 {
@@ -26,7 +27,7 @@ namespace Effects
             else
             {
                 var main = particle.main;
-                main.startSizeMultiplier *= SizeMultiplier;
+                Util.ScaleParticleStartSize(main, SizeMultiplier);
             }
             var c = (Color)(settings[0]);
             if (SettingsManager.AbilitySettings.ShowBombColors.Value || c == ThunderspearProjectile.CritColor)

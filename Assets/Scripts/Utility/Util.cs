@@ -401,5 +401,45 @@ namespace Utility
             // Handle wrap-around
             return (4294967.295 - sentTime) + serverTime;
         }
+
+        private static bool ForceScalableParticleSystemMinMaxCurveMode(ParticleSystem.MinMaxCurve curve, out ParticleSystem.MinMaxCurve newCurve, float scale = 1.0f)
+        {
+            switch (curve.mode)
+            {
+                case ParticleSystemCurveMode.Constant:
+                    newCurve = new ParticleSystem.MinMaxCurve(scale, AnimationCurve.Linear(0.0f, curve.constant, 1.0f, curve.constant));
+                    return true;
+                case ParticleSystemCurveMode.TwoConstants:
+                    newCurve = new ParticleSystem.MinMaxCurve(scale, AnimationCurve.Linear(0.0f, curve.constantMin, 1.0f, curve.constantMax));
+                    return true;
+                default:
+                    newCurve = curve;
+                    return false;
+            }
+        }
+
+        public static void ScaleParticleStartSize(ParticleSystem.MainModule main, float scale)
+        {
+            if (ForceScalableParticleSystemMinMaxCurveMode(main.startSize, out var newCurve, scale))
+            {
+                main.startSize = newCurve;
+            }
+            else
+            {
+                main.startSizeMultiplier = scale;
+            }
+        }
+
+        public static void ScaleParticleStartSpeed(ParticleSystem.MainModule main, float scale)
+        {
+            if (ForceScalableParticleSystemMinMaxCurveMode(main.startSpeed, out var newCurve, scale))
+            {
+                main.startSpeed = newCurve;
+            }
+            else
+            {
+                main.startSpeedMultiplier = scale;
+            }
+        }
     }
 }
