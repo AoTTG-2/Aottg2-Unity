@@ -1,14 +1,15 @@
 # RoomData
 Inherits from object
 ## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Static Methods
-#### function <mark style="color:yellow;">SetProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+## Static Methods
+#### function <span style="color:yellow;">SetProperty</span>(property: <span style="color:blue;">string</span>, value: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Sets the property with given name to the object value. Valid value types are float, string, bool, and int.
 
-#### function <mark style="color:yellow;">GetProperty</mark>(property: <mark style="color:blue;">string</mark>, defaultValue: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
+#### function <span style="color:yellow;">GetProperty</span>(property: <span style="color:blue;">string</span>, defaultValue: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
 > Gets the property with given name. If property does not exist, returns defaultValue.
 
-#### function <mark style="color:yellow;">Clear</mark>() → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Clear</span>() → <span style="color:blue;">null</span>
 > Clears all room data.
 
 

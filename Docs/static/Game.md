@@ -1,7 +1,8 @@
 # Game
 Inherits from object
 ## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Fields
+<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
 |IsEnding|bool|True|Is the game ending?|
@@ -24,91 +25,91 @@ Inherits from object
 |ForcedCharacterType|string|False|Forced character type|
 |ForcedLoadout|string|False|Forced loadout|
 ## Methods
-#### function <mark style="color:yellow;">Debug</mark>(message: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Debug</span>(message: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Print a debug statement to the console
 
-#### function <mark style="color:yellow;">Print</mark>(message: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Print</span>(message: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Print a message to the chat
 
-#### function <mark style="color:yellow;">PrintAll</mark>(message: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">PrintAll</span>(message: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Print a message to all players
 
-#### function <mark style="color:yellow;">GetGeneralSetting</mark>(settingName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
+#### function <span style="color:yellow;">GetGeneralSetting</span>(settingName: <span style="color:blue;">string</span>) → <span style="color:blue;">Object</span>
 > Get a general setting
 
-#### function <mark style="color:yellow;">GetTitanSetting</mark>(settingName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
+#### function <span style="color:yellow;">GetTitanSetting</span>(settingName: <span style="color:blue;">string</span>) → <span style="color:blue;">Object</span>
 > Get a titan setting
 
-#### function <mark style="color:yellow;">GetMiscSetting</mark>(settingName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
+#### function <span style="color:yellow;">GetMiscSetting</span>(settingName: <span style="color:blue;">string</span>) → <span style="color:blue;">Object</span>
 > Get a misc setting
 
-#### function <mark style="color:yellow;">End</mark>(delay: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">End</span>(delay: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
 > End the game
 
-#### function <mark style="color:yellow;">FindCharacterByViewID</mark>(viewID: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">[Character](../objects/Character.md)</mark>
+#### function <span style="color:yellow;">FindCharacterByViewID</span>(viewID: <span style="color:blue;">int</span>) → <span style="color:blue;">[Character](../objects/Character.md)</span>
 > Find a character by view ID
 
-#### function <mark style="color:yellow;">SpawnTitan</mark>(type: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[Titan](../objects/Titan.md)</mark>
+#### function <span style="color:yellow;">SpawnTitan</span>(type: <span style="color:blue;">string</span>) → <span style="color:blue;">[Titan](../objects/Titan.md)</span>
 > Spawn a titan
 
-#### function <mark style="color:yellow;">SpawnTitanAt</mark>(type: <mark style="color:blue;">string</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">[Titan](../objects/Titan.md)</mark>
+#### function <span style="color:yellow;">SpawnTitanAt</span>(type: <span style="color:blue;">string</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">[Titan](../objects/Titan.md)</span>
 > Spawn a titan at a position
 
-#### function <mark style="color:yellow;">SpawnTitans</mark>(type: <mark style="color:blue;">string</mark>, count: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">[List](../objects/List.md)</mark>
+#### function <span style="color:yellow;">SpawnTitans</span>(type: <span style="color:blue;">string</span>, count: <span style="color:blue;">int</span>) → <span style="color:blue;">[List](../objects/List.md)</span>
 > Spawn titans
 
-#### function <mark style="color:yellow;">SpawnTitansAsync</mark>(type: <mark style="color:blue;">string</mark>, count: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnTitansAsync</span>(type: <span style="color:blue;">string</span>, count: <span style="color:blue;">int</span>) → <span style="color:blue;">null</span>
 > Spawn titans asynchronously
 
-#### function <mark style="color:yellow;">SpawnTitansAt</mark>(type: <mark style="color:blue;">string</mark>, count: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">[List](../objects/List.md)</mark>
+#### function <span style="color:yellow;">SpawnTitansAt</span>(type: <span style="color:blue;">string</span>, count: <span style="color:blue;">int</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">[List](../objects/List.md)</span>
 > Spawn titans at a position
 
-#### function <mark style="color:yellow;">SpawnTitansAtAsync</mark>(type: <mark style="color:blue;">string</mark>, count: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnTitansAtAsync</span>(type: <span style="color:blue;">string</span>, count: <span style="color:blue;">int</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">null</span>
 > Spawn titans at a position asynchronously
 
-#### function <mark style="color:yellow;">SpawnShifter</mark>(type: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[Shifter](../objects/Shifter.md)</mark>
+#### function <span style="color:yellow;">SpawnShifter</span>(type: <span style="color:blue;">string</span>) → <span style="color:blue;">[Shifter](../objects/Shifter.md)</span>
 > Spawn a shifter
 
-#### function <mark style="color:yellow;">SpawnShifterAt</mark>(type: <mark style="color:blue;">string</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">[Shifter](../objects/Shifter.md)</mark>
+#### function <span style="color:yellow;">SpawnShifterAt</span>(type: <span style="color:blue;">string</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">[Shifter](../objects/Shifter.md)</span>
 > Spawn a shifter at a position
 
-#### function <mark style="color:yellow;">SpawnProjectile</mark>(parameters: <mark style="color:blue;">Object[]</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnProjectile</span>(parameters: <span style="color:blue;">Object[]</span>) → <span style="color:blue;">null</span>
 > Spawn a projectile
 
-#### function <mark style="color:yellow;">SpawnProjectileWithOwner</mark>(parameters: <mark style="color:blue;">Object[]</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnProjectileWithOwner</span>(parameters: <span style="color:blue;">Object[]</span>) → <span style="color:blue;">null</span>
 > Spawn a projectile with an owner
 
-#### function <mark style="color:yellow;">SpawnEffect</mark>(parameters: <mark style="color:blue;">Object[]</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnEffect</span>(parameters: <span style="color:blue;">Object[]</span>) → <span style="color:blue;">null</span>
 > Spawn an effect
 
-#### function <mark style="color:yellow;">SpawnPlayer</mark>(player: <mark style="color:blue;">[Player](../objects/Player.md)</mark>, force: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnPlayer</span>(player: <span style="color:blue;">[Player](../objects/Player.md)</span>, force: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
 > Spawn a player
 
-#### function <mark style="color:yellow;">SpawnPlayerAll</mark>(force: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnPlayerAll</span>(force: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
 > Spawn a player for all players
 
-#### function <mark style="color:yellow;">SpawnPlayerAt</mark>(player: <mark style="color:blue;">[Player](../objects/Player.md)</mark>, force: <mark style="color:blue;">bool</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnPlayerAt</span>(player: <span style="color:blue;">[Player](../objects/Player.md)</span>, force: <span style="color:blue;">bool</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">null</span>
 > Spawn a player at a position
 
-#### function <mark style="color:yellow;">SpawnPlayerAtAll</mark>(force: <mark style="color:blue;">bool</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationY: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SpawnPlayerAtAll</span>(force: <span style="color:blue;">bool</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, rotationY: <span style="color:blue;">float</span> = <span style="color:blue;">0</span>) → <span style="color:blue;">null</span>
 > Spawn a player at a position for all players
 
-#### function <mark style="color:yellow;">SetPlaylist</mark>(playlist: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SetPlaylist</span>(playlist: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
 > Set the music playlist
 
-#### function <mark style="color:yellow;">SetSong</mark>(song: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SetSong</span>(song: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
 > Set the music song
 
-#### function <mark style="color:yellow;">DrawRay</mark>(start: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, dir: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, color: <mark style="color:blue;">[Color](../objects/Color.md)</mark>, duration: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">DrawRay</span>(start: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, dir: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, color: <span style="color:blue;">[Color](../objects/Color.md)</span>, duration: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
 > Draw a ray
 
-#### function <mark style="color:yellow;">ShowKillScore</mark>(damage: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">ShowKillScore</span>(damage: <span style="color:blue;">int</span>) → <span style="color:blue;">null</span>
 > Show the kill score
 
-#### function <mark style="color:yellow;">ShowKillFeed</mark>(killer: <mark style="color:blue;">string</mark>, victim: <mark style="color:blue;">string</mark>, score: <mark style="color:blue;">int</mark>, weapon: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">ShowKillFeed</span>(killer: <span style="color:blue;">string</span>, victim: <span style="color:blue;">string</span>, score: <span style="color:blue;">int</span>, weapon: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
 > Show the kill feed
 
-#### function <mark style="color:yellow;">ShowKillFeedAll</mark>(killer: <mark style="color:blue;">string</mark>, victim: <mark style="color:blue;">string</mark>, score: <mark style="color:blue;">int</mark>, weapon: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">ShowKillFeedAll</span>(killer: <span style="color:blue;">string</span>, victim: <span style="color:blue;">string</span>, score: <span style="color:blue;">int</span>, weapon: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
 > Show the kill feed for all players
 
 

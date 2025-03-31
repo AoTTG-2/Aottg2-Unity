@@ -1,7 +1,8 @@
 # MapTargetable
 Inherits from object
 ## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Fields
+<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
 |Team|string|False|The team of the targetable|

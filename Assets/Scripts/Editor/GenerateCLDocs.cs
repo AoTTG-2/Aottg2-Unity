@@ -67,67 +67,6 @@ public class GenerateCLDocs : EditorWindow
         }
     }
 
-
-    private System.Xml.XmlNode TryResolve(string cref, string file)
-    {
-        var doc = LoadXML(file);
-        var node = doc.SelectSingleNode($"//member[@name='{cref}']");
-        return node;
-    }
-
-    private System.Xml.XmlNode ResolveInheritDoc(string cref)
-    {
-        // search common assemblies first
-        foreach (var file in _priorityXML)
-        {
-            var node = TryResolve(cref, $"{_xmlFolder}{file}");
-            if (node != null)
-            {
-                return node;
-            }
-        }
-
-        List<string> searched = new();
-
-        // Search all with xml that start with UnityEngine first.
-        var unityengineFiles = System.IO.Directory.GetFiles(_xmlFolder, "UnityEngine*.xml");
-        foreach (var file in unityengineFiles)
-        {
-            if (_priorityXML.Contains(System.IO.Path.GetFileName(file)))
-                continue;
-            searched.Add(file);
-            var node = TryResolve(cref, file);
-            if (node != null)
-            {
-                return node;
-            }
-        }
-
-        // exhaustive search other xml files in the same directory
-        //var files = System.IO.Directory.GetFiles(_xmlFolder, "*.xml");
-        //foreach (var file in files)
-        //{
-        //    if (_priorityXML.Contains(System.IO.Path.GetFileName(file)) || searched.Contains(System.IO.Path.GetFileName(file)))
-        //        continue;
-        //    var node = TryResolve(cref, file);
-        //    if (node != null)
-        //    {
-        //        return node;
-        //    }
-        //}
-        return null;
-    }
-
-    private XmlDocument LoadXML(string path)
-    {
-        if (_loadedDocs.ContainsKey(path))
-            return _loadedDocs[path];
-        var xml = new System.Xml.XmlDocument();
-        xml.Load(path);
-        _loadedDocs.Add(path, xml);
-        return xml;
-    }
-
     private void GenerateDocs(string output)
     {
         // Read the xml
@@ -232,18 +171,301 @@ public class GenerateCLDocs : EditorWindow
         else if (isAbstract)
         {
             doc += "## Initialization\n";
-            doc += WrapColor("This class is abstract and cannot be instantiated.", "red");
+            doc += WrapColor("This class is abstract and cannot be instantiated.", "red") + "\n";
         }
         else if (isStatic && constructorCount == 0)
         {
             doc += "## Initialization\n";
-            doc += WrapColor("This class is static and cannot be instantiated.", "red");
+            doc += WrapColor("This class is static and cannot be instantiated.", "red") + "\n";
         }
 
         doc += GenerateFields(type, XMLdoc);
         doc += GenerateMethods(type, XMLdoc, isStatic: false);
         doc += GenerateMethods(type, XMLdoc, isStatic: true);
         System.IO.File.WriteAllText(path, doc);
+    }
+
+    private string GenerateInheritance(System.Type parentType)
+    {
+        string doc = string.Empty;
+        if (parentType == typeof(BuiltinClassInstance))
+        {
+            doc += "Inherits from object\n";
+        }
+        else
+        {
+            var parentClTypes = parentType.GetCustomAttributes(typeof(CLTypeAttribute), false);
+            if (parentClTypes.Length > 0)
+            {
+                var parentClType = (CLTypeAttribute)parentClTypes[0];
+                var parentClassName = parentClType.Name;
+                if (TypeReference.ContainsKey(parentClassName))
+                {
+                    parentClassName = TypeReference[parentClassName];
+                }
+                doc += $"Inherits from {parentClassName}\n";
+            }
+
+        }
+        return doc;
+    }
+
+    private string GenerateInitializers(System.Type type, string className, System.Xml.XmlDocument XMLdoc)
+    {
+        // Add initializer header
+        string doc = "## Initialization\n";
+
+        // Grab all constructors
+        var constructors = type.GetConstructors()
+            .Where(x => x.GetCustomAttributes(typeof(CLConstructorAttribute), false).Length > 0)
+            .ToArray();
+
+
+        string typeSummary = DelimitStyled(ResolveClassNodeText(type, XMLdoc, "summary"));
+        string codeSnippet = ResolveClassNodeText(type, XMLdoc, "code");
+        string codeExample = ResolveClassNodeText(type, XMLdoc, "example");
+
+        if (typeSummary != string.Empty)
+        {
+            doc += $"> {typeSummary}\n";
+        }
+
+        if (codeSnippet != string.Empty)
+        {
+            doc += $"> Constructors:\n";
+            doc += CreateCodeExample(codeSnippet);
+        }
+        else
+        {
+            // create code examples for each constructor
+            codeSnippet = string.Empty;
+            foreach (var constructor in constructors)
+            {
+                var parameters = constructor.GetParameters();
+                var parameterNames = parameters.Select(x => x.Name).ToList();
+                var parameterTypes = parameters.Select(x => ResolveType(x.ParameterType.Name)).ToList();
+                var parameterValues = parameters.Select(x => $"{x.ParameterType.Name}").ToList();
+                var constructorSignature = $"example = {className}({string.Join(", ", parameterValues)})";
+
+                codeSnippet += $"# {className}({string.Join(", ", parameterValues)})\n";
+                codeSnippet += $"example = {className}({string.Join(", ", parameterValues)})\n";
+                codeSnippet += "\n";
+            }
+
+            if (codeSnippet == string.Empty) doc += WrapColor("No constructor given, object can only be accessed via builtins.", "red") + "\n";
+            else doc += CreateCodeExample(codeSnippet);
+        }
+
+        if (codeExample != string.Empty)
+        {
+            doc += $"> Example:\n";
+            doc += CreateCodeExample(codeExample);
+        }
+
+        return doc;
+    }
+
+    private string GenerateFields(System.Type type, System.Xml.XmlDocument XMLdoc)
+    {
+        string doc = string.Empty;
+
+        var properties = type.GetProperties()
+            .Where(x => x.GetCustomAttributes(typeof(CLPropertyAttribute), false).Length > 0)
+            .ToArray();
+
+        var fields = type.GetFields()
+            .Where(x => x.GetCustomAttributes(typeof(CLPropertyAttribute), false).Length > 0)
+            .ToArray();
+
+        List<string> headers = new List<string> { "Field", "Type", "Readonly", "Description" };
+        List<List<string>> fieldRows = new List<List<string>>();
+        List<List<string>> staticFieldRows = new List<List<string>>();
+
+        foreach (var property in properties)
+        {
+            var clProperty = (CLPropertyAttribute)property.GetCustomAttributes(typeof(CLPropertyAttribute), false)[0];
+            var isStatic = property.IsStatic();
+            var field = DelimitStyled(property.Name);
+            var varType = ResolveType(property.PropertyType.Name);
+            var readOnly = clProperty.ReadOnly || !property.CanWrite;
+            var description = ResolvePropertyDescription(type, property, XMLdoc, clProperty.Description);
+
+
+            if (isStatic)
+                staticFieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+            else
+                fieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+        }
+
+        foreach (var field in fields)
+        {
+            var clProperty = (CLPropertyAttribute)field.GetCustomAttributes(typeof(CLPropertyAttribute), false)[0];
+            var isStatic = field.IsStatic;
+            var fieldName = DelimitStyled(field.Name);
+            var varType = ResolveType(field.FieldType.Name);
+            var readOnly = clProperty.ReadOnly;
+            var description = ResolveFieldDescription(type, field, XMLdoc, clProperty.Description);
+            if (isStatic)
+                staticFieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+            else
+                fieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+        }
+
+        if (fieldRows.Count > 0)
+        {
+            doc += "## Fields\n";
+            doc += CreateTable(headers, fieldRows);
+        }
+
+        if (staticFieldRows.Count > 0)
+        {
+            doc += "## Static Fields\n";
+            doc += CreateTable(headers, staticFieldRows);
+        }
+
+        return doc;
+    }
+
+    private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc, bool isStatic=false)
+    {
+        string doc = string.Empty;
+        var methods = type.GetMethods()
+            .Where(x => x.GetCustomAttributes(typeof(CLMethodAttribute), false).Length > 0)
+            .ToArray();
+
+        string header = "## Methods";
+        // Filter out static methods
+        if (isStatic)
+        {
+            methods = methods.Where(x => x.IsStatic).ToArray();
+            header = "## Static Methods";
+        }
+        else
+        {
+            methods = methods.Where(x => !x.IsStatic).ToArray();
+        }
+
+        if (methods.Length > 0)
+        {
+            doc += $"{header}\n";
+            List<string> headers = new List<string> { "Function", "Returns", "Description" };
+            List<float> sizing = new List<float> { 30, 20, 50 };
+            List<List<string>> rows = new List<List<string>>();
+            foreach (var method in methods)
+            {
+                var clMethod = (CLMethodAttribute)method.GetCustomAttributes(typeof(CLMethodAttribute), false)[0];
+                var obselete = method.GetCustomAttributes(typeof(ObsoleteAttribute), false);
+                var methodName = DelimitStyled(method.Name);
+                var parameters = method.GetParameters();
+                string signature = $"{WrapColor(methodName, "yellow")}(";
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    var param = parameters[i];
+                    var paramType = ResolveType(param.ParameterType.Name);
+                    string paramDefaultValue = param.DefaultValue == null? "null" : param.DefaultValue.ToString();
+
+                    if (param.HasDefaultValue)
+                        signature += $"{param.Name}: {WrapColor(paramType, "blue")} = {WrapColor(paramDefaultValue, "blue")}";
+                    else
+                        signature += $"{param.Name}: {WrapColor(paramType, "blue")}";
+                    if (i < parameters.Length - 1)
+                        signature += ", ";
+                }
+                signature += ")";
+                var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
+                var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
+                var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
+
+                doc += $"#### function {signature} \u2192 {WrapColor(returnType, "blue")}\n";
+
+                if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
+
+                if (obselete.Length > 0)
+                {
+                    // If obsolete, add a note
+                    var obsoleteAttr = (ObsoleteAttribute)obselete[0];
+                    string warningStr = WrapColor("This method is obselete", "red");
+                    if (!string.IsNullOrEmpty(obsoleteAttr.Message))
+                    {
+                        doc += $"> {warningStr}: {obsoleteAttr.Message}\n\n";
+                    }
+                    else doc += $"> {warningStr}\n\n";
+                }
+                doc += $"> {description}\n\n";
+
+                if (codeExample != string.Empty)
+                {
+                    doc += $"> Example:\n";
+                    doc += CreateCodeExample(codeExample);
+                }
+
+                if (method == methods.Last()) doc += "\n---\n\n";
+            }
+
+            //doc += CreateHTMLTable(headers, rows, sizing);
+        }
+        return doc;
+    }
+
+    #region XMLParsingOrUtility
+    private System.Xml.XmlNode TryResolve(string cref, string file)
+    {
+        var doc = LoadXML(file);
+        var node = doc.SelectSingleNode($"//member[@name='{cref}']");
+        return node;
+    }
+
+    private System.Xml.XmlNode ResolveInheritDoc(string cref)
+    {
+        // search common assemblies first
+        foreach (var file in _priorityXML)
+        {
+            var node = TryResolve(cref, $"{_xmlFolder}{file}");
+            if (node != null)
+            {
+                return node;
+            }
+        }
+
+        List<string> searched = new();
+
+        // Search all with xml that start with UnityEngine first.
+        var unityengineFiles = System.IO.Directory.GetFiles(_xmlFolder, "UnityEngine*.xml");
+        foreach (var file in unityengineFiles)
+        {
+            if (_priorityXML.Contains(System.IO.Path.GetFileName(file)))
+                continue;
+            searched.Add(file);
+            var node = TryResolve(cref, file);
+            if (node != null)
+            {
+                return node;
+            }
+        }
+
+        // exhaustive search other xml files in the same directory
+        //var files = System.IO.Directory.GetFiles(_xmlFolder, "*.xml");
+        //foreach (var file in files)
+        //{
+        //    if (_priorityXML.Contains(System.IO.Path.GetFileName(file)) || searched.Contains(System.IO.Path.GetFileName(file)))
+        //        continue;
+        //    var node = TryResolve(cref, file);
+        //    if (node != null)
+        //    {
+        //        return node;
+        //    }
+        //}
+        return null;
+    }
+
+    private XmlDocument LoadXML(string path)
+    {
+        if (_loadedDocs.ContainsKey(path))
+            return _loadedDocs[path];
+        var xml = new System.Xml.XmlDocument();
+        xml.Load(path);
+        _loadedDocs.Add(path, xml);
+        return xml;
     }
 
     private string DelimitStyled(string val)
@@ -331,7 +553,7 @@ public class GenerateCLDocs : EditorWindow
     /// <summary>
     /// TODO: This will work for now but will need to be replaced if we ever add function overloading.
     /// </summary>
-    private string ResolveMethodNodeText(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType="summary", string defaultText="")
+    private string ResolveMethodNodeText(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType = "summary", string defaultText = "")
     {
         var fqn = GetFullyQualifiedMethod(method);
         var methodNameWithParams = $"M:{type.FullName}.{fqn}";
@@ -380,7 +602,7 @@ public class GenerateCLDocs : EditorWindow
         return defaultText;
     }
 
-    private XmlNode ResolveMethodNode(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType="summary")
+    private XmlNode ResolveMethodNode(System.Type type, MethodBase method, System.Xml.XmlDocument XMLdoc, string nodeType = "summary")
     {
         var methodName = method.Name;
         // Create params signature with fully qualified name
@@ -398,245 +620,12 @@ public class GenerateCLDocs : EditorWindow
         return null;
     }
 
-    private string GenerateInheritance(System.Type parentType)
-    {
-        string doc = string.Empty;
-        if (parentType == typeof(BuiltinClassInstance))
-        {
-            doc += "Inherits from object\n";
-        }
-        else
-        {
-            var parentClTypes = parentType.GetCustomAttributes(typeof(CLTypeAttribute), false);
-            if (parentClTypes.Length > 0)
-            {
-                var parentClType = (CLTypeAttribute)parentClTypes[0];
-                var parentClassName = parentClType.Name;
-                if (TypeReference.ContainsKey(parentClassName))
-                {
-                    parentClassName = TypeReference[parentClassName];
-                }
-                doc += $"Inherits from {parentClassName}\n";
-            }
-
-        }
-        return doc;
-    }
-
-    private string GenerateInitializers(System.Type type, string className, System.Xml.XmlDocument XMLdoc)
-    {
-        // Add initializer header
-        string doc = "## Initialization\n";
-
-        // Grab all constructors
-        var constructors = type.GetConstructors()
-            .Where(x => x.GetCustomAttributes(typeof(CLConstructorAttribute), false).Length > 0)
-            .ToArray();
-
-
-        string typeSummary = DelimitStyled(ResolveClassNodeText(type, XMLdoc, "summary"));
-        string codeSnippet = ResolveClassNodeText(type, XMLdoc, "code");
-        string codeExample = ResolveClassNodeText(type, XMLdoc, "example");
-
-        if (typeSummary != string.Empty)
-        {
-            doc += $"> {typeSummary}\n";
-        }
-
-        if (codeSnippet != string.Empty)
-        {
-            doc += $"> Constructors:\n";
-            doc += CreateCodeExample(codeSnippet);
-        }
-        else
-        {
-            // create code examples for each constructor
-            codeSnippet = string.Empty;
-            foreach (var constructor in constructors)
-            {
-                var parameters = constructor.GetParameters();
-                var parameterNames = parameters.Select(x => x.Name).ToList();
-                var parameterTypes = parameters.Select(x => ResolveType(x.ParameterType.Name)).ToList();
-                var parameterValues = parameters.Select(x => $"{x.ParameterType.Name}").ToList();
-                var constructorSignature = $"example = {className}({string.Join(", ", parameterValues)})";
-
-                codeSnippet += $"# {className}({string.Join(", ", parameterValues)})\n";
-                codeSnippet += $"example = {className}({string.Join(", ", parameterValues)})\n";
-                codeSnippet += "\n";
-            }
-
-            if (codeSnippet == string.Empty) doc += WrapColor("No constructor given, object can only be accessed via builtins.", "red");
-            else doc += CreateCodeExample(codeSnippet);
-        }
-
-        if (codeExample != string.Empty)
-        {
-            doc += $"> Example:\n";
-            doc += CreateCodeExample(codeExample);
-        }
-
-        return doc;
-    }
-
-    private string GenerateFields(System.Type type, System.Xml.XmlDocument XMLdoc)
-    {
-        string doc = string.Empty;
-
-        var properties = type.GetProperties()
-            .Where(x => x.GetCustomAttributes(typeof(CLPropertyAttribute), false).Length > 0)
-            .ToArray();
-
-        var fields = type.GetFields()
-            .Where(x => x.GetCustomAttributes(typeof(CLPropertyAttribute), false).Length > 0)
-            .ToArray();
-
-        List<string> headers = new List<string> { "Field", "Type", "Readonly", "Description" };
-        List<List<string>> fieldRows = new List<List<string>>();
-        List<List<string>> staticFieldRows = new List<List<string>>();
-
-        foreach (var property in properties)
-        {
-            var clProperty = (CLPropertyAttribute)property.GetCustomAttributes(typeof(CLPropertyAttribute), false)[0];
-            var isStatic = property.IsStatic();
-            var field = DelimitStyled(property.Name);
-            var varType = ResolveType(property.PropertyType.Name);
-            var readOnly = clProperty.ReadOnly || !property.CanWrite;
-            var description = ResolvePropertyDescription(type, property, XMLdoc, clProperty.Description);
-
-
-            if (isStatic)
-                staticFieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
-            else
-                fieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
-        }
-
-        foreach (var field in fields)
-        {
-            var clProperty = (CLPropertyAttribute)field.GetCustomAttributes(typeof(CLPropertyAttribute), false)[0];
-            var isStatic = field.IsStatic;
-            var fieldName = DelimitStyled(field.Name);
-            var varType = ResolveType(field.FieldType.Name);
-            var readOnly = clProperty.ReadOnly;
-            var description = ResolveFieldDescription(type, field, XMLdoc, clProperty.Description);
-            if (isStatic)
-                staticFieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
-            else
-                fieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
-        }
-
-        if (fieldRows.Count > 0)
-        {
-            doc += "## Fields\n";
-            doc += CreateTable(headers, fieldRows);
-        }
-
-        if (staticFieldRows.Count > 0)
-        {
-            doc += "## Static Fields\n";
-            doc += CreateTable(headers, staticFieldRows);
-        }
-
-        return doc;
-    }
-
-    /// <summary>
-    /// Generates methods in the format
-    /// ### ret MethodName(param1 : param1Type, param2 : param2Type = DefaultValue...)
-    /// - **Description:** Description of the method
-    /// - **Parameters:**
-    ///   - `param1`: Description of param1
-    ///   - `param2`: *(Optional)* Description of param2
-    /// - **Returns:** Return type of the method
-    /// Signature - dcdcaa
-    /// Param Type - 509cd4
-    /// Param name - 9cdcfe
-    /// </summary>
-    private string GenerateMethods(System.Type type, System.Xml.XmlDocument XMLdoc, bool isStatic=false)
-    {
-        string doc = string.Empty;
-        var methods = type.GetMethods()
-            .Where(x => x.GetCustomAttributes(typeof(CLMethodAttribute), false).Length > 0)
-            .ToArray();
-
-        string header = "## Methods";
-        // Filter out static methods
-        if (isStatic)
-        {
-            methods = methods.Where(x => x.IsStatic).ToArray();
-            header = "## Static Methods";
-        }
-        else
-        {
-            methods = methods.Where(x => !x.IsStatic).ToArray();
-        }
-
-        if (methods.Length > 0)
-        {
-            doc += $"{header}\n";
-            List<string> headers = new List<string> { "Function", "Returns", "Description" };
-            List<float> sizing = new List<float> { 30, 20, 50 };
-            List<List<string>> rows = new List<List<string>>();
-            foreach (var method in methods)
-            {
-                var clMethod = (CLMethodAttribute)method.GetCustomAttributes(typeof(CLMethodAttribute), false)[0];
-                var obselete = method.GetCustomAttributes(typeof(ObsoleteAttribute), false);
-                var methodName = DelimitStyled(method.Name);
-                var parameters = method.GetParameters();
-                string signature = $"{WrapColor(methodName, "yellow")}(";
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    var param = parameters[i];
-                    var paramType = ResolveType(param.ParameterType.Name);
-                    string paramDefaultValue = param.DefaultValue == null? "null" : param.DefaultValue.ToString();
-
-                    if (param.HasDefaultValue)
-                        signature += $"{param.Name}: {WrapColor(paramType, "blue")} = {WrapColor(paramDefaultValue, "blue")}";
-                    else
-                        signature += $"{param.Name}: {WrapColor(paramType, "blue")}";
-                    if (i < parameters.Length - 1)
-                        signature += ", ";
-                }
-                signature += ")";
-                var returnType = ResolveType(method.ReturnType.Name, isReturned: true);
-                var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
-                var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
-
-                doc += $"#### function {signature} \u2192 {WrapColor(returnType, "blue")}\n";
-
-                if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
-
-                if (obselete.Length > 0)
-                {
-                    // If obsolete, add a note
-                    var obsoleteAttr = (ObsoleteAttribute)obselete[0];
-                    string warningStr = WrapColor("This method is obselete", "red");
-                    if (!string.IsNullOrEmpty(obsoleteAttr.Message))
-                    {
-                        doc += $"> {warningStr}: {obsoleteAttr.Message}\n\n";
-                    }
-                    else doc += $"> {warningStr}\n\n";
-                }
-                doc += $"> {description}\n\n";
-
-                if (codeExample != string.Empty)
-                {
-                    doc += $"> Example:\n";
-                    doc += CreateCodeExample(codeExample);
-                }
-
-                if (method == methods.Last()) doc += "\n---\n\n";
-            }
-
-            //doc += CreateHTMLTable(headers, rows, sizing);
-        }
-        return doc;
-    }
-
-
     private string WrapColor(string text, string color)
     {
-        return $"<mark style=\"color:{color};\">{text}</mark>";
+        return $"<span style=\"color:{color};\">{text}</span>";
     }
+
+    #endregion
 
     private string CreateCodeExample(List<string> lines)
     {
@@ -687,7 +676,6 @@ public class GenerateCLDocs : EditorWindow
         return code;
     }
 
-
     private string CreateHTMLTable(List<string> headers, List<List<string>> rows, List<float> columnWidths)
     {
         string table = string.Empty;
@@ -725,12 +713,6 @@ public class GenerateCLDocs : EditorWindow
         return table;
     }
 
-    /// <summary>
-    /// Create a markdown table
-    /// </summary>
-    /// <param name="headers"></param>
-    /// <param name="rows"></param>
-    /// <returns></returns>
     private string CreateTable(List<string> headers, List<List<string>> rows)
     {
              

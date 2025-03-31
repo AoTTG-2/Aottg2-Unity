@@ -1,60 +1,61 @@
 # String
 Inherits from object
 ## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>## Static Fields
+<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+## Static Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
 |Newline|string|True|Returns the newline character.|
 ## Static Methods
-#### function <mark style="color:yellow;">FormatFloat</mark>(val: <mark style="color:blue;">float</mark>, decimals: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">FormatFloat</span>(val: <span style="color:blue;">float</span>, decimals: <span style="color:blue;">int</span>) → <span style="color:blue;">string</span>
 > Formats a float to a string with the specified number of decimal places.
 
-#### function <mark style="color:yellow;">FormatFromList</mark>(str: <mark style="color:blue;">string</mark>, list: <mark style="color:blue;">[List](../objects/List.md)</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">FormatFromList</span>(str: <span style="color:blue;">string</span>, list: <span style="color:blue;">[List](../objects/List.md)</span>) → <span style="color:blue;">string</span>
 > Equivalent to C# string.format(string, List<string>).
 
-#### function <mark style="color:yellow;">Split</mark>(toSplit: <mark style="color:blue;">string</mark>, splitter: <mark style="color:blue;">Object</mark>, removeEmptyEntries: <mark style="color:blue;">bool</mark> = <mark style="color:blue;">False</mark>) → <mark style="color:blue;">[List](../objects/List.md)</mark>
+#### function <span style="color:yellow;">Split</span>(toSplit: <span style="color:blue;">string</span>, splitter: <span style="color:blue;">Object</span>, removeEmptyEntries: <span style="color:blue;">bool</span> = <span style="color:blue;">False</span>) → <span style="color:blue;">[List](../objects/List.md)</span>
 > Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
 
-#### function <mark style="color:yellow;">Join</mark>(list: <mark style="color:blue;">[List](../objects/List.md)</mark>, separator: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Join</span>(list: <span style="color:blue;">[List](../objects/List.md)</span>, separator: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Joins a list of strings into a single string with the specified separator.
 
-#### function <mark style="color:yellow;">Substring</mark>(str: <mark style="color:blue;">string</mark>, startIndex: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Substring</span>(str: <span style="color:blue;">string</span>, startIndex: <span style="color:blue;">int</span>) → <span style="color:blue;">string</span>
 > Returns a substring starting from the specified index.
 
-#### function <mark style="color:yellow;">SubstringWithLength</mark>(str: <mark style="color:blue;">string</mark>, startIndex: <mark style="color:blue;">int</mark>, length: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">SubstringWithLength</span>(str: <span style="color:blue;">string</span>, startIndex: <span style="color:blue;">int</span>, length: <span style="color:blue;">int</span>) → <span style="color:blue;">string</span>
 > Returns a substring of the specified length starting from the specified start index.
 
-#### function <mark style="color:yellow;">Length</mark>(str: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">int</mark>
+#### function <span style="color:yellow;">Length</span>(str: <span style="color:blue;">string</span>) → <span style="color:blue;">int</span>
 > Length of the string.
 
-#### function <mark style="color:yellow;">Replace</mark>(str: <mark style="color:blue;">string</mark>, replace: <mark style="color:blue;">string</mark>, with: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Replace</span>(str: <span style="color:blue;">string</span>, replace: <span style="color:blue;">string</span>, with: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Replaces all occurrences of a substring with another substring.
 
-#### function <mark style="color:yellow;">Contains</mark>(str: <mark style="color:blue;">string</mark>, match: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">Contains</span>(str: <span style="color:blue;">string</span>, match: <span style="color:blue;">string</span>) → <span style="color:blue;">bool</span>
 > Checks if the string contains the specified substring.
 
-#### function <mark style="color:yellow;">StartsWith</mark>(str: <mark style="color:blue;">string</mark>, match: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">StartsWith</span>(str: <span style="color:blue;">string</span>, match: <span style="color:blue;">string</span>) → <span style="color:blue;">bool</span>
 > Checks if the string starts with the specified substring.
 
-#### function <mark style="color:yellow;">EndsWith</mark>(str: <mark style="color:blue;">string</mark>, match: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">EndsWith</span>(str: <span style="color:blue;">string</span>, match: <span style="color:blue;">string</span>) → <span style="color:blue;">bool</span>
 > Checks if the string ends with the specified substring.
 
-#### function <mark style="color:yellow;">Trim</mark>(str: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Trim</span>(str: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Trims whitespace from the start and end of the string.
 
-#### function <mark style="color:yellow;">Insert</mark>(str: <mark style="color:blue;">string</mark>, insert: <mark style="color:blue;">string</mark>, index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Insert</span>(str: <span style="color:blue;">string</span>, insert: <span style="color:blue;">string</span>, index: <span style="color:blue;">int</span>) → <span style="color:blue;">string</span>
 > Inserts a substring at the specified index.
 
-#### function <mark style="color:yellow;">Capitalize</mark>(str: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">Capitalize</span>(str: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Capitalizes the first letter of the string.
 
-#### function <mark style="color:yellow;">ToUpper</mark>(str: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">ToUpper</span>(str: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Converts the string to uppercase.
 
-#### function <mark style="color:yellow;">ToLower</mark>(str: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
+#### function <span style="color:yellow;">ToLower</span>(str: <span style="color:blue;">string</span>) → <span style="color:blue;">string</span>
 > Converts the string to lowercase.
 
-#### function <mark style="color:yellow;">IndexOf</mark>(str: <mark style="color:blue;">string</mark>, substring: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">int</mark>
+#### function <span style="color:yellow;">IndexOf</span>(str: <span style="color:blue;">string</span>, substring: <span style="color:blue;">string</span>) → <span style="color:blue;">int</span>
 > Returns the index of the given string.
 
 

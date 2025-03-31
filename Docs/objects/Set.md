@@ -13,46 +13,46 @@ example = Set(CustomLogicListBuiltin)
 |---|---|---|---|
 |Count|int|True|The number of elements in the set|
 ## Methods
-#### function <mark style="color:yellow;">Clear</mark>() → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Clear</span>() → <span style="color:blue;">null</span>
 > Clear all set elements
 
-#### function <mark style="color:yellow;">Contains</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">Contains</span>(value: <span style="color:blue;">Object</span>) → <span style="color:blue;">bool</span>
 > Check if the set contains the specified element
 
-#### function <mark style="color:yellow;">Add</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Add</span>(value: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Add an element to the set
 
-#### function <mark style="color:yellow;">Remove</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Remove</span>(value: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
 > Remove the element from the set
 
-#### function <mark style="color:yellow;">Union</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Union</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">null</span>
 > Union with another set
 
-#### function <mark style="color:yellow;">Intersect</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Intersect</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">null</span>
 > Intersect with another set
 
-#### function <mark style="color:yellow;">Difference</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">Difference</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">null</span>
 > Difference with another set
 
-#### function <mark style="color:yellow;">IsSubsetOf</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">IsSubsetOf</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set is a subset of another set
 
-#### function <mark style="color:yellow;">IsSupersetOf</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">IsSupersetOf</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set is a superset of another set
 
-#### function <mark style="color:yellow;">IsProperSubsetOf</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">IsProperSubsetOf</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set is a proper subset of another set
 
-#### function <mark style="color:yellow;">IsProperSupersetOf</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">IsProperSupersetOf</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set is a proper superset of another set
 
-#### function <mark style="color:yellow;">Overlaps</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">Overlaps</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set overlaps with another set
 
-#### function <mark style="color:yellow;">SetEquals</mark>(set: <mark style="color:blue;">[Set](../objects/Set.md)</mark>) → <mark style="color:blue;">bool</mark>
+#### function <span style="color:yellow;">SetEquals</span>(set: <span style="color:blue;">[Set](../objects/Set.md)</span>) → <span style="color:blue;">bool</span>
 > Check if the set has the same elements as another set
 
-#### function <mark style="color:yellow;">ToList</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
+#### function <span style="color:yellow;">ToList</span>() → <span style="color:blue;">[List](../objects/List.md)</span>
 > Convert the set to a list
 
 

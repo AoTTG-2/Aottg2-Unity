@@ -27,18 +27,18 @@ example = LineRenderer(Object[])
 |WidthMultiplier|float|False|The width multiplier of the line renderer|
 |ColorGradientMode|string|False|The color gradient mode of the line renderer|
 ## Methods
-#### function <mark style="color:yellow;">GetPosition</mark>(index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+#### function <span style="color:yellow;">GetPosition</span>(index: <span style="color:blue;">int</span>) → <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>
 > Get the position of a point in the line renderer
 
-#### function <mark style="color:yellow;">SetPosition</mark>(index: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+#### function <span style="color:yellow;">SetPosition</span>(index: <span style="color:blue;">int</span>, position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">null</span>
 > Set the position of a point in the line renderer
 
 
 ---
 
 ## Static Methods
-#### function <mark style="color:yellow;">CreateLineRenderer</mark>() → <mark style="color:blue;">[LineRenderer](../objects/LineRenderer.md)</mark>
-> <mark style="color:red;">This method is obselete</mark>: Create a new instance with LineRenderer() instead.
+#### function <span style="color:yellow;">CreateLineRenderer</span>() → <span style="color:blue;">[LineRenderer](../objects/LineRenderer.md)</span>
+> <span style="color:red;">This method is obselete</span>: Create a new instance with LineRenderer() instead.
 
 > Create a new LineRenderer
 
