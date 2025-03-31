@@ -1,7 +1,7 @@
 # LineCastHitResult
 Inherits from object
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

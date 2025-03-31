@@ -1,18 +1,18 @@
 # Cutscene
 Inherits from object
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Methods
-#### function <span style="color:yellow;">Start</span>(name: <span style="color:blue;">string</span>, full: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Start</mark>(name: <mark style="color:blue;">string</mark>, full: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Start a cutscene
 
-#### function <span style="color:yellow;">ShowDialogue</span>(icon: <span style="color:blue;">string</span>, title: <span style="color:blue;">string</span>, content: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">ShowDialogue</mark>(icon: <mark style="color:blue;">string</mark>, title: <mark style="color:blue;">string</mark>, content: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
 > Show a dialogue box
 
-#### function <span style="color:yellow;">ShowDialogueForTime</span>(icon: <span style="color:blue;">string</span>, title: <span style="color:blue;">string</span>, content: <span style="color:blue;">string</span>, time: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">ShowDialogueForTime</mark>(icon: <mark style="color:blue;">string</mark>, title: <mark style="color:blue;">string</mark>, content: <mark style="color:blue;">string</mark>, time: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
 > Show a dialogue box for a certain amount of time
 
-#### function <span style="color:yellow;">HideDialogue</span>() → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">HideDialogue</mark>() → <mark style="color:blue;">null</mark>
 > Hide the dialogue box
 
 

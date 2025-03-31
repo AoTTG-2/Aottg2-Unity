@@ -1,27 +1,27 @@
 # PersistentData
 Inherits from object
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Static Methods
-#### function <span style="color:yellow;">SetProperty</span>(property: <span style="color:blue;">string</span>, value: <span style="color:blue;">Object</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">SetProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
 > Sets the property with given name to the object value. Valid value types are float, string, bool, and int.
 
-#### function <span style="color:yellow;">GetProperty</span>(property: <span style="color:blue;">string</span>, defaultValue: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
+#### function <mark style="color:yellow;">GetProperty</mark>(property: <mark style="color:blue;">string</mark>, defaultValue: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
 > Gets the property with given name. If property does not exist, returns defaultValue.
 
-#### function <span style="color:yellow;">LoadFromFile</span>(fileName: <span style="color:blue;">string</span>, encrypted: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">LoadFromFile</mark>(fileName: <mark style="color:blue;">string</mark>, encrypted: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Loads persistent data from given file name. If encrypted is true, will treat the file as having been saved as encrypted.
 
-#### function <span style="color:yellow;">SaveToFile</span>(fileName: <span style="color:blue;">string</span>, encrypted: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">SaveToFile</mark>(fileName: <mark style="color:blue;">string</mark>, encrypted: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Saves current persistent data to given file name. If encrypted is true, will also encrypt the file instead of using plaintext.
 
-#### function <span style="color:yellow;">Clear</span>() → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Clear</mark>() → <mark style="color:blue;">null</mark>
 > Clears current persistent data.
 
-#### function <span style="color:yellow;">IsValidFileName</span>(fileName: <span style="color:blue;">string</span>) → <span style="color:blue;">bool</span>
+#### function <mark style="color:yellow;">IsValidFileName</mark>(fileName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
 > Determines whether or not the given fileName will be allowed for use when saving/loading a file.
 
-#### function <span style="color:yellow;">FileExists</span>(fileName: <span style="color:blue;">string</span>) → <span style="color:blue;">bool</span>
+#### function <mark style="color:yellow;">FileExists</mark>(fileName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
 > Determines whether the file given already exists. Throws an error if given an invalid file name.
 
 

@@ -18,56 +18,56 @@ example = Quaternion(Object[])
 |---|---|---|---|
 |Identity|[Quaternion](../objects/Quaternion.md)|True|The identity rotation (Read Only).|
 ## Methods
-#### function <span style="color:yellow;">\_\_Copy\_\_</span>() → <span style="color:blue;">Object</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Copy\_\_</mark>() → <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Add\_\_</span>(self: <span style="color:blue;">Object</span>, other: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Add\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Sub\_\_</span>(self: <span style="color:blue;">Object</span>, other: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Sub\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Mul\_\_</span>(self: <span style="color:blue;">Object</span>, other: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Mul\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Div\_\_</span>(self: <span style="color:blue;">Object</span>, other: <span style="color:blue;">Object</span>) → <span style="color:blue;">Object</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Div\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Eq\_\_</span>(self: <span style="color:blue;">Object</span>, other: <span style="color:blue;">Object</span>) → <span style="color:blue;">bool</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Eq\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">bool</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">\_\_Hash\_\_</span>() → <span style="color:blue;">int</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">\_\_Hash\_\_</mark>() → <mark style="color:blue;">int</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
 
 ---
 
 ## Static Methods
-#### function <span style="color:yellow;">Lerp</span>(a: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, b: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, t: <span style="color:blue;">float</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">Lerp</mark>(a: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, b: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Interpolates between a and b by t and normalizes the result afterwards.
 
-#### function <span style="color:yellow;">LerpUnclamped</span>(a: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, b: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, t: <span style="color:blue;">float</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">LerpUnclamped</mark>(a: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, b: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Interpolates between a and b by t and normalizes the result afterwards. The parameter t is not clamped.
 
-#### function <span style="color:yellow;">Slerp</span>(a: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, b: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, t: <span style="color:blue;">float</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">Slerp</mark>(a: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, b: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Spherically linear interpolates between unit quaternions a and b by a ratio of t.
 
-#### function <span style="color:yellow;">SlerpUnclamped</span>(a: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, b: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, t: <span style="color:blue;">float</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">SlerpUnclamped</mark>(a: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, b: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, t: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Spherically linear interpolates between unit quaternions a and b by t.
 
-#### function <span style="color:yellow;">FromEuler</span>(euler: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">FromEuler</mark>(euler: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Returns the Quaternion rotation from the given euler angles.
 
-#### function <span style="color:yellow;">LookRotation</span>(forward: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, upwards: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span> = <span style="color:blue;">null</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">LookRotation</mark>(forward: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, upwards: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark> = <mark style="color:blue;">null</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Creates a rotation with the specified forward and upwards directions.
 
-#### function <span style="color:yellow;">FromToRotation</span>(a: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, b: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">FromToRotation</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Creates a rotation from fromDirection to toDirection.
 
-#### function <span style="color:yellow;">Inverse</span>(q: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">Inverse</mark>(q: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Returns the Inverse of rotation.
 
-#### function <span style="color:yellow;">RotateTowards</span>(from: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, to: <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>, maxDegreesDelta: <span style="color:blue;">float</span>) → <span style="color:blue;">[Quaternion](../objects/Quaternion.md)</span>
+#### function <mark style="color:yellow;">RotateTowards</mark>(from: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, to: <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>, maxDegreesDelta: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[Quaternion](../objects/Quaternion.md)</mark>
 > Rotates a rotation from towards to.
 
 

@@ -1,7 +1,7 @@
 # Collision
 Inherits from object
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -9,11 +9,11 @@ Inherits from object
 |Impulse|[Vector3](../objects/Vector3.md)|True||
 |RelativeVelocity|[Vector3](../objects/Vector3.md)|True||
 ## Methods
-#### function <span style="color:yellow;">GetContact</span>(index: <span style="color:blue;">int</span>) → <span style="color:blue;">null</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">GetContact</mark>(index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">GetContacts</span>() → <span style="color:blue;">null</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">GetContacts</mark>() → <mark style="color:blue;">null</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
 
 ---

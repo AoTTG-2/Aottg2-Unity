@@ -1,7 +1,7 @@
 # Shifter
 Inherits from [Character](../objects/Character.md)
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -50,61 +50,61 @@ Inherits from [Character](../objects/Character.md)
 |CurrentAnimation|string|True|Character's current playing animation.|
 |Grounded|bool|True|Character's grounded status.|
 ## Methods
-#### function <span style="color:yellow;">MoveTo</span>(position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, range: <span style="color:blue;">float</span>, ignoreEnemies: <span style="color:blue;">bool</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">MoveTo</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, range: <mark style="color:blue;">float</mark>, ignoreEnemies: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.
 
-#### function <span style="color:yellow;">Target</span>(enemyObj: <span style="color:blue;">Object</span>, focus: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Target</mark>(enemyObj: <mark style="color:blue;">Object</mark>, focus: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
 > Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.
 
-#### function <span style="color:yellow;">Idle</span>(time: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Idle</mark>(time: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
 > Causes the (AI) shifter to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.
 
-#### function <span style="color:yellow;">Wander</span>() → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Wander</mark>() → <mark style="color:blue;">null</mark>
 > Causes the (AI) shifter to cancel any move commands and begin wandering randomly.
 
-#### function <span style="color:yellow;">Blind</span>() → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Blind</mark>() → <mark style="color:blue;">null</mark>
 > Causes the shifter to enter the blind state.
 
-#### function <span style="color:yellow;">Cripple</span>(time: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Cripple</mark>(time: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
 > Causes the shifter to enter the cripple state.
 
-#### function <span style="color:yellow;">GetKilled</span>(killer: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
 > Kills the character. Callable by non-owners.
 
-#### function <span style="color:yellow;">GetDamaged</span>(killer: <span style="color:blue;">string</span>, damage: <span style="color:blue;">int</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">string</mark>, damage: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
 > Damages the character and kills it if its health reaches 0. Callable by non-owners.
 
-#### function <span style="color:yellow;">Emote</span>(emote: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
 > Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
 
-#### function <span style="color:yellow;">PlayAnimation</span>(animation: <span style="color:blue;">string</span>, fade: <span style="color:blue;">float</span> = <span style="color:blue;">0.1</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
 > Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
-#### function <span style="color:yellow;">ForceAnimation</span>(animation: <span style="color:blue;">string</span>, fade: <span style="color:blue;">float</span> = <span style="color:blue;">0.1</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
 > Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
-#### function <span style="color:yellow;">GetAnimationLength</span>(animation: <span style="color:blue;">string</span>) → <span style="color:blue;">float</span>
+#### function <mark style="color:yellow;">GetAnimationLength</mark>(animation: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">float</mark>
 > Gets the length of animation.
 
-#### function <span style="color:yellow;">PlaySound</span>(sound: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
 > Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
 
-#### function <span style="color:yellow;">StopSound</span>(sound: <span style="color:blue;">string</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
 > Stops the sound.
 
-#### function <span style="color:yellow;">LookAt</span>(position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
 > Rotates the character such that it is looking towards a world position.
 
-#### function <span style="color:yellow;">AddForce</span>(force: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, mode: <span style="color:blue;">string</span> = <span style="color:blue;">Acceleration</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">Acceleration</mark>) → <mark style="color:blue;">null</mark>
 > Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
 
-#### function <span style="color:yellow;">Reveal</span>(delay: <span style="color:blue;">float</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
 > Reveaal the titan for a set number of seconds.
 
-#### function <span style="color:yellow;">AddOutline</span>(color: <span style="color:blue;">[Color](../objects/Color.md)</span> = <span style="color:blue;">null</span>, mode: <span style="color:blue;">string</span> = <span style="color:blue;">OutlineAll</span>) → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">OutlineAll</mark>) → <mark style="color:blue;">null</mark>
 > Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
 
-#### function <span style="color:yellow;">RemoveOutline</span>() → <span style="color:blue;">null</span>
+#### function <mark style="color:yellow;">RemoveOutline</mark>() → <mark style="color:blue;">null</mark>
 > Removes the outline effect from the character.
 
 

@@ -87,13 +87,6 @@ def update_summary(summary, object_files, static_files):
     # Serialize the JSON tree structure back to markdown content
     return serialize_to_markdown(tree)
 
-def span_to_mark(file):
-    # edit the file so that </span> is replaced with </mark> and "<span" becomes "<mark"
-    with open(file, 'r') as f:
-        content = f.read()
-    content = content.replace('</span>', '</mark>').replace('<span', '<mark')
-    with open(file, 'w') as f:
-        f.write(content)
 
 if __name__ == "__main__":
     # Parse command line arguments which contains a file path for the summary.md file
@@ -121,11 +114,6 @@ if __name__ == "__main__":
     # print object_files and static_files
     print("object_files: ", object_files)
     print("static_files: ", static_files)
-
-    # for all files, call span_to_mark
-    for file in object_files + static_files:
-        span_to_mark(file)
-
 
     # Update the summary.md file with the dynamically synced content
     updated_summary = update_summary(summary, object_files, static_files)

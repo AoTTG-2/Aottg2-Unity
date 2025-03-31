@@ -6,10 +6,10 @@ Inherits from object
 example = Physics()
 ```
 ## Static Methods
-#### function <span style="color:yellow;">LineCast</span>(start: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, end: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, collideWith: <span style="color:blue;">string</span>) → <span style="color:blue;">[LineCastHitResult](../objects/LineCastHitResult.md)</span>
+#### function <mark style="color:yellow;">LineCast</mark>(start: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, end: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, collideWith: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[LineCastHitResult](../objects/LineCastHitResult.md)</mark>
 > Casts a ray from start to end and returns the first object it hits.             Returns a
 
-#### function <span style="color:yellow;">SphereCast</span>(start: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, end: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, radius: <span style="color:blue;">float</span>, collideWith: <span style="color:blue;">string</span>) → <span style="color:blue;">Object</span>
+#### function <mark style="color:yellow;">SphereCast</mark>(start: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, end: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, radius: <mark style="color:blue;">float</mark>, collideWith: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
 > Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).
 
 

@@ -622,7 +622,7 @@ public class GenerateCLDocs : EditorWindow
 
     private string WrapColor(string text, string color)
     {
-        return $"<span style=\"color:{color};\">{text}</span>";
+        return $"<mark style=\"color:{color};\">{text}</mark>";
     }
 
     #endregion

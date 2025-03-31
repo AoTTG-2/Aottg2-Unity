@@ -1,7 +1,7 @@
 # Collider
 Inherits from object
 ## Initialization
-<span style="color:red;">This class is abstract and cannot be instantiated.</span>
+<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|
@@ -18,14 +18,14 @@ Inherits from object
 |Transform|[Transform](../objects/Transform.md)|True||
 |GameObjectTransform|[Transform](../objects/Transform.md)|True||
 ## Methods
-#### function <span style="color:yellow;">ClosestPoint</span>(position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">ClosestPoint</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">ClosestPointOnBounds</span>(position: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>) → <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">ClosestPointOnBounds</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
-#### function <span style="color:yellow;">Raycast</span>(start: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, end: <span style="color:blue;">[Vector3](../objects/Vector3.md)</span>, maxDistance: <span style="color:blue;">float</span>, collideWith: <span style="color:blue;">string</span>) → <span style="color:blue;">[LineCastHitResult](../objects/LineCastHitResult.md)</span>
-> <span style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</span>
+#### function <mark style="color:yellow;">Raycast</mark>(start: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, end: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, maxDistance: <mark style="color:blue;">float</mark>, collideWith: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[LineCastHitResult](../objects/LineCastHitResult.md)</mark>
+> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
 
 ---
