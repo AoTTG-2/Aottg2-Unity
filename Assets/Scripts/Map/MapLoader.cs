@@ -483,11 +483,6 @@ namespace Map
                 var mapObject = IdToMapObject[id];
                 if (mapObject.ScriptObject.Parent > 0 || !mapObject.ScriptObject.Static)
                     continue;
-                mapObject.GameObject.isStatic = true;
-                foreach (var child in mapObject.GameObject.GetComponentsInChildren<Transform>())
-                {
-                    child.gameObject.isStatic = true;
-                }
 
                 var shader = ((MapScriptSceneObject)mapObject.ScriptObject).Material.Shader;
                 if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
