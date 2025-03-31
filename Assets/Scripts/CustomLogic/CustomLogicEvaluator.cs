@@ -953,6 +953,7 @@ namespace CustomLogic
                     for (int i = 0; i < maxValues; i++)
                         localVariables.Add(methodAst.ParameterNames[i], parameterValues[i]);
                     EvaluateBlock(classInstance, localVariables, methodAst.Statements, out object result);
+                    UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
                     return result;
                 }
             }
@@ -979,18 +980,24 @@ namespace CustomLogic
 
             try
             {
-                Dictionary<string, object> localVariables = new Dictionary<string, object>();
-                int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
-                for (int i = 0; i < maxValues; i++)
-                    localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
                 if (ast.Coroutine)
                 {
+                    Dictionary<string, object> localVariables = new Dictionary<string, object>();
+                    int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
+                    for (int i = 0; i < maxValues; i++)
+                        localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
+
                     return CustomLogicManager._instance.StartCoroutine(EvaluateBlockCoroutine(classInstance,
                         localVariables, ast.Statements));
                 }
                 else
                 {
+                    Dictionary<string, object> localVariables = UnityEngine.Pool.DictionaryPool<string, object>.Get();
+                    int maxValues = Math.Min(parameterValues.Length, ast.ParameterNames.Count);
+                    for (int i = 0; i < maxValues; i++)
+                        localVariables.Add(ast.ParameterNames[i], parameterValues[i]);
                     EvaluateBlock(classInstance, localVariables, ast.Statements, out object result);
+                    UnityEngine.Pool.DictionaryPool<string, object>.Release(localVariables);
                     return result;
                 }
             }
