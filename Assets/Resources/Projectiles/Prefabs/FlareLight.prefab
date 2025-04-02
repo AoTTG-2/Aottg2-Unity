@@ -47,7 +47,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125752}
   serializedVersion: 8
-  lengthInSec: 120
+  lengthInSec: 60
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
@@ -122,7 +122,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 120
+      scalar: 60
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -617,7 +617,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4958,7 +4958,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
-  m_Intensity: 3
+  m_Intensity: 1.5
   m_Range: 1400
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

@@ -7,8 +7,8 @@ namespace Characters
     class FlareItem1 : SimpleUseable
     {
         Color _color;
-        float Speed = 40f;
-        Vector3 Gravity = Vector3.down * 2f;
+        float Speed = 60f;
+        Vector3 Gravity = Vector3.down * 4f;
 
         public FlareItem1(BaseCharacter owner, string name, Color color, float cooldown): base(owner)
         {
