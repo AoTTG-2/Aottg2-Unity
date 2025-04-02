@@ -7,14 +7,14 @@ Flare:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: FlareLensFlare
-  m_FlareTexture: {fileID: 0}
-  m_TextureLayout: 0
+  m_FlareTexture: {fileID: 2800000, guid: 68e73abd251039c4cba788131130f72d, type: 3}
+  m_TextureLayout: 2
   m_Elements:
   - m_ImageIndex: 0
     m_Position: 0
-    m_Size: 0.5
-    m_Color: {r: 1, g: 1, b: 1, a: 0}
-    m_UseLightColor: 1
+    m_Size: 10
+    m_Color: {r: 0.6933962, g: 0.92983466, b: 1, a: 0}
+    m_UseLightColor: 0
     m_Rotate: 0
     m_Zoom: 1
     m_Fade: 1
