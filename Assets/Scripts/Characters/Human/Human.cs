@@ -2685,7 +2685,7 @@ namespace Characters
             Items.Add(new FlareItem(this, "Blue", new Color(0f, 102f / 255, 204f / 255, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Cyan", new Color(0f, 255f / 252, 255f / 255, 0.8f), cooldown));
-            Items.Add(new FlareItem(this, "Orange", new Color(1f, 0.6f, 0f, 1f), cooldown));
+            Items.Add(new FlareItem1(this, "Light", new Color(1f, 1f, 1f, 1f), cooldown));
 
 
         }
