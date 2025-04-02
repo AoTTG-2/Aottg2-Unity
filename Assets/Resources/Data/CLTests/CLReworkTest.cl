@@ -2,8 +2,9 @@ class Main {
 
     _tester = null;
 
-    function Init()
+    function OnGameStart()
     {
+
         self._tester = Tester(self.DisplayInConsole);
 
         baseList = self.GetList("1,2,1,4,115");
@@ -18,6 +19,22 @@ class Main {
         self._tester.Assert("Filter", self.ListCompare(values.Filter(self.Filter), filteredList));
         self._tester.Assert("Transform", self.ListCompare(values.Map(self.TransformData), transformedList));
         self._tester.Assert("ExampleFail", false);
+
+        self._tester.AssertEqual("Int2.X", Int2(1, 2).X, 1);
+        self._tester.AssertEqual("Int2.Y", Int2(1, 2).Y, 2);
+
+        a = Int2(1, 2);
+        b = Int2(1, 3);
+        c = Int2(10, 20);
+        d = Int2(2, 4)
+
+        self._tester.AssertEqual("Int2.__eq__", a, a);
+        self._tester.AssertEqual("Int2.__add__", a+b, Int2(2, 5));
+        self._tester.AssertEqual("Int2.__sub__", a-b, Int2(0, -1));
+        self._tester.AssertEqual("Int2.__mul__", a*b, Int2(1, 6));
+        self._tester.AssertEqual("Int2.__div__", c / d, Int2(5, 5));
+        self._tester.AssertEqual("Int2.__copy__", a.__Copy__(), Int2(1, 2));
+        self._tester.AssertEqual("Int2.__str__", a.__Str__(), "(1, 2)");
 
         self._tester.ShowResults();
     }
@@ -117,26 +134,6 @@ class Tester {
         } else {
             self._failingTests.Add(self._failMessage + UI.WrapStyleTag(method + " returned " + result + " expected not  " + expected, "color", "white"));
         }
-    }
-}
-
-class Int2TestSuite
-{
-    _tester = null;
-    function Init(tester)
-    {
-        self._tester = tester;
-
-        self._tester.AssertEqual("Int2.X", Int2(1, 2).X, 1);
-        self._tester.AssertEqual("Int2.Y", Int2(1, 2).Y, 2);
-
-        self._tester.AssertEqual("Int2.__eq__", Int2(1, 2), Int2(1,2));
-        self._tester.AssertEqual("Int2.__add__", Int2(1,2) + Int2(1,3), Int2(2, 5));
-        self._tester.AssertEqual("Int2.__sub__", Int2(1, 2) - Int2(1,3), Int2(0, -1));
-        self._tester.AssertEqual("Int2.__mul__", Int2(1, 2) * Int2(1,3), Int2(1, 6));
-        self._tester.AssertEqual("Int2.__div__", Int2(10, 20) / Int2(2, 4), Int2(5, 5));
-        self._tester.AssertEqual("Int2.__copy__", Int2(1, 2).__Copy__(), Int2(1, 2));
-        self._tester.AssertEqual("Int2.__str__", Int2(1, 2).__Str__(), "(1, 2)");
     }
 }
 
