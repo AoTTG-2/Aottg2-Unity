@@ -1145,22 +1145,19 @@ namespace CustomLogic
             return null;
         }
 
-        public readonly object[] Parameters3 = new object[2];
+        public object[] Parameters3 = new object[2];
 
         private object ClassMathOperation(object left, object right, string method)
         {
             CustomLogicClassInstance instance = left is CustomLogicClassInstance ? (CustomLogicClassInstance)left : (CustomLogicClassInstance)right;
             if (instance.HasVariable(method))
             {
-                Parameters3[0] = left;
-                Parameters3[1] = right;
-                return EvaluateMethod(instance, method, Parameters3);
-                // using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                // {
-                //     Parameters.Add(left);
-                //     Parameters.Add(right);
-                //     return EvaluateMethod(instance, method, Parameters);
-                // }
+                object[] parameters = ArrayPool<object>.New(2);
+                parameters[0] = left;
+                parameters[1] = right;
+                var result = EvaluateMethod(instance, method, parameters);
+                ArrayPool<object>.Free(parameters);
+                return result;
             }
             else
                 throw new Exception($"No {method} method found in class " + instance.ClassName);
@@ -1234,13 +1231,12 @@ namespace CustomLogic
                 CustomLogicClassInstance leftInstance = (CustomLogicClassInstance)left;
                 if (leftInstance.HasVariable(eq))
                 {
-                    Parameters3[0] = right;
-                    return (bool)EvaluateMethod(leftInstance, eq, Parameters3);
-                    // using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                    // {
-                    //     Parameters.Add(right);
-                    //     return (bool)EvaluateMethod(leftInstance, eq, Parameters);
-                    // }
+                    object[] parameters = ArrayPool<object>.New(2);
+                    parameters[0] = left;
+                    parameters[1] = right;
+                    var result = EvaluateMethod(leftInstance, eq, parameters);
+                    ArrayPool<object>.Free(parameters);
+                    return (bool)result;
                 }
             }
             else if (right is CustomLogicClassInstance)
@@ -1248,13 +1244,12 @@ namespace CustomLogic
                 CustomLogicClassInstance rightInstance = (CustomLogicClassInstance)right;
                 if (rightInstance.HasVariable(eq))
                 {
-                    Parameters3[0] = left;
-                    return (bool)EvaluateMethod(rightInstance, eq, Parameters3);
-                    // using (CollectionPool<List<object>, object>.Get(out var Parameters))
-                    // {
-                    //     Parameters.Add(left);
-                    //     return (bool)EvaluateMethod(rightInstance, eq, Parameters);
-                    // }
+                    object[] parameters = ArrayPool<object>.New(2);
+                    parameters[0] = left;
+                    parameters[1] = right;
+                    var result = EvaluateMethod(rightInstance, eq, parameters);
+                    ArrayPool<object>.Free(parameters);
+                    return (bool)result;
                 }
             }
             if (left != null)

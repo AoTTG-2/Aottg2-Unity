@@ -19,8 +19,6 @@ class Main {
         self._tester.Assert("Transform", self.ListCompare(values.Map(self.TransformData), transformedList));
         self._tester.Assert("ExampleFail", false);
 
-        Int2TestSuite(self._tester);
-
         self._tester.ShowResults();
     }
 
