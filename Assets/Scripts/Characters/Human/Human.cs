@@ -2676,7 +2676,7 @@ namespace Characters
 
         protected void SetupItems()
         {
-            float cooldown = 30f;
+            float cooldown = 1f;
             Items.Clear();
             Items.Add(new FlareItem(this, "Green", new Color(0f, 1f, 0f, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Red", new Color(1f, 0f, 0f, 0.7f), cooldown));
@@ -2684,6 +2684,10 @@ namespace Characters
             Items.Add(new FlareItem(this, "Purple", new Color(153f / 255, 0f, 204f / 255, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Blue", new Color(0f, 102f / 255, 204f / 255, 0.7f), cooldown));
             Items.Add(new FlareItem(this, "Yellow", new Color(1f, 1f, 0f, 0.7f), cooldown));
+            Items.Add(new FlareItem(this, "Cyan", new Color(0f, 255f / 252, 255f / 255, 0.8f), cooldown));
+            Items.Add(new FlareItem(this, "Orange", new Color(1f, 0.6f, 0f, 1f), cooldown));
+
+
         }
 
         public void SetSpecial(string special)
