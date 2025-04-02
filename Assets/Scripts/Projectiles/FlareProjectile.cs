@@ -12,7 +12,7 @@ namespace Projectiles
 {
     class FlareProjectile : BaseProjectile
     {
-        protected override float DestroyDelay => 10f;
+        protected override float DestroyDelay => 100f;
 
         protected override void SetupSettings(object[] settings)
         {
