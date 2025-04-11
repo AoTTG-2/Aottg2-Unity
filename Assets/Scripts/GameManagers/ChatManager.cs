@@ -18,6 +18,7 @@ using Map;
 using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace GameManagers
 {
@@ -670,30 +671,35 @@ namespace GameManagers
             AddLine(help, ChatTextColor.System);
         }
 
-        [CommandAttribute("savechat", "/savechat: Save chat history to Downloads folder")]
+        [CommandAttribute("savechat", "/savechat: Save chat history to Aottg2/Chat folder")]
         private static void SaveChatHistory(string[] args)
         {
-            var messages = RawMessages.Select((msg, i) => 
-                System.Text.RegularExpressions.Regex.Replace(
-                    GetFormattedMessage(msg, Timestamps[i], false), 
-                    "<.*?>", 
-                    string.Empty
-                ));
-            var (success, message) = Util.SaveChatHistory(messages);
-            AddLine(message, success ? ChatTextColor.System : ChatTextColor.Error);
-        }
-
-        [CommandAttribute("verifychat", "/verifychat [filename]: Verify if a chat history file has been modified")]
-        private static void VerifyChatHistory(string[] args)
-        {
-            if (args.Length != 2)
+            try
             {
-                AddLine("Usage: /verifychat [filename]", ChatTextColor.Error);
+                string chatHistoryPath = Path.Combine(FolderPaths.Documents, "Chat");
+                if (!Directory.Exists(chatHistoryPath))
+                {
+                    Directory.CreateDirectory(chatHistoryPath);
+                }
+                DateTime timestamp = DateTime.UtcNow;
+                string baseFilename = $"chat_history_{timestamp:yyyy-MM-dd_HH-mm-ss}";
+                if (!Util.IsValidFileName(baseFilename))
+                {
+                    AddLine("Invalid filename error.", ChatTextColor.Error);
                 return;
+                }
+                string filename = baseFilename + ".txt";
+                string filePath = Path.Combine(chatHistoryPath, filename);
+                var messages = RawMessages.Select((msg, i) => System.Text.RegularExpressions.Regex.Replace(GetFormattedMessage(msg, Timestamps[i], false), "<.*?>", string.Empty));
+                string chatContent = string.Join("\n", messages);
+                string fileContent = $"[TIME:{timestamp:yyyy-MM-dd HH:mm:ss UTC}]\n\n{chatContent}";
+                File.WriteAllText(filePath, fileContent);
+                AddLine($"Chat history saved to Aottg2/Chat/{filename}", ChatTextColor.System);
             }
-
-            var (success, message) = Util.VerifyChatHistory(args[1]);
-            AddLine(message, success ? ChatTextColor.System : ChatTextColor.Error);
+            catch (Exception ex)
+            {
+                AddLine($"Failed to save chat history: {ex.Message}", ChatTextColor.Error);
+            }
         }
 
         public static void KickPlayer(Player player, bool print = true, bool ban = false, string reason = ".")
@@ -1111,14 +1117,15 @@ namespace GameManagers
                 return;
             }
             
-            string senderName = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name);
             RPCManager.PhotonView.RPC("PrivateChatRPC", RpcTarget.All,
-                new object[] { senderName, message, PhotonNetwork.LocalPlayer.ActorNumber, target.ActorNumber });
+                new object[] { message, target.ActorNumber });
         }
 
-        public static void OnPrivateChatRPC(string senderName, string message, int senderID, int targetID)
+        public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
         {
             int localID = PhotonNetwork.LocalPlayer.ActorNumber;
+            int senderID = info.Sender.ActorNumber;
+            string senderName = info.Sender.GetStringProperty(PlayerProperty.Name);
             
             if (localID == senderID)
             {
@@ -1127,7 +1134,8 @@ namespace GameManagers
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
                     AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}", 
-                        ChatTextColor.Default, false, DateTime.UtcNow, senderID, false, true, targetID);
+                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)), 
+                        senderID, false, true, targetID);
                     
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
@@ -1139,12 +1147,13 @@ namespace GameManagers
             else if (localID == targetID)
             {
                 AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}", 
-                    ChatTextColor.Default, false, DateTime.UtcNow, senderID, false, true, senderID);
+                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)), 
+                    senderID, false, true, senderID);
                     
                 var panel = GetChatPanel();
                 if (panel != null)
                 {
-                    Player senderPlayer = PhotonNetwork.CurrentRoom.GetPlayer(senderID);
+                    Player senderPlayer = info.Sender;
                     if (senderPlayer != null)
                     {
                         panel.AddPMPartner(senderPlayer);

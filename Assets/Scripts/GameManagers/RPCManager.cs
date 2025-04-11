@@ -258,9 +258,9 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void PrivateChatRPC(string senderName, string message, int senderID, int targetID)
+        public void PrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
         {
-            ChatManager.OnPrivateChatRPC(senderName, message, senderID, targetID);
+            ChatManager.OnPrivateChatRPC(message, targetID, info);
         }
 
         void Awake()
