@@ -5,9 +5,6 @@ using Utility;
 
 namespace ApplicationManagers
 {
-#if (UNITY_EDITOR || DEVELOPMENT_BUILD) && HAS_CREDENTIALS
-    class ApplicationVersion : DevApplicationVersion { }
-#else
     class ApplicationVersion
     {
         public static bool UseServerHash = false;
@@ -29,5 +26,4 @@ namespace ApplicationManagers
             return string.Empty;
         }
     }
-#endif
 }
