@@ -23,7 +23,7 @@ namespace MapEditor
             foreach (MapObject obj in objs)
             {
                 _ids.Add(obj.ScriptObject.Id);
-                _previousParents.Add(obj.ScriptObject.Parent);
+                _previousParents.Add(obj.Parent);
                 _previousSiblingIndices.Add(obj.SiblingIndex);
             }
         }

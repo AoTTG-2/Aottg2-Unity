@@ -165,6 +165,8 @@ namespace GameManagers
         {
             if (SelectedObjects.Count == 0)
                 return;
+            // if NewParent is a child of any of the selected objects, we should just ignore this case for now.
+
             NewCommand(new SetParentCommand(new List<MapObject>(SelectedObjects), newParent, newSiblingID));
             _menu.SyncHierarchyPanel();
         }

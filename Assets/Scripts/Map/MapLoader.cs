@@ -164,6 +164,9 @@ namespace Map
         /// Moves the object into the new position in the hierarchy.
         /// If newSiblingIndex is null, the object will be placed at the start of the list.
         /// This will rebalance the old and new parent's children's sibling indices.
+        /// 
+        /// NOTE: this is likely whats breaking the parent to id mapping which causes elements to disappear.
+        /// When expanding, it is immediately trying to set the parent of the clicked item with the expanded item.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="newParent"></param>
@@ -173,7 +176,7 @@ namespace Map
             if (IdToMapObject.ContainsKey(id) == false)
                 return;
             var obj = IdToMapObject[id];
-            int oldParent = obj.ScriptObject.Parent;
+            int oldParent = obj.Parent;
             int oldSiblingIndex = obj.SiblingIndex;
 
             int siblingIndexTarget = newSiblingIndex ?? 0;
@@ -213,7 +216,7 @@ namespace Map
                     IdToMapObject[childId].SiblingIndex++;
                 j++;
             }
-            IdToMapObject[id].ScriptObject.Parent = newParent;
+            IdToMapObject[id].Parent = newParent;
             IdToMapObject[id].SiblingIndex = siblingIndexTarget;
             IdToChildren[newParent].Add(id);
         }
@@ -256,7 +259,7 @@ namespace Map
             if (IdToMapObject.ContainsKey(id) == false)
                 return;
             var obj = IdToMapObject[id];
-            int oldParent = obj.ScriptObject.Parent;
+            int oldParent = obj.Parent;
             int oldSiblingIndex = obj.SiblingIndex;
 
             // Clean up the old parent

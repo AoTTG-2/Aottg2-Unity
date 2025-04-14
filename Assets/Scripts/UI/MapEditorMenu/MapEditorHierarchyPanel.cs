@@ -43,9 +43,6 @@ namespace UI
 
         // Pooling
         private const int MaxVisibleObjects = 40;
-        private int _visibleIndex = 0;
-        private VirtualTreeView _treeView = new VirtualTreeView();
-        private List<VirtualTreeViewItem> _visibleTreeViewItems = new List<VirtualTreeViewItem>();
         private ScrollRect _scrollRect;
         private GameObject _scroll;
         private Scrollbar _scrollBar;
@@ -54,7 +51,6 @@ namespace UI
         private List<MapEditorHierarchyButton> _elementsPool = new();
         private Dictionary<int, MapEditorHierarchyButton> _idToElement = new();
         private List<MapObject> _visibleObjects = new();
-        private float _buttonSize = 25f;
 
         public int TotalElementCount => MapLoader.IdToMapObject.Count;
 
@@ -63,6 +59,7 @@ namespace UI
         int _targetParent = -1;
         int? _targetSibling = null;
         MapEditorHierarchyButton _lastHighlighted = null;
+        bool _blockUI = false;
 
         // State
         public bool IsTreeView = true;
@@ -118,6 +115,12 @@ namespace UI
         }
 
         #region TreeViewAlgorithms
+        public List<MapObject> GetVisibleItems()
+        {
+            List<int> ids = GetVisibleIds();
+            return ids.Select(id => MapLoader.IdToMapObject[id]).ToList();
+        }
+
         public List<int> GetVisibleIds()
         {
             List<int> items = new List<int>();
@@ -129,17 +132,12 @@ namespace UI
             return items;
         }
 
-        public List<MapObject> GetVisibleItems()
-        {
-            List<int> ids = GetVisibleIds();
-            return ids.Select(id => MapLoader.IdToMapObject[id]).ToList();
-        }
-
         private void GetOrderedChildren(int parent, List<int> items, int level = 0)
         {
             if (MapLoader.IdToChildren.ContainsKey(parent) == false)
                 return;
-
+            // Note: When expanding the parent, we're seeing that this code runs twice and the second time around,
+            // the parent we're expanding (which should still have a parent of -1, is no longer in this mapping）
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
             foreach (int child in orderedChildren)
             {
@@ -159,7 +157,7 @@ namespace UI
             int parent = obj.Parent;
             int siblingIndex = obj.SiblingIndex;
 
-            MapLoader.IdToMapObject[id].ScriptObject.Parent = -1;
+            MapLoader.IdToMapObject[id].Parent = -1;
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
 
         }
@@ -174,6 +172,7 @@ namespace UI
                 _requestRedraw = false;
                 Canvas.ForceUpdateCanvases();
             }
+            _blockUI = false;
         }
 
         public void OnScroll(float x) { }
@@ -236,6 +235,8 @@ namespace UI
 
         private void HandleElementDrag()
         {
+            if (_blockUI)
+                return;
             if (_lastHighlighted != null)
                 _lastHighlighted.SetHighlight(false);
 
@@ -272,7 +273,7 @@ namespace UI
                     _targetParent = _lastHighlighted.BoundID;
                     _targetSibling = 0;
 
-                    if (_targetID != _targetParent)
+                    if (_targetID != _targetParent && MapLoader.IdToMapObject[_targetParent].Parent != _targetID)
                     {
                         _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
                     }
@@ -304,7 +305,6 @@ namespace UI
                 go.SetActive(false);
                 _elementsPool.Add(go.GetComponent<MapEditorHierarchyButton>());
             }
-            _buttonSize = _elementsPool[0].GetComponent<RectTransform>().sizeDelta.y;
         }
 
         /// <summary>
@@ -315,8 +315,6 @@ namespace UI
         {
             // Clear and repopulate the view
             // foreach (var btn in _elementsPool) btn.gameObject.SetActive(false);
-
-            var expandedIds = MapLoader.IdToMapObject.Values.Where(e => e.Expanded).Select(e => e.ScriptObject.Id).ToList();
             string searchTerm = _searchSetting.Value.ToLower();
 
             _idToItem.Clear();
@@ -326,8 +324,6 @@ namespace UI
             IsTreeView = searchTerm == string.Empty;
             if (!IsTreeView) _visibleObjects = MapLoader.Query(searchTerm).Select(id => MapLoader.IdToMapObject[id]).ToList();
             else _visibleObjects = GetVisibleItems();
-
-            foreach (var obj in _visibleObjects) obj.Expanded = expandedIds.Contains(obj.ScriptObject.Id);
         }
 
         public void Sync()
@@ -353,6 +349,7 @@ namespace UI
 
         private void OnElementCallback(int id, bool expanded)
         {
+            _blockUI = true;
             if (expanded) OnElementExpand(id);
             else OnElementClose(id);
             Sync();
@@ -413,6 +410,7 @@ namespace UI
             _lastClickedItem = id;
             _lastclickedTime = Time.time;
         }
+        
         public void SyncSelectedItems()
         {
 
