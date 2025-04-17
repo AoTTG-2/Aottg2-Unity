@@ -30,7 +30,10 @@ public class GenerateCLDocs : EditorWindow
         "Photon3Unity3D.xml"
     };
 
-    private Dictionary<string, string> TypeReference = new();
+    private Dictionary<string, string> TypeReference = new()
+    {
+        { "Object", "[Object](../Objects/Object.md)" }
+    };
     private Dictionary<string, string> CSTypeReference = new()
     {
         { "Single", "float" },
@@ -188,7 +191,7 @@ public class GenerateCLDocs : EditorWindow
         string doc = string.Empty;
         if (parentType == typeof(BuiltinClassInstance))
         {
-            doc += "Inherits from object\n";
+            doc += $"Inherits from {ResolveType("Object")}\n";
         }
         else
         {
