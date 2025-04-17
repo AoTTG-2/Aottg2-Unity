@@ -2,6 +2,7 @@
 Inherits from object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+
 ## Methods
 ###### function <mark style="color:yellow;">FindAllMapObjects</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
 > Find all map objects

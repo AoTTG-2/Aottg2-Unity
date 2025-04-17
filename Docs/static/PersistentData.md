@@ -2,6 +2,7 @@
 Inherits from object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+
 ## Static Methods
 ###### function <mark style="color:yellow;">SetProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
 > Sets the property with given name to the object value. Valid value types are float, string, bool, and int.

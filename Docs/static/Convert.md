@@ -2,6 +2,7 @@
 Inherits from object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+
 ## Methods
 ###### function <mark style="color:yellow;">ToFloat</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">float</mark>
 > Converts a value to a float

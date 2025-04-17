@@ -171,12 +171,12 @@ public class GenerateCLDocs : EditorWindow
         else if (isAbstract)
         {
             doc += "## Initialization\n";
-            doc += WrapColor("This class is abstract and cannot be instantiated.", "red") + "\n";
+            doc += WrapColor("This class is abstract and cannot be instantiated.", "red") + "\n\n";
         }
         else if (isStatic && constructorCount == 0)
         {
             doc += "## Initialization\n";
-            doc += WrapColor("This class is static and cannot be instantiated.", "red") + "\n";
+            doc += WrapColor("This class is static and cannot be instantiated.", "red") + "\n\n";
         }
 
         doc += GenerateFields(type, XMLdoc);

@@ -2,6 +2,7 @@
 Inherits from object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+
 ## Methods
 ###### function <mark style="color:yellow;">Start</mark>(name: <mark style="color:blue;">string</mark>, full: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Start a cutscene

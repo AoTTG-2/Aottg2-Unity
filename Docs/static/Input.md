@@ -2,6 +2,7 @@
 Inherits from object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+
 ## Static Methods
 ###### function <mark style="color:yellow;">GetKeyName</mark>(key: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
 > Gets the key name the player assigned to the key setting
