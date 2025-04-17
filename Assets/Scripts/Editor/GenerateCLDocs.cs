@@ -1,19 +1,13 @@
 
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using CustomLogic;
-using NUnit.Framework.Constraints;
-using static UnityEngine.Rendering.DebugUI.Table;
 using System.Reflection;
-using Unity.VisualScripting.Antlr3.Runtime;
 using System.Xml;
-using NUnit.Framework.Internal;
-using UnityEngine.Rendering;
-using Utility;
 using System;
+using Unity.VisualScripting;
 
 #if UNITY_EDITOR
 public static class PropertyInfoExtensions
@@ -238,16 +232,16 @@ public class GenerateCLDocs : EditorWindow
         else
         {
             // create code examples for each constructor
+
             codeSnippet = string.Empty;
             foreach (var constructor in constructors)
             {
                 var parameters = constructor.GetParameters();
                 var parameterNames = parameters.Select(x => x.Name).ToList();
-                var parameterTypes = parameters.Select(x => ResolveType(x.ParameterType.Name)).ToList();
-                var parameterValues = parameters.Select(x => $"{x.ParameterType.Name}").ToList();
-                var constructorSignature = $"example = {className}({string.Join(", ", parameterValues)})";
+                var parameterTypes = parameters.Select(x => ResolveType(x.ParameterType.Name, referenceDocs: false)).ToList();
+                var parameterValues = parameters.Select(x => $"{x.PseudoDefaultValue()}" != string.Empty ? $"{x.PseudoDefaultValue()}" : ResolveType(x.ParameterType.Name, referenceDocs: false)).ToList();
 
-                codeSnippet += $"# {className}({string.Join(", ", parameterValues)})\n";
+                codeSnippet += $"# {className}({string.Join(", ", parameterTypes)})\n";
                 codeSnippet += $"example = {className}({string.Join(", ", parameterValues)})\n";
                 codeSnippet += "\n";
             }
@@ -496,13 +490,13 @@ public class GenerateCLDocs : EditorWindow
         return val;
     }
 
-    private string ResolveType(string type, bool isReturned = false)
+    private string ResolveType(string type, bool isReturned = false, bool referenceDocs = true)
     {
         if (CSTypeReference.ContainsKey(type))
         {
             type = CSTypeReference[type];
         }
-        else if (TypeReference.ContainsKey(type))
+        else if (TypeReference.ContainsKey(type) && referenceDocs)
         {
             type = TypeReference[type];
         }

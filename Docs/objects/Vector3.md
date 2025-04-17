@@ -5,14 +5,14 @@ Inherits from object
 # Vector3()
 example = Vector3()
 
-# Vector3(Single)
-example = Vector3(Single)
+# Vector3(float)
+example = Vector3(0)
 
-# Vector3(Single, Single)
-example = Vector3(Single, Single)
+# Vector3(float, float)
+example = Vector3(0, 0)
 
-# Vector3(Single, Single, Single)
-example = Vector3(Single, Single, Single)
+# Vector3(float, float, float)
+example = Vector3(0, 0, 0)
 ```
 ## Fields
 |Field|Type|Readonly|Description|
