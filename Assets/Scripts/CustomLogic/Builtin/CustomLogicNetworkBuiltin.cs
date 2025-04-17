@@ -9,6 +9,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Networking functions.
+    /// </summary>
     [CLType(Name = "Network", Static = true, Abstract = true)]
     partial class CustomLogicNetworkBuiltin : BuiltinClassInstance
     {

@@ -4,6 +4,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// String manipulation functions.
+    /// </summary>
     [CLType(Name = "String", Static = true, Abstract = true)]
     partial class CustomLogicStringBuiltin : BuiltinClassInstance
     {

@@ -1,5 +1,6 @@
 # Vector3
-Inherits from object
+Inherits from Object
+
 ## Initialization
 ```csharp
 # Vector3()
@@ -37,7 +38,7 @@ example = Vector3(0, 0, 0)
 |NegativeInfinity|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).|
 |PositiveInfinity|[Vector3](../objects/Vector3.md)|True|Shorthand for writing Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity).|
 ## Methods
-###### function <mark style="color:yellow;">Set</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>, z: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Set</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>, z: <mark style="color:blue;">float</mark>)
 > Set x, y and z components of an existing Vector3.
 
 ###### function <mark style="color:yellow;">GetRotationDirection</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
@@ -116,7 +117,7 @@ example = Vector3(0, 0, 0)
 ###### function <mark style="color:yellow;">Normalize</mark>(value: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Makes this vector have a magnitude of 1.
 
-###### function <mark style="color:yellow;">OrthoNormalize</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">OrthoNormalize</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
 
 ###### function <mark style="color:yellow;">Project</mark>(a: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, b: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>

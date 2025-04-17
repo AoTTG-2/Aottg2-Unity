@@ -1,5 +1,6 @@
 # Transform
-Inherits from object
+Inherits from Object
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
@@ -23,19 +24,19 @@ Inherits from object
 ###### function <mark style="color:yellow;">GetTransforms</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
 > Gets all child transforms.
 
-###### function <mark style="color:yellow;">PlayAnimation</mark>(anim: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlayAnimation</mark>(anim: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>)
 > Plays the specified animation.
 
 ###### function <mark style="color:yellow;">GetAnimationLength</mark>(anim: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">float</mark>
 > Gets the length of the specified animation.
 
-###### function <mark style="color:yellow;">PlaySound</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlaySound</mark>()
 > Plays the sound.
 
-###### function <mark style="color:yellow;">StopSound</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">StopSound</mark>()
 > Stops the sound.
 
-###### function <mark style="color:yellow;">ToggleParticle</mark>(enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ToggleParticle</mark>(enabled: <mark style="color:blue;">bool</mark>)
 > Toggles the particle system.
 
 ###### function <mark style="color:yellow;">InverseTransformDirection</mark>(direction: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
@@ -50,16 +51,16 @@ Inherits from object
 ###### function <mark style="color:yellow;">TransformPoint</mark>(point: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Transforms position from local space to world space.
 
-###### function <mark style="color:yellow;">Rotate</mark>(rotation: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Rotate</mark>(rotation: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).
 
-###### function <mark style="color:yellow;">RotateAround</mark>(point: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, axis: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, angle: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RotateAround</mark>(point: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, axis: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, angle: <mark style="color:blue;">float</mark>)
 > Rotates the transform about axis passing through point in world coordinates by angle degrees.
 
-###### function <mark style="color:yellow;">LookAt</mark>(target: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">LookAt</mark>(target: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Rotates the transform so the forward vector points at worldPosition.
 
-###### function <mark style="color:yellow;">SetRenderersEnabled</mark>(enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetRenderersEnabled</mark>(enabled: <mark style="color:blue;">bool</mark>)
 > Sets the enabled state of all child renderers.
 
 ###### function <mark style="color:yellow;">\_\_Eq\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">bool</mark>

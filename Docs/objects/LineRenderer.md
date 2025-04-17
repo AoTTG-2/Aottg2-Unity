@@ -1,5 +1,6 @@
 # LineRenderer
-Inherits from object
+Inherits from Object
+
 ## Initialization
 ```csharp
 # LineRenderer(Object[])
@@ -30,7 +31,7 @@ example = LineRenderer(Object[])
 ###### function <mark style="color:yellow;">GetPosition</mark>(index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Get the position of a point in the line renderer
 
-###### function <mark style="color:yellow;">SetPosition</mark>(index: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetPosition</mark>(index: <mark style="color:blue;">int</mark>, position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Set the position of a point in the line renderer
 
 

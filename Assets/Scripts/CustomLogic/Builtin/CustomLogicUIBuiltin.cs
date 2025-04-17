@@ -11,6 +11,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// UI label functions.
+    /// </summary>
     [CLType(Name = "UI", Static = true, Abstract = true)]
     partial class CustomLogicUIBuiltin : BuiltinClassInstance
     {

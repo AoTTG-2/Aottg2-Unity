@@ -1,8 +1,9 @@
 # Convert
-Inherits from object
-## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+Inherits from Object
 
+<mark style="color:red;">This class is static and cannot be instantiated.</mark>
+
+> Converting objects to different types.
 ## Methods
 ###### function <mark style="color:yellow;">ToFloat</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">float</mark>
 > Converts a value to a float
@@ -40,10 +41,10 @@ Inherits from object
 ###### function <mark style="color:yellow;">HasVariable</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>, variableName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
 > Checks if the class instance has a variable
 
-###### function <mark style="color:yellow;">DefineVariable</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>, variableName: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">DefineVariable</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>, variableName: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>)
 > Defines a variable for the class instance
 
-###### function <mark style="color:yellow;">RemoveVariable</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>, variableName: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RemoveVariable</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>, variableName: <mark style="color:blue;">string</mark>)
 > Removes a variable from the class instance
 
 ###### function <mark style="color:yellow;">GetType</mark>(cInstance: <mark style="color:blue;">CustomLogicClassInstance</mark>) → <mark style="color:blue;">string</mark>

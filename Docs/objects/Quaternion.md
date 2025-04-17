@@ -1,5 +1,6 @@
 # Quaternion
-Inherits from object
+Inherits from Object
+
 ## Initialization
 > Constructors:
 ```csharp

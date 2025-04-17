@@ -1,8 +1,9 @@
 # String
-Inherits from object
-## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+Inherits from Object
 
+<mark style="color:red;">This class is static and cannot be instantiated.</mark>
+
+> String manipulation functions.
 ## Static Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

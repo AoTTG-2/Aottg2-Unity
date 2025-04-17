@@ -162,22 +162,23 @@ public class GenerateCLDocs : EditorWindow
 
         if (inheritBaseMembers && type.BaseType != null)
         {
-            doc += GenerateInheritance(type.BaseType);
+            doc += GenerateInheritance(type.BaseType) + "\n";
         }
 
         if (!isAbstract && (!isStatic || constructorCount > 0))
         {
             doc += GenerateInitializers(type, className, XMLdoc);
         }
+        else if (isStatic && constructorCount == 0 || isAbstract && isStatic)
+        {
+            doc += WrapColor("This class is static and cannot be instantiated.", "red") + "\n\n";
+            doc += GenerateClassDescription(type, className, XMLdoc);
+        }
         else if (isAbstract)
         {
             doc += "## Initialization\n";
             doc += WrapColor("This class is abstract and cannot be instantiated.", "red") + "\n\n";
-        }
-        else if (isStatic && constructorCount == 0)
-        {
-            doc += "## Initialization\n";
-            doc += WrapColor("This class is static and cannot be instantiated.", "red") + "\n\n";
+            doc += GenerateClassDescription(type, className, XMLdoc);
         }
 
         doc += GenerateFields(type, XMLdoc);
@@ -208,6 +209,35 @@ public class GenerateCLDocs : EditorWindow
             }
 
         }
+        return doc;
+    }
+
+    private string GenerateClassDescription(System.Type type, string className, System.Xml.XmlDocument XMLdoc)
+    {
+        // Add initializer header
+        string doc = string.Empty;
+
+        string typeSummary = DelimitStyled(ResolveClassNodeText(type, XMLdoc, "summary"));
+        string codeSnippet = ResolveClassNodeText(type, XMLdoc, "code");
+        string codeExample = ResolveClassNodeText(type, XMLdoc, "example");
+
+        if (typeSummary != string.Empty)
+        {
+            doc += $"> {typeSummary}\n";
+        }
+
+        if (codeSnippet != string.Empty)
+        {
+            doc += $"> Snippet:\n";
+            doc += CreateCodeExample(codeSnippet);
+        }
+
+        if (codeExample != string.Empty)
+        {
+            doc += $"> Example:\n";
+            doc += CreateCodeExample(codeExample);
+        }
+
         return doc;
     }
 
@@ -411,7 +441,8 @@ public class GenerateCLDocs : EditorWindow
                 var description = DelimitStyled(ResolveMethodNodeText(type, method, XMLdoc, "summary", clMethod.Description));
                 var codeExample = ResolveMethodNodeText(type, method, XMLdoc, "code");
 
-                doc += $"###### function {signature} \u2192 {WrapColor(returnType, "blue")}\n";
+                if (returnType != "null") doc += $"###### function {signature} \u2192 {WrapColor(returnType, "blue")}\n";
+                else doc += $"###### function {signature}\n";
 
                 if (description == string.Empty) description = WrapColor("Missing description, please ping dev to fix this or if you need clarification :)", "red");
 

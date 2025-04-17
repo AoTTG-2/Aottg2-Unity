@@ -1,5 +1,6 @@
 # Player
-Inherits from object
+Inherits from Object
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
@@ -26,10 +27,10 @@ Inherits from object
 ###### function <mark style="color:yellow;">GetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
 > Get a custom property at given key. Must be a primitive type. This is synced to all clients.
 
-###### function <mark style="color:yellow;">SetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>)
 > Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
 
-###### function <mark style="color:yellow;">ClearKDR</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ClearKDR</mark>()
 > Clears kills, deaths, highestdamage, and totaldamage properties.
 
 

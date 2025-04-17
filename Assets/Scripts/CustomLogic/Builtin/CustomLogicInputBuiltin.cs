@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.
+    /// </summary>
     [CLType(Name = "Input", Abstract = true, Static = true)]
     partial class CustomLogicInputBuiltin : BuiltinClassInstance
     {

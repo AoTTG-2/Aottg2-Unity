@@ -6,6 +6,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Converting objects to different types.
+    /// </summary>
     [CLType(Name = "Convert", Abstract = true, Static = true)]
     partial class CustomLogicConvertBuiltin : BuiltinClassInstance
     {

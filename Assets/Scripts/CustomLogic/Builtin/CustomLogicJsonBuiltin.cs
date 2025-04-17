@@ -4,6 +4,11 @@ using SimpleJSONFixed;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Serializes and deserializes primitive and struct values from and to json strings.
+    /// Supports float, int, string, bool, Vector3, Quaternion, Color, Dict, and List.
+    /// Dict and List must contain only the supported types, and can be nested.
+    /// </summary>
     [CLType(Name = "Json", Static = true, Abstract = true)]
     partial class CustomLogicJsonBuiltin : BuiltinClassInstance
     {

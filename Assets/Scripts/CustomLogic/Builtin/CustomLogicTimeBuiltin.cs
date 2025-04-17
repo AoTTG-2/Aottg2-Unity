@@ -2,6 +2,9 @@
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Time functions.
+    /// </summary>
     [CLType(Name = "Time", Static = true, Abstract = true)]
     partial class CustomLogicTimeBuiltin : BuiltinClassInstance
     {

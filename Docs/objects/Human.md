@@ -1,5 +1,6 @@
 # Human
 Inherits from [Character](../objects/Character.md)
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
@@ -70,76 +71,76 @@ Inherits from [Character](../objects/Character.md)
 ###### function <mark style="color:yellow;">Refill</mark>() → <mark style="color:blue;">bool</mark>
 > Refills the gas of the human
 
-###### function <mark style="color:yellow;">RefillImmediate</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RefillImmediate</mark>()
 > Refills the gas of the human immediately
 
-###### function <mark style="color:yellow;">ClearHooks</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ClearHooks</mark>()
 > Clears all hooks
 
-###### function <mark style="color:yellow;">ClearLeftHook</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ClearLeftHook</mark>()
 > Clears the left hook
 
-###### function <mark style="color:yellow;">ClearRightHook</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ClearRightHook</mark>()
 > Clears the right hook
 
-###### function <mark style="color:yellow;">MountMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">MountMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Mounts the human on a map object
 
-###### function <mark style="color:yellow;">MountTransform</mark>(transform: <mark style="color:blue;">[Transform](../objects/Transform.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">MountTransform</mark>(transform: <mark style="color:blue;">[Transform](../objects/Transform.md)</mark>, positionOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, rotationOffset: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Mounts the human on a transform
 
-###### function <mark style="color:yellow;">Unmount</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Unmount</mark>()
 > Unmounts the human
 
-###### function <mark style="color:yellow;">SetSpecial</mark>(special: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetSpecial</mark>(special: <mark style="color:blue;">string</mark>)
 > Sets the special of the human
 
-###### function <mark style="color:yellow;">ActivateSpecial</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ActivateSpecial</mark>()
 > Activates the special of the human
 
-###### function <mark style="color:yellow;">SetWeapon</mark>(weapon: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetWeapon</mark>(weapon: <mark style="color:blue;">string</mark>)
 > Sets the weapon of the human
 
-###### function <mark style="color:yellow;">DisablePerks</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">DisablePerks</mark>()
 > Disables all perks of the human
 
-###### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">string</mark>)
 > Kills the character. Callable by non-owners.
 
-###### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">string</mark>, damage: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">string</mark>, damage: <mark style="color:blue;">int</mark>)
 > Damages the character and kills it if its health reaches 0. Callable by non-owners.
 
-###### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">string</mark>)
 > Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
 
-###### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>)
 > Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
-###### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>)
 > Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
 ###### function <mark style="color:yellow;">GetAnimationLength</mark>(animation: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">float</mark>
 > Gets the length of animation.
 
-###### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">string</mark>)
 > Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
 
-###### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">string</mark>)
 > Stops the sound.
 
-###### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Rotates the character such that it is looking towards a world position.
 
-###### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">Acceleration</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">Acceleration</mark>)
 > Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
 
-###### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
-> Reveaal the titan for a set number of seconds.
+###### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>)
+> Reveal the titan for a set number of seconds.
 
-###### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">OutlineAll</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">OutlineAll</mark>)
 > Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
 
-###### function <mark style="color:yellow;">RemoveOutline</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RemoveOutline</mark>()
 > Removes the outline effect from the character.
 
 

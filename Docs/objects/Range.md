@@ -13,34 +13,34 @@ example = Range(Object[])
 </details>
 
 ## Methods
-###### function <mark style="color:yellow;">Clear</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Clear</mark>()
 > Clear all list elements
 
 ###### function <mark style="color:yellow;">Get</mark>(index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">Object</mark>
 > Get the element at the specified index
 
-###### function <mark style="color:yellow;">Set</mark>(index: <mark style="color:blue;">int</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Set</mark>(index: <mark style="color:blue;">int</mark>, value: <mark style="color:blue;">Object</mark>)
 > Set the element at the specified index
 
-###### function <mark style="color:yellow;">Add</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Add</mark>(value: <mark style="color:blue;">Object</mark>)
 > Add an element to the end of the list
 
-###### function <mark style="color:yellow;">InsertAt</mark>(index: <mark style="color:blue;">int</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">InsertAt</mark>(index: <mark style="color:blue;">int</mark>, value: <mark style="color:blue;">Object</mark>)
 > Insert an element at the specified index
 
-###### function <mark style="color:yellow;">RemoveAt</mark>(index: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RemoveAt</mark>(index: <mark style="color:blue;">int</mark>)
 > Remove the element at the specified index
 
-###### function <mark style="color:yellow;">Remove</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Remove</mark>(value: <mark style="color:blue;">Object</mark>)
 > Remove the first occurrence of the specified element
 
 ###### function <mark style="color:yellow;">Contains</mark>(value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">bool</mark>
 > Check if the list contains the specified element
 
-###### function <mark style="color:yellow;">Sort</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Sort</mark>()
 > Sort the list
 
-###### function <mark style="color:yellow;">SortCustom</mark>(method: <mark style="color:blue;">function</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SortCustom</mark>(method: <mark style="color:blue;">function</mark>)
 > Sort the list using a custom method, expects a method with the signature int method(a,b)
 
 ###### function <mark style="color:yellow;">Filter</mark>(method: <mark style="color:blue;">function</mark>) → <mark style="color:blue;">[List](../objects/List.md)</mark>
@@ -52,7 +52,7 @@ example = Range(Object[])
 ###### function <mark style="color:yellow;">Reduce</mark>(method: <mark style="color:blue;">function</mark>, initialValue: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
 > Reduce the list using a custom method, expects a method with the signature object method(acc, element)
 
-###### function <mark style="color:yellow;">Randomize</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Randomize</mark>()
 > Randomize the list
 
 ###### function <mark style="color:yellow;">ToSet</mark>() → <mark style="color:blue;">[Set](../objects/Set.md)</mark>

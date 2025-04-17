@@ -14,6 +14,9 @@ using Utility;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Game functions such as spawning titans and managing game state.
+    /// </summary>
     [CLType(Name = "Game", Abstract = true, Static = true)]
     partial class CustomLogicGameBuiltin : BuiltinClassInstance
     {

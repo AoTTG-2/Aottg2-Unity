@@ -1,5 +1,6 @@
 # Color
-Inherits from object
+Inherits from Object
+
 ## Initialization
 > Constructor for the Color class
 > Constructors:

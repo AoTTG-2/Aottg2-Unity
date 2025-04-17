@@ -1,5 +1,6 @@
 # MapObject
-Inherits from object
+Inherits from Object
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
@@ -34,22 +35,22 @@ Inherits from object
 ###### function <mark style="color:yellow;">AddComponent</mark>(name: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Component</mark>
 > Add a component to the object
 
-###### function <mark style="color:yellow;">RemoveComponent</mark>(name: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RemoveComponent</mark>(name: <mark style="color:blue;">string</mark>)
 > Remove a component from the object
 
 ###### function <mark style="color:yellow;">GetComponent</mark>(name: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Component</mark>
 > Get a component from the object
 
-###### function <mark style="color:yellow;">SetComponentEnabled</mark>(name: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetComponentEnabled</mark>(name: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>)
 > Set whether a component is enabled
 
-###### function <mark style="color:yellow;">SetComponentsEnabled</mark>(enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetComponentsEnabled</mark>(enabled: <mark style="color:blue;">bool</mark>)
 > Set whether all components are enabled
 
-###### function <mark style="color:yellow;">AddSphereCollider</mark>(collideMode: <mark style="color:blue;">string</mark>, collideWith: <mark style="color:blue;">string</mark>, center: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, radius: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddSphereCollider</mark>(collideMode: <mark style="color:blue;">string</mark>, collideWith: <mark style="color:blue;">string</mark>, center: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, radius: <mark style="color:blue;">float</mark>)
 > Add a sphere collider to the object
 
-###### function <mark style="color:yellow;">AddBoxCollider</mark>(collideMode: <mark style="color:blue;">string</mark>, collideWith: <mark style="color:blue;">string</mark>, center: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark> = <mark style="color:blue;">null</mark>, size: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark> = <mark style="color:blue;">null</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddBoxCollider</mark>(collideMode: <mark style="color:blue;">string</mark>, collideWith: <mark style="color:blue;">string</mark>, center: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark> = <mark style="color:blue;">null</mark>, size: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark> = <mark style="color:blue;">null</mark>)
 > Add a box collider to the object
 
 ###### function <mark style="color:yellow;">AddSphereTarget</mark>(team: <mark style="color:blue;">string</mark>, center: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, radius: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">[MapTargetable](../objects/MapTargetable.md)</mark>
@@ -67,7 +68,7 @@ Inherits from object
 ###### function <mark style="color:yellow;">GetTransform</mark>(name: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[Transform](../objects/Transform.md)</mark>
 > Get a child transform by name
 
-###### function <mark style="color:yellow;">SetColorAll</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetColorAll</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark>)
 > Set the color of all renderers on the object
 
 ###### function <mark style="color:yellow;">InBounds</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">bool</mark>
@@ -94,7 +95,7 @@ Inherits from object
 ###### function <mark style="color:yellow;">GetCorners</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
 > Get the corners of the bounds
 
-###### function <mark style="color:yellow;">AddBuiltinComponent</mark>(componentName: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter1: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter2: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter3: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter4: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddBuiltinComponent</mark>(componentName: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter1: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter2: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter3: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter4: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>)
 > Add a builtin component to the object.             Components: Daylight, PointLight, Tag, Rigidbody, CustomPhysicsMaterial, NavMeshObstacle
 
 ###### function <mark style="color:yellow;">HasTag</mark>(tag: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">bool</mark>
@@ -103,7 +104,7 @@ Inherits from object
 ###### function <mark style="color:yellow;">ReadBuiltinComponent</mark>(name: <mark style="color:blue;">string</mark>, param: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
 > Read a builtin component
 
-###### function <mark style="color:yellow;">UpdateBuiltinComponent</mark>(componentName: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter1: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter2: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter3: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter4: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">UpdateBuiltinComponent</mark>(componentName: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter1: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter2: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter3: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>, parameter4: <mark style="color:blue;">Object</mark> = <mark style="color:blue;">null</mark>)
 > Update a builtin component
 
 

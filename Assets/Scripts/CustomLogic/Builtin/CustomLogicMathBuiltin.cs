@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Math functions. Note that parameter types can be either int or float unless otherwise specified.
+    /// Functions may return int or float depending on the parameter types given.
+    /// </summary>
     [CLType(Name = "Math", Abstract = true, Static = true)]
     partial class CustomLogicMathBuiltin : BuiltinClassInstance
     {

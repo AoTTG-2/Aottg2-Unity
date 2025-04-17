@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Photon.Realtime;
+using System.Collections.Generic;
+using UnityEngine.SocialPlatforms;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types.
+    /// Note that RoomData is local only and does not sync.You must use network messages to sync room variables.
+    /// </summary>
     [CLType(Name = "RoomData", Static = true, Abstract = true)]
     partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {

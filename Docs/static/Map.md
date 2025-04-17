@@ -1,8 +1,9 @@
 # Map
-Inherits from object
-## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+Inherits from Object
 
+<mark style="color:red;">This class is static and cannot be instantiated.</mark>
+
+> Finding, creating, and destroying map objects.
 ## Methods
 ###### function <mark style="color:yellow;">FindAllMapObjects</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
 > Find all map objects
@@ -31,19 +32,19 @@ Inherits from object
 ###### function <mark style="color:yellow;">CreateMapObjectRaw</mark>(prefab: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>
 > Create a new map object
 
-###### function <mark style="color:yellow;">DestroyMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, includeChildren: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">DestroyMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, includeChildren: <mark style="color:blue;">bool</mark>)
 > Destroy a map object
 
 ###### function <mark style="color:yellow;">CopyMapObject</mark>(mapObject: <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>, includeChildren: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">[MapObject](../objects/MapObject.md)</mark>
 > Copy a map object
 
-###### function <mark style="color:yellow;">DestroyMapTargetable</mark>(targetable: <mark style="color:blue;">[MapTargetable](../objects/MapTargetable.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">DestroyMapTargetable</mark>(targetable: <mark style="color:blue;">[MapTargetable](../objects/MapTargetable.md)</mark>)
 > Destroy a map targetable
 
-###### function <mark style="color:yellow;">UpdateNavMesh</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">UpdateNavMesh</mark>()
 > Update the nav mesh
 
-###### function <mark style="color:yellow;">UpdateNavMeshAsync</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">UpdateNavMeshAsync</mark>()
 > Update the nav mesh asynchronously
 
 

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Finding, creating, and destroying map objects.
+    /// </summary>
     [CLType(Name = "Map", Static = true, Abstract = true)]
     partial class CustomLogicMapBuiltin : BuiltinClassInstance
     {

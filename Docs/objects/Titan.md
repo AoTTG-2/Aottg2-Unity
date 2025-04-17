@@ -1,5 +1,6 @@
 # Titan
 Inherits from [Character](../objects/Character.md)
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
@@ -63,61 +64,61 @@ Inherits from [Character](../objects/Character.md)
 </details>
 
 ## Methods
-###### function <mark style="color:yellow;">MoveTo</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, range: <mark style="color:blue;">float</mark>, ignoreEnemies: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">MoveTo</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, range: <mark style="color:blue;">float</mark>, ignoreEnemies: <mark style="color:blue;">bool</mark>)
 > Causes the (AI) titan to move towards a position and stopping when within specified range. If ignoreEnemies is true, will not engage enemies along the way.
 
-###### function <mark style="color:yellow;">Target</mark>(enemyObj: <mark style="color:blue;">Object</mark>, focus: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Target</mark>(enemyObj: <mark style="color:blue;">Object</mark>, focus: <mark style="color:blue;">float</mark>)
 > Causes the (AI) titan to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time
 
-###### function <mark style="color:yellow;">Idle</mark>(time: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Idle</mark>(time: <mark style="color:blue;">float</mark>)
 > Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.
 
-###### function <mark style="color:yellow;">Wander</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Wander</mark>()
 > Causes the (AI) titan to cancel any move commands and begin wandering randomly.
 
-###### function <mark style="color:yellow;">Blind</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Blind</mark>()
 > Causes the titan to enter the blind state.
 
-###### function <mark style="color:yellow;">Cripple</mark>(time: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Cripple</mark>(time: <mark style="color:blue;">float</mark>)
 > Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.
 
-###### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">GetKilled</mark>(killer: <mark style="color:blue;">string</mark>)
 > Kills the character. Callable by non-owners.
 
-###### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">string</mark>, damage: <mark style="color:blue;">int</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">GetDamaged</mark>(killer: <mark style="color:blue;">string</mark>, damage: <mark style="color:blue;">int</mark>)
 > Damages the character and kills it if its health reaches 0. Callable by non-owners.
 
-###### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Emote</mark>(emote: <mark style="color:blue;">string</mark>)
 > Causes the character to emote. The list of available emotes is the same as those shown in the in-game emote menu.
 
-###### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlayAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>)
 > Causes the character to play an animation.  If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
-###### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ForceAnimation</mark>(animation: <mark style="color:blue;">string</mark>, fade: <mark style="color:blue;">float</mark> = <mark style="color:blue;">0.1</mark>)
 > Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.
 
 ###### function <mark style="color:yellow;">GetAnimationLength</mark>(animation: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">float</mark>
 > Gets the length of animation.
 
-###### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">PlaySound</mark>(sound: <mark style="color:blue;">string</mark>)
 > Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
 
-###### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">StopSound</mark>(sound: <mark style="color:blue;">string</mark>)
 > Stops the sound.
 
-###### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">LookAt</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>)
 > Rotates the character such that it is looking towards a world position.
 
-###### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">Acceleration</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddForce</mark>(force: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">Acceleration</mark>)
 > Adds a force to the character with given force vector and optional mode. Valid modes are Force, Acceleration, Impulse, VelocityChange with default being Acceleration.
 
-###### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
-> Reveaal the titan for a set number of seconds.
+###### function <mark style="color:yellow;">Reveal</mark>(delay: <mark style="color:blue;">float</mark>)
+> Reveal the titan for a set number of seconds.
 
-###### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">OutlineAll</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">AddOutline</mark>(color: <mark style="color:blue;">[Color](../objects/Color.md)</mark> = <mark style="color:blue;">null</mark>, mode: <mark style="color:blue;">string</mark> = <mark style="color:blue;">OutlineAll</mark>)
 > Adds an outline effect with the given color and mode. Valid modes are: OutlineAll, OutlineVisible, OutlineHidden, OutlineAndSilhouette, SilhouetteOnly, OutlineAndLightenColor
 
-###### function <mark style="color:yellow;">RemoveOutline</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">RemoveOutline</mark>()
 > Removes the outline effect from the character.
 
 

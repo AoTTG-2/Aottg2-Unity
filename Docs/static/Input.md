@@ -1,8 +1,9 @@
 # Input
-Inherits from object
-## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+Inherits from Object
 
+<mark style="color:red;">This class is static and cannot be instantiated.</mark>
+
+> Reading player key inputs. Note that inputs are best handled in OnFrame rather than OnTick, due to being updated every frame and not every physics tick.
 ## Static Methods
 ###### function <mark style="color:yellow;">GetKeyName</mark>(key: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">string</mark>
 > Gets the key name the player assigned to the key setting
@@ -31,10 +32,10 @@ Inherits from object
 ###### function <mark style="color:yellow;">GetScreenDimensions</mark>() → <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>
 > Returns the dimensions of the screen
 
-###### function <mark style="color:yellow;">SetKeyDefaultEnabled</mark>(key: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetKeyDefaultEnabled</mark>(key: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>)
 > Sets whether the key is enabled by default
 
-###### function <mark style="color:yellow;">SetKeyHold</mark>(key: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetKeyHold</mark>(key: <mark style="color:blue;">string</mark>, enabled: <mark style="color:blue;">bool</mark>)
 > Sets whether the key is being held down
 
 

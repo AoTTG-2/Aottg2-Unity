@@ -1,5 +1,6 @@
 # Vector2
-Inherits from object
+Inherits from Object
+
 ## Initialization
 ```csharp
 # Vector2(Object[])
@@ -25,10 +26,10 @@ example = Vector2(Object[])
 |NegativeInfinity|[Vector2](../objects/Vector2.md)|True|Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).|
 |PositiveInfinity|[Vector2](../objects/Vector2.md)|True|Shorthand for writing Vector2(float.PositiveInfinity, float.PositiveInfinity).|
 ## Methods
-###### function <mark style="color:yellow;">Set</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Set</mark>(x: <mark style="color:blue;">float</mark>, y: <mark style="color:blue;">float</mark>)
 > Set x and y components of an existing Vector2.
 
-###### function <mark style="color:yellow;">Normalize</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">Normalize</mark>()
 > Makes this vector have a magnitude of 1.
 
 ###### function <mark style="color:yellow;">\_\_Copy\_\_</mark>() → <mark style="color:blue;">Object</mark>

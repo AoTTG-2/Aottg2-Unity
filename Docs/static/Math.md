@@ -1,8 +1,9 @@
 # Math
-Inherits from object
-## Initialization
-<mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
+Inherits from Object
 
+<mark style="color:red;">This class is static and cannot be instantiated.</mark>
+
+> Math functions. Note that parameter types can be either int or float unless otherwise specified.             Functions may return int or float depending on the parameter types given.
 ## Static Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

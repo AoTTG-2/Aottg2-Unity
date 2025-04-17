@@ -261,7 +261,7 @@ namespace CustomLogic
             Character.Cache.Rigidbody.AddForce(force.Value, useForceMode);
         }
 
-        [CLMethod(description: "Reveaal the titan for a set number of seconds.")]
+        [CLMethod(description: "Reveal the titan for a set number of seconds.")]
         public void Reveal(float delay)
         {
             Character.Reveal(0, delay);

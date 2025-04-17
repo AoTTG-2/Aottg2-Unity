@@ -3,9 +3,17 @@ using System.IO;
 using Utility;
 using SimpleJSONFixed;
 using System.Linq;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using System.Runtime.CompilerServices;
+using System.Xml;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Store and retrieve persistent data. Persistent data can be saved and loaded from file. Supports float, int, string, and bool types.
+    /// Note that any game mode may use the same file names, so it is recommended that you choose unique file names when saving and loading.
+    /// Saved files are located in Documents/Aottg2/PersistentData.
+    /// </summary>
     [CLType(Name = "PersistentData", Static = true, Abstract = true)]
     partial class CustomLogicPersistentDataBuiltin : BuiltinClassInstance
     {

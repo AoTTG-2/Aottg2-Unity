@@ -1,5 +1,6 @@
 # Collider
-Inherits from object
+Inherits from Object
+
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 

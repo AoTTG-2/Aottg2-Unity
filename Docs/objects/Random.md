@@ -1,5 +1,6 @@
 # Random
-Inherits from object
+Inherits from Object
+
 ## Initialization
 > Random can be initialized as a class with a string given as the seed value.             Note that this is optional, and you can reference Random directly as a static class.
 > Constructors:
