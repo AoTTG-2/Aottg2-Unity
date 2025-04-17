@@ -1,9 +1,11 @@
 # Quaternion
 Inherits from object
 ## Initialization
+> Constructors:
 ```csharp
-# Quaternion(Object[])
-example = Quaternion(Object[])
+
+# Quaternion takes four floats X, Y, Z and W as parameters when initializing. 
+quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);
 ```
 ## Fields
 |Field|Type|Readonly|Description|

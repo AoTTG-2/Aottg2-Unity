@@ -2,6 +2,10 @@
 
 namespace CustomLogic
 {
+    /// <code>
+    /// # Quaternion takes four floats X, Y, Z and W as parameters when initializing. 
+    /// quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);
+    /// </code>
     [CLType(Name = "Quaternion", Static = true)]
     partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {

@@ -12,7 +12,7 @@ Inherits from object
 |IsAI|bool|True|Is this character AI?|
 |ViewID|int|True|Network view ID of the character.|
 |IsMine|bool|True|Is this character mine?|
-|IsMainCharacter|bool|True||
+|IsMainCharacter|bool|True|Character belongs to my player and is the main character (the camera-followed player).|
 |Transform|[Transform](../objects/Transform.md)|True|Unity transform of the character.|
 |Position|[Vector3](../objects/Vector3.md)|False|Position of the character.|
 |Rotation|[Vector3](../objects/Vector3.md)|False|Rotation of the character.|

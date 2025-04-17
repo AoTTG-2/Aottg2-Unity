@@ -134,6 +134,10 @@ public class GenerateCLDocs : EditorWindow
             GenerateClassDoc(path, cl, XMLdoc);
         }
 
+        // Create Component and Object .md files unmder the objects folder.
+        System.IO.File.WriteAllText($"{output}/objects/Component.md", GenerateComponenttMD());
+        System.IO.File.WriteAllText($"{output}/objects/Object.md", GenerateObjectMD());
+
         // Create README.md files in both Object and Static with text # Object / # Static
         System.IO.File.WriteAllText($"{output}/objects/README.md", "# Objects");
         System.IO.File.WriteAllText($"{output}/static/README.md", "# Static");
@@ -275,6 +279,9 @@ public class GenerateCLDocs : EditorWindow
         List<List<string>> fieldRows = new List<List<string>>();
         List<List<string>> staticFieldRows = new List<List<string>>();
 
+        List<List<string>> fieldRowsDerived = new List<List<string>>();
+        List<List<string>> staticFieldRowsDerived = new List<List<string>>();
+
         foreach (var property in properties)
         {
             var clProperty = (CLPropertyAttribute)property.GetCustomAttributes(typeof(CLPropertyAttribute), false)[0];
@@ -286,9 +293,19 @@ public class GenerateCLDocs : EditorWindow
 
 
             if (isStatic)
-                staticFieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+            {
+                if (property.DeclaringType == type)
+                    staticFieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+                else
+                    staticFieldRowsDerived.Add(new List<string> { field, varType, readOnly.ToString(), description });
+            }
             else
-                fieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+            {
+                if (property.DeclaringType == type)
+                    fieldRows.Add(new List<string> { field, varType, readOnly.ToString(), description });
+                else
+                    fieldRowsDerived.Add(new List<string> { field, varType, readOnly.ToString(), description });
+            }
         }
 
         foreach (var field in fields)
@@ -300,9 +317,19 @@ public class GenerateCLDocs : EditorWindow
             var readOnly = clProperty.ReadOnly;
             var description = ResolveFieldDescription(type, field, XMLdoc, clProperty.Description);
             if (isStatic)
-                staticFieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+            {
+                if (field.DeclaringType == type)
+                    staticFieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+                else
+                    staticFieldRowsDerived.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+            }
             else
-                fieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+            {
+                if (field.DeclaringType == type)
+                    fieldRows.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+                else
+                    fieldRowsDerived.Add(new List<string> { fieldName, varType, readOnly.ToString(), description });
+            }
         }
 
         if (fieldRows.Count > 0)
@@ -311,10 +338,20 @@ public class GenerateCLDocs : EditorWindow
             doc += CreateTable(headers, fieldRows);
         }
 
+        if (fieldRowsDerived.Count > 0)
+        {
+            doc += CreateCollapsedSection("Derived Fields", CreateTable(headers, fieldRowsDerived));
+        }
+
         if (staticFieldRows.Count > 0)
         {
             doc += "## Static Fields\n";
             doc += CreateTable(headers, staticFieldRows);
+        }
+
+        if (staticFieldRowsDerived.Count > 0)
+        {
+            doc += CreateCollapsedSection("Derived Static Fields", CreateTable(headers, staticFieldRowsDerived));
         }
 
         return doc;
@@ -399,6 +436,38 @@ public class GenerateCLDocs : EditorWindow
 
             //doc += CreateHTMLTable(headers, rows, sizing);
         }
+        return doc;
+    }
+
+    private string GenerateObjectMD()
+    {
+        string doc = string.Empty;
+        doc += "# Objects\n";
+        doc += "All the following objects in custom logic inherits from Object.\n";
+        doc += "## Fields\n";
+        doc += CreateTable(new List<string> { "Field", "Type", "Readonly", "Description" },
+            new List<List<string>> {
+                new List<string> { "Type", ResolveType("string"), "true", "The type of the object (such as \"Human\")" },
+                new List<string> { "IsCharacter", ResolveType("bool"), "true", "Whether or not the object is a Character type or any of its inheritors" },
+                new List<string> { "Init", ResolveType("bool"), "true", "Whether or not the object has been initialized" },
+            });
+        return doc;
+    }
+
+    /// <summary>
+    /// ToDo: Once components are converted to builtins, auto-generate this md along with the other components.
+    /// </summary>
+    private string GenerateComponenttMD()
+    {
+        string doc = string.Empty;
+        doc += "# Component\n";
+        doc += "Represents a component script attached to a MapObject.\n";
+        doc += "## Fields\n";
+        doc += CreateTable(new List<string> { "Field", "Type", "Readonly", "Description" },
+            new List<List<string>> {
+                new List<string> { "MapObject", ResolveType(nameof(CustomLogicMapObjectBuiltin)), "true", "The MapObject the component is attached to." },
+                new List<string> { "NetworkView", ResolveType(nameof(CustomLogicNetworkViewBuiltin)), "true", "The NetworkView attached to the MapObject, if Networked is enabled." },
+            });
         return doc;
     }
 
@@ -734,6 +803,11 @@ public class GenerateCLDocs : EditorWindow
             table += "\n";
         }
         return table;
+    }
+
+    private string CreateCollapsedSection(string title, string content)
+    {
+        return $"<details>\n<summary>{title}</summary>\n\n{content}</details>\n\n";
     }
 
 }

@@ -4,10 +4,14 @@
 # Range(Object[])
 example = Range(Object[])
 ```
-## Fields
+<details>
+<summary>Derived Fields</summary>
+
 |Field|Type|Readonly|Description|
 |---|---|---|---|
 |Count|int|True|The number of elements in the list|
+</details>
+
 ## Methods
 ###### function <mark style="color:yellow;">Clear</mark>() → <mark style="color:blue;">null</mark>
 > Clear all list elements

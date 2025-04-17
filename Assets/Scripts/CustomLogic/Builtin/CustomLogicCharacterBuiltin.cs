@@ -46,7 +46,7 @@ namespace CustomLogic
         [CLProperty(Description = "Is this character mine?")]
         public bool IsMine => Character.IsMine();
 
-        [CLProperty]
+        [CLProperty(Description = "Character belongs to my player and is the main character (the camera-followed player).")]
         public bool IsMainCharacter => Character.IsMainCharacter();
 
         [CLProperty(Description = "Unity transform of the character.")]

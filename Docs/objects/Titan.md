@@ -33,11 +33,16 @@ Inherits from [Character](../objects/Character.md)
 |UsePathfinding|bool|False|Determines whether the (AI) titan uses pathfinding. (Smart Movement in titan settings)|
 |HeadMount|[Transform](../objects/Transform.md)|True|Titan's head transform.|
 |NeckMount|[Transform](../objects/Transform.md)|True|Titan's neck transform.|
+<details>
+<summary>Derived Fields</summary>
+
+|Field|Type|Readonly|Description|
+|---|---|---|---|
 |Player|[Player](../objects/Player.md)|True|Player who owns this character.|
 |IsAI|bool|True|Is this character AI?|
 |ViewID|int|True|Network view ID of the character.|
 |IsMine|bool|True|Is this character mine?|
-|IsMainCharacter|bool|True||
+|IsMainCharacter|bool|True|Character belongs to my player and is the main character (the camera-followed player).|
 |Transform|[Transform](../objects/Transform.md)|True|Unity transform of the character.|
 |Position|[Vector3](../objects/Vector3.md)|False|Position of the character.|
 |Rotation|[Vector3](../objects/Vector3.md)|False|Rotation of the character.|
@@ -55,6 +60,8 @@ Inherits from [Character](../objects/Character.md)
 |CustomDamage|int|False|Amount of custom damage to deal per attack.|
 |CurrentAnimation|string|True|Character's current playing animation.|
 |Grounded|bool|True|Character's grounded status.|
+</details>
+
 ## Methods
 ###### function <mark style="color:yellow;">MoveTo</mark>(position: <mark style="color:blue;">[Vector3](../objects/Vector3.md)</mark>, range: <mark style="color:blue;">float</mark>, ignoreEnemies: <mark style="color:blue;">bool</mark>) → <mark style="color:blue;">null</mark>
 > Causes the (AI) titan to move towards a position and stopping when within specified range. If ignoreEnemies is true, will not engage enemies along the way.
