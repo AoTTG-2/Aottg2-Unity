@@ -574,7 +574,7 @@ public class GenerateCLDocs : EditorWindow
             var interMethod = inter.GetMethod(method.Name);
             if (interMethod != null)
             {
-                node = ResolveMethodNode(type, interMethod, XMLdoc, nodeType);
+                node = ResolveMethodNode(inter, interMethod, XMLdoc, nodeType);
                 if (node != null)
                 {
                     return node.InnerText;

@@ -20,7 +20,7 @@ namespace CustomLogic
     /// Game.Print(result.Distance);
     /// Game.Print(result.Collider);
     /// </example>
-    [CLType(Name = "Physics", Static = true)]
+    [CLType(Name = "Physics", Static = true, Abstract = true)]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {
         [CLConstructor]

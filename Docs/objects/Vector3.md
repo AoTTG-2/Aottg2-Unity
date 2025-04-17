@@ -59,25 +59,25 @@ example = Vector3(Single, Single, Single)
 > Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
 
 ###### function <mark style="color:yellow;">\_\_Copy\_\_</mark>() → <mark style="color:blue;">Object</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to deepcopy object on assignment, used for structs. Ex: copy = original is equivalent to copy = original.\_\_Copy\_\_()
 
 ###### function <mark style="color:yellow;">\_\_Add\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement addition, used for + operator. Ex: a + b is equivalent to a.\_\_Add\_\_(a, b)
 
 ###### function <mark style="color:yellow;">\_\_Sub\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement subtraction, used for - operator. Ex: a - b is equivalent to a.\_\_Sub\_\_(a, b)
 
 ###### function <mark style="color:yellow;">\_\_Mul\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement multiplication, used for * operator. Ex: a * b is equivalent to a.\_\_Mul\_\_(a, b)
 
 ###### function <mark style="color:yellow;">\_\_Div\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement division, used for / operator. Ex: a / b is equivalent to a.\_\_Div\_\_(a, b)
 
 ###### function <mark style="color:yellow;">\_\_Eq\_\_</mark>(self: <mark style="color:blue;">Object</mark>, other: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">bool</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement equality comparison, used for == and != operators. Ex: a == b is equivalent to a.\_\_Eq\_\_(a, b)
 
 ###### function <mark style="color:yellow;">\_\_Hash\_\_</mark>() → <mark style="color:blue;">int</mark>
-> <mark style="color:red;">Missing description, please ping dev to fix this or if you need clarification :)</mark>
+> Override to implement hashing, used for GetHashCode - Used for Dictionaries/Sets. Ex: hash = obj.GetHashCode() is equivalent to hash = obj.\_\_Hash\_\_()
 
 
 ---
