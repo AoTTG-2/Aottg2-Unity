@@ -331,6 +331,7 @@ public class GenerateCLDocs : EditorWindow
         string doc = string.Empty;
         var methods = type.GetMethods()
             .Where(x => x.GetCustomAttributes(typeof(CLMethodAttribute), false).Length > 0)
+            .OrderBy(x => x.GetCustomAttributes(typeof(ObsoleteAttribute), false).Length)
             .ToArray();
 
         string header = "## Methods";
