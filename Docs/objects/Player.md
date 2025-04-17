@@ -22,13 +22,13 @@ Inherits from object
 |SpectateID|int|True|The player's spectating ID. If not spectating anyone, returns -1.|
 |SpawnPoint|[Vector3](../objects/Vector3.md)|False|Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.|
 ## Methods
-#### function <mark style="color:yellow;">GetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
+###### function <mark style="color:yellow;">GetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>) → <mark style="color:blue;">Object</mark>
 > Get a custom property at given key. Must be a primitive type. This is synced to all clients.
 
-#### function <mark style="color:yellow;">SetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">SetCustomProperty</mark>(property: <mark style="color:blue;">string</mark>, value: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">null</mark>
 > Sets a custom property at given key. Must be a primitive type. This is synced to all clients.
 
-#### function <mark style="color:yellow;">ClearKDR</mark>() → <mark style="color:blue;">null</mark>
+###### function <mark style="color:yellow;">ClearKDR</mark>() → <mark style="color:blue;">null</mark>
 > Clears kills, deaths, highestdamage, and totaldamage properties.
 
 
