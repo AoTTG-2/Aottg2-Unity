@@ -7,6 +7,7 @@ using CustomSkins;
 using GameManagers;
 using System.Globalization;
 using EZhex1991.EZSoftBone;
+using System.Collections.Generic;
 
 namespace Characters
 {
@@ -83,6 +84,7 @@ namespace Characters
         public static int BackCount;
         public static int HeadCount;
         public static int HatCount;
+        public static HashSet<string> UniqueItems = new HashSet<string>();
 
         public static void Init()
         {
@@ -99,6 +101,8 @@ namespace Characters
             CostumeFCount = CostumeInfo["Female"].Count;
             HairMCount = HairInfo["Male"].Count;
             HairFCount = HairInfo["Female"].Count;
+            foreach (var item in costume["UniqueItem"].AsArray)
+                UniqueItems.Add(item.Value);
             HumanSetupMaterials.Init();
         }
 
@@ -378,30 +382,44 @@ namespace Characters
             DestroyIfExists(_part_eye);
             _part_eye = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetEyeMesh(), cached: true);
             AttachToMount(_part_eye, _part_head);
-            SetFacialTexture(_part_eye, "Eye", CustomSet.Eye.Value);
+            SetFacialTexture(_part_eye, "Eye", CustomSet.Eye.Value, false);
         }
 
         public void CreateFace()
         {
             DestroyIfExists(_part_face);
-            _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(), cached: true);
-            AttachToMount(_part_face, _part_head);
+            string prefab = CustomSet.Face.Value;
+            bool unique = UniqueItems.Contains(prefab);
+            if (!unique)
+                prefab = string.Empty;
+            _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(prefab), cached: true);
+            if (unique)
+                AttachToMount(_part_face, _mount_head_decor, true);
+            else
+                AttachToMount(_part_face, _part_head);
             string face = CustomSet.Face.Value.Substring(4);
             if (face != "None")
-                SetFacialTexture(_part_face, "Face", int.Parse(face));
+                SetFacialTexture(_part_face, "Face", int.Parse(face), unique);
             else
-                SetFacialTexture(_part_face, "Face", -1);
+                SetFacialTexture(_part_face, "Face", -1, unique);
         }
 
         public void CreateGlass()
         {
-            _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(), cached: true);
-            AttachToMount(_part_glass, _part_head);
+            string prefab = CustomSet.Glass.Value;
+            bool unique = UniqueItems.Contains(prefab);
+            if (!unique)
+                prefab = string.Empty;
+            _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(prefab), cached: true);
+            if (unique)
+                AttachToMount(_part_glass, _mount_head_decor, true);
+            else
+                AttachToMount(_part_glass, _part_head);
             string glass = CustomSet.Glass.Value.Substring(5);
             if (glass != "None")
-                SetFacialTexture(_part_glass, "Glass", int.Parse(glass));
+                SetFacialTexture(_part_glass, "Glass", int.Parse(glass), unique);
             else
-                SetFacialTexture(_part_glass, "Glass", -1);
+                SetFacialTexture(_part_glass, "Glass", -1, unique);
         }
 
         public void CreateBack()
@@ -521,12 +539,12 @@ namespace Characters
             _part_chest.GetComponent<Renderer>().material = skinMaterial;
         }
 
-        private void SetFacialTexture(GameObject go, string type, int id)
+        private void SetFacialTexture(GameObject go, string type, int id, bool unique)
         {
             if (id >= 0)
-                go.GetComponent<Renderer>().material = HumanSetupMaterials.GetFaceMaterial(type + id.ToString());
+                go.GetComponentInChildren<Renderer>().material = HumanSetupMaterials.GetFaceMaterial(type + id.ToString(), unique);
             else
-                go.GetComponent<Renderer>().material = MaterialCache.TransparentMaterial;
+                go.GetComponentInChildren<Renderer>().material = MaterialCache.TransparentMaterial;
         }
 
         private GameObject CreateMount(string transformPath)

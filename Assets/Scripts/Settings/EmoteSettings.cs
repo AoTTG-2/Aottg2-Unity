@@ -5,16 +5,16 @@ namespace Settings
     class EmoteSettings: SaveableSettingsContainer
     {
         protected override string FileName { get { return "Emote.json"; } }
-        public ListSetting<NameSetting> TextEmotes = new ListSetting<NameSetting>(new List<NameSetting>()
+        public ListSetting<StringSetting> TextEmotes = new ListSetting<StringSetting>(new List<StringSetting>()
         {
-            new NameSetting("Help", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Thanks", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Sorry", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Titan here", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Good game", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Nice hit", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Oops", maxLength: 200, maxStrippedLength: 40),
-            new NameSetting("Welcome", maxLength: 200, maxStrippedLength: 40)
+            new StringSetting("Help", maxLength: 40),
+            new StringSetting("Thanks", maxLength: 40),
+            new StringSetting("Sorry", maxLength: 40),
+            new StringSetting("Titan here", maxLength: 40),
+            new StringSetting("Good game", maxLength: 40),
+            new StringSetting("Nice hit", maxLength: 40),
+            new StringSetting("Oops", maxLength: 40),
+            new StringSetting("Welcome", maxLength: 40)
         });
         public ListSetting<StringSetting> EmojiEmotes = new ListSetting<StringSetting>(new List<StringSetting>()
         {

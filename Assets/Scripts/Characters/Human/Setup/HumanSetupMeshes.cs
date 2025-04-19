@@ -117,13 +117,17 @@ namespace Characters
             return FacePath + "char_eyes";
         }
 
-        public string GetFaceMesh()
+        public string GetFaceMesh(string prefab)
         {
+            if (prefab != string.Empty)
+                return FacePath + prefab;
             return FacePath + "char_face";
         }
 
-        public string GetGlassMesh()
+        public string GetGlassMesh(string prefab)
         {
+            if (prefab != string.Empty)
+                return FacePath + prefab;
             return FacePath + "char_glasses";
         }
 

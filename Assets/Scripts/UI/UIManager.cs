@@ -26,6 +26,8 @@ namespace UI
         public static LoadingMenu LoadingMenu;
         public static float CurrentCanvasScale = 1f;
         public static List<string> AvailableProfileIcons = new List<string>();
+        public static List<string> AvailableEmojis = new List<string>();
+        public static HashSet<string> AnimatedEmojis = new HashSet<string>();
         public static bool NeedResizeText = false;
         public static bool NeedResizeTextSecondFrame = false;
         private static Dictionary<string, AudioSource> _sounds = new Dictionary<string, AudioSource>();
@@ -85,6 +87,11 @@ namespace UI
             var node = JSON.Parse(ResourceManager.LoadText(ResourcePaths.Info, "ProfileIconInfo"));
             foreach (var profileIcon in node["Icons"])
                 AvailableProfileIcons.Add(profileIcon.Value);
+            node = JSON.Parse(ResourceManager.LoadText(ResourcePaths.Info, "EmoteInfo"));
+            foreach (var emoteIcon in node["AllEmojis"])
+                AvailableEmojis.Add(emoteIcon.Value);
+            foreach (var emoteIcon in node["AnimatedEmojis"])
+                AnimatedEmojis.Add(emoteIcon.Value);
         }
 
         private static void LoadSounds()

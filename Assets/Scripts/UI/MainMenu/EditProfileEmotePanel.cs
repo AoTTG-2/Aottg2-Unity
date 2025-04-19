@@ -16,9 +16,9 @@ namespace UI
             base.Setup(parent);
             var settings = SettingsManager.EmoteSettings;
             ElementStyle style = new ElementStyle(titleWidth: 100f, themePanel: ThemePanel);
-            string[] options = UIManager.AvailableProfileIcons.ToArray();
-            string[] icons = GetProfileIconPaths(options);
 
+            string[] options = GetAvailableEmotes();
+            string[] icons = GetEmotePaths(options);
             for (int i = 0; i < 8; i++)
                 ElementFactory.CreateInputSetting(SinglePanel, style, settings.TextEmotes.GetItemAt(i), UIManager.GetLocaleCommon("Text") + " " + (i + 1),
                     elementWidth: 260f);
@@ -30,11 +30,34 @@ namespace UI
             }
         }
 
-        private string[] GetProfileIconPaths(string[] options)
+        private string[] GetAvailableEmotes()
+        {
+            List<string> options = new List<string>();
+            foreach (string option in UIManager.AvailableEmojis)
+                options.Add(option);
+            foreach (string option in UIManager.AvailableProfileIcons)
+            {
+                if (!option.StartsWith("Emoji"))
+                    options.Add(option);
+            }
+            return options.ToArray();
+        }
+
+        private string[] GetEmotePaths(string[] options)
         {
             List<string> icons = new List<string>();
             foreach (string option in options)
-                icons.Add(ResourcePaths.UI + "/Icons/Profile/" + option + "Icon");
+            {
+                if (option.StartsWith("Emoji"))
+                {
+                    if (UIManager.AnimatedEmojis.Contains(option))
+                        icons.Add(ResourcePaths.UI + "/Icons/Emotes/" + option + "_0");
+                    else
+                        icons.Add(ResourcePaths.UI + "/Icons/Emotes/" + option);
+                }
+                else
+                    icons.Add(ResourcePaths.UI + "/Icons/Profile/" + option + "Icon");
+            }
             return icons.ToArray();
         }
     }

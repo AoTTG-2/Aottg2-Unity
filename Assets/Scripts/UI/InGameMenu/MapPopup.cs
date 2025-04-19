@@ -20,6 +20,7 @@ namespace UI
         private float _height = 2000f;
         private Dictionary<Transform, Transform> _icons = new Dictionary<Transform, Transform>();
         private RawImage _background;
+        private Text _label;
         private Texture2D _texture;
         private const float SyncDelay = 1f;
         private float _syncTimeLeft = 1f;
@@ -33,7 +34,8 @@ namespace UI
             _background = ElementFactory.CreateRawImage(transform, new ElementStyle(), "", MinimapCamera.MapSize, MinimapCamera.MapSize).GetComponent<RawImage>();
             _background.GetComponent<LayoutElement>().ignoreLayout = true;
             _background.GetComponent<RectTransform>().sizeDelta = new Vector2(MinimapCamera.MapSize, MinimapCamera.MapSize);
-
+            _label = ElementFactory.CreateWhiteLabel(transform, new ElementStyle(), "").GetComponent<Text>();
+            ElementFactory.SetAnchor(_label.gameObject, TextAnchor.UpperRight, TextAnchor.UpperRight, new Vector2(-15f, -75f));
         }
 
         public override void Show()
@@ -45,6 +47,11 @@ namespace UI
 
         private void Update()
         {
+            var camera = (InGameCamera)SceneLoader.CurrentCamera;
+            var position = camera.Cache.Transform.position;
+            if (camera._follow != null)
+                position = camera._follow.Cache.Transform.position;
+            _label.text = position.x.ToString("F0") + ", " + position.y.ToString("F0") + ", " + position.z.ToString("F0");
             _syncTimeLeft -= Time.deltaTime;
             if (_syncTimeLeft <= 0f)
             {

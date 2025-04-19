@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 430506}
   - component: {fileID: 3330506}
   - component: {fileID: 2330506}
-  - component: {fileID: 6430506}
+  - component: {fileID: 3073810097404053929}
   m_Layer: 23
   m_Name: Statue2
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6430506
+--- !u!64 &3073810097404053929
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,6 +103,6 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 42917d78687abb84781505778012be92, type: 3}
+  m_Mesh: {fileID: 6785510847901775098, guid: 42917d78687abb84781505778012be92, type: 3}
