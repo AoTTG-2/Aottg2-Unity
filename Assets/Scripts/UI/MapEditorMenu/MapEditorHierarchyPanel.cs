@@ -8,6 +8,7 @@ using GameManagers;
 using Map;
 using MapEditor;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 
 namespace UI
@@ -232,6 +233,8 @@ namespace UI
             _pageLabel.text = $"{startIndex} - {startIndex + MaxVisibleObjects} ({MapLoader.IdToMapObject.Values.Count})";
         }
 
+        Vector2 _lastMousePosition = Vector2.zero;
+        bool _pollingDrag = false;
         private void HandleElementDrag()
         {
             if (_blockUI)
@@ -239,22 +242,55 @@ namespace UI
             if (_lastHighlighted != null)
                 _lastHighlighted.ClearContextHighlight();
 
-            // mouse down, mouse hold, mouse up
-            if (Input.GetMouseButtonDown(0))    // Start Drag
+            // On mouse down begin checking for drag threshold
+            if (Input.GetMouseButtonDown(0))
             {
+                _lastMousePosition = Input.mousePosition;
+                _pollingDrag = true;
+            }
+            if (_pollingDrag && Input.GetMouseButton(0))
+            {
+                if (Vector2.Distance(_lastMousePosition, Input.mousePosition) > EventSystem.current.pixelDragThreshold)
+                {
+                    _pollingDrag = false;
+                    _draggingItem = false;
+                    _targetID = -1;
+                    _targetParent = -1;
+                    _targetSibling = null;
+                    _lastHighlighted = FindButtonMouseOver();
+                    if (_lastHighlighted != null)
+                    {
+                        _lastHighlighted.SetHighlight(true);
+                        _draggingItem = true;
+                        _targetID = _lastHighlighted.BoundID;
+                    }
+                }
+            }
+            if (_pollingDrag && Input.GetMouseButtonUp(0))
+            {
+                _pollingDrag = false;
                 _draggingItem = false;
                 _targetID = -1;
                 _targetParent = -1;
                 _targetSibling = null;
-                _lastHighlighted = FindButtonMouseOver();
-                if (_lastHighlighted != null)
-                {
-                    _lastHighlighted.SetHighlight(true);
-                    _draggingItem = true;
-                    _targetID = _lastHighlighted.BoundID;
-                }
-            }
-            else if (Input.GetMouseButton(0) && _draggingItem)  // Highlight Drag Target
+            }   
+
+            // mouse down, mouse hold, mouse up
+            //if (Input.GetMouseButtonDown(0))    // Start Drag
+            //{
+            //    _draggingItem = false;
+            //    _targetID = -1;
+            //    _targetParent = -1;
+            //    _targetSibling = null;
+            //    _lastHighlighted = FindButtonMouseOver();
+            //    if (_lastHighlighted != null)
+            //    {
+            //        _lastHighlighted.SetHighlight(true);
+            //        _draggingItem = true;
+            //        _targetID = _lastHighlighted.BoundID;
+            //    }
+            //}
+            if (Input.GetMouseButton(0) && _draggingItem)  // Highlight Drag Target
             {
                 _lastHighlighted = FindButtonMouseOver();
                 if (_lastHighlighted != null)
