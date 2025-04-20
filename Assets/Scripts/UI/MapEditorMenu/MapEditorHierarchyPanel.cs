@@ -61,6 +61,8 @@ namespace UI
         int? _targetSibling = null;
         MapEditorHierarchyButton _lastHighlighted = null;
         bool _blockUI = false;
+        Vector2 _lastMousePosition = Vector2.zero;
+        bool _pollingDrag = false;
 
         // State
         public bool IsTreeView = true;
@@ -217,6 +219,9 @@ namespace UI
                     if (!isCorrectlyBound)
                     {
                         element.Bind(mapObject, _selected.Contains(mapObject.ScriptObject.Id));
+                        if (_idToItem.ContainsKey(mapObject.ScriptObject.Id))
+                            _idToItem.Remove(mapObject.ScriptObject.Id);
+                        _idToItem.Add(mapObject.ScriptObject.Id, element.gameObject);
                     }
 
                     if (siblingIndex != i)
@@ -233,8 +238,6 @@ namespace UI
             _pageLabel.text = $"{startIndex} - {startIndex + MaxVisibleObjects} ({MapLoader.IdToMapObject.Values.Count})";
         }
 
-        Vector2 _lastMousePosition = Vector2.zero;
-        bool _pollingDrag = false;
         private void HandleElementDrag()
         {
             if (_blockUI)
@@ -346,7 +349,6 @@ namespace UI
             }
             return null;
         }
-
 
         /// <summary>
         /// Create a fixed number of MapHierarchyButtons for reuse, disabled by default.
