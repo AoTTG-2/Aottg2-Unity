@@ -20,6 +20,7 @@ namespace MapEditor
         {
             Assert.AreEqual(objs.Count, 1); // TODO: for now only allow single element moving.
             _newParent = newParent;
+            _newSiblingIndex = newSiblingIndex;
             foreach (MapObject obj in objs)
             {
                 _ids.Add(obj.ScriptObject.Id);

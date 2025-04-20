@@ -9,7 +9,14 @@ namespace Map
 {
     class MapObject
     {
-        public int Parent;
+        public int Parent
+        {
+            get => ScriptObject.Parent;
+            set
+            {
+                ScriptObject.Parent = value;
+            }
+        }
         public GameObject GameObject;
         public MapScriptBaseObject ScriptObject;
         public Vector3 BaseScale;
@@ -17,6 +24,7 @@ namespace Map
         public Renderer[] renderCache;
         public Collider[] colliderCache;
         public bool RuntimeCreated = false;
+        private int _parent;
 
         /// New fields for serialization
         // Editor
@@ -34,9 +42,9 @@ namespace Map
 
         public MapObject(int parent, GameObject gameObject, MapScriptBaseObject scriptObject)
         {
+            ScriptObject = scriptObject;
             Parent = parent;
             GameObject = gameObject;
-            ScriptObject = scriptObject;
             colliderCache = GameObject.GetComponentsInChildren<Collider>();
             if (scriptObject.Static)
             {

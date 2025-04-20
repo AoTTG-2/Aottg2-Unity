@@ -14,18 +14,20 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using log4net.Core;
 using System.Runtime.CompilerServices;
+using UnityEditor.UIElements;
 
 namespace UI
 {
     class MapEditorHierarchyButton : Button
     {
         public GameObject Highlight;
+        public GameObject HighlightTop;
+        public GameObject HighlightBottom;
         public Text Name;
         public LayoutElement TextLayoutElement;
         public LayoutElement LayoutElement;
         public HorizontalLayoutGroup LayoutGroup;
-        public GameObject TopBar;
-        public GameObject BottomBar;
+        public RectTransform RectTransform;
         public int BoundID = -1;
 
         private GameObject ArrowClosed;
@@ -45,6 +47,11 @@ namespace UI
             #region Styling
             Highlight = transform.Find("Highlight").gameObject;
             Highlight.SetActive(false);
+            HighlightTop = transform.Find("HighlightTop").gameObject;
+            HighlightTop.SetActive(false);
+            HighlightBottom = transform.Find("HighlightBottom").gameObject;
+            HighlightBottom.SetActive(false);
+
 
             Name = transform.Find("Text").GetComponent<Text>();
             Name.text = string.Empty;
@@ -65,6 +72,9 @@ namespace UI
             ArrowExpanded = transform.Find("ArrowDownButton").gameObject;
             ArrowClosed.SetActive(true);
             ArrowExpanded.SetActive(false);
+
+            RectTransform = transform.GetComponent<RectTransform>();
+
             #endregion
 
             onClick.AddListener(onButtonClick);
@@ -111,20 +121,68 @@ namespace UI
 
         public void HighlightTopBorder(bool active)
         {
-            TopBar.SetActive(active);
-            BottomBar.SetActive(!active);
+            HighlightTop.SetActive(active);
+            HighlightBottom.SetActive(!active);
         }
 
         public void HighlightBottomBorder(bool active)
         {
-            BottomBar.SetActive(active);
-            TopBar.SetActive(!active);
+            HighlightBottom.SetActive(active);
+            HighlightTop.SetActive(!active);
         }
 
         public void SetBarHighlight(bool active)
         {
-            TopBar.SetActive(active);
-            BottomBar.SetActive(active);
+            HighlightTop.SetActive(active);
+            HighlightBottom.SetActive(active);
+        }
+
+        public void ContextHighlight()
+        {
+            HighlightTop.SetActive(false);
+            HighlightBottom.SetActive(false);
+            Highlight.SetActive(false);
+
+            // Shift all highlight UI elements by the level
+
+
+            Vector2 percent = GetPercentCovered();
+            if (percent.y >= 0.9f)
+            {
+                HighlightTop.SetActive(true);
+            }
+            else if (percent.y <= 0.1f)
+            {
+                HighlightBottom.SetActive(true);
+            }
+            else
+            {
+                Highlight.SetActive(true);
+            }
+        }
+
+        public Vector2 GetPercentCovered()
+        {
+            RectTransform rectTransform = transform.GetComponent<RectTransform>();
+            Vector2 sizeDelta = rectTransform.sizeDelta / 2;
+            Vector2 localMousePosition = rectTransform.InverseTransformPoint(Input.mousePosition);
+
+            // clamp mouse position to bounds
+            localMousePosition.x = Mathf.Clamp(localMousePosition.x, 0, sizeDelta.x);
+            localMousePosition.y = Mathf.Clamp(localMousePosition.y, 0, sizeDelta.y);
+
+            // calculate percentage covered
+            float percentX = localMousePosition.x / sizeDelta.x;
+            float percentY = localMousePosition.y / sizeDelta.y;
+
+            return new Vector2(percentX, percentY);
+        }
+
+        public void ClearContextHighlight()
+        {
+            HighlightTop.SetActive(false);
+            HighlightBottom.SetActive(false);
+            Highlight.SetActive(false);
         }
 
         public void SetHighlight(bool highlight)
@@ -135,6 +193,15 @@ namespace UI
         public void SetNesting(int level)
         {
             LayoutGroup.padding = new RectOffset(10 + (level * 20), 0, 0, 0);
+
+            // Calculate new size of the highlight objects
+            float parentWidth = transform.GetComponent<RectTransform>().rect.width;
+            float padding = LayoutGroup.padding.left + LayoutGroup.padding.right;
+            float barWidth = parentWidth - padding;
+
+            Highlight.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, barWidth);
+            HighlightBottom.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, barWidth);
+            HighlightTop.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, barWidth);
         }
 
         public float Level => (LayoutGroup.padding.left / 20) - 10;

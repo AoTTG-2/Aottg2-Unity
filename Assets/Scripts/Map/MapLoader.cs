@@ -180,6 +180,7 @@ namespace Map
             int oldSiblingIndex = obj.SiblingIndex;
 
             int siblingIndexTarget = newSiblingIndex ?? 0;
+            obj.Level = -1;
 
             // Clean up the old parent
             if (IdToChildren.ContainsKey(oldParent))
@@ -296,7 +297,7 @@ namespace Map
             // TODO: add a task for a prefab editor? (would only affect the stored version, not the used instances)
         }
 
-
+        /// <summary>For runtime created objects</summary>
         public static void DeleteObject(MapObject obj)
         {
             if (IdToMapObject.ContainsKey(obj.ScriptObject.Id) == false)
@@ -366,7 +367,7 @@ namespace Map
             bool willLoadNavMesh = (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
                 && PhotonNetwork.IsMasterClient
                 && SettingsManager.InGameCurrent.Titan.TitanSmartMovement.Value
-                && gamemodeNeedsNav;
+                && gamemodeNeedsNav && !editor;
 
             int count = 0;
 
@@ -394,7 +395,7 @@ namespace Map
 
             
 
-            if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
+            if ((MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false) && !editor)
             {
                 NavMesh.RemoveAllNavMeshData();
                 _hasNavMeshData = false;
@@ -435,6 +436,7 @@ namespace Map
             MapManager.MapLoaded = true;
         }
 
+        #region Navmesh
         static Bounds GetWorldBounds(Matrix4x4 mat, Bounds bounds)
         {
             var absAxisX = Util.Abs(mat.MultiplyVector(Vector3.right));
@@ -592,7 +594,8 @@ namespace Map
             }
             await Task.WhenAll(tasks);
         }
-
+        #endregion
+        
         private void Batch()
         {
             Dictionary<string, GameObject> roots = new Dictionary<string, GameObject>();
@@ -933,7 +936,46 @@ namespace Map
                 layer = PhysicsLayer.Hurtbox;
             return layer;
         }
-        
+       
+        private static Object LoadAssetCached(string path, string asset)
+        {
+            string name = path + "/" + asset;
+            if (!_assetCache.ContainsKey(name))
+            {
+                _assetCache.Add(name, ResourceManager.LoadAsset(path, asset));
+            }
+            return _assetCache[name];
+        }
+
+        private static GameObject LoadPrefabCached(string asset)
+        {
+            try
+            {
+                if (!_assetCache.ContainsKey(asset))
+                {
+                    string[] strArr = asset.Split("/");
+                    if (strArr[0] == "Custom")
+                    {
+                        string bundleName = strArr[1];
+                        int length = bundleName.Length + 8;
+                        string name = asset.Substring(length);
+                        _assetCache.Add(asset, AssetBundleManager.LoadAsset(bundleName, name));
+                    }
+                    else
+                        _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
+                    if (asset == "Arenas/CaveMap1")
+                        WeatherManager.EnableCaveMap();
+                }
+                return (GameObject)Instantiate(_assetCache[asset]);
+            }
+            catch (System.Exception e)
+            {
+                DebugConsole.Log("Failed to load asset: " + asset + ", " + e.Message, true);
+                Errors.Add("Failed to load asset: " + asset + ", " + e.Message);
+                return new GameObject();
+            }
+        }
+
         public static IEnumerable<int> Query(string queryString)
         {
             Dictionary<string, string> query = GetQuery(queryString);
@@ -992,47 +1034,9 @@ namespace Map
 
             return queryDictionary;
         }
-
-        private static Object LoadAssetCached(string path, string asset)
-        {
-            string name = path + "/" + asset;
-            if (!_assetCache.ContainsKey(name))
-            {
-                _assetCache.Add(name, ResourceManager.LoadAsset(path, asset));
-            }
-            return _assetCache[name];
-        }
-
-        private static GameObject LoadPrefabCached(string asset)
-        {
-            try
-            {
-                if (!_assetCache.ContainsKey(asset))
-                {
-                    string[] strArr = asset.Split("/");
-                    if (strArr[0] == "Custom")
-                    {
-                        string bundleName = strArr[1];
-                        int length = bundleName.Length + 8;
-                        string name = asset.Substring(length);
-                        _assetCache.Add(asset, AssetBundleManager.LoadAsset(bundleName, name));
-                    }
-                    else
-                        _assetCache.Add(asset, ResourceManager.LoadAsset("Map", strArr[0] + "/Prefabs/" + strArr[1]));
-                    if (asset == "Arenas/CaveMap1")
-                        WeatherManager.EnableCaveMap();
-                }
-                return (GameObject)Instantiate(_assetCache[asset]);
-            }
-            catch (System.Exception e)
-            {
-                DebugConsole.Log("Failed to load asset: " + asset + ", " + e.Message, true);
-                Errors.Add("Failed to load asset: " + asset + ", " + e.Message);
-                return new GameObject();
-            }
-        }
     }
 
+    #region StaticClasses
     static class MapObjectShader
     {
         public static string Default = "Default";
@@ -1078,4 +1082,5 @@ namespace Map
         public static string Default = "Default";
         public static string Ice = "IceMaterial";
     }
+    #endregion
 }

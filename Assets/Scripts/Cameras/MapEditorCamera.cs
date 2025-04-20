@@ -111,8 +111,8 @@ namespace Cameras
                 {
                     Vector2 delta = Input.mousePosition - _lastDragPosition;
                     _lastDragPosition = Input.mousePosition;
-                    Cache.Transform.position -= Cache.Transform.right * delta.x * Time.deltaTime * speed;
-                    Cache.Transform.position -= Cache.Transform.up * delta.y * Time.deltaTime * speed;
+                    Cache.Transform.position -= Cache.Transform.right * delta.x * Time.deltaTime * speed * 0.5f;
+                    Cache.Transform.position -= Cache.Transform.up * delta.y * Time.deltaTime * speed * 0.5f;
                 }
             }
             else if (_input.Pan.GetKeyUp())
@@ -129,16 +129,16 @@ namespace Cameras
             if (!Camera.orthographic)
             {
                 if (_input.ZoomIn.GetKey())
-                    Cache.Transform.position += Cache.Transform.forward * Time.deltaTime * speed * 2;
+                    Cache.Transform.position += Cache.Transform.forward * Time.deltaTime * speed * 5;
                 else if (_input.ZoomOut.GetKey())
-                    Cache.Transform.position -= Cache.Transform.forward * Time.deltaTime * speed * 2;
+                    Cache.Transform.position -= Cache.Transform.forward * Time.deltaTime * speed * 5;
             }
             else
             {
                 if (_input.ZoomIn.GetKey())
-                    Camera.orthographicSize -= Time.deltaTime * speed * 2;
+                    Camera.orthographicSize -= Time.deltaTime * speed * 5;
                 else if (_input.ZoomOut.GetKey())
-                    Camera.orthographicSize += Time.deltaTime * speed * 2;
+                    Camera.orthographicSize += Time.deltaTime * speed * 5;
             }
             
         }

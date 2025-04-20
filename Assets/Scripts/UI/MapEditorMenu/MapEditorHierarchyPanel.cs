@@ -161,7 +161,6 @@ namespace UI
             IEnumerable<int> orderedChildren = MapLoader.IdToChildren[parent].OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
 
         }
-
         #endregion
 
         private void Update()
@@ -238,10 +237,10 @@ namespace UI
             if (_blockUI)
                 return;
             if (_lastHighlighted != null)
-                _lastHighlighted.SetHighlight(false);
+                _lastHighlighted.ClearContextHighlight();
 
             // mouse down, mouse hold, mouse up
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))    // Start Drag
             {
                 _draggingItem = false;
                 _targetID = -1;
@@ -255,27 +254,46 @@ namespace UI
                     _targetID = _lastHighlighted.BoundID;
                 }
             }
-            else if (Input.GetMouseButton(0) && _draggingItem)
+            else if (Input.GetMouseButton(0) && _draggingItem)  // Highlight Drag Target
             {
                 _lastHighlighted = FindButtonMouseOver();
                 if (_lastHighlighted != null)
                 {
-                    _lastHighlighted.SetHighlight(true);
+                    _lastHighlighted.ContextHighlight();
                 }
             }
-            else if (Input.GetMouseButtonUp(0) && _draggingItem)
+            else if (Input.GetMouseButtonUp(0) && _draggingItem)    // Reposition Elements
             {
                 _lastHighlighted = FindButtonMouseOver();
                 if (_lastHighlighted != null)
                 {
                     _lastHighlighted.SetHighlight(false);
                     _draggingItem = false;
-                    _targetParent = _lastHighlighted.BoundID;
-                    _targetSibling = 0;
 
-                    if (_targetID != _targetParent && MapLoader.IdToMapObject[_targetParent].Parent != _targetID)
+                    Vector2 percentCovered = _lastHighlighted.GetPercentCovered();
+
+                    if (percentCovered.y >= 0.9f)   // Top
                     {
-                        _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
+                        // Target parent is the same as the highlighted parent, the sibling id is the same as it will push right
+                        _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
+                        _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex;
+                    }
+                    else if (percentCovered.y <= 0.1f)  // Bottom
+                    {
+                        // Target parent is the same as the highlighted parent, the sibling id is past the highlighted element
+                        _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
+                        _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex + 1;
+                    }
+                    else
+                    {
+                        _targetParent = _lastHighlighted.BoundID;
+                        _targetSibling = 0;
+                    }
+
+                    if (_targetID != _targetParent)
+                    {
+                        if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != _targetID)
+                            _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
                     }
                 }
             }

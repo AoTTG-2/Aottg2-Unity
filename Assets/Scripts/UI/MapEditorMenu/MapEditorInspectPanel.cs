@@ -85,7 +85,9 @@ namespace UI
             _mapObject = mapObject;
             SyncSettings();
             ElementStyle style = new ElementStyle(fontSize: 18, titleWidth: 80f, spacing: 10f, themePanel: ThemePanel);
-            var label = ElementFactory.CreateDefaultLabel(SinglePanel, style, "Object Id: " + _mapObject.ScriptObject.Id.ToString() + " | " + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            var label = ElementFactory.CreateDefaultLabel(SinglePanel, style, "Object Id: " + _mapObject.ScriptObject.Id.ToString()
+                + " | " + "Sibling Id: " + _mapObject.SiblingIndex.ToString()
+                + " | " + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
             style.TitleWidth = 45f;
             ElementFactory.CreateToggleSetting(group, style, _active, "Active", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
@@ -338,19 +340,27 @@ namespace UI
             var script = (MapScriptSceneObject)_mapObject.ScriptObject;
             bool nameChange = script.Name != _name.Value;
             bool parentChange = script.Parent != _parent.Value;
+            int oldParent = script.Parent;
+            int targetParent = _parent.Value;
             script.Name = _name.Value;
             script.Active = _active.Value;
             script.Static = _static.Value;
             script.Networked = _networked.Value;
             script.Visible = _visible.Value;
-            script.Parent = _parent.Value;
-            if (script.Parent > 0)
+            bool canSetParent = true;
+            if (script.Parent > MapLoader.ROOT)
             {
-                if (!MapLoader.IdToMapObject.ContainsKey(script.Parent) || script.Parent == script.Id || MapLoader.IdToMapObject[script.Parent].Parent == script.Id)
+                if (!MapLoader.IdToMapObject.ContainsKey(targetParent) || targetParent == script.Id || MapLoader.IdToMapObject[targetParent].Parent == script.Id)
                 {
-                    script.Parent = 0;
-                    _parent.Value = 0;
+                    _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, MapLoader.ROOT, MapLoader.IdToMapObject[oldParent].SiblingIndex));
+                    script.Parent = MapLoader.ROOT;
+                    _parent.Value = MapLoader.ROOT;
+                    canSetParent = false;
                 }
+            }
+            if (canSetParent && parentChange)
+            {
+                _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, targetParent, MapLoader.IdToMapObject[oldParent].SiblingIndex));
             }
             var newPosition = new Vector3(_positionX.Value, _positionY.Value, _positionZ.Value);
             if (script.GetPosition() != newPosition)
