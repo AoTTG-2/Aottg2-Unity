@@ -373,22 +373,22 @@ namespace UI
                 {
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.position = newPosition;
-                    _gameManager.NewCommand(new TransformPositionCommand(allTransforms), false);
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
+                    _gameManager.NewCommand(new TransformPositionCommand(allTransforms), false);
                 }
                 if (script.GetRotation() != newRotation)
                 {
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
-                    _gameManager.NewCommand(new TransformRotationCommand(allTransforms), false);
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
+                    _gameManager.NewCommand(new TransformRotationCommand(allTransforms), false);
                 }
                 if (script.GetScale() != newScale)
                 {
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
-                    _gameManager.NewCommand(new TransformScaleCommand(allTransforms), false);
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
+                    _gameManager.NewCommand(new TransformScaleCommand(allTransforms), false);
                 }
             }
             else

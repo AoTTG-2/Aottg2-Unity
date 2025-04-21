@@ -58,6 +58,15 @@ namespace GameManagers
                 return SelectedObjects.ToList();
         }
 
+        public bool IsSelectionUniform()
+        {
+            if (SelectedObjects.Count == 0 || SelectedObjects.Count == 1)
+                return true;
+
+            var first = SelectedObjects.First();
+            return SelectedObjects.All(obj => obj.Parent == first.Parent);
+        }
+
         public void ShowAddObject()
         {
             if (_menu.AddObjectPopup.IsActive)

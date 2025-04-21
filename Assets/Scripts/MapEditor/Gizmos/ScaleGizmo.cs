@@ -77,6 +77,9 @@ namespace MapEditor
             return false;
         }
 
+        bool firstFrame = true;
+        bool selectionUniform = false;
+        Dictionary<MapObject, List<MapObject>> collectionsToMove = new Dictionary<MapObject, List<MapObject>>();
         protected void Update()
         {
             base.Update();
@@ -119,6 +122,21 @@ namespace MapEditor
             {
                 if (mouseKey.GetKey())
                 {
+                    if (firstFrame)
+                    {
+                        firstFrame = false;
+
+                        // Gather all objects we're moving, if multiselect and all roots, move roots and all children (setup hierarchy)
+                        // if multiselect and not all roots, move all selected objects independently
+                        selectionUniform = _gameManager.IsSelectionUniform();
+                        if (selectionUniform)
+                        {
+                            foreach (var obj in _gameManager.SelectedObjects)
+                            {
+                                collectionsToMove.Add(obj, MapLoader.SetupGameObjectHierarchy(obj));
+                            }
+                        }
+                    }
                     Ray ray = camera.Camera.ScreenPointToRay(Input.mousePosition);
                     Vector3 previousRay = (_previousMousePoint - ray.origin);
                     float angle = Vector3.Angle(ray.direction, previousRay) * Mathf.Deg2Rad;
@@ -180,9 +198,23 @@ namespace MapEditor
                 }
                 else
                 {
-                    _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>(_gameManager.SelectedObjects)));
+                    if (selectionUniform)
+                    {
+                        foreach (var obj in collectionsToMove)
+                        {
+                            MapLoader.ClearGameObjectHierarchy(obj.Key);
+                            _gameManager.NewCommand(new TransformScaleCommand(obj.Value));
+                        }
+                    }
+                    else
+                    {
+                        _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>(_gameManager.SelectedObjects)));
+                    }
                     ResetColors();
                     _activeLine = null;
+                    firstFrame = true;
+                    selectionUniform = false;
+                    collectionsToMove.Clear();
                 }
                 _gameManager.IgnoreNextSelect = true;
             }

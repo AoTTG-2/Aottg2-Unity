@@ -32,6 +32,8 @@ namespace MapEditor
                 if (!_meshOutlines.ContainsKey(obj))
                     CreateOutline(obj);
             }
+
+            // TODO: Add dimmer highlight for sub-selection
         }
 
         private void CreateOutline(MapObject obj)
