@@ -14,6 +14,7 @@ using UnityEngine.UI;
 using System.Collections;
 using static UI.MapEditorTopPanel;
 using System;
+using System.Linq;
 
 namespace GameManagers
 {
@@ -28,6 +29,8 @@ namespace GameManagers
         public MapScript MapScript;
         public CustomLogicEvaluator LogicEvaluator;
         public HashSet<MapObject> SelectedObjects = new HashSet<MapObject>();
+        public HashSet<MapObject> SubSelection = new HashSet<MapObject>();
+        public bool UseSubSelection = true;
         public BaseGizmo CurrentGizmo;
         public GizmoMode CurrentGizmoMode;
         public bool Snap;
@@ -45,6 +48,16 @@ namespace GameManagers
         private bool _isDrag;
         private Vector3 _dragStart;
         
+        
+        public List<MapObject> GetSelection()
+        {
+            // Take union of SelectedObjects and SubSelection
+            if (UseSubSelection)
+                return SelectedObjects.Union(SubSelection).ToList();
+            else
+                return SelectedObjects.ToList();
+        }
+
         public void ShowAddObject()
         {
             if (_menu.AddObjectPopup.IsActive)
@@ -127,7 +140,7 @@ namespace GameManagers
             if (SelectedObjects.Count == 0)
                 return;
             var mapScriptObjects = new MapScriptObjects();
-            foreach (var obj in SelectedObjects)
+            foreach (var obj in GetSelection())
                 mapScriptObjects.Objects.Add(obj.ScriptObject);
             _clipboard = mapScriptObjects.Serialize();
         }
@@ -156,7 +169,7 @@ namespace GameManagers
         {
             if (SelectedObjects.Count == 0)
                 return;
-            NewCommand(new DeleteObjectCommand(new List<MapObject>(SelectedObjects)));
+            NewCommand(new DeleteObjectCommand(new List<MapObject>(SelectedObjects)));  // Only delete roots
             _menu.SyncHierarchyPanel();
             OnSelectionChange();
         }
@@ -167,7 +180,7 @@ namespace GameManagers
                 return;
             // if NewParent is a child of any of the selected objects, we should just ignore this case for now.
 
-            NewCommand(new SetParentCommand(new List<MapObject>(SelectedObjects), newParent, newSiblingID));
+            NewCommand(new SetParentCommand(new List<MapObject>(SelectedObjects), newParent, newSiblingID));    // No need to set parent of sub selection
             _menu.SyncHierarchyPanel();
         }
 
@@ -245,11 +258,33 @@ namespace GameManagers
         public void DeselectObject(MapObject obj)
         {
             SelectedObjects.Remove(obj);
+
+            // Remove children from subselection
+            if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
+            {
+                foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
+                {
+                    var childObj = MapLoader.IdToMapObject[child];
+                    if (SubSelection.Contains(childObj))
+                        SubSelection.Remove(childObj);
+                }
+            }
         }
 
         public void SelectObject(MapObject obj)
         {
             SelectedObjects.Add(obj);
+
+            // Add children to subselection
+            if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
+            {
+                foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
+                {
+                    var childObj = MapLoader.IdToMapObject[child];
+                    if (!SubSelection.Contains(childObj))
+                        SubSelection.Add(childObj);
+                }
+            }
         }
 
         public void NewCommand(BaseCommand command, bool syncInspector = true)

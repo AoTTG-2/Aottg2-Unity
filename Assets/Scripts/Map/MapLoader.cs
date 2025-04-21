@@ -2,6 +2,7 @@
 using CustomLogic;
 using Events;
 using Photon.Pun;
+using Photon.Realtime;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;
@@ -157,6 +158,45 @@ namespace Map
                     IdToChildren[obj.Parent].Add(obj.ScriptObject.Id);
                 else
                     IdToChildren.Add(obj.Parent, new HashSet<int>() { obj.ScriptObject.Id });
+            }
+        }
+
+        public static List<MapObject> SetupGameObjectHierarchy(MapObject root)
+        {
+            var results = new List<MapObject>();
+            var stack = new Stack<MapObject>();
+            stack.Push(root);
+
+            while (stack.Count > 0)
+            {
+                var current = stack.Pop();
+                results.Add(IdToMapObject[current.ScriptObject.Id]);
+
+                if (IdToChildren.ContainsKey(current.ScriptObject.Id))
+                {
+                    foreach (int childId in IdToChildren[current.ScriptObject.Id])
+                    {
+                        var child = IdToMapObject[childId];
+                        child.GameObject.transform.parent = current.GameObject.transform;
+                        stack.Push(child);
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public static void ClearGameObjectHierarchy(MapObject parent)
+        {
+            // traverse idToChildren tree and set the parent of each child to null.
+            if (IdToChildren.ContainsKey(parent.ScriptObject.Id))
+            {
+                foreach (int childId in IdToChildren[parent.ScriptObject.Id])
+                {
+                    var child = IdToMapObject[childId];
+                    child.GameObject.transform.parent = null;
+                    ClearGameObjectHierarchy(child);
+                }
             }
         }
 
@@ -822,8 +862,11 @@ namespace Map
                 var mats = _defaultMaterialCache[materialHash];
                 for (int i = 0; i < renderers.Count; i++)
                 {
-                    renderers[i].material = mats[i];
-                    renderers[i].enabled = visible;
+                    if (i < mats.Count)
+                    {
+                        renderers[i].material = mats[i];
+                        renderers[i].enabled = visible;
+                    }
                 }
             }
             else

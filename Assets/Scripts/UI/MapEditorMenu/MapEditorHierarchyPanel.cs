@@ -311,13 +311,13 @@ namespace UI
 
                     Vector2 percentCovered = _lastHighlighted.GetPercentCovered();
 
-                    if (percentCovered.y >= 0.9f)   // Top
+                    if (percentCovered.y >= _lastHighlighted.TopBorder)   // Top
                     {
                         // Target parent is the same as the highlighted parent, the sibling id is the same as it will push right
                         _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
                         _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex;
                     }
-                    else if (percentCovered.y <= 0.1f)  // Bottom
+                    else if (percentCovered.y <= _lastHighlighted.BottomBorder)  // Bottom
                     {
                         // Target parent is the same as the highlighted parent, the sibling id is past the highlighted element
                         _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;

@@ -362,24 +362,54 @@ namespace UI
             {
                 _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, targetParent, MapLoader.IdToMapObject[oldParent].SiblingIndex));
             }
+
             var newPosition = new Vector3(_positionX.Value, _positionY.Value, _positionZ.Value);
-            if (script.GetPosition() != newPosition)
-            {
-                _mapObject.GameObject.transform.position = newPosition;
-                _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }), false);
-            }
             var newRotation = new Vector3(_rotationX.Value, _rotationY.Value, _rotationZ.Value);
-            if (script.GetRotation() != newRotation)
-            {
-                _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
-                _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }), false);
-            }
             var newScale = new Vector3(_scaleX.Value, _scaleY.Value, _scaleZ.Value);
-            if (script.GetScale() != newScale)
+            if (_gameManager.UseSubSelection)
             {
-                _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
-                _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }), false);
+                // This is extremely dumb.
+                if (script.GetPosition() != newPosition)
+                {
+                    List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
+                    _mapObject.GameObject.transform.position = newPosition;
+                    _gameManager.NewCommand(new TransformPositionCommand(allTransforms), false);
+                    MapLoader.ClearGameObjectHierarchy(_mapObject);
+                }
+                if (script.GetRotation() != newRotation)
+                {
+                    List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
+                    _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
+                    _gameManager.NewCommand(new TransformRotationCommand(allTransforms), false);
+                    MapLoader.ClearGameObjectHierarchy(_mapObject);
+                }
+                if (script.GetScale() != newScale)
+                {
+                    List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
+                    _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
+                    _gameManager.NewCommand(new TransformScaleCommand(allTransforms), false);
+                    MapLoader.ClearGameObjectHierarchy(_mapObject);
+                }
             }
+            else
+            {
+                if (script.GetPosition() != newPosition)
+                {
+                    _mapObject.GameObject.transform.position = newPosition;
+                    _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }), false);
+                }
+                if (script.GetRotation() != newRotation)
+                {
+                    _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
+                    _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }), false);
+                }
+                if (script.GetScale() != newScale)
+                {
+                    _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
+                    _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }), false);
+                }
+            }
+            
             script.CollideMode = _collideMode.Value;
             script.CollideWith = _collideWith.Value;
             script.PhysicsMaterial = _physicsMaterial.Value;

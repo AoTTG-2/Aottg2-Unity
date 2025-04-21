@@ -1,13 +1,12 @@
 ﻿using CustomLogic;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Map
 {
-    class MapObject
+    class MapObject : IEquatable<MapObject>
     {
         public int Parent
         {
@@ -70,5 +69,22 @@ namespace Map
             }
             return null;
         }
+
+        public bool Equals(MapObject other)
+        {
+            return other != null &&
+                   other.ScriptObject.Id == ScriptObject.Id &&
+                   other.GameObject == GameObject;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ScriptObject.Id, GameObject);
+        }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as MapObject);
+        }
+
     }
 }

@@ -1,20 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using Settings;
-using System.Collections;
-using ApplicationManagers;
-using GameManagers;
-using Characters;
 using Map;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using log4net.Core;
-using System.Runtime.CompilerServices;
-using UnityEditor.UIElements;
 
 namespace UI
 {
@@ -29,19 +16,17 @@ namespace UI
         public HorizontalLayoutGroup LayoutGroup;
         public RectTransform RectTransform;
         public int BoundID = -1;
+        public float TopBorder = 0.7f;
+        public float BottomBorder = 0.3f;
 
         private GameObject ArrowClosed;
         private GameObject ArrowExpanded;
 
-        private UnityAction _onMouseOver;
-        private UnityAction _onMouseDown;
 
-        public void Setup(
-            float Width,
+        public void Setup(float Width,
             UnityAction onButtonClick,
             UnityAction onExpand,
-            UnityAction onCollapse
-            )
+            UnityAction onCollapse)
         {
 
             #region Styling
@@ -143,15 +128,12 @@ namespace UI
             HighlightBottom.SetActive(false);
             Highlight.SetActive(false);
 
-            // Shift all highlight UI elements by the level
-
-
             Vector2 percent = GetPercentCovered();
-            if (percent.y >= 0.9f)
+            if (percent.y >= TopBorder)
             {
                 HighlightTop.SetActive(true);
             }
-            else if (percent.y <= 0.1f)
+            else if (percent.y <= BottomBorder)
             {
                 HighlightBottom.SetActive(true);
             }
@@ -164,16 +146,13 @@ namespace UI
         public Vector2 GetPercentCovered()
         {
             RectTransform rectTransform = transform.GetComponent<RectTransform>();
-            Vector2 sizeDelta = rectTransform.sizeDelta / 2;
-            Vector2 localMousePosition = rectTransform.InverseTransformPoint(Input.mousePosition);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, Input.mousePosition, null, out Vector2 mousePosition);
+            mousePosition += rectTransform.sizeDelta / 2;
+            mousePosition.x = Mathf.Clamp(mousePosition.x, 0, rectTransform.sizeDelta.x);
+            mousePosition.y = Mathf.Clamp(mousePosition.y, 0, rectTransform.sizeDelta.y);
 
-            // clamp mouse position to bounds
-            localMousePosition.x = Mathf.Clamp(localMousePosition.x, 0, sizeDelta.x);
-            localMousePosition.y = Mathf.Clamp(localMousePosition.y, 0, sizeDelta.y);
-
-            // calculate percentage covered
-            float percentX = localMousePosition.x / sizeDelta.x;
-            float percentY = localMousePosition.y / sizeDelta.y;
+            float percentX = mousePosition.x / rectTransform.sizeDelta.x;
+            float percentY = mousePosition.y / rectTransform.sizeDelta.y;
 
             return new Vector2(percentX, percentY);
         }
