@@ -9,6 +9,7 @@ using Map;
 using MapEditor;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
+using Photon.Realtime;
 
 
 namespace UI
@@ -26,6 +27,8 @@ namespace UI
         protected override int VerticalPadding => 10;
         protected int ButtomMaskPadding => 50;
         protected override bool ScrollBar => true;
+        public int TotalElementCount => MapLoader.IdToMapObject.Count;
+        public readonly int MAX_DEPTH = 100;
 
         private Dictionary<int, GameObject> _idToItem = new Dictionary<int, GameObject>();
         private HashSet<int> _selected = new HashSet<int>();
@@ -52,8 +55,7 @@ namespace UI
         private List<MapEditorHierarchyButton> _elementsPool = new();
         private Dictionary<int, MapEditorHierarchyButton> _idToElement = new();
         private List<MapObject> _visibleObjects = new();
-
-        public int TotalElementCount => MapLoader.IdToMapObject.Count;
+        private bool _requestRedraw = true;
 
         // Selectors
         int _targetID = -1;
@@ -118,7 +120,7 @@ namespace UI
         }
 
         #region TreeViewAlgorithms
-        public List<MapObject> GetVisibleItems()
+        public List<MapObject> GetVisibleMapObjects()
         {
             List<int> ids = GetVisibleIds();
             return ids.Select(id => MapLoader.IdToMapObject[id]).ToList();
@@ -126,13 +128,16 @@ namespace UI
 
         public List<int> GetVisibleIds()
         {
-            List<int> items = new List<int>();
-            GetOrderedChildren(-1, items);
+            List<int> results = new List<int>();
+            if (MapLoader.IdToChildren.Count == 0) return results;
+            if (MapLoader.IdToChildren.ContainsKey(MapLoader.ROOT))
+            {
+                GetOrderedChildren(-1, results);
+                return results;
+            }
 
-            // For now so that we can check other maps,
-            if (items.Count == 0) GetOrderedChildren(0, items); // TODO: Remove this when map migration is added.
-
-            return items;
+            GetOrderedChildren(0, results);   // Handle outdated maps for now
+            return results;
         }
 
         private void GetOrderedChildren(int parent, List<int> items, int level = 0)
@@ -150,6 +155,45 @@ namespace UI
                     GetOrderedChildren(child, items, level + 1);
             }
         }
+
+        //public List<int> GetVisibleIds()
+        //{
+        //    if (MapLoader.IdToChildren.Count == 0) return new List<int>();
+        //    if (MapLoader.IdToChildren.ContainsKey(MapLoader.ROOT)) return GetOrderedChildren(-1);
+
+        //    return GetOrderedChildren(0);   // Handle outdated maps for now
+        //}
+
+        // TODO: Debug why the iterative version is not working when expanding the parent. - should also validate the iterative one in gamemanager/maploader (transform setup).
+        // This is needed for release as its more efficient.
+        /*private List<int> GetOrderedChildren(int root)
+        {
+            List<int> results = new List<int>();
+            Stack<(int parent, int level)> stack = new Stack<(int, int)>();
+            stack.Push((root, 0));
+
+            while (stack.Count > 0)
+            {
+                var (currentParent, level) = stack.Pop();
+
+                if (!MapLoader.IdToChildren.ContainsKey(currentParent))
+                    continue;
+
+                IEnumerable<int> orderedChildren = MapLoader.IdToChildren[currentParent]
+                    .OrderBy(id => MapLoader.IdToMapObject[id].SiblingIndex);
+
+                foreach (int child in orderedChildren)
+                {
+                    MapLoader.IdToMapObject[child].Level = level;
+                    results.Add(child);
+
+                    if (MapLoader.IdToMapObject[child].Expanded && level + 1 < MAX_DEPTH)
+                        stack.Push((child, level + 1));
+                }
+            }
+
+            return results;
+        }*/
 
         public void RemoveFromParent(int id)
         {
@@ -184,7 +228,6 @@ namespace UI
             UpdateVisibleElements();
         }
 
-        private bool _requestRedraw = true;
         public void UpdateVisibleElements()
         {
             float scrollPos = _scrollRect.verticalNormalizedPosition;
@@ -379,7 +422,7 @@ namespace UI
 
             IsTreeView = searchTerm == string.Empty;
             if (!IsTreeView) _visibleObjects = MapLoader.Query(searchTerm).Select(id => MapLoader.IdToMapObject[id]).ToList();
-            else _visibleObjects = GetVisibleItems();
+            else _visibleObjects = GetVisibleMapObjects();
         }
 
         public void Sync()
@@ -387,6 +430,8 @@ namespace UI
             UpdateDataSource();
             UpdateVisibleElements();
             SyncSelectedItems();
+            // UpdateHighlight(); -> Might just handle this in UpdateVisibleElements.
+            //SyncSelectedItems();
         }
 
         private GameObject CreatePooledElement()
@@ -433,13 +478,13 @@ namespace UI
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
                     // TODO: Add a subselection so that we can move child elements with the parent.
                     //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
-                    _gameManager.OnSelectionChange();
+                    _gameManager.OnSelectionChange(false);
                 }
                 else if (multi)
                 {
                     _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
                     //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.DeselectObject(MapLoader.IdToMapObject[item.ID]));
-                    _gameManager.OnSelectionChange();
+                    _gameManager.OnSelectionChange(false);
                 }
                 else
                 {
@@ -453,14 +498,14 @@ namespace UI
                 {
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
                     //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
-                    _gameManager.OnSelectionChange();
+                    _gameManager.OnSelectionChange(false);
                 }
                 else if (_selected.Count > 0 && !multi)
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
                     //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
-                    _gameManager.OnSelectionChange();
+                    _gameManager.OnSelectionChange(false);
                 }
             }
             _lastClickedItem = id;
@@ -469,7 +514,7 @@ namespace UI
         
         public void SyncSelectedItems()
         {
-
+            // TODO: Rework this to auto-scroll to the intended selected element instead of just the one in the pooled frame.
             foreach (int selected in _selected.ToList())
             {
                 MapObject value = null;
@@ -490,12 +535,77 @@ namespace UI
             }
         }
 
+        public void SyncSelection()
+        {
+            foreach (int selected in _selected.ToList())
+            {
+                MapObject value = null;
+                MapLoader.IdToMapObject.TryGetValue(selected, out value);
+                if (!_gameManager.SelectedObjects.Contains(value))
+                {
+                    _selected.Remove(selected);
+                }
+            }
+            foreach (MapObject obj in _gameManager.SelectedObjects)
+            {
+                if (!_selected.Contains(obj.ScriptObject.Id))
+                {
+                    _selected.Add(obj.ScriptObject.Id);
+                }
+            }
+        }
+        
+        /// <summary>Jump to the element selected, may need to be deferred to a double click due to performance.</summary>
+        public void SyncSelectedItemsAndJumpToFirst()
+        {
+            SyncSelection();
+            if (_gameManager.SelectedObjects.Count == 0) return;
+
+            MapObject first = _gameManager.SelectedObjects.First();
+
+            // Calculate what it would take to access this element, need to know what elements to expand, and what scroll level to set.
+            int iters = 0;
+            int id = first.ScriptObject.Id;
+            decimal elapsedElements = 0;
+
+            while (iters < MAX_DEPTH && id != MapLoader.ROOT && MapLoader.IdToMapObject.ContainsKey(id))
+            {
+                MapObject current = MapLoader.IdToMapObject[id];
+                int parent = current.Parent;
+                var children = MapLoader.IdToChildren[parent];
+                elapsedElements += children.Sum(x => MapLoader.IdToMapObject[x].SiblingIndex <= current.SiblingIndex? 1 : 0);
+
+                // Expand parent if possible
+                if (MapLoader.IdToMapObject.ContainsKey(parent) && !MapLoader.IdToMapObject[parent].Expanded)
+                {
+                    MapLoader.IdToMapObject[parent].Expanded = true;
+                }
+
+                id = current.Parent;
+            }
+
+            // Calculate scroll offset
+            //int maxStartIndex = TotalElementCount - MaxVisibleObjects;
+            //float targetScrollPos = 1f - (float)elapsedElements / maxStartIndex;
+            //targetScrollPos = Mathf.Clamp(targetScrollPos, 0f, 1f);
+            //_scrollRect.verticalNormalizedPosition = targetScrollPos;
+
+            int maxStartIndex = TotalElementCount - MaxVisibleObjects;
+            int centerIndex = Mathf.Clamp((int)elapsedElements - (MaxVisibleObjects / 2), 0, maxStartIndex);
+            float targetScrollPos = 1f - ((float)centerIndex / maxStartIndex);
+            targetScrollPos = Mathf.Clamp(targetScrollPos, 0f, 1f);
+
+            // Apply scroll position
+            _scrollRect.verticalNormalizedPosition = targetScrollPos;
+            Sync();
+        }
+
         public void SelectAllInHierarchy()
         {
             _gameManager.DeselectAll();
             if (_gameManager.SelectedObjects.Count == _visibleObjects.Count) return;
             foreach (var element in _visibleObjects) _gameManager.SelectObject(MapLoader.IdToMapObject[element.ScriptObject.Id]);
-            _gameManager.OnSelectionChange();
+            _gameManager.OnSelectionChange(false);
         }
     }
 }

@@ -124,7 +124,7 @@ namespace Map
             }
             IdToMapObject.Add(scriptObject.Id, mapObject);
             GoToMapObject.Add(go, mapObject);
-            if (scriptObject.Parent >= -1)
+            if (scriptObject.Parent >= ROOT)
             {
                 if (IdToChildren.ContainsKey(scriptObject.Parent))
                     IdToChildren[scriptObject.Parent].Add(scriptObject.Id);
@@ -186,16 +186,47 @@ namespace Map
             return results;
         }
 
-        public static void ClearGameObjectHierarchy(MapObject parent)
+        public static List<MapObject> GetAllChildren(MapObject root)
         {
-            // traverse idToChildren tree and set the parent of each child to null.
-            if (IdToChildren.ContainsKey(parent.ScriptObject.Id))
+            var results = new List<MapObject>();
+            var stack = new Stack<MapObject>();
+            stack.Push(root);
+
+            while (stack.Count > 0)
             {
-                foreach (int childId in IdToChildren[parent.ScriptObject.Id])
+                var current = stack.Pop();
+                if (current != root)
+                    results.Add(IdToMapObject[current.ScriptObject.Id]);
+
+                if (IdToChildren.ContainsKey(current.ScriptObject.Id))
                 {
-                    var child = IdToMapObject[childId];
-                    child.GameObject.transform.parent = null;
-                    ClearGameObjectHierarchy(child);
+                    foreach (int childId in IdToChildren[current.ScriptObject.Id])
+                    {
+                        var child = IdToMapObject[childId];
+                        stack.Push(child);
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public static void ClearGameObjectHierarchy(MapObject root)
+        {
+            var stack = new Stack<MapObject>();
+            stack.Push(root);
+
+            while (stack.Count > 0)
+            {
+                var current = stack.Pop();
+                if (IdToChildren.ContainsKey(current.ScriptObject.Id))
+                {
+                    foreach (int childId in IdToChildren[current.ScriptObject.Id])
+                    {
+                        var child = IdToMapObject[childId];
+                        child.GameObject.transform.parent = null;
+                        stack.Push(child);
+                    }
                 }
             }
         }
@@ -421,6 +452,26 @@ namespace Map
                     yield return new WaitForEndOfFrame();
                 }
                 count++;
+            }
+            if (editor)
+            {
+                foreach (var element in IdToMapObject)
+                {
+                    int id = element.Key;
+                    var obj = element.Value;
+                    if (obj.Parent == ROOT) continue;
+
+                    // Verify parent object actually exists and set to ROOT if not
+                    if (IdToMapObject.ContainsKey(obj.Parent) == false)
+                    {
+                        obj.Parent = ROOT;
+                        obj.GameObject.transform.SetParent(null);
+                        if (IdToChildren.ContainsKey(ROOT))
+                            IdToChildren[ROOT].Add(id);
+                        else
+                            IdToChildren.Add(ROOT, new HashSet<int>() { id });
+                    }
+                }
             }
             if (!editor)
             {

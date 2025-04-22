@@ -18,7 +18,7 @@ namespace MapEditor
 
         public SetParentCommand(List<MapObject> objs, int newParent, int? newSiblingIndex)
         {
-            Assert.AreEqual(objs.Count, 1); // TODO: for now only allow single element moving.
+            // Assert.AreEqual(objs.Count, 1); // TODO: for now only allow single element moving.
             _newParent = newParent;
             _newSiblingIndex = newSiblingIndex;
             foreach (MapObject obj in objs)
@@ -37,8 +37,8 @@ namespace MapEditor
 
         public override void Unexecute()
         {
-            Assert.AreEqual(_ids.Count, _previousParents.Count);
-            Assert.AreEqual(_ids.Count, _previousSiblingIndices.Count);
+            //Assert.AreEqual(_ids.Count, _previousParents.Count);
+            //Assert.AreEqual(_ids.Count, _previousSiblingIndices.Count);
 
             for (int i = 0; i < _ids.Count; i++)
                 MapLoader.EditorOnMoveObject(_ids[i], _previousParents[i], _previousSiblingIndices[i]);

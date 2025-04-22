@@ -352,7 +352,12 @@ namespace UI
             {
                 if (!MapLoader.IdToMapObject.ContainsKey(targetParent) || targetParent == script.Id || MapLoader.IdToMapObject[targetParent].Parent == script.Id)
                 {
-                    _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, MapLoader.ROOT, MapLoader.IdToMapObject[oldParent].SiblingIndex));
+                    int? siblingIndex = null;
+                    if (MapLoader.IdToMapObject.ContainsKey(oldParent))
+                    {
+                        siblingIndex = MapLoader.IdToMapObject[oldParent].SiblingIndex;
+                    }
+                    _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, MapLoader.ROOT, siblingIndex));
                     script.Parent = MapLoader.ROOT;
                     _parent.Value = MapLoader.ROOT;
                     canSetParent = false;
@@ -360,7 +365,12 @@ namespace UI
             }
             if (canSetParent && parentChange)
             {
-                _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, targetParent, MapLoader.IdToMapObject[oldParent].SiblingIndex));
+                int? siblingIndex = null;
+                if (MapLoader.IdToMapObject.ContainsKey(oldParent))
+                {
+                    siblingIndex = MapLoader.IdToMapObject[oldParent].SiblingIndex;
+                }
+                _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[script.Id] }, targetParent, siblingIndex));
             }
 
             var newPosition = new Vector3(_positionX.Value, _positionY.Value, _positionZ.Value);
@@ -374,21 +384,21 @@ namespace UI
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.position = newPosition;
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
-                    _gameManager.NewCommand(new TransformPositionCommand(allTransforms), false);
+                    _gameManager.NewCommand(new TransformCommand(allTransforms), false);
                 }
                 if (script.GetRotation() != newRotation)
                 {
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
-                    _gameManager.NewCommand(new TransformRotationCommand(allTransforms), false);
+                    _gameManager.NewCommand(new TransformCommand(allTransforms), false);
                 }
                 if (script.GetScale() != newScale)
                 {
                     List<MapObject> allTransforms = MapLoader.SetupGameObjectHierarchy(_mapObject);
                     _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
                     MapLoader.ClearGameObjectHierarchy(_mapObject);
-                    _gameManager.NewCommand(new TransformScaleCommand(allTransforms), false);
+                    _gameManager.NewCommand(new TransformCommand(allTransforms), false);
                 }
             }
             else
@@ -396,17 +406,17 @@ namespace UI
                 if (script.GetPosition() != newPosition)
                 {
                     _mapObject.GameObject.transform.position = newPosition;
-                    _gameManager.NewCommand(new TransformPositionCommand(new List<MapObject>() { _mapObject }), false);
+                    _gameManager.NewCommand(new TransformCommand(new List<MapObject>() { _mapObject }), false);
                 }
                 if (script.GetRotation() != newRotation)
                 {
                     _mapObject.GameObject.transform.rotation = Quaternion.Euler(newRotation);
-                    _gameManager.NewCommand(new TransformRotationCommand(new List<MapObject>() { _mapObject }), false);
+                    _gameManager.NewCommand(new TransformCommand(new List<MapObject>() { _mapObject }), false);
                 }
                 if (script.GetScale() != newScale)
                 {
                     _mapObject.GameObject.transform.localScale = Util.MultiplyVectors(_mapObject.BaseScale, newScale);
-                    _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>() { _mapObject }), false);
+                    _gameManager.NewCommand(new TransformCommand(new List<MapObject>() { _mapObject }), false);
                 }
             }
             

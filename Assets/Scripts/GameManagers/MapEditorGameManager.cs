@@ -160,6 +160,9 @@ namespace GameManagers
                 return;
             var mapScriptObjects = new MapScriptObjects();
             mapScriptObjects.Deserialize(_clipboard);
+
+            // Calculate new parent ids for any previously nested elements. -> messy, not known root element
+
             NewCommand(new AddObjectCommand(mapScriptObjects.Objects));
             DeselectAll();
             foreach (var obj in mapScriptObjects.Objects)
@@ -262,21 +265,21 @@ namespace GameManagers
         {
             foreach (MapObject obj in new List<MapObject>(SelectedObjects))
                 DeselectObject(obj);
+            SubSelection.Clear();
         }
 
         public void DeselectObject(MapObject obj)
         {
             SelectedObjects.Remove(obj);
 
-            // Remove children from subselection
-            if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
+
+            var children = MapLoader.GetAllChildren(obj);
+            foreach (var child in children)
             {
-                foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
-                {
-                    var childObj = MapLoader.IdToMapObject[child];
-                    if (SubSelection.Contains(childObj))
-                        SubSelection.Remove(childObj);
-                }
+                if (SubSelection.Contains(child))
+                    SubSelection.Remove(child);
+                if (SelectedObjects.Contains(child))
+                    SelectedObjects.Remove(child);
             }
         }
 
@@ -425,7 +428,7 @@ namespace GameManagers
             _menu._topPanel.Save();
         }
 
-        public void OnSelectionChange()
+        public void OnSelectionChange(bool jumpToSelection=true)
         {
             foreach (var obj in new HashSet<MapObject>(SelectedObjects))
             {
@@ -436,7 +439,9 @@ namespace GameManagers
                 _menu.ShowInspector(new List<MapObject>(SelectedObjects)[0]);
             else
                 _menu.HideInspector();
-            _menu.HierarchyPanel.SyncSelectedItems();
+            if (jumpToSelection) _menu.HierarchyPanel.SyncSelectedItemsAndJumpToFirst();
+            else _menu.HierarchyPanel.SyncSelectedItems();
+
             SyncGizmos();
         }
 

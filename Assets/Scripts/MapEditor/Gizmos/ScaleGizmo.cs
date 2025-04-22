@@ -203,12 +203,12 @@ namespace MapEditor
                         foreach (var obj in collectionsToMove)
                         {
                             MapLoader.ClearGameObjectHierarchy(obj.Key);
-                            _gameManager.NewCommand(new TransformScaleCommand(obj.Value));
+                            _gameManager.NewCommand(new TransformCommand(obj.Value));
                         }
                     }
                     else
                     {
-                        _gameManager.NewCommand(new TransformScaleCommand(new List<MapObject>(_gameManager.SelectedObjects)));
+                        _gameManager.NewCommand(new TransformCommand(new List<MapObject>(_gameManager.SelectedObjects)));
                     }
                     ResetColors();
                     _activeLine = null;

@@ -133,12 +133,12 @@ namespace MapEditor
                         foreach (var obj in collectionsToMove)
                         {
                             MapLoader.ClearGameObjectHierarchy(obj.Key);
-                            _gameManager.NewCommand(new TransformPositionRotationCommand(obj.Value));
+                            _gameManager.NewCommand(new TransformCommand(obj.Value));
                         }
                     }
                     else
                     {
-                        _gameManager.NewCommand(new TransformPositionRotationCommand(new List<MapObject>(_gameManager.SelectedObjects)));
+                        _gameManager.NewCommand(new TransformCommand(new List<MapObject>(_gameManager.SelectedObjects)));
                     }
 
                     ResetColors();
