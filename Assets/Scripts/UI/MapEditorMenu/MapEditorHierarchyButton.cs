@@ -16,8 +16,8 @@ namespace UI
         public HorizontalLayoutGroup LayoutGroup;
         public RectTransform RectTransform;
         public int BoundID = -1;
-        public float TopBorder = 0.7f;
-        public float BottomBorder = 0.3f;
+        public float TopBorder = 0.65f;
+        public float BottomBorder = 0.35f;
 
         private GameObject ArrowClosed;
         private GameObject ArrowExpanded;

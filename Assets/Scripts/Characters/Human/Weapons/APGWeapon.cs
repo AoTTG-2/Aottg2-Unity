@@ -48,7 +48,9 @@ namespace Characters
             human.HumanCache.APGHit.transform.position = start;
             human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];
-            if (SettingsManager.InGameCurrent.Misc.APGPVP.Value)
+            float normalRadius = gunInfo["Radius"].AsFloat;
+            bool isPVP = SettingsManager.InGameCurrent.Misc.APGPVP.Value;
+            if (isPVP)
                 gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
             var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
             capsule.radius = gunInfo["Radius"].AsFloat;
@@ -69,6 +71,12 @@ namespace Characters
             float height = capsule.height * 1.2f;
             float radius = capsule.radius * 4f;
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
+
+            if (isPVP)
+            {
+                radius = normalRadius * 100f;
+            }
+
             object[] settings = new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f,
             radius, radius, 0.25f};
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.identity, settings: settings);

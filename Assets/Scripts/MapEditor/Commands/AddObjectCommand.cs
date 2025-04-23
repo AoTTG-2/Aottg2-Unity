@@ -11,13 +11,21 @@ namespace MapEditor
     class AddObjectCommand : BaseCommand
     {
         private string _script;
+        private bool maintainParents;
+        private Dictionary<int, int> newIdToOld = new Dictionary<int, int>();
+        private Dictionary<int, int> oldIdToNew = new Dictionary<int, int>();
 
-        public AddObjectCommand(List<MapScriptBaseObject> objs)
+        public AddObjectCommand(List<MapScriptBaseObject> objs, bool maintainParents = false)
         {
+            // Need to store previous parents and map to new parents ids
+            this.maintainParents = maintainParents;
             var scriptObjects = new MapScriptObjects();
             foreach (var obj in objs)
             {
-                obj.Id = ((MapEditorGameManager)SceneLoader.CurrentGameManager).GetNextObjectId();
+                int newId = ((MapEditorGameManager)SceneLoader.CurrentGameManager).GetNextObjectId();
+                newIdToOld.Add(newId, obj.Id);
+                oldIdToNew.Add(obj.Id, newId);
+                obj.Id = newId;
                 scriptObjects.Objects.Add(obj);
             }
             _script = scriptObjects.Serialize();
@@ -28,7 +36,16 @@ namespace MapEditor
             var scriptObjects = new MapScriptObjects();
             scriptObjects.Deserialize(_script);
             foreach (MapScriptBaseObject obj in scriptObjects.Objects)
+            {
+                if (obj.Parent != -1)
+                {
+                    if (oldIdToNew.ContainsKey(obj.Parent))
+                    {
+                        obj.Parent = oldIdToNew[obj.Parent];
+                    }
+                }
                 MapLoader.LoadObject(obj, true);
+            }
         }
 
         public override void Unexecute()

@@ -28,6 +28,7 @@ namespace UI
         protected int ButtomMaskPadding => 50;
         protected override bool ScrollBar => true;
         public int TotalElementCount => MapLoader.IdToMapObject.Count;
+        public int TotalVisibleCount => _visibleObjects.Count;
         public readonly int MAX_DEPTH = 100;
 
         private Dictionary<int, GameObject> _idToItem = new Dictionary<int, GameObject>();
@@ -319,23 +320,7 @@ namespace UI
                 _targetID = -1;
                 _targetParent = -1;
                 _targetSibling = null;
-            }   
-
-            // mouse down, mouse hold, mouse up
-            //if (Input.GetMouseButtonDown(0))    // Start Drag
-            //{
-            //    _draggingItem = false;
-            //    _targetID = -1;
-            //    _targetParent = -1;
-            //    _targetSibling = null;
-            //    _lastHighlighted = FindButtonMouseOver();
-            //    if (_lastHighlighted != null)
-            //    {
-            //        _lastHighlighted.SetHighlight(true);
-            //        _draggingItem = true;
-            //        _targetID = _lastHighlighted.BoundID;
-            //    }
-            //}
+            }
             if (Input.GetMouseButton(0) && _draggingItem)  // Highlight Drag Target
             {
                 _lastHighlighted = FindButtonMouseOver();
@@ -371,11 +356,12 @@ namespace UI
                         _targetParent = _lastHighlighted.BoundID;
                         _targetSibling = 0;
                     }
-
                     if (_targetID != _targetParent)
                     {
                         if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != _targetID)
+                        {
                             _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
+                        }
                     }
                 }
             }
@@ -470,20 +456,18 @@ namespace UI
         {
             if (_menu.IsPopupActive()) return;
             bool multi = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
+            bool shiftSelect = SettingsManager.InputSettings.MapEditor.Slow.GetKey();
             if (_selected.Contains(id))
             {
                 if (!multi && _gameManager.SelectedObjects.Count > 1)
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    // TODO: Add a subselection so that we can move child elements with the parent.
-                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange(false);
                 }
                 else if (multi)
                 {
                     _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
-                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.DeselectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange(false);
                 }
                 else
@@ -497,14 +481,12 @@ namespace UI
                 if (_selected.Count == 0 || multi)
                 {
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange(false);
                 }
                 else if (_selected.Count > 0 && !multi)
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    //_treeView.GetChildrenRecursive(_treeView.Items.Where(item => item.ID == id).FirstOrDefault()).ForEach(item => _gameManager.SelectObject(MapLoader.IdToMapObject[item.ID]));
                     _gameManager.OnSelectionChange(false);
                 }
             }
@@ -534,31 +516,11 @@ namespace UI
                 }
             }
         }
-
-        public void SyncSelection()
-        {
-            foreach (int selected in _selected.ToList())
-            {
-                MapObject value = null;
-                MapLoader.IdToMapObject.TryGetValue(selected, out value);
-                if (!_gameManager.SelectedObjects.Contains(value))
-                {
-                    _selected.Remove(selected);
-                }
-            }
-            foreach (MapObject obj in _gameManager.SelectedObjects)
-            {
-                if (!_selected.Contains(obj.ScriptObject.Id))
-                {
-                    _selected.Add(obj.ScriptObject.Id);
-                }
-            }
-        }
-        
+ 
         /// <summary>Jump to the element selected, may need to be deferred to a double click due to performance.</summary>
         public void SyncSelectedItemsAndJumpToFirst()
         {
-            SyncSelection();
+            SyncSelectedItems();
             if (_gameManager.SelectedObjects.Count == 0) return;
 
             MapObject first = _gameManager.SelectedObjects.First();
@@ -584,15 +546,16 @@ namespace UI
                 id = current.Parent;
             }
 
-            // Calculate scroll offset
-            //int maxStartIndex = TotalElementCount - MaxVisibleObjects;
-            //float targetScrollPos = 1f - (float)elapsedElements / maxStartIndex;
-            //targetScrollPos = Mathf.Clamp(targetScrollPos, 0f, 1f);
-            //_scrollRect.verticalNormalizedPosition = targetScrollPos;
-
-            int maxStartIndex = TotalElementCount - MaxVisibleObjects;
+            int maxStartIndex = TotalVisibleCount - MaxVisibleObjects;
             int centerIndex = Mathf.Clamp((int)elapsedElements - (MaxVisibleObjects / 2), 0, maxStartIndex);
             float targetScrollPos = 1f - ((float)centerIndex / maxStartIndex);
+
+            // Snap to end if the element is at the end of the list
+            if (elapsedElements <= TotalVisibleCount && elapsedElements >= TotalVisibleCount - MaxVisibleObjects / 2)
+            {
+                targetScrollPos = 0f;
+            }
+
             targetScrollPos = Mathf.Clamp(targetScrollPos, 0f, 1f);
 
             // Apply scroll position
