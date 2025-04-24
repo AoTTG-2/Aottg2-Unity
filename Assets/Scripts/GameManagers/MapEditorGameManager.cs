@@ -29,7 +29,6 @@ namespace GameManagers
         public MapScript MapScript;
         public CustomLogicEvaluator LogicEvaluator;
         public HashSet<MapObject> SelectedObjects = new HashSet<MapObject>();
-        public HashSet<MapObject> SubSelection = new HashSet<MapObject>();
         public bool UseSubSelection = true;
         public BaseGizmo CurrentGizmo;
         public GizmoMode CurrentGizmoMode;
@@ -48,15 +47,6 @@ namespace GameManagers
         private bool _isDrag;
         private Vector3 _dragStart;
         
-        
-        public List<MapObject> GetSelection()
-        {
-            // Take union of SelectedObjects and SubSelection
-            if (UseSubSelection)
-                return SelectedObjects.Union(SubSelection).ToList();
-            else
-                return SelectedObjects.ToList();
-        }
 
         public bool IsSelectionUniform()
         {
@@ -149,8 +139,18 @@ namespace GameManagers
             if (SelectedObjects.Count == 0)
                 return;
             var mapScriptObjects = new MapScriptObjects();
-            foreach (var obj in GetSelection())
+            foreach (var obj in SelectedObjects)
+            {
+                var children = MapLoader.GetAllChildren(obj);
+                foreach (var child in children)
+                {
+                    if (SelectedObjects.Contains(child))
+                        continue;
+                    mapScriptObjects.Objects.Add(child.ScriptObject);
+                }
                 mapScriptObjects.Objects.Add(obj.ScriptObject);
+            }
+                
             _clipboard = mapScriptObjects.Serialize();
         }
 
@@ -231,6 +231,7 @@ namespace GameManagers
                     }
                     else if (!multi)
                         DeselectAll();
+                    OnSelectionChange();
                 }
             }
             else
@@ -265,38 +266,16 @@ namespace GameManagers
         {
             foreach (MapObject obj in new List<MapObject>(SelectedObjects))
                 DeselectObject(obj);
-            SubSelection.Clear();
         }
 
         public void DeselectObject(MapObject obj)
         {
             SelectedObjects.Remove(obj);
-
-
-            var children = MapLoader.GetAllChildren(obj);
-            foreach (var child in children)
-            {
-                if (SubSelection.Contains(child))
-                    SubSelection.Remove(child);
-                if (SelectedObjects.Contains(child))
-                    SelectedObjects.Remove(child);
-            }
         }
 
         public void SelectObject(MapObject obj)
         {
             SelectedObjects.Add(obj);
-
-            // Add children to subselection
-            if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
-            {
-                foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
-                {
-                    var childObj = MapLoader.IdToMapObject[child];
-                    if (!SubSelection.Contains(childObj))
-                        SubSelection.Add(childObj);
-                }
-            }
         }
 
         public void NewCommand(BaseCommand command, bool syncInspector = true)

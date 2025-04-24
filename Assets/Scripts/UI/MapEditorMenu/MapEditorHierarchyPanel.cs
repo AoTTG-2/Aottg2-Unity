@@ -284,6 +284,8 @@ namespace UI
 
         private void HandleElementDrag()
         {
+            // TODO: Simplify logic into state machine.
+            // Mouse Down -> Poll Drag Threshold -> Poll | StartDrag  | DiscardDrag -> Drag -> Drag | SetParent | DiscardDrag
             if (_blockUI)
                 return;
             if (_lastHighlighted != null)
@@ -356,13 +358,29 @@ namespace UI
                         _targetParent = _lastHighlighted.BoundID;
                         _targetSibling = 0;
                     }
-                    if (_targetID != _targetParent)
+
+                    // Merge selected and target in union
+                    List<MapObject> targets = new List<MapObject>();
+                    if (!_selected.Contains(_targetID))
                     {
-                        if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != _targetID)
+                        _selected.Add(_targetID);
+                    }
+                    foreach (int id in _selected)
+                    {
+                        MapObject obj = MapLoader.IdToMapObject[id];
+                        if (obj == null)
+                            continue;
+                        // Check if the target parent is the same as the current parent
+                        if (obj.Parent != _targetParent)
                         {
-                            _gameManager.NewCommand(new SetParentCommand(new List<MapObject>() { MapLoader.IdToMapObject[_targetID] }, _targetParent, _targetSibling));
+                            if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != obj.ScriptObject.Id)
+                            {
+                                targets.Add(obj);
+                            }
                         }
                     }
+                    _selected.Remove(_targetID);
+                    if (targets.Count > 0) _gameManager.NewCommand(new SetParentCommand(targets, _targetParent, _targetSibling));
                 }
             }
         }
@@ -413,6 +431,7 @@ namespace UI
 
         public void Sync()
         {
+            SyncSelectedItems();
             UpdateDataSource();
             UpdateVisibleElements();
             SyncSelectedItems();
@@ -456,7 +475,6 @@ namespace UI
         {
             if (_menu.IsPopupActive()) return;
             bool multi = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
-            bool shiftSelect = SettingsManager.InputSettings.MapEditor.Slow.GetKey();
             if (_selected.Contains(id))
             {
                 if (!multi && _gameManager.SelectedObjects.Count > 1)
@@ -558,7 +576,7 @@ namespace UI
 
             targetScrollPos = Mathf.Clamp(targetScrollPos, 0f, 1f);
 
-            // Apply scroll position
+            // TODO: only scroll and sync if element is not already in view.
             _scrollRect.verticalNormalizedPosition = targetScrollPos;
             Sync();
         }
