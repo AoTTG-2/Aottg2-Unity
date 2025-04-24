@@ -154,7 +154,7 @@ namespace GameManagers
             _clipboard = mapScriptObjects.Serialize();
         }
 
-        public void Paste()
+        public void Paste(bool asChild = false)
         {
             if (_clipboard == string.Empty)
                 return;
@@ -162,10 +162,11 @@ namespace GameManagers
             mapScriptObjects.Deserialize(_clipboard);
 
             // Calculate new parent ids for any previously nested elements. -> messy, not known root element
-            bool pasteAsChild = SelectedObjects.Count == 1 && !mapScriptObjects.Objects.Any(e => e.Id == SelectedObjects.First().ScriptObject.Id);
+            bool pasteAsChild = asChild && SelectedObjects.Count == 1 && !mapScriptObjects.Objects.Any(e => e.Id == SelectedObjects.First().ScriptObject.Id);
+            List<MapScriptBaseObject> roots = mapScriptObjects.Objects.Where(e => !mapScriptObjects.Objects.Any(x => x.Id == e.Parent)).ToList();
             if (pasteAsChild)
             {
-                foreach (var item in mapScriptObjects.Objects.Where(e => !mapScriptObjects.Objects.Any(x => x.Id == e.Parent)))
+                foreach (var item in roots)
                 {
                     item.Parent = SelectedObjects.First().ScriptObject.Id;
                 }
@@ -174,7 +175,9 @@ namespace GameManagers
             NewCommand(new AddObjectCommand(mapScriptObjects.Objects));
             DeselectAll();
             foreach (var obj in mapScriptObjects.Objects)
-                SelectObject(MapLoader.IdToMapObject[obj.Id]);
+                if (roots.Any(e => e.Id == obj.Id))
+                    SelectObject(MapLoader.IdToMapObject[obj.Id]);
+
             _menu.SyncHierarchyPanel();
             OnSelectionChange();
         }
@@ -386,7 +389,7 @@ namespace GameManagers
             else if (_input.CopyObjects.GetKeyDown())
                 Copy();
             else if (_input.Paste.GetKeyDown())
-                Paste();
+                Paste(_input.ShiftSelect.GetKey());
             else if (_input.Cut.GetKeyDown())
                 Cut();
             else if (_input.AddObject.GetKeyDown())
