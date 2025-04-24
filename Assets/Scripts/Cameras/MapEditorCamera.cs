@@ -1,17 +1,9 @@
 ﻿using UnityEngine;
-using Utility;
 using Settings;
 using UI;
-using Weather;
-using System.Collections;
-using GameProgress;
 using Map;
 using GameManagers;
-using Events;
 using ApplicationManagers;
-using System.Linq;
-using System;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Cameras
 {
@@ -129,9 +121,9 @@ namespace Cameras
             if (!Camera.orthographic)
             {
                 if (_input.ZoomIn.GetKey())
-                    Cache.Transform.position += Cache.Transform.forward * Time.deltaTime * speed * 5;
+                    Cache.Transform.position += Cache.Transform.forward * Time.deltaTime * speed * 17;
                 else if (_input.ZoomOut.GetKey())
-                    Cache.Transform.position -= Cache.Transform.forward * Time.deltaTime * speed * 5;
+                    Cache.Transform.position -= Cache.Transform.forward * Time.deltaTime * speed * 17;
             }
             else
             {
