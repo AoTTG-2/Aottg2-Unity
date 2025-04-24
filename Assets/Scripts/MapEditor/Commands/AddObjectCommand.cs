@@ -11,14 +11,12 @@ namespace MapEditor
     class AddObjectCommand : BaseCommand
     {
         private string _script;
-        private bool maintainParents;
         private Dictionary<int, int> newIdToOld = new Dictionary<int, int>();
         private Dictionary<int, int> oldIdToNew = new Dictionary<int, int>();
 
-        public AddObjectCommand(List<MapScriptBaseObject> objs, bool maintainParents = false)
+        public AddObjectCommand(List<MapScriptBaseObject> objs)
         {
             // Need to store previous parents and map to new parents ids
-            this.maintainParents = maintainParents;
             var scriptObjects = new MapScriptObjects();
             foreach (var obj in objs)
             {

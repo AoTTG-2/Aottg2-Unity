@@ -474,40 +474,114 @@ namespace UI
         private void OnButtonClick(int id)
         {
             if (_menu.IsPopupActive()) return;
-            bool multi = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
-            if (_selected.Contains(id))
+            bool multiSelect = SettingsManager.InputSettings.MapEditor.Multiselect.GetKey();
+            bool shiftSelect = SettingsManager.InputSettings.MapEditor.ShiftSelect.GetKey();
+            bool singleSelect = !multiSelect && !shiftSelect;
+
+            if (singleSelect)
             {
-                if (!multi && _gameManager.SelectedObjects.Count > 1)
+                if (_selected.Contains(id) && _selected.Count == 1)
+                {
+                    var transform = SceneLoader.CurrentCamera.Cache.Transform;
+                    transform.position = MapLoader.IdToMapObject[id].GameObject.transform.position - transform.forward * 50f;
+                }
+                else
                 {
                     _gameManager.DeselectAll();
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
                     _gameManager.OnSelectionChange(false);
                 }
-                else if (multi)
+            }
+            else if (multiSelect)
+            {
+                if (_selected.Contains(id))
                 {
                     _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
                     _gameManager.OnSelectionChange(false);
                 }
                 else
                 {
-                    var transform = SceneLoader.CurrentCamera.Cache.Transform;
-                    transform.position = MapLoader.IdToMapObject[id].GameObject.transform.position - transform.forward * 50f;
+                    _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
+                    _gameManager.OnSelectionChange(false);
                 }
             }
-            else
+            else if (shiftSelect)
             {
-                if (_selected.Count == 0 || multi)
+                if (_selected.Count == 0)
                 {
+                    // If nothing is selected, just select the current item
                     _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
                     _gameManager.OnSelectionChange(false);
+                    return;
                 }
-                else if (_selected.Count > 0 && !multi)
+
+                // Get the index of the last selected item (assume last selected was most recent)
+                int lastSelectedIndex = -1;
+                List<int> visibleItems = _visibleObjects.Select(_visibleObjects => _visibleObjects.ScriptObject.Id).ToList();
+                foreach (var selectedId in _selected)
                 {
-                    _gameManager.DeselectAll();
-                    _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-                    _gameManager.OnSelectionChange(false);
+                    int index = visibleItems.IndexOf(selectedId);
+                    if (index != -1 && (lastSelectedIndex == -1 || index > lastSelectedIndex))
+                    {
+                        lastSelectedIndex = index;
+                    }
                 }
+
+                // Get the index of the currently clicked item
+                int currentIndex = visibleItems.IndexOf(id);
+
+                if (lastSelectedIndex == -1 || currentIndex == -1) return;
+
+                // Determine range to select
+                int start = Mathf.Min(lastSelectedIndex, currentIndex);
+                int end = Mathf.Max(lastSelectedIndex, currentIndex);
+
+                // Select all items in the range
+                for (int i = start; i <= end; i++)
+                {
+                    if (!_selected.Contains(visibleItems[i]))
+                    {
+                        _gameManager.SelectObject(MapLoader.IdToMapObject[visibleItems[i]]);
+                    }
+                }
+
+                _gameManager.OnSelectionChange(false);
             }
+
+
+            //    if (_selected.Contains(id))
+            //{
+            //    if (!multi && _gameManager.SelectedObjects.Count > 1)
+            //    {
+            //        _gameManager.DeselectAll();
+            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
+            //        _gameManager.OnSelectionChange(false);
+            //    }
+            //    else if (multi)
+            //    {
+            //        _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
+            //        _gameManager.OnSelectionChange(false);
+            //    }
+            //    else
+            //    {
+            //        var transform = SceneLoader.CurrentCamera.Cache.Transform;
+            //        transform.position = MapLoader.IdToMapObject[id].GameObject.transform.position - transform.forward * 50f;
+            //    }
+            //}
+            //else
+            //{
+            //    if (_selected.Count == 0 || multi)
+            //    {
+            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
+            //        _gameManager.OnSelectionChange(false);
+            //    }
+            //    else if (_selected.Count > 0 && !multi)
+            //    {
+            //        _gameManager.DeselectAll();
+            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
+            //        _gameManager.OnSelectionChange(false);
+            //    }
+            //}
             _lastClickedItem = id;
             _lastclickedTime = Time.time;
         }
@@ -547,6 +621,8 @@ namespace UI
             int iters = 0;
             int id = first.ScriptObject.Id;
             decimal elapsedElements = 0;
+
+            // TODO: Cache Subtree elapsed element count for performance if possible, not that performance is a big deal here.
 
             while (iters < MAX_DEPTH && id != MapLoader.ROOT && MapLoader.IdToMapObject.ContainsKey(id))
             {

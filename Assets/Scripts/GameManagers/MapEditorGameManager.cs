@@ -162,6 +162,14 @@ namespace GameManagers
             mapScriptObjects.Deserialize(_clipboard);
 
             // Calculate new parent ids for any previously nested elements. -> messy, not known root element
+            bool pasteAsChild = SelectedObjects.Count == 1 && !mapScriptObjects.Objects.Any(e => e.Id == SelectedObjects.First().ScriptObject.Id);
+            if (pasteAsChild)
+            {
+                foreach (var item in mapScriptObjects.Objects.Where(e => !mapScriptObjects.Objects.Any(x => x.Id == e.Parent)))
+                {
+                    item.Parent = SelectedObjects.First().ScriptObject.Id;
+                }
+            }
 
             NewCommand(new AddObjectCommand(mapScriptObjects.Objects));
             DeselectAll();
@@ -419,7 +427,7 @@ namespace GameManagers
             else
                 _menu.HideInspector();
             if (jumpToSelection) _menu.HierarchyPanel.SyncSelectedItemsAndJumpToFirst();
-            else _menu.HierarchyPanel.SyncSelectedItems();
+            else _menu.HierarchyPanel.Sync();
 
             SyncGizmos();
         }

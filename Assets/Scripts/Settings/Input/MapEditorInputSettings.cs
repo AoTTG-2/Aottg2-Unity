@@ -16,6 +16,7 @@
         public KeybindSetting ZoomOut = new KeybindSetting(new string[] { "WheelDown", "None" });
         public KeybindSetting Select = new KeybindSetting(new string[] { "Mouse0", "None" });
         public KeybindSetting Multiselect = new KeybindSetting(new string[] { "LeftControl", "None" });
+        public KeybindSetting ShiftSelect = new KeybindSetting(new string[] { "LeftShift", "None" });
         public KeybindSetting Deselect = new KeybindSetting(new string[] { "Escape", "None" });
         public KeybindSetting RotateCamera = new KeybindSetting(new string[] { "Mouse1", "None" });
         public KeybindSetting AddObject = new KeybindSetting(new string[] { "Space", "None" });
