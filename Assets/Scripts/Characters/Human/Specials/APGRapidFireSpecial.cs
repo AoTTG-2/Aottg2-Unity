@@ -8,7 +8,7 @@ namespace Characters
     class APGRapidFire : BaseHoldAttackSpecial
     {
         int _MaxShotCount;
-        float _waitBeforeShot = 0.25f;
+        float _waitBeforeShot = 0.15f;
         float _lastShotTime = Time.deltaTime;
         public APGRapidFire(BaseCharacter owner) : base(owner)
         {
@@ -28,6 +28,7 @@ namespace Characters
         {
             var weapon = (AmmoWeapon)((Human)_owner).Weapon;
             _MaxShotCount = weapon.RoundLeft;
+            ((Human)_owner).HumanCache.APGHit.Activate(0f);
         }
         protected override void OnUse()
         {
@@ -37,6 +38,7 @@ namespace Characters
         protected override void Deactivate()
         {
             _lastUseTime = Time.time;
+            ((Human)_owner).HumanCache.APGHit.Deactivate();
         }
         protected override void ActiveFixedUpdate()
         {
@@ -50,7 +52,6 @@ namespace Characters
                 direction = (target - start).normalized;
                 human.HumanCache.APGHit.transform.position = start;
                 human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
-                human.HumanCache.APGHit.Activate(0f, 0.1f);
 
                 //var gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
                 //var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
@@ -66,7 +67,10 @@ namespace Characters
                 _lastShotTime = Time.deltaTime;
             }
             }
-            
+            else
+            {
+                Deactivate();
+            }
         }
         private void Shoot()
         {
