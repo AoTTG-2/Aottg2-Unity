@@ -52,20 +52,14 @@ namespace Characters
                 direction = (target - start).normalized;
                 human.HumanCache.APGHit.transform.position = start;
                 human.HumanCache.APGHit.transform.rotation = Quaternion.LookRotation(direction);
-
-                //var gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
-                //var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
-                //float height = capsule.height * 1.2f;
-                //float radius = capsule.radius * 4f;
-                //capsule.radius = gunInfo["Radius"].AsFloat;
-            _lastShotTime += Time.deltaTime;
-            if ((_lastShotTime - _waitBeforeShot >= 0) &&(_MaxShotCount > 0))
-            {
-                Shoot();
-                _MaxShotCount--;
-                    ((AmmoWeapon)human.Weapon).RoundLeft--;
-                _lastShotTime = Time.deltaTime;
-            }
+                 _lastShotTime += Time.deltaTime;
+                if ((_lastShotTime - _waitBeforeShot >= 0) &&(_MaxShotCount > 0))
+                {
+                    Shoot();
+                    _MaxShotCount--;
+                        ((AmmoWeapon)human.Weapon).RoundLeft--;
+                    _lastShotTime = Time.deltaTime;
+                }
             }
             else
             {
@@ -78,9 +72,6 @@ namespace Characters
             var capsule = (CapsuleCollider)human.HumanCache.APGHit._collider;
             float height = capsule.height * 1.2f;
             float radius = capsule.radius * 4f;
-            
-            
-
             Vector3 target = human.GetAimPoint();
             Vector3 direction = (target - human.Cache.Transform.position).normalized;
             string anim;
@@ -105,14 +96,12 @@ namespace Characters
             human.Cache.Transform.rotation = Quaternion.Lerp(human.Cache.Transform.rotation, human._targetRotation, Time.deltaTime * 30f);
             Vector3 start = human.Cache.Transform.position + human.Cache.Transform.up * 0.8f;
             direction = (target - start).normalized;
-            //EffectSpawner.Spawn(EffectPrefabs.APGTrail, start, Quaternion.LookRotation(direction), 2f);
             Vector3 midpoint = 0.5f * (start + start + direction * capsule.height);
             EffectSpawner.Spawn(EffectPrefabs.APGTrail, human.Cache.Transform.position + human.Cache.Transform.up * 0.8f, Quaternion.LookRotation((human.GetAimPoint() - human.Cache.Transform.position).normalized), 4f, true, new object[] { midpoint + direction * height * 0.5f, midpoint - direction * height * 0.5f, radius, radius, 0.25f });
             human.PlaySound(HumanSounds.GetRandomAPGShot());
             var gunInfo = CharacterData.HumanWeaponInfo["APG"];
             if (SettingsManager.InGameCurrent.Misc.APGPVP.Value)
                 gunInfo = CharacterData.HumanWeaponInfo["APGPVP"];
-            
             ((InGameMenu)UIManager.CurrentMenu).HUDBottomHandler.ShootAPG();
         }
     }
