@@ -41,7 +41,7 @@ namespace Projectiles
                 }
                 if (character != null && !TeamInfo.SameTeam(character, _team))
                 {
-                    character.GetHit("Rock", damage, "Rock", collision.collider.name);
+                    character.GetHit(_owner.Name + "'s Rock", damage, "Rock", collision.collider.name);
                 }
                 KillPlayersInRadius(_size * 2f, damage);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);
@@ -58,7 +58,7 @@ namespace Projectiles
                 if (human == null || human.Dead)
                     continue;
                 if (Vector3.Distance(human.Cache.Transform.position, position) < radius && !TeamInfo.SameTeam(human, _team))
-                    human.GetHit("Rock", damage, "Rock", "");
+                    human.GetHit(_owner.Name + "'s Rock", damage, "Rock", "");
             }
         }
 
