@@ -54,10 +54,23 @@ namespace GameManagers
         public bool Restarting = false;
         public float PauseTimeLeft = -1f;
         public float RespawnTimeLeft;
+        public HashSet<BaseDetection> Detections = new HashSet<BaseDetection>();
 
         //ping related
         private float pingUpdateInterval = 10f;
         private float timeSinceLastPingUpdate = 0f;
+
+        public void RegisterCharacter(BaseCharacter character)
+        {
+            if (character is Human)
+                Humans.Add((Human)character);
+            else if (character is BasicTitan)
+                Titans.Add((BasicTitan)character);
+            else if (character is BaseShifter)
+                Shifters.Add((BaseShifter)character);
+            foreach (var detection in Detections)
+                detection.OnCharacterSpawned(character);
+        }
 
         public HashSet<BaseCharacter> GetAllCharacters()
         {
@@ -229,8 +242,8 @@ namespace GameManagers
         public static void OnJoinRoom()
         {
             AnticheatManager.Reset();
-            ResetPersistentPlayerProperties();
             ResetPlayerInfo();
+            ResetPersistentPlayerProperties();
             _needSendPlayerInfo = true;
             if (PhotonNetwork.OfflineMode)
                 ChatManager.AddLine("Welcome to single player. \nType /help for a list of commands.", ChatTextColor.System);
@@ -474,15 +487,15 @@ namespace GameManagers
 
             List<string> loadouts = new List<string>();
             if (miscSettings.AllowBlades.Value)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (miscSettings.AllowAHSS.Value)
                 loadouts.Add(HumanLoadout.AHSS);
             if (miscSettings.AllowAPG.Value)
                 loadouts.Add(HumanLoadout.APG);
             if (miscSettings.AllowThunderspears.Value)
-                loadouts.Add(HumanLoadout.Thunderspears);
+                loadouts.Add(HumanLoadout.Thunderspear);
             if (loadouts.Count == 0)
-                loadouts.Add(HumanLoadout.Blades);
+                loadouts.Add(HumanLoadout.Blade);
             if (!loadouts.Contains(settings.Loadout.Value))
                 settings.Loadout.Value = loadouts[0];
             var specials = HumanSpecials.GetSpecialNames(settings.Loadout.Value, miscSettings.AllowShifterSpecials.Value);
@@ -525,15 +538,15 @@ namespace GameManagers
             {
                 List<string> loadouts = new List<string>();
                 if (miscSettings.AllowBlades.Value)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (miscSettings.AllowAHSS.Value)
                     loadouts.Add(HumanLoadout.AHSS);
                 if (miscSettings.AllowAPG.Value)
                     loadouts.Add(HumanLoadout.APG);
                 if (miscSettings.AllowThunderspears.Value)
-                    loadouts.Add(HumanLoadout.Thunderspears);
+                    loadouts.Add(HumanLoadout.Thunderspear);
                 if (loadouts.Count == 0)
-                    loadouts.Add(HumanLoadout.Blades);
+                    loadouts.Add(HumanLoadout.Blade);
                 if (!loadouts.Contains(settings.Loadout.Value))
                     settings.Loadout.Value = loadouts[0];
                 if (CustomLogicManager.Evaluator.ForcedLoadout != string.Empty)
@@ -557,9 +570,22 @@ namespace GameManagers
             else if (character == PlayerCharacter.Titan)
             {
                 int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo();
+                TitanCustomSet selectedSet = null;
+                int selectedSetIndex = settings.CustomSet.Value;
+                if (selectedSetIndex > 0)
+                {
+                    selectedSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.Sets.GetItemAt(selectedSetIndex - 1);
+                    combo[0] = selectedSet.Body.Value;
+                    combo[1] = selectedSet.Head.Value;
+                }
                 string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
                 var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-                titan.Init(false, GetPlayerTeam(true), null, combo[1]);
+                TitanCustomSet currentSet;
+                if (selectedSetIndex == 0)
+                    currentSet = titan.Setup.CreateRandomSet(combo[1]);
+                else
+                    currentSet = selectedSet;
+                titan.Init(false, GetPlayerTeam(true), null, currentSet);
                 SetupTitan(titan, false);
                 float smallSize = 1f;
                 float mediumSize = 2f;
@@ -713,7 +739,7 @@ namespace GameManagers
             int[] combo = BasicTitanSetup.GetRandomBodyHeadCombo(data);
             string prefab = CharacterPrefabs.BasicTitanPrefix + combo[0];
             var titan = (BasicTitan)CharacterSpawner.Spawn(prefab, position, rotation);
-            titan.Init(true, TeamInfo.Titan, data, combo[1]);
+            titan.Init(true, TeamInfo.Titan, data, titan.Setup.CreateRandomSet(combo[1]));
             SetupTitan(titan);
             return titan;
         }
@@ -833,8 +859,8 @@ namespace GameManagers
             PhotonNetwork.LocalPlayer.CustomProperties.Clear();
             var properties = new Dictionary<string, object>
             {
-                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.HexColor() },
-                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.HexColor() },
+                { PlayerProperty.Name, MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor() },
+                { PlayerProperty.Guild, MyPlayerInfo.Profile.Guild.Value.FilterBadWords().HexColor() },
                 { PlayerProperty.Team, null },
                 { PlayerProperty.CharacterViewId, -1 },
                 { PlayerProperty.CustomMapHash, null },
@@ -886,7 +912,7 @@ namespace GameManagers
 
         public static void UpdatePlayerName()
         {
-            string name = MyPlayerInfo.Profile.Name.Value.HexColor();
+            string name = MyPlayerInfo.Profile.Name.Value.FilterBadWords().HexColor();
             if (SettingsManager.InGameCurrent.Misc.PVP.Value == (int)PVPMode.Team)
             {
                 if (SettingsManager.InGameCharacterSettings.Team.Value == TeamInfo.Blue)
@@ -1055,6 +1081,18 @@ namespace GameManagers
                 else
                     _inGameMenu.SetScoreboardMenu(false, false);
             }
+            if (_generalInputSettings.TapMap.Value)
+            {
+                if (_generalInputSettings.ToggleMap.GetKeyDown())
+                    _inGameMenu.ToggleMapMenu();
+            }
+            else
+            {
+                if (_generalInputSettings.ToggleMap.GetKey())
+                    _inGameMenu.SetMapMenu(true, false);
+                else
+                    _inGameMenu.SetMapMenu(false, false);
+            }
             if (SettingsManager.InputSettings.General.HideUI.GetKeyDown() && !InGameMenu.InMenu() && !CustomLogicManager.Cutscene)
             {
                 _inGameMenu.ToggleUI(!_inGameMenu.IsActive());
@@ -1089,65 +1127,24 @@ namespace GameManagers
             Humans = Util.RemoveNullOrDead(Humans);
             Titans = Util.RemoveNullOrDead(Titans);
             Shifters = Util.RemoveNullOrDeadShifters(Shifters);
+            Detections = Util.RemoveNullOrDeadDetections(Detections);
         }
 
         protected void LoadSkin()
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value && !SettingsManager.CustomSkinSettings.Skybox.SkinsLocal.Value)
             {
-                if (SettingsManager.CustomSkinSettings.Skybox.SkinsEnabled.Value)
-                {
-                    var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
-                    string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
+                var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
+                string urls = string.Join(",", new string[] {set.Front.Value, set.Back.Value , set.Left.Value , set.Right.Value ,
                                               set.Up.Value, set.Down.Value});
-                    RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
-                }
-                /*
-                string indices = string.Empty;
-                string urls1 = string.Empty;
-                string urls2 = string.Empty;
-                bool send = false;
-                var settings = SettingsManager.InGameCurrent.General;
-                if (settings.MapCategory.Value == "General" && settings.MapName.Value == "City" && SettingsManager.CustomSkinSettings.City.SkinsEnabled.Value)
-                {
-                    CityCustomSkinSet set = (CityCustomSkinSet)SettingsManager.CustomSkinSettings.City.GetSelectedSet();
-                    List<string> houses = new List<string>();
-                    foreach (StringSetting house in set.Houses.GetItems())
-                        houses.Add(house.Value);
-                    urls1 = string.Join(",", houses.ToArray());
-                    for (int i = 0; i < 300; i++)
-                        indices = indices + Convert.ToString((int)UnityEngine.Random.Range(0f, 8f));
-                    urls2 = string.Join(",", new string[] { set.Ground.Value, set.Wall.Value, set.Gate.Value });
-                    if (urls1.Replace(",", "").Trim() != "" || urls2.Replace(",", "").Trim() != "")
-                        send = true;
-                }
-                else if (settings.MapCategory.Value == "General" && settings.MapName.Value == "Forest" && SettingsManager.CustomSkinSettings.Forest.SkinsEnabled.Value)
-                {
-                    ForestCustomSkinSet set = (ForestCustomSkinSet)SettingsManager.CustomSkinSettings.Forest.GetSelectedSet();
-                    List<string> trees = new List<string>();
-                    foreach (StringSetting tree in set.TreeTrunks.GetItems())
-                        trees.Add(tree.Value);
-                    urls1 = string.Join(",", trees.ToArray());
-                    List<string> leafs = new List<string>();
-                    foreach (StringSetting leaf in set.TreeLeafs.GetItems())
-                        leafs.Add(leaf.Value);
-                    leafs.Add(set.Ground.Value);
-                    urls2 = string.Join(",", leafs.ToArray());
-                    for (int i = 0; i < 150; i++)
-                    {
-                        string str = Convert.ToString((int)UnityEngine.Random.Range((float)0f, (float)8f));
-                        indices = indices + str;
-                        if (!set.RandomizedPairs.Value)
-                            indices = indices + str;
-                        else
-                            indices = indices + Convert.ToString((int)UnityEngine.Random.Range((float)0f, (float)8f));
-                    }
-                    if (urls1.Replace(",", "").Trim() != "" || urls2.Replace(",", "").Trim() != "")
-                        send = true;
-                }
-                if (send)
-                    RPCManager.PhotonView.RPC("LoadLevelSkinRPC", RpcTarget.AllBuffered, new object[] { indices, urls1, urls2 });
-                */
+                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                // send empty strings for the values
+                string urls = string.Join(",", new string[] {string.Empty, string.Empty, string.Empty , string.Empty ,
+                                              string.Empty, string.Empty});
+                RPCManager.PhotonView.RPC("LoadSkyboxRPC", RpcTarget.AllBuffered, new object[] { urls });
             }
         }
 
@@ -1158,6 +1155,16 @@ namespace GameManagers
             {
                 yield return StartCoroutine(_skyboxCustomSkinLoader.LoadSkinsFromRPC(urls));
                 StartCoroutine(ReloadSkybox());
+            }
+            else if (settings.SkinsEnabled.Value && settings.SkinsLocal.Value)
+            {
+                var set = (SkyboxCustomSkinSet)SettingsManager.CustomSkinSettings.Skybox.GetSelectedSet();
+                string[] localUrls = new string[] { set.Front.Value, set.Back.Value, set.Left.Value, set.Right.Value, set.Up.Value, set.Down.Value };
+                if (IsValidSkybox(localUrls))
+                {
+                    yield return StartCoroutine(_skyboxCustomSkinLoader.LoadSkinsFromRPC(localUrls));
+                    StartCoroutine(ReloadSkybox());
+                }
             }
         }
 

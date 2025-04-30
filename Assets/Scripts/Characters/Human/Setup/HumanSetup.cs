@@ -6,6 +6,8 @@ using Settings;
 using CustomSkins;
 using GameManagers;
 using System.Globalization;
+using EZhex1991.EZSoftBone;
+using System.Collections.Generic;
 
 namespace Characters
 {
@@ -85,6 +87,7 @@ namespace Characters
         public static int HeadCount;
         public static int HatCount;
         public static string Special;
+        public static HashSet<string> UniqueItems = new HashSet<string>();
 
         public static void Init()
         {
@@ -101,6 +104,8 @@ namespace Characters
             CostumeFCount = CostumeInfo["Female"].Count;
             HairMCount = HairInfo["Male"].Count;
             HairFCount = HairInfo["Female"].Count;
+            foreach (var item in costume["UniqueItem"].AsArray)
+                UniqueItems.Add(item.Value);
             HumanSetupMaterials.Init();
         }
 
@@ -160,13 +165,13 @@ namespace Characters
             else
                 CustomSet = (HumanCustomSet)customSets.Sets.GetItemAt(setIndex - preCount);
             var loadout = settings.Loadout.Value;
-            if (loadout == HumanLoadout.Blades)
+            if (loadout == HumanLoadout.Blade)
                 Weapon = HumanWeapon.Blade;
             else if (loadout == HumanLoadout.AHSS)
                 Weapon = HumanWeapon.AHSS;
             else if (loadout == HumanLoadout.APG)
                 Weapon = HumanWeapon.APG;
-            else if (loadout == HumanLoadout.Thunderspears)
+            else if (loadout == HumanLoadout.Thunderspear)
                 Weapon = HumanWeapon.Thunderspear;
         }
 
@@ -273,7 +278,7 @@ namespace Characters
             Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
             _part_3dmg = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.Get3dmgMesh(), cached: true);
             AttachToMount(_part_3dmg, _mount_3dmg);
-            _part_3dmg.GetComponent<Renderer>().material = material;
+            _part_3dmg.GetComponentInChildren<Renderer>().material = material;
             string beltMesh = _meshes.GetBeltMesh();
             if (beltMesh != string.Empty)
             {
@@ -281,27 +286,28 @@ namespace Characters
                 _part_belt.GetComponent<Renderer>().material = material;
                 AttachToMount(_part_belt, _mount_3dmg);
             }
-            _part_gas_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: true), cached: true);
-            _part_gas_l.GetComponent<Renderer>().material = material;
-            if (Weapon == HumanWeapon.AHSS || Weapon == HumanWeapon.APG)
-                AttachToMount(_part_gas_l, _mount_gun_mag_l);
-            else
-                AttachToMount(_part_gas_l, _mount_gas_l);
-            _part_gas_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: false), cached: true);
-            _part_gas_r.GetComponent<Renderer>().material = material;
-            if (Weapon == HumanWeapon.AHSS || Weapon == HumanWeapon.APG)
-                AttachToMount(_part_gas_r, _mount_gun_mag_r);
-            else
-                AttachToMount(_part_gas_r, _mount_gas_r);
+            if (Weapon != HumanWeapon.APG)
+            {
+                _part_gas_l = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: true), cached: true);
+                _part_gas_l.GetComponent<Renderer>().material = material;
+                if (Weapon == HumanWeapon.AHSS)
+                    AttachToMount(_part_gas_l, _mount_gun_mag_l);
+                else
+                    AttachToMount(_part_gas_l, _mount_gas_l);
+                _part_gas_r = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGasMesh(left: false), cached: true);
+                _part_gas_r.GetComponent<Renderer>().material = material;
+                if (Weapon == HumanWeapon.AHSS)
+                    AttachToMount(_part_gas_r, _mount_gun_mag_r);
+                else
+                    AttachToMount(_part_gas_r, _mount_gas_r);
+            }
         }
 
         public void CreateWeapon()
         {
             DestroyIfExists(_part_blade_l);
             DestroyIfExists(_part_blade_r);
-            DestroyIfExists(_part_ts_l);
-            DestroyIfExists(_part_ts_r);
-            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture());
+            Material material = HumanSetupMaterials.GetPartMaterial(_textures.Get3dmgTexture(), Weapon == HumanWeapon.APG);
             string weaponLMesh = _meshes.GetWeaponMesh(left: true);
             if (weaponLMesh != string.Empty)
             {
@@ -313,9 +319,7 @@ namespace Characters
                 else
                 {
                     AttachToMount(_part_blade_l, _mount_weapon_l);
-                    if(Special == "Thunderspears")
-                        AttachToMount(_part_ts_l, _mount_ts_l);
-                    _part_blade_l.GetComponent<Renderer>().material = material;
+                    _part_blade_l.GetComponentInChildren<Renderer>().material = material;
                 }
                 if (_part_blade_l.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {
@@ -335,9 +339,7 @@ namespace Characters
                 else
                 {
                     AttachToMount(_part_blade_r, _mount_weapon_r);
-                    if(Special == "Thunderspears")
-                        AttachToMount(_part_ts_r, _mount_ts_r);
-                    _part_blade_r.GetComponent<Renderer>().material = material;
+                    _part_blade_r.GetComponentInChildren<Renderer>().material = material;
                 }
                 if (_part_blade_r.GetComponentInChildren<MeleeWeaponTrail>() != null)
                 {
@@ -370,8 +372,12 @@ namespace Characters
             {
                 _part_hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, hairMesh, cached: true);
                 AttachToMount(_part_hair, _part_head);
-                _part_hair.GetComponentInChildren<Renderer>().material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
-                _part_hair.GetComponentInChildren<Renderer>().material.color = CustomSet.HairColor.Value.ToColor();
+                foreach (var renderer in _part_hair.GetComponentsInChildren<Renderer>())
+                {
+                    renderer.material = HumanSetupMaterials.GetHairMaterial(_textures.GetHairTexture());
+                    if (!renderer.name.Contains("IgnoreColor"))
+                        renderer.material.color = CustomSet.HairColor.Value.ToColor();
+                }
             }
             string hairClothMesh = _meshes.GetHairClothMesh();
             if (hairClothMesh != string.Empty && !IsDeadBody)
@@ -386,30 +392,44 @@ namespace Characters
             DestroyIfExists(_part_eye);
             _part_eye = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetEyeMesh(), cached: true);
             AttachToMount(_part_eye, _part_head);
-            SetFacialTexture(_part_eye, CustomSet.Eye.Value, true);
+            SetFacialTexture(_part_eye, "Eye", CustomSet.Eye.Value, false);
         }
 
         public void CreateFace()
         {
             DestroyIfExists(_part_face);
-            _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(), cached: true);
-            AttachToMount(_part_face, _part_head);
+            string prefab = CustomSet.Face.Value;
+            bool unique = UniqueItems.Contains(prefab);
+            if (!unique)
+                prefab = string.Empty;
+            _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(prefab), cached: true);
+            if (unique)
+                AttachToMount(_part_face, _mount_head_decor, true);
+            else
+                AttachToMount(_part_face, _part_head);
             string face = CustomSet.Face.Value.Substring(4);
             if (face != "None")
-                SetFacialTexture(_part_face, int.Parse(face), false);
+                SetFacialTexture(_part_face, "Face", int.Parse(face), unique);
             else
-                SetFacialTexture(_part_face, -1, false);
+                SetFacialTexture(_part_face, "Face", -1, unique);
         }
 
         public void CreateGlass()
         {
-            _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(), cached: true);
-            AttachToMount(_part_glass, _part_head);
+            string prefab = CustomSet.Glass.Value;
+            bool unique = UniqueItems.Contains(prefab);
+            if (!unique)
+                prefab = string.Empty;
+            _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(prefab), cached: true);
+            if (unique)
+                AttachToMount(_part_glass, _mount_head_decor, true);
+            else
+                AttachToMount(_part_glass, _part_head);
             string glass = CustomSet.Glass.Value.Substring(5);
             if (glass != "None")
-                SetFacialTexture(_part_glass, int.Parse(glass), false);
+                SetFacialTexture(_part_glass, "Glass", int.Parse(glass), unique);
             else
-                SetFacialTexture(_part_glass, -1, false);
+                SetFacialTexture(_part_glass, "Glass", -1, unique);
         }
 
         public void CreateBack()
@@ -420,6 +440,9 @@ namespace Characters
             {
                 _part_back = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, HumanSetupPrefabs.GetBackPrefab(back), cached: true);
                 AttachToMount(_part_back, _mount_back, true);
+                var ezSoftBone = _part_back.GetComponentInChildren<EZSoftBone>();
+                if (ezSoftBone != null && ezSoftBone.simulateSpace != null)
+                    ezSoftBone.simulateSpace = transform;
             }
         }
 
@@ -526,18 +549,12 @@ namespace Characters
             _part_chest.GetComponent<Renderer>().material = skinMaterial;
         }
 
-        private void SetFacialTexture(GameObject go, int id, bool eyes)
+        private void SetFacialTexture(GameObject go, string type, int id, bool unique)
         {
             if (id >= 0)
-            {
-                float x = (int)(id / 8f) * 0.125f;
-                float y = -0.125f * (id % 8);
-                if (eyes)
-                    y += 0.125f;
-                go.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(x, y);
-            }
+                go.GetComponentInChildren<Renderer>().material = HumanSetupMaterials.GetFaceMaterial(type + id.ToString(), unique);
             else
-                go.GetComponent<Renderer>().material = MaterialCache.TransparentMaterial;
+                go.GetComponentInChildren<Renderer>().material = MaterialCache.TransparentMaterial;
         }
 
         private GameObject CreateMount(string transformPath)

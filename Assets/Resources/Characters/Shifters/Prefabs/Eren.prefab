@@ -515,6 +515,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: cd3b6d73fbfa32d448642b2d308572dd, type: 2}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 7df1b1380bf4c2347b2342585b58bc3a, type: 3}
       propertyPath: m_Animation
       value: 
@@ -983,8 +995,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bffc411424859d4e91a073b25a8853d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  FootstepsEnabled: 1
+  SoundsEnabled: 1
+  MaxFootstepDistance: 200
+  MaxSoundDistance: 500
+  RichTextName: 
+  VisibleName: 
   Guild: 
+  FeedKillerName: 
+  FeedVictimName: 
   Dead: 0
   CustomDamageEnabled: 0
   CustomDamage: 0
@@ -992,6 +1011,8 @@ MonoBehaviour:
   MaxHealth: 0
   CurrentHealth: 0
   Team: 
+  MovementSync: {fileID: 0}
+  CurrentSpeed: 0
   Grounded: 0
   JustGrounded: 0
   TargetAngle: 0
@@ -1004,6 +1025,7 @@ MonoBehaviour:
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
   Size: 1
+  ClimbCooldown: 0.5
   StunTime: 0.3
   ActionPause: 0.2
   AttackPause: 0.2
@@ -1022,6 +1044,9 @@ MonoBehaviour:
   JumpForce: 0
   RotateSpeed: 0
   TurnSpeed: 0
+  LeftArmDisabled: 0
+  RightArmDisabled: 0
+  _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
   TransformingToHuman: 0
   PreviousHumanGas: 0
@@ -1083,7 +1108,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:

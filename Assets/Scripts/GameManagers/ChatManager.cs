@@ -170,7 +170,7 @@ namespace GameManagers
         {
             if (Lines.Count > 0)
             {
-                line = line.FilterSizeTag();
+                line = line.FilterSizeTag().FilterBadWords();
                 Lines[Lines.Count - 1] = line;
                 if (IsChatAvailable())
                 {
@@ -198,7 +198,7 @@ namespace GameManagers
                 LastException = string.Empty;
                 LastExceptionCount = 0;
             }
-            line = line.FilterSizeTag();
+            line = line.FilterSizeTag().FilterBadWords();
             Lines.Add(line);
             if (Lines.Count > MaxLines)
                 Lines.RemoveAt(0);
@@ -220,7 +220,7 @@ namespace GameManagers
                 AddLine(line);
                 return;
             }
-            line = line.FilterSizeTag();
+            line = line.FilterSizeTag().FilterBadWords();
             FeedLines.Add(line);
             if (FeedLines.Count > MaxLines)
                 FeedLines.RemoveAt(0);
@@ -255,7 +255,7 @@ namespace GameManagers
             if (input == string.Empty)
                 return;
             var response = CustomLogicManager.Evaluator.OnChatInput(input);
-            if (response is bool && ((bool)response == true))
+            if (response is bool && ((bool)response == false))
                 return;
             if (input.StartsWith("/"))
             {

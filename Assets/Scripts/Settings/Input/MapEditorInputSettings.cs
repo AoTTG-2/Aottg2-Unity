@@ -11,6 +11,9 @@
         public KeybindSetting Down = new KeybindSetting(new string[] { "Q", "None" });
         public KeybindSetting Slow = new KeybindSetting(new string[] { "LeftShift", "None" });
         public KeybindSetting Fast = new KeybindSetting(new string[] { "LeftAlt", "None" });
+        public KeybindSetting Pan = new KeybindSetting(new string[] { "Mouse2", "None" });
+        public KeybindSetting ZoomIn = new KeybindSetting(new string[] { "WheelUp", "None" });
+        public KeybindSetting ZoomOut = new KeybindSetting(new string[] { "WheelDown", "None" });
         public KeybindSetting Select = new KeybindSetting(new string[] { "Mouse0", "None" });
         public KeybindSetting Multiselect = new KeybindSetting(new string[] { "LeftControl", "None" });
         public KeybindSetting Deselect = new KeybindSetting(new string[] { "Escape", "None" });
@@ -25,5 +28,10 @@
         public KeybindSetting Undo = new KeybindSetting(new string[] { "LeftControl+Z", "None" });
         public KeybindSetting Redo = new KeybindSetting(new string[] { "LeftControl+Y", "None" });
         public KeybindSetting SaveMap = new KeybindSetting(new string[] { "LeftControl+S", "None" });
+        public KeybindSetting SnapCameraLeft = new KeybindSetting(new string[] { "LeftArrow", "None" });
+        public KeybindSetting SnapCameraRight = new KeybindSetting(new string[] { "RightArrow", "None" });
+        public KeybindSetting SnapCameraUp = new KeybindSetting(new string[] { "UpArrow", "None" });
+        public KeybindSetting SnapCameraDown = new KeybindSetting(new string[] { "DownArrow", "None" });
+        public KeybindSetting ToggleOrthographic = new KeybindSetting(new string[] { "O", "None" });
     }
 }

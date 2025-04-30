@@ -3,10 +3,7 @@ using Characters;
 using GameManagers;
 using Settings;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Photon.Pun.UtilityScripts.PunTeams;
 
 namespace Characters
 {

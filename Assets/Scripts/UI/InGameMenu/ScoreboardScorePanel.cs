@@ -171,13 +171,13 @@ namespace UI
             if (character == PlayerCharacter.Human)
             {
                 loadoutImage.color = UIManager.GetThemeColor(ThemePanel, "Icon", "LoadoutHuman");
-                if (loadout == HumanLoadout.Blades)
+                if (loadout == HumanLoadout.Blade)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/BladeIcon", true);
                 else if (loadout == HumanLoadout.AHSS)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/AHSSIcon", true);
                 else if (loadout == HumanLoadout.APG)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/APGIcon", true);
-                else if (loadout == HumanLoadout.Thunderspears)
+                else if (loadout == HumanLoadout.Thunderspear)
                     loadoutImage.texture = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, "Icons/Game/ThunderspearIcon", true);
             }
             else if (character == PlayerCharacter.Titan)

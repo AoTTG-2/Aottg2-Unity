@@ -1,4 +1,5 @@
 ﻿using ApplicationManagers;
+using CustomLogic;
 using Events;
 using Photon.Pun;
 using Settings;
@@ -7,10 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UI;
-using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 using Utility;
 using Weather;
 using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
@@ -23,6 +22,7 @@ namespace Map
         public static Dictionary<int, HashSet<int>> IdToChildren = new Dictionary<int, HashSet<int>>();
         public static Dictionary<GameObject, MapObject> GoToMapObject = new Dictionary<GameObject, MapObject>();
         public static Dictionary<string, List<MapObject>> Tags = new Dictionary<string, List<MapObject>>();
+        public static Dictionary<MapObject, HashSet<string>> MapObjectToTags = new Dictionary<MapObject, HashSet<string>>();
         public static List<Light> Daylight = new List<Light>();
         public static List<MapLight> MapLights = new List<MapLight>();
         public static List<MapTargetable> MapTargetables = new List<MapTargetable>();
@@ -80,6 +80,7 @@ namespace Map
             MapTargetables.Clear();
             _assetCache.Clear();
             Tags.Clear();
+            MapObjectToTags.Clear();
             HighestObjectId = 1;
             HasWeather = !editor && options != null && options.HasWeather;
             Weather = weather;
@@ -111,9 +112,9 @@ namespace Map
         }
         */
 
-        public static void RegisterMapLight(Light light)
+        public static void RegisterMapLight(Light light, bool isDaylight)
         {
-            MapLights.Add(new MapLight(light));
+            MapLights.Add(new MapLight(light, isDaylight));
         }
 
         public static MapObject FindObjectFromCollider(Collider collider)
@@ -377,8 +378,28 @@ namespace Map
             var mask = PhysicsLayer.GetMask(PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectAll, PhysicsLayer.MapObjectCharacters,
                 PhysicsLayer.MapObjectTitans);
             List<NavMeshBuildMarkup> modifiers = new List<NavMeshBuildMarkup>();
+
             // Collect sources of physics colliders, exclude components with NavMeshObstacles
             NavMeshBuilder.CollectSources(null, mask, NavMeshCollectGeometry.PhysicsColliders, 0, modifiers, _navMeshSources);
+
+            // Create hashset of all gameobjects under MapObjects that are marked as static.
+            HashSet<GameObject> staticObjects = new HashSet<GameObject>();
+            foreach (var mapObject in IdToMapObject.Values)
+            {
+                if (mapObject.ScriptObject.Static)
+                {
+                    // Add all gameobjects under the mapobject to the hashset
+                    foreach (Transform child in mapObject.GameObject.GetComponentsInChildren<Transform>())
+                    {
+                        staticObjects.Add(child.gameObject);
+                    }
+                }
+            }
+
+            // filter navmeshsources for only static objects
+            _navMeshSources = _navMeshSources.Where(source => staticObjects.Contains(source.component.gameObject)).ToList();
+            staticObjects.Clear();
+
             _navMeshBounds = CalculateWorldBounds(_navMeshSources);
             _navMeshBounds.size = Vector3.Min(_navMeshBounds.size, new Vector3(15000, 15000, 15000));
         }
@@ -456,6 +477,7 @@ namespace Map
             Dictionary<string, List<GameObject>> shared = new Dictionary<string, List<GameObject>>();
             Dictionary<GameObject, Transform> oldParents = new Dictionary<GameObject, Transform>();
             Dictionary<string, int> hashCounts = new Dictionary<string, int>();
+            GameObject batchRoot = new GameObject("Batched Meshes");
             foreach (int id in IdToMapObject.Keys)
             {
                 var mapObject = IdToMapObject[id];
@@ -465,12 +487,19 @@ namespace Map
                 if (MapObjectShader.IsLegacyShader(shader) || shader == MapObjectShader.Transparent)
                     continue;
                 var position = mapObject.GameObject.transform.position;
+
                 string positionHash = ((int)(position.x / 1000f)).ToString() + "-" + ((int)(position.y / 1000f)).ToString() + "-" + ((int)(position.z / 1000f)).ToString();
                 foreach (MeshFilter filter in mapObject.GameObject.GetComponentsInChildren<MeshFilter>())
                 {
                     var renderer = filter.GetComponent<Renderer>();
                     if (renderer == null || renderer.sharedMaterials.Length > 1)
                         continue;
+                    if (filter?.sharedMesh == null)
+                    {
+                        DebugConsole.Log($"Map load error: object {mapObject.ScriptObject.Name} with missing mesh", true);
+                        Errors.Add("Failed to load static object with no MeshFilter or SharedMesh: " + mapObject.ScriptObject.Name);
+                        continue;
+                    }
                     string hash = filter.sharedMesh.GetHashCode().ToString();
                     hash += positionHash;
                     if (renderer.enabled)
@@ -485,7 +514,9 @@ namespace Map
                     if (!roots.ContainsKey(hash))
                     {
                         var go = new GameObject();
+                        go.name = mapObject.ScriptObject.Name + " (Batched)";
                         go.layer = PhysicsLayer.MapObjectEntities;
+                        go.transform.parent = batchRoot.transform;
                         roots.Add(hash, go);
                         shared.Add(hash, new List<GameObject>());
                     }
@@ -530,7 +561,33 @@ namespace Map
         {
             if (!Tags.ContainsKey(tag))
                 Tags.Add(tag, new List<MapObject>());
+            if (!MapObjectToTags.ContainsKey(obj))
+                MapObjectToTags.Add(obj, new HashSet<string>());
             Tags[tag].Add(obj);
+            MapObjectToTags[obj].Add(tag);
+        }
+
+        public static bool HasTag(MapObject obj, string tag)
+        {
+            return MapObjectToTags.ContainsKey(obj) && MapObjectToTags[obj].Contains(tag);
+        }
+
+        public static MapObject GetMapObject(GameObject obj)
+        {
+            if (obj == null)
+                return null;
+            while (!GoToMapObject.ContainsKey(obj))
+            {
+                if (obj == null)
+                    break;
+                var parent = obj.transform.parent;
+                if (parent == null)
+                    break;
+                obj = parent.gameObject;
+            }
+            if (GoToMapObject.ContainsKey(obj))
+                return GoToMapObject[obj];
+            return null;
         }
 
         private static GameObject LoadSceneObject(MapScriptSceneObject obj, bool editor)

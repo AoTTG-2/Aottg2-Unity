@@ -78,6 +78,18 @@ namespace CustomLogic
                 menu.CreateCustomPopup(popupName, title, width, height);
                 return null;
             }
+            if (name == "IsPopupActive")
+            {
+                string popupName = (string)parameters[0];
+                return menu.GetCustomPopup(popupName).IsActive;
+            }
+            if (name == "GetPopups")
+            {
+                var result = new CustomLogicListBuiltin();
+                foreach (var popup in menu.GetAllCustomPopups())
+                    result.List.Add(popup);
+                return result;
+            }
             if (name == "ShowPopup")
             {
                 string popupName = (string)parameters[0];

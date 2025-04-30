@@ -18,7 +18,7 @@ namespace Characters
             var names = new List<string>();
             foreach (string special in AnySpecials)
                 AddSpecialName(names, special);
-            if (loadout == HumanLoadout.Blades)
+            if (loadout == HumanLoadout.Blade)
             {
                 foreach (string special in BladeSpecials)
                     AddSpecialName(names, special);
@@ -33,7 +33,7 @@ namespace Characters
                 foreach (string special in ShifterSpecials)
                     AddSpecialName(names, special);
             }
-            if (loadout == HumanLoadout.Thunderspears)
+            if (loadout == HumanLoadout.Thunderspear)
                 AddSpecialName(names, "Stock");
             AddSpecialName(names, "None");
             return names;

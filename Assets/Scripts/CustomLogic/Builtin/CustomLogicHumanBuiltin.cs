@@ -100,6 +100,10 @@ namespace CustomLogic
                     return null;
                 var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
                 string weapon = (string)parameters[0];
+                if (weapon == "Blades")
+                    weapon = "Blade";
+                else if (weapon == "Thunderspears")
+                    weapon = "Thunderspear";
                 if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
                 {
                     var miscSettings = SettingsManager.InGameCurrent.Misc;
@@ -107,15 +111,15 @@ namespace CustomLogic
                     {
                         List<string> loadouts = new List<string>();
                         if (miscSettings.AllowBlades.Value)
-                            loadouts.Add(HumanLoadout.Blades);
+                            loadouts.Add(HumanLoadout.Blade);
                         if (miscSettings.AllowAHSS.Value)
                             loadouts.Add(HumanLoadout.AHSS);
                         if (miscSettings.AllowAPG.Value)
                             loadouts.Add(HumanLoadout.APG);
                         if (miscSettings.AllowThunderspears.Value)
-                            loadouts.Add(HumanLoadout.Thunderspears);
+                            loadouts.Add(HumanLoadout.Thunderspear);
                         if (loadouts.Count == 0)
-                            loadouts.Add(HumanLoadout.Blades);
+                            loadouts.Add(HumanLoadout.Blade);
 
                         if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
                         {
@@ -250,11 +254,17 @@ namespace CustomLogic
                 return Human.IsInvincible;
             if (name == "InvincibleTimeLeft")
                 return Human.InvincibleTimeLeft;
+            if (name == "IsCarried")
+                return Human.CarryState == HumanCarryState.Carry;
             return base.GetField(name);
         }
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Human.IsMine())
                 return;
             BladeWeapon bladeWeapon = null;

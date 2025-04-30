@@ -155,6 +155,10 @@ namespace CustomLogic
 
         public override void SetField(string name, object value)
         {
+            if (name == "Name")
+                Character.Name = (string)value;
+            else if (name == "Guild")
+                Character.Guild = (string)value;
             if (!Shifter.IsMine())
                 return;
             if (name == "Size")
@@ -208,7 +212,7 @@ namespace CustomLogic
             {
                 Shifter.AttackSpeedMultiplier = value.UnboxToFloat();
             }
-            if (name == "DeathAnimLength")
+            else if (name == "DeathAnimLength")
             {
                 Shifter.DeathAnimationLength = value.UnboxToFloat();
             }

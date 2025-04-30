@@ -18,6 +18,22 @@ namespace UI
 {
     class MapEditorTopPanel: HeadedPanel
     {
+        public enum LayerOption
+        {
+            All,
+            Active,
+            Inactive,
+            Visible,
+            Invisible,
+            Static,
+            NonStatic,
+            Colliders,
+            Triggers,
+            NoColliders,
+            Networked,
+            NonNetworked,
+        }
+
         protected override float Width => 1960f;
         protected override float Height => 60f;
 
@@ -33,6 +49,7 @@ namespace UI
         private StringSetting _currentMap;
         private List<DropdownSelectElement> _dropdowns = new List<DropdownSelectElement>();
         private GameObject _gizmoButton;
+        private GameObject _gizmoOrientationButton;
         private GameObject _snapButton;
         protected override string ThemePanel => "MapEditor";
 
@@ -83,8 +100,17 @@ namespace UI
             // gizmos
             ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MapEditorSettings", "Keybinds", "AddObject"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("AddObject"));
             _gizmoButton = ElementFactory.CreateDefaultButton(group, style, "Gizmo: Position", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Gizmo"));
+            _gizmoOrientationButton = ElementFactory.CreateDefaultButton(group, style, "Orientation: Center", elementHeight: dropdownHeight, onClick: () => OnButtonClick("GizmoOrientation"));
             _snapButton = ElementFactory.CreateDefaultButton(group, style, "Snap: Off", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Snap"));
             ElementFactory.CreateDefaultButton(group, style, "Camera", elementHeight: dropdownHeight,onClick: () => OnButtonClick("Camera"));
+
+            // lights
+            ElementFactory.CreateDefaultButton(group, style, "Light", elementHeight: dropdownHeight, onClick: () => OnButtonClick("Light"));
+
+            // layers
+            var layerDropdown = ElementFactory.CreateDropdownSelect(group, style, _dropdownSelection, UIManager.GetLocaleCommon("Layers"),
+               Enum.GetNames(typeof(LayerOption)), elementWidth: dropdownWidth, optionsWidth: 180f, maxScrollHeight: 500f, onDropdownOptionSelect: () => OnLayersClick());
+            _dropdowns.Add(layerDropdown.GetComponent<DropdownSelectElement>());
 
             // tutorial
             ElementFactory.CreateDefaultButton(group, style, UIManager.GetLocale("MainMenu", "Intro", "TutorialButton"), elementHeight: dropdownHeight, onClick: () => OnButtonClick("Tutorial"));
@@ -233,8 +259,12 @@ namespace UI
                 _menu.CameraPopup.Show();
             else if (name == "Gizmo")
                 NextGizmo();
+            else if (name == "GizmoOrientation")
+                NextGizmoOrientation();
             else if (name == "Snap")
                 ToggleSnap();
+            else if (name == "Light")
+                ToggleLights();
             else if (name == "Tutorial")
                 _menu.ExternalLinkPopup.Show("https://aottg2.gitbook.io/custom-maps");
         }
@@ -251,6 +281,34 @@ namespace UI
             {
                 _gameManager.Snap = true;
                 text.text = "Snap: On";
+            }
+        }
+
+        public void ToggleLights()
+        {
+            _gameManager.ToggleLights();
+        }
+
+        public void OnLayersClick()
+        {
+            if (_menu.IsPopupActive())
+                return;
+            LayerOption index = (LayerOption)_dropdownSelection.Value;
+            _gameManager.SetLayerVisibility(index);
+        }
+
+        public void NextGizmoOrientation()
+        {
+            var text = _gizmoOrientationButton.transform.Find("Text").GetComponent<Text>();
+            if (_gameManager.CurrentGizmoMode == GizmoMode.Center)
+            {
+                _gameManager.SetGizmoMode(GizmoMode.Local);
+                text.text = "Orientation: Local";
+            }
+            else
+            {
+                _gameManager.SetGizmoMode(GizmoMode.Center);
+                text.text = "Orientation: Center";
             }
         }
 

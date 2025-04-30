@@ -285,6 +285,25 @@ namespace UI
             return label;
         }
 
+        public static GameObject CreateWhiteLabel(Transform parent, ElementStyle style, string title, FontStyle fontStyle = FontStyle.Normal,
+            TextAnchor alignment = TextAnchor.MiddleCenter)
+        {
+            GameObject label = InstantiateAndBind(parent, "Prefabs/Elements/DefaultLabel");
+            Text text = label.GetComponent<Text>();
+            text.fontSize = style.FontSize;
+            text.text = title;
+            text.fontStyle = fontStyle;
+            text.color = UIManager.GetThemeColor(style.ThemePanel, "WhiteLabel", "TextColor");
+            text.alignment = alignment;
+            if (parent.GetComponent<VerticalLayoutGroup>() != null)
+                text.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            else
+                text.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            if (parent.GetComponent<HorizontalLayoutGroup>() != null)
+                text.GetComponent<LayoutElement>().flexibleWidth = 0f;
+            return label;
+        }
+
         public static GameObject CreateEmptySpace(Transform parent)
         {
             GameObject label = InstantiateAndBind(parent, "Prefabs/Elements/DefaultLabel");
@@ -389,7 +408,7 @@ namespace UI
         {
             GameObject row = CreateHorizontalGroup(parent, 10f, TextAnchor.MiddleLeft);
             PlayerKDRRow rowComponent = row.AddComponent<PlayerKDRRow>();
-            rowComponent.Setup(style, player);
+            rowComponent.Setup(style, player, parent.GetComponent<KDRPanel>());
             return row;
         }
 

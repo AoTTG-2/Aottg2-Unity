@@ -68,7 +68,7 @@ namespace Controllers
                 if (_human.Grounded && _human.State != HumanState.Idle)
                     return;
                 if (!_human.Grounded && (_human.State == HumanState.EmoteAction || (_human.State == HumanState.SpecialAttack && _human.Special is not DownStrikeSpecial && _human.Special is not StockSpecial) ||
-                    _human.Cache.Animation.IsPlaying("dash") || _human.Cache.Animation.IsPlaying("jump") || _human.IsFiringThunderspear()))
+                    _human.Animation.IsPlaying("dash") || _human.Animation.IsPlaying("jump") || _human.IsFiringThunderspear()))
                     return;
             }
             int forward = 0;
@@ -139,6 +139,8 @@ namespace Controllers
                     speed = (int)(speed * CharacterData.HumanWeaponInfo["AHSS"]["DamageMultiplier"].AsFloat);
                 else if (_human.Weapon is APGWeapon)
                     speed = (int)(speed * CharacterData.HumanWeaponInfo["APG"]["DamageMultiplier"].AsFloat);
+                else if (_human.Weapon is ThunderspearWeapon && !SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
+                    speed = (int)(speed * CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat);
                 speed = Mathf.Max(speed, 10f);
                 speed /= 100f;
                 str += speed.ToString("F1") + "K";

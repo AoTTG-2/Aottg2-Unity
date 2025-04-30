@@ -25,7 +25,7 @@ namespace UI
                           UIManager.GetLocale(settingsPopup.LocaleCategory, "Skins.Human", "HookEnabled"));
             CreateHorizontalDivider(DoublePanelLeft);
             CreateHorizontalDivider(DoublePanelRight);
-            skinsPanel.CreateSkinStringSettings(DoublePanelLeft, DoublePanelRight, titleWidth: 200f, elementWidth: 200f, leftCount: 9);
+            skinsPanel.CreateSkinStringSettings(DoublePanelLeft, DoublePanelRight, titleWidth: 200f, elementWidth: 200f, leftCount: 11);
         }
     }
 }

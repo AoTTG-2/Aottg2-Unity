@@ -6,6 +6,7 @@ using SimpleJSONFixed;
 using Utility;
 using UnityEngine.AI;
 using Map;
+using GameManagers;
 
 namespace Controllers
 {
@@ -16,7 +17,8 @@ namespace Controllers
         public bool SmartAttack = false;
         public float DetectRange;
         public float CloseAttackRange;
-        public float FarAttackRange;
+        public float FarAttackMinRange;
+        public float FarAttackMaxRange;
         public float FarAttackCooldown;
         public float FocusRange;
         public float FocusTime;
@@ -40,7 +42,6 @@ namespace Controllers
         protected float _rangedCooldownLeft;
         protected float _attackRange;
         protected ITargetable _enemy;
-        protected AICharacterDetection _detection;
         protected string _attack;
         protected float _attackCooldownLeft;
         protected float _waitAttackTimeLeft;
@@ -133,7 +134,8 @@ namespace Controllers
         {
             DetectRange = data["DetectRange"].AsFloat;
             CloseAttackRange = data["CloseAttackRange"].AsFloat;
-            FarAttackRange = data["FarAttackRange"].AsFloat;
+            FarAttackMinRange = data["FarAttackMinRange"].AsFloat;
+            FarAttackMaxRange = data["FarAttackMaxRange"].AsFloat;
             FarAttackCooldown = data["FarAttackCooldown"].AsFloat;
             FocusRange = data["FocusRange"].AsFloat;
             FocusTime = data["FocusTime"].AsFloat;
@@ -163,13 +165,11 @@ namespace Controllers
                 else
                     AttackChances.Add(attack, chance);
             }
-            _detection = AICharacterDetection.Create(_titan, DetectRange);
             _waitAttackTimeLeft = AttackWait;
         }
 
         public void SetDetectRange(float range)
         {
-            _detection.SetRange(range);
             DetectRange = range;
         }
 
@@ -229,10 +229,9 @@ namespace Controllers
                     _enemy = enemy;
                 else if (_enemy != null)
                 {
-                    if (Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
+                    if (TeamInfo.SameTeam(_titan.Team, _enemy.GetTeam()) || Vector3.Distance(_titan.Cache.Transform.position, _enemy.GetPosition()) > FocusRange)
                         _enemy = null;
                 }
-
                 if (_enemy != null && _enemy.ValidTarget() && _usePathfinding && _agent.isOnNavMesh && _agent.pathPending == false && !(_moveToActive && _moveToIgnoreEnemies))
                     SetAgentDestination(_enemy.GetPosition());
                 _focusTimeLeft = FocusTime;
@@ -252,7 +251,7 @@ namespace Controllers
                     {
                         if (AIState == TitanAIState.Idle)
                         {
-                            if (!IsCrawler() && !IsShifter() && RandomGen.Roll(0.3f))
+                            if (!IsCrawler() && !IsShifter() && RandomGen.Roll(0.33f))
                                 Sit();
                             else
                                 Wander();
@@ -313,7 +312,7 @@ namespace Controllers
                     else
                     {
                         var validAttacks = GetValidAttacks(true);
-                        if (_enemyDistance <= FarAttackRange && validAttacks.Count > 0)
+                        if (_enemyDistance <= FarAttackMaxRange && _enemyDistance >= FarAttackMinRange && validAttacks.Count > 0)
                             Attack(validAttacks);
                         else if (HasClearLineOfSight(_enemy.GetPosition()))
                             TargetEnemy();
@@ -531,7 +530,7 @@ namespace Controllers
             AIState = TitanAIState.Idle;
             _titan.HasDirection = false;
             _titan.IsSit = false;
-            _stateTimeLeft = Random.Range(2f, 6f);
+            _stateTimeLeft = Random.Range(4f, 8f);
         }
 
         protected void Wander()
@@ -546,14 +545,14 @@ namespace Controllers
             float angle = Vector3.Angle(_titan.Cache.Transform.forward, _titan.GetTargetDirection());
             if (Mathf.Abs(angle) > 60f)
                 _titan.Turn(_titan.GetTargetDirection());
-            _stateTimeLeft = Random.Range(2f, 8f);
+            _stateTimeLeft = Random.Range(2f, 6f);
         }
 
         protected void Sit()
         {
             AIState = TitanAIState.SitIdle;
             _titan.IsSit = true;
-            _stateTimeLeft = Random.Range(6f, 12f);
+            _stateTimeLeft = Random.Range(8f, 14f);
         }
 
         protected void MoveToEnemy(bool avoidCollisions = true)
@@ -623,10 +622,9 @@ namespace Controllers
             Vector3 position = _titan.Cache.Transform.position;
             float nearestDistance = float.PositiveInfinity;
             ITargetable nearestCharacter = null;
-            foreach (BaseCharacter character in _detection.Enemies)
+            var character = _titan.Detection.ClosestEnemy;
+            if (character != null && !character.Dead)
             {
-                if (character == null || character.Dead)
-                    continue;
                 float distance = Vector3.Distance(character.Cache.Transform.position, position);
                 if (distance < nearestDistance && distance < DetectRange)
                 {
@@ -723,6 +721,10 @@ namespace Controllers
                 if (farOnly && !attackInfo.FarOnly)
                     continue;
                 if (attackInfo.FarOnly && _rangedCooldownLeft > 0f)
+                    continue;
+                if (attackInfo.LeftArm && _titan.LeftArmDisabled)
+                    continue;
+                if (attackInfo.RightArm && _titan.RightArmDisabled)
                     continue;
                 if (!SmartAttack || attackInfo.FarOnly || !isHuman || !attackInfo.HasKeyframes)
                 {
