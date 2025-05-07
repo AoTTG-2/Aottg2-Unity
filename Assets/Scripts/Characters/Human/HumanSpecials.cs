@@ -34,11 +34,11 @@ namespace Characters
                 foreach (string special in ShifterSpecials)
                     AddSpecialName(names, special);
             }
-            if (loadout == HumanLoadout.Thunderspears)
+            if (loadout == HumanLoadout.Thunderspear)
             {
                 AddSpecialName(names, "Stock");
             }
-            if(loadout == HumanLoadout.Thunderspears || loadout == HumanLoadout.APG || loadout == HumanLoadout.AHSS)
+            if(loadout == HumanLoadout.Thunderspear || loadout == HumanLoadout.APG || loadout == HumanLoadout.AHSS)
                 foreach (string special in AmmoWeaponSpecials)
                     AddSpecialName(names, special);
             AddSpecialName(names, "None");

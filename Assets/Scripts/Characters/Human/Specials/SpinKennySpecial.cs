@@ -30,14 +30,12 @@ namespace Characters
         {
             _stage = 0;
             _human.StartSpecialAttack(HumanAnimations.SpecialLevi);
-            Debug.Log("Activate");
         }
 
         protected override void ActiveFixedUpdate()
         {
-            Debug.Log("Active Update");
             base.ActiveFixedUpdate();
-            if (!_human.Cache.Animation.IsPlaying(HumanAnimations.SpecialLevi))
+            if (!_human.Animation.IsPlaying(HumanAnimations.SpecialLevi))
                 return;
             float time = GetAnimationTime();
 
@@ -88,7 +86,6 @@ namespace Characters
                 //}
                 _stage += 1;
             }
-            Debug.Log(_owner.Cache.Transform.rotation.x);
         }
         public override bool CanUse()
         {
@@ -96,7 +93,7 @@ namespace Characters
         }
         protected float GetAnimationTime()
         {
-            return _human.Cache.Animation[HumanAnimations.SpecialLevi].normalizedTime;
+            return _human.Animation.GetNormalizedTime(HumanAnimations.SpecialLevi);
         }
         void ShootAPG(int stage)
         {
