@@ -11,6 +11,7 @@ namespace CustomLogic
 {
     /// <summary>
     /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMainCharacter && character.Type == "Human") {
@@ -20,7 +21,6 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    /// </summary>
     [CLType(Name = "Human", Abstract = true)]
     partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {

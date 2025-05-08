@@ -4,6 +4,35 @@ Inherits from Object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
+> Represents a network view on a map object that has the "networked" flag.             Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.             If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.                          Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.             When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also             avoid cases where message sending increases heavily with the number of players in the room.
+> Snippet:
+```csharp
+
+# The following is for a component scoped object, in general this is bad practice if the component is widely used.
+# OnPlayerJoin, every object with this component will send a message to the player that joined, if you use 100 objects with this, 100 messages will be sent.
+# Preferred practice for this sort of case is to have a either Main handle the single message pass or have a single ManagerComponent that handles the message pass
+# and defers the value to all registered components.
+KillCount = 0;
+            
+function OnNetworkMessage(player, message, sentServerTime) {
+    if (player.ID == Network.MasterClient.ID) {
+        self.KillCount == Convert.ToInt(message);
+    }
+}
+            
+function OnCharacterDie(victim, killer, killerName) {
+    self.KillCount += 1;
+}
+            
+function OnPlayerJoined(player) {
+    if (Network.IsMasterClient) {
+        self.NetworkView.SendMessage(player, Convert.ToString(self.KillCount));
+    }
+}
+            
+# Good Practice would be to have a single component that handles the message pass and defers the value to all registered components.
+TODO: Bother someone for good practice example - maybe move this into Networking Summary Page.
+```
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

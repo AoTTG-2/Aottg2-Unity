@@ -1,8 +1,17 @@
 # Range
 ## Initialization
+> Inherits from List. Allows you to create lists of integers for convenient iteration, particularly in for loops.
+> Constructors:
 ```csharp
-# Range(Object[])
-example = Range(Object[])
+
+for (a in Range(10))
+    Game.Print(a);
+                
+for (a in Range(1, 10))
+    Game.Print(a);
+                
+for (a in Range(1, 10, 2))
+    Game.Print(a);
 ```
 <details>
 <summary>Derived Fields</summary>
@@ -52,8 +61,8 @@ example = Range(Object[])
 ###### function <mark style="color:yellow;">Reduce</mark>(method: <mark style="color:blue;">function</mark>, initialValue: <mark style="color:blue;">Object</mark>) → <mark style="color:blue;">Object</mark>
 > Reduce the list using a custom method, expects a method with the signature object method(acc, element)
 
-###### function <mark style="color:yellow;">Randomize</mark>()
-> Randomize the list
+###### function <mark style="color:yellow;">Randomize</mark>() → <mark style="color:blue;">[List](../objects/List.md)</mark>
+> Returns a randomized version of the list.
 
 ###### function <mark style="color:yellow;">ToSet</mark>() → <mark style="color:blue;">[Set](../objects/Set.md)</mark>
 > Convert the list to a set

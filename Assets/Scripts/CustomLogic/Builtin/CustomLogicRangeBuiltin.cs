@@ -5,6 +5,7 @@
 
     /// <summary>
     /// Inherits from List. Allows you to create lists of integers for convenient iteration, particularly in for loops.
+    /// </summary>
     /// <code>
     /// for (a in Range(10))
     ///     Game.Print(a);
@@ -16,7 +17,6 @@
     ///     Game.Print(a);
     /// 
     /// </code>
-    /// </summary>
     [CLType(Name = "Range", InheritBaseMembers = false)]
     partial class CustomLogicRangeBuiltin : CustomLogicListBuiltin
     {

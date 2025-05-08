@@ -5,6 +5,7 @@ namespace CustomLogic
 {
     /// <summary>
     /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMine && character.Type == "Titan") {
@@ -14,7 +15,6 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    /// </summary>
     [CLType(Name = "Titan", Abstract = true)]
     partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {

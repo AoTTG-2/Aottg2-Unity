@@ -9,8 +9,8 @@ namespace CustomLogic
     /// <summary>
     /// Character is the base class that Human, Titan, and Shifter inherit from.
     /// Only character owner can modify fields and call functions unless otherwise specified.
-    /// 
-    /// <code>
+    /// </summary>
+    /// <example>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMine) {
     ///         # Character is owned (network-wise) by the person running this script.
@@ -29,8 +29,7 @@ namespace CustomLogic
     ///         }
     ///     }
     /// }
-    /// </code>
-    /// </summary>
+    /// </example>
     [CLType(Name = "Character", Abstract = true)]
     abstract partial class CustomLogicCharacterBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {

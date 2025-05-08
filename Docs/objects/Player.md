@@ -4,6 +4,7 @@ Inherits from Object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
+> Represents a network player. Only master client or player may modify fields.
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

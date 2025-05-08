@@ -6,8 +6,8 @@ Inherits from Object
 # Set()
 example = Set()
 
-# Set(CustomLogicListBuiltin)
-example = Set(CustomLogicListBuiltin)
+# Set(Object[])
+example = Set(Object[])
 ```
 ## Fields
 |Field|Type|Readonly|Description|

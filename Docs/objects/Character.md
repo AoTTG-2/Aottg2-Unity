@@ -4,6 +4,29 @@ Inherits from Object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
+> Character is the base class that Human, Titan, and Shifter inherit from.             Only character owner can modify fields and call functions unless otherwise specified.
+> Example:
+```csharp
+
+function OnCharacterSpawn(character) {
+    if (character.IsMine) {
+        # Character is owned (network-wise) by the person running this script.
+        # Ex: If user is host, this could either be their actual player character or AI titans/shifters.
+    }
+                
+    if (character.IsMainCharacter) {
+        # Character is the main character (the camera-followed player).
+    }
+                
+    if (character.IsAI) {
+        # Character is AI and likely controlled via MasterClient.
+                    
+        if (character.Player.ID == Network.MasterClient.ID) {
+            # Character is owned by masterclient, if we're not masterclient, we cannot modify props.    
+        }
+    }
+}
+```
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

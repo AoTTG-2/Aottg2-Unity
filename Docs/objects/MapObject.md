@@ -4,6 +4,7 @@ Inherits from Object
 ## Initialization
 <mark style="color:red;">This class is abstract and cannot be instantiated.</mark>
 
+> MapObject represents a map object created in the editor or spawned at runtime using Map static methods.
 ## Fields
 |Field|Type|Readonly|Description|
 |---|---|---|---|

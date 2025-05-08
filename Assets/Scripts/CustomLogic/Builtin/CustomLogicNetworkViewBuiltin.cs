@@ -15,7 +15,7 @@ namespace CustomLogic
     /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
     /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
     /// avoid cases where message sending increases heavily with the number of players in the room.
-    /// 
+    /// </summary>
     /// <code>
     /// # The following is for a component scoped object, in general this is bad practice if the component is widely used.
     /// # OnPlayerJoin, every object with this component will send a message to the player that joined, if you use 100 objects with this, 100 messages will be sent.
@@ -42,7 +42,6 @@ namespace CustomLogic
     /// # Good Practice would be to have a single component that handles the message pass and defers the value to all registered components.
     /// TODO: Bother someone for good practice example - maybe move this into Networking Summary Page.
     /// </code>
-    /// </summary>
     [CLType(Name = "NetworkView", Abstract = true)]
     partial class CustomLogicNetworkViewBuiltin : BuiltinClassInstance
     {

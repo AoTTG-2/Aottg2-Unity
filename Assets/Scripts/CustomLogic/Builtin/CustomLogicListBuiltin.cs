@@ -6,6 +6,7 @@ namespace CustomLogic
 {
     /// <summary>
     /// List class for Custom Logic.
+    /// </summary>
     /// <code>
     /// values = List(1,2,1,4,115);
     /// 
@@ -36,7 +37,6 @@ namespace CustomLogic
     ///     return a * 2;
     /// }
     /// </code>
-    /// </summary>
     [CLType(Name = "List")]
     partial class CustomLogicListBuiltin : BuiltinClassInstance
     {

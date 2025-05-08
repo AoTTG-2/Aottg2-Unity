@@ -5,7 +5,7 @@ namespace CustomLogic
 {
     /// <summary>
     /// Only character owner can modify fields and call functions unless otherwise specified.
-    /// 
+    /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
     ///     if (character.IsMine && character.Type == "Shifter") {
@@ -16,7 +16,6 @@ namespace CustomLogic
     ///     }
     /// }
     /// </code>
-    /// </summary>
     [CLType(Name = "Shifter", Abstract = true)]
     partial class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {
