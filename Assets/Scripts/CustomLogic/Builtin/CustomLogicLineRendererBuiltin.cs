@@ -11,6 +11,11 @@ namespace CustomLogic
     {
         public LineRenderer Value = null;
 
+        /// <summary>
+        /// Default constructor is parameterless.
+        /// lr = LineRenderer();
+        /// lr.StartWidth = 1;
+        /// </summary>
         [CLConstructor]
         public CustomLogicLineRendererBuiltin(object[] parameterValues)
         {
