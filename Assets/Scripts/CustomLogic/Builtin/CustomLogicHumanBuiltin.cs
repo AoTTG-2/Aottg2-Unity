@@ -9,6 +9,18 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// <code>
+    /// function OnCharacterSpawn(character) {
+    ///     if (character.IsMainCharacter && character.Type == "Human") {
+    ///         character.SetWeapon("Blade");
+    ///         character.SetSpecial("Potato");
+    ///         character.CurrentGas = character.MaxGas / 2;
+    ///     }
+    /// }
+    /// </code>
+    /// </summary>
     [CLType(Name = "Human", Abstract = true)]
     partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {

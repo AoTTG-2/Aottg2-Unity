@@ -11,6 +11,9 @@ using CustomLogic;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// MapObject represents a map object created in the editor or spawned at runtime using Map static methods.
+    /// </summary>
     [CLType(Name = "MapObject", Abstract = true)]
     partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
@@ -902,6 +905,11 @@ namespace CustomLogic
                 return false;
             var other = ((CustomLogicMapObjectBuiltin)obj).Value;
             return Value == other;
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.ScriptObject.Id;
         }
 
         public override string ToString()

@@ -3,6 +3,20 @@ using Controllers;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// 
+    /// <code>
+    /// function OnCharacterSpawn(character) {
+    ///     if (character.IsMine && character.Type == "Shifter") {
+    ///         character.Size = 2;
+    ///         if (Network.MyPlayer.Status == "Alive" && Network.MyPlayer.Character.Type == "Human") {
+    ///             character.Target(Network.MyPlayer, 10);
+    ///         }
+    ///     }
+    /// }
+    /// </code>
+    /// </summary>
     [CLType(Name = "Shifter", Abstract = true)]
     partial class CustomLogicShifterBuiltin : CustomLogicCharacterBuiltin
     {

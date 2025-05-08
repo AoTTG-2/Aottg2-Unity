@@ -3,6 +3,18 @@ using Controllers;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// <code>
+    /// function OnCharacterSpawn(character) {
+    ///     if (character.IsMine && character.Type == "Titan") {
+    ///         character.Size = 3;
+    ///         character.DetectRange = 1000;
+    ///         character.Blind();
+    ///     }
+    /// }
+    /// </code>
+    /// </summary>
     [CLType(Name = "Titan", Abstract = true)]
     partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {

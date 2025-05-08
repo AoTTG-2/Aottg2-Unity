@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a network player. Only master client or player may modify fields.
+    /// </summary>
     [CLType(Name = "Player", Abstract = true)]
     partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
