@@ -14,12 +14,9 @@ namespace CustomLogic
         }
 
         [CLConstructor]
-        public CustomLogicSetBuiltin(CustomLogicListBuiltin list)
+        public CustomLogicSetBuiltin(object[] parameterValues)
         {
-            foreach (var item in list.List)
-            {
-                Set.Add(item);
-            }
+            foreach (var item in parameterValues)   Set.Add(item);
         }
 
         [CLProperty(readOnly: true, description: "The number of elements in the set")]
@@ -102,7 +99,9 @@ namespace CustomLogic
         [CLMethod(description: "Convert the set to a list")]
         public CustomLogicListBuiltin ToList()
         {
-            return new CustomLogicListBuiltin(Set.ToList());
+            CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
+            foreach (var item in Set)   newList.Add(item);
+            return newList;
         }
     }
 }

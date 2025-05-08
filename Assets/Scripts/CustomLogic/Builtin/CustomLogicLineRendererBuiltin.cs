@@ -133,12 +133,12 @@ namespace CustomLogic
         {
             get
             {
-                var colors = new List<object>();
+                CustomLogicListBuiltin colors = new CustomLogicListBuiltin();
                 foreach (var color in Value.colorGradient.colorKeys)
                 {
-                    colors.Add(new CustomLogicColorBuiltin(new Color255(color.color)));
+                    colors.List.Add(new CustomLogicColorBuiltin(new Color255(color.color)));
                 }
-                return new CustomLogicListBuiltin(colors);
+                return colors;
             }
             set
             {
@@ -166,12 +166,12 @@ namespace CustomLogic
         {
             get
             {
-                var alphas = new List<object>();
+                CustomLogicListBuiltin alphas = new CustomLogicListBuiltin();
                 foreach (var alpha in Value.colorGradient.alphaKeys)
                 {
-                    alphas.Add(alpha.alpha);
+                    alphas.List.Add(alpha.alpha);
                 }
-                return new CustomLogicListBuiltin(alphas);
+                return alphas;
             }
             set
             {
@@ -196,12 +196,12 @@ namespace CustomLogic
         {
             get
             {
-                var curve = new List<object>();
+                CustomLogicListBuiltin curve = new CustomLogicListBuiltin();
                 foreach (var point in Value.widthCurve.keys)
                 {
-                    curve.Add(new CustomLogicVector2Builtin(new Vector2(point.time, point.value)));
+                    curve.List.Add(new CustomLogicVector2Builtin(new Vector2(point.time, point.value)));
                 }
-                return new CustomLogicListBuiltin(curve);
+                return curve;
             }
             set
             {
