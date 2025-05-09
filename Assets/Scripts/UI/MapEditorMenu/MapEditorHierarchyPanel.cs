@@ -370,13 +370,9 @@ namespace UI
                         MapObject obj = MapLoader.IdToMapObject[id];
                         if (obj == null)
                             continue;
-                        // Check if the target parent is the same as the current parent
-                        if (obj.Parent != _targetParent)
+                        if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != obj.ScriptObject.Id)
                         {
-                            if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != obj.ScriptObject.Id)
-                            {
-                                targets.Add(obj);
-                            }
+                            targets.Add(obj);
                         }
                     }
                     _selected.Remove(_targetID);

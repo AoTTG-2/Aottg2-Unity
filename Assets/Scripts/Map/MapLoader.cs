@@ -281,12 +281,10 @@ namespace Map
 
             var newSiblings = IdToChildren[newParent].OrderBy(e => IdToMapObject[e].SiblingIndex);
 
-            int j = 0;
             foreach (int childId in newSiblings)
             {
-                if (j >= siblingIndexTarget)
+                if (IdToMapObject[childId].SiblingIndex >= siblingIndexTarget)
                     IdToMapObject[childId].SiblingIndex++;
-                j++;
             }
             IdToMapObject[id].Parent = newParent;
             IdToMapObject[id].SiblingIndex = siblingIndexTarget;

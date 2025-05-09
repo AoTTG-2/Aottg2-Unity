@@ -130,11 +130,17 @@ namespace MapEditor
                 {
                     if (selectionUniform)
                     {
+                        // Collect collections into one list
+                        List<MapObject> objects = new List<MapObject>();
                         foreach (var obj in collectionsToMove)
                         {
                             MapLoader.ClearGameObjectHierarchy(obj.Key);
-                            _gameManager.NewCommand(new TransformCommand(obj.Value));
+                            foreach (var child in obj.Value)
+                            {
+                                objects.Add(child);
+                            }
                         }
+                        _gameManager.NewCommand(new TransformCommand(objects));
                     }
                     else
                     {
