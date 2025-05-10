@@ -339,6 +339,7 @@ namespace Utility
 
         public static NavMeshBuildSettings GetAgentSettingsCorrected(float size)
         {
+            // determine the size to use based on if the size is greater than the current size but less than the next
             string name = "minTitan";
             float sizeToUse = 0.5f;
             for (int i = 0; i < _titanSizes.Count; i++)

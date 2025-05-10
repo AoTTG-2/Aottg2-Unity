@@ -282,6 +282,12 @@ namespace Controllers
                 }
                 else
                 {
+                    var chatPanel = ((InGameMenu)UIManager.CurrentMenu).ChatPanel;
+                    if (chatPanel != null && chatPanel.IsPointerOverChatUI())
+                    {
+                        _human.Weapon.SetInput(false);
+                        return;
+                    }
                     if (_human.Weapon is AHSSWeapon)
                     {
                         bool isClick = attackInput.Contains(KeyCode.Mouse0);
@@ -373,8 +379,6 @@ namespace Controllers
                 defaultMenu.GetComponent<Canvas>().enabled = !defaultMenu.GetComponent<Canvas>().enabled;
             }
         }
-
-
 
         void UpdateReelInput(bool inMenu)
         {

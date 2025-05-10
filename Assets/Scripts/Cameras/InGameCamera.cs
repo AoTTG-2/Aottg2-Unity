@@ -337,40 +337,57 @@ namespace Cameras
             Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
             float height = cameraDistance == 0f ? 0.6f : cameraDistance;
             Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
-            float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
-            int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
-            if (InGameMenu.InMenu())
-                sensitivity = 0f;
-            float deadzone = SettingsManager.GeneralSettings.OriginalCameraDeadzone.Value;
-            float cameraSpeed = SettingsManager.GeneralSettings.OriginalCameraSpeed.Value;
-            if (CurrentCameraMode == CameraInputMode.Original)
+            if (!ChatManager.IsChatActive() && !InGameMenu.InMenu())
             {
-                float screenWidth = Screen.width;
-                float centerX = screenWidth / 2;
-                float leftDeadzoneBoundary = screenWidth * ((1 - deadzone) / 2);
-                float rightDeadzoneBoundary = screenWidth * ((1 + deadzone) / 2);
-
-                float inputX = Input.mousePosition.x;
-                float inputY = Input.mousePosition.y;
-
-                if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
+                float sensitivity = SettingsManager.GeneralSettings.MouseSpeed.Value;
+                int invertY = SettingsManager.GeneralSettings.InvertMouse.Value ? -1 : 1;
+                float deadzone = SettingsManager.GeneralSettings.OriginalCameraDeadzone.Value;
+                float cameraSpeed = SettingsManager.GeneralSettings.OriginalCameraSpeed.Value;
+                if (CurrentCameraMode == CameraInputMode.Original)
                 {
-                    float t = 0;
-                    if (inputX < leftDeadzoneBoundary)
+                    float screenWidth = Screen.width;
+                    float centerX = screenWidth / 2;
+                    float leftDeadzoneBoundary = screenWidth * ((1 - deadzone) / 2);
+                    float rightDeadzoneBoundary = screenWidth * ((1 + deadzone) / 2);
+                    float inputX = Input.mousePosition.x;
+                    float inputY = Input.mousePosition.y;
+                    if (inputX < leftDeadzoneBoundary || inputX > rightDeadzoneBoundary)
                     {
-                        t = (leftDeadzoneBoundary - inputX) / screenWidth;
-                        float angle = -t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
-                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                        float t = 0;
+                        if (inputX < leftDeadzoneBoundary)
+                        {
+                            t = (leftDeadzoneBoundary - inputX) / screenWidth;
+                            float angle = -t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                            Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                        }
+                        else if (inputX > rightDeadzoneBoundary)
+                        {
+                            t = (inputX - rightDeadzoneBoundary) / screenWidth;
+                            float angle = t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
+                            Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                        }
                     }
-                    else if (inputX > rightDeadzoneBoundary)
+                    float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
+                    Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
+                }
+                if (!_napeLock || _napeLockTitan == null)
+                {
+                    if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
                     {
-                        t = (inputX - rightDeadzoneBoundary) / screenWidth;
-                        float angle = t * cameraSpeed * GetSensitivityDeltaTime(sensitivity);
-                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, angle);
+                        float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
+                        float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
+                        Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX);
+                        float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
+                        float sumY = inputY + angleY;
+                        bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
+                        bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
+                        if (rotateUp && rotateDown)
+                            Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
                     }
                 }
-                float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
-                Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
+            }
+            if (CurrentCameraMode != CameraInputMode.Original || !_napeLock || _napeLockTitan == null)
+            {
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
             if (_napeLock && (_napeLockTitan != null))
@@ -386,19 +403,6 @@ namespace Cameras
                     _napeLockTitan = null;
                     _napeLock = false;
                 }
-            }
-            else if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
-            {
-                float inputX = Input.GetAxis("Mouse X") * 10f * sensitivity;
-                float inputY = -Input.GetAxis("Mouse Y") * 10f * sensitivity * invertY;
-                Cache.Transform.RotateAround(Cache.Transform.position, Vector3.up, inputX);
-                float angleY = Cache.Transform.rotation.eulerAngles.x % 360f;
-                float sumY = inputY + angleY;
-                bool rotateUp = inputY <= 0f || ((angleY >= 260f || sumY <= 260f) && (angleY >= 80f || sumY <= 80f));
-                bool rotateDown = inputY >= 0f || ((angleY <= 280f || sumY >= 280f) && (angleY <= 100f || sumY >= 100f));
-                if (rotateUp && rotateDown)
-                    Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
-                Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
             Cache.Transform.position += Cache.Transform.right * (SettingsManager.GeneralSettings.CameraSide.Value - 1f);
             UpdateShake();
@@ -430,7 +434,6 @@ namespace Cameras
                 if (rotateUp && rotateDown)
                     Cache.Transform.RotateAround(Cache.Transform.position, Cache.Transform.right, inputY);
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-
             }
             else
             {
@@ -482,7 +485,6 @@ namespace Cameras
                 float speed = 200f;
                 if (_input.Modifier.GetKey())
                     speed *= 2f;
-
                 if (_input.Forward.GetKey())
                     direction += Cache.Transform.forward;
                 else if (_input.Back.GetKey())
