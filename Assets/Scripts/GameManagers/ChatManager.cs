@@ -145,7 +145,7 @@ namespace GameManagers
                         {
                             cmdAttr.Command = info;
 
-                            CommandsCache.Add(cmdAttr.Name, cmdAttr);
+                            CommandsCache.Add(cmdAttr.Name.ToLower(), cmdAttr);
 
                             // Create second mapping from alias to cmd, has to be a separate object flagged as alias.
                             // This lets us ignore alias's later on in the help function.
@@ -153,7 +153,7 @@ namespace GameManagers
                             {
                                 CommandAttribute alias = new CommandAttribute(cmdAttr);
                                 alias.IsAlias = true;
-                                CommandsCache.Add(alias.Alias, alias);
+                                CommandsCache.Add(alias.Alias.ToLower(), alias);
                             }
                         }
                     }
@@ -447,7 +447,7 @@ namespace GameManagers
 
         private static void HandleCommand(string[] args)
         {
-            if (CommandsCache.TryGetValue(args[0], out CommandAttribute cmdAttr))
+            if (CommandsCache.TryGetValue(args[0].ToLower(), out CommandAttribute cmdAttr))
             {
                 MethodInfo info = cmdAttr.Command;
                 if (info.IsStatic)
@@ -710,9 +710,9 @@ namespace GameManagers
                 if (print)
                 {
                     if (ban)
-                        SendChatAll($"{player.GetStringProperty(PlayerProperty.Name)} has been banned{reason}", ChatTextColor.System);
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + $" has been banned{reason}", ChatTextColor.System);
                     else
-                        SendChatAll($"{player.GetStringProperty(PlayerProperty.Name)} has been kicked{reason}", ChatTextColor.System);
+                        SendChatAll(player.GetStringProperty(PlayerProperty.Name) + $" has been kicked{reason}", ChatTextColor.System);
                 }
             }
         }
@@ -850,10 +850,12 @@ namespace GameManagers
             return GetColorString(str, ChatTextColor.ID);
         }
 
-        public static string GetColorString(string str, ChatTextColor color)
+        public static string GetColorString(string str, ChatTextColor color, bool bold=false)
         {
             if (color == ChatTextColor.Default)
                 return str;
+            if (bold)
+                str = $"<b>{str}</b>";
             return "<color=#" + ColorTags[color] + ">" + str + "</color>";
         }
 

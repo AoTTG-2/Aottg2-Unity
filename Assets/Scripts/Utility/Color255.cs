@@ -51,5 +51,13 @@ namespace Utility
             gradient.SetKeys(colorKeys, alphakeys);
             return new Color255(gradient.Evaluate(t));
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Color255))
+                return false;
+            var other = (Color255)obj;
+            return R == other.R && G == other.G && B == other.B && A == other.A;
+        }
     }
 }

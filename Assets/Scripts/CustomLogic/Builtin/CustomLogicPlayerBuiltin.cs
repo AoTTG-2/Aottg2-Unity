@@ -7,49 +7,24 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicPlayerBuiltin : CustomLogicBaseBuiltin
+    /// <summary>
+    /// Represents a network player. Only master client or player may modify fields.
+    /// </summary>
+    [CLType(Name = "Player", Abstract = true)]
+    partial class CustomLogicPlayerBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {
-        public Player Player;
+        public readonly Player Player;
 
-        public CustomLogicPlayerBuiltin(Player player) : base("Player")
+        [CLConstructor]
+        public CustomLogicPlayerBuiltin(Player player)
         {
             Player = player;
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLProperty("Player's current character, if alive.")]
+        public CustomLogicCharacterBuiltin Character
         {
-            if (methodName == "GetCustomProperty")
-                return Player.GetCustomProperty("CL:" + (string)parameters[0]);
-            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
-                return null;
-            if (methodName == "SetCustomProperty")
-            {
-                object param = parameters[1];
-                if (!(param is float || param is int || param is string || param is bool))
-                    throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
-                CheckPropertyRateLimit("CL:" + (string)parameters[0]);
-                Player.SetCustomProperty("CL:" + (string)parameters[0], param);
-                return null;
-            }
-            if (methodName == "ClearKDR")
-            {
-                CheckPropertyRateLimit("ClearKDR");
-                var properties = new Dictionary<string, object>
-                    {
-                        { PlayerProperty.Kills, 0 },
-                        { PlayerProperty.Deaths, 0 },
-                        { PlayerProperty.HighestDamage, 0 },
-                        { PlayerProperty.TotalDamage, 0 }
-                    };
-                Player.SetCustomProperties(properties);
-                return null;
-            }
-            return base.CallMethod(methodName, parameters);
-        }
-
-        public override object GetField(string name)
-        {
-            if (name == "Character")
+            get
             {
                 int viewId = Player.GetIntProperty(PlayerProperty.CharacterViewId, 0);
                 if (viewId > 0)
@@ -65,78 +40,141 @@ namespace CustomLogic
                 }
                 return null;
             }
-            if (name == "Connected")
-                return Player != null;
-            if (name == "ID")
-                return Player.ActorNumber;
-            if (name == "Name")
-                return Player.GetStringProperty(PlayerProperty.Name);
-            if (name == "Guild")
-                return Player.GetStringProperty(PlayerProperty.Guild);
-            if (name == "Team")
-                return Player.GetStringProperty(PlayerProperty.Team);
-            if (name == "Status")
-                return Player.GetStringProperty(PlayerProperty.Status);
-            if (name == "CharacterType")
-                return Player.GetStringProperty(PlayerProperty.Character);
-            if (name == "Loadout")
-                return Player.GetStringProperty(PlayerProperty.Loadout);
-            if (name == "Kills")
-                return Player.GetIntProperty(PlayerProperty.Kills);
-            if (name == "Deaths")
-                return Player.GetIntProperty(PlayerProperty.Deaths);
-            if (name == "HighestDamage")
-                return Player.GetIntProperty(PlayerProperty.HighestDamage);
-            if (name == "TotalDamage")
-                return Player.GetIntProperty(PlayerProperty.TotalDamage);
-            if (name == "Ping")
-                return Player.GetIntProperty(PlayerProperty.Ping);
-            if (name == "SpectateID")
-                return Player.GetIntProperty(PlayerProperty.SpectateID);
-            if (name == "SpawnPoint")
+        }
+
+        [CLProperty("Player is still connected to the room.")]
+        public bool Connected => Player != null;
+
+        [CLProperty("Player unique ID.")]
+        public int ID => Player.ActorNumber;
+
+        [CLProperty("Player name.")]
+        public string Name => Player.GetStringProperty(PlayerProperty.Name);
+
+        [CLProperty("Player guild.")]
+        public string Guild => Player.GetStringProperty(PlayerProperty.Guild);
+
+        /// <summary>
+        /// Player's chosen team ("None", "Blue", "Red", "Titan", "Human").
+        /// Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.
+        /// </summary>
+        [CLProperty] public string Team => Player.GetStringProperty(PlayerProperty.Team);
+
+        [CLProperty("Player's spawn status (\"Alive\", \"Dead\", \"Spectating\").")]
+        public string Status => Player.GetStringProperty(PlayerProperty.Status);
+
+        [CLProperty("Player's chosen character (\"Human\", \"Titan\", \"Shifter\")")]
+        public string CharacterType => Player.GetStringProperty(PlayerProperty.Character);
+
+        [CLProperty("Player's chosen loadout (\"Blades\", \"AHSS\", \"APG\", \"Thunderspears\").")]
+        public string Loadout => Player.GetStringProperty(PlayerProperty.Loadout);
+
+        [CLProperty("Player's kills.")]
+        public int Kills
+        {
+            get => Player.GetIntProperty(PlayerProperty.Kills);
+            set
+            {
+                if (PhotonNetwork.IsMasterClient || Player == PhotonNetwork.LocalPlayer)
+                    Player.SetCustomProperty(PlayerProperty.Kills, value);
+            }
+        }
+
+        [CLProperty("Player's deaths.")]
+        public int Deaths
+        {
+            get => Player.GetIntProperty(PlayerProperty.Deaths);
+            set
+            {
+                if (PhotonNetwork.IsMasterClient || Player == PhotonNetwork.LocalPlayer)
+                    Player.SetCustomProperty(PlayerProperty.Deaths, value);
+            }
+        }
+
+        [CLProperty("Player's highest damage.")]
+        public int HighestDamage
+        {
+            get => Player.GetIntProperty(PlayerProperty.HighestDamage);
+            set
+            {
+                if (PhotonNetwork.IsMasterClient || Player == PhotonNetwork.LocalPlayer)
+                    Player.SetCustomProperty(PlayerProperty.HighestDamage, value);
+            }
+        }
+
+        [CLProperty("Player's total damage.")]
+        public int TotalDamage
+        {
+            get => Player.GetIntProperty(PlayerProperty.TotalDamage);
+            set
+            {
+                if (PhotonNetwork.IsMasterClient || Player == PhotonNetwork.LocalPlayer)
+                    Player.SetCustomProperty(PlayerProperty.TotalDamage, value);
+            }
+        }
+
+        [CLProperty("The player's connection ping.")]
+        public int Ping => Player.GetIntProperty(PlayerProperty.Ping);
+
+        [CLProperty("The player's spectating ID. If not spectating anyone, returns -1.")]
+        public int SpectateID => Player.GetIntProperty(PlayerProperty.SpectateID);
+
+        [CLProperty("Player's respawn point. Is initially null and can be set back to null, at which point map spawn points are used.")]
+        public CustomLogicVector3Builtin SpawnPoint
+        {
+            get
             {
                 if (Player.HasSpawnPoint())
                     return new CustomLogicVector3Builtin(Player.GetSpawnPoint());
                 return null;
             }
-            return base.GetField(name);
-        }
-
-        public override void SetField(string name, object value)
-        {
-            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
-                return;
-            CheckPropertyRateLimit(name);
-            if (name == "Kills")
-                Player.SetCustomProperty(PlayerProperty.Kills, (int)value);
-            else if (name == "Deaths")
-                Player.SetCustomProperty(PlayerProperty.Deaths, (int)value);
-            else if (name == "HighestDamage")
-                Player.SetCustomProperty(PlayerProperty.HighestDamage, (int)value);
-            else if (name == "TotalDamage")
-                Player.SetCustomProperty(PlayerProperty.TotalDamage, (int)value);
-            else if (name == "SpawnPoint")
+            set
             {
+                if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
+                    return;
+                CheckPropertyRateLimit("SpawnPoint");
                 if (value == null)
                     Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
                 else
                 {
-                    if (value is CustomLogicVector3Builtin v3)
-                    {
-                        var vector = v3.Value;
-                        string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
-                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
-                    }
-                    else if (value is CustomLogicMapObjectBuiltin mapObject)
-                    {
-                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, mapObject.Value.ScriptObject.Id.ToString());
-                    }
-                    else
-                        Player.SetCustomProperty(PlayerProperty.SpawnPoint, "null");
+                    var vector = value.Value;
+                    string str = string.Join(",", new string[] { vector.x.ToString(), vector.y.ToString(), vector.z.ToString() });
+                    Player.SetCustomProperty(PlayerProperty.SpawnPoint, str);
                 }
             }
-            else
-                base.SetField(name, value);
+        }
+
+        [CLMethod("Get a custom property at given key. Must be a primitive type. This is synced to all clients.")]
+        public object GetCustomProperty(string property)
+        {
+            return Player.GetCustomProperty("CL:" + property);
+        }
+
+        [CLMethod("Sets a custom property at given key. Must be a primitive type. This is synced to all clients.")]
+        public void SetCustomProperty(string property, object value)
+        {
+            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
+                return;
+            if (value is not (float or int or string or bool))
+                throw new System.Exception("Player.SetCustomProperty only supports float, int, string, or bool values.");
+            CheckPropertyRateLimit("CL:" + property);
+            Player.SetCustomProperty("CL:" + property, value);
+        }
+
+        [CLMethod("Clears kills, deaths, highestdamage, and totaldamage properties.")]
+        public void ClearKDR()
+        {
+            if (!PhotonNetwork.IsMasterClient && Player != PhotonNetwork.LocalPlayer)
+                return;
+            CheckPropertyRateLimit("ClearKDR");
+            var properties = new Dictionary<string, object>
+                {
+                    { PlayerProperty.Kills, 0 },
+                    { PlayerProperty.Deaths, 0 },
+                    { PlayerProperty.HighestDamage, 0 },
+                    { PlayerProperty.TotalDamage, 0 }
+                };
+            Player.SetCustomProperties(properties);
         }
 
         private void CheckPropertyRateLimit(string property)
@@ -164,5 +202,9 @@ namespace CustomLogic
             var other = ((CustomLogicPlayerBuiltin)obj).Player;
             return Player == other;
         }
+
+        public bool __Eq__(object self, object other) => self.Equals(other);
+
+        public int __Hash__() => Player.GetHashCode();
     }
 }

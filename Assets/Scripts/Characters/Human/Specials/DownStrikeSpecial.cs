@@ -15,6 +15,10 @@ namespace Characters
 
         protected override void Activate()
         {
+            if (_human.MountState == HumanMountState.Horse && _human.IsAttackableState)
+            {
+                _human.Unmount(false);
+            }
             _needActivate = true;
             _human.HookLeft.DisableAnyHook();
             _human.HookRight.DisableAnyHook();

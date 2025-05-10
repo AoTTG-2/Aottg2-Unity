@@ -6,7 +6,7 @@ using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicComponentInstance : CustomLogicClassInstance
+    class CustomLogicComponentInstance : UserClassInstance
     {
         public CustomLogicMapObjectBuiltin MapObject;
         public CustomLogicNetworkViewBuiltin NetworkView;
@@ -15,7 +15,6 @@ namespace CustomLogic
         public CustomLogicComponentInstance(string name, MapObject obj, MapScriptComponent script,
             CustomLogicNetworkViewBuiltin networkView) : base(name)
         {
-            ClassName = name;
             MapObject = new CustomLogicMapObjectBuiltin(obj);
             _script = script;
             NetworkView = networkView;
@@ -44,44 +43,49 @@ namespace CustomLogic
             return eval.HasMethod(this, "OnCollisionStay") || eval.HasMethod(this, "OnCollisionEnter") || eval.HasMethod(this, "OnCollisionExit") || eval.HasMethod(this, "OnGetHit") || eval.HasMethod(this, "OnGetHooked");
         }
 
-        public void OnCollisionStay(CustomLogicBaseBuiltin other)
+        [CLCallbackAttribute]
+        public void OnCollisionStay(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new List<object>() { other });
+            CustomLogicManager.Evaluator?.EvaluateMethod(this, "OnCollisionStay", new object[] { other });
         }
 
-        public void OnCollisionEnter(CustomLogicBaseBuiltin other)
+        [CLCallbackAttribute]
+        public void OnCollisionEnter(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new List<object>() { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionEnter", new object[] { other });
         }
 
-        public void OnCollisionExit(CustomLogicBaseBuiltin other)
+        [CLCallbackAttribute]
+        public void OnCollisionExit(BuiltinClassInstance other)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new List<object>() { other });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnCollisionExit", new object[] { other });
         }
 
+        [CLCallbackAttribute]
         public void OnGetHit(CustomLogicCharacterBuiltin character, string name, int damage, string type, CustomLogicVector3Builtin position)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new List<object>() { character, name, damage, type, position });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHit", new object[] { character, name, damage, type, position });
         }
 
+        [CLCallbackAttribute]
         public void OnGetHooked(CustomLogicHumanBuiltin human, CustomLogicVector3Builtin position, bool left)
         {
             if (!Enabled)
                 return;
 
-            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new List<object>() { human, position, left });
+            CustomLogicManager.Evaluator.EvaluateMethod(this, "OnGetHooked", new object[] { human, position, left });
         }
 
         public static object DeserializeValue(object obj, string value)

@@ -94,7 +94,7 @@ namespace CustomLogic
         }
 
 
-        public static CustomLogicBaseBuiltin GetBuiltin(Collider other)
+        public static BuiltinClassInstance GetBuiltin(Collider other)
         {
             if (other == null || other.transform == null)
                 return null;
@@ -104,7 +104,7 @@ namespace CustomLogic
             var character = root.GetComponent<BaseCharacter>();
             if (character != null)
             {
-                CustomLogicBaseBuiltin builtin = null;
+                BuiltinClassInstance builtin = null;
                 if (character is Human)
                     builtin = new CustomLogicHumanBuiltin((Human)character);
                 else if (character is BasicTitan)

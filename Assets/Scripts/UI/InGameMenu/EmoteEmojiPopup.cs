@@ -43,6 +43,7 @@ namespace UI
                     _texture1 = (Texture2D)ResourceManager.LoadAsset(ResourcePaths.UI, iconPath + "_1", true);
                     _emojiImage.texture = _texture0;
                     _animated = true;
+                    _isFirstFrame = true;
                     _animationTimeLeft = AnimationFrameTime;
                     return;
                 }
@@ -54,7 +55,7 @@ namespace UI
 
         protected void Update()
         {
-            if (_animated)
+            if (IsActive && _animated)
             {
                 _animationTimeLeft -= Time.deltaTime;
                 if (_animationTimeLeft <= 0f)

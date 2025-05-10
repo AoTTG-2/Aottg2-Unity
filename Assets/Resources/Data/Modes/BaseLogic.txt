@@ -1839,7 +1839,7 @@ component SupplyStation
     function Init()
     {
         self._refillsLeft = self.MaxRefills;
-        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,-2,0), Vector3(14,8,14));
+        self.MapObject.AddBoxCollider("Region", "Characters", Vector3(0,-2,0), Vector3(14,10,14));
     }
 
     function OnCollisionStay(other)
@@ -1865,7 +1865,7 @@ component SupplyStation
     {
         if (self._currentHumanRefill != null)
         {
-            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill(true))
+            if ((self._currentHumanRefill.AutoRefillGas || Input.GetKeyDown("Interaction/Interact")) && self._currentHumanRefill.Refill())
             {
                 self._currentHumanRefill = null;
                 self._refillsLeft = self._refillsLeft - 1;
