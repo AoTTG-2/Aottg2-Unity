@@ -95,8 +95,9 @@ namespace Characters
             base.SetSizeParticles(size);
             foreach (ParticleSystem system in new ParticleSystem[] { BasicCache.ForearmSmokeL, BasicCache.ForearmSmokeR })
             {
-                system.startSize *= size;
-                system.startSpeed *= size;
+                var main = system.main;
+                Util.ScaleParticleStartSize(main, size);
+                Util.ScaleParticleStartSpeed(main, size);
             }
             BasicCache.ForearmSmokeL.transform.localScale = Vector3.one * Size;
             BasicCache.ForearmSmokeR.transform.localScale = Vector3.one * Size;

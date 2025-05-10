@@ -49,9 +49,9 @@ namespace Effects
                 return;
             foreach (ParticleSystem system in transform.GetComponentsInChildren<ParticleSystem>())
             {
-                var emission = system.main;
-                emission.startSpeedMultiplier *= scale;
-                emission.startSizeMultiplier *= scale;
+                var main = system.main;
+                Util.ScaleParticleStartSize(main, scale);
+                Util.ScaleParticleStartSpeed(main, scale);
             }
         }
     }

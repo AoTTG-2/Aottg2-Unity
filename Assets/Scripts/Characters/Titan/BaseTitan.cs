@@ -957,8 +957,8 @@ namespace Characters
             foreach (ParticleSystem system in GetComponentsInChildren<ParticleSystem>())
             {
                 var main = system.main;
-                main.startSizeMultiplier *= size;
-                main.startSpeedMultiplier *= size;
+                Util.ScaleParticleStartSize(main, size);
+                Util.ScaleParticleStartSpeed(main, size);
             }
         }
 
