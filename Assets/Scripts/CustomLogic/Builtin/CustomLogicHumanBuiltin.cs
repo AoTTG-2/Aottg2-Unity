@@ -9,295 +9,133 @@ using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
+    /// <summary>
+    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
+    /// <code>
+    /// function OnCharacterSpawn(character) {
+    ///     if (character.IsMainCharacter && character.Type == "Human") {
+    ///         character.SetWeapon("Blade");
+    ///         character.SetSpecial("Potato");
+    ///         character.CurrentGas = character.MaxGas / 2;
+    ///     }
+    /// }
+    /// </code>
+    [CLType(Name = "Human", Abstract = true)]
+    partial class CustomLogicHumanBuiltin : CustomLogicCharacterBuiltin
     {
         public Human Human;
 
-        public CustomLogicHumanBuiltin(Human human) : base(human, "Human")
+        public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
-        {
-            if (methodName == "Refill")
-            {
-                if (Human.IsMine() && Human.NeedRefill(true))
-                    return Human.Refill();
-                return false;
-            }
-            if (methodName == "RefillImmediate")
-            {
-                if (Human.IsMine())
-                    Human.FinishRefill();
-                return null;
-            }
-            if (methodName == "ClearHooks")
-            {
-                if (Human.IsMine())
-                {
-                    Human.HookLeft.DisableAnyHook();
-                    Human.HookRight.DisableAnyHook();
-                }
-                return null;
-            }
-            if (methodName == "ClearLeftHook")
-            {
-                if (Human.IsMine())
-                    Human.HookLeft.DisableAnyHook();
-                return null;
-            }
-            if (methodName == "ClearRightHook")
-            {
-                if (Human.IsMine())
-                    Human.HookRight.DisableAnyHook();
-                return null;
-            }
-            if (methodName == "MountMapObject")
-            {
-                if (Human.IsMine())
-                {
-                    Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                    Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                    Human.Mount(((CustomLogicMapObjectBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
-                }
-                return null;
-            }
-            if (methodName == "MountTransform")
-            {
-                if (Human.IsMine())
-                {
-                    Vector3 positionOffset = ((CustomLogicVector3Builtin)parameters[1]).Value;
-                    Vector3 rotationOffset = ((CustomLogicVector3Builtin)parameters[2]).Value;
-                    Human.Mount(((CustomLogicTransformBuiltin)parameters[0]).Value, positionOffset, rotationOffset);
-                }
-                return null;
-            }
-            if (methodName == "Unmount")
-            {
-                if (Human.IsMine())
-                    Human.Unmount(true);
-                return null;
-            }
-            if (methodName == "SetSpecial")
-            {
-                if (Human.IsMine())
-                    Human.SetSpecial((string)parameters[0]);
-                return null;
-            }
-            if (methodName == "ActivateSpecial")
-            {
-                if (Human.IsMine() && Human.Special != null)
-                {
-                    Human.Special.SetInput(true);
-                    Human.Special.SetInput(false);
-                }
-                return null;
-            }
-            if (methodName == "SetWeapon")
-            {
-                if (!Human.IsMine())
-                    return null;
-                var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
-                string weapon = (string)parameters[0];
-                if (weapon == "Blades")
-                    weapon = "Blade";
-                else if (weapon == "Thunderspears")
-                    weapon = "Thunderspear";
-                if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
-                {
-                    var miscSettings = SettingsManager.InGameCurrent.Misc;
-                    if (!Human.Dead)
-                    {
-                        List<string> loadouts = new List<string>();
-                        if (miscSettings.AllowBlades.Value)
-                            loadouts.Add(HumanLoadout.Blade);
-                        if (miscSettings.AllowAHSS.Value)
-                            loadouts.Add(HumanLoadout.AHSS);
-                        if (miscSettings.AllowAPG.Value)
-                            loadouts.Add(HumanLoadout.APG);
-                        if (miscSettings.AllowThunderspears.Value)
-                            loadouts.Add(HumanLoadout.Thunderspear);
-                        if (loadouts.Count == 0)
-                            loadouts.Add(HumanLoadout.Blade);
-
-                        if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
-                        {
-                            SettingsManager.InGameCharacterSettings.Loadout.Value = weapon;
-                            var manager = (InGameManager)SceneLoader.CurrentGameManager;
-                            Human = (Human)gameManager.CurrentCharacter;
-                            Human.ReloadHuman(manager.GetSetHumanSettings());
-                        }
-                    }
-                }
-                return null;
-            }
-            if (methodName == "DisablePerks")
-            {
-                if (Human.IsMine())
-                    Human.Stats.DisablePerks();
-                return null;
-            }
-            return base.CallMethod(methodName, parameters);
+        [CLProperty(description: "The human's name")]
+        public string Name {
+            get => Human.Name;
+            set => Human.Name = value;
         }
 
-        public override object GetField(string name)
+        [CLProperty(description: "The human's guild")]
+        public string Guild {
+            get => Human.Guild;
+            set => Human.Guild = value;
+        }
+
+        // Add CLProperties for the above setField/getField 
+        [CLProperty(description: "The weapon the human is using")]
+        public string Weapon
         {
-            BladeWeapon bladeWeapon = null;
-            AmmoWeapon ammoWeapon = null;
-            if (Human.Weapon is BladeWeapon)
-                bladeWeapon = (BladeWeapon)Human.Weapon;
-            else if (Human.Weapon is AmmoWeapon)
-                ammoWeapon = (AmmoWeapon)Human.Weapon;
-            if (name == "Weapon")
-                return Human.Setup.Weapon.ToString();
-            if (name == "CurrentSpecial")
-                return Human.CurrentSpecial;
-            if (name == "SpecialCooldown")
-                return Human.Special == null ? 0f : Human.Special.Cooldown;
-            if (name == "ShifterLiveTime")
+            get => Human.Setup.Weapon.ToString();
+            set => SetWeapon(value);
+        }
+
+        [CLProperty(description: "The current special the human is using")]
+        public string CurrentSpecial
+        {
+            get => Human.CurrentSpecial;
+            set => SetSpecial(value);
+        }
+
+        [CLProperty(description: "The cooldown of the special")]
+        public float SpecialCooldown
+        {
+            get => Human.Special == null ? 0f : Human.Special.Cooldown;
+            set
+            {
+                if (Human.Special == null) return;
+                var v = Mathf.Max(0f, value);
+                Human.Special.Cooldown = v;
+            }
+        }
+
+        [CLProperty(description: "The live time of the shifter special")]
+        public float ShifterLiveTime
+        {
+            get
             {
                 if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
                     return special.LiveTime;
-
                 return 0f;
             }
-            if (name == "SpecialCooldownRatio")
-                return Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
-            if (name == "CurrentGas")
-                return Human.Stats.CurrentGas;
-            if (name == "MaxGas")
-                return Human.Stats.MaxGas;
-            if (name == "Acceleration")
-                return Human.Stats.Acceleration;
-            if (name == "Speed")
-                return Human.Stats.Speed;
-            if (name == "HorseSpeed")
-                return Human.Stats.HorseSpeed;
-            if (name == "CurrentBladeDurability")
+            set
             {
-                if (bladeWeapon != null)
+                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
+                    special.LiveTime = value;
+            }
+        }
+
+        [CLProperty(description: "The ratio of the special cooldown")]
+        public float SpecialCooldownRatio => Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
+
+        [CLProperty(description: "The current gas of the human")]
+        public float CurrentGas
+        {
+            get => Human.Stats.CurrentGas;
+            set => Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value);
+        }
+
+        [CLProperty(description: "The max gas of the human")]
+        public float MaxGas
+        {
+            get => Human.Stats.MaxGas;
+            set => Human.Stats.MaxGas = value;
+        }
+
+        [CLProperty(description: "The acceleration of the human")]
+        public int Acceleration
+        {
+            get => Human.Stats.Acceleration;
+            set => Human.Stats.Acceleration = value;
+        }
+
+        [CLProperty(description: "The speed of the human")]
+        public int Speed
+        {
+            get => Human.Stats.Speed;
+            set => Human.Stats.Speed = value;
+        }
+
+        [CLProperty(description: "The speed of the horse")]
+        public float HorseSpeed
+        {
+            get => Human.Stats.HorseSpeed;
+            set => Human.Stats.HorseSpeed = value;
+        }
+
+        [CLProperty(description: "The current blade durability")]
+        public float CurrentBladeDurability
+        {
+            get
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
                     return bladeWeapon.CurrentDurability;
                 return 0f;
             }
-            if (name == "MaxBladeDurability")
+            set
             {
-                if (bladeWeapon != null)
-                    return bladeWeapon.MaxDurability;
-                return 0f;
-            }
-            if (name == "CurrentBlade")
-            {
-                if (bladeWeapon != null)
-                    return bladeWeapon.BladesLeft;
-                return 0;
-            }
-            if (name == "MaxBlade")
-            {
-                if (bladeWeapon != null)
-                    return bladeWeapon.MaxBlades;
-                return 0;
-            }
-            if (name == "CurrentAmmoRound")
-            {
-                if (ammoWeapon != null)
-                    return ammoWeapon.RoundLeft;
-                return 0;
-            }
-            if (name == "MaxAmmoRound")
-            {
-                if (ammoWeapon != null)
-                    return ammoWeapon.MaxRound;
-                return 0;
-            }
-            if (name == "CurrentAmmoLeft")
-            {
-                if (ammoWeapon != null)
-                    return ammoWeapon.AmmoLeft;
-                return 0;
-            }
-            if (name == "MaxAmmoTotal")
-            {
-                if (ammoWeapon != null)
-                    return ammoWeapon.MaxAmmo;
-                return 0;
-            }
-            if (name == "LeftHookEnabled")
-                return Human.HookLeft.Enabled;
-            if (name == "RightHookEnabled")
-                return Human.HookRight.Enabled;
-            if (name == "IsMounted")
-                return Human.MountState == HumanMountState.MapObject;
-            if (name == "MountedMapObject")
-            {
-                if (Human.MountedMapObject == null)
-                    return null;
-                return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
-            }
-            if (name == "MountedTransform")
-            {
-                if (Human.MountedTransform == null)
-                    return null;
-                return new CustomLogicTransformBuiltin(Human.MountedTransform);
-            }
-            if (name == "AutoRefillGas")
-            {
-                if (Human != null && Human.IsMine())
-                    return SettingsManager.InputSettings.Human.AutoRefillGas.Value;
-                return false;
-            }
-            if (name == "State")
-                return Human.State.ToString();
-            if (name == "CanDodge")
-                return Human.CanDodge;
-            if (name == "IsInvincible")
-                return Human.IsInvincible;
-            if (name == "InvincibleTimeLeft")
-                return Human.InvincibleTimeLeft;
-            if (name == "IsCarried")
-                return Human.CarryState == HumanCarryState.Carry;
-            return base.GetField(name);
-        }
-
-        public override void SetField(string name, object value)
-        {
-            if (name == "Name")
-                Character.Name = (string)value;
-            else if (name == "Guild")
-                Character.Guild = (string)value;
-            if (!Human.IsMine())
-                return;
-            BladeWeapon bladeWeapon = null;
-            AmmoWeapon ammoWeapon = null;
-            if (Human.Weapon is BladeWeapon)
-                bladeWeapon = (BladeWeapon)Human.Weapon;
-            else if (Human.Weapon is AmmoWeapon)
-                ammoWeapon = (AmmoWeapon)Human.Weapon;
-            if (name == "SpecialCooldown")
-            {
-                if (Human.Special == null) return;
-
-                var v = Mathf.Max(0f, value.UnboxToFloat());
-                Human.Special.Cooldown = v;
-            }
-            else if (name == "ShifterLiveTime")
-            {
-                if (Human.Special != null && Human.Special is ShifterTransformSpecial special)
-                    special.LiveTime = value.UnboxToFloat();
-            }
-            else if (name == "CurrentGas")
-                Human.Stats.CurrentGas = Mathf.Min(Human.Stats.MaxGas, value.UnboxToFloat());
-            else if (name == "MaxGas")
-                Human.Stats.MaxGas = value.UnboxToFloat();
-            else if (name == "Acceleration")
-                Human.Stats.Acceleration = value.UnboxToInt();
-            else if (name == "Speed")
-                Human.Stats.Speed = value.UnboxToInt();
-            else if (name == "HorseSpeed")
-                Human.Stats.HorseSpeed = value.UnboxToFloat();
-            else if (name == "CurrentBladeDurability")
-            {
-                if (bladeWeapon != null)
+                if (Human.Weapon is BladeWeapon bladeWeapon)
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
                     bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
@@ -309,59 +147,320 @@ namespace CustomLogic
                     }
                 }
             }
-            else if (name == "MaxBladeDurability")
-            {
-                if (bladeWeapon != null)
-                    bladeWeapon.MaxDurability = value.UnboxToFloat();
-            }
-            else if (name == "CurrentBlade")
-            {
-                if (bladeWeapon != null)
-                    bladeWeapon.BladesLeft = Mathf.Min(value.UnboxToInt(), bladeWeapon.MaxBlades);
-            }
-            else if (name == "MaxBlade")
-            {
-                if (bladeWeapon != null)
-                    bladeWeapon.MaxBlades = value.UnboxToInt();
-            }
-            else if (name == "CurrentAmmoRound")
-            {
-                if (ammoWeapon != null)
-                    ammoWeapon.RoundLeft = Mathf.Min(ammoWeapon.MaxRound, value.UnboxToInt());
-            }
-            else if (name == "MaxAmmoRound")
-            {
-                if (ammoWeapon != null)
-                    ammoWeapon.MaxRound = value.UnboxToInt();
-            }
-            else if (name == "CurrentAmmoLeft")
-            {
-                if (ammoWeapon != null)
-                    ammoWeapon.AmmoLeft = Mathf.Min(ammoWeapon.MaxAmmo, value.UnboxToInt());
-            }
-            else if (name == "MaxAmmoTotal")
-            {
-                if (ammoWeapon != null)
-                    ammoWeapon.MaxAmmo = value.UnboxToInt();
-            }
-            else if (name == "LeftHookEnabled")
-                Human.HookLeft.Enabled = (bool)value;
-            else if (name == "RightHookEnabled")
-                Human.HookRight.Enabled = (bool)value;
-            else if (name == "Position")
-            {
-                Human.IsChangingPosition();
-                base.SetField(name, value);
-            }
-            else if (name == "CanDodge")
-                Human.CanDodge = (bool)value;
-            else if (name == "IsInvincible")
-                Human.IsInvincible = (bool)value;
-            else if (name == "InvincibleTimeLeft")
-                Human.InvincibleTimeLeft = (float)value;
-            else
-                base.SetField(name, value);
-            Human.Stats.UpdateStats();
         }
+
+        [CLProperty(description: "The max blade durability")]
+        public float MaxBladeDurability
+        {
+            get
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    return bladeWeapon.MaxDurability;
+                return 0f;
+            }
+            set
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    bladeWeapon.MaxDurability = value;
+            }
+        }
+
+        [CLProperty(description: "The current blade")]
+        public int CurrentBlade
+        {
+            get
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    return bladeWeapon.BladesLeft;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    bladeWeapon.BladesLeft = Mathf.Min(value, bladeWeapon.MaxBlades);
+            }
+        }
+
+        [CLProperty(description: "The max number of blades held")]
+        public int MaxBlade
+        {
+            get
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    return bladeWeapon.MaxBlades;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is BladeWeapon bladeWeapon)
+                    bladeWeapon.MaxBlades = value;
+            }
+        }
+
+        [CLProperty(description: "The current ammo round")]
+        public int CurrentAmmoRound
+        {
+            get
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    return ammoWeapon.RoundLeft;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    ammoWeapon.RoundLeft = Mathf.Min(ammoWeapon.MaxRound, value);
+            }
+        }
+
+        [CLProperty(description: "The max ammo round")]
+        public int MaxAmmoRound
+        {
+            get
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    return ammoWeapon.MaxRound;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    ammoWeapon.MaxRound = value;
+            }
+        }
+
+        [CLProperty(description: "The current ammo left")]
+        public int CurrentAmmoLeft
+        {
+            get
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    return ammoWeapon.AmmoLeft;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    ammoWeapon.AmmoLeft = Mathf.Min(ammoWeapon.MaxAmmo, value);
+            }
+        }
+
+        [CLProperty(description: "The max total ammo")]
+        public int MaxAmmoTotal
+        {
+            get
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    return ammoWeapon.MaxAmmo;
+                return 0;
+            }
+            set
+            {
+                if (Human.Weapon is AmmoWeapon ammoWeapon)
+                    ammoWeapon.MaxAmmo = value;
+            }
+        }
+
+        [CLProperty(description: "Whether the left hook is enabled")]
+        public bool LeftHookEnabled
+        {
+            get => Human.HookLeft.Enabled;
+            set => Human.HookLeft.Enabled = value;
+        }
+
+        [CLProperty(description: "Whether the right hook is enabled")]
+        public bool RightHookEnabled
+        {
+            get => Human.HookRight.Enabled;
+            set => Human.HookRight.Enabled = value;
+        }
+
+        [CLProperty(description: "Whether the human is mounted")]
+        public bool IsMounted => Human.MountState == HumanMountState.MapObject;
+
+        [CLProperty(description: "The map object the human is mounted on")]
+        public CustomLogicMapObjectBuiltin MountedMapObject
+        {
+            get
+            {
+                if (Human.MountedMapObject == null)
+                    return null;
+                return new CustomLogicMapObjectBuiltin(Human.MountedMapObject);
+            }
+        }
+
+        [CLProperty(description: "The transform the human is mounted on")]
+        public CustomLogicTransformBuiltin MountedTransform
+        {
+            get
+            {
+                if (Human.MountedTransform == null)
+                    return null;
+                return new CustomLogicTransformBuiltin(Human.MountedTransform);
+            }
+        }
+
+        [CLProperty(description: "Whether the human auto refills gas")]
+        public bool AutoRefillGas
+        {
+            get => Human != null && Human.IsMine() && SettingsManager.InputSettings.Human.AutoRefillGas.Value;
+            set
+            {
+                if (Human != null && Human.IsMine())
+                    SettingsManager.InputSettings.Human.AutoRefillGas.Value = value;
+            }
+        }
+
+        [CLProperty(description: "The state of the human")]
+        public string State => Human.State.ToString();
+
+        [CLProperty(description: "Whether the human can dodge")]
+        public bool CanDodge
+        {
+            get => Human.CanDodge;
+            set => Human.CanDodge = value;
+        }
+
+        [CLProperty(description: "Whether the human is invincible")]
+        public bool IsInvincible
+        {
+            get => Human.IsInvincible;
+            set => Human.IsInvincible = value;
+        }
+
+        [CLProperty(description: "The time left for invincibility")]
+        public float InvincibleTimeLeft
+        {
+            get => Human.InvincibleTimeLeft;
+            set => Human.InvincibleTimeLeft = value;
+        }
+
+        [CLProperty(description: "If the human is carried.")]
+        public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
+
+        // Add CLMethods for the above setField/getField
+        [CLMethod(description: "Refills the gas of the human")]
+        public bool Refill()
+        {
+            if (Human.IsMine() && Human.NeedRefill(true))
+                return Human.Refill();
+            return false;
+        }
+
+        [CLMethod(description: "Refills the gas of the human immediately")]
+        public void RefillImmediate()
+        {
+            if (Human.IsMine())
+                Human.FinishRefill();
+        }
+
+        [CLMethod(description: "Clears all hooks")]
+        public void ClearHooks()
+        {
+            if (Human.IsMine())
+            {
+                Human.HookLeft.DisableAnyHook();
+                Human.HookRight.DisableAnyHook();
+            }
+        }
+
+        [CLMethod(description: "Clears the left hook")]
+        public void ClearLeftHook()
+        {
+            if (Human.IsMine())
+                Human.HookLeft.DisableAnyHook();
+        }
+
+        [CLMethod(description: "Clears the right hook")]
+        public void ClearRightHook()
+        {
+            if (Human.IsMine())
+                Human.HookRight.DisableAnyHook();
+        }
+
+        [CLMethod(description: "Mounts the human on a map object")]
+        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        {
+            if (Human.IsMine())
+                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value);
+        }
+
+        [CLMethod(description: "Mounts the human on a transform")]
+        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        {
+            if (Human.IsMine())
+                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value);
+        }
+
+        [CLMethod(description: "Unmounts the human")]
+        public void Unmount()
+        {
+            if (Human.IsMine())
+                Human.Unmount(true);
+        }
+
+        [CLMethod(description: "Sets the special of the human")]
+        public void SetSpecial(string special)
+        {
+            if (Human.IsMine())
+                Human.SetSpecial(special);
+        }
+
+        [CLMethod(description: "Activates the special of the human")]
+        public void ActivateSpecial()
+        {
+            if (Human.IsMine() && Human.Special != null)
+            {
+                Human.Special.SetInput(true);
+                Human.Special.SetInput(false);
+            }
+        }
+
+        [CLMethod(description: "Sets the weapon of the human")]
+        public void SetWeapon(string weapon)
+        {
+            if (!Human.IsMine())
+                return;
+            var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
+            if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
+            {
+
+                if (weapon == "Blades")
+                    weapon = "Blade"; // Normalize to Blade for compatibility
+                else if (weapon == "Thunderspears")
+                    weapon = "Thunderspear"; // Normalize to Thunderspear for compatibility
+
+                var miscSettings = SettingsManager.InGameCurrent.Misc;
+                if (!Human.Dead)
+                {
+                    List<string> loadouts = new List<string>();
+                    if (miscSettings.AllowBlades.Value)
+                        loadouts.Add(HumanLoadout.Blade);
+                    if (miscSettings.AllowAHSS.Value)
+                        loadouts.Add(HumanLoadout.AHSS);
+                    if (miscSettings.AllowAPG.Value)
+                        loadouts.Add(HumanLoadout.APG);
+                    if (miscSettings.AllowThunderspears.Value)
+                        loadouts.Add(HumanLoadout.Thunderspear);
+                    if (loadouts.Count == 0)
+                        loadouts.Add(HumanLoadout.Blade);
+                    if (loadouts.Contains(weapon) && weapon != SettingsManager.InGameCharacterSettings.Loadout.Value)
+                    {
+                        SettingsManager.InGameCharacterSettings.Loadout.Value = weapon;
+                        var manager = (InGameManager)SceneLoader.CurrentGameManager;
+                        Human = (Human)gameManager.CurrentCharacter;
+                        Human.ReloadHuman(manager.GetSetHumanSettings());
+                    }
+                }
+            }
+        }
+
+        [CLMethod(description: "Disables all perks of the human")]
+        public void DisablePerks()
+        {
+            if (Human.IsMine())
+                Human.Stats.DisablePerks();
+        }
+
     }
 }

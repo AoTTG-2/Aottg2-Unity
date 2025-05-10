@@ -255,7 +255,7 @@ namespace Projectiles
                         human.GetHit("", 100, "Thunderspear", "");
                     else
                     {
-                        var damage = CalculateDamage();
+                        var damage = CalculateDamage(true);
                         human.GetHit(_owner, damage, "Thunderspear", "");
                         ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
                         ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(human.Cache.Transform.position, damage);
@@ -279,13 +279,12 @@ namespace Projectiles
             return soundPriority;
         }
 
-        int CalculateDamage()
+        int CalculateDamage(bool dmgOverride=false)
         {
             float multiplier = CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat;
             if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 multiplier = 1f;
-            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f *
-            multiplier), 10);
+            int damage = Mathf.Max((int)(InitialPlayerVelocity.magnitude * 10f * multiplier), 10);
             if (_owner != null && _owner is Human)
             {
                 var human = (Human)_owner;
