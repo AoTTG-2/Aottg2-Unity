@@ -47,6 +47,7 @@ namespace UI
         private Button _emojiButton;
         private bool _wasChatUIClicked = false;
         private bool _isInteractingWithChatUI = false;
+        private Dictionary<GameObject, RectTransform> _cachedRectTransforms = new Dictionary<GameObject, RectTransform>();
 
         private static class UIAnchors
         {
@@ -62,6 +63,7 @@ namespace UI
             public static readonly Vector2 CenterMiddle = new Vector2(0.5f, 0.5f); // Centered both ways
             public static readonly Vector2 TopCenter = new Vector2(0.5f, 1f);      // Centered horizontally, anchored to top
             public static readonly Vector2 RightCenter = new Vector2(1f, 0.5f);    // Centered vertically, anchored to right
+            public static readonly Vector2 LeftCenter = new Vector2(0f, 0f);     // Centered vertically, anchored to left
             
             // Corner anchors
             public static readonly Vector2 BottomLeft = Vector2.zero;           // Anchored to bottom-left
@@ -161,7 +163,7 @@ namespace UI
             _scrollRect = GetComponentInChildren<ChatScrollRect>();
             transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
-            _inputField.text = "";
+            _inputField.text = ChatManager.GetPreservedInputText();
             if (SettingsManager.UISettings.ChatWidth.Value == 0f)
             {
                 _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
@@ -239,9 +241,9 @@ namespace UI
             var emojiButtonGo = new GameObject("EmojiButton", typeof(RectTransform), typeof(Image), typeof(Button));
             emojiButtonGo.transform.SetParent(_inputField.transform, false);
             var emojiButtonRect = emojiButtonGo.GetComponent<RectTransform>();
-            emojiButtonRect.anchorMin = UIAnchors.RightCenter;
-            emojiButtonRect.anchorMax = UIAnchors.RightCenter;
-            emojiButtonRect.pivot = UIAnchors.RightCenter;
+            emojiButtonRect.anchorMin = UIAnchors.LeftCenter;
+            emojiButtonRect.anchorMax = UIAnchors.LeftCenter;
+            emojiButtonRect.pivot = UIAnchors.LeftCenter;
             emojiButtonRect.sizeDelta = new Vector2(30, 30);
             emojiButtonRect.anchoredPosition = new Vector2(0, 0);
             var emojiButtonImage = emojiButtonGo.GetComponent<Image>();
@@ -250,8 +252,30 @@ namespace UI
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.offsetMax = new Vector2(-40, textAreaRect.offsetMax.y);
-            CreateEmojiPanel();
+            textAreaRect.offsetMin = new Vector2(38, 2);
+            textAreaRect.offsetMax = new Vector2(0, 0);
+        }
+
+        private void ToggleEmojiPanel()
+        {
+            if (_emojiPanel == null)
+            {
+                CreateEmojiPanel();
+            }
+            _emojiPanelActive = !_emojiPanelActive;
+            _emojiPanel.SetActive(_emojiPanelActive);
+            if (_emojiPanelActive)
+            {
+                RectTransform inputFieldRect = _inputField.GetComponent<RectTransform>();
+                Vector3[] corners = new Vector3[4];
+                inputFieldRect.GetWorldCorners(corners);
+                _emojiPanel.transform.position = new Vector3(
+                    corners[2].x, // Right edge of input field
+                    corners[0].y, // Bottom of input field
+                    corners[2].z
+                );
+                _emojiPanel.transform.SetAsLastSibling();
+            }
         }
 
         private void CreateEmojiPanel()
@@ -320,25 +344,6 @@ namespace UI
                 var button = emojiButtonGo.GetComponent<Button>();
                 int spriteIndex = i;
                 button.onClick.AddListener(() => InsertEmoji(spriteIndex.ToString()));
-            }
-        }
-
-        private void ToggleEmojiPanel()
-        {
-            _emojiPanelActive = !_emojiPanelActive;
-            _emojiPanel.SetActive(_emojiPanelActive);
-            
-            if (_emojiPanelActive)
-            {
-                RectTransform buttonRect = _emojiButton.GetComponent<RectTransform>();
-                Vector3[] corners = new Vector3[4];
-                buttonRect.GetWorldCorners(corners);
-                _emojiPanel.transform.position = new Vector3(
-                    corners[2].x, // Right side of button
-                    corners[0].y, // Bottom of button
-                    corners[2].z
-                );
-                _emojiPanel.transform.SetAsLastSibling();
             }
         }
 
@@ -649,13 +654,16 @@ namespace UI
 
         public bool IsPointerOverChatUI()
         {
+            if (EventSystem.current == null)
+                return false;
+                
             Vector2 mousePosition = Input.mousePosition;
             bool isOverUI = EventSystem.current.IsPointerOverGameObject();
             
             bool isOverChatUI = isOverUI && (
                 IsMouseOverAnyChatElement(mousePosition) ||
                 (_emojiPanel != null && _emojiPanel.activeSelf && 
-                 RectTransformUtility.RectangleContainsScreenPoint(_emojiPanel.GetComponent<RectTransform>(), mousePosition))
+                 RectTransformUtility.RectangleContainsScreenPoint(GetCachedRectTransform(_emojiPanel), mousePosition))
             );
             if (Input.GetMouseButtonDown(0))
             {
@@ -664,6 +672,7 @@ namespace UI
                 if (!isOverChatUI)
                 {
                     _isInteractingWithChatUI = false;
+                    IgnoreNextActivation = false;
                 }
             }
             if (isOverChatUI)
@@ -684,16 +693,22 @@ namespace UI
             }
             foreach (var line in _linesPool)
             {
-                if (line.gameObject.activeSelf && 
-                    RectTransformUtility.RectangleContainsScreenPoint(line.GetComponent<RectTransform>(), mousePosition))
+                if (line.gameObject.activeSelf)
+                {
+                    var rectTransform = GetCachedRectTransform(line.gameObject);
+                    if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, mousePosition))
+                    {
+                        return true;
+                    }
+                }
+            }
+            if (_emojiButton != null)
+            {
+                var rectTransform = GetCachedRectTransform(_emojiButton.gameObject);
+                if (RectTransformUtility.RectangleContainsScreenPoint(rectTransform, mousePosition))
                 {
                     return true;
                 }
-            }
-            if (_emojiButton != null && 
-                RectTransformUtility.RectangleContainsScreenPoint(_emojiButton.GetComponent<RectTransform>(), mousePosition))
-            {
-                return true;
             }
             return false;
         }
@@ -803,7 +818,12 @@ namespace UI
 
         private void OnDestroy()
         {
+            if (_inputField != null)
+            {
+                ChatManager.PreserveInputText(_inputField.text);
+            }
             _cachedInputFields.Clear();
+            _cachedRectTransforms.Clear();
         }
 
         private void OnValueChanged(string text)
@@ -949,8 +969,11 @@ namespace UI
 
         public void CloseEmojiPanel()
         {
-            _emojiPanelActive = false;
-            _emojiPanel.SetActive(false);
+            if (_emojiPanel != null)
+            {
+                _emojiPanelActive = false;
+                _emojiPanel.SetActive(false);
+            }
         }
 
         public void HandleCursorStateChange(CursorState newState)
@@ -1055,6 +1078,20 @@ namespace UI
                 _inputField.ForceLabelUpdate();
                 Canvas.ForceUpdateCanvases();
             }
+        }
+
+        private RectTransform GetCachedRectTransform(GameObject obj)
+        {
+            if (obj == null) return null;
+            if (!_cachedRectTransforms.TryGetValue(obj, out RectTransform rectTransform))
+            {
+                rectTransform = obj.GetComponent<RectTransform>();
+                if (rectTransform != null)
+                {
+                    _cachedRectTransforms[obj] = rectTransform;
+                }
+            }
+            return rectTransform;
         }
     }
 }
