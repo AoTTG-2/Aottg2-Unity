@@ -2403,7 +2403,7 @@ component Wagon
             {
                 if (!self._inUse && !self._riding && !other.IsMounted)
                 {
-                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact") + " to drive wagon.", 0.1);
+                    UI.SetLabelForTime("MiddleCenter", "Press " + Input.GetKeyName("Interaction/Interact2") + " to drive wagon.", 0.1);
                     self._collidingHuman = other;
                     self._collidingDrive = true;
                 }
@@ -2522,7 +2522,7 @@ component Wagon
                         self._human.PlayAnimation("Armature|horse_idle");
                     }
                 }
-                if (Input.GetKeyDown("Human/HorseMount"))
+                if (Input.GetKeyDown("Interaction/Interact2"))
                 {
                     self._human.Unmount();
                     self.NetworkView.Transfer(Network.MasterClient);
@@ -2569,7 +2569,7 @@ component Wagon
         }
         if (self._collidingHuman != null)
         {
-            if (Input.GetKeyDown("Interaction/Interact"))
+            if (Input.GetKeyDown("Interaction/Interact2"))
             {
                 if (self._collidingDrive && !self._inUse)
                 {
@@ -2584,7 +2584,10 @@ component Wagon
                         self.NetworkView.SendMessage(self.NetworkView.Owner, "request");
                     }
                 }
-                elif (self._collidingGas && !self._inUse)
+            }
+            elif(Input.GetKeyDown("Interaction/Interact"))
+            {
+                if (self._collidingGas && !self._inUse)
                 {
                     if (self._collidingHuman.Refill(true))
                     {
