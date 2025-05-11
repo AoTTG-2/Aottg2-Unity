@@ -238,22 +238,29 @@ namespace UI
 
         private void SetupEmojiButton()
         {
-            var emojiButtonGo = new GameObject("EmojiButton", typeof(RectTransform), typeof(Image), typeof(Button));
+            var emojiButtonGo = new GameObject("EmojiButton", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(Button));
             emojiButtonGo.transform.SetParent(_inputField.transform, false);
             var emojiButtonRect = emojiButtonGo.GetComponent<RectTransform>();
-            emojiButtonRect.anchorMin = UIAnchors.LeftCenter;
-            emojiButtonRect.anchorMax = UIAnchors.LeftCenter;
-            emojiButtonRect.pivot = UIAnchors.LeftCenter;
-            emojiButtonRect.sizeDelta = new Vector2(30, 30);
-            emojiButtonRect.anchoredPosition = new Vector2(0, 0);
-            var emojiButtonImage = emojiButtonGo.GetComponent<Image>();
-            emojiButtonImage.color = new Color(0.0f, 0.0f, 0.0f, 0.6f);
+            emojiButtonRect.anchorMin = UIAnchors.RightCenter;
+            emojiButtonRect.anchorMax = UIAnchors.RightCenter;
+            emojiButtonRect.pivot = UIAnchors.RightCenter;
+            emojiButtonRect.sizeDelta = new Vector2(30, 26);
+            emojiButtonRect.anchoredPosition = new Vector2(-2, 0);
+
+            var tmpText = emojiButtonGo.GetComponent<TextMeshProUGUI>();
+            tmpText.text = "☺";
+            tmpText.fontSize = 28;
+            tmpText.alignment = TextAlignmentOptions.Center;
+            tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
+            tmpText.horizontalAlignment = HorizontalAlignmentOptions.Center;
+            tmpText.margin = new Vector4(0, -1, 0, 1);
+            tmpText.color = new Color(1f, 1f, 1f, 0.5f);
             _emojiButton = emojiButtonGo.GetComponent<Button>();
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
             var textArea = _inputField.textViewport.gameObject;
             var textAreaRect = textArea.GetComponent<RectTransform>();
-            textAreaRect.offsetMin = new Vector2(38, 2);
-            textAreaRect.offsetMax = new Vector2(0, 0);
+            textAreaRect.offsetMin = new Vector2(5, 2);
+            textAreaRect.offsetMax = new Vector2(-33, -2);
         }
 
         private void ToggleEmojiPanel()
