@@ -32,13 +32,15 @@ namespace CustomLogic
         }
 
         [CLProperty(description: "The human's name")]
-        public string Name {
+        public string Name
+        {
             get => Human.Name;
             set => Human.Name = value;
         }
 
         [CLProperty(description: "The human's guild")]
-        public string Guild {
+        public string Guild
+        {
             get => Human.Guild;
             set => Human.Guild = value;
         }
@@ -379,17 +381,17 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Mounts the human on a map object")]
-        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool isMountedAttackable = false)
         {
             if (Human.IsMine())
-                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value);
+                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, isMountedAttackable);
         }
 
         [CLMethod(description: "Mounts the human on a transform")]
-        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset)
+        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool isMountedAttackable = false)
         {
             if (Human.IsMine())
-                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value);
+                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, isMountedAttackable);
         }
 
         [CLMethod(description: "Unmounts the human")]
