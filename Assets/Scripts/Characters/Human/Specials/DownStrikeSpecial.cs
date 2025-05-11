@@ -8,14 +8,14 @@ namespace Characters
     {
         protected bool _needActivate;
 
-        public DownStrikeSpecial(BaseCharacter owner): base(owner)
+        public DownStrikeSpecial(BaseCharacter owner) : base(owner)
         {
             Cooldown = 5f;
         }
 
         protected override void Activate()
         {
-            if (_human.MountState == HumanMountState.Horse && _human.IsAttackableState)
+            if (_human.MountState != HumanMountState.None && _human.IsAttackableState)
             {
                 _human.Unmount(false);
             }

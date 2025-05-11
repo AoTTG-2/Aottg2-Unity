@@ -34,7 +34,7 @@ namespace Characters
             if (key && CanUse() && !IsActive)
             {
                 var human = ((Human)_owner);
-                if (human.MountState == HumanMountState.Horse && human.IsAttackableState)
+                if (human.MountState != HumanMountState.None && human.IsAttackableState)
                 {
                     human.Unmount(false);
                 }
