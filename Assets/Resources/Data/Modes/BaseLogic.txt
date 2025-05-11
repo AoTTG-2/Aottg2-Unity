@@ -2315,6 +2315,7 @@ component Dummy
 component Wagon
 {
     MoveForce = 20.0;
+    JumpVelocity = 20.0;
     MaxMoveSpeed = 50.0;
     RotateSpeed = 3.0;
     CanSupply = true;
@@ -2334,6 +2335,7 @@ component Wagon
     _leftSitTransform = null;
     _rightSitTransform = null;
     _supplyTimesLeft = 0;
+    _jumpCoolDown = 0.0;
 
     function Init()
     {
@@ -2476,32 +2478,49 @@ component Wagon
         {
             if (self._inUse)
             {
-                if (self._human.HasTargetDirection)
+                ySpeed = self._rigidbody.GetVelocity().Y;
+                FrameFactor = Time.FrameTime/0.007;
+                if (ySpeed <= 0.1 && self._jumpCoolDown > 0)
+                {
+                    self._jumpCoolDown -= Time.FrameTime;
+                }
+                if (Input.GetKeyDown("Human/HorseJump") && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
+                {
+                    velocity = self._rigidbody.GetVelocity();
+                    velocity.Y = self.JumpVelocity;
+                    self._rigidbody.SetVelocity(velocity);
+                    self._jumpCoolDown = 1;
+                }
+                elif (self._human.HasTargetDirection && self._jumpCoolDown <= 0 && Math.Abs(ySpeed) < 0.1)
                 {
                     self.MapObject.Forward = Vector3.Lerp(self.MapObject.Forward, self._human.TargetDirection, self.RotateSpeed * Time.FrameTime);
-                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce);
+                    self._rigidbody.AddForce(self.MapObject.Forward * self.MoveForce * FrameFactor);
                     velocity = self._rigidbody.GetVelocity();
                     self._rigidbody.SetVelocity(velocity.Normalized * Math.Min(velocity.Magnitude, self.MaxMoveSpeed));
                 }
                 else
                 {
                     velocity = self._rigidbody.GetVelocity();
-                    if (velocity.Magnitude < 1)
+                    vh = Vector3(velocity.X, 0.0, velocity.Z);
+                    if (vh.Magnitude < 1)
                     {
                         self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
                     }
-                    else
+                    elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
                     {
-                        self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                        self._rigidbody.AddForce(-0.5 * vh);
                     }
                 }
-                if (self._rigidbody.GetVelocity().Magnitude > 1)
+                if (self._human.State == "Idle")
                 {
-                    self._human.PlayAnimation("Armature|horse_run");
-                }
-                else
-                {
-                    self._human.PlayAnimation("Armature|horse_idle");
+                    if (self._rigidbody.GetVelocity().Magnitude > 1)
+                    {
+                        self._human.PlayAnimation("Armature|horse_run");
+                    }
+                    else
+                    {
+                        self._human.PlayAnimation("Armature|horse_idle");
+                    }
                 }
                 if (Input.GetKeyDown("Interaction/Interact"))
                 {
@@ -2520,13 +2539,14 @@ component Wagon
             else
             {
                 velocity = self._rigidbody.GetVelocity();
-                if (velocity.Magnitude < 1)
+                vh = Vector3(velocity.X, 0.0, velocity.Z);
+                if (vh.Magnitude < 1)
                 {
                     self._rigidbody.SetVelocity(Vector3.Up * velocity.Y);
                 }
-                else
+                elif (Math.Abs(velocity.Y) < 0.1 && self._jumpCoolDown <= 0)
                 {
-                    self._rigidbody.AddForce(-0.5 * velocity.Normalized * velocity.Magnitude);
+                    self._rigidbody.AddForce(-0.5 * vh);
                 }
             }
         }
@@ -2556,7 +2576,7 @@ component Wagon
                     if (self.NetworkView.Owner == Network.MyPlayer) 
                     {
                         self._inUse = true;
-                        self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero);
+                        self._collidingHuman.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
                         self._human = self._collidingHuman;
                     }
                     else
