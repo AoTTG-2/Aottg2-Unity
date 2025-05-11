@@ -1,89 +1,66 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
-    class CustomLogicDictBuiltin: CustomLogicBaseBuiltin
+    // TODO: Make dict lookup constant time
+    [CLType(Name = "Dict")]
+    partial class CustomLogicDictBuiltin : BuiltinClassInstance
     {
         public Dictionary<object, object> Dict = new Dictionary<object, object>();
 
-        public CustomLogicDictBuiltin(): base("Dict")
+        [CLConstructor]
+        public CustomLogicDictBuiltin()
         {
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        // Add CLProperties
+        [CLProperty(description: "Number of elements in the dictionary")]
+        public int Count => Dict.Count;
+
+        [CLProperty(description: "Keys in the dictionary")]
+        public CustomLogicListBuiltin Keys => new CustomLogicListBuiltin { List = new List<object>(Dict.Keys) };
+
+        [CLProperty(description: "Values in the dictionary")]
+        public CustomLogicListBuiltin Values => new CustomLogicListBuiltin { List = new List<object>(Dict.Values) };
+
+        // Add CLMethods
+        [CLMethod(description: "Clears the dictionary")]
+        public void Clear()
         {
-            if (methodName == "Clear")
-            {
-                Dict.Clear();
-                return null;
-            }
-            if (methodName == "Get")
-            {
-                var key = GetDictKey(parameters[0]);
-                if (key != null)
-                    return Dict[key];
-                if (parameters.Count > 1)
-                    return parameters[1];
-                throw new System.Exception("No dict key found: " + parameters[0]);
-            }
-            if (methodName == "Set")
-            {
-                object key = parameters[0];
-                var dictKey = GetDictKey(key);
-                if (dictKey != null)
-                    Dict[dictKey] = parameters[1];
-                else
-                    Dict.Add(key, parameters[1]);
-                return null;
-            }
-            if (methodName == "Remove")
-            {
-                var dictKey = GetDictKey(parameters[0]);
-                if (dictKey != null)
-                    Dict.Remove(dictKey);
-                return null;
-            }
-            if (methodName == "Contains")
-            {
-                return GetDictKey(parameters[0]) != null;
-            }
-            return base.CallMethod(methodName, parameters);
+            Dict.Clear();
         }
 
-        private object GetDictKey(object key)
+        [CLMethod(description: "Gets a value from the dictionary")]
+        public object Get(object key, object defaultValue = null)
         {
-            foreach (var dictKey in Dict.Keys)
-            {
-                if (CustomLogicManager.Evaluator.CheckEquals(dictKey, key))
-                    return dictKey;
-            }
-            return null;
+            if (Dict.ContainsKey(key))
+                return Dict[key];
+            return defaultValue;
         }
 
-        public override object GetField(string name)
+        [CLMethod(description: "Sets a value in the dictionary")]
+        public void Set(object key, object value)
         {
-            if (name == "Keys")
-            {
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                list.List = new List<object>(Dict.Keys);
-                return list;
-            }
-            if (name == "Values")
-            {
-                CustomLogicListBuiltin list = new CustomLogicListBuiltin();
-                list.List = new List<object>(Dict.Values);
-                return list;
-            }
-            if (name == "Count")
-                return Dict.Count;
-            return base.GetField(name);
+            if (Dict.ContainsKey(key))
+                Dict[key] = value;
+            else
+                Dict.Add(key, value);
         }
 
-        public override void SetField(string name, object value)
+        [CLMethod(description: "Removes a value from the dictionary")]
+        public void Remove(object key)
         {
-            base.SetField(name, value);
+            if (Dict.ContainsKey(key))
+                Dict.Remove(key);
+        }
+
+        [CLMethod(description: "Checks if the dictionary contains a key")]
+        public bool Contains(object key)
+        {
+            return Dict.ContainsKey(key);
         }
 
         public override string ToString()
@@ -100,10 +77,10 @@ namespace CustomLogic
 
                 if (i != Dict.Count - 1)
                     builder.Append(", ");
-                
+
                 i++;
             }
-            
+
             builder.Append("}");
             return builder.ToString();
 

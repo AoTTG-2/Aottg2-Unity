@@ -1,246 +1,253 @@
 ﻿using Characters;
-using System.Collections.Generic;
-using UnityEngine;
 using Controllers;
-using System.Reflection;
 
 namespace CustomLogic
 {
-    class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
+    /// <summary>
+    /// Only character owner can modify fields and call functions unless otherwise specified.
+    /// </summary>
+    /// <code>
+    /// function OnCharacterSpawn(character) {
+    ///     if (character.IsMine && character.Type == "Titan") {
+    ///         character.Size = 3;
+    ///         character.DetectRange = 1000;
+    ///         character.Blind();
+    ///     }
+    /// }
+    /// </code>
+    [CLType(Name = "Titan", Abstract = true)]
+    partial class CustomLogicTitanBuiltin : CustomLogicCharacterBuiltin
     {
-        public BasicTitan Titan;
+        public readonly BasicTitan Titan;
+        public readonly BaseTitanAIController Controller;
 
-        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan, "Titan")
+        public CustomLogicTitanBuiltin(BasicTitan titan) : base(titan)
         {
             Titan = titan;
+            Controller = Titan.GetComponent<BaseTitanAIController>();
         }
 
-        public override object CallMethod(string methodName, List<object> parameters)
+        [CLProperty("Titans's name.")]
+        public string Name
         {
-            bool mine = Titan.IsMine() && !Titan.Dead;
-            if (methodName == "MoveTo")
-            {
-                if (!mine || !Titan.AI)
-                    return null;
-                var position = ((CustomLogicVector3Builtin)parameters[0]).Value;
-                var range = parameters[1].UnboxToFloat();
-                bool ignoreEnemies = (bool)parameters[2];
-                Titan.GetComponent<BaseTitanAIController>().MoveTo(position, range, ignoreEnemies);
-                return null;
-            }
-            if (methodName == "Target")
-            {
-                if (!mine || !Titan.AI)
-                    return null;
-
-                ITargetable enemy;
-                if (parameters[0] is CustomLogicMapTargetableBuiltin mapTargetable)
-                    enemy = mapTargetable.Value;
-                else
-                    enemy = ((CustomLogicCharacterBuiltin)parameters[0]).Character;
-                var focus = parameters[1].UnboxToFloat();
-                Titan.GetComponent<BaseTitanAIController>().SetEnemy(enemy, focus);
-                return null;
-            }
-            if (methodName == "Idle")
-            {
-                if (!mine || !Titan.AI)
-                    return null;
-                var time = parameters[0].UnboxToFloat();
-                Titan.GetComponent<BaseTitanAIController>().ForceIdle(time);
-                return null;
-            }
-            if (methodName == "Wander")
-            {
-                if (!mine || !Titan.AI)
-                    return null;
-                Titan.GetComponent<BaseTitanAIController>().CancelOrder();
-                return null;
-            }
-            if (methodName == "Blind")
-            {
-                if (mine)
-                    Titan.Blind();
-                return null;
-            }
-            if (methodName == "Cripple")
-            {
-                if (mine)
-                {
-                    var time = parameters[0].UnboxToFloat();
-                    Titan.Cripple(time);
-                }
-                return null;
-            }
-            if (methodName == "Emote")
-            {
-                if (mine)
-                    Titan.Emote((string)parameters[0]);
-                return null;
-            }
-            return base.CallMethod(methodName, parameters);
+            get => Titan.Name;
+            set => Titan.Name = value;
         }
 
-        public override object GetField(string name)
+        [CLProperty("Titans's guild.")]
+        public string Guild
         {
-            if (name == "Size")
-                return Titan.Size;
-            if (name == "DetectRange")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().DetectRange;
-                return 0;
-            }
-            if (name == "FocusRange")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().FocusRange;
-                return 0;
-            }
-            if (name == "RunSpeedBase")
-                return Titan.RunSpeedBase;
-            if (name == "WalkSpeedBase")
-                return Titan.WalkSpeedBase;
-            if (name == "WalkSpeedPerLevel")
-                return Titan.WalkSpeedPerLevel;
-            if (name == "RunSpeedPerLevel")
-                return Titan.RunSpeedPerLevel;
-            if (name == "TurnSpeed")
-                return Titan.TurnSpeed;
-            if (name == "RotateSpeed")
-                return Titan.RotateSpeed;
-            if (name == "JumpForce")
-                return Titan.JumpForce;
-            if (name == "ActionPause")
-                return Titan.ActionPause;
-            if (name == "AttackPause")
-                return Titan.AttackPause;
-            if (name == "TurnPause")
-                return Titan.TurnPause;
-            if (name == "Stamina")
-                return Titan.CurrentSprintStamina;
-            if (name == "MaxStamina")
-                return Titan.MaxSprintStamina;
-            if (name == "NapePosition")
-                return new CustomLogicVector3Builtin(Titan.BasicCache.NapeHurtbox.transform.position);
-            if (name == "IsCrawler")
-                return Titan.IsCrawler;
-            if (name == "FocusTime")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().FocusTime;
-                return 0;
-            }
-            if (name == "FarAttackCooldown")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().FarAttackCooldown;
-                return 0;
-            }
-            if (name == "AttackWait")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().AttackWait;
-                return 0;
-            }
-            if (name == "CanRun")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>().IsRun;
-                return false;
-            }
-            if (name == "AttackSpeedMultiplier")
-            {
-                return Titan.AttackSpeedMultiplier;
-            }
-            if (name == "UsePathfinding")
-            {
-                if (Titan.IsMine() && Titan.AI)
-                    return Titan.GetComponent<BaseTitanAIController>()._usePathfinding;
-                return false;
-            }
-            if (name == "HeadMount")
-            {
-                return new CustomLogicTransformBuiltin(Titan.BasicCache.Head);
-            }
-            if (name == "NeckMount")
-            {
-                return new CustomLogicTransformBuiltin(Titan.BasicCache.Neck);
-            }
-            return base.GetField(name);
+            get => Titan.Guild;
+            set => Titan.Guild = value;
         }
 
-        public override void SetField(string name, object value)
+        [CLProperty("Titan's size.")]
+        public float Size
         {
-            if (name == "Name")
-                Character.Name = (string)value;
-            else if (name == "Guild")
-                Character.Guild = (string)value;
-            if (!Titan.IsMine())
+            get => Titan.Size;
+            set { if (Titan.IsMine()) Titan.SetSize(value); }
+        }
+
+        [CLProperty("Titan's base run speed. Final run speed is RunSpeedBase + Size * RunSpeedPerLevel.")]
+        public float RunSpeedBase
+        {
+            get => Titan.RunSpeedBase;
+            set { if (Titan.IsMine()) Titan.RunSpeedBase = value; }
+        }
+
+        [CLProperty("Titan's base walk speed. Final walk speed is WalkSpeedBase + Size * WalkSpeedPerLevel.")]
+        public float WalkSpeedBase
+        {
+            get => Titan.WalkSpeedBase;
+            set { if (Titan.IsMine()) Titan.WalkSpeedBase = value; }
+        }
+
+        [CLProperty("Titan's walk speed added per size.")]
+        public float WalkSpeedPerLevel
+        {
+            get => Titan.WalkSpeedPerLevel;
+            set { if (Titan.IsMine()) Titan.WalkSpeedPerLevel = value; }
+        }
+
+        [CLProperty("Titan's run speed added per size.")]
+        public float RunSpeedPerLevel
+        {
+            get => Titan.RunSpeedPerLevel;
+            set { if (Titan.IsMine()) Titan.RunSpeedPerLevel = value; }
+        }
+
+        [CLProperty("Titan's turn animation speed.")]
+        public float TurnSpeed
+        {
+            get => Titan.TurnSpeed;
+            set { if (Titan.IsMine()) Titan.TurnSpeed = value; }
+        }
+
+        [CLProperty("Titan's rotate speed.")]
+        public float RotateSpeed
+        {
+            get => Titan.RotateSpeed;
+            set { if (Titan.IsMine()) Titan.RotateSpeed = value; }
+        }
+
+        [CLProperty("Titan's jump force.")]
+        public float JumpForce
+        {
+            get => Titan.JumpForce;
+            set { if (Titan.IsMine()) Titan.JumpForce = value; }
+        }
+
+        [CLProperty("Titan's pause delay after performing an action.")]
+        public float ActionPause
+        {
+            get => Titan.ActionPause;
+            set { if (Titan.IsMine()) Titan.ActionPause = value; }
+        }
+
+        [CLProperty("Titan's pause delay after performing an attack.")]
+        public float AttackPause
+        {
+            get => Titan.AttackPause;
+            set { if (Titan.IsMine()) Titan.AttackPause = value; }
+        }
+
+        [CLProperty("Titan's pause delay after performing a turn.")]
+        public float TurnPause
+        {
+            get => Titan.TurnPause;
+            set { if (Titan.IsMine()) Titan.TurnPause = value; }
+        }
+
+        [CLProperty("PT stamina.")]
+        public float Stamina
+        {
+            get => Titan.CurrentSprintStamina;
+            set { if (Titan.IsMine()) Titan.CurrentSprintStamina = value; }
+        }
+
+        [CLProperty("PT max stamina.")]
+        public float MaxStamina
+        {
+            get => Titan.MaxSprintStamina;
+            set { if (Titan.IsMine()) Titan.MaxSprintStamina = value; }
+        }
+
+        [CLProperty("The titan's nape position.")]
+        public CustomLogicVector3Builtin NapePosition => Titan.BasicCache.NapeHurtbox.transform.position;
+
+        [CLProperty("Is titan a crawler.")]
+        public bool IsCrawler => Titan.IsCrawler;
+
+        [CLProperty("(AI) titan's detect range.")]
+        public float DetectRange
+        {
+            get => Titan.IsMine() && Titan.AI ? Controller.DetectRange : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.SetDetectRange(value); }
+        }
+
+        [CLProperty("(AI) titan's focus range.")]
+        public float FocusRange
+        {
+            get => Titan.IsMine() && Titan.AI ? Controller.FocusRange : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.FocusRange = value; }
+        }
+
+        [CLProperty("(AI) titan's focus time.")]
+        public float FocusTime
+        {
+            get => Titan.IsMine() && Titan.AI ? Controller.FocusTime : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.FocusTime = value; }
+        }
+
+        [CLProperty("(AI) Titan's cooldown after performing a ranged attack.")]
+        public float FarAttackCooldown => Titan.IsMine() && Titan.AI ? Controller.FarAttackCooldown : 0;
+
+        [CLProperty("(AI) Titan's wait time between being in range and performing an attack.")]
+        public float AttackWait
+        {
+            get => Titan.IsMine() && Titan.AI ? Controller.AttackWait : 0;
+            set { if (Titan.IsMine() && Titan.AI) Controller.AttackWait = value; }
+        }
+
+        [CLProperty("(AI) Titan can run or only walk.")]
+        public bool CanRun
+        {
+            get => Titan.IsMine() && Titan.AI && Controller.IsRun;
+            set { if (Titan.IsMine() && Titan.AI) Controller.IsRun = value; }
+        }
+
+        [CLProperty("Titan's attack animation speed.")]
+        public float AttackSpeedMultiplier
+        {
+            get => Titan.IsMine() && Titan.AI ? Titan.AttackSpeedMultiplier : 0;
+            set { if (Titan.IsMine() && Titan.AI) Titan.AttackSpeedMultiplier = value; }
+        }
+
+        [CLProperty("Determines whether the (AI) titan uses pathfinding. (Smart Movement in titan settings)")]
+        public bool UsePathfinding
+        {
+            get => Titan.IsMine() && Titan.AI && Controller._usePathfinding;
+            set { if (Titan.IsMine() && Titan.AI) Controller._usePathfinding = value; }
+        }
+
+        [CLProperty("Titan's head transform.")]
+        public CustomLogicTransformBuiltin HeadMount => Titan.BasicCache.Head;
+
+        [CLProperty("Titan's neck transform.")]
+        public CustomLogicTransformBuiltin NeckMount => Titan.BasicCache.Neck;
+
+        [CLMethod("Causes the (AI) titan to move towards a position and stopping when within specified range. If ignoreEnemies is true, will not engage enemies along the way.")]
+        public void MoveTo(CustomLogicVector3Builtin position, float range, bool ignoreEnemies)
+        {
+            if (IsAlive() && Titan.AI)
+                Controller.MoveTo(position.Value, range, ignoreEnemies);
+        }
+
+        [CLMethod("Causes the (AI) titan to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time")]
+        public void Target(object enemyObj, float focus)
+        {
+            if (IsAlive() && Titan.AI == false)
+            // if (name == "Name")
+            //     Character.Name = (string)value;
+            // else if (name == "Guild")
+            //     Character.Guild = (string)value;
+            // if (!Titan.IsMine())
                 return;
-            if (name == "Size")
-                Titan.SetSize(value.UnboxToFloat());
-            else if (name == "RunSpeedBase")
-                Titan.RunSpeedBase = value.UnboxToFloat();
-            else if (name == "WalkSpeedBase")
-                Titan.WalkSpeedBase = value.UnboxToFloat();
-            else if (name == "RunSpeedPerLevel")
-                Titan.RunSpeedPerLevel = value.UnboxToFloat();
-            else if (name == "WalkSpeedPerLevel")
-                Titan.WalkSpeedPerLevel = value.UnboxToFloat();
-            else if (name == "TurnSpeed")
-                Titan.TurnSpeed = value.UnboxToFloat();
-            else if (name == "RotateSpeed")
-                Titan.RotateSpeed = value.UnboxToFloat();
-            else if (name == "JumpForce")
-                Titan.JumpForce = value.UnboxToFloat();
-            else if (name == "ActionPause")
-                Titan.ActionPause = value.UnboxToFloat();
-            else if (name == "AttackPause")
-                Titan.AttackPause = value.UnboxToFloat();
-            else if (name == "TurnPause")
-                Titan.TurnPause = value.UnboxToFloat();
-            else if (name == "Stamina")
-                Titan.CurrentSprintStamina = value.UnboxToFloat();
-            else if (name == "MaxStamina")
-                Titan.MaxSprintStamina = value.UnboxToFloat();
-            else if (name == "DetectRange")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>().SetDetectRange(value.UnboxToFloat());
-            }
-            else if (name == "FocusRange")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>().FocusRange = value.UnboxToFloat();
-            }
-            else if (name == "FocusTime")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>().FocusTime = value.UnboxToFloat();
-            }
-            else if (name == "AttackWait")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>().AttackWait = value.UnboxToFloat();
-            }
-            else if (name == "CanRun")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>().IsRun = (bool)value;
-            }
-            else if (name == "AttackSpeedMultiplier")
-            {
-                Titan.AttackSpeedMultiplier = value.UnboxToFloat();
-            }
-            else if (name == "UsePathfinding")
-            {
-                if (Titan.AI)
-                    Titan.GetComponent<BaseTitanAIController>()._usePathfinding = (bool)value;
-            }
-            else
-                base.SetField(name, value);
+
+            ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)enemyObj).Character;
+            Controller.SetEnemy(enemy, focus);
         }
 
+        [CLMethod("Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.")]
+        public void Idle(float time)
+        {
+            if (IsAlive() && Titan.AI)
+                Controller.ForceIdle(time);
+        }
+
+        [CLMethod("Causes the (AI) titan to cancel any move commands and begin wandering randomly.")]
+        public void Wander()
+        {
+            if (IsAlive() && Titan.AI)
+                Controller.CancelOrder();
+        }
+
+        [CLMethod("Causes the titan to enter the blind state.")]
+        public void Blind()
+        {
+            if (IsAlive())
+                Titan.Blind();
+        }
+
+        [CLMethod("Causes the titan to enter the cripple state for time seconds. Using 0 will use the default cripple time.")]
+        public void Cripple(float time)
+        {
+            if (IsAlive())
+                Titan.Cripple(time);
+        }
+
+        private bool IsAlive() => Titan.IsMine() && Titan.Dead == false;
     }
 }

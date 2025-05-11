@@ -73,9 +73,12 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowInterpolation, UIManager.GetLocale(cat, sub, "ShowInterpolation"), tooltip: UIManager.GetLocale(cat, sub, "ShowInterpolationTooltip"));
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, SettingsManager.UISettings.ShowKeybindTip, UIManager.GetLocale(cat, sub, "ShowKeybindTip"), tooltip: UIManager.GetLocale(cat, sub, "ShowKeybindTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.KillFeedCount, UIManager.GetLocale(cat, sub, "KillFeedCount"), tooltip: UIManager.GetLocale(cat, sub, "KillFeedCountTooltip"), elementWidth: 100f);
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.ShowChatTimestamp, UIManager.GetLocale(cat, sub, "ShowChatTimestamp"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatWidth, UIManager.GetLocale(cat, sub, "ChatWidth"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatHeight, UIManager.GetLocale(cat, sub, "ChatHeight"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatFontSize, UIManager.GetLocale(cat, sub, "ChatFontSize"), elementWidth: 100f);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatPoolSize, UIManager.GetLocale(cat, sub, "ChatPoolSize"), 
+                tooltip: UIManager.GetLocale(cat, sub, "ChatPoolSizeTooltip"), elementWidth: 100f);
         }
     }
 }

@@ -1,41 +1,38 @@
-﻿using ApplicationManagers;
-using GameManagers;
+﻿using Photon.Realtime;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace CustomLogic
 {
-    class CustomLogicRoomDataBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// Store and retrieve room variables. Room data is cleared upon joining or creating a new lobby and does not reset between game rounds. Supports float, string, bool, and int types.
+    /// Note that RoomData is local only and does not sync.You must use network messages to sync room variables.
+    /// </summary>
+    [CLType(Name = "RoomData", Static = true, Abstract = true)]
+    partial class CustomLogicRoomDataBuiltin : BuiltinClassInstance
     {
-        public CustomLogicRoomDataBuiltin(): base("RoomData")
+        [CLConstructor]
+        public CustomLogicRoomDataBuiltin() { }
+
+        [CLMethod("Sets the property with given name to the object value. Valid value types are float, string, bool, and int.")]
+        public static void SetProperty(string property, object value)
         {
+            if (value is not (null or float or int or string or bool))
+                throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
+
+            CustomLogicManager.RoomData[property] = value;
         }
 
-        public override object CallMethod(string name, List<object> parameters)
+        [CLMethod("Gets the property with given name. If property does not exist, returns defaultValue.")]
+        public static object GetProperty(string property, object defaultValue)
         {
-            if (name == "SetProperty")
-            {
-                string property = (string)parameters[0];
-                object value = parameters[1];
-                if (!(value == null || value is float || value is int || value is string || value is bool))
-                    throw new System.Exception("RoomData.SetProperty only supports null, float, int, string, or bool values.");
-                CustomLogicManager.RoomData[property] = value;
-                return null;
-            }
-            if (name == "GetProperty")
-            {
-                string property = (string)parameters[0];
-                object value = parameters[1];
-                if (CustomLogicManager.RoomData.ContainsKey(property))
-                    return CustomLogicManager.RoomData[property];
-                return value;
-            }
-            if (name == "Clear")
-            {
-                CustomLogicManager.RoomData.Clear();
-                return null;
-            }
-            return base.CallMethod(name, parameters);
+            return CustomLogicManager.RoomData.GetValueOrDefault(property, defaultValue);
+        }
+
+        [CLMethod("Clears all room data.")]
+        public static void Clear()
+        {
+            CustomLogicManager.RoomData.Clear();
         }
     }
 }

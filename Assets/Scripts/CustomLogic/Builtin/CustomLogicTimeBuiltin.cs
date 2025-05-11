@@ -1,40 +1,30 @@
-﻿using ApplicationManagers;
-using GameManagers;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CustomLogic
 {
-    class CustomLogicTimeBuiltin: CustomLogicBaseBuiltin
+    /// <summary>
+    /// Time functions.
+    /// </summary>
+    [CLType(Name = "Time", Static = true, Abstract = true)]
+    partial class CustomLogicTimeBuiltin : BuiltinClassInstance
     {
-        public CustomLogicTimeBuiltin(): base("Time")
-        {
-        }
+        [CLConstructor]
+        public CustomLogicTimeBuiltin() { }
 
-        public override object CallMethod(string name, List<object> parameters)
-        {
-            return base.CallMethod(name, parameters);
-        }
+        [CLProperty("Time between each tick (0.02 seconds)")]
+        public static float TickTime => Time.fixedDeltaTime;
 
-        public override object GetField(string name)
-        {
-            if (name == "TickTime")
-                return Time.fixedDeltaTime;
-            if (name == "FrameTime")
-                return Time.deltaTime;
-            if (name == "GameTime")
-                return CustomLogicManager.Evaluator.CurrentTime;
-            if (name == "TimeScale")
-                return Time.timeScale;
-            return base.GetField(name);
-        }
+        [CLProperty("Time between each frame.")]
+        public static float FrameTime => Time.deltaTime;
 
-        public override void SetField(string name, object value)
+        [CLProperty("Time since start of the round.")]
+        public static float GameTime => CustomLogicManager.Evaluator.CurrentTime;
+
+        [CLProperty("Changes the timescale of the game.")]
+        public static float TimeScale
         {
-            if (name == "TimeScale")
-                Time.timeScale = value.UnboxToFloat();
-            else
-                base.SetField(name, value);
+            get => Time.timeScale;
+            set => Time.timeScale = value;
         }
     }
 }
