@@ -64,7 +64,7 @@ namespace Characters
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
-        public bool IsMountedAttackable = false;
+        public bool CanMountedAttack = false;
         public bool InMountedCombat = false;
         public bool IsAttackableState;
         public bool IsRefillable;
@@ -257,7 +257,7 @@ namespace Characters
             ToggleSparks(false);
         }
 
-        public void Mount(Transform transform, Vector3 positionOffset, Vector3 rotationOffset, bool isMountedAttackable = false)
+        public void Mount(Transform transform, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
             Transform parent = transform;
             MapObject mapObject = null;
@@ -275,15 +275,15 @@ namespace Characters
                     transformName = parent.name + "/" + transformName;
                 parent = parent.parent;
             }
-            Mount(mapObject, transformName, positionOffset, rotationOffset, isMountedAttackable);
+            Mount(mapObject, transformName, positionOffset, rotationOffset, canMountedAttack);
         }
 
-        public void Mount(MapObject mapObject, Vector3 positionOffset, Vector3 rotationOffset, bool isMountedAttackable = false)
+        public void Mount(MapObject mapObject, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
-            Mount(mapObject, "", positionOffset, rotationOffset, isMountedAttackable);
+            Mount(mapObject, "", positionOffset, rotationOffset, canMountedAttack);
         }
 
-        public void Mount(MapObject mapObject, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool isMountedAttackable = false)
+        public void Mount(MapObject mapObject, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
             if (MountedTransform != transform)
             {
@@ -294,16 +294,16 @@ namespace Characters
             int scriptId = -100;
             if (mapObject != null)
                 scriptId = mapObject.ScriptObject.Id;
-            _lastMountMessage = new object[] { scriptId, transformName, positionOffset, rotationOffset, isMountedAttackable };
+            _lastMountMessage = new object[] { scriptId, transformName, positionOffset, rotationOffset, canMountedAttack };
             Cache.PhotonView.RPC("MountRPC", RpcTarget.All, _lastMountMessage);
         }
 
         [PunRPC]
-        public void MountRPC(int mapObjectID, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool isMountedAttackable, PhotonMessageInfo info)
+        public void MountRPC(int mapObjectID, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack, PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
-            IsMountedAttackable = isMountedAttackable;
+            CanMountedAttack = canMountedAttack;
             MountState = HumanMountState.MapObject;
             MountedMapObject = null;
             MountedTransform = null;
@@ -369,7 +369,7 @@ namespace Characters
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             MountState = HumanMountState.None;
-            IsMountedAttackable = false;
+            CanMountedAttack = false;
             MountedTransform = null;
             MountedMapObject = null;
         }
@@ -1229,7 +1229,7 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
-                InMountedCombat = MountState != HumanMountState.None && IsMountedAttackable;
+                InMountedCombat = MountState != HumanMountState.None && CanMountedAttack;
                 IsAttackableState = MountState == HumanMountState.None || InMountedCombat;
                 IsRefillable = State == HumanState.Idle && (Grounded || InMountedCombat);
                 _stateTimeLeft -= Time.deltaTime;
@@ -1636,7 +1636,7 @@ namespace Characters
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
                         MountState = HumanMountState.Horse;
                         MountedTransform = Horse.Cache.Transform;
-                        IsMountedAttackable = SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
+                        CanMountedAttack = SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
                         SetInterpolation(false);
                         if (!Animation.IsPlaying(HumanAnimations.HorseIdle))
                             CrossFade(HumanAnimations.HorseIdle, 0.1f);

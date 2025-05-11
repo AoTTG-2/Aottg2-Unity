@@ -45,7 +45,7 @@ namespace Characters
         {
             if (!Disabled && !_photonView.IsMine)
             {
-                if (_human.MountState == HumanMountState.MapObject && !_human.IsMountedAttackable && _human.MountedTransform != null)
+                if (_human.MountState == HumanMountState.MapObject && !_human.CanMountedAttack && _human.MountedTransform != null)
                 {
                     _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);
                     _transform.rotation = Quaternion.Euler(_human.MountedTransform.rotation.eulerAngles + _human.MountedRotationOffset);

@@ -381,17 +381,17 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Mounts the human on a map object")]
-        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool isMountedAttackable = false)
+        public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
         {
             if (Human.IsMine())
-                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, isMountedAttackable);
+                Human.Mount(mapObject.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod(description: "Mounts the human on a transform")]
-        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool isMountedAttackable = false)
+        public void MountTransform(CustomLogicTransformBuiltin transform, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
         {
             if (Human.IsMine())
-                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, isMountedAttackable);
+                Human.Mount(transform.Value, positionOffset.Value, rotationOffset.Value, canMountedAttack);
         }
 
         [CLMethod(description: "Unmounts the human")]
