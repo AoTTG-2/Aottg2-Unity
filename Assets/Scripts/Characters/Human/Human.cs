@@ -2874,7 +2874,7 @@ namespace Characters
                 _launchRight = true;
                 _launchRightTime = 0f;
             }
-            // There is no need to judge the mountState of human
+            // There is no need to judge the mountState of human, whether hookable is desiced by controller
             if (State == HumanState.Grab || State == HumanState.Reload || State == HumanState.Stun)
                 return;
             if (MountState != HumanMountState.None)
