@@ -2387,7 +2387,7 @@ component Wagon
             human = Network.MyPlayer.Character;
             if (human != null && human.Type == "Human")
             {
-                human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero);
+                human.MountTransform(self._horse, Vector3(0, 1.95, 0), Vector3.Zero, Game.GetMiscSetting("HorsebackCombat"));
                 self._human = human;
             }
         }
