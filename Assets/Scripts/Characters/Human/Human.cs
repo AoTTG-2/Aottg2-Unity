@@ -56,6 +56,8 @@ namespace Characters
         public Transform MountedTransform;
         public Vector3 MountedPositionOffset;
         public Vector3 MountedRotationOffset;
+        public Vector3 _lastMountedPosition;
+        public Vector3 _mountedVelocity;
         public bool CancelHookLeftKey;
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
@@ -337,6 +339,7 @@ namespace Characters
                     MountedTransform = transform;
                     MountedPositionOffset = positionOffset;
                     MountedRotationOffset = rotationOffset;
+                    _lastMountedPosition = MountedTransform.TransformPoint(MountedPositionOffset);
                 }
             }
         }
@@ -1481,13 +1484,19 @@ namespace Characters
                 }
                 if (MountState == HumanMountState.MapObject)
                 {
-                    Cache.Rigidbody.velocity = Vector3.zero;
                     if (!IsAttackableState)
                     {
+                        Cache.Rigidbody.velocity = Vector3.zero;
                         ToggleSparks(false);
                         if (State != HumanState.Idle)
                             Idle();
                         return;
+                    }
+                    else
+                    {
+                        var currentMountedPosition = MountedTransform.TransformPoint(MountedPositionOffset);
+                        Cache.Rigidbody.velocity = (currentMountedPosition - _lastMountedPosition) / Time.deltaTime;
+                        _lastMountedPosition = currentMountedPosition;
                     }
                 }
                 if (_hookHuman != null && !_hookHuman.Dead)
