@@ -2522,7 +2522,7 @@ component Wagon
                         self._human.PlayAnimation("Armature|horse_idle");
                     }
                 }
-                if (Input.GetKeyDown("Interaction/Interact"))
+                if (Input.GetKeyDown("Human/HorseMount"))
                 {
                     self._human.Unmount();
                     self.NetworkView.Transfer(Network.MasterClient);
