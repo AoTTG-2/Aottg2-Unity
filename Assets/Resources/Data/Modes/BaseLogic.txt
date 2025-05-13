@@ -2340,6 +2340,7 @@ component Wagon
     function Init()
     {
         self._horse = self.MapObject.GetTransform("Horse");
+        self._horse.Layer = 17; # NPC
         self.MapObject.AddSphereCollider("Region", "Characters", Vector3.Zero, 10.0);
         self._rigidbody = self.MapObject.GetComponent("Rigidbody");
         self._leftWheel = self.MapObject.GetTransform("Carriage/Wheels/LeftWheelPivot");
