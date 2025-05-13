@@ -2478,6 +2478,12 @@ component Wagon
         {
             if (self._inUse)
             {
+                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._horse)
+                {
+                    self.NetworkView.Transfer(Network.MasterClient);
+                    self._inUse = false;
+                    return;
+                }
                 ySpeed = self._rigidbody.GetVelocity().Y;
                 FrameFactor = Time.FrameTime/0.007;
                 if (ySpeed <= 0.1 && self._jumpCoolDown > 0)
@@ -2525,12 +2531,6 @@ component Wagon
                 if (Input.GetKeyDown("Interaction/Interact2"))
                 {
                     self._human.Unmount();
-                    self.NetworkView.Transfer(Network.MasterClient);
-                    self._inUse = false;
-                    return;
-                }
-                if (self.NetworkView.Owner.Character == null || self.NetworkView.Owner.Character.Type != "Human" || self.NetworkView.Owner.Character.MountedTransform != self._horse)
-                {
                     self.NetworkView.Transfer(Network.MasterClient);
                     self._inUse = false;
                     return;
