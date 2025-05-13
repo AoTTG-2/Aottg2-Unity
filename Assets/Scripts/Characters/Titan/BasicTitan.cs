@@ -134,22 +134,6 @@ namespace Characters
             }
         }
 
-        [PunRPC]
-        public override void PlaySoundRPC(string sound, PhotonMessageInfo info)
-        {
-            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
-                return;
-            if (!SoundsEnabled)
-                return;
-            if (Cache.AudioSources.ContainsKey(sound))
-            {
-                // Scale sound pitch/volume off size
-                Cache.AudioSources[sound].pitch = Mathf.Lerp(1.2f, 0.9f, Mathf.Clamp01(Size / 3f));
-                Cache.AudioSources[sound].volume = Mathf.Clamp01(Size / 3f);
-                Cache.AudioSources[sound].Play();
-            }
-        }
-
         public override Transform GetCameraAnchor()
         {
             return Cache.Transform;
@@ -488,7 +472,10 @@ namespace Characters
                 dieAnimation = BasicAnimations.DieSit;
             StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.05f);
             yield return new WaitForSeconds(1.4f);
-            PlaySound(TitanSounds.DeathFall);
+            if (dieAnimation == BasicAnimations.DieGround || dieAnimation == BasicAnimations.DieCrawler)
+                PlaySound(TitanSounds.DeathNoFall);
+            else
+                PlaySound(TitanSounds.DeathFall);
             yield return new WaitForSeconds(1f);
             EffectSpawner.Spawn(EffectPrefabs.TitanDie1, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
             yield return new WaitForSeconds(2f);
