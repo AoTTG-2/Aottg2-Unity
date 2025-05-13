@@ -10,6 +10,7 @@ using System.Collections;
 using System;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
 
 namespace UI
 {
@@ -33,6 +34,7 @@ namespace UI
         protected override string ThemePanel => "ChatPanel";
         public bool IgnoreNextActivation;
         private static readonly Regex _richTextPattern = new Regex(@"<[^>]+>|</[^>]+>", RegexOptions.Compiled);
+        private static readonly Regex _emojiPattern = new Regex(@":([^:\s]+):", RegexOptions.Compiled);
         private float _lastTypeTime = 0f;
         private const float TYPING_DEBOUNCE = 0.2f;
         private bool _requestCanvasUpdate;
@@ -48,6 +50,39 @@ namespace UI
         private bool _wasChatUIClicked = false;
         private bool _isInteractingWithChatUI = false;
         private Dictionary<GameObject, RectTransform> _cachedRectTransforms = new Dictionary<GameObject, RectTransform>();
+
+        private static readonly Dictionary<string, int> EmojiNameToIndex = new Dictionary<string, int>
+        {
+            {"blush", 0},
+            {"yum", 1},
+            {"heart", 2},
+            {"cool", 3},
+            {"grin", 4},
+            {"grin2", 5},
+            {"joy", 6},
+            {"grin3", 7},
+            {"grin4", 8},
+            {"sweat", 9},
+            {"cry", 10},
+            {"wink", 11},
+            {"?", 12},
+            {"lmao", 13},
+            {"smile", 14},
+            {"sad", 15}
+        };
+
+        private string ProcessEmojiCodes(string text)
+        {
+            return _emojiPattern.Replace(text, match =>
+            {
+                string emojiName = match.Groups[1].Value.ToLower();
+                if (EmojiNameToIndex.TryGetValue(emojiName, out int spriteIndex))
+                {
+                    return $"<sprite={spriteIndex}>";
+                }
+                return match.Value;
+            });
+        }
 
         private static class UIAnchors
         {
@@ -296,13 +331,27 @@ namespace UI
             float cellSize = 40f;
             float spacing = 5f;
             float padding = 15f;
+            float tooltipHeight = 5f;
             float gridWidth = (cellSize * 4) + (spacing * 3);
             float gridHeight = (cellSize * 4) + (spacing * 3);
             float totalWidth = gridWidth + (padding * 2);
-            float totalHeight = gridHeight + (padding * 2);
+            float totalHeight = gridHeight + (padding * 2) + tooltipHeight;
             emojiPanelRect.sizeDelta = new Vector2(totalWidth, totalHeight);
             var emojiPanelImage = _emojiPanel.GetComponent<Image>();
             emojiPanelImage.color = new Color(0.118f, 0.118f, 0.118f, 0.95f);
+            var tooltipGo = new GameObject("TooltipArea", typeof(RectTransform), typeof(TextMeshProUGUI));
+            tooltipGo.transform.SetParent(_emojiPanel.transform, false);
+            var tooltipRect = tooltipGo.GetComponent<RectTransform>();
+            tooltipRect.anchorMin = new Vector2(0, 1);
+            tooltipRect.anchorMax = new Vector2(1, 1);
+            tooltipRect.pivot = new Vector2(0.5f, 1f);
+            tooltipRect.sizeDelta = new Vector2(0, tooltipHeight);
+            tooltipRect.anchoredPosition = new Vector2(0, -padding + 8);
+            var tooltipText = tooltipGo.GetComponent<TextMeshProUGUI>();
+            tooltipText.fontSize = 14;
+            tooltipText.color = new Color(1f, 1f, 1f, 0.8f);
+            tooltipText.alignment = TextAlignmentOptions.Center;
+            tooltipText.text = "";
             var emojiGrid = new GameObject("EmojiGrid", typeof(RectTransform), typeof(GridLayoutGroup));
             emojiGrid.transform.SetParent(_emojiPanel.transform, false);
             var gridRect = emojiGrid.GetComponent<RectTransform>();
@@ -310,27 +359,27 @@ namespace UI
             gridRect.anchorMax = UIAnchors.FullStretch;
             gridRect.sizeDelta = Vector2.zero;
             gridRect.offsetMin = new Vector2(padding, padding);
-            gridRect.offsetMax = new Vector2(-padding, -padding);
+            gridRect.offsetMax = new Vector2(-padding, -(padding + tooltipHeight));
             var gridLayout = emojiGrid.GetComponent<GridLayoutGroup>();
             gridLayout.cellSize = new Vector2(cellSize, cellSize);
             gridLayout.spacing = new Vector2(spacing, spacing);
             gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             gridLayout.constraintCount = 4;
-            AddEmojiButtons(emojiGrid.transform);
+            AddEmojiButtons(tooltipText);
             _emojiPanel.SetActive(false);
         }
 
-        private void AddEmojiButtons(Transform parent)
+        private void AddEmojiButtons(TextMeshProUGUI tooltipText)
         {
-            var spriteAsset = Resources.Load<TMP_SpriteAsset>("UI/Emojis/EmojiOne.asset");
+            var emojiGrid = _emojiPanel.transform.Find("EmojiGrid").GetComponent<GridLayoutGroup>();
             for (int i = 0; i < 16; i++)
             {
-                var emojiButtonGo = new GameObject($"EmojiButton_{i}", typeof(RectTransform), typeof(Button), typeof(Image));
-                emojiButtonGo.transform.SetParent(parent, false);
-                var emojiButtonImage = emojiButtonGo.GetComponent<Image>();
-                emojiButtonImage.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
+                var buttonGo = new GameObject($"EmojiButton_{i}", typeof(RectTransform), typeof(Button), typeof(Image));
+                buttonGo.transform.SetParent(emojiGrid.transform, false);
+                var buttonImage = buttonGo.GetComponent<Image>();
+                buttonImage.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
                 var emojiText = new GameObject("EmojiText", typeof(RectTransform), typeof(TextMeshProUGUI));
-                emojiText.transform.SetParent(emojiButtonGo.transform, false);
+                emojiText.transform.SetParent(buttonGo.transform, false);
                 var emojiTextRect = emojiText.GetComponent<RectTransform>();
                 emojiTextRect.anchorMin = UIAnchors.CenterMiddle;
                 emojiTextRect.anchorMax = UIAnchors.CenterMiddle;
@@ -339,36 +388,49 @@ namespace UI
                 emojiTextRect.anchoredPosition = Vector2.zero;
                 var tmpText = emojiText.GetComponent<TextMeshProUGUI>();
                 tmpText.text = $"<sprite={i}>";
-                tmpText.fontSize = 24;
+                tmpText.fontSize = 28;
                 tmpText.alignment = TextAlignmentOptions.Center;
-                tmpText.enableAutoSizing = true;
-                tmpText.fontSizeMin = 12;
-                tmpText.fontSizeMax = 24;
-                tmpText.overflowMode = TextOverflowModes.Overflow;
-                tmpText.margin = new Vector4(0, 0, 0, 0);
-                tmpText.spriteAsset = spriteAsset;
-                tmpText.richText = true;
-                var button = emojiButtonGo.GetComponent<Button>();
+                tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
+                tmpText.enableAutoSizing = false;
+                tmpText.color = new Color(1f, 1f, 1f, 1f);
+                var button = buttonGo.GetComponent<Button>();
                 int spriteIndex = i;
-                button.onClick.AddListener(() => InsertEmoji(spriteIndex.ToString()));
+                button.onClick.AddListener(() => InsertEmoji(spriteIndex));
+                string emojiName = EmojiNameToIndex.Where(x => x.Value == i).Select(x => x.Key).FirstOrDefault();
+                if (!string.IsNullOrEmpty(emojiName))
+                {
+                    var tooltipTrigger = buttonGo.AddComponent<EventTrigger>();
+                    var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+                    enterEntry.callback.AddListener((data) => { tooltipText.text = $":{emojiName}:"; });
+                    tooltipTrigger.triggers.Add(enterEntry);
+                    var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                    exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
+                    tooltipTrigger.triggers.Add(exitEntry);
+                }
             }
         }
 
-        private void InsertEmoji(string spriteTag)
+        private void InsertEmoji(int spriteIndex)
         {
             _inputField.ActivateInputField();
             _inputField.Select();
             string text = _inputField.text;
-            string formattedTag = $"<sprite={spriteTag}>";
+            string emojiCode = $"<sprite={spriteIndex}>";
+            string emojiName = EmojiNameToIndex.Where(x => x.Value == spriteIndex).Select(x => x.Key).FirstOrDefault();
+            if (!string.IsNullOrEmpty(emojiName))
+            {
+                emojiCode = $":{emojiName}:";
+            }
             int insertPosition = _inputField.isFocused ? _inputField.caretPosition : text.Length;
-            string newText = text.Insert(insertPosition, formattedTag);
+            string newText = text.Insert(insertPosition, emojiCode);
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
             if (newText.Length > maxLength)
             {
                 return;
             }
-            _inputField.SetTextWithoutNotify(newText);
-            int newCaretPos = insertPosition + formattedTag.Length;
+            string processedText = ProcessEmojiCodes(newText);
+            _inputField.SetTextWithoutNotify(processedText);
+            int newCaretPos = insertPosition + emojiCode.Length;
             _inputField.caretPosition = newCaretPos;
             _inputField.selectionAnchorPosition = newCaretPos;
             _inputField.selectionFocusPosition = newCaretPos;
@@ -519,7 +581,7 @@ namespace UI
                 IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
                 return;
             }
-            string input = _inputField.text;
+            string input = ProcessEmojiCodes(_inputField.text);
             if (string.IsNullOrWhiteSpace(input))
             {
                 IgnoreNextActivation = true;
@@ -838,6 +900,16 @@ namespace UI
             _lastTypeTime = Time.unscaledTime;
             if (text == null)
                 text = string.Empty;
+
+            // Process emoji codes in the input field
+            string processedText = ProcessEmojiCodes(text);
+            if (processedText != text)
+            {
+                int caretPos = _inputField.caretPosition;
+                _inputField.SetTextWithoutNotify(processedText);
+                _inputField.caretPosition = caretPos;
+            }
+
             ChatManager.HandleTyping(text);
         }
 
