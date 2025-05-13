@@ -444,13 +444,15 @@ namespace Controllers
                     }
                     if (currentDirection == HumanDashDirection.None)
                     {
-                        if (_human.Stats.Perks["OmniDash"].CurrPoints == 1)
+                        if (_human.Stats.OmniDashPerk.CanUse() && _human.Stats.OmniDashPerk.PerkEnabled)
                         {
+                            _human.Stats.OmniDashPerk.OnUse();
                             Vector3 direction = SceneLoader.CurrentCamera.Camera.ScreenPointToRay(CursorManager.GetInGameMousePosition()).direction.normalized;
                             _human.DashVertical(GetTargetAngle(direction), direction);
                         }
-                        else if (_human.Stats.Perks["VerticalDash"].CurrPoints == 1)
+                        else if (_human.Stats.VerticalDashPerk.CanUse() && _human.Stats.VerticalDashPerk.PerkEnabled && !_human.Stats.OmniDashPerk.PerkEnabled)
                         {
+                            _human.Stats.VerticalDashPerk.OnUse();
                             float angle = SceneLoader.CurrentCamera.Cache.Transform.rotation.eulerAngles.x;
                             if (angle < 0)
                                 angle += 360f;
