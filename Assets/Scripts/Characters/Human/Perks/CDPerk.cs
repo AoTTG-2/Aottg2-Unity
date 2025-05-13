@@ -6,7 +6,7 @@ namespace Assets.Scripts.Characters.Human.Perks
     class CDPerk : BasePerk
     {
         public bool PerkEnabled => CurrPoints == MaxPoints;
-        public float Cooldown => 5f;
+        public float Cooldown => 3.5f;
         protected float _lastUseTime = -1000f;
 
         public virtual void Reset()
