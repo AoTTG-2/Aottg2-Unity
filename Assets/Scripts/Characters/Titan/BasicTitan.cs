@@ -38,7 +38,7 @@ namespace Characters
         public override bool CanSprint => true;
         public override bool CanWallClimb => true;
 
-        public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar" };
+        public override List<string> EmoteActions => new List<string>() { "Laugh", "Nod", "Shake", "Roar1", "Roar2" };
         private TitanCustomSet _customSet;
 
         public void Init(bool ai, string team, JSONNode data, TitanCustomSet customSet)
@@ -134,6 +134,22 @@ namespace Characters
             }
         }
 
+        [PunRPC]
+        public override void PlaySoundRPC(string sound, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!SoundsEnabled)
+                return;
+            if (Cache.AudioSources.ContainsKey(sound))
+            {
+                // Scale sound pitch/volume off size
+                Cache.AudioSources[sound].pitch = Mathf.Lerp(1.2f, 0.9f, Mathf.Clamp01(Size / 3f));
+                Cache.AudioSources[sound].volume = Mathf.Clamp01(Size / 3f);
+                Cache.AudioSources[sound].Play();
+            }
+        }
+
         public override Transform GetCameraAnchor()
         {
             return Cache.Transform;
@@ -187,10 +203,15 @@ namespace Characters
                     anim = BasicAnimations.EmoteNod;
                 else if (emote == "Shake")
                     anim = BasicAnimations.EmoteShake;
-                else if (emote == "Roar")
+                else if (emote == "Roar1")
                 {
                     anim = BasicAnimations.EmoteRoar;
-                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar, 1.4f));
+                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar1, 1.4f));
+                }
+                else if (emote == "Roar2")
+                {
+                    anim = BasicAnimations.EmoteRoar;
+                    StartCoroutine(WaitAndPlaySound(TitanSounds.Roar2, 1.4f));
                 }
                 StateAction(TitanState.Emote, anim);
             }
@@ -467,7 +488,7 @@ namespace Characters
                 dieAnimation = BasicAnimations.DieSit;
             StateActionWithTime(TitanState.Dead, dieAnimation, 0f, 0.05f);
             yield return new WaitForSeconds(1.4f);
-            PlaySound(TitanSounds.Fall);
+            PlaySound(TitanSounds.DeathFall);
             yield return new WaitForSeconds(1f);
             EffectSpawner.Spawn(EffectPrefabs.TitanDie1, BaseTitanCache.Hip.position, Quaternion.Euler(-90f, 0f, 0f), GetSpawnEffectSize(), false);
             yield return new WaitForSeconds(2f);
@@ -939,13 +960,16 @@ namespace Characters
                 flatTarget.y = Cache.Transform.position.y;
                 var forward = (flatTarget - Cache.Transform.position).normalized;
                 Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, Quaternion.LookRotation(forward), Time.deltaTime * 5f);
-                if (_currentAttackStage == 0 && animationTime > 0.16f)
+                if (_currentAttackStage == 0 && animationTime > 0.1f)
                 {
+                    PlaySound(TitanSounds.RockPickup);
                     _currentAttackStage = 1;
                     SpawnableSpawner.Spawn(SpawnablePrefabs.Rock1, hand, Quaternion.identity, Size * 1.5f, new object[] { Cache.PhotonView.ViewID });
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.61f)
                 {
+                    string sound = Random.Range(0, 2) == 0 ? TitanSounds.RockThrow1 : TitanSounds.RockThrow2;
+                    PlaySound(sound);
                     _currentAttackStage = 2;
                     Vector3 direction = (_rockThrowTarget - hand).normalized;
                     Cache.PhotonView.RPC("ClearRockRPC", RpcTarget.All, new object[0]);
