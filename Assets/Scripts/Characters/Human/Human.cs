@@ -354,7 +354,6 @@ namespace Characters
             }
             else
             {
-                MountState = HumanMountState.None;
                 Idle();
             }
             if (MountState == HumanMountState.MapObject)
