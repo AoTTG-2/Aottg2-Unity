@@ -357,6 +357,7 @@ namespace Characters
             {
                 float stateTime = Animation.GetLength(BasicAnimations.Jump) / 2f;
                 StateActionWithTime(TitanState.PreJump, BaseTitanAnimations.Jump, stateTime, 0.1f);
+                PlaySound(TitanSounds.TitanJump);
             }
         }
 
