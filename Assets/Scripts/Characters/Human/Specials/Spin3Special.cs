@@ -23,7 +23,7 @@ namespace Characters
 
         protected override void Activate()
         {
-            if (_human.MountState != HumanMountState.None && _human.IsAttackableState)
+            if (_human.MountState != HumanMountState.None)
             {
                 _human.Unmount(true);
             }
