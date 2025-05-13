@@ -395,10 +395,10 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Unmounts the human")]
-        public void Unmount()
+        public void Unmount(bool immediate = true)
         {
             if (Human.IsMine())
-                Human.Unmount(true);
+                Human.Unmount(immediate);
         }
 
         [CLMethod(description: "Sets the special of the human")]

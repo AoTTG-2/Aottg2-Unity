@@ -347,18 +347,19 @@ namespace Characters
         public void Unmount(bool immediate)
         {
             SetInterpolation(true);
-            if (MountState == HumanMountState.Horse && !immediate)
+            if (MountState != HumanMountState.None && !immediate)
             {
                 PlayAnimation(HumanAnimations.HorseDismount);
                 Cache.Rigidbody.AddForce((Vector3.up * 10f) - (Cache.Transform.forward * 2f) - (Cache.Transform.right * 1f), ForceMode.VelocityChange);
-                MountState = HumanMountState.None;
             }
             else
             {
                 MountState = HumanMountState.None;
                 Idle();
-                SetTriggerCollider(false);
             }
+            if (MountState == HumanMountState.MapObject)
+                SetTriggerCollider(false);
+            MountState = HumanMountState.None;
             _lastMountMessage = null;
             Cache.PhotonView.RPC("UnmountRPC", RpcTarget.All, new object[0]);
         }
