@@ -27,12 +27,25 @@
         public static string Grunt9 = "Grunt9";
         public static string Grunt10 = "Grunt10";
         public static string Hit = "Hit";
-        public static string Roar = "Roar";
-        public static string Fall = "Fall";
+        public static string Roar1 = "Roar1";
+        public static string Roar2 = "Roar2";
+        public static string DeathFall = "DeathFall";
+        public static string DeathNoFall = "DeathNoFall";
         public static string Bite1 = "Bite1";
         public static string Bite2 = "Bite2";
         public static string Laugh1 = "Laugh1";
         public static string Laugh2 = "Laugh2";
+        public static string Huff1 = "Huff1";
+        public static string Huff2 = "Huff2";
+        public static string Huff3 = "Huff3";
+        public static string Huff4 = "Huff4";
+        public static string Huff5 = "Huff5";
+        public static string Huff6 = "Huff6";
+        public static string TitanJump = "TitanJump";
+        public static string RockPickup = "RockPickup";
+        public static string RockThrow1 = "RockThrow1";
+        public static string RockThrow2 = "RockThrow2";
+
 
         private static string[] Footsteps = new string[] { Footstep1, Footstep2, Footstep3 };
 
