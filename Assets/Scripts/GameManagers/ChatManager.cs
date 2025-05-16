@@ -120,9 +120,21 @@ namespace GameManagers
             PlayerID
         }
 
-        // Add new lists for PM tracking
         public static List<bool> PrivateFlags = new List<bool>();
         public static List<int> PMPartnerIDs = new List<int>();
+        private static string _preservedInputText = string.Empty;
+
+        public static void PreserveInputText(string text)
+        {
+            _preservedInputText = text ?? string.Empty;
+        }
+
+        public static string GetPreservedInputText()
+        {
+            string text = _preservedInputText;
+            _preservedInputText = string.Empty;
+            return text;
+        }
 
         public static void Init()
         {
