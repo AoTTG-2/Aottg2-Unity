@@ -2,12 +2,14 @@
 using UnityEngine;
 using Map;
 using UnityEngine.Events;
+using PlasticPipe.PlasticProtocol.Messages;
 
 namespace UI
 {
     class MapEditorHierarchyButton : Button
     {
         public GameObject Highlight;
+        public GameObject HighlightDark;
         public GameObject HighlightTop;
         public GameObject HighlightBottom;
         public Text Name;
@@ -32,6 +34,8 @@ namespace UI
             #region Styling
             Highlight = transform.Find("Highlight").gameObject;
             Highlight.SetActive(false);
+            HighlightDark = transform.Find("HighlightDark").gameObject;
+            HighlightDark.SetActive(false);
             HighlightTop = transform.Find("HighlightTop").gameObject;
             HighlightTop.SetActive(false);
             HighlightBottom = transform.Find("HighlightBottom").gameObject;
@@ -89,11 +93,12 @@ namespace UI
                 return;
             }
 
-            Name.text = obj.ScriptObject.Name;
+            Name.text = obj.Name;
             BoundID = obj.ScriptObject.Id;
             SetNesting(obj.Level);
             SetExpanded(obj.Expanded, obj.HasChildren);
             SetHighlight(isSelected);
+            SetDarkHighlight(false);
         }
 
         public void Bind(string name, int id, int level, bool isSelected)
@@ -120,6 +125,12 @@ namespace UI
         {
             HighlightTop.SetActive(active);
             HighlightBottom.SetActive(active);
+        }
+
+        public void SetDarkHighlight(bool active)
+        {
+            HighlightDark.SetActive(active);
+            HighlightDark.SetActive(active);
         }
 
         public void ContextHighlight()

@@ -23,6 +23,7 @@ namespace Map
         public Renderer[] renderCache;
         public Collider[] colliderCache;
         public bool RuntimeCreated = false;
+        public string Name => ScriptObject.Name; // debug $"{ScriptObject.Name}: ({ScriptObject.Id}, {SiblingIndex})<-({Parent})";
         private int _parent;
 
         /// New fields for serialization

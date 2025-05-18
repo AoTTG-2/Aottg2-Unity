@@ -37,7 +37,6 @@ namespace UI
 
         private int _lastClickedItem = -1;
         private float _lastclickedTime = 0f;
-        private bool _draggingItem = false;
         private MapEditorMenu _menu;
         private ElementStyle _style;
         private MapEditorGameManager _gameManager;
@@ -59,13 +58,21 @@ namespace UI
         private bool _requestRedraw = true;
 
         // Selectors
+        enum DragState
+        {
+            None,
+            PollingDragThreshold,
+            Dragging,
+            Dropped
+        }
         int _targetID = -1;
         int _targetParent = -1;
         int? _targetSibling = null;
         MapEditorHierarchyButton _lastHighlighted = null;
         bool _blockUI = false;
         Vector2 _lastMousePosition = Vector2.zero;
-        bool _pollingDrag = false;
+        DragState dragState = DragState.None;
+
 
         // State
         public bool IsTreeView = true;
@@ -282,102 +289,157 @@ namespace UI
             _pageLabel.text = $"{startIndex} - {startIndex + MaxVisibleObjects} ({MapLoader.IdToMapObject.Values.Count})";
         }
 
+        public void TryStartDrag()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Mouse Down");
+                _targetID = -1;
+                _targetParent = -1;
+                _targetSibling = null;
+                _lastHighlighted = FindButtonMouseOver();
+                if (_lastHighlighted != null)
+                {
+                    dragState = DragState.PollingDragThreshold;
+                    _lastMousePosition = Input.mousePosition;
+                    _targetID = _lastHighlighted.BoundID;
+                    _lastHighlighted.SetDarkHighlight(true);
+
+                    if (_selected.Count == 0)
+                    {
+                        _gameManager.DeselectAll();
+                        _gameManager.SelectObject(MapLoader.IdToMapObject[_targetID]);
+                        _gameManager.OnSelectionChange(false);
+                    }
+                }
+            }
+        }
+
+        public void OnDragThresholdPoll()
+        {
+            if (Input.GetMouseButton(0) == false)
+            {
+                dragState = DragState.None;
+                return;
+            }
+
+            if (Vector2.Distance(_lastMousePosition, Input.mousePosition) > EventSystem.current.pixelDragThreshold)
+            {
+                Debug.Log("Start Dragging");
+                dragState = DragState.Dragging;
+                _lastHighlighted.SetDarkHighlight(false);
+
+                if (!_selected.Contains(_targetID)) // Simpler than merging click and mouse down states
+                {
+                    _gameManager.DeselectAll();
+                    _gameManager.SelectObject(MapLoader.IdToMapObject[_targetID]);
+                    _gameManager.OnSelectionChange(false);
+                }
+                //_lastHighlighted = FindButtonMouseOver();
+                //if (_lastHighlighted != null)
+                //{
+                //    _lastHighlighted.ContextHighlight();
+                //}
+            }
+        }
+
+        public void OnDrag()
+        {
+            if (Input.GetMouseButton(0) == false)
+            {
+                Debug.Log("Dropped");
+                dragState = DragState.Dropped;
+                return;
+            }
+
+            _lastHighlighted = FindButtonMouseOver();
+            if (_lastHighlighted != null)
+            {
+                _lastHighlighted.ContextHighlight();
+            }
+        }
+
+        public void OnDrop()
+        {
+            dragState = DragState.None;
+            _lastHighlighted = FindButtonMouseOver();
+            if (_lastHighlighted != null)
+            {
+                _lastHighlighted.SetHighlight(false);
+                Vector2 percentCovered = _lastHighlighted.GetPercentCovered();
+
+                if (percentCovered.y >= _lastHighlighted.TopBorder)   // Top
+                {
+                    // Target parent is the same as the highlighted parent, the sibling id is the same as it will push right
+                    _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
+                    _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex;
+                }
+                else if (percentCovered.y <= _lastHighlighted.BottomBorder)  // Bottom
+                {
+                    // Target parent is the same as the highlighted parent, the sibling id is past the highlighted element
+                    _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
+                    _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex + 1;
+                }
+                else
+                {
+                    _targetParent = _lastHighlighted.BoundID;
+                    _targetSibling = 0;
+                }
+
+                // Merge selected and target in union
+                List<MapObject> targets = new List<MapObject>();
+                if (!_selected.Contains(_targetID))
+                {
+                    _selected.Add(_targetID);
+                }
+                foreach (int id in _selected)
+                {
+                    MapObject obj = MapLoader.IdToMapObject[id];
+                    if (obj == null)
+                        continue;
+                    if (obj.ScriptObject.Id == _targetParent)
+                        continue;
+                    if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != obj.ScriptObject.Id)
+                    {
+                        targets.Add(obj);
+                    }
+                }
+                _selected.Remove(_targetID);
+                if (targets.Count > 0) _gameManager.NewCommand(new SetParentCommand(targets, _targetParent, _targetSibling));
+            }
+        }
+
+
         private void HandleElementDrag()
         {
             // TODO: Simplify logic into state machine.
             // Mouse Down -> Poll Drag Threshold -> Poll | StartDrag  | DiscardDrag -> Drag -> Drag | SetParent | DiscardDrag
-            if (_blockUI)
+            if (_blockUI || !_menu.IsMouseUI)
                 return;
-            if (_lastHighlighted != null)
+            if (_lastHighlighted != null && dragState != DragState.None)
+            {
                 _lastHighlighted.ClearContextHighlight();
-
-            // On mouse down begin checking for drag threshold
-            if (Input.GetMouseButtonDown(0))
-            {
-                _lastMousePosition = Input.mousePosition;
-                _pollingDrag = true;
-            }
-            if (_pollingDrag && Input.GetMouseButton(0))
-            {
-                if (Vector2.Distance(_lastMousePosition, Input.mousePosition) > EventSystem.current.pixelDragThreshold)
+                if (_selected.Contains(_lastHighlighted.BoundID))
                 {
-                    _pollingDrag = false;
-                    _draggingItem = false;
-                    _targetID = -1;
-                    _targetParent = -1;
-                    _targetSibling = null;
-                    _lastHighlighted = FindButtonMouseOver();
-                    if (_lastHighlighted != null)
-                    {
-                        _lastHighlighted.SetHighlight(true);
-                        _draggingItem = true;
-                        _targetID = _lastHighlighted.BoundID;
-                    }
+                    _lastHighlighted.SetHighlight(true);
                 }
             }
-            if (_pollingDrag && Input.GetMouseButtonUp(0))
-            {
-                _pollingDrag = false;
-                _draggingItem = false;
-                _targetID = -1;
-                _targetParent = -1;
-                _targetSibling = null;
-            }
-            if (Input.GetMouseButton(0) && _draggingItem)  // Highlight Drag Target
-            {
-                _lastHighlighted = FindButtonMouseOver();
-                if (_lastHighlighted != null)
-                {
-                    _lastHighlighted.ContextHighlight();
-                }
-            }
-            else if (Input.GetMouseButtonUp(0) && _draggingItem)    // Reposition Elements
-            {
-                _lastHighlighted = FindButtonMouseOver();
-                if (_lastHighlighted != null)
-                {
-                    _lastHighlighted.SetHighlight(false);
-                    _draggingItem = false;
+                
 
-                    Vector2 percentCovered = _lastHighlighted.GetPercentCovered();
-
-                    if (percentCovered.y >= _lastHighlighted.TopBorder)   // Top
-                    {
-                        // Target parent is the same as the highlighted parent, the sibling id is the same as it will push right
-                        _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
-                        _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex;
-                    }
-                    else if (percentCovered.y <= _lastHighlighted.BottomBorder)  // Bottom
-                    {
-                        // Target parent is the same as the highlighted parent, the sibling id is past the highlighted element
-                        _targetParent = MapLoader.IdToMapObject[_lastHighlighted.BoundID].Parent;
-                        _targetSibling = MapLoader.IdToMapObject[_lastHighlighted.BoundID].SiblingIndex + 1;
-                    }
-                    else
-                    {
-                        _targetParent = _lastHighlighted.BoundID;
-                        _targetSibling = 0;
-                    }
-
-                    // Merge selected and target in union
-                    List<MapObject> targets = new List<MapObject>();
-                    if (!_selected.Contains(_targetID))
-                    {
-                        _selected.Add(_targetID);
-                    }
-                    foreach (int id in _selected)
-                    {
-                        MapObject obj = MapLoader.IdToMapObject[id];
-                        if (obj == null)
-                            continue;
-                        if (_targetParent == -1 || MapLoader.IdToMapObject[_targetParent].Parent != obj.ScriptObject.Id)
-                        {
-                            targets.Add(obj);
-                        }
-                    }
-                    _selected.Remove(_targetID);
-                    if (targets.Count > 0) _gameManager.NewCommand(new SetParentCommand(targets, _targetParent, _targetSibling));
-                }
+            switch (dragState)
+            {
+                case DragState.None:
+                    TryStartDrag();
+                    break;
+                case DragState.PollingDragThreshold:
+                    OnDragThresholdPoll();
+                    break;
+                case DragState.Dragging:
+                    OnDrag();
+                    break;
+                case DragState.Dropped:
+                    OnDrop();
+                    break;
             }
         }
 
@@ -543,43 +605,6 @@ namespace UI
 
                 _gameManager.OnSelectionChange(false);
             }
-
-
-            //    if (_selected.Contains(id))
-            //{
-            //    if (!multi && _gameManager.SelectedObjects.Count > 1)
-            //    {
-            //        _gameManager.DeselectAll();
-            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-            //        _gameManager.OnSelectionChange(false);
-            //    }
-            //    else if (multi)
-            //    {
-            //        _gameManager.DeselectObject(MapLoader.IdToMapObject[id]);
-            //        _gameManager.OnSelectionChange(false);
-            //    }
-            //    else
-            //    {
-            //        var transform = SceneLoader.CurrentCamera.Cache.Transform;
-            //        transform.position = MapLoader.IdToMapObject[id].GameObject.transform.position - transform.forward * 50f;
-            //    }
-            //}
-            //else
-            //{
-            //    if (_selected.Count == 0 || multi)
-            //    {
-            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-            //        _gameManager.OnSelectionChange(false);
-            //    }
-            //    else if (_selected.Count > 0 && !multi)
-            //    {
-            //        _gameManager.DeselectAll();
-            //        _gameManager.SelectObject(MapLoader.IdToMapObject[id]);
-            //        _gameManager.OnSelectionChange(false);
-            //    }
-            //}
-            _lastClickedItem = id;
-            _lastclickedTime = Time.time;
         }
         
         public void SyncSelectedItems()

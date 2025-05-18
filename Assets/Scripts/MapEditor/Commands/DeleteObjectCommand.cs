@@ -5,6 +5,7 @@ using Utility;
 using ApplicationManagers;
 using Map;
 using GameManagers;
+using System.Linq;
 
 namespace MapEditor
 {
@@ -14,16 +15,19 @@ namespace MapEditor
 
         public DeleteObjectCommand(List<MapObject> objs)
         {
-            var scriptObjects = new MapScriptObjects();
+            HashSet<MapObject> uniqueObjects = new HashSet<MapObject>();
             foreach (MapObject obj in objs)
             {
-                scriptObjects.Objects.Add(obj.ScriptObject);
+                uniqueObjects.Add(obj);
                 if (MapLoader.IdToChildren.ContainsKey(obj.ScriptObject.Id))
                 {
                     foreach (int child in MapLoader.IdToChildren[obj.ScriptObject.Id])
-                        scriptObjects.Objects.Add(MapLoader.IdToMapObject[child].ScriptObject);
+                        uniqueObjects.Add(MapLoader.IdToMapObject[child]);
                 }
             }
+
+            var scriptObjects = new MapScriptObjects();
+            scriptObjects.Objects = uniqueObjects.OrderBy(x => x.Level).Select(x => x.ScriptObject).ToList(); // Need to delete from bottom up.
             _script = scriptObjects.Serialize();
         }
 
