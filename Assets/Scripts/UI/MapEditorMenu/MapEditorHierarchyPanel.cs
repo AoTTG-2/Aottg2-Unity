@@ -293,7 +293,6 @@ namespace UI
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Mouse Down");
                 _targetID = -1;
                 _targetParent = -1;
                 _targetSibling = null;
@@ -325,7 +324,6 @@ namespace UI
 
             if (Vector2.Distance(_lastMousePosition, Input.mousePosition) > EventSystem.current.pixelDragThreshold)
             {
-                Debug.Log("Start Dragging");
                 dragState = DragState.Dragging;
                 _lastHighlighted.SetDarkHighlight(false);
 
@@ -347,7 +345,6 @@ namespace UI
         {
             if (Input.GetMouseButton(0) == false)
             {
-                Debug.Log("Dropped");
                 dragState = DragState.Dropped;
                 return;
             }
