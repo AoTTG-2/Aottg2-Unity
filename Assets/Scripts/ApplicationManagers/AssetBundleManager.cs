@@ -222,6 +222,19 @@ namespace ApplicationManagers
                     foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
                         clip.events = new AnimationEvent[0];
                 }
+                else if (component is Renderer)
+                {
+                    Shader legacyDiffuse = Shader.Find("Legacy Shaders/Diffuse");
+                    if (legacyDiffuse != null)
+                    {
+                        var renderer = (Renderer)component;
+                        renderer.sharedMaterial.shader = legacyDiffuse;
+                    }
+                    else
+                    {
+                        Debug.LogError("Legacy Diffuse Shader not found!");
+                    }
+                }
             }
         }
     }
