@@ -46,16 +46,19 @@ namespace Characters
 
         public override void Emote(string emote)
         {
-            string anim = string.Empty;
-            if (emote == "Nod")
-                anim = ErenAnimations.EmoteNod;
-            else if (emote == "Roar")
+            if (CanAction())
             {
-                StartCoroutine(WaitAndPlaySound(ShifterSounds.ErenRoar, 0.9f));
-                anim = ErenAnimations.EmoteRoar;
+                string anim = string.Empty;
+                if (emote == "Nod")
+                    anim = ErenAnimations.EmoteNod;
+                else if (emote == "Roar")
+                {
+                    StartCoroutine(WaitAndPlaySound(ShifterSounds.ErenRoar, 0.9f));
+                    anim = ErenAnimations.EmoteRoar;
+                }
+                if (anim != "")
+                    StateAction(TitanState.Emote, anim);
             }
-            if (anim != "")
-                StateAction(TitanState.Emote, anim);
         }
 
         protected override Dictionary<string, float> GetRootMotionAnimations()
