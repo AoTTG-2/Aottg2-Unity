@@ -913,6 +913,7 @@
 			{"Name": "DebrisFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "DebrisFX2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "EmberField1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "FakeRiderFX", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeavesFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeavesFX1a", "Variant": "FallingLeavesFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "FallingLeavesFX1b", "Variant": "FallingLeavesFX1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
