@@ -955,6 +955,7 @@
 			{"Name": "Rumbling2", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Rumbling3", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "Scifi1", "Static": false, "Material": "DefaultNoTint|255/255/255/255|"},
+			{"Name": "SeaCube1a", "Static": false, "CollideMode": "Region", "CollideWith": "Characters",  "Material": "DefaultTiled|255/255/255/255|1/1|"},
 			{"Name": "Seaweed1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "SmokeArea1", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
 			{"Name": "SmokeArea2", "Static": false, "CollideMode": "None", "Material": "DefaultNoTint|255/255/255/255|"},
