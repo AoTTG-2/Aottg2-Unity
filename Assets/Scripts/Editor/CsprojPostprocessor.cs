@@ -42,6 +42,7 @@ namespace Assets.Scripts.Editor
             generated.AppendLine("\t<PropertyGroup>");
             generated.AppendLine("\t\t<GenerateDocumentationFile>true</GenerateDocumentationFile>");
             generated.AppendLine("\t\t<DocumentationFile>Temp\\Bin\\Debug\\Scripts.xml</DocumentationFile>");
+            generated.AppendLine("\t\t<NoWarn>$(NoWarn);1591</NoWarn>"); // disable warning for missing xml comments
             generated.AppendLine("\t</PropertyGroup>");
             generated.AppendLine($"<!-- Generated via {nameof(CsprojPostprocessor)} -->");
 
