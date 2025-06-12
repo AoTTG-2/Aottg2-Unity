@@ -225,6 +225,18 @@ namespace UI
             var contentRect = content.GetComponent<RectTransform>();
             var layoutElement = content.GetComponent<LayoutElement>();
             layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
+            
+            // Create a separate background that covers the entire content area including scrollbar
+            var chatBackgroundGO = new GameObject("ChatBackground", typeof(RectTransform), typeof(Image));
+            chatBackgroundGO.transform.SetParent(content, false);
+            chatBackgroundGO.transform.SetAsFirstSibling(); // Make sure it's behind other elements
+            var chatBackgroundRect = chatBackgroundGO.GetComponent<RectTransform>();
+            chatBackgroundRect.anchorMin = UIAnchors.FullStretchStart;
+            chatBackgroundRect.anchorMax = UIAnchors.FullStretch;
+            chatBackgroundRect.sizeDelta = Vector2.zero;
+            chatBackgroundRect.anchoredPosition = Vector2.zero;
+            var chatBackgroundImage = chatBackgroundGO.GetComponent<Image>();
+            chatBackgroundImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
             var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
             scrollbarGo.transform.SetParent(content, false);
             scrollbarGo.SetActive(true);
