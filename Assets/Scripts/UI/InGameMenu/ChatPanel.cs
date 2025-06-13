@@ -225,18 +225,12 @@ namespace UI
             var contentRect = content.GetComponent<RectTransform>();
             var layoutElement = content.GetComponent<LayoutElement>();
             layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
-            
-            // Create a separate background that covers the entire content area including scrollbar
-            var chatBackgroundGO = new GameObject("ChatBackground", typeof(RectTransform), typeof(Image));
-            chatBackgroundGO.transform.SetParent(content, false);
-            chatBackgroundGO.transform.SetAsFirstSibling(); // Make sure it's behind other elements
-            var chatBackgroundRect = chatBackgroundGO.GetComponent<RectTransform>();
-            chatBackgroundRect.anchorMin = UIAnchors.FullStretchStart;
-            chatBackgroundRect.anchorMax = UIAnchors.FullStretch;
-            chatBackgroundRect.sizeDelta = Vector2.zero;
-            chatBackgroundRect.anchoredPosition = Vector2.zero;
-            var chatBackgroundImage = chatBackgroundGO.GetComponent<Image>();
-            chatBackgroundImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
+            var panelImage = _panel.GetComponent<Image>();
+            if (panelImage == null)
+            {
+                panelImage = _panel.AddComponent<Image>();
+            }
+            panelImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
             var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
             scrollbarGo.transform.SetParent(content, false);
             scrollbarGo.SetActive(true);
@@ -280,7 +274,6 @@ namespace UI
             exitEntry.callback.AddListener((data) => { scrollRect.OnMouseExit(); });
             eventTrigger.triggers.Add(exitEntry);
             var panelRect = _panel.GetComponent<RectTransform>();
-            panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);
         }
 
         private void SetupEmojiButton()
@@ -521,6 +514,7 @@ namespace UI
                 {
                     _scrollRect.verticalScrollbar.size = 1;
                 }
+                UpdateBackgroundVisibility(false);
                 return;
             }
             float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
@@ -568,10 +562,26 @@ namespace UI
                     needsCanvasUpdate = true;
                 }
             }
-            
+            UpdateBackgroundVisibility(true);
             if (needsCanvasUpdate)
             {
                 _requestCanvasUpdate = true;
+            }
+        }
+
+        private void UpdateBackgroundVisibility(bool hasMessages)
+        {
+            var panelImage = _panel.GetComponent<Image>();
+            if (panelImage != null)
+            {
+                if (hasMessages)
+                {
+                    panelImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
+                }
+                else
+                {
+                    panelImage.color = Color.clear;
+                }
             }
         }
 
@@ -840,6 +850,7 @@ namespace UI
             textAreaRect.anchorMax = UIAnchors.FullStretch;
             textAreaRect.sizeDelta = Vector2.zero;
             textAreaRect.anchoredPosition = Vector2.zero;
+            textAreaRect.offsetMax = new Vector2(-8, 0);
             inputField.text = text;
             return inputField;
         }

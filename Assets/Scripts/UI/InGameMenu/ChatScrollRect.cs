@@ -25,7 +25,7 @@ namespace UI
                 verticalScrollbar.gameObject.SetActive(true);
                 if (handleImage != null)
                 {
-                    handleImage.enabled = true;
+                    handleImage.enabled = false;
                 }
             }
         }
