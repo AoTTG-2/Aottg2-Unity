@@ -2112,8 +2112,13 @@ namespace Characters
         {
             if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
             {
-                _wallSlide = true;
-                _wallSlideGround = collision.GetContact(0).normal.normalized;
+                if (SettingsManager.InputSettings.Human.WallSlideAttach.Value == (int)WallSlideAttachMethod.Auto ||
+                    (SettingsManager.InputSettings.Human.WallSlideAttach.Value == (int)WallSlideAttachMethod.Strafe
+                    && IsPressDirectionRelativeToWall(-collision.GetContact(0).normal.normalized, 0.5f)))
+                {
+                    _wallSlide = true;
+                    _wallSlideGround = collision.GetContact(0).normal.normalized;
+                }
             }
             if (Special != null && Special is SwitchbackSpecial)
             {
