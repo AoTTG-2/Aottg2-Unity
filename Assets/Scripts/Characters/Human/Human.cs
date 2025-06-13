@@ -56,14 +56,16 @@ namespace Characters
         public Transform MountedTransform;
         public Vector3 MountedPositionOffset;
         public Vector3 MountedRotationOffset;
+        public Vector3 _lastMountedPosition;
+        public Vector3 _mountedVelocity;
         public bool CancelHookLeftKey;
         public bool CancelHookRightKey;
         public bool CancelHookBothKey;
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
-        
-        public bool HorsebackCombat = false;
+        public bool CanMountedAttack = false;
+        public bool InMountedCombat = false;
         public bool IsAttackableState;
         public bool IsRefillable;
         private object[] _lastMountMessage = null;
@@ -255,7 +257,7 @@ namespace Characters
             ToggleSparks(false);
         }
 
-        public void Mount(Transform transform, Vector3 positionOffset, Vector3 rotationOffset)
+        public void Mount(Transform transform, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
             Transform parent = transform;
             MapObject mapObject = null;
@@ -273,15 +275,15 @@ namespace Characters
                     transformName = parent.name + "/" + transformName;
                 parent = parent.parent;
             }
-            Mount(mapObject, transformName, positionOffset, rotationOffset);
+            Mount(mapObject, transformName, positionOffset, rotationOffset, canMountedAttack);
         }
 
-        public void Mount(MapObject mapObject, Vector3 positionOffset, Vector3 rotationOffset)
+        public void Mount(MapObject mapObject, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
-            Mount(mapObject, "", positionOffset, rotationOffset);
+            Mount(mapObject, "", positionOffset, rotationOffset, canMountedAttack);
         }
 
-        public void Mount(MapObject mapObject, string transformName, Vector3 positionOffset, Vector3 rotationOffset)
+        public void Mount(MapObject mapObject, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack = false)
         {
             if (MountedTransform != transform)
             {
@@ -292,15 +294,16 @@ namespace Characters
             int scriptId = -100;
             if (mapObject != null)
                 scriptId = mapObject.ScriptObject.Id;
-            _lastMountMessage = new object[] { scriptId, transformName, positionOffset, rotationOffset };
+            _lastMountMessage = new object[] { scriptId, transformName, positionOffset, rotationOffset, canMountedAttack };
             Cache.PhotonView.RPC("MountRPC", RpcTarget.All, _lastMountMessage);
         }
 
         [PunRPC]
-        public void MountRPC(int mapObjectID, string transformName, Vector3 positionOffset, Vector3 rotationOffset, PhotonMessageInfo info)
+        public void MountRPC(int mapObjectID, string transformName, Vector3 positionOffset, Vector3 rotationOffset, bool canMountedAttack, PhotonMessageInfo info)
         {
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
+            CanMountedAttack = canMountedAttack;
             MountState = HumanMountState.MapObject;
             MountedMapObject = null;
             MountedTransform = null;
@@ -336,6 +339,7 @@ namespace Characters
                     MountedTransform = transform;
                     MountedPositionOffset = positionOffset;
                     MountedRotationOffset = rotationOffset;
+                    _lastMountedPosition = MountedTransform.TransformPoint(MountedPositionOffset);
                 }
             }
         }
@@ -343,18 +347,18 @@ namespace Characters
         public void Unmount(bool immediate)
         {
             SetInterpolation(true);
-            if (MountState == HumanMountState.Horse && !immediate)
+            if (MountState != HumanMountState.None && !immediate)
             {
                 PlayAnimation(HumanAnimations.HorseDismount);
-                Cache.Rigidbody.AddForce((((Vector3.up * 10f) - (Cache.Transform.forward * 2f)) - (Cache.Transform.right * 1f)), ForceMode.VelocityChange);
-                MountState = HumanMountState.None;
+                Cache.Rigidbody.AddForce((Vector3.up * 10f) - (Cache.Transform.forward * 2f) - (Cache.Transform.right * 1f), ForceMode.VelocityChange);
             }
             else
             {
-                MountState = HumanMountState.None;
                 Idle();
-                SetTriggerCollider(false);
             }
+            if (MountState == HumanMountState.MapObject)
+                SetTriggerCollider(false);
+            MountState = HumanMountState.None;
             _lastMountMessage = null;
             Cache.PhotonView.RPC("UnmountRPC", RpcTarget.All, new object[0]);
         }
@@ -365,6 +369,7 @@ namespace Characters
             if (info.Sender != Cache.PhotonView.Owner)
                 return;
             MountState = HumanMountState.None;
+            CanMountedAttack = false;
             MountedTransform = null;
             MountedMapObject = null;
         }
@@ -1224,9 +1229,9 @@ namespace Characters
         {
             if (IsMine() && !Dead)
             {
-                HorsebackCombat = MountState == HumanMountState.Horse && SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
-                IsAttackableState = MountState == HumanMountState.None || HorsebackCombat;
-                IsRefillable = State == HumanState.Idle && (Grounded || HorsebackCombat);
+                InMountedCombat = MountState != HumanMountState.None && CanMountedAttack;
+                IsAttackableState = MountState == HumanMountState.None || InMountedCombat;
+                IsRefillable = State == HumanState.Idle && (Grounded || InMountedCombat);
                 _stateTimeLeft -= Time.deltaTime;
                 _dashCooldownLeft -= Time.deltaTime;
                 _reloadCooldownLeft -= Time.deltaTime;
@@ -1260,7 +1265,10 @@ namespace Characters
                     else
                     {
                         Cache.Transform.position = MountedTransform.TransformPoint(MountedPositionOffset);
-                        Cache.Transform.rotation = Quaternion.Euler(MountedTransform.rotation.eulerAngles + MountedRotationOffset);
+                        if (!IsAttackableState || (_state != HumanState.Attack && _state != HumanState.SpecialAttack && _state != HumanState.SpecialAction))
+                        {
+                            Cache.Transform.rotation = Quaternion.Euler(MountedTransform.rotation.eulerAngles + MountedRotationOffset);
+                        }
                     }
                 }
                 else if (MountState == HumanMountState.Horse)
@@ -1282,13 +1290,13 @@ namespace Characters
                     if (Setup.Weapon == HumanWeapon.Blade)
                     {
                         var bladeWeapon = (BladeWeapon)Weapon;
-                        if (MountState == HumanMountState.Horse && IsAttackableState)
+                        if (MountState != HumanMountState.None && IsAttackableState)
                         {
                             // This allows bladers to attack enemies on a different plane
                             var target = GetAimPoint();
                             var start = Cache.Transform.position + Cache.Transform.up * 0.8f;
                             var direction = (target - start).normalized;
-                            var forward = Horse.Cache.Transform.forward;
+                            var forward = MountedTransform.forward;
                             float maxAngle = 70f;
                             float angle = Vector3.Angle(forward, direction);
 
@@ -1476,11 +1484,20 @@ namespace Characters
                 }
                 if (MountState == HumanMountState.MapObject)
                 {
-                    Cache.Rigidbody.velocity = Vector3.zero;
-                    ToggleSparks(false);
-                    if (State != HumanState.Idle)
-                        Idle();
-                    return;
+                    if (!IsAttackableState)
+                    {
+                        Cache.Rigidbody.velocity = Vector3.zero;
+                        ToggleSparks(false);
+                        if (State != HumanState.Idle)
+                            Idle();
+                        return;
+                    }
+                    else
+                    {
+                        var currentMountedPosition = MountedTransform.TransformPoint(MountedPositionOffset);
+                        Cache.Rigidbody.velocity = (currentMountedPosition - _lastMountedPosition) / Time.deltaTime;
+                        _lastMountedPosition = currentMountedPosition;
+                    }
                 }
                 if (_hookHuman != null && !_hookHuman.Dead)
                 {
@@ -1505,7 +1522,7 @@ namespace Characters
                 {
                     rotationSpeed = 10f;
                 }
-                if (MountState != HumanMountState.Horse)
+                if (MountState == HumanMountState.None)
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 }
@@ -1618,6 +1635,8 @@ namespace Characters
                         Cache.Transform.position = Horse.Cache.Transform.position + Vector3.up * 1.95f;
                         Cache.Transform.rotation = Horse.Cache.Transform.rotation;
                         MountState = HumanMountState.Horse;
+                        MountedTransform = Horse.Cache.Transform;
+                        CanMountedAttack = SettingsManager.InGameCurrent.Misc.HorsebackCombat.Value;
                         SetInterpolation(false);
                         if (!Animation.IsPlaying(HumanAnimations.HorseIdle))
                             CrossFade(HumanAnimations.HorseIdle, 0.1f);
@@ -2244,7 +2263,7 @@ namespace Characters
                     v = position - (Cache.Rigidbody.position - new Vector3(0, 0.020f, 0)); // 0.020F gives the player the original aottg1 clipping required for bounce.
                 }
             }
-           
+
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
@@ -2869,10 +2888,10 @@ namespace Characters
                 _launchRight = true;
                 _launchRightTime = 0f;
             }
-            if (State == HumanState.Grab || State == HumanState.Reload || MountState == HumanMountState.MapObject
-                || State == HumanState.Stun)
+            // There is no need to judge the mountState of human, whether hookable is desiced by controller
+            if (State == HumanState.Grab || State == HumanState.Reload || State == HumanState.Stun)
                 return;
-            if (MountState == HumanMountState.Horse)
+            if (MountState != HumanMountState.None)
                 Unmount(true);
             if (CarryState == HumanCarryState.Carry)
                 Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
@@ -3086,7 +3105,7 @@ namespace Characters
 
         public void StartBladeSwing()
         {
-            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState == HumanMountState.Horse))
+            if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState != HumanMountState.None))
             {
                 if (SettingsManager.InputSettings.General.Left.GetKey())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;

@@ -27,7 +27,7 @@ namespace Characters
 
         public override bool CanUse()
         {
-            return base.CanUse() && (_human.HorsebackCombat || _human.Grounded);
+            return base.CanUse() && (_human.InMountedCombat || _human.Grounded);
         }
 
         protected override void Deactivate()
