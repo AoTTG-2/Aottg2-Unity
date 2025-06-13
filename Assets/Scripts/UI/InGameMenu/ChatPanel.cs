@@ -476,7 +476,8 @@ namespace UI
             {
                 for (int i = 0; i < ChatManager.RawMessages.Count; i++)
                 {
-                    if (!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i])
+                    if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) && 
+                        !ChatManager.SuggestionFlags[i] && !ChatManager.NotificationFlags[i]) // Add regular messages first (not PM, suggestions, or notifications)
                     {
                         linesToShow.Add(ChatManager.GetFormattedMessage(
                             ChatManager.RawMessages[i],
@@ -484,8 +485,27 @@ namespace UI
                             ChatManager.SuggestionFlags[i]));
                     }
                 }
+                for (int i = 0; i < ChatManager.RawMessages.Count; i++) 
+                {
+                    if (ChatManager.SuggestionFlags[i]) // Add suggestions at the bottom
+                    {
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.SuggestionFlags[i]));
+                    }
+                }
+                for (int i = 0; i < ChatManager.RawMessages.Count; i++)
+                {
+                    if (ChatManager.NotificationFlags[i]) // Add pm notifications at the very bottom
+                    {
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.NotificationFlags[i]));
+                    }
+                }
             }
-            
             UpdateVisibleMessages(linesToShow);
         }
 
@@ -959,6 +979,7 @@ namespace UI
                 StopCoroutine(_pmToggleCoroutine);
             _pmToggleCoroutine = StartCoroutine(ResetPMToggleActive());
             AddPMPartner(target);
+            ChatManager.ClearPMNotification(target.ActorNumber);
             _inputField.text = "";
             _inputField.Select();
             _inputField.ActivateInputField();

@@ -68,6 +68,7 @@ namespace GameManagers
         public static List<bool> SystemFlags = new List<bool>();
         public static List<DateTime> Timestamps = new List<DateTime>();
         public static List<bool> SuggestionFlags = new List<bool>();
+        public static List<bool> NotificationFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
         private static int MaxLines 
         {
@@ -95,6 +96,9 @@ namespace GameManagers
         private static readonly StringBuilder MessageBuilder = new StringBuilder(256);
         private static readonly StringBuilder TimeBuilder = new StringBuilder(8);
         private static readonly StringBuilder MentionBuilder = new StringBuilder(256);
+
+        private static readonly Dictionary<int, DateTime> ActivePMNotifications = new Dictionary<int, DateTime>();
+        private static readonly float NOTIFICATION_DURATION = 3.0f;
 
         private static class SuggestionState
         {
@@ -188,10 +192,10 @@ namespace GameManagers
             Timestamps.Clear();
             SenderIDs.Clear();
             SuggestionFlags.Clear();
+            NotificationFlags.Clear();
             LastException = string.Empty;
             LastExceptionCount = 0;
             FeedLines.Clear();
-
             if (IsChatAvailable())
             {
                 var chatPanel = GetChatPanel();
@@ -202,6 +206,7 @@ namespace GameManagers
                 if (feedPanel != null)
                     feedPanel.Sync();
             }
+            ActivePMNotifications.Clear();
         }
 
         public static bool IsChatActive()
@@ -242,7 +247,7 @@ namespace GameManagers
             AddLine(message, ChatTextColor.System, true);
         }
 
-        public static void AddLine(string message, ChatTextColor color = ChatTextColor.Default, bool isSystem = false, DateTime? timestamp = null, int senderID = -1, bool isSuggestion = false, bool isPM = false, int pmPartnerID = -1)
+        public static void AddLine(string message, ChatTextColor color = ChatTextColor.Default, bool isSystem = false, DateTime? timestamp = null, int senderID = -1, bool isSuggestion = false, bool isPM = false, int pmPartnerID = -1, bool isNotification = false)
         {
             message = message.FilterSizeTag();
             string formattedMessage = GetColorString(message, color);
@@ -253,6 +258,7 @@ namespace GameManagers
             Timestamps.Add(messageTime);
             SenderIDs.Add(senderID);
             SuggestionFlags.Add(isSuggestion);
+            NotificationFlags.Add(isNotification);
             PrivateFlags.Add(isPM);
             PMPartnerIDs.Add(pmPartnerID);
             if (RawMessages.Count > MaxLines)
@@ -263,6 +269,7 @@ namespace GameManagers
                 Timestamps.RemoveAt(0);
                 SenderIDs.RemoveAt(0);
                 SuggestionFlags.RemoveAt(0);
+                NotificationFlags.RemoveAt(0);
                 PrivateFlags.RemoveAt(0);
                 PMPartnerIDs.RemoveAt(0);
             }
@@ -307,6 +314,7 @@ namespace GameManagers
                 Timestamps[lastIndex] = timestamp;
                 SenderIDs[lastIndex] = -1;
                 SuggestionFlags[lastIndex] = false;
+                NotificationFlags[lastIndex] = false;
                 PrivateFlags[lastIndex] = false;
                 PMPartnerIDs[lastIndex] = -1;
 
@@ -885,6 +893,7 @@ namespace GameManagers
                         chatPanel.Activate();
                 }
             }
+            UpdatePMNotifications();
         }
 
         public static void HandleTyping(string input)
@@ -1110,6 +1119,7 @@ namespace GameManagers
                     Timestamps.RemoveAt(i);
                     SenderIDs.RemoveAt(i);
                     SuggestionFlags.RemoveAt(i);
+                    NotificationFlags.RemoveAt(i);
                     PrivateFlags.RemoveAt(i);
                     PMPartnerIDs.RemoveAt(i);
                 }
@@ -1173,8 +1183,7 @@ namespace GameManagers
                         panel.AddPMPartner(senderPlayer);
                         if (!panel.IsInPMMode() || panel.GetCurrentPMTarget().ActorNumber != senderPlayer.ActorNumber)
                         {
-                            AddLine($"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(" (Esc)", ChatTextColor.System)}", 
-                                ChatTextColor.Default, true, DateTime.UtcNow, -1, false, false, -1);
+                            ShowPMNotification(senderPlayer);
                         }
                     }
                 }
@@ -1243,6 +1252,78 @@ namespace GameManagers
                     }
                 }
             }
+        }
+
+        public static void ShowPMNotification(Player senderPlayer)
+        {
+            if (senderPlayer == null) return;
+            int senderID = senderPlayer.ActorNumber;
+            DateTime currentTime = DateTime.UtcNow;
+            if (ActivePMNotifications.ContainsKey(senderID))
+            {
+                ActivePMNotifications[senderID] = currentTime;
+                return;
+            }
+            ActivePMNotifications[senderID] = currentTime;
+            string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(" (Esc)", ChatTextColor.System)}";
+            AddLine(notificationText, ChatTextColor.MyPlayer, true, currentTime, senderID, false, false, -1, true);
+        }
+
+        public static void UpdatePMNotifications()
+        {
+            DateTime currentTime = DateTime.UtcNow;
+            var expiredNotifications = new List<int>();
+            foreach (var kvp in ActivePMNotifications)
+            {
+                if ((currentTime - kvp.Value).TotalSeconds >= NOTIFICATION_DURATION)
+                {
+                    expiredNotifications.Add(kvp.Key);
+                }
+            }
+            foreach (int playerID in expiredNotifications)
+            {
+                ActivePMNotifications.Remove(playerID);
+                ClearPMNotificationFromChat(playerID);
+            }
+        }
+
+        private static void ClearPMNotificationFromChat(int playerID)
+        {
+            for (int i = RawMessages.Count - 1; i >= 0; i--)
+            {
+                if (NotificationFlags[i] && SenderIDs[i] == playerID)
+                {
+                    RawMessages.RemoveAt(i);
+                    Colors.RemoveAt(i);
+                    SystemFlags.RemoveAt(i);
+                    Timestamps.RemoveAt(i);
+                    SenderIDs.RemoveAt(i);
+                    SuggestionFlags.RemoveAt(i);
+                    NotificationFlags.RemoveAt(i);
+                    PrivateFlags.RemoveAt(i);
+                    PMPartnerIDs.RemoveAt(i);
+                }
+            }
+            if (IsChatAvailable())
+            {
+                var panel = GetChatPanel();
+                if (panel != null)
+                    panel.Sync();
+            }
+        }
+
+        public static void ClearPMNotification(int playerID)
+        {
+            if (ActivePMNotifications.ContainsKey(playerID))
+            {
+                ActivePMNotifications.Remove(playerID);
+                ClearPMNotificationFromChat(playerID);
+            }
+        }
+
+        public static bool HasActivePMNotification(int playerID)
+        {
+            return ActivePMNotifications.ContainsKey(playerID);
         }
     }
 
