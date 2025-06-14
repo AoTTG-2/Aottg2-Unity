@@ -103,17 +103,35 @@ namespace GameManagers
         private static class SuggestionState
         {
             public static string PartialText = "";
+            public static string OriginalText = "";
+            public static int OriginalStartPos = -1;
+            public static int OriginalEndPos = -1;
             public static List<string> Suggestions = new List<string>();
             public static int CurrentIndex = -1;
             public static SuggestionType Type = SuggestionType.None;
+            public static bool IsTabCompleting = false;
             
             public static void Clear()
             {
                 PartialText = "";
+                OriginalText = "";
+                OriginalStartPos = -1;
+                OriginalEndPos = -1;
                 Suggestions.Clear();
                 CurrentIndex = -1;
                 Type = SuggestionType.None;
+                IsTabCompleting = false;
             }
+
+            public static void SetOriginalContext(string original, int startPos, int endPos)
+            {
+                OriginalText = original;
+                OriginalStartPos = startPos;
+                OriginalEndPos = endPos;
+            }
+
+            public static bool HasSuggestions => Suggestions.Count > 0;
+            public static bool IsActive => Type != SuggestionType.None && HasSuggestions;
         }
 
         private enum SuggestionType
@@ -898,6 +916,63 @@ namespace GameManagers
 
         public static void HandleTyping(string input)
         {
+            if (SuggestionState.Type == SuggestionType.Mention && input.Contains("@"))
+            {
+                int lastAt = input.LastIndexOf('@');
+                if (lastAt >= 0)
+                {
+                    string afterAt = input.Substring(lastAt + 1);
+                    if (afterAt.Contains(' ') || afterAt.Contains('\t'))
+                    {
+                        ClearLastSuggestions();
+                        return;
+                    }
+                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) && 
+                        afterAt.Length < SuggestionState.PartialText.Length &&
+                        SuggestionState.PartialText.StartsWith(afterAt, StringComparison.OrdinalIgnoreCase))
+                    {
+                        SuggestionState.IsTabCompleting = false;
+                    }
+                }
+            }
+            
+            if (SuggestionState.Type == SuggestionType.Command && input.StartsWith("/"))
+            {
+                int spaceIndex = input.IndexOf(' ');
+                if (spaceIndex > 0)
+                {
+                    string command = input.Substring(1, spaceIndex - 1).ToLower();
+                    if (CommandsCache.TryGetValue(command, out CommandAttribute cmdAttr))
+                    {
+                        if (cmdAttr.AutofillType == AutofillType.None && cmdAttr.Parameters.Length == 0)
+                        {
+                            ClearLastSuggestions();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        ClearLastSuggestions();
+                        return;
+                    }
+                }
+                else
+                {
+                    string currentCommand = input.Substring(1).ToLower();
+                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) && 
+                        currentCommand.Length < SuggestionState.PartialText.Length &&
+                        SuggestionState.PartialText.StartsWith(currentCommand, StringComparison.OrdinalIgnoreCase))
+                    {
+                        SuggestionState.IsTabCompleting = false;
+                    }
+                }
+            }
+            
+            if (SuggestionState.IsTabCompleting)
+            {
+                SuggestionState.IsTabCompleting = false;
+                return;
+            }
             if (string.IsNullOrEmpty(input) || input == "@" || input == "/")
             {
                 ClearLastSuggestions();
@@ -921,6 +996,8 @@ namespace GameManagers
                         ClearLastSuggestions();
                         SuggestionState.PartialText = partial;
                         SuggestionState.Type = SuggestionType.PlayerID;
+                        SuggestionState.CurrentIndex = -1;
+                        SuggestionState.SetOriginalContext(partial, spaceIndex + 1, input.Length);
                         var players = new List<Player>();
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
@@ -931,16 +1008,9 @@ namespace GameManagers
                             }
                         }
                         players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
-
                         if (players.Count > 0)
                         {
-                            AddLine("Matching players:", ChatTextColor.MyPlayer, true, isSuggestion: true);
-                            foreach (var player in players)
-                            {
-                                string name = player.GetStringProperty(PlayerProperty.Name).FilterSizeTag();
-                                AddLine($"{player.ActorNumber}. {name}", ChatTextColor.MyPlayer, true, isSuggestion: true);
-                            }
-                            
+                            ShowCommandSuggestions(players.Select(p => $"{GetColorString($"[{p.ActorNumber}]", ChatTextColor.ID)} {p.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}").ToList());
                             SuggestionState.Suggestions.Clear();
                             foreach (var player in players)
                             {
@@ -956,6 +1026,8 @@ namespace GameManagers
                         ClearLastSuggestions();
                         SuggestionState.PartialText = command;
                         SuggestionState.Type = SuggestionType.Command;
+                        SuggestionState.CurrentIndex = -1;
+                        SuggestionState.SetOriginalContext("/" + command, 0, input.Length);
                         var matchingCommands = new List<KeyValuePair<string, CommandAttribute>>();
                         foreach (var cmd in CommandsCache)
                         {
@@ -967,11 +1039,11 @@ namespace GameManagers
                         matchingCommands.Sort((a, b) => string.Compare(a.Key, b.Key, StringComparison.Ordinal));
                         if (matchingCommands.Count > 0)
                         {
+                            var suggestionTexts = new List<string>();
                             foreach (var cmd in matchingCommands)
                             {
                                 MessageBuilder.Clear();
                                 MessageBuilder.Append('/').Append(cmd.Key);
-                                
                                 if (cmd.Value.Parameters.Length > 0)
                                 {
                                     MessageBuilder.Append(' ');
@@ -981,8 +1053,9 @@ namespace GameManagers
                                         MessageBuilder.Append('[').Append(cmd.Value.Parameters[i]).Append(']');
                                     }
                                 }
-                                AddLine(MessageBuilder.ToString(), ChatTextColor.MyPlayer, true, isSuggestion: true);
+                                suggestionTexts.Add(GetColorString(MessageBuilder.ToString(), ChatTextColor.MyPlayer));
                             }
+                            ShowCommandSuggestions(suggestionTexts);
                             SuggestionState.Suggestions.Clear();
                             foreach (var cmd in matchingCommands)
                             {
@@ -1008,6 +1081,8 @@ namespace GameManagers
                     ClearLastSuggestions();
                     SuggestionState.PartialText = partial;
                     SuggestionState.Type = SuggestionType.Mention;
+                    SuggestionState.CurrentIndex = -1;
+                    SuggestionState.SetOriginalContext("@" + partial, lastAt, lastAt + partial.Length + 1);
                     var players = new List<Player>();
                     string partialLower = partial.ToLower();
                     bool isNumeric = partial.All(char.IsDigit);
@@ -1031,12 +1106,11 @@ namespace GameManagers
                     players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
                     if (players.Count > 0)
                     {
-                        AddLine("Matching players:", ChatTextColor.MyPlayer, true, isSuggestion: true);
+                        ShowCommandSuggestions(players.Select(p => $"{GetColorString($"[{p.ActorNumber}]", ChatTextColor.ID)} {p.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}").ToList());
+                        
                         SuggestionState.Suggestions.Clear();
                         foreach (var player in players)
                         {
-                            string name = player.GetStringProperty(PlayerProperty.Name).FilterSizeTag();
-                            AddLine($"{player.ActorNumber}. {name}", ChatTextColor.MyPlayer, true, isSuggestion: true);
                             SuggestionState.Suggestions.Add(player.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText());
                         }
                     }
@@ -1048,63 +1122,159 @@ namespace GameManagers
             }
         }
 
+        private static void ShowCommandSuggestions(List<string> suggestions)
+        {
+            for (int i = 0; i < suggestions.Count; i++)
+            {
+                bool isSelected = i == SuggestionState.CurrentIndex;
+                string suggestionText = suggestions[i];
+                if (isSelected)
+                {
+                    string leftArrow = GetColorString("> ", ChatTextColor.MyPlayer);
+                    string rightArrow = GetColorString(" <", ChatTextColor.MyPlayer);
+                    suggestionText = $"{leftArrow}{suggestionText}{rightArrow}";
+                }
+                AddLine(suggestionText, ChatTextColor.Default, true, isSuggestion: true);
+            }
+        }
+
         public static void HandleTabComplete()
         {
-            if (SuggestionState.Type == SuggestionType.None || 
-                SuggestionState.Suggestions.Count == 0)
+            if (!SuggestionState.IsActive)
                 return;
+                
             var chatPanel = GetChatPanel();
             if (chatPanel == null) return;
             string currentInput = chatPanel.GetInputText();
             if ((currentInput.StartsWith("/") && SuggestionState.Type == SuggestionType.Mention) ||
                 (!currentInput.StartsWith("/") && (SuggestionState.Type == SuggestionType.Command || SuggestionState.Type == SuggestionType.PlayerID)))
             {
-                SuggestionState.Type = SuggestionType.None;
-                SuggestionState.Suggestions.Clear();
-                SuggestionState.CurrentIndex = -1;
+                ClearLastSuggestions();
                 return;
             }
             SuggestionState.CurrentIndex++;
             if (SuggestionState.CurrentIndex >= SuggestionState.Suggestions.Count)
+            {
                 SuggestionState.CurrentIndex = 0;
+            }
             string chosen = SuggestionState.Suggestions[SuggestionState.CurrentIndex];
+            string newText = BuildCompletedText(currentInput, chosen);
+            UpdatePartialTextAfterCompletion(newText, chosen);
+            RefreshSuggestionDisplay();
+            SuggestionState.IsTabCompleting = true;
+            chatPanel.SetTextAndPositionCaret(newText);
+        }
+        
+        private static string BuildCompletedText(string currentInput, string suggestion)
+        {
             string newText = currentInput;
             switch (SuggestionState.Type)
             {
-                case SuggestionType.PlayerID:
-                    string[] parts = currentInput.Split(' ');
-                    if (parts.Length > 0)
-                    {
-                        string command = parts[0];
-                        newText = $"{command} {chosen}";
-                    }
-                    break;
                 case SuggestionType.Command:
-                    int firstSpace = currentInput.IndexOf(' ');
-                    if (firstSpace < 0) firstSpace = currentInput.Length;
-                    string prefix = currentInput.Substring(0, 1);
-                    string suffix = firstSpace < currentInput.Length ? currentInput.Substring(firstSpace) : "";
-                    newText = prefix + chosen + suffix;
+                    newText = $"/{suggestion}";
+                    break;
+                case SuggestionType.PlayerID:
+                    string beforeID = currentInput.Substring(0, SuggestionState.OriginalStartPos);
+                    newText = beforeID + suggestion;
                     break;
                 case SuggestionType.Mention:
-                    if (!currentInput.StartsWith("/"))
+                    int atPos = SuggestionState.OriginalStartPos;
+                    if (atPos < 0 || atPos >= currentInput.Length || currentInput[atPos] != '@')
                     {
-                        int lastAt = currentInput.LastIndexOf('@');
-                        if (lastAt >= 0)
+                        atPos = currentInput.LastIndexOf('@');
+                    }
+                    if (atPos >= 0)
+                    {
+                        int mentionEnd = atPos + 1;
+                        while (mentionEnd < currentInput.Length && 
+                               currentInput[mentionEnd] != ' ' && 
+                               currentInput[mentionEnd] != '\t')
                         {
-                            string beforeAt = currentInput.Substring(0, lastAt + 1);
-                            string afterMention = "";
-                            int spaceAfterAt = currentInput.IndexOf(' ', lastAt);
-                            if (spaceAfterAt >= 0)
-                                afterMention = currentInput.Substring(spaceAfterAt);
-
-                            string playerName = chosen.Trim();
-                            newText = beforeAt + playerName + afterMention;
+                            mentionEnd++;
                         }
+                        string beforeMention = currentInput.Substring(0, atPos);
+                        string afterMention = mentionEnd < currentInput.Length ? currentInput.Substring(mentionEnd) : "";
+                        newText = beforeMention + "@" + suggestion + afterMention;
                     }
                     break;
             }
-            chatPanel.SetTextAndPositionCaret(newText);
+            return newText;
+        }
+        
+        private static void RefreshSuggestionDisplay()
+        {
+            for (int i = RawMessages.Count - 1; i >= 0; i--)
+            {
+                if (SuggestionFlags[i])
+                {
+                    RawMessages.RemoveAt(i);
+                    Colors.RemoveAt(i);
+                    SystemFlags.RemoveAt(i);
+                    Timestamps.RemoveAt(i);
+                    SenderIDs.RemoveAt(i);
+                    SuggestionFlags.RemoveAt(i);
+                    NotificationFlags.RemoveAt(i);
+                    PrivateFlags.RemoveAt(i);
+                    PMPartnerIDs.RemoveAt(i);
+                }
+            }
+            string header = "";
+            List<string> displayTexts = new List<string>();
+            switch (SuggestionState.Type)
+            {
+                case SuggestionType.Command:
+                    header = $"Commands matching '/{SuggestionState.PartialText}':";
+                    foreach (var suggestion in SuggestionState.Suggestions)
+                    {
+                        MessageBuilder.Clear();
+                        MessageBuilder.Append('/').Append(suggestion);
+                        if (CommandsCache.TryGetValue(suggestion, out CommandAttribute cmdAttr) && cmdAttr.Parameters.Length > 0)
+                        {
+                            MessageBuilder.Append(' ');
+                            for (int i = 0; i < cmdAttr.Parameters.Length; i++)
+                            {
+                                if (i > 0) MessageBuilder.Append(' ');
+                                MessageBuilder.Append('[').Append(cmdAttr.Parameters[i]).Append(']');
+                            }
+                        }
+                        displayTexts.Add(GetColorString(MessageBuilder.ToString(), ChatTextColor.MyPlayer));
+                    }
+                    break;                    
+                case SuggestionType.PlayerID:
+                    header = "Matching players:";
+                    foreach (var suggestion in SuggestionState.Suggestions)
+                    {
+                        if (int.TryParse(suggestion, out int playerId))
+                        {
+                            var player = PhotonNetwork.CurrentRoom.GetPlayer(playerId);
+                            if (player != null)
+                            {
+                                string name = player.GetStringProperty(PlayerProperty.Name).FilterSizeTag();
+                                displayTexts.Add($"{GetColorString($"[{playerId}]", ChatTextColor.ID)} {name}");
+                            }
+                        }
+                    }
+                    break;                    
+                case SuggestionType.Mention:
+                    header = $"Players matching '@{SuggestionState.PartialText}':";
+                    foreach (var suggestion in SuggestionState.Suggestions)
+                    {
+                        var player = PhotonNetwork.PlayerList.FirstOrDefault(p => 
+                            p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().Equals(suggestion, StringComparison.OrdinalIgnoreCase));
+                        if (player != null)
+                        {
+                            displayTexts.Add($"{GetColorString($"[{player.ActorNumber}]", ChatTextColor.ID)} {player.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}");
+                        }
+                    }
+                    break;
+            }            
+            ShowCommandSuggestions(displayTexts);
+            if (IsChatAvailable())
+            {
+                var panel = GetChatPanel();
+                if (panel != null)
+                    panel.Sync();
+            }
         }
 
         public static void ClearLastSuggestions()
@@ -1140,9 +1310,7 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            
-            RPCManager.PhotonView.RPC("PrivateChatRPC", RpcTarget.All,
-                new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC("PrivateChatRPC", RpcTarget.All, new object[] { message, target.ActorNumber });
         }
 
         public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
@@ -1324,6 +1492,30 @@ namespace GameManagers
         public static bool HasActivePMNotification(int playerID)
         {
             return ActivePMNotifications.ContainsKey(playerID);
+        }
+
+        private static void UpdatePartialTextAfterCompletion(string newText, string chosen)
+        {
+            switch (SuggestionState.Type)
+            {
+                case SuggestionType.Command:
+                    SuggestionState.PartialText = chosen;
+                    break;
+                case SuggestionType.PlayerID:
+                    SuggestionState.PartialText = chosen;
+                    break;
+                case SuggestionType.Mention:
+                    int lastAt = newText.LastIndexOf('@');
+                    if (lastAt >= 0 && lastAt + 1 < newText.Length)
+                    {
+                        string afterAt = newText.Substring(lastAt + 1);
+                        int spaceIndex = afterAt.IndexOf(' ');
+                        if (spaceIndex >= 0)
+                            afterAt = afterAt.Substring(0, spaceIndex);
+                        SuggestionState.PartialText = afterAt;
+                    }
+                    break;
+            }
         }
     }
 

@@ -725,6 +725,10 @@ namespace UI
                                 EnterPMMode(_pmPartners[_currentPMIndex]);
                             }
                         }
+                        else
+                        {
+                            ChatManager.ClearLastSuggestions();
+                        }
                     }
                 }
             }
