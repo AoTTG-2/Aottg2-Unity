@@ -16,6 +16,7 @@ namespace CustomLogic
         private Dictionary<string, AnimationClip> _animatorClips;
 
         private readonly Animation _animation;
+        private readonly Animator _animator;
         private readonly AudioSource _audioSource;
         private readonly ParticleSystem _particleSystem;
 
@@ -24,6 +25,7 @@ namespace CustomLogic
             Value = transform;
 
             _animation = Value.GetComponent<Animation>();
+            _animator = Value.GetComponent<Animator>();
             _audioSource = Value.GetComponent<AudioSource>();
             _particleSystem = Value.GetComponent<ParticleSystem>();
         }
@@ -145,19 +147,63 @@ namespace CustomLogic
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animation != null) {
-                if (!animation.IsPlaying(anim))
-                    animation.CrossFade(anim, fade);
+            if (_animation != null) {
+                if (!_animation.IsPlaying(anim))
+                    _animation.CrossFade(anim, fade);
                 return;
             }
-            var animator = Value.GetComponent<Animator>();
-            if (animator != null)
+
+            if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
                 if (_currentAnimation != anim)
                 {
-                    animator.CrossFade(anim, fade);
+                    _animator.CrossFade(anim, fade);
+                    _currentAnimation = anim;
+                }
+            }
+        }
+
+        [CLMethod("Plays the specified animation at the given normalized time.")]
+        public void PlayAnimationAt(string anim, float time, float fade = 0.1f)
+        {
+            if (_animation != null)
+            {
+                if (!_animation.IsPlaying(anim))
+                {
+                    _animation.CrossFade(anim, fade);
+                    _animation[anim].time = time;
+                }
+                return;
+            }
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    _animator.CrossFade(anim, fade, 0, time);
+                    _currentAnimation = anim;
+                }
+            }
+        }
+
+        [CLMethod("Sets the given animations playback speed.")]
+        public void SetAnimationSpeed(string anim, float speed)
+        {
+            if (_animation != null)
+            {
+                if (!_animation.IsPlaying(anim))
+                {
+                    _animation[anim].speed = speed;
+                }
+                return;
+            }
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    _animator.speed = speed;
                     _currentAnimation = anim;
                 }
             }
@@ -166,17 +212,15 @@ namespace CustomLogic
         [CLMethod("Gets the length of the specified animation.")]
         public float GetAnimationLength(string anim)
         {
-            var animation = Value.GetComponent<Animation>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animation != null)
-                return animation[anim].length;
-            var animator = Value.GetComponent<Animator>();  // TODO: Cache this value or find a way to avoid calling GetComponent every time.
-            if (animator != null)
+            if (_animation != null)
+                return _animation[anim].length;
+            if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
                 if (_animatorClips == null)
                 {
                     _animatorClips = new Dictionary<string, AnimationClip>();
-                    foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+                    foreach (AnimationClip clip in _animator.runtimeAnimatorController.animationClips)
                         _animatorClips[clip.name.Replace('.', '_')] = clip;
                 }
                 return _animatorClips[anim].length;
