@@ -30,7 +30,7 @@ namespace CustomLogic
                 var arr = param.Split(':');
                 string name = arr[0];
                 string value = arr[1];
-                if (Variables.ContainsKey(name))
+                if (Variables.ContainsKey(name) && name != "Type")
                 {
                     Variables[name] = DeserializeValue(Variables[name], value);
                 }

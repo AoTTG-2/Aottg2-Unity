@@ -117,7 +117,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Vector3.Angle"/>
         [CLMethod]
-        public static float Angle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to) => Vector3.Angle(from, to);
+        public static float Angle(CustomLogicVector3Builtin from, CustomLogicVector3Builtin to) => Vector3.Angle(from.Value, to.Value);
 
         /// <inheritdoc cref="Vector3.ClampMagnitude"/>
         [CLMethod]
@@ -202,7 +202,7 @@ namespace CustomLogic
         /// Returns the Vector3 multiplied by scale.
         /// </summary>
         /// <param name="scale">float | Vector3</param>
-        [CLMethod, Obsolete("Use multiply operator instead")]
+        [CLMethod]
         public CustomLogicVector3Builtin Scale(object scale)
         {
             if (scale is float fScale)
@@ -222,7 +222,7 @@ namespace CustomLogic
         /// <param name="a">Vector3</param>
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
-        [CLMethod, Obsolete("Use multiply operator instead")]
+        [CLMethod]
         public CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.MultiplyVectors(a, b));
@@ -234,7 +234,7 @@ namespace CustomLogic
         /// <param name="a">Vector3</param>
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
-        [CLMethod, Obsolete("Use divide operator instead")]
+        [CLMethod]
         public CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.DivideVectors(a, b));

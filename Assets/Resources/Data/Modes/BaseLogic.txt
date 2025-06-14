@@ -176,7 +176,7 @@ component Floater
                     self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
 
                     wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
-                    self._rb.AddForceWithMode(bForce, "VeclocityChange");
+                    self._rb.AddForceWithMode(bForce, "Acceleration");
 
                     ag = self._rb.GetAngularVelocity();
                     agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
@@ -1927,42 +1927,50 @@ component Rigidbody
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        self.MapObject.AddRigidbody(self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
     }
 
     function SetVelocity(velocity)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "SetVelocity", velocity);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "SetVelocity", velocity);
+        self.MapObject.Rigidbody.Velocity = velocity;
     }
 
     function AddForce(force)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
+        self.MapObject.Rigidbody.AddForce(force);
     }
 
     function AddForceWithMode(force, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode);
+        self.MapObject.Rigidbody.AddForce(force, mode);
     }
 
     function AddForceWithModeAtPoint(force, point, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force, mode, point);
+        self.MapObject.Rigidbody.AddForce(force, mode, point);
     }
 
     function AddTorque(force, mode)
     {
-        self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+        # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddTorque", force, mode);
+        self.MapObject.Rigidbody.AddTorque(force, mode);
     }
 
     function GetVelocity()
     {
-        return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+        # return self.MapObject.ReadBuiltinComponent("Rigidbody", "Velocity");
+        return self.MapObject.Rigidbody.Velocity;
     }
 
     function GetAngularVelocity()
     {
-        return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
+        # return self.MapObject.ReadBuiltinComponent("Rigidbody", "AngularVelocity");
+        return self.MapObject.Rigidbody.AngularVelocity;
     }
 }
 

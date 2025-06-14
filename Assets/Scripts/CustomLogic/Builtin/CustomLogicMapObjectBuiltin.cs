@@ -18,6 +18,7 @@ namespace CustomLogic
     partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
         public MapObject Value;
+        private CustomLogicRigidbodyBuiltin _rigidBody = null;
         private Vector3 _internalRotation;
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
@@ -876,6 +877,52 @@ namespace CustomLogic
                 }
             }
         }
+
+        [CLMethod(description: "Add a Rigidbody component to the MapObject")]
+        public CustomLogicRigidbodyBuiltin AddRigidbody(float mass = 1.0f, CustomLogicVector3Builtin gravity = null, bool freezeRotation = true, bool interpolate = false)
+        {
+            if (Value.ScriptObject.Static)
+            {
+                throw new System.Exception("AddRigidbody cannot be called on a static MapObject.");
+            }
+            if (_rigidBody != null)
+            {
+                throw new System.Exception("MapObject already has a Rigidbody.");
+            }
+            _rigidBody = new CustomLogicRigidbodyBuiltin(this, mass, gravity?.Value, freezeRotation, interpolate);
+            return _rigidBody;
+        }
+
+        // Remove a Rigidbody component from the MapObject
+        [CLMethod(description: "Remove the Rigidbody component from the MapObject")]
+        public void RemoveRigidbody()
+        {
+            if (Value.ScriptObject.Static)
+            {
+                throw new System.Exception("RemoveRigidbody cannot be called on a static MapObject.");
+            }
+            if (_rigidBody == null)
+            {
+                throw new System.Exception("MapObject does not have a Rigidbody.");
+            }
+            _rigidBody = null;
+            Object.Destroy(Value.GameObject.GetComponent<Rigidbody>());
+        }
+
+        // Prop to get RigidBody
+        [CLProperty(description: "The Rigidbody component of the MapObject, is null if not added.")]
+        public CustomLogicRigidbodyBuiltin Rigidbody
+        {
+            get
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception("Rigidbody cannot be accessed on a static MapObject.");
+                }
+                return _rigidBody;
+            }
+        }
+
 
         private void AssertRendererGet()
         {
