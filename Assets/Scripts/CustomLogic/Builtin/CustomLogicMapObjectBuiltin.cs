@@ -18,7 +18,7 @@ namespace CustomLogic
     partial class CustomLogicMapObjectBuiltin : BuiltinClassInstance
     {
         public MapObject Value;
-        private CustomLogicRigidbodyBuiltin _rigidBody = null;
+        private CustomLogicRigidbodyBuiltin _rigidBody;
         private Vector3 _internalRotation;
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
@@ -915,10 +915,6 @@ namespace CustomLogic
         {
             get
             {
-                if (Value.ScriptObject.Static)
-                {
-                    throw new System.Exception("Rigidbody cannot be accessed on a static MapObject.");
-                }
                 return _rigidBody;
             }
         }

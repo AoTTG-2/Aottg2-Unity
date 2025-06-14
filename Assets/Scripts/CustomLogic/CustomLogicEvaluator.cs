@@ -22,6 +22,7 @@ namespace CustomLogic
         public float CurrentTime;
         public bool HasSetMusic = false;
         public Dictionary<int, CustomLogicNetworkViewBuiltin> IdToNetworkView = new Dictionary<int, CustomLogicNetworkViewBuiltin>();
+        public Dictionary<int, CustomLogicMapObjectBuiltin> IdToMapObjectBuiltin = new Dictionary<int, CustomLogicMapObjectBuiltin>();
         protected CustomLogicStartAst _start;
         protected Dictionary<string, CustomLogicClassInstance> _staticClasses = new Dictionary<string, CustomLogicClassInstance>();
         protected Dictionary<string, List<CustomLogicClassInstance>> _callbacks = new Dictionary<string, List<CustomLogicClassInstance>>();
@@ -375,6 +376,7 @@ namespace CustomLogic
             if (obj.ScriptObject is MapScriptSceneObject)
             {
                 var photonView = SetupNetworking(obj);
+                var mapObjectBuiltin = SetupMapObject(obj);
                 List<MapScriptComponent> components = ((MapScriptSceneObject)obj.ScriptObject).Components;
                 bool rigidbody = false;
                 foreach (var component in components)
@@ -428,6 +430,7 @@ namespace CustomLogic
                 };
 
                 var photonView = SetupNetworking(obj);
+                var mapObjectBuiltin = SetupMapObject(obj);
                 CustomLogicComponentInstance instance = CreateComponentInstance(componentName, obj, component);
                 obj.RegisterComponentInstance(instance);
                 EvaluateMethod(instance, "Init");
@@ -465,7 +468,7 @@ namespace CustomLogic
             CustomLogicNetworkViewBuiltin networkView = null;
             if (obj.ScriptObject.Networked)
                 networkView = IdToNetworkView[obj.ScriptObject.Id];
-            var classInstance = new CustomLogicComponentInstance(className, obj, script, networkView);
+            var classInstance = new CustomLogicComponentInstance(className, IdToMapObjectBuiltin[obj.ScriptObject.Id], script, networkView);
             if (networkView != null)
                 networkView.RegisterComponentInstance(classInstance);
             RunAssignmentsClassInstance(classInstance);
@@ -496,6 +499,15 @@ namespace CustomLogic
                     continue;
                 FindSubcolliders(child, set);
             }
+        }
+
+        public CustomLogicMapObjectBuiltin SetupMapObject(MapObject obj)
+        {
+            if (!IdToMapObjectBuiltin.ContainsKey(obj.ScriptObject.Id))
+            {
+                IdToMapObjectBuiltin.Add(obj.ScriptObject.Id, new CustomLogicMapObjectBuiltin(obj));
+            }
+            return IdToMapObjectBuiltin[obj.ScriptObject.Id];
         }
 
         public CustomLogicPhotonSync SetupNetworking(MapObject obj)

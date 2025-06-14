@@ -285,12 +285,16 @@ namespace CustomLogic
         [CLMethod(description: "Print a debug statement to the console")]
         public void Debug(object message)
         {
+            if (message == null)
+                message = "null";
             DebugConsole.Log(message.ToString(), true);
         }
 
         [CLMethod(description: "Print a message to the chat")]
         public void Print(object message)
         {
+            if (message == null)
+                message = "null";
             ChatManager.AddLine(message.ToString(), ChatTextColor.System);
         }
 

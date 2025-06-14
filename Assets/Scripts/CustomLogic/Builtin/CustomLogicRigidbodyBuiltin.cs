@@ -429,22 +429,5 @@ namespace CustomLogic
         {
             Value.PublishTransform();
         }
-
-        // Unbind component
-        [CLMethod(Description = "Unbind the Rigidbody component from the MapObject. This will remove the Rigidbody component from the GameObject and destroy it.")]
-        public void UnbindComponent()
-        {
-            if (Owner != null)
-            {
-                GameObject.Destroy(Value);
-                Owner = null;
-                OwnerMapObject = null;
-                Value = null;
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot unbind a Rigidbody that is not bound to a MapObject.");
-            }
-        }
     }
 }

@@ -20,6 +20,14 @@ namespace CustomLogic
             NetworkView = networkView;
         }
 
+        public CustomLogicComponentInstance(string name, CustomLogicMapObjectBuiltin obj, MapScriptComponent script,
+            CustomLogicNetworkViewBuiltin networkView) : base(name)
+        {
+            MapObject = obj;
+            _script = script;
+            NetworkView = networkView;
+        }
+
         public void LoadVariables()
         {
             Variables.Add("MapObject", MapObject);
