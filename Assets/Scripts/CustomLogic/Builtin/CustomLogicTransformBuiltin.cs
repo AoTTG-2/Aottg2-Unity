@@ -163,6 +163,47 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod("Plays the specified animation starting from a normalized time.")]
+        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f)
+        {
+            if (_animation != null)
+            {
+                if (!_animation.IsPlaying(anim))
+                {
+                    _animation.CrossFade(anim, fade);
+                    _animation[anim].normalizedTime = normalizedTime;
+                }
+                return;
+            }
+
+            var animator = Value.GetComponent<Animator>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
+            if (animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                if (_currentAnimation != anim)
+                {
+                    animator.CrossFade(anim, fade, 0, normalizedTime);
+                    _currentAnimation = anim;
+                }
+            }
+        }
+
+        [CLMethod("Sets the animation playback speed")]
+        public void SetAnimationSpeed(float speed)
+        {
+            if (_animation != null)
+            {
+                foreach (AnimationState state in _animation)
+                   state.speed = speed;
+
+                return;
+            }
+
+            var animator = Value.GetComponent<Animator>();    // TODO: Cache this value or find a way to avoid calling GetComponent every time.
+            if (animator != null)
+                animator.speed = speed;
+        }
+
         [CLMethod("Gets the length of the specified animation.")]
         public float GetAnimationLength(string anim)
         {
