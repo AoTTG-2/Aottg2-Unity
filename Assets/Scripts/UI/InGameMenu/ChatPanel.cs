@@ -289,11 +289,11 @@ namespace UI
 
             var tmpText = emojiButtonGo.GetComponent<TextMeshProUGUI>();
             tmpText.text = "☺";
-            tmpText.fontSize = 28;
+            tmpText.fontSize = 24;
             tmpText.alignment = TextAlignmentOptions.Center;
             tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmpText.horizontalAlignment = HorizontalAlignmentOptions.Center;
-            tmpText.margin = new Vector4(0, -1, 0, 1);
+            tmpText.margin = new Vector4(0, 0, 0, 0);
             tmpText.color = new Color(1f, 1f, 1f, 0.5f);
             _emojiButton = emojiButtonGo.GetComponent<Button>();
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
