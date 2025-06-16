@@ -43,19 +43,19 @@ namespace Projectiles
                 {
                     character.GetHit(_owner.Name + "'s Rock", damage, "Rock", collision.collider.name);
                 }
-                KillPlayersInRadius(_size * 2f, damage);
+                KillPlayersInRadius(_size * 2f, damage, character);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);
                 DestroySelf();
             }
         }
 
-        void KillPlayersInRadius(float radius, int damage)
+        void KillPlayersInRadius(float radius, int damage, BaseCharacter damagedHuman)
         {
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             var position = transform.position;
             foreach (Human human in gameManager.Humans)
             {
-                if (human == null || human.Dead)
+                if (human == null || human.Dead || human == damagedHuman)
                     continue;
                 if (Vector3.Distance(human.Cache.Transform.position, position) < radius && !TeamInfo.SameTeam(human, _team))
                     human.GetHit(_owner.Name + "'s Rock", damage, "Rock", "");
