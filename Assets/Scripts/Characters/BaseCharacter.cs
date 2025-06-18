@@ -421,14 +421,16 @@ namespace Characters
         }
 
         [PunRPC]
-        public void PlaySoundRPC(string sound, PhotonMessageInfo info)
+        public virtual void PlaySoundRPC(string sound, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (!SoundsEnabled)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
+            {
                 Cache.AudioSources[sound].Play();
+            }
         }
 
         public void StopSound(string sound)
