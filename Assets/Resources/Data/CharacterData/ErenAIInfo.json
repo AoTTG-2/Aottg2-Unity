@@ -2,9 +2,7 @@
 	"Type": "Eren",
 	"AttackInfo": {
 		"AttackCombo": {"HumanOnly": false},
-		"AttackComboBlind": {"HumanOnly": false},
-		"AttackKick": {"HumanOnly": false},
-		"AttackSwing": {"HumanOnly": false}
+		"AttackKick": {"HumanOnly": false}
 	},
 	"Default": {
 		"Name": "Eren",
@@ -36,16 +34,9 @@
 			"AttackComboBlind": 0.7
 		},
 		"Attacks": {
-			"AttackCombo": 0.1,
-			"AttackSwing": 0.1,
-			"AttackKick": 0.1,
-			"AttackBrush*": 0.1,
-			"AttackStomp": 0.1,
-			"AttackHead": 0.1,
-			"AttackBite": 0.1,
-			"AttackGrab*": 0.1,
-			"AttackComboBlind": 0.0
-		},
+			"AttackCombo": 0.4,
+			"AttackKick": 0.4
+		}
 	},
 	"Training": {
 		"DetectRange": 0,
