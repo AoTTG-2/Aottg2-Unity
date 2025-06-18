@@ -346,6 +346,8 @@ namespace GameManagers
                 if (GlobalPause)
                     RPCManager.PhotonView.RPC("PauseGameRPC", player, new object[0]);
             }
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public void OnNotifyPlayerJoined(Player player)
@@ -356,6 +358,8 @@ namespace GameManagers
                 string line = player.GetCustomProperty(PlayerProperty.Name) + ChatManager.GetColorString(" has joined the room.", ChatTextColor.System);
                 ChatManager.AddLine(line);
             }
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public override void OnPlayerLeftRoom(Player player)
@@ -388,6 +392,8 @@ namespace GameManagers
                 VoiceChatVolumeMultiplier.Remove(player.ActorNumber);
 
             AnticheatManager.ResetVoteKicks(player);
+            if (ChatManager.HasActivePlayerSuggestions())
+                ChatManager.RefreshPlayerSuggestions();
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
