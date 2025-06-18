@@ -45,7 +45,7 @@ namespace Characters
         {
             if (!Disabled && !_photonView.IsMine)
             {
-                if (_human.MountState == HumanMountState.MapObject && _human.MountedTransform != null)
+                if (_human.MountState == HumanMountState.MapObject && !_human.CanMountedAttack && _human.MountedTransform != null)
                 {
                     _transform.position = _human.MountedTransform.TransformPoint(_human.MountedPositionOffset);
                     _transform.rotation = Quaternion.Euler(_human.MountedTransform.rotation.eulerAngles + _human.MountedRotationOffset);
@@ -60,7 +60,7 @@ namespace Characters
                 {
                     _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                     _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
-                    if(_human.BackHuman != null)
+                    if (_human.BackHuman != null)
                         _human.CarryVelocity = _correctVelocity;
                     if (_timeSinceLastMessage < MaxPredictionTime)
                     {
