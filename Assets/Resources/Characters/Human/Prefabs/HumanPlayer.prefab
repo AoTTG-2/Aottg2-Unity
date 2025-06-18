@@ -16584,6 +16584,9 @@ MonoBehaviour:
   CanDodge: 1
   IsInvincible: 1
   InvincibleTimeLeft: 0
+  HorsebackCombat: 0
+  IsAttackableState: 0
+  IsRefillable: 0
   ReelInAxis: 0
   ReelOutAxis: 0
   ReelOutScrollTimeLeft: 0

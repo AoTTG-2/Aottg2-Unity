@@ -591,15 +591,15 @@ component VelocityZone
             {
                 mapDir = self.MapObject.Right;
             }
-            
-            mapDir = mapDir.Scale(self.Speed);
+
+            mapDir = mapDir * self.Speed;
             appliedForce = appliedForce + mapDir;
         }
 
         if (self.UseObject)
         {
             direction = velocity.Normalized;
-            direction = direction.Scale(self.Magnitude);
+            direction = direction * self.Magnitude;
             appliedForce = appliedForce + direction;
         }
         if (self.UseVector)

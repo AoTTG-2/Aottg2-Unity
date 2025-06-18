@@ -26,6 +26,10 @@ namespace Characters
         public float RunSpeed;
         protected Human _human;
 
+        // Cache
+        public VerticalDashPerk VerticalDashPerk;
+        public OmniDashPerk OmniDashPerk;
+
         public HumanStats(Human human)
         {
             _human = human;
@@ -34,6 +38,11 @@ namespace Characters
             Perks.Add("RefillTime", new RefillTimePerk());
             Perks.Add("VerticalDash", new VerticalDashPerk());
             Perks.Add("OmniDash", new OmniDashPerk());
+
+            // Cache - Temp solution for adding cooldown.
+            VerticalDashPerk = (VerticalDashPerk)Perks["VerticalDash"];
+            OmniDashPerk = (OmniDashPerk)Perks["OmniDash"];
+
             ResetGas();
             UpdateStats();
         }

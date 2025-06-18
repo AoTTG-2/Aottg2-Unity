@@ -946,10 +946,16 @@ namespace Characters
             if (this is BaseShifter)
                 size *= 3.5f;
             float stepVolume = Mathf.Clamp(size * 0.125f, 0.1f, 0.5f);
-            Cache.AudioSources[TitanSounds.Fall].volume = Mathf.Clamp(size * 0.3f, 0.1f, 1f);
+            float sizeScaleVolume = Mathf.Clamp(size * 0.3f, 0.1f, 1f);
+            Cache.AudioSources[TitanSounds.DeathFall].volume = sizeScaleVolume;
+            Cache.AudioSources[TitanSounds.DeathNoFall].volume = sizeScaleVolume;
             Cache.AudioSources[TitanSounds.Footstep1].volume = stepVolume;
             Cache.AudioSources[TitanSounds.Footstep2].volume = stepVolume;
             Cache.AudioSources[TitanSounds.Footstep3].volume = stepVolume;
+
+            Cache.AudioSources[TitanSounds.RockPickup].volume = sizeScaleVolume;
+            Cache.AudioSources[TitanSounds.RockThrow1].volume = sizeScaleVolume;
+            Cache.AudioSources[TitanSounds.RockThrow2].volume = sizeScaleVolume;
         }
 
         protected virtual void SetSizeParticles(float size)
