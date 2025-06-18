@@ -997,8 +997,22 @@ namespace GameManagers
                     }
                 }
             }
-            
-            if (SuggestionState.IsTabCompleting)
+            if (SuggestionState.Type == SuggestionType.PlayerID && SuggestionState.IsTabCompleting && 
+                input.StartsWith("/") && input.IndexOf(' ') is int cmdSpaceIndex && cmdSpaceIndex != -1)
+            {
+                string partial = input.Substring(cmdSpaceIndex + 1);
+                if (partial.Length < SuggestionState.PartialText.Length || partial.EndsWith(" "))
+                {
+                    ClearLastSuggestions();
+                    SuggestionState.PartialText = "\uFFFF";
+                }
+                else
+                {
+                    SuggestionState.IsTabCompleting = false;
+                    return;
+                }
+            }
+            else if (SuggestionState.IsTabCompleting)
             {
                 SuggestionState.IsTabCompleting = false;
                 return;
@@ -1027,6 +1041,7 @@ namespace GameManagers
                         SuggestionState.PartialText = partial;
                         SuggestionState.Type = SuggestionType.PlayerID;
                         SuggestionState.CurrentIndex = -1;
+                        SuggestionState.IsTabCompleting = false;
                         SuggestionState.SetOriginalContext(partial, spaceIndex + 1, input.Length);
                         var players = new List<Player>();
                         foreach (var p in PhotonNetwork.PlayerList)
@@ -1040,6 +1055,7 @@ namespace GameManagers
                         players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
                         if (players.Count > 0)
                         {
+                            AddLine(GetColorString("Matching players:", ChatTextColor.System), ChatTextColor.System, true, isSuggestion: true);
                             ShowCommandSuggestions(players.Select(p => $"{GetColorString($"[{p.ActorNumber}]", ChatTextColor.ID)} {p.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}").ToList());
                             SuggestionState.Suggestions.Clear();
                             foreach (var player in players)
@@ -1136,6 +1152,7 @@ namespace GameManagers
                     players.Sort((a, b) => a.ActorNumber.CompareTo(b.ActorNumber));
                     if (players.Count > 0)
                     {
+                        AddLine(GetColorString("Matching players:", ChatTextColor.System), ChatTextColor.System, true, isSuggestion: true);
                         ShowCommandSuggestions(players.Select(p => $"{GetColorString($"[{p.ActorNumber}]", ChatTextColor.ID)} {p.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}").ToList());
                         SuggestionState.Suggestions.Clear();
                         foreach (var player in players)
@@ -1251,7 +1268,6 @@ namespace GameManagers
             switch (SuggestionState.Type)
             {
                 case SuggestionType.Command:
-                    header = $"Commands matching '/{SuggestionState.PartialText}':";
                     foreach (var suggestion in SuggestionState.Suggestions)
                     {
                         MessageBuilder.Clear();
@@ -1284,7 +1300,7 @@ namespace GameManagers
                     }
                     break;                    
                 case SuggestionType.Mention:
-                    header = $"Players matching '@{SuggestionState.PartialText}':";
+                    header = "Matching players:";
                     foreach (var suggestion in SuggestionState.Suggestions)
                     {
                         if (int.TryParse(suggestion, out int playerId))
@@ -1299,6 +1315,11 @@ namespace GameManagers
                     }
                     break;
             }            
+            // Add header if we have one
+            if (!string.IsNullOrEmpty(header))
+            {
+                AddLine(GetColorString(header, ChatTextColor.System), ChatTextColor.System, true, isSuggestion: true);
+            }
             ShowCommandSuggestions(displayTexts);
             if (IsChatAvailable())
             {
@@ -1485,6 +1506,28 @@ namespace GameManagers
                 ActivePMNotifications.Remove(playerID);
                 ClearPMNotificationFromChat(playerID);
             }
+        }
+
+        public static bool HasActivePlayerSuggestions()
+        {
+            return SuggestionState.IsActive && (SuggestionState.Type == SuggestionType.PlayerID || SuggestionState.Type == SuggestionType.Mention);
+        }
+
+        public static void RefreshPlayerSuggestions()
+        {
+            if (!HasActivePlayerSuggestions())
+                return;
+            var chatPanel = GetChatPanel();
+            if (chatPanel == null) return;
+            string currentInput = chatPanel.GetInputText();
+            if (string.IsNullOrEmpty(currentInput))
+            {
+                ClearLastSuggestions();
+                return;
+            }
+            string originalPartialText = SuggestionState.PartialText;
+            SuggestionState.PartialText = "\uFFFF";
+            HandleTyping(currentInput);
         }
 
         private static void ClearPMNotificationFromChat(int playerID)

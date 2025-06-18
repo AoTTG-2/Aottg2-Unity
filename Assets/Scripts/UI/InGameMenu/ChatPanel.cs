@@ -438,7 +438,7 @@ namespace UI
             {
                 emojiCode = $":{emojiName}:";
             }
-            int insertPosition = _inputField.isFocused ? _inputField.caretPosition : text.Length;
+            int insertPosition = text.Length;
             string newText = text.Insert(insertPosition, emojiCode);
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
             if (newText.Length > maxLength)
@@ -447,7 +447,7 @@ namespace UI
             }
             string processedText = ProcessEmojiCodes(newText);
             _inputField.SetTextWithoutNotify(processedText);
-            int newCaretPos = insertPosition + emojiCode.Length;
+            int newCaretPos = newText.Length;
             _inputField.caretPosition = newCaretPos;
             _inputField.selectionAnchorPosition = newCaretPos;
             _inputField.selectionFocusPosition = newCaretPos;
@@ -516,8 +516,8 @@ namespace UI
                     true));
             }
             linesToShow.AddRange(regularMessages);
-            linesToShow.AddRange(suggestions);
             linesToShow.AddRange(notifications);
+            linesToShow.AddRange(suggestions);
             UpdateVisibleMessages(linesToShow);
         }
 
@@ -724,23 +724,24 @@ namespace UI
             if (e.type == EventType.KeyDown)
             {
                 bool canHandlePMKeys = IsInputActive() || _isInteractingWithChatUI;
-                
-                if (e.keyCode == KeyCode.Tab && canHandlePMKeys)
+                if (e.keyCode == KeyCode.Tab)
                 {
-                    e.Use();
-                    
-                    if (_inPMMode && _pmPartners.Count > 0)
+                    if (IsInputActive())
                     {
+                        e.Use();
+                        if (_inPMMode && _pmPartners.Count > 0)
+                        {
+                            CycleToPMPartner();
+                        }
+                        else
+                        {
+                            ChatManager.HandleTabComplete();
+                        }
+                    }
+                    else if (_inPMMode && _pmPartners.Count > 0)
+                    {
+                        e.Use();
                         CycleToPMPartner();
-                    }
-                    else if (IsInputActive())
-                    {
-                        ChatManager.HandleTabComplete();
-                    }
-                    else if (_pmPartners.Count > 0)
-                    {
-                        _currentPMIndex = _pmPartners.Count - 1;
-                        EnterPMMode(_pmPartners[_currentPMIndex]);
                     }
                 }
                 else if (e.keyCode == KeyCode.Escape && canHandlePMKeys)
@@ -1277,8 +1278,6 @@ namespace UI
                 Canvas.ForceUpdateCanvases();
             }
         }
-
-
 
         private RectTransform GetCachedRectTransform(GameObject obj)
         {
