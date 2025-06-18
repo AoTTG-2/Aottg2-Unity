@@ -631,6 +631,7 @@ namespace UI
             }
             if (!string.IsNullOrEmpty(_inputField.text))
             {
+                ChatManager.ForceSuggestionRefresh();
                 ChatManager.HandleTyping(_inputField.text);
             }
         }

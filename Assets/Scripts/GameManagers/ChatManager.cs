@@ -1315,7 +1315,6 @@ namespace GameManagers
                     }
                     break;
             }            
-            // Add header if we have one
             if (!string.IsNullOrEmpty(header))
             {
                 AddLine(GetColorString(header, ChatTextColor.System), ChatTextColor.System, true, isSuggestion: true);
@@ -1353,6 +1352,11 @@ namespace GameManagers
                 if (panel != null)
                     panel.Sync();
             }
+        }
+
+        public static void ForceSuggestionRefresh()
+        {
+            SuggestionState.PartialText = "\uFFFF";
         }
 
         public static void SendPrivateMessage(Player target, string message)
