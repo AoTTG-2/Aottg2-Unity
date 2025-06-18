@@ -11,6 +11,7 @@ using System;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
+using ApplicationManagers;
 
 namespace UI
 {
@@ -50,6 +51,7 @@ namespace UI
         private bool _wasChatUIClicked = false;
         private bool _isInteractingWithChatUI = false;
         private Dictionary<GameObject, RectTransform> _cachedRectTransforms = new Dictionary<GameObject, RectTransform>();
+        private int _desiredCaretPosition = 0;
 
         private static readonly Dictionary<string, int> EmojiNameToIndex = new Dictionary<string, int>
         {
@@ -198,10 +200,20 @@ namespace UI
             _scrollRect = GetComponentInChildren<ChatScrollRect>();
             transform.Find("Content").GetComponent<LayoutElement>().preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
             transform.GetComponent<RectTransform>().sizeDelta = new Vector2(SettingsManager.UISettings.ChatWidth.Value, 0f);
-            _inputField.text = ChatManager.GetPreservedInputText();
-            if (SettingsManager.UISettings.ChatWidth.Value == 0f)
+            var (text, caretPos) = ChatManager.GetConversation("PUBLIC");
+            if (!string.IsNullOrEmpty(text))
             {
-                _inputField.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 0f);
+                _inputField.text = text;
+                _desiredCaretPosition = caretPos;
+            }
+            else
+            {
+                var (preservedText, preservedCaret) = ChatManager.GetPreservedInputWithCaret();
+                if (!string.IsNullOrEmpty(preservedText))
+                {
+                    _inputField.text = preservedText;
+                    _desiredCaretPosition = preservedCaret;
+                }
             }
             SetupEmojiButton();
             var fontAsset = Resources.Load<TMP_FontAsset>("UI/Fonts/Vegur-Regular-SDF");
@@ -446,66 +458,66 @@ namespace UI
         {
             RefreshPoolSize();
             ValidatePMState();
+            RestorePMPartners();
             RefreshDisplayedMessages();
         }
 
         private void RefreshDisplayedMessages()
         {
+            List<string> regularMessages = new List<string>();
+            List<string> suggestions = new List<string>();
+            List<string> notifications = new List<string>();
+            for (int i = 0; i < ChatManager.RawMessages.Count; i++)
+            {
+                if (_inPMMode && _currentPMTarget != null)
+                {
+                    if (ChatManager.PrivateFlags[i] && 
+                        (ChatManager.PMPartnerIDs[i] == _currentPMTarget.ActorNumber ||
+                         ChatManager.SenderIDs[i] == _currentPMTarget.ActorNumber))
+                    {
+                        regularMessages.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.SuggestionFlags[i]));
+                    }
+                }
+                else
+                {
+                    if (ChatManager.NotificationFlags[i])
+                    {
+                        notifications.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.NotificationFlags[i]));
+                    }
+                    else if (ChatManager.SuggestionFlags[i])
+                    {
+                        suggestions.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.SuggestionFlags[i]));
+                    }
+                    else if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) && 
+                             !ChatManager.SuggestionFlags[i] && !ChatManager.NotificationFlags[i])
+                    {
+                        regularMessages.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.SuggestionFlags[i]));
+                    }
+                }
+            }
             List<string> linesToShow = new List<string>();
-            
             if (_inPMMode && _currentPMTarget != null)
             {
                 linesToShow.Add(ChatManager.GetFormattedMessage(
                     $"{ChatManager.GetColorString("Private chat with ", ChatTextColor.System)}{ChatManager.GetPlayerIdentifier(_currentPMTarget)}", 
                     DateTime.Now, 
                     true));
-                for (int i = 0; i < ChatManager.RawMessages.Count; i++)
-                {
-                    if (ChatManager.PrivateFlags[i] && 
-                        (ChatManager.PMPartnerIDs[i] == _currentPMTarget.ActorNumber ||
-                         ChatManager.SenderIDs[i] == _currentPMTarget.ActorNumber))
-                    {
-                        linesToShow.Add(ChatManager.GetFormattedMessage(
-                            ChatManager.RawMessages[i],
-                            ChatManager.Timestamps[i],
-                            ChatManager.SuggestionFlags[i]));
-                    }
-                }
             }
-            else
-            {
-                for (int i = 0; i < ChatManager.RawMessages.Count; i++)
-                {
-                    if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) && 
-                        !ChatManager.SuggestionFlags[i] && !ChatManager.NotificationFlags[i]) // Add regular messages first (not PM, suggestions, or notifications)
-                    {
-                        linesToShow.Add(ChatManager.GetFormattedMessage(
-                            ChatManager.RawMessages[i],
-                            ChatManager.Timestamps[i],
-                            ChatManager.SuggestionFlags[i]));
-                    }
-                }
-                for (int i = 0; i < ChatManager.RawMessages.Count; i++) 
-                {
-                    if (ChatManager.SuggestionFlags[i]) // Add suggestions at the bottom
-                    {
-                        linesToShow.Add(ChatManager.GetFormattedMessage(
-                            ChatManager.RawMessages[i],
-                            ChatManager.Timestamps[i],
-                            ChatManager.SuggestionFlags[i]));
-                    }
-                }
-                for (int i = 0; i < ChatManager.RawMessages.Count; i++)
-                {
-                    if (ChatManager.NotificationFlags[i]) // Add pm notifications at the very bottom
-                    {
-                        linesToShow.Add(ChatManager.GetFormattedMessage(
-                            ChatManager.RawMessages[i],
-                            ChatManager.Timestamps[i],
-                            ChatManager.NotificationFlags[i]));
-                    }
-                }
-            }
+            linesToShow.AddRange(regularMessages);
+            linesToShow.AddRange(suggestions);
+            linesToShow.AddRange(notifications);
             UpdateVisibleMessages(linesToShow);
         }
 
@@ -609,6 +621,18 @@ namespace UI
         {
             _inputField.Select();
             _inputField.ActivateInputField();
+            if (_desiredCaretPosition > 0 && !string.IsNullOrEmpty(_inputField.text))
+            {
+                int clampedCaretPos = Mathf.Clamp(_desiredCaretPosition, 0, _inputField.text.Length);
+                _inputField.caretPosition = clampedCaretPos;
+                _inputField.selectionAnchorPosition = clampedCaretPos;
+                _inputField.selectionFocusPosition = clampedCaretPos;
+                _desiredCaretPosition = 0;
+            }
+            if (!string.IsNullOrEmpty(_inputField.text))
+            {
+                ChatManager.HandleTyping(_inputField.text);
+            }
         }
 
         public bool IsInputActive()
@@ -620,23 +644,28 @@ namespace UI
         {
             if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter))
             {
+                ChatManager.ClearLastSuggestions();
                 IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
                 return;
             }
             string input = ProcessEmojiCodes(_inputField.text);
             if (string.IsNullOrWhiteSpace(input))
             {
+                ChatManager.ClearLastSuggestions();
                 IgnoreNextActivation = true;
                 _inputField.DeactivateInputField();
                 return;
             }
+            ChatManager.ClearLastSuggestions();
             if (_inPMMode && _currentPMTarget != null)
             {
                 ChatManager.SendPrivateMessage(_currentPMTarget, input);
+                ChatManager.ClearConversation($"PM_{_currentPMTarget.ActorNumber}");
             }
             else
             {
                 ChatManager.HandleInput(input);
+                ChatManager.ClearConversation("PUBLIC");
             }
             _inputField.text = "";
             _inputField.DeactivateInputField();
@@ -691,44 +720,47 @@ namespace UI
 
         private void OnGUI()
         {
-            if (IsInputActive())
+            Event e = Event.current;
+            if (e.type == EventType.KeyDown)
             {
-                Event e = Event.current;
-                if (e.type == EventType.KeyDown)
+                bool canHandlePMKeys = IsInputActive() || _isInteractingWithChatUI;
+                
+                if (e.keyCode == KeyCode.Tab && canHandlePMKeys)
                 {
-                    if (e.keyCode == KeyCode.Tab)
+                    e.Use();
+                    
+                    if (_inPMMode && _pmPartners.Count > 0)
                     {
-                        e.Use();
-                        
-                        if (_inPMMode && _pmPartners.Count > 0)
+                        CycleToPMPartner();
+                    }
+                    else if (IsInputActive())
+                    {
+                        ChatManager.HandleTabComplete();
+                    }
+                    else if (_pmPartners.Count > 0)
+                    {
+                        _currentPMIndex = _pmPartners.Count - 1;
+                        EnterPMMode(_pmPartners[_currentPMIndex]);
+                    }
+                }
+                else if (e.keyCode == KeyCode.Escape && canHandlePMKeys)
+                {
+                    e.Use();
+                    if (_inPMMode || _pmPartners.Count > 0)
+                    {
+                        if (_inPMMode)
                         {
-                            _currentPMIndex = (_currentPMIndex + 1) % _pmPartners.Count;
+                            ExitPMMode();
+                        }
+                        else if (_pmPartners.Count > 0)
+                        {
+                            _currentPMIndex = _pmPartners.Count - 1;
                             EnterPMMode(_pmPartners[_currentPMIndex]);
                         }
-                        else
-                        {
-                            ChatManager.HandleTabComplete();
-                        }
                     }
-                    else if (e.keyCode == KeyCode.Escape)
+                    else if (IsInputActive())
                     {
-                        e.Use();
-                        if (_inPMMode || _pmPartners.Count > 0)
-                        {
-                            if (_inPMMode)
-                            {
-                                ExitPMMode();
-                            }
-                            else if (_pmPartners.Count > 0)
-                            {
-                                _currentPMIndex = _pmPartners.Count - 1;
-                                EnterPMMode(_pmPartners[_currentPMIndex]);
-                            }
-                        }
-                        else
-                        {
-                            ChatManager.ClearLastSuggestions();
-                        }
+                        ChatManager.ClearLastSuggestions();
                     }
                 }
             }
@@ -771,10 +803,8 @@ namespace UI
         {
             if (EventSystem.current == null)
                 return false;
-                
             Vector2 mousePosition = Input.mousePosition;
             bool isOverUI = EventSystem.current.IsPointerOverGameObject();
-            
             bool isOverChatUI = isOverUI && (
                 IsMouseOverAnyChatElement(mousePosition) ||
                 (_emojiPanel != null && _emojiPanel.activeSelf && 
@@ -783,7 +813,6 @@ namespace UI
             if (Input.GetMouseButtonDown(0))
             {
                 _wasChatUIClicked = isOverChatUI;
-                
                 if (!isOverChatUI)
                 {
                     _isInteractingWithChatUI = false;
@@ -936,7 +965,11 @@ namespace UI
         {
             if (_inputField != null)
             {
-                ChatManager.PreserveInputText(_inputField.text);
+                if (_inPMMode)
+                {
+                    SaveCurrentConversation();
+                }
+                ChatManager.PreserveInputText(_inputField.text, _inputField.caretPosition);
             }
             _cachedInputFields.Clear();
             _cachedRectTransforms.Clear();
@@ -947,8 +980,6 @@ namespace UI
             _lastTypeTime = Time.unscaledTime;
             if (text == null)
                 text = string.Empty;
-
-            // Process emoji codes in the input field
             string processedText = ProcessEmojiCodes(text);
             if (processedText != text)
             {
@@ -956,7 +987,6 @@ namespace UI
                 _inputField.SetTextWithoutNotify(processedText);
                 _inputField.caretPosition = caretPos;
             }
-
             ChatManager.HandleTyping(text);
         }
 
@@ -976,6 +1006,7 @@ namespace UI
                 return;
             if (_inPMMode && _currentPMTarget != null && _currentPMTarget.ActorNumber == target.ActorNumber)
                 return;
+            SaveCurrentConversation();
             _currentPMTarget = target;
             _inPMMode = true;
             _pmToggleActive = true;
@@ -983,15 +1014,16 @@ namespace UI
                 StopCoroutine(_pmToggleCoroutine);
             _pmToggleCoroutine = StartCoroutine(ResetPMToggleActive());
             AddPMPartner(target);
+            _currentPMIndex = _pmPartners.FindIndex(p => p.ActorNumber == target.ActorNumber);
             ChatManager.ClearPMNotification(target.ActorNumber);
-            _inputField.text = "";
-            _inputField.Select();
-            _inputField.ActivateInputField();
+            var (text, caretPos) = ChatManager.GetConversation($"PM_{target.ActorNumber}");
+            SetTextAndCaretPosition(text, caretPos);
             Sync();
         }
 
         public void ExitPMMode()
         {
+            SaveCurrentConversation();
             _currentPMTarget = null;
             _inPMMode = false;
             _currentPMIndex = -1;
@@ -999,9 +1031,10 @@ namespace UI
             if (_pmToggleCoroutine != null)
                 StopCoroutine(_pmToggleCoroutine);
             _pmToggleCoroutine = StartCoroutine(ResetPMToggleActive());
-            _inputField.text = "";
-            _inputField.Select();
-            _inputField.ActivateInputField();
+            
+            var (text, caretPos) = ChatManager.GetConversation("PUBLIC");
+            SetTextAndCaretPosition(text, caretPos);
+            
             Sync();
         }
 
@@ -1067,6 +1100,29 @@ namespace UI
 
         public bool IsInPMMode() => _inPMMode;
 
+        private void CycleToPMPartner()
+        {
+            if (_pmPartners.Count == 0) return;
+            int currentIndex = -1;
+            if (_currentPMTarget != null)
+            {
+                currentIndex = _pmPartners.FindIndex(p => p.ActorNumber == _currentPMTarget.ActorNumber);
+            }
+            if (currentIndex == -1)
+            {
+                currentIndex = -1;
+            }
+            int nextIndex = (currentIndex + 1) % _pmPartners.Count;
+            Player nextPartner = _pmPartners[nextIndex];
+            SaveCurrentConversation();
+            _currentPMTarget = nextPartner;
+            _currentPMIndex = nextIndex;
+            ChatManager.ClearPMNotification(nextPartner.ActorNumber);
+            var (text, caretPos) = ChatManager.GetConversation($"PM_{nextPartner.ActorNumber}");
+            SetTextAndCaretPosition(text, caretPos);
+            Sync();
+        }
+
         public void AddPMPartner(Player player)
         {
             if (player == null || player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
@@ -1074,7 +1130,6 @@ namespace UI
             if (!_pmPartners.Exists(p => p.ActorNumber == player.ActorNumber))
             {
                 _pmPartners.Add(player);
-                _currentPMIndex = _pmPartners.Count - 1;
             }
         }
 
@@ -1207,6 +1262,24 @@ namespace UI
             }
         }
 
+        public void SetTextAndCaretPosition(string newText, int caretPosition)
+        {
+            if (_inputField != null)
+            {
+                _inputField.text = newText;
+                _inputField.textComponent.ForceMeshUpdate();
+                int clampedCaretPos = Mathf.Clamp(caretPosition, 0, newText.Length);
+                _inputField.caretPosition = clampedCaretPos;
+                _inputField.selectionAnchorPosition = clampedCaretPos;
+                _inputField.selectionFocusPosition = clampedCaretPos;
+                _inputField.ActivateInputField();
+                _inputField.ForceLabelUpdate();
+                Canvas.ForceUpdateCanvases();
+            }
+        }
+
+
+
         private RectTransform GetCachedRectTransform(GameObject obj)
         {
             if (obj == null) return null;
@@ -1220,6 +1293,48 @@ namespace UI
             }
             return rectTransform;
         }
+
+        private void SaveCurrentConversation()
+        {
+            if (_inputField == null) return;
+            string key = _inPMMode && _currentPMTarget != null ? $"PM_{_currentPMTarget.ActorNumber}" : "PUBLIC";
+            if (!_inPMMode && string.IsNullOrEmpty(_inputField.text))
+            {
+                ChatManager.ClearConversation("PUBLIC");
+            }
+            else
+            {
+                ChatManager.SaveConversation(key, _inputField.text, _inputField.caretPosition);
+            }
+        }
+
+        private void RestorePMPartners()
+        {
+            HashSet<int> partnerIDs = new HashSet<int>();
+            for (int i = 0; i < ChatManager.RawMessages.Count; i++)
+            {
+                if (ChatManager.PrivateFlags[i])
+                {
+                    int senderID = ChatManager.SenderIDs[i];
+                    int partnerID = ChatManager.PMPartnerIDs[i];
+                    if (senderID != PhotonNetwork.LocalPlayer.ActorNumber)
+                        partnerIDs.Add(senderID);
+                    if (partnerID != PhotonNetwork.LocalPlayer.ActorNumber)
+                        partnerIDs.Add(partnerID);
+                }
+            }
+            foreach (int partnerID in partnerIDs)
+            {
+                var player = PhotonNetwork.CurrentRoom.GetPlayer(partnerID);
+                if (player != null && !_pmPartners.Exists(p => p.ActorNumber == partnerID))
+                {
+                    _pmPartners.Add(player);
+                }
+            }
+            if (_pmPartners.Count > 0)
+            {
+                _currentPMIndex = _pmPartners.Count - 1;
+            }
+        }
     }
 }
-

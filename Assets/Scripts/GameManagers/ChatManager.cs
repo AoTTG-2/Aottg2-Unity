@@ -145,17 +145,49 @@ namespace GameManagers
         public static List<bool> PrivateFlags = new List<bool>();
         public static List<int> PMPartnerIDs = new List<int>();
         private static string _preservedInputText = string.Empty;
-
-        public static void PreserveInputText(string text)
+        private static int _preservedInputCaretPosition = 0;
+        private static readonly Dictionary<string, string> _conversationTexts = new Dictionary<string, string>();
+        private static readonly Dictionary<string, int> _conversationCarets = new Dictionary<string, int>();
+        public static void PreserveInputText(string text, int caretPosition)
         {
             _preservedInputText = text ?? string.Empty;
+            _preservedInputCaretPosition = caretPosition;
         }
 
-        public static string GetPreservedInputText()
+        public static (string text, int caretPos) GetPreservedInputWithCaret()
         {
             string text = _preservedInputText;
+            int caretPos = _preservedInputCaretPosition;
             _preservedInputText = string.Empty;
-            return text;
+            _preservedInputCaretPosition = 0;
+            return (text, caretPos);
+        }
+
+        public static void SaveConversation(string key, string text, int caretPos)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                _conversationTexts.Remove(key);
+                _conversationCarets.Remove(key);
+            }
+            else
+            {
+                _conversationTexts[key] = text;
+                _conversationCarets[key] = caretPos;
+            }
+        }
+
+        public static (string text, int caretPos) GetConversation(string key)
+        {
+            string text = _conversationTexts.TryGetValue(key, out string savedText) ? savedText : "";
+            int caretPos = _conversationCarets.TryGetValue(key, out int savedCaret) ? savedCaret : 0;
+            return (text, caretPos);
+        }
+
+        public static void ClearConversation(string key)
+        {
+            _conversationTexts.Remove(key);
+            _conversationCarets.Remove(key);
         }
 
         public static void Init()
@@ -450,7 +482,6 @@ namespace GameManagers
                         return playerId == mention || playerName == mention;
                     })
                     .ToList();
-
                 if (matchingPlayers.Count == 1)
                 {
                     string playerName = matchingPlayers[0].GetStringProperty(PlayerProperty.Name).FilterSizeTag();
@@ -464,7 +495,6 @@ namespace GameManagers
                     index = MentionBuilder.ToString().IndexOf('@', index + 1);
                 }
             }
-            
             return MentionBuilder.ToString();
         }
 
@@ -1107,11 +1137,10 @@ namespace GameManagers
                     if (players.Count > 0)
                     {
                         ShowCommandSuggestions(players.Select(p => $"{GetColorString($"[{p.ActorNumber}]", ChatTextColor.ID)} {p.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}").ToList());
-                        
                         SuggestionState.Suggestions.Clear();
                         foreach (var player in players)
                         {
-                            SuggestionState.Suggestions.Add(player.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText());
+                            SuggestionState.Suggestions.Add(player.ActorNumber.ToString());
                         }
                     }
                 }
@@ -1142,7 +1171,6 @@ namespace GameManagers
         {
             if (!SuggestionState.IsActive)
                 return;
-                
             var chatPanel = GetChatPanel();
             if (chatPanel == null) return;
             string currentInput = chatPanel.GetInputText();
@@ -1259,11 +1287,14 @@ namespace GameManagers
                     header = $"Players matching '@{SuggestionState.PartialText}':";
                     foreach (var suggestion in SuggestionState.Suggestions)
                     {
-                        var player = PhotonNetwork.PlayerList.FirstOrDefault(p => 
-                            p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().Equals(suggestion, StringComparison.OrdinalIgnoreCase));
-                        if (player != null)
+                        if (int.TryParse(suggestion, out int playerId))
                         {
-                            displayTexts.Add($"{GetColorString($"[{player.ActorNumber}]", ChatTextColor.ID)} {player.GetStringProperty(PlayerProperty.Name).FilterSizeTag()}");
+                            var player = PhotonNetwork.CurrentRoom.GetPlayer(playerId);
+                            if (player != null)
+                            {
+                                string name = player.GetStringProperty(PlayerProperty.Name).FilterSizeTag();
+                                displayTexts.Add($"{GetColorString($"[{playerId}]", ChatTextColor.ID)} {name}");
+                            }
                         }
                     }
                     break;
@@ -1318,7 +1349,6 @@ namespace GameManagers
             int localID = PhotonNetwork.LocalPlayer.ActorNumber;
             int senderID = info.Sender.ActorNumber;
             string senderName = info.Sender.GetStringProperty(PlayerProperty.Name);
-            
             if (localID == senderID)
             {
                 Player targetPlayer = PhotonNetwork.CurrentRoom.GetPlayer(targetID);
@@ -1328,7 +1358,6 @@ namespace GameManagers
                     AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}", 
                         ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)), 
                         senderID, false, true, targetID);
-                    
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
                     {
@@ -1433,7 +1462,10 @@ namespace GameManagers
                 return;
             }
             ActivePMNotifications[senderID] = currentTime;
-            string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(" (Esc)", ChatTextColor.System)}";
+            var chatPanel = GetChatPanel();
+            bool isInPMMode = chatPanel != null && chatPanel.IsInPMMode();
+            string prompt = isInPMMode ? " (Tab)" : " (Esc)";
+            string notificationText = $"{GetColorString("New message from ", ChatTextColor.System)}{GetPlayerIdentifier(senderPlayer)}{GetColorString(prompt, ChatTextColor.System)}";
             AddLine(notificationText, ChatTextColor.MyPlayer, true, currentTime, senderID, false, false, -1, true);
         }
 
