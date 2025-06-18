@@ -54,6 +54,8 @@ namespace Settings
         public BoolSetting JoinNotifications = new BoolSetting(true);
         public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
         public BoolSetting ShowChatTimestamp = new BoolSetting(false);
+        public ColorSetting ChatBackgroundColor = new ColorSetting(new Utility.Color255(38, 38, 38, 0));
+
 
         public override void Apply()
         {

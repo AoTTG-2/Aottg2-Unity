@@ -33,20 +33,23 @@ namespace Characters
 
         public override void Emote(string emote)
         {
-            string anim = string.Empty;
-            if (emote == "Salute")
-                anim = AnnieAnimations.EmoteSalute;
-            else if (emote == "Roar")
+            if(CanAction())
             {
-                anim = AnnieAnimations.EmoteRoar;
-                StartCoroutine(WaitAndPlaySound(ShifterSounds.AnnieRoar, 0.1f));
+                string anim = string.Empty;
+                if (emote == "Salute")
+                    anim = AnnieAnimations.EmoteSalute;
+                else if (emote == "Roar")
+                {
+                    anim = AnnieAnimations.EmoteRoar;
+                    StartCoroutine(WaitAndPlaySound(ShifterSounds.AnnieRoar, 0.1f));
+                }
+                else if (emote == "Taunt")
+                    anim = AnnieAnimations.EmoteTaunt;
+                else if (emote == "Wave")
+                    anim = AnnieAnimations.EmoteWave;
+                if (anim != "")
+                    StateAction(TitanState.Emote, anim);
             }
-            else if (emote == "Taunt")
-                anim = AnnieAnimations.EmoteTaunt;
-            else if (emote == "Wave")
-                anim = AnnieAnimations.EmoteWave;
-            if (anim != "")
-                StateAction(TitanState.Emote, anim);
         }
 
         protected override BaseCustomSkinLoader CreateCustomSkinLoader()
