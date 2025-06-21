@@ -65,7 +65,7 @@ namespace CustomLogic
         }
 
         /// <inheritdoc cref="Collider.includeLayers"/>
-        [CLProperty]
+        [CLProperty(Description = "")]
         public int IncludeLayers
         {
             get => collider.gameObject.layer;
