@@ -15,6 +15,7 @@ namespace CustomLogic
         private string _currentAnimation;
         private Dictionary<string, AnimationClip> _animatorClips;
 
+        private readonly Animator _animator;
         private readonly Animation _animation;
         private readonly Animator _animator;
         private readonly AudioSource _audioSource;
@@ -24,6 +25,7 @@ namespace CustomLogic
         {
             Value = transform;
 
+            _animator = Value.GetComponent<Animator>();
             _animation = Value.GetComponent<Animation>();
             _animator = Value.GetComponent<Animator>();
             _audioSource = Value.GetComponent<AudioSource>();
@@ -152,7 +154,6 @@ namespace CustomLogic
                     _animation.CrossFade(anim, fade);
                 return;
             }
-
             if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
@@ -164,49 +165,43 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Plays the specified animation at the given normalized time.")]
-        public void PlayAnimationAt(string anim, float time, float fade = 0.1f)
+        [CLMethod("Plays the specified animation starting from a normalized time.")]
+        public void PlayAnimationAt(string anim, float normalizedTime, float fade = 0.1f)
         {
             if (_animation != null)
             {
                 if (!_animation.IsPlaying(anim))
                 {
                     _animation.CrossFade(anim, fade);
-                    _animation[anim].time = time;
+                    _animation[anim].normalizedTime = normalizedTime;
                 }
                 return;
             }
+
             if (_animator != null)
             {
                 anim = anim.Replace('.', '_');
                 if (_currentAnimation != anim)
                 {
-                    _animator.CrossFade(anim, fade, 0, time);
+                    _animator.CrossFade(anim, fade, 0, normalizedTime);
                     _currentAnimation = anim;
                 }
             }
         }
 
-        [CLMethod("Sets the given animations playback speed.")]
-        public void SetAnimationSpeed(string anim, float speed)
+        [CLMethod("Sets the animation playback speed")]
+        public void SetAnimationSpeed(float speed)
         {
             if (_animation != null)
             {
-                if (!_animation.IsPlaying(anim))
-                {
-                    _animation[anim].speed = speed;
-                }
+                foreach (AnimationState state in _animation)
+                   state.speed = speed;
+
                 return;
             }
+
             if (_animator != null)
-            {
-                anim = anim.Replace('.', '_');
-                if (_currentAnimation != anim)
-                {
-                    _animator.speed = speed;
-                    _currentAnimation = anim;
-                }
-            }
+                _animator.speed = speed;
         }
 
         [CLMethod("Gets the length of the specified animation.")]

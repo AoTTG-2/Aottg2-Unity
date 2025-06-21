@@ -225,6 +225,12 @@ namespace UI
             var contentRect = content.GetComponent<RectTransform>();
             var layoutElement = content.GetComponent<LayoutElement>();
             layoutElement.preferredHeight = SettingsManager.UISettings.ChatHeight.Value;
+            var panelImage = _panel.GetComponent<Image>();
+            if (panelImage == null)
+            {
+                panelImage = _panel.AddComponent<Image>();
+            }
+            panelImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
             var scrollbarGo = new GameObject("Scrollbar", typeof(RectTransform));
             scrollbarGo.transform.SetParent(content, false);
             scrollbarGo.SetActive(true);
@@ -268,7 +274,6 @@ namespace UI
             exitEntry.callback.AddListener((data) => { scrollRect.OnMouseExit(); });
             eventTrigger.triggers.Add(exitEntry);
             var panelRect = _panel.GetComponent<RectTransform>();
-            panelRect.offsetMax = new Vector2(-12, panelRect.offsetMax.y);
         }
 
         private void SetupEmojiButton()
@@ -284,11 +289,11 @@ namespace UI
 
             var tmpText = emojiButtonGo.GetComponent<TextMeshProUGUI>();
             tmpText.text = "☺";
-            tmpText.fontSize = 28;
+            tmpText.fontSize = 24;
             tmpText.alignment = TextAlignmentOptions.Center;
             tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
             tmpText.horizontalAlignment = HorizontalAlignmentOptions.Center;
-            tmpText.margin = new Vector4(0, -1, 0, 1);
+            tmpText.margin = new Vector4(0, 0, 0, 0);
             tmpText.color = new Color(1f, 1f, 1f, 0.5f);
             _emojiButton = emojiButtonGo.GetComponent<Button>();
             _emojiButton.onClick.AddListener(ToggleEmojiPanel);
@@ -471,7 +476,8 @@ namespace UI
             {
                 for (int i = 0; i < ChatManager.RawMessages.Count; i++)
                 {
-                    if (!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i])
+                    if ((!ChatManager.PrivateFlags[i] || ChatManager.SystemFlags[i]) && 
+                        !ChatManager.SuggestionFlags[i] && !ChatManager.NotificationFlags[i]) // Add regular messages first (not PM, suggestions, or notifications)
                     {
                         linesToShow.Add(ChatManager.GetFormattedMessage(
                             ChatManager.RawMessages[i],
@@ -479,8 +485,27 @@ namespace UI
                             ChatManager.SuggestionFlags[i]));
                     }
                 }
+                for (int i = 0; i < ChatManager.RawMessages.Count; i++) 
+                {
+                    if (ChatManager.SuggestionFlags[i]) // Add suggestions at the bottom
+                    {
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.SuggestionFlags[i]));
+                    }
+                }
+                for (int i = 0; i < ChatManager.RawMessages.Count; i++)
+                {
+                    if (ChatManager.NotificationFlags[i]) // Add pm notifications at the very bottom
+                    {
+                        linesToShow.Add(ChatManager.GetFormattedMessage(
+                            ChatManager.RawMessages[i],
+                            ChatManager.Timestamps[i],
+                            ChatManager.NotificationFlags[i]));
+                    }
+                }
             }
-            
             UpdateVisibleMessages(linesToShow);
         }
 
@@ -509,6 +534,7 @@ namespace UI
                 {
                     _scrollRect.verticalScrollbar.size = 1;
                 }
+                UpdateBackgroundVisibility(false);
                 return;
             }
             float scrollPos = _scrollRect?.verticalNormalizedPosition ?? 0f;
@@ -556,10 +582,26 @@ namespace UI
                     needsCanvasUpdate = true;
                 }
             }
-            
+            UpdateBackgroundVisibility(true);
             if (needsCanvasUpdate)
             {
                 _requestCanvasUpdate = true;
+            }
+        }
+
+        private void UpdateBackgroundVisibility(bool hasMessages)
+        {
+            var panelImage = _panel.GetComponent<Image>();
+            if (panelImage != null)
+            {
+                if (hasMessages)
+                {
+                    panelImage.color = SettingsManager.UISettings.ChatBackgroundColor.Value.ToColor();
+                }
+                else
+                {
+                    panelImage.color = Color.clear;
+                }
             }
         }
 
@@ -682,6 +724,10 @@ namespace UI
                                 _currentPMIndex = _pmPartners.Count - 1;
                                 EnterPMMode(_pmPartners[_currentPMIndex]);
                             }
+                        }
+                        else
+                        {
+                            ChatManager.ClearLastSuggestions();
                         }
                     }
                 }
@@ -828,6 +874,7 @@ namespace UI
             textAreaRect.anchorMax = UIAnchors.FullStretch;
             textAreaRect.sizeDelta = Vector2.zero;
             textAreaRect.anchoredPosition = Vector2.zero;
+            textAreaRect.offsetMax = new Vector2(-8, 0);
             inputField.text = text;
             return inputField;
         }
@@ -936,6 +983,7 @@ namespace UI
                 StopCoroutine(_pmToggleCoroutine);
             _pmToggleCoroutine = StartCoroutine(ResetPMToggleActive());
             AddPMPartner(target);
+            ChatManager.ClearPMNotification(target.ActorNumber);
             _inputField.text = "";
             _inputField.Select();
             _inputField.ActivateInputField();
