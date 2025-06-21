@@ -60,16 +60,16 @@ namespace CustomLogic
         [CLProperty]
         public int ExludeLayers
         {
-            get => collider.gameObject.layer;
-            set => collider.gameObject.layer = value;
+            get => collider.excludeLayers;
+            set => collider.excludeLayers = value;
         }
 
         /// <inheritdoc cref="Collider.includeLayers"/>
         [CLProperty]
         public int includeLayers
         {
-            get => collider.gameObject.layer;
-            set => collider.gameObject.layer = value;
+            get => collider.includeLayers;
+            set => collider.includeLayers = value;
         }
 
         /// <inheritdoc cref="Collider.isTrigger"/>
