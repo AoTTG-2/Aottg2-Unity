@@ -126,6 +126,19 @@ namespace CustomLogic
             set => Value.right = value.Value;
         }
 
+        [CLProperty("Gets the name of the transform.")]
+        public string Name
+        {
+            get => Value.name;
+        }
+
+        [CLProperty("Gets the Physics Layer of the transform.")]
+        public int Layer
+        {
+            get => Value.gameObject.layer;
+            set => Value.gameObject.layer = value;
+        }
+
         [CLMethod("Gets the transform of the specified child.")]
         public CustomLogicTransformBuiltin GetTransform(string name)
         {
@@ -270,6 +283,27 @@ namespace CustomLogic
         {
             foreach (var renderer in Value.GetComponentsInChildren<Renderer>())
                 renderer.enabled = enabled;
+        }
+
+        [CLMethod("Gets colliders of the transform.")]
+        public CustomLogicListBuiltin GetColliders(bool recursive = false)
+        {
+            var listBuiltin = new CustomLogicListBuiltin();
+            if (recursive)
+            {
+                foreach (var collider in Value.gameObject.GetComponentsInChildren<Collider>())
+                {
+                    listBuiltin.List.Add(new CustomLogicColliderBuiltin(new object[] { collider }));
+                }
+            }
+            else
+            {
+                foreach (var collider in Value.gameObject.GetComponents<Collider>())
+                {
+                    listBuiltin.List.Add(new CustomLogicColliderBuiltin(new object[] { collider }));
+                }
+            }
+            return listBuiltin;
         }
 
         public static implicit operator CustomLogicTransformBuiltin(Transform value) => new CustomLogicTransformBuiltin(value);
