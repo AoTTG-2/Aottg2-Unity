@@ -15,7 +15,6 @@ namespace CustomLogic
         private string _currentAnimation;
         private Dictionary<string, AnimationClip> _animatorClips;
 
-        private readonly Animator _animator;
         private readonly Animation _animation;
         private readonly Animator _animator;
         private readonly AudioSource _audioSource;

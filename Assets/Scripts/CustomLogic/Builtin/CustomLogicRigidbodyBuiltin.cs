@@ -1,16 +1,10 @@
-﻿using CustomLogic;
-using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using UnityEngine;
 
 namespace CustomLogic
 {
     [CLType(Name = "RigidbodyBuiltin", Static = true, Abstract = true, Description = "")]
-    partial class CustomLogicRigidbodyBuiltin : BuiltinClassInstance
+    partial class CustomLogicRigidbodyBuiltin : BuiltinComponentInstance
     {
         public Rigidbody Value;
         public ConstantForce CustomGravity;
@@ -20,13 +14,13 @@ namespace CustomLogic
         private Vector3? _gravity;
 
         [CLConstructor]
-        public CustomLogicRigidbodyBuiltin() {}
+        public CustomLogicRigidbodyBuiltin() : base(null) { }
 
-        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass, Vector3? gravity, bool freezeRotation, bool interpolate)
+        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(owner.Value.GameObject.AddComponent<Rigidbody>())
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;
-            Value = Owner.AddComponent<Rigidbody>();
+            Value = (Rigidbody)Component;
 
             Gravity = gravity; // Set the custom gravity force
             UseGravity = true;

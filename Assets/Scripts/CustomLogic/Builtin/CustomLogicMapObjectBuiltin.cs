@@ -8,6 +8,8 @@ using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using UnityEngine.AI;
 using CustomLogic;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using System;
 
 namespace CustomLogic
 {
@@ -23,6 +25,7 @@ namespace CustomLogic
         private Vector3 _internalLocalRotation;
         private bool _needSetRotation = true;
         private bool _needSetLocalRotation = true;
+        private Dictionary<string, BuiltinComponentInstance> _builtinCache;
 
         public CustomLogicMapObjectBuiltin(MapObject obj)
         {
@@ -274,7 +277,7 @@ namespace CustomLogic
         public string Tag
         {
             get => Value.GameObject.tag;
-            set => Value.GameObject.tag = value;
+            set => MapLoader.RegisterTag(value, Value);
         }
 
         [CLProperty(description: "The layer of the object")]
@@ -305,7 +308,26 @@ namespace CustomLogic
         [CLMethod(description: "Set whether a component is enabled")]
         public void SetComponentEnabled(string name, bool enabled)
         {
-            Value.FindComponentInstance(name).Enabled = enabled;
+            var clComp = Value.FindComponentInstance(name);
+            if (clComp != null)
+            {
+                clComp.Enabled = enabled;
+            }
+            else
+            {
+                if (_builtinCache == null)
+                {
+                    return;
+                }
+                if (_builtinCache.TryGetValue(name, out var builtinComp))
+                {
+                    builtinComp.Enabled = enabled;
+                }
+                else
+                {
+                    throw new System.Exception($"Component '{name}' not found on MapObject '{Value.ScriptObject.Name}'.");
+                }
+            }
         }
 
         [CLMethod(description: "Set whether all components are enabled")]
@@ -314,6 +336,11 @@ namespace CustomLogic
             foreach (var instance in Value.ComponentInstances)
             {
                 instance.Enabled = enabled;
+            }
+
+            foreach (var comp in _builtinCache.Values)
+            {
+                comp.Enabled = enabled;
             }
         }
 
@@ -878,35 +905,64 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Add a Rigidbody component to the MapObject")]
-        public CustomLogicRigidbodyBuiltin AddRigidbody(float mass = 1.0f, CustomLogicVector3Builtin gravity = null, bool freezeRotation = true, bool interpolate = false)
+        [CLMethod(description: "Add a builtin component to the MapObject")]
+        public object AddBuiltinComponent2(string name)
         {
-            if (Value.ScriptObject.Static)
+            // Add the component and add to cache.
+            if (_builtinCache == null)
             {
-                throw new System.Exception("AddRigidbody cannot be called on a static MapObject.");
+                _builtinCache = new Dictionary<string, BuiltinComponentInstance>();
             }
-            if (_rigidBody != null)
+            if (_builtinCache.ContainsKey(name))
             {
-                throw new System.Exception("MapObject already has a Rigidbody.");
+                throw new System.Exception($"MapObject already has a {name} component.");
             }
-            _rigidBody = new CustomLogicRigidbodyBuiltin(this, mass, gravity?.Value, freezeRotation, interpolate);
-            return _rigidBody;
+
+            if (name == "Light")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this);
+            }
+            else if (name == "Rigidbody")
+            {
+                if (Value.ScriptObject.Static)
+                {
+                    throw new System.Exception("AddRigidbody cannot be called on a static MapObject.");
+                }
+                _rigidBody = new CustomLogicRigidbodyBuiltin(this);
+                _builtinCache[name] = _rigidBody;
+            }
+            else if (name == "CustomPhysicsMaterial")
+            {
+                _builtinCache[name] = new CustomLogicPhysicsMaterialBuiltin(this);
+            }
+            else if (name == "NavMeshObstacle")
+            {
+                _builtinCache[name] = new CustomLogicNavmeshObstacleBuiltin(this);
+            }
+            else if (name == "Lod")
+            {
+                _builtinCache[name] = new CustomLogicLodBuiltin(this);
+            }
+            else
+            {
+                throw new System.Exception($"Unknown builtin component: {name}");
+            }
+            return _builtinCache[name];
         }
 
-        // Remove a Rigidbody component from the MapObject
-        [CLMethod(description: "Remove the Rigidbody component from the MapObject")]
-        public void RemoveRigidbody()
+        [CLMethod(description: "Remove a builtin component from the MapObject")]
+        public void RemoveBuiltinComponent(string name)
         {
-            if (Value.ScriptObject.Static)
+            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
             {
-                throw new System.Exception("RemoveRigidbody cannot be called on a static MapObject.");
+                throw new System.Exception($"MapObject does not have a {name} component.");
             }
-            if (_rigidBody == null)
+            _builtinCache[name].Unload();
+            _builtinCache.Remove(name);
+            if (name == "Rigidbody")
             {
-                throw new System.Exception("MapObject does not have a Rigidbody.");
+                _rigidBody = null;
             }
-            _rigidBody = null;
-            Object.Destroy(Value.GameObject.GetComponent<Rigidbody>());
         }
 
         // Prop to get RigidBody
