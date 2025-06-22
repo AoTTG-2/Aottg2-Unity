@@ -29,6 +29,7 @@ namespace UI
         public BasePopup _questPopup;
         public BasePopup _tutorialPopup;
         public OutdatedPopup _outdatedPopup;
+        public BasePopup _discordLoginPopup;
         public MainBackgroundMenu _backgroundMenu;
         public TipPanel _tipPanel;
         protected Text _multiplayerStatusLabel;
@@ -37,6 +38,10 @@ namespace UI
         public static JSONNode MainBackgroundInfo = null;
         protected const float ChangeBackgroundTime = 20f;
         private static bool ShowedOutdated = false;
+        
+        private bool _hasShownMandatoryLogin = false;
+        private List<Button> _introButtons = new List<Button>();
+        private Text _authenticationStatusLabel;
 
         public override void Setup()
         {
@@ -46,6 +51,121 @@ namespace UI
             SetupMainBackground();
             SetupIntroPanel();
             SetupLabels();
+            SetupDiscordAuthenticationHandlers();
+            
+            StartCoroutine(CheckAuthenticationOnStartup());
+        }
+
+        private void SetupDiscordAuthenticationHandlers()
+        {
+            DiscordManager.OnUserAuthenticated += OnDiscordAuthenticated;
+            DiscordManager.OnUserLoggedOut += OnDiscordLoggedOut;
+        }
+
+        private IEnumerator CheckAuthenticationOnStartup()
+        {
+            while (DiscordManager.discord == null)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+            
+            yield return null;
+            
+            if (!DiscordManager.IsAuthenticated && !_hasShownMandatoryLogin)
+            {
+                _hasShownMandatoryLogin = true;
+                ShowMandatoryDiscordLogin();
+            }
+            
+            UpdateButtonStates();
+        }
+
+        private void ShowMandatoryDiscordLogin()
+        {
+            HideAllPopups();
+            ((DiscordLoginPopup)_discordLoginPopup).ShowMandatory();
+            
+            if (_authenticationStatusLabel == null)
+            {
+                _authenticationStatusLabel = ElementFactory.CreateDefaultLabel(transform, ElementStyle.Default, 
+                    "Discord authentication is required to play AOTTG2. Please log in to continue.", 
+                    alignment: TextAnchor.MiddleCenter).GetComponent<Text>();
+                _authenticationStatusLabel.GetComponent<RectTransform>().sizeDelta = new Vector2(600f, 60f);
+                ElementFactory.SetAnchor(_authenticationStatusLabel.gameObject, TextAnchor.MiddleCenter, TextAnchor.MiddleCenter, new Vector2(0f, 100f));
+                _authenticationStatusLabel.color = Color.red;
+                _authenticationStatusLabel.fontSize = 16;
+            }
+            _authenticationStatusLabel.gameObject.SetActive(true);
+        }
+
+        private void OnDiscordAuthenticated(Discord.User user)
+        {
+            Debug.Log($"Discord authentication successful: {user.Username}#{user.Discriminator}");
+            
+            if (_authenticationStatusLabel != null)
+            {
+                _authenticationStatusLabel.gameObject.SetActive(false);
+            }
+            
+            UpdateButtonStates();
+            
+            _discordLoginPopup.Hide();
+        }
+
+        private void OnDiscordLoggedOut()
+        {
+            Debug.Log("Discord user logged out - showing mandatory login again");
+            ShowMandatoryDiscordLogin();
+            UpdateButtonStates();
+        }
+
+        private void UpdateButtonStates()
+        {
+            bool isAuthenticated = DiscordManager.discord != null && DiscordManager.IsAuthenticated;
+            
+            foreach (Button button in _introButtons)
+            {
+                if (button != null && button.gameObject != null)
+                {
+                    string buttonName = button.gameObject.name;
+                    
+                    if (!RequiresAuthentication(buttonName))
+                    {
+                        button.interactable = true;
+                    }
+                    else
+                    {
+                        button.interactable = isAuthenticated;
+                        
+                        var colors = button.colors;
+                        if (!isAuthenticated)
+                        {
+                            colors.normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                            colors.highlightedColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                        }
+                        else
+                        {
+                            colors.normalColor = new Color(0.9f, 0.9f, 0.9f, 1f);
+                            colors.highlightedColor = new Color(0.75f, 0.75f, 0.75f, 1f);
+                        }
+                        button.colors = colors;
+                    }
+                }
+            }
+        }
+
+        private bool RequiresAuthentication(string buttonName)
+        {
+            switch (buttonName)
+            {
+                case "SettingsButton":
+                case "QuitButton":
+                case "HelpButton":
+                case "DiscordLoginButton":
+                    return false;
+                default:
+                    return true; 
+            }
         }
 
         private void SetupMainBackground()
@@ -89,6 +209,7 @@ namespace UI
             _tutorialPopup = ElementFactory.CreateHeadedPanel<TutorialPopup>(transform).GetComponent<BasePopup>();
             _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _duelPopup = ElementFactory.CreateDefaultPopup<DuelPopup>(transform).GetComponent<DuelPopup>();
+            _discordLoginPopup = ElementFactory.CreateDefaultPopup<DiscordLoginPopup>(transform).GetComponent<DiscordLoginPopup>();
             _popups.Add(_createGamePopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
@@ -103,6 +224,7 @@ namespace UI
             _popups.Add(_selectMapPopup);
             _popups.Add(_outdatedPopup);
             _popups.Add(_duelPopup);
+            _popups.Add(_discordLoginPopup);
         }
 
         private RectTransform _introPanelRect;
@@ -130,6 +252,13 @@ namespace UI
             {
                 IntroButton introButton = buttonTransform.gameObject.AddComponent<IntroButton>();
                 introButton.onClick.AddListener(() => OnIntroButtonClick(introButton.name));
+                
+                // Store button reference for authentication control
+                Button button = buttonTransform.gameObject.GetComponent<Button>();
+                if (button != null)
+                {
+                    _introButtons.Add(button);
+                }
             }
         }
 
@@ -149,6 +278,9 @@ namespace UI
                     disabledColor = new Color(0.5f, 0.5f, 0.5f)
                 };
                 button.colors = block;
+                
+                // Store button reference for authentication control
+                _introButtons.Add(button);
             }
         }
 
@@ -184,11 +316,36 @@ namespace UI
 
         private void Update()
         {
+            // Check for authentication status changes and update UI accordingly
+            // Only check if DiscordManager is initialized
+            if (DiscordManager.discord != null && !DiscordManager.IsAuthenticated && !_discordLoginPopup.IsActive && !_hasShownMandatoryLogin)
+            {
+                ShowMandatoryDiscordLogin();
+            }
+
             if (_multiplayerStatusLabel != null)
             {
                 string label = "";
                 if (SettingsManager.GraphicsSettings.ShowFPS.Value)
                     label = "FPS:" + UIManager.GetFPS().ToString() + "\n";
+                
+                // Add Discord authentication status to the label
+                if (DiscordManager.discord != null)
+                {
+                    if (DiscordManager.IsAuthenticated)
+                    {
+                        label += $"Discord: {DiscordManager.GetUserDisplayName()}\n";
+                    }
+                    else
+                    {
+                        label += "Discord: Not authenticated (Required)\n";
+                    }
+                }
+                else
+                {
+                    label += "Discord: Initializing...\n";
+                }
+                
                 if (_multiplayerMapPopup.IsActive || _multiplayerRoomListPopup.IsActive || (_createGamePopup.IsActive && PhotonNetwork.IsConnected))
                 {
                     label += PhotonNetwork.NetworkClientState.ToString();
@@ -260,6 +417,13 @@ namespace UI
 
         private void OnIntroButtonClick(string name)
         {
+            // Check if Discord authentication is required for this action
+            if (RequiresAuthentication(name) && (DiscordManager.discord == null || !DiscordManager.IsAuthenticated))
+            {
+                ShowMandatoryDiscordLogin();
+                return;
+            }
+
             bool isPopupAactive = IsPopupActive();
             HideAllPopups();
             if (isPopupAactive && _lastButtonClicked == name)
@@ -318,7 +482,17 @@ namespace UI
                 case "PatreonButton":
                     ExternalLinkPopup.Show("https://www.patreon.com/aottg2");
                     break;
+                case "DiscordLoginButton":
+                    ((DiscordLoginPopup)_discordLoginPopup).ShowOptional();
+                    break;
             }
+        }
+
+        protected void OnDestroy()
+        {
+            // Unsubscribe from Discord events to prevent memory leaks
+            DiscordManager.OnUserAuthenticated -= OnDiscordAuthenticated;
+            DiscordManager.OnUserLoggedOut -= OnDiscordLoggedOut;
         }
     }
 }

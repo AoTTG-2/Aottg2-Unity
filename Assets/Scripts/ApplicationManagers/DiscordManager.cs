@@ -16,7 +16,7 @@ namespace ApplicationManagers
         private static DiscordManager _instance;
         public static Discord.Discord discord;
 
-        private static long appID = 1247921316913483888;
+        private static long appID = 480451799908876289;
         private static bool instanceExists;
         private string largeImage = "aottg2-logo2";
         private static long time;
@@ -28,21 +28,186 @@ namespace ApplicationManagers
         private Activity mainMenuActivity;
         private string[] trackedProperties = new string[] { "Kills", "Deaths", "HighestDamage", "TotalDamage" };
 
+        public static bool IsAuthenticated { get; private set; } = false;
+        public static User CurrentUser { get; private set; }
+        public static OAuth2Token CurrentToken { get; private set; }
+        
+        public static event Action<User> OnUserAuthenticated;
+        public static event Action<string> OnAuthenticationFailed;
+        public static event Action OnUserLoggedOut;
+
         public static void Init()
         {
+            if (_instance != null)
+                return;
+            
             _instance = SingletonFactory.CreateSingleton(_instance);
+            
             try
             {
                 discord = new Discord.Discord(appID, (ulong)CreateFlags.NoRequireDiscord);
                 time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 _instance.roomActivity = new Activity();
                 _instance.mainMenuActivity = new Activity();
+                
+                SetupOAuth2Callbacks();
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.Log("Unable to initialize discord manager.");
-                Destroy(_instance);
+                Debug.LogWarning($"Discord SDK failed to initialize: {ex.Message}");
+                Debug.LogWarning("Discord features will be disabled");
+                
+                discord = null;
+                
+                time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                _instance.roomActivity = new Activity();
+                _instance.mainMenuActivity = new Activity();
             }
+        }
+
+        private static void SetupOAuth2Callbacks()
+        {
+            if (discord == null) return;
+            
+            try
+            {
+                var userManager = discord.GetUserManager();
+                userManager.OnCurrentUserUpdate += OnCurrentUserUpdate;
+                
+                try
+                {
+                    var currentUser = userManager.GetCurrentUser();
+                    if (currentUser.Id != 0)
+                    {
+                        CurrentUser = currentUser;
+                        IsAuthenticated = true;
+                        OnUserAuthenticated?.Invoke(currentUser);
+                    }
+                }
+                catch
+                {
+                    // TODO: This a funny way to handle this, will figure something else later
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to setup OAuth2 callbacks: {ex.Message}");
+            }
+        }
+
+        private static void OnCurrentUserUpdate()
+        {
+            try
+            {
+                var userManager = discord.GetUserManager();
+                var user = userManager.GetCurrentUser();
+                CurrentUser = user;
+                IsAuthenticated = true;
+                OnUserAuthenticated?.Invoke(user);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to get current user: {ex.Message}");
+                OnAuthenticationFailed?.Invoke(ex.Message);
+            }
+        }
+
+
+
+        public static void StartOAuth2Authentication()
+        {
+            if (_instance == null)
+            {
+                Init();
+            }
+            
+            if (_instance == null || discord == null)
+            {
+                Debug.LogError("DiscordManager not initialized. Call Init() first.");
+                OnAuthenticationFailed?.Invoke("Discord SDK not initialized. Please wait and try again.");
+                return;
+            }
+
+            if (IsAuthenticated && CurrentUser.Id != 0)
+            {
+                OnUserAuthenticated?.Invoke(CurrentUser);
+                return;
+            }
+
+            try
+            {
+                var userManager = discord.GetUserManager();
+                var currentUser = userManager.GetCurrentUser();
+                
+                if (currentUser.Id != 0)
+                {
+                    CurrentUser = currentUser;
+                    IsAuthenticated = true;
+                    OnUserAuthenticated?.Invoke(currentUser);
+                    return;
+                }
+                else
+                {
+
+                    OnAuthenticationFailed?.Invoke("Waiting for Discord authentication. Please make sure Discord is running and you're logged in.");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to get Discord user: {ex.Message}");
+                
+                string errorMessage = "Waiting for Discord connection. ";
+                if (ex.Message.Contains("NotFound"))
+                {
+                    errorMessage += "Please make sure Discord is running and you're logged in.";
+                }
+                else
+                {
+                    errorMessage += "Please make sure Discord is running and you're logged in.";
+                }
+                
+                OnAuthenticationFailed?.Invoke(errorMessage);
+                return;
+            }
+        }
+
+
+
+        public static void Logout()
+        {
+            IsAuthenticated = false;
+            CurrentUser = new User();
+            CurrentToken = new OAuth2Token();
+            OnUserLoggedOut?.Invoke();
+        }
+
+        public static string GetUserDisplayName()
+        {
+            if (discord == null)
+                return "Discord not initialized";
+            
+            if (IsAuthenticated && CurrentUser.Id != 0)
+            {
+                return $"{CurrentUser.Username}#{CurrentUser.Discriminator}";
+            }
+            return "Not logged in";
+        }
+
+        public static string GetUserAvatarUrl()
+        {
+            if (discord == null || !IsAuthenticated || CurrentUser.Id == 0)
+                return null;
+                
+            return $"https://cdn.discordapp.com/avatars/{CurrentUser.Id}/{CurrentUser.Avatar}.png";
+        }
+
+        public static string GetAccessToken()
+        {
+            if (discord == null || !IsAuthenticated || string.IsNullOrEmpty(CurrentToken.AccessToken))
+                return null;
+                
+            return CurrentToken.AccessToken;
         }
 
         private void Update()
@@ -93,6 +258,11 @@ namespace ApplicationManagers
                 if(SettingsManager.ProfileSettings.Guild.Value != "")
                 {
                     guild += "[" + SettingsManager.ProfileSettings.Guild.Value.StripHex() + "] ";
+                }
+
+                if (IsAuthenticated)
+                {
+                    name = $"{GetUserDisplayName()} | {name}";
                 }
 
                 //in game activity

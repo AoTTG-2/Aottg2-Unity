@@ -57,6 +57,7 @@ namespace ApplicationManagers
             }
             SettingsManager.Init();
             FullscreenHandler.Init();
+            DiscordManager.Init();
             UIManager.Init();
             SnapshotManager.Init();
             CursorManager.Init();
@@ -88,7 +89,6 @@ namespace ApplicationManagers
             EventManager.InvokeFinishInit();
             if (ApplicationConfig.DevelopmentMode)
                 DebugTesting.RunLateTests();
-            DiscordManager.Init();
         }
     }
 }
