@@ -15,16 +15,18 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicLightBuiltin() : base(null) { }
 
-        public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, int type = 1) : base(owner.Value.GameObject.AddComponent<Light>())
+        public CustomLogicLightBuiltin(CustomLogicMapObjectBuiltin owner, LightType type) : base(owner.Value.GameObject.AddComponent<Light>())
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;
             Value = (Light)Component;
+            Value.type = type;
             Value.shadowBias = 0.2f;
             Value.intensity = 1f;
             Value.shadows = LightShadows.Soft;
             Value.shadowStrength = 0.8f;
             Value.shadowBias = 0.2f;
+            MapLoader.RegisterMapLight(Value, type == LightType.Directional);
         }
 
         [CLProperty(Static = true, Description = "LightType.Directional")]
@@ -121,12 +123,5 @@ namespace CustomLogic
                 }
             }
         }
-
-        [CLMethod(Description = "Registers the light.")]
-        public void Register(bool isDaylight)
-        {
-            MapLoader.RegisterMapLight(Value, isDaylight);
-        }
-
     }
 }

@@ -685,9 +685,17 @@ namespace CustomLogic
                 throw new System.Exception($"MapObject already has a {name} component.");
             }
 
-            if (name == "Light")
+            if (name == "DayLight")
             {
-                _builtinCache[name] = new CustomLogicLightBuiltin(this);
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Directional);
+            }
+            else if (name == "PointLight")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Point);
+            }
+            else if (name == "SpotLight")
+            {
+                _builtinCache[name] = new CustomLogicLightBuiltin(this, LightType.Spot);
             }
             else if (name == "Rigidbody")
             {

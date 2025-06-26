@@ -1931,14 +1931,12 @@ component Daylight
     function Init()
     {
         #self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
-        light = self.MapObject.AddBuiltinComponent("Light");
-        light.TypeOfLight = light.LightTypeDirectional;
+        light = self.MapObject.AddBuiltinComponent("DayLight");
         light.WeatherControlled = self.WeatherControlled;
         light.Color = self.Color;
         light.Intensity = self.Intensity;
         light.ShadowType = light.ShadowTypeSoft;
         light.ShadowStrength = 0.8;
-        light.Register(true);
     }
 }
 
@@ -1954,7 +1952,7 @@ component PointLight
     function Init()
     {
         #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
-        self._light = self.MapObject.AddBuiltinComponent("Light");
+        self._light = self.MapObject.AddBuiltinComponent("PointLight");
         self._light.Type = self._light.LightTypePoint;
         self._light.Color = self.Color;
         self._light.Intensity = self.Intensity;
@@ -1977,7 +1975,7 @@ component SpotLight
     function Init()
     {
         #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
-        self._light = self.MapObject.AddBuiltinComponent("Light");
+        self._light = self.MapObject.AddBuiltinComponent("SpotLight");
         self._light.Type = self._light.LightTypePoint;
         self._light.Color = self.Color;
         self._light.Intensity = self.Intensity;
