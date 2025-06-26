@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Map;
+using System;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -19,6 +20,11 @@ namespace CustomLogic
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;
             Value = (Light)Component;
+            Value.shadowBias = 0.2f;
+            Value.intensity = 1f;
+            Value.shadows = LightShadows.Soft;
+            Value.shadowStrength = 0.8f;
+            Value.shadowBias = 0.2f;
         }
 
         [CLProperty(Static = true, Description = "LightType.Directional")]
@@ -40,7 +46,7 @@ namespace CustomLogic
         public static int ShadowTypeSoft => (int)LightShadows.Soft;
 
         [CLProperty(Description = "The type of the light.")]
-        public int Type
+        public int TypeOfLight
         {
             get => (int)Value.type;
             set => Value.type = (LightType)value;
@@ -74,8 +80,16 @@ namespace CustomLogic
             set => Value.intensity = value;
         }
 
+        // Bounce Intensity
+        [CLProperty(Description = "The bounce intensity of the light.")]
+        public float BounceIntensity
+        {
+            get => Value.bounceIntensity;
+            set => Value.bounceIntensity = value;
+        }
+
         [CLProperty(Description = "The shadow type of the light (Soft, None, Hard).")]
-        public int Shadows
+        public int ShadowType
         {
             get => (int)Value.shadows;
             set => Value.shadows = (LightShadows)value;
@@ -87,5 +101,32 @@ namespace CustomLogic
             get => Value.shadowStrength;
             set => Value.shadowStrength = value;
         }
+
+        // Weather controlled prop
+        private bool _weatherControlled = false;
+        [CLProperty(Description = "The light is controlled by the weather system.")]
+        public bool WeatherControlled
+        {
+            get => _weatherControlled;
+            set
+            {
+                _weatherControlled = value;
+                if (value && !MapLoader.Daylight.Contains(Value))
+                {
+                    MapLoader.Daylight.Add(Value);
+                }
+                else if (!value)
+                {
+                    MapLoader.Daylight.Remove(Value);
+                }
+            }
+        }
+
+        [CLMethod(Description = "Registers the light.")]
+        public void Register(bool isDaylight)
+        {
+            MapLoader.RegisterMapLight(Value, isDaylight);
+        }
+
     }
 }

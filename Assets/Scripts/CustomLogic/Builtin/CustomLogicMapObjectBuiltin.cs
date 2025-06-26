@@ -482,7 +482,6 @@ namespace CustomLogic
             return new CustomLogicMapTargetableBuiltin(go, targetable);
         }
 
-
         [CLMethod(description: "Get a child object by name")]
         public CustomLogicMapObjectBuiltin GetChild(string name)
         {
@@ -667,246 +666,14 @@ namespace CustomLogic
             return result;
         }
 
-        /// <summary>
-        /// Add a builtin component to the object.
-        /// Components: Daylight, PointLight, Tag, Rigidbody, CustomPhysicsMaterial, NavMeshObstacle
-        /// </summary>
-        /// <example>
-        /// # Add a Daylight component
-        /// AddBuiltinComponent("Daylight", new Color(255, 255, 255), 1.0f, true);
-        /// 
-        /// # Add a PointLight component
-        /// AddBuiltinComponent("PointLight", new Color(255, 255, 255), 1.0f, 10.0f);
-        /// 
-        /// # Add a Tag component
-        /// AddBuiltinComponent("Tag", "MyTag");
-        /// 
-        /// # Add a Rigidbody component
-        /// AddBuiltinComponent("Rigidbody", 1.0f, new Vector3(0, -9.81f, 0), true, true);
-        /// 
-        /// # Add a CustomPhysicsMaterial component
-        /// AddBuiltinComponent("CustomPhysicsMaterial", true);
-        /// 
-        /// # Add a NavMeshObstacle component
-        /// AddBuiltinComponent("NavMeshObstacle", true);
-        /// </example>
-        [CLMethod(description: "Add builtin component")]
-        public void AddBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
-        {
-            string name = (string)componentName;
-            if (name == "Daylight")
-            {
-                var light = Value.GameObject.AddComponent<Light>();
-                light.type = LightType.Directional;
-                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
-                light.intensity = parameter2.UnboxToFloat();
-                light.shadows = LightShadows.Soft;
-                light.shadowStrength = 0.8f;
-                light.shadowBias = 0.2f;
-                bool weatherControlled = (bool)parameter3;
-                if (weatherControlled)
-                    MapLoader.Daylight.Add(light);
-                MapLoader.RegisterMapLight(light, true);
-            }
-            else if (name == "PointLight")
-            {
-                var light = Value.GameObject.AddComponent<Light>();
-                light.type = LightType.Point;
-                light.color = ((CustomLogicColorBuiltin)parameter1).Value.ToColor();
-                light.intensity = parameter2.UnboxToFloat();
-                light.range = parameter3.UnboxToFloat();
-                light.shadows = LightShadows.None;
-                light.renderMode = LightRenderMode.ForcePixel;
-                light.bounceIntensity = 0f;
-                MapLoader.RegisterMapLight(light, false);
-            }
-            else if (name == "Tag")
-            {
-                var tag = (string)parameter1;
-                MapLoader.RegisterTag(tag, Value);
-            }
-            else if (name == "Rigidbody")
-            {
-                float mass = parameter1.UnboxToFloat();
-                Vector3 gravity = ((CustomLogicVector3Builtin)parameter2).Value;
-                var rigidbody = Value.GameObject.AddComponent<Rigidbody>();
-                rigidbody.mass = mass;
-                var force = Value.GameObject.AddComponent<ConstantForce>();
-                force.force = gravity;
-                rigidbody.useGravity = false;
-                rigidbody.freezeRotation = (bool)parameter3;
-
-                var interpolate = (bool)parameter4;
-                rigidbody.interpolation = interpolate
-                    ? RigidbodyInterpolation.Interpolate
-                    : RigidbodyInterpolation.None;
-            }
-            else if (name == "CustomPhysicsMaterial")
-            {
-                var customPhysicsMaterial = Value.GameObject.AddComponent<CustomPhysicsMaterial>();
-                customPhysicsMaterial.Setup((bool)parameter1);
-            }
-            else if (name == "NavMeshObstacle")
-            {
-                bool carveOnlyStationary = (bool)parameter1;
-                var navMeshObstacleGo = new GameObject("NavMeshObstacle");
-                navMeshObstacleGo.transform.parent = Value.GameObject.transform;
-
-                navMeshObstacleGo.transform.localPosition = Vector3.zero;
-
-                var navMeshObstacle = navMeshObstacleGo.AddComponent<NavMeshObstacle>();
-                navMeshObstacle.carving = true;
-                navMeshObstacle.carveOnlyStationary = carveOnlyStationary;
-
-                Bounds bounds = Value.colliderCache[0].bounds;
-                foreach (var collider in Value.colliderCache)
-                {
-                    bounds.Encapsulate(collider.bounds);
-                }
-
-                navMeshObstacle.size = bounds.size;
-                navMeshObstacle.center = bounds.center;
-
-                navMeshObstacle.center = navMeshObstacle.center - Value.GameObject.transform.position;
-
-            }
-        }
-
         [CLMethod(description: "Whether or not the object has the given tag")]
         public bool HasTag(string tag)
         {
             return MapLoader.HasTag(Value, tag);
         }
 
-        [CLMethod(Description = "Read a builtin component")]
-        public object ReadBuiltinComponent(string name, string param)
-        {
-            if (name == "Rigidbody")
-            {
-                var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
-                if (param == "Velocity")
-                {
-                    return new CustomLogicVector3Builtin(rigidbody.velocity);
-                }
-                else if (param == "AngularVelocity")
-                {
-                    return new CustomLogicVector3Builtin(rigidbody.angularVelocity);
-                }
-            }
-            return null;
-        }
-
-        [CLMethod(description: "Update a builtin component")]
-        public void UpdateBuiltinComponent(object componentName = null, object parameter1 = null, object parameter2 = null, object parameter3 = null, object parameter4 = null)
-        {
-            string name = (string)componentName;
-            string param = (string)parameter1;
-            if (name == "Rigidbody")
-            {
-                var rigidbody = Value.GameObject.GetComponent<Rigidbody>();
-                if (param == "SetVelocity")
-                {
-                    Vector3 velocity = ((CustomLogicVector3Builtin)parameter2).Value;
-                    rigidbody.velocity = velocity;
-                }
-                else if (param == "AddForce")
-                {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
-                    ForceMode mode = ForceMode.Acceleration;
-                    if (parameter3 != null)
-                    {
-                        string forceMode = (string)parameter3;
-                        switch (forceMode)
-                        {
-                            case "Force":
-                                mode = ForceMode.Force;
-                                break;
-                            case "Acceleration":
-                                mode = ForceMode.Acceleration;
-                                break;
-                            case "Impulse":
-                                mode = ForceMode.Impulse;
-                                break;
-                            case "VelocityChange":
-                                mode = ForceMode.VelocityChange;
-                                break;
-                        }
-                    }
-                    if (parameter4 != null)
-                    {
-                        Vector3 position = ((CustomLogicVector3Builtin)parameter4).Value;
-                        rigidbody.AddForceAtPosition(force, position, mode);
-                    }
-                    else
-                    {
-                        rigidbody.AddForce(force, mode);
-                    }
-                }
-                else if (param == "AddTorque")
-                {
-                    Vector3 force = ((CustomLogicVector3Builtin)parameter2).Value;
-                    ForceMode mode = ForceMode.Acceleration;
-                    if (parameter3 != null)
-                    {
-                        string forceMode = (string)parameter3;
-                        switch (forceMode)
-                        {
-                            case "Force":
-                                mode = ForceMode.Force;
-                                break;
-                            case "Acceleration":
-                                mode = ForceMode.Acceleration;
-                                break;
-                            case "Impulse":
-                                mode = ForceMode.Impulse;
-                                break;
-                            case "VelocityChange":
-                                mode = ForceMode.VelocityChange;
-                                break;
-                        }
-                    }
-                    rigidbody.AddTorque(force, mode);
-                }
-            }
-            else if (name == "CustomPhysicsMaterial")
-            {
-                var customPhysicsMaterial = Value.GameObject.GetComponent<CustomPhysicsMaterial>();
-                if (param == "StaticFriction")
-                {
-                    customPhysicsMaterial.StaticFriction = parameter2.UnboxToFloat();
-                }
-                if (param == "DynamicFriction")
-                {
-                    customPhysicsMaterial.DynamicFriction = parameter2.UnboxToFloat();
-                }
-                if (param == "Bounciness")
-                {
-                    customPhysicsMaterial.Bounciness = parameter2.UnboxToFloat();
-                }
-
-                var isFrictionCombine = param == "FrictionCombine";
-                var isBounceCombine = param == "BounceCombine";
-                if (isFrictionCombine || isBounceCombine)
-                {
-                    var combine = parameter2 switch
-                    {
-                        "Minimum" => PhysicMaterialCombine.Minimum,
-                        "Multiply" => PhysicMaterialCombine.Multiply,
-                        "Maximum" => PhysicMaterialCombine.Maximum,
-                        _ => PhysicMaterialCombine.Average
-                    };
-
-                    if (isFrictionCombine)
-                        customPhysicsMaterial.FrictionCombine = combine;
-                    else
-                        customPhysicsMaterial.BounceCombine = combine;
-
-                }
-            }
-        }
-
         [CLMethod(description: "Add a builtin component to the MapObject")]
-        public object AddBuiltinComponent2(string name)
+        public object AddBuiltinComponent(string name)
         {
             // Add the component and add to cache.
             if (_builtinCache == null)
@@ -950,6 +717,16 @@ namespace CustomLogic
             return _builtinCache[name];
         }
 
+        [CLMethod(description: "Gets a builtin component to the MapObject")]
+        public object GetBuiltinComponent(string name)
+        {
+            if (_builtinCache == null || !_builtinCache.ContainsKey(name))
+            {
+                return null;
+            }
+            return _builtinCache[name];
+        }
+
         [CLMethod(description: "Remove a builtin component from the MapObject")]
         public void RemoveBuiltinComponent(string name)
         {
@@ -974,7 +751,6 @@ namespace CustomLogic
                 return _rigidBody;
             }
         }
-
 
         private void AssertRendererGet()
         {

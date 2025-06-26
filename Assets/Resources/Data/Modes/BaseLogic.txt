@@ -2,12 +2,17 @@
 component NavMeshObstacle
 {
     Description = "Adds a navMeshObstacle to the object";
+    AutoScale = true;
+
     _nav = null;
 
     function Init()
     {
         # Add the component like how we add Rigidbody
-        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle", false);
+        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle");
+        _nav.Carving = true;
+        _nav.CarveOnlyStationary = false;
+        _nav.AutoScale();
     }
 }
 
@@ -173,14 +178,16 @@ component Floater
 
                     bForce = Vector3(0, gScale * Math.Abs(gravity.Y) * dMult - wdForce.Y, 0);
                     #Game.DrawRay(point, bForce, Color(0, 255, 0, 255), 1);
-                    self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+                    #self._rb.AddForceWithModeAtPoint(bForce, point, "Acceleration");
+                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration, point);
 
                     wdForce = velocity.Scale(self.Drag * -1 * Time.TickTime);
-                    self._rb.AddForceWithMode(bForce, "Acceleration");
+                    #self._rb.AddForceWithMode(bForce, "Acceleration");
+                    self._rb.AddForceOptimized(bForce, self._rb.ForceModeAcceleration);
 
-                    ag = self._rb.GetAngularVelocity();
+                    ag = self._rb.AngularVelocity;
                     agdForce = ag.Scale(self.AngularDrag * -1 * Time.TickTime * dMult);
-                    self._rb.AddTorque(agdForce, "VelocityChange");
+                    self._rb.AddTorqueOptimized(agdForce, self._rb.ForceModeVelocityChange);
                 }
             }
         }
@@ -260,12 +267,12 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body == null)
             {
                 return Vector3(0, 0, 0);
             }
-            return body.GetVelocity();
+            return body.Velocity;
         }
         return Vector3(0, 0, 0);
     }
@@ -278,7 +285,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body == null)
             {
                 return 1;
@@ -296,10 +303,10 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body != null)
             {
-                body.SetVelocity(velocity);
+                body.Velocity = velocity;
             }
         }
     }
@@ -312,7 +319,7 @@ component WaterPhysics
         }
         elif (other.Type == "MapObject")
         {
-            body = other.GetComponent("Rigidbody");
+            body = other.GetBuiltinComponent("Rigidbody");
             if (body != null)
             {
                 return true;
@@ -1089,13 +1096,16 @@ component CustomPhysicsMaterial
     BounceCombine = "Average";
     BounceCombineDropbox = "Average, Minimum, Multiply, Maximum";
 
+    _material = null;
+
     function Init()
     {
         self.StaticFriction = Math.Max(0.0, self.StaticFriction);
         self.DynamicFriction = Math.Max(0.0, self.DynamicFriction);
         self.Bounciness = Math.Clamp(self.Bounciness, 0.0, 1.0);
         
-        self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial", self.IncludeChildren);
+        self._material = self.MapObject.AddBuiltinComponent("CustomPhysicsMaterial");
+        self._material.Setup(self.IncludeChildren);
         self.SetStaticFriction(self.StaticFriction);
         self.SetDynamicFriction(self.DynamicFriction);
         self.SetBounciness(self.Bounciness);
@@ -1105,27 +1115,47 @@ component CustomPhysicsMaterial
     
     function SetStaticFriction(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "StaticFriction", value);
+        self._material.StaticFriction = value;
     }
     
     function SetDynamicFriction(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "DynamicFriction", value);
+        self._material.DynamicFriction = value;
     }
         
     function SetBounciness(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "Bounciness", value);
+        self._material.Bounciness = value;
     }
     
+    function GetEnumValue(value)
+    {
+        if (value == "Average")
+        {
+            return self._material.FrictionCombineAverage;
+        }
+        elif (value == "Minimum")
+        {
+            return self._material.FrictionCombineMinimum;
+        }
+        elif (value == "Maximum")
+        {
+            return self._material.FrictionCombineMaximum;
+        }
+        elif (value == "Multiply")
+        {
+            return self._material.FrictionCombineMultiply;
+        }
+    }
+
     function SetFrictionCombine(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "FrictionCombine", value);
+        self._material.FrictionCombine = self.GetEnumValue(value);
     }
         
     function SetBounceCombine(value)
     {
-        self.MapObject.UpdateBuiltinComponent("CustomPhysicsMaterial", "BounceCombine", value);
+        self._material.BounceCombine = self.GetEnumValue(value);
     }
 }
 
@@ -1900,7 +1930,15 @@ component Daylight
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
+        #self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
+        light = self.MapObject.AddBuiltinComponent("Light");
+        light.TypeOfLight = light.LightTypeDirectional;
+        light.WeatherControlled = self.WeatherControlled;
+        light.Color = self.Color;
+        light.Intensity = self.Intensity;
+        light.ShadowType = light.ShadowTypeSoft;
+        light.ShadowStrength = 0.8;
+        light.Register(true);
     }
 }
 
@@ -1911,9 +1949,42 @@ component PointLight
     Intensity = 1.0;
     Range = 10.0;
 
+    _light = null;
+
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        self._light = self.MapObject.AddBuiltinComponent("Light");
+        self._light.Type = self._light.LightTypePoint;
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.Range = self.Range;
+        self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
+        self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
+    }
+}
+
+# internal
+component SpotLight
+{
+    Color = Color(255, 255, 255, 255);
+    Intensity = 1.0;
+    Range = 10.0;
+    Angle = 30.0;
+
+    _light = null;
+
+    function Init()
+    {
+        #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
+        self._light = self.MapObject.AddBuiltinComponent("Light");
+        self._light.Type = self._light.LightTypePoint;
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.Range = self.Range;
+        self._light.SpotAngle = self.Angle;
+        self._light.ShadowType = self._light.ShadowTypeNone; # Point lights do not support shadows
+        self._light.BounceIntensity = 0.0; # Point lights do not support bounce intensity
     }
 }
 
@@ -1928,7 +1999,11 @@ component Rigidbody
     function Init()
     {
         # self.MapObject.AddBuiltinComponent("Rigidbody", self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
-        self.MapObject.AddRigidbody(self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        self.MapObject.AddBuiltinComponent("Rigidbody"); # self.Mass, self.Gravity, self.FreezeRotation, self.Interpolate);
+        self.MapObject.Rigidbody.Mass = self.Mass;
+        self.MapObject.Rigidbody.Gravity = self.Gravity;
+        self.MapObject.Rigidbody.FreezeAllRotations = self.FreezeRotation;
+        self.MapObject.Rigidbody.Interpolate = self.Interpolate;
     }
 
     function SetVelocity(velocity)
@@ -1981,7 +2056,7 @@ component Tag
 
     function Init()
     {
-        self.MapObject.AddBuiltinComponent("Tag", self.Name);
+        self.MapObject.Tag = self.Name;
     }
 }
 

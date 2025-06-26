@@ -119,12 +119,12 @@ namespace CustomLogic
         /// If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.
         /// </summary>
         [CLProperty(Description = "The force of gravity.")]
-        public Vector3? Gravity
+        public CustomLogicVector3Builtin? Gravity
         {
             get => _gravity;
             set
             {
-                _gravity = value; // Always update stored gravity
+                _gravity = value == null ? null : value.Value; // Always update stored gravity
                 if (value == null)
                 {
                     if (CustomGravity != null)

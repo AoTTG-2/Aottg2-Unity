@@ -24,21 +24,6 @@ namespace CustomLogic
         [CLProperty(Description = "")]
         public CustomLogicTransformBuiltin AttachedArticulationBody => new CustomLogicTransformBuiltin(collider.attachedRigidbody.transform);
 
-        /*[CLProperty(Description = "")]
-        public CustomLogicRigidbodyBuiltin AttachedRigidbody {
-            get => new CustomLogicRigidbodyBuiltin(collider.attachedRigidbody);
-            set => collider.attachedRigidbody = value.Value;
-        }*/
-
-        /*[CLProperty(Description = "")]
-        public CustomLogicBoundsBuiltin Bounds
-        {
-            get
-            {
-                return new CustomLogicBoundsBuiltin(collider.bounds);
-                collider.bounds.
-            }
-        }*/
 
         /// <inheritdoc cref="Collider.contactOffset"/>
         [CLProperty]
@@ -50,7 +35,7 @@ namespace CustomLogic
 
         /// <inheritdoc cref="Collider.enabled"/>
         [CLProperty]
-        public bool Enabled
+        new public bool Enabled
         {
             get => collider.enabled;
             set => collider.enabled = value;
@@ -79,13 +64,6 @@ namespace CustomLogic
             get => collider.isTrigger;
             set => collider.isTrigger = value;
         }
-
-        /*[CLProperty(Description = "")]
-        public CustomLogicPhysicMaterialBuiltin Material
-        {
-            get => new CustomLogicPhysicMaterialBuiltin(collider.material);
-            set => collider.material = value.Value;
-        }*/
 
         /// <inheritdoc cref="Bounds.center"/>
         [CLProperty]

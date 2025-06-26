@@ -35,9 +35,28 @@ namespace ApplicationManagers
         const int InputHeight = 25;
         const int Padding = 10;
         const string InputControlName = "DebugInput";
+        const int MaxMessagesPerSecond = 5;
+        static int _numberOfMessages = 0;
+        static Stopwatch _messageRateLimiter = new Stopwatch();
+
+        public static bool CanPlaceMessage()
+        {
+            _numberOfMessages++;
+            if (_numberOfMessages > MaxMessagesPerSecond)
+            {
+                if (_messageRateLimiter.ElapsedMilliseconds < 1000)
+                {
+                    return false; // Too many messages in the last second
+                }
+                _numberOfMessages = 0; // Reset the counter after a second
+                _messageRateLimiter.Restart();
+            }
+            return true; // Allow placing a message
+        }
 
         public static void Init()
         {
+            if (!CanPlaceMessage()) return; // Antispam check
             _instance = SingletonFactory.CreateSingleton(_instance);
             Application.logMessageReceived += OnUnityDebugLog;
         }
