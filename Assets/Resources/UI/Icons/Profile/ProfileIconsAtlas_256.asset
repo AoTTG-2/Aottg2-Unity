@@ -168,91 +168,91 @@ MonoBehaviour:
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 5
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_5
     m_HashCode: 2126825148
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 8
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_8
     m_HashCode: 2126825137
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 0
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_0
     m_HashCode: 2126825145
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 1
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_1
     m_HashCode: 2126825144
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 2
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_2
     m_HashCode: 2126825147
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 3
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_3
     m_HashCode: 2126825146
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 4
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_4
     m_HashCode: 2126825149
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 6
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_6
     m_HashCode: 2126825151
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 7
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_7
     m_HashCode: 2126825150
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 9
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_9
     m_HashCode: 2126825136
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 11
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_11
     m_HashCode: 1465752969
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 12
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_12
     m_HashCode: 1465752970
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 13
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_13
     m_HashCode: 1465752971
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 14
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_14
     m_HashCode: 1465752972
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 15
-    m_Scale: 1
+    m_Scale: 1.1
     m_Name: ProfileIconsAtlas_256_15
     m_HashCode: 1465752973
   - m_ElementType: 2
