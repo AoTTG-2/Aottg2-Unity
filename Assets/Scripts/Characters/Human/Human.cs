@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEngine;
 using Utility;
+using Utility.CustomMath;
 using Weather;
 
 namespace Characters
@@ -2038,6 +2039,63 @@ namespace Characters
             }
         }
 
+        private bool CanClip(Collision collision)
+        {
+            if (_lastVelocity.magnitude < 10f) return false;
+
+            if (collision.collider is not CapsuleCollider) return false;
+            if (collision.collider.gameObject.name != "neck") return false;
+            CapsuleCollider collider = (CapsuleCollider)collision.collider;
+            Ray prediction = new Ray(_lastPosition, _lastVelocity.normalized * 1000f);
+
+            CustomDebug.DrawRay(prediction.origin + prediction.direction.normalized * -1, prediction.direction, Color.red, 100f);
+
+            CapsuleRayIntersection.RayIntersectsCapsule(prediction, collider, out List<Vector3> intersections, out float ratio);
+
+            if (intersections.Count == 1)
+            {
+                CustomDebug.SpawnSphere(intersections[0], 0.5f, Color.blue, 100f);
+                string message1 = $"Clipped {ratio}%";
+                ChatManager.AddLine(message1, ChatTextColor.System);
+                InGameManager.SetLabel("MiddleCenter", $"\n\n\n\n<size=20><color=red>{message1}</color></size>!", 2);
+                return true;
+            }
+
+            if (intersections.Count != 2) return false;
+
+            CustomDebug.DrawLine(intersections[0], intersections[1], Color.white, 100f);
+
+            CustomDebug.SpawnSphere(intersections[0], 0.5f, Color.blue, 100f);
+            CustomDebug.SpawnSphere(intersections[1], 0.5f, Color.blue, 100f);
+            string message = $"Clipped {ratio}%";
+            ChatManager.AddLine(message, ChatTextColor.System);
+            InGameManager.SetLabel("MiddleCenter", $"\n\n\n\n<size=20><color=red>{message}</color></size>!", 2);
+
+            return ratio < 0.01f;
+        }
+
+        private bool CanClip2(Collision collision)
+        {
+            if (_lastVelocity.magnitude < 10f) return false;
+
+            // Check the angle of the last velocity and the collision normal
+            float angle = 90-Vector3.Angle(_lastVelocity, -collision.contacts[0].normal);
+            CustomDebug.DrawLine(_lastPosition, collision.contacts[0].point, Color.red, 100f);
+            CustomDebug.DrawLine(collision.contacts[0].point, collision.contacts[0].point + collision.contacts[0].normal * 10f, Color.green, 100f);
+            CustomDebug.DrawLine(collision.contacts[0].point, collision.contacts[0].point + _lastVelocity.normalized * 10f, Color.blue, 100f);
+            Debug.Log(angle);
+            // if the angle is less than 30 degrees, we can clip
+            if (angle < 45f)
+            {
+                CustomDebug.SpawnSphere(collision.contacts[0].point, 0.5f, Color.red, 100f);
+                string message = $"Clipped {angle} degrees";
+                ChatManager.AddLine(message, ChatTextColor.System);
+                InGameManager.SetLabel("MiddleCenter", $"\n\n\n\n<size=20><color=red>{message}</color></size>!", 2);
+                return true;
+            }
+            return false;
+        }
+
         protected void OnCollisionEnter(Collision collision)
         {
             if (!IsMine())
@@ -2050,10 +2108,20 @@ namespace Characters
             }
             if (_lastVelocity.magnitude > 0f)
             {
-                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-                float speed = _lastVelocity.magnitude * speedMultiplier;
-                Cache.Rigidbody.velocity = velocity.normalized * speed;
+                bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
+
+                if (hitTitan && CanClip2(collision))
+                {
+                    Cache.Rigidbody.velocity = _lastVelocity;
+                }
+                else
+                {
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float percent = 0.015f;
+                    float speedMultiplier = Mathf.Max(1f - (angle * percent), 0f);
+                    float speed = _lastVelocity.magnitude * speedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
+                }
                 float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
                 if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
                     GetHit("Impact", (int)speedDiff, "Impact", "");
@@ -2072,7 +2140,8 @@ namespace Characters
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
+            bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && !hitTitan)
             {
                 _wallSlide = true;
                 _wallSlideGround = collision.GetContact(0).normal.normalized;

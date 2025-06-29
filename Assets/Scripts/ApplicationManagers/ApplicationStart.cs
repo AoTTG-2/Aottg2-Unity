@@ -74,6 +74,7 @@ namespace ApplicationManagers
             // debug
             DebugConsole.Init();
             DebugLagSim.Init();
+            CustomDebug.Init();
             if (ApplicationConfig.DevelopmentMode)
             {
                 DebugTesting.Init();

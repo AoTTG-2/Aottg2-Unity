@@ -1,8 +1,7 @@
-﻿using UnityEngine.UI;
+﻿using Map;
 using UnityEngine;
-using Map;
 using UnityEngine.Events;
-using PlasticPipe.PlasticProtocol.Messages;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -179,7 +178,7 @@ namespace UI
         {
             Highlight.SetActive(highlight);
         }
-        
+
         public void SetNesting(int level)
         {
             LayoutGroup.padding = new RectOffset(10 + (level * 20), 0, 0, 0);

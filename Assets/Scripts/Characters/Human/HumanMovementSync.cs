@@ -1,8 +1,5 @@
-using ApplicationManagers;
 using Photon.Pun;
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Utility;
 
 
@@ -60,7 +57,7 @@ namespace Characters
                 {
                     _transform.position = Vector3.Lerp(_transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
                     _transform.rotation = Quaternion.Lerp(_transform.rotation, _correctRotation, Time.deltaTime * SmoothingDelay);
-                    if(_human.BackHuman != null)
+                    if (_human.BackHuman != null)
                         _human.CarryVelocity = _correctVelocity;
                     if (_timeSinceLastMessage < MaxPredictionTime)
                     {
