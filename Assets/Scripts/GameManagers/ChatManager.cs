@@ -110,6 +110,8 @@ namespace GameManagers
             public static int CurrentIndex = -1;
             public static SuggestionType Type = SuggestionType.None;
             public static bool IsTabCompleting = false;
+            public static string OriginalPartialText = "";
+            public static bool IsProcessingClick = false;
             
             public static void Clear()
             {
@@ -120,7 +122,11 @@ namespace GameManagers
                 Suggestions.Clear();
                 CurrentIndex = -1;
                 Type = SuggestionType.None;
-                IsTabCompleting = false;
+                if (!IsProcessingClick)
+                {
+                    IsTabCompleting = false;
+                }
+                OriginalPartialText = "";
             }
 
             public static void SetOriginalContext(string original, int startPos, int endPos)
@@ -946,6 +952,142 @@ namespace GameManagers
 
         public static void HandleTyping(string input)
         {
+            if (!string.IsNullOrEmpty(SuggestionState.OriginalPartialText))
+            {
+                bool isStillValidCompletion = false;
+                
+                if (SuggestionState.Type == SuggestionType.Command && input.StartsWith("/"))
+                {
+                    int spaceIndex = input.IndexOf(' ');
+                    string currentCommand = spaceIndex == -1 ? input.Substring(1).ToLower() : input.Substring(1, spaceIndex - 1).ToLower();
+                    
+                    if (spaceIndex != -1)
+                    {
+                        SuggestionState.OriginalPartialText = "";
+                        SuggestionState.IsTabCompleting = false;
+                    }
+                    else
+                    {
+                        foreach (var suggestion in SuggestionState.Suggestions)
+                        {
+                            if (string.Equals(currentCommand, suggestion, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isStillValidCompletion = true;
+                                break;
+                            }
+                        }
+                        if (isStillValidCompletion)
+                        {
+                            SuggestionState.IsTabCompleting = false;
+                            return;
+                        }
+                        else
+                        {
+                            bool isPotentialPrefix = false;
+                            foreach (var suggestion in SuggestionState.Suggestions)
+                            {
+                                if (suggestion.StartsWith(currentCommand, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    isPotentialPrefix = true;
+                                    break;
+                                }
+                            }
+                            if (isPotentialPrefix)
+                            {
+                                SuggestionState.OriginalPartialText = "";
+                            }
+                            else
+                            {
+                                ClearLastSuggestions();
+                                return;
+                            }
+                        }
+                    }
+                }
+                else if (SuggestionState.Type == SuggestionType.Mention && input.Contains("@"))
+                {
+                    int lastAt = input.LastIndexOf('@');
+                    if (lastAt >= 0)
+                    {
+                        string afterAt = input.Substring(lastAt + 1);
+                        foreach (var suggestion in SuggestionState.Suggestions)
+                        {
+                            if (string.Equals(afterAt, suggestion, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isStillValidCompletion = true;
+                                break;
+                            }
+                        }
+                        if (isStillValidCompletion)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            bool isPotentialPrefix = false;
+                            foreach (var suggestion in SuggestionState.Suggestions)
+                            {
+                                if (suggestion.StartsWith(afterAt, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    isPotentialPrefix = true;
+                                    break;
+                                }
+                            }
+                            if (isPotentialPrefix)
+                            {
+                                SuggestionState.OriginalPartialText = "";
+                            }
+                            else
+                            {
+                                ClearLastSuggestions();
+                                return;
+                            }
+                        }
+                    }
+                }
+                else if (SuggestionState.Type == SuggestionType.PlayerID && input.StartsWith("/"))
+                {
+                    int spaceIndex = input.IndexOf(' ');
+                    if (spaceIndex != -1)
+                    {
+                        string partial = input.Substring(spaceIndex + 1);
+                        foreach (var suggestion in SuggestionState.Suggestions)
+                        {
+                            if (string.Equals(partial, suggestion, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isStillValidCompletion = true;
+                                break;
+                            }
+                        }
+                        if (isStillValidCompletion)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            bool isPotentialPrefix = false;
+                            foreach (var suggestion in SuggestionState.Suggestions)
+                            {
+                                if (suggestion.StartsWith(partial, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    isPotentialPrefix = true;
+                                    break;
+                                }
+                            }
+                            if (isPotentialPrefix)
+                            {
+                                SuggestionState.OriginalPartialText = "";
+                            }
+                            else
+                            {
+                                ClearLastSuggestions();
+                                return;
+                            }
+                        }
+                    }
+                }
+                SuggestionState.OriginalPartialText = "";
+            }
             if (SuggestionState.Type == SuggestionType.Mention && input.Contains("@"))
             {
                 int lastAt = input.LastIndexOf('@');
@@ -954,7 +1096,8 @@ namespace GameManagers
                     string afterAt = input.Substring(lastAt + 1);
                     if (afterAt.Contains(' ') || afterAt.Contains('\t'))
                     {
-                        ClearLastSuggestions();
+                        if (!SuggestionState.IsProcessingClick)
+                            ClearLastSuggestions();
                         return;
                     }
                     if (!string.IsNullOrEmpty(SuggestionState.PartialText) && 
@@ -976,13 +1119,15 @@ namespace GameManagers
                     {
                         if (cmdAttr.AutofillType == AutofillType.None && cmdAttr.Parameters.Length == 0)
                         {
-                            ClearLastSuggestions();
+                            if (!SuggestionState.IsProcessingClick)
+                                ClearLastSuggestions();
                             return;
                         }
                     }
                     else
                     {
-                        ClearLastSuggestions();
+                        if (!SuggestionState.IsProcessingClick)
+                            ClearLastSuggestions();
                         return;
                     }
                 }
@@ -1003,8 +1148,9 @@ namespace GameManagers
                 string partial = input.Substring(cmdSpaceIndex + 1);
                 if (partial.Length < SuggestionState.PartialText.Length || partial.EndsWith(" "))
                 {
-                    ClearLastSuggestions();
-                    SuggestionState.PartialText = "\uFFFF";
+                    if (!SuggestionState.IsProcessingClick)
+                        ClearLastSuggestions();
+                    SuggestionState.PartialText = "##FORCE_REFRESH##";
                 }
                 else
                 {
@@ -1019,7 +1165,8 @@ namespace GameManagers
             }
             if (string.IsNullOrEmpty(input) || input == "@" || input == "/")
             {
-                ClearLastSuggestions();
+                if (!SuggestionState.IsProcessingClick)
+                    ClearLastSuggestions();
                 return;
             }
             if (input.StartsWith("/"))
@@ -1028,14 +1175,15 @@ namespace GameManagers
                 string command = spaceIndex == -1 ? input.Substring(1).ToLower() : input.Substring(1, spaceIndex - 1).ToLower();
                 if (string.IsNullOrEmpty(command))
                 {
-                    ClearLastSuggestions();
+                    if (!SuggestionState.IsProcessingClick)
+                        ClearLastSuggestions();
                     return;
                 }
                 if (spaceIndex != -1 && CommandsCache.TryGetValue(command, out CommandAttribute cmdAttr) && 
                     cmdAttr.AutofillType == AutofillType.PlayerID)
                 {
                     string partial = input.Substring(spaceIndex + 1);
-                    if (partial != SuggestionState.PartialText)
+                    if (partial != SuggestionState.PartialText && !SuggestionState.IsTabCompleting && !SuggestionState.IsProcessingClick)
                     {
                         ClearLastSuggestions();
                         SuggestionState.PartialText = partial;
@@ -1067,7 +1215,7 @@ namespace GameManagers
                 }
                 else if (spaceIndex == -1)
                 {
-                    if (command != SuggestionState.PartialText)
+                    if (command != SuggestionState.PartialText && !SuggestionState.IsProcessingClick)
                     {
                         ClearLastSuggestions();
                         SuggestionState.PartialText = command;
@@ -1118,11 +1266,12 @@ namespace GameManagers
                 int spaceIdx = partial.IndexOf(' ');
                 if (spaceIdx >= 0 || string.IsNullOrWhiteSpace(partial))
                 {
-                    ClearLastSuggestions();
+                    if (!SuggestionState.IsProcessingClick)
+                        ClearLastSuggestions();
                     SuggestionState.PartialText = "";
                     return;
                 }
-                if (partial != SuggestionState.PartialText)
+                if (partial != SuggestionState.PartialText && !SuggestionState.IsProcessingClick)
                 {
                     ClearLastSuggestions();
                     SuggestionState.PartialText = partial;
@@ -1160,12 +1309,18 @@ namespace GameManagers
                             SuggestionState.Suggestions.Add(player.ActorNumber.ToString());
                         }
                     }
+                    else
+                    {
+                        ClearLastSuggestions();
+                    }
                 }
             }
             else
             {
-                ClearLastSuggestions();
+                if (!SuggestionState.IsProcessingClick)
+                    ClearLastSuggestions();
             }
+            SuggestionState.IsTabCompleting = false;
         }
 
         private static void ShowCommandSuggestions(List<string> suggestions)
@@ -1180,6 +1335,7 @@ namespace GameManagers
                     string rightArrow = GetColorString(" <", ChatTextColor.MyPlayer);
                     suggestionText = $"{leftArrow}{suggestionText}{rightArrow}";
                 }
+                suggestionText = $"<link=\"suggestion_{i}\">{suggestionText}</link>";
                 AddLine(suggestionText, ChatTextColor.Default, true, isSuggestion: true);
             }
         }
@@ -1204,10 +1360,61 @@ namespace GameManagers
             }
             string chosen = SuggestionState.Suggestions[SuggestionState.CurrentIndex];
             string newText = BuildCompletedText(currentInput, chosen);
+            if (string.IsNullOrEmpty(SuggestionState.OriginalPartialText))
+            {
+                SuggestionState.OriginalPartialText = SuggestionState.PartialText;
+            }
             UpdatePartialTextAfterCompletion(newText, chosen);
             RefreshSuggestionDisplay();
             SuggestionState.IsTabCompleting = true;
             chatPanel.SetTextAndPositionCaret(newText);
+        }
+
+        public static void HandleSuggestionClick(int suggestionIndex)
+        {
+            if (!SuggestionState.IsActive || suggestionIndex < 0 || suggestionIndex >= SuggestionState.Suggestions.Count)
+                return;
+            var chatPanel = GetChatPanel();
+            if (chatPanel == null) return;
+            string currentInput = chatPanel.GetInputText();
+            string chosen = SuggestionState.Suggestions[suggestionIndex];
+            string newText = BuildCompletedText(currentInput, chosen);
+            if (string.IsNullOrEmpty(SuggestionState.OriginalPartialText))
+            {
+                SuggestionState.OriginalPartialText = SuggestionState.PartialText;
+            }
+            SuggestionState.CurrentIndex = suggestionIndex;
+            SuggestionState.IsTabCompleting = true;
+            SuggestionState.IsProcessingClick = true;
+            RefreshSuggestionDisplay();            
+            chatPanel.SetTextAndPositionCaret(newText);
+            _instance.StartCoroutine(_instance.ReactivateInputAfterClick(chatPanel));
+        }
+        
+        private IEnumerator ReactivateInputAfterClick(ChatPanel chatPanel)
+        {
+            yield return null;
+            bool wasTabCompleting = SuggestionState.IsTabCompleting;
+            int preservedIndex = SuggestionState.CurrentIndex;
+            chatPanel.Activate();
+            if (wasTabCompleting && SuggestionState.CurrentIndex != preservedIndex)
+            {
+                SuggestionState.CurrentIndex = preservedIndex;
+                SuggestionState.IsTabCompleting = true;
+                RefreshSuggestionDisplay();
+            }            
+            yield return null;
+            if (!chatPanel.IsInputActive())
+            {
+                chatPanel.Activate();
+                if (wasTabCompleting && SuggestionState.CurrentIndex != preservedIndex)
+                {
+                    SuggestionState.CurrentIndex = preservedIndex;
+                    SuggestionState.IsTabCompleting = true;
+                    RefreshSuggestionDisplay();
+                }
+            }
+            SuggestionState.IsProcessingClick = false;
         }
         
         private static string BuildCompletedText(string currentInput, string suggestion)
@@ -1356,7 +1563,7 @@ namespace GameManagers
 
         public static void ForceSuggestionRefresh()
         {
-            SuggestionState.PartialText = "\uFFFF";
+            SuggestionState.PartialText = "##FORCE_REFRESH##";
         }
 
         public static void SendPrivateMessage(Player target, string message)

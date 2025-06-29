@@ -26,7 +26,7 @@ namespace UI
         private RectTransform _contentRect;
         private RectTransform _scrollbarRect;
         private Transform _caret;
-        private readonly List<TMP_InputField> _linesPool = new List<TMP_InputField>();
+        protected readonly List<TMP_InputField> _linesPool = new List<TMP_InputField>();
         private readonly Dictionary<GameObject, TMP_InputField> _cachedInputFields = new Dictionary<GameObject, TMP_InputField>();
         private readonly List<string> _allMessages = new List<string>();
         private GameObject _currentSelectedObject;
@@ -52,26 +52,14 @@ namespace UI
         private bool _isInteractingWithChatUI = false;
         private Dictionary<GameObject, RectTransform> _cachedRectTransforms = new Dictionary<GameObject, RectTransform>();
         private int _desiredCaretPosition = 0;
-
-        private static readonly Dictionary<string, int> EmojiNameToIndex = new Dictionary<string, int>
+        private static readonly Dictionary<string, int> EmojiNameToIndex = new Dictionary<string, int>();
+        static ChatPanel()
         {
-            {"blush", 0},
-            {"yum", 1},
-            {"heart", 2},
-            {"cool", 3},
-            {"grin", 4},
-            {"grin2", 5},
-            {"joy", 6},
-            {"grin3", 7},
-            {"grin4", 8},
-            {"sweat", 9},
-            {"cry", 10},
-            {"wink", 11},
-            {"?", 12},
-            {"lmao", 13},
-            {"smile", 14},
-            {"sad", 15}
-        };
+            for (int i = 0; i <= 136; i++)
+            {
+                EmojiNameToIndex[i.ToString()] = i;
+            }
+        }
 
         private string ProcessEmojiCodes(string text)
         {
@@ -276,6 +264,7 @@ namespace UI
             scrollRect.content = _panel.GetComponent<RectTransform>();
             scrollRect.verticalScrollbar = scrollbar;
             scrollRect.verticalScrollbarSpacing = -3;
+            scrollRect.scrollSensitivity = SettingsManager.UISettings.ChatScrollSensitivity.Value;
             var eventTrigger = content.gameObject.AddComponent<EventTrigger>();
             var enterEntry = new EventTrigger.Entry();
             enterEntry.eventID = EventTriggerType.PointerEnter;
@@ -401,11 +390,11 @@ namespace UI
                 emojiTextRect.anchorMin = UIAnchors.CenterMiddle;
                 emojiTextRect.anchorMax = UIAnchors.CenterMiddle;
                 emojiTextRect.pivot = UIAnchors.CenterMiddle;
-                emojiTextRect.sizeDelta = new Vector2(30, 30);
-                emojiTextRect.anchoredPosition = Vector2.zero;
+                emojiTextRect.sizeDelta = new Vector2(38, 38);
+                emojiTextRect.anchoredPosition = new Vector2(0, 0); // Move up 3 pixels
                 var tmpText = emojiText.GetComponent<TextMeshProUGUI>();
                 tmpText.text = $"<sprite={i}>";
-                tmpText.fontSize = 28;
+                tmpText.fontSize = 30;
                 tmpText.alignment = TextAlignmentOptions.Center;
                 tmpText.verticalAlignment = VerticalAlignmentOptions.Middle;
                 tmpText.enableAutoSizing = false;
@@ -413,17 +402,13 @@ namespace UI
                 var button = buttonGo.GetComponent<Button>();
                 int spriteIndex = i;
                 button.onClick.AddListener(() => InsertEmoji(spriteIndex));
-                string emojiName = EmojiNameToIndex.Where(x => x.Value == i).Select(x => x.Key).FirstOrDefault();
-                if (!string.IsNullOrEmpty(emojiName))
-                {
-                    var tooltipTrigger = buttonGo.AddComponent<EventTrigger>();
-                    var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
-                    enterEntry.callback.AddListener((data) => { tooltipText.text = $":{emojiName}:"; });
-                    tooltipTrigger.triggers.Add(enterEntry);
-                    var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
-                    exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
-                    tooltipTrigger.triggers.Add(exitEntry);
-                }
+                var tooltipTrigger = buttonGo.AddComponent<EventTrigger>();
+                var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+                enterEntry.callback.AddListener((data) => { tooltipText.text = $":{spriteIndex}:"; });
+                tooltipTrigger.triggers.Add(enterEntry);
+                var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+                exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
+                tooltipTrigger.triggers.Add(exitEntry);
             }
         }
 
@@ -432,12 +417,8 @@ namespace UI
             _inputField.ActivateInputField();
             _inputField.Select();
             string text = _inputField.text;
-            string emojiCode = $"<sprite={spriteIndex}>";
-            string emojiName = EmojiNameToIndex.Where(x => x.Value == spriteIndex).Select(x => x.Key).FirstOrDefault();
-            if (!string.IsNullOrEmpty(emojiName))
-            {
-                emojiCode = $":{emojiName}:";
-            }
+            string emojiCode = $":{spriteIndex}:";
+            
             int insertPosition = text.Length;
             string newText = text.Insert(insertPosition, emojiCode);
             int maxLength = _inputField.characterLimit > 0 ? _inputField.characterLimit : int.MaxValue;
@@ -645,7 +626,14 @@ namespace UI
         {
             if (!Input.GetKey(KeyCode.Return) && !Input.GetKey(KeyCode.KeypadEnter))
             {
-                ChatManager.ClearLastSuggestions();
+                Vector2 mousePosition = Input.mousePosition;
+                bool isOverChatUI = IsMouseOverAnyChatElement(mousePosition) || 
+                                   (_emojiPanel != null && _emojiPanel.activeSelf && 
+                                    RectTransformUtility.RectangleContainsScreenPoint(GetCachedRectTransform(_emojiPanel), mousePosition));
+                if (!isOverChatUI)
+                {
+                    ChatManager.ClearLastSuggestions();
+                }
                 IgnoreNextActivation = SettingsManager.InputSettings.General.Chat.ContainsEnter();
                 return;
             }
@@ -797,6 +785,7 @@ namespace UI
             if (Input.GetMouseButtonDown(0) && !_wasChatUIClicked && EventSystem.current.IsPointerOverGameObject())
             {
                 _isInteractingWithChatUI = false;
+                ChatManager.ClearLastSuggestions();
             }
             UpdateChatInteractionState();
         }
@@ -818,6 +807,7 @@ namespace UI
                 if (!isOverChatUI)
                 {
                     _isInteractingWithChatUI = false;
+                    ChatManager.ClearLastSuggestions();
                     IgnoreNextActivation = false;
                 }
             }
@@ -894,7 +884,7 @@ namespace UI
             textComponent.enableKerning = true;
             textComponent.isTextObjectScaleStatic = false;
             var clickHandler = lineGO.AddComponent<ChatLineClickHandler>();
-            clickHandler.Initialize(textComponent, _inputField);
+            clickHandler.Initialize(textComponent, _inputField, this);
             var rectTransform = lineGO.GetComponent<RectTransform>();
             rectTransform.anchorMin = UIAnchors.TopStretch;
             rectTransform.anchorMax = UIAnchors.TopStretchEnd;
@@ -914,11 +904,14 @@ namespace UI
         {
             private TextMeshProUGUI _textComponent;
             private TMP_InputField _chatInput;
-            public void Initialize(TextMeshProUGUI textComponent, TMP_InputField chatInput)
+            private ChatPanel _chatPanel;
+            public void Initialize(TextMeshProUGUI textComponent, TMP_InputField chatInput, ChatPanel chatPanel)
             {
                 _textComponent = textComponent;
                 _chatInput = chatInput;
+                _chatPanel = chatPanel;
             }
+            
             public void OnPointerClick(PointerEventData eventData)
             {
                 int linkIndex = TMP_TextUtilities.FindIntersectingLink(_textComponent, eventData.position, null);
@@ -926,18 +919,23 @@ namespace UI
                 {
                     TMP_LinkInfo linkInfo = _textComponent.textInfo.linkInfo[linkIndex];
                     string linkID = linkInfo.GetLinkID();
-                    if (int.TryParse(linkID, out int playerID))
+                    if (linkID.StartsWith("suggestion_"))
+                    {
+                        string indexStr = linkID.Substring("suggestion_".Length);
+                        if (int.TryParse(indexStr, out int suggestionIndex))
+                        {
+                            ChatManager.HandleSuggestionClick(suggestionIndex);
+                            return;
+                        }
+                    }
+                    else if (int.TryParse(linkID, out int playerID))
                     {
                         if (playerID == PhotonNetwork.LocalPlayer.ActorNumber)
                             return;
                         var player = PhotonNetwork.CurrentRoom.GetPlayer(playerID);
                         if (player != null)
                         {
-                            ChatPanel panel = _chatInput.transform.parent.GetComponent<ChatPanel>();
-                            if (panel != null)
-                            {
-                                panel.EnterPMMode(player);
-                            }
+                            _chatPanel.EnterPMMode(player);
                         }
                     }
                 }

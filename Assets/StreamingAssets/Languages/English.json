@@ -373,6 +373,7 @@
 		"UI.ChatPoolSize": "Chat pool size",
 		"UI.ChatBackgroundColor": "Chat background color",
 		"UI.ChatPoolSizeTooltip": "Number of messages in chat history (0 to autoscale).",
+		"UI.ChatScrollSensitivity": "Chat scroll sensitivity",
 		"UI.ShowChatTimestamp": "Chat timestamp",
 		"UI.KillFeedCount": "Kill feed count",
 		"UI.KillFeedCountTooltip": "Max number of kill feed popups to show.",

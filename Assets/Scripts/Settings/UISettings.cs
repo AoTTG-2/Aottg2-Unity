@@ -50,6 +50,7 @@ namespace Settings
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
         public IntSetting ChatPoolSize = new IntSetting(0, minValue: 0, maxValue: 400);
+        public IntSetting ChatScrollSensitivity = new IntSetting(10, minValue: 1, maxValue: 50);
         public IntSetting KillFeedCount = new IntSetting(3, minValue: 0, maxValue: 10);
         public BoolSetting JoinNotifications = new BoolSetting(true);
         public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
