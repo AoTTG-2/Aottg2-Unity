@@ -1,12 +1,8 @@
 ﻿using Settings;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace UI
 {
-    class SettingsGeneralPanel: SettingsCategoryPanel
+    class SettingsGeneralPanel : SettingsCategoryPanel
     {
         protected override bool ScrollBar => true;
         public override void Setup(BasePanel parent = null)
@@ -51,6 +47,10 @@ namespace UI
             ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.SkipCutscenes, UIManager.GetLocale(cat, sub, "SkipCutscenes"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraDeadzone, UIManager.GetLocale(cat, sub, "OriginalCameraDeadzone"));
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.OriginalCameraSpeed, UIManager.GetLocale(cat, sub, "OriginalCameraSpeed"));
-}   
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.GlancingAngle, "Glancing Angle");
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ProjectCombine, "Projection Combine");
+            ElementFactory.CreateToggleSetting(DoublePanelRight, style, settings.TitanFriction, "Use Titan Friction");
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.Friction, "Titan Friction");
+        }
     }
 }
