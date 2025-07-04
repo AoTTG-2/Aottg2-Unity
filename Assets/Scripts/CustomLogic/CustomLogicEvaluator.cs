@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 using Utility;
 
 
@@ -111,8 +110,9 @@ namespace CustomLogic
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Debug.LogError("Custom logic error getting component settings for " + component + ": " + e.Message + "\n" + e.InnerException);
             }
             return settings;
         }

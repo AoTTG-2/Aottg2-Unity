@@ -1927,16 +1927,37 @@ component Daylight
     Color = Color(255, 255, 255, 255);
     Intensity = 1.0;
     WeatherControlled = true;
+    ShadowType = "Soft";
+    ShadowTypeDropbox = "None,Soft,Hard";
+    ShadowStrength = 0.8;
+
+    _light = null;
 
     function Init()
     {
         #self.MapObject.AddBuiltinComponent("Daylight", self.Color, self.Intensity, self.WeatherControlled);
-        light = self.MapObject.AddBuiltinComponent("DayLight");
-        light.WeatherControlled = self.WeatherControlled;
-        light.Color = self.Color;
-        light.Intensity = self.Intensity;
-        light.ShadowType = light.ShadowTypeSoft;
-        light.ShadowStrength = 0.8;
+        self._light = self.MapObject.AddBuiltinComponent("DayLight");
+        self._light.WeatherControlled = self.WeatherControlled;
+        self._light.Color = self.Color;
+        self._light.Intensity = self.Intensity;
+        self._light.ShadowType = self.ParseEnum(self.ShadowType);
+        self._light.ShadowStrength = self.ShadowStrength;
+    }
+
+    function ParseEnum(value)
+    {
+        if (value == "None")
+        {
+            return self._light.ShadowTypeNone;
+        }
+        elif (value == "Soft")
+        {
+            return self._light.ShadowTypeSoft;
+        }
+        elif (value == "Hard")
+        {
+            return self._light.ShadowTypeHard;
+        }
     }
 }
 
@@ -1953,7 +1974,6 @@ component PointLight
     {
         #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
         self._light = self.MapObject.AddBuiltinComponent("PointLight");
-        self._light.Type = self._light.LightTypePoint;
         self._light.Color = self.Color;
         self._light.Intensity = self.Intensity;
         self._light.Range = self.Range;
@@ -1970,13 +1990,13 @@ component SpotLight
     Range = 10.0;
     Angle = 30.0;
 
+
     _light = null;
 
     function Init()
     {
         #self.MapObject.AddBuiltinComponent("PointLight", self.Color, self.Intensity, self.Range);
         self._light = self.MapObject.AddBuiltinComponent("SpotLight");
-        self._light.Type = self._light.LightTypePoint;
         self._light.Color = self.Color;
         self._light.Intensity = self.Intensity;
         self._light.Range = self.Range;
