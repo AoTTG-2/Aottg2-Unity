@@ -2,6 +2,10 @@
 using UnityEngine;
 using UI;
 using ApplicationManagers;
+using GameManagers;
+using System.Collections.Generic;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Settings
 {
@@ -45,9 +49,13 @@ namespace Settings
         public IntSetting ChatWidth = new IntSetting(320, minValue: 0, maxValue: 1000);
         public IntSetting ChatHeight = new IntSetting(295, minValue: 0, maxValue: 500);
         public IntSetting ChatFontSize = new IntSetting(18, minValue: 1, maxValue: 50);
+        public IntSetting ChatPoolSize = new IntSetting(0, minValue: 0, maxValue: 400);
         public IntSetting KillFeedCount = new IntSetting(3, minValue: 0, maxValue: 10);
         public BoolSetting JoinNotifications = new BoolSetting(true);
         public IntSetting Coordinates = new IntSetting((int)CoordinateMode.Off);
+        public BoolSetting ShowChatTimestamp = new BoolSetting(false);
+        public ColorSetting ChatBackgroundColor = new ColorSetting(new Utility.Color255(38, 38, 38, 0));
+
 
         public override void Apply()
         {
@@ -55,13 +63,15 @@ namespace Settings
             if (UIManager.CurrentMenu != null)
             {
                 UIManager.CurrentMenu.ApplyScale(SceneLoader.SceneName);
-
                 if (UIManager.CurrentMenu is InGameMenu)
                 {
                     InGameMenu igm = (InGameMenu)UIManager.CurrentMenu;
                     igm.ApplyUISettings();
+                    if (igm.ChatPanel != null)
+                    {
+                        igm.ChatPanel.Sync();
+                    }
                 }
-
             }
         }
     }

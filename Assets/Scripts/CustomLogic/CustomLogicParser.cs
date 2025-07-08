@@ -48,17 +48,11 @@ namespace CustomLogic
                 var binopToken = _tokens[lowestBinopIndex];
                 var left = ParseExpression(null, startIndex, lowestBinopIndex - 1);
                 var right = ParseExpression(null, lowestBinopIndex + 1, endIndex);
-                if (IsSymbolValue(binopToken, (int)CustomLogicSymbol.SetEquals))
+                if (IsAnySymbolValue(binopToken, (int)CustomLogicSymbol.SetEquals, (int)CustomLogicSymbol.PlusEquals,
+                        (int)CustomLogicSymbol.MinusEquals, (int)CustomLogicSymbol.TimesEquals,
+                        (int)CustomLogicSymbol.DivideEquals))
                 {
-                    var assignmentAst = new CustomLogicAssignmentExpressionAst(left, currToken.Line);
-                    assignmentAst.Right = right;
-                    return assignmentAst;
-                }
-                else if (IsAnySymbolValue(binopToken, (int)CustomLogicSymbol.PlusEquals,
-                             (int)CustomLogicSymbol.MinusEquals, (int)CustomLogicSymbol.TimesEquals,
-                             (int)CustomLogicSymbol.DivideEquals))
-                {
-                    var assignmentAst = new CustomLogicCompoundAssignmentExpressionAst(left, binopToken, currToken.Line);
+                    var assignmentAst = new CustomLogicAssignmentExpressionAst(left, binopToken, currToken.Line);
                     assignmentAst.Right = right;
                     return assignmentAst;
                 }
@@ -188,6 +182,7 @@ namespace CustomLogic
                     AssertTokenType(nextToken, CustomLogicTokenType.Name);
                     bool coroutine = IsSymbolValue(currToken, (int)CustomLogicSymbol.Coroutine);
                     CustomLogicMethodDefinitionAst methodAst = new CustomLogicMethodDefinitionAst(currToken.Line, coroutine);
+                    methodAst.Name = (string)nextToken.Value;
                     int scanIndex = startIndex + 2;
                     CustomLogicToken scanToken = _tokens[scanIndex];
                     AssertSymbolValue(scanToken, (int)CustomLogicSymbol.LeftParen);
@@ -210,7 +205,7 @@ namespace CustomLogic
                 {
                     AssertSymbolValue(nextToken, (int)CustomLogicSymbol.SetEquals);
                     CustomLogicVariableExpressionAst variableAst = new CustomLogicVariableExpressionAst((string)currToken.Value, currToken.Line);
-                    CustomLogicAssignmentExpressionAst assignmentAst = new CustomLogicAssignmentExpressionAst(variableAst, currToken.Line);
+                    CustomLogicAssignmentExpressionAst assignmentAst = new CustomLogicAssignmentExpressionAst(variableAst, nextToken, currToken.Line);
                     int end = FindSemicolon(startIndex);
                     var expression = ParseExpression(null, startIndex + 2, end - 1);
                     assignmentAst.Right = expression;

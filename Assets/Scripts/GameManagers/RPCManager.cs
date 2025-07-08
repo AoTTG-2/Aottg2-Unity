@@ -201,7 +201,7 @@ namespace GameManagers
         public void SendMessageRPC(string message, PhotonMessageInfo info)
         {
             if (CustomLogicManager.Evaluator != null)
-                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message, info.SentServerTimestamp);
+                CustomLogicManager.Evaluator.OnNetworkMessage(info.Sender, message, info.SentServerTime);
         }
 
         [PunRPC]
@@ -255,6 +255,12 @@ namespace GameManagers
         public void TestRPC(Color c)
         {
             Debug.Log(c);
+        }
+
+        [PunRPC]
+        public void PrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
+        {
+            ChatManager.OnPrivateChatRPC(message, targetID, info);
         }
 
         void Awake()

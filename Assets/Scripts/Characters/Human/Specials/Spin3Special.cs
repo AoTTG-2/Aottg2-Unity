@@ -23,6 +23,10 @@ namespace Characters
 
         protected override void Activate()
         {
+            if (_human.MountState != HumanMountState.None)
+            {
+                _human.Unmount(true);
+            }
             _stage = 0;
             _human.HookLeft.DisableAnyHook();
             _human.HookRight.DisableAnyHook();

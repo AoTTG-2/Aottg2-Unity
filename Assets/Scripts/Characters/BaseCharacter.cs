@@ -198,7 +198,7 @@ namespace Characters
             if (!ai)
             {
                 Name = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Name).StripIllegalRichText();
-                Guild = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Guild);
+                Guild = PhotonNetwork.LocalPlayer.GetStringProperty(PlayerProperty.Guild).StripIllegalRichText();
             }
             Cache.PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { AI, Name, Guild });
             SetTeam(team);
@@ -421,14 +421,16 @@ namespace Characters
         }
 
         [PunRPC]
-        public void PlaySoundRPC(string sound, PhotonMessageInfo info)
+        public virtual void PlaySoundRPC(string sound, PhotonMessageInfo info)
         {
             if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
                 return;
             if (!SoundsEnabled)
                 return;
             if (Cache.AudioSources.ContainsKey(sound))
+            {
                 Cache.AudioSources[sound].Play();
+            }
         }
 
         public void StopSound(string sound)

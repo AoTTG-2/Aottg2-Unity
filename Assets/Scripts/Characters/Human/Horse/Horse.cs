@@ -218,24 +218,25 @@ namespace Characters
             {
                 if (_owner == null || _owner.Dead)
                     return;
+                bool humanActing = _owner.State != HumanState.Idle;
                 if (Cache.Rigidbody.velocity.magnitude > 8f)
                 {
                     CrossFadeIfNotPlaying(HorseAnimations.Run, 0.1f);
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseRun, 0.1f);
                     _idleTimeLeft = 0f;
                 }
                 else if (Cache.Rigidbody.velocity.magnitude > 1f)
                 {
                     CrossFadeIfNotPlaying(HorseAnimations.Walk, 0.1f);
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseIdle, 0.1f);
                     _idleTimeLeft = 0f;
                 }
                 else
                 {
                     UpdateIdle();
-                    if (_owner.MountState == HumanMountState.Horse)
+                    if (_owner.MountState == HumanMountState.Horse && !humanActing)
                         _owner.CrossFadeIfNotPlaying(HumanAnimations.HorseIdle, 0.1f);
                 }
             }
