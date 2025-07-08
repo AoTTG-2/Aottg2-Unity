@@ -1573,7 +1573,8 @@ namespace GameManagers
                 AddLine("Invalid private message target.", ChatTextColor.Error);
                 return;
             }
-            RPCManager.PhotonView.RPC("PrivateChatRPC", RpcTarget.All, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC("PrivateChatRPC", PhotonNetwork.LocalPlayer, new object[] { message, target.ActorNumber });
+            RPCManager.PhotonView.RPC("PrivateChatRPC", target, new object[] { message, target.ActorNumber });
         }
 
         public static void OnPrivateChatRPC(string message, int targetID, PhotonMessageInfo info)
