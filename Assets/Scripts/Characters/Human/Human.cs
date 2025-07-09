@@ -65,7 +65,6 @@ namespace Characters
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
 
-        public bool HorsebackCombat = false;
         public bool CanMountedAttack = false;
         public bool InMountedCombat = false;
         public bool IsAttackableState;
