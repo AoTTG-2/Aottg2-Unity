@@ -79,6 +79,8 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatFontSize, UIManager.GetLocale(cat, sub, "ChatFontSize"), elementWidth: 100f);
             ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatPoolSize, UIManager.GetLocale(cat, sub, "ChatPoolSize"), 
                 tooltip: UIManager.GetLocale(cat, sub, "ChatPoolSizeTooltip"), elementWidth: 100f);
+            ElementFactory.CreateInputSetting(DoublePanelRight, style, settings.ChatScrollSensitivity, UIManager.GetLocale(cat, sub, "ChatScrollSensitivity"), 
+                tooltip: UIManager.GetLocale(cat, sub, "ChatScrollSensitivityTooltip"), elementWidth: 100f);
             ElementFactory.CreateColorSetting(DoublePanelRight, style, SettingsManager.UISettings.ChatBackgroundColor, UIManager.GetLocale(cat, sub, "ChatBackgroundColor"), UIManager.CurrentMenu.ColorPickPopup);
         }
     }

@@ -50,8 +50,8 @@ namespace CustomLogic
         }
 
         /// <inheritdoc cref="Collider.includeLayers"/>
-        [CLProperty]
-        public int includeLayers
+        [CLProperty(Description = "The additional layers that this Collider should include when deciding if the Collider can contact another Collider.")]
+        public int IncludeLayers
         {
             get => collider.includeLayers;
             set => collider.includeLayers = value;
