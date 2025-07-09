@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using GameManagers;
 using Map;
-using GameManagers;
-using Utility;
 using Photon.Pun;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -51,11 +51,25 @@ namespace CustomLogic
 
         private List<object> _streamObjects;
         private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
+        private bool _isTransformSynced = true;
+
 
         [CLConstructor]
         public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
+        }
+
+        [CLProperty("Whether or not the object's Transform is synced. If PhotonSync is not initialized yet, it will defer until it is set.")]
+        public bool SyncTransforms
+        {
+            get => _isTransformSynced;
+            set
+            {
+                _isTransformSynced = value;
+                if (Sync != null)
+                    Sync.SyncTransforms = value;
+            }
         }
 
         [CLProperty("The network view's owner.")]
@@ -96,6 +110,7 @@ namespace CustomLogic
             int oldId = OwnerId;
             Sync = sync;
             OwnerId = sync.photonView.Owner.ActorNumber;
+            Sync.SyncTransforms = _isTransformSynced;
             if (oldId >= 0)
             {
                 var oldPlayer = Util.FindPlayerById(oldId);

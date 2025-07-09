@@ -2,7 +2,6 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utility;
 
@@ -10,6 +9,7 @@ namespace CustomLogic
 {
     class CustomLogicPhotonSync : Photon.Pun.MonoBehaviourPunCallbacks, Photon.Pun.IPunObservable
     {
+        public bool SyncTransforms = true;
         protected Vector3 _correctPosition = Vector3.zero;
         protected Quaternion _correctRotation = Quaternion.identity;
         protected Vector3 _correctVelocity = Vector3.zero;
@@ -42,7 +42,7 @@ namespace CustomLogic
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (_inited)
+            if (_inited && SyncTransforms)
                 _photonView.RPC("SyncRPC", newPlayer, new object[] { GetPosition(), GetRotation() });
         }
 
@@ -117,12 +117,15 @@ namespace CustomLogic
             {
                 if (_inited && _mapObject.GameObject != null)
                 {
-                    stream.SendNext(GetPosition());
-                    var rotation = GetRotation();
-                    stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
-                    if (_syncVelocity)
+                    if (SyncTransforms)
                     {
-                        stream.SendNext(GetVelocity());
+                        stream.SendNext(GetPosition());
+                        var rotation = GetRotation();
+                        stream.SendNext(QuaternionCompression.CompressQuaternion(ref rotation));
+                        if (_syncVelocity)
+                        {
+                            stream.SendNext(GetVelocity());
+                        }
                     }
                     _networkView.SendNetworkStream(stream);
                 }
@@ -131,10 +134,13 @@ namespace CustomLogic
             {
                 if (_inited)
                 {
-                    _correctPosition = (Vector3)stream.ReceiveNext();
-                    QuaternionCompression.DecompressQuaternion(ref _correctRotation, (int)stream.ReceiveNext());
-                    if (_syncVelocity)
-                        _correctVelocity = (Vector3)stream.ReceiveNext();
+                    if (SyncTransforms)
+                    {
+                        _correctPosition = (Vector3)stream.ReceiveNext();
+                        QuaternionCompression.DecompressQuaternion(ref _correctRotation, (int)stream.ReceiveNext());
+                        if (_syncVelocity)
+                            _correctVelocity = (Vector3)stream.ReceiveNext();
+                    }
                     _streamObjs = (object[])stream.ReceiveNext();
                     if (_streamObjs != null && _streamObjs.Length > 0)
                         _networkView.OnNetworkStream(_streamObjs);
@@ -146,7 +152,7 @@ namespace CustomLogic
         {
             if (!_photonView.IsMine && _inited)
             {
-                if (_mapObject.GameObject == null)
+                if (_mapObject.GameObject == null || !SyncTransforms)
                     return;
                 var transform = _mapObject.GameObject.transform;
                 transform.position = Vector3.Lerp(transform.position, _correctPosition, Time.deltaTime * SmoothingDelay);
