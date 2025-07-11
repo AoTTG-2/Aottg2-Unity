@@ -58,6 +58,7 @@ namespace UI
         private const int MAX_EMOJI_INDEX = 140;
         private Button _emojiNextButton;
         private Button _emojiBackButton;
+        private TextMeshProUGUI _emojiPageText;
         static ChatPanel()
         {
             for (int i = 0; i <= MAX_EMOJI_INDEX; i++)
@@ -400,6 +401,18 @@ namespace UI
             backBtnText.color = Color.white;
             _emojiBackButton = backBtnGo.GetComponent<Button>();
             _emojiBackButton.onClick.AddListener(() => ChangeEmojiPage(-1, tooltipText));
+            var pageTextGo = new GameObject("PageText", typeof(RectTransform), typeof(TextMeshProUGUI));
+            pageTextGo.transform.SetParent(navPanel.transform, false);
+            var pageTextRect = pageTextGo.GetComponent<RectTransform>();
+            pageTextRect.anchorMin = new Vector2(0.5f, 0);
+            pageTextRect.anchorMax = new Vector2(0.5f, 1);
+            pageTextRect.pivot = new Vector2(0.5f, 0.5f);
+            pageTextRect.sizeDelta = new Vector2(60, navButtonHeight);
+            pageTextRect.anchoredPosition = new Vector2(0, 0);
+            _emojiPageText = pageTextGo.GetComponent<TextMeshProUGUI>();
+            _emojiPageText.fontSize = 16;
+            _emojiPageText.alignment = TextAlignmentOptions.Center;
+            _emojiPageText.color = Color.white;
             var nextBtnGo = new GameObject("NextButton", typeof(RectTransform), typeof(Button), typeof(TextMeshProUGUI));
             nextBtnGo.transform.SetParent(navPanel.transform, false);
             var nextBtnRect = nextBtnGo.GetComponent<RectTransform>();
@@ -462,11 +475,16 @@ namespace UI
             }
             _emojiBackButton.interactable = _emojiPage > 0;
             _emojiNextButton.interactable = (end <= MAX_EMOJI_INDEX);
+            if (_emojiPageText != null)
+            {
+                int maxPage = (MAX_EMOJI_INDEX + 1 + EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE;
+                _emojiPageText.text = $"{_emojiPage + 1}/{maxPage}";
+            }
         }
         private void ChangeEmojiPage(int delta, TextMeshProUGUI tooltipText)
         {
-            int maxPage = MAX_EMOJI_INDEX / EMOJIS_PER_PAGE;
-            _emojiPage = Mathf.Clamp(_emojiPage + delta, 0, maxPage);
+            int maxPage = (MAX_EMOJI_INDEX + 1 + EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE;
+            _emojiPage = Mathf.Clamp(_emojiPage + delta, 0, maxPage - 1);
             AddEmojiButtons(tooltipText);
         }
 
