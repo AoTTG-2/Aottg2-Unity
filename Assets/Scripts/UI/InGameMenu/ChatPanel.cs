@@ -59,6 +59,7 @@ namespace UI
         private Button _emojiNextButton;
         private Button _emojiBackButton;
         private TextMeshProUGUI _emojiPageText;
+        private int _actualPoolSize = 0;
         static ChatPanel()
         {
             for (int i = 0; i <= MAX_EMOJI_INDEX; i++)
@@ -226,6 +227,7 @@ namespace UI
                 lineObj.gameObject.SetActive(false);
                 _linesPool.Add(lineObj);
             }
+            _actualPoolSize = _linesPool.Count;
             Sync();
             var content = transform.Find("Content");
             var contentRect = content.GetComponent<RectTransform>();
@@ -746,11 +748,7 @@ namespace UI
 
         public void ReplaceLastLine(string line)
         {
-            if (POOL_SIZE == 0 || _linesPool.Count == 0)
-            {
-                return;
-            }
-            int lastIndex = (_currentLineIndex - 1 + POOL_SIZE) % POOL_SIZE;
+            int lastIndex = (_currentLineIndex - 1 + _actualPoolSize) % _actualPoolSize;
             TMP_InputField lineObj = _linesPool[lastIndex];
             if (!lineObj.gameObject.activeSelf)
             {
@@ -1295,7 +1293,10 @@ namespace UI
             }
             
             if (currentPoolSize == targetPoolSize)
+            {
+                _actualPoolSize = _linesPool.Count;
                 return;
+            }
             if (currentPoolSize > targetPoolSize)
             {
                 for (int i = currentPoolSize - 1; i >= targetPoolSize; i--)
@@ -1318,6 +1319,7 @@ namespace UI
                     _linesPool.Add(lineObj);
                 }
             }
+            _actualPoolSize = _linesPool.Count;
             RefreshDisplayedMessages();
         }
 
