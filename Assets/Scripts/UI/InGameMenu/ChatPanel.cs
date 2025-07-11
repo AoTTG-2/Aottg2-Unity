@@ -396,7 +396,7 @@ namespace UI
             backBtnRect.anchoredPosition = new Vector2(10, 0);
             var backBtnText = backBtnGo.GetComponent<TextMeshProUGUI>();
             backBtnText.text = "<";
-            backBtnText.fontSize = 20;
+            backBtnText.fontSize = 14;
             backBtnText.alignment = TextAlignmentOptions.Center;
             backBtnText.color = Color.white;
             _emojiBackButton = backBtnGo.GetComponent<Button>();
@@ -410,7 +410,7 @@ namespace UI
             pageTextRect.sizeDelta = new Vector2(60, navButtonHeight);
             pageTextRect.anchoredPosition = new Vector2(0, 0);
             _emojiPageText = pageTextGo.GetComponent<TextMeshProUGUI>();
-            _emojiPageText.fontSize = 16;
+            _emojiPageText.fontSize = 14;
             _emojiPageText.alignment = TextAlignmentOptions.Center;
             _emojiPageText.color = Color.white;
             var nextBtnGo = new GameObject("NextButton", typeof(RectTransform), typeof(Button), typeof(TextMeshProUGUI));
@@ -423,7 +423,7 @@ namespace UI
             nextBtnRect.anchoredPosition = new Vector2(-10, 0);
             var nextBtnText = nextBtnGo.GetComponent<TextMeshProUGUI>();
             nextBtnText.text = ">";
-            nextBtnText.fontSize = 20;
+            nextBtnText.fontSize = 14;
             nextBtnText.alignment = TextAlignmentOptions.Center;
             nextBtnText.color = Color.white;
             _emojiNextButton = nextBtnGo.GetComponent<Button>();
