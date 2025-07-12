@@ -1,14 +1,8 @@
-using System.Collections.Generic;
-using UnityEngine;
 using Map;
-using Utility;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using UnityEngine.AI;
-using CustomLogic;
-using System;
+using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -40,7 +34,7 @@ namespace CustomLogic
             get => new CustomLogicVector3Builtin(Value.GameObject.transform.position);
             set => Value.GameObject.transform.position = value.Value;
         }
-        
+
         [CLProperty(description: "The local position of the object")]
         public CustomLogicVector3Builtin LocalPosition
         {
@@ -758,6 +752,9 @@ namespace CustomLogic
                 return _rigidBody;
             }
         }
+
+        [CLProperty(description: "The NetworkView attached to the MapObject, is null if not initialized yet.")]
+        public CustomLogicNetworkViewBuiltin NetworkView { get; set; }
 
         private void AssertRendererGet()
         {

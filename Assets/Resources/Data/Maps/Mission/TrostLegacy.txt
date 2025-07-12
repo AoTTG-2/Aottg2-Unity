@@ -1,0 +1,411 @@
+/// Options
+EditorVersion:1.0|Description:|HasWeather:0
+/// CustomAssets
+
+/// Objects
+Scene,Geometry/Cuboid,0,0,1,1,1,0,Unnamed,0,-25,0,0,0,0,100,5,100,Physical,Entities,Default,Basic|255/255/255/255|Nature/Grass6|25/25|0/0,;
+Scene,General/EditorDaylight,1,0,1,1,0,0,Daylight,0,20,0,53.13011,126.8699,0,1,1,1,None,Entities,Default,DefaultNoTint|255/255/255/255,Daylight|;
+Scene,Geometry/Cylinder1,2,0,1,1,1,0,ErenSpawnPoint,0,0,0,0,0,0,22,22,22,None,Entities,Default,Transparent|255/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,3,0,1,1,1,0,RockPickupLocation,61.62914,0,-78.71371,0,0,0,22,22,22,None,Entities,Default,Transparent|255/255/0/111|Misc/None|1/1|0/0,;
+Scene,Decor/RoastChicken1,4,0,1,0,1,0,TheRock,61.38316,19.07629,-129.2221,0,0,0,22,22,22,Physical,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cylinder1,5,0,1,1,1,0,Checkpoint1,24.31305,0,-38.72676,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,6,0,1,1,1,0,Checkpoint2,-17.27419,0,38.6298,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,7,0,1,1,1,0,Checkpoint3,-17.27419,0,225.379,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,8,0,1,1,1,0,Checkpoint4,81.65672,0,272.3369,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,9,0,1,1,1,0,Checkpoint5,182.6341,0,272.3369,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,10,0,1,1,1,0,Checkpoint6,182.6341,-1.14441E-05,426.9338,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,11,0,1,1,1,0,Checkpoint7,346.6484,0,258.1937,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,12,0,1,1,1,0,Checkpoint8,346.6484,0,-72.95356,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,Geometry/Cylinder1,13,0,1,1,1,0,Checkpoint9,119.1358,0,-127.1085,0,0,0,22,22,22,None,Entities,Default,Transparent|0/140/255/111|Misc/None|1/1|0/0,;
+Scene,General/EditorHumanSpawnPoint,14,0,1,1,0,0,Human SpawnPoint,137.0298,0,86.2728,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint
+/// Logic
+class Main
+{
+    Speed = 10;
+
+    # Synced State
+    _isHoldingRock = false;
+    _phase = 0;
+
+    # Masterclient State
+    # @type Shifter
+    _eren = null;
+
+    # @type Transform
+    _erenHand = null;
+
+    # @type MapObject
+    _targetCheckpoint = null;
+
+    # @type MapObject
+    _lastCheckpoint = null;
+
+    # @type List<MapObject>
+    _checkpoints = null;
+
+    _currentWaveTimer = 0.0;
+
+    # @type MapObject
+    _erenSpawnPoint = null;
+
+    # @type MapObject
+    _rockPickupLocation = null;
+    
+    # @type MapObject
+    _theRock = null;
+
+    # @type Dict
+    _rpcs = Dict();
+
+    function Init()
+    {
+        Game.Print("1");
+        self._checkpoints = Map.FindMapObjectsByRegex("Checkpoint.*", true);
+        self._erenSpawnPoint = Map.FindMapObjectByName("ErenSpawnPoint");
+        self._rockPickupLocation = Map.FindMapObjectByName("RockPickupLocation");
+        self._theRock = Map.FindMapObjectByName("TheRock");
+
+        Game.Print("2");
+
+
+        if (Network.IsMasterClient)
+        {
+            # Validate
+            valid = self._checkpoints != null && self._erenSpawnPoint != null && self._rockPickupLocation != null && self._theRock != null;
+            if (self._checkpoints != null) {
+                valid = valid && self._checkpoints.Count >= 2;
+                if (self._checkpoints.Count < 2)
+                {
+                    Game.Print("Must have at least 2 MapObjects with the name pattern 'Checkpoint*' in the map. (Ex: Checkpoint1, ..., CheckpointN)");
+                }
+            }
+
+            if (self._checkpoints == null)
+            {
+                Game.Print("Must have at least 2 MapObjects with the name pattern 'Checkpoint*' in the map. (Ex: Checkpoint1, ..., CheckpointN)");
+            }
+            
+            if (self._erenSpawnPoint == null)
+            {
+                Game.Print("Must have a MapObject called ErenSpawnPoint in the map.");
+            }
+            if (self._rockPickupLocation == null)
+            {
+                Game.Print("Must have a MapObject called RockPickupLocation in the map.");
+            }
+            if (self._theRock == null)
+            {
+                Game.Print("Must have a MapObject called TheRock in the map.");
+            }
+
+            if (!valid)
+            {
+                UI.SetLabel("MiddleCenter", UI.WrapStyleTag(UI.WrapStyleTag("Map Not Supported!" + String.Newline + "Please add the listed dependencies to the map in order to use this mode.", "color", "red"), "size", "25"));
+                Time.TimeScale = 0;
+                return;
+            }
+
+            Game.Print("3");
+
+            # Setup
+            self._lastCheckpoint = self._erenSpawnPoint;
+        }
+        
+        Game.Print("4");
+        _rpcs = Dict();
+        _rpcs.Set("StartMovingRock", self.StartMovingRock);
+        _rpcs.Set("RockPlayAnimation", self.RockPlayAnimation);
+        _rpcs.Set("EndMovingRock", self.EndMovingRock);
+        _rpcs.Set("SyncState", self.SyncState);
+
+        Game.Print("5");
+    }
+
+    function OnGameStart()
+    {
+        if (Network.IsMasterClient)
+        {
+            self._eren = Game.SpawnShifterAt("Eren", self._erenSpawnPoint.Position);
+            self._eren.EnableAI = false;
+            self._eren.UsePathfinding = false;
+
+            # Spawn initial titans.
+        }
+
+        Cutscene.Start("MainCutscene", true);
+    }
+
+    function OnCheckPointHit(shifter)
+    {
+        if (self._checkpoints.Count == 0)
+        {
+            self._phase = 3;
+        }
+        # Get next checkpoint.
+        self._targetCheckpoint = self._checkpoints.Get(0);
+        self._checkpoints.RemoveAt(0);
+    }
+
+    function MoveTowardsCheckpoint(threshold)
+    {
+        distance = Vector3.Distance(self._lastCheckpoint.Position, self._targetCheckpoint.Position);
+        if (distance <= 0.0001)
+        {
+            distance = 0.0001;
+        }
+        step = Time.TickTime * self.Speed;
+        self._eren.Position = Vector3.Lerp(self._eren.Position, self._targetCheckpoint.Position, step / distance);
+
+        distance = Vector3.Distance(self._eren.Position, self._targetCheckpoint.Position);
+        return distance <= threshold;
+    }
+
+    function OnTick()
+    {
+        if (Network.IsMasterClient == false) {
+            return;
+        }
+        
+        if (self._phase == 0)
+        {
+            self._eren.PlayAnimation("ErenRig_VER2|et_die", 0.1);
+
+            if (Game.AITitans.Count == 0)
+            {
+                self._eren.PlayAnimation("ErenRig_VER2|et_idle", 0.1);  # need to play animations for a bit before ready to continue.
+                self._phase = 1;
+                self._lastCheckpoint = self._erenSpawnPoint;
+                self._targetCheckpoint = self._rockPickupLocation;
+            }
+        }
+
+        if (self._phase == 1)
+        {
+            atRock = self.MoveTowardsCheckpoint(0.1);
+            if (atRock)
+            {
+                self._eren.PlayAnimation("ErenRig_VER2|et_rock_lift", 0.1);
+                self.RPC("StartMovingRock", "all", List());
+                self._phase = 2;
+                self._lastCheckpoint = self._rockPickupLocation;
+                self._targetCheckpoint = self._checkpoints.Get(0);
+                self._checkpoints.RemoveAt(0);
+            }
+        }
+
+        if (self._phase == 2)
+        {
+            atNextCheckpoint = self.MoveTowardsCheckpoint(0.1);
+
+            if (atNextCheckpoint)
+            {
+                if (self._checkpoints.Count == 0)
+                {
+                    self._phase = 3;
+                }
+                else
+                {
+                    self._lastCheckpoint = self._targetCheckpoint;
+                    self._targetCheckpoint = self._checkpoints.Get(0);
+                    self._checkpoints.RemoveAt(0);
+                }
+            }
+        }
+
+        if (self._phase == 3)
+        {
+            self._phase = 4;
+            self._eren.PlayAnimation("ErenRig_VER2|rock_fix_hole", 0.1);
+        }
+    }
+
+    /*
+    @param name String
+    @param target String
+    @param params List
+    */
+    function RPC(name, target, params)
+    {
+        paramString = "";
+        for (i in Range(params.Count)) {
+            paramString += Convert.ToString(params.Get(i));
+            if (i != (params.Count - 1))
+            {
+                paramString += ",";
+            }
+        }
+
+        message = name + ":" + paramString;
+        if (target == "all") {
+            Network.SendMessageAll(message);
+        }
+        elif (target == "others")
+        {
+            Network.SendMessageOthers(message);
+        }
+        else
+        {
+            Network.SendMessage(target, message);
+        }
+        
+    }
+
+    # @param sender Player
+    # @param message String
+    function OnNetworkMessage(sender, message)
+    {
+        body = String.Split(message, ":", true);
+        rpc = body.Get(0);
+        params = List();
+        if (body.Count >= 2) {
+            params = String.Split(body.Get(1), ",", true);
+        }
+        
+        method = self._rpcs.get(rpc);
+        method(sender, params);
+    }
+
+    function StartMovingRock(sender, params)
+    {
+        self._isHoldingRock = true;
+        self._theRock.Parent = self._eren.Transform;
+        self._theRock.LocalPosition = Vector3.Zero;
+    }
+
+    function RockPlayAnimation(sender, params)
+    {
+        animation = params.Get(0);
+    }
+
+    function EndMovingRock(sender, params)
+    {
+        self._isHoldingRock = false;
+        self._theRock.Parent = null;
+    }
+
+    function SyncState(sender, params)
+    {
+        self._phase = params.Get(0);
+        self._isHoldingRock = params.Get(1);
+
+        if (self._isHoldingRock)
+        {
+            self._theRock.Parent = self._eren.Transform;
+            self._theRock.LocalPosition = Vector3.Zero;
+        }
+    }
+
+    function OnPlayerJoin(player)
+    {
+        self.RPC("SyncState", player, List(self._phase, self._isHoldingRock));
+    }
+
+    function OnCharacterDie(victim, killer, killerName)
+    {
+        if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren") && !Game.IsEnding)
+        {
+            UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
+            if (Network.IsMasterClient)
+            {
+                Game.End(10.0);
+            }
+            if (self._isHoldingRock)
+            {
+                # Let go of the rock and apply the rigidbody and network sync enable.
+                if (Network.IsMasterClient) {
+                    self.RPC("EndMovingRock", "all", List());
+                }
+            }
+        }
+        if (!Game.IsEnding && Game.PlayerHumans.Count + Game.PlayerShifters.Count == 1)
+        {
+            UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
+            if (Network.IsMasterClient)
+            {
+                Game.End(10.0);
+            }
+        }
+    }
+}
+
+cutscene MainCutscene
+{
+    coroutine Start()
+    {
+        cameraSpawnPoint = Map.FindMapObjectByName("Camera SpawnPoint");
+
+        if (cameraSpawnPoint != null)
+        {
+            Camera.SetPosition(cameraSpawnPoint.Position);
+            Camera.SetRotation(cameraSpawnPoint.Rotation);
+            Camera.SetVelocity(Camera.Forward * 5.0);
+        }
+
+        # To Do: Add translations.
+        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Defend him at all costs!", 2.0);
+        wait 2.0;
+        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Protect Eren until he reaches the gates, even if it costs your lifes!", 4.0);
+        wait 4.0;
+        Cutscene.ShowDialogueForTime("Ian1", "Commander", "Don't let titan near him!", 2.0);
+        wait 2.0;
+        return;
+    }
+}
+/// Weather
+{
+    "Skybox" : "Day1",
+    "SkyboxColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Daylight" : [
+        255,
+        255,
+        255,
+        255
+    ],
+    "DaylightIntensity" : 1,
+    "DaylightDirection" : [
+        45,
+        45,
+        0
+    ],
+    "AmbientLight" : [
+        126,
+        122,
+        114,
+        255
+    ],
+    "Flashlight" : [
+        255,
+        255,
+        255,
+        0
+    ],
+    "FogDensity" : 0,
+    "FogColor" : [
+        128,
+        128,
+        128,
+        255
+    ],
+    "Rain" : 0,
+    "Thunder" : 0,
+    "Snow" : 0,
+    "Wind" : 0,
+    "WindDirection" : [
+        1,
+        0,
+        0
+    ],
+    "RainForce" : 0,
+    "SnowForce" : 0,
+    "WindForce" : 0,
+    "UseSchedule" : false,
+    "ScheduleLoop" : false,
+    "Schedule" : "",
+    "Name" : "Set 1",
+    "Preset" : false
+}

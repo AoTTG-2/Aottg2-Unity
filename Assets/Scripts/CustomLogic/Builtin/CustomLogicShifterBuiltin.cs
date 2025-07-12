@@ -160,6 +160,13 @@ namespace CustomLogic
             set { if (Shifter.IsMine() && Shifter.AI) Controller._usePathfinding = value; }
         }
 
+        [CLProperty("Enable/Disable AI Behavior (Shifter will not attack/target but pathfinding/move methods will still work).")]
+        public bool AIEnabled
+        {
+            get => Shifter.IsMine() && Shifter.AI && Controller.AIEnabled;
+            set { if (Shifter.IsMine() && Shifter.AI) Controller.AIEnabled = value; }
+        }
+
         [CLProperty("The shifter's nape position.")]
         public CustomLogicVector3Builtin NapePosition => new CustomLogicVector3Builtin(Shifter.BaseTitanCache.NapeHurtbox.transform.position);
 
@@ -175,6 +182,26 @@ namespace CustomLogic
         {
             if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
                 Controller.MoveTo(position.Value, range, ignoreEnemies);
+        }
+
+        [CLMethod("Causes the (AI) shifter to move towards a position. If ignoreEnemies is true, will not engage enemies along the way.")]
+        public void MoveToExact(CustomLogicVector3Builtin position, float timeoutPadding = 1)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
+                Controller.MoveToExact(position.Value, timeoutPadding);
+        }
+
+        [CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
+        public void MoveToExactCallback(UserMethod method, CustomLogicVector3Builtin position, float range = 10, float timeoutPadding = 1)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.AI)
+            {
+                Controller.MoveToExactCallback(
+                    () => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { this }),
+                    position.Value,
+                    range,
+                    timeoutPadding);
+            }
         }
 
         [CLMethod("Causes the (AI) shifter to target an enemy character or MapTargetable for focusTime seconds. If focusTime is 0 it will use the default focus time.")]

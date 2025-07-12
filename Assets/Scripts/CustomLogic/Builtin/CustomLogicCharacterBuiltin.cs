@@ -1,7 +1,5 @@
 ﻿using Characters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace CustomLogic
@@ -42,17 +40,21 @@ namespace CustomLogic
         }
 
         [CLProperty(Description = "Character's name.")]
-        public string Name {
+        public string Name
+        {
             get => Character.Name;
-            set {
+            set
+            {
                 Character.Name = value;
             }
         }
 
         [CLProperty(Description = "Character's guild.")]
-        public string Guild {
+        public string Guild
+        {
             get => Character.Guild;
-            set {
+            set
+            {
                 Character.Guild = value;
             }
         }
@@ -241,6 +243,20 @@ namespace CustomLogic
                 Character.CrossFadeIfNotPlaying(animation, fade);
         }
 
+        [CLMethod(Description = "Returns true if the animation is playing.")]
+        public bool IsPlayingAnimation(string animation)
+        {
+            return Character.Animation.IsPlaying(animation);
+        }
+
+        [CLMethod(Description = "Returns true if the animation is playing.")]
+        public float GetAnimationNormalizedTime(string animation)
+        {
+            if (!Character.Animation.IsPlaying(animation))
+                return 1f;
+            return Character.Animation.GetCurrentNormalizedTime();
+        }
+
         [CLMethod(Description = "Forces the character to play an animation. If the fade parameter is provided, will crossfade the animation by this timestep. Available animations can be found here: Human, Titan, Annie, Eren. Use the right-hand string value for the animation.")]
         public void ForceAnimation(string animation, float fade = 0.1f)
         {
@@ -252,6 +268,13 @@ namespace CustomLogic
         public float GetAnimationLength(string animation)
         {
             return Character.Animation.GetLength(animation);
+        }
+
+        // IsPlayingSound
+        [CLMethod(Description = "Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]
+        public bool IsPlayingSound(string sound)
+        {
+            return Character.IsPlayingSound(sound);
         }
 
         [CLMethod(Description = "Plays a sound if present in the character. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]

@@ -1,8 +1,6 @@
-using ApplicationManagers;
-using ExitGames.Client.Photon.StructWrapping;
-using GameManagers;
 using Map;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace CustomLogic
@@ -49,6 +47,27 @@ namespace CustomLogic
                 if (mapObject.ScriptObject.Name == objectName)
                     listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
             }
+            return listBuiltin;
+        }
+
+        [CLMethod(description: "Find all map objects by regex pattern")]
+        public CustomLogicListBuiltin FindMapObjectsByRegex(string pattern, bool sorted = false)
+        {
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            Regex regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            foreach (MapObject mapObject in MapLoader.GoToMapObject.Values)
+            {
+                if (regex.IsMatch(mapObject.ScriptObject.Name))
+                {
+                    listBuiltin.List.Add(new CustomLogicMapObjectBuiltin(mapObject));
+                }
+            }
+
+            if (sorted)
+            {
+                listBuiltin.List.Sort((a, b) => string.Compare(((CustomLogicMapObjectBuiltin)a).Value.ScriptObject.Name, ((CustomLogicMapObjectBuiltin)b).Value.ScriptObject.Name));
+            }
+
             return listBuiltin;
         }
 

@@ -127,6 +127,19 @@ namespace CustomLogic
             set => Value.right = value.Value;
         }
 
+        [CLProperty("Sets the parent of the transform")]
+        public CustomLogicTransformBuiltin Parent
+        {
+            get => Value.parent != null ? new CustomLogicTransformBuiltin(Value.parent) : null;
+            set
+            {
+                if (value == null)
+                    Value.SetParent(null);
+                else
+                    Value.SetParent(value.Value);
+            }
+        }
+
         [CLProperty("Gets the name of the transform.")]
         public string Name
         {
@@ -158,10 +171,26 @@ namespace CustomLogic
             return listBuiltin;
         }
 
+        [CLMethod("Checks if the given animation is playing.")]
+        public bool IsPlayingAnimation(string anim)
+        {
+            if (_animation != null)
+            {
+                return _animation.IsPlaying(anim);
+            }
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                return _currentAnimation == anim;
+            }
+            return false;
+        }
+
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            if (_animation != null) {
+            if (_animation != null)
+            {
                 if (!_animation.IsPlaying(anim))
                     _animation.CrossFade(anim, fade);
                 return;
@@ -207,7 +236,7 @@ namespace CustomLogic
             if (_animation != null)
             {
                 foreach (AnimationState state in _animation)
-                   state.speed = speed;
+                    state.speed = speed;
 
                 return;
             }

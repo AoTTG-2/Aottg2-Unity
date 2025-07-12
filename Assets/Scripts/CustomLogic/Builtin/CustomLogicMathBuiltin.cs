@@ -89,6 +89,15 @@ namespace CustomLogic
             return Mathf.Sqrt(fValue);
         }
 
+        // Repeat
+        [CLMethod(description: "Modulo for floats")]
+        public object Repeat(object value, object max)
+        {
+            float fValue = value.UnboxToFloat();
+            float fMax = max.UnboxToFloat();
+            return Mathf.Repeat(fValue, fMax);
+        }
+
         [CLMethod(description: "Get the remainder of a division operation")]
         public object Mod(object a, object b)
         {

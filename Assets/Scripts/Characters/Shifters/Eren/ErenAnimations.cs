@@ -1,6 +1,6 @@
 ﻿namespace Characters
 {
-    class ErenAnimations: BaseTitanAnimations
+    class ErenAnimations : BaseTitanAnimations
     {
         public override string Idle => "ErenRig_VER2|et_idle";
         public override string Run => "ErenRig_VER2|et_run";
@@ -14,5 +14,9 @@
         public override string Stun => "ErenRig_VER2|et_hit_titan";
         public string EmoteNod = "ErenRig_VER2|et_yes";
         public string EmoteRoar = "ErenRig_VER2|et_born";
+        public string RockLift = "ErenRig_VER2|et_rock_lift";
+        public string RockLift001 = "ErenRig_VER2|et_rock_lift.001";
+        public string RockWalk = "ErenRig_VER2|et_rock_walk";
+        public string RockFixHole = "ErenRig_VER2|et_rock_fix_hole";
     }
 }

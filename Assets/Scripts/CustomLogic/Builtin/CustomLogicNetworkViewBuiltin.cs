@@ -124,6 +124,12 @@ namespace CustomLogic
                         CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
             }
+
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            if (linkedMapObjectClass != null)
+            {
+                linkedMapObjectClass.NetworkView = this;
+            }
         }
 
         public void SendNetworkStream(PhotonStream stream)
