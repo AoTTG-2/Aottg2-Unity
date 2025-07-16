@@ -1,10 +1,8 @@
 using ApplicationManagers;
-using Cameras;
 using Characters;
 using GameManagers;
 using Settings;
 using System.Collections.Generic;
-using UI;
 using UnityEngine;
 
 namespace CustomLogic
@@ -58,6 +56,18 @@ namespace CustomLogic
         {
             get => Human.CurrentSpecial;
             set => SetSpecial(value);
+        }
+
+        [CLProperty(description: "The normalized cooldown time of the special. Has a range of 0 to 1.")]
+        public float SpecialCooldownTime
+        {
+            get => Human.Special == null ? 0f : Human.Special.GetCooldownRatio();
+            set
+            {
+                if (Human.Special == null) return;
+                var v = Mathf.Max(0f, value);
+                Human.Special.SetCooldownRatio(v);
+            }
         }
 
         [CLProperty(description: "The cooldown of the special")]

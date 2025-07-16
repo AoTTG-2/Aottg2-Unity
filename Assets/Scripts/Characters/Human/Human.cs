@@ -81,8 +81,6 @@ namespace Characters
         public float ReelOutScrollTimeLeft = 0f;
         public float TargetMagnitude = 0f;
         public bool IsWalk;
-        public const float RealismMaxReel = 120f;
-        public const float RealismDeathVelocity = 100f;
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
@@ -1877,6 +1875,19 @@ namespace Characters
                     windEmission.enabled = false;
                 FixedUpdateSetHookedDirection();
                 FixedUpdateBodyLean();
+
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                {
+                    float currentSpeed = Cache.Rigidbody.velocity.magnitude;
+                    float maxSpeed = SettingsManager.InGameCurrent.Misc.RealismMaxSpeed.Value;
+                    float dampingStrength = 0.9f;
+                    if (currentSpeed > maxSpeed)
+                    {
+                        Vector3 dampingForce = -(Cache.Rigidbody.velocity.normalized * (currentSpeed - maxSpeed)) * dampingStrength;
+                        Cache.Rigidbody.AddForce(dampingForce, ForceMode.Acceleration);
+                    }
+                }
+
                 if (_useFixedUpdateClipping)
                 {
                     FixedUpdateClippingCheck();
@@ -2128,24 +2139,18 @@ namespace Characters
 
                         maxAngle = Mathf.Max(maxAngle, newAngle);
 
-                        if (newAngle < SettingsManager.GeneralSettings.GlancingAngle.Value)
+                        if (newAngle < 45)
                         {
                             // Project velocity along the surface to preserve momentum
                             Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
-                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, SettingsManager.GeneralSettings.ProjectCombine.Value);
+                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
                         }
                     }
 
-                    if (SettingsManager.GeneralSettings.TitanFriction.Value)
-                    {
-                        float speedMultiplier = Mathf.Max(1f - (maxAngle * SettingsManager.GeneralSettings.Friction.Value), 0f);
-                        float speed = _lastVelocity.magnitude * speedMultiplier;
-                        Cache.Rigidbody.velocity = velocity.normalized * speed;
-                    }
-
-                    string message = "Angle of impact: " + newAngle + " degrees";
-                    Debug.Log(message);
-                    InGameManager.SetLabel("MiddleLeft", message, 5);
+                    // Testing optional friction
+                    //float speedMultiplier = Mathf.Max(1f - (maxAngle * SettingsManager.GeneralSettings.Friction.Value), 0f);
+                    //float speed = _lastVelocity.magnitude * speedMultiplier;
+                    //Cache.Rigidbody.velocity = velocity.normalized * speed;
                 }
                 else
                 {
@@ -2156,7 +2161,7 @@ namespace Characters
                 }
 
                 float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
                     GetHit("Impact", (int)speedDiff, "Impact", "");
             }
             if (hitTitan)
@@ -2315,7 +2320,7 @@ namespace Characters
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && Vector3.Distance(Cache.Transform.position, position) > RealismMaxReel)
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && Vector3.Distance(Cache.Transform.position, position) > SettingsManager.InGameCurrent.Misc.RealismMaxReel.Value)
                     reelAxis = 0f;
             }
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
@@ -3258,12 +3263,16 @@ namespace Characters
             return nearestHuman;
         }
 
-        private void FalseAttack()
+        public void FalseAttack()
         {
             if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.Thunderspear || Setup.Weapon == HumanWeapon.APG)
             {
                 if (!_attackRelease)
                     _attackRelease = true;
+                if (Special is StockSpecial)
+                {
+                    ContinueAnimation();
+                }
             }
             else
             {

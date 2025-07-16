@@ -1,12 +1,8 @@
-﻿using ApplicationManagers;
-using Effects;
-using Projectiles;
+﻿using Projectiles;
 using Settings;
 using SimpleJSONFixed;
-using System.Threading;
 using UI;
 using UnityEngine;
-using Utility;
 
 namespace Characters
 {
@@ -33,6 +29,11 @@ namespace Characters
         protected override void Activate()
         {
             var human = (Human)_owner;
+            if ((human.State == HumanState.Attack || human.State == HumanState.SpecialAttack) && human.Special is StockSpecial)
+            {
+                // Fix Animation Lockup when shooting while holding stock special.
+                ((StockSpecial)human.Special).FalseAttack();
+            }
             Vector3 target = human.GetAimPoint();
             Vector3 direction = (target - human.Cache.Transform.position).normalized;
             float cross = Vector3.Cross(human.Cache.Transform.forward, direction).y;

@@ -1,8 +1,4 @@
-﻿using Effects;
-using System.Collections;
-using UnityEngine;
-
-namespace Characters
+﻿namespace Characters
 {
     class StockSpecial : BaseHoldAttackSpecial
     {
@@ -13,6 +9,12 @@ namespace Characters
         public override bool CanUse()
         {
             return base.CanUse() && _human.State == HumanState.Idle;
+        }
+
+        public void FalseAttack()
+        {
+            IsActive = false;
+            Deactivate();
         }
 
         protected override void Activate()
