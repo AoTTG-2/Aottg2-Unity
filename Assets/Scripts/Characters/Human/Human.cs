@@ -418,7 +418,7 @@ namespace Characters
                 {
                     //The line below was causing problems when dashing away from walls at certain angles.
                     //Removing it fixed that but I'm unsure if it's needed for another situation (didn't notice a difference without it), do uncomment if the case
-                    //Cache.Rigidbody.rotation = _targetRotation;
+                    Cache.Rigidbody.rotation = _targetRotation;
                     CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 }
 
