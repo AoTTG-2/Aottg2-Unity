@@ -47,6 +47,8 @@ namespace UI
         {
             if (_category.Value != GetCurrentCategory())
             {
+                bool currentlyHuman = CharacterEditorGameManager.HumanMode;
+                Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(currentlyHuman);
                 if (_category.Value == "Human")
                     CharacterEditorGameManager.HumanMode = true;
                 else

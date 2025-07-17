@@ -109,6 +109,13 @@ namespace UI
                 last.Special.Value = current.Special.Value;
                 SettingsManager.InGameSettings.Save();
             }
+            else if (current.CharacterType.Value == PlayerCharacter.Titan)
+            {
+                last.CharacterType.Value = PlayerCharacter.Titan;
+                last.CustomSet.Value = current.CustomSet.Value;
+                last.Loadout.Value = current.Loadout.Value;
+                SettingsManager.InGameSettings.Save();
+            }
         }
     }
 }

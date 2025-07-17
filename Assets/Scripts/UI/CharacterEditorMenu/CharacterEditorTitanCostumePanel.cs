@@ -23,15 +23,20 @@ namespace UI
         protected override int VerticalPadding => 25;
         protected override bool ScrollBar => true;
         private CharacterEditorMenu _menu;
+        private bool _shouldGeneratePreviewAfterRebuild = false;
+        private string _previousProfileName = null;
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             _menu = (CharacterEditorMenu)UIManager.CurrentMenu;
+            var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            _previousProfileName = currentSet.Name.Value;
             ElementStyle style = new ElementStyle(titleWidth: 130f, themePanel: ThemePanel);
             var settings = SettingsManager.TitanCustomSettings;
             string cat = "CharacterEditor";
             string sub = "Costume";
+            ElementFactory.CreateTextButton(BottomBar, style, "Quit Without Save", onClick: () => OnButtonClick("QuitWithoutSave"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale(cat, sub, "SaveQuit"), onClick: () => OnButtonClick("SaveQuit"));
             var set = (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet();
             float dropdownWidth = 170f;
@@ -52,20 +57,20 @@ namespace UI
             CreateHorizontalDivider(SinglePanel);
             var options = GetOptions("Head", BasicTitanSetup.HeadCount);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Head, UIManager.GetLocale(cat, sub, "Head"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Body", BasicTitanSetup.BodyCount);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Body, UIManager.GetLocale(cat, sub, "Body"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Eye", BasicTitanSetup.EyeCount);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Eye, UIManager.GetLocale(cat, sub, "Eye"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetHairOptions();
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hair, UIManager.GetLocale(cat, sub, "Hair"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.SkinColor, UIManager.GetLocale(cat, sub, "SkinColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
         }
 
         private string[] GetOptions(string prefix, int options, bool includeNone = false)
@@ -98,8 +103,88 @@ namespace UI
 
         private void OnCustomSetSelected()
         {
+            var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            string currentProfileName = currentSet.Name.Value;
             _menu.RebuildPanels(true);
             _menu.ResetCharacter(true);
+            if (_previousProfileName != null && _previousProfileName != currentProfileName)
+            {
+                var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+                if (gameManager != null)
+                {
+                    gameManager.StartCoroutine(CapturePreviousTitanProfilePreview(_previousProfileName, currentProfileName));
+                }
+            }
+            else if (_shouldGeneratePreviewAfterRebuild)
+            {
+                _shouldGeneratePreviewAfterRebuild = false;
+                Utility.CharacterPreviewGenerator.GeneratePreviewForTitanSet(_menu as CharacterEditorTitanMenu, isRebuild: true);
+            }
+            _previousProfileName = currentProfileName;
+        }
+
+        private System.Collections.IEnumerator CapturePreviousTitanProfilePreview(string previousProfileName, string currentProfileName)
+        {
+            var settings = SettingsManager.TitanCustomSettings;
+            TitanCustomSet previousSet = null;
+            int previousSetIndex = -1;
+            var customSets = settings.TitanCustomSets.GetSets().GetItems();
+            for (int i = 0; i < customSets.Count; i++)
+            {
+                var set = (TitanCustomSet)customSets[i];
+                if (set.Name.Value == previousProfileName)
+                {
+                    previousSet = set;
+                    previousSetIndex = i;
+                    break;
+                }
+            }
+            if (previousSet != null)
+            {
+                int currentSelectedIndex = settings.TitanCustomSets.SelectedSetIndex.Value;
+                settings.TitanCustomSets.SelectedSetIndex.Value = previousSetIndex;
+                var character = (DummyTitan)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
+                character.Setup.Load(previousSet);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
+                settings.TitanCustomSets.SelectedSetIndex.Value = currentSelectedIndex;
+                var currentSet = (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet();
+                character.Setup.Load(currentSet);
+                character.Idle();
+            }
+        }
+
+        private void OnCharacterChanged()
+        {
+            _menu.ResetCharacter(fullReset: false);
+            GeneratePreviewForCurrentSet();
+        }
+
+        private void GeneratePreviewForCurrentSet()
+        {
+            Utility.CharacterPreviewGenerator.GeneratePreviewWithDebounce(this, "TitanCostumePreview", () => Utility.CharacterPreviewGenerator.GeneratePreviewForTitanSet(_menu as CharacterEditorTitanMenu, isRebuild: false));
+        }
+
+        private string ValidateSetName(string name, bool excludeCurrentSet = true)
+        {
+            if (string.IsNullOrEmpty(name?.Trim()))
+                return "Name cannot be empty.";
+            name = name.Trim();
+            var settings = SettingsManager.TitanCustomSettings;
+            var customSets = settings.TitanCustomSets.GetSets().GetItems();
+            var currentSet = excludeCurrentSet ? (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet() : null;
+            
+            foreach (var baseSetting in customSets)
+            {
+                var set = (TitanCustomSet)baseSetting;
+                if ((!excludeCurrentSet || set != currentSet) && set.Name.Value == name)
+                {
+                    return "A profile with this name already exists.";
+                }
+            }
+            return null;
         }
 
         private void OnButtonClick(string name)
@@ -109,7 +194,7 @@ namespace UI
             switch (name)
             {
                 case "Create":
-                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Create"));
+                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Create"), (n) => ValidateSetName(n, false));
                     break;
                 case "Delete":
                     if (settings.TitanCustomSets.CanDeleteSelectedSet())
@@ -118,13 +203,15 @@ namespace UI
                     break;
                 case "Rename":
                         string currentSetName = settings.TitanCustomSets.GetSelectedSet().Name.Value;
-                        setNamePopup.Show(currentSetName, () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Rename"));
+                        setNamePopup.Show(currentSetName, () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Rename"), (n) => ValidateSetName(n, true));
                     break;
                 case "Copy":
-                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Copy"));
+                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Copy"), (n) => ValidateSetName(n, false));
                     break;
                 case "SaveQuit":
                     SettingsManager.TitanCustomSettings.Save();
+                    Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
+                    Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
                     SceneLoader.LoadScene(SceneName.MainMenu);
                     break;
                 case "LoadPreset":
@@ -141,6 +228,14 @@ namespace UI
                         json["Preset"] = false;
                     UIManager.CurrentMenu.ExportPopup.Show(json.ToString(aIndent: 4));
                     break;
+                case "QuitWithoutSave":
+                    UIManager.CurrentMenu.ConfirmPopup.Show("Quit without saving? All changes will be lost.", () =>
+                    {
+                        Utility.CharacterPreviewGenerator.ClearSessionGeneratedPreviews();
+                        SettingsManager.TitanCustomSettings.Load();
+                        SceneLoader.LoadScene(SceneName.MainMenu);
+                    }, "Quit Without Save");
+                    break;
             }
         }
 
@@ -153,17 +248,23 @@ namespace UI
                 case "Create":
                     settings.CreateSet(setNamePopup.NameSetting.Value);
                     settings.GetSelectedSetIndex().Value = settings.GetSets().GetCount() - 1;
+                    _shouldGeneratePreviewAfterRebuild = true;
                     break;
                 case "Delete":
                     settings.DeleteSelectedSet();
                     settings.GetSelectedSetIndex().Value = 0;
+                    Utility.CharacterPreviewGenerator.CleanupOrphanedPreviews();
                     break;
                 case "Rename":
-                    settings.GetSelectedSet().Name.Value = setNamePopup.NameSetting.Value;
+                    string oldName = settings.GetSelectedSet().Name.Value;
+                    string newName = setNamePopup.NameSetting.Value;
+                    Utility.CharacterPreviewGenerator.RenamePreviewFile(oldName, newName, false);
+                    settings.GetSelectedSet().Name.Value = newName;
                     break;
                 case "Copy":
                     settings.CopySelectedSet(setNamePopup.NameSetting.Value);
                     settings.GetSelectedSetIndex().Value = settings.GetSets().GetCount() - 1;
+                    _shouldGeneratePreviewAfterRebuild = true;
                     break;
                 case "Import":
                     ImportPopup importPopup = UIManager.CurrentMenu.ImportPopup;

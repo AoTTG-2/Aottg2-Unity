@@ -8,6 +8,8 @@ using System.Linq;
 using GameManagers;
 using Characters;
 using Utility;
+using ApplicationManagers;
+using System.IO;
 
 namespace UI
 {
@@ -143,9 +145,27 @@ namespace UI
             foreach (string option in options)
             {
                 if (sets.Contains(option))
+                {
                     icons.Add(ResourcePaths.Characters + "/Human/Previews/Preset" + option);
+                }
                 else
-                    icons.Add(ResourcePaths.Characters + "/Human/Previews/PresetNone");
+                {
+                    string cacheKey = "CharacterPreview_Human_" + option;
+                    Texture2D texture = ResourceManager.GetExternalTexture(cacheKey);
+                    if (texture == null)
+                    {
+                        string customPreviewPath = Path.Combine(FolderPaths.CharacterPreviews, "Human", "Preset" + option + ".png");
+                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey);
+                    }
+                    if (texture != null)
+                    {
+                        icons.Add(cacheKey);
+                    }
+                    else
+                    {
+                        icons.Add(ResourcePaths.Characters + "/Human/Previews/PresetNone");
+                    }
+                }
             }
             return icons.ToArray();
         }

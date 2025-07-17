@@ -1,0 +1,400 @@
+using UnityEngine;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using CustomSkins;
+using Settings;
+using UI;
+using ApplicationManagers;
+
+namespace Utility
+{
+    public static class CharacterPreviewGenerator
+    {
+        private static readonly HashSet<string> _currentlyGenerating = new HashSet<string>();
+        private static Dictionary<string, PreviewCameraData> _persistentCameras = new Dictionary<string, PreviewCameraData>();
+        private static Dictionary<string, Coroutine> _activeDebounceCoroutines = new Dictionary<string, Coroutine>();
+        private static HashSet<string> _generatedPreviewKeys = new HashSet<string>();
+
+        private class PreviewCameraData
+        {
+            public Camera Camera;
+            public RenderTexture RenderTexture;
+            public bool IsInitialized;
+            public bool IsCleanedUp;
+        }
+
+        public static void CleanupOrphanedPreviews()
+        {
+            CleanupOrphanedPreviewsInFolder(true);
+            CleanupOrphanedPreviewsInFolder(false);
+        }
+
+        private static void CleanupOrphanedPreviewsInFolder(bool isHuman)
+        {
+            string subFolder = isHuman ? "Human" : "Titans";
+            string folder = Path.Combine(FolderPaths.CharacterPreviews, subFolder);
+            if (!Directory.Exists(folder))
+                return;
+            HashSet<string> validSetNames = new HashSet<string>();
+            if (isHuman)
+            {
+                var humanSets = SettingsManager.HumanCustomSettings.CustomSets.GetSetNames();
+                foreach (string setName in humanSets)
+                {
+                    validSetNames.Add("Preset" + setName);
+                }
+            }
+            else
+            {
+                var titanSets = SettingsManager.TitanCustomSettings.TitanCustomSets.GetSetNames();
+                foreach (string setName in titanSets)
+                {
+                    validSetNames.Add("Preset" + setName);
+                }
+            }
+            string[] previewFiles = Directory.GetFiles(folder, "Preset*.png");
+            foreach (string filePath in previewFiles)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+                if (!validSetNames.Contains(fileName))
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
+
+        public static void RenamePreviewFile(string oldName, string newName, bool isHuman = true)
+        {
+            string subFolder = isHuman ? "Human" : "Titans";
+            string folder = Path.Combine(FolderPaths.CharacterPreviews, subFolder);
+            if (!Directory.Exists(folder))
+                return;
+            string oldPath = Path.Combine(folder, "Preset" + oldName + ".png");
+            string newPath = Path.Combine(folder, "Preset" + newName + ".png");
+            if (!File.Exists(oldPath))
+                return;
+            if (File.Exists(newPath))
+                File.Delete(newPath);
+            File.Move(oldPath, newPath);
+        }
+
+        public static void SetLayerRecursively(GameObject obj, int newLayer)
+        {
+            obj.layer = newLayer;
+            foreach (Transform child in obj.transform)
+                SetLayerRecursively(child.gameObject, newLayer);
+        }
+
+        private static PreviewCameraData GetOrCreatePersistentCamera(string cameraId, Transform parent = null)
+        {
+            if (_persistentCameras.ContainsKey(cameraId) && _persistentCameras[cameraId].IsInitialized && !_persistentCameras[cameraId].IsCleanedUp)
+            {
+                var existingData = _persistentCameras[cameraId];
+                if (existingData.Camera != null && existingData.RenderTexture != null && existingData.Camera.gameObject != null)
+                {
+                    return existingData;
+                }
+                else
+                {
+                    _persistentCameras.Remove(cameraId);
+                }
+            }
+            var cameraData = new PreviewCameraData();
+            GameObject cameraObject = new GameObject($"PersistentPreviewCamera_{cameraId}");
+            Object.DontDestroyOnLoad(cameraObject);
+            if (parent != null)
+            {
+                if (parent.gameObject.scene.name == "DontDestroyOnLoad" || parent.gameObject.scene.name == null)
+                {
+                    cameraObject.transform.SetParent(parent);
+                }
+            }
+            cameraData.Camera = cameraObject.AddComponent<Camera>();
+            Camera mainCamera = Camera.main ?? Object.FindObjectOfType<Camera>();
+            if (mainCamera != null)
+            {
+                cameraData.Camera.clearFlags = mainCamera.clearFlags;
+                cameraData.Camera.backgroundColor = mainCamera.backgroundColor;
+                cameraData.Camera.nearClipPlane = mainCamera.nearClipPlane;
+                cameraData.Camera.farClipPlane = mainCamera.farClipPlane;
+                var mainSkybox = mainCamera.GetComponent<Skybox>();
+                if (mainSkybox != null)
+                {
+                    var skybox = cameraObject.AddComponent<Skybox>();
+                    skybox.material = mainSkybox.material;
+                }
+            }
+            cameraData.Camera.fieldOfView = 60f;
+            cameraData.Camera.orthographic = false;
+            cameraData.Camera.cullingMask = ~0;
+            cameraData.Camera.enabled = false;
+            int renderWidth = 1920;
+            int renderHeight = 1080;
+            cameraData.RenderTexture = new RenderTexture(renderWidth, renderHeight, 24);
+            if (cameraData.RenderTexture == null)
+            {
+                return null;
+            }
+            cameraData.RenderTexture.antiAliasing = 1;
+            cameraData.RenderTexture.Create();
+            cameraData.Camera.targetTexture = cameraData.RenderTexture;
+            cameraData.IsInitialized = true;
+            cameraData.IsCleanedUp = false;
+            _persistentCameras[cameraId] = cameraData;
+            return cameraData;
+        }
+
+        private static void PositionCameraForCharacter(Camera camera, GameObject character)
+        {
+            Vector3 anchorPoint = new Vector3(0f, 0.8f, 0f);
+            float defaultDistance = 3.6f;
+            camera.transform.position = new Vector3(0f, 1.0f, defaultDistance);
+            camera.transform.LookAt(anchorPoint);
+        }
+
+        private static Texture2D CapturePreviewWithCamera(PreviewCameraData cameraData, GameObject character, int size = 128)
+        {
+            if (cameraData?.Camera == null || cameraData.RenderTexture == null)
+            {
+                return null;
+            }
+            Vector3 originalPosition = character.transform.position;
+            Quaternion originalRotation = character.transform.rotation;
+            try
+            {
+                SetLayerRecursively(character, LayerMask.NameToLayer("Default"));
+                character.transform.position = Vector3.zero;
+                character.transform.rotation = Quaternion.identity;
+                PositionCameraForCharacter(cameraData.Camera, character);
+                RenderTexture originalActive = RenderTexture.active;
+                cameraData.Camera.Render();
+                RenderTexture.active = cameraData.RenderTexture;
+                int cropSize = 280;
+                int cropStartX = 820;
+                int cropStartY = 500;
+                Texture2D texture = new Texture2D(cropSize, cropSize, TextureFormat.RGB24, false);
+                texture.ReadPixels(new Rect(cropStartX, cropStartY, cropSize, cropSize), 0, 0);
+                texture.Apply();
+                RenderTexture.active = originalActive;
+                TextureScaler.ScaleBlocking(texture, size, size);
+                return texture;
+            }
+            finally
+            {
+                character.transform.position = originalPosition;
+                character.transform.rotation = originalRotation;
+            }
+        }
+
+        public static void CleanupPersistentCamera(string cameraId)
+        {
+            if (!_persistentCameras.ContainsKey(cameraId))
+                return;
+            var cameraData = _persistentCameras[cameraId];
+            if (cameraData.Camera != null)
+            {
+                cameraData.Camera.targetTexture = null;
+                cameraData.Camera.enabled = false;
+                Object.DestroyImmediate(cameraData.Camera.gameObject);
+            }
+            if (cameraData.RenderTexture != null)
+            {
+                cameraData.RenderTexture.Release();
+                Object.DestroyImmediate(cameraData.RenderTexture);
+            }
+            cameraData.IsCleanedUp = true;
+            _persistentCameras.Remove(cameraId);
+        }
+
+        public static void CleanupAllPersistentCameras()
+        {
+            var cameraIds = new List<string>(_persistentCameras.Keys);
+            foreach (var cameraId in cameraIds)
+            {
+                CleanupPersistentCamera(cameraId);
+            }
+        }
+
+        public static void GeneratePreviewWithPersistentCamera(string cameraId, GameObject character, string fileName, int size = 128, bool isHuman = true, Transform cameraParent = null)
+        {
+            lock (_currentlyGenerating)
+            {
+                if (_currentlyGenerating.Contains(fileName))
+                {
+                    return;
+                }
+                _currentlyGenerating.Add(fileName);
+            }
+            try
+            {
+                var cameraData = GetOrCreatePersistentCamera(cameraId, cameraParent);
+                Texture2D texture = CapturePreviewWithCamera(cameraData, character, size);
+                if (texture == null)
+                {
+                    return;
+                }
+                string setName = fileName.Replace("Preset", "");
+                string cacheKey = "CharacterPreview_" + (isHuman ? "Human" : "Titans") + "_" + setName;
+                ResourceManager.SetExternalTexture(cacheKey, texture);
+                _generatedPreviewKeys.Add(cacheKey);
+            }
+            finally
+            {
+                lock (_currentlyGenerating)
+                {
+                    _currentlyGenerating.Remove(fileName);
+                }
+            }
+        }
+
+        public static void SaveCachedPreviewsToDisk()
+        {
+            string humanFolder = System.IO.Path.Combine(FolderPaths.CharacterPreviews, "Human");
+            string titanFolder = System.IO.Path.Combine(FolderPaths.CharacterPreviews, "Titans");
+            foreach (string cacheKey in _generatedPreviewKeys)
+            {
+                Texture2D texture = ResourceManager.GetExternalTexture(cacheKey);
+                if (texture != null)
+                {
+                    string[] parts = cacheKey.Split('_');
+                    if (parts.Length >= 3)
+                    {
+                        bool isHuman = parts[1] == "Human";
+                        string setName = string.Join("_", parts.Skip(2));
+                        
+                        string folder = isHuman ? humanFolder : titanFolder;
+                        if (!System.IO.Directory.Exists(folder))
+                        {
+                            System.IO.Directory.CreateDirectory(folder);
+                        }
+                        
+                        string path = System.IO.Path.Combine(folder, "Preset" + setName + ".png");
+                        byte[] pngData = texture.EncodeToPNG();
+                        System.IO.File.WriteAllBytes(path, pngData);
+                    }
+                }
+            }
+            CleanupOrphanedPreviews();
+        }
+
+        public static void ClearSessionGeneratedPreviews()
+        {
+            foreach (string cacheKey in _generatedPreviewKeys)
+            {
+                Texture2D texture = ResourceManager.GetExternalTexture(cacheKey);
+                if (texture != null)
+                {
+                    Object.DestroyImmediate(texture);
+                }
+                ResourceManager.RemoveExternalTexture(cacheKey);
+            }
+            _generatedPreviewKeys.Clear();
+        }
+
+        public static void CaptureCurrentCharacterPreview(bool isHuman = true)
+        {
+            var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+            if (gameManager == null) return;
+            if (isHuman && gameManager.Human != null)
+            {
+                var currentSet = (Settings.HumanCustomSet)Settings.SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+                GeneratePreviewWithPersistentCamera("HumanPreview", gameManager.Human.gameObject, "Preset" + currentSet.Name.Value, 128, true);
+            }
+            else if (!isHuman && gameManager.Titan != null)
+            {
+                var currentSet = (Settings.TitanCustomSet)Settings.SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+                GeneratePreviewWithPersistentCamera("TitanPreview", gameManager.Titan.gameObject, "Preset" + currentSet.Name.Value, 128, false);
+            }
+        }
+
+        public static void InitializePreviewSystem()
+        {
+            CleanupOrphanedPreviews();
+        }
+        
+        public static System.Collections.IEnumerator GeneratePreviewWithPersistentCameraCoroutine(string cameraId, GameObject character, string fileName, int size = 128, bool isHuman = true, Transform cameraParent = null)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            GeneratePreviewWithPersistentCamera(cameraId, character, fileName, size, isHuman, cameraParent);
+        }
+
+        internal static void GeneratePreviewForHumanSet(UI.CharacterEditorHumanMenu humanMenu, bool isRebuild = false)
+        {
+            var currentSet = (Settings.HumanCustomSet)Settings.SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+            var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+            var dummyHuman = gameManager.Human;
+            var currentWeapon = humanMenu != null ? (Characters.HumanWeapon)humanMenu.Weapon.Value : Characters.HumanWeapon.Blade;
+            if (isRebuild)
+            {
+                dummyHuman.Setup.Load(currentSet, currentWeapon, false);
+                if (humanMenu != null)
+                {
+                    humanMenu.StartCoroutine(GeneratePreviewForHumanSetCoroutine(humanMenu, false));
+                    return;
+                }
+            }
+            if (humanMenu != null)
+            {
+                GeneratePreviewWithPersistentCamera("HumanPreview", dummyHuman.gameObject, "Preset" + currentSet.Name.Value, 128, true, humanMenu.transform);
+            }
+        }
+        
+        internal static System.Collections.IEnumerator GeneratePreviewForHumanSetCoroutine(UI.CharacterEditorHumanMenu humanMenu, bool isRebuild = false)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            GeneratePreviewForHumanSet(humanMenu, isRebuild);
+        }
+        
+        internal static System.Collections.IEnumerator GeneratePreviewForTitanSetCoroutine(UI.CharacterEditorTitanMenu titanMenu, bool isRebuild = false)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            GeneratePreviewForTitanSet(titanMenu, isRebuild);
+        }
+        
+        public static void GeneratePreviewWithDebounce(MonoBehaviour coroutineRunner, string debounceKey, System.Action generateAction, float delaySeconds = 0.1f)
+        {
+            if (_activeDebounceCoroutines.ContainsKey(debounceKey) && _activeDebounceCoroutines[debounceKey] != null)
+            {
+                coroutineRunner.StopCoroutine(_activeDebounceCoroutines[debounceKey]);
+            }
+            _activeDebounceCoroutines[debounceKey] = coroutineRunner.StartCoroutine(DebouncedPreviewCoroutine(debounceKey, generateAction, delaySeconds));
+        }
+        
+        private static System.Collections.IEnumerator DebouncedPreviewCoroutine(string debounceKey, System.Action generateAction, float delaySeconds)
+        {
+            yield return new WaitForSeconds(delaySeconds);
+            generateAction?.Invoke();
+            if (_activeDebounceCoroutines.ContainsKey(debounceKey))
+            {
+                _activeDebounceCoroutines[debounceKey] = null;
+            }
+        }
+
+        internal static void GeneratePreviewForTitanSet(UI.CharacterEditorTitanMenu titanMenu, bool isRebuild = false)
+        {
+            var currentSet = (Settings.TitanCustomSet)Settings.SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+            var dummyTitan = gameManager.Titan;
+            if (isRebuild)
+            {
+                dummyTitan.Setup.Load(currentSet);
+                if (titanMenu != null)
+                {
+                    titanMenu.StartCoroutine(GeneratePreviewForTitanSetCoroutine(titanMenu, false));
+                    return;
+                }
+            }
+            if (titanMenu != null)
+            {
+                GeneratePreviewWithPersistentCamera("TitanPreview", dummyTitan.gameObject, "Preset" + currentSet.Name.Value, 128, false, titanMenu.transform);
+            }
+        }
+    }
+}
