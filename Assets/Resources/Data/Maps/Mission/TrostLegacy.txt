@@ -21,7 +21,7 @@ Scene,General/EditorHumanSpawnPoint,14,0,1,1,0,0,Human SpawnPoint,137.0298,0,86.
 /// Logic
 class Main
 {
-    Speed = 10;
+    Speed = 1;
 
     # Synced State
     _isHoldingRock = false;
@@ -32,7 +32,7 @@ class Main
     _eren = null;
 
     # @type Transform
-    _erenHand = null;
+    _erenRockT = null;
 
     # @type MapObject
     _targetCheckpoint = null;
@@ -42,6 +42,9 @@ class Main
 
     # @type List<MapObject>
     _checkpoints = null;
+
+    # @type List<MapObject>
+    _checkpoints_copy = null;
 
     _currentWaveTimer = 0.0;
 
@@ -57,16 +60,48 @@ class Main
     # @type Dict
     _rpcs = Dict();
 
+    _rock_t_path = "ErenRig_VER2/Core/Rock";
+    _rock_lift = "ErenRig_VER2|et_rock_lift";
+    _rock_walk = "ErenRig_VER2|et_rock_walk";
+    _rock_fix_hole = "ErenRig_VER2|et_rock_fix_hole";
+    _run = "ErenRig_VER2|et_run";
+    _die = "ErenRig_VER2|et_die";
+    _idle = "ErenRig_VER2|et_idle";
+    _sound_footstep1 = "Footstep1";
+    _sound_footstep2 = "Footstep2";
+    _soundPhase = 1;
+    _runSpeed = 25;
+    _rockSpeed = 10;
+
+    # State
+    _phase_0_spawn = 0;
+    _phase_1_wait_clear = 1;
+    _phase_2_to_rock = 2;
+    _phase_3_pickup_rock = 3;
+    _phase_4_pathfind = 4;
+    _phase_5_start_fix_hole = 5;
+    _phase_6_wait_spawn_effect = 6;
+    _phase_7_no_transition = 7;
+    _wave_cooldown = 15;
+    _wave_timer = 15;
+    _start_titans = 1;
+    _wave_titans_base = 1;
+    _max_aggro_titans = 5;
+    _max_non_aggro_titans = 5;
+
+    _progress = 0;
+    _completion_distance = 0;
+    _lerp_progress = 0;
+    _bs_state_timer_garbage_thx = 3;
+
     function Init()
     {
-        Game.Print("1");
         self._checkpoints = Map.FindMapObjectsByRegex("Checkpoint.*", true);
+        self._checkpoints_copy = Map.FindMapObjectsByRegex("Checkpoint.*", true);
         self._erenSpawnPoint = Map.FindMapObjectByName("ErenSpawnPoint");
         self._rockPickupLocation = Map.FindMapObjectByName("RockPickupLocation");
         self._theRock = Map.FindMapObjectByName("TheRock");
-
-        Game.Print("2");
-
+        self._lastCheckpoint = self._erenSpawnPoint;
 
         if (Network.IsMasterClient)
         {
@@ -105,20 +140,33 @@ class Main
                 return;
             }
 
-            Game.Print("3");
-
-            # Setup
-            self._lastCheckpoint = self._erenSpawnPoint;
+            # Calculate Path Distance for Game Progress Stat
+            self._completion_distance = self.CalcCompletionDistance(self._checkpoints_copy.Get(self._checkpoints_copy.Count-1));
+            Game.Print(self._completion_distance);
         }
         
-        Game.Print("4");
-        _rpcs = Dict();
-        _rpcs.Set("StartMovingRock", self.StartMovingRock);
-        _rpcs.Set("RockPlayAnimation", self.RockPlayAnimation);
-        _rpcs.Set("EndMovingRock", self.EndMovingRock);
-        _rpcs.Set("SyncState", self.SyncState);
+        # Look into why usermethod here isn't returned correctly.
+        # _rpcs = Dict();
+        # _rpcs.Set("StartMovingRock", self.StartMovingRock);
+        # _rpcs.Set("RockPlayAnimation", self.RockPlayAnimation);
+        # _rpcs.Set("EndMovingRock", self.EndMovingRock);
+        # _rpcs.Set("SyncState", self.SyncState);
 
-        Game.Print("5");
+    }
+
+    function CalcCompletionDistance(targetCheckpoint)
+    {
+        progress = 0;
+        found = false;
+        for (i in Range(1, self._checkpoints_copy.Count, 1))
+        {
+            if (!found)
+            {
+                progress += Vector3.Distance(self._checkpoints_copy.Get(i-1).Position, self._checkpoints_copy.Get(i).Position);
+            }
+            found = self._checkpoints_copy.Get(i).ID == targetCheckpoint.ID;
+        }
+        return progress;
     }
 
     function OnGameStart()
@@ -126,13 +174,33 @@ class Main
         if (Network.IsMasterClient)
         {
             self._eren = Game.SpawnShifterAt("Eren", self._erenSpawnPoint.Position);
-            self._eren.EnableAI = false;
+            self._eren.Team = Network.MyPlayer.Team;
+            self._eren.AIEnabled = false;
             self._eren.UsePathfinding = false;
-
-            # Spawn initial titans.
+            self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
+            self._runSpeed = self._runSpeed * self.Speed;
+            self._rockSpeed = self._rockSpeed * self.Speed;
         }
 
         Cutscene.Start("MainCutscene", true);
+    }
+
+    function OnCharacterSpawn(character)
+    {
+        if (self._eren != null)
+        {
+            return;
+        }
+        if (character.Type == "Shifter")
+        {
+            self._eren = character;
+            self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
+
+            if (self._isHoldingRock)
+            {
+                self.StartMovingRock(null, null);
+            }
+        }
     }
 
     function OnCheckPointHit(shifter)
@@ -146,65 +214,223 @@ class Main
         self._checkpoints.RemoveAt(0);
     }
 
-    function MoveTowardsCheckpoint(threshold)
+    
+    function MoveTowardsCheckpoint()
     {
-        distance = Vector3.Distance(self._lastCheckpoint.Position, self._targetCheckpoint.Position);
-        if (distance <= 0.0001)
+        speed = self._runSpeed;
+        if (self._isHoldingRock)
         {
-            distance = 0.0001;
+            speed = self._rockSpeed;
         }
-        step = Time.TickTime * self.Speed;
-        self._eren.Position = Vector3.Lerp(self._eren.Position, self._targetCheckpoint.Position, step / distance);
+        distance = Vector3.Distance(self._lastCheckpoint.Position, self._targetCheckpoint.Position);
+        step = Time.TickTime * speed / distance;
+        self._lerp_progress = self._lerp_progress + step;
+        self._eren.Position = Vector3.Lerp(self._lastCheckpoint.Position, self._targetCheckpoint.Position, self._lerp_progress);
 
-        distance = Vector3.Distance(self._eren.Position, self._targetCheckpoint.Position);
-        return distance <= threshold;
+        # Dynamic but not exact (eren can be pushed)
+        #prev_position = self._eren.Position;
+        #self._eren.Position = Vector3.MoveTowards(prev_position, self._targetCheckpoint.Position, step);
+
+        # Update progress
+        self._progress += step;
+
+        # @type Vector3
+        direction = (self._targetCheckpoint.Position - self._eren.Position).Normalized;
+
+        newVector = Vector3.Slerp(self._eren.Transform.Forward, direction, Time.TickTime * 3);
+        angle = Vector3.SignedAngle(self._eren.Forward, Vector3(newVector.X, self._eren.Forward.Y, newVector.Z), self._eren.Up);
+        self._eren.Transform.RotateAround(self._eren.Position, self._eren.Up, angle);
+
+        # distance = Vector3.Distance(self._eren.Position, self._targetCheckpoint.Position);
+        # return distance <= threshold;
+        return self._lerp_progress >= 1;
+    }
+
+    function StepSound()
+    {
+        #.PlaySound("Footstep1");
+        if (self._eren.CurrentAnimation == self._rock_walk)
+        {
+            normTime = self._eren.GetAnimationNormalizedTime(self._rock_walk);
+            normTime = Math.Repeat(normTime, 1);
+            if (normTime >= 0.5 && self._soundPhase == 1)
+            {
+                self._eren.StopSound(self._sound_footstep2);
+                self._eren.PlaySound(self._sound_footstep1);
+                self._soundPhase = 2;
+            }
+            elif (normTime < 0.5 && self._soundPhase == 2)
+            {
+                self._eren.StopSound(self._sound_footstep1);
+                self._eren.PlaySound(self._sound_footstep2);
+                self._soundPhase = 1;
+            }
+        }
+        elif (self._eren.CurrentAnimation == self._run)
+        {
+            normTime = self._eren.GetAnimationNormalizedTime(self._run);
+            normTime = Math.Repeat(normTime, 1);
+            if (normTime > 0.75 && self._soundPhase == 1)
+            {
+                self._eren.StopSound(self._sound_footstep2);
+                self._eren.PlaySound(self._sound_footstep1);
+                self._soundPhase = 2;
+            }
+            elif (normTime > 0.3 && normTime < 0.75 && self._soundPhase == 2)
+            {
+                self._eren.StopSound(self._sound_footstep1);
+                self._eren.PlaySound(self._sound_footstep2);
+                self._soundPhase = 1;
+            }
+        }
+    }
+
+    function GetSpawnZones(position, min, max)
+    {
+        zones = Map.FindMapObjectsByTag("TitanSpawnPoint");
+        filteredZones = List();
+        for (zone in zones)
+        {
+            distance = Vector3.Distance(position, zone.Position);
+            if (min < distance && distance < max)
+            {
+                filteredZones.Add(zone);
+            }
+        }
+        return filteredZones;
+    }
+
+    function SpawnTitansAroundEren(count, min, max, targetsEren, detectRange)
+    {
+        zones = self.GetSpawnZones(self._eren.Position, min, max);
+
+        for (i in Range(count))
+        {
+            zone = Random.RandomInt(0, zones.Count);
+            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
+            {
+                titan.Target(self._eren, 100000.0);
+            }
+
+            titan.DetectRange = detectRange;
+        }
+    }
+
+    function SpawnTitansAroundMap(count, targetsEren, detectRange)
+    {
+        self.SpawnTitansAroundEren(count, 600, 10000, false, 500);
+    }
+
+    function UpdateWaves()
+    {
+        self._wave_timer = self._wave_timer - Time.TickTime;
+        if (self._wave_timer <= 0)
+        {
+            # Spawn Titans
+            self._wave_timer = self._wave_cooldown;
+
+            # Progressive Difficulty
+            progress_ratio = self._progress / self._completion_distance;
+            aggro_count = Math.Floor(self._wave_titans_base + (self._max_aggro_titans * progress_ratio));
+            non_aggro_count = Math.Floor(self._wave_titans_base + (self._max_non_aggro_titans * progress_ratio));
+
+            self.SpawnTitansAroundEren(aggro_count, 100, 600, true, 10000);
+            self.SpawnTitansAroundEren(non_aggro_count, 100, 600, false, 300);
+        }
+    }
+
+    function OnSecond()
+    {
+        if (Network.IsMasterClient)
+        {
+            progress = Math.Floor(100 * self._progress / self._completion_distance);
+            UI.SetLabelForTimeAll("TopCenter", "Progress: " + Convert.ToString(progress) + "%", 1);
+        }
     }
 
     function OnTick()
     {
-        if (Network.IsMasterClient == false) {
+        if (Network.IsMasterClient == false || Game.IsEnding) {
             return;
         }
-        
-        if (self._phase == 0)
-        {
-            self._eren.PlayAnimation("ErenRig_VER2|et_die", 0.1);
 
+        self.StepSound();
+
+        if (self._phase == self._phase_0_spawn)
+        {
+            self._bs_state_timer_garbage_thx = self._bs_state_timer_garbage_thx - Time.TickTime;
+            if (self._bs_state_timer_garbage_thx <= 0)
+            {
+                self.SpawnTitansAroundEren(self._start_titans, 100, 600, true, 100000);
+                self._eren.ForceAnimation(self._die, 1);
+                self._phase = self._phase_1_wait_clear;
+            }
+        }
+        
+        elif (self._phase == self._phase_1_wait_clear)
+        {
+            if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+            {
+                # Bounce between 1.75 and 1.93
+                self._eren.SetAnimationSpeed(self._die, -1);
+            }
+            elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+            {
+                self._eren.SetAnimationSpeed(self._die, 1);
+            }
             if (Game.AITitans.Count == 0)
             {
-                self._eren.PlayAnimation("ErenRig_VER2|et_idle", 0.1);  # need to play animations for a bit before ready to continue.
-                self._phase = 1;
+                self._eren.SetAnimationSpeed(self._die, 1);
+                self._eren.PlayAnimation(self._idle, 0.1);
+                self._phase = self._phase_2_to_rock;
+                self._lerp_progress = 0;
                 self._lastCheckpoint = self._erenSpawnPoint;
                 self._targetCheckpoint = self._rockPickupLocation;
             }
         }
 
-        if (self._phase == 1)
+        elif (self._phase == self._phase_2_to_rock)
         {
-            atRock = self.MoveTowardsCheckpoint(0.1);
+            atRock = self.MoveTowardsCheckpoint();
+            self._eren.PlayAnimation(self._run, 0.1);
             if (atRock)
             {
-                self._eren.PlayAnimation("ErenRig_VER2|et_rock_lift", 0.1);
+                self._eren.PlayAnimation(self._rock_lift, 0.1);
                 self.RPC("StartMovingRock", "all", List());
-                self._phase = 2;
+                self._phase = self._phase_3_pickup_rock;
+                self._lerp_progress = 0;
                 self._lastCheckpoint = self._rockPickupLocation;
                 self._targetCheckpoint = self._checkpoints.Get(0);
                 self._checkpoints.RemoveAt(0);
             }
         }
 
-        if (self._phase == 2)
+        elif (self._phase == self._phase_3_pickup_rock)
         {
-            atNextCheckpoint = self.MoveTowardsCheckpoint(0.1);
+            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9) {
+                self._phase = self._phase_4_pathfind;
+            }
+        }
+
+        elif (self._phase == self._phase_4_pathfind)
+        {
+            self.UpdateWaves();
+            self._eren.PlayAnimation(self._rock_walk, 0);
+            #self._eren.Transform.SetAnimationSpeed(self.Speed / 10); Funny but not synced
+            atNextCheckpoint = self.MoveTowardsCheckpoint();
 
             if (atNextCheckpoint)
             {
+                # self._progress = self.CalcCompletionDistance(self._targetCheckpoint);
                 if (self._checkpoints.Count == 0)
                 {
-                    self._phase = 3;
+                    self._lerp_progress = 0;
+                    self._phase = self._phase_5_start_fix_hole;
                 }
                 else
                 {
+                    self._lerp_progress = 0;
                     self._lastCheckpoint = self._targetCheckpoint;
                     self._targetCheckpoint = self._checkpoints.Get(0);
                     self._checkpoints.RemoveAt(0);
@@ -212,10 +438,21 @@ class Main
             }
         }
 
-        if (self._phase == 3)
+        elif (self._phase == self._phase_5_start_fix_hole)
         {
-            self._phase = 4;
-            self._eren.PlayAnimation("ErenRig_VER2|rock_fix_hole", 0.1);
+            self._phase = self._phase_6_wait_spawn_effect;
+            self._eren.PlayAnimation(self._rock_fix_hole, 0);
+        }
+
+        elif (self._phase == self._phase_6_wait_spawn_effect)
+        {
+            if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.7)
+            {
+                self._phase = self._phase_7_no_transition;
+                Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 40), Quaternion.Identity.Euler, 10);
+                self.RPC("EndMovingRock", "all", List());
+                self.WaitAndDie();
+            }
         }
     }
 
@@ -260,16 +497,33 @@ class Main
         if (body.Count >= 2) {
             params = String.Split(body.Get(1), ",", true);
         }
-        
-        method = self._rpcs.get(rpc);
-        method(sender, params);
+
+        if (rpc == "StartMovingRock") {
+            self.StartMovingRock(sender, params);
+        }
+        elif (rpc == "EndMovingRock")
+        {
+            self.EndMovingRock(sender, params);
+        }
+        elif (rpc == "SyncState")
+        {
+            self.SyncState(sender, params);
+        }
+        elif (rpc == "RockPlayAnimation")
+        {
+            self.RockPlayAnimation(sender, params);
+        }
     }
 
     function StartMovingRock(sender, params)
     {
+        if (self._eren == null) {
+            return;
+        }
         self._isHoldingRock = true;
-        self._theRock.Parent = self._eren.Transform;
+        self._theRock.Parent = self._erenRockT;
         self._theRock.LocalPosition = Vector3.Zero;
+        self._theRock.Transform.Scale = Vector3(2, 2, 2);
     }
 
     function RockPlayAnimation(sender, params)
@@ -279,19 +533,30 @@ class Main
 
     function EndMovingRock(sender, params)
     {
+        if (self._eren == null) {
+            return;
+        }
         self._isHoldingRock = false;
         self._theRock.Parent = null;
+        self._theRock.Position = self._eren.Transform.Position + (self._eren.Transform.Forward * 40);
+        self._theRock.Scale = Vector3(22, 22, 22);  
+    }
+
+    coroutine WaitAndDie()
+    {
+        self._eren.Idle(3);
+        wait 2;
+        self._eren.PlayAnimation(self._die, 2);
     }
 
     function SyncState(sender, params)
     {
-        self._phase = params.Get(0);
-        self._isHoldingRock = params.Get(1);
+        self._phase = Convert.ToFloat(params.Get(0));
+        self._isHoldingRock = Convert.ToBool(params.Get(1));
 
         if (self._isHoldingRock)
         {
-            self._theRock.Parent = self._eren.Transform;
-            self._theRock.LocalPosition = Vector3.Zero;
+            self.StartMovingRock(null, null);
         }
     }
 
@@ -304,24 +569,24 @@ class Main
     {
         if (victim.Type == "Shifter" && (victim.Name == "" || victim.Name == "Eren") && !Game.IsEnding)
         {
-            UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
             if (Network.IsMasterClient)
             {
+                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
                 Game.End(10.0);
             }
             if (self._isHoldingRock)
             {
-                # Let go of the rock and apply the rigidbody and network sync enable.
-                if (Network.IsMasterClient) {
-                    self.RPC("EndMovingRock", "all", List());
-                }
+                self._isHoldingRock = false;
+                self._theRock.Parent = null;
+                self._theRock.AddBuiltinComponent("Rigidbody"); # Gonna have to sync this somehow to other people (fix networkview component to be visible again)
+                self._theRock.Rigidbody.Mass = 100;
             }
         }
-        if (!Game.IsEnding && Game.PlayerHumans.Count + Game.PlayerShifters.Count == 1)
+        if (!Game.IsEnding && Game.PlayerHumans.Count == 0)
         {
-            UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
             if (Network.IsMasterClient)
             {
+                UI.SetLabelAll("MiddleCenter", "All hope is now lost ...");
                 Game.End(10.0);
             }
         }
