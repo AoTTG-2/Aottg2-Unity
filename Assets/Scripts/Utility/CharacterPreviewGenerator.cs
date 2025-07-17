@@ -67,7 +67,6 @@ namespace Utility
             }
         }
 
-
         public static void SetLayerRecursively(GameObject obj, int newLayer)
         {
             obj.layer = newLayer;

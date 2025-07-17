@@ -54,7 +54,6 @@ namespace UI
             lastCharSettings.Loadout.Value = charSettings.Loadout.Value;
         }
 
-
         protected string[] GetCharOptions()
         {
             List<string> sets = new List<string>(SettingsManager.TitanCustomSettings.TitanCustomSets.GetSetNames());
@@ -84,7 +83,6 @@ namespace UI
                             break;
                         }
                     }
-                    
                     if (uniqueId != null)
                     {
                         string cacheKey = "CharacterPreview_Titans_" + uniqueId;
