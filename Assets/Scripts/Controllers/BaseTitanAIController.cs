@@ -52,15 +52,17 @@ namespace Controllers
         protected float _enemyDistance;
         protected bool _isAIEnabled = true;
 
+        // A way to circumvent normal AI control so that we can force certain scripted behavior.
         public bool AIEnabled
         {
             get => _isAIEnabled;
             set
             {
                 _isAIEnabled = value;
+                _titan.EnableAI = value;
                 if (!value)
                 {
-                    ForceIdle(0f);
+                    Idle();
                 }
             }
         }
@@ -281,8 +283,6 @@ namespace Controllers
                 {
                     if (_moveToActive)
                         MoveToPosition();
-                    else
-                        Idle();
                 }
                 if (AIState == TitanAIState.MoveToPosition)
                 {

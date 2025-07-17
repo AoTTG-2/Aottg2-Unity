@@ -243,6 +243,39 @@ namespace CustomLogic
                 Character.CrossFadeIfNotPlaying(animation, fade);
         }
 
+        [CLMethod(Description = "Causes the character to play an animation at a specific time.")]
+        public void PlayAnimationAt(string animation, float t, float fade = 0.1f, bool force = false)
+        {
+            if (Character.IsMine() && !Character.Dead)
+            {
+                if (force)
+                    Character.CrossFade(animation, fade, t);
+                else
+                    Character.CrossFadeIfNotPlaying(animation, fade, t);
+            }
+        }
+
+        [CLMethod(Description = "Sets the animation speed of a given animation.")]
+        public void SetAnimationSpeed(string animation, float speed)
+        {
+            if (Character.IsMine() && !Character.Dead)
+                Character.SetAnimationSpeed(animation, speed);
+        }
+
+        //[CLMethod(Description = "Causes the character to pause their animation.")]
+        //public void PauseAnimations()
+        //{
+        //    if (Character.IsMine() && !Character.Dead)
+        //        Character.PauseAnimations();
+        //}
+
+        //[CLMethod(Description = "Causes the character to continue their animation.")]
+        //public void ContinueAnimations()
+        //{
+        //    if (Character.IsMine() && !Character.Dead)
+        //        Character.ContinueAnimations();
+        //}
+
         [CLMethod(Description = "Returns true if the animation is playing.")]
         public bool IsPlayingAnimation(string animation)
         {
