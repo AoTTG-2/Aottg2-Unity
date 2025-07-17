@@ -78,7 +78,7 @@ namespace UI
                     if (texture == null)
                     {
                         string customPreviewPath = Path.Combine(FolderPaths.CharacterPreviews, "Titans", "Preset" + option + ".png");
-                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey);
+                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey, persistent: true);
                     }
                     if (texture != null)
                     {
@@ -86,7 +86,7 @@ namespace UI
                     }
                     else
                     {
-                        icons.Add(ResourcePaths.Characters + "/Titan/Previews/PresetNone");
+                        icons.Add(ResourcePaths.Characters + "/Human/Previews/PresetNone");
                     }
                 }
             }

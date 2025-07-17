@@ -155,7 +155,7 @@ namespace UI
                     if (texture == null)
                     {
                         string customPreviewPath = Path.Combine(FolderPaths.CharacterPreviews, "Human", "Preset" + option + ".png");
-                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey);
+                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey, persistent: true);
                     }
                     if (texture != null)
                     {

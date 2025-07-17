@@ -237,7 +237,7 @@ namespace Utility
                 }
                 string setName = fileName.Replace("Preset", "");
                 string cacheKey = "CharacterPreview_" + (isHuman ? "Human" : "Titans") + "_" + setName;
-                ResourceManager.SetExternalTexture(cacheKey, texture);
+                ResourceManager.SetExternalTexture(cacheKey, texture, persistent: true);
                 _generatedPreviewKeys.Add(cacheKey);
             }
             finally
@@ -291,6 +291,17 @@ namespace Utility
                 ResourceManager.RemoveExternalTexture(cacheKey);
             }
             _generatedPreviewKeys.Clear();
+        }
+
+        public static void ClearNonPersistentPreviews()
+        {
+            ResourceManager.ClearNonPersistentTextures();
+        }
+
+        public static void GetCacheInfo(out int totalCached, out int persistent)
+        {
+            totalCached = ResourceManager.GetExternalTextureCacheCount();
+            persistent = ResourceManager.GetPersistentTextureCacheCount();
         }
 
         public static void CaptureCurrentCharacterPreview(bool isHuman = true)
