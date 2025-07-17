@@ -53,11 +53,6 @@ namespace ApplicationManagers
             return Resources.Load(name);
         }
 
-        public static T LoadAsset<T>(string path, string name, bool cached = false) where T : Object
-        {
-            return (T)LoadAsset(path, name, cached);
-        }
-
         public static T InstantiateAsset<T>(string path, string name, bool cached = false) where T : Object
         {
             return (T)Instantiate(LoadAsset(path, name, cached));
