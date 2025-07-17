@@ -37,48 +37,36 @@ namespace Utility
             string folder = Path.Combine(FolderPaths.CharacterPreviews, subFolder);
             if (!Directory.Exists(folder))
                 return;
-            HashSet<string> validSetNames = new HashSet<string>();
+            HashSet<string> validSetIds = new HashSet<string>();
             if (isHuman)
             {
-                var humanSets = SettingsManager.HumanCustomSettings.CustomSets.GetSetNames();
-                foreach (string setName in humanSets)
+                var humanSets = SettingsManager.HumanCustomSettings.CustomSets.GetSets().GetItems();
+                foreach (var baseSetting in humanSets)
                 {
-                    validSetNames.Add("Preset" + setName);
+                    var set = (Settings.HumanCustomSet)baseSetting;
+                    validSetIds.Add("Preset" + set.UniqueId.Value);
                 }
             }
             else
             {
-                var titanSets = SettingsManager.TitanCustomSettings.TitanCustomSets.GetSetNames();
-                foreach (string setName in titanSets)
+                var titanSets = SettingsManager.TitanCustomSettings.TitanCustomSets.GetSets().GetItems();
+                foreach (var baseSetting in titanSets)
                 {
-                    validSetNames.Add("Preset" + setName);
+                    var set = (Settings.TitanCustomSet)baseSetting;
+                    validSetIds.Add("Preset" + set.UniqueId.Value);
                 }
             }
             string[] previewFiles = Directory.GetFiles(folder, "Preset*.png");
             foreach (string filePath in previewFiles)
             {
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
-                if (!validSetNames.Contains(fileName))
+                if (!validSetIds.Contains(fileName))
                 {
                     File.Delete(filePath);
                 }
             }
         }
 
-        public static void RenamePreviewFile(string oldName, string newName, bool isHuman = true)
-        {
-            string subFolder = isHuman ? "Human" : "Titans";
-            string folder = Path.Combine(FolderPaths.CharacterPreviews, subFolder);
-            if (!Directory.Exists(folder))
-                return;
-            string oldPath = Path.Combine(folder, "Preset" + oldName + ".png");
-            string newPath = Path.Combine(folder, "Preset" + newName + ".png");
-            if (!File.Exists(oldPath))
-                return;
-            if (File.Exists(newPath))
-                File.Delete(newPath);
-            File.Move(oldPath, newPath);
-        }
 
         public static void SetLayerRecursively(GameObject obj, int newLayer)
         {
@@ -235,8 +223,8 @@ namespace Utility
                 {
                     return;
                 }
-                string setName = fileName.Replace("Preset", "");
-                string cacheKey = "CharacterPreview_" + (isHuman ? "Human" : "Titans") + "_" + setName;
+                string setId = fileName.Replace("Preset", "");
+                string cacheKey = "CharacterPreview_" + (isHuman ? "Human" : "Titans") + "_" + setId;
                 ResourceManager.SetExternalTexture(cacheKey, texture, persistent: true);
                 _generatedPreviewKeys.Add(cacheKey);
             }
@@ -262,7 +250,7 @@ namespace Utility
                     if (parts.Length >= 3)
                     {
                         bool isHuman = parts[1] == "Human";
-                        string setName = string.Join("_", parts.Skip(2));
+                        string setId = string.Join("_", parts.Skip(2));
                         
                         string folder = isHuman ? humanFolder : titanFolder;
                         if (!System.IO.Directory.Exists(folder))
@@ -270,7 +258,7 @@ namespace Utility
                             System.IO.Directory.CreateDirectory(folder);
                         }
                         
-                        string path = System.IO.Path.Combine(folder, "Preset" + setName + ".png");
+                        string path = System.IO.Path.Combine(folder, "Preset" + setId + ".png");
                         byte[] pngData = texture.EncodeToPNG();
                         System.IO.File.WriteAllBytes(path, pngData);
                     }
@@ -311,12 +299,12 @@ namespace Utility
             if (isHuman && gameManager.Human != null)
             {
                 var currentSet = (Settings.HumanCustomSet)Settings.SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
-                GeneratePreviewWithPersistentCamera("HumanPreview", gameManager.Human.gameObject, "Preset" + currentSet.Name.Value, 128, true);
+                GeneratePreviewWithPersistentCamera("HumanPreview", gameManager.Human.gameObject, "Preset" + currentSet.UniqueId.Value, 128, true);
             }
             else if (!isHuman && gameManager.Titan != null)
             {
                 var currentSet = (Settings.TitanCustomSet)Settings.SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
-                GeneratePreviewWithPersistentCamera("TitanPreview", gameManager.Titan.gameObject, "Preset" + currentSet.Name.Value, 128, false);
+                GeneratePreviewWithPersistentCamera("TitanPreview", gameManager.Titan.gameObject, "Preset" + currentSet.UniqueId.Value, 128, false);
             }
         }
 
@@ -349,7 +337,7 @@ namespace Utility
             }
             if (humanMenu != null)
             {
-                GeneratePreviewWithPersistentCamera("HumanPreview", dummyHuman.gameObject, "Preset" + currentSet.Name.Value, 128, true, humanMenu.transform);
+                GeneratePreviewWithPersistentCamera("HumanPreview", dummyHuman.gameObject, "Preset" + currentSet.UniqueId.Value, 128, true, humanMenu.transform);
             }
         }
         
@@ -404,7 +392,7 @@ namespace Utility
             }
             if (titanMenu != null)
             {
-                GeneratePreviewWithPersistentCamera("TitanPreview", dummyTitan.gameObject, "Preset" + currentSet.Name.Value, 128, false, titanMenu.transform);
+                GeneratePreviewWithPersistentCamera("TitanPreview", dummyTitan.gameObject, "Preset" + currentSet.UniqueId.Value, 128, false, titanMenu.transform);
             }
         }
     }

@@ -24,14 +24,14 @@ namespace UI
         protected override bool ScrollBar => true;
         private CharacterEditorMenu _menu;
         private bool _shouldGeneratePreviewAfterRebuild = false;
-        private string _previousProfileName = null;
+        private string _previousProfileId = null;
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             _menu = (CharacterEditorMenu)UIManager.CurrentMenu;
             var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
-            _previousProfileName = currentSet.Name.Value;
+            _previousProfileId = currentSet.UniqueId.Value;
             ElementStyle style = new ElementStyle(titleWidth: 130f, themePanel: ThemePanel);
             HumanCustomSettings settings = SettingsManager.HumanCustomSettings;
             string cat = "CharacterEditor";
@@ -165,15 +165,15 @@ namespace UI
         private void OnCustomSetSelected()
         {
             var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
-            string currentProfileName = currentSet.Name.Value;
+            string currentProfileId = currentSet.UniqueId.Value;
             _menu.RebuildPanels(true);
             _menu.ResetCharacter(true);
-            if (_previousProfileName != null && _previousProfileName != currentProfileName)
+            if (_previousProfileId != null && _previousProfileId != currentProfileId)
             {
                 var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
                 if (gameManager != null)
                 {
-                    gameManager.StartCoroutine(CapturePreviousProfilePreview(_previousProfileName, currentProfileName));
+                    gameManager.StartCoroutine(CapturePreviousProfilePreview(_previousProfileId, currentProfileId));
                 }
             }
             else if (_shouldGeneratePreviewAfterRebuild)
@@ -181,10 +181,10 @@ namespace UI
                 _shouldGeneratePreviewAfterRebuild = false;
                 Utility.CharacterPreviewGenerator.GeneratePreviewForHumanSet(_menu as CharacterEditorHumanMenu, isRebuild: true);
             }
-            _previousProfileName = currentProfileName;
+            _previousProfileId = currentProfileId;
         }
 
-        private System.Collections.IEnumerator CapturePreviousProfilePreview(string previousProfileName, string currentProfileName)
+        private System.Collections.IEnumerator CapturePreviousProfilePreview(string previousProfileId, string currentProfileId)
         {
             var settings = SettingsManager.HumanCustomSettings;
             HumanCustomSet previousSet = null;
@@ -193,7 +193,7 @@ namespace UI
             for (int i = 0; i < customSets.Count; i++)
             {
                 var set = (HumanCustomSet)customSets[i];
-                if (set.Name.Value == previousProfileName)
+                if (set.UniqueId.Value == previousProfileId)
                 {
                     previousSet = set;
                     previousSetIndex = i;
@@ -236,18 +236,6 @@ namespace UI
         {
             if (string.IsNullOrEmpty(name?.Trim()))
                 return "Name cannot be empty.";
-            name = name.Trim();
-            HumanCustomSettings settings = SettingsManager.HumanCustomSettings;
-            var customSets = settings.CustomSets.GetSets().GetItems();
-            var currentSet = excludeCurrentSet ? (HumanCustomSet)settings.CustomSets.GetSelectedSet() : null;
-            foreach (var baseSetting in customSets)
-            {
-                var set = (HumanCustomSet)baseSetting;
-                if ((!excludeCurrentSet || set != currentSet) && set.Name.Value == name)
-                {
-                    return "A profile with this name already exists.";
-                }
-            }
             return null;
         }
 
@@ -258,7 +246,7 @@ namespace UI
             switch (name)
             {
                 case "Create":
-                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Create"), (n) => ValidateSetName(n, false));
+                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Create"));
                     break;
                 case "Delete":
                     if (settings.CustomSets.CanDeleteSelectedSet())
@@ -267,10 +255,10 @@ namespace UI
                     break;
                 case "Rename":
                         string currentSetName = settings.CustomSets.GetSelectedSet().Name.Value;
-                        setNamePopup.Show(currentSetName, () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Rename"), (n) => ValidateSetName(n, true));
+                        setNamePopup.Show(currentSetName, () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Rename"));
                     break;
                 case "Copy":
-                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Copy"), (n) => ValidateSetName(n, false));
+                    setNamePopup.Show("New set", () => OnCostumeSetOperationFinish(name), UIManager.GetLocaleCommon("Copy"));
                     break;
                 case "SaveQuit":
                     SettingsManager.HumanCustomSettings.Save();
@@ -320,10 +308,7 @@ namespace UI
                     Utility.CharacterPreviewGenerator.CleanupOrphanedPreviews();
                     break;
                 case "Rename":
-                    string oldName = settings.GetSelectedSet().Name.Value;
-                    string newName = setNamePopup.NameSetting.Value;
-                    Utility.CharacterPreviewGenerator.RenamePreviewFile(oldName, newName, true);
-                    settings.GetSelectedSet().Name.Value = newName;
+                    settings.GetSelectedSet().Name.Value = setNamePopup.NameSetting.Value;
                     break;
                 case "Copy":
                     settings.CopySelectedSet(setNamePopup.NameSetting.Value);

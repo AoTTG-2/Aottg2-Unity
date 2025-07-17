@@ -187,7 +187,7 @@ namespace GameManagers
                 Human.Setup.Load(preset, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
-                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.Name.Value);
+                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.UniqueId.Value);
             }
             Screenshot(450f, 360f, 128f, 128f, "PresetNone");
         }

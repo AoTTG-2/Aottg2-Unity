@@ -65,6 +65,7 @@ namespace UI
         protected string[] GetCharIcons(string[] options)
         {
             List<string> icons = new List<string>();
+            var titanSets = SettingsManager.TitanCustomSettings.TitanCustomSets.GetSets().GetItems();
             foreach (string option in options)
             {
                 if (option == "Random")
@@ -73,16 +74,34 @@ namespace UI
                 }
                 else
                 {
-                    string cacheKey = "CharacterPreview_Titans_" + option;
-                    Texture2D texture = ResourceManager.GetExternalTexture(cacheKey);
-                    if (texture == null)
+                    string uniqueId = null;
+                    foreach (var baseSetting in titanSets)
                     {
-                        string customPreviewPath = Path.Combine(FolderPaths.CharacterPreviews, "Titans", "Preset" + option + ".png");
-                        texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey, persistent: true);
+                        var set = (Settings.TitanCustomSet)baseSetting;
+                        if (set.Name.Value == option)
+                        {
+                            uniqueId = set.UniqueId.Value;
+                            break;
+                        }
                     }
-                    if (texture != null)
+                    
+                    if (uniqueId != null)
                     {
-                        icons.Add(cacheKey);
+                        string cacheKey = "CharacterPreview_Titans_" + uniqueId;
+                        Texture2D texture = ResourceManager.GetExternalTexture(cacheKey);
+                        if (texture == null)
+                        {
+                            string customPreviewPath = Path.Combine(FolderPaths.CharacterPreviews, "Titans", "Preset" + uniqueId + ".png");
+                            texture = ResourceManager.LoadExternalTexture(customPreviewPath, cacheKey, persistent: true);
+                        }
+                        if (texture != null)
+                        {
+                            icons.Add(cacheKey);
+                        }
+                        else
+                        {
+                            icons.Add(ResourcePaths.Characters + "/Human/Previews/PresetNone");
+                        }
                     }
                     else
                     {
