@@ -22,13 +22,18 @@ namespace ApplicationManagers
 
         public static string TryLoadText(string path, string name)
         {
-            TextAsset asset = (TextAsset)LoadAsset(path, name);
-            if (asset != null)
-                return asset.text;
-            return "";
+            try
+            {
+                return LoadText(path, name);
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(string.Format("Error loading text from asset bundle: {0}, {1}", name, e.Message));
+            }
+            return string.Empty;
         }
 
-        public static Object LoadAsset(string path, string name, bool cached = true)
+        public static Object LoadAsset(string path, string name, bool cached = false)
         {
             if (path != "")
                 name = path + "/" + name;
@@ -48,17 +53,17 @@ namespace ApplicationManagers
             return Resources.Load(name);
         }
 
-        public static T LoadAsset<T>(string path, string name, bool cached = true) where T : Object
+        public static T LoadAsset<T>(string path, string name, bool cached = false) where T : Object
         {
             return (T)LoadAsset(path, name, cached);
         }
 
-        public static T InstantiateAsset<T>(string path, string name, bool cached = true) where T : Object
+        public static T InstantiateAsset<T>(string path, string name, bool cached = false) where T : Object
         {
             return (T)Instantiate(LoadAsset(path, name, cached));
         }
 
-        public static T InstantiateAsset<T>(string path, string name, Vector3 position, Quaternion rotation, bool cached = true) where T : Object
+        public static T InstantiateAsset<T>(string path, string name, Vector3 position, Quaternion rotation, bool cached = false) where T : Object
         {
             return (T)Instantiate(LoadAsset(path, name, cached), position, rotation);
         }
