@@ -1044,6 +1044,7 @@ MonoBehaviour:
   RightArmDisabled: 0
   _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
+  EnableAI: 1
   TransformingToHuman: 0
   PreviousHumanGas: 0
   DeathAnimationLength: 2
