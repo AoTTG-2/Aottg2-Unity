@@ -410,8 +410,12 @@ namespace Cameras
 
         private void UpdateSpectate()
         {
+            //  <--- Offset is calculating this way in UpdateMain
             var cameraDistance = GetCameraDistance();
-            float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f;
+            float offset = cameraDistance * (200f - Camera.fieldOfView) / 150f;
+            if (cameraDistance == 0f)
+                offset = 0.1f;
+            //float offset = Mathf.Max(cameraDistance, 0.3f) * (200f - Camera.fieldOfView) / 150f; <--- old calculating
             var correctCamera = _follow.GetComponent<BaseMovementSync>()._correctCamera;
             if (SpecMode.Current() == SpecateMode.OrbitSpectate)
             {
@@ -440,7 +444,7 @@ namespace Cameras
                 Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, correctCamera, Time.deltaTime * 10f);
                 Cache.Transform.position = _follow.GetCameraAnchor().position;
                 Cache.Transform.position += Vector3.up * GetHeightDistance() * SettingsManager.GeneralSettings.CameraHeight.Value;
-                float height = cameraDistance;
+                float height = cameraDistance == 0f ? 0.6f : cameraDistance;
                 Cache.Transform.position -= Vector3.up * (0.6f - height) * 2f;
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
