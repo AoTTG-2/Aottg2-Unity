@@ -230,6 +230,11 @@ namespace Controllers
             DetectRange = range;
         }
 
+        public ITargetable GetEnemy()
+        {
+            return _enemy;
+        }
+
         public void SetEnemy(ITargetable enemy, float focusTime = 0f)
         {
             _enemy = enemy;

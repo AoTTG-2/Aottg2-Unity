@@ -151,7 +151,7 @@ namespace CustomLogic
                 {
                     bool bladeWasEnabled = bladeWeapon.CurrentDurability > 0f;
                     bladeWeapon.CurrentDurability = Mathf.Max(Mathf.Min(bladeWeapon.MaxDurability, value.UnboxToFloat()), 0);
-                    if (bladeWeapon.CurrentDurability == 0f)
+                    if (bladeWeapon.CurrentDurability >= 0f)
                     {
                         Human.ToggleBlades(false);
                         if (bladeWasEnabled)
@@ -388,6 +388,34 @@ namespace CustomLogic
         {
             if (Human.IsMine())
                 Human.HookRight.DisableAnyHook();
+        }
+
+        [CLMethod(description: "Position of the left hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin LeftHookPosition()
+        {
+            if (Human.IsMine())
+            {
+                Vector3 hook = Human.HookLeft.GetHookPosition();
+                if (hook != null)
+                {
+                    return new CustomLogicVector3Builtin(hook);
+                }
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Position of the right hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin RightHookPosition()
+        {
+            if (Human.IsMine())
+            {
+                Vector3 hook = Human.HookRight.GetHookPosition();
+                if (hook != null)
+                {
+                    return new CustomLogicVector3Builtin(hook);
+                }
+            }
+            return null;
         }
 
         [CLMethod(description: "Mounts the human on a map object")]
