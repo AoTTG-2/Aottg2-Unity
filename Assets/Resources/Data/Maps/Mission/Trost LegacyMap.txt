@@ -246,7 +246,7 @@ Scene,Buildings/Tower1,241,0,1,1,1,0,Tower1,-220.514,152.6394,-303.548,0,180,0,2
 Scene,Buildings/Tower1,242,0,1,1,1,0,Tower1,-199.256,153.8924,-150.427,0,180,0,2.48,0.669,2.385,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower1,243,0,1,1,1,0,Tower1,200.397,160.1594,-150.427,0,180,0,2.48,0.783,2.385,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/Tower1,244,0,1,1,1,0,Tower1,429.543,163.9194,497.338,0,180,0,2.48,0.852,2.385,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,Interact/Supply2,245,0,1,1,1,0,Supply2,15.25012,117.0824,-532.3516,0,88.62315,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|;
+Scene,Interact/Supply2,245,0,1,1,1,0,Supply2,15.25012,117.0824,-532.3516,0,88.62315,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
 Scene,Buildings/House1,246,0,1,1,1,0,House1,217.8155,126.7207,453.1814,0,358.119,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,247,0,1,1,1,0,House1,-288.2834,126.2601,414.4238,0,359.9068,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,248,0,1,1,1,0,House1,-337.1049,131.8652,119.8937,0,179.741,0,1.5,0.9,1.2,Physical,Entities,Default,Default|255/255/255/255,;
@@ -552,7 +552,8 @@ Scene,Geometry/Cylinder1,555,0,1,1,0,0,Checkpoint11,-3.063678E-05,139.0824,538,0
 Scene,Geometry/Cylinder1,556,0,1,1,0,0,Checkpoint12,0.4930615,139.0824,605,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cylinder1,557,0,1,1,0,0,Checkpoint13,0.4930615,139.0824,625,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorCameraSpawnPoint,559,0,1,1,0,0,Camera SpawnPoint,-114.5232,218.6866,-359.7654,21.85167,330.2353,-4.599327E-07,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:CameraSpawnPoint;
-Scene,General/EditorHumanSpawnPoint,569,0,1,1,0,0,Human SpawnPoint,-171.6566,156.8339,-179.1708,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint
+Scene,General/EditorHumanSpawnPoint,569,0,1,1,0,0,Human SpawnPoint,-171.6566,156.8339,-179.1708,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
+Scene,Interact/Supply2,571,0,1,1,1,0,Supply2,2.817069,117.0824,-73.04965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true
 /// Logic
 class Main
 {
@@ -696,10 +697,10 @@ class Main
         
         # Look into why usermethod here isn't returned correctly.
         # _rpcs = Dict();
-        # _rpcs.Set("StartMovingRock", self.StartMovingRock);
-        # _rpcs.Set("RockPlayAnimation", self.RockPlayAnimation);
-        # _rpcs.Set("EndMovingRock", self.EndMovingRock);
-        # _rpcs.Set("SyncState", self.SyncState);
+        # _rpcs.Set("StartMovingRockRPC", self.StartMovingRockRPC);
+        # _rpcs.Set("RockPlayAnimationRPC", self.RockPlayAnimationRPC);
+        # _rpcs.Set("EndMovingRockRPC", self.EndMovingRockRPC);
+        # _rpcs.Set("SyncStateRPC", self.SyncStateRPC);
 
     }
 
@@ -747,7 +748,7 @@ class Main
 
             if (self._isHoldingRock)
             {
-                self.StartMovingRock(null, null);
+                self.StartMovingRockRPC(null, null);
             }
         }
     }
@@ -900,9 +901,37 @@ class Main
         }
     }
 
+    function SyncPhase()
+    {
+        Game.Print(self._phase);
+        self.RPC("ChangePhaseRPC", "others", List(self._phase));
+    }
+
     function OnTick()
     {
-        if (Network.IsMasterClient == false || Game.IsEnding) {
+        if (Game.IsEnding)
+        {
+            return;
+        }
+        if (Network.IsMasterClient == false) {
+            # Sync animation loop locally due to low duration of loop.
+            if (self._phase == self._phase_1_wait_clear)
+            {
+                if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
+                {
+                    # Bounce between 1.75 and 1.93
+                    self._eren.SetAnimationSpeed(self._die, -1, false);
+                }
+                elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
+                {
+                    self._eren.SetAnimationSpeed(self._die, 1, false);
+                }
+            }
+            if (self._phase == self._phase_2_to_rock && self._eren.GetAnimationSpeed(self._die) != 1)
+            {
+                self._eren.SetAnimationSpeed(self._die, 1, false);
+            }
+            
             return;
         }
 
@@ -916,6 +945,7 @@ class Main
                 self.SpawnTitansAroundEren(self._start_titans, 100, 600, true, 100000);
                 self._eren.ForceAnimation(self._die, 1);
                 self._phase = self._phase_1_wait_clear;
+                self.SyncPhase();
             }
         }
         
@@ -925,17 +955,18 @@ class Main
             if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
             {
                 # Bounce between 1.75 and 1.93
-                self._eren.SetAnimationSpeed(self._die, -1);
+                self._eren.SetAnimationSpeed(self._die, -1, false);
             }
             elif (self._eren.GetAnimationNormalizedTime(self._die) <= 0.9)
             {
-                self._eren.SetAnimationSpeed(self._die, 1);
+                self._eren.SetAnimationSpeed(self._die, 1, false);
             }
             if (Game.AITitans.Count == 0)
             {
-                self._eren.SetAnimationSpeed(self._die, 1);
+                self._eren.SetAnimationSpeed(self._die, 1, false);
                 self._eren.PlayAnimation(self._idle, 0.1);
                 self._phase = self._phase_2_to_rock;
+                self.SyncPhase();
                 self._lerp_progress = 0;
                 self._lastCheckpoint = self._erenSpawnPoint;
                 self._targetCheckpoint = self._rockPickupLocation;
@@ -949,8 +980,9 @@ class Main
             if (atRock)
             {
                 self._eren.PlayAnimation(self._rock_lift, 0.1);
-                self.RPC("StartMovingRock", "all", List());
+                self.RPC("StartMovingRockRPC", "all", List());
                 self._phase = self._phase_3_pickup_rock;
+                self.SyncPhase();
                 self._lerp_progress = 0;
                 self._lastCheckpoint = self._rockPickupLocation;
                 self._targetCheckpoint = self._checkpoints.Get(0);
@@ -962,6 +994,7 @@ class Main
         {
             if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9) {
                 self._phase = self._phase_4_pathfind;
+                self.SyncPhase();
             }
         }
 
@@ -979,6 +1012,7 @@ class Main
                 {
                     self._lerp_progress = 0;
                     self._phase = self._phase_5_start_fix_hole;
+                    self.SyncPhase();
                 }
                 else
                 {
@@ -993,6 +1027,7 @@ class Main
         elif (self._phase == self._phase_5_start_fix_hole)
         {
             self._phase = self._phase_6_wait_spawn_effect;
+            self.SyncPhase();
             self._eren.PlayAnimation(self._rock_fix_hole, 0);
         }
 
@@ -1001,8 +1036,9 @@ class Main
             if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.7)
             {
                 self._phase = self._phase_7_no_transition;
+                self.SyncPhase();
                 Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 40), Quaternion.Identity.Euler, 10);
-                self.RPC("EndMovingRock", "all", List());
+                self.RPC("EndMovingRockRPC", "all", List());
                 self.WaitAndDie();
             }
         }
@@ -1063,24 +1099,28 @@ class Main
             params = String.Split(body.Get(1), ",", true);
         }
 
-        if (rpc == "StartMovingRock") {
-            self.StartMovingRock(sender, params);
+        if (rpc == "StartMovingRockRPC") {
+            self.StartMovingRockRPC(sender, params);
         }
-        elif (rpc == "EndMovingRock")
+        elif (rpc == "EndMovingRockRPC")
         {
-            self.EndMovingRock(sender, params);
+            self.EndMovingRockRPC(sender, params);
         }
-        elif (rpc == "SyncState")
+        elif (rpc == "SyncStateRPC")
         {
-            self.SyncState(sender, params);
+            self.SyncStateRPC(sender, params);
         }
-        elif (rpc == "RockPlayAnimation")
+        elif (rpc == "RockPlayAnimationRPC")
         {
-            self.RockPlayAnimation(sender, params);
+            self.RockPlayAnimationRPC(sender, params);
+        }
+        elif (rpc == "ChangePhaseRPC")
+        {
+            self.ChangePhaseRPC(sender, params);
         }
     }
 
-    function StartMovingRock(sender, params)
+    function StartMovingRockRPC(sender, params)
     {
         if (self._eren == null) {
             return;
@@ -1091,12 +1131,12 @@ class Main
         self._theRock.Transform.Scale = Vector3(2, 2, 2);
     }
 
-    function RockPlayAnimation(sender, params)
+    function RockPlayAnimationRPC(sender, params)
     {
         animation = params.Get(0);
     }
 
-    function EndMovingRock(sender, params)
+    function EndMovingRockRPC(sender, params)
     {
         if (self._eren == null) {
             return;
@@ -1114,20 +1154,25 @@ class Main
         self._eren.PlayAnimation(self._die, 2);
     }
 
-    function SyncState(sender, params)
+    function ChangePhaseRPC(sender, params)
+    {
+        self._phase = Convert.ToFloat(params.Get(0));
+    }
+
+    function SyncStateRPC(sender, params)
     {
         self._phase = Convert.ToFloat(params.Get(0));
         self._isHoldingRock = Convert.ToBool(params.Get(1));
 
         if (self._isHoldingRock)
         {
-            self.StartMovingRock(null, null);
+            self.StartMovingRockRPC(null, null);
         }
     }
 
     function OnPlayerJoin(player)
     {
-        self.RPC("SyncState", player, List(self._phase, self._isHoldingRock));
+        self.RPC("SyncStateRPC", player, List(self._phase, self._isHoldingRock));
     }
 
     function OnCharacterDie(victim, killer, killerName)

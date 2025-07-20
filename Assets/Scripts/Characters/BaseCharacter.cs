@@ -424,9 +424,19 @@ namespace Characters
         //    Animation.SetSpeedAll(0f);
         //}
 
+        public float GetAnimationSpeed(string animation)
+        {
+            return Animation.GetSpeed(animation);
+        }
+
         public void SetAnimationSpeed(string animation, float speed)
         {
             Cache.PhotonView.RPC("SetAnimationSpeedRPC", RpcTarget.All, new object[2] { animation, speed });
+        }
+
+        public void SetAnimationSpeedNonRPC(string animation, float speed)
+        {
+            Animation.SetSpeed(animation, speed);
         }
 
         [PunRPC]

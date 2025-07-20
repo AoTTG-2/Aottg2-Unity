@@ -255,11 +255,28 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(Description = "Sets the animation speed of a given animation.")]
-        public void SetAnimationSpeed(string animation, float speed)
+        [CLMethod(Description = "Gets the animation speed of a given animation.")]
+        public void GetAnimationSpeed(string animation)
         {
             if (Character.IsMine() && !Character.Dead)
-                Character.SetAnimationSpeed(animation, speed);
+                Character.GetAnimationSpeed(animation);
+        }
+
+        [CLMethod(Description = "Sets the animation speed of a given animation.")]
+        public void SetAnimationSpeed(string animation, float speed, bool synced = true)
+        {
+            if (Character.IsMine() && !Character.Dead)
+            {
+                if (synced)
+                {
+                    Character.SetAnimationSpeed(animation, speed);
+                }
+                else
+                {
+                    Character.SetAnimationSpeedNonRPC(animation, speed);
+                }
+
+            }
         }
 
         //[CLMethod(Description = "Causes the character to pause their animation.")]

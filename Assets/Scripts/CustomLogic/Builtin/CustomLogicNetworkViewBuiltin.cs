@@ -11,7 +11,6 @@ namespace CustomLogic
     /// Represents a network view on a map object that has the "networked" flag.
     /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
     /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
-    /// 
     /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
     /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
     /// avoid cases where message sending increases heavily with the number of players in the room.

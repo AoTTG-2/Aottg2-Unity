@@ -6,7 +6,6 @@ using MapEditor;
 using Settings;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
@@ -74,7 +73,7 @@ namespace UI
 
         public void CopyID()
         {
-            EditorGUIUtility.systemCopyBuffer = this._mapObject.ScriptObject.Id.ToString();
+            GUIUtility.systemCopyBuffer = this._mapObject.ScriptObject.Id.ToString();
         }
 
         public void Show(MapObject mapObject)

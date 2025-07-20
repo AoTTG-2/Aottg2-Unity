@@ -1,10 +1,4 @@
 ﻿using Map;
-using NUnit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Utility;
 
@@ -21,7 +15,7 @@ namespace CustomLogic
             collider = (Collider)parameters[0];
         }
 
-        [CLProperty(Description = "")]
+        [CLProperty(Description = "The transform of the rigidbody this collider is attached to.")]
         public CustomLogicTransformBuiltin AttachedArticulationBody => new CustomLogicTransformBuiltin(collider.attachedRigidbody.transform);
 
 
@@ -117,9 +111,12 @@ namespace CustomLogic
             return collider.ClosestPointOnBounds(position.Value);
         }
 
-        /// <inheritdoc cref="Collider.Raycast(Ray, out RaycastHit, float)"/>
+        /// <summary>
+        /// Runs a raycast physics check between start to end and checks if it hits any collider with the given collideWith layer.
+        /// Returns a Collider object if it hit something otherwise returns null.
+        /// </summary>
         [CLMethod]
-        public CustomLogicLineCastHitResultBuiltin Raycast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float maxDistance, string collideWith)
+        public CustomLogicLineCastHitResultBuiltin Raycast(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
             RaycastHit hit;
             var startPosition = start.Value;

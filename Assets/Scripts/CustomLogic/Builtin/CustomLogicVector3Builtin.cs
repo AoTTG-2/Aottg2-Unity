@@ -157,9 +157,14 @@ namespace CustomLogic
         [CLMethod]
         public static CustomLogicVector3Builtin Normalize(CustomLogicVector3Builtin value) => Vector3.Normalize(value);
 
-        /// <inheritdoc cref="Vector3.OrthoNormalize(ref Vector3, ref Vector3)"/>
+        /// <summary>
+        /// Makes vectors normalized and orthogonal to each other.
+        /// Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal (that is, angle between them is 90 degrees).
+        /// Honestly just go look up the unity docs for this one idk.
+        /// This one uses references so the Vectors will be modified in place.
+        /// </summary>
         [CLMethod]
-        public static void OrthoNormalize(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b) => Vector3.OrthoNormalize(ref a.Value, ref b.Value);
+        public static void OrthoNormalize(CustomLogicVector3Builtin normal, CustomLogicVector3Builtin tangent) => Vector3.OrthoNormalize(ref normal.Value, ref tangent.Value);
 
         /// <inheritdoc cref="Vector3.Project"/>
         [CLMethod]
@@ -189,7 +194,9 @@ namespace CustomLogic
         [CLMethod]
         public static CustomLogicVector3Builtin SlerpUnclamped(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b, float t) => Vector3.SlerpUnclamped(a, b, t);
 
-        /// <inheritdoc cref="Vector3.SmoothDamp(Vector3, Vector3, ref Vector3, float, float, float)"/>
+        /// <summary>
+        /// Smoothly damps current towards target with currentVelocity as state. smoothTime and maxSpeed control how aggressive the transition is.
+        /// </summary>
         [CLMethod]
         public static CustomLogicVector3Builtin SmoothDamp(CustomLogicVector3Builtin current, CustomLogicVector3Builtin target, CustomLogicVector3Builtin currentVelocity, float smoothTime, float maxSpeed) => Vector3.SmoothDamp(current, target, ref currentVelocity.Value, smoothTime, maxSpeed);
 
