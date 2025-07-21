@@ -36,7 +36,7 @@ namespace UI
             var settings = SettingsManager.TitanCustomSettings;
             string cat = "CharacterEditor";
             string sub = "Costume";
-            ElementFactory.CreateTextButton(BottomBar, style, "Quit Without Save", onClick: () => OnButtonClick("QuitWithoutSave"));
+            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("QuitWithoutSave"), onClick: () => OnButtonClick("QuitWithoutSave"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale(cat, sub, "SaveQuit"), onClick: () => OnButtonClick("SaveQuit"));
             var set = (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet();
             float dropdownWidth = 170f;
@@ -167,13 +167,6 @@ namespace UI
             Utility.CharacterPreviewGenerator.GeneratePreviewWithDebounce(this, "TitanCostumePreview", () => Utility.CharacterPreviewGenerator.GeneratePreviewForTitanSet(_menu as CharacterEditorTitanMenu, isRebuild: false));
         }
 
-        private string ValidateSetName(string name, bool excludeCurrentSet = true)
-        {
-            if (string.IsNullOrEmpty(name?.Trim()))
-                return "Name cannot be empty.";
-            return null;
-        }
-
         private void OnButtonClick(string name)
         {
             var settings = SettingsManager.TitanCustomSettings;
@@ -197,9 +190,16 @@ namespace UI
                     break;
                 case "SaveQuit":
                     SettingsManager.TitanCustomSettings.Save();
-                    Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
-                    Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
-                    SceneLoader.LoadScene(SceneName.MainMenu);
+                    var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+                    if (gameManager?.Character is DummyTitan dummyTitan)
+                    {
+                        var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+                        dummyTitan.Setup.Load(currentSet);
+                        SaveQuitCaptureCoroutine();
+                        return;
+                    }
+                    SaveQuitCaptureCoroutine();
+                    return;
                     break;
                 case "LoadPreset":
                     List<string> sets = new List<string>(SettingsManager.TitanCustomSettings.TitanCustomSets.GetSetNames());
@@ -267,6 +267,21 @@ namespace UI
                     break;
             }
             OnCustomSetSelected();
+        }
+
+        private void SaveQuitCaptureCoroutine()
+        {
+            StartCoroutine(SaveQuitCaptureCoroutineInternal());
+        }
+        
+        private System.Collections.IEnumerator SaveQuitCaptureCoroutineInternal()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
+            Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
+            SceneLoader.LoadScene(SceneName.MainMenu);
         }
     }
 }

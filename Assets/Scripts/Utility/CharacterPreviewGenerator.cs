@@ -117,9 +117,9 @@ namespace Utility
             cameraData.Camera.orthographic = false;
             cameraData.Camera.cullingMask = ~0;
             cameraData.Camera.enabled = false;
-            int renderWidth = 1920;
-            int renderHeight = 1080;
-            cameraData.RenderTexture = new RenderTexture(renderWidth, renderHeight, 24);
+            int renderWidth = 128;
+            int renderHeight = 128;
+            cameraData.RenderTexture = new RenderTexture(renderWidth, renderHeight, 16);
             if (cameraData.RenderTexture == null)
             {
                 return null;
@@ -133,15 +133,19 @@ namespace Utility
             return cameraData;
         }
 
-        private static void PositionCameraForCharacter(Camera camera, GameObject character)
+        private static void PositionCameraForCharacter(Camera camera, GameObject character, bool isHuman = true)
         {
-            Vector3 anchorPoint = new Vector3(0f, 0.8f, 0f);
-            float defaultDistance = 3.6f;
-            camera.transform.position = new Vector3(0f, 1.0f, defaultDistance);
-            camera.transform.LookAt(anchorPoint);
+            Vector3 anchorPoint = new Vector3(0f, 1.18f, 0f);
+            float defaultDistance = isHuman ? 3f : 3.5f;
+            Vector3 characterPosition = character.transform.position;
+            Vector3 cameraPosition = characterPosition + new Vector3(0f, 1.23f, defaultDistance);
+            Vector3 targetAnchorPoint = characterPosition + anchorPoint;
+            camera.transform.position = cameraPosition;
+            camera.transform.LookAt(targetAnchorPoint);
+            camera.fieldOfView = 20f;
         }
 
-        private static Texture2D CapturePreviewWithCamera(PreviewCameraData cameraData, GameObject character, int size = 128)
+        private static Texture2D CapturePreviewWithCamera(PreviewCameraData cameraData, GameObject character, int size = 128, bool isHuman = true)
         {
             if (cameraData?.Camera == null || cameraData.RenderTexture == null)
             {
@@ -149,29 +153,40 @@ namespace Utility
             }
             Vector3 originalPosition = character.transform.position;
             Quaternion originalRotation = character.transform.rotation;
+            Vector3 originalScale = character.transform.localScale;
             try
             {
                 SetLayerRecursively(character, LayerMask.NameToLayer("Default"));
-                character.transform.position = Vector3.zero;
-                character.transform.rotation = Quaternion.identity;
-                PositionCameraForCharacter(cameraData.Camera, character);
+                var renderers = character.GetComponentsInChildren<Renderer>();
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = true;
+                    if (renderer is SkinnedMeshRenderer skinnedRenderer)
+                    {
+                        skinnedRenderer.updateWhenOffscreen = true;
+                    }
+                }
+                PositionCameraForCharacter(cameraData.Camera, character, isHuman);
                 RenderTexture originalActive = RenderTexture.active;
                 cameraData.Camera.Render();
                 RenderTexture.active = cameraData.RenderTexture;
-                int cropSize = 280;
-                int cropStartX = 820;
-                int cropStartY = 500;
-                Texture2D texture = new Texture2D(cropSize, cropSize, TextureFormat.RGB24, false);
-                texture.ReadPixels(new Rect(cropStartX, cropStartY, cropSize, cropSize), 0, 0);
+                int renderWidth = cameraData.RenderTexture.width;
+                int renderHeight = cameraData.RenderTexture.height;
+                Texture2D texture = new Texture2D(renderWidth, renderHeight, TextureFormat.RGB24, false);
+                texture.ReadPixels(new Rect(0, 0, renderWidth, renderHeight), 0, 0);
                 texture.Apply();
                 RenderTexture.active = originalActive;
-                TextureScaler.ScaleBlocking(texture, size, size);
+                if (size != renderWidth)
+                {
+                    TextureScaler.ScaleBlocking(texture, size, size);
+                }
                 return texture;
             }
             finally
             {
                 character.transform.position = originalPosition;
                 character.transform.rotation = originalRotation;
+                character.transform.localScale = originalScale;
             }
         }
 
@@ -217,7 +232,7 @@ namespace Utility
             try
             {
                 var cameraData = GetOrCreatePersistentCamera(cameraId, cameraParent);
-                Texture2D texture = CapturePreviewWithCamera(cameraData, character, size);
+                Texture2D texture = CapturePreviewWithCamera(cameraData, character, size, isHuman);
                 if (texture == null)
                 {
                     return;
@@ -250,13 +265,11 @@ namespace Utility
                     {
                         bool isHuman = parts[1] == "Human";
                         string setId = string.Join("_", parts.Skip(2));
-                        
                         string folder = isHuman ? humanFolder : titanFolder;
                         if (!System.IO.Directory.Exists(folder))
                         {
                             System.IO.Directory.CreateDirectory(folder);
                         }
-                        
                         string path = System.IO.Path.Combine(folder, "Preset" + setId + ".png");
                         byte[] pngData = texture.EncodeToPNG();
                         System.IO.File.WriteAllBytes(path, pngData);
@@ -312,13 +325,6 @@ namespace Utility
             CleanupOrphanedPreviews();
         }
         
-        public static System.Collections.IEnumerator GeneratePreviewWithPersistentCameraCoroutine(string cameraId, GameObject character, string fileName, int size = 128, bool isHuman = true, Transform cameraParent = null)
-        {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            GeneratePreviewWithPersistentCamera(cameraId, character, fileName, size, isHuman, cameraParent);
-        }
-
         internal static void GeneratePreviewForHumanSet(UI.CharacterEditorHumanMenu humanMenu, bool isRebuild = false)
         {
             var currentSet = (Settings.HumanCustomSet)Settings.SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
@@ -393,6 +399,13 @@ namespace Utility
             {
                 GeneratePreviewWithPersistentCamera("TitanPreview", dummyTitan.gameObject, "Preset" + currentSet.UniqueId.Value, 128, false, titanMenu.transform);
             }
+        }
+
+        public static System.Collections.IEnumerator GeneratePreviewWithPersistentCameraCoroutine(string cameraId, GameObject character, string fileName, int size = 128, bool isHuman = true, Transform cameraParent = null)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            GeneratePreviewWithPersistentCamera(cameraId, character, fileName, size, isHuman, cameraParent);
         }
     }
 }

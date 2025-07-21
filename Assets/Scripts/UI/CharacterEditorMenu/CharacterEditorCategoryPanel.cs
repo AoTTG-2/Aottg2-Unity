@@ -48,12 +48,60 @@ namespace UI
             if (_category.Value != GetCurrentCategory())
             {
                 bool currentlyHuman = CharacterEditorGameManager.HumanMode;
-                Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(currentlyHuman);
-                if (_category.Value == "Human")
-                    CharacterEditorGameManager.HumanMode = true;
-                else
-                    CharacterEditorGameManager.HumanMode = false;
-                SceneLoader.LoadScene(SceneName.CharacterEditor);
+                bool shouldPreserveSkinPreview = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+                if (currentlyHuman && _gameManager?.Character is DummyHuman dummyHuman)
+                {
+                    var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+                    var currentWeapon = dummyHuman.Setup.Weapon;
+                    dummyHuman.Setup.Load(currentSet, currentWeapon, false);
+                }
+                else if (!currentlyHuman && _gameManager?.Character is DummyTitan dummyTitan)
+                {
+                    var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+                    dummyTitan.Setup.Load(currentSet);
+                }
+                if (_category.Value == "Titan")
+                {
+                    CharacterEditorSkinsPanel.ResetSkinPreviewToggles();
+                }
+                _gameManager.StartCoroutine(CategoryChangeCaptureCoroutine(currentlyHuman, shouldPreserveSkinPreview));
+            }
+        }
+        
+        private void ResetHumanSkinPreviewToggles()
+        {
+            CharacterEditorCostumePanel.ResetSkinPreviewToggles();
+        }
+        
+        private System.Collections.IEnumerator CategoryChangeCaptureCoroutine(bool isHuman, bool shouldPreserveSkinPreview)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(isHuman);
+            if (_category.Value == "Human")
+                CharacterEditorGameManager.HumanMode = true;
+            else
+                CharacterEditorGameManager.HumanMode = false;
+            SceneLoader.LoadScene(SceneName.CharacterEditor);
+            if (shouldPreserveSkinPreview)
+            {
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+                if (gameManager?.Character is DummyHuman dummyHuman)
+                {
+                    bool originalGlobalEnabled = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                    bool originalSetEnabled = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
+                    SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
+                    SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+                    dummyHuman.LoadSkin();
+                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForEndOfFrame();
+                    SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
+                    SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
+                }
             }
         }
     }

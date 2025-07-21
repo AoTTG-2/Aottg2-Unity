@@ -2761,20 +2761,133 @@ namespace Characters
             {
                 if (SettingsManager.CustomSkinSettings.Human.SkinsEnabled.Value)
                 {
-                    HumanCustomSkinSet set = (HumanCustomSkinSet)SettingsManager.CustomSkinSettings.Human.GetSelectedSet();
-                    string url = string.Join(",", new string[] { set.Horse.Value, set.Hair.Value, set.Eye.Value, set.Glass.Value, set.Face.Value,
+                    try
+                    {
+                        bool useGlobalOverrides = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                        bool usePresetSkins = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
+                        HumanCustomSet presetSet = null;
+                        if (Setup?.CustomSet != null)
+                        {
+                            presetSet = Setup.CustomSet;
+                        }
+                        HumanCustomSkinSet globalSet = null;
+                        if (useGlobalOverrides)
+                        {
+                            int globalPresetIndex = SettingsManager.CustomSkinSettings.Human.LastGlobalPresetIndex.Value;
+                            var allSets = SettingsManager.CustomSkinSettings.Human.GetSets().GetItems();
+                            if (globalPresetIndex >= 0 && globalPresetIndex < allSets.Count)
+                            {
+                                globalSet = (HumanCustomSkinSet)allSets[globalPresetIndex];
+                            }
+                        }
+                        string GetSkinValue(string globalValue, string presetValue)
+                        {
+                            if (usePresetSkins && presetSet != null)
+                            {
+                                if (useGlobalOverrides && globalSet != null && !string.IsNullOrEmpty(globalValue))
+                                {
+                                    return globalValue;
+                                }
+                                if (!string.IsNullOrEmpty(presetValue))
+                                {
+                                    return presetValue;
+                                }
+                            }
+                            else if (useGlobalOverrides && globalSet != null)
+                            {
+                                if (!string.IsNullOrEmpty(globalValue))
+                                {
+                                    if (presetSet != null && !string.IsNullOrEmpty(presetValue) && 
+                                        globalValue.Equals(presetValue, System.StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        return string.Empty;
+                                    }
+                                    return globalValue;
+                                }
+                            }
+                            else if (usePresetSkins && presetSet != null && !string.IsNullOrEmpty(presetValue))
+                            {
+                                return presetValue;
+                            }
+                            return string.Empty;
+                        }
+                        float GetFloatValue(float globalValue, float presetValue)
+                        {
+                            if (usePresetSkins && presetSet != null)
+                            {
+                                if (useGlobalOverrides && globalSet != null)
+                                {
+                                    return globalValue;
+                                }
+                                return presetValue;
+                            }
+                            else if (useGlobalOverrides && globalSet != null)
+                            {
+                                if (presetSet != null && Math.Abs(globalValue - presetValue) < 0.001f)
+                                {
+                                    return 1f;
+                                }
+                                return globalValue;
+                            }
+                            else if (usePresetSkins && presetSet != null)
+                            {
+                                return presetValue;
+                            }
+                            return 1f;
+                        }
+                        string[] skinUrls = new string[] {
+                            GetSkinValue(globalSet?.Horse.Value, presetSet?.SkinHorse.Value),
+                            GetSkinValue(globalSet?.Hair.Value, presetSet?.SkinHair.Value),
+                            GetSkinValue(globalSet?.Eye.Value, presetSet?.SkinEye.Value),
+                            GetSkinValue(globalSet?.Glass.Value, presetSet?.SkinGlass.Value),
+                            GetSkinValue(globalSet?.Face.Value, presetSet?.SkinFace.Value),
+                            GetSkinValue(globalSet?.Skin.Value, presetSet?.SkinSkin.Value),
+                            GetSkinValue(globalSet?.Costume.Value, presetSet?.SkinCostume.Value),
+                            GetSkinValue(globalSet?.Logo.Value, presetSet?.SkinLogo.Value),
+                            GetSkinValue(globalSet?.GearL.Value, presetSet?.SkinGearL.Value),
+                            GetSkinValue(globalSet?.GearR.Value, presetSet?.SkinGearR.Value),
+                            GetSkinValue(globalSet?.Gas.Value, presetSet?.SkinGas.Value),
+                            GetSkinValue(globalSet?.Hoodie.Value, presetSet?.SkinHoodie.Value),
+                            GetSkinValue(globalSet?.WeaponTrail.Value, presetSet?.SkinWeaponTrail.Value),
+                            GetSkinValue(globalSet?.ThunderspearL.Value, presetSet?.SkinThunderspearL.Value),
+                            GetSkinValue(globalSet?.ThunderspearR.Value, presetSet?.SkinThunderspearR.Value),
+                            GetFloatValue(globalSet?.HookLTiling.Value ?? 1f, presetSet?.SkinHookLTiling.Value ?? 1f).ToString(),
+                            GetSkinValue(globalSet?.HookL.Value, presetSet?.SkinHookL.Value),
+                            GetFloatValue(globalSet?.HookRTiling.Value ?? 1f, presetSet?.SkinHookRTiling.Value ?? 1f).ToString(),
+                            GetSkinValue(globalSet?.HookR.Value, presetSet?.SkinHookR.Value),
+                            GetSkinValue(globalSet?.Hat.Value, presetSet?.SkinHat.Value),
+                            GetSkinValue(globalSet?.Head.Value, presetSet?.SkinHead.Value),
+                            GetSkinValue(globalSet?.Back.Value, presetSet?.SkinBack.Value)
+                        };
+                        string url = string.Join(",", skinUrls);
+                        int viewID = -1;
+                        if (Horse != null)
+                        {
+                            viewID = Horse.gameObject.GetPhotonView().ViewID;
+                        }
+                        if (player == null)
+                            Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                        else
+                            Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
+                    }
+                    catch (System.Exception ex)
+                    {
+                        UnityEngine.Debug.LogError("Failed to load skin: " + ex.Message);
+                        HumanCustomSkinSet set = (HumanCustomSkinSet)SettingsManager.CustomSkinSettings.Human.GetSelectedSet();
+                        string url = string.Join(",", new string[] { set.Horse.Value, set.Hair.Value, set.Eye.Value, set.Glass.Value, set.Face.Value,
                 set.Skin.Value, set.Costume.Value, set.Logo.Value, set.GearL.Value, set.GearR.Value, set.Gas.Value, set.Hoodie.Value,
                     set.WeaponTrail.Value, set.ThunderspearL.Value, set.ThunderspearR.Value, set.HookLTiling.Value.ToString(), set.HookL.Value,
                     set.HookRTiling.Value.ToString(), set.HookR.Value, set.Hat.Value, set.Head.Value, set.Back.Value });
-                    int viewID = -1;
-                    if (Horse != null)
-                    {
-                        viewID = Horse.gameObject.GetPhotonView().ViewID;
+                        int viewID = -1;
+                        if (Horse != null)
+                        {
+                            viewID = Horse.gameObject.GetPhotonView().ViewID;
+                        }
+                        if (player == null)
+                            Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
+                        else
+                            Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                     }
-                    if (player == null)
-                        Cache.PhotonView.RPC("LoadSkinRPC", RpcTarget.All, new object[] { viewID, url });
-                    else
-                        Cache.PhotonView.RPC("LoadSkinRPC", player, new object[] { viewID, url });
                 }
                 else
                     _customSkinLoader.Finished = true;
