@@ -29,7 +29,7 @@ namespace UI
             base.Setup(parent);
             _scoreLabel = ElementFactory.InstantiateAndBind(transform, "Prefabs/InGame/KillScoreLabel").GetComponent<Text>();
             _backgroundLabel = _scoreLabel.transform.Find("BackgroundLabel").GetComponent<Text>();
-            _scoreLabel.transform.parent.Find("Border").GetComponent<Image>().enabled = false;
+            _scoreLabel.transform.parent.Find("Border").gameObject.SetActive(false);
         }
 
         public void Show(int score)
