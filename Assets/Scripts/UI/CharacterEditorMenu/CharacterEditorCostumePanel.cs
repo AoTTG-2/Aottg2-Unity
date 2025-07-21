@@ -181,6 +181,10 @@ namespace UI
             bool shouldApplySkinPreview = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
             if (shouldApplySkinPreview)
             {
+                var gameManager = ((CharacterEditorMenu)_menu)._gameManager;
+                var dummyHuman = gameManager.Human;
+                if (dummyHuman != null)
+                    dummyHuman.LoadSkin();
                 StartCoroutine(ApplySkinPreviewAfterReset());
             }
         }
