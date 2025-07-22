@@ -500,6 +500,7 @@ namespace Characters
         {
             if (notifyTitan && Grabber != null)
                 Grabber.Cache.PhotonView.RPC("UngrabRPC", RpcTarget.All, new object[] { Cache.PhotonView.ViewID });
+                Grabber.DisableArm(Grabber.HoldHumanLeft);
             Grabber = null;
             GrabHand = null;
             SetTriggerCollider(false);
@@ -1082,7 +1083,6 @@ namespace Characters
             else
                 base.GetHitRPC(viewId, name, damage, type, collider);
         }
-
         public override void OnHit(BaseHitbox hitbox, object victim, Collider collider, string type, bool firstHit)
         {
             if (hitbox != null)
@@ -1206,6 +1206,10 @@ namespace Characters
                             }
 
                         }
+                        if (Special is RechargeableUseable)
+                        {
+                            ((RechargeableUseable)Special).ReduceCooldown();
+                        }
                         _lastNapeHitTimes[titan] = Time.time;
                     }
                     if (titan.BaseTitanCache.Hurtboxes.Contains(collider))
@@ -1224,7 +1228,6 @@ namespace Characters
                 }
             }
         }
-
         protected void Update()
         {
             if (IsMine() && !Dead)

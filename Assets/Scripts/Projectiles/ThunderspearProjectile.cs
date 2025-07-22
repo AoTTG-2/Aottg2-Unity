@@ -239,6 +239,10 @@ namespace Projectiles
                             damage = 0;
                             titan.GetHit("Thunderspear", damage, "TitanStun", collider.name);
                         }
+                        if(((Human)_owner).Special is RechargeableUseable)
+                        {
+                            ((RechargeableUseable)((Human)_owner).Special).ReduceCooldown();
+                        }
                         if (damage >= titanHealth)
                             soundPriority = Mathf.Max(soundPriority, (int)TSKillType.Kill);
                         else
