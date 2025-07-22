@@ -307,7 +307,7 @@ namespace UI
             }
         }
         
-        private System.Collections.IEnumerator ApplySkinPreviewAfterCostumeChange()
+        public System.Collections.IEnumerator ApplySkinPreviewAfterCostumeChange()
         {
             yield return null;
             yield return null;

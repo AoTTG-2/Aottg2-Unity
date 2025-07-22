@@ -13,7 +13,7 @@ namespace UI
 {
     class CharacterEditorHumanMenu: CharacterEditorMenu
     {
-        private CharacterEditorCostumePanel _costumePanel;
+        public CharacterEditorCostumePanel _costumePanel;
         private CharacterEditorStatsPanel _statsPanel;
         private CharacterEditorSkinsPanel _skinsPanel;
         private CharacterEditorHumanCategoryPanel _categoryPanel;
