@@ -294,7 +294,6 @@ namespace UI
             {
                 StartCoroutine(ApplySkinPreviewAfterCostumeChange());
             }
-            GeneratePreviewForCurrentSet();
         }
         
         private System.Collections.IEnumerator ApplySkinPreviewAfterCostumeChange()
@@ -318,11 +317,7 @@ namespace UI
 
         private void GeneratePreviewForCurrentSet()
         {
-            Utility.CharacterPreviewGenerator.GeneratePreviewWithDebounce(
-                this, 
-                "HumanCostumePreview", 
-                () => Utility.CharacterPreviewGenerator.GeneratePreviewForHumanSet(_menu as CharacterEditorHumanMenu, isRebuild: false)
-            );
+            Utility.CharacterPreviewGenerator.GeneratePreviewForHumanSet(_menu as CharacterEditorHumanMenu, isRebuild: false);
         }
 
         private void OnButtonClick(string name)

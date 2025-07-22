@@ -159,12 +159,11 @@ namespace UI
         private void OnCharacterChanged()
         {
             _menu.ResetCharacter(fullReset: false);
-            GeneratePreviewForCurrentSet();
         }
 
         private void GeneratePreviewForCurrentSet()
         {
-            Utility.CharacterPreviewGenerator.GeneratePreviewWithDebounce(this, "TitanCostumePreview", () => Utility.CharacterPreviewGenerator.GeneratePreviewForTitanSet(_menu as CharacterEditorTitanMenu, isRebuild: false));
+            Utility.CharacterPreviewGenerator.GeneratePreviewForTitanSet(_menu as CharacterEditorTitanMenu, isRebuild: false);
         }
 
         private void OnButtonClick(string name)
@@ -195,12 +194,9 @@ namespace UI
                     {
                         var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
                         dummyTitan.Setup.Load(currentSet);
-                        SaveQuitCaptureCoroutine();
-                        return;
                     }
-                    SaveQuitCaptureCoroutine();
+                    StartCoroutine(SaveQuitCaptureCoroutineInternal());
                     return;
-                    break;
                 case "LoadPreset":
                     List<string> sets = new List<string>(SettingsManager.TitanCustomSettings.TitanCustomSets.GetSetNames());
                     UIManager.CurrentMenu.SelectListPopup.ShowLoad(sets, "Presets", onLoad: () => OnCostumeSetOperationFinish("LoadPreset"));
@@ -269,11 +265,6 @@ namespace UI
             OnCustomSetSelected();
         }
 
-        private void SaveQuitCaptureCoroutine()
-        {
-            StartCoroutine(SaveQuitCaptureCoroutineInternal());
-        }
-        
         private System.Collections.IEnumerator SaveQuitCaptureCoroutineInternal()
         {
             yield return new WaitForEndOfFrame();
