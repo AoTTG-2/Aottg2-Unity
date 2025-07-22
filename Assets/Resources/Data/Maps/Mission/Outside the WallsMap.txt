@@ -1238,6 +1238,7 @@ _playersJustJoined = List();
 
 function OnGameStart()
 {
+Locale.RegisterLanguages("internal://OutsideTheWallsMap");
 ReinforcementZones.Setup(self, self.MaxReinforcementCalls);
 
 if (!self.ReinforcementCallsEnabled)
@@ -2577,7 +2578,7 @@ NetworkMessage()
 coroutine ShowDialogue(key, profileIndex)
 {
 profile = self.Profiles.Get(profileIndex);
-text = UI.GetLocale("OutsideTheWallsMap", "Dialogue", key);
+text = UI.Get("Dialogue." + key);
 Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
 wait 4.0;
 Cutscene.HideDialogue();
