@@ -549,16 +549,17 @@ Scene,Geometry/Cylinder1,552,0,1,1,0,0,Checkpoint08,-77,139.0824,279,0,0,0,22,22
 Scene,Geometry/Cylinder1,553,0,1,1,0,0,Checkpoint09,0,139.0824,281,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cylinder1,554,0,1,1,0,0,Checkpoint10,-1.311302E-05,139.0824,391,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
 Scene,Geometry/Cylinder1,555,0,1,1,0,0,Checkpoint11,-3.063678E-05,139.0824,538,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cylinder1,556,0,1,1,0,0,Checkpoint12,0.4930615,139.0824,605,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
-Scene,Geometry/Cylinder1,557,0,1,1,0,0,Checkpoint13,0.4930615,139.0824,625,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cylinder1,556,0,1,1,0,0,Checkpoint12,0,139.0824,616.1619,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
+Scene,Geometry/Cylinder1,557,0,1,1,0,0,TheGoal,-0.1256732,139.0824,676.5198,0,0,0,22,22,22,None,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorCameraSpawnPoint,559,0,1,1,0,0,Camera SpawnPoint,-114.5232,218.6866,-359.7654,21.85167,330.2353,-4.599327E-07,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:CameraSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,569,0,1,1,0,0,Human SpawnPoint,-171.6566,156.8339,-179.1708,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
-Scene,Interact/Supply2,571,0,1,1,1,0,Supply2,2.817069,117.0824,-73.04965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true
+Scene,Interact/Supply2,571,0,1,1,1,0,Supply2,2.817069,117.0824,-73.04965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
+Scene,Geometry/Sphere1,572,543,0,0,0,0,BoulderThrowKill,-224.0053,141.5054,-276.9409,0,0,0,73,73,73,Physical,All,Default,Basic|255/255/255/255|Stone/Rock3|1/1|0/0,KillRegion|Type:KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:false|KillMessage:Reduced to a shape...
 /// Logic
 class Main
 {
-    Speed = 1;
-    StartTitans = 1;
+    Speed = 55;
+    StartTitans = 0;
     WaveTitans = 1;
     MaxWaveAggroTitans = 5;
     MaxWaveNonAggroTitans = 5;
@@ -587,6 +588,9 @@ class Main
 
     # @type List<MapObject>
     _checkpoints_copy = null;
+
+    # @type MapObject
+    _goal = null;
 
     _currentWaveTimer = 0.0;
 
@@ -645,6 +649,7 @@ class Main
         self._rockPickupLocation = Map.FindMapObjectByName("RockPickupLocation");
         self._theRock = Map.FindMapObjectByName("TheRock");
         self._lastCheckpoint = self._erenSpawnPoint;
+        self._goal = Map.FindMapObjectByName("TheGoal");
 
         self._start_titans = self.StartTitans;
         self._wave_titans_base = self.WaveTitans;
@@ -681,6 +686,11 @@ class Main
             if (self._theRock == null)
             {
                 Game.Print("Must have a MapObject called TheRock in the map.");
+            }
+
+            if (self._goal == null)
+            {
+                Game.Print("Must have a MapObject called TheGoal in the map.");
             }
 
             if (!valid)
@@ -724,7 +734,7 @@ class Main
         if (Network.IsMasterClient)
         {
             self._eren = Game.SpawnShifterAt("Eren", self._erenSpawnPoint.Position);
-            self._eren.Team = Network.MyPlayer.Team;
+            self._eren.Team = "Human";
             self._eren.AIEnabled = false;
             self._eren.UsePathfinding = false;
             self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
@@ -892,14 +902,14 @@ class Main
         }
     }
 
-    function OnSecond()
-    {
-        if (Network.IsMasterClient)
-        {
-            progress = Math.Floor(100 * self._progress / self._completion_distance);
-            UI.SetLabelForTimeAll("TopCenter", "Progress: " + Convert.ToString(progress) + "%", 1);
-        }
-    }
+    # function OnSecond()
+    # {
+    #     if (Network.IsMasterClient)
+    #     {
+    #         progress = Math.Floor(100 * self._progress / self._completion_distance);
+    #         UI.SetLabelForTimeAll("TopCenter", "Progress: " + Convert.ToString(progress) + "%", 1);
+    #     }
+    # }
 
     function SyncPhase()
     {
@@ -1033,13 +1043,13 @@ class Main
 
         elif (self._phase == self._phase_6_wait_spawn_effect)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.7)
+            if (self._eren.GetAnimationNormalizedTime(self._rock_fix_hole) >= 0.69)
             {
                 self._phase = self._phase_7_no_transition;
                 self.SyncPhase();
-                Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 40), Quaternion.Identity.Euler, 10);
+                #Game.SpawnEffect("Boom2", self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0), Quaternion.Identity.Euler, 10);
                 self.RPC("EndMovingRockRPC", "all", List());
-                self.WaitAndDie();
+                # self.WaitAndDie();
             }
         }
     }
@@ -1143,8 +1153,85 @@ class Main
         }
         self._isHoldingRock = false;
         self._theRock.Parent = null;
-        self._theRock.Position = self._eren.Transform.Position + (self._eren.Transform.Forward * 40) + Vector3(0, 11, 0);
-        self._theRock.Scale = Vector3(22, 22, 22);  
+        # self._theRock.Position = self._eren.Transform.Position + (self._eren.Transform.Forward * 65) + Vector3(0, 11, 0);
+        self._theRock.Scale = Vector3(22, 22, 22);
+        self.ThrowBoulder();
+    }
+
+    function KnockbackCharacter(position, force, maxDistance)
+    {
+        character = Network.MyPlayer.Character;
+        if (character != null && !character.Grounded && character.Type == "Human")
+        {
+            distance = Vector3.Distance(position, character.Position);
+            if (distance < maxDistance)
+            {
+                character.Velocity += (character.Position - position).Normalized * force; 
+            }
+        }
+    }
+
+    coroutine ThrowBoulder()
+    {
+        start = self._theRock.Position;
+        end = self._goal.Position;
+        arcHeight = 5;
+        duration = 0.1;
+        controlPoint = (start + end) / 2 + Vector3.Up * arcHeight;
+        elapsed = 0.0;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.FrameTime;
+            t = elapsed / duration;
+            p1 = Math.Pow(1 - t, 2);
+            p2 = 2 * (1 - t) * t;
+            p3 = Math.Pow(t, 2);
+            currentPosition = p1 * start + p2 * controlPoint + p3 * end;
+            self._theRock.Position = currentPosition;
+
+            r1 = 2 * (1 - t) * (controlPoint - start);
+            r2 =  2 * t * (end - controlPoint);
+
+            tangent = r1 + r2;
+
+            if (tangent != Vector3.Zero)
+            {
+                self._theRock.Transform.QuaternionRotation = Quaternion.LookRotation(tangent);
+            }
+            wait 0.0;
+        }
+
+        self._theRock.Position = end;
+
+        killSphere = Map.FindMapObjectByName("BoulderThrowKill");
+        if (killSphere != null)
+        {
+            killSphere.Active = true;
+        }
+
+        # Knockback
+        self.KnockbackCharacter(self._goal.Position, 160.0, 330.0);
+
+        if (Network.IsMasterClient)
+        {
+            for (titan in Game.AITitans)
+            {
+                if (titan.Grounded && Vector3.Distance(titan.Position, end) < 500)
+                {
+                    titan.Cripple(20.0);
+                }
+            }
+
+            Game.SpawnEffect("GasBurst", end + Vector3.Forward * -40.0 + Vector3.Up * 10.0, Vector3(0.0, 0.0, 0.0), 100.0);
+            Game.SpawnEffect("Boom2", end + Vector3.Forward * -20.0 + Vector3.Up * 0.0, Vector3(90.0, 0.0, 0.0), 30);
+        }
+        if (Network.IsMasterClient)
+        {
+            UI.SetLabelForTimeAll("MiddleCenter", "You've successfully defended Eren and the hole has been plugged." + String.Newline + "This is the first time humanity has won against the Titans.", 5.0);
+            Game.End(10);
+            self._eren.GetKilled("Exhaustion");
+        }
     }
 
     coroutine WaitAndDie()
