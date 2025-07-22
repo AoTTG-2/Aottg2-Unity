@@ -24,6 +24,11 @@ class Main
     
     _initialized = false;
 
+    function Init()
+    {
+        Locale.RegisterLanguages("internal://BasicTutorialMap");
+    }
+
     function OnTick()
     {
         if (!self._initialized)
@@ -162,12 +167,12 @@ class IntroductionStage
     {
         Game.SetSong("dakros_origin");
 
-        str = TextStyle.Line(Locale.GetRaw("Introduction.Welcome"));
-        str += TextStyle.Line(Locale.GetRaw("Introduction.Text"));
+        str = TextStyle.Line(Locale.Get("Introduction.Welcome"));
+        str += TextStyle.Line(Locale.Get("Introduction.Text"));
         str += TextStyle.ContinueNextStage("Stage.Movement");
 
-        str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.GetRaw("Name.Tutorial")));
-        str = String.Replace(str, "{Name.Game}", TextStyle.Header(Locale.GetRaw("Name.Game")));
+        str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.Get("Name.Tutorial")));
+        str = String.Replace(str, "{Name.Game}", TextStyle.Header(Locale.Get("Name.Game")));
 
         Dialogue.ShowDelayed("Stage.Introduction", str, 1.1);
     }
@@ -205,7 +210,7 @@ class MovementStage
         CharacterState.SetRightHookEnabled(false);
         CharacterState.SetSpecial("None");
 
-        str = TextStyle.Line(Locale.GetRaw("Movement.Text"));
+        str = TextStyle.Line(Locale.Get("Movement.Text"));
         str += TextStyle.ContinueNextStage("Stage.Camera");
 
         str = String.Replace(str, "{0}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
@@ -222,7 +227,7 @@ class MovementStage
 
         # if (!self._started && (Input.GetKeyDown("Interaction/Interact3") || Input.GetKeyDown("General/Forward") || Input.GetKeyDown("General/Back") || Input.GetKeyDown("General/Left") || Input.GetKeyDown("General/Right")))
         # {
-        #     str = Locale.GetRaw("Movement.Forward");
+        #     str = Locale.Get("Movement.Forward");
         #     str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
         #     Dialogue.Show("Stage.Movement", str);
         #     self._started = true;
@@ -238,7 +243,7 @@ class MovementStage
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
         #     {
-        #         str = Locale.GetRaw("Movement.Left");
+        #         str = Locale.Get("Movement.Left");
         #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Left"));
         #         Dialogue.Show("Stage.Movement", str);
 
@@ -251,7 +256,7 @@ class MovementStage
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
         #     {
-        #         str = Locale.GetRaw("Movement.Back");
+        #         str = Locale.Get("Movement.Back");
         #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Back"));
         #         Dialogue.Show("Stage.Movement", str);
 
@@ -264,7 +269,7 @@ class MovementStage
         #     self._currentTime += Time.FrameTime;
         #     if (self._currentTime >= self.RequiredMoveTime)
         #     {
-        #         str = Locale.GetRaw("Movement.Right");
+        #         str = Locale.Get("Movement.Right");
         #         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Right"));
         #         Dialogue.Show("Stage.Movement", str);
 
@@ -291,7 +296,7 @@ class CameraSwitchStage
 
     function OnStart()
     {
-        str = TextStyle.Line(Locale.GetRaw("Camera.Text"));
+        str = TextStyle.Line(Locale.Get("Camera.Text"));
         str += TextStyle.ContinueNextStage("Stage.SupplyStation");
         str = String.Replace(str, "{0}", TextStyle.KeyName("General/ChangeCamera"));
         Dialogue.Show("Stage.Camera", str);
@@ -331,8 +336,8 @@ class SupplyStationStage
         wait 0.5;
         self._started = true;
 
-        str = TextStyle.Line(Locale.GetRaw("SupplyStation.Text"));
-        str += TextStyle.Instruction(Locale.GetRaw("SupplyStation.Instruction1"));
+        str = TextStyle.Line(Locale.Get("SupplyStation.Text"));
+        str += TextStyle.Instruction(Locale.Get("SupplyStation.Instruction1"));
         str = String.Replace(str, "{0}", TextStyle.KeyName("Human/Reload"));
         str = String.Replace(str, "{1}", TextStyle.KeyName("Interaction/Interact"));
         Dialogue.Show("Stage.SupplyStation", str);
@@ -347,7 +352,7 @@ class SupplyStationStage
 
         if (!self._reloaded && Main.Character.CurrentBladeDurability > 0)
         {
-            str = TextStyle.Instruction(Locale.GetRaw("SupplyStation.Instruction2"));
+            str = TextStyle.Instruction(Locale.Get("SupplyStation.Instruction2"));
             Dialogue.ShowDelayed("Stage.SupplyStation", str, 1.0);
 
             self._reloaded = true;
@@ -395,8 +400,8 @@ class JumpStage
         MapUtils.Checkpoint.Scale = Vector3(sX - 0.05, 0.1, sZ / 2 - 0.05);
         MapUtils.ConfigureCheckpoint("CollisionEnter", self);
 
-        str = TextStyle.Line(Locale.GetRaw("Jump.Text"));
-        str += TextStyle.Instruction(Locale.GetRaw("Jump.Instruction1"));
+        str = TextStyle.Line(Locale.Get("Jump.Text"));
+        str += TextStyle.Instruction(Locale.Get("Jump.Instruction1"));
 
         str = String.Replace(str, "{0}", TextStyle.KeyName("Human/Jump"));
         str = String.Replace(str, "{1}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
@@ -412,8 +417,8 @@ class JumpStage
         self._count += 1;
         if (self._count == 1)
         {
-            str = TextStyle.Instruction(Locale.GetRaw("Jump.Instruction2"));
-            str = String.Replace(str, "{Stage.Praise$}", Locale.GetRandomPraise());
+            str = TextStyle.Instruction(Locale.Get("Jump.Instruction2"));
+            str = String.Replace(str, "{Stage.Praise$}", LocaleUtil.GetRandomPraise());
             Dialogue.Show("Stage.Jump", str);
 
             Tween.PlayerPosition(self.SpawnPoint).Start();
@@ -450,8 +455,8 @@ class WallRunningStage
         MapUtils.Checkpoint.Scale = Vector3(sX - 0.05, 0.1, sZ / 2 - 0.05);
         MapUtils.ConfigureCheckpoint("CollisionEnter", self);
 
-        str = TextStyle.Line(Locale.GetRaw("WallRun.Text"));
-        str += TextStyle.Instruction(Locale.GetRaw("WallRun.Instruction"));
+        str = TextStyle.Line(Locale.Get("WallRun.Text"));
+        str += TextStyle.Instruction(Locale.Get("WallRun.Instruction"));
         str = String.Replace(str, "{0}", TextStyle.KeyName("General/Forward"));
         Dialogue.Show("Stage.WallRun", str);
     }
@@ -476,7 +481,7 @@ class WallRunningStage
             return;
         }
 
-        str = TextStyle.Line(TextStyle.Header(Locale.GetRandomPraise()));
+        str = TextStyle.Line(TextStyle.Header(LocaleUtil.GetRandomPraise()));
         str += TextStyle.ContinueNextStage("Stage.Hook");
         Dialogue.Show(null, str);
 
@@ -530,8 +535,8 @@ class HookStage
 
         wait 1.1;
 
-        str = TextStyle.Line(Locale.GetRaw("Hook.Text1"));
-        str += TextStyle.Instruction(Locale.GetRaw("Hook.Instruction"));
+        str = TextStyle.Line(Locale.Get("Hook.Text1"));
+        str += TextStyle.Instruction(Locale.Get("Hook.Instruction"));
         str = String.Replace(str, "{0}", TextStyle.KeyName("Human/HookLeft"));
         Dialogue.Show("Stage.Hook", str);
 
@@ -560,7 +565,7 @@ class HookStage
         self._count += 1;
         if (self._count == 1)
         {
-            str = TextStyle.Line(Locale.GetRaw("Hook.Text2"));
+            str = TextStyle.Line(Locale.Get("Hook.Text2"));
             str = String.Replace(str, "{0}", TextStyle.KeyName("Human/HookRight"));
             Dialogue.Show("Stage.Hook", str);
 
@@ -667,8 +672,8 @@ class DashStage
         MapUtils.SinglePlatform.TextureTilingX = 10;
         MapUtils.SinglePlatform.TextureTilingY = 20;
 
-        str = TextStyle.Line(Locale.GetRaw("Dash.Text"));
-        str += TextStyle.Instruction(Locale.GetRaw("Dash.Instruction"));
+        str = TextStyle.Line(Locale.Get("Dash.Text"));
+        str += TextStyle.Instruction(Locale.Get("Dash.Instruction"));
         str = String.Replace(str, "{0}", TextStyle.KeyNames("General/Forward,General/Left,General/Back,General/Right"));
         Dialogue.Show("Stage.Dash", str);
 
@@ -687,7 +692,7 @@ class DashStage
     {
         if (self._started && !self._completed && Main.Character.CurrentAnimation == "Armature|dash")
         {
-            str = TextStyle.Line(Locale.GetRandomPraise());
+            str = TextStyle.Line(LocaleUtil.GetRandomPraise());
             str += TextStyle.ContinueNextStage("Stage.Attack");
             Dialogue.Show(null, str);
 
@@ -714,7 +719,7 @@ class AttackStage
         wait 0.5;
         Tween.Rotation(MapUtils.DummyTitan, Vector3(0, 90, 0)).SetDuration(2).SetEasing("InOutElastic").Start();
 
-        str = TextStyle.Line(Locale.GetRaw("Attack.Text1"));
+        str = TextStyle.Line(Locale.Get("Attack.Text1"));
         str += TextStyle.Continue();
         str = String.Replace(str, "{0}", TextStyle.KeyName("Human/AttackDefault"));
         str = String.Replace(str, "{1}", TextStyle.KeyName("Human/AttackSpecial"));
@@ -757,8 +762,8 @@ class NapeAttackStage
         self._titan.FocusRange = 0;
         self._titan.Rotation = Vector3(0, 90, 0);
 
-        str = TextStyle.Line(Locale.GetRaw("Attack.Text2"));
-        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction1"));
+        str = TextStyle.Line(Locale.Get("Attack.Text2"));
+        str += TextStyle.Instruction(Locale.Get("Attack.Instruction1"));
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.3;
@@ -821,8 +826,8 @@ class CrippleStage
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
 
-        str = TextStyle.Line(Locale.GetRaw("Attack.Text3"));
-        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction2"));
+        str = TextStyle.Line(Locale.Get("Attack.Text3"));
+        str += TextStyle.Instruction(Locale.Get("Attack.Instruction2"));
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
@@ -863,8 +868,8 @@ class CrippleStage
                     self._titan.Health = 1;
                     self._learnedCrippling = true;
 
-                    str = TextStyle.Line(Locale.GetRandomPraise());
-                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    str = TextStyle.Line(LocaleUtil.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.Get("Attack.Instruction$"));
                     Dialogue.Show(null, str);
                 }
             }
@@ -918,8 +923,8 @@ class BlindStage
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
 
-        str = TextStyle.Line(Locale.GetRaw("Attack.Text4"));
-        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction3"));
+        str = TextStyle.Line(Locale.Get("Attack.Text4"));
+        str += TextStyle.Instruction(Locale.Get("Attack.Instruction3"));
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
@@ -963,8 +968,8 @@ class BlindStage
                     self._titan.MaxHealth = 1;
                     self._titan.Health = 1;
 
-                    str = TextStyle.Line(Locale.GetRandomPraise());
-                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    str = TextStyle.Line(LocaleUtil.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.Get("Attack.Instruction$"));
                     Dialogue.Show(null, str);
 
                     self._learnedBlinding = true;
@@ -1007,8 +1012,8 @@ class ArmCutStage
     {
         Tween.PlayerPosition(self.SpawnPoint).Start();
 
-        str = TextStyle.Line(Locale.GetRaw("Attack.Text5"));
-        str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction4"));
+        str = TextStyle.Line(Locale.Get("Attack.Text5"));
+        str += TextStyle.Instruction(Locale.Get("Attack.Instruction4"));
         Dialogue.Show("Stage.Attack", str);
 
         wait 0.9;
@@ -1048,8 +1053,8 @@ class ArmCutStage
                     self._titan.MaxHealth = 1;
                     self._titan.Health = 1;
 
-                    str = TextStyle.Line(Locale.GetRandomPraise());
-                    str += TextStyle.Instruction(Locale.GetRaw("Attack.Instruction$"));
+                    str = TextStyle.Line(LocaleUtil.GetRandomPraise());
+                    str += TextStyle.Instruction(Locale.Get("Attack.Instruction$"));
                     Dialogue.Show(null, str);
 
                 }
@@ -1113,7 +1118,7 @@ class FightStage
         self._titan = Game.SpawnTitanAt("Normal", Vector3(0, 5, 20));
         self._titan.Size = Random.RandomFloat(1, 2);
 
-        str = TextStyle.Instruction(Locale.GetRaw("Attack.Instruction5"));
+        str = TextStyle.Instruction(Locale.Get("Attack.Instruction5"));
         Dialogue.Show("Stage.Attack", str);
         self.HideDialogue();
     }
@@ -1132,9 +1137,9 @@ class FightStage
     {
         if (victim == self._titan)
         {
-            str = TextStyle.Line(Locale.GetRaw("Stage.Completed"));
-            str = String.Replace(str, "{Stage.Praise$}", Locale.GetRandomPraise());
-            str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.GetRaw("Name.Tutorial")));
+            str = TextStyle.Line(Locale.Get("Stage.Completed"));
+            str = String.Replace(str, "{Stage.Praise$}", LocaleUtil.GetRandomPraise());
+            str = String.Replace(str, "{Name.Tutorial}", TextStyle.Header(Locale.Get("Name.Tutorial")));
             Dialogue.Show(null, str);
         }
     }
@@ -1375,17 +1380,17 @@ extension TextStyle
 
     function Continue()
     {
-        str = Locale.GetRaw("Stage.Continue");
+        str = Locale.Get("Stage.Continue");
         str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
         return self.Instruction(str);
     }
 
     function ContinueNextStage(stageNameSubKey)
     {
-        str = Locale.GetRaw("Stage.Continue");
+        str = Locale.Get("Stage.Continue");
         str += "...({1})";
         str = String.Replace(str, "{0}", self.KeyName("Interaction/Interact3"));
-        str = String.Replace(str, "{1}", Locale.GetRaw(stageNameSubKey));
+        str = String.Replace(str, "{1}", Locale.Get(stageNameSubKey));
         return self.Instruction(str);
     }
 }
@@ -1428,7 +1433,7 @@ extension Dialogue
     {
         if (header != null)
         {
-            header = TextStyle.Header(Locale.GetRaw(header));
+            header = TextStyle.Header(Locale.Get(header));
         }
         else
         {
@@ -1465,21 +1470,12 @@ class Profile
         self.Icon = icon;
     }
 }
-extension Locale
+extension LocaleUtil
 {
-    function GetRaw(subKey)
-    {
-        arr = String.Split(subKey, ".");
-        sub = arr.Get(0);
-        key = arr.Get(1);
-
-        return UI.GetLocale("BasicTutorialMap", sub, key);
-    }
-
     function GetRandomPraise()
     {
         subKey = "Stage.Praise";
-        return self.GetRaw(subKey + Random.RandomInt(1, 4));
+        return Locale.Get(subKey + Random.RandomInt(1, 4));
     }
 }
 # From https:
