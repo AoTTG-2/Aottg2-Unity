@@ -32,6 +32,10 @@ namespace CustomSkins
                     if (humanComponent != null && humanComponent.enabled && !humanComponent.IsMine())
                         continue;
                 }
+                else if (partId == (int)HumanCustomSkinPartId.Gas && !SettingsManager.CustomSkinSettings.Human.GasEnabled.Value)
+                    continue;
+                else if ((partId == (int)HumanCustomSkinPartId.HookL || partId == (int)HumanCustomSkinPartId.HookR) && !SettingsManager.CustomSkinSettings.Human.HookEnabled.Value)
+                    continue;
                 else if (partId == (int)HumanCustomSkinPartId.HookLTiling || partId == (int)HumanCustomSkinPartId.HookRTiling)
                     continue;
                 var part = GetCustomSkinPart(partId);
