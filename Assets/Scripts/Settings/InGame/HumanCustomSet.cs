@@ -30,7 +30,6 @@ namespace Settings
         public StringSetting Stats = new StringSetting(string.Empty);
 
         // Preset skin URLs
-        public StringSetting SkinHorse = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinHair = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinEye = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinGlass = new StringSetting(string.Empty, maxLength: 200);
@@ -43,6 +42,7 @@ namespace Settings
         public StringSetting SkinGas = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinHoodie = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinWeaponTrail = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinHorse = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinThunderspearL = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinThunderspearR = new StringSetting(string.Empty, maxLength: 200);
         public StringSetting SkinHookL = new StringSetting(string.Empty, maxLength: 200);
