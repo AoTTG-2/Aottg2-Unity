@@ -16,6 +16,8 @@ namespace UI
 {
     class UIManager : MonoBehaviour
     {
+        private const string InternalPrefix = "internal://";
+
         private static Dictionary<string, JSONObject> _languages = new Dictionary<string, JSONObject>();
         private string _arabicLanguageName;
         private static Dictionary<string, JSONObject> _uiThemes = new Dictionary<string, JSONObject>();
@@ -203,6 +205,93 @@ namespace UI
         public static string[] GetLocaleCommonArray(string item)
         {
             return GetLocaleArray("Common", item);
+        }
+
+        /// <summary>
+        /// Gets all localized strings for a specific category from all available languages.
+        /// Returns a dictionary where keys are language names and values are dictionaries of localized strings.
+        /// Use 'internal://' prefix for internal localization files, otherwise treats as external files.
+        /// </summary>
+        public static Dictionary<string, Dictionary<string, string>> GetLocaleCategoryStrings(string pattern)
+        {
+            if (pattern.StartsWith(InternalPrefix))
+            {
+                return GetInternalLocaleCategoryStrings(pattern.Substring(InternalPrefix.Length));
+            }
+
+            return GetExternalLocaleCategoryStrings(pattern);
+        }
+
+        private static Dictionary<string, Dictionary<string, string>> GetInternalLocaleCategoryStrings(string category)
+        {
+            var result = new Dictionary<string, Dictionary<string, string>>();
+
+            foreach (var lang in _languages)
+            {
+                if (!lang.Value.HasKey(category)) continue;
+
+                var strings = new Dictionary<string, string>();
+                foreach (string key in lang.Value[category].Keys)
+                {
+                    if (lang.Value[category][key].IsString)
+                    {
+                        string value = lang.Value[category][key].Value;
+                        if (lang.Key == _instance._arabicLanguageName)
+                            value = value.ReverseString();
+                        strings[key] = value;
+                    }
+                }
+                result[lang.Key] = strings;
+            }
+
+            return result;
+        }
+
+        private static Dictionary<string, Dictionary<string, string>> GetExternalLocaleCategoryStrings(string uniqueName)
+        {
+            var result = new Dictionary<string, Dictionary<string, string>>();
+
+            string basePath = FolderPaths.CustomLocale + "/" + uniqueName;
+            if (!Directory.Exists(basePath))
+                throw new Exception("Failed to find localization files: " + basePath);
+
+            var files = Directory.GetFiles(basePath, "*.json");
+            if (files.Length == 0)
+                throw new Exception("Failed to find localization files: " + basePath);
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    JSONObject json = (JSONObject)JSON.Parse(File.ReadAllText(file));
+                    if (!json.HasKey("Name"))
+                        continue;
+
+                    string languageName = json["Name"].Value;
+                    var strings = new Dictionary<string, string>();
+
+                    foreach (string key in json.Keys)
+                    {
+                        if (key == "Name") continue;
+
+                        if (json[key].IsString)
+                        {
+                            string value = json[key].Value;
+                            if (languageName == _instance._arabicLanguageName)
+                                value = value.ReverseString();
+                            strings[key] = value;
+                        }
+                    }
+
+                    result[languageName] = strings;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to load external locale file {file}: {e.Message}");
+                }
+            }
+
+            return result;
         }
 
         public static string[] GetLanguages()
