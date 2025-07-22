@@ -265,6 +265,17 @@ namespace UI
                     yield return ApplySkinPreviewAfterReset();
                 }
             }
+            else
+            {
+                if (shouldApplySkinPreview)
+                {
+                    var character = (DummyHuman)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
+                    if (character != null)
+                    {
+                        yield return ApplySkinPreviewAfterReset();
+                    }
+                }
+            }
         }
         
         private System.Collections.IEnumerator ApplySkinPreviewAfterReset()
@@ -435,6 +446,8 @@ namespace UI
                     {
                         importPopup.ShowError("Invalid human preset.");
                     }
+                    // Ensure skin preview state is preserved during character import
+                    _shouldGeneratePreviewAfterRebuild = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
                     break;
             }
             OnCustomSetSelected();
