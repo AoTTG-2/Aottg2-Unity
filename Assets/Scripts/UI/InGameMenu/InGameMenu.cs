@@ -107,7 +107,7 @@ namespace UI
         {
             // Create the top left HUD layout group, add the telemetry, kdr, and topleftlabel will be created after this and added to the group
             var panel = ElementFactory.InstantiateAndSetupPanel<TopLeftHUD>(transform, "Prefabs/InGame/TopLeftHUD");
-            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(0f, 0f));
+            ElementFactory.SetAnchor(panel, TextAnchor.UpperLeft, TextAnchor.UpperLeft, new Vector2(10f, -8f)); // -8 to make it level with top center label which would be 2 pixels higher if y-offset is -10
             TopLeftHud = panel;
             KDRReference = panel.GetComponent<TopLeftHUD>().kdrAndLabel;
             panel.SetActive(true); // ????
