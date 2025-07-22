@@ -15,7 +15,7 @@ namespace UI
             base.Setup(parent);
             SettingsKeybindsPanel keybindsPanel = (SettingsKeybindsPanel)parent;
             SettingsPopup settingsPopup = (SettingsPopup)keybindsPanel.Parent;
-            keybindsPanel.CreateGategoryDropdown(DoublePanelLeft);
+            keybindsPanel.CreateCategoryDropdown(DoublePanelLeft);
             string cat = settingsPopup.LocaleCategory;
             ElementStyle style = new ElementStyle(titleWidth: 140f, themePanel: ThemePanel);
             string sub = keybindsPanel.GetCurrentCategoryName().Replace(" ", "");
