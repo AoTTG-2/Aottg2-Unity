@@ -36,8 +36,18 @@ namespace CustomSkins
                     continue;
                 else if ((partId == (int)HumanCustomSkinPartId.HookL || partId == (int)HumanCustomSkinPartId.HookR) && !SettingsManager.CustomSkinSettings.Human.HookEnabled.Value)
                     continue;
-                else if (partId == (int)HumanCustomSkinPartId.HookLTiling || partId == (int)HumanCustomSkinPartId.HookRTiling)
+                else if (partId == (int)HumanCustomSkinPartId.HookLTiling)
+                {
+                    if (skinUrls.Length > partId)
+                        float.TryParse(skinUrls[partId], out _hookLTiling);
                     continue;
+                }
+                else if (partId == (int)HumanCustomSkinPartId.HookRTiling)
+                {
+                    if (skinUrls.Length > partId)
+                        float.TryParse(skinUrls[partId], out _hookRTiling);
+                    continue;
+                }
                 var part = GetCustomSkinPart(partId);
                 if (part != null)
                 {
