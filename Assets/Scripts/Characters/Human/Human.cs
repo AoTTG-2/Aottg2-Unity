@@ -134,6 +134,7 @@ namespace Characters
         private float _hookHumanConstantTimeLeft;
         private bool _isReelingOut;
         private Dictionary<BaseTitan, float> _lastNapeHitTimes = new Dictionary<BaseTitan, float>();
+        private Material _originalSmokeMaterial;
 
         protected override void CreateDetection()
         {
@@ -986,6 +987,20 @@ namespace Characters
         {
             FinishSetup = false;
             Setup.Copy(settings);
+            Setup.Load(Setup.CustomSet, Setup.Weapon, false);
+            Transform smokeTransform = transform.Find("3dmg_smoke");
+            if (smokeTransform != null)
+            {
+                ParticleSystem smokeParticleSystem = smokeTransform.GetComponent<ParticleSystem>();
+                if (smokeParticleSystem != null)
+                {
+                    Renderer smokeRenderer = smokeParticleSystem.GetComponent<Renderer>();
+                    if (smokeRenderer != null && _originalSmokeMaterial != null)
+                    {
+                        smokeRenderer.material = _originalSmokeMaterial;
+                    }
+                }
+            }
             if (IsMine())
             {
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
@@ -1026,6 +1041,19 @@ namespace Characters
             _inGameManager.RegisterCharacter(this);
             base.Start();
             SetInterpolation(true);
+            Transform smokeTransform = transform.Find("3dmg_smoke");
+            if (smokeTransform != null)
+            {
+                ParticleSystem smokeParticleSystem = smokeTransform.GetComponent<ParticleSystem>();
+                if (smokeParticleSystem != null)
+                {
+                    Renderer smokeRenderer = smokeParticleSystem.GetComponent<Renderer>();
+                    if (smokeRenderer != null && smokeRenderer.sharedMaterial != null)
+                    {
+                        _originalSmokeMaterial = smokeRenderer.sharedMaterial;
+                    }
+                }
+            }            
             if (IsMine())
             {
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
