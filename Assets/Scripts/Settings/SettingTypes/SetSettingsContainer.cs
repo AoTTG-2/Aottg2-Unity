@@ -17,6 +17,24 @@ namespace Settings
             return Sets.GetCount() > 0;
         }
 
+        public override void Apply()
+        {
+            base.Apply();
+            MigrateUniqueIds();
+        }
+
+        private void MigrateUniqueIds()
+        {
+            foreach (var baseSetting in Sets.GetItems())
+            {
+                var set = (BaseSetSetting)baseSetting;
+                if (string.IsNullOrEmpty(set.UniqueId.Value))
+                {
+                    set.UniqueId.Value = System.Guid.NewGuid().ToString();
+                }
+            }
+        }
+
         public BaseSetSetting GetSelectedSet()
         {
             int setIndex = SelectedSetIndex.Value;
@@ -34,6 +52,7 @@ namespace Settings
         {
             T newSet = new T();
             newSet.Name.Value = name;
+            newSet.UniqueId.Value = System.Guid.NewGuid().ToString();
             Sets.Value.Add(newSet);
         }
 
@@ -43,6 +62,7 @@ namespace Settings
             newSet.Copy(GetSelectedSet());
             newSet.Name.Value = name;
             newSet.Preset.Value = false;
+            newSet.UniqueId.Value = System.Guid.NewGuid().ToString();
             Sets.Value.Add(newSet);
         }
 

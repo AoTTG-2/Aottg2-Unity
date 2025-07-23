@@ -105,6 +105,11 @@ namespace Characters
 
             // hair
             var hairSocket = head.Find("HairSocket");
+            for (int i = hairSocket.childCount - 1; i >= 0; i--)
+            {
+                var child = hairSocket.GetChild(i);
+                DestroyImmediate(child.gameObject);
+            }
             var hair = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, "Titans/Hairs/Prefabs/" + HairPrefabs[set.Hair.Value], true);
             hair.transform.SetParent(hairSocket);
             hair.transform.localPosition = Vector3.zero;

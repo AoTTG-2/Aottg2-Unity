@@ -35,6 +35,7 @@ namespace GameManagers
             platform.GetComponent<Renderer>().material.color = new Color(1f, 1f, 1f, 0.2f);
             SettingsManager.HumanCustomSettings.CustomSets.SelectedSetIndex.Value = 0;
             SettingsManager.TitanCustomSettings.TitanCustomSets.SelectedSetIndex.Value = 0;
+            Utility.CharacterPreviewGenerator.InitializePreviewSystem();
             ReinstantiateCharacter();
         }
 
@@ -186,7 +187,7 @@ namespace GameManagers
                 Human.Setup.Load(preset, HumanWeapon.Blade, false);
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
-                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.Name.Value);
+                Screenshot(746f, 360f, 420f, 420f, "Preset" + preset.UniqueId.Value);
             }
             Screenshot(450f, 360f, 128f, 128f, "PresetNone");
         }

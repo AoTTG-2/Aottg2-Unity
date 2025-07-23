@@ -13,7 +13,7 @@ namespace UI
 {
     class CharacterEditorMenu: BaseMenu
     {
-        protected CharacterEditorGameManager _gameManager;
+        public CharacterEditorGameManager _gameManager;
 
         public override void Setup()
         {
