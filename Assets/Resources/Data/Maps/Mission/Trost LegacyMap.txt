@@ -558,13 +558,8 @@ Scene,Geometry/Sphere1,572,543,0,0,0,0,BoulderThrowKill,-224.0053,141.5054,-276.
 /// Logic
 class Main
 {
-    Speed = 55;
-    StartTitans = 0;
-    WaveTitans = 1;
-    MaxWaveAggroTitans = 5;
-    MaxWaveNonAggroTitans = 5;
-    WaveTimer = 15;
-    RockScale = 1;
+    Speed = 1;
+    SpawnExtraTitans = 5;
 
     # Synced State
     _isHoldingRock = false;
@@ -651,12 +646,48 @@ class Main
         self._lastCheckpoint = self._erenSpawnPoint;
         self._goal = Map.FindMapObjectByName("TheGoal");
 
-        self._start_titans = self.StartTitans;
-        self._wave_titans_base = self.WaveTitans;
-        self._wave_timer = self.WaveTimer;
-        self._max_aggro_titans = self.MaxWaveAggroTitans;
-        self._max_non_aggro_titans = self.MaxWaveNonAggroTitans;
         self._start_scale = self._theRock.Scale.X;
+
+        difficulty = Game.GetGeneralSetting("Difficulty");
+        if (difficulty == 0) # Training
+        {
+            self._start_titans = 0;
+            self._wave_titans_base = 1;
+            self._wave_timer = 20;
+            self._max_aggro_titans = 0;
+            self._max_non_aggro_titans = 2;
+        }
+        elif (difficulty == 1) # Easy
+        {
+            self._start_titans = 1;
+            self._wave_titans_base = 2;
+            self._wave_timer = 20;
+            self._max_aggro_titans = 1;
+            self._max_non_aggro_titans = 2;
+        }
+        elif (difficulty == 2) # Normal
+        {
+            self._start_titans = 3;
+            self._wave_titans_base = 2;
+            self._wave_timer = 20;
+            self._max_aggro_titans = 4;
+        }
+        elif (difficulty == 3) # Hard
+        {
+            self._start_titans = 6;
+            self._wave_titans_base = 3;
+            self._wave_timer = 15;
+            self._max_aggro_titans = 4;
+            self._max_non_aggro_titans = 4;
+        }
+        elif (difficulty == 4) # Abnormal
+        {
+            self._start_titans = 8;
+            self._wave_titans_base = 4;
+            self._wave_timer = 15;
+            self._max_aggro_titans = 6;
+            self._max_non_aggro_titans = 6;
+        }
 
         if (Network.IsMasterClient)
         {
@@ -740,6 +771,33 @@ class Main
             self._erenRockT = self._eren.Transform.GetTransform(self._rock_t_path);
             self._runSpeed = self._runSpeed * self.Speed;
             self._rockSpeed = self._rockSpeed * self.Speed;
+
+            difficulty = Game.GetGeneralSetting("Difficulty");
+            if (difficulty == 0) # Training
+            {
+                self._eren.MaxHealth = 1000;
+                self._eren.Health = self._eren.MaxHealth;
+            }
+            elif (difficulty == 1) # Easy
+            {
+                self._eren.MaxHealth = 500;
+                self._eren.Health = self._eren.MaxHealth;
+            }
+            elif (difficulty == 2) # Normal
+            {
+                self._eren.MaxHealth = 300;
+                self._eren.Health = self._eren.MaxHealth;
+            }
+            elif (difficulty == 3) # Hard
+            {
+                self._eren.MaxHealth = 100;
+                self._eren.Health = self._eren.MaxHealth;
+            }
+            elif (difficulty == 4) # Abnormal
+            {
+                self._eren.MaxHealth = 100;
+                self._eren.Health = self._eren.MaxHealth;
+            }
         }
 
         Cutscene.Start("MainCutscene", true);
@@ -879,9 +937,25 @@ class Main
         }
     }
 
-    function SpawnTitansAroundMap(count, targetsEren, detectRange)
+    coroutine SpawnTitansAroundErenAsync(count, min, max, targetsEren, detectRange)
     {
-        self.SpawnTitansAroundEren(count, 600, 10000, false, 500);
+        zones = self.GetSpawnZones(self._eren.Position, min, max);
+
+        for (i in Range(count))
+        {
+            zone = Random.RandomInt(0, zones.Count);
+            titan = Game.SpawnTitanAt("Default", zones.Get(zone).Position);
+            if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
+            {
+                titan.Target(self._eren, 100000.0);
+            }
+
+            titan.DetectRange = detectRange;
+            if (Math.Mod(i, 10) == 0)
+            {
+                wait 0.2;
+            }
+        }
     }
 
     function UpdateWaves()
@@ -897,19 +971,33 @@ class Main
             aggro_count = Math.Floor(self._wave_titans_base + (self._max_aggro_titans * progress_ratio));
             non_aggro_count = Math.Floor(self._wave_titans_base + (self._max_non_aggro_titans * progress_ratio));
 
-            self.SpawnTitansAroundEren(aggro_count, 100, 600, true, 10000);
-            self.SpawnTitansAroundEren(non_aggro_count, 100, 600, false, 300);
+            self.SpawnTitansAroundEren(aggro_count, 100, 300, true, 10000);
+            self.SpawnTitansAroundEren(non_aggro_count, 100, 400, false, 300);
         }
     }
 
-    # function OnSecond()
-    # {
-    #     if (Network.IsMasterClient)
-    #     {
-    #         progress = Math.Floor(100 * self._progress / self._completion_distance);
-    #         UI.SetLabelForTimeAll("TopCenter", "Progress: " + Convert.ToString(progress) + "%", 1);
-    #     }
-    # }
+    function OnSecond()
+    {
+        if (Network.IsMasterClient == false)
+        {
+            return;
+        }
+
+        if (self._phase == self._phase_1_wait_clear)
+        {
+            UI.SetLabelForTimeAll("TopCenter", "Clear out the titans around eren!", 1);
+        }
+        elif (self._eren != null && self._phase > self._phase_1_wait_clear)
+        {
+            healthLeft = Math.Floor(100 * self._eren.Health / self._eren.MaxHealth);
+            label = "Eren Health: " + Convert.ToString(healthLeft) + "%";
+            if (healthLeft < 0.3)
+            {
+                label = UI.WrapStyleTag(label, "color", "red");
+            }
+            UI.SetLabelForTimeAll("TopCenter", label, 1);
+        }
+    }
 
     function SyncPhase()
     {
@@ -925,7 +1013,7 @@ class Main
         }
         if (Network.IsMasterClient == false) {
             # Sync animation loop locally due to low duration of loop.
-            if (self._phase == self._phase_1_wait_clear)
+            if (self._phase == self._phase_1_wait_clear && self._eren != null)
             {
                 if (self._eren.GetAnimationNormalizedTime(self._die) >= 0.99)
                 {
@@ -952,7 +1040,7 @@ class Main
             self._bs_state_timer_garbage_thx = self._bs_state_timer_garbage_thx - Time.TickTime;
             if (self._bs_state_timer_garbage_thx <= 0)
             {
-                self.SpawnTitansAroundEren(self._start_titans, 100, 600, true, 100000);
+                self.SpawnTitansAroundEren(self._start_titans, 100, 250, true, 100000);
                 self._eren.ForceAnimation(self._die, 1);
                 self._phase = self._phase_1_wait_clear;
                 self.SyncPhase();
@@ -990,7 +1078,7 @@ class Main
             if (atRock)
             {
                 self._eren.PlayAnimation(self._rock_lift, 0.1);
-                self.RPC("StartMovingRockRPC", "all", List());
+                #self.RPC("StartMovingRockRPC", "all", List());
                 self._phase = self._phase_3_pickup_rock;
                 self.SyncPhase();
                 self._lerp_progress = 0;
@@ -1002,7 +1090,16 @@ class Main
 
         elif (self._phase == self._phase_3_pickup_rock)
         {
-            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9) {
+            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.5 && self._isHoldingRock == false)
+            {
+                self.RPC("StartMovingRockRPC", "all", List());
+            }
+            if (self._eren.GetAnimationNormalizedTime(self._rock_lift) > 0.9)
+            {
+                if (self.SpawnExtraTitans > 0)
+                {
+                    self.SpawnTitansAroundErenAsync(self.SpawnExtraTitans, 300, 10000, false, 200);
+                }
                 self._phase = self._phase_4_pathfind;
                 self.SyncPhase();
             }
@@ -1056,6 +1153,10 @@ class Main
 
     function OnLateFrame()
     {
+        # if (self._phase == self._phase_3_pickup_rock && Network.IsMasterClient)
+        # {
+        #     self._eren.Position.Y = self._rockPickupLocation.Position.Y;
+        # }
         if (self._theRock != null && self._erenRockT != null && self._isHoldingRock)
         {
             self._erenRockT.Scale = Vector3(1);

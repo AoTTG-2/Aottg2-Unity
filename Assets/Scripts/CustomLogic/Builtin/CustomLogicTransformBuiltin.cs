@@ -264,6 +264,22 @@ namespace CustomLogic
             return -1;
         }
 
+        // Get/Set Audio volume
+        [CLMethod("Gets the audio sound if a clip exists.")]
+        public float GetSoundVolume()
+        {
+            if (_audioSource != null)
+                return _audioSource.volume;
+            return -1;
+        }
+
+        [CLMethod("Sets the audio sound if a clip exists.")]
+        public void SetSoundVolume(float volume)
+        {
+            if (_audioSource != null)
+                _audioSource.volume = volume;
+        }
+
         [CLMethod("Plays the sound.")]
         public void PlaySound()
         {
