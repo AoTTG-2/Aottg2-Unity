@@ -1,8 +1,3 @@
-using System;
-using Utility;
-using UnityEngine;
-using UnityEngine.SocialPlatforms;
-
 public class BombUtil
 {
 
@@ -45,7 +40,7 @@ public class BombUtil
     {
         return (pointsSpent * 60f) + 200f;
     }
-    
+
 
     public static float GetBombStat(float pointsSpent, float maxValue, float valuePerPoint, float cutoff)
     {
