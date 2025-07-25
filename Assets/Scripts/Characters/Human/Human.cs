@@ -1,4 +1,4 @@
-﻿using ApplicationManagers;
+using ApplicationManagers;
 using Cameras;
 using Controllers;
 using CustomLogic;
@@ -2760,20 +2760,17 @@ namespace Characters
                 var tsInfo = CharacterData.HumanWeaponInfo["Thunderspear"];
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 {
+
+                    
                     int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
                     int cdStat = SettingsManager.AbilitySettings.BombCooldown.Value;
                     int speedStat = SettingsManager.AbilitySettings.BombSpeed.Value;
                     int rangeStat = SettingsManager.AbilitySettings.BombRange.Value;
-                    if (radiusStat + cdStat + speedStat + rangeStat > 16)
-                    {
-                        radiusStat = speedStat = 6;
-                        rangeStat = 3;
-                        cdStat = 1;
-                    }
-                    float travelTime = ((rangeStat * 60f) + 200f) / ((speedStat * 60f) + 200f);
-                    float radius = (radiusStat * 4f) + 20f;
-                    float cd = ((cdStat + 4) * -0.4f) + 5f;
-                    float speed = (speedStat * 60f) + 200f;
+                    float range = BombUtil.GetBombRange(rangeStat, 0f, 4f, 7f);
+                    float speed = BombUtil.GetBombSpeed(speedStat, 3f, 10.5f, 10.5f);
+                    float travelTime = range / speed;
+                    float radius = BombUtil.GetBombRadius(radiusStat, 5.40f, 7.4f, 7f);
+                    float cd = BombUtil.GetBombCooldown(cdStat, 4f, 7f, 7f);
                     Weapon = new ThunderspearWeapon(this, -1, -1, cd, radius, speed, travelTime, 0f, tsInfo);
                     if (CustomLogicManager.Evaluator.CurrentTime > 10f)
                         Weapon.SetCooldownLeft(5f);

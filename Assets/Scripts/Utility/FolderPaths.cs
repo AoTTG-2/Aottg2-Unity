@@ -24,5 +24,6 @@ namespace Utility
         public static string CustomMapAutosave = Documents + "/CustomMap/Autosave";
         public static string CustomAssetsLocal = Documents + "/CustomAssets";
         public static string CustomAssetsWeb = Documents + "/CustomAssets/WebDownload";
+        public static string CustomLocale = Documents + "/CustomLocale";
     }
 }

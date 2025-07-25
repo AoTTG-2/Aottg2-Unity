@@ -154,12 +154,6 @@ namespace CustomLogic
             return $"<{style}={arg}>{text}</{style}>";
         }
 
-        /// <summary>Gets translated locale from the current Language.json file with given category, subcategory, and key pattern.</summary>
-        [CLMethod] public static string GetLocale(string cat, string sub, string key) => UIManager.GetLocale(cat, sub, key);
-
-        /// <summary>Returns the current language (e.g. "English" or "简体中文").</summary>
-        [CLMethod] public static string GetLanguage() => SettingsManager.GeneralSettings.Language.Value;
-
         /// <summary>Shows the change character menu if main character is Human.</summary>
         [CLMethod]
         public static void ShowChangeCharacterMenu()

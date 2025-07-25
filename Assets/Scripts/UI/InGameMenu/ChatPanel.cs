@@ -53,9 +53,16 @@ namespace UI
         private Dictionary<GameObject, RectTransform> _cachedRectTransforms = new Dictionary<GameObject, RectTransform>();
         private int _desiredCaretPosition = 0;
         private static readonly Dictionary<string, int> EmojiNameToIndex = new Dictionary<string, int>();
+        private int _emojiPage = 0;
+        private const int EMOJIS_PER_PAGE = 16;
+        private const int MAX_EMOJI_INDEX = 140;
+        private Button _emojiNextButton;
+        private Button _emojiBackButton;
+        private TextMeshProUGUI _emojiPageText;
+        private int _actualPoolSize = 0;
         static ChatPanel()
         {
-            for (int i = 0; i <= 136; i++)
+            for (int i = 0; i <= MAX_EMOJI_INDEX; i++)
             {
                 EmojiNameToIndex[i.ToString()] = i;
             }
@@ -220,6 +227,7 @@ namespace UI
                 lineObj.gameObject.SetActive(false);
                 _linesPool.Add(lineObj);
             }
+            _actualPoolSize = _linesPool.Count;
             Sync();
             var content = transform.Find("Content");
             var contentRect = content.GetComponent<RectTransform>();
@@ -337,11 +345,12 @@ namespace UI
             float cellSize = 40f;
             float spacing = 5f;
             float padding = 15f;
-            float tooltipHeight = 5f;
+            float tooltipHeight = 7f;
+            float navButtonHeight = 15f;
             float gridWidth = (cellSize * 4) + (spacing * 3);
             float gridHeight = (cellSize * 4) + (spacing * 3);
             float totalWidth = gridWidth + (padding * 2);
-            float totalHeight = gridHeight + (padding * 2) + tooltipHeight;
+            float totalHeight = gridHeight + (padding * 2) + tooltipHeight + navButtonHeight;
             emojiPanelRect.sizeDelta = new Vector2(totalWidth, totalHeight);
             var emojiPanelImage = _emojiPanel.GetComponent<Image>();
             emojiPanelImage.color = new Color(0.118f, 0.118f, 0.118f, 0.95f);
@@ -364,13 +373,63 @@ namespace UI
             gridRect.anchorMin = UIAnchors.FullStretchStart;
             gridRect.anchorMax = UIAnchors.FullStretch;
             gridRect.sizeDelta = Vector2.zero;
-            gridRect.offsetMin = new Vector2(padding, padding);
+            gridRect.offsetMin = new Vector2(padding, padding + navButtonHeight);
             gridRect.offsetMax = new Vector2(-padding, -(padding + tooltipHeight));
             var gridLayout = emojiGrid.GetComponent<GridLayoutGroup>();
             gridLayout.cellSize = new Vector2(cellSize, cellSize);
             gridLayout.spacing = new Vector2(spacing, spacing);
             gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             gridLayout.constraintCount = 4;
+            var navPanel = new GameObject("NavPanel", typeof(RectTransform));
+            navPanel.transform.SetParent(_emojiPanel.transform, false);
+            var navRect = navPanel.GetComponent<RectTransform>();
+            navRect.anchorMin = new Vector2(0, 0);
+            navRect.anchorMax = new Vector2(1, 0);
+            navRect.pivot = new Vector2(0.5f, 0f);
+            navRect.sizeDelta = new Vector2(0, navButtonHeight);
+            navRect.anchoredPosition = new Vector2(0, padding / 2);
+            var backBtnGo = new GameObject("BackButton", typeof(RectTransform), typeof(Button), typeof(TextMeshProUGUI));
+            backBtnGo.transform.SetParent(navPanel.transform, false);
+            var backBtnRect = backBtnGo.GetComponent<RectTransform>();
+            backBtnRect.anchorMin = new Vector2(0, 0);
+            backBtnRect.anchorMax = new Vector2(0, 1);
+            backBtnRect.pivot = new Vector2(0, 0.5f);
+            backBtnRect.sizeDelta = new Vector2(60, navButtonHeight);
+            backBtnRect.anchoredPosition = new Vector2(10, 0);
+            var backBtnText = backBtnGo.GetComponent<TextMeshProUGUI>();
+            backBtnText.text = "<";
+            backBtnText.fontSize = 14;
+            backBtnText.alignment = TextAlignmentOptions.Center;
+            backBtnText.color = Color.white;
+            _emojiBackButton = backBtnGo.GetComponent<Button>();
+            _emojiBackButton.onClick.AddListener(() => ChangeEmojiPage(-1, tooltipText));
+            var pageTextGo = new GameObject("PageText", typeof(RectTransform), typeof(TextMeshProUGUI));
+            pageTextGo.transform.SetParent(navPanel.transform, false);
+            var pageTextRect = pageTextGo.GetComponent<RectTransform>();
+            pageTextRect.anchorMin = new Vector2(0.5f, 0);
+            pageTextRect.anchorMax = new Vector2(0.5f, 1);
+            pageTextRect.pivot = new Vector2(0.5f, 0.5f);
+            pageTextRect.sizeDelta = new Vector2(60, navButtonHeight);
+            pageTextRect.anchoredPosition = new Vector2(0, 0);
+            _emojiPageText = pageTextGo.GetComponent<TextMeshProUGUI>();
+            _emojiPageText.fontSize = 14;
+            _emojiPageText.alignment = TextAlignmentOptions.Center;
+            _emojiPageText.color = Color.white;
+            var nextBtnGo = new GameObject("NextButton", typeof(RectTransform), typeof(Button), typeof(TextMeshProUGUI));
+            nextBtnGo.transform.SetParent(navPanel.transform, false);
+            var nextBtnRect = nextBtnGo.GetComponent<RectTransform>();
+            nextBtnRect.anchorMin = new Vector2(1, 0);
+            nextBtnRect.anchorMax = new Vector2(1, 1);
+            nextBtnRect.pivot = new Vector2(1, 0.5f);
+            nextBtnRect.sizeDelta = new Vector2(60, navButtonHeight);
+            nextBtnRect.anchoredPosition = new Vector2(-10, 0);
+            var nextBtnText = nextBtnGo.GetComponent<TextMeshProUGUI>();
+            nextBtnText.text = ">";
+            nextBtnText.fontSize = 14;
+            nextBtnText.alignment = TextAlignmentOptions.Center;
+            nextBtnText.color = Color.white;
+            _emojiNextButton = nextBtnGo.GetComponent<Button>();
+            _emojiNextButton.onClick.AddListener(() => ChangeEmojiPage(1, tooltipText));
             AddEmojiButtons(tooltipText);
             _emojiPanel.SetActive(false);
         }
@@ -378,7 +437,13 @@ namespace UI
         private void AddEmojiButtons(TextMeshProUGUI tooltipText)
         {
             var emojiGrid = _emojiPanel.transform.Find("EmojiGrid").GetComponent<GridLayoutGroup>();
-            for (int i = 0; i < 16; i++)
+            foreach (Transform child in emojiGrid.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            int start = _emojiPage * EMOJIS_PER_PAGE;
+            int end = Mathf.Min(start + EMOJIS_PER_PAGE, MAX_EMOJI_INDEX + 1);
+            for (int i = start; i < end; i++)
             {
                 var buttonGo = new GameObject($"EmojiButton_{i}", typeof(RectTransform), typeof(Button), typeof(Image));
                 buttonGo.transform.SetParent(emojiGrid.transform, false);
@@ -391,7 +456,7 @@ namespace UI
                 emojiTextRect.anchorMax = UIAnchors.CenterMiddle;
                 emojiTextRect.pivot = UIAnchors.CenterMiddle;
                 emojiTextRect.sizeDelta = new Vector2(38, 38);
-                emojiTextRect.anchoredPosition = new Vector2(0, 0); // Move up 3 pixels
+                emojiTextRect.anchoredPosition = new Vector2(0, 0);
                 var tmpText = emojiText.GetComponent<TextMeshProUGUI>();
                 tmpText.text = $"<sprite={i}>";
                 tmpText.fontSize = 30;
@@ -410,6 +475,19 @@ namespace UI
                 exitEntry.callback.AddListener((data) => { tooltipText.text = ""; });
                 tooltipTrigger.triggers.Add(exitEntry);
             }
+            _emojiBackButton.interactable = _emojiPage > 0;
+            _emojiNextButton.interactable = (end <= MAX_EMOJI_INDEX);
+            if (_emojiPageText != null)
+            {
+                int maxPage = (MAX_EMOJI_INDEX + 1 + EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE;
+                _emojiPageText.text = $"{_emojiPage + 1}/{maxPage}";
+            }
+        }
+        private void ChangeEmojiPage(int delta, TextMeshProUGUI tooltipText)
+        {
+            int maxPage = (MAX_EMOJI_INDEX + 1 + EMOJIS_PER_PAGE - 1) / EMOJIS_PER_PAGE;
+            _emojiPage = Mathf.Clamp(_emojiPage + delta, 0, maxPage - 1);
+            AddEmojiButtons(tooltipText);
         }
 
         private void InsertEmoji(int spriteIndex)
@@ -670,7 +748,7 @@ namespace UI
 
         public void ReplaceLastLine(string line)
         {
-            int lastIndex = (_currentLineIndex - 1 + POOL_SIZE) % POOL_SIZE;
+            int lastIndex = (_currentLineIndex - 1 + _actualPoolSize) % _actualPoolSize;
             TMP_InputField lineObj = _linesPool[lastIndex];
             if (!lineObj.gameObject.activeSelf)
             {
@@ -1215,7 +1293,10 @@ namespace UI
             }
             
             if (currentPoolSize == targetPoolSize)
+            {
+                _actualPoolSize = _linesPool.Count;
                 return;
+            }
             if (currentPoolSize > targetPoolSize)
             {
                 for (int i = currentPoolSize - 1; i >= targetPoolSize; i--)
@@ -1238,6 +1319,7 @@ namespace UI
                     _linesPool.Add(lineObj);
                 }
             }
+            _actualPoolSize = _linesPool.Count;
             RefreshDisplayedMessages();
         }
 
