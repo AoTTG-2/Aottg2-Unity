@@ -1040,7 +1040,7 @@ class Main
             self._bs_state_timer_garbage_thx = self._bs_state_timer_garbage_thx - Time.TickTime;
             if (self._bs_state_timer_garbage_thx <= 0)
             {
-                self.SpawnTitansAroundEren(self._start_titans, 100, 250, true, 100000);
+                self.SpawnTitansAroundEren(self._start_titans, 80, 200, true, 100000);
                 self._eren.ForceAnimation(self._die, 1);
                 self._phase = self._phase_1_wait_clear;
                 self.SyncPhase();
@@ -1265,9 +1265,10 @@ class Main
         if (character != null && !character.Grounded && character.Type == "Human")
         {
             distance = Vector3.Distance(position, character.Position);
+            pushForce = Math.Clamp(1 - distance / maxDistance, 0, 1) * force;
             if (distance < maxDistance)
             {
-                character.Velocity += (character.Position - position).Normalized * force; 
+                character.Velocity += (character.Position - position).Normalized * pushForce; 
             }
         }
     }
@@ -1312,7 +1313,7 @@ class Main
         }
 
         # Knockback
-        self.KnockbackCharacter(self._goal.Position, 160.0, 330.0);
+        self.KnockbackCharacter(self._goal.Position, 200.0, 400.0);
 
         if (Network.IsMasterClient)
         {

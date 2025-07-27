@@ -2126,20 +2126,22 @@ namespace Characters
 
                 // Calculate the angle between the velocity and the collision normal
                 float hitAngle = Vector3.Angle(_lastVelocity, -collisionNormal);
+                float angleThreshold = 45;
+                float frictionThreshold = 25;
 
                 if (hitTitan)
                 {
                     float maxAngle = 0;
+                    float minAngle = 0;
                     float newAngle = 0;
                     foreach (ContactPoint contact in collision.contacts)
                     {
-                        Vector3 velNorm = Cache.Rigidbody.velocity.normalized;
                         newAngle = Vector3.Angle(_lastVelocity, -contact.normal);
                         newAngle = Mathf.Abs(newAngle - 90f);
 
                         maxAngle = Mathf.Max(maxAngle, newAngle);
-
-                        if (newAngle < 45)
+                        minAngle = Mathf.Min(minAngle, newAngle);
+                        if (newAngle < angleThreshold)
                         {
                             // Project velocity along the surface to preserve momentum
                             Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
@@ -2147,10 +2149,16 @@ namespace Characters
                         }
                     }
 
-                    // Testing optional friction
-                    //float speedMultiplier = Mathf.Max(1f - (maxAngle * SettingsManager.GeneralSettings.Friction.Value), 0f);
-                    //float speed = _lastVelocity.magnitude * speedMultiplier;
-                    //Cache.Rigidbody.velocity = velocity.normalized * speed;
+                    // Map velocity on a scale from 0-500 into 0-1
+                    if (minAngle > frictionThreshold)
+                    {
+                        // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
+                        float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
+                        float speedMultiplier = Mathf.Max(1f - (minAngle * 0.005f), 0f);    // Friction value 1-0.5
+                        float appliedMultiplier = Mathf.Lerp(speedMultiplier, 1f, speedFactor);
+                        float speed = _lastVelocity.magnitude * appliedMultiplier;
+                        Cache.Rigidbody.velocity = velocity.normalized * speed;
+                    }
                 }
                 else
                 {
@@ -2761,7 +2769,7 @@ namespace Characters
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 {
 
-                    
+
                     int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
                     int cdStat = SettingsManager.AbilitySettings.BombCooldown.Value;
                     int speedStat = SettingsManager.AbilitySettings.BombSpeed.Value;
