@@ -252,16 +252,16 @@ Scene,Buildings/House1,247,0,1,1,1,0,House1,-288.2834,126.2601,414.4238,0,359.90
 Scene,Buildings/House1,248,0,1,1,1,0,House1,-337.1049,131.8652,119.8937,0,179.741,0,1.5,0.9,1.2,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,249,0,1,1,1,0,House1,-494.0628,126.19,84.40763,0,180.1134,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/House1,250,0,1,1,1,0,House1,-255.9945,126.2123,-430.3184,0,180.017,0,1,0.6,1,Physical,Entities,Default,Default|255/255/255/255,;
-Scene,General/EditorTitanSpawnPoint,251,0,1,1,0,0,Titan SpawnPoint,-0.9394906,118,-131.0714,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,251,0,1,1,0,0,Titan SpawnPoint,-0.9394906,118,-259.7739,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,252,0,1,1,0,0,Titan SpawnPoint,-69.62139,118,43.73843,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,253,0,1,1,0,0,Titan SpawnPoint,-167.126,118,-6.512352,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,254,0,1,1,0,0,Titan SpawnPoint,55.72274,118,-126.3325,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,254,0,1,1,0,0,Titan SpawnPoint,-39.62257,118,-236.1127,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,255,0,1,1,0,0,Titan SpawnPoint,67.9489,118,89.0145,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,256,0,1,1,0,0,Titan SpawnPoint,172.101,118,-8.184544,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,257,0,1,1,0,0,Titan SpawnPoint,-142.8271,118,267.5121,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,258,0,1,1,0,0,Titan SpawnPoint,1.568989,118,277.7758,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,259,0,1,1,0,0,Titan SpawnPoint,200.3878,118,254.4868,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,260,0,1,1,0,0,Titan SpawnPoint,-377.8481,118,68.01484,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,260,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,109.1207,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,261,0,1,1,0,0,Titan SpawnPoint,-208.5553,118,421.7258,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,262,0,1,1,0,0,Titan SpawnPoint,-273.8312,118,570.3094,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,263,0,1,1,0,0,Titan SpawnPoint,-481.252,118,383.1521,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
@@ -284,12 +284,12 @@ Scene,General/EditorTitanSpawnPoint,279,0,1,1,0,0,Titan SpawnPoint,-356.6053,118
 Scene,General/EditorTitanSpawnPoint,280,0,1,1,0,0,Titan SpawnPoint,-329.9554,118,-336.394,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,281,0,1,1,0,0,Titan SpawnPoint,-381.2267,118,-392.1897,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,282,0,1,1,0,0,Titan SpawnPoint,-429.7804,118,-445.1651,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,283,0,1,1,0,0,Titan SpawnPoint,-487.7249,118,-506.4124,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,284,0,1,1,0,0,Titan SpawnPoint,-435.3701,118,-128.8673,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,285,0,1,1,0,0,Titan SpawnPoint,-484.4058,118,-172.4502,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,283,0,1,1,0,0,Titan SpawnPoint,-103.6278,118,-269.3556,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,284,0,1,1,0,0,Titan SpawnPoint,-344.0847,167.313,-93.03623,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,285,0,1,1,0,0,Titan SpawnPoint,-375.8711,118,-247.6967,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,286,0,1,1,0,0,Titan SpawnPoint,-545.8197,118,310.7743,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,287,0,1,1,0,0,Titan SpawnPoint,-323.9818,118,66.90705,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,288,0,1,1,0,0,Titan SpawnPoint,-460.5862,118,368.1019,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,287,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,108.0129,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,288,0,1,1,0,0,Titan SpawnPoint,-460.5862,118,368.1019,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
 Scene,General/EditorTitanSpawnPoint,289,0,1,1,0,0,Titan SpawnPoint,201.512,118,526.5078,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,568,0,1,1,0,0,Human SpawnPoint,-164.5809,156.8339,-184.2946,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,567,0,1,1,0,0,Human SpawnPoint,-156.9111,156.8339,-189.8484,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
@@ -554,7 +554,18 @@ Scene,Geometry/Cylinder1,557,0,1,1,0,0,TheGoal,-0.1256732,139.0824,676.5198,0,0,
 Scene,General/EditorCameraSpawnPoint,559,0,1,1,0,0,Camera SpawnPoint,-114.5232,218.6866,-359.7654,21.85167,330.2353,-4.599327E-07,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:CameraSpawnPoint;
 Scene,General/EditorHumanSpawnPoint,569,0,1,1,0,0,Human SpawnPoint,-171.6566,156.8339,-179.1708,0,35.90915,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:HumanSpawnPoint;
 Scene,Interact/Supply2,571,0,1,1,1,0,Supply2,2.817069,117.0824,-73.04965,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,SupplyStation|Type:SupplyStation|UnlimitedRefills:true|MaxRefills:0|LoadoutChange:true;
-Scene,Geometry/Sphere1,572,543,0,0,0,0,BoulderThrowKill,-224.0053,141.5054,-276.9409,0,0,0,73,73,73,Physical,All,Default,Basic|255/255/255/255|Stone/Rock3|1/1|0/0,KillRegion|Type:KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:false|KillMessage:Reduced to a shape...
+Scene,Geometry/Sphere1,572,543,0,0,0,0,BoulderThrowKill,-224.0053,141.5054,-276.9409,0,0,0,73,73,73,Physical,All,Default,Basic|255/255/255/255|Stone/Rock3|1/1|0/0,KillRegion|Type:KillRegion|Team:None|KillHumans:true|KillTitans:false|KillShifters:false|KillMessage:Reduced to a shape...;
+Scene,General/EditorTitanSpawnPoint,573,0,1,1,0,0,Titan SpawnPoint,-323.9818,164.8882,11.89947,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,574,0,1,1,0,0,Titan SpawnPoint,-377.8481,164.8882,13.00727,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,575,0,1,1,0,0,Titan SpawnPoint,-2.146477,118,180.5285,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,576,0,1,1,0,0,Titan SpawnPoint,-338.0371,118,267.3255,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,577,0,1,1,0,0,Titan SpawnPoint,-358.7029,118,282.3757,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,578,0,1,1,0,0,Titan SpawnPoint,-182.8543,118,363.7435,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,579,0,1,1,0,0,Titan SpawnPoint,80.40378,118,278.5453,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,580,0,1,1,0,0,Titan SpawnPoint,55.16016,118,398.6927,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,581,0,1,1,0,0,Titan SpawnPoint,112.4423,118,593.9601,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,582,0,1,1,0,0,Titan SpawnPoint,-96.65392,118,590.4827,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,583,0,1,1,0,0,Titan SpawnPoint,-145.8421,118,513.6457,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,Tag|Type:Tag|Name:TitanSpawnPoint
 /// Logic
 class Main
 {
