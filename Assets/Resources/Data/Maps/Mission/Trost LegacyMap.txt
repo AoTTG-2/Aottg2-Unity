@@ -744,7 +744,6 @@ class Main
 
             # Calculate Path Distance for Game Progress Stat
             self._completion_distance = self.CalcCompletionDistance(self._checkpoints_copy.Get(self._checkpoints_copy.Count-1));
-            Game.Print(self._completion_distance);
         }
         
         # Look into why usermethod here isn't returned correctly.
@@ -935,6 +934,22 @@ class Main
     {
         zones = self.GetSpawnZones(self._eren.Position, min, max);
 
+        if (zones.Count == 0)
+        {
+            for (i in Range(count))
+            {
+                position = self._eren.Position + self._eren.Transform.Forward * 100 + Vector3(0, 80, 0);
+                titan = Game.SpawnTitanAt("Default", position);
+                if (targetsEren && !titan.IsCrawler && titan.Name != "Thrower")
+                {
+                    titan.Target(self._eren, 100000.0);
+                }
+
+                titan.DetectRange = detectRange;
+            }
+            return;
+        }
+
         for (i in Range(count))
         {
             zone = Random.RandomInt(0, zones.Count);
@@ -1012,7 +1027,6 @@ class Main
 
     function SyncPhase()
     {
-        Game.Print(self._phase);
         self.RPC("ChangePhaseRPC", "others", List(self._phase));
     }
 
