@@ -1,0 +1,631 @@
+{
+  "name": "Quaternion",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "\r\n            # Quaternion takes four floats X, Y, Z and W as parameters when initializing. \r\n            quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);\r\n            ",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": [
+    {
+      "parameters": [
+        {
+          "name": "parameterValues",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "Object[]",
+          "isOptional": false
+        }
+      ],
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticFields": [
+    {
+      "type": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "Identity",
+      "info": {
+        "summary": "The identity rotation (Read Only).",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "X",
+      "info": {
+        "summary": "X component of the Quaternion. Don't modify this directly unless you know quaternions inside out.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Y",
+      "info": {
+        "summary": "Y component of the Quaternion. Don't modify this directly unless you know quaternions inside out.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Z",
+      "info": {
+        "summary": "Z component of the Quaternion. Don't modify this directly unless you know quaternions inside out.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "W",
+      "info": {
+        "summary": "W component of the Quaternion. Do not directly modify quaternions.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Euler",
+      "info": {
+        "summary": "Returns or sets the euler angle representation of the rotation.",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": false,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [
+    {
+      "parameters": [
+        {
+          "name": "a",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "b",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "t",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "Lerp",
+      "info": {
+        "summary": "Interpolates between a and b by t and normalizes the result afterwards.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "A unit quaternion interpolated between quaternions a and b."
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "a",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "b",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "t",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "LerpUnclamped",
+      "info": {
+        "summary": "Interpolates between a and b by t and normalizes the result afterwards. The parameter t is not clamped.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "a",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "b",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "t",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "Slerp",
+      "info": {
+        "summary": "Spherically linear interpolates between unit quaternions a and b by a ratio of t.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "A unit quaternion spherically interpolated between quaternions a and b."
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "a",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "b",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "t",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "SlerpUnclamped",
+      "info": {
+        "summary": "Spherically linear interpolates between unit quaternions a and b by t.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "A unit quaternion spherically interpolated between unit quaternions a and b."
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "euler",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "FromEuler",
+      "info": {
+        "summary": "\r\n            Returns the Quaternion rotation from the given euler angles.\r\n            ",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "forward",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "upwards",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "null",
+          "isOptional": true
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "LookRotation",
+      "info": {
+        "summary": "Creates a rotation with the specified forward and upwards directions.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "a",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "b",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "FromToRotation",
+      "info": {
+        "summary": "Creates a rotation from fromDirection to toDirection.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "A unit quaternion which rotates from fromDirection to toDirection."
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "q",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "Inverse",
+      "info": {
+        "summary": "Returns the Inverse of rotation.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "from",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "to",
+          "info": null,
+          "type": {
+            "name": "Quaternion",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "maxDegreesDelta",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Quaternion",
+        "arguments": []
+      },
+      "label": "RotateTowards",
+      "info": {
+        "summary": "Rotates a rotation from towards to.",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": "A unit quaternion rotated towards to by an angular step of maxDegreesDelta."
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceMethods": [
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "__Copy__",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "self",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "other",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "__Mul__",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "self",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "other",
+          "info": null,
+          "type": {
+            "name": "Object",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "__Eq__",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "int",
+        "arguments": []
+      },
+      "label": "__Hash__",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}
