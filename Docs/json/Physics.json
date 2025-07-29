@@ -1,0 +1,126 @@
+{
+  "name": "Physics",
+  "info": {
+    "summary": "\r\n            Physics class for custom logic.\r\n            ",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [],
+  "staticMethods": [
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "end",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "collideWith",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "LineCastHitResult",
+        "arguments": []
+      },
+      "label": "LineCast",
+      "info": {
+        "summary": "Performs a line cast between two points, returns a LineCastHitResult object",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [
+        {
+          "name": "start",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "end",
+          "info": null,
+          "type": {
+            "name": "Vector3",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "radius",
+          "info": null,
+          "type": {
+            "name": "float",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        },
+        {
+          "name": "collideWith",
+          "info": null,
+          "type": {
+            "name": "string",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "Object",
+        "arguments": []
+      },
+      "label": "SphereCast",
+      "info": {
+        "summary": "Performs a sphere cast between two points, returns the object hit (Human, Titan, etc...).",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "instanceMethods": [],
+  "kind": "EXTENSION",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

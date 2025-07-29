@@ -114,9 +114,7 @@ namespace CustomLogic
             return new CustomLogicQuaternionBuiltin(value);
         }
 
-        [CLMethod]
         public object __Add__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Add__), self, other);
-        [CLMethod]
         public object __Sub__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Sub__), self, other);
 
         [CLMethod]
@@ -130,7 +128,6 @@ namespace CustomLogic
             };
         }
 
-        [CLMethod]
         public object __Div__(object self, object other) => throw CustomLogicUtils.OperatorException(nameof(__Div__), self, other);
 
         [CLMethod]

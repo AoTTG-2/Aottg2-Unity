@@ -1,0 +1,122 @@
+{
+  "name": "LineCastHitResult",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsCharacter",
+      "info": {
+        "summary": "true if the linecast hit a character",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "bool",
+        "arguments": []
+      },
+      "label": "IsMapObject",
+      "info": {
+        "summary": "true if the linecast hit a map object",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "float",
+        "arguments": []
+      },
+      "label": "Distance",
+      "info": {
+        "summary": "The distance to the hit point",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Point",
+      "info": {
+        "summary": "The point in world space where the linecast hit",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Normal",
+      "info": {
+        "summary": "The normal of the surface the linecast hit",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Collider",
+        "arguments": []
+      },
+      "label": "Collider",
+      "info": {
+        "summary": "The collider that was hit",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}

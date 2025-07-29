@@ -1,0 +1,117 @@
+{
+  "name": "Collision",
+  "info": {
+    "summary": "",
+    "remarks": "",
+    "code": "",
+    "parameters": null,
+    "returns": null
+  },
+  "constructors": null,
+  "staticFields": [],
+  "instanceFields": [
+    {
+      "type": {
+        "name": "Collider",
+        "arguments": []
+      },
+      "label": "Collider",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "Impulse",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "type": {
+        "name": "Vector3",
+        "arguments": []
+      },
+      "label": "RelativeVelocity",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": null,
+        "returns": null
+      },
+      "readonly": true,
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "staticMethods": [],
+  "instanceMethods": [
+    {
+      "parameters": [
+        {
+          "name": "index",
+          "info": null,
+          "type": {
+            "name": "int",
+            "arguments": []
+          },
+          "defaultValue": "",
+          "isOptional": false
+        }
+      ],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "GetContact",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    },
+    {
+      "parameters": [],
+      "returnType": {
+        "name": "null",
+        "arguments": []
+      },
+      "label": "GetContacts",
+      "info": {
+        "summary": "",
+        "remarks": "",
+        "code": "",
+        "parameters": {},
+        "returns": ""
+      },
+      "obsoleteMessage": "",
+      "isObsolete": false
+    }
+  ],
+  "kind": "CLASS",
+  "baseTypeName": "Object",
+  "obsoleteMessage": "",
+  "isObsolete": false
+}
