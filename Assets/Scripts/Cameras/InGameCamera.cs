@@ -39,7 +39,7 @@ namespace Cameras
         private float _anchorDistance;
         private const float DistanceMultiplier = 10f;
         private bool _napeLock;
-        private BaseTitan _napeLockTitan;
+        private BaseCharacter _napeLockTarget;
         private SnapshotHandler _snapshotHandler;
         private const float ShakeDistance = 10f;
         private const float ShakeDuration = 1f;
@@ -279,10 +279,18 @@ namespace Cameras
 
         private void UpdateNapeLockImage()
         {
-            if (_follow != null && _follow == _inGameManager.CurrentCharacter && _napeLock && _napeLockTitan != null)
+            if (_follow != null && _follow == _inGameManager.CurrentCharacter && _napeLock && _napeLockTarget != null)
             {
                 _menu.NapeLock.SetActive(true);
-                Vector3 position = _napeLockTitan.BaseTitanCache.Neck.position - _napeLockTitan.BaseTitanCache.Neck.forward * _napeLockTitan.Size;
+                Vector3 position = new Vector3(0,0,0);
+                if(_napeLockTarget is BaseTitan)
+                {
+                    position = ((BaseTitan)_napeLockTarget).BaseTitanCache.Neck.position - ((BaseTitan)_napeLockTarget).BaseTitanCache.Neck.forward * ((BaseTitan)_napeLockTarget).Size;
+                }
+                else if (_napeLockTarget is Human)
+                {
+                    position = _napeLockTarget.Cache.Transform.position - _napeLockTarget.Cache.Transform.forward;
+                }
                 Vector3 screenPosition = SceneLoader.CurrentCamera.Camera.WorldToScreenPoint(position);
                 _menu.NapeLock.transform.position = screenPosition;
             }
@@ -317,13 +325,13 @@ namespace Cameras
                     _napeLock = !_napeLock;
                     if (_napeLock)
                     {
-                        var titan = GetNearestTitan();
+                        var titan = GetNearestTarget();
                         if (titan == null)
                             _napeLock = false;
                         else if (Vector3.Distance(_follow.Cache.Transform.position, titan.Cache.Transform.position) >= 150f)
                             _napeLock = false;
                         else
-                            _napeLockTitan = titan;
+                            _napeLockTarget = titan;
                     }
                 }
                 if (_napeLock && _follow is Human && ((Human)_follow).Setup.Weapon != HumanWeapon.Blade)
@@ -370,7 +378,7 @@ namespace Cameras
                     float rotationX = 0.5f * (280f * (Screen.height * 0.6f - inputY)) / Screen.height;
                     Cache.Transform.rotation = Quaternion.Euler(rotationX, Cache.Transform.rotation.eulerAngles.y, Cache.Transform.rotation.eulerAngles.z);
                 }
-                if (!_napeLock || _napeLockTitan == null)
+                if (!_napeLock || _napeLockTarget == null)
                 {
                     if (CurrentCameraMode == CameraInputMode.TPS || CurrentCameraMode == CameraInputMode.FPS)
                     {
@@ -386,21 +394,30 @@ namespace Cameras
                     }
                 }
             }
-            if (CurrentCameraMode != CameraInputMode.Original || !_napeLock || _napeLockTitan == null)
+            if (CurrentCameraMode != CameraInputMode.Original || !_napeLock || _napeLockTarget == null)
             {
                 Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
             }
-            if (_napeLock && (_napeLockTitan != null))
+            if (_napeLock && (_napeLockTarget != null))
             {
                 float z = Cache.Transform.eulerAngles.z;
-                Transform neck = _napeLockTitan.BaseTitanCache.Neck;
-                Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.8f + neck.position * 0.2f);
-                Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
+                if (_napeLockTarget is BaseTitan)
+                {
+                    Transform neck = ((BaseTitan)_napeLockTarget).BaseTitanCache.Neck;
+                    Cache.Transform.LookAt(_follow.GetCameraAnchor().position * 0.1f + neck.position * 0.9f);
+                    Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
+                }
+                else if(_napeLockTarget is Human)
+                {
+                    Transform pos = ((Human)_napeLockTarget).Cache.Transform;
+                    Cache.Transform.LookAt(pos.position);
+                    Cache.Transform.localEulerAngles = new Vector3(Cache.Transform.eulerAngles.x, Cache.Transform.eulerAngles.y, z);
+                }
                 if (CurrentCameraMode != CameraInputMode.Original)
                     Cache.Transform.position -= Cache.Transform.forward * DistanceMultiplier * _anchorDistance * offset;
-                if (_napeLockTitan.Dead)
+                if (_napeLockTarget.Dead)
                 {
-                    _napeLockTitan = null;
+                    _napeLockTarget = null;
                     _napeLock = false;
                 }
             }
@@ -574,24 +591,38 @@ namespace Cameras
             return (sensitivity * Time.deltaTime) * 62f;
         }
 
-        private BaseTitan GetNearestTitan()
+        private BaseCharacter GetNearestTarget()
         {
-            BaseTitan nearestTitan = null;
+            BaseCharacter nearestTarget = null;
             float nearestDistance = Mathf.Infinity;
             foreach (var character in _inGameManager.GetAllCharactersEnumerable())
             {
-                if (character is BaseTitan && !TeamInfo.SameTeam(character, _follow))
+                if ((_follow is Human && character is not BaseTitan) || TeamInfo.SameTeam(character, _follow))
+                {
+                    continue;
+                }
+                if (character is BaseTitan)
                 {
                     var neck = ((BaseTitan)character).BaseTitanCache.Neck;
                     float distance = Vector3.Distance(_follow.Cache.Transform.position, neck.position);
                     if (distance < nearestDistance)
                     {
                         nearestDistance = distance;
-                        nearestTitan = (BaseTitan)character;
+                        nearestTarget = (BaseTitan)character;
+                    }
+                }
+                else if(character is not BaseTitan)
+                {
+                    var pos = ((Human)character).Cache.Transform;
+                    float distance = Vector3.Distance(_follow.Cache.Transform.position, pos.position);
+                    if (distance < nearestDistance)
+                    {
+                        nearestDistance = distance;
+                        nearestTarget = (Human)character;
                     }
                 }
             }
-            return nearestTitan;
+            return nearestTarget;
         }
 
         private List<BaseCharacter> GetSortedCharacters()
