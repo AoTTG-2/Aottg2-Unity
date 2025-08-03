@@ -1451,6 +1451,8 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
+            HookLeft.FixedUpdateMock();
+            HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {

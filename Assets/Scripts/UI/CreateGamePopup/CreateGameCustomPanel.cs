@@ -1,12 +1,10 @@
-﻿using Map;
+﻿using CustomLogic;
+using Map;
 using Settings;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using System.Linq;
 using System;
-using CustomLogic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
 
 namespace UI
 {
@@ -16,10 +14,38 @@ namespace UI
         protected static IntSetting SelectedLogic = new IntSetting(0);
         protected string[] CurrentMapNames;
         protected string[] CurrentLogicNames;
+        protected FileSystemWatcher _watcher;
+
+        private void OnDestroy()
+        {
+            if (_watcher != null)
+            {
+                _watcher.Dispose();
+            }
+        }
+
+        void CreateFileWatcher(string path)
+        {
+            if (_watcher == null) _watcher = new FileSystemWatcher(path);
+
+            _watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _watcher.IncludeSubdirectories = true;
+            _watcher.Changed += RefreshList;
+            _watcher.Created += RefreshList;
+            _watcher.Deleted += RefreshList;
+            _watcher.Renamed += RefreshList;
+            _watcher.EnableRaisingEvents = true;
+        }
+
+        void RefreshList(object source, FileSystemEventArgs e)
+        {
+            StartCoroutine(WaitAndRebuildCategoryPanel(0.2f));
+        }
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
+            CreateFileWatcher(BuiltinLevels.CustomMapFolderPath);
             ElementStyle style = new ElementStyle(titleWidth: 120f, themePanel: ThemePanel);
             string cat = "CreateGamePopup";
             string sub = "Custom";
@@ -34,7 +60,7 @@ namespace UI
                 ElementFactory.CreateDropdownSetting(DoublePanelLeft, new ElementStyle(titleWidth: 53f, themePanel: ThemePanel), SelectedMap,
                 UIManager.GetLocale(cat, sub, "File"), maps, elementWidth: 269f);
                 GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelLeft, 10f, TextAnchor.UpperLeft);
-                foreach (string button in new string[] { "New", "Delete", "Export" })
+                foreach (string button in new string[] { "New", "Delete", "Modify", "Export" })
                 {
                     GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                         onClick: () => OnCustomButtonClick(button, true));
@@ -50,7 +76,7 @@ namespace UI
                 }
             }
             CreateHorizontalDivider(DoublePanelLeft);
-            ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel), 
+            ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
                 "Custom maps can be found in Documents/Aottg2/CustomMap. ", alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelLeft, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
                "To use a custom map, select the Custom map category under the General section.", alignment: TextAnchor.MiddleLeft);
@@ -65,7 +91,7 @@ namespace UI
                 ElementFactory.CreateDropdownSetting(DoublePanelRight, new ElementStyle(titleWidth: 53f, themePanel: ThemePanel), SelectedLogic,
                 UIManager.GetLocale(cat, sub, "File"), logics, elementWidth: 269f);
                 GameObject group = ElementFactory.CreateHorizontalGroup(DoublePanelRight, 10f, TextAnchor.UpperLeft);
-                foreach (string button in new string[] { "New", "Delete", "Export" })
+                foreach (string button in new string[] { "New", "Delete", "Modify", "Export" })
                 {
                     GameObject obj = ElementFactory.CreateDefaultButton(group.transform, style, UIManager.GetLocaleCommon(button),
                                                                         onClick: () => OnCustomButtonClick(button, false));
@@ -98,8 +124,8 @@ namespace UI
                     UIManager.CurrentMenu.ConfirmPopup.Show(UIManager.GetLocaleCommon("DeleteWarning"), () => OnCustomOperationFinish(name, isMap),
                         UIManager.GetLocaleCommon("Delete"));
                     break;
-                case "Import":
-                    // UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnCustomOperationFinish(name, isMap));
+                case "Modify":
+                    UIManager.CurrentMenu.ImportPopup.Show(onSave: () => OnCustomOperationFinish(name, isMap));
                     break;
                 case "Export":
                     if (isMap)
@@ -164,7 +190,7 @@ namespace UI
                     else
                         BuiltinLevels.DeleteCustomLogic(CurrentLogicNames[SelectedLogic.Value]);
                     break;
-                case "Import":
+                case "Modify":
                     var importPopup = UIManager.CurrentMenu.ImportPopup;
                     if (isMap)
                     {

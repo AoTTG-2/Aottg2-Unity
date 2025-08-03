@@ -107,6 +107,12 @@ namespace Characters
             StartHook();
         }
 
+        public void FixedUpdateMock()
+        {
+            if (_activeHook == null) return;
+            _activeHook.FixedUpdateMock();
+        }
+
         private void StartHook()
         {
             if (_activeHook != null && _activeHook.State == HookState.Disabled)

@@ -5,11 +5,10 @@ using Map;
 using Photon.Pun;
 using Settings;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using Utility;
-using UI;
 
 namespace Characters
 {
@@ -261,7 +260,7 @@ namespace Characters
                 float noise = (midpoint - midDiff) / (float)midpoint;
                 noise = Mathf.Pow(noise, 0.5f);
                 float max = ((rndFactor + velocity.magnitude) * 0.0015f) * noise;
-                
+
                 // Use deterministic sine wave instead of random for stable rope physics
                 float time = Time.time * 2f;
                 float sineX = Mathf.Sin(time + i * 0.5f) * max * 0.3f;
@@ -440,7 +439,7 @@ namespace Characters
         }
 
 
-        protected void FixedUpdate()
+        public void FixedUpdateMock()
         {
             _usingDeathTimer = false;
             if (State == HookState.Hooking)

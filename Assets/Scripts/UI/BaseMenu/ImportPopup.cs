@@ -1,15 +1,11 @@
 ﻿using Settings;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using Weather;
 
 namespace UI
 {
-    class ImportPopup: PromptPopup
+    class ImportPopup : PromptPopup
     {
         protected override string Title => UIManager.GetLocaleCommon("Import");
         protected override float Width => 500f;
@@ -33,7 +29,7 @@ namespace UI
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Save"), onClick: () => OnButtonClick("Save"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Cancel"), onClick: () => OnButtonClick("Cancel"));
             _topText = ElementFactory.CreateDefaultLabel(SinglePanel, style, "").GetComponent<Text>();
-            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ImportSetting, string.Empty, elementWidth: 460f, 
+            _element = ElementFactory.CreateInputSetting(SinglePanel, style, ImportSetting, string.Empty, elementWidth: 460f,
                 elementHeight: DefaultInputHeight, multiLine: true).
                 GetComponent<InputSettingElement>();
             _errorText = ElementFactory.CreateDefaultLabel(SinglePanel, style, "").GetComponent<Text>();
@@ -71,6 +67,13 @@ namespace UI
                 _element.GetComponent<LayoutElement>().preferredHeight = DefaultInputHeight - TextHeight * 2;
             else
                 _element.GetComponent<LayoutElement>().preferredHeight = DefaultInputHeight - TextHeight;
+        }
+
+        public void MockSave()
+        {
+            _onSave.Invoke();
+            if (!_manualHide)
+                Hide();
         }
 
         private void OnButtonClick(string name)
