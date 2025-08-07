@@ -2,7 +2,6 @@
 using Map;
 using Settings;
 using System;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -14,38 +13,12 @@ namespace UI
         protected static IntSetting SelectedLogic = new IntSetting(0);
         protected string[] CurrentMapNames;
         protected string[] CurrentLogicNames;
-        protected FileSystemWatcher _watcher;
 
-        private void OnDestroy()
-        {
-            if (_watcher != null)
-            {
-                _watcher.Dispose();
-            }
-        }
 
-        void CreateFileWatcher(string path)
-        {
-            if (_watcher == null) _watcher = new FileSystemWatcher(path);
-
-            _watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            _watcher.IncludeSubdirectories = true;
-            _watcher.Changed += RefreshList;
-            _watcher.Created += RefreshList;
-            _watcher.Deleted += RefreshList;
-            _watcher.Renamed += RefreshList;
-            _watcher.EnableRaisingEvents = true;
-        }
-
-        void RefreshList(object source, FileSystemEventArgs e)
-        {
-            StartCoroutine(WaitAndRebuildCategoryPanel(0.2f));
-        }
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
-            CreateFileWatcher(BuiltinLevels.CustomMapFolderPath);
             ElementStyle style = new ElementStyle(titleWidth: 120f, themePanel: ThemePanel);
             string cat = "CreateGamePopup";
             string sub = "Custom";
