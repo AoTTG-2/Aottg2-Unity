@@ -15,10 +15,13 @@ namespace UI
     {
         private CharacterEditorTitanCostumePanel _costumePanel;
         private CharacterEditorTitanCategoryPanel _categoryPanel;
+        private int _currentBodyType = -1;
 
         public override void Setup()
         {
             base.Setup();
+            var currentSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            _currentBodyType = currentSet.Body.Value;
         }
 
         protected override void SetupPopups()
@@ -46,7 +49,21 @@ namespace UI
 
         public override void ResetCharacter(bool fullReset = false)
         {
-            _gameManager.ReinstantiateCharacter();
+            var newSet = (TitanCustomSet)SettingsManager.TitanCustomSettings.TitanCustomSets.GetSelectedSet();
+            var gameManager = (CharacterEditorGameManager)_gameManager;
+            if (fullReset || _currentBodyType != newSet.Body.Value)
+            {
+                _currentBodyType = newSet.Body.Value;
+                gameManager.ReinstantiateCharacter();
+            }
+            else
+            {
+                if (gameManager.Titan != null)
+                {
+                    gameManager.Titan.Setup.Load(newSet);
+                    gameManager.Titan.Idle();
+                }
+            }
         }
 
         public override float GetMinMouseX()

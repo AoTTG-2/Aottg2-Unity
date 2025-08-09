@@ -388,38 +388,39 @@ namespace Characters
         public void CreateFace()
         {
             DestroyIfExists(_part_face);
-            string prefab = CustomSet.Face.Value;
-            bool unique = UniqueItems.Contains(prefab);
-            if (!unique)
-                prefab = string.Empty;
-            _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(prefab), cached: true);
-            if (unique)
-                AttachToMount(_part_face, _mount_head_decor, true);
-            else
-                AttachToMount(_part_face, _part_head);
             string face = CustomSet.Face.Value.Substring(4);
             if (face != "None")
+            {
+                string prefab = CustomSet.Face.Value;
+                bool unique = UniqueItems.Contains(prefab);
+                if (!unique)
+                    prefab = string.Empty;
+                _part_face = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetFaceMesh(prefab), cached: true);
+                if (unique)
+                    AttachToMount(_part_face, _mount_head_decor, true);
+                else
+                    AttachToMount(_part_face, _part_head);
                 SetFacialTexture(_part_face, "Face", int.Parse(face), unique);
-            else
-                SetFacialTexture(_part_face, "Face", -1, unique);
+            }
         }
 
         public void CreateGlass()
         {
-            string prefab = CustomSet.Glass.Value;
-            bool unique = UniqueItems.Contains(prefab);
-            if (!unique)
-                prefab = string.Empty;
-            _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(prefab), cached: true);
-            if (unique)
-                AttachToMount(_part_glass, _mount_head_decor, true);
-            else
-                AttachToMount(_part_glass, _part_head);
+            DestroyIfExists(_part_glass);
             string glass = CustomSet.Glass.Value.Substring(5);
             if (glass != "None")
+            {
+                string prefab = CustomSet.Glass.Value;
+                bool unique = UniqueItems.Contains(prefab);
+                if (!unique)
+                    prefab = string.Empty;
+                _part_glass = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Characters, _meshes.GetGlassMesh(prefab), cached: true);
+                if (unique)
+                    AttachToMount(_part_glass, _mount_head_decor, true);
+                else
+                    AttachToMount(_part_glass, _part_head);
                 SetFacialTexture(_part_glass, "Glass", int.Parse(glass), unique);
-            else
-                SetFacialTexture(_part_glass, "Glass", -1, unique);
+            }
         }
 
         public void CreateBack()

@@ -29,6 +29,30 @@ namespace Settings
 		public ColorSetting BootsColor = new ColorSetting(new Color255(49, 36, 33));
         public StringSetting Stats = new StringSetting(string.Empty);
 
+        // Preset skin URLs
+        public StringSetting SkinHair = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinEye = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinGlass = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinFace = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinSkin = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinCostume = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinLogo = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinGearL = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinGearR = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinGas = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinHoodie = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinWeaponTrail = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinHorse = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinThunderspearL = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinThunderspearR = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinHookL = new StringSetting(string.Empty, maxLength: 200);
+        public FloatSetting SkinHookLTiling = new FloatSetting(1f);
+        public StringSetting SkinHookR = new StringSetting(string.Empty, maxLength: 200);
+        public FloatSetting SkinHookRTiling = new FloatSetting(1f);
+        public StringSetting SkinHat = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinHead = new StringSetting(string.Empty, maxLength: 200);
+        public StringSetting SkinBack = new StringSetting(string.Empty, maxLength: 200);
+
         protected override bool Validate()
         {
             if (Sex.Value == 0 && Costume.Value >= HumanSetup.CostumeMCount)
