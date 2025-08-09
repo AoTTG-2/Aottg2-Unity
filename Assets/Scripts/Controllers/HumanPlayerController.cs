@@ -263,7 +263,7 @@ namespace Controllers
             UpdateHookInput(inMenu);
             UpdateReelInput(inMenu);
             UpdateDashInput(inMenu);
-            bool canWeapon =  _human.IsAttackableState && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
+            bool canWeapon = _human.IsAttackableState && !_illegalWeaponStates.Contains(_human.State) && !inMenu && !_human.Dead;
             var attackInput = _humanInput.AttackDefault;
             var specialInput = _humanInput.AttackSpecial;
             if (_human.Weapon is ThunderspearWeapon && SettingsManager.InputSettings.Human.SwapTSAttackSpecial.Value)
@@ -321,7 +321,7 @@ namespace Controllers
                     if (_human.Special is AHSSTwinShot)
                         _human.Special.SetInput(specialInput.GetKeyUp());
                     else
-                    _human.Special.ReadInput(specialInput);
+                        _human.Special.ReadInput(specialInput);
                 }
                 else
                     _human.Special.SetInput(false);
@@ -507,6 +507,35 @@ namespace Controllers
         bool IsSpin3Special()
         {
             return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
+        }
+
+        public bool LeftGetKey()
+        {
+            return SettingsManager.InputSettings.General.Left.GetKey();
+        }
+        public bool RightGetKey()
+        {
+            return SettingsManager.InputSettings.General.Right.GetKey();
+        }
+
+        public bool JumpGetKey()
+        {
+            return SettingsManager.InputSettings.Human.Jump.GetKey();
+        }
+
+        public bool HookLeftGetKey()
+        {
+            return SettingsManager.InputSettings.Human.HookLeft.GetKey();
+        }
+
+        public bool HookRightGetKey()
+        {
+            return SettingsManager.InputSettings.Human.HookRight.GetKey();
+        }
+
+        public bool HookBothGetKey()
+        {
+            return SettingsManager.InputSettings.Human.HookBoth.GetKey();
         }
     }
 }
