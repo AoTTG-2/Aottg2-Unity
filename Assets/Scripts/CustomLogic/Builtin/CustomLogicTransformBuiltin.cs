@@ -15,8 +15,8 @@ namespace CustomLogic
         private string _currentAnimation;
         private Dictionary<string, AnimationClip> _animatorClips;
 
-        private readonly Animator _animator;
         private readonly Animation _animation;
+        private readonly Animator _animator;
         private readonly AudioSource _audioSource;
         private readonly ParticleSystem _particleSystem;
 
@@ -26,6 +26,7 @@ namespace CustomLogic
 
             _animator = Value.GetComponent<Animator>();
             _animation = Value.GetComponent<Animation>();
+            _animator = Value.GetComponent<Animator>();
             _audioSource = Value.GetComponent<AudioSource>();
             _particleSystem = Value.GetComponent<ParticleSystem>();
         }
@@ -126,6 +127,19 @@ namespace CustomLogic
             set => Value.right = value.Value;
         }
 
+        [CLProperty("Sets the parent of the transform")]
+        public CustomLogicTransformBuiltin Parent
+        {
+            get => Value.parent != null ? new CustomLogicTransformBuiltin(Value.parent) : null;
+            set
+            {
+                if (value == null)
+                    Value.SetParent(null);
+                else
+                    Value.SetParent(value.Value);
+            }
+        }
+
         [CLProperty("Gets the name of the transform.")]
         public string Name
         {
@@ -157,10 +171,26 @@ namespace CustomLogic
             return listBuiltin;
         }
 
+        [CLMethod("Checks if the given animation is playing.")]
+        public bool IsPlayingAnimation(string anim)
+        {
+            if (_animation != null)
+            {
+                return _animation.IsPlaying(anim);
+            }
+            if (_animator != null)
+            {
+                anim = anim.Replace('.', '_');
+                return _currentAnimation == anim;
+            }
+            return false;
+        }
+
         [CLMethod("Plays the specified animation.")]
         public void PlayAnimation(string anim, float fade = 0.1f)
         {
-            if (_animation != null) {
+            if (_animation != null)
+            {
                 if (!_animation.IsPlaying(anim))
                     _animation.CrossFade(anim, fade);
                 return;
@@ -206,7 +236,7 @@ namespace CustomLogic
             if (_animation != null)
             {
                 foreach (AnimationState state in _animation)
-                   state.speed = speed;
+                    state.speed = speed;
 
                 return;
             }
@@ -232,6 +262,22 @@ namespace CustomLogic
                 return _animatorClips[anim].length;
             }
             return -1;
+        }
+
+        // Get/Set Audio volume
+        [CLMethod("Gets the audio sound if a clip exists.")]
+        public float GetSoundVolume()
+        {
+            if (_audioSource != null)
+                return _audioSource.volume;
+            return -1;
+        }
+
+        [CLMethod("Sets the audio sound if a clip exists.")]
+        public void SetSoundVolume(float volume)
+        {
+            if (_audioSource != null)
+                _audioSource.volume = volume;
         }
 
         [CLMethod("Plays the sound.")]

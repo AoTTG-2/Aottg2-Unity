@@ -1,19 +1,14 @@
-﻿using System;
-using UnityEngine;
-using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
-using Utility;
-using System.Collections;
-using SimpleJSONFixed;
+﻿using ApplicationManagers;
+using Cameras;
 using Effects;
-using UI;
-using System.Collections.Generic;
-using Settings;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.AI;
-using Cameras;
+using Settings;
+using SimpleJSONFixed;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace Characters
 {
@@ -98,6 +93,7 @@ namespace Characters
         protected Vector3 _furthestCoreLocalPosition;
         protected Dictionary<string, float> _rootMotionAnimations = new Dictionary<string, float>();
         public Dictionary<string, string> AttackAnimations = new Dictionary<string, string>();
+        public bool EnableAI = true;
 
         public virtual void Init(bool ai, string team, JSONNode data)
         {
@@ -167,12 +163,12 @@ namespace Characters
 
         public virtual bool CanAction()
         {
-            return !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
+            return EnableAI && !Dead && (State == TitanState.Idle && _stateTimeLeft <= 0f) || State == TitanState.Run || State == TitanState.Walk || State == TitanState.Sprint;
         }
 
         public virtual bool CanStun()
         {
-            return State != TitanState.Stun && !Dead;
+            return State != TitanState.Stun && !Dead && EnableAI;
         }
 
         public virtual void Jump(Vector3 direction)
@@ -568,6 +564,8 @@ namespace Characters
             UpdateAnimationColliders();
             if (IsMine())
             {
+                if (!EnableAI)
+                    return;
                 _disableCooldownLeft -= Time.deltaTime;
                 _climbCooldownLeft -= Time.deltaTime;
                 if (!AI && (State == TitanState.Sprint || State == TitanState.Run || State == TitanState.Walk) && IsSit && State != TitanState.SitDown && State != TitanState.SitIdle && State != TitanState.SitUp)

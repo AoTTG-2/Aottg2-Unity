@@ -234,6 +234,7 @@ MonoBehaviour:
   RightArmDisabled: 0
   _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
+  EnableAI: 1
   IsCrawler: 0
   Setup: {fileID: 0}
   _oldHeadRotation: {x: 0, y: 0, z: 0, w: 0}
@@ -993,7 +994,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101032}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: af6705323d641c647a47c20b7b3c3c30, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1050,7 +1051,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101034}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: af6705323d641c647a47c20b7b3c3c30, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1109,7 +1110,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101036}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: af6705323d641c647a47c20b7b3c3c30, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1165,7 +1166,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101038}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: af6705323d641c647a47c20b7b3c3c30, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

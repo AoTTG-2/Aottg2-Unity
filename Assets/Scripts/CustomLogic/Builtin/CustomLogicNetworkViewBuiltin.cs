@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using GameManagers;
 using Map;
-using GameManagers;
-using Utility;
 using Photon.Pun;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -11,7 +11,6 @@ namespace CustomLogic
     /// Represents a network view on a map object that has the "networked" flag.
     /// Note1: messages sent from a mapobjects network view are not component scoped, all components will receive the same message.
     /// If you intend for a mapobject to have multiple message sending components, preface the message with the component name to determine scope.
-    /// 
     /// Note2: Rooms and Players have bandwidth limits, exceeding the limits via CL will result in either the player being kicked or the room being shut down.
     /// When possible, use basic message passing for state sync and then run logic locally instead of repeatedly sending state over the network. Also
     /// avoid cases where message sending increases heavily with the number of players in the room.
@@ -51,11 +50,25 @@ namespace CustomLogic
 
         private List<object> _streamObjects;
         private readonly List<CustomLogicComponentInstance> _classInstances = new List<CustomLogicComponentInstance>();
+        private bool _isTransformSynced = true;
+
 
         [CLConstructor]
         public CustomLogicNetworkViewBuiltin(MapObject obj)
         {
             MapObject = obj;
+        }
+
+        [CLProperty("Whether or not the object's Transform is synced. If PhotonSync is not initialized yet, it will defer until it is set.")]
+        public bool SyncTransforms
+        {
+            get => _isTransformSynced;
+            set
+            {
+                _isTransformSynced = value;
+                if (Sync != null)
+                    Sync.SyncTransforms = value;
+            }
         }
 
         [CLProperty("The network view's owner.")]
@@ -96,6 +109,7 @@ namespace CustomLogic
             int oldId = OwnerId;
             Sync = sync;
             OwnerId = sync.photonView.Owner.ActorNumber;
+            Sync.SyncTransforms = _isTransformSynced;
             if (oldId >= 0)
             {
                 var oldPlayer = Util.FindPlayerById(oldId);
@@ -108,6 +122,12 @@ namespace CustomLogic
                     foreach (var instance in _classInstances)
                         CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
                 }
+            }
+
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            if (linkedMapObjectClass != null)
+            {
+                linkedMapObjectClass.NetworkView = this;
             }
         }
 

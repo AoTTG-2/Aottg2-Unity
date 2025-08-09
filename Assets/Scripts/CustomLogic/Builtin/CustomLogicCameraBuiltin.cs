@@ -1,11 +1,7 @@
 using ApplicationManagers;
 using Cameras;
-using Characters;
 using Settings;
 using System;
-using System.Collections.Generic;
-using UnityEngine;
-using Utility;
 
 namespace CustomLogic
 {

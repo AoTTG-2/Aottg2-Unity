@@ -64,6 +64,7 @@ namespace Characters
         public bool CanDodge = true;
         public bool IsInvincible = true;
         public float InvincibleTimeLeft;
+
         public bool CanMountedAttack = false;
         public bool InMountedCombat = false;
         public bool IsAttackableState;
@@ -80,8 +81,6 @@ namespace Characters
         public float ReelOutScrollTimeLeft = 0f;
         public float TargetMagnitude = 0f;
         public bool IsWalk;
-        public const float RealismMaxReel = 120f;
-        public const float RealismDeathVelocity = 100f;
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
@@ -420,7 +419,7 @@ namespace Characters
                 {
                     //The line below was causing problems when dashing away from walls at certain angles.
                     //Removing it fixed that but I'm unsure if it's needed for another situation (didn't notice a difference without it), do uncomment if the case
-                    //Cache.Rigidbody.rotation = _targetRotation;
+                    Cache.Rigidbody.rotation = _targetRotation;
                     CrossFade(HumanAnimations.Dash, 0.1f, 0.1f);
                 }
 
@@ -1480,6 +1479,8 @@ namespace Characters
 
         protected override void FixedUpdate()
         {
+            HookLeft.FixedUpdateMock();
+            HookRight.FixedUpdateMock();
             base.FixedUpdate();
             if (IsMine())
             {
@@ -1904,6 +1905,19 @@ namespace Characters
                     windEmission.enabled = false;
                 FixedUpdateSetHookedDirection();
                 FixedUpdateBodyLean();
+
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                {
+                    float currentSpeed = Cache.Rigidbody.velocity.magnitude;
+                    float maxSpeed = SettingsManager.InGameCurrent.Misc.RealismMaxSpeed.Value;
+                    float dampingStrength = 0.9f;
+                    if (currentSpeed > maxSpeed)
+                    {
+                        Vector3 dampingForce = -(Cache.Rigidbody.velocity.normalized * (currentSpeed - maxSpeed)) * dampingStrength;
+                        Cache.Rigidbody.AddForce(dampingForce, ForceMode.Acceleration);
+                    }
+                }
+
                 if (_useFixedUpdateClipping)
                 {
                     FixedUpdateClippingCheck();
@@ -2133,31 +2147,80 @@ namespace Characters
                 if (((SwitchbackSpecial)Special).RegisterCollision(this, collision, _lastVelocity.magnitude * 0.7f))
                     return;
             }
+            bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
             if (_lastVelocity.magnitude > 0f)
             {
-                float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
-                float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
-                float speed = _lastVelocity.magnitude * speedMultiplier;
-                Cache.Rigidbody.velocity = velocity.normalized * speed;
+                // Get the contact point normal
+                ContactPoint theContact = collision.contacts[0];
+                Vector3 collisionNormal = theContact.normal;
+
+                // Calculate the angle between the velocity and the collision normal
+                float hitAngle = Vector3.Angle(_lastVelocity, -collisionNormal);
+                float angleThreshold = 45;
+                float frictionThreshold = 25;
+
+                if (hitTitan)
+                {
+                    float maxAngle = 0;
+                    float minAngle = 0;
+                    float newAngle = 0;
+                    foreach (ContactPoint contact in collision.contacts)
+                    {
+                        newAngle = Vector3.Angle(_lastVelocity, -contact.normal);
+                        newAngle = Mathf.Abs(newAngle - 90f);
+
+                        maxAngle = Mathf.Max(maxAngle, newAngle);
+                        minAngle = Mathf.Min(minAngle, newAngle);
+                        if (newAngle < angleThreshold)
+                        {
+                            // Project velocity along the surface to preserve momentum
+                            Vector3 projected = Vector3.ProjectOnPlane(_lastVelocity, contact.normal);
+                            Cache.Rigidbody.velocity = Vector3.Lerp(_lastVelocity, projected, 0.5f);
+                        }
+                    }
+
+                    // Map velocity on a scale from 0-500 into 0-1
+                    if (minAngle > frictionThreshold)
+                    {
+                        // Testing optional friction under 1k it should apply the max friction possible and reduce it to nothing towards the upper limit.
+                        float speedFactor = Util.ClampedLinearMap(Cache.Rigidbody.velocity.magnitude, 0, 250, 0, 1);
+                        float speedMultiplier = Mathf.Max(1f - (minAngle * 0.005f), 0f);    // Friction value 1-0.5
+                        float appliedMultiplier = Mathf.Lerp(speedMultiplier, 1f, speedFactor);
+                        float speed = _lastVelocity.magnitude * appliedMultiplier;
+                        Cache.Rigidbody.velocity = velocity.normalized * speed;
+                    }
+                }
+                else
+                {
+                    float angle = Mathf.Abs(Vector3.Angle(velocity, _lastVelocity));
+                    float speedMultiplier = Mathf.Max(1f - (angle * 1.5f * 0.01f), 0f);
+                    float speed = _lastVelocity.magnitude * speedMultiplier;
+                    Cache.Rigidbody.velocity = velocity.normalized * speed;
+                }
+
                 float speedDiff = _lastVelocity.magnitude - Cache.Rigidbody.velocity.magnitude;
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > RealismDeathVelocity)
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && speedDiff > SettingsManager.InGameCurrent.Misc.RealismImpactThreshold.Value)
                     GetHit("Impact", (int)speedDiff, "Impact", "");
             }
-            var titan = collision.transform.root.GetComponent<BaseTitan>();
-            if (titan != null && !titan.AI)
+            if (hitTitan)
             {
-                var normal = collision.contacts[0].normal;
-                var titanVel = titan.GetVelocity();
-                if (titanVel.magnitude > 0f && Vector3.Angle(titanVel, normal) < 70f)
+                var titan = collision.transform.root.GetComponent<BaseTitan>();
+                if (titan != null && !titan.AI)
                 {
-                    Cache.Rigidbody.velocity += titanVel;
+                    var normal = collision.contacts[0].normal;
+                    var titanVel = titan.GetVelocity();
+                    if (titanVel.magnitude > 0f && Vector3.Angle(titanVel, normal) < 70f)
+                    {
+                        Cache.Rigidbody.velocity += titanVel;
+                    }
                 }
             }
         }
 
         protected void OnCollisionStay(Collision collision)
         {
-            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && collision.gameObject.layer != PhysicsLayer.MapObjectTitans)
+            bool hitTitan = collision.transform.root.gameObject.layer == PhysicsLayer.TitanMovebox;
+            if (!Grounded && Cache.Rigidbody.velocity.magnitude >= 15f && !Animation.IsPlaying(HumanAnimations.WallRun) && !hitTitan)
             {
                 if (SettingsManager.InputSettings.Human.WallSlideAttach.Value == (int)WallSlideAttachMethod.Auto ||
                     (SettingsManager.InputSettings.Human.WallSlideAttach.Value == (int)WallSlideAttachMethod.Strafe
@@ -2295,7 +2358,7 @@ namespace Characters
             float reelAxis = GetReelAxis();
             if (reelAxis > 0f)
             {
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && Vector3.Distance(Cache.Transform.position, position) > RealismMaxReel)
+                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value && Vector3.Distance(Cache.Transform.position, position) > SettingsManager.InGameCurrent.Misc.RealismMaxReel.Value)
                     reelAxis = 0f;
             }
             float reel = Mathf.Clamp(reelAxis, -0.8f, 0.8f) + 1f;
@@ -2736,7 +2799,7 @@ namespace Characters
                 if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)
                 {
 
-                    
+
                     int radiusStat = SettingsManager.AbilitySettings.BombRadius.Value;
                     int cdStat = SettingsManager.AbilitySettings.BombCooldown.Value;
                     int speedStat = SettingsManager.AbilitySettings.BombSpeed.Value;
@@ -3343,12 +3406,16 @@ namespace Characters
             return nearestHuman;
         }
 
-        private void FalseAttack()
+        public void FalseAttack()
         {
             if (Setup.Weapon == HumanWeapon.AHSS || Setup.Weapon == HumanWeapon.Thunderspear || Setup.Weapon == HumanWeapon.APG)
             {
                 if (!_attackRelease)
                     _attackRelease = true;
+                if (Special is StockSpecial)
+                {
+                    ContinueAnimation();
+                }
             }
             else
             {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using ApplicationManagers;
+﻿using ApplicationManagers;
+using Photon.Pun;
 using Settings;
 using SimpleJSONFixed;
 using System.Collections;
-using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
 using Utility;
 
 namespace UI
@@ -268,19 +264,7 @@ namespace UI
             switch (name)
             {
                 case "TutorialButton":
-                    // _tutorialPopup.Show();
-                    MusicManager.PlayEffect();
-                    MusicManager.PlayTransition();
-                    SettingsManager.InGameUI.SetDefault();
-                    SettingsManager.InGameUI.General.MapCategory.Value = "Tutorial";
-                    SettingsManager.InGameUI.General.MapName.Value = "Basic Tutorial";
-                    SettingsManager.InGameUI.General.GameMode.Value = "Map Logic";
-                    SettingsManager.InGameUI.Misc.AllowPlayerTitans.Value = false;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnEnabled.Value = true;
-                    SettingsManager.InGameUI.Misc.EndlessRespawnTime.Value = 1f;
-                    SettingsManager.InGameCurrent.Copy(SettingsManager.InGameUI);
-                    SettingsManager.MultiplayerSettings.ConnectOffline();
-                    SettingsManager.MultiplayerSettings.StartRoom();
+                    _tutorialPopup.Show();  // I've hit this button around 20 times while testing and I'm done, everyone else can click one more time to confirm they want to be whisked away to a loading screen.
                     break;
                 case "CreditsButton":
                     SceneLoader.LoadScene(SceneName.Credits);

@@ -85,11 +85,12 @@ namespace CustomLogic
         [CLMethod] public static CustomLogicQuaternionBuiltin FromEuler(CustomLogicVector3Builtin euler) => Quaternion.Euler(euler);
 
         /// <inheritdoc cref="Quaternion.LookRotation(Vector3, Vector3)"/>
-        [CLMethod] public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
+        [CLMethod]
+        public static CustomLogicQuaternionBuiltin LookRotation(CustomLogicVector3Builtin forward, CustomLogicVector3Builtin upwards = null)
         {
             if (upwards == null)
-                return Quaternion.LookRotation(forward);
-            return Quaternion.LookRotation(forward, upwards);
+                return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward));
+            return new CustomLogicQuaternionBuiltin(Quaternion.LookRotation(forward, upwards));
         }
 
         /// <inheritdoc cref="Quaternion.FromToRotation(Vector3, Vector3)"/>

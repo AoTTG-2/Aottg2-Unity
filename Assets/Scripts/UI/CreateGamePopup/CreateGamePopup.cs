@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine.UI;
-using UnityEngine;
-using Settings;
-using System.Collections;
-using ApplicationManagers;
-using GameManagers;
+﻿using ApplicationManagers;
 using CustomLogic;
+using GameManagers;
 using Map;
-using Photon.Pun;
-using Photon.Realtime;
+using Settings;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using Utility;
 
 namespace UI
 {
-    class CreateGamePopup: BasePopup
+    class CreateGamePopup : BasePopup
     {
         protected override string Title => string.Empty;
         protected override float Width => 1010f;
@@ -27,11 +24,29 @@ namespace UI
         public bool IsMultiplayer = false;
         protected override bool UseSound => true;
 
+        protected FileWatcherExtension _watcher;
+
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             SetupBottomButtons();
+
+            if (_watcher == null) _watcher = this.gameObject.AddComponent<FileWatcherExtension>();
+            _watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            _watcher.IncludeSubdirectories = true;
+            _watcher.Changed += RefreshList;
+            _watcher.Created += RefreshList;
+            _watcher.Deleted += RefreshList;
+            _watcher.Renamed += RefreshList;
+            _watcher.AddWatcher(BuiltinLevels.CustomMapFolderPath);
+            _watcher.AddWatcher(BuiltinLevels.CustomLogicFolderPath);
+
+        }
+
+        void RefreshList(object source, FileSystemEventArgs e)
+        {
+            RebuildCategoryPanel();
         }
 
         public Dictionary<string, BaseSetting> SyncModeSettings(MapScript script)

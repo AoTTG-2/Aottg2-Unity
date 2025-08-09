@@ -16578,13 +16578,16 @@ MonoBehaviour:
   MountedTransform: {fileID: 0}
   MountedPositionOffset: {x: 0, y: 0, z: 0}
   MountedRotationOffset: {x: 0, y: 0, z: 0}
+  _lastMountedPosition: {x: 0, y: 0, z: 0}
+  _mountedVelocity: {x: 0, y: 0, z: 0}
   CancelHookLeftKey: 0
   CancelHookRightKey: 0
   CancelHookBothKey: 0
   CanDodge: 1
   IsInvincible: 1
   InvincibleTimeLeft: 0
-  HorsebackCombat: 0
+  CanMountedAttack: 0
+  InMountedCombat: 0
   IsAttackableState: 0
   IsRefillable: 0
   ReelInAxis: 0

@@ -20,6 +20,14 @@ namespace CustomLogic
             NetworkView = networkView;
         }
 
+        public CustomLogicComponentInstance(string name, CustomLogicMapObjectBuiltin obj, MapScriptComponent script,
+            CustomLogicNetworkViewBuiltin networkView) : base(name)
+        {
+            MapObject = obj;
+            _script = script;
+            NetworkView = networkView;
+        }
+
         public void LoadVariables()
         {
             Variables.Add("MapObject", MapObject);
@@ -30,7 +38,7 @@ namespace CustomLogic
                 var arr = param.Split(':');
                 string name = arr[0];
                 string value = arr[1];
-                if (Variables.ContainsKey(name))
+                if (Variables.ContainsKey(name) && name != "Type")
                 {
                     Variables[name] = DeserializeValue(Variables[name], value);
                 }

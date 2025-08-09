@@ -1,5 +1,6 @@
 ﻿using Characters;
 using Controllers;
+using Map;
 
 namespace CustomLogic
 {
@@ -207,17 +208,52 @@ namespace CustomLogic
         public void Target(object enemyObj, float focus)
         {
             if (IsAlive() && Titan.AI == false)
-            // if (name == "Name")
-            //     Character.Name = (string)value;
-            // else if (name == "Guild")
-            //     Character.Guild = (string)value;
-            // if (!Titan.IsMine())
+                // if (name == "Name")
+                //     Character.Name = (string)value;
+                // else if (name == "Guild")
+                //     Character.Guild = (string)value;
+                // if (!Titan.IsMine())
                 return;
 
             ITargetable enemy = enemyObj is CustomLogicMapTargetableBuiltin mapTargetable
                                     ? mapTargetable.Value
                                     : ((CustomLogicCharacterBuiltin)enemyObj).Character;
             Controller.SetEnemy(enemy, focus);
+        }
+
+        [CLMethod("Gets the target currently focused by this character. Returns null if no target is set.")]
+        public object GetTarget()
+        {
+            if (IsAlive() && Titan.AI == false)
+                return null;
+
+
+            ITargetable enemy = Controller.GetEnemy();
+
+            if (enemy == null)
+                return null;
+
+            if (enemy is CustomLogicMapTargetableBuiltin)
+            {
+                MapTargetable mapTargetable1 = (MapTargetable)enemy;
+                return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
+            }
+            else if (enemy is Human)
+            {
+                return new CustomLogicHumanBuiltin((Human)enemy);
+            }
+            else if (enemy is BaseShifter)
+            {
+                return new CustomLogicShifterBuiltin((BaseShifter)enemy);
+            }
+            else if (enemy is BasicTitan)
+            {
+                return new CustomLogicTitanBuiltin((BasicTitan)enemy);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         [CLMethod("Causes the (AI) titan to idle for time seconds before beginning to wander. During idle the titan will not react or move at all.")]

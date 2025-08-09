@@ -1,22 +1,18 @@
-using System;
-using UnityEngine;
-using ApplicationManagers;
-using GameManagers;
-using UnityEngine.UI;
-using Utility;
 using Controllers;
-using SimpleJSONFixed;
-using Effects;
-using UI;
-using Settings;
-using System.Collections;
 using CustomLogic;
 using CustomSkins;
+using Effects;
 using Photon.Pun;
+using Settings;
+using SimpleJSONFixed;
+using System.Collections;
+using UI;
+using UnityEngine;
+using Utility;
 
 namespace Characters
 {
-    class BaseShifter: BaseTitan
+    class BaseShifter : BaseTitan
     {
         protected override int DefaultMaxHealth => 1000;
         protected override float DefaultRunSpeed => 100f;
@@ -129,7 +125,7 @@ namespace Characters
             {
                 Stun();
                 var killer = Util.FindCharacterByViewId(viewId);
-                if (killer != null)
+                if (killer != null && EnableAI)
                 {
                     Vector3 direction = killer.Cache.Transform.position - Cache.Transform.position;
                     direction.y = 0f;

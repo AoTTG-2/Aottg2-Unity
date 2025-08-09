@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Utility;
-using System.Diagnostics;
+﻿using Assets.Scripts.ApplicationManagers;
 using GameManagers;
-using Assets.Scripts.ApplicationManagers;
+using System.Collections.Generic;
+using UnityEngine;
+using Utility;
 
 namespace ApplicationManagers
 {
@@ -35,6 +32,7 @@ namespace ApplicationManagers
         const int InputHeight = 25;
         const int Padding = 10;
         const string InputControlName = "DebugInput";
+
 
         public static void Init()
         {

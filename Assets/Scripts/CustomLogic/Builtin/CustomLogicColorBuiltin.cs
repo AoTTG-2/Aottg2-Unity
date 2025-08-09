@@ -46,7 +46,11 @@ namespace CustomLogic
             Value = color;
         }
 
-        
+        public CustomLogicColorBuiltin(Color color)
+        {
+            Value = new Color255(color);
+        }
+
         public CustomLogicColorBuiltin(Color255 value)
         {
             Value = value;
