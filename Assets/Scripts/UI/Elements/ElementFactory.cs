@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -210,11 +210,11 @@ namespace UI
 
         public static GameObject CreateIncrementSetting(Transform parent, ElementStyle style, BaseSetting setting, string title, string tooltip = "",
             float elementWidth = 33f, float elementHeight = 30f, string[] options = null,
-            UnityAction onValueChanged = null)
+            UnityAction onValueChanged = null, Func<bool> validation = null)
         {
             GameObject incrementSetting = InstantiateAndBind(parent, "Prefabs/Elements/IncrementSetting");
             IncrementSettingElement element = incrementSetting.AddComponent<IncrementSettingElement>();
-            element.Setup(setting, style, title, tooltip, elementWidth, elementHeight, options, onValueChanged);
+            element.Setup(setting, style, title, tooltip, elementWidth, elementHeight, options, onValueChanged, validation);
             return incrementSetting;
         }
 
