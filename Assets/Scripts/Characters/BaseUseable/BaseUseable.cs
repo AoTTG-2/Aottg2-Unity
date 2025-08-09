@@ -44,8 +44,6 @@ namespace Characters
 
         public void SetCooldownRatio(float ratio)
         {
-            if (Cooldown < 0f)
-                return;
             SetCooldownLeft(Cooldown * Mathf.Clamp(ratio, 0f, 1f));
         }
 

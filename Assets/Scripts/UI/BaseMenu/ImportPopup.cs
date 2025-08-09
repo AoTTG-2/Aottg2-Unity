@@ -69,13 +69,6 @@ namespace UI
                 _element.GetComponent<LayoutElement>().preferredHeight = DefaultInputHeight - TextHeight;
         }
 
-        public void MockSave()
-        {
-            _onSave.Invoke();
-            if (!_manualHide)
-                Hide();
-        }
-
         private void OnButtonClick(string name)
         {
             if (name == "Cancel")

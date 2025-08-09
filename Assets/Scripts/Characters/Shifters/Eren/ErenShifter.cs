@@ -54,12 +54,6 @@ namespace Characters
             }
         }
 
-        public void WalkWithRock()
-        {
-            _stepPhase = 0;
-            StateActionWithTime(TitanState.Walk, ((ErenAnimations)BaseTitanAnimations).RockWalk, 0f, 0.5f);
-        }
-
         protected override Dictionary<string, float> GetRootMotionAnimations()
         {
             return new Dictionary<string, float>() { { ErenAnimations.AttackCombo, 1f }, { ErenAnimations.AttackKick, 1f } };

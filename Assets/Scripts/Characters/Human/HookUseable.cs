@@ -49,7 +49,6 @@ namespace Characters
         {
             if (_activeHook != null)
                 return _activeHook.GetHookPosition();
-            // Debug.Log("Warning: zero hook position");
             return Vector3.zero;
         }
 

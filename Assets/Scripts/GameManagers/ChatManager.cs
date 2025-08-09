@@ -1,24 +1,20 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Weather;
-using UI;
-using Utility;
-using CustomSkins;
-using CustomLogic;
+﻿using Anticheat;
 using ApplicationManagers;
-using System.Diagnostics;
-using Settings;
-using Anticheat;
-using Photon.Realtime;
+using CustomLogic;
 using Photon.Pun;
+using Photon.Realtime;
+using Settings;
 using System;
-using System.Reflection;
-using System.Linq;
-using Map;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
+using UI;
+using UnityEngine;
+using Utility;
 
 namespace GameManagers
 {
@@ -70,7 +66,7 @@ namespace GameManagers
         public static List<bool> SuggestionFlags = new List<bool>();
         public static List<bool> NotificationFlags = new List<bool>();
         public static List<string> FeedLines = new List<string>();
-        private static int MaxLines 
+        private static int MaxLines
         {
             get
             {
@@ -112,7 +108,7 @@ namespace GameManagers
             public static bool IsTabCompleting = false;
             public static string OriginalPartialText = "";
             public static bool IsProcessingClick = false;
-            
+
             public static void Clear()
             {
                 PartialText = "";
@@ -257,7 +253,7 @@ namespace GameManagers
                 var chatPanel = GetChatPanel();
                 if (chatPanel != null)
                     chatPanel.Sync();
-                    
+
                 var feedPanel = GetFeedPanel();
                 if (feedPanel != null)
                     feedPanel.Sync();
@@ -398,7 +394,7 @@ namespace GameManagers
             MessageBuilder.Append(GetColorString(TimeBuilder.ToString(), ChatTextColor.System)).Append(message);
             return MessageBuilder.ToString();
         }
-        
+
         public static void AddFeed(string line)
         {
             if (!IsChatAvailable())
@@ -480,7 +476,7 @@ namespace GameManagers
                     continue;
                 }
                 var matchingPlayers = PhotonNetwork.PlayerList
-                    .Where(p => 
+                    .Where(p =>
                     {
                         string playerId = p.ActorNumber.ToString();
                         string playerName = p.GetStringProperty(PlayerProperty.Name).FilterSizeTag().StripRichText().ToLower();
@@ -760,7 +756,7 @@ namespace GameManagers
                 if (!Util.IsValidFileName(baseFilename))
                 {
                     AddLine("Invalid filename error.", ChatTextColor.Error);
-                return;
+                    return;
                 }
                 string filename = baseFilename + ".txt";
                 string filePath = Path.Combine(chatHistoryPath, filename);
@@ -869,7 +865,7 @@ namespace GameManagers
 
         public static Player GetPlayer(string[] args)
         {
-            if (args.Length > 1 && int.TryParse(args[1], out int id) && 
+            if (args.Length > 1 && int.TryParse(args[1], out int id) &&
                 PhotonNetwork.CurrentRoom.GetPlayer(id, true) is Player player)
             {
                 return player;
@@ -890,7 +886,7 @@ namespace GameManagers
         {
             if (!IsChatAvailable() || UIManager.CurrentMenu == null)
                 return null;
-        
+
             var menu = UIManager.CurrentMenu as InGameMenu;
             return menu?.ChatPanel;
         }
@@ -899,7 +895,7 @@ namespace GameManagers
         {
             if (!IsChatAvailable() || UIManager.CurrentMenu == null)
                 return null;
-        
+
             var menu = UIManager.CurrentMenu as InGameMenu;
             return menu?.FeedPanel;
         }
@@ -924,7 +920,7 @@ namespace GameManagers
             return GetColorString(str, ChatTextColor.ID);
         }
 
-        public static string GetColorString(string str, ChatTextColor color, bool bold=false)
+        public static string GetColorString(string str, ChatTextColor color, bool bold = false)
         {
             if (color == ChatTextColor.Default)
                 return str;
@@ -955,12 +951,12 @@ namespace GameManagers
             if (!string.IsNullOrEmpty(SuggestionState.OriginalPartialText))
             {
                 bool isStillValidCompletion = false;
-                
+
                 if (SuggestionState.Type == SuggestionType.Command && input.StartsWith("/"))
                 {
                     int spaceIndex = input.IndexOf(' ');
                     string currentCommand = spaceIndex == -1 ? input.Substring(1).ToLower() : input.Substring(1, spaceIndex - 1).ToLower();
-                    
+
                     if (spaceIndex != -1)
                     {
                         SuggestionState.OriginalPartialText = "";
@@ -1100,7 +1096,7 @@ namespace GameManagers
                             ClearLastSuggestions();
                         return;
                     }
-                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) && 
+                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) &&
                         afterAt.Length < SuggestionState.PartialText.Length &&
                         SuggestionState.PartialText.StartsWith(afterAt, StringComparison.OrdinalIgnoreCase))
                     {
@@ -1108,7 +1104,7 @@ namespace GameManagers
                     }
                 }
             }
-            
+
             if (SuggestionState.Type == SuggestionType.Command && input.StartsWith("/"))
             {
                 int spaceIndex = input.IndexOf(' ');
@@ -1134,7 +1130,7 @@ namespace GameManagers
                 else
                 {
                     string currentCommand = input.Substring(1).ToLower();
-                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) && 
+                    if (!string.IsNullOrEmpty(SuggestionState.PartialText) &&
                         currentCommand.Length < SuggestionState.PartialText.Length &&
                         SuggestionState.PartialText.StartsWith(currentCommand, StringComparison.OrdinalIgnoreCase))
                     {
@@ -1142,7 +1138,7 @@ namespace GameManagers
                     }
                 }
             }
-            if (SuggestionState.Type == SuggestionType.PlayerID && SuggestionState.IsTabCompleting && 
+            if (SuggestionState.Type == SuggestionType.PlayerID && SuggestionState.IsTabCompleting &&
                 input.StartsWith("/") && input.IndexOf(' ') is int cmdSpaceIndex && cmdSpaceIndex != -1)
             {
                 string partial = input.Substring(cmdSpaceIndex + 1);
@@ -1179,7 +1175,7 @@ namespace GameManagers
                         ClearLastSuggestions();
                     return;
                 }
-                if (spaceIndex != -1 && CommandsCache.TryGetValue(command, out CommandAttribute cmdAttr) && 
+                if (spaceIndex != -1 && CommandsCache.TryGetValue(command, out CommandAttribute cmdAttr) &&
                     cmdAttr.AutofillType == AutofillType.PlayerID)
                 {
                     string partial = input.Substring(spaceIndex + 1);
@@ -1194,7 +1190,7 @@ namespace GameManagers
                         var players = new List<Player>();
                         foreach (var p in PhotonNetwork.PlayerList)
                         {
-                            if (string.IsNullOrEmpty(partial) || 
+                            if (string.IsNullOrEmpty(partial) ||
                                 p.ActorNumber.ToString().StartsWith(partial))
                             {
                                 players.Add(p);
@@ -1386,11 +1382,11 @@ namespace GameManagers
             SuggestionState.CurrentIndex = suggestionIndex;
             SuggestionState.IsTabCompleting = true;
             SuggestionState.IsProcessingClick = true;
-            RefreshSuggestionDisplay();            
+            RefreshSuggestionDisplay();
             chatPanel.SetTextAndPositionCaret(newText);
             _instance.StartCoroutine(_instance.ReactivateInputAfterClick(chatPanel));
         }
-        
+
         private IEnumerator ReactivateInputAfterClick(ChatPanel chatPanel)
         {
             yield return null;
@@ -1402,7 +1398,7 @@ namespace GameManagers
                 SuggestionState.CurrentIndex = preservedIndex;
                 SuggestionState.IsTabCompleting = true;
                 RefreshSuggestionDisplay();
-            }            
+            }
             yield return null;
             if (!chatPanel.IsInputActive())
             {
@@ -1416,7 +1412,7 @@ namespace GameManagers
             }
             SuggestionState.IsProcessingClick = false;
         }
-        
+
         private static string BuildCompletedText(string currentInput, string suggestion)
         {
             string newText = currentInput;
@@ -1438,8 +1434,8 @@ namespace GameManagers
                     if (atPos >= 0)
                     {
                         int mentionEnd = atPos + 1;
-                        while (mentionEnd < currentInput.Length && 
-                               currentInput[mentionEnd] != ' ' && 
+                        while (mentionEnd < currentInput.Length &&
+                               currentInput[mentionEnd] != ' ' &&
                                currentInput[mentionEnd] != '\t')
                         {
                             mentionEnd++;
@@ -1452,7 +1448,7 @@ namespace GameManagers
             }
             return newText;
         }
-        
+
         private static void RefreshSuggestionDisplay()
         {
             for (int i = RawMessages.Count - 1; i >= 0; i--)
@@ -1490,7 +1486,7 @@ namespace GameManagers
                         }
                         displayTexts.Add(GetColorString(MessageBuilder.ToString(), ChatTextColor.MyPlayer));
                     }
-                    break;                    
+                    break;
                 case SuggestionType.PlayerID:
                     header = "Matching players:";
                     foreach (var suggestion in SuggestionState.Suggestions)
@@ -1505,7 +1501,7 @@ namespace GameManagers
                             }
                         }
                     }
-                    break;                    
+                    break;
                 case SuggestionType.Mention:
                     header = "Matching players:";
                     foreach (var suggestion in SuggestionState.Suggestions)
@@ -1521,7 +1517,7 @@ namespace GameManagers
                         }
                     }
                     break;
-            }            
+            }
             if (!string.IsNullOrEmpty(header))
             {
                 AddLine(GetColorString(header, ChatTextColor.System), ChatTextColor.System, true, isSuggestion: true);
@@ -1588,8 +1584,8 @@ namespace GameManagers
                 if (targetPlayer != null)
                 {
                     string targetName = targetPlayer.GetStringProperty(PlayerProperty.Name);
-                    AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}", 
-                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)), 
+                    AddLine($"{GetColorString("To ", ChatTextColor.System)}{targetName}{GetColorString(": ", ChatTextColor.System)}{message}",
+                        ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
                         senderID, false, true, targetID);
                     var panel = GetChatPanel();
                     if (panel != null && !panel.IsInPMMode())
@@ -1600,10 +1596,10 @@ namespace GameManagers
             }
             else if (localID == targetID)
             {
-                AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}", 
-                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)), 
+                AddLine($"{GetColorString("From ", ChatTextColor.System)}{senderName}{GetColorString(": ", ChatTextColor.System)}{message}",
+                    ChatTextColor.Default, false, DateTime.UtcNow.AddSeconds(-Util.GetPhotonTimestampDifference(info.SentServerTime, PhotonNetwork.Time)),
                     senderID, false, true, senderID);
-                    
+
                 var panel = GetChatPanel();
                 if (panel != null)
                 {
