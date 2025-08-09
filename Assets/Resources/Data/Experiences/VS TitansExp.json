@@ -1,0 +1,25 @@
+{
+  "category": "",
+  "subcategory": "",
+  "name": "Standard 1k",
+  "description": "1k minimum damage required to kill titans.",
+
+  "modes": [
+    "+waves",
+    "+survive",
+    "+endless",
+    "+cranked"
+  ],
+
+  "maps": ["+*"],
+
+  "uiRules": [
+    "!misc.allow_player_titans=false",
+    "!misc.allow_shifter_specials=false",
+    
+    "titan.min_size=2.5[0-3.0]",
+    "titan.max_size=3.0[0-3.0]",
+
+    "general.difficulty=normal{easy,normal,hard,abnormal}"
+  ]
+}

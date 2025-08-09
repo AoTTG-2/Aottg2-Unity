@@ -1,17 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-using SimpleJSONFixed;
-using ApplicationManagers;
+﻿using ApplicationManagers;
 using Settings;
-using Events;
+using SimpleJSONFixed;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 using Utility;
 
 namespace Map
 {
+    class Experience
+    {
+        public string Category;
+        public string SubCategory;
+        public string Name;
+        public string Description;
+
+        public Experience(JSONNode node)
+        {
+            // Category, SubCategory, Name, Description
+            Category = node["Category"];
+            SubCategory = node["SubCategory"];
+            Name = node["Name"];
+            Description = node["Description"];
+        }
+    }
+
     class BuiltinLevels
     {
         private static JSONNode _info;
@@ -85,6 +99,44 @@ namespace Map
                     return true;
             }
             return false;
+        }
+
+        // Optimally only extend once or twice.
+        public static PresetDefinition Resolve(string name)
+        {
+            string text = ResourceManager.TryLoadText(ResourcePaths.Experiences, name + "Exp");
+            PresetDefinition preset = JsonUtility.FromJson<PresetDefinition>(text);
+
+            if (preset.Extends == null)
+            {
+                return preset;
+            }
+            else
+            {
+                return PresetMerger.Merge(Resolve(preset.Extends), preset);
+            }
+        }
+
+        public static PresetDefinition LoadExperience(string name)
+        {
+            if (name == "")
+                return null;
+            foreach (JSONNode experience in _info["Experiences"])
+            {
+                if (experience["Name"] == name)
+                {
+                    return Resolve(experience["Name"]); // dont need looping since all we care about is name.
+                }
+            }
+            return null;    // determine later if we want custom experiences that aren't bundled with their own content.
+        }
+
+        public static List<Experience> GetExperiences()
+        {
+            List<Experience> experiences = new List<Experience>();
+            foreach (JSONNode experience in _info["Experiences"])
+                experiences.Add(new Experience(experience));
+            return experiences;
         }
 
         public static string[] GetMapCategories()
@@ -267,7 +319,7 @@ namespace Map
             JSONNode map = GetMap(category, mapName);
             JSONNode mode = GetGameMode(gameMode);
             Dictionary<string, JSONNode> settings = new Dictionary<string, JSONNode>();
-            if (mode != null  && mode.HasKey("MiscSettings"))
+            if (mode != null && mode.HasKey("MiscSettings"))
                 LoadSettings(settings, mode["MiscSettings"]);
             if (map != null && map.HasKey("MiscSettings"))
                 LoadSettings(settings, map["MiscSettings"]);

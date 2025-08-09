@@ -70,7 +70,7 @@ namespace UI
         {
             base.SetupPopups();
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
-            _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
+            _createGamePopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
             _multiplayerMapPopup = ElementFactory.InstantiateAndSetupPanel<MultiplayerMapPopup>(transform, "Prefabs/MainMenu/MultiplayerMapPopup").
                 GetComponent<BasePopup>();
             _editProfilePopup = ElementFactory.CreateHeadedPanel<EditProfilePopup>(transform).GetComponent<BasePopup>();
@@ -270,7 +270,7 @@ namespace UI
                     SceneLoader.LoadScene(SceneName.Credits);
                     break;
                 case "SingleplayerButton":
-                    ((CreateGamePopup)_createGamePopup).Show(false);
+                    ((ExperienceMenu)_createGamePopup).Show(false);
                     break;
                 case "MultiplayerButton":
                     _multiplayerMapPopup.Show();

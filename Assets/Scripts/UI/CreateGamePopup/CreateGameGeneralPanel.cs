@@ -1,15 +1,13 @@
-﻿using Map;
+﻿using ApplicationManagers;
+using Map;
 using Settings;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 using System.Linq;
-using ApplicationManagers;
+using UnityEngine;
 
 namespace UI
 {
-    class CreateGameGeneralPanel: CreateGameCategoryPanel
+    class CreateGameGeneralPanel : CreateGameCategoryPanel
     {
         protected override bool ScrollBar => true;
         public override void Setup(BasePanel parent = null)
@@ -38,12 +36,12 @@ namespace UI
             if (settings.General.GameMode.Value != settings.General.PrevGameMode.Value || (settings.General.GameMode.Value == BuiltinLevels.UseMapLogic))
             {
                 SetDefaultMisc();
-                BuiltinLevels.LoadMiscSettings(settings.General.MapCategory.Value, settings.General.MapName.Value, 
+                BuiltinLevels.LoadMiscSettings(settings.General.MapCategory.Value, settings.General.MapName.Value,
                     settings.General.GameMode.Value, settings.Misc);
                 SettingsManager.InGameUI.Mode.Current = new Dictionary<string, BaseSetting>();
             }
             settings.General.PrevGameMode.Value = settings.General.GameMode.Value;
-            ((CreateGamePopup)Parent).SyncModeSettings(script);
+            //((CreateGamePopup)Parent).SyncModeSettings(script);
             BasePopup selectPopup;
             if (SceneLoader.SceneName == SceneName.InGame)
                 selectPopup = ((InGameMenu)UIManager.CurrentMenu)._selectMapPopup;
@@ -59,7 +57,7 @@ namespace UI
                 UIManager.GetLocale(cat, sub, "Weather"), SettingsManager.WeatherSettings.WeatherSets.GetSetNames(), elementWidth: 180f);
             ElementFactory.CreateToggleGroupSetting(DoublePanelRight, dropdownStyle, settings.General.Difficulty, UIManager.GetLocale(cat, sub, "Difficulty"),
                 UIManager.GetLocaleArray(cat, sub, "DifficultyOptions"));
-            if (((CreateGamePopup)parent).IsMultiplayer && SceneLoader.SceneName == SceneName.MainMenu)
+            if (((ExperienceMenu)parent).IsMultiplayer && SceneLoader.SceneName == SceneName.MainMenu)
             {
                 ElementFactory.CreateInputSetting(DoublePanelRight, dropdownStyle, settings.General.RoomName, UIManager.GetLocale(cat, sub, "RoomName"), elementWidth: 200f);
                 ElementFactory.CreateInputSetting(DoublePanelRight, dropdownStyle, settings.General.MaxPlayers, UIManager.GetLocale(cat, sub, "MaxPlayers"), elementWidth: 200f);

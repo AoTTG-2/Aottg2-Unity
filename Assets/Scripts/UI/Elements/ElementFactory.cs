@@ -419,6 +419,14 @@ namespace UI
             return row;
         }
 
+        public static GameObject CreateCarouselSelector(Transform parent)
+        {
+            GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/CarouselSelector");
+            var element = buttonSetting.AddComponent<CarouselSelector>();
+            element.Setup(parent);
+            return buttonSetting;
+        }
+
         public static GameObject CreateVerticalGroup(Transform parent, float spacing, TextAnchor alignment = TextAnchor.UpperLeft)
         {
             GameObject group = InstantiateAndBind(parent, "Prefabs/Elements/VerticalGroup");

@@ -1,0 +1,32 @@
+{
+  "id": "exp_1k_legacy",
+  "category": "General",
+  "subcategory": "1k",
+  "name": "1k Legacy",
+  "description": "1k minimum damage required to kill titans.",
+  "extends": "base_waves_mode",
+
+  "modes": [
+    "+waves",
+    "+survive"
+  ],
+
+  "maps": [
+    "+forest_1",
+    "+forest_2",
+    "+forest_3",
+    "+forest_lava"
+  ],
+
+  "uiRules": [
+    "!misc.allow_player_titans=false",   // force off + disable editing
+    "+misc.allow_shifter_specials",      // allow toggle
+
+    "titan.min_size=2.5[0-3.0]",         // default=2.5, min=0, max=3.0
+    "titan.max_size=3.0[0-3.0]",         // default=3.0, min=0, max=3.0
+
+    "general.difficulty=normal{easy,normal,hard,abnormal}", // allowed values list
+
+    "-debug.*"                           // hides all debug.* settings
+  ]
+}

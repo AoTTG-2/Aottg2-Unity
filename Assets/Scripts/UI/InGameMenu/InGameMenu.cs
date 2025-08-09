@@ -1,24 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using Settings;
-using GameManagers;
-using Utility;
-using SimpleJSONFixed;
-using ApplicationManagers;
-using Characters;
-using System.Collections;
+﻿using ApplicationManagers;
 using Cameras;
+using Characters;
 using CustomLogic;
+using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
+using Settings;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using Utility;
 
 namespace UI
 {
-    class InGameMenu: BaseMenu
+    class InGameMenu : BaseMenu
     {
         public EmoteHandler EmoteHandler;
         public ItemHandler ItemHandler;
@@ -264,7 +261,7 @@ namespace UI
             {
                 HideAllMenus();
                 _pausePopup.Show();
-            }            
+            }
             else if (!enabled)
             {
                 HideAllMenus();
@@ -389,7 +386,7 @@ namespace UI
                 return;
             if (_killFeedBigPopup.TimeLeft > 0f)
             {
-                ShowKillFeedPushSmall(_killFeedBigPopup.Killer, _killFeedBigPopup.Victim, _killFeedBigPopup.Score, 
+                ShowKillFeedPushSmall(_killFeedBigPopup.Killer, _killFeedBigPopup.Victim, _killFeedBigPopup.Score,
                     _killFeedBigPopup.Weapon, _killFeedBigPopup.TimeLeft, 0);
             }
             _killFeedBigPopup.Show(killer, victim, score, weapon);
@@ -687,7 +684,7 @@ namespace UI
                     }
                 }
             }
-            
+
             row = Util.SizeText($"{name}: {score}", 19);
 
             return row;
@@ -755,7 +752,7 @@ namespace UI
             _settingsPopup = ElementFactory.CreateHeadedPanel<SettingsPopup>(transform).GetComponent<BasePopup>();
             _pausePopup = ElementFactory.CreateHeadedPanel<PausePopup>(transform).GetComponent<PausePopup>();
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
-            _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
+            _createGamePopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
             _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
             SkillTooltipPopup = ElementFactory.CreateTooltipPopup<SkillTooltipPopup>(IconPickPopup.transform).GetComponent<SkillTooltipPopup>();
             _popups.Add(_settingsPopup);

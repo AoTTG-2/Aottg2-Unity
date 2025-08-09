@@ -5,14 +5,12 @@ using Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using ApplicationManagers;
 
 namespace UI
 {
-    class MultiplayerRoomListPopup: BasePopup
+    class MultiplayerRoomListPopup : BasePopup
     {
         protected override string ThemePanel => "MultiplayerRoomListPopup";
         protected override bool HasPremadeContent => true;
@@ -122,7 +120,7 @@ namespace UI
             if (refetch)
             {
                 _rooms = MainMenuGameManager.RoomList.Values.ToArray();
-                string playerCount = (PhotonNetwork.CountOfPlayers / 2) + " " + 
+                string playerCount = (PhotonNetwork.CountOfPlayers / 2) + " " +
                     UIManager.GetLocale("MainMenu", "MultiplayerRoomListPopup", "PlayersOnline");
                 _playersOnlineLabel.text = playerCount;
             }
@@ -250,7 +248,7 @@ namespace UI
                     break;
                 case "Create":
                     HideNoDisconnect();
-                    ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show(true);
+                    ((ExperienceMenu)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show(true);
                     break;
                 case "Duel":
                     HideNoDisconnect();

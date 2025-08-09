@@ -453,6 +453,20 @@
 			"Name": "None"
 		}
 	],
+	"Experiences": [
+		{
+			"Name": "VS Titans",
+			"Category": "General",
+  			"Subcategory": "Casual",
+			"Description": "Fight off AI titans."
+		},
+		{
+			"Name": "Standard 1k",
+			"Category": "General",
+  			"Subcategory": "1k",
+			"Description": "1k minimum damage required to kill titans."
+		},
+	],
 	"Duels": [
 		{
 			"Name": "1v1 Speed Duel",
