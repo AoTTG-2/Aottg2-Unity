@@ -348,17 +348,13 @@ namespace Utility
         
         internal static System.Collections.IEnumerator GeneratePreviewForHumanSetCoroutine(UI.CharacterEditorHumanMenu humanMenu, bool isRebuild = false)
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(3);
             GeneratePreviewForHumanSet(humanMenu, isRebuild);
         }
         
         internal static System.Collections.IEnumerator GeneratePreviewForTitanSetCoroutine(UI.CharacterEditorTitanMenu titanMenu, bool isRebuild = false)
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(3);
             GeneratePreviewForTitanSet(titanMenu, isRebuild);
         }
         
@@ -403,8 +399,7 @@ namespace Utility
 
         public static System.Collections.IEnumerator GeneratePreviewWithPersistentCameraCoroutine(string cameraId, GameObject character, string fileName, int size = 128, bool isHuman = true, Transform cameraParent = null)
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(2);
             GeneratePreviewWithPersistentCamera(cameraId, character, fileName, size, isHuman, cameraParent);
         }
     }

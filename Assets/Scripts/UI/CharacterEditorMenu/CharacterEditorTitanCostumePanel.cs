@@ -145,9 +145,7 @@ namespace UI
                 settings.TitanCustomSets.SelectedSetIndex.Value = previousSetIndex;
                 var character = (DummyTitan)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
                 character.Setup.Load(previousSet);
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
+                yield return Util.WaitForFrames(3);
                 Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
                 settings.TitanCustomSets.SelectedSetIndex.Value = currentSelectedIndex;
                 var currentSet = (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet();
@@ -267,9 +265,7 @@ namespace UI
 
         private System.Collections.IEnumerator SaveQuitCaptureCoroutineInternal()
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(3);
             Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(false);
             Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
             SceneLoader.LoadScene(SceneName.MainMenu);

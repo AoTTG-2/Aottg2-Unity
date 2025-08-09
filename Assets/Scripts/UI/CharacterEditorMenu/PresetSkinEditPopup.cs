@@ -83,29 +83,10 @@ namespace UI
             {
                 CreateBackup();
             }
-            
-            _currentPreset.SkinHair.Value = string.Empty;
-            _currentPreset.SkinEye.Value = string.Empty;
-            _currentPreset.SkinGlass.Value = string.Empty;
-            _currentPreset.SkinFace.Value = string.Empty;
-            _currentPreset.SkinSkin.Value = string.Empty;
-            _currentPreset.SkinCostume.Value = string.Empty;
-            _currentPreset.SkinLogo.Value = string.Empty;
-            _currentPreset.SkinGearL.Value = string.Empty;
-            _currentPreset.SkinGearR.Value = string.Empty;
-            _currentPreset.SkinGas.Value = string.Empty;
-            _currentPreset.SkinHoodie.Value = string.Empty;
-            _currentPreset.SkinWeaponTrail.Value = string.Empty;
-            _currentPreset.SkinThunderspearL.Value = string.Empty;
-            _currentPreset.SkinThunderspearR.Value = string.Empty;
-            _currentPreset.SkinHookL.Value = string.Empty;
-            _currentPreset.SkinHookLTiling.Value = 1f;
-            _currentPreset.SkinHookR.Value = string.Empty;
-            _currentPreset.SkinHookRTiling.Value = 1f;
-            _currentPreset.SkinHat.Value = string.Empty;
-            _currentPreset.SkinHead.Value = string.Empty;
-            _currentPreset.SkinBack.Value = string.Empty;
-            _currentPreset.SkinHorse.Value = string.Empty;
+            foreach (var typedSetting in _currentPreset.TypedSettings)
+            {
+                typedSetting.Value.SetDefault();
+            }
             var inputElements = GetComponentsInChildren<InputSettingElement>();
             foreach (var element in inputElements)
             {
@@ -117,28 +98,23 @@ namespace UI
         {
             _backupValues.Clear();
             _backupFloatValues.Clear();
-            _backupValues["SkinHair"] = _currentPreset.SkinHair.Value;
-            _backupValues["SkinEye"] = _currentPreset.SkinEye.Value;
-            _backupValues["SkinGlass"] = _currentPreset.SkinGlass.Value;
-            _backupValues["SkinFace"] = _currentPreset.SkinFace.Value;
-            _backupValues["SkinSkin"] = _currentPreset.SkinSkin.Value;
-            _backupValues["SkinCostume"] = _currentPreset.SkinCostume.Value;
-            _backupValues["SkinLogo"] = _currentPreset.SkinLogo.Value;
-            _backupValues["SkinGearL"] = _currentPreset.SkinGearL.Value;
-            _backupValues["SkinGearR"] = _currentPreset.SkinGearR.Value;
-            _backupValues["SkinGas"] = _currentPreset.SkinGas.Value;
-            _backupValues["SkinHoodie"] = _currentPreset.SkinHoodie.Value;
-            _backupValues["SkinWeaponTrail"] = _currentPreset.SkinWeaponTrail.Value;
-            _backupValues["SkinThunderspearL"] = _currentPreset.SkinThunderspearL.Value;
-            _backupValues["SkinThunderspearR"] = _currentPreset.SkinThunderspearR.Value;
-            _backupValues["SkinHookL"] = _currentPreset.SkinHookL.Value;
-            _backupValues["SkinHookR"] = _currentPreset.SkinHookR.Value;
-            _backupValues["SkinHat"] = _currentPreset.SkinHat.Value;
-            _backupValues["SkinHead"] = _currentPreset.SkinHead.Value;
-            _backupValues["SkinBack"] = _currentPreset.SkinBack.Value;
-            _backupValues["SkinHorse"] = _currentPreset.SkinHorse.Value;
-            _backupFloatValues["SkinHookLTiling"] = _currentPreset.SkinHookLTiling.Value;
-            _backupFloatValues["SkinHookRTiling"] = _currentPreset.SkinHookRTiling.Value;
+            foreach (var kvp in _currentPreset.TypedSettings)
+            {
+                string key = kvp.Key;
+                var setting = kvp.Value;
+                var type = SettingsUtil.GetSettingType(setting);
+                switch (type)
+                {
+                    case SettingType.String:
+                        _backupValues[key] = ((StringSetting)setting).Value;
+                        break;
+                    case SettingType.Float:
+                        _backupFloatValues[key] = ((FloatSetting)setting).Value;
+                        break;
+                    default:
+                        break;
+                }
+            }
             _hasBackup = true;
         }
         
@@ -148,28 +124,25 @@ namespace UI
             {
                 return;
             }
-            if (_backupValues.ContainsKey("SkinHair")) _currentPreset.SkinHair.Value = _backupValues["SkinHair"];
-            if (_backupValues.ContainsKey("SkinEye")) _currentPreset.SkinEye.Value = _backupValues["SkinEye"];
-            if (_backupValues.ContainsKey("SkinGlass")) _currentPreset.SkinGlass.Value = _backupValues["SkinGlass"];
-            if (_backupValues.ContainsKey("SkinFace")) _currentPreset.SkinFace.Value = _backupValues["SkinFace"];
-            if (_backupValues.ContainsKey("SkinSkin")) _currentPreset.SkinSkin.Value = _backupValues["SkinSkin"];
-            if (_backupValues.ContainsKey("SkinCostume")) _currentPreset.SkinCostume.Value = _backupValues["SkinCostume"];
-            if (_backupValues.ContainsKey("SkinLogo")) _currentPreset.SkinLogo.Value = _backupValues["SkinLogo"];
-            if (_backupValues.ContainsKey("SkinGearL")) _currentPreset.SkinGearL.Value = _backupValues["SkinGearL"];
-            if (_backupValues.ContainsKey("SkinGearR")) _currentPreset.SkinGearR.Value = _backupValues["SkinGearR"];
-            if (_backupValues.ContainsKey("SkinGas")) _currentPreset.SkinGas.Value = _backupValues["SkinGas"];
-            if (_backupValues.ContainsKey("SkinHoodie")) _currentPreset.SkinHoodie.Value = _backupValues["SkinHoodie"];
-            if (_backupValues.ContainsKey("SkinWeaponTrail")) _currentPreset.SkinWeaponTrail.Value = _backupValues["SkinWeaponTrail"];
-            if (_backupValues.ContainsKey("SkinThunderspearL")) _currentPreset.SkinThunderspearL.Value = _backupValues["SkinThunderspearL"];
-            if (_backupValues.ContainsKey("SkinThunderspearR")) _currentPreset.SkinThunderspearR.Value = _backupValues["SkinThunderspearR"];
-            if (_backupValues.ContainsKey("SkinHookL")) _currentPreset.SkinHookL.Value = _backupValues["SkinHookL"];
-            if (_backupValues.ContainsKey("SkinHookR")) _currentPreset.SkinHookR.Value = _backupValues["SkinHookR"];
-            if (_backupValues.ContainsKey("SkinHat")) _currentPreset.SkinHat.Value = _backupValues["SkinHat"];
-            if (_backupValues.ContainsKey("SkinHead")) _currentPreset.SkinHead.Value = _backupValues["SkinHead"];
-            if (_backupValues.ContainsKey("SkinBack")) _currentPreset.SkinBack.Value = _backupValues["SkinBack"];
-            if (_backupValues.ContainsKey("SkinHorse")) _currentPreset.SkinHorse.Value = _backupValues["SkinHorse"];
-            if (_backupFloatValues.ContainsKey("SkinHookLTiling")) _currentPreset.SkinHookLTiling.Value = _backupFloatValues["SkinHookLTiling"];
-            if (_backupFloatValues.ContainsKey("SkinHookRTiling")) _currentPreset.SkinHookRTiling.Value = _backupFloatValues["SkinHookRTiling"];
+            foreach (var kvp in _currentPreset.TypedSettings)
+            {
+                string key = kvp.Key;
+                var setting = kvp.Value;
+                var type = SettingsUtil.GetSettingType(setting);
+                switch (type)
+                {
+                    case SettingType.String:
+                        if (_backupValues.ContainsKey(key))
+                            ((StringSetting)setting).Value = _backupValues[key];
+                        break;
+                    case SettingType.Float:
+                        if (_backupFloatValues.ContainsKey(key))
+                            ((FloatSetting)setting).Value = _backupFloatValues[key];
+                        break;
+                    default:
+                        break;
+                }
+            }
             var inputElements = GetComponentsInChildren<InputSettingElement>();
             foreach (var element in inputElements)
             {

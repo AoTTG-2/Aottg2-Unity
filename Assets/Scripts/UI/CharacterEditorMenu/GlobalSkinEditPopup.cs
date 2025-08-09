@@ -83,56 +83,52 @@ namespace UI
             if (_currentGlobalSet == null || _hasBackup) return;
             _backupValues.Clear();
             _backupFloatValues.Clear();
-            _backupValues["Hair"] = _currentGlobalSet.Hair.Value;
-            _backupValues["Eye"] = _currentGlobalSet.Eye.Value;
-            _backupValues["Glass"] = _currentGlobalSet.Glass.Value;
-            _backupValues["Face"] = _currentGlobalSet.Face.Value;
-            _backupValues["Skin"] = _currentGlobalSet.Skin.Value;
-            _backupValues["Costume"] = _currentGlobalSet.Costume.Value;
-            _backupValues["Logo"] = _currentGlobalSet.Logo.Value;
-            _backupValues["Hat"] = _currentGlobalSet.Hat.Value;
-            _backupValues["Head"] = _currentGlobalSet.Head.Value;
-            _backupValues["Back"] = _currentGlobalSet.Back.Value;
-            _backupValues["GearL"] = _currentGlobalSet.GearL.Value;
-            _backupValues["GearR"] = _currentGlobalSet.GearR.Value;
-            _backupValues["Gas"] = _currentGlobalSet.Gas.Value;
-            _backupValues["Hoodie"] = _currentGlobalSet.Hoodie.Value;
-            _backupValues["WeaponTrail"] = _currentGlobalSet.WeaponTrail.Value;
-            _backupValues["ThunderspearL"] = _currentGlobalSet.ThunderspearL.Value;
-            _backupValues["ThunderspearR"] = _currentGlobalSet.ThunderspearR.Value;
-            _backupValues["HookL"] = _currentGlobalSet.HookL.Value;
-            _backupValues["HookR"] = _currentGlobalSet.HookR.Value;
-            _backupValues["Horse"] = _currentGlobalSet.Horse.Value;
-            _backupFloatValues["HookLTiling"] = _currentGlobalSet.HookLTiling.Value;
-            _backupFloatValues["HookRTiling"] = _currentGlobalSet.HookRTiling.Value;
+            foreach (var kvp in _currentGlobalSet.TypedSettings)
+            {
+                string key = kvp.Key;
+                if (key == "Name" || key == "Preset" || key == "UniqueId")
+                    continue;
+                var setting = kvp.Value;
+                var type = SettingsUtil.GetSettingType(setting);
+                switch (type)
+                {
+                    case SettingType.String:
+                        _backupValues[key] = ((StringSetting)setting).Value;
+                        break;
+                    case SettingType.Float:
+                        _backupFloatValues[key] = ((FloatSetting)setting).Value;
+                        break;
+                    default:
+                        break;
+                }
+            }
             _hasBackup = true;
         }
 
         private void RestoreBackup()
         {
             if (_currentGlobalSet == null || !_hasBackup) return;
-            _currentGlobalSet.Hair.Value = _backupValues["Hair"];
-            _currentGlobalSet.Eye.Value = _backupValues["Eye"];
-            _currentGlobalSet.Glass.Value = _backupValues["Glass"];
-            _currentGlobalSet.Face.Value = _backupValues["Face"];
-            _currentGlobalSet.Skin.Value = _backupValues["Skin"];
-            _currentGlobalSet.Costume.Value = _backupValues["Costume"];
-            _currentGlobalSet.Logo.Value = _backupValues["Logo"];
-            _currentGlobalSet.Hat.Value = _backupValues["Hat"];
-            _currentGlobalSet.Head.Value = _backupValues["Head"];
-            _currentGlobalSet.Back.Value = _backupValues["Back"];
-            _currentGlobalSet.GearL.Value = _backupValues["GearL"];
-            _currentGlobalSet.GearR.Value = _backupValues["GearR"];
-            _currentGlobalSet.Gas.Value = _backupValues["Gas"];
-            _currentGlobalSet.Hoodie.Value = _backupValues["Hoodie"];
-            _currentGlobalSet.WeaponTrail.Value = _backupValues["WeaponTrail"];
-            _currentGlobalSet.ThunderspearL.Value = _backupValues["ThunderspearL"];
-            _currentGlobalSet.ThunderspearR.Value = _backupValues["ThunderspearR"];
-            _currentGlobalSet.HookL.Value = _backupValues["HookL"];
-            _currentGlobalSet.HookR.Value = _backupValues["HookR"];
-            _currentGlobalSet.Horse.Value = _backupValues["Horse"];
-            _currentGlobalSet.HookLTiling.Value = _backupFloatValues["HookLTiling"];
-            _currentGlobalSet.HookRTiling.Value = _backupFloatValues["HookRTiling"];
+            foreach (var kvp in _currentGlobalSet.TypedSettings)
+            {
+                string key = kvp.Key;
+                if (key == "Name" || key == "Preset" || key == "UniqueId")
+                    continue;
+                var setting = kvp.Value;
+                var type = SettingsUtil.GetSettingType(setting);
+                switch (type)
+                {
+                    case SettingType.String:
+                        if (_backupValues.ContainsKey(key))
+                            ((StringSetting)setting).Value = _backupValues[key];
+                        break;
+                    case SettingType.Float:
+                        if (_backupFloatValues.ContainsKey(key))
+                            ((FloatSetting)setting).Value = _backupFloatValues[key];
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public void OnCancelClick()
@@ -151,28 +147,13 @@ namespace UI
                 CreateBackup();
             }
             
-            _currentGlobalSet.Hair.Value = string.Empty;
-            _currentGlobalSet.Eye.Value = string.Empty;
-            _currentGlobalSet.Glass.Value = string.Empty;
-            _currentGlobalSet.Face.Value = string.Empty;
-            _currentGlobalSet.Skin.Value = string.Empty;
-            _currentGlobalSet.Costume.Value = string.Empty;
-            _currentGlobalSet.Logo.Value = string.Empty;
-            _currentGlobalSet.Hat.Value = string.Empty;
-            _currentGlobalSet.Head.Value = string.Empty;
-            _currentGlobalSet.Back.Value = string.Empty;
-            _currentGlobalSet.GearL.Value = string.Empty;
-            _currentGlobalSet.GearR.Value = string.Empty;
-            _currentGlobalSet.Gas.Value = string.Empty;
-            _currentGlobalSet.Hoodie.Value = string.Empty;
-            _currentGlobalSet.WeaponTrail.Value = string.Empty;
-            _currentGlobalSet.ThunderspearL.Value = string.Empty;
-            _currentGlobalSet.ThunderspearR.Value = string.Empty;
-            _currentGlobalSet.HookL.Value = string.Empty;
-            _currentGlobalSet.HookR.Value = string.Empty;
-            _currentGlobalSet.Horse.Value = string.Empty;
-            _currentGlobalSet.HookLTiling.Value = 1f;
-            _currentGlobalSet.HookRTiling.Value = 1f;
+            foreach (var kvp in _currentGlobalSet.TypedSettings)
+            {
+                string key = kvp.Key;
+                if (key == "Name" || key == "Preset" || key == "UniqueId")
+                    continue;
+                kvp.Value.SetDefault();
+            }
             var inputElements = GetComponentsInChildren<InputSettingElement>();
             foreach (var element in inputElements)
             {

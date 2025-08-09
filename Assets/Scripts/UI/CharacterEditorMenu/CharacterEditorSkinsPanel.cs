@@ -157,14 +157,11 @@ namespace UI
                 bool originalGlobalEnabled = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
                 bool originalSetEnabled = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
                 _menu.ResetCharacter(fullReset: false);
-                yield return null;
-                yield return null;
+                yield return Util.YieldForFrames(2);
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = _persistentGlobalSkinPreview;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = _persistentCustomSkinPreview;
                 dummyHuman.LoadSkin();
-                yield return null;
-                yield return null;
-                yield return null;
+                yield return Util.YieldForFrames(3);
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
             }
@@ -209,25 +206,21 @@ namespace UI
         
         private System.Collections.IEnumerator LoadSkinAfterReset(DummyHuman dummyHuman, bool originalGlobalEnabled, bool originalSetEnabled)
         {
-            yield return null;
-            yield return null;
+            yield return Util.YieldForFrames(2);
             if (dummyHuman.Setup == null)
             {
                 StartCoroutine(RestoreOriginalSkinSettings(originalGlobalEnabled, originalSetEnabled));
                 yield break;
             }
             dummyHuman.LoadSkin();
-            yield return null;
-            yield return null;
+            yield return Util.YieldForFrames(2);
             SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
             SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
         }
         
         private System.Collections.IEnumerator ApplySkinPreviewAfterInitialSetup()
         {
-            yield return null;
-            yield return null;
-            yield return null;
+            yield return Util.YieldForFrames(3);
             var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
             if (gameManager?.Character is DummyHuman dummyHuman)
             {
@@ -236,8 +229,7 @@ namespace UI
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = _globalSkinPreview.Value;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = _customSkinPreview.Value;
                 dummyHuman.LoadSkin();
-                yield return null;
-                yield return null;
+                yield return Util.YieldForFrames(2);
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
             }

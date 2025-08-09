@@ -9,6 +9,7 @@ using System.Collections;
 using ApplicationManagers;
 using GameManagers;
 using Characters;
+using Utility;
 
 namespace UI
 {
@@ -75,9 +76,7 @@ namespace UI
         
         private System.Collections.IEnumerator CategoryChangeCaptureCoroutine(bool isHuman, bool shouldPreserveSkinPreview)
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(3);
             Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(isHuman);
             if (_category.Value == "Human")
                 CharacterEditorGameManager.HumanMode = true;
@@ -86,9 +85,7 @@ namespace UI
             SceneLoader.LoadScene(SceneName.CharacterEditor);
             if (shouldPreserveSkinPreview)
             {
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
+                yield return Util.WaitForFrames(3);
                 var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
                 if (gameManager?.Character is DummyHuman dummyHuman)
                 {
@@ -97,8 +94,7 @@ namespace UI
                     SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
                     SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
                     dummyHuman.LoadSkin();
-                    yield return new WaitForEndOfFrame();
-                    yield return new WaitForEndOfFrame();
+                    yield return Util.WaitForFrames(2);
                     SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
                     SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
                 }

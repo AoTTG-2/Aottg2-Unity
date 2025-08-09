@@ -252,9 +252,7 @@ namespace UI
                 settings.CustomSets.SelectedSetIndex.Value = previousSetIndex;
                 var character = (DummyHuman)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
                 character.Setup.Load(previousSet, (HumanWeapon)((CharacterEditorHumanMenu)_menu).Weapon.Value, false);
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForEndOfFrame();
+                yield return Util.WaitForFrames(3);
                 Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(true);
                 settings.CustomSets.SelectedSetIndex.Value = currentSelectedIndex;
                 var currentSet = (HumanCustomSet)settings.CustomSets.GetSelectedSet();
@@ -280,8 +278,7 @@ namespace UI
         
         private System.Collections.IEnumerator ApplySkinPreviewAfterReset()
         {
-            yield return null;
-            yield return null;
+            yield return Util.YieldForFrames(2);
             var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
             if (gameManager?.Character is DummyHuman dummyHuman)
             {
@@ -290,8 +287,7 @@ namespace UI
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
                 dummyHuman.LoadSkin();
-                yield return null;
-                yield return null;
+                yield return Util.YieldForFrames(2);
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
             }
@@ -309,8 +305,7 @@ namespace UI
         
         public System.Collections.IEnumerator ApplySkinPreviewAfterCostumeChange()
         {
-            yield return null;
-            yield return null;
+            yield return Util.YieldForFrames(2);
             var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
             if (gameManager?.Character is DummyHuman dummyHuman)
             {
@@ -319,8 +314,7 @@ namespace UI
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
                 dummyHuman.LoadSkin();
-                yield return null;
-                yield return null;
+                yield return Util.YieldForFrames(2);
                 SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
                 SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
             }
@@ -455,9 +449,7 @@ namespace UI
 
         private System.Collections.IEnumerator SaveQuitCaptureCoroutine()
         {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            yield return Util.WaitForFrames(3);
             Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(true);
             Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
             CharacterEditorSkinsPanel.ResetSkinPreviewToggles();
