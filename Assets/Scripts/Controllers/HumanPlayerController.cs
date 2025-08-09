@@ -9,7 +9,7 @@ using Photon.Pun;
 
 namespace Controllers
 {
-    class HumanPlayerController : BasePlayerController
+    class HumanPlayerController : BasePlayerController, IHumanController
     {
         protected Human _human;
         protected float _reelOutScrollTimeLeft;

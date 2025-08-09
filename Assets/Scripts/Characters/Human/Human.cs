@@ -137,7 +137,7 @@ namespace Characters
 
 
         // Decoupling keyboard operations
-        protected HumanPlayerController Controller;
+        public IHumanController Controller;
 
         protected override void CreateDetection()
         {
