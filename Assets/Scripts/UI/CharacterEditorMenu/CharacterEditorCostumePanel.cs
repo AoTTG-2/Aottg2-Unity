@@ -23,15 +23,37 @@ namespace UI
         protected override int VerticalPadding => 25;
         protected override bool ScrollBar => true;
         private CharacterEditorMenu _menu;
+        private bool _shouldGeneratePreviewAfterRebuild = false;
+        private string _previousProfileId = null;
+        private bool _isRebuildingPanel = false;
+        
+        public static bool GetPersistentGlobalPreview()
+        {
+            return CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
+        }
+        
+        public static bool GetPersistentCustomPreview()
+        {
+            return CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+        }
+        
+        public static void ResetSkinPreviewToggles()
+        {
+            CharacterEditorSkinsPanel.ResetSkinPreviewToggles();
+        }
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
             _menu = (CharacterEditorMenu)UIManager.CurrentMenu;
+            _isRebuildingPanel = true;
+            var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+            _previousProfileId = currentSet.UniqueId.Value;
             ElementStyle style = new ElementStyle(titleWidth: 130f, themePanel: ThemePanel);
             HumanCustomSettings settings = SettingsManager.HumanCustomSettings;
             string cat = "CharacterEditor";
             string sub = "Costume";
+            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("QuitWithoutSave"), onClick: () => OnButtonClick("QuitWithoutSave"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("LoadPreset"), onClick: () => OnButtonClick("LoadPreset"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale(cat, sub, "SaveQuit"), onClick: () => OnButtonClick("SaveQuit"));
             HumanCustomSet set = (HumanCustomSet)settings.CustomSets.GetSelectedSet();
@@ -55,48 +77,49 @@ namespace UI
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnSexChanged());
             string[] options = GetOptions("Eye", HumanSetup.EyeCount);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Eye, UIManager.GetLocale(cat, sub, "Eye"), options, GetIcons(options), 
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Face", HumanSetup.FaceCount, true);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Face, UIManager.GetLocale(cat, sub, "Face"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Glass", HumanSetup.GlassCount, true);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Glass, UIManager.GetLocale(cat, sub, "Glass"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetHairOptions();
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hair, UIManager.GetLocale(cat, sub, "Hair"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetCostumeOptions(set);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Costume, UIManager.GetLocale(cat, sub, "Costume"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Boots, UIManager.GetLocale(cat, sub, "Boots"), GetOptions("Boots", 2),
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+                elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnCharacterChanged());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Cape, UIManager.GetLocale(cat, sub, "Cape"), new string[] {"No cape", "Cape"}, 
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+                elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnCharacterChanged());
             ElementFactory.CreateDropdownSetting(SinglePanel, style, set.Logo, UIManager.GetLocale(cat, sub, "Logo"), GetOptions("Logo", 4),
-                elementWidth: dropdownWidth, onDropdownOptionSelect: () => _menu.ResetCharacter());
+                elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnCharacterChanged());
             options = GetOptions("Hat", HumanSetup.HatCount, true);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Hat, UIManager.GetLocale(cat, sub, "Hat"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Head", HumanSetup.HeadCount, true);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Head, UIManager.GetLocale(cat, sub, "Head"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             options = GetOptions("Back", HumanSetup.BackCount, true);
             ElementFactory.CreateIconPickSetting(SinglePanel, style, set.Back, UIManager.GetLocale(cat, sub, "Back"), options, GetIcons(options),
-                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => _menu.ResetCharacter());
+                UIManager.CurrentMenu.IconPickPopup, elementWidth: dropdownWidth, elementHeight: 40f, onSelect: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.SkinColor, UIManager.GetLocale(cat, sub, "SkinColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.HairColor, UIManager.GetLocale(cat, sub, "HairColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.ShirtColor, UIManager.GetLocale(cat, sub, "ShirtColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.StrapsColor, UIManager.GetLocale(cat, sub, "StrapsColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.PantsColor, UIManager.GetLocale(cat, sub, "PantsColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.JacketColor, UIManager.GetLocale(cat, sub, "JacketColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
             ElementFactory.CreateColorSetting(SinglePanel, style, set.BootsColor, UIManager.GetLocale(cat, sub, "BootsColor"), UIManager.CurrentMenu.ColorPickPopup,
-                onChangeColor: () => _menu.ResetCharacter());
+                onChangeColor: () => OnCharacterChanged());
+            _isRebuildingPanel = false;
         }
 
         private string[] GetOptions(string prefix, int options, bool includeNone = false)
@@ -143,7 +166,7 @@ namespace UI
                 icons.Add(ResourcePaths.Characters + "/Human/Previews/" + option);
             return icons.ToArray();
         }
-
+        
         private void OnSexChanged()
         {
             var settings = SettingsManager.HumanCustomSettings;
@@ -153,13 +176,153 @@ namespace UI
             else
                 set.Hair.Value = "HairF0";
             set.Costume.Value = 0;
-            OnCustomSetSelected();
+            _menu.RebuildPanels(true);
+            _menu.ResetCharacter(true);
+            bool shouldApplySkinPreview = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+            if (shouldApplySkinPreview)
+            {
+                var gameManager = ((CharacterEditorMenu)_menu)._gameManager;
+                var dummyHuman = gameManager.Human;
+                if (dummyHuman != null)
+                    dummyHuman.LoadSkin();
+                StartCoroutine(ApplySkinPreviewAfterReset());
+            }
         }
 
         private void OnCustomSetSelected()
         {
+            var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+            string currentProfileId = currentSet.UniqueId.Value;
+            bool isSameSet = _previousProfileId == currentProfileId;
+            if (isSameSet && _previousProfileId != null)
+            {
+                return;
+            }
+            var humanMenu = _menu as CharacterEditorHumanMenu;
+            if (humanMenu != null && humanMenu._editPresetSkinPopup != null && humanMenu._editPresetSkinPopup.IsActive)
+            {
+                humanMenu._editPresetSkinPopup.OnCancelClick();
+            }
             _menu.RebuildPanels(true);
             _menu.ResetCharacter(true);
+            bool shouldApplySkinPreview = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+            if (_previousProfileId != null && _previousProfileId != currentProfileId)
+            {
+                var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+                if (gameManager != null)
+                {
+                    gameManager.StartCoroutine(CapturePreviousProfilePreviewAndApplySkins(_previousProfileId, currentProfileId, shouldApplySkinPreview));
+                }
+            }
+            else if (_shouldGeneratePreviewAfterRebuild)
+            {
+                _shouldGeneratePreviewAfterRebuild = false;
+                if (shouldApplySkinPreview)
+                {
+                    StartCoroutine(ApplySkinPreviewAfterReset());
+                }
+                Utility.CharacterPreviewGenerator.GeneratePreviewForHumanSet(_menu as CharacterEditorHumanMenu, isRebuild: true);
+            }
+            else if (shouldApplySkinPreview)
+            {
+                StartCoroutine(ApplySkinPreviewAfterReset());
+            }
+            _previousProfileId = currentProfileId;
+        }
+
+        private System.Collections.IEnumerator CapturePreviousProfilePreviewAndApplySkins(string previousProfileId, string currentProfileId, bool shouldApplySkinPreview)
+        {
+            var settings = SettingsManager.HumanCustomSettings;
+            HumanCustomSet previousSet = null;
+            int previousSetIndex = -1;
+            var customSets = settings.CustomSets.GetSets().GetItems();
+            for (int i = 0; i < customSets.Count; i++)
+            {
+                var set = (HumanCustomSet)customSets[i];
+                if (set.UniqueId.Value == previousProfileId)
+                {
+                    previousSet = set;
+                    previousSetIndex = i;
+                    break;
+                }
+            }
+            if (previousSet != null)
+            {
+                int currentSelectedIndex = settings.CustomSets.SelectedSetIndex.Value;
+                settings.CustomSets.SelectedSetIndex.Value = previousSetIndex;
+                var character = (DummyHuman)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
+                character.Setup.Load(previousSet, (HumanWeapon)((CharacterEditorHumanMenu)_menu).Weapon.Value, false);
+                yield return Util.WaitForFrames(3);
+                Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(true);
+                settings.CustomSets.SelectedSetIndex.Value = currentSelectedIndex;
+                var currentSet = (HumanCustomSet)settings.CustomSets.GetSelectedSet();
+                character.Setup.Load(currentSet, (HumanWeapon)((CharacterEditorHumanMenu)_menu).Weapon.Value, false);
+                character.Idle();
+                if (shouldApplySkinPreview)
+                {
+                    yield return ApplySkinPreviewAfterReset();
+                }
+            }
+            else
+            {
+                if (shouldApplySkinPreview)
+                {
+                    var character = (DummyHuman)((CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager).Character;
+                    if (character != null)
+                    {
+                        yield return ApplySkinPreviewAfterReset();
+                    }
+                }
+            }
+        }
+        
+        private System.Collections.IEnumerator ApplySkinPreviewAfterReset()
+        {
+            yield return Util.YieldForFrames(2);
+            var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+            if (gameManager?.Character is DummyHuman dummyHuman)
+            {
+                bool originalGlobalEnabled = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                bool originalSetEnabled = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
+                SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
+                SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+                dummyHuman.LoadSkin();
+                yield return Util.YieldForFrames(2);
+                SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
+                SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
+            }
+        }
+
+        private void OnCharacterChanged()
+        {
+            _menu.ResetCharacter(fullReset: false);
+            bool shouldApplySkinPreview = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+            if (shouldApplySkinPreview)
+            {
+                StartCoroutine(ApplySkinPreviewAfterCostumeChange());
+            }
+        }
+        
+        public System.Collections.IEnumerator ApplySkinPreviewAfterCostumeChange()
+        {
+            yield return Util.YieldForFrames(2);
+            var gameManager = (CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+            if (gameManager?.Character is DummyHuman dummyHuman)
+            {
+                bool originalGlobalEnabled = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                bool originalSetEnabled = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
+                SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = CharacterEditorSkinsPanel.GetPersistentGlobalPreview();
+                SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = CharacterEditorSkinsPanel.GetPersistentCustomPreview();
+                dummyHuman.LoadSkin();
+                yield return Util.YieldForFrames(2);
+                SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value = originalGlobalEnabled;
+                SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value = originalSetEnabled;
+            }
+        }
+
+        private void GeneratePreviewForCurrentSet()
+        {
+            Utility.CharacterPreviewGenerator.GeneratePreviewForHumanSet(_menu as CharacterEditorHumanMenu, isRebuild: false);
         }
 
         private void OnButtonClick(string name)
@@ -185,7 +348,18 @@ namespace UI
                     break;
                 case "SaveQuit":
                     SettingsManager.HumanCustomSettings.Save();
-                    SceneLoader.LoadScene(SceneName.MainMenu);
+                    SettingsManager.CustomSkinSettings.Save();
+                    var gameManager = (GameManagers.CharacterEditorGameManager)ApplicationManagers.SceneLoader.CurrentGameManager;
+                    if (gameManager?.Character is DummyHuman dummyHuman)
+                    {
+                        var currentSet = (HumanCustomSet)SettingsManager.HumanCustomSettings.CustomSets.GetSelectedSet();
+                        var currentWeapon = _menu is CharacterEditorHumanMenu menu ? (Characters.HumanWeapon)menu.Weapon.Value : Characters.HumanWeapon.Blade;
+                        dummyHuman.Setup.Load(currentSet, currentWeapon, false);
+                        gameManager.StartCoroutine(SaveQuitCaptureCoroutine());
+                        return;
+                    }
+                    StartCoroutine(SaveQuitCaptureCoroutine());
+                    return;
                     break;
                 case "LoadPreset":
                     List<string> sets = new List<string>(SettingsManager.HumanCustomSettings.Costume1Sets.GetSetNames());
@@ -201,6 +375,18 @@ namespace UI
                         json["Preset"] = false;
                     UIManager.CurrentMenu.ExportPopup.Show(json.ToString(aIndent: 4));
                     break;
+                case "QuitWithoutSave":
+                    UIManager.CurrentMenu.ConfirmPopup.Show("Quit without saving? All changes will be lost.", () =>
+                    {
+                        Utility.CharacterPreviewGenerator.ClearSessionGeneratedPreviews();
+                        Utility.CharacterPreviewGenerator.ClearNonPersistentPreviews();
+                        SettingsManager.HumanCustomSettings.Load();
+                        SettingsManager.CustomSkinSettings.Load();
+                        CharacterEditorSkinsPanel.ResetSkinPreviewToggles();
+                        SceneLoader.LoadScene(SceneName.MainMenu);
+                    }, "Quit Without Save");
+                    break;
+
             }
         }
 
@@ -213,10 +399,12 @@ namespace UI
                 case "Create":
                     settings.CreateSet(setNamePopup.NameSetting.Value);
                     settings.GetSelectedSetIndex().Value = settings.GetSets().GetCount() - 1;
+                    _shouldGeneratePreviewAfterRebuild = true;
                     break;
                 case "Delete":
                     settings.DeleteSelectedSet();
                     settings.GetSelectedSetIndex().Value = 0;
+                    Utility.CharacterPreviewGenerator.CleanupOrphanedPreviews();
                     break;
                 case "Rename":
                     settings.GetSelectedSet().Name.Value = setNamePopup.NameSetting.Value;
@@ -224,6 +412,7 @@ namespace UI
                 case "Copy":
                     settings.CopySelectedSet(setNamePopup.NameSetting.Value);
                     settings.GetSelectedSetIndex().Value = settings.GetSets().GetCount() - 1;
+                    _shouldGeneratePreviewAfterRebuild = true;
                     break;
                 case "LoadPreset":
                     string setName = settings.GetSelectedSet().Name.Value;
@@ -251,9 +440,20 @@ namespace UI
                     {
                         importPopup.ShowError("Invalid human preset.");
                     }
+                    // Ensure skin preview state is preserved during character import
+                    _shouldGeneratePreviewAfterRebuild = CharacterEditorSkinsPanel.GetPersistentGlobalPreview() || CharacterEditorSkinsPanel.GetPersistentCustomPreview();
                     break;
             }
             OnCustomSetSelected();
+        }
+
+        private System.Collections.IEnumerator SaveQuitCaptureCoroutine()
+        {
+            yield return Util.WaitForFrames(3);
+            Utility.CharacterPreviewGenerator.CaptureCurrentCharacterPreview(true);
+            Utility.CharacterPreviewGenerator.SaveCachedPreviewsToDisk();
+            CharacterEditorSkinsPanel.ResetSkinPreviewToggles();
+            SceneLoader.LoadScene(SceneName.MainMenu);
         }
     }
 }

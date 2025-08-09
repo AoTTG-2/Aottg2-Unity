@@ -136,6 +136,12 @@ namespace Utility
                 yield return new WaitForEndOfFrame();
         }
 
+        public static IEnumerator YieldForFrames(int frames)
+        {
+            for (int i = 0; i < frames; i++)
+                yield return null;
+        }
+
         public static string[] EnumToStringArray<T>()
         {
             return Enum.GetNames(typeof(T));
