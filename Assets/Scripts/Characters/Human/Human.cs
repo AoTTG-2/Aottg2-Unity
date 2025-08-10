@@ -139,6 +139,8 @@ namespace Characters
         // Decoupling keyboard operations
         public IHumanController Controller;
 
+        public InGameCharacterSettings Settings;
+
         protected override void CreateDetection()
         {
             if (AI)
@@ -996,6 +998,7 @@ namespace Characters
         public void Init(bool ai, string team, InGameCharacterSettings settings)
         {
             base.Init(ai, team);
+            Settings = settings;
             Setup.Copy(settings);
             if (!ai)
                 Controller = gameObject.AddComponent<HumanPlayerController>();
@@ -1006,6 +1009,7 @@ namespace Characters
         public void ReloadHuman(InGameCharacterSettings settings)
         {
             FinishSetup = false;
+            Settings = settings;
             Setup.Copy(settings);
             Setup.Load(Setup.CustomSet, Setup.Weapon, false);
             Transform smokeTransform = transform.Find("3dmg_smoke");

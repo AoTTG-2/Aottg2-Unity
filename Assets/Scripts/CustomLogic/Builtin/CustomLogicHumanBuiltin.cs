@@ -461,6 +461,13 @@ namespace CustomLogic
         {
             if (!Human.IsMine())
                 return;
+            if (Human.AI)
+            {
+                var settings = Human.Settings;
+                settings.Loadout.Value = weapon;
+                Human.ReloadHuman(settings);
+                return;
+            }
             var gameManager = (InGameManager)SceneLoader.CurrentGameManager;
             if (gameManager.CurrentCharacter != null && gameManager.CurrentCharacter is Human && Human.IsMine())
             {
