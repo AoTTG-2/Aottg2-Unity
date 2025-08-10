@@ -6,8 +6,10 @@ using UI;
 using System.Collections.Generic;
 using Utility;
 using Map;
+using UnityEngine.AI;
 using Photon.Pun;
 using UnityEditor.UI;
+using System;
 
 namespace Controllers
 {
@@ -20,11 +22,8 @@ namespace Controllers
             PhysicsLayer.MapObjectEntities, PhysicsLayer.MapObjectProjectiles, PhysicsLayer.MapObjectAll);
 
         protected float _movingLeft = 0;
-        protected Vector3? MoveDirection;
         protected Vector3 AimDirection;
         protected Vector3 AimPoint;
-
-        protected bool IsWalk = false;
         protected bool _usingGas = false;
         protected bool _hookingLeft = false;
         protected bool _hookingRight = false;
@@ -54,22 +53,66 @@ namespace Controllers
         protected Vector3? _targetLastPosition;
         public Vector3 TargetVelocity;
 
+        public HumanAIState AIState;
+
+        public Dictionary<string, HumanAIState> AIStates = new();
+
+        public bool _usePathfinding = true;
+        protected NavMeshAgent _agent;
+
+        protected float _moveAngle;
+        protected bool _moveToActive = false;
+
+        protected float _stateTimeLeft = 0.0f;
+
+        protected float _moveToRange;
+
+        protected float _moveToTimeout;
+
+
+        protected bool _setTargetThisFrame = false;
+
         protected override void Awake()
         {
             base.Awake();
             _human = GetComponent<Human>();
         }
 
-        protected void Update()
+        protected override void Start()
         {
-            if (!_human.FinishSetup)
-                return;
-            UpdateMovementInput();
+            // set agent size
+            if (_usePathfinding)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(_human.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                {
+                    _human.Cache.Transform.position = hit.position;
+                }
+
+                // Add the navmesh agent
+                int agentId = Util.GetNavMeshAgentID(name).Value;
+                // log titan size
+                var agentSettings = NavMesh.GetSettingsByID(agentId);
+                _agent = gameObject.AddComponent<NavMeshAgent>();
+                _agent.agentTypeID = agentSettings.agentTypeID;
+                _agent.speed = _human.Cache.Rigidbody.velocity.magnitude;
+                _agent.angularSpeed = 10;
+                _agent.acceleration = 10;
+                _agent.autoRepath = true;
+                _agent.stoppingDistance = 1.1f;
+                _agent.autoBraking = false;
+                _agent.radius = agentSettings.agentRadius;
+                _agent.height = agentSettings.agentHeight;
+                _agent.updatePosition = false;
+                _agent.updateRotation = false;
+                _agent.obstacleAvoidanceType = ObstacleAvoidanceType.MedQualityObstacleAvoidance;
+                _agent.avoidancePriority = 0;
+            }
+
         }
 
         protected void BeforeFixedUpdate()
         {
-            MoveDirection = null;
             if (Target != null)
             {
                 if (Target is BaseTitan titan)
@@ -141,40 +184,28 @@ namespace Controllers
 
         protected override void FixedUpdate()
         {
+            if (!_human.FinishSetup)
+                return;
             BeforeFixedUpdate();
             FixedUpdateTargetStatus();
+            AIState?.Action();
         }
 
-        protected void UpdateMovementInput()
+        protected bool canMove()
         {
             if (_human.Dead || _human.State == HumanState.Stun)
             {
-                return;
+                return false;
             }
-            _human.IsWalk = IsWalk;
             if (_human.MountState != HumanMountState.Horse)
             {
                 if (_human.Grounded && _human.State != HumanState.Idle)
-                    return;
+                    return false;
                 if (!_human.Grounded && (_human.State == HumanState.EmoteAction || (_human.State == HumanState.SpecialAttack && _human.Special is not DownStrikeSpecial && _human.Special is not StockSpecial) ||
                     _human.Animation.IsPlaying("dash") || _human.Animation.IsPlaying("jump") || _human.IsFiringThunderspear()))
-                    return;
+                    return false;
             }
-
-            if (MoveDirection is Vector3 moveDirection)
-            {
-                float _movingLeft = AimDirection.x * moveDirection.z - AimDirection.z * moveDirection.x;
-                _character.TargetAngle = GetTargetAngle(moveDirection);
-                _character.HasDirection = true;
-                Vector3 v = new(moveDirection.x, 0f, moveDirection.z);
-                float magnitude = (v.magnitude <= 0.95f) ? ((v.magnitude >= 0.25f) ? v.magnitude : 0f) : 1f;
-                _human.TargetMagnitude = magnitude;
-            }
-            else
-            {
-                _character.HasDirection = false;
-                _human.TargetMagnitude = 0f;
-            }
+            return true;
         }
 
         private HashSet<HumanState> _illegalWeaponStates = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
@@ -294,6 +325,28 @@ namespace Controllers
             return AimPoint;
         }
 
+        public void Move(Vector3? direction)
+        {
+            if (!canMove())
+            {
+                return;
+            }
+            if (direction is Vector3 moveDirection)
+            {
+                _movingLeft = AimDirection.x * moveDirection.z - AimDirection.z * moveDirection.x;
+                _character.TargetAngle = GetTargetAngle(moveDirection);
+                _character.HasDirection = true;
+                Vector3 v = new(moveDirection.x, 0f, moveDirection.z);
+                float magnitude = (v.magnitude <= 0.95f) ? ((v.magnitude >= 0.25f) ? v.magnitude : 0f) : 1f;
+                _human.TargetMagnitude = magnitude;
+            }
+            else
+            {
+                _character.HasDirection = false;
+                _human.TargetMagnitude = 0f;
+            }
+        }
+
         public void AimAt(Vector3? position)
         {
             if (position is Vector3 pos)
@@ -307,11 +360,6 @@ namespace Controllers
             }
         }
 
-        public void Move(Vector3? direction)
-        {
-            MoveDirection = direction;
-        }
-
         public void UseGas(bool useGas)
         {
             _usingGas = useGas;
@@ -319,7 +367,7 @@ namespace Controllers
 
         public void HorseWalk(bool isWalk)
         {
-            IsWalk = isWalk;
+            _human.IsWalk = isWalk;
         }
 
         public void Reel(int reelAxis)
@@ -452,5 +500,201 @@ namespace Controllers
             }
         }
 
+        /***
+        NavMesh
+        ***/
+
+        public float GetAgentNavAngle(Vector3 target)
+        {
+            Vector3 resultDirection = _agent.velocity.normalized;
+            // Good ol' power cycle fix
+            // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+            Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
+            Vector3 titanPositionXY = new Vector3(_human.Cache.Transform.position.x, 0, _human.Cache.Transform.position.z);
+            if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
+            {
+                resultDirection = (_agent.transform.position - _human.Cache.Transform.position).normalized;
+            }
+            else if (_agent.isOnNavMesh && _agent.pathPending == false)
+            {
+                SetAgentDestination(target);
+            }
+            else if (_agent.isOnNavMesh == false)
+            {
+                resultDirection = GetDirectionTowardsNavMesh();
+            }
+
+            if (resultDirection == Vector3.zero)
+                return _human.TargetAngle;
+
+            return GetChaseAngleGivenDirection(resultDirection, true);
+        }
+
+        protected Vector3 GetDirectionTowardsNavMesh()
+        {
+            // Find a point on the navmesh closest to the titan
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(_human.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+            {
+                return (hit.position - _human.Cache.Transform.position).normalized;
+            }
+
+            // Return a random direction if the navmesh is not found
+            Vector3 randDir = UnityEngine.Random.onUnitSphere;
+            randDir.y = 0;
+            return randDir.normalized;
+        }
+
+        protected float GetChaseAngleGivenDirection(Vector3 direction, bool useMoveAngle)
+        {
+            float angle;
+            if (direction == Vector3.zero)
+                angle = _human.TargetAngle;
+            else
+                angle = GetTargetAngle(direction);
+            if (useMoveAngle)
+                angle += _moveAngle;
+            if (angle > 360f)
+                angle -= 360f;
+            if (angle < 0f)
+                angle += 360f;
+            return angle;
+        }
+
+        public void SetAgentDestination(Vector3 position)
+        {
+            if (!_setTargetThisFrame)
+            {
+                _agent.SetDestination(position);
+                _setTargetThisFrame = true;
+            }
+        }
+
+        public void RefreshAgent()
+        {
+            if (_usePathfinding)
+            {
+                // Good ol' power cycle fix
+                // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
+                Vector3 agentPositionXY = new(_agent.transform.position.x, 0, _agent.transform.position.z);
+                Vector3 titanPositionXY = new(_human.Cache.Transform.position.x, 0, _human.Cache.Transform.position.z);
+                if (_usePathfinding && Vector3.Distance(agentPositionXY, titanPositionXY) > 0.1f)
+                {
+                    // debug log
+                    _agent.enabled = false;
+                    _agent.enabled = true;
+                }
+
+                _agent.nextPosition = _human.Cache.Transform.position;
+            }
+        }
+
+        public float GetChaseAngle(Vector3 position, bool useMoveAngle)
+        {
+            return GetChaseAngleGivenDirection((position - _character.Cache.Transform.position).normalized, useMoveAngle);
+        }
+
+        public void MoveToPosition()
+        {
+            if (_usePathfinding)
+            {
+                _setTargetThisFrame = false;
+                _agent.speed = _human.Cache.Rigidbody.velocity.magnitude;
+            }
+            _stateTimeLeft -= Time.deltaTime;
+            _moveToTimeout -= Time.deltaTime;
+            float distance = Vector3.Distance(_human.Cache.Transform.position, TargetPosition);
+
+            if (distance <= _moveToRange || !_moveToActive)
+            {
+                _moveToActive = false;
+                Idle();
+            }
+            else
+            {
+                _human.HasDirection = true;
+                _human.TargetMagnitude = 1.0f;
+                if (_usePathfinding)
+                {
+                    _moveAngle = UnityEngine.Random.Range(-5f, 5f);
+                    _human.TargetAngle = GetAgentNavAngle(TargetPosition);
+                }
+                else
+                {
+                    _moveAngle = UnityEngine.Random.Range(-45f, 45f);
+                    _human.TargetAngle = GetChaseAngle(TargetPosition, true);
+                }
+            }
+            RefreshAgent();
+        }
+
+        /***
+        AI State
+        ***/
+
+        public void SetAIState(HumanAIState aiState)
+        {
+            aiState?.PreAction();
+            var oldAIState = AIState;
+            AIState = aiState;
+            oldAIState?.PostAction();
+        }
+
+        public void MoveTo(Vector3 position, float range)
+        {
+            Target = null;
+            TargetPosition = position;
+            _moveToRange = range;
+            _moveToActive = true;
+            AIState = AIStates["MoveTo"];
+        }
+
+        public void MoveToTarget(ITargetable targetable, float range)
+        {
+            Target = targetable;
+            _moveToRange = range;
+            _moveToActive = true;
+            AIState = AIStates["MoveTo"];
+        }
+
+        public void Idle()
+        {
+            Target = null;
+            _human.HasDirection = false;
+            _human.TargetMagnitude = 0;
+            _stateTimeLeft = 0;
+            AIState = null;
+        }
+
+
+
     }
+
+    class HumanAIState
+    {
+        protected Human Human;
+        protected HumanAIController Controller;
+        public virtual void Init(Human human)
+        {
+            Human = human;
+            Controller = (HumanAIController)human.Controller;
+        }
+
+        public virtual void PreAction() { }
+        public virtual void Action() { }
+        public virtual void PostAction() { }
+    }
+
+    namespace HumanAIStates
+    {
+        class MoveTo : HumanAIState
+        {
+            public override void Action()
+            {
+                Controller.MoveToPosition();
+            }
+        }
+    }
+
+
 }
