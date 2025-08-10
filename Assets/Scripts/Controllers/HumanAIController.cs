@@ -10,6 +10,7 @@ using UnityEngine.AI;
 using Photon.Pun;
 using UnityEditor.UI;
 using System;
+using CustomLogic;
 
 namespace Controllers
 {
@@ -55,6 +56,8 @@ namespace Controllers
 
         public HumanAIState AIState;
 
+        public HumanAICallback Callbacks = new();
+
         public Dictionary<string, HumanAIState> AIStates = new();
 
         public bool _usePathfinding = true;
@@ -76,31 +79,40 @@ namespace Controllers
         {
             base.Awake();
             _human = GetComponent<Human>();
+            _usePathfinding = SettingsManager.InGameUI.Titan.TitanSmartMovement.Value;
+
+            if (_usePathfinding)
+            {
+                if (NavMesh.SamplePosition(_human.Cache.Transform.position, out NavMeshHit hit, 100f, NavMesh.AllAreas))
+                {
+                    _human.Cache.Transform.position = hit.position;
+                }
+            }
         }
 
         protected override void Start()
         {
+            SetAIState("MoveTo", new HumanAIStates.MoveTo().Init(_human));
             // set agent size
             if (_usePathfinding)
             {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(_human.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(_human.Cache.Transform.position, out NavMeshHit hit, 100f, NavMesh.AllAreas))
                 {
                     _human.Cache.Transform.position = hit.position;
                 }
 
-                // Add the navmesh agent
-                int agentId = Util.GetNavMeshAgentID(name).Value;
-                // log titan size
-                var agentSettings = NavMesh.GetSettingsByID(agentId);
+                NavMeshBuildSettings agentSettings = Util.GetAgentSettingsCorrected(1f);
                 _agent = gameObject.AddComponent<NavMeshAgent>();
                 _agent.agentTypeID = agentSettings.agentTypeID;
+                // _agent.agentTypeID = 1;
                 _agent.speed = _human.Cache.Rigidbody.velocity.magnitude;
                 _agent.angularSpeed = 10;
                 _agent.acceleration = 10;
                 _agent.autoRepath = true;
                 _agent.stoppingDistance = 1.1f;
                 _agent.autoBraking = false;
+                // _agent.radius = 0.5f;
+                // _agent.height = 1.0f;
                 _agent.radius = agentSettings.agentRadius;
                 _agent.height = agentSettings.agentHeight;
                 _agent.updatePosition = false;
@@ -188,10 +200,17 @@ namespace Controllers
                 return;
             BeforeFixedUpdate();
             FixedUpdateTargetStatus();
-            AIState?.Action();
+            if (AIState is not null)
+            {
+                AIState.Action();
+            }
+            else
+            {
+                Callbacks.NullAIState?.Invoke();
+            }
         }
 
-        protected bool canMove()
+        protected bool CanMove()
         {
             if (_human.Dead || _human.State == HumanState.Stun)
             {
@@ -211,7 +230,7 @@ namespace Controllers
         private HashSet<HumanState> _illegalWeaponStates = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun };
 
-        public void JumpInput()
+        public void Jump()
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
@@ -228,11 +247,11 @@ namespace Controllers
             }
         }
 
-        public void HorseMountInput()
+        public void HorseMount(bool unmount = false)
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
-            if (_human.MountState == HumanMountState.None)
+            if (_human.MountState == HumanMountState.None && !unmount)
             {
                 if (_human.CanJump())
                 {
@@ -245,7 +264,7 @@ namespace Controllers
                     _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
-            else if (_human.MountState == HumanMountState.Horse)
+            else if (_human.MountState == HumanMountState.Horse && unmount)
             {
                 if (_human.State == HumanState.Idle)
                     _human.Unmount(false);
@@ -253,7 +272,7 @@ namespace Controllers
 
         }
 
-        public void DodgeInput()
+        public void Dodge()
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
@@ -266,7 +285,7 @@ namespace Controllers
             }
         }
 
-        public void ReloadInput()
+        public void Reload()
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
@@ -327,7 +346,7 @@ namespace Controllers
 
         public void Move(Vector3? direction)
         {
-            if (!canMove())
+            if (!CanMove())
             {
                 return;
             }
@@ -509,18 +528,21 @@ namespace Controllers
             Vector3 resultDirection = _agent.velocity.normalized;
             // Good ol' power cycle fix
             // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
-            Vector3 agentPositionXY = new Vector3(_agent.transform.position.x, 0, _agent.transform.position.z);
-            Vector3 titanPositionXY = new Vector3(_human.Cache.Transform.position.x, 0, _human.Cache.Transform.position.z);
-            if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
+            Vector3 agentPositionXY = new(_agent.transform.position.x, 0, _agent.transform.position.z);
+            Vector3 titanPositionXY = new(_human.Cache.Transform.position.x, 0, _human.Cache.Transform.position.z);
+            bool isOnNavMesh = _agent.isOnNavMesh;
+            // isOnNavMesh = true;
+            if (isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
             {
                 resultDirection = (_agent.transform.position - _human.Cache.Transform.position).normalized;
             }
-            else if (_agent.isOnNavMesh && _agent.pathPending == false)
+            else if (isOnNavMesh && _agent.pathPending == false)
             {
                 SetAgentDestination(target);
             }
-            else if (_agent.isOnNavMesh == false)
+            else if (isOnNavMesh == false)
             {
+
                 resultDirection = GetDirectionTowardsNavMesh();
             }
 
@@ -533,8 +555,7 @@ namespace Controllers
         protected Vector3 GetDirectionTowardsNavMesh()
         {
             // Find a point on the navmesh closest to the titan
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(_human.Cache.Transform.position, out hit, 100f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(_human.Cache.Transform.position, out NavMeshHit hit, 100f, NavMesh.AllAreas))
             {
                 return (hit.position - _human.Cache.Transform.position).normalized;
             }
@@ -632,12 +653,29 @@ namespace Controllers
         AI State
         ***/
 
-        public void SetAIState(HumanAIState aiState)
+        public void SwitchAIState(HumanAIState aiState)
         {
+            if (aiState == AIState)
+                return;
             aiState?.PreAction();
             var oldAIState = AIState;
             AIState = aiState;
             oldAIState?.PostAction();
+        }
+
+        public void SetAIState(string name, HumanAIState aiState)
+        {
+            AIStates[name] = aiState;
+        }
+
+        public bool HasAIState(string name)
+        {
+            return AIStates.ContainsKey(name);
+        }
+
+        public HumanAIState GetAIState(string name)
+        {
+            return AIStates[name];
         }
 
         public void MoveTo(Vector3 position, float range)
@@ -646,7 +684,7 @@ namespace Controllers
             TargetPosition = position;
             _moveToRange = range;
             _moveToActive = true;
-            AIState = AIStates["MoveTo"];
+            SwitchAIState(AIStates["MoveTo"]);
         }
 
         public void MoveToTarget(ITargetable targetable, float range)
@@ -654,16 +692,18 @@ namespace Controllers
             Target = targetable;
             _moveToRange = range;
             _moveToActive = true;
-            AIState = AIStates["MoveTo"];
+            SwitchAIState(AIStates["MoveTo"]);
         }
 
         public void Idle()
         {
+            Callbacks.PreIdle?.Invoke();
             Target = null;
             _human.HasDirection = false;
             _human.TargetMagnitude = 0;
             _stateTimeLeft = 0;
-            AIState = null;
+            SwitchAIState(null);
+            Callbacks.PostIdle?.Invoke();
         }
 
 
@@ -674,15 +714,24 @@ namespace Controllers
     {
         protected Human Human;
         protected HumanAIController Controller;
-        public virtual void Init(Human human)
+        public virtual HumanAIState Init(Human human)
         {
             Human = human;
             Controller = (HumanAIController)human.Controller;
+            return this;
         }
 
         public virtual void PreAction() { }
         public virtual void Action() { }
         public virtual void PostAction() { }
+    }
+
+    class HumanAICallback
+    {
+
+        public Action NullAIState;
+        public Action PreIdle;
+        public Action PostIdle;
     }
 
     namespace HumanAIStates
@@ -692,6 +741,56 @@ namespace Controllers
             public override void Action()
             {
                 Controller.MoveToPosition();
+            }
+        }
+
+        class Custom : HumanAIState
+        {
+
+            protected UserClassInstance _instance;
+
+            protected UserMethod _preAction;
+
+            protected UserMethod _postAction;
+
+            protected UserMethod _action;
+
+            public void Init(UserClassInstance instance)
+            {
+                _instance = instance;
+                _preAction = null;
+                _action = null;
+                _postAction = null;
+                if (_instance.Variables.ContainsKey("PreAction"))
+                {
+                    _preAction = (UserMethod)_instance.GetVariable("PreAction");
+                }
+                if (_instance.Variables.ContainsKey("Action"))
+                {
+                    _action = (UserMethod)_instance.GetVariable("Action");
+                }
+
+                if (_instance.Variables.ContainsKey("PostAction"))
+                {
+                    _postAction = (UserMethod)_instance.GetVariable("PostAction");
+                }
+            }
+
+            public override void PreAction()
+            {
+                if (_preAction is not null)
+                    CustomLogicManager.Evaluator.EvaluateMethod(_preAction, new object[] { });
+            }
+            public override void Action()
+            {
+                if (_action is not null)
+                    CustomLogicManager.Evaluator.EvaluateMethod(_action, new object[] { });
+            }
+
+            public override void PostAction()
+            {
+                if (_action is not null)
+                    CustomLogicManager.Evaluator.EvaluateMethod(_postAction, new object[] { });
             }
         }
     }

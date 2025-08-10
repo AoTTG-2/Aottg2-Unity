@@ -1,8 +1,12 @@
 using ApplicationManagers;
 using Characters;
+using Controllers;
 using GameManagers;
 using Settings;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace CustomLogic
@@ -24,9 +28,15 @@ namespace CustomLogic
     {
         public Human Human;
 
+        public HumanAIController Controller;
+
         public CustomLogicHumanBuiltin(Human human) : base(human)
         {
             Human = human;
+            if (Human.AI)
+            {
+                Controller = (HumanAIController)Human.Controller;
+            }
         }
 
         [CLProperty(description: "The human's name")]
@@ -507,6 +517,87 @@ namespace CustomLogic
         {
             if (Human.IsMine())
                 Human.Stats.DisablePerks();
+        }
+
+
+        [CLMethod(description: "Causes the (AI) human to move towards a position and stopping when within specified range")]
+        public void MoveTo(CustomLogicVector3Builtin position, float range)
+        {
+            if (Human.IsMine() && Human.AI)
+                Controller.MoveTo(position.Value, range);
+        }
+
+        [CLMethod(description: "Causes the (AI) human to move towards a target and stopping when within specified range")]
+        public void MoveToTarget(object target, float range)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                ITargetable itarget = target is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)target).Character;
+                Controller.MoveToTarget(itarget, range);
+            }
+        }
+
+        [CLMethod(description: "Causes the (AI) human to move towards a position and stopping when within specified range")]
+        public void Idle()
+        {
+            if (Human.IsMine() && Human.AI)
+                Controller.Idle();
+        }
+
+        [CLMethod(description: "Causes the (AI) humans to mount on their horse")]
+        public void HorseMount(bool unmount = false)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.HorseMount(unmount);
+            }
+        }
+
+        [CLMethod(description: "Determine whether an AIState exists for the (AI) humans")]
+        public bool HasAIState(string name)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                return Controller.HasAIState(name);
+            }
+            return false;
+        }
+
+        [CLMethod(description: "Set the custom ai states for the (AI) humans")]
+        public void SetAIState(string name, UserClassInstance classInstance = null)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                if (classInstance is not null)
+                {
+                    Controllers.HumanAIStates.Custom state = new();
+                    state.Init(classInstance);
+                    Controller.SetAIState(name, state);
+                }
+                else
+                {
+                    Controller.AIStates.Remove(name);
+                }
+            }
+        }
+
+        [CLMethod(description: "Set the callbacks for the (AI) humans")]
+        public void SetCallback(string callback, UserMethod method = null)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                if (method is null)
+                {
+                    Controller.Callbacks.GetType().GetField(callback).SetValue(Controller.Callbacks, null);
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("set call back ");
+                    Controller.Callbacks.GetType().GetField(callback).SetValue(Controller.Callbacks, new Action(() => CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { })));
+                }
+            }
         }
 
     }
