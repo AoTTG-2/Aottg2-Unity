@@ -530,19 +530,16 @@ namespace Controllers
             // if agent gets desynced (position is not equal to titan position), disable the component and re-enable it
             Vector3 agentPositionXY = new(_agent.transform.position.x, 0, _agent.transform.position.z);
             Vector3 titanPositionXY = new(_human.Cache.Transform.position.x, 0, _human.Cache.Transform.position.z);
-            bool isOnNavMesh = _agent.isOnNavMesh;
-            // isOnNavMesh = true;
-            if (isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
+            if (_agent.isOnNavMesh && Vector3.Distance(agentPositionXY, titanPositionXY) > 1f)
             {
                 resultDirection = (_agent.transform.position - _human.Cache.Transform.position).normalized;
             }
-            else if (isOnNavMesh && _agent.pathPending == false)
+            else if (_agent.isOnNavMesh && _agent.pathPending == false)
             {
                 SetAgentDestination(target);
             }
-            else if (isOnNavMesh == false)
+            else if (_agent.isOnNavMesh == false)
             {
-
                 resultDirection = GetDirectionTowardsNavMesh();
             }
 
