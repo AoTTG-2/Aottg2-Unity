@@ -1,16 +1,23 @@
+using UnityEngine;
+
 namespace Controllers
 {
     interface IHumanController
     {
-        public bool LeftGetKey();
-        public bool RightGetKey();
+        public bool MovingLeft();
+        public bool MovingRight();
 
-        public bool JumpGetKey();
+        public bool UsingGas();
 
-        public bool HookLeftGetKey();
+        public bool HookingLeft();
 
-        public bool HookRightGetKey();
+        public bool HookingRight();
 
-        public bool HookBothGetKey();
+        public bool HookingBoth();
+
+        public Vector3 GetAimPoint()
+        {
+            return Vector3.zero;
+        }
     }
 }

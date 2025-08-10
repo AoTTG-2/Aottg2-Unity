@@ -141,7 +141,14 @@ namespace Characters
 
         protected override void CreateDetection()
         {
-            Detection = new HumanDetection(this);
+            if (AI)
+            {
+                Detection = new HumanDetection(this, true, false);
+            }
+            else
+            {
+                Detection = new HumanDetection(this);
+            }
         }
 
         public void DieChangeCharacter()
@@ -218,6 +225,10 @@ namespace Characters
 
         public override Vector3 GetAimPoint()
         {
+            if (AI)
+            {
+                return Controller.GetAimPoint();
+            }
             RaycastHit hit;
             Ray ray = GetAimRayAfterHumanCheap(); // SceneLoader.CurrentCamera.Camera.ScreenPointToRay(Input.mousePosition);
             Vector3 target = ray.origin + ray.direction * 1000f;
@@ -249,8 +260,8 @@ namespace Characters
 
         public bool CanJump()
         {
-            return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
-                !Animation.IsPlaying(HumanAnimations.Jump) && !Animation.IsPlaying(HumanAnimations.HorseMount));
+            return Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
+                !Animation.IsPlaying(HumanAnimations.Jump) && !Animation.IsPlaying(HumanAnimations.HorseMount);
         }
 
         public void Jump()
@@ -989,7 +1000,7 @@ namespace Characters
             if (!ai)
                 Controller = gameObject.AddComponent<HumanPlayerController>();
             else
-                Controller = gameObject.AddComponent<HumanPlayerController>();
+                Controller = gameObject.AddComponent<HumanAIController>();
         }
 
         public void ReloadHuman(InGameCharacterSettings settings)
@@ -1790,7 +1801,7 @@ namespace Characters
                             PlayAnimation(HumanAnimations.AirRise);
                         }
                     }
-                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero() || Controller.JumpGetKey() || Controller.HookLeftGetKey() || Controller.HookRightGetKey() || Controller.HookBothGetKey() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
+                    else if (!(State != HumanState.Idle || !IsPressDirectionTowardsHero() || Controller.UsingGas() || Controller.HookingLeft() || Controller.HookingRight() || Controller.HookingBoth() || !IsFrontGrounded() || Animation.IsPlaying(HumanAnimations.WallRun) || Animation.IsPlaying(HumanAnimations.Dodge)))
                     {
                         CrossFade(HumanAnimations.WallRun, 0.1f);
                         _wallRunTime = 0f;
@@ -1822,7 +1833,7 @@ namespace Characters
                         }
                         else
                             _targetRotation = GetTargetRotation();
-                        bool isUsingGas = AI ? Controller.JumpGetKey() : Controller.JumpGetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
+                        bool isUsingGas = AI ? Controller.UsingGas() : Controller.UsingGas() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
                         if (!pivotLeft && !pivotRight && MountState == HumanMountState.None && isUsingGas && (Stats.CurrentGas > 0f))
                         {
                             if (HasDirection)
@@ -2330,7 +2341,7 @@ namespace Characters
                     if (!(_launchLeft && _launchRight))
                         v *= 2f;
 
-                    bool usingGas = AI ? Controller.JumpGetKey() : Controller.JumpGetKey() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
+                    bool usingGas = AI ? Controller.UsingGas() : Controller.UsingGas() ^ SettingsManager.InputSettings.Human.AutoUseGas.Value;
                     if ((Vector3.Angle(Cache.Rigidbody.velocity, v) > 90f) && usingGas)
                     {
                         pivot = true;
@@ -3325,18 +3336,18 @@ namespace Characters
         {
             if (!Grounded && (HookLeft.IsHooked() || HookRight.IsHooked() || MountState != HumanMountState.None))
             {
-                if (Controller.LeftGetKey())
+                if (Controller.MovingLeft())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
-                else if (Controller.RightGetKey())
+                else if (Controller.MovingRight())
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
                 else if (_leanLeft)
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookL1 : HumanAnimations.Attack1HookL2;
                 else
                     AttackAnimation = (UnityEngine.Random.Range(0, 100) >= 50) ? HumanAnimations.Attack1HookR1 : HumanAnimations.Attack1HookR2;
             }
-            else if (Controller.LeftGetKey())
+            else if (Controller.MovingLeft())
                 AttackAnimation = HumanAnimations.Attack2;
-            else if (Controller.RightGetKey())
+            else if (Controller.MovingRight())
                 AttackAnimation = HumanAnimations.Attack1;
             else
             {

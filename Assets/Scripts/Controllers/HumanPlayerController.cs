@@ -509,31 +509,31 @@ namespace Controllers
             return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
         }
 
-        public bool LeftGetKey()
+        public bool MovingLeft()
         {
             return SettingsManager.InputSettings.General.Left.GetKey();
         }
-        public bool RightGetKey()
+        public bool MovingRight()
         {
             return SettingsManager.InputSettings.General.Right.GetKey();
         }
 
-        public bool JumpGetKey()
+        public bool UsingGas()
         {
             return SettingsManager.InputSettings.Human.Jump.GetKey();
         }
 
-        public bool HookLeftGetKey()
+        public bool HookingLeft()
         {
             return SettingsManager.InputSettings.Human.HookLeft.GetKey();
         }
 
-        public bool HookRightGetKey()
+        public bool HookingRight()
         {
             return SettingsManager.InputSettings.Human.HookRight.GetKey();
         }
 
-        public bool HookBothGetKey()
+        public bool HookingBoth()
         {
             return SettingsManager.InputSettings.Human.HookBoth.GetKey();
         }
