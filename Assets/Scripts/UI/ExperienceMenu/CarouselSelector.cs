@@ -33,6 +33,8 @@ namespace UI
             foreach (var option in options)
             {
                 var btn = ElementFactory.InstantiateAndBind(_content.transform, "Prefabs/Misc/MapSelectObjectButton");
+                var rect = btn.GetComponent<RectTransform>();
+                rect.sizeDelta = new Vector2(256, 256);
                 btn.GetComponent<Button>().onClick.AddListener(() => onSelected(option));
                 if (option.Icon != null)
                     btn.transform.Find("Icon").GetComponent<RawImage>().texture = option.Icon;

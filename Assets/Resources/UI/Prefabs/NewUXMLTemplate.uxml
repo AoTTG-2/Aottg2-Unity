@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(255, 255, 255, 0); visibility: visible; display: flex; background-image: resource(&apos;UI/Sprites/Panels/MenuBackgroundDark1&apos;); width: 100%; height: 100%; flex-basis: 0; flex-shrink: 1; scale: 0.8 0.7;">
+        <ui:ScrollView vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="AlwaysVisible" style="background-image: resource(&apos;UI/Sprites/Panels/MenuBackgroundLight1&apos;); height: 224px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+        <ui:ScrollView style="background-image: resource(&apos;UI/Sprites/Panels/MenuBackgroundLight1&apos;); height: 224px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+        <ui:ScrollView style="background-image: resource(&apos;UI/Sprites/Panels/MenuBackgroundLight1&apos;); height: 224px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+    </ui:VisualElement>
+</ui:UXML>
