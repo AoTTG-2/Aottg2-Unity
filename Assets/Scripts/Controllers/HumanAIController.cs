@@ -200,6 +200,8 @@ namespace Controllers
                 return;
             BeforeFixedUpdate();
             FixedUpdateTargetStatus();
+
+            Callbacks.PreAction?.Invoke();
             if (AIState is not null)
             {
                 AIState.Action();
@@ -208,6 +210,7 @@ namespace Controllers
             {
                 Callbacks.NullAIState?.Invoke();
             }
+            Callbacks.PostAction?.Invoke();
         }
 
         protected bool CanMove()
@@ -229,6 +232,80 @@ namespace Controllers
 
         private HashSet<HumanState> _illegalWeaponStates = new HashSet<HumanState>() { HumanState.Grab, HumanState.SpecialAction, HumanState.EmoteAction, HumanState.Reload,
             HumanState.SpecialAttack, HumanState.Stun };
+
+        bool IsSpin3Special()
+        {
+            return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
+        }
+
+        public bool MovingLeft()
+        {
+            return _movingLeft < 0;
+        }
+        public bool MovingRight()
+        {
+            return _movingLeft > 0;
+        }
+
+        public bool UsingGas()
+        {
+            return _usingGas;
+        }
+
+        public bool HookingLeft()
+        {
+            return _hookingLeft;
+        }
+
+        public bool HookingRight()
+        {
+            return _hookingRight;
+        }
+
+        public bool HookingBoth()
+        {
+            return false;
+        }
+
+        public Vector3 GetAimPoint()
+        {
+            return AimPoint;
+        }
+
+        public void Move(Vector3? direction)
+        {
+            if (!CanMove())
+            {
+                return;
+            }
+            if (direction is Vector3 moveDirection)
+            {
+                _movingLeft = AimDirection.x * moveDirection.z - AimDirection.z * moveDirection.x;
+                _character.TargetAngle = GetTargetAngle(moveDirection);
+                _character.HasDirection = true;
+                Vector3 v = new(moveDirection.x, 0f, moveDirection.z);
+                float magnitude = (v.magnitude <= 0.95f) ? ((v.magnitude >= 0.25f) ? v.magnitude : 0f) : 1f;
+                _human.TargetMagnitude = magnitude;
+            }
+            else
+            {
+                _character.HasDirection = false;
+                _human.TargetMagnitude = 0f;
+            }
+        }
+
+        public void AimAt(Vector3? position)
+        {
+            if (position is Vector3 pos)
+            {
+                AimPoint = pos;
+                AimDirection = pos - _human.transform.position;
+            }
+            else
+            {
+                AimDirection = Vector3.zero;
+            }
+        }
 
         public void Jump()
         {
@@ -305,80 +382,6 @@ namespace Controllers
             }
         }
 
-        bool IsSpin3Special()
-        {
-            return _human.State == HumanState.SpecialAttack && _human.Special is Spin3Special;
-        }
-
-        public bool MovingLeft()
-        {
-            return _movingLeft < 0;
-        }
-        public bool MovingRight()
-        {
-            return _movingLeft > 0;
-        }
-
-        public bool UsingGas()
-        {
-            return _usingGas;
-        }
-
-        public bool HookingLeft()
-        {
-            return _hookingLeft;
-        }
-
-        public bool HookingRight()
-        {
-            return _hookingRight;
-        }
-
-        public bool HookingBoth()
-        {
-            return false;
-        }
-
-        public Vector3 GetAimPoint()
-        {
-            return AimPoint;
-        }
-
-        public void Move(Vector3? direction)
-        {
-            if (!CanMove())
-            {
-                return;
-            }
-            if (direction is Vector3 moveDirection)
-            {
-                _movingLeft = AimDirection.x * moveDirection.z - AimDirection.z * moveDirection.x;
-                _character.TargetAngle = GetTargetAngle(moveDirection);
-                _character.HasDirection = true;
-                Vector3 v = new(moveDirection.x, 0f, moveDirection.z);
-                float magnitude = (v.magnitude <= 0.95f) ? ((v.magnitude >= 0.25f) ? v.magnitude : 0f) : 1f;
-                _human.TargetMagnitude = magnitude;
-            }
-            else
-            {
-                _character.HasDirection = false;
-                _human.TargetMagnitude = 0f;
-            }
-        }
-
-        public void AimAt(Vector3? position)
-        {
-            if (position is Vector3 pos)
-            {
-                AimPoint = pos;
-                AimDirection = pos - _human.transform.position;
-            }
-            else
-            {
-                AimDirection = Vector3.zero;
-            }
-        }
-
         public void UseGas(bool useGas)
         {
             _usingGas = useGas;
@@ -387,6 +390,15 @@ namespace Controllers
         public void HorseWalk(bool isWalk)
         {
             _human.IsWalk = isWalk;
+        }
+
+        public void Dash(Vector3 direction)
+        {
+            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
+                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAction && !_human.Dead)
+            {
+                _human.Dash(GetTargetAngle(direction));
+            }
         }
 
         public void Reel(int reelAxis)
@@ -402,15 +414,6 @@ namespace Controllers
             else
             {
                 _human.ReelOutAxis = 0f;
-            }
-        }
-
-        public void Dash(Vector3 direction)
-        {
-            if (!_human.Grounded && _human.State != HumanState.AirDodge && _human.MountState == HumanMountState.None && _human.State != HumanState.Grab && _human.CarryState != HumanCarryState.Carry
-                && _human.State != HumanState.Stun && _human.State != HumanState.EmoteAction && _human.State != HumanState.SpecialAction && !_human.Dead)
-            {
-                _human.Dash(GetTargetAngle(direction));
             }
         }
 
@@ -654,10 +657,10 @@ namespace Controllers
         {
             if (aiState == AIState)
                 return;
-            aiState?.PreAction();
+            aiState?.PreSwitchState();
             var oldAIState = AIState;
             AIState = aiState;
-            oldAIState?.PostAction();
+            oldAIState?.PostSwitchState();
         }
 
         public void SetAIState(string name, HumanAIState aiState)
@@ -711,6 +714,11 @@ namespace Controllers
     {
         protected Human Human;
         protected HumanAIController Controller;
+
+        public virtual string Name
+        {
+            get => "";
+        }
         public virtual HumanAIState Init(Human human)
         {
             Human = human;
@@ -718,9 +726,9 @@ namespace Controllers
             return this;
         }
 
-        public virtual void PreAction() { }
+        public virtual void PreSwitchState() { }
         public virtual void Action() { }
-        public virtual void PostAction() { }
+        public virtual void PostSwitchState() { }
     }
 
     class HumanAICallback
@@ -729,12 +737,20 @@ namespace Controllers
         public Action NullAIState;
         public Action PreIdle;
         public Action PostIdle;
+
+        public Action PreAction;
+
+        public Action PostAction;
     }
 
     namespace HumanAIStates
     {
         class MoveTo : HumanAIState
         {
+            public override string Name
+            {
+                get => "MoveTo";
+            }
             public override void Action()
             {
                 Controller.MoveToPosition();
@@ -746,37 +762,44 @@ namespace Controllers
 
             protected UserClassInstance _instance;
 
-            protected UserMethod _preAction;
+            protected UserMethod _preSwitchState;
 
-            protected UserMethod _postAction;
+            protected UserMethod _postSwitchState;
 
             protected UserMethod _action;
 
-            public void Init(UserClassInstance instance)
+            public override string Name
             {
+                get => _name;
+            }
+            private string _name;
+
+            public void Init(string name, UserClassInstance instance)
+            {
+                _name = name;
                 _instance = instance;
-                _preAction = null;
+                _preSwitchState = null;
                 _action = null;
-                _postAction = null;
-                if (_instance.Variables.ContainsKey("PreAction"))
+                _postSwitchState = null;
+                if (_instance.Variables.ContainsKey("PreSwitchState"))
                 {
-                    _preAction = (UserMethod)_instance.GetVariable("PreAction");
+                    _preSwitchState = (UserMethod)_instance.GetVariable("PreSwitchState");
                 }
                 if (_instance.Variables.ContainsKey("Action"))
                 {
                     _action = (UserMethod)_instance.GetVariable("Action");
                 }
 
-                if (_instance.Variables.ContainsKey("PostAction"))
+                if (_instance.Variables.ContainsKey("PostSwitchState"))
                 {
-                    _postAction = (UserMethod)_instance.GetVariable("PostAction");
+                    _postSwitchState = (UserMethod)_instance.GetVariable("PostSwitchState");
                 }
             }
 
-            public override void PreAction()
+            public override void PreSwitchState()
             {
-                if (_preAction is not null)
-                    CustomLogicManager.Evaluator.EvaluateMethod(_preAction, new object[] { });
+                if (_preSwitchState is not null)
+                    CustomLogicManager.Evaluator.EvaluateMethod(_preSwitchState, new object[] { });
             }
             public override void Action()
             {
@@ -784,10 +807,10 @@ namespace Controllers
                     CustomLogicManager.Evaluator.EvaluateMethod(_action, new object[] { });
             }
 
-            public override void PostAction()
+            public override void PostSwitchState()
             {
                 if (_action is not null)
-                    CustomLogicManager.Evaluator.EvaluateMethod(_postAction, new object[] { });
+                    CustomLogicManager.Evaluator.EvaluateMethod(_postSwitchState, new object[] { });
             }
         }
     }
