@@ -107,7 +107,7 @@ namespace Controllers
                 // _agent.agentTypeID = 1;
                 _agent.speed = _human.Cache.Rigidbody.velocity.magnitude;
                 _agent.angularSpeed = 10;
-                _agent.acceleration = 10;
+                _agent.acceleration = 100;
                 _agent.autoRepath = true;
                 _agent.stoppingDistance = 1.1f;
                 _agent.autoBraking = false;
@@ -324,11 +324,11 @@ namespace Controllers
             }
         }
 
-        public void HorseMount(bool unmount = false)
+        public void HorseMount(bool mount = false)
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
-            if (_human.MountState == HumanMountState.None && !unmount)
+            if (_human.MountState == HumanMountState.None && mount)
             {
                 if (_human.CanJump())
                 {
@@ -341,7 +341,7 @@ namespace Controllers
                     _human.Cache.PhotonView.RPC("UncarryRPC", RpcTarget.All, new object[0]);
                 }
             }
-            else if (_human.MountState == HumanMountState.Horse && unmount)
+            else if (_human.MountState == HumanMountState.Horse && !mount)
             {
                 if (_human.State == HumanState.Idle)
                     _human.Unmount(false);

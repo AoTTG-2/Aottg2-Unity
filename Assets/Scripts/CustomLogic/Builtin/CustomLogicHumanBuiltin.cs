@@ -301,6 +301,9 @@ namespace CustomLogic
         [CLProperty(description: "Whether the human is mounted")]
         public bool IsMounted => Human.MountState == HumanMountState.MapObject;
 
+        [CLProperty(description: "The mount state of human. 0: None, 1: Horse, 2:MapObject")]
+        public int MountState => (int)Human.MountState;
+
         [CLProperty(description: "The map object the human is mounted on")]
         public CustomLogicMapObjectBuiltin MountedMapObject
         {
@@ -360,6 +363,9 @@ namespace CustomLogic
 
         [CLProperty(description: "If the human is carried.")]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
+
+        [CLProperty(description: "If the human is on the ground.")]
+        public bool Grounded => Human.Grounded;
 
         [CLProperty(description: "If left hook is hooked.")]
         public bool IsHookedLeft => Human.HookLeft.IsHooked();
@@ -655,11 +661,11 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Causes the (AI) humans to mount on their horse")]
-        public void HorseMount(bool unmount = false)
+        public void HorseMount(bool mount = true)
         {
             if (Human.IsMine() && Human.AI)
             {
-                Controller.HorseMount(unmount);
+                Controller.HorseMount(mount);
             }
         }
 
