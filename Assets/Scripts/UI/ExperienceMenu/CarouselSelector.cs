@@ -24,6 +24,8 @@ namespace UI
         public void Setup(Transform parent)
         {
             _content = this.transform.Find("Scroll View/Viewport/Content").GetComponent<RectTransform>();
+
+            var rect = this.GetComponent<RectTransform>();
         }
 
         public void Populate(List<YourOptionData> options, Action<YourOptionData> onSelected)
@@ -34,7 +36,10 @@ namespace UI
             {
                 var btn = ElementFactory.InstantiateAndBind(_content.transform, "Prefabs/Misc/MapSelectObjectButton");
                 var rect = btn.GetComponent<RectTransform>();
-                rect.sizeDelta = new Vector2(256, 256);
+                rect.anchorMin = new Vector2(0, 0.5f);
+                rect.anchorMax = new Vector2(0, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = new Vector2(256, 150);
                 btn.GetComponent<Button>().onClick.AddListener(() => onSelected(option));
                 if (option.Icon != null)
                     btn.transform.Find("Icon").GetComponent<RawImage>().texture = option.Icon;

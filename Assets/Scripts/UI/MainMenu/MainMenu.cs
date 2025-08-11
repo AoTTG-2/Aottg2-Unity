@@ -12,6 +12,7 @@ namespace UI
     class MainMenu : BaseMenu
     {
         public BasePopup _createGamePopup;
+        public BasePopup _experienceMenuPopup;
         public BasePopup _selectMapPopup;
         public BasePopup _multiplayerMapPopup;
         public BasePopup _settingsPopup;
@@ -70,7 +71,8 @@ namespace UI
         {
             base.SetupPopups();
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
-            _createGamePopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
+            _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
+            _experienceMenuPopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
             _multiplayerMapPopup = ElementFactory.InstantiateAndSetupPanel<MultiplayerMapPopup>(transform, "Prefabs/MainMenu/MultiplayerMapPopup").
                 GetComponent<BasePopup>();
             _editProfilePopup = ElementFactory.CreateHeadedPanel<EditProfilePopup>(transform).GetComponent<BasePopup>();
@@ -86,6 +88,7 @@ namespace UI
             _outdatedPopup = ElementFactory.CreateDefaultPopup<OutdatedPopup>(transform).GetComponent<OutdatedPopup>();
             _duelPopup = ElementFactory.CreateDefaultPopup<DuelPopup>(transform).GetComponent<DuelPopup>();
             _popups.Add(_createGamePopup);
+            _popups.Add(_experienceMenuPopup);
             _popups.Add(_multiplayerMapPopup);
             _popups.Add(_editProfilePopup);
             _popups.Add(_settingsPopup);
@@ -185,7 +188,7 @@ namespace UI
                 string label = "";
                 if (SettingsManager.GraphicsSettings.ShowFPS.Value)
                     label = "FPS:" + UIManager.GetFPS().ToString() + "\n";
-                if (_multiplayerMapPopup.IsActive || _multiplayerRoomListPopup.IsActive || (_createGamePopup.IsActive && PhotonNetwork.IsConnected))
+                if (_multiplayerMapPopup.IsActive || _multiplayerRoomListPopup.IsActive || ((_experienceMenuPopup.IsActive || _createGamePopup.IsActive) && PhotonNetwork.IsConnected))
                 {
                     label += PhotonNetwork.NetworkClientState.ToString();
                     if (PhotonNetwork.IsConnected)
@@ -270,7 +273,7 @@ namespace UI
                     SceneLoader.LoadScene(SceneName.Credits);
                     break;
                 case "SingleplayerButton":
-                    ((ExperienceMenu)_createGamePopup).Show(false);
+                    ((ExperienceMenu)_experienceMenuPopup).Show(false);
                     break;
                 case "MultiplayerButton":
                     _multiplayerMapPopup.Show();

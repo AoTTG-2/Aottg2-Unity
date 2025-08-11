@@ -1,0 +1,19 @@
+{
+  "Category": "PVP",
+  "SubCategory": "Bomb",
+  "Name": "Bomb PVP",
+  "Description": "PVP using thunderspears",
+
+  "UIRules": [
+    "!general.modes=bomb",
+    "general.maps=Forest1{Forest1,Forest2,cats forest,deforest,city 1}",
+
+    "!misc.allow_player_titans=false",
+    "!misc.allow_shifter_specials=false",
+    
+    "titan.min_size=2.5[0-3.0]",
+    "titan.max_size=3.0[0-3.0]",
+
+    "general.difficulty=normal{easy,normal,hard,abnormal}"
+  ]
+}

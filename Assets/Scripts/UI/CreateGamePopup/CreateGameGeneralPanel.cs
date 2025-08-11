@@ -57,7 +57,7 @@ namespace UI
                 UIManager.GetLocale(cat, sub, "Weather"), SettingsManager.WeatherSettings.WeatherSets.GetSetNames(), elementWidth: 180f);
             ElementFactory.CreateToggleGroupSetting(DoublePanelRight, dropdownStyle, settings.General.Difficulty, UIManager.GetLocale(cat, sub, "Difficulty"),
                 UIManager.GetLocaleArray(cat, sub, "DifficultyOptions"));
-            if (((ExperienceMenu)parent).IsMultiplayer && SceneLoader.SceneName == SceneName.MainMenu)
+            if (((CreateGamePopup)parent).IsMultiplayer && SceneLoader.SceneName == SceneName.MainMenu)
             {
                 ElementFactory.CreateInputSetting(DoublePanelRight, dropdownStyle, settings.General.RoomName, UIManager.GetLocale(cat, sub, "RoomName"), elementWidth: 200f);
                 ElementFactory.CreateInputSetting(DoublePanelRight, dropdownStyle, settings.General.MaxPlayers, UIManager.GetLocale(cat, sub, "MaxPlayers"), elementWidth: 200f);

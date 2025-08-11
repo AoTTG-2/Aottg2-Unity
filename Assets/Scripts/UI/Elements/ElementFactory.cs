@@ -29,6 +29,20 @@ namespace UI
             return InstantiateAndSetupPanel<T>(parent, "Prefabs/Panels/EmptyPanel", enabled).GetComponent<T>();
         }
 
+        public static GameObject CreatePanelBasedOnType(Transform parent, Type t, bool enabled = false)
+        {
+            if (typeof(HeadedPanel).IsAssignableFrom(t))
+            {
+                return InstantiateAndSetupPanel(parent, "Prefabs/Panels/HeadedPanel", t, enabled);
+            }
+
+            GameObject panel = InstantiateAndBind(parent, "Prefabs/Panels/EmptyPanel");
+            panel.name = t.Name;
+            ((BasePanel)panel.AddComponent(t)).Setup(parent.GetComponent<BasePanel>());
+            panel.SetActive(enabled);
+            return panel;
+        }
+
         public static GameObject CreateEmptyPanel(Transform parent, Type t, bool enabled = false)
         {
             GameObject panel = InstantiateAndBind(parent, "Prefabs/Panels/EmptyPanel");
@@ -422,6 +436,10 @@ namespace UI
         public static GameObject CreateCarouselSelector(Transform parent)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/CarouselSelector");
+            RectTransform rect = buttonSetting.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.anchoredPosition = new Vector2(0.5f, 0.5f);
             var element = buttonSetting.AddComponent<CarouselSelector>();
             element.Setup(parent);
             return buttonSetting;
@@ -451,6 +469,22 @@ namespace UI
         {
             GameObject panel = InstantiateAndBind(parent, asset);
             panel.AddComponent<T>().Setup(parent.GetComponent<BasePanel>());
+            panel.SetActive(false);
+            panel.SetActive(enabled);
+            return panel;
+        }
+
+        public static GameObject InstantiateAndSetupPanel(Transform parent, string asset, Type t, bool enabled = false)
+        {
+            GameObject panel = InstantiateAndBind(parent, asset);
+            var comp = panel.AddComponent(t);
+
+            if (typeof(BasePanel).IsAssignableFrom(t))
+            {
+                BasePanel bp = (BasePanel)comp;
+                bp.Setup(parent.GetComponent<BasePanel>());
+            }
+
             panel.SetActive(false);
             panel.SetActive(enabled);
             return panel;

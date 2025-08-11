@@ -1,19 +1,15 @@
-﻿using System;
+﻿using ApplicationManagers;
+using GameManagers;
+using Map;
+using Settings;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using UnityEngine.UI;
 using UnityEngine;
-using Settings;
-using System.Collections;
-using ApplicationManagers;
-using GameManagers;
-using Characters;
-using Map;
+using UnityEngine.UI;
 
 namespace UI
 {
-    class MapEditorHierarchyPanel: HeadedPanel
+    class MapEditorHierarchyPanel : HeadedPanel
     {
         protected override float Width => 260f;
         protected override float Height => 1005f;

@@ -7,55 +7,20 @@ namespace Settings
     public class PresetDefinition
     {
         public string Category;
-        public string Subcategory;
+        public string SubCategory;
         public string Name;
         public string Description;
         public string Extends; // Name of base preset
 
-        public List<string> ModesRaw;  // raw rule strings from JSON
-        public List<string> MapsRaw;   // raw rule strings from JSON
-        public List<string> UIRulesRaw;
+        public List<string> UIRules;
 
-        // These are runtime-only, non-serialized
-        public List<UIRule> Modes
-        {
-            get
-            {
-                if (_modes == null)
-                {
-                    _modes = RuleParser.Parse(ModesRaw);
-                }
-                return _modes;
-            }
-            set
-            {
-                _modes = value;
-            }
-        }
-
-        public List<UIRule> Maps
-        {
-            get
-            {
-                if (_maps == null)
-                {
-                    _maps = RuleParser.Parse(MapsRaw);
-                }
-                return _maps;
-            }
-            set
-            {
-                _maps = value;
-            }
-        }
-
-        public List<UIRule> UIRules
+        public List<UIRule> UIRulesObject
         {
             get
             {
                 if (_uiRules == null)
                 {
-                    _uiRules = RuleParser.Parse(UIRulesRaw);
+                    _uiRules = RuleParser.Parse(UIRules);
                 }
                 return _uiRules;
             }
@@ -66,13 +31,54 @@ namespace Settings
         }
 
         [NonSerialized]
-        private List<UIRule> _modes;
-
-        [NonSerialized]
-        private List<UIRule> _maps;
-
-        [NonSerialized]
         private List<UIRule> _uiRules;
+
+        public UIRule MapRule
+        {
+            get
+            {
+                if (_mapRule == null)
+                {
+                    foreach (var rule in UIRulesObject)
+                    {
+                        if (rule.SettingId == "general.maps")
+                            _mapRule = rule;
+                    }
+                }
+                return _mapRule;
+            }
+        }
+
+        public UIRule ModeRule
+        {
+            get
+            {
+                if (_modeRule == null)
+                {
+                    foreach (var rule in UIRulesObject)
+                    {
+                        if (rule.SettingId == "general.modes")
+                            _modeRule = rule;
+                    }
+                }
+                return _modeRule;
+            }
+        }
+
+        [NonSerialized]
+        private UIRule _mapRule;
+
+        [NonSerialized]
+        private UIRule _modeRule;
+
+        private UIRule GetRule(string id)
+        {
+            // find the rule with general.maps
+            foreach (UIRule rule in _uiRules)
+                if (rule.SettingId == id)
+                    return rule;
+            return null;
+        }
     }
 
 }

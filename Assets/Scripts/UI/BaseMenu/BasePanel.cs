@@ -3,7 +3,6 @@ using Settings;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using Utility;
@@ -146,7 +145,7 @@ namespace UI
                 Destroy(_currentCategoryPanel);
             Type t = _categoryPanelTypes[name];
             _currentCategoryPanelName.Value = name;
-            _currentCategoryPanel = ElementFactory.CreateEmptyPanel(transform, t, enabled: true);
+            _currentCategoryPanel = ElementFactory.CreatePanelBasedOnType(transform, t, enabled: true);
             _currentCategoryPanel.SetActive(false);
             _currentCategoryPanel.transform.localPosition = Vector3.up * GetPanelVerticalOffset();
             if (MaskBackground != null)

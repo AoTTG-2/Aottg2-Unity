@@ -1,15 +1,13 @@
 ﻿using Settings;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace UI
 {
-    class SelectListPopup: PromptPopup
+    class SelectListPopup : PromptPopup
     {
         protected override string ThemePanel => "SelectListPopup";
         protected override int HorizontalPadding => 0;
@@ -41,14 +39,30 @@ namespace UI
         {
             base.Setup(parent);
             ElementStyle buttonStyle = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel, titleWidth: 60f);
-            _inputElement = ElementFactory.CreateInputSetting(BottomBar, buttonStyle, FinishSetting, UIManager.GetLocaleCommon("Name"), elementWidth: 185f)
+            _inputElement = ElementFactory.CreateInputSetting(BottomBar, buttonStyle, FinishSetting, UIManager.GetLocaleCommon("Name"), elementWidth: 185f,
+                onValueChanged: () => OnSearchChanged(), onEndEdit: () => OnSearchChanged())
                 .GetComponent<InputSettingElement>();
-            _saveElements.Add(_inputElement.gameObject);
+            // _saveElements.Add(_inputElement.gameObject);
             _saveElements.Add(ElementFactory.CreateTextButton(BottomBar, buttonStyle, UIManager.GetLocaleCommon("Save"),
                 onClick: () => OnButtonClick("Save")));
             ElementFactory.CreateTextButton(BottomBar, buttonStyle, UIManager.GetLocaleCommon("Back"),
                 onClick: () => OnButtonClick("Back"));
             _noItemsLabel = ElementFactory.CreateDefaultLabel(SinglePanel, new ElementStyle(themePanel: ThemePanel), "No items found.");
+        }
+
+        private void OnSearchChanged()
+        {
+            string query = FinishSetting.Value.ToLowerInvariant();
+            RefreshList();
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                var match = _items.FirstOrDefault(item => item.ToLowerInvariant().Contains(query));
+                if (!string.IsNullOrEmpty(query) && match != null)
+                {
+                    OnItemClick(match);
+                }
+            }
         }
 
         public void ShowLoad(List<string> items, string title = "", UnityAction onLoad = null, UnityAction onDelete = null, List<string> disallowedDelete = null)
@@ -65,6 +79,10 @@ namespace UI
             if (title != string.Empty)
                 SetTitle(title);
             RefreshList();
+
+            // Focus search input
+            _inputElement._inputField.Select();
+            _inputElement._inputField.ActivateInputField();
         }
 
         public void ShowSave(List<string> items, string title = "", string initial = "", UnityAction onSave = null, List<string> disallowedSave = null,
@@ -84,6 +102,10 @@ namespace UI
             if (title != string.Empty)
                 SetTitle(title);
             RefreshList();
+
+            // Focus search input
+            _inputElement._inputField.Select();
+            _inputElement._inputField.ActivateInputField();
         }
 
         private void ToggleSaveElements()
@@ -106,7 +128,13 @@ namespace UI
         {
             ElementStyle style = new ElementStyle(themePanel: ThemePanel);
             ClearListButtons();
-            foreach (string item in _items)
+
+            string query = FinishSetting.Value.ToLowerInvariant();
+            List<string> filteredItems = string.IsNullOrEmpty(query)
+                ? _items
+                : _items.Where(item => item.ToLowerInvariant().Contains(query)).ToList();
+
+            foreach (string item in filteredItems)
             {
                 GameObject button = ElementFactory.InstantiateAndBind(SinglePanel, "Prefabs/Misc/SelectListButton");
                 _itemButtons.Add(button);

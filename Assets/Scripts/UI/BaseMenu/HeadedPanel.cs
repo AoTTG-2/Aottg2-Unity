@@ -1,13 +1,10 @@
-﻿using ApplicationManagers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    class HeadedPanel: BasePanel
+    class HeadedPanel : BasePanel
     {
         protected virtual string Title => "Default";
         protected virtual float TopBarHeight => 65f;
@@ -19,8 +16,9 @@ namespace UI
         protected virtual int TitleFontSize => 30;
         protected virtual int ButtonFontSize => 28;
         protected virtual bool CategoryButtons => false;
-        protected Transform BottomBar;
-        protected Transform TopBar;
+
+        public Transform BottomBar;
+        public Transform TopBar;
         protected Dictionary<string, Button> _topButtons = new Dictionary<string, Button>();
 
         public override void Setup(BasePanel parent = null)

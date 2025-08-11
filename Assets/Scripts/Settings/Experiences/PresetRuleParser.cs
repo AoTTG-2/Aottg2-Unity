@@ -19,6 +19,81 @@ namespace Settings
         public float? Max;
         public List<string> AllowedValues; // for strings and numbers with discrete sets
         public bool DisableEditing;
+
+        public bool MatchesAllowedValues(string value)
+        {
+            if (string.IsNullOrEmpty(value) || AllowedValues == null || AllowedValues.Count == 0)
+                return false;
+
+            foreach (var allowed in AllowedValues)
+            {
+                // Escape regex characters except '*'
+                string pattern = "^" + Regex.Escape(allowed).Replace("\\*", ".*") + "$";
+
+                if (Regex.IsMatch(value, pattern, RegexOptions.IgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool MatchesRule(object value, UIRule rule)
+        {
+            if (value == null || rule == null) return false;
+
+            switch (rule.Type)
+            {
+                case UIRuleType.SetDefault:
+                    return MatchesDefault(value, rule.DefaultValue);
+
+                case UIRuleType.LimitRange:
+                    return MatchesRange(value, rule.Min, rule.Max);
+
+                case UIRuleType.AllowedValues:
+                    return MatchesAllowedValues(value, rule.AllowedValues);
+
+                case UIRuleType.Show:
+                case UIRuleType.Hide:
+                case UIRuleType.ForceValue:
+                    // These types are UI behavior-related, not value validation
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        private static bool MatchesDefault(object value, object defaultValue)
+        {
+            return value?.ToString() == defaultValue?.ToString();
+        }
+
+        private static bool MatchesRange(object value, float? min, float? max)
+        {
+            if (value is IConvertible)
+            {
+                try
+                {
+                    float val = Convert.ToSingle(value);
+                    if (min.HasValue && val < min.Value) return false;
+                    if (max.HasValue && val > max.Value) return false;
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        private static bool MatchesAllowedValues(object value, List<string> allowedValues)
+        {
+            if (allowedValues == null || value == null) return false;
+
+            string valStr = value.ToString();
+            return allowedValues.Contains(valStr);
+        }
     }
 
     public static class RuleParser

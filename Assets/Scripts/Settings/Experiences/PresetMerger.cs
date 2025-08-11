@@ -10,13 +10,11 @@ namespace Settings
             var merged = new PresetDefinition
             {
                 Category = child.Category ?? basePreset.Category,
-                Subcategory = child.Subcategory ?? basePreset.Subcategory,
+                SubCategory = child.SubCategory ?? basePreset.SubCategory,
                 Name = child.Name ?? basePreset.Name,
                 Description = child.Description ?? basePreset.Description,
 
-                Modes = MergeUIRuleLists(basePreset.Modes, child.Modes),
-                Maps = MergeUIRuleLists(basePreset.Maps, child.Maps),
-                UIRules = MergeUIRuleLists(basePreset.UIRules, child.UIRules)
+                UIRulesObject = MergeUIRuleLists(basePreset.UIRulesObject, child.UIRulesObject)
             };
             return merged;
         }

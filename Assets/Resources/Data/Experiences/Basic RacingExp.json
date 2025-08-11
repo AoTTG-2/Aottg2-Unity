@@ -1,0 +1,19 @@
+{
+  "Category": "Ranking",
+  "SubCategory": "Racing",
+  "Name": "Basic Racing",
+  "Description": "A basic racing experience.",
+  
+  "UIRules": [
+    "general.modes=racing{racing,laps}",
+    "general.maps=Akina{Akina,Another Brick in the Wall,Future Trax 10}",
+
+    "!misc.allow_player_titans=false",
+    "!misc.allow_shifter_specials=false",
+    
+    "titan.min_size=2.5[0-3.0]",
+    "titan.max_size=3.0[0-3.0]",
+
+    "general.difficulty=normal{easy,normal,hard,abnormal}"
+  ]
+}

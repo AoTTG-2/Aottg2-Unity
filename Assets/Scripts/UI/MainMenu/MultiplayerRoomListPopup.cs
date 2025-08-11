@@ -248,7 +248,7 @@ namespace UI
                     break;
                 case "Create":
                     HideNoDisconnect();
-                    ((ExperienceMenu)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show(true);
+                    ((ExperienceMenu)((MainMenu)UIManager.CurrentMenu)._experienceMenuPopup).Show(true);
                     break;
                 case "Duel":
                     HideNoDisconnect();

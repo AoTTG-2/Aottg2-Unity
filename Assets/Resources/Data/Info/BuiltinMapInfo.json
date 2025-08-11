@@ -1,487 +1,499 @@
 {
-	"MapCategories":[
-		{
-			"Name": "General",
-			"ExcludedModes": ["Racing"],
-			"Maps": [
-				{
-					"Name": "Forest1"
-				},
-				{
-					"Name": "Forest2"
-				},
-				{
-					"Name": "Forest3"
-				},
-				{
-					"Name": "City1"
-				},
-				{
-					"Name": "City2"
-				},
-				{
-					"Name": "Trost1"
-				},
-				{
-					"Name": "Utgard1"
-				},
-				{
-					"Name": "Utgard2"
-				},
-				{
-					"Name": "Cave1"
-				},
-				{
-					"Name": "Lake"
-				},
-				{
-					"Name": "Plaza"
-				},
-				{
-					"Name": "Grandmaster"
-				},
-				{
-					"Name": "Casino"
-				},
-				{
-					"Name": "ForestFlooded"
-				},
-				{
-					"Name": "ForestLava"
-				},
-				{
-					"Name": "Deforest1"
-				},
-				{
-					"Name": "Birth of Levi"
-				},
-				{
-					"Name": "Mew's 1K"
-				},
-				{
-					"Name": "Rocky Mountain"
-				},
-				{
-					"Name": "Shiganshina"
-				},
-				{
-					"Name": "Trost2"
-				},
-				{
-					"Name": "Futuristic Forest"
-				}
-			]
-		},
-		{
-			"Name": "Mission",
-			"IncludedModes": ["Map Logic"],
-			"Maps": [
-				{
-					"Name": "Christmas Waves",
-					"MiscSettings": {
-						"AllowAHSS": false,
-						"AllowAPG": false,
-						"AllowShifterSpecials": false
-					}
-				},
-				{
-					"Name": "Spooky Waves"
-				},
-				{
-					"Name": "Trick or Treat"
-				},
-				{
-					"Name": "Slender Titan",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowShifterSpecials": false,
-						"GlobalMinimapDisable": true
-					}
-				},
-				{
-					"Name": "Annie",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowAHSS": false,
-						"AllowAPG": false,
-						"AllowShifterSpecials": false
-					}
-				},
-				{
-					"Name": "Outside The Walls",
-					"MiscSettings": {
-						"Horses": true,
-						"HorsebackCombat": false,
-						"AllowPlayerTitans": false,
-						"AllowShifters": false
-					}
-				},
-				{
-					"Name": "Trost Defense",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"EndlessRespawnEnabled": true
-					}
-				},
-				{
-					"Name": "Trost Legacy",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"EndlessRespawnEnabled": true
-					}
-				},
-				{
-					"Name": "Crawler Escape",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"AllowAHSS": false,
-						"AllowAPG": false,
-						"AllowThunderspears": false,
-						"RealismMode": true
-					}
-				},
-				{
-					"Name": "Target Practice",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"AllowBlades": false,
-						"AllowAHSS": false,
-						"AllowThunderspears": false,
-						"AllowAPG": true,
-						"APGPVP": true
-					}
-				},
-				{
-					"Name": "Rising Flood"
-				},
-				{
-					"Name": "Hide and Seek",
-					"MiscSettings": {
-						"AllowPlayerTitans": false,
-						"AllowShifterSpecials": false,
-						"AllowShifters": false,
-						"AllowBlades": true,
-						"AllowAHSS": true,
-						"AllowThunderspears": false,
-						"AllowAPG": false,
-						"GlobalMinimapDisable": true
-					}
-				}
-			]
-		},
-		{
-			"Name": "PVP",
-			"IncludedModes": ["Thunderspear PVP", "Blade PVP", "APG PVP", "AHSS PVP", "None"],
-			"Maps": [
-				{
-					"Name": "Cats Forest"
-				},
-				{
-					"Category": "General",
-					"Name": "Forest1"
-				},
-				{
-					"Category": "General",
-					"Name": "Deforest1"
-				},
-				{
-					"Category": "General",
-					"Name": "Forest2"
-				},
-				{
-					"Category": "General",
-					"Name": "City1"
-				},
-				{
-					"Category": "General",
-					"Name": "Cave1"
-				},
-				{
-					"Name": "Headquarters"
-				},
-				{
-					"Name": "House"
-				},
-				{
-					"Name": "Cave2"
-				},
-				{
-					"Name": "Temple Arena"
-				},
-				{
-					"Name": "Beyblade Arena"
-				},
-				{
-					"Name": "Ice Skate"
-				},
-				{
-					"Name": "Madzik Arena"
-				},
-				{
-					"Name": "Palace Arena"
-				},
-				{
-					"Name": "Cave City"
-				},
-				{
-					"Name": "Stars Arena"
-				},
-				{
-					"Name": "Bamboo Arena"
-				},
-				{
-					"Name": "Box Arena"
-				}
-			]
-		},
-		{
-			"Name": "Cage Fight",
-			"IncludedModes": ["Cage Fight", "None"],
-			"Maps": [
-				{
-					"Name": "Veneration"
-				},
-				{
-					"Name": "Refuge"
-				},
-				{
-					"Name": "Crystalline"
-				},
-				{
-					"Name": "En Passant"
-				},
-				{
-					"Name": "Fortification"
-				},
-				{
-					"Name": "Inebriation"
-				}
-			]
-		},
-		{
-			"Name": "Racing Basic",
-			"IncludedModes": ["Racing"],
-			"Maps": [
-				{
-					"Name": "Akina"
-				},
-				{
-					"Name": "The Way of the Racers"
-				},
-				{
-					"Name": "Makina Speed"
-				},
-				{
-					"Name": "Another Brick in the Wall"
-				},
-				{
-					"Name": "Racing City"
-				},
-				{
-					"Name": "Winter Speed"
-				},
-				{
-					"Name": "Makina Source Lvl 1"
-				},
-				{
-					"Name": "Iri Spid 2"
-				},
-				{
-					"Name": "Makina Honor"
-				},
-				{
-					"Name": "Future Trax 10"
-				},
-				{
-					"Name": "Ex'd II"
-				},
-				{
-					"Name": "Makina Red"
-				}
-			]
-		},
-		{
-			"Name": "Racing Hard",
-			"IncludedModes": ["Racing"],
-			"Maps": [
-				{
-					"Name": "Iri Crystal"
-				},
-				{
-					"Name": "ELOR 3"
-				},
-				{
-					"Name": "Makina ZYX + ZYX"
-				},
-				{
-					"Name": "Future Trax 3"
-				},
-				{
-					"Name": "Celestial Marine II"
-				},
-				{
-					"Name": "ELOR 1"
-				},
-				{
-					"Name": "Future Trax 7"
-				},
-				{
-					"Name": "Blood of the Racers"
-				},
-				{
-					"Name": "Ancient Trax"
-				},
-				{
-					"Name": "Machina II"
-				},
-				{
-					"Name": "Blood of the Racers II"
-				},
-				{
-					"Name": "Inferno I"
-				}
-			]
-		},
-		{
-			"Name": "Tutorial",
-			"IncludedModes": ["Map Logic"],
-			"Maps": [
-				{
-					"Name": "Basic Tutorial"
-				}
-			]
-		}
-	],
-	"GameModes": [
-		{
-			"Name": "Waves",
-			"MiscSettings": {
-				"AllowPlayerTitans": false
-			}
-		},
-		{
-			"Name": "Survive"
-		},
-		{
-			"Name": "Endless"
-		},
-		{
-			"Name": "Racing",
-			"MiscSettings": {
-				"AllowPlayerTitans": false,
-				"AllowShifterSpecials": false
-			}
-		},
-		{
-			"Name": "Thunderspear PVP",
-			"MiscSettings": {
-				"PVP": 1,
-				"AllowBlades": false,
-				"AllowAHSS": false,
-				"AllowAPG": false,
-				"AllowPlayerTitans": false,
-				"ThunderspearPVP": true,
-				"AllowShifterSpecials": false
-			}
-		},
-		{
-			"Name": "Cage Fight",
-			"MiscSettings": {
-				"PVP": 2,
-				"AllowPlayerTitans": false,
-				"AllowShifterSpecials": false
-			}
-		},
-		{
-			"Name": "Blade PVP",
-			"MiscSettings": {
-				"PVP": 1,
-				"AllowThunderspears": false,
-				"AllowAHSS": false,
-				"AllowAPG": false,
-				"AllowPlayerTitans": false,
-				"AllowShifterSpecials": false,
-				"AllowStock": false
-			}
-		},
-		{
-			"Name": "APG PVP",
-			"MiscSettings": {
-				"PVP": 1,
-				"AllowThunderspears": false,
-				"AllowBlades": false,
-				"AllowAHSS": false,
-				"AllowPlayerTitans": false,
-				"AllowShifterSpecials": false,
-				"AllowStock": false,
-				"APGPVP": true
-			}
-		},
-		{
-			"Name": "AHSS PVP",
-			"MiscSettings": {
-				"PVP": 1,
-				"AllowThunderspears": false,
-				"AllowBlades": false,
-				"AllowPlayerTitans": false,
-				"AllowShifterSpecials": false,
-				"AllowAPG": false,
-				"AllowStock": false
-			}
-		},
-		{
-			"Name": "Titan Explode",
-			"MiscSettings": {
-				"AllowThunderspears": false
-			}
-		},
-		{
-			"Name": "Cranked",
-			"MiscSettings": {
-				"AllowPlayerTitans": false
-			}
-		},
-		{
-			"Name": "None"
-		}
-	],
-	"Experiences": [
-		{
-			"Name": "VS Titans",
-			"Category": "General",
-  			"Subcategory": "Casual",
-			"Description": "Fight off AI titans."
-		},
-		{
-			"Name": "Standard 1k",
-			"Category": "General",
-  			"Subcategory": "1k",
-			"Description": "1k minimum damage required to kill titans."
-		},
-	],
-	"Duels": [
-		{
-			"Name": "1v1 Speed Duel",
-			"Icon": "TitanIcon",
-			"Players": 2
-		},
-		{
-			"Name": "1v1 Thunderspear PVP",
-			"Icon": "ThunderspearIcon",
-			"Players": 2
-		},
-		{
-			"Name": "1v1 Blade PVP",
-			"Icon": "BladeIcon",
-			"Players": 2
-		}
-	]
+    "MapCategories" : [
+        {
+            "Name" : "General",
+            "ExcludedModes" : ["Racing"],
+            "Maps" : [
+                {
+                    "Name" : "Forest1"
+                },
+                {
+                    "Name" : "Forest2"
+                },
+                {
+                    "Name" : "Forest3"
+                },
+                {
+                    "Name" : "City1"
+                },
+                {
+                    "Name" : "City2"
+                },
+                {
+                    "Name" : "Trost1"
+                },
+                {
+                    "Name" : "Utgard1"
+                },
+                {
+                    "Name" : "Utgard2"
+                },
+                {
+                    "Name" : "Cave1"
+                },
+                {
+                    "Name" : "Lake"
+                },
+                {
+                    "Name" : "Plaza"
+                },
+                {
+                    "Name" : "Grandmaster"
+                },
+                {
+                    "Name" : "Casino"
+                },
+                {
+                    "Name" : "ForestFlooded"
+                },
+                {
+                    "Name" : "ForestLava"
+                },
+                {
+                    "Name" : "Deforest1"
+                },
+                {
+                    "Name" : "Birth of Levi"
+                },
+                {
+                    "Name" : "Mew's 1K"
+                },
+                {
+                    "Name" : "Rocky Mountain"
+                },
+                {
+                    "Name" : "Shiganshina"
+                },
+                {
+                    "Name" : "Trost2"
+                },
+                {
+                    "Name" : "Futuristic Forest"
+                }
+            ]
+        },
+        {
+            "Name" : "Mission",
+            "IncludedModes" : ["Map Logic"],
+            "Maps" : [
+                {
+                    "Name" : "Christmas Waves",
+                    "MiscSettings" : {
+                        "AllowAHSS" : false,
+                        "AllowAPG" : false,
+                        "AllowShifterSpecials" : false
+                    }
+                },
+                {
+                    "Name" : "Spooky Waves"
+                },
+                {
+                    "Name" : "Trick or Treat"
+                },
+                {
+                    "Name" : "Slender Titan",
+                    "MiscSettings" : {
+                        "AllowThunderspears" : false,
+                        "AllowShifterSpecials" : false,
+                        "GlobalMinimapDisable" : true
+                    }
+                },
+                {
+                    "Name" : "Annie",
+                    "MiscSettings" : {
+                        "AllowThunderspears" : false,
+                        "AllowAHSS" : false,
+                        "AllowAPG" : false,
+                        "AllowShifterSpecials" : false
+                    }
+                },
+                {
+                    "Name" : "Outside The Walls",
+                    "MiscSettings" : {
+                        "Horses" : true,
+                        "HorsebackCombat" : false,
+                        "AllowPlayerTitans" : false,
+                        "AllowShifters" : false
+                    }
+                },
+                {
+                    "Name" : "Trost Defense",
+                    "MiscSettings" : {
+                        "AllowPlayerTitans" : false,
+                        "AllowShifterSpecials" : false,
+                        "AllowShifters" : false,
+                        "EndlessRespawnEnabled" : true
+                    }
+                },
+                {
+                    "Name" : "Trost Legacy",
+                    "MiscSettings" : {
+                        "AllowPlayerTitans" : false,
+                        "AllowShifterSpecials" : false,
+                        "AllowShifters" : false,
+                        "EndlessRespawnEnabled" : true
+                    }
+                },
+                {
+                    "Name" : "Crawler Escape",
+                    "MiscSettings" : {
+                        "AllowPlayerTitans" : false,
+                        "AllowShifterSpecials" : false,
+                        "AllowShifters" : false,
+                        "AllowAHSS" : false,
+                        "AllowAPG" : false,
+                        "AllowThunderspears" : false,
+                        "RealismMode" : true
+                    }
+                },
+                {
+                    "Name" : "Target Practice",
+                    "MiscSettings" : {
+                        "AllowPlayerTitans" : false,
+                        "AllowShifterSpecials" : false,
+                        "AllowShifters" : false,
+                        "AllowBlades" : false,
+                        "AllowAHSS" : false,
+                        "AllowThunderspears" : false,
+                        "AllowAPG" : true,
+                        "APGPVP" : true
+                    }
+                },
+                {
+                    "Name" : "Rising Flood"
+                },
+                {
+                    "Name" : "Hide and Seek",
+                    "MiscSettings" : {
+                        "AllowPlayerTitans" : false,
+                        "AllowShifterSpecials" : false,
+                        "AllowShifters" : false,
+                        "AllowBlades" : true,
+                        "AllowAHSS" : true,
+                        "AllowThunderspears" : false,
+                        "AllowAPG" : false,
+                        "GlobalMinimapDisable" : true
+                    }
+                }
+            ]
+        },
+        {
+            "Name" : "PVP",
+            "IncludedModes" : ["Thunderspear PVP","Blade PVP","APG PVP","AHSS PVP","None"],
+            "Maps" : [
+                {
+                    "Name" : "Cats Forest"
+                },
+                {
+                    "Category" : "General",
+                    "Name" : "Forest1"
+                },
+                {
+                    "Category" : "General",
+                    "Name" : "Deforest1"
+                },
+                {
+                    "Category" : "General",
+                    "Name" : "Forest2"
+                },
+                {
+                    "Category" : "General",
+                    "Name" : "City1"
+                },
+                {
+                    "Category" : "General",
+                    "Name" : "Cave1"
+                },
+                {
+                    "Name" : "Headquarters"
+                },
+                {
+                    "Name" : "House"
+                },
+                {
+                    "Name" : "Cave2"
+                },
+                {
+                    "Name" : "Temple Arena"
+                },
+                {
+                    "Name" : "Beyblade Arena"
+                },
+                {
+                    "Name" : "Ice Skate"
+                },
+                {
+                    "Name" : "Madzik Arena"
+                },
+                {
+                    "Name" : "Palace Arena"
+                },
+                {
+                    "Name" : "Cave City"
+                },
+                {
+                    "Name" : "Stars Arena"
+                },
+                {
+                    "Name" : "Bamboo Arena"
+                },
+                {
+                    "Name" : "Box Arena"
+                }
+            ]
+        },
+        {
+            "Name" : "Cage Fight",
+            "IncludedModes" : ["Cage Fight","None"],
+            "Maps" : [
+                {
+                    "Name" : "Veneration"
+                },
+                {
+                    "Name" : "Refuge"
+                },
+                {
+                    "Name" : "Crystalline"
+                },
+                {
+                    "Name" : "En Passant"
+                },
+                {
+                    "Name" : "Fortification"
+                },
+                {
+                    "Name" : "Inebriation"
+                }
+            ]
+        },
+        {
+            "Name" : "Racing Basic",
+            "IncludedModes" : ["Racing"],
+            "Maps" : [
+                {
+                    "Name" : "Akina"
+                },
+                {
+                    "Name" : "The Way of the Racers"
+                },
+                {
+                    "Name" : "Makina Speed"
+                },
+                {
+                    "Name" : "Another Brick in the Wall"
+                },
+                {
+                    "Name" : "Racing City"
+                },
+                {
+                    "Name" : "Winter Speed"
+                },
+                {
+                    "Name" : "Makina Source Lvl 1"
+                },
+                {
+                    "Name" : "Iri Spid 2"
+                },
+                {
+                    "Name" : "Makina Honor"
+                },
+                {
+                    "Name" : "Future Trax 10"
+                },
+                {
+                    "Name" : "Ex'd II"
+                },
+                {
+                    "Name" : "Makina Red"
+                }
+            ]
+        },
+        {
+            "Name" : "Racing Hard",
+            "IncludedModes" : ["Racing"],
+            "Maps" : [
+                {
+                    "Name" : "Iri Crystal"
+                },
+                {
+                    "Name" : "ELOR 3"
+                },
+                {
+                    "Name" : "Makina ZYX + ZYX"
+                },
+                {
+                    "Name" : "Future Trax 3"
+                },
+                {
+                    "Name" : "Celestial Marine II"
+                },
+                {
+                    "Name" : "ELOR 1"
+                },
+                {
+                    "Name" : "Future Trax 7"
+                },
+                {
+                    "Name" : "Blood of the Racers"
+                },
+                {
+                    "Name" : "Ancient Trax"
+                },
+                {
+                    "Name" : "Machina II"
+                },
+                {
+                    "Name" : "Blood of the Racers II"
+                },
+                {
+                    "Name" : "Inferno I"
+                }
+            ]
+        },
+        {
+            "Name" : "Tutorial",
+            "IncludedModes" : ["Map Logic"],
+            "Maps" : [
+                {
+                    "Name" : "Basic Tutorial"
+                }
+            ]
+        }
+    ],
+    "GameModes" : [
+        {
+            "Name" : "Waves",
+            "MiscSettings" : {
+                "AllowPlayerTitans" : false
+            }
+        },
+        {
+            "Name" : "Survive"
+        },
+        {
+            "Name" : "Endless"
+        },
+        {
+            "Name" : "Racing",
+            "MiscSettings" : {
+                "AllowPlayerTitans" : false,
+                "AllowShifterSpecials" : false
+            }
+        },
+        {
+            "Name" : "Thunderspear PVP",
+            "MiscSettings" : {
+                "PVP" : 1,
+                "AllowBlades" : false,
+                "AllowAHSS" : false,
+                "AllowAPG" : false,
+                "AllowPlayerTitans" : false,
+                "ThunderspearPVP" : true,
+                "AllowShifterSpecials" : false
+            }
+        },
+        {
+            "Name" : "Cage Fight",
+            "MiscSettings" : {
+                "PVP" : 2,
+                "AllowPlayerTitans" : false,
+                "AllowShifterSpecials" : false
+            }
+        },
+        {
+            "Name" : "Blade PVP",
+            "MiscSettings" : {
+                "PVP" : 1,
+                "AllowThunderspears" : false,
+                "AllowAHSS" : false,
+                "AllowAPG" : false,
+                "AllowPlayerTitans" : false,
+                "AllowShifterSpecials" : false,
+                "AllowStock" : false
+            }
+        },
+        {
+            "Name" : "APG PVP",
+            "MiscSettings" : {
+                "PVP" : 1,
+                "AllowThunderspears" : false,
+                "AllowBlades" : false,
+                "AllowAHSS" : false,
+                "AllowPlayerTitans" : false,
+                "AllowShifterSpecials" : false,
+                "AllowStock" : false,
+                "APGPVP" : true
+            }
+        },
+        {
+            "Name" : "AHSS PVP",
+            "MiscSettings" : {
+                "PVP" : 1,
+                "AllowThunderspears" : false,
+                "AllowBlades" : false,
+                "AllowPlayerTitans" : false,
+                "AllowShifterSpecials" : false,
+                "AllowAPG" : false,
+                "AllowStock" : false
+            }
+        },
+        {
+            "Name" : "Titan Explode",
+            "MiscSettings" : {
+                "AllowThunderspears" : false
+            }
+        },
+        {
+            "Name" : "Cranked",
+            "MiscSettings" : {
+                "AllowPlayerTitans" : false
+            }
+        },
+        {
+            "Name" : "None"
+        }
+    ],
+    "Experiences" : [
+        {
+            "Name" : "Basic Racing",
+            "Category" : "Ranking",
+            "SubCategory" : "Racing",
+            "Description" : "A basic racing experience."
+        },
+        {
+            "Name" : "Bomb PVP",
+            "Category" : "PVP",
+            "SubCategory" : "Bomb",
+            "Description" : "PVP using thunderspears"
+        },
+        {
+            "Name" : "Standard 1k",
+            "Category" : "General",
+            "SubCategory" : "1k",
+            "Description" : "1k minimum damage required to kill titans."
+        },
+        {
+            "Name" : "Vs Titans",
+            "Category" : "General",
+            "SubCategory" : "Casual",
+            "Description" : "1k minimum damage required to kill titans."
+        }
+    ],
+    "Duels" : [
+        {
+            "Name" : "1v1 Speed Duel",
+            "Icon" : "TitanIcon",
+            "Players" : 2
+        },
+        {
+            "Name" : "1v1 Thunderspear PVP",
+            "Icon" : "ThunderspearIcon",
+            "Players" : 2
+        },
+        {
+            "Name" : "1v1 Blade PVP",
+            "Icon" : "BladeIcon",
+            "Players" : 2
+        }
+    ]
 }

@@ -32,6 +32,7 @@ namespace UI
         public Telemetry TelemetryPanel;
         public BasePopup _settingsPopup;
         public BasePopup _createGamePopup;
+        public BasePopup _experienceGamePopup;
         public BasePopup _pausePopup;
         public BasePopup _characterPopup;
         public BasePopup _characterChangePopup;
@@ -752,18 +753,21 @@ namespace UI
             _settingsPopup = ElementFactory.CreateHeadedPanel<SettingsPopup>(transform).GetComponent<BasePopup>();
             _pausePopup = ElementFactory.CreateHeadedPanel<PausePopup>(transform).GetComponent<PausePopup>();
             _selectMapPopup = ElementFactory.CreateHeadedPanel<CreateGameSelectMapPopup>(transform).GetComponent<CreateGameSelectMapPopup>();
-            _createGamePopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
+            _createGamePopup = ElementFactory.CreateHeadedPanel<CreateGamePopup>(transform).GetComponent<CreateGamePopup>();
+            _experienceGamePopup = ElementFactory.CreateHeadedPanel<ExperienceMenu>(transform).GetComponent<ExperienceMenu>();
             _customAssetUrlPopup = ElementFactory.CreateDefaultPopup<CustomAssetUrlPopup>(transform).GetComponent<CustomAssetUrlPopup>();
             SkillTooltipPopup = ElementFactory.CreateTooltipPopup<SkillTooltipPopup>(IconPickPopup.transform).GetComponent<SkillTooltipPopup>();
             _popups.Add(_settingsPopup);
             _popups.Add(_pausePopup);
             _popups.Add(_createGamePopup);
+            _popups.Add(_experienceGamePopup);
             _popups.Add(_selectMapPopup);
             _popups.Add(_customAssetUrlPopup);
             _popups.Add(SkillTooltipPopup);
             _allPausePopups.Add(_settingsPopup);
             _allPausePopups.Add(_pausePopup);
             _allPausePopups.Add(_createGamePopup);
+            _allPausePopups.Add(_experienceGamePopup);
             _allPausePopups.Add(_customAssetUrlPopup);
             _allPausePopups.Add(_selectMapPopup);
         }

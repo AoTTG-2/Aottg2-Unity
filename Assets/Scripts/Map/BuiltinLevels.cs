@@ -24,6 +24,16 @@ namespace Map
             Name = node["Name"];
             Description = node["Description"];
         }
+
+        public JSONNode Serialize()
+        {
+            JSONObject json = new JSONObject();
+            json.Add("Name", Name);
+            json.Add("Category", Category);
+            json.Add("SubCategory", Category);
+            json.Add("Description", Description);
+            return json;
+        }
     }
 
     class BuiltinLevels
@@ -40,6 +50,11 @@ namespace Map
             Directory.CreateDirectory(CustomLogicFolderPath);
             Directory.CreateDirectory(CustomMapAutosaveFolderPath);
             _info = JSON.Parse(((TextAsset)ResourceManager.LoadAsset(ResourcePaths.Info, "BuiltinMapInfo")).text);
+        }
+
+        public static JSONNode GetInfo()
+        {
+            return _info;
         }
 
 
@@ -170,6 +185,33 @@ namespace Map
                 }
                 return mapNames.ToArray();
             }
+        }
+
+        public static string[] QueryMapsNames(UIRule query)
+        {
+            HashSet<string> mapNames = new HashSet<string>();
+            foreach (JSONNode mapCategory in _info["MapCategories"])
+            {
+                foreach (JSONNode map in mapCategory["Maps"])
+                {
+                    if (query.MatchesAllowedValues(map["name"]) || query.AllowedValues.Count == 0)
+                        mapNames.Add(map["Name"]);
+                }
+
+            }
+            return mapNames.ToArray();
+        }
+
+        public static string[] QueryModeNames(UIRule query)
+        {
+            HashSet<string> mapNames = new HashSet<string>();
+            foreach (JSONNode mode in _info["GameModes"])
+            {
+                if (query.MatchesAllowedValues(mode["name"]) || query.AllowedValues.Count == 0)
+                    mapNames.Add(mode["Name"]);
+
+            }
+            return mapNames.ToArray();
         }
 
         public static string[] GetAutosaveNames()

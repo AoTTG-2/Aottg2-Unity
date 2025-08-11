@@ -22,10 +22,8 @@ namespace UI
         protected override string DefaultCategoryPanel => "General";
         public string LocaleCategory = "CreateGamePopup";
         public bool IsMultiplayer = false;
-        protected override bool UseSound => true;
 
         protected FileWatcherExtension _watcher;
-
 
         public override void Setup(BasePanel parent = null)
         {
@@ -120,6 +118,7 @@ namespace UI
             {
                 SettingsManager.MultiplayerSettings.Disconnect();
             }
+
             base.Hide();
         }
 
@@ -147,16 +146,20 @@ namespace UI
                 case "Back":
                     if (SceneLoader.SceneName == SceneName.InGame)
                     {
+                        Hide();
                         ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
-                        HideNoDisconnect();
                     }
                     else if (IsMultiplayer)
                     {
-                        HideNoDisconnect();
-                        ((MultiplayerRoomListPopup)((MainMenu)UIManager.CurrentMenu)._multiplayerRoomListPopup).Show();
+                        Hide();
+                        ((ExperienceMenu)((MainMenu)UIManager.CurrentMenu)._experienceMenuPopup).Show();
                     }
                     else
+                    {
                         Hide();
+                        ((ExperienceMenu)((MainMenu)UIManager.CurrentMenu)._experienceMenuPopup).Show();
+                    }
+
                     break;
                 case "LoadPreset":
                     UIManager.CurrentMenu.SelectListPopup.ShowLoad(SettingsManager.InGameSettings.InGameSets.GetSetNames().ToList(), onLoad: () => OnLoadPreset(),

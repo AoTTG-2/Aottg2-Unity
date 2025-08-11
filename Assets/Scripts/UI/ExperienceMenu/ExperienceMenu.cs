@@ -1,9 +1,6 @@
 ﻿using ApplicationManagers;
 using GameManagers;
-using Map;
 using Settings;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,204 +9,83 @@ namespace UI
     class ExperienceMenu : BasePopup
     {
         protected override string Title => string.Empty;
-        protected override float Width => 1500;
+        protected override float Width => 1200f;
         protected override float Height => 800f;
-        protected override bool CategoryPanel => false;
-        protected override bool CategoryButtons => false;
+        protected override bool CategoryPanel => true;
+        protected override bool CategoryButtons => true;
         protected override string DefaultCategoryPanel => "General";
         public string LocaleCategory = "ExperiencePopup";
-        public bool IsMultiplayer = false;
+
         protected override bool UseSound => true;
 
-        private CarouselSelector categorySelector;
-        private CarouselSelector subCategorySelector;
-        private CarouselSelector modeSelector;
-        private CarouselSelector mapSelector;
-
-        private Button playButton;
-        private Button settingsButton;
-        private Button sandboxButton;
-
-        private List<Experience> allPresets;
-
-        private string selectedCategory;
-        private string selectedSubCategory;
-        private PresetDefinition selectedPreset;
-        private string selectedMode;
-        private string selectedMap;
+        protected override bool ScrollBar => true;
+        public Button playButton;
+        public Button settingsButton;
+        public Button backButton;
+        public Button sandboxButton;
+        public bool IsMultiplayer = false;
 
         public override void Setup(BasePanel parent = null)
         {
             base.Setup(parent);
-
-            // Setup and bind CarouselSelectors
-            categorySelector = ElementFactory.CreateCarouselSelector(SinglePanel).GetComponent<CarouselSelector>();
-            subCategorySelector = ElementFactory.CreateCarouselSelector(SinglePanel).GetComponent<CarouselSelector>();
-            modeSelector = ElementFactory.CreateCarouselSelector(SinglePanel).GetComponent<CarouselSelector>();
-            mapSelector = ElementFactory.CreateCarouselSelector(SinglePanel).GetComponent<CarouselSelector>();
-
-            ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-
-            sandboxButton = ElementFactory.CreateTextButton(BottomBar, style, "Sandbox", onClick: () => OnSandboxClicked()).GetComponent<Button>();
-            settingsButton = ElementFactory.CreateTextButton(BottomBar, style, "Settings", onClick: () => OnSettingsClicked()).GetComponent<Button>();
-            playButton = ElementFactory.CreateTextButton(BottomBar, style, "Play", onClick: () => OnPlayClicked()).GetComponent<Button>();
-
-
-
-            allPresets = BuiltinLevels.GetExperiences();
-
-            PopulateCategories();
-
             SetupBottomButtons();
 
         }
 
-        private void PopulateCategories()
-        {
-            var categories = allPresets.Select(p => p.Category).Distinct().ToList();
-            categorySelector.Populate(categories.Select(c => new YourOptionData { ID = c, Name = c }).ToList(), OnCategorySelected);    // need to resolve locale and icon eventually.
-
-            // Clear deeper selectors
-            subCategorySelector.ClearButtons();
-            modeSelector.ClearButtons();
-            mapSelector.ClearButtons();
-
-            playButton.interactable = false;
-            settingsButton.gameObject.SetActive(false);
-        }
-
-        private void OnCategorySelected(YourOptionData category)
-        {
-            selectedCategory = category.ID;
-
-            var subCategories = allPresets
-                .Where(p => p.Category == selectedCategory)
-                .Select(p => p.SubCategory)
-                .Distinct()
-                .ToList();
-
-            if (subCategories.Count == 1)
-            {
-                selectedSubCategory = subCategories[0];
-                subCategorySelector.ClearButtons();
-                OnSubCategorySelected(new YourOptionData { ID = selectedSubCategory, Name = selectedSubCategory });
-            }
-            else
-            {
-                subCategorySelector.Populate(subCategories.Select(sc => new YourOptionData { ID = sc, Name = sc }).ToList(), OnSubCategorySelected);
-            }
-
-            // Clear lower selectors
-            modeSelector.ClearButtons();
-            mapSelector.ClearButtons();
-
-            playButton.interactable = false;
-            settingsButton.gameObject.SetActive(false);
-        }
-
-        private void OnSubCategorySelected(YourOptionData subCategory)
-        {
-            selectedSubCategory = subCategory.ID;
-            var experience = allPresets.FirstOrDefault(p => p.Category == selectedCategory && p.SubCategory == selectedSubCategory);
-
-            selectedPreset = BuiltinLevels.LoadExperience(experience.Name);
-
-            if (selectedPreset == null)
-            {
-                Debug.LogError($"Preset not found for {selectedCategory} / {selectedSubCategory}");
-                return;
-            }
-
-            // Populate modes (or auto-select if only one)
-            var modes = selectedPreset.ModesRaw ?? new List<string>();
-            if (modes.Count == 1)
-            {
-                selectedMode = modes[0];
-                modeSelector.ClearButtons();
-            }
-            else if (modes.Count > 1)
-            {
-                modeSelector.Populate(modes.Select(m => new YourOptionData { ID = m, Name = m }).ToList(), OnModeSelected);
-            }
-            else
-            {
-                selectedMode = null;
-                modeSelector.ClearButtons();
-            }
-
-            // Populate maps (or auto-select if only one)
-            var maps = selectedPreset.MapsRaw ?? new List<string>();
-            if (maps.Count == 1)
-            {
-                selectedMap = maps[0];
-                mapSelector.ClearButtons();
-            }
-            else if (maps.Count > 1)
-            {
-                mapSelector.Populate(maps.Select(m => new YourOptionData { ID = m, Name = m }).ToList(), OnMapSelected);
-            }
-            else
-            {
-                selectedMap = null;
-                mapSelector.ClearButtons();
-            }
-
-            UpdateButtonsState();
-        }
-
-        private void OnModeSelected(YourOptionData mode)
-        {
-            selectedMode = mode.ID;
-            UpdateButtonsState();
-        }
-
-        private void OnMapSelected(YourOptionData map)
-        {
-            selectedMap = map.ID;
-            UpdateButtonsState();
-        }
-
-        private void UpdateButtonsState()
-        {
-            bool canPlay = selectedPreset != null;
-
-            if (selectedPreset.ModesRaw != null && selectedPreset.ModesRaw.Count > 1)
-                canPlay &= !string.IsNullOrEmpty(selectedMode);
-            if (selectedPreset.MapsRaw != null && selectedPreset.MapsRaw.Count > 1)
-                canPlay &= !string.IsNullOrEmpty(selectedMap);
-
-            playButton.interactable = canPlay;
-            settingsButton.gameObject.SetActive(selectedPreset != null && selectedPreset.UIRulesRaw?.Count > 0);
-        }
-
-        private void OnPlayClicked()
-        {
-            // Start game with selectedPreset + selectedMode + selectedMap
-            Debug.Log($"Playing {selectedCategory}/{selectedSubCategory} Mode:{selectedMode} Map:{selectedMap}");
-        }
-
-        private void OnSettingsClicked()
-        {
-            // Open settings panel, passing selectedPreset
-            Debug.Log("Open settings panel");
-        }
-
-        private void OnSandboxClicked()
-        {
-            // Open sandbox panel with no preset
-            Debug.Log("Open sandbox panel");
-        }
-
         private void SetupBottomButtons()
         {
-            //ElementStyle style = new ElementStyle(fontSize: ButtonFontSize, themePanel: ThemePanel);
-            //string start = SceneLoader.SceneName == SceneName.InGame ? "Restart" : "Start";
-            //foreach (string buttonName in new string[] { "Import", "Export", "LoadPreset", "SavePreset", start, "Back" })
-            //{
-            //    string locale = UIManager.GetLocaleCommon(buttonName);
-            //    GameObject obj = ElementFactory.CreateTextButton(BottomBar, style, locale,
-            //        onClick: () => OnBottomBarButtonClick(buttonName));
-            //}
+
+            ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
+
+            // Create containers
+            GameObject leftContainer = new GameObject("LeftContainer", typeof(RectTransform));
+            GameObject rightContainer = new GameObject("RightContainer", typeof(RectTransform));
+
+            leftContainer.transform.SetParent(BottomBar.transform, false);
+            rightContainer.transform.SetParent(BottomBar.transform, false);
+
+            // Add layout groups
+            leftContainer.AddComponent<HorizontalLayoutGroup>();
+            rightContainer.AddComponent<HorizontalLayoutGroup>();
+
+            // Optional: Add LayoutElement to control sizing
+            LayoutElement leftLayout = leftContainer.AddComponent<LayoutElement>();
+            LayoutElement rightLayout = rightContainer.AddComponent<LayoutElement>();
+            leftLayout.flexibleWidth = 1;
+            rightLayout.flexibleWidth = 1;
+
+            // Create buttons
+            string start = SceneLoader.SceneName == SceneName.InGame ? "Restart" : "Start";
+
+            backButton = ElementFactory.CreateTextButton(leftContainer.transform, style, "Back",
+                onClick: () => OnBottomBarButtonClick("Back")).GetComponent<Button>();
+
+            sandboxButton = ElementFactory.CreateTextButton(rightContainer.transform, style, "Sandbox",
+                onClick: () => OnBottomBarButtonClick("Sandbox")).GetComponent<Button>();
+
+            settingsButton = ElementFactory.CreateTextButton(rightContainer.transform, style, "Settings",
+                onClick: () => OnBottomBarButtonClick("Settings")).GetComponent<Button>();
+
+            playButton = ElementFactory.CreateTextButton(rightContainer.transform, style, start,
+                onClick: () => OnBottomBarButtonClick(start)).GetComponent<Button>();
+        }
+
+        protected override void SetupTopButtons()
+        {
+            ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
+            foreach (string buttonName in new string[] { "General", "Add Content" })
+            {
+                GameObject obj = ElementFactory.CreateCategoryButton(TopBar, style, buttonName, // UIManager.GetLocale(LocaleCategory, "Top", buttonName + "Button") do this later
+                    onClick: () => SetCategoryPanel(buttonName));
+                _topButtons.Add(buttonName, obj.GetComponent<Button>());
+            }
+            base.SetupTopButtons();
+        }
+
+        protected override void RegisterCategoryPanels()
+        {
+            _categoryPanelTypes.Add("General", typeof(QuickPlayPanel));
+            _categoryPanelTypes.Add("Add Content", typeof(CreateGameCustomPanel));
         }
 
         public void Show(bool isMultiplayer)
@@ -236,6 +112,27 @@ namespace UI
             base.Hide();
         }
 
+
+        public void OpenSettings(PresetDefinition preset = null)
+        {
+            if (SceneLoader.SceneName == SceneName.InGame)
+            {
+                ((InGameMenu)UIManager.CurrentMenu).SkipAHSSInput = true;
+                ((CreateGamePopup)((InGameMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+                HideNoDisconnect();
+            }
+            else if (IsMultiplayer)
+            {
+                HideNoDisconnect();
+                ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+            }
+            else
+            {
+                Hide();
+                ((CreateGamePopup)((MainMenu)UIManager.CurrentMenu)._createGamePopup).Show();
+            }
+        }
+
         private void OnBottomBarButtonClick(string name)
         {
             switch (name)
@@ -255,6 +152,7 @@ namespace UI
                     break;
 
                 case "Settings":
+                    OpenSettings();
                     break;
 
                 case "Back":
@@ -275,5 +173,6 @@ namespace UI
             SettingsManager.WeatherSettings.Save();
             SettingsManager.WeatherSettings.Load();
         }
+
     }
 }

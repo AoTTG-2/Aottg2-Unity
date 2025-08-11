@@ -1,19 +1,13 @@
 {
-  "category": "",
-  "subcategory": "",
-  "name": "Standard 1k",
-  "description": "1k minimum damage required to kill titans.",
+  "Category": "General",
+  "SubCategory": "1k",
+  "Name": "Standard 1k",
+  "Description": "1k minimum damage required to kill titans.",
 
-  "modes": [
-    "+waves",
-    "+survive",
-    "+endless",
-    "+cranked"
-  ],
+  "UIRules": [
+    "general.modes=waves{waves,survive,endless,cranked}",
+    "general.maps=Forest1{Forest1,Forest2}",
 
-  "maps": ["+*"],
-
-  "uiRules": [
     "!misc.allow_player_titans=false",
     "!misc.allow_shifter_specials=false",
     
