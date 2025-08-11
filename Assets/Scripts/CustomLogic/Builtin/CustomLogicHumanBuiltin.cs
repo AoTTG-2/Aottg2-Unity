@@ -617,6 +617,15 @@ namespace CustomLogic
             return null;
         }
 
+        [CLMethod(description: "Switch the ai state of the (AI) human.")]
+        public void SwitchAIState(string name)
+        {
+            if (Human.IsMine() && Human.AI)
+            {
+                Controller.SwitchAIState(Controller.AIStates[name]);
+            }
+        }
+
         [CLMethod(description: "Reset the callbacks for the (AI) humans")]
         public void ResetCallback(string callback, UserMethod method = null)
         {
