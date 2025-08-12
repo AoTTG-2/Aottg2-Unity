@@ -406,7 +406,6 @@ namespace CustomLogic
                 if (!Human.IsMine() || !Human.AI)
                     return null;
 
-
                 ITargetable enemy = Controller.Target;
 
                 if (enemy == null)
@@ -448,12 +447,12 @@ namespace CustomLogic
         [CLProperty("The target position of the (AI) human.")]
         public CustomLogicVector3Builtin TargetPosition
         {
-            get => new(Controller.TargetPosition);
+            get => Controller.TargetPosition;
             set => Controller.TargetPosition = value.Value;
         }
 
         [CLProperty("The target velocity of the (AI) human.")]
-        public CustomLogicVector3Builtin TargetVelocity => new(Controller.TargetVelocity);
+        public CustomLogicVector3Builtin TargetVelocity => Controller.TargetVelocity;
 
         // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
@@ -495,30 +494,11 @@ namespace CustomLogic
                 Human.HookRight.DisableAnyHook();
         }
 
-        [CLMethod(description: "Position of the left hook, null if there is no hook.")]
-        public CustomLogicVector3Builtin LeftHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookLeft.GetHookPosition();
-                return new CustomLogicVector3Builtin(hook);
-            }
-            return null;
-        }
+        [CLMethod(description: "Position of the left hook, Vector3.zero if there is no hook.")]
+        public CustomLogicVector3Builtin LeftHookPosition() => Human.HookLeft.GetHookPosition();
 
-        [CLMethod(description: "Position of the right hook, null if there is no hook.")]
-        public CustomLogicVector3Builtin RightHookPosition()
-        {
-            if (Human.IsMine())
-            {
-                Vector3 hook = Human.HookRight.GetHookPosition();
-                // if (hook != null) # vector3 is struct and can not be assign with null, so don't need to judge
-                // {
-                return new CustomLogicVector3Builtin(hook);
-                // }
-            }
-            return null;
-        }
+        [CLMethod(description: "Position of the right hook, Vector3.zero if there is no hook.")]
+        public CustomLogicVector3Builtin RightHookPosition() => Human.HookRight.GetHookPosition();
 
         [CLMethod(description: "Mounts the human on a map object")]
         public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
