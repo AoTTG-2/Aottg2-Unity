@@ -872,13 +872,20 @@ namespace GameManagers
                 preCount = SettingsManager.HumanCustomSettings.Costume1Sets.Sets.GetCount();
             }
             int idx = 0;
+            bool finded = false;
             foreach (var h in sets.Value)
             {
                 if (h.Name.Value == costumeName)
                 {
+                    finded = true;
                     break;
                 }
                 idx += 1;
+            }
+
+            if (!finded)
+            {
+                return null;
             }
 
             var settings = new InGameCharacterSettings();
