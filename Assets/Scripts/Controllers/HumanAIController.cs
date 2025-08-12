@@ -50,29 +50,14 @@ namespace Controllers
 
         public Vector3 TargetPosition;
         public Vector3 TargetDirection;
-
         protected Vector3? _targetLastPosition;
         public Vector3 TargetVelocity;
-
         public HumanAIState AIState;
-
         public HumanAICallback Callbacks = new();
-
         public Dictionary<string, HumanAIState> AIStates = new();
-
         public bool _usePathfinding = true;
         protected NavMeshAgent _agent;
-
         protected float _moveAngle;
-        protected bool _moveToActive = false;
-
-        protected float _stateTimeLeft = 0.0f;
-
-        protected float _moveToRange;
-
-        protected float _moveToTimeout;
-
-
         protected bool _setTargetThisFrame = false;
 
         protected override void Awake()
@@ -324,7 +309,7 @@ namespace Controllers
             }
         }
 
-        public void HorseMount(bool mount = false)
+        public void HorseMount(bool mount = true)
         {
             if (_human.Dead || _human.State == HumanState.Stun)
                 return;
@@ -617,34 +602,19 @@ namespace Controllers
 
         public void MoveToPosition()
         {
+            _human.HasDirection = true;
+            _human.TargetMagnitude = 1.0f;
             if (_usePathfinding)
             {
                 _setTargetThisFrame = false;
                 _agent.speed = _human.Cache.Rigidbody.velocity.magnitude;
-            }
-            _stateTimeLeft -= Time.deltaTime;
-            _moveToTimeout -= Time.deltaTime;
-            float distance = Vector3.Distance(_human.Cache.Transform.position, TargetPosition);
-
-            if (distance <= _moveToRange || !_moveToActive)
-            {
-                _moveToActive = false;
-                Idle();
+                _moveAngle = UnityEngine.Random.Range(-5f, 5f);
+                _human.TargetAngle = GetAgentNavAngle(TargetPosition);
             }
             else
             {
-                _human.HasDirection = true;
-                _human.TargetMagnitude = 1.0f;
-                if (_usePathfinding)
-                {
-                    _moveAngle = UnityEngine.Random.Range(-5f, 5f);
-                    _human.TargetAngle = GetAgentNavAngle(TargetPosition);
-                }
-                else
-                {
-                    _moveAngle = UnityEngine.Random.Range(-45f, 45f);
-                    _human.TargetAngle = GetChaseAngle(TargetPosition, true);
-                }
+                _moveAngle = UnityEngine.Random.Range(-45f, 45f);
+                _human.TargetAngle = GetChaseAngle(TargetPosition, true);
             }
             RefreshAgent();
         }
@@ -682,17 +652,17 @@ namespace Controllers
         {
             Target = null;
             TargetPosition = position;
-            _moveToRange = range;
-            _moveToActive = true;
-            SwitchAIState(AIStates["MoveTo"]);
+            var moveToState = (HumanAIStates.MoveTo)AIStates["MoveTo"];
+            moveToState.MoveToRange = range;
+            SwitchAIState(moveToState);
         }
 
         public void MoveToTarget(ITargetable targetable, float range)
         {
             Target = targetable;
-            _moveToRange = range;
-            _moveToActive = true;
-            SwitchAIState(AIStates["MoveTo"]);
+            var moveToState = (HumanAIStates.MoveTo)AIStates["MoveTo"];
+            moveToState.MoveToRange = range;
+            SwitchAIState(moveToState);
         }
 
         public void Idle()
@@ -701,7 +671,6 @@ namespace Controllers
             Target = null;
             _human.HasDirection = false;
             _human.TargetMagnitude = 0;
-            _stateTimeLeft = 0;
             SwitchAIState(null);
             Callbacks.PostIdle?.Invoke();
         }
@@ -741,19 +710,36 @@ namespace Controllers
         public Action PreAction;
 
         public Action PostAction;
+
+        public Action MoveToCallback;
     }
 
     namespace HumanAIStates
     {
         class MoveTo : HumanAIState
         {
+
+            public float MoveToRange;
             public override string Name
             {
                 get => "MoveTo";
             }
             public override void Action()
             {
-                Controller.MoveToPosition();
+                float distance = Vector3.Distance(Human.Cache.Transform.position, Controller.TargetPosition);
+
+                if (distance <= MoveToRange)
+                {
+                    Controller.Callbacks.MoveToCallback?.Invoke();
+                    Controller.Idle();
+                }
+                else
+                    Controller.MoveToPosition();
+            }
+
+            public override void PostSwitchState()
+            {
+                Controller.Callbacks.MoveToCallback = null;
             }
         }
 

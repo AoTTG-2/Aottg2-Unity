@@ -898,7 +898,6 @@ namespace GameManagers
             human.Init(true, TeamInfo.Human, settings);
             if (SettingsManager.InGameCurrent.Misc.HumanHealth.Value > 1)
                 human.SetHealth(SettingsManager.InGameCurrent.Misc.HumanHealth.Value);
-            Debug.Log(human);
             return human;
         }
 

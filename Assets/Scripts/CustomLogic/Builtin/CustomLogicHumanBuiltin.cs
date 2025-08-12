@@ -367,6 +367,12 @@ namespace CustomLogic
         [CLProperty(description: "If the human is on the ground.")]
         public bool Grounded => Human.Grounded;
 
+        [CLProperty(description: "If the human can hold reel in/out.")]
+        public bool Pivot => Human.Pivot;
+
+        [CLProperty(description: "The position of the pivot when the human hold reel in/out.")]
+        public CustomLogicVector3Builtin PivotPosition => Human.PivotPosition();
+
         [CLProperty(description: "If left hook is hooked.")]
         public bool IsHookedLeft => Human.HookLeft.IsHooked();
 
@@ -390,6 +396,64 @@ namespace CustomLogic
 
         [CLProperty(description: "If right hook is ready.")]
         public bool RightHookReady => Human.HookRight.IsReady();
+
+
+        [CLProperty("The target currently focused by this character. Returns null if no target is set.")]
+        public object Target
+        {
+            get
+            {
+                if (!Human.IsMine() || !Human.AI)
+                    return null;
+
+
+                ITargetable enemy = Controller.Target;
+
+                if (enemy == null)
+                    return null;
+
+                if (enemy is CustomLogicMapTargetableBuiltin)
+                {
+                    MapTargetable mapTargetable1 = (MapTargetable)enemy;
+                    return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
+                }
+                else if (enemy is Human human)
+                {
+                    return new CustomLogicHumanBuiltin(human);
+                }
+                else if (enemy is BaseShifter shifter)
+                {
+                    return new CustomLogicShifterBuiltin(shifter);
+                }
+                else if (enemy is BasicTitan titan)
+                {
+                    return new CustomLogicTitanBuiltin(titan);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (!Human.IsMine() || !Human.AI)
+                    return;
+                ITargetable itarget = value is CustomLogicMapTargetableBuiltin mapTargetable
+                                    ? mapTargetable.Value
+                                    : ((CustomLogicCharacterBuiltin)value).Character;
+                Controller.Target = itarget;
+            }
+        }
+
+        [CLProperty("The target position of the (AI) human.")]
+        public CustomLogicVector3Builtin TargetPosition
+        {
+            get => new(Controller.TargetPosition);
+            set => Controller.TargetPosition = value.Value;
+        }
+
+        [CLProperty("The target velocity of the (AI) human.")]
+        public CustomLogicVector3Builtin TargetVelocity => new(Controller.TargetVelocity);
 
         // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
@@ -437,10 +501,7 @@ namespace CustomLogic
             if (Human.IsMine())
             {
                 Vector3 hook = Human.HookLeft.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
+                return new CustomLogicVector3Builtin(hook);
             }
             return null;
         }
@@ -451,10 +512,10 @@ namespace CustomLogic
             if (Human.IsMine())
             {
                 Vector3 hook = Human.HookRight.GetHookPosition();
-                if (hook != null)
-                {
-                    return new CustomLogicVector3Builtin(hook);
-                }
+                // if (hook != null) # vector3 is struct and can not be assign with null, so don't need to judge
+                // {
+                return new CustomLogicVector3Builtin(hook);
+                // }
             }
             return null;
         }
@@ -586,8 +647,6 @@ namespace CustomLogic
             }
             return false;
         }
-
-
 
         [CLMethod(description: "Set the custom ai states for the (AI) humans")]
         public void SetAIState(string name, UserClassInstance classInstance = null)
@@ -733,7 +792,6 @@ namespace CustomLogic
             }
         }
 
-
         [CLMethod(description: "Causes the (AI) humans to launch left hook.")]
         public void LaunchHookLeft(CustomLogicVector3Builtin aimPoint)
         {
@@ -788,8 +846,6 @@ namespace CustomLogic
             }
         }
 
-
-
         [CLMethod(description: "Causes the (AI) humans to find the nearest enemy")]
         public void FindNearestEnemy()
         {
@@ -799,49 +855,13 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod("Gets the target currently focused by this character. Returns null if no target is set.")]
-        public object GetTarget()
-        {
-            if (!Human.IsMine() || !Human.AI)
-                return null;
-
-
-            ITargetable enemy = Controller.Target;
-
-            if (enemy == null)
-                return null;
-
-            if (enemy is CustomLogicMapTargetableBuiltin)
-            {
-                MapTargetable mapTargetable1 = (MapTargetable)enemy;
-                return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
-            }
-            else if (enemy is Human human)
-            {
-                return new CustomLogicHumanBuiltin(human);
-            }
-            else if (enemy is BaseShifter shifter)
-            {
-                return new CustomLogicShifterBuiltin(shifter);
-            }
-            else if (enemy is BasicTitan titan)
-            {
-                return new CustomLogicTitanBuiltin(titan);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        [CLMethod("Gets the target position of the (AI) human.")]
-        public CustomLogicVector3Builtin GetTargetPosition()
+        [CLMethod(description: "Correct the direction of (AI) humans for moving to the target.")]
+        public void Navigation()
         {
             if (Human.IsMine() && Human.AI)
             {
-                return new CustomLogicVector3Builtin(Controller.TargetPosition);
+                Controller.MoveToPosition();
             }
-            return null;
         }
 
     }

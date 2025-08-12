@@ -81,6 +81,12 @@ namespace Characters
         public float ReelOutScrollTimeLeft = 0f;
         public float TargetMagnitude = 0f;
         public bool IsWalk;
+
+        public bool Pivot => pivot;
+        private bool pivot;
+        private bool pivotLeft;
+        private bool pivotRight;
+
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
@@ -1587,9 +1593,9 @@ namespace Characters
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 }
-                bool pivotLeft = FixedUpdateLaunch(true);
-                bool pivotRight = FixedUpdateLaunch(false);
-                bool pivot = pivotLeft || pivotRight;
+                pivotLeft = FixedUpdateLaunch(true);
+                pivotRight = FixedUpdateLaunch(false);
+                pivot = pivotLeft || pivotRight;
                 if (Grounded)
                 {
                     Vector3 newVelocity = Vector3.zero;
@@ -3792,6 +3798,17 @@ namespace Characters
             if (mapObject != null && MapLoader.HasTag(mapObject, "HumanIgnoreGround"))
                 return false;
             return true;
+        }
+
+        public Vector3? PivotPosition()
+        {
+            if (pivotLeft && pivotRight)
+                return (HookRight.GetHookPosition() + HookLeft.GetHookPosition()) * 0.5f;
+            else if (pivotLeft)
+                return HookLeft.GetHookPosition();
+            else if (pivotRight)
+                return HookRight.GetHookPosition();
+            return null;
         }
 
         protected override List<Renderer> GetFPSDisabledRenderers()
