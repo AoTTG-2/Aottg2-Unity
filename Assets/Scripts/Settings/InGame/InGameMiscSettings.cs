@@ -18,7 +18,7 @@
         public BoolSetting AllowShifters = new BoolSetting(false);
         public BoolSetting AllowVoteKicking = new BoolSetting(false);
         public BoolSetting Horses = new BoolSetting(false);
-        public BoolSetting HorsebackCombat = new BoolSetting(false);
+        public BoolSetting HorsebackCombat = new BoolSetting(true);
         public BoolSetting GunsAirReload = new BoolSetting(true);
         public BoolSetting AllowStock = new BoolSetting(true);
         public BoolSetting ClearKDROnRestart = new BoolSetting(true);
