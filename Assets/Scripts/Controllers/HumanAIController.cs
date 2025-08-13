@@ -193,7 +193,7 @@ namespace Controllers
             }
             else
             {
-                Callbacks.NullAIState?.Invoke();
+                Callbacks.OnIdle?.Invoke();
             }
             Callbacks.PostAction?.Invoke();
         }
@@ -627,10 +627,10 @@ namespace Controllers
         {
             if (aiState == AIState)
                 return;
-            aiState?.PreSwitchState();
+            aiState?.OnStateEntry();
             var oldAIState = AIState;
             AIState = aiState;
-            oldAIState?.PostSwitchState();
+            oldAIState?.OnStateExit();
         }
 
         public void SetAIState(string name, HumanAIState aiState)
@@ -667,12 +667,10 @@ namespace Controllers
 
         public void Idle()
         {
-            Callbacks.PreIdle?.Invoke();
             Target = null;
             _human.HasDirection = false;
             _human.TargetMagnitude = 0;
             SwitchAIState(null);
-            Callbacks.PostIdle?.Invoke();
         }
 
 
@@ -695,17 +693,15 @@ namespace Controllers
             return this;
         }
 
-        public virtual void PreSwitchState() { }
+        public virtual void OnStateEntry() { }
         public virtual void Action() { }
-        public virtual void PostSwitchState() { }
+        public virtual void OnStateExit() { }
     }
 
     class HumanAICallback
     {
 
-        public Action NullAIState;
-        public Action PreIdle;
-        public Action PostIdle;
+        public Action OnIdle;
 
         public Action PreAction;
 
@@ -737,7 +733,7 @@ namespace Controllers
                     Controller.MoveToPosition();
             }
 
-            public override void PostSwitchState()
+            public override void OnStateExit()
             {
                 Controller.Callbacks.MoveToCallback = null;
             }
@@ -748,9 +744,9 @@ namespace Controllers
 
             protected UserClassInstance _instance;
 
-            protected UserMethod _preSwitchState;
+            protected UserMethod _onStateEntry;
 
-            protected UserMethod _postSwitchState;
+            protected UserMethod _onStateExit;
 
             protected UserMethod _action;
 
@@ -764,28 +760,28 @@ namespace Controllers
             {
                 _name = name;
                 _instance = instance;
-                _preSwitchState = null;
+                _onStateEntry = null;
                 _action = null;
-                _postSwitchState = null;
-                if (_instance.Variables.ContainsKey("PreSwitchState"))
+                _onStateExit = null;
+                if (_instance.Variables.ContainsKey("OnStateEntry"))
                 {
-                    _preSwitchState = (UserMethod)_instance.GetVariable("PreSwitchState");
+                    _onStateEntry = (UserMethod)_instance.GetVariable("OnStateEntry");
                 }
                 if (_instance.Variables.ContainsKey("Action"))
                 {
                     _action = (UserMethod)_instance.GetVariable("Action");
                 }
 
-                if (_instance.Variables.ContainsKey("PostSwitchState"))
+                if (_instance.Variables.ContainsKey("OnStateExit"))
                 {
-                    _postSwitchState = (UserMethod)_instance.GetVariable("PostSwitchState");
+                    _onStateExit = (UserMethod)_instance.GetVariable("OnStateExit");
                 }
             }
 
-            public override void PreSwitchState()
+            public override void OnStateEntry()
             {
-                if (_preSwitchState is not null)
-                    CustomLogicManager.Evaluator.EvaluateMethod(_preSwitchState, new object[] { });
+                if (_onStateEntry is not null)
+                    CustomLogicManager.Evaluator.EvaluateMethod(_onStateEntry, new object[] { });
             }
             public override void Action()
             {
@@ -793,10 +789,10 @@ namespace Controllers
                     CustomLogicManager.Evaluator.EvaluateMethod(_action, new object[] { });
             }
 
-            public override void PostSwitchState()
+            public override void OnStateExit()
             {
                 if (_action is not null)
-                    CustomLogicManager.Evaluator.EvaluateMethod(_postSwitchState, new object[] { });
+                    CustomLogicManager.Evaluator.EvaluateMethod(_onStateExit, new object[] { });
             }
         }
     }
