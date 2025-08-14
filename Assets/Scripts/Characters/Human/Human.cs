@@ -2892,7 +2892,7 @@ namespace Characters
                 {
                     try
                     {
-                        bool useGlobalOverrides = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value;
+                        bool useGlobalOverrides = SettingsManager.CustomSkinSettings.Human.GlobalSkinOverridesEnabled.Value && !AI; // force ai to use character skin.
                         bool usePresetSkins = SettingsManager.CustomSkinSettings.Human.SetSpecificSkinsEnabled.Value;
                         HumanCustomSet presetSet = null;
                         if (Setup?.CustomSet != null)
