@@ -82,7 +82,7 @@ namespace Characters
         public float TargetMagnitude = 0f;
         public bool IsWalk;
 
-        public bool Pivot => pivot;
+        public bool Pivot => pivot; // expose pivot for judging if human can hold reelin/out
         private bool pivot;
         private bool pivotLeft;
         private bool pivotRight;
@@ -145,6 +145,7 @@ namespace Characters
         // Decoupling keyboard operations
         public IHumanController Controller;
 
+        // Keep the character setting for ai human to reload
         public InGameCharacterSettings Settings;
 
         protected override void CreateDetection()
@@ -268,8 +269,8 @@ namespace Characters
 
         public bool CanJump()
         {
-            return Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
-                !Animation.IsPlaying(HumanAnimations.Jump) && !Animation.IsPlaying(HumanAnimations.HorseMount);
+            return (Grounded && CarryState != HumanCarryState.Carry && (State == HumanState.Idle || State == HumanState.Slide) &&
+                !Animation.IsPlaying(HumanAnimations.Jump) && !Animation.IsPlaying(HumanAnimations.HorseMount));
         }
 
         public void Jump()
@@ -1004,7 +1005,7 @@ namespace Characters
         public void Init(bool ai, string team, InGameCharacterSettings settings)
         {
             base.Init(ai, team);
-            Settings = settings;
+            Settings = settings; // keep the setting for ai human to reload
             Setup.Copy(settings);
             if (!ai)
                 Controller = gameObject.AddComponent<HumanPlayerController>();
