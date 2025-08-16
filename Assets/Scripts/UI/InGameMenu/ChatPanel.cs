@@ -720,6 +720,7 @@ namespace UI
             {
                 ChatManager.ClearLastSuggestions();
                 IgnoreNextActivation = true;
+                _inputField.text = "";
                 _inputField.DeactivateInputField();
                 return;
             }
