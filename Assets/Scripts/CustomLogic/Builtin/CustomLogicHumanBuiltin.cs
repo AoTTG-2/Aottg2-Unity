@@ -454,6 +454,13 @@ namespace CustomLogic
         [CLProperty("The target velocity of the (AI) human.")]
         public CustomLogicVector3Builtin TargetVelocity => Controller.TargetVelocity;
 
+        [CLProperty("Allow the (AI) human to have horse.")]
+        public bool AllowHorse
+        {
+            get => Human.AllowHorse;
+            set => Human.AllowHorse = value;
+        }
+
         // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
         public bool Refill()

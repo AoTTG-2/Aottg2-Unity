@@ -32,6 +32,7 @@ namespace Characters
         public HumanMountState MountState = HumanMountState.None;
         public HumanCarryState CarryState = HumanCarryState.None;
         public Horse Horse;
+        public bool AllowHorse = false; // only for ai, players dep on that in the misc setting.
         public HumanSetup Setup;
         public HumanStats Stats;
         public bool FinishSetup;
@@ -1091,7 +1092,7 @@ namespace Characters
                 InvincibleTimeLeft = SettingsManager.InGameCurrent.Misc.InvincibilityTime.Value;
                 TargetAngle = Cache.Transform.eulerAngles.y;
                 Cache.PhotonView.RPC("SetupRPC", RpcTarget.All, Setup.CustomSet.SerializeToJsonString(), (int)Setup.Weapon);
-                if (SettingsManager.InGameCurrent.Misc.Horses.Value)
+                if (AI ? AllowHorse : SettingsManager.InGameCurrent.Misc.Horses.Value)
                 {
                     Horse = (Horse)CharacterSpawner.Spawn(CharacterPrefabs.Horse, Cache.Transform.position + Vector3.right * 2f, Quaternion.Euler(0f, TargetAngle, 0f));
                     Horse.Init(this);
