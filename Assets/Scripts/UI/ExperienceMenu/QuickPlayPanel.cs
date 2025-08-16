@@ -15,11 +15,20 @@ namespace UI
         protected override float Height => 700f;
         protected override bool ScrollBar => true;
 
+        // Top UI
         private GameObject CarouselLayout;
-        private CarouselSelector categorySelector;
+        private HorizontalLayoutGroup categorySelector;
         private CarouselSelector subCategorySelector;
-        private CarouselSelector modeSelector;
-        private CarouselSelector mapSelector;
+        private CarouselSelector presetSelector;
+
+        // Bottom UI
+        private HorizontalLayoutGroup bottomUI;
+        private GameObject mapSelector;
+        private GameObject modeSelector;
+        private GameObject weatherSelector;
+        private GameObject difficultySelector;
+
+
         private List<Experience> allPresets;
 
         private string selectedCategory;
@@ -44,6 +53,10 @@ namespace UI
         {
             base.Setup(parent);
 
+            // Query format: Category, SubCategory, PresetDefinition -> PresetDefinition (Modes, Maps)
+            // Each category as n >= 1 subcategories
+            // If there's only one subcategory we should skip its selector and instead show a selector for the PresetDefinitions under the Category/SubCategory
+
             CarouselLayout = ElementFactory.CreateVerticalGroup(SinglePanel, 10f);
             VerticalLayoutGroup vert = CarouselLayout.GetComponent<VerticalLayoutGroup>();
             vert.childForceExpandWidth = true;
@@ -53,17 +66,17 @@ namespace UI
             ContentSizeFitter cnt = CarouselLayout.AddComponent<ContentSizeFitter>();
             cnt.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            HorizontalLayoutGroup horiz = ElementFactory.CreateHorizontalGroup(vert.transform, 25f, TextAnchor.MiddleLeft).GetComponent<HorizontalLayoutGroup>();
-            horiz.childForceExpandWidth = true;
-            horiz.childForceExpandHeight = false;
-            LayoutElement leHoriz = horiz.AddComponent<LayoutElement>();
+            categorySelector = ElementFactory.CreateHorizontalGroup(vert.transform, 25f, TextAnchor.MiddleLeft).GetComponent<HorizontalLayoutGroup>();
+            categorySelector.childForceExpandWidth = true;
+            categorySelector.childForceExpandHeight = false;
+            LayoutElement leHoriz = categorySelector.AddComponent<LayoutElement>();
             leHoriz.flexibleWidth = 1f;
 
             string[] categories = new string[] { "General", "Ranking", "PVP", "Sandbox" };
             foreach (string category in categories)
             {
                 // Create panels for each category
-                var btn = ElementFactory.InstantiateAndBind(horiz.transform, "Prefabs/Misc/MapSelectObjectButton");
+                var btn = ElementFactory.InstantiateAndBind(categorySelector.transform, "Prefabs/Misc/MapSelectObjectButton");
                 var rect = btn.GetComponent<RectTransform>();
                 rect.anchorMin = new Vector2(0, 0.5f);
                 rect.anchorMax = new Vector2(0, 0.5f);
@@ -71,37 +84,85 @@ namespace UI
                 rect.sizeDelta = new Vector2(256, 120);
                 btn.GetComponent<Button>().onClick.AddListener(() => OnCategorySelected(category));
                 btn.transform.Find("Icon").GetComponent<RawImage>().color = new Color(0.32f, 0.32f, 0.32f);
+                btn.transform.Find("Icon").gameObject.SetActive(true);
                 btn.transform.Find("Text").GetComponent<Text>().text = category;
                 btn.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor("DefaultPanel", "DefaultLabel", "TextColor");
             }
 
             // Setup and bind CarouselSelectors
-            subCategorySelector = ElementFactory.CreateCarouselSelector(CarouselLayout.transform).GetComponent<CarouselSelector>();
-            modeSelector = ElementFactory.CreateCarouselSelector(CarouselLayout.transform).GetComponent<CarouselSelector>();
-            mapSelector = ElementFactory.CreateCarouselSelector(CarouselLayout.transform).GetComponent<CarouselSelector>();
-
-            ElementStyle style = new ElementStyle(fontSize: 28, themePanel: ThemePanel);
-
+            subCategorySelector = ElementFactory.CreateCarouselSelector(CarouselLayout.transform, 100).GetComponent<CarouselSelector>();
+            presetSelector = ElementFactory.CreateCarouselSelector(CarouselLayout.transform, 100).GetComponent<CarouselSelector>();
 
             allPresets = BuiltinLevels.GetExperiences();
-            PopulateCategories();
+
+            // Hide all but the category
+            subCategorySelector.ClearButtons();
+            presetSelector.ClearButtons();
+            DestroyPresetInformation();
         }
 
-        private void PopulateCategories()
+        private void ShowPresetInformation(PresetDefinition definition)
         {
-            var categories = allPresets.Select(p => p.Category).Distinct().ToList();
+            // Setup Map, Mode, Weather, and Difficulty Selector
+            bottomUI = ElementFactory.CreateHorizontalGroup(CarouselLayout.transform, 25f, TextAnchor.MiddleLeft).GetComponent<HorizontalLayoutGroup>();
+            var left = ElementFactory.CreateVerticalGroup(bottomUI.transform, 10f);
+            string cat = "CreateGamePopup";
+            string sub = "General";
+            InGameSet settings = SettingsManager.InGameUI;
+            ElementStyle dropdownStyle = new ElementStyle(titleWidth: 200f, themePanel: ThemePanel);
+            BasePopup selectPopup;
+            if (SceneLoader.SceneName == SceneName.InGame)
+                selectPopup = ((InGameMenu)UIManager.CurrentMenu)._selectMapPopup;
+            else
+                selectPopup = ((MainMenu)UIManager.CurrentMenu)._selectMapPopup;
+            mapSelector = ElementFactory.CreateButtonPopupSetting(left.transform, dropdownStyle, settings.General.MapName, UIManager.GetLocale(cat, sub, "MapName"), selectPopup, elementWidth: 180f);
 
-            // Clear deeper selectors
-            subCategorySelector.ClearButtons();
-            modeSelector.ClearButtons();
-            mapSelector.ClearButtons();
+            // Create right side
+            string[] maps = BuiltinLevels.QueryMapsNames(definition.MapRule);
+            string[] modes = BuiltinLevels.QueryModeNames(definition.ModeRule);
 
-            // Will need to hide Headed panel's button based on this thing's logic.
+            modeSelector = ElementFactory.CreateDropdownSetting(left.transform, dropdownStyle, settings.General.GameMode, UIManager.GetLocale(cat, sub, "GameMode"),
+                modes, elementWidth: 180f, optionsWidth: 240f,
+                onDropdownOptionSelect: () => Parent.RebuildCategoryPanel());
+
+            ElementFactory.CreateDefaultLabel(left.transform, dropdownStyle, UIManager.GetLocale(cat, sub, "MapCategory") + ": " + settings.General.MapCategory.Value, alignment: TextAnchor.MiddleLeft);
+            ElementFactory.CreateDefaultLabel(left.transform, dropdownStyle, "Description here once we get default selector working...", alignment: TextAnchor.MiddleLeft);
+
+
+            ElementFactory.CreateDropdownSetting(left.transform, dropdownStyle, settings.WeatherIndex,
+                UIManager.GetLocale(cat, sub, "Weather"), SettingsManager.WeatherSettings.WeatherSets.GetSetNames(), elementWidth: 180f);
+
+            var right = ElementFactory.CreateVerticalGroup(bottomUI.transform, 10f);
+            ElementFactory.CreateToggleGroupSetting(right.transform, dropdownStyle, settings.General.Difficulty, UIManager.GetLocale(cat, sub, "Difficulty"),
+                UIManager.GetLocaleArray(cat, sub, "DifficultyOptions"));
+            if (((ExperienceMenu)Parent).IsMultiplayer && SceneLoader.SceneName == SceneName.MainMenu)
+            {
+                ElementFactory.CreateInputSetting(right.transform, dropdownStyle, settings.General.RoomName, UIManager.GetLocale(cat, sub, "RoomName"), elementWidth: 200f);
+                ElementFactory.CreateInputSetting(right.transform, dropdownStyle, settings.General.MaxPlayers, UIManager.GetLocale(cat, sub, "MaxPlayers"), elementWidth: 200f);
+                ElementFactory.CreateInputSetting(right.transform, dropdownStyle, settings.General.Password, UIManager.GetLocaleCommon("Password"), elementWidth: 200f);
+            }
+
+            // Load Settings...
+        }
+
+        private void DestroyPresetInformation()
+        {
+            if (bottomUI != null)
+                Destroy(bottomUI.gameObject);
         }
 
         private void OnCategorySelected(string category)
         {
             selectedCategory = category;
+            subCategorySelector.ClearButtons();
+            presetSelector.ClearButtons();
+            DestroyPresetInformation();
+
+            // Collapse Category Selector Images
+            foreach (Transform cat in categorySelector.transform)
+            {
+                cat.Find("Icon").gameObject.SetActive(false);
+            }
 
             if (selectedCategory == "Sandbox")
             {
@@ -115,30 +176,32 @@ namespace UI
                 .Distinct()
                 .ToList();
 
-            Debug.Log(subCategories.Count);
+            Debug.Log($"There are {subCategories.Count} subcategory(s)");
 
             subCategorySelector.Populate(subCategories.Select(sc => new YourOptionData { ID = sc, Name = sc }).ToList(), OnSubCategorySelected);
-
-            if (subCategories.Count == 1)
-            {
-                selectedSubCategory = subCategories[0];
-                OnSubCategorySelected(new YourOptionData { ID = selectedSubCategory, Name = selectedSubCategory });
-            }
-
-            // Clear lower selectors
-            modeSelector.ClearButtons();
-            mapSelector.ClearButtons();
-
-            //playButton.interactable = false;
-            //settingsButton.gameObject.SetActive(false);
         }
 
         private void OnSubCategorySelected(YourOptionData subCategory)
         {
             selectedSubCategory = subCategory.ID;
-            var experience = allPresets.FirstOrDefault(p => p.Category == selectedCategory && p.SubCategory == selectedSubCategory);
+            presetSelector.ClearButtons();
+            DestroyPresetInformation();
 
-            selectedPreset = BuiltinLevels.LoadExperience(experience.Name);
+            var experiences = allPresets
+                .Where(p => p.Category == selectedCategory && p.SubCategory == selectedSubCategory)
+                .Select(p => p.Name)
+                .Distinct()
+                .ToList();
+
+            Debug.Log($"There are {experiences.Count} preset(s)");
+
+            presetSelector.Populate(experiences.Select(sc => new YourOptionData { ID = sc, Name = sc }).ToList(), OnPresetSelected);
+        }
+
+        private void OnPresetSelected(YourOptionData preset)
+        {
+            selectedPreset = BuiltinLevels.LoadExperience(preset.Name);
+
 
             if (selectedPreset == null)
             {
@@ -146,33 +209,7 @@ namespace UI
                 return;
             }
 
-            // Populate modes (or auto-select if only one)
-            var maps = BuiltinLevels.QueryMapsNames(selectedPreset.MapRule);
-            var modes = BuiltinLevels.QueryModeNames(selectedPreset.ModeRule);
-
-            modeSelector.Populate(modes.Select(m => new YourOptionData { ID = m, Name = m }).ToList(), OnModeSelected);
-
-            if (modes.Length == 1)
-            {
-                selectedMode = modes[0];
-            }
-
-            // This will be changed to a Map Selector/Mode Selector/Weather/Difficulty
-            if (maps.Length == 1)
-            {
-                selectedMap = maps[0];
-                mapSelector.ClearButtons();
-            }
-            else if (maps.Length > 1)
-            {
-                mapSelector.Populate(maps.Select(m => new YourOptionData { ID = m, Name = m }).ToList(), OnMapSelected);
-            }
-            else
-            {
-                selectedMap = null;
-                mapSelector.ClearButtons();
-            }
-
+            ShowPresetInformation(selectedPreset);
             UpdateButtonsState();
         }
 

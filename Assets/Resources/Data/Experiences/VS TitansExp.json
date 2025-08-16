@@ -5,7 +5,7 @@
   "Description": "1k minimum damage required to kill titans.",
 
   "UIRules": [
-    "general.modes=waves{waves,survive,endless,cranked}",
+    "general.modes=Waves{Waves,Survive,Endless,Cranked}",
     "general.maps=Forest1{Forest1,Forest2}",
 
     "!misc.allow_player_titans=false",

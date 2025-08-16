@@ -5,7 +5,7 @@
   "Description": "PVP using thunderspears",
 
   "UIRules": [
-    "!general.modes=bomb",
+    "!general.modes=Thunderspear PVP",
     "general.maps=Forest1{Forest1,Forest2,cats forest,deforest,city 1}",
 
     "!misc.allow_player_titans=false",

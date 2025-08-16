@@ -433,10 +433,13 @@ namespace UI
             return row;
         }
 
-        public static GameObject CreateCarouselSelector(Transform parent)
+        public static GameObject CreateCarouselSelector(Transform parent, float height = 256)
         {
             GameObject buttonSetting = InstantiateAndBind(parent, "Prefabs/Elements/CarouselSelector");
             RectTransform rect = buttonSetting.GetComponent<RectTransform>();
+            LayoutElement layout = buttonSetting.GetComponent<LayoutElement>();
+            layout.preferredHeight = height;
+            layout.minHeight = Math.Min(layout.minHeight, height);
             rect.anchorMin = new Vector2(0, 0);
             rect.anchorMax = new Vector2(1, 1);
             rect.anchoredPosition = new Vector2(0.5f, 0.5f);

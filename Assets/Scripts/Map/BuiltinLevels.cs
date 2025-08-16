@@ -194,7 +194,7 @@ namespace Map
             {
                 foreach (JSONNode map in mapCategory["Maps"])
                 {
-                    if (query.MatchesAllowedValues(map["name"]) || query.AllowedValues.Count == 0)
+                    if (query.MatchesAllowedValues(map["Name"]) || query.AllowedValues.Count == 0)
                         mapNames.Add(map["Name"]);
                 }
 
@@ -204,14 +204,16 @@ namespace Map
 
         public static string[] QueryModeNames(UIRule query)
         {
-            HashSet<string> mapNames = new HashSet<string>();
+            HashSet<string> modeNames = new HashSet<string>();
             foreach (JSONNode mode in _info["GameModes"])
             {
-                if (query.MatchesAllowedValues(mode["name"]) || query.AllowedValues.Count == 0)
-                    mapNames.Add(mode["Name"]);
+                if (query.MatchesAllowedValues(mode["Name"]) || query.AllowedValues.Count == 0)
+                    modeNames.Add(mode["Name"]);
 
             }
-            return mapNames.ToArray();
+            modeNames.Add("None");
+            modeNames.Add("Maplogic");
+            return modeNames.ToArray();
         }
 
         public static string[] GetAutosaveNames()

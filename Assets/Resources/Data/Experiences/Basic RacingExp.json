@@ -5,7 +5,7 @@
   "Description": "A basic racing experience.",
   
   "UIRules": [
-    "general.modes=racing{racing,laps}",
+    "general.modes=Racing",
     "general.maps=Akina{Akina,Another Brick in the Wall,Future Trax 10}",
 
     "!misc.allow_player_titans=false",

@@ -39,12 +39,19 @@ namespace UI
                 rect.anchorMin = new Vector2(0, 0.5f);
                 rect.anchorMax = new Vector2(0, 0.5f);
                 rect.pivot = new Vector2(0.5f, 0.5f);
-                rect.sizeDelta = new Vector2(256, 150);
+
                 btn.GetComponent<Button>().onClick.AddListener(() => onSelected(option));
                 if (option.Icon != null)
+                {
+                    rect.sizeDelta = new Vector2(256, 150);
                     btn.transform.Find("Icon").GetComponent<RawImage>().texture = option.Icon;
+                }
                 else
-                    btn.transform.Find("Icon").GetComponent<RawImage>().color = new Color(0.32f, 0.32f, 0.32f);
+                {
+                    rect.sizeDelta = new Vector2(256, 50);
+                    btn.transform.Find("Icon").gameObject.SetActive(false);
+                }
+
                 btn.transform.Find("Text").GetComponent<Text>().text = option.Name;
                 btn.transform.Find("Text").GetComponent<Text>().color = UIManager.GetThemeColor("DefaultPanel", "DefaultLabel", "TextColor");
 
