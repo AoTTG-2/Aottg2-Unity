@@ -428,6 +428,30 @@ namespace CustomLogic
             return null;
         }
 
+        [CLMethod(description: "Spawn a human")]
+        public CustomLogicHumanBuiltin SpawnHuman(int costume, string costumeName, string loadout)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var human = new CustomLogicHumanBuiltin(_inGameManager.SpawnAIHuman(costume, costumeName, loadout));
+                return human;
+            }
+            return null;
+        }
+
+        [CLMethod(description: "Spawn a human at a position")]
+        public CustomLogicHumanBuiltin SpawnHumanAt(int costume, string costumeName, string loadout, CustomLogicVector3Builtin position, float rotationY = 0f)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var human = new CustomLogicHumanBuiltin(_inGameManager.SpawnAIHumanAt(costume, costumeName, loadout, position.Value, rotationY));
+                return human;
+            }
+            return null;
+        }
+
+
+
         [CLMethod(description: "Spawn a projectile")]
         public void SpawnProjectile(object[] parameters)
         {

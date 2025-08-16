@@ -85,7 +85,7 @@ namespace Projectiles
                     _velocity = _rigidbody.velocity;
                     return; // Don't proceed with normal collision logic
                 }
-                
+
                 // Original collision logic for all other cases
                 _wasImpact = true;
                 _rigidbody.velocity = Vector3.zero;
@@ -230,8 +230,11 @@ namespace Projectiles
                         else if (angle)
                         {
                             damage = CalculateDamage();
-                            ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                            ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
+                            if (!_owner.AI)
+                            {
+                                ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                                ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(titan.BaseTitanCache.Neck.position, damage);
+                            }
                             titan.GetHit(_owner, damage, "Thunderspear", collider.name);
                         }
                         else if (_isEmbed)
@@ -268,8 +271,11 @@ namespace Projectiles
                     {
                         var damage = CalculateDamage(true);
                         human.GetHit(_owner, damage, "Thunderspear", "");
-                        ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
-                        ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(human.Cache.Transform.position, damage);
+                        if (!human.AI)
+                        {
+                            ((InGameMenu)UIManager.CurrentMenu).ShowKillScore(damage);
+                            ((InGameCamera)SceneLoader.CurrentCamera).TakeSnapshot(human.Cache.Transform.position, damage);
+                        }
                     }
 
                     if (human.CurrentHealth <= 0)
@@ -290,7 +296,7 @@ namespace Projectiles
             return soundPriority;
         }
 
-        int CalculateDamage(bool dmgOverride=false)
+        int CalculateDamage(bool dmgOverride = false)
         {
             float multiplier = CharacterData.HumanWeaponInfo["Thunderspear"]["DamageMultiplier"].AsFloat;
             if (SettingsManager.InGameCurrent.Misc.ThunderspearPVP.Value)

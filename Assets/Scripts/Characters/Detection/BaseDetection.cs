@@ -74,6 +74,8 @@ namespace Characters
 
         public void OnFixedUpdate()
         {
+            if (ClosestEnemy != null && ClosestEnemy.Dead)
+                ClosestEnemy = null; // reset ClosestEnemy if enemy is dead. Otherwise, ai will be in a daze for a while
             _currentMediumTime += Time.deltaTime;
             _currentSlowTime += Time.deltaTime;
             float mySpeed = GetSpeed();
