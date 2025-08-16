@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using Utility;
+using UnityEngine;
 
 namespace ApplicationManagers
 {
@@ -24,6 +25,11 @@ namespace ApplicationManagers
             if (UseServerHash)
                 return key;
             return string.Empty;
+        }
+
+        public static string GetSessionID()
+        {
+            return "eWire7HpInEhOO7r" + SystemInfo.deviceUniqueIdentifier;
         }
     }
 }
