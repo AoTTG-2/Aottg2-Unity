@@ -671,7 +671,7 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Reset the callbacks for the (AI) humans")]
+        [CLMethod(description: "Reset the callbacks for the (AI) humans. Optional: OnIdle, PreAction, PostAction, MoveToCallback.")]
         public void ResetCallback(string callback, UserMethod method = null)
         {
             if (Human.IsMine() && Human.AI)
