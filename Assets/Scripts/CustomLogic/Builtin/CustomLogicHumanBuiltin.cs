@@ -618,7 +618,7 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Causes the (AI) human to move towards a position and stopping when within specified range")]
+        [CLMethod(description: "Causes the (AI) human to idle.")]
         public void Idle()
         {
             if (Human.IsMine() && Human.AI)
