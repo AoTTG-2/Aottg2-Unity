@@ -16,7 +16,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicRigidbodyBuiltin() : base(null) { }
 
-        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(owner.Value.GameObject.AddComponent<Rigidbody>())
+        public CustomLogicRigidbodyBuiltin(CustomLogicMapObjectBuiltin owner, float mass = 1, Vector3? gravity = null, bool freezeRotation = false, bool interpolate = false) : base(GetOrAddComponent<Rigidbody>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;
@@ -313,7 +313,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Apply a force to the Rigidbody - legacy version, please use optimized if possible.")]
-        public void AddForce(CustomLogicVector3Builtin force, string forceMode, CustomLogicVector3Builtin? atPoint = null)
+        public void AddForce(CustomLogicVector3Builtin force, string forceMode = "Acceleration", CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = ForceMode.Acceleration;
             switch (forceMode)
@@ -337,7 +337,7 @@ namespace CustomLogic
         }
 
         [CLMethod(Description = "Apply a force to the Rigidbody.")]
-        public void AddForceOptimized(CustomLogicVector3Builtin force, int forceMode=5, CustomLogicVector3Builtin? atPoint = null)
+        public void AddForceOptimized(CustomLogicVector3Builtin force, int forceMode = 5, CustomLogicVector3Builtin? atPoint = null)
         {
             ForceMode mode = (ForceMode)forceMode;
             if (atPoint != null)

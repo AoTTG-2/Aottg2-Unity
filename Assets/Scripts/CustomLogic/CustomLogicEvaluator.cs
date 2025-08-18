@@ -90,7 +90,7 @@ namespace CustomLogic
                 }
                 foreach (string variableName in instance.Variables.Keys)
                 {
-                    if (!variableName.StartsWith("_"))
+                    if (!variableName.StartsWith("_") && variableName != "Type")
                     {
                         object value = instance.Variables[variableName];
                         if (parameterDict.ContainsKey(variableName))

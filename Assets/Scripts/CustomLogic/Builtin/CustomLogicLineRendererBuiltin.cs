@@ -33,6 +33,21 @@ namespace CustomLogic
             Value = value;
         }
 
+        [CLMethod(description: "Remove the line renderer (can also be done by removing all references to this object)")]
+        public void Destroy()
+        {
+            GameObject.Destroy(Value.gameObject);
+        }
+
+        ~CustomLogicLineRendererBuiltin()
+        {
+            // Remove object when reference is lost
+            if (Value.gameObject != null)
+            {
+                GameObject.Destroy(Value.gameObject);
+            }
+        }
+
         [CLProperty(description: "The width of the line at the start")]
         public float StartWidth
         {

@@ -1,7 +1,6 @@
 ﻿// implement
 using Settings;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
@@ -11,10 +10,10 @@ namespace CustomLogic
         public LODGroup Value;
         public CustomLogicMapObjectBuiltin OwnerMapObject;
         public GameObject Owner;
-        
+
         [CLConstructor]
         public CustomLogicLodBuiltin() : base(null) { }
-        public CustomLogicLodBuiltin(CustomLogicMapObjectBuiltin owner) : base(owner.Value.GameObject.AddComponent<LODGroup>())
+        public CustomLogicLodBuiltin(CustomLogicMapObjectBuiltin owner) : base(GetOrAddComponent<LODGroup>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;

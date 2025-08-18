@@ -12,6 +12,13 @@ namespace CustomLogic
             this.Component = component;
         }
 
+        // Utility method to check and add component if needed
+        protected static T GetOrAddComponent<T>(GameObject gameObject) where T : Component
+        {
+            T existing = gameObject.GetComponent<T>();
+            return existing != null ? existing : gameObject.AddComponent<T>();
+        }
+
         public bool Enabled
         {
             get => Component is Behaviour behaviour && behaviour.enabled;
