@@ -84,6 +84,78 @@ namespace UI
                 "Custom logic can be found in Documents/Aottg2/CustomLogic", alignment: TextAnchor.MiddleLeft);
             ElementFactory.CreateDefaultLabel(DoublePanelRight, new ElementStyle(fontSize: 20, themePanel: ThemePanel),
                 "To use a custom script, select it in the Game mode dropdown under the General section.", alignment: TextAnchor.MiddleLeft);
+
+            // Create a method for adding services
+            CreateHorizontalDivider(DoublePanelRight);
+            ElementFactory.CreateDefaultLabel(DoublePanelRight, style, "Services", FontStyle.Bold, alignment: TextAnchor.MiddleLeft);
+            ElementFactory.CreateDefaultButton(DoublePanelRight, style, "Edit",
+                onClick: () => UIManager.CurrentMenu.SelectListPopup.ShowSave(SettingsManager.AdvancedSettings.Services.Value.Select(e => e.Value).ToList(), onSave: () => OnSaveService(), onDelete: () => OnDeleteService()));
+
+
+        }
+
+
+
+        private void OnSaveService()
+        {
+            string service = UIManager.CurrentMenu.SelectListPopup.FinishSetting.Value;
+            if (service == string.Empty)
+                return;
+
+            try
+            {
+                foreach (var setting in SettingsManager.AdvancedSettings.Services.Value)
+                {
+                    if (setting.Value == service)
+                    {
+                        SettingsManager.AdvancedSettings.Save();
+                        return;
+                    }
+                }
+
+                SettingsManager.AdvancedSettings.Services.AddItem(new StringSetting(service));
+                SettingsManager.AdvancedSettings.Save();
+
+            }
+            catch (Exception ex)
+            {
+                // Show error
+            }
+        }
+
+        private void OnDeleteService()
+        {
+            string service = UIManager.CurrentMenu.SelectListPopup.FinishSetting.Value;
+            if (service == string.Empty)
+                return;
+
+            try
+            {
+                int index = -1;
+                int i = 0;
+                foreach (var setting in SettingsManager.AdvancedSettings.Services.Value)
+                {
+                    if (setting.Value == service)
+                    {
+                        index = i;
+                        break;
+                    }
+
+                    i++;
+                }
+
+                if (index == -1)
+                    throw new Exception($"Could not find entry with name {service}.");
+
+                SettingsManager.AdvancedSettings.Services.Value.RemoveAt(index);
+
+            }
+            catch (Exception ex)
+            {
+                // Show error
+            }
+
+            SettingsManager.AdvancedSettings.Save();
         }
 
         private void OnCustomButtonClick(string name, bool isMap)

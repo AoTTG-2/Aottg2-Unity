@@ -1,22 +1,18 @@
 using ApplicationManagers;
-using Cameras;
 using Events;
 using GameManagers;
 using Map;
 using Photon.Pun;
 using Photon.Realtime;
 using Settings;
-using SimpleJSONFixed;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using UI;
 using UnityEngine;
 using Utility;
 
 namespace CustomLogic
 {
-    class CustomLogicManager: Photon.Pun.MonoBehaviourPunCallbacks
+    class CustomLogicManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         public static CustomLogicManager _instance;
         public static CustomLogicEvaluator Evaluator;
@@ -228,7 +224,7 @@ namespace CustomLogic
             }
             if (SkipCutscene && !Cutscene)
                 SkipCutscene = false;
-            if (Cutscene && (SettingsManager.GeneralSettings.SkipCutscenes.Value || 
+            if (Cutscene && (SettingsManager.GeneralSettings.SkipCutscenes.Value ||
                 (!ChatManager.IsChatActive() && !InGameMenu.InMenu() && SettingsManager.InputSettings.General.SkipCutscene.GetKeyDown())))
             {
                 SkipCutscene = true;
