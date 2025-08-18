@@ -19,9 +19,6 @@ using Controllers;
 using Photon.Voice.PUN;
 using Anticheat;
 using System.Globalization;
-using System;
-using SimpleJSONFixed;
-using ExitGames.Client.Photon.StructWrapping;
 
 namespace GameManagers
 {
