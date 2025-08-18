@@ -3,9 +3,9 @@ using Cameras;
 
 namespace Characters
 {
-    class HumanDetection: BaseDetection
+    class HumanDetection : BaseDetection
     {
-        public HumanDetection(BaseCharacter owner, bool enemiesOnly = false, bool titansOnly = true): base(owner, enemiesOnly, titansOnly)
+        public HumanDetection(BaseCharacter owner, bool enemiesOnly = false, bool titansOnly = true) : base(owner, enemiesOnly, titansOnly)
         {
         }
 
@@ -16,6 +16,13 @@ namespace Characters
                 float radius = titan.GetColliderToggleRadius();
                 titan.TitanColliderToggler.SetNearby(Owner, distance < radius);
             }
+        }
+
+        public override void OnFixedUpdate()
+        {
+            if (ClosestEnemy != null && ClosestEnemy.Dead)
+                ClosestEnemy = null; // reset ClosestEnemy if enemy is dead. Otherwise, ai will be in a daze for a while
+            base.OnFixedUpdate();
         }
     }
 }

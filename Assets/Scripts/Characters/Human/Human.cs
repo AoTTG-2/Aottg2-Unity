@@ -157,7 +157,7 @@ namespace Characters
             }
             else
             {
-                Detection = new HumanDetection(this);
+                Detection = null;
             }
         }
 
