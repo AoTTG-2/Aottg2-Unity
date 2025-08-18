@@ -411,9 +411,8 @@ namespace CustomLogic
                 if (enemy == null)
                     return null;
 
-                if (enemy is CustomLogicMapTargetableBuiltin)
+                if (enemy is MapTargetable mapTargetable1)
                 {
-                    MapTargetable mapTargetable1 = (MapTargetable)enemy;
                     return new CustomLogicMapTargetableBuiltin(mapTargetable1.GameObject, mapTargetable1);
                 }
                 else if (enemy is Human human)
