@@ -96,7 +96,7 @@ namespace CustomLogic.Editor
             {
                 _sb.AppendLine("### Example");
                 _sb.AppendLine("```csharp");
-                _sb.AppendLine(TrimAndCleanLines(type.Info.Code));
+                _sb.AppendLine(TrimAndCleanLines(type.Info.Code, true));
                 _sb.AppendLine("```");
             }
 
@@ -183,8 +183,16 @@ namespace CustomLogic.Editor
                 // ignore operators
                 if (method.Name.StartsWith("__")) continue;
 
+                string parameters = GetParametersStr(method.Parameters, TypeLinkKind.Footnote);
+                string returnStr = GetTypeReferenceStr(method.ReturnType, TypeLinkKind.Footnote);
+
+                if (string.IsNullOrEmpty(returnStr) || returnStr == "null")
+                    returnStr = string.Empty;
+                else
+                    returnStr = $" -> {returnStr}";
+
                 _sb.Append("<pre class=\"language-typescript\"><code class=\"lang-typescript\">function ");
-                _sb.Append($"{method.Name}({GetParametersStr(method.Parameters, TypeLinkKind.Footnote)}) -> {GetTypeReferenceStr(method.ReturnType, TypeLinkKind.Footnote)}");
+                _sb.Append($"{method.Name}({parameters}){returnStr}");
                 _sb.AppendLine("</code></pre>");
 
                 if (method.IsObsolete)
@@ -304,7 +312,7 @@ namespace CustomLogic.Editor
             return sb.ToString();
         }
 
-        private static string TrimAndCleanLines(string val)
+        private static string TrimAndCleanLines(string val, bool isCodeBlock = false)
         {
             var lines = val.Split('\n');
             int start = 0;
@@ -318,13 +326,39 @@ namespace CustomLogic.Editor
             while (end >= start && string.IsNullOrWhiteSpace(lines[end]))
                 end--;
 
-            var sb = new StringBuilder();
-            for (int i = start; i <= end; i++)
+            if (isCodeBlock)
             {
-                sb.AppendLine(lines[i].Trim());
-            }
+                // Find minimum indent (ignoring empty lines)
+                int minIndent = int.MaxValue;
+                for (int i = start; i <= end; i++)
+                {
+                    var line = lines[i];
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    int indent = line.TakeWhile(char.IsWhiteSpace).Count();
+                    if (indent < minIndent) minIndent = indent;
+                }
+                if (minIndent == int.MaxValue) minIndent = 0;
 
-            return sb.ToString().TrimEnd('\n', '\r');
+                var sb = new StringBuilder();
+                for (int i = start; i <= end; i++)
+                {
+                    var line = lines[i];
+                    if (line.Length >= minIndent)
+                        sb.AppendLine(line[minIndent..].TrimEnd('\r', '\n'));
+                    else
+                        sb.AppendLine(line.TrimEnd('\r', '\n'));
+                }
+                return sb.ToString().TrimEnd('\n', '\r');
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                for (int i = start; i <= end; i++)
+                {
+                    sb.AppendLine(lines[i].Trim());
+                }
+                return sb.ToString().TrimEnd('\n', '\r');
+            }
         }
     }
 }

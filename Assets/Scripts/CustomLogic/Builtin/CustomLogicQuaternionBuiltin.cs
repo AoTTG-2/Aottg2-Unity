@@ -2,21 +2,24 @@
 
 namespace CustomLogic
 {
-    /// <code>
-    /// # Quaternion takes four floats X, Y, Z and W as parameters when initializing. 
-    /// quaternion = Quaternion(0.5, 0.5, 0.5, 0.5);
-    /// </code>
+    /// <summary>
+    /// Represents a quaternion.
+    /// </summary>
     [CLType(Name = "Quaternion", Static = true)]
     partial class CustomLogicQuaternionBuiltin : BuiltinClassInstance, ICustomLogicMathOperators, ICustomLogicEquals, ICustomLogicCopyable
     {
         public Quaternion Value = Quaternion.identity;
 
         [CLConstructor]
-        public CustomLogicQuaternionBuiltin(object[] parameterValues)
+        public CustomLogicQuaternionBuiltin() { }
+
+        /// <summary>
+        /// Creates a new Quaternion from the given values.
+        /// </summary>
+        [CLConstructor]
+        public CustomLogicQuaternionBuiltin(float x, float y, float z, float w)
         {
-            if (parameterValues.Length == 0)
-                return;
-            Value = new Quaternion(parameterValues[0].UnboxToFloat(), parameterValues[1].UnboxToFloat(), parameterValues[2].UnboxToFloat(), parameterValues[3].UnboxToFloat());
+            Value = new Quaternion(x, y, z, w);
         }
 
         public CustomLogicQuaternionBuiltin(Quaternion value)

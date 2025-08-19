@@ -11,9 +11,10 @@ namespace CustomLogic.Editor
 {
     class CLTypeProvider
     {
+        private const BindingFlags MemberFlags = BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
         // TODO: Generic types
         // TODO: Optional and variadic params
-        // TODO: Read through builtin classes and fix parameter types and docs
 
         private static readonly Dictionary<string, string> _typeNameMap = new()
         {
@@ -140,7 +141,7 @@ namespace CustomLogic.Editor
 
         private void ResolveConstructors(Type type, CLType clType, XmlDocument xmlDocument)
         {
-            var constructors = type.GetConstructors()
+            var constructors = type.GetConstructors(MemberFlags)
                 .Where(x => x.GetCustomAttributes(typeof(CLConstructorAttribute), false).Length > 0)
                 .ToArray();
 
@@ -213,11 +214,11 @@ namespace CustomLogic.Editor
 
         private void ResolveProperties(Type type, CLType clType, XmlDocument xmlDocument)
         {
-            var properties = type.GetProperties()
+            var properties = type.GetProperties(MemberFlags)
                 .Where(CustomLogicReflectionUtils.IsCustomLogicProperty)
                 .ToArray();
 
-            var fields = type.GetFields()
+            var fields = type.GetFields(MemberFlags)
                 .Where(CustomLogicReflectionUtils.IsCustomLogicProperty)
                 .ToArray();
 
@@ -271,7 +272,7 @@ namespace CustomLogic.Editor
 
         private void ResolveMethods(Type type, CLType clType, XmlDocument xmlDocument)
         {
-            var methods = type.GetMethods()
+            var methods = type.GetMethods(MemberFlags)
                 .Where(CustomLogicReflectionUtils.IsCustomLogicMethod)
                 .ToArray();
 
