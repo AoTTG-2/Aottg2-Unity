@@ -10,11 +10,8 @@ namespace CustomLogic
         public Vector3 Value;
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (0, 0, 0).
+        /// Default constructor, Initializes the Vector3 to (0, 0, 0).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3();
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin()
         {
@@ -22,23 +19,26 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (xyz, xyz, xyz).
+        /// Initializes the Vector3 to (xyz, xyz, xyz).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3(10); # -> Vector3(10, 10, 10)
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin(float xyz)
         {
             Value = new Vector3(xyz, xyz, xyz);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, 0).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y)
         {
             Value = new Vector3(x, y, 0);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, z).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y, float z)
         {

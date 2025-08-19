@@ -5,7 +5,7 @@ using System.Text;
 namespace CustomLogic
 {
     /// <summary>
-    /// List class for Custom Logic.
+    /// Ordered collection of objects.
     /// </summary>
     /// <code>
     /// values = List(1,2,1,4,115);
@@ -25,15 +25,18 @@ namespace CustomLogic
     /// # Transform list using mapping method.
     /// newList = values.Map(self.TransformData);   # returns List(2,4,2,8,230)
     /// 
-    /// function Sum2(a, b) {
+    /// function Sum2(a, b)
+    /// {
     ///     return a + b;
     /// }
     /// 
-    /// function Filter(a) {
+    /// function Filter(a)
+    /// {
     ///     return a > 20;
     /// }
     /// 
-    /// function TransformData(a) {
+    /// function TransformData(a)
+    /// {
     ///     return a * 2;
     /// }
     /// </code>
@@ -50,10 +53,10 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicListBuiltin(object[] parameterValues)
         {
-            foreach (var item in parameterValues)   List.Add(item);
+            foreach (var item in parameterValues) List.Add(item);
         }
 
-        [CLProperty(readOnly: true, description: "The number of elements in the list")]
+        [CLProperty(description: "The number of elements in the list")]
         public int Count => List.Count;
 
         [CLMethod(description: "Clear all list elements")]
@@ -157,7 +160,7 @@ namespace CustomLogic
         public CustomLogicSetBuiltin ToSet()
         {
             CustomLogicSetBuiltin newSet = new CustomLogicSetBuiltin();
-            foreach (var item in List)  newSet.Set.Add(item);
+            foreach (var item in List) newSet.Set.Add(item);
             return newSet;
         }
 

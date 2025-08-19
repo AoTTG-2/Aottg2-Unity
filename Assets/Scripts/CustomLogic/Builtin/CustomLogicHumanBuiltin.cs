@@ -1,18 +1,21 @@
+using System.Collections.Generic;
 using ApplicationManagers;
 using Characters;
 using GameManagers;
 using Settings;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CustomLogic
 {
     /// <summary>
+    /// Represents a human character.
     /// Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
-    /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMainCharacter && character.Type == "Human") {
+    /// function OnCharacterSpawn(character)
+    /// {
+    ///     if (character.IsMainCharacter &amp;&amp; character.Type == "Human")
+    ///     {
     ///         character.SetWeapon("Blade");
     ///         character.SetSpecial("Potato");
     ///         character.CurrentGas = character.MaxGas / 2;
@@ -29,21 +32,6 @@ namespace CustomLogic
             Human = human;
         }
 
-        [CLProperty(description: "The human's name")]
-        public string Name
-        {
-            get => Human.Name;
-            set => Human.Name = value;
-        }
-
-        [CLProperty(description: "The human's guild")]
-        public string Guild
-        {
-            get => Human.Guild;
-            set => Human.Guild = value;
-        }
-
-        // Add CLProperties for the above setField/getField 
         [CLProperty(description: "The weapon the human is using")]
         public string Weapon
         {
@@ -350,7 +338,6 @@ namespace CustomLogic
         [CLProperty(description: "If the human is carried.")]
         public bool IsCarried => Human.CarryState == HumanCarryState.Carry;
 
-        // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
         public bool Refill()
         {
@@ -456,7 +443,11 @@ namespace CustomLogic
             }
         }
 
-        [CLMethod(description: "Sets the weapon of the human")]
+        /// <summary>
+        /// Sets the weapon of the human
+        /// </summary>
+        /// <param name="weapon">Name of the weapon. Available weapons: "Blade", "AHSS", "APG", "Thunderspear"</param>
+        [CLMethod]
         public void SetWeapon(string weapon)
         {
             if (!Human.IsMine())

@@ -18,19 +18,19 @@ avoid cases where message sending increases heavily with the number of players i
 KillCount = 0;
 
 function OnNetworkMessage(player, message, sentServerTime) {
-if (player.ID == Network.MasterClient.ID) {
-self.KillCount == Convert.ToInt(message);
-}
+    if (player.ID == Network.MasterClient.ID) {
+        self.KillCount == Convert.ToInt(message);
+    }
 }
 
 function OnCharacterDie(victim, killer, killerName) {
-self.KillCount += 1;
+    self.KillCount += 1;
 }
 
 function OnPlayerJoined(player) {
-if (Network.IsMasterClient) {
-self.NetworkView.SendMessage(player, Convert.ToString(self.KillCount));
-}
+    if (Network.IsMasterClient) {
+        self.NetworkView.SendMessage(player, Convert.ToString(self.KillCount));
+    }
 }
 
 # Good Practice would be to have a single component that handles the message pass and defers the value to all registered components.
@@ -43,25 +43,25 @@ TODO: Bother someone for good practice example - maybe move this into Networking
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Transfer(player: <a data-footnote-ref href="#user-content-fn-23">Player</a>) -> null</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Transfer(player: <a data-footnote-ref href="#user-content-fn-24">Player</a>)</code></pre>
 > Owner only. Transfer ownership of this NetworkView to another player.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendMessage(target: <a data-footnote-ref href="#user-content-fn-23">Player</a>, msg: string) -> null</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendMessage(target: <a data-footnote-ref href="#user-content-fn-24">Player</a>, msg: string)</code></pre>
 > Send a message to a target player. This will be received in any of the MapObject attached components through the OnNetworkMessage callback.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendMessageAll(msg: string) -> null</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendMessageAll(msg: string)</code></pre>
 > Send a message to all players including myself.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendMessageOthers(msg: string) -> null</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendMessageOthers(msg: string)</code></pre>
 > Send a message to players excluding myself.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SendStream(obj: <a data-footnote-ref href="#user-content-fn-37">Object</a>) -> null</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SendStream(obj: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
 > Send an object to the network sync stream.
 This represents sending data from the object owner to all non-owner observers,
 and should only be called in the SendNetworkStream callback in the attached component.
 It only works with some object types: primitives and Vector3.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function ReceiveStream() -> <a data-footnote-ref href="#user-content-fn-37">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function ReceiveStream() -> <a data-footnote-ref href="#user-content-fn-38">Object</a></code></pre>
 > Receive an object through the network sync stream.
 This represents receiving data from the object owner as a non-owner observer,
 and should only be called in the OnNetworkStream callback.
@@ -82,27 +82,28 @@ and should only be called in the OnNetworkStream callback.
 [^12]: [LineCastHitResult](../objects/LineCastHitResult.md)
 [^13]: [LineRenderer](../objects/LineRenderer.md)
 [^14]: [List](../objects/List.md)
-[^15]: [Map](../static/Map.md)
-[^16]: [MapObject](../objects/MapObject.md)
-[^17]: [MapTargetable](../objects/MapTargetable.md)
-[^18]: [Math](../static/Math.md)
-[^19]: [Network](../static/Network.md)
-[^20]: [NetworkView](../objects/NetworkView.md)
-[^21]: [PersistentData](../static/PersistentData.md)
-[^22]: [Physics](../static/Physics.md)
-[^23]: [Player](../objects/Player.md)
-[^24]: [Quaternion](../objects/Quaternion.md)
-[^25]: [Random](../objects/Random.md)
-[^26]: [Range](../objects/Range.md)
-[^27]: [RoomData](../static/RoomData.md)
-[^28]: [Set](../objects/Set.md)
-[^29]: [Shifter](../objects/Shifter.md)
-[^30]: [String](../static/String.md)
-[^31]: [Time](../static/Time.md)
-[^32]: [Titan](../objects/Titan.md)
-[^33]: [Transform](../objects/Transform.md)
-[^34]: [UI](../static/UI.md)
-[^35]: [Vector2](../objects/Vector2.md)
-[^36]: [Vector3](../objects/Vector3.md)
-[^37]: [Object](../objects/Object.md)
-[^38]: [Component](../objects/Component.md)
+[^15]: [Locale](../static/Locale.md)
+[^16]: [Map](../static/Map.md)
+[^17]: [MapObject](../objects/MapObject.md)
+[^18]: [MapTargetable](../objects/MapTargetable.md)
+[^19]: [Math](../static/Math.md)
+[^20]: [Network](../static/Network.md)
+[^21]: [NetworkView](../objects/NetworkView.md)
+[^22]: [PersistentData](../static/PersistentData.md)
+[^23]: [Physics](../static/Physics.md)
+[^24]: [Player](../objects/Player.md)
+[^25]: [Quaternion](../objects/Quaternion.md)
+[^26]: [Random](../objects/Random.md)
+[^27]: [Range](../objects/Range.md)
+[^28]: [RoomData](../static/RoomData.md)
+[^29]: [Set](../objects/Set.md)
+[^30]: [Shifter](../objects/Shifter.md)
+[^31]: [String](../static/String.md)
+[^32]: [Time](../static/Time.md)
+[^33]: [Titan](../objects/Titan.md)
+[^34]: [Transform](../objects/Transform.md)
+[^35]: [UI](../static/UI.md)
+[^36]: [Vector2](../objects/Vector2.md)
+[^37]: [Vector3](../objects/Vector3.md)
+[^38]: [Object](../objects/Object.md)
+[^39]: [Component](../objects/Component.md)

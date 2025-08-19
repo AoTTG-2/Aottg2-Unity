@@ -16,6 +16,7 @@ namespace CustomLogic.Editor
         private bool _runBuildCommand;
         private bool _generateJson;
         private bool _generateMarkdown;
+        private bool _resolveInheritDoc = true;
 
         private Button _generateButton;
 
@@ -39,14 +40,17 @@ namespace CustomLogic.Editor
             var runBuildCommandToggle = CreateOption("Run build command", "Run `dotnet build` before generating the docs which will generate Scripts.xml. Only enable this if this is the first time running docs generator (since unity startup) or the docs comments (xml) have changed.");
             var generateJsonToggle = CreateOption("Generate JSON", "Generate docs in JSON format");
             var generateMarkdownToggle = CreateOption("Generate Markdown", "Generate docs in Markdown format");
+            var resolveInheritDocToggle = CreateOption("Resolve <inheritdoc />", "Slow process. Can be disabled when debugging.");
 
             runBuildCommandToggle.SetValueWithoutNotify(_runBuildCommand);
             generateJsonToggle.SetValueWithoutNotify(_generateJson);
             generateMarkdownToggle.SetValueWithoutNotify(_generateMarkdown);
+            resolveInheritDocToggle.SetValueWithoutNotify(_resolveInheritDoc);
 
             runBuildCommandToggle.RegisterValueChangedCallback(e => _runBuildCommand = e.newValue);
             generateJsonToggle.RegisterValueChangedCallback(e => _generateJson = e.newValue);
             generateMarkdownToggle.RegisterValueChangedCallback(e => _generateMarkdown = e.newValue);
+            resolveInheritDocToggle.RegisterValueChangedCallback(e => _resolveInheritDoc = e.newValue);
 
             _generateButton = new Button(() => _ = Generate())
             {
@@ -179,8 +183,11 @@ namespace CustomLogic.Editor
                 const string xmlPath = "Temp/Bin/Debug/Scripts.xml";
                 var xmlDocument = XmlDocumentUtils.LoadXml(xmlPath);
 
-                LogInfo("Resolving inheritdocs...");
-                await XmlDocumentUtils.ResolveAndReplaceInheritDocNodeAsync(xmlDocument, LogError);
+                if (_resolveInheritDoc)
+                {
+                    LogInfo("Resolving inheritdocs...");
+                    await XmlDocumentUtils.ResolveAndReplaceInheritDocNodeAsync(xmlDocument, LogError);
+                }
 
                 var clTypeProvider = new CLTypeProvider();
                 var clTypes = clTypeProvider.GetCLTypes(xmlDocument);
