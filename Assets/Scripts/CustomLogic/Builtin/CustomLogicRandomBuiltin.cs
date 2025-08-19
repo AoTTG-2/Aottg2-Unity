@@ -19,7 +19,7 @@ namespace CustomLogic
     /// 
     /// # Seed allows repeatable random values
     /// generator2 = Random(123);
-    /// b = generator.RandomInt(0, 100);
+    /// b = generator2.RandomInt(0, 100);
     /// compared = a == b;    # Always True
     /// </code>
     [CLType(Name = "Random", Static = true)]

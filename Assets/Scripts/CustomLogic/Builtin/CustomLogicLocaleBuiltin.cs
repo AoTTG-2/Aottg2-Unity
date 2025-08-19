@@ -94,7 +94,7 @@ namespace CustomLogic
     /// # Missing key throws an exception
     /// Game.Print("missing_key: " + Locale.Get("missing_key"));
     /// </code>
-    [CLType(Name = "Locale", Static = true)]
+    [CLType(Name = "Locale", Abstract = true, Static = true)]
     partial class CustomLogicLocaleBuiltin : BuiltinClassInstance
     {
         private static readonly Dictionary<string, Dictionary<string, string>> _languages = new Dictionary<string, Dictionary<string, string>>();
@@ -122,7 +122,7 @@ namespace CustomLogic
         public static string CzechLanguage => UILanguages.Czech;
 
         [CLProperty(readOnly: true, description: "Dutch language code")]
-        public string DutchLanguage => UILanguages.Dutch;
+        public static string DutchLanguage => UILanguages.Dutch;
 
         [CLProperty(readOnly: true, description: "English language code")]
         public static string EnglishLanguage => UILanguages.English;
