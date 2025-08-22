@@ -444,24 +444,18 @@ namespace Controllers
             bool hasHook = _human.HookLeft.HasHook() || _human.HookRight.HasHook();
             if (_human.CancelHookBothKey)
             {
-                if (hookBoth)
-                    hookBoth = false;
-                else
-                    _human.CancelHookBothKey = false;
+                hookBoth = false;
+                _human.CancelHookBothKey = false;
             }
             if (_human.CancelHookLeftKey)
             {
-                if (hookLeft)
-                    hookLeft = false;
-                else
-                    _human.CancelHookLeftKey = false;
+                hookLeft = false;
+                _human.CancelHookLeftKey = false;
             }
             if (_human.CancelHookRightKey)
             {
-                if (hookRight)
-                    hookRight = false;
-                else
-                    _human.CancelHookRightKey = false;
+                hookRight = false;
+                _human.CancelHookRightKey = false;
             }
             _human.HookLeft.HookBoth = hookBoth && !hookLeft;
             _human.HookRight.HookBoth = hookBoth && !hookRight;
