@@ -62,6 +62,13 @@ namespace Characters
             return Vector3.zero;
         }
 
+        public Vector3? GetCLHookPosition()
+        {
+            if (_activeHook != null)
+                return _activeHook.GetHookPosition();
+            return null;
+        }
+
         public bool IsHookOffset()
         {
             if (_activeHook != null)

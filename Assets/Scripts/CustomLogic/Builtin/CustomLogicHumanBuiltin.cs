@@ -397,6 +397,12 @@ namespace CustomLogic
         [CLProperty(description: "If right hook is ready.")]
         public bool RightHookReady => Human.HookRight.IsReady();
 
+        [CLProperty(description: "Position of the left hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin LeftHookPosition => Human.HookLeft.GetCLHookPosition();
+
+        [CLProperty(description: "Position of the right hook, null if there is no hook.")]
+        public CustomLogicVector3Builtin RightHookPosition => Human.HookRight.GetCLHookPosition();
+
 
         [CLProperty("The target currently focused by this character. Returns null if no target is set.")]
         public object Target
@@ -499,12 +505,6 @@ namespace CustomLogic
             if (Human.IsMine())
                 Human.HookRight.DisableAnyHook();
         }
-
-        [CLMethod(description: "Position of the left hook, Vector3.zero if there is no hook.")]
-        public CustomLogicVector3Builtin LeftHookPosition() => Human.HookLeft.GetHookPosition();
-
-        [CLMethod(description: "Position of the right hook, Vector3.zero if there is no hook.")]
-        public CustomLogicVector3Builtin RightHookPosition() => Human.HookRight.GetHookPosition();
 
         [CLMethod(description: "Mounts the human on a map object")]
         public void MountMapObject(CustomLogicMapObjectBuiltin mapObject, CustomLogicVector3Builtin positionOffset, CustomLogicVector3Builtin rotationOffset, bool canMountedAttack = false)
