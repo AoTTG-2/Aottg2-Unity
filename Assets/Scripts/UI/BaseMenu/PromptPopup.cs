@@ -19,5 +19,14 @@ namespace UI
             dim.transform.SetSiblingIndex(0);
             _staticTransforms.Add(dim.transform);
         }
+
+        public void Update()
+        {
+            // if the user presses esc, hide the panel.
+            if (Input.GetKeyDown(KeyCode.Escape) && IsActive)
+            {
+                Hide();
+            }
+        }
     }
 }
