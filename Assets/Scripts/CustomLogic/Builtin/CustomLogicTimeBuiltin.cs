@@ -20,6 +20,9 @@ namespace CustomLogic
         [CLProperty("Time since start of the round.")]
         public static float GameTime => CustomLogicManager.Evaluator.CurrentTime;
 
+        [CLProperty("Unity's Time.time")]
+        public static float EngineTime => Time.time;
+
         [CLProperty("Changes the timescale of the game.")]
         public static float TimeScale
         {
