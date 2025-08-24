@@ -33,6 +33,7 @@ namespace Characters
         public HumanCarryState CarryState = HumanCarryState.None;
         public Horse Horse;
         public bool AllowHorse = false; // only for ai, players dep on that in the misc setting.
+        public bool AllowSkin = false; // only for ai, players dep on that in the misc setting.
         public HumanSetup Setup;
         public HumanStats Stats;
         public bool FinishSetup;
@@ -2892,7 +2893,7 @@ namespace Characters
         {
             if (IsMine())
             {
-                if (SettingsManager.CustomSkinSettings.Human.SkinsEnabled.Value)
+                if (AI ? AllowSkin : SettingsManager.CustomSkinSettings.Human.SkinsEnabled.Value)
                 {
                     try
                     {

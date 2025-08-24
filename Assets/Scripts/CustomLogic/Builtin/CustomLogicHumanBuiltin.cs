@@ -466,6 +466,13 @@ namespace CustomLogic
             set => Human.AllowHorse = value;
         }
 
+        [CLProperty("Allow the (AI) human to use the skin. (preset skin only)")]
+        public bool AllowSkin
+        {
+            get => Human.AllowSkin;
+            set => Human.AllowSkin = value;
+        }
+
         // Add CLMethods for the above setField/getField
         [CLMethod(description: "Refills the gas of the human")]
         public bool Refill()
