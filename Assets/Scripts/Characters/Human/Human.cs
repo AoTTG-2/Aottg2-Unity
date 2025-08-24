@@ -1598,6 +1598,9 @@ namespace Characters
                 bool pivotLeft = FixedUpdateLaunch(true);
                 bool pivotRight = FixedUpdateLaunch(false);
                 bool pivot = pivotLeft || pivotRight;
+                _pivot = pivot;
+                _pivotLeft = pivotLeft;
+                _pivotRight = pivotRight;
                 if (Grounded)
                 {
                     Vector3 newVelocity = Vector3.zero;
@@ -1971,9 +1974,6 @@ namespace Characters
                 }
 
                 ReelInAxis = 0f;
-                _pivot = pivot;
-                _pivotLeft = pivotLeft;
-                _pivotRight = pivotRight;
             }
             EnableSmartTitans();
         }
