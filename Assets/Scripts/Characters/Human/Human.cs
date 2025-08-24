@@ -83,11 +83,10 @@ namespace Characters
         public float TargetMagnitude = 0f;
         public bool IsWalk;
 
-        public bool Pivot => pivot; // expose pivot for judging if human can hold reelin/out
-        private bool pivot;
-        private bool pivotLeft;
-        private bool pivotRight;
-
+        public bool Pivot => _pivot; // expose pivot for judging if human can hold reelin/out
+        private bool _pivot;
+        private bool _pivotLeft;
+        private bool _pivotRight;
         private const float MaxVelocityChange = 10f;
         private float _originalDashSpeed;
         public Quaternion _targetRotation;
@@ -1595,9 +1594,9 @@ namespace Characters
                 {
                     Cache.Transform.rotation = Quaternion.Lerp(Cache.Transform.rotation, _targetRotation, Time.deltaTime * rotationSpeed);
                 }
-                pivotLeft = FixedUpdateLaunch(true);
-                pivotRight = FixedUpdateLaunch(false);
-                pivot = pivotLeft || pivotRight;
+                bool pivotLeft = FixedUpdateLaunch(true);
+                bool pivotRight = FixedUpdateLaunch(false);
+                bool pivot = pivotLeft || pivotRight;
                 if (Grounded)
                 {
                     Vector3 newVelocity = Vector3.zero;
@@ -1971,6 +1970,9 @@ namespace Characters
                 }
 
                 ReelInAxis = 0f;
+                _pivot = pivot;
+                _pivotLeft = pivotLeft;
+                _pivotRight = pivotRight;
             }
             EnableSmartTitans();
         }
@@ -3804,11 +3806,11 @@ namespace Characters
 
         public Vector3? PivotPosition()
         {
-            if (pivotLeft && pivotRight)
+            if (_pivotLeft && _pivotRight)
                 return (HookRight.GetHookPosition() + HookLeft.GetHookPosition()) * 0.5f;
-            else if (pivotLeft)
+            else if (_pivotLeft)
                 return HookLeft.GetHookPosition();
-            else if (pivotRight)
+            else if (_pivotRight)
                 return HookRight.GetHookPosition();
             return null;
         }
