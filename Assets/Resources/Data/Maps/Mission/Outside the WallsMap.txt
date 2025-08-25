@@ -2578,7 +2578,7 @@ NetworkMessage()
 coroutine ShowDialogue(key, profileIndex)
 {
 profile = self.Profiles.Get(profileIndex);
-text = UI.Get("Dialogue." + key);
+text = Locale.Get("Dialogue." + key);
 Cutscene.ShowDialogue(profile.Icon, profile.Name, text);
 wait 4.0;
 Cutscene.HideDialogue();
