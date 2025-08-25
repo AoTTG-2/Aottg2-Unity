@@ -28,22 +28,22 @@ Game functions such as spawning titans and managing game state.
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function Debug(message: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Debug(message: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Print a debug statement to the console
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Print(message: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Print(message: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Print a message to the chat
 > 
-<pre class="language-typescript"><code class="lang-typescript">function PrintAll(message: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function PrintAll(message: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Print a message to all players
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetGeneralSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-38">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetGeneralSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
 > Get a general setting
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetTitanSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-38">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetTitanSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
 > Get a titan setting
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetMiscSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-38">Object</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetMiscSetting(settingName: string) -> <a data-footnote-ref href="#user-content-fn-45">Object</a></code></pre>
 > Get a misc setting
 > 
 <pre class="language-typescript"><code class="lang-typescript">function End(delay: float)</code></pre>
@@ -52,49 +52,49 @@ Game functions such as spawning titans and managing game state.
 <pre class="language-typescript"><code class="lang-typescript">function FindCharacterByViewID(viewID: int) -> <a data-footnote-ref href="#user-content-fn-1">Character</a></code></pre>
 > Find a character by view ID
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnTitan(type: string) -> <a data-footnote-ref href="#user-content-fn-33">Titan</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnTitan(type: string) -> <a data-footnote-ref href="#user-content-fn-39">Titan</a></code></pre>
 > Spawn a titan
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnTitanAt(type: string, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-33">Titan</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnTitanAt(type: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-39">Titan</a></code></pre>
 > Spawn a titan at a position
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnTitans(type: string, count: int) -> <a data-footnote-ref href="#user-content-fn-14">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnTitans(type: string, count: int) -> <a data-footnote-ref href="#user-content-fn-15">List</a></code></pre>
 > Spawn titans
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAsync(type: string, count: int)</code></pre>
 > Spawn titans asynchronously
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAt(type: string, count: int, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-14">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAt(type: string, count: int, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-15">List</a></code></pre>
 > Spawn titans at a position
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAtAsync(type: string, count: int, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnTitansAtAsync(type: string, count: int, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0)</code></pre>
 > Spawn titans at a position asynchronously
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnShifter(type: string) -> <a data-footnote-ref href="#user-content-fn-30">Shifter</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnShifter(type: string) -> <a data-footnote-ref href="#user-content-fn-36">Shifter</a></code></pre>
 > Spawn a shifter
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnShifterAt(type: string, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-30">Shifter</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnShifterAt(type: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-36">Shifter</a></code></pre>
 > Spawn a shifter at a position
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(parameters: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Spawn a projectile
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(parameters: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Spawn a projectile with an owner
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnEffect(parameters: <a data-footnote-ref href="#user-content-fn-38">Object</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnEffect(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
 > Spawn an effect
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayer(player: <a data-footnote-ref href="#user-content-fn-24">Player</a>, force: bool)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayer(player: <a data-footnote-ref href="#user-content-fn-28">Player</a>, force: bool)</code></pre>
 > Spawn a player
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnPlayerAll(force: bool)</code></pre>
 > Spawn a player for all players
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayerAt(player: <a data-footnote-ref href="#user-content-fn-24">Player</a>, force: bool, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayerAt(player: <a data-footnote-ref href="#user-content-fn-28">Player</a>, force: bool, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0)</code></pre>
 > Spawn a player at a position
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayerAtAll(force: bool, position: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, rotationY: float = 0)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function SpawnPlayerAtAll(force: bool, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0)</code></pre>
 > Spawn a player at a position for all players
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetPlaylist(playlist: string)</code></pre>
@@ -103,7 +103,7 @@ Game functions such as spawning titans and managing game state.
 <pre class="language-typescript"><code class="lang-typescript">function SetSong(song: string)</code></pre>
 > Set the music song
 > 
-<pre class="language-typescript"><code class="lang-typescript">function DrawRay(start: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, dir: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, color: <a data-footnote-ref href="#user-content-fn-4">Color</a>, duration: float)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function DrawRay(start: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, dir: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, color: <a data-footnote-ref href="#user-content-fn-4">Color</a>, duration: float)</code></pre>
 > Draw a ray
 > 
 <pre class="language-typescript"><code class="lang-typescript">function ShowKillScore(damage: int)</code></pre>
@@ -128,31 +128,38 @@ Game functions such as spawning titans and managing game state.
 [^9]: [Human](../objects/Human.md)
 [^10]: [Input](../static/Input.md)
 [^11]: [Json](../static/Json.md)
-[^12]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^13]: [LineRenderer](../objects/LineRenderer.md)
-[^14]: [List](../objects/List.md)
-[^15]: [Locale](../static/Locale.md)
-[^16]: [Map](../static/Map.md)
-[^17]: [MapObject](../objects/MapObject.md)
-[^18]: [MapTargetable](../objects/MapTargetable.md)
-[^19]: [Math](../static/Math.md)
-[^20]: [Network](../static/Network.md)
-[^21]: [NetworkView](../objects/NetworkView.md)
-[^22]: [PersistentData](../static/PersistentData.md)
-[^23]: [Physics](../static/Physics.md)
-[^24]: [Player](../objects/Player.md)
-[^25]: [Quaternion](../objects/Quaternion.md)
-[^26]: [Random](../objects/Random.md)
-[^27]: [Range](../objects/Range.md)
-[^28]: [RoomData](../static/RoomData.md)
-[^29]: [Set](../objects/Set.md)
-[^30]: [Shifter](../objects/Shifter.md)
-[^31]: [String](../static/String.md)
-[^32]: [Time](../static/Time.md)
-[^33]: [Titan](../objects/Titan.md)
-[^34]: [Transform](../objects/Transform.md)
-[^35]: [UI](../static/UI.md)
-[^36]: [Vector2](../objects/Vector2.md)
-[^37]: [Vector3](../objects/Vector3.md)
-[^38]: [Object](../objects/Object.md)
-[^39]: [Component](../objects/Component.md)
+[^12]: [LightBuiltin](../static/LightBuiltin.md)
+[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^14]: [LineRenderer](../objects/LineRenderer.md)
+[^15]: [List](../objects/List.md)
+[^16]: [Locale](../static/Locale.md)
+[^17]: [LodBuiltin](../static/LodBuiltin.md)
+[^18]: [Map](../static/Map.md)
+[^19]: [MapObject](../objects/MapObject.md)
+[^20]: [MapTargetable](../objects/MapTargetable.md)
+[^21]: [Math](../static/Math.md)
+[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^23]: [Network](../static/Network.md)
+[^24]: [NetworkView](../objects/NetworkView.md)
+[^25]: [PersistentData](../static/PersistentData.md)
+[^26]: [Physics](../static/Physics.md)
+[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^28]: [Player](../objects/Player.md)
+[^29]: [Prefab](../objects/Prefab.md)
+[^30]: [Quaternion](../objects/Quaternion.md)
+[^31]: [Random](../objects/Random.md)
+[^32]: [Range](../objects/Range.md)
+[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^34]: [RoomData](../static/RoomData.md)
+[^35]: [Set](../objects/Set.md)
+[^36]: [Shifter](../objects/Shifter.md)
+[^37]: [String](../static/String.md)
+[^38]: [Time](../static/Time.md)
+[^39]: [Titan](../objects/Titan.md)
+[^40]: [Transform](../objects/Transform.md)
+[^41]: [UI](../static/UI.md)
+[^42]: [Vector2](../objects/Vector2.md)
+[^43]: [Vector3](../objects/Vector3.md)
+[^44]: [WallColossal](../objects/WallColossal.md)
+[^45]: [Object](../objects/Object.md)
+[^46]: [Component](../objects/Component.md)

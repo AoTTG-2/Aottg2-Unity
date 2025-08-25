@@ -1,19 +1,27 @@
-# MapTargetable
-Inherits from [Object](../objects/Object.md)
-
-MapTargetable object returned from MapObject.AddTarget method.
-Creating a map targetable is similar to adding a collider to the MapObject,
-except this collider can be targeted by AI such as titans.
-Map targetables that are on a different team than the AI will be targeted by the titan,
-and will trigger the OnGetHit callback on the attached MapObject.
-
+# NavmeshObstacleBuiltin
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Team|string|False|The team of the targetable|
-|Position|[Vector3](../objects/Vector3.md)|True|The position of the targetable|
-|Enabled|bool|False|Is the targetable enabled|
+|Radius|float|False|The radius of the obstacle.|
+|Height|float|False|The height of the obstacle.|
+|Scale|[Vector3](../objects/Vector3.md)|False|The scale of the obstacle|
+|Center|[Vector3](../objects/Vector3.md)|False|The center of the obstacle.|
+|Carving|bool|False|Whether the obstacle carves the NavMesh.|
+|CarveOnlyStationary|bool|False|Whether the obstacle only carves when stationary.|
+|Shape|int|False|The shape of the obstacle.|
 
+
+### Static Properties
+|Name|Type|Readonly|Description|
+|---|---|---|---|
+|ShapeBox|int|True|The NavMeshObstacleShape Box.|
+|ShapeCapsule|int|True|The NavMeshObstacleShape Capsule.|
+
+
+### Methods
+<pre class="language-typescript"><code class="lang-typescript">function AutoScale()</code></pre>
+> Auto scales the obstacle to fit the colliders.
+> 
 
 [^0]: [Camera](../static/Camera.md)
 [^1]: [Character](../objects/Character.md)

@@ -20,16 +20,20 @@ Overloads operators:
 |Forward|[Vector3](../objects/Vector3.md)|False|Gets the forward vector of the transform.|
 |Up|[Vector3](../objects/Vector3.md)|False|Gets the up vector of the transform.|
 |Right|[Vector3](../objects/Vector3.md)|False|Gets the right vector of the transform.|
+|Parent|[Transform](../objects/Transform.md)|False|Sets the parent of the transform|
 |Name|string|True|Gets the name of the transform.|
 |Layer|int|False|Gets the Physics Layer of the transform.|
 
 
 ### Methods
-<pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-34">Transform</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetTransform(name: string) -> <a data-footnote-ref href="#user-content-fn-40">Transform</a></code></pre>
 > Gets the transform of the specified child.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetTransforms() -> <a data-footnote-ref href="#user-content-fn-14">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetTransforms() -> <a data-footnote-ref href="#user-content-fn-15">List</a></code></pre>
 > Gets all child transforms.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsPlayingAnimation(anim: string) -> bool</code></pre>
+> Checks if the given animation is playing.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlayAnimation(anim: string, fade: float = 0.1)</code></pre>
 > Plays the specified animation.
@@ -43,6 +47,12 @@ Overloads operators:
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(anim: string) -> float</code></pre>
 > Gets the length of the specified animation.
 > 
+<pre class="language-typescript"><code class="lang-typescript">function GetSoundVolume() -> float</code></pre>
+> Gets the audio sound if a clip exists.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetSoundVolume(volume: float)</code></pre>
+> Sets the audio sound if a clip exists.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function PlaySound()</code></pre>
 > Plays the sound.
 > 
@@ -52,31 +62,31 @@ Overloads operators:
 <pre class="language-typescript"><code class="lang-typescript">function ToggleParticle(enabled: bool)</code></pre>
 > Toggles the particle system.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function InverseTransformDirection(direction: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-37">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function InverseTransformDirection(direction: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
 > Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function InverseTransformPoint(point: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-37">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function InverseTransformPoint(point: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
 > Transforms position from world space to local space.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function TransformDirection(direction: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-37">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function TransformDirection(direction: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
 > Transforms direction from local space to world space.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function TransformPoint(point: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-37">Vector3</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function TransformPoint(point: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
 > Transforms position from local space to world space.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Rotate(rotation: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Rotate(rotation: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>)</code></pre>
 > Applies a rotation of eulerAngles.z degrees around the z-axis, eulerAngles.x degrees around the x-axis, and eulerAngles.y degrees around the y-axis (in that order).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function RotateAround(point: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, axis: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>, angle: float)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function RotateAround(point: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, axis: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, angle: float)</code></pre>
 > Rotates the transform about axis passing through point in world coordinates by angle degrees.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function LookAt(target: <a data-footnote-ref href="#user-content-fn-37">Vector3</a>)</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function LookAt(target: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>)</code></pre>
 > Rotates the transform so the forward vector points at worldPosition.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SetRenderersEnabled(enabled: bool)</code></pre>
 > Sets the enabled state of all child renderers.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function GetColliders(recursive: bool = False) -> <a data-footnote-ref href="#user-content-fn-14">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function GetColliders(recursive: bool = False) -> <a data-footnote-ref href="#user-content-fn-15">List</a></code></pre>
 > Gets colliders of the transform.
 > 
 
@@ -92,31 +102,38 @@ Overloads operators:
 [^9]: [Human](../objects/Human.md)
 [^10]: [Input](../static/Input.md)
 [^11]: [Json](../static/Json.md)
-[^12]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^13]: [LineRenderer](../objects/LineRenderer.md)
-[^14]: [List](../objects/List.md)
-[^15]: [Locale](../static/Locale.md)
-[^16]: [Map](../static/Map.md)
-[^17]: [MapObject](../objects/MapObject.md)
-[^18]: [MapTargetable](../objects/MapTargetable.md)
-[^19]: [Math](../static/Math.md)
-[^20]: [Network](../static/Network.md)
-[^21]: [NetworkView](../objects/NetworkView.md)
-[^22]: [PersistentData](../static/PersistentData.md)
-[^23]: [Physics](../static/Physics.md)
-[^24]: [Player](../objects/Player.md)
-[^25]: [Quaternion](../objects/Quaternion.md)
-[^26]: [Random](../objects/Random.md)
-[^27]: [Range](../objects/Range.md)
-[^28]: [RoomData](../static/RoomData.md)
-[^29]: [Set](../objects/Set.md)
-[^30]: [Shifter](../objects/Shifter.md)
-[^31]: [String](../static/String.md)
-[^32]: [Time](../static/Time.md)
-[^33]: [Titan](../objects/Titan.md)
-[^34]: [Transform](../objects/Transform.md)
-[^35]: [UI](../static/UI.md)
-[^36]: [Vector2](../objects/Vector2.md)
-[^37]: [Vector3](../objects/Vector3.md)
-[^38]: [Object](../objects/Object.md)
-[^39]: [Component](../objects/Component.md)
+[^12]: [LightBuiltin](../static/LightBuiltin.md)
+[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^14]: [LineRenderer](../objects/LineRenderer.md)
+[^15]: [List](../objects/List.md)
+[^16]: [Locale](../static/Locale.md)
+[^17]: [LodBuiltin](../static/LodBuiltin.md)
+[^18]: [Map](../static/Map.md)
+[^19]: [MapObject](../objects/MapObject.md)
+[^20]: [MapTargetable](../objects/MapTargetable.md)
+[^21]: [Math](../static/Math.md)
+[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^23]: [Network](../static/Network.md)
+[^24]: [NetworkView](../objects/NetworkView.md)
+[^25]: [PersistentData](../static/PersistentData.md)
+[^26]: [Physics](../static/Physics.md)
+[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^28]: [Player](../objects/Player.md)
+[^29]: [Prefab](../objects/Prefab.md)
+[^30]: [Quaternion](../objects/Quaternion.md)
+[^31]: [Random](../objects/Random.md)
+[^32]: [Range](../objects/Range.md)
+[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^34]: [RoomData](../static/RoomData.md)
+[^35]: [Set](../objects/Set.md)
+[^36]: [Shifter](../objects/Shifter.md)
+[^37]: [String](../static/String.md)
+[^38]: [Time](../static/Time.md)
+[^39]: [Titan](../objects/Titan.md)
+[^40]: [Transform](../objects/Transform.md)
+[^41]: [UI](../static/UI.md)
+[^42]: [Vector2](../objects/Vector2.md)
+[^43]: [Vector3](../objects/Vector3.md)
+[^44]: [WallColossal](../objects/WallColossal.md)
+[^45]: [Object](../objects/Object.md)
+[^46]: [Component](../objects/Component.md)
