@@ -1,19 +1,34 @@
-# MapTargetable
+# Prefab
 Inherits from [Object](../objects/Object.md)
 
-MapTargetable object returned from MapObject.AddTarget method.
-Creating a map targetable is similar to adding a collider to the MapObject,
-except this collider can be targeted by AI such as titans.
-Map targetables that are on a different team than the AI will be targeted by the titan,
-and will trigger the OnGetHit callback on the attached MapObject.
+Will expand this further later, currently only handles single elements, not children.
+Should be able to take in a serialized CSV describing the object and populate a child array/parent object when done.
+
+### Initialization
+```csharp
+Prefab()
+Prefab(prefabCSV: string, clearComponents: bool)
+```
 
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Team|string|False|The team of the targetable|
-|Position|[Vector3](../objects/Vector3.md)|True|The position of the targetable|
-|Enabled|bool|False|Is the targetable enabled|
+|Type|string|False||
+|Asset|string|False||
+|Active|bool|False||
+|Static|bool|False||
+|Visible|bool|False||
+|Name|string|False||
+|Position|[Vector3](../objects/Vector3.md)|False||
+|Rotation|[Vector3](../objects/Vector3.md)|False||
+|Scale|[Vector3](../objects/Vector3.md)|False||
+|CollideMode|string|False||
+|CollideWith|string|False||
+|PhysicsMaterial|string|False||
 
+
+### Methods
+<pre class="language-typescript"><code class="lang-typescript">function ClearComponents()</code></pre>
 
 [^0]: [Camera](../static/Camera.md)
 [^1]: [Character](../objects/Character.md)
