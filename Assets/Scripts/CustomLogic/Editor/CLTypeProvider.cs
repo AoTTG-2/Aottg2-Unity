@@ -23,6 +23,7 @@ namespace CustomLogic.Editor
             ["Boolean"] = "bool",
             ["String"] = "string",
             ["Void"] = "null",
+            ["Double"] = "double",
             [nameof(CustomLogicClassInstance)] = "class",
             [nameof(CustomLogicComponentInstance)] = "component",
             [nameof(UserMethod)] = "function",
