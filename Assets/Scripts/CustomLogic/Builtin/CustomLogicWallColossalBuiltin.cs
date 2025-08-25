@@ -8,9 +8,9 @@ namespace CustomLogic
     /// </summary>
     /// <code>
     /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMine && character.Type == "WallColossal") {
+    ///     if (character.IsMine &amp;&amp; character.Type == "WallColossal") {
     ///         character.Size = 2;
-    ///         if (Network.MyPlayer.Status == "Alive" && Network.MyPlayer.Character.Type == "Human") {
+    ///         if (Network.MyPlayer.Status == "Alive" &amp;&amp; Network.MyPlayer.Character.Type == "Human") {
     ///             character.Target(Network.MyPlayer, 10);
     ///         }
     ///     }
@@ -28,24 +28,24 @@ namespace CustomLogic
             Controller = shifter.GetComponent<WallColossalAIController>();
         }
         [CLProperty(Description = "Colossal's current hand health.")]
-        public float HandHealth
+        public int HandHealth
         {
             get => Shifter.CurrentHandHealth;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetCurrentHandHealth((int)value);
+                    Shifter.SetCurrentHandHealth(value);
             }
         }
 
         [CLProperty(Description = "Colossal's maximum hand health.")]
-        public float MaxHandHealth
+        public int MaxHandHealth
         {
             get => Shifter.MaxHandHealth;
             set
             {
                 if (Shifter.IsMine())
-                    Shifter.SetMaxHandHealth((int)value);
+                    Shifter.SetMaxHandHealth(value);
             }
         }
 
@@ -55,7 +55,7 @@ namespace CustomLogic
             get => Controller.WallAttackCooldown;
             set
             {
-                Controller.WallAttackCooldown = (float)value;
+                Controller.WallAttackCooldown = value;
             }
         }
 
@@ -65,7 +65,7 @@ namespace CustomLogic
             get => Controller.WallAttackCooldownLeft;
             set
             {
-                Controller.WallAttackCooldownLeft = (float)value;
+                Controller.WallAttackCooldownLeft = value;
             }
         }
 
