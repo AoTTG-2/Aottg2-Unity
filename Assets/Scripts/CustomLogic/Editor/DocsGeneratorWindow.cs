@@ -13,7 +13,7 @@ namespace CustomLogic.Editor
 {
     public class DocsGeneratorWindow : EditorWindow
     {
-        private bool _runBuildCommand;
+        private bool _runBuildCommand = true;
         private bool _generateJson;
         private bool _generateMarkdown;
         private bool _resolveInheritDoc = true;
