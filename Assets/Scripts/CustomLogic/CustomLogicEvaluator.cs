@@ -555,13 +555,7 @@ namespace CustomLogic
             {
                 RunAssignmentsClassInstance(classInstance);
                 EvaluateMethod(classInstance, "Init", parameterValues);
-                classInstance = new UserClassInstance(className);
-                if (init)
-                {
-                    RunAssignmentsClassInstance(classInstance);
-                    EvaluateMethod(classInstance, "Init", parameterValues);
-                    classInstance.Inited = true;
-                }
+                classInstance.Inited = true;
             }
             return classInstance;
         }
