@@ -743,6 +743,12 @@ namespace CustomLogic
             }
         }
 
+        [CLMethod(description: "Serialize the current object to a csv.")]
+        public string ConvertToCSV()
+        {
+            return Value.ScriptObject.Serialize();
+        }
+
         // Prop to get RigidBody
         [CLProperty(description: "The Rigidbody component of the MapObject, is null if not added.")]
         public CustomLogicRigidbodyBuiltin Rigidbody
