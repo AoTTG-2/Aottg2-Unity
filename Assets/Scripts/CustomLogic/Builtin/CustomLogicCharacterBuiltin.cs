@@ -341,6 +341,13 @@ namespace CustomLogic
                 Character.StopSound(sound);
         }
 
+        [CLMethod(Description = "Fades the sound volume to a specific volume between 0.0 and 1.0 over [time] seconds. Does not play or stop the sound.")]
+        public void FadeSound(string sound, float volume, float time)
+        {
+            if (Character.IsMine() && !Character.Dead)
+                Character.FadeSound(sound, volume, time);
+        }
+
         [CLMethod(Description = "Rotates the character such that it is looking towards a world position.")]
         public void LookAt(CustomLogicVector3Builtin position)
         {

@@ -301,6 +301,8 @@ namespace CustomLogic
                 return new CustomLogicHumanBuiltin((Human)character);
             else if (character is BasicTitan)
                 return new CustomLogicTitanBuiltin((BasicTitan)character);
+            else if (character is WallColossalShifter)
+                return new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
             else if (character is BaseShifter)
                 return new CustomLogicShifterBuiltin((BaseShifter)character);
             return null;

@@ -833,6 +833,8 @@ namespace GameManagers
                 prefab = CharacterPrefabs.ArmoredShifter;
             else if (type == "Eren")
                 prefab = CharacterPrefabs.ErenShifter;
+            else if (type == "WallColossal")
+                prefab = CharacterPrefabs.WallColossal;
             if (prefab == "")
                 return null;
             var shifter = (BaseShifter)CharacterSpawner.Spawn(prefab, position, rotation);

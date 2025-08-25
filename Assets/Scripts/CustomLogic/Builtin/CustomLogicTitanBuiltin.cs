@@ -242,6 +242,10 @@ namespace CustomLogic
             {
                 return new CustomLogicHumanBuiltin((Human)enemy);
             }
+            else if (enemy is WallColossalShifter)
+            {
+                return new CustomLogicWallColossalBuiltin((WallColossalShifter)enemy);
+            }
             else if (enemy is BaseShifter)
             {
                 return new CustomLogicShifterBuiltin((BaseShifter)enemy);

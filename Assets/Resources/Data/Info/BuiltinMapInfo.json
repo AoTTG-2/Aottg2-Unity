@@ -77,29 +77,16 @@
 			"IncludedModes": ["Map Logic"],
 			"Maps": [
 				{
-					"Name": "Christmas Waves",
+					"Name": "Annie",
 					"MiscSettings": {
+						"AllowThunderspears": false,
 						"AllowAHSS": false,
 						"AllowAPG": false,
 						"AllowShifterSpecials": false
 					}
 				},
 				{
-					"Name": "Spooky Waves"
-				},
-				{
-					"Name": "Trick or Treat"
-				},
-				{
-					"Name": "Slender Titan",
-					"MiscSettings": {
-						"AllowThunderspears": false,
-						"AllowShifterSpecials": false,
-						"GlobalMinimapDisable": true
-					}
-				},
-				{
-					"Name": "Annie",
+					"Name": "Colossal",
 					"MiscSettings": {
 						"AllowThunderspears": false,
 						"AllowAHSS": false,
@@ -132,6 +119,28 @@
 						"AllowShifterSpecials": false,
 						"AllowShifters": false,
 						"EndlessRespawnEnabled": true
+					}
+				},
+				{
+					"Name": "Christmas Waves",
+					"MiscSettings": {
+						"AllowAHSS": false,
+						"AllowAPG": false,
+						"AllowShifterSpecials": false
+					}
+				},
+				{
+					"Name": "Spooky Waves"
+				},
+				{
+					"Name": "Trick or Treat"
+				},
+				{
+					"Name": "Slender Titan",
+					"MiscSettings": {
+						"AllowThunderspears": false,
+						"AllowShifterSpecials": false,
+						"GlobalMinimapDisable": true
 					}
 				},
 				{

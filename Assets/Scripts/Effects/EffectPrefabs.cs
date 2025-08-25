@@ -30,5 +30,6 @@
         public static string Splash2 = "Splash2Effect";
         public static string Splash3 = "Splash3Effect";
         public static string WaterWake = "WaterWakeEffect";
+        public static string ColossalSpawn = "ColossalSpawnEffect";
     }
 }

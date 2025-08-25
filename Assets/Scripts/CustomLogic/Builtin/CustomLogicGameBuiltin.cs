@@ -105,7 +105,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["Shifters"] = list;
                 }
@@ -124,7 +129,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["AIShifters"] = list;
                 }
@@ -143,7 +153,12 @@ namespace CustomLogic
                     foreach (var shifter in _inGameManager.Shifters)
                     {
                         if (shifter != null && !shifter.AI && (!shifter.Dead || shifter.TransformingToHuman))
-                            list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        {
+                            if (shifter is WallColossalShifter)
+                                list.List.Add(new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter));
+                            else
+                                list.List.Add(new CustomLogicShifterBuiltin(shifter));
+                        }
                     }
                     _cachedLists["PlayerShifters"] = list;
                 }
@@ -411,8 +426,10 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifter(type));
-                return shifter;
+                var shifter = _inGameManager.SpawnAIShifter(type);
+                if (type == "WallColossal")
+                    return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
+                return new CustomLogicShifterBuiltin(shifter);
             }
             return null;
         }
@@ -422,8 +439,10 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                var shifter = new CustomLogicShifterBuiltin(_inGameManager.SpawnAIShifterAt(type, position.Value, rotationY));
-                return shifter;
+                var shifter = _inGameManager.SpawnAIShifterAt(type, position.Value, rotationY);
+                if (type == "WallColossal")
+                    return new CustomLogicWallColossalBuiltin((WallColossalShifter)shifter);
+                return new CustomLogicShifterBuiltin(shifter);
             }
             return null;
         }

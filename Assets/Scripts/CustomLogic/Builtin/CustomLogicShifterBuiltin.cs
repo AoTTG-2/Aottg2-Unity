@@ -243,5 +243,12 @@ namespace CustomLogic
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.Cripple(time);
         }
+
+        [CLMethod("Causes the shifter to perform the given attack, if able.")]
+        public void Attack(string attack)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.CanAttack())
+                Shifter.Attack(attack);
+        }
     }
 }

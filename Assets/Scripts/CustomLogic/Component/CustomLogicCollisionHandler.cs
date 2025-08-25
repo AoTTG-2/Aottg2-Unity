@@ -23,6 +23,8 @@ namespace CustomLogic
                 builtin = new CustomLogicHumanBuiltin((Human)character);
             else if (character is BasicTitan)
                 builtin = new CustomLogicTitanBuiltin((BasicTitan)character);
+            else if (character is WallColossalShifter)
+                builtin = new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
             else if (character is BaseShifter)
                 builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
             foreach (var classInstance in _classInstances)
@@ -109,6 +111,8 @@ namespace CustomLogic
                     builtin = new CustomLogicHumanBuiltin((Human)character);
                 else if (character is BasicTitan)
                     builtin = new CustomLogicTitanBuiltin((BasicTitan)character);
+                else if (character is WallColossalShifter)
+                    builtin = new CustomLogicWallColossalBuiltin((WallColossalShifter)character);
                 else if (character is BaseShifter)
                     builtin = new CustomLogicShifterBuiltin((BaseShifter)character);
                 return builtin;
