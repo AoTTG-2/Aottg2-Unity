@@ -1,19 +1,39 @@
-# MapTargetable
-Inherits from [Object](../objects/Object.md)
+# WallColossal
+Inherits from [Shifter](../objects/Shifter.md)
 
-MapTargetable object returned from MapObject.AddTarget method.
-Creating a map targetable is similar to adding a collider to the MapObject,
-except this collider can be targeted by AI such as titans.
-Map targetables that are on a different team than the AI will be targeted by the titan,
-and will trigger the OnGetHit callback on the attached MapObject.
+Only character owner can modify fields and call functions unless otherwise specified.
 
+### Example
+```csharp
+function OnCharacterSpawn(character) {
+    if (character.IsMine && character.Type == "WallColossal") {
+        character.Size = 2;
+        if (Network.MyPlayer.Status == "Alive" && Network.MyPlayer.Character.Type == "Human") {
+            character.Target(Network.MyPlayer, 10);
+        }
+    }
+}
+```
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
-|Team|string|False|The team of the targetable|
-|Position|[Vector3](../objects/Vector3.md)|True|The position of the targetable|
-|Enabled|bool|False|Is the targetable enabled|
+|HandHealth|int|False|Colossal's current hand health.|
+|MaxHandHealth|int|False|Colossal's maximum hand health.|
+|WallAttackCooldown|float|False|Colossal's (AI) wall attack cooldown per attack.|
+|WallAttackCooldownLeft|float|False|Colossal's (AI) wall attack cooldown remaining.|
+|SteamState|string|True|Colossal's current steam state (Off, Warning, or Damage).|
 
+
+### Methods
+<pre class="language-typescript"><code class="lang-typescript">function AttackSteam()</code></pre>
+> Causes the colossal to perform steam attack.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function StopSteam()</code></pre>
+> Causes the colossal to stop steam attack.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function WallAttack()</code></pre>
+> Causes the (AI) colossal to perform a random wall attack.
+> 
 
 [^0]: [Camera](../static/Camera.md)
 [^1]: [Character](../objects/Character.md)

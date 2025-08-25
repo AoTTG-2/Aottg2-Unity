@@ -13,13 +13,13 @@ String manipulation functions.
 <pre class="language-typescript"><code class="lang-typescript">function FormatFloat(val: float, decimals: int) -> string</code></pre>
 > Formats a float to a string with the specified number of decimal places.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function FormatFromList(str: string, list: <a data-footnote-ref href="#user-content-fn-14">List</a>) -> string</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function FormatFromList(str: string, list: <a data-footnote-ref href="#user-content-fn-15">List</a>) -> string</code></pre>
 > Equivalent to C# string.format(string, List<string>).
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Split(toSplit: string, splitter: <a data-footnote-ref href="#user-content-fn-38">Object</a>, removeEmptyEntries: bool = False) -> <a data-footnote-ref href="#user-content-fn-14">List</a></code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Split(toSplit: string, splitter: <a data-footnote-ref href="#user-content-fn-45">Object</a>, removeEmptyEntries: bool = False) -> <a data-footnote-ref href="#user-content-fn-15">List</a></code></pre>
 > Split the string into a list. Can pass in either a string to split on or a list of strings to split on, the last optional param can remove all empty entries.
 > 
-<pre class="language-typescript"><code class="lang-typescript">function Join(list: <a data-footnote-ref href="#user-content-fn-14">List</a>, separator: string) -> string</code></pre>
+<pre class="language-typescript"><code class="lang-typescript">function Join(list: <a data-footnote-ref href="#user-content-fn-15">List</a>, separator: string) -> string</code></pre>
 > Joins a list of strings into a single string with the specified separator.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Substring(str: string, startIndex: int) -> string</code></pre>
@@ -74,31 +74,38 @@ String manipulation functions.
 [^9]: [Human](../objects/Human.md)
 [^10]: [Input](../static/Input.md)
 [^11]: [Json](../static/Json.md)
-[^12]: [LineCastHitResult](../objects/LineCastHitResult.md)
-[^13]: [LineRenderer](../objects/LineRenderer.md)
-[^14]: [List](../objects/List.md)
-[^15]: [Locale](../static/Locale.md)
-[^16]: [Map](../static/Map.md)
-[^17]: [MapObject](../objects/MapObject.md)
-[^18]: [MapTargetable](../objects/MapTargetable.md)
-[^19]: [Math](../static/Math.md)
-[^20]: [Network](../static/Network.md)
-[^21]: [NetworkView](../objects/NetworkView.md)
-[^22]: [PersistentData](../static/PersistentData.md)
-[^23]: [Physics](../static/Physics.md)
-[^24]: [Player](../objects/Player.md)
-[^25]: [Quaternion](../objects/Quaternion.md)
-[^26]: [Random](../objects/Random.md)
-[^27]: [Range](../objects/Range.md)
-[^28]: [RoomData](../static/RoomData.md)
-[^29]: [Set](../objects/Set.md)
-[^30]: [Shifter](../objects/Shifter.md)
-[^31]: [String](../static/String.md)
-[^32]: [Time](../static/Time.md)
-[^33]: [Titan](../objects/Titan.md)
-[^34]: [Transform](../objects/Transform.md)
-[^35]: [UI](../static/UI.md)
-[^36]: [Vector2](../objects/Vector2.md)
-[^37]: [Vector3](../objects/Vector3.md)
-[^38]: [Object](../objects/Object.md)
-[^39]: [Component](../objects/Component.md)
+[^12]: [LightBuiltin](../static/LightBuiltin.md)
+[^13]: [LineCastHitResult](../objects/LineCastHitResult.md)
+[^14]: [LineRenderer](../objects/LineRenderer.md)
+[^15]: [List](../objects/List.md)
+[^16]: [Locale](../static/Locale.md)
+[^17]: [LodBuiltin](../static/LodBuiltin.md)
+[^18]: [Map](../static/Map.md)
+[^19]: [MapObject](../objects/MapObject.md)
+[^20]: [MapTargetable](../objects/MapTargetable.md)
+[^21]: [Math](../static/Math.md)
+[^22]: [NavmeshObstacleBuiltin](../static/NavmeshObstacleBuiltin.md)
+[^23]: [Network](../static/Network.md)
+[^24]: [NetworkView](../objects/NetworkView.md)
+[^25]: [PersistentData](../static/PersistentData.md)
+[^26]: [Physics](../static/Physics.md)
+[^27]: [PhysicsMaterialBuiltin](../static/PhysicsMaterialBuiltin.md)
+[^28]: [Player](../objects/Player.md)
+[^29]: [Prefab](../objects/Prefab.md)
+[^30]: [Quaternion](../objects/Quaternion.md)
+[^31]: [Random](../objects/Random.md)
+[^32]: [Range](../objects/Range.md)
+[^33]: [RigidbodyBuiltin](../static/RigidbodyBuiltin.md)
+[^34]: [RoomData](../static/RoomData.md)
+[^35]: [Set](../objects/Set.md)
+[^36]: [Shifter](../objects/Shifter.md)
+[^37]: [String](../static/String.md)
+[^38]: [Time](../static/Time.md)
+[^39]: [Titan](../objects/Titan.md)
+[^40]: [Transform](../objects/Transform.md)
+[^41]: [UI](../static/UI.md)
+[^42]: [Vector2](../objects/Vector2.md)
+[^43]: [Vector3](../objects/Vector3.md)
+[^44]: [WallColossal](../objects/WallColossal.md)
+[^45]: [Object](../objects/Object.md)
+[^46]: [Component](../objects/Component.md)
