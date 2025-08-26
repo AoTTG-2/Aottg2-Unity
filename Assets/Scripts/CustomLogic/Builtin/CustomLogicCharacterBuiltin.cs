@@ -271,6 +271,70 @@ namespace CustomLogic
                 Character.CrossFadeIfNotPlaying(animation, fade);
         }
 
+        [CLMethod(Description = "Causes the character to play an animation at a specific time.")]
+        public void PlayAnimationAt(string animation, float t, float fade = 0.1f, bool force = false)
+        {
+            if (Character.IsMine() && !Character.Dead)
+            {
+                if (force)
+                    Character.CrossFade(animation, fade, t);
+                else
+                    Character.CrossFadeIfNotPlaying(animation, fade, t);
+            }
+        }
+
+        [CLMethod(Description = "Gets the animation speed of a given animation.")]
+        public void GetAnimationSpeed(string animation)
+        {
+            if (Character.IsMine() && !Character.Dead)
+                Character.GetAnimationSpeed(animation);
+        }
+
+        [CLMethod(Description = "Sets the animation speed of a given animation.")]
+        public void SetAnimationSpeed(string animation, float speed, bool synced = true)
+        {
+            if (Character.IsMine() && !Character.Dead)
+            {
+                if (synced)
+                {
+                    Character.SetAnimationSpeed(animation, speed);
+                }
+                else
+                {
+                    Character.SetAnimationSpeedNonRPC(animation, speed);
+                }
+
+            }
+        }
+
+        //[CLMethod(Description = "Causes the character to pause their animation.")]
+        //public void PauseAnimations()
+        //{
+        //    if (Character.IsMine() && !Character.Dead)
+        //        Character.PauseAnimations();
+        //}
+
+        //[CLMethod(Description = "Causes the character to continue their animation.")]
+        //public void ContinueAnimations()
+        //{
+        //    if (Character.IsMine() && !Character.Dead)
+        //        Character.ContinueAnimations();
+        //}
+
+        [CLMethod(Description = "Returns true if the animation is playing.")]
+        public bool IsPlayingAnimation(string animation)
+        {
+            return Character.Animation.IsPlaying(animation);
+        }
+
+        [CLMethod(Description = "Returns true if the animation is playing.")]
+        public float GetAnimationNormalizedTime(string animation)
+        {
+            if (!Character.Animation.IsPlaying(animation))
+                return 1f;
+            return Character.Animation.GetCurrentNormalizedTime();
+        }
+
         /// <summary>
         /// Forces the character to play an animation.
         /// </summary>
@@ -293,6 +357,12 @@ namespace CustomLogic
         public float GetAnimationLength(string animation)
         {
             return Character.Animation.GetLength(animation);
+        }
+
+        [CLMethod(Description = "Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.")]
+        public bool IsPlayingSound(string sound)
+        {
+            return Character.IsPlayingSound(sound);
         }
 
         /// <summary>
