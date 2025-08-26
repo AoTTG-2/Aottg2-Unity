@@ -487,6 +487,8 @@
 		"Skins.Human.SetSpecificSkinsEnabledTooltip": "Toggle your own character specific skins.",
 		"Skins.Human.GlobalSkinOverridesEnabled": "My global skins",
 		"Skins.Human.GlobalSkinOverridesEnabledTooltip": "Toggle your own global skins (overrides character specific skins).",
+		"Skins.Human.GlobalSkins": "Global skins",
+		"Skins.Human.CharacterSkins": "Character skins",
 		"Skins.Human.Global": "Global",
 		"Skins.Human.Preset": "Character",
 		"Skins.Human.SkinMode": "Skin mode",

@@ -69,8 +69,8 @@ namespace UI
             GameObject globalSetsDropdown = ElementFactory.CreateDropdownSetting(SinglePanel, style, _globalSetDropdownSetting, UIManager.GetLocale("SettingsPopup", "Skins.Human", "Global"), globalSetNames,
                 elementWidth: dropdownWidth, onDropdownOptionSelect: () => OnGlobalSkinSetSelected(_globalSetDropdownSetting.Value));
             Text globalSetsLabel = globalSetsDropdown.transform.Find("Label").GetComponent<Text>();
-            GameObject globalToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _globalSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "GlobalSkinOverridesEnabled"), onValueChanged: () => OnSkinPreviewToggle());
-            GameObject customToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _customSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "SetSpecificSkinsEnabled"), onValueChanged: () => OnSkinPreviewToggle());
+            GameObject globalToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _globalSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "GlobalSkins"), onValueChanged: () => OnSkinPreviewToggle());
+            GameObject customToggle = ElementFactory.CreateToggleSetting(SinglePanel, style, _customSkinPreview, UIManager.GetLocale("SettingsPopup", "Skins.Human", "CharacterSkins"), onValueChanged: () => OnSkinPreviewToggle());
             Text globalText = globalToggle.transform.Find("Label").GetComponent<Text>();
             Text customText = customToggle.transform.Find("Label").GetComponent<Text>();
             globalText.horizontalOverflow = HorizontalWrapMode.Overflow;
