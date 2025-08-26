@@ -685,6 +685,27 @@ namespace Characters
                 Cache.PhotonView.RPC("GetKilledRPC", Cache.PhotonView.Owner, new object[] { name });
         }
 
+        public virtual void BlowAway(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead)
+                Cache.PhotonView.RPC("BlowAwayRPC", Cache.PhotonView.Owner, new object[] { source, force, maxDistance });
+        }
+
+        [PunRPC]
+        public virtual void BlowAwayRPC(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead && IsMine())
+            {
+                if (Vector3.Distance(Cache.Transform.position, source) <= maxDistance)
+                {
+                    Vector3 direction = (Cache.Transform.position - source).normalized;
+                    if (Grounded && direction.y >= 0f)
+                        Cache.Rigidbody.AddForce(Vector3.up * Mathf.Min(10f, force), ForceMode.VelocityChange);
+                    Cache.Rigidbody.AddForce(direction * force, ForceMode.VelocityChange);
+                }
+            }
+        }
+
         protected virtual void Awake()
         {
             if (SceneLoader.CurrentGameManager is InGameManager)

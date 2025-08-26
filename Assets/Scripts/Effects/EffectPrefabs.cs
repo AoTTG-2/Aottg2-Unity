@@ -20,6 +20,7 @@
         public static string Boom5 = "Boom5Effect";
         public static string Boom6 = "Boom6Effect";
         public static string Boom7 = "Boom7Effect";
+        public static string Boom8 = "Boom8Effect";
         public static string Splash = "SplashEffect";
         public static string TitanBite = "BiteEffect";
         public static string ShifterThunder = "ShifterThunderEffect";

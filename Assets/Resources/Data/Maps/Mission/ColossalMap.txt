@@ -1111,35 +1111,22 @@ Scene,Buildings/WallColumn,4052,0,1,1,1,0,WallColumn,53.85677,286.1344,680.0255,
 Scene,Buildings/WallColumn,4053,0,1,1,1,0,WallColumn,-186.1281,285.7907,670.8073,0,355,270,1,1,1.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,Buildings/WallColumn,4054,0,1,1,1,0,WallColumn,187.4364,286.0459,671.3177,0,5,90,1,1,1.6,Physical,Entities,Default,Default|255/255/255/255,;
 Scene,General/EditorHumanSpawnPoint,4055,0,1,1,0,0,Human SpawnPoint,5.577838,305.3383,678.7203,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:HumanSpawnPoint|Type:Tag;
-Scene,General/EditorTitanSpawnPoint,4056,0,1,1,0,0,Titan SpawnPoint,0.3799801,11.99381,566.5103,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4057,0,1,1,0,0,Titan SpawnPoint,0.3799801,11.99381,596.106,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4058,0,1,1,0,0,Titan SpawnPoint,-39.37451,11.99381,596.106,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4059,0,1,1,0,0,Titan SpawnPoint,-83.88857,11.99381,596.106,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4060,0,1,1,0,0,Titan SpawnPoint,-83.88857,11.99381,561.0043,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4061,0,1,1,0,0,Titan SpawnPoint,-129.0579,11.99381,561.0043,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4062,0,1,1,0,0,Titan SpawnPoint,-129.0579,11.99381,593.4655,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4063,0,1,1,0,0,Titan SpawnPoint,-172.565,11.99381,593.4655,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4064,0,1,1,0,0,Titan SpawnPoint,-172.565,11.99381,560.224,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4065,0,1,1,0,0,Titan SpawnPoint,51.55432,11.99381,596.106,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4066,0,1,1,0,0,Titan SpawnPoint,93.53431,11.99381,596.106,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4067,0,1,1,0,0,Titan SpawnPoint,93.53431,11.99381,561.9863,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4068,0,1,1,0,0,Titan SpawnPoint,144.3813,11.99381,561.9863,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4069,0,1,1,0,0,Titan SpawnPoint,144.3813,11.99381,594.8753,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4070,0,1,1,0,0,Titan SpawnPoint,0.3799801,11.99381,620.1406,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4071,0,1,1,0,0,Titan SpawnPoint,0.3799801,11.99381,533.1334,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4072,0,1,1,0,0,Titan SpawnPoint,0.3799801,11.99381,495.2135,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4073,0,1,1,0,0,Titan SpawnPoint,-63.01949,11.99381,495.2135,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4074,0,1,1,0,0,Titan SpawnPoint,60.03244,11.99381,502.1969,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4075,0,1,1,0,0,Titan SpawnPoint,-89.08598,11.99381,460.115,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
-Scene,General/EditorTitanSpawnPoint,4076,0,1,1,0,0,Titan SpawnPoint,84.05357,11.99381,460.115,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
+Scene,General/EditorTitanSpawnPoint,4056,0,1,1,0,0,Titan SpawnPoint,6.196728,10.46042,701.9404,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,4057,0,1,1,0,0,Titan SpawnPoint,-5.94364,10.46042,701.9404,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,4058,0,1,1,0,0,Titan SpawnPoint,0.1203972,10.46042,701.9404,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,4059,0,1,1,0,0,Titan SpawnPoint,0.1203972,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,4060,0,1,1,0,0,Titan SpawnPoint,5.76397,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint;
+Scene,General/EditorTitanSpawnPoint,4061,0,1,1,0,0,Titan SpawnPoint,-6.606063,10.46042,695.9642,0,0,0,1,1,1,None,Entities,Default,Default|255/255/255/255,Tag|Name:TitanSpawnPoint
 /// Logic
 class Main
 {
-	TitansCount = 20;
-	TitansCountTooltip = "Number of titans that is spawned after the colossal titan died. Can be 0.";
+	MaxTitans = 20;
+	MaxTitansTooltip = "Max number of titans to spawn at gate.";
+	TitanSpawnTime = 5.0;
+	TitanSpawnTimeTooltip = "Time between each titan spawn.";
 	_hasSpawned = false;
 	_hasSpawnedEnemy = false;
-	_hasSpawnedTitans = false;
+	_titanSpawnTimeLeft = 10.0;
 	_colossal = null;
 	_handMode = false;
 	_handCooldown = 5.0;
@@ -1147,11 +1134,11 @@ class Main
 	_hasKicked = false;
 	_wallGateStart = null;
 	_wallGateDestroyed = null;
+	_hasFinalDialogue = false;
 
 	function OnGameStart()
 	{
 		Game.SetPlaylist("Battle");
-		Cutscene.Start("MainCutscene", true);
 		difficulty = Game.GetGeneralSetting("Difficulty");
 		if (difficulty == 0)
 		{
@@ -1167,21 +1154,29 @@ class Main
 		}
 		elif (difficulty == 3)
 		{
-			self._handCooldown = 4.0;
+			self._handCooldown = 4.5;
 		}
 		elif (difficulty == 4)
 		{
-			self._handCooldown = 2.0;
+			self._handCooldown = 3.0;
 		}
 		self._wallGateStart = Map.FindMapObjectByName("WallGateStart");
 		self._wallGateDestroyed = Map.FindMapObjectByName("WallGateDestroyed");
+		if (Network.IsMasterClient)
+		{
+			Network.SendMessageAll("StartCutscene");
+		}
 	}
 
 	function OnNetworkMessage(sender, message)
 	{
 		if (sender == Network.MasterClient)
 		{
-			if (message == "DestroyGate")
+			if (message == "StartCutscene")
+			{
+				Cutscene.Start("MainCutscene", true);
+			}
+			elif (message == "DestroyGate")
 			{
 				self._wallGateStart.Active = false;
 				self._wallGateDestroyed.Active = true;
@@ -1195,13 +1190,14 @@ class Main
 
 	function FinalDialogue()
 	{
-		Cutscene.ShowDialogueForTime("Armin1", "Armin", "The Colossal is gone, but some titans have broken through the gate!", 5.0);
+		Cutscene.ShowDialogueForTime("Armin1", "Armin", "The Colossal titan has vanished, but some titans have broken through the gate!", 5.0);
 	}
 
 	function OnTick()
 	{
 		if (Network.IsMasterClient && !Game.IsEnding)
 		{
+			self._titanSpawnTimeLeft -= Time.TickTime;
 			titans = Game.Titans.Count;
 			humans = Game.Humans.Count;
 			aiShifters = Game.AIShifters.Count;
@@ -1214,19 +1210,21 @@ class Main
 			{
 				self._hasSpawnedEnemy = true;
 			}
-			if (aiShifters == 0 && titans == 0 && self._hasSpawnedEnemy)
+			if (aiShifters == 0 && self._hasSpawnedEnemy)
 			{
-				if (self.TitansCount > 0 && !self._hasSpawnedTitans)
+				if (titans > 0 && !self._hasFinalDialogue)
 				{
-					self.SpawnTitans(self.TitansCount);
-					self._hasSpawnedTitans = true;
+					self._hasFinalDialogue = true;
 					Network.SendMessageAll("FinalDialogue");
 					return;
 				}
-
-				UI.SetLabelAll("MiddleCenter", "Humanity wins!");
-				Game.End(10.0);
-				return;
+				if (titans <= 0)
+				{
+					UI.SetLabelAll("TopCenter", "");
+					UI.SetLabelAll("MiddleCenter", "Humanity wins!");
+					Game.End(10.0);
+					return;
+				}
 			}
 			if (humans == 0 && playerShifters == 0 && self._hasSpawned)
 			{
@@ -1238,7 +1236,7 @@ class Main
 			{
 				if (self._handMode)
 				{
-					UI.SetLabelAll("TopCenter", "<color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth);
+					UI.SetLabelAll("TopCenter", "<b><size=28><color=#008000>Colossal Hand: </color>" + self._colossal.HandHealth + "</size></b>");
 					if (self._colossal.HandHealth <= 0)
 					{
 						self._handMode = false;
@@ -1248,7 +1246,7 @@ class Main
 				}
 				else
 				{
-					UI.SetLabelAll("TopCenter", "<color=#ff0000>Colossal Nape: </color>" + self._colossal.Health);
+					UI.SetLabelAll("TopCenter", "<b><size=28><color=#ff0000>Colossal Nape: </color>" + self._colossal.Health + "</size></b>");
 					self._handCooldownLeft -= Time.TickTime;
 					if (self._handCooldownLeft <= 0)
 					{
@@ -1272,18 +1270,19 @@ class Main
 			{
 				UI.SetLabelAll("TopCenter", "");
 			}
+			if (self._titanSpawnTimeLeft <= 0 && titans < self.MaxTitans && self._colossal != null)
+			{
+				self._titanSpawnTimeLeft = self.TitanSpawnTime;
+				self.SpawnTitan();
+			}
 		}
 	}
 
-	coroutine SpawnTitans(count)
+	function SpawnTitan()
 	{
-		i = 0;
-		while (i < count)
-		{
-			titan = Game.SpawnTitan("Default");
-			i += 1;
-			wait 0.01;
-		}
+		titan = Game.SpawnTitan("Default");
+		titan.Rotation = Vector3(0, 180, 0);
+		titan.MoveTo(Vector3(0, 0, 400), 20, false);
 	}
 }
 
@@ -1300,6 +1299,12 @@ cutscene MainCutscene
 		Cutscene.ShowDialogue("Armin1", "Armin", "The colossal titan is coming, prepare yourselves!");
 		Game.SpawnEffect("ColossalSpawn", Vector3(0, 150, 765), Vector3(-90, 0, 0), 5.0);
 		wait 2.5;
+		human = Network.MyPlayer.Character;
+		if (human != null && human.Type == "Human")
+		{
+			human.IsInvincible = true;
+			human.InvincibleTimeLeft = 100.0;
+		}
 		if (Network.IsMasterClient)
 		{
 			colossal = Game.SpawnShifterAt("WallColossal", spawnPosition);
@@ -1307,19 +1312,39 @@ cutscene MainCutscene
 			colossal.Size = 0.945;
 			Main._colossal = colossal;
 		}
-		wait 0.5;
+		wait 1.0;
 		if (Network.IsMasterClient)
 		{
 			colossal.Attack("AttackKick");
 			colossal.WallAttackCooldownLeft = 2.0;
 			Main._hasKicked = true;
 		}
-		wait 1.2;
+		wait 0.5;
+		Camera.SetPosition(Vector3(200, 120, 400));
+		Camera.SetRotation(Vector3(0, -50, 0));
+		Camera.SetVelocity(velocity * -1.0);
+		wait 0.5;
 		if (Network.IsMasterClient)
 		{
 			Network.SendMessageAll("DestroyGate");
+			position = Vector3(0, 50, 650);
+			velocity = Vector3(0, 200, -200);
+			gravity = Vector3(0, -9000, 0);
+			Game.SpawnProjectile("Rock2", position, Vector3.Zero, velocity, gravity, 10000, "Titan", 15.0);
 		}
+		wait 2.0;
+		Camera.SetPosition(Vector3(-150, 340, 630));
+		Camera.SetRotation(Vector3(0, 70, 0));
+		Camera.SetVelocity(Vector3.Zero);
+		Cutscene.HideDialogue();
 		wait 1.5;
+		Cutscene.ShowDialogue("Armin1", "Armin", "We can't get close to the Colossal titan with all the steam. Attack his hands first to distract him!");
+		wait 6.0;
+		if (human != null && human.Type == "Human")
+		{
+			human.InvincibleTimeLeft = 1.0;
+		}
+		Main._titanSpawnTimeLeft = 5.0;
 	}
 }
 /// Weather

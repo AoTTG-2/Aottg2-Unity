@@ -19,12 +19,17 @@ namespace Characters
         protected WallColossalComponentCache ColossalCache;
         protected WallColossalAnimations ColossalAnimations;
         protected float _steamTimeLeft;
+        protected float _steamBlowAwayTimeLeft;
         public ColossalSteamState _steamState;
-        protected const float WarningSteamTime = 2f;
+        protected float WarningSteamTime = 3f;
         protected override float SizeMultiplier => 22f;
 
         public int MaxHandHealth = 1000;
         public int CurrentHandHealth = 1000;
+        protected float SteamBlowAwayForce = 30f;
+        protected float DefaultBlowAwayForce = 50f;
+        protected float BlowAwayMaxDistance = 60f;
+        protected float BlowAwaySteamTime = 0.5f;
 
         public override bool CheckNapeAngle(Vector3 hitPosition, float maxAngle)
         {
@@ -80,6 +85,8 @@ namespace Characters
             {
                 if (data.HasKey("HandHealth"))
                     SetHandHealth(data["HandHealth"].AsInt);
+                if (data.HasKey("WarningSteamTime"))
+                    WarningSteamTime = data["WarningSteamTime"].AsFloat;
             }
             base.Init(ai, team, data, liveTime);
         }
@@ -148,6 +155,7 @@ namespace Characters
             PlaySound(ShifterSounds.ColossalSteam1);
             _steamTimeLeft = WarningSteamTime;
             _steamState = ColossalSteamState.Warning;
+            _steamBlowAwayTimeLeft = BlowAwaySteamTime;
             ColossalCache.SteamHitbox.Deactivate();
         }
 
@@ -156,6 +164,12 @@ namespace Characters
             if (_steamState == ColossalSteamState.Off)
                 return;
             _steamTimeLeft -= Time.deltaTime;
+            _steamBlowAwayTimeLeft -= Time.deltaTime;
+            if (_steamBlowAwayTimeLeft <= 0f)
+            {
+                // BlowAwayHumans(ColossalCache.NapeHurtbox.transform.position, SteamBlowAwayForce);
+                _steamBlowAwayTimeLeft = BlowAwaySteamTime;
+            }
             if (_steamTimeLeft <= 0f)
             {
                 if (_steamState == ColossalSteamState.Warning)
@@ -164,7 +178,6 @@ namespace Characters
                     ColossalCache.ColossalSteam2.Play();
                     FadeSound(ShifterSounds.ColossalSteam1, 0f, 1f);
                     FadeSound(ShifterSounds.ColossalSteam2, 1f, 0f);
-                    // FadeSound(ShifterSounds.ColossalSteam2, 1f, 1f);
                     PlaySound(ShifterSounds.ColossalSteam2);
                     _steamState = ColossalSteamState.Damage;
                     ColossalCache.SteamHitbox.Activate();
@@ -211,10 +224,10 @@ namespace Characters
             }
             else if (_currentAttackAnimation == ColossalAnimations.AttackSweep)
             {
-                if (_currentAttackStage == 0 && animationTime > 0.37f)
+                if (_currentAttackStage == 0 && animationTime > 0.38f)
                 {
                     _currentAttackStage = 1;
-                    ColossalCache.HandRHitbox.Activate(0f, GetHitboxTime(0.18f));
+                    ColossalCache.ForearmRHitbox.Activate(0f, GetHitboxTime(0.14f));
                 }
                 else if (_currentAttackStage == 1 && animationTime > 0.45f)
                 {
@@ -228,8 +241,9 @@ namespace Characters
                 {
                     _currentAttackStage = 1;
                     ColossalCache.HandLHitbox.Activate(0f, GetHitboxTime(0.02f));
-                    EffectSpawner.Spawn(EffectPrefabs.Boom2, ColossalCache.HandLHitbox.transform.position, Quaternion.Euler(-90f, 0f, 0f),
-                        Size * 5f);
+                    EffectSpawner.Spawn(EffectPrefabs.Boom8, ColossalCache.HandLHitbox.transform.position + Vector3.down * 8f, Quaternion.Euler(-90f, 0f, 0f),
+                        Size * 4f);
+                    BlowAwayHumans(ColossalCache.HandLHitbox.transform.position + Vector3.down * 10f, DefaultBlowAwayForce);
                 }
             }
             else if (_currentAttackAnimation == ColossalAnimations.AttackWallSlap1R || _currentAttackAnimation == ColossalAnimations.AttackWallSlap2R)
@@ -238,9 +252,19 @@ namespace Characters
                 {
                     _currentAttackStage = 1;
                     ColossalCache.HandRHitbox.Activate(0f, GetHitboxTime(0.02f));
-                    EffectSpawner.Spawn(EffectPrefabs.Boom2, ColossalCache.HandRHitbox.transform.position, Quaternion.Euler(-90f, 0f, 0f),
-                        Size * 5f);
+                    EffectSpawner.Spawn(EffectPrefabs.Boom8, ColossalCache.HandRHitbox.transform.position + Vector3.down * 8f, Quaternion.Euler(-90f, 0f, 0f),
+                        Size * 4f);
+                    BlowAwayHumans(ColossalCache.HandRHitbox.transform.position + Vector3.down * 10f, DefaultBlowAwayForce);
                 }
+            }
+        }
+
+        protected void BlowAwayHumans(Vector3 source, float force)
+        {
+            foreach (var human in _inGameManager.Humans)
+            {
+                if (Vector3.Distance(human.Cache.Transform.position, source) < BlowAwayMaxDistance)
+                    human.BlowAway(source, force, BlowAwayMaxDistance);
             }
         }
 

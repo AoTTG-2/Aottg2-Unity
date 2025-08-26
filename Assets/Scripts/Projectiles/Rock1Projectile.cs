@@ -15,11 +15,21 @@ namespace Projectiles
     class Rock1Projectile : BaseProjectile
     {
         protected float _size;
+        protected virtual bool DestroyOnImpact => true;
+        protected virtual float MinImpactVelocity => 0f;
+        protected virtual float ImpactCooldown => 1f;
+        protected float _impactCooldownLeft = 0f;
 
         protected override void RegisterObjects()
         {
             var model = transform.Find("Rubble3Model").gameObject;
             _hideObjects.Add(model);
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            _impactCooldownLeft -= Time.deltaTime;
         }
 
         protected override void SetupSettings(object[] settings)
@@ -32,6 +42,9 @@ namespace Projectiles
         {
             if (photonView.IsMine && !Disabled)
             {
+                if (_rigidbody.velocity.magnitude < MinImpactVelocity || _impactCooldownLeft > 0f)
+                    return;
+                _impactCooldownLeft = ImpactCooldown;
                 var character = collision.collider.gameObject.transform.root.GetComponent<BaseCharacter>();
                 var handler = collision.collider.gameObject.GetComponent<CustomLogicCollisionHandler>();
                 var damage = CalculateDamage();
@@ -45,7 +58,10 @@ namespace Projectiles
                 }
                 KillPlayersInRadius(_size * 2f, damage, character);
                 EffectSpawner.Spawn(EffectPrefabs.Boom7, transform.position, transform.rotation, _size);
-                DestroySelf();
+                if (DestroyOnImpact)
+                {
+                    DestroySelf();
+                }
             }
         }
 

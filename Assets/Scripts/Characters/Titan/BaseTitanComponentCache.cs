@@ -22,6 +22,8 @@ namespace Characters
         public BaseHitbox FootLHitbox;
         public BaseHitbox FootRHitbox;
         public BaseHitbox SteamHitbox;
+        public BaseHitbox ForearmLHitbox;
+        public BaseHitbox ForearmRHitbox;
         public Collider EyesHurtbox;
         public Collider LegLHurtbox;
         public Collider LegRHurtbox;
@@ -72,6 +74,10 @@ namespace Characters
                     HandLHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "HandRHitbox")
                     HandRHitbox = BaseHitbox.Create(character, go, c);
+                else if (name == "ForearmLHitbox")
+                    ForearmLHitbox = BaseHitbox.Create(character, go, c);
+                else if (name == "ForearmRHitbox")
+                    ForearmRHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "FootLHitbox")
                     FootLHitbox = BaseHitbox.Create(character, go, c);
                 else if (name == "FootRHitbox")

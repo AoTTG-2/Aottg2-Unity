@@ -7,27 +7,32 @@
 		"Health": 1000,
 		"HandHealth": 100,
 		"WallAttackCooldown": 3.0, 
-		"IsCrawler": false
+		"IsCrawler": false,
+		"WarningSteamTime": 3.0
 	},
 	"Training": {
 		"WallAttackCooldown": 1000.0
 	},
 	"Easy": {
-		"WallAttackCooldown": 5.0
+		"WallAttackCooldown": 5.0,
+		"WarningSteamTime": 4.0
 	},
 	"Normal": {
 		"Health": 2500,
 		"HandHealth": 800,
-		"WallAttackCooldown": 4.0
+		"WallAttackCooldown": 4.0,
+		"WarningSteamTime": 3.0
 	},
 	"Hard": {
 		"Health": 5000,
 		"HandHealth": 1500,
-		"WallAttackCooldown": 3.0
+		"WallAttackCooldown": 3.0,
+		"WarningSteamTime": 2.0
 	},
 	"Abnormal": {
 		"Health": 10000,
 		"HandHealth": 3000,
-		"WallAttackCooldown": 2.0
+		"WallAttackCooldown": 2.0,
+		"WarningSteamTime": 1.0
 	}
 }

@@ -469,7 +469,7 @@ namespace CustomLogic
                 Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                 settings = new object[] { color };
             }
-            else if (projectileName == ProjectilePrefabs.Rock1)
+            else if (projectileName == ProjectilePrefabs.Rock1 || projectileName == ProjectilePrefabs.Rock2)
             {
                 float size = parameters[7].UnboxToFloat();
                 settings = new object[] { size };
@@ -498,6 +498,11 @@ namespace CustomLogic
             {
                 Color color = ((CustomLogicColorBuiltin)parameters[7]).Value.ToColor();
                 settings = new object[] { color };
+            }
+            else if (projectileName == ProjectilePrefabs.Rock1 || projectileName == ProjectilePrefabs.Rock2)
+            {
+                float size = parameters[7].UnboxToFloat();
+                settings = new object[] { size };
             }
             ProjectileSpawner.Spawn(projectileName, position, Quaternion.Euler(rotation), velocity, gravity, liveTime, character.photonView.ViewID,
                 character.Team, settings);
