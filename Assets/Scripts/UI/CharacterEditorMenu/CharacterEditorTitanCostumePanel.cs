@@ -36,7 +36,7 @@ namespace UI
             var settings = SettingsManager.TitanCustomSettings;
             string cat = "CharacterEditor";
             string sub = "Costume";
-            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("QuitWithoutSave"), onClick: () => OnButtonClick("QuitWithoutSave"));
+            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Quit"), onClick: () => OnButtonClick("Quit"));
             ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale(cat, sub, "SaveQuit"), onClick: () => OnButtonClick("SaveQuit"));
             var set = (TitanCustomSet)settings.TitanCustomSets.GetSelectedSet();
             float dropdownWidth = 170f;
@@ -209,13 +209,13 @@ namespace UI
                         json["Preset"] = false;
                     UIManager.CurrentMenu.ExportPopup.Show(json.ToString(aIndent: 4));
                     break;
-                case "QuitWithoutSave":
-                    UIManager.CurrentMenu.ConfirmPopup.Show("Quit without saving? All changes will be lost.", () =>
+                case "Quit":
+                    UIManager.CurrentMenu.ConfirmPopup.Show(UIManager.GetLocaleCommon("QuitWithoutSaveConfirm"), () =>
                     {
                         Utility.CharacterPreviewGenerator.ClearSessionGeneratedPreviews();
                         SettingsManager.TitanCustomSettings.Load();
                         SceneLoader.LoadScene(SceneName.MainMenu);
-                    }, "Quit Without Save");
+                    }, UIManager.GetLocaleCommon("Quit"));
                     break;
             }
         }

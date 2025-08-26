@@ -60,8 +60,8 @@ namespace UI
             _globalSkinPreview = new BoolSetting(_persistentGlobalSkinPreview);
             _customSkinPreview = new BoolSetting(_persistentCustomSkinPreview);
             ElementStyle style = new ElementStyle(titleWidth: 95f, themePanel: ThemePanel);
-            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale("SettingsPopup", "Skins.Human", "EditPreset"), onClick: () => OnButtonClick("EditCustomSkins"));
-            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocale("SettingsPopup", "Skins.Human", "EditGlobal"), onClick: () => OnButtonClick("EditGlobalSkin"));
+            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Edit") + " " + UIManager.GetLocale("CharacterPopup", "General", "Character"), onClick: () => OnButtonClick("EditCustomSkins"));
+            ElementFactory.CreateTextButton(BottomBar, style, UIManager.GetLocaleCommon("Edit") + " " + UIManager.GetLocale("SettingsPopup", "Skins.Human", "Global"), onClick: () => OnButtonClick("EditGlobalSkin"));
             float dropdownWidth = 160f;
             string[] globalSetNames = GetFilteredGlobalSetNames();
             int currentGlobalIndex = GetFilteredGlobalSetIndex();
