@@ -80,6 +80,30 @@ namespace CustomLogic
             return null;
         }
 
+        [CLMethod("Performs a line cast between two points, specify what to detect with layer id, returns a LineCastHitResult object")]
+        public static CustomLogicLineCastHitResultBuiltin LineCastWithLayer(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, int layer)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            if (Physics.Linecast(startPosition, endPosition, out RaycastHit hit, layer))
+            {
+                var collider = CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+                if (collider != null)
+                {
+                    return new CustomLogicLineCastHitResultBuiltin
+                    {
+                        IsCharacter = collider is CustomLogicCharacterBuiltin,
+                        IsMapObject = collider is CustomLogicMapObjectBuiltin,
+                        Point = new CustomLogicVector3Builtin(hit.point),
+                        Normal = new CustomLogicVector3Builtin(hit.normal),
+                        Distance = hit.distance,
+                        Collider = new CustomLogicColliderBuiltin(new object[] { hit.collider })
+                    };
+                }
+            }
+            return null;
+        }
+
         [CLMethod("Performs a line cast between two points and returns a LineCastHitResult object for each element hit.")]
         public static CustomLogicListBuiltin LineCastAll(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, string collideWith)
         {
@@ -119,6 +143,19 @@ namespace CustomLogic
             int layer = MapLoader.GetColliderLayer(collideWith);
             var diff = (endPosition - startPosition);
             if (Physics.SphereCast(startPosition, radius, diff.normalized, out hit, diff.magnitude, PhysicsLayer.CopyMask(layer).value))
+            {
+                return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
+            }
+            return null;
+        }
+
+        [CLMethod("Performs a sphere cast between two points, specify what to detect with layer id, returns the object hit (Human, Titan, etc...).")]
+        public static object SphereCastWithLayer(CustomLogicVector3Builtin start, CustomLogicVector3Builtin end, float radius, int layer)
+        {
+            var startPosition = start.Value;
+            var endPosition = end.Value;
+            var diff = endPosition - startPosition;
+            if (Physics.SphereCast(startPosition, radius, diff.normalized, out RaycastHit hit, diff.magnitude, layer))
             {
                 return CustomLogicCollisionHandler.GetBuiltin(hit.collider);
             }
