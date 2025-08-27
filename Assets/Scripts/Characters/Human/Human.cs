@@ -153,11 +153,11 @@ namespace Characters
         {
             if (AI)
             {
-                Detection = new HumanDetection(this, true, false);
+                Detection = new AIHumanDetection(this, true, false);
             }
             else
             {
-                Detection = null;
+                Detection = new HumanDetection(this);;
             }
         }
 
