@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Collection of unique elements
+    /// </summary>
     [CLType(Name = "Set")]
     partial class CustomLogicSetBuiltin : BuiltinClassInstance
     {
@@ -16,7 +19,7 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicSetBuiltin(object[] parameterValues)
         {
-            foreach (var item in parameterValues)   Set.Add(item);
+            foreach (var item in parameterValues) Set.Add(item);
         }
 
         [CLProperty(readOnly: true, description: "The number of elements in the set")]
@@ -100,7 +103,7 @@ namespace CustomLogic
         public CustomLogicListBuiltin ToList()
         {
             CustomLogicListBuiltin newList = new CustomLogicListBuiltin();
-            foreach (var item in Set)   newList.Add(item);
+            foreach (var item in Set) newList.Add(item);
             return newList;
         }
     }
