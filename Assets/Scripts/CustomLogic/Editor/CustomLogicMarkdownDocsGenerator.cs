@@ -75,19 +75,22 @@ namespace CustomLogic.Editor
                     _sb.AppendLine("Overloads operators: ");
                     if (type.InstanceMethods.Any(x => x.Name.StartsWith("__")))
                     {
+                        string str = "";
                         foreach (var method in type.InstanceMethods.Where(x => x.Name.StartsWith("__")))
                         {
-                            if (method.Name == nameof(ICustomLogicMathOperators.__Add__)) _sb.AppendLine($"- `+`");
-                            if (method.Name == nameof(ICustomLogicMathOperators.__Sub__)) _sb.AppendLine($"- `-`");
-                            if (method.Name == nameof(ICustomLogicMathOperators.__Mul__)) _sb.AppendLine($"- `*`");
-                            if (method.Name == nameof(ICustomLogicMathOperators.__Div__)) _sb.AppendLine($"- `/`");
-                            if (method.Name == nameof(ICustomLogicEquals.__Eq__)) _sb.AppendLine($"- `==`");
+                            if (method.Name == nameof(ICustomLogicMathOperators.__Add__)) str += $"`+`, ";
+                            if (method.Name == nameof(ICustomLogicMathOperators.__Sub__)) str += $"`-`, ";
+                            if (method.Name == nameof(ICustomLogicMathOperators.__Mul__)) str += $"`*`, ";
+                            if (method.Name == nameof(ICustomLogicMathOperators.__Div__)) str += $"`/`, ";
+                            if (method.Name == nameof(ICustomLogicEquals.__Eq__)) str += $"`==`, ";
 
-                            if (method.Name == nameof(ICustomLogicCopyable.__Copy__)) _sb.AppendLine($"- `{method.Name}`");
+                            if (method.Name == nameof(ICustomLogicCopyable.__Copy__)) str += $"`{method.Name}`, ";
 
-                            if (method.Name == nameof(ICustomLogicEquals.__Hash__)) _sb.AppendLine($"- `{method.Name}`");
-                            if (method.Name == nameof(ICustomLogicToString.__Str__)) _sb.AppendLine($"- `{method.Name}`");
+                            if (method.Name == nameof(ICustomLogicEquals.__Hash__)) str += $"`{method.Name}`, ";
+                            if (method.Name == nameof(ICustomLogicToString.__Str__)) str += $"`{method.Name}`, ";
                         }
+                        str = str[..^2]; // trim ending ', '
+                        _sb.AppendLine(str);
                     }
                 }
             }
