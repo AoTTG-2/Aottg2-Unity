@@ -271,22 +271,6 @@ namespace CustomLogic
         [CLMethod(description: "Get the exponential value of a number")]
         public float Exp(float value) => Mathf.Exp(value);
 
-        // TODO: I don't think SmoothDamp and SmoothDampAngle actually work because the cl doesn't support ref parameters
-
-        // Smooth Damp
-        [CLMethod(description: "Smoothly damp a value towards a target value")]
-        public float SmoothDamp(float current, float target, float currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
-        {
-            return Mathf.SmoothDamp(current, target, ref currentVelocity, smoothTime, maxSpeed, deltaTime);
-        }
-
-        // Smooth Damp Angle
-        [CLMethod(description: "Smoothly damp an angle towards a target angle")]
-        public float SmoothDampAngle(float current, float target, float currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
-        {
-            return Mathf.SmoothDampAngle(current, target, ref currentVelocity, smoothTime, maxSpeed, deltaTime);
-        }
-
         // SmoothStep
         [CLMethod(description: "Smoothly step between two values")]
         public float SmoothStep(float a, float b, float t) => Mathf.SmoothStep(a, b, t);
