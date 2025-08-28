@@ -267,7 +267,7 @@ namespace CustomLogic
                 foreach (int child in children)
                 {
                     if (MapLoader.IdToMapObject.ContainsKey(child))
-                        DestroyMapObject(MapLoader.IdToMapObject[child], true);
+                        DestroyMapObjectBuiltin(MapLoader.IdToMapObject[child], true);
                 }
             }
         }
