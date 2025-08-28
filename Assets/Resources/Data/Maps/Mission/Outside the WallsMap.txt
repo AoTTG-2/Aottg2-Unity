@@ -1844,7 +1844,6 @@ class Event1
 
 	function Init(eventController, captureZoneIndex)
 	{
-        Game.Print("Event1");
 		self._eventController = eventController;
 		self.CaptureZone = CaptureZones.Get(captureZoneIndex);
 	}
