@@ -171,7 +171,7 @@ namespace CustomLogic.Editor
                         property.Name,
                         GetTypeReferenceStr(property.Type, TypeLinkKind.Absolute),
                         property.IsReadonly.ToString(),
-                        TrimAndCleanLines(property.Info.Summary)
+                        TrimAndCleanLines(property.Info.Summary).Replace("\r\n", " ").Replace('\n', ' ').Replace('\t', ' ')
                     };
 
                 rows.Add(row);
