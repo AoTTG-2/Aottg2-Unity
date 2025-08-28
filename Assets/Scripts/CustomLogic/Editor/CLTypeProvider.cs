@@ -338,8 +338,8 @@ namespace CustomLogic.Editor
                     instanceMethods.Add(cLMethod);
             }
 
-            clType.StaticMethods = staticMethods.ToArray();
-            clType.InstanceMethods = instanceMethods.ToArray();
+            clType.StaticMethods = staticMethods.OrderBy(x => x.IsObsolete).ToArray();
+            clType.InstanceMethods = instanceMethods.OrderBy(x => x.IsObsolete).ToArray();
         }
 
         public CLType[] GetCLTypes(XmlDocument xmlDocument)
