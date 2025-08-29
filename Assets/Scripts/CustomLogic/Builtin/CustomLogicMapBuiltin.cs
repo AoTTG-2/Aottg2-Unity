@@ -182,7 +182,7 @@ namespace CustomLogic
         [CLMethod(description: "Destroy a map object")]
         public void DestroyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
         {
-            DestroyMapObject(mapObject, includeChildren);
+            DestroyMapObjectBuiltin(mapObject, includeChildren);
         }
 
         [CLMethod(description: "Copy a map object")]
@@ -236,7 +236,7 @@ namespace CustomLogic
             return copy;
         }
 
-        protected void DestroyMapObject(object obj, bool recursive)
+        protected void DestroyMapObjectBuiltin(object obj, bool recursive)
         {
             if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
@@ -267,7 +267,7 @@ namespace CustomLogic
                 foreach (int child in children)
                 {
                     if (MapLoader.IdToMapObject.ContainsKey(child))
-                        DestroyMapObject(MapLoader.IdToMapObject[child], true);
+                        DestroyMapObjectBuiltin(MapLoader.IdToMapObject[child], true);
                 }
             }
         }
