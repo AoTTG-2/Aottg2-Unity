@@ -615,6 +615,37 @@ namespace GameManagers
                 KickPlayer(player, ban: true);
         }
 
+        [CommandAttribute("ipban", "/ipban [ID]: IP ban the player with ID (mod only)", AutofillType.PlayerID)]
+        private static void IPBan(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player == null) return;
+            AnticheatManager.IPBan(player);
+        }
+
+        [CommandAttribute("ipunban", "/ipunban [IP]: Unban the given IP address (mod only)", AutofillType.None)]
+        private static void IPUnban(string[] args)
+        {
+            if (args.Length > 0)
+            {
+                AnticheatManager.IPUnban(args[0]);
+            }
+        }
+
+        [CommandAttribute("superban", "/superban [ID]: IP and hardware ban the player with ID (mod only). Cannot be undone!", AutofillType.PlayerID)]
+        private static void Superban(string[] args)
+        {
+            var player = GetPlayer(args);
+            if (player == null) return;
+            AnticheatManager.Superban(player);
+        }
+
+        [CommandAttribute("removesuperbans", "/removesuperbans: Clear all superbans on the region.", AutofillType.None)]
+        private static void Removesuperbans(string[] args)
+        {
+            AnticheatManager.ClearSuperbans();
+        }
+
         private static bool CanVoteKick(Player player)
         {
             if (!SettingsManager.InGameCurrent.Misc.AllowVoteKicking.Value)
