@@ -210,6 +210,8 @@ namespace CustomLogic
         [CLMethod]
         public CustomLogicVector3Builtin Scale(object scale)
         {
+            if (scale is int iScale)
+                return new CustomLogicVector3Builtin(Value * iScale);
             if (scale is float fScale)
                 return new CustomLogicVector3Builtin(Value * fScale);
             if (scale is CustomLogicVector3Builtin v3Scale)
