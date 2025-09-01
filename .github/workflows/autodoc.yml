@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - Thyme-DocTestBranch
-      - Main
+      - main
 
 jobs:
   sync:
