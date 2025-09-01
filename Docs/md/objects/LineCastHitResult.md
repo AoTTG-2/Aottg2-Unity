@@ -5,9 +5,7 @@ The result of a Physics.LineCast
 
 ### Remarks
 Overloads operators: 
-- `__Copy__`
-- `==`
-- `__Hash__`
+`__Copy__`, `==`, `__Hash__`
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|

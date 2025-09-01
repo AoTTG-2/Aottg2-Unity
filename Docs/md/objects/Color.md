@@ -7,14 +7,7 @@ Represents a color. Every component is in the range [0, 255].
 Implements `__Copy__` which means that this class will act like a struct.
 
 Overloads operators: 
-- `==`
-- `__Hash__`
-- `__Copy__`
-- `__Str__`
-- `+`
-- `-`
-- `*`
-- `/`
+`==`, `__Hash__`, `__Copy__`, `__Str__`, `+`, `-`, `*`, `/`
 ### Example
 ```csharp
 Game.Print(color.ToHexString()) // Prints the color in hex format

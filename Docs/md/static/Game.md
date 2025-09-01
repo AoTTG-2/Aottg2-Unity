@@ -76,14 +76,58 @@ Game functions such as spawning titans and managing game state.
 <pre class="language-typescript"><code class="lang-typescript">function SpawnShifterAt(type: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotationY: float = 0) -> <a data-footnote-ref href="#user-content-fn-36">Shifter</a></code></pre>
 > Spawn a shifter at a position
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
-> Spawn a projectile
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectile(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, liveTime: float, team: string, extraParam: <a data-footnote-ref href="#user-content-fn-45">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-45">Object</a> = null)</code></pre>
+> Spawn a projectile.
+Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
-> Spawn a projectile with an owner
+> **Parameters**:
+> - `projectileName`: Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"
+> - `position`: Spawn position
+> - `rotation`: Spawn rotation
+> - `velocity`: Spawn velocity
+> - `gravity`: Spawn gravity
+> - `liveTime`: Live time of the projectile
+> - `team`: The team that the projectile belongs to
+> - `extraParam`: Optional. Type depends on projectile:
+>   - Thunderspear: float (explosion radius)
+>   - Flare: Color (flare color)
+>   - Rock1: float (rock size)
+>   - Others: unused
+> - `extraParam2`: Optional. Type depends on projectile:
+>   - Thunderspear: Color (projectile color)
+>   - Others: unused
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SpawnEffect(parameters: <a data-footnote-ref href="#user-content-fn-45">Object</a>)</code></pre>
-> Spawn an effect
+<pre class="language-typescript"><code class="lang-typescript">function SpawnProjectileWithOwner(projectileName: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, velocity: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, gravity: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, liveTime: float, owner: <a data-footnote-ref href="#user-content-fn-1">Character</a>, extraParam: <a data-footnote-ref href="#user-content-fn-45">Object</a> = null, extraParam2: <a data-footnote-ref href="#user-content-fn-45">Object</a> = null)</code></pre>
+> Spawn a projectile with an owner.
+Note: `extraParam` and `extraParam2` are optional. They may or may not be used depending on the value of `projectileName`
+> 
+> **Parameters**:
+> - `projectileName`: Name of the projectile. Valid values are: "Thunderspear", "CannonBall", "Flare", "BladeThrow", "SmokeBomb", "Rock1"
+> - `position`: Spawn position
+> - `rotation`: Spawn rotation
+> - `velocity`: Spawn velocity
+> - `gravity`: Spawn gravity
+> - `liveTime`: Live time of the projectile
+> - `owner`: The character that the projectile belongs to
+> - `extraParam`: Optional. Type depends on projectile:
+>   - Thunderspear: float (explosion radius)
+>   - Flare: Color (flare color)
+>   - Rock1: float (rock size)
+>   - Others: unused
+> - `extraParam2`: Optional. Type depends on projectile:
+>   - Thunderspear: Color (projectile color)
+>   - Others: unused
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SpawnEffect(effectName: string, position: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, rotation: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, scale: float, tsExplodeColor: <a data-footnote-ref href="#user-content-fn-4">Color</a> = null, tsKillSound: string = null)</code></pre>
+> Spawns an effect.
+> 
+> **Parameters**:
+> - `effectName`: Name of the effect. Effect names can be found [here](https://raw.githubusercontent.com/AoTTG-2/Aottg2-Unity/refs/heads/main/Assets/Scripts/Effects/EffectPrefabs.cs) (left-hand variable name)
+> - `position`: Spawn position
+> - `rotation`: Spawn rotation
+> - `scale`: Spawn scale
+> - `tsExplodeColor`: Thunderspear explode color (Only valid when `effectName` is "ThunderspearExplode")
+> - `tsKillSound`: Optional. Thunderspear explode sound (Only valid when `effectName` is "ThunderspearExplode"). Valid values are: "Kill", "Air", "Ground", "ArmorHit", "CloseShot", "MaxRangeShot"
 > 
 <pre class="language-typescript"><code class="lang-typescript">function SpawnPlayer(player: <a data-footnote-ref href="#user-content-fn-28">Player</a>, force: bool)</code></pre>
 > Spawn a player

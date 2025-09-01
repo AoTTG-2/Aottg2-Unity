@@ -2,9 +2,7 @@
 Inherits from [Object](../objects/Object.md)
 ### Remarks
 Overloads operators: 
-- `__Copy__`
-- `==`
-- `__Hash__`
+`__Copy__`, `==`, `__Hash__`
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|

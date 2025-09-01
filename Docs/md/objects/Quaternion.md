@@ -5,10 +5,7 @@ Represents a quaternion.
 
 ### Remarks
 Overloads operators: 
-- `__Copy__`
-- `*`
-- `==`
-- `__Hash__`
+`__Copy__`, `*`, `==`, `__Hash__`
 ### Initialization
 ```csharp
 Quaternion()

@@ -11,8 +11,7 @@ Represents a network player. Only master client or player may modify fields.
 |ID|int|True|Player unique ID.|
 |Name|string|True|Player name.|
 |Guild|string|True|Player guild.|
-|Team|string|True|Player's chosen team ("None", "Blue", "Red", "Titan", "Human").
-Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.|
+|Team|string|True|Player's chosen team ("None", "Blue", "Red", "Titan", "Human"). Note that this may be different from the character's final team (Character.Team field) if the character's team field is modified.|
 |Status|string|True|Player's spawn status ("Alive", "Dead", "Spectating").|
 |CharacterType|string|True|Player's chosen character ("Human", "Titan", "Shifter")|
 |Loadout|string|True|Player's chosen loadout ("Blades", "AHSS", "APG", "Thunderspears").|

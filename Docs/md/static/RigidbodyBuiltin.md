@@ -10,9 +10,7 @@
 |AngularDrag|float|False|The angular damping of the Rigidbody. This is a multiplier applied to the angular velocity every frame, reducing it over time.|
 |Mass|float|False|The Mass of the Rigidbody|
 |UseGravity|bool|False|Whether or not the Rigidbody use gravity.|
-|Gravity|[Vector3](../objects/Vector3.md)|False|The force of gravity applied to the Rigidbody.
-If null, the Rigidbody will use Unity's default gravity settings and will enable gravity.
-If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.|
+|Gravity|[Vector3](../objects/Vector3.md)|False|The force of gravity applied to the Rigidbody. If null, the Rigidbody will use Unity's default gravity settings and will enable gravity. If Vector3 is provided, it will apply that as a custom gravity force using ConstantForce and disable gravity.|
 |FreezeXPosition|bool|False|If the x movement axis is frozen|
 |FreezeYPosition|bool|False|If the y movement axis is frozen|
 |FreezeZPosition|bool|False|If the z movement axis is frozen|

@@ -6,8 +6,7 @@ Only character owner can modify properties and call functions unless otherwise s
 
 ### Remarks
 Overloads operators: 
-- `==`
-- `__Hash__`
+`==`, `__Hash__`
 ### Example
 ```csharp
 function OnCharacterSpawn(character)
@@ -92,6 +91,21 @@ Use the right-hand string value for the animation.
 Note that shifters also have all titan animations.
 > - `fade`: Fade time. If provided, will crossfade the animation by this timestep
 > 
+<pre class="language-typescript"><code class="lang-typescript">function PlayAnimationAt(animation: string, t: float, fade: float = 0.1, force: bool = False)</code></pre>
+> Causes the character to play an animation at a specific time.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationSpeed(animation: string)</code></pre>
+> Gets the animation speed of a given animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function SetAnimationSpeed(animation: string, speed: float, synced: bool = True)</code></pre>
+> Sets the animation speed of a given animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsPlayingAnimation(animation: string) -> bool</code></pre>
+> Returns true if the animation is playing.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function GetAnimationNormalizedTime(animation: string) -> float</code></pre>
+> Returns true if the animation is playing.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function ForceAnimation(animation: string, fade: float = 0.1)</code></pre>
 > Forces the character to play an animation.
 > 
@@ -106,6 +120,9 @@ Note that shifters also have all titan animations.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function GetAnimationLength(animation: string) -> float</code></pre>
 > Gets the length of animation.
+> 
+<pre class="language-typescript"><code class="lang-typescript">function IsPlayingSound(sound: string) -> bool</code></pre>
+> Returns true if the character is playing a sound. Available sound names can be found here: Humans, Shifters, Titans. Note that shifters also have all titan sounds.
 > 
 <pre class="language-typescript"><code class="lang-typescript">function PlaySound(sound: string)</code></pre>
 > Plays a sound if present in the character.

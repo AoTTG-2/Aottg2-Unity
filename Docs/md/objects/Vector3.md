@@ -2,13 +2,7 @@
 Inherits from [Object](../objects/Object.md)
 ### Remarks
 Overloads operators: 
-- `__Copy__`
-- `+`
-- `-`
-- `*`
-- `/`
-- `==`
-- `__Hash__`
+`__Copy__`, `+`, `-`, `*`, `/`, `==`, `__Hash__`
 ### Initialization
 ```csharp
 Vector3() // Default constructor, Initializes the Vector3 to (0, 0, 0).
@@ -47,13 +41,26 @@ Vector3(x: float, y: float, z: float) // Initializes the Vector3 to (x, y, z).
 <pre class="language-typescript"><code class="lang-typescript">function Set(x: float, y: float, z: float)</code></pre>
 > Set x, y and z components of an existing Vector3.
 > 
+<pre class="language-typescript"><code class="lang-typescript">function GetRotationDirection(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+> Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
+> 
 <pre class="language-typescript"><code class="lang-typescript">function Scale(scale: <a data-footnote-ref href="#user-content-fn-45">Object</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+
+{% hint style="warning" %}
+**Obsolete**: Use multiply operator instead
+{% endhint %}
+
 > Returns the Vector3 multiplied by scale.
 > 
 > **Parameters**:
 > - `scale`: float | Vector3
 > 
 <pre class="language-typescript"><code class="lang-typescript">function Multiply(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+
+{% hint style="warning" %}
+**Obsolete**: Use multiply operator instead
+{% endhint %}
+
 > Returns the multiplication of two Vector3s.
 > 
 > **Parameters**:
@@ -62,6 +69,11 @@ Vector3(x: float, y: float, z: float) // Initializes the Vector3 to (x, y, z).
 > 
 > **Returns**: Vector3
 <pre class="language-typescript"><code class="lang-typescript">function Divide(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
+
+{% hint style="warning" %}
+**Obsolete**: Use divide operator instead
+{% endhint %}
+
 > Returns the division of two Vector3s.
 > 
 > **Parameters**:
@@ -69,9 +81,6 @@ Vector3(x: float, y: float, z: float) // Initializes the Vector3 to (x, y, z).
 > - `b`: Vector3
 > 
 > **Returns**: Vector3
-<pre class="language-typescript"><code class="lang-typescript">function GetRotationDirection(a: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, b: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> <a data-footnote-ref href="#user-content-fn-43">Vector3</a></code></pre>
-> Gets the relational Vector3 "b" using "a" as a reference. This is equivalent to setting MapObject.Forward to Vector "a", and finding the relative "b" vector.
-> 
 
 ### Static Methods
 <pre class="language-typescript"><code class="lang-typescript">function Angle(from: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>, to: <a data-footnote-ref href="#user-content-fn-43">Vector3</a>) -> float</code></pre>

@@ -137,12 +137,6 @@ Functions may return int or float depending on the parameter types given.
 <pre class="language-typescript"><code class="lang-typescript">function Exp(value: float) -> float</code></pre>
 > Get the exponential value of a number
 > 
-<pre class="language-typescript"><code class="lang-typescript">function SmoothDamp(current: float, target: float, currentVelocity: float, smoothTime: float, maxSpeed: float, deltaTime: float) -> float</code></pre>
-> Smoothly damp a value towards a target value
-> 
-<pre class="language-typescript"><code class="lang-typescript">function SmoothDampAngle(current: float, target: float, currentVelocity: float, smoothTime: float, maxSpeed: float, deltaTime: float) -> float</code></pre>
-> Smoothly damp an angle towards a target angle
-> 
 <pre class="language-typescript"><code class="lang-typescript">function SmoothStep(a: float, b: float, t: float) -> float</code></pre>
 > Smoothly step between two values
 > 

@@ -5,8 +5,7 @@ Represents a transform.
 
 ### Remarks
 Overloads operators: 
-- `==`
-- `__Hash__`
+`==`, `__Hash__`
 ### Properties
 |Name|Type|Readonly|Description|
 |---|---|---|---|
