@@ -69,9 +69,10 @@ namespace UI
                     dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
                 }
             }
+            int splitIdx = totalCount > 5 ? totalCount / 2 : int.MaxValue;
             foreach (string key in settings.Keys)
             {
-                Transform panel = count < totalCount / 2 ? DoublePanelLeft : DoublePanelRight;
+                Transform panel = count < splitIdx ? DoublePanelLeft : DoublePanelRight;
                 BaseSetting setting = settings[key];
                 if (key == "Description")
                     continue;
