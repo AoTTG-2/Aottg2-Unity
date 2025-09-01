@@ -17,8 +17,8 @@ jobs:
       - name: Filter and copy .md files
         run: |
           mkdir -p temp-dir/objects temp-dir/static
-          find Docs/objects -name '*.md' -exec cp {} temp-dir/objects/ \;
-          find Docs/static -name '*.md' -exec cp {} temp-dir/static/ \;
+          find Docs/md/objects -name '*.md' -exec cp {} temp-dir/objects/ \;
+          find Docs/md/static -name '*.md' -exec cp {} temp-dir/static/ \;
           echo "Copied .md files to temp-dir/objects:"
           ls temp-dir/objects
           echo "Copied .md files to temp-dir/static:"
