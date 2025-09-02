@@ -1,5 +1,8 @@
 namespace CustomLogic
 {
+    /// <summary>
+    /// The result of a Physics.LineCast
+    /// </summary>
     [CLType(Name = "LineCastHitResult", Abstract = true)]
     partial class CustomLogicLineCastHitResultBuiltin : BuiltinClassInstance, ICustomLogicCopyable, ICustomLogicEquals
     {
@@ -21,10 +24,6 @@ namespace CustomLogic
         [CLProperty("The collider that was hit", ReadOnly = true)]
         public CustomLogicColliderBuiltin Collider { get; set; }
 
-        public CustomLogicLineCastHitResultBuiltin()
-        {
-        }
-
         public BuiltinClassInstance Copy()
         {
             return new CustomLogicLineCastHitResultBuiltin()
@@ -38,11 +37,13 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public object __Copy__()
         {
             return Copy();
         }
 
+        [CLMethod]
         public bool __Eq__(object self, object other)
         {
             return (self, other) switch
@@ -54,6 +55,7 @@ namespace CustomLogic
             };
         }
 
+        [CLMethod]
         public int __Hash__()
         {
             return Point.__Hash__() ^

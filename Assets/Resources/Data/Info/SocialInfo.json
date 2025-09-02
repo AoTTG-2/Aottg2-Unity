@@ -23,5 +23,15 @@
 		"Title": "Racing Discord",
 		"Link": "https://discord.gg/Hked6UP9Gn",
 		"About": "Racing community for both competitive play and map sharing."
-	}
+	},
+	{
+		"Title": "Bomb Discord",
+		"Link": "https://discord.gg/rJyazCYrqN",
+		"About": "Bomb community for both competitive play and FFA rooms."
+	},
+	{
+		"Title": "Bomb Website",
+		"Link": "https://bomb-cards.vercel.app/",
+		"About": "Bomb community managed ranking website."
+	},
 ]

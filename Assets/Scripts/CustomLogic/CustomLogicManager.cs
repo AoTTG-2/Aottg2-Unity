@@ -66,6 +66,16 @@ namespace CustomLogic
             }
         }
 
+        public static string GetLineNumberString(int line, int internalLogicOffset = 0)
+        {
+            // Base Logic
+            if (line < 0) return $"{line + internalLogicOffset} (Internal Logic)";
+
+            // Map Logic
+            if (SettingsManager.InGameCurrent.General.GameMode.Value == BuiltinLevels.UseMapLogic) return $"{line} ({MapManager.MapScript.LogicStart + line} maplogic)";
+            return line.ToString();
+        }
+
         private static void OnPreLoadScene(SceneName sceneName)
         {
             _instance.StopAllCoroutines();
@@ -176,9 +186,11 @@ namespace CustomLogic
 
         public static CustomLogicEvaluator GetEditorEvaluator(string source)
         {
+            // Rework this to pass around the builtin logic offset dependency bc this is annoying.
+            // Also implement a proper stack for error handling via rethrowing exceptions and adding in method calls as stack frames.
             var lexer = GetLexer(source);
-            var parser = new CustomLogicParser(lexer.GetTokens());
-            var evaluator = new CustomLogicEvaluator(parser.GetStartAst());
+            var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
+            var evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);
             return evaluator;
         }
 
@@ -194,11 +206,16 @@ namespace CustomLogic
             return "";
         }
 
+        /// <summary>
+        /// Need to maintain the following information in the lexer, parser, evaluator, and manager. 
+        /// If a line number is negative, it is part of baselogic and we need to remove the offset.
+        /// If the mode selected is "Map Logic", the non-negative part is offset by the current maps logic offset.
+        /// </summary>
         public static void StartLogic(Dictionary<string, BaseSetting> modeSettings)
         {
             var lexer = GetLexer(Logic);
-            var parser = new CustomLogicParser(lexer.GetTokens());
-            Evaluator = new CustomLogicEvaluator(parser.GetStartAst());
+            var parser = new CustomLogicParser(lexer.GetTokens(), lexer.BuiltinLogicOffset);
+            Evaluator = new CustomLogicEvaluator(parser.GetStartAst(), lexer.BuiltinLogicOffset);
             Evaluator.Start(modeSettings);
         }
 

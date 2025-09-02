@@ -4,13 +4,17 @@ using Controllers;
 namespace CustomLogic
 {
     /// <summary>
+    /// Represents a Shifter character.
     /// Only character owner can modify fields and call functions unless otherwise specified.
     /// </summary>
     /// <code>
-    /// function OnCharacterSpawn(character) {
-    ///     if (character.IsMine && character.Type == "Shifter") {
+    /// function OnCharacterSpawn(character)
+    /// {
+    ///     if (character.IsMine &amp;&amp; character.Type == "Shifter")
+    ///     {
     ///         character.Size = 2;
-    ///         if (Network.MyPlayer.Status == "Alive" && Network.MyPlayer.Character.Type == "Human") {
+    ///         if (Network.MyPlayer.Status == "Alive" &amp;&amp; Network.MyPlayer.Character.Type == "Human")
+    ///         {
     ///             character.Target(Network.MyPlayer, 10);
     ///         }
     ///     }
@@ -26,20 +30,6 @@ namespace CustomLogic
         {
             Shifter = shifter;
             Controller = shifter.GetComponent<BaseTitanAIController>();
-        }
-
-        [CLProperty("Shifter's name.")]
-        public string Name
-        {
-            get => Shifter.Name;
-            set => Shifter.Name = value;
-        }
-
-        [CLProperty("Shifter's guild.")]
-        public string Guild
-        {
-            get => Shifter.Guild;
-            set => Shifter.Guild = value;
         }
 
         [CLProperty("Shifter's size.")]
@@ -242,6 +232,13 @@ namespace CustomLogic
         {
             if (Shifter.IsMine() && !Shifter.Dead)
                 Shifter.Cripple(time);
+        }
+
+        [CLMethod("Causes the shifter to perform the given attack, if able.")]
+        public void Attack(string attack)
+        {
+            if (Shifter.IsMine() && !Shifter.Dead && Shifter.CanAttack())
+                Shifter.Attack(attack);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace UI
     {
         protected override string Title => UIManager.GetLocale("MainMenu", "MultiplayerSettingsPopup", "Title");
         protected override float Width => 480f;
-        protected override float Height => 600f;
+        protected override float Height => 550f;
         protected override bool DoublePanel => false;
         protected override TextAnchor PanelAlignment => TextAnchor.MiddleCenter;
 
@@ -31,8 +31,6 @@ namespace UI
             ElementFactory.CreateToggleGroupSetting(SinglePanel, style, settings.AppIdMode, UIManager.GetLocale(cat, sub, "AppId"),
                 UIManager.GetLocaleArray(cat, sub, "AppIdOptions"), tooltip: UIManager.GetLocale(cat, sub, "AppIdTooltip"));
             ElementFactory.CreateInputSetting(SinglePanel, style, settings.CustomAppId, UIManager.GetLocale(cat, sub, "AppIdCustom"), elementWidth: inputWidth);
-            CreateHorizontalDivider(SinglePanel);
-            ElementFactory.CreateInputSetting(SinglePanel, style, settings.ModPassword, "Mod Login", elementWidth: inputWidth);
         }
 
         protected void OnSaveButtonClick()

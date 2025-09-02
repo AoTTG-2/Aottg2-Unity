@@ -10,11 +10,8 @@ namespace CustomLogic
         public Vector3 Value;
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (0, 0, 0).
+        /// Default constructor, Initializes the Vector3 to (0, 0, 0).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3();
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin()
         {
@@ -22,23 +19,26 @@ namespace CustomLogic
         }
 
         /// <summary>
-        /// Default constructor. Initializes the Vector3 to (xyz, xyz, xyz).
+        /// Initializes the Vector3 to (xyz, xyz, xyz).
         /// </summary>
-        /// <code>
-        /// myVector3 = Vector3(10); # -> Vector3(10, 10, 10)
-        /// </code>
         [CLConstructor]
         public CustomLogicVector3Builtin(float xyz)
         {
             Value = new Vector3(xyz, xyz, xyz);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, 0).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y)
         {
             Value = new Vector3(x, y, 0);
         }
 
+        /// <summary>
+        /// Initializes the Vector3 to (x, y, z).
+        /// </summary>
         [CLConstructor]
         public CustomLogicVector3Builtin(float x, float y, float z)
         {
@@ -207,9 +207,11 @@ namespace CustomLogic
         /// Returns the Vector3 multiplied by scale.
         /// </summary>
         /// <param name="scale">float | Vector3</param>
-        [CLMethod]
+        [CLMethod, Obsolete("Use multiply operator instead")]
         public CustomLogicVector3Builtin Scale(object scale)
         {
+            if (scale is int iScale)
+                return new CustomLogicVector3Builtin(Value * iScale);
             if (scale is float fScale)
                 return new CustomLogicVector3Builtin(Value * fScale);
             if (scale is CustomLogicVector3Builtin v3Scale)
@@ -227,7 +229,7 @@ namespace CustomLogic
         /// <param name="a">Vector3</param>
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
-        [CLMethod]
+        [CLMethod, Obsolete("Use multiply operator instead")]
         public CustomLogicVector3Builtin Multiply(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.MultiplyVectors(a, b));
@@ -239,7 +241,7 @@ namespace CustomLogic
         /// <param name="a">Vector3</param>
         /// <param name="b">Vector3</param>
         /// <returns>Vector3</returns>
-        [CLMethod]
+        [CLMethod, Obsolete("Use divide operator instead")]
         public CustomLogicVector3Builtin Divide(CustomLogicVector3Builtin a, CustomLogicVector3Builtin b)
         {
             return new CustomLogicVector3Builtin(Util.DivideVectors(a, b));

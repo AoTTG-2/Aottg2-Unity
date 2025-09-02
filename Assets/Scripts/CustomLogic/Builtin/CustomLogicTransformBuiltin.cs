@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// Represents a transform.
+    /// </summary>
     [CLType(Name = "Transform", Abstract = true)]
     partial class CustomLogicTransformBuiltin : BuiltinClassInstance, ICustomLogicEquals
     {

@@ -36,21 +36,31 @@ namespace UI
             ElementFactory.CreateDropdownSetting(DoublePanelLeft, style, SettingsManager.InGameUI.General.GameMode, UIManager.GetLocale(cat, "General", "GameMode"),
                 BuiltinLevels.GetGameModes(SettingsManager.InGameUI.General.MapCategory.Value, SettingsManager.InGameUI.General.MapName.Value, script.Logic.Trim() != string.Empty), 
                 elementWidth: 180f, optionsWidth: 240f, onDropdownOptionSelect: () => parent.RebuildCategoryPanel());
+            int count = 1;
+            int totalCount = settings.Keys.Count;
             if (description != "")
+            {
                 ElementFactory.CreateDefaultLabel(DoublePanelLeft, style, description, alignment: TextAnchor.MiddleLeft);
-            int count = 0;
+                count += 1;
+            }
             CreateHorizontalDivider(DoublePanelLeft);
             var tooltips = new Dictionary<string, string>();
             var dropboxes = new Dictionary<string, string[]>();
             foreach (string key in settings.Keys)
             {
                 BaseSetting setting = settings[key];
+                if (key == "Description")
+                {
+                    totalCount -= 1;
+                }
                 if (key.EndsWith("Tooltip") && setting is StringSetting)
                 {
+                    totalCount -= 1;
                     tooltips[key.Substring(0, key.Length - 7)] = ((StringSetting)setting).Value;
                 }
                 else if (key.EndsWith("Dropbox") && setting is StringSetting)
                 {
+                    totalCount -= 1;
                     List<string> options = new List<string>();
                     foreach (string option in ((StringSetting)setting).Value.Split(','))
                         options.Add(option.Trim());
@@ -59,9 +69,10 @@ namespace UI
                     dropboxes[key.Substring(0, key.Length - 7)] = options.ToArray();
                 }
             }
+            int splitIdx = totalCount > 5 ? totalCount / 2 : int.MaxValue;
             foreach (string key in settings.Keys)
             {
-                Transform panel = count < settings.Keys.Count / 2 ? DoublePanelLeft : DoublePanelRight;
+                Transform panel = count < splitIdx ? DoublePanelLeft : DoublePanelRight;
                 BaseSetting setting = settings[key];
                 if (key == "Description")
                     continue;

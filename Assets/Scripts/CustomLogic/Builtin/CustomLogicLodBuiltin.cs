@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.
+    /// </summary>
     [CLType(Name = "LodBuiltin", Static = true, Abstract = true, Description = "")]
     partial class CustomLogicLodBuiltin : BuiltinComponentInstance
     {

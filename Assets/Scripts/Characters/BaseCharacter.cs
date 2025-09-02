@@ -500,6 +500,42 @@ namespace Characters
                 Cache.PhotonView.RPC("StopSoundRPC", RpcTarget.All, new object[] { sound });
         }
 
+        public void FadeSound(string sound, float volume, float time)
+        {
+            if (IsMine())
+                Cache.PhotonView.RPC("FadeSoundRPC", RpcTarget.All, new object[] { sound, volume, time });
+        }
+
+        [PunRPC]
+        public virtual void FadeSoundRPC(string sound, float volume, float time, PhotonMessageInfo info)
+        {
+            if (info.Sender != null && info.Sender != Cache.PhotonView.Owner)
+                return;
+            if (!SoundsEnabled)
+                return;
+            if (Cache.AudioSources.ContainsKey(sound))
+            {
+                var source = Cache.AudioSources[sound];
+                if (time <= 0f)
+                {
+                    source.volume = volume;
+                    return;
+                }
+                float volumeIncrement = (volume - source.volume);
+                StartCoroutine(FadeSoundOverTime(source, volumeIncrement, time));
+            }
+        }
+
+        IEnumerator FadeSoundOverTime(AudioSource source, float volumeIncrement, float time)
+        {
+            while (time >= 0f)
+            {
+                time -= 0.1f;
+                source.volume += volumeIncrement * 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+
         [PunRPC]
         public void StopSoundRPC(string sound, PhotonMessageInfo info)
         {
@@ -647,6 +683,27 @@ namespace Characters
         {
             if (!Dead)
                 Cache.PhotonView.RPC("GetKilledRPC", Cache.PhotonView.Owner, new object[] { name });
+        }
+
+        public virtual void BlowAway(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead)
+                Cache.PhotonView.RPC("BlowAwayRPC", Cache.PhotonView.Owner, new object[] { source, force, maxDistance });
+        }
+
+        [PunRPC]
+        public virtual void BlowAwayRPC(Vector3 source, float force, float maxDistance)
+        {
+            if (!Dead && IsMine())
+            {
+                if (Vector3.Distance(Cache.Transform.position, source) <= maxDistance)
+                {
+                    Vector3 direction = (Cache.Transform.position - source).normalized;
+                    if (Grounded && direction.y >= 0f)
+                        Cache.Rigidbody.AddForce(Vector3.up * Mathf.Min(10f, force), ForceMode.VelocityChange);
+                    Cache.Rigidbody.AddForce(direction * force, ForceMode.VelocityChange);
+                }
+            }
         }
 
         protected virtual void Awake()

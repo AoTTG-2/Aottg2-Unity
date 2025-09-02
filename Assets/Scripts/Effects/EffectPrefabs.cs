@@ -20,6 +20,7 @@
         public static string Boom5 = "Boom5Effect";
         public static string Boom6 = "Boom6Effect";
         public static string Boom7 = "Boom7Effect";
+        public static string Boom8 = "Boom8Effect";
         public static string Splash = "SplashEffect";
         public static string TitanBite = "BiteEffect";
         public static string ShifterThunder = "ShifterThunderEffect";
@@ -30,5 +31,6 @@
         public static string Splash2 = "Splash2Effect";
         public static string Splash3 = "Splash3Effect";
         public static string WaterWake = "WaterWakeEffect";
+        public static string ColossalSpawn = "ColossalSpawnEffect";
     }
 }

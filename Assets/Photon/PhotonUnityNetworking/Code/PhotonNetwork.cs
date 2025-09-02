@@ -1534,6 +1534,53 @@ namespace Photon.Pun
             return NetworkingClient.OpRaiseEvent(PunEvent.CloseConnection, null, options, SendOptions.SendReliable);
         }
 
+        public static bool RoomBan(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("RoomBan: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(190, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool IPBan(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("IPBan: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(191, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool IPUnban(string ip)
+        {
+            RaiseEventOptions options = new RaiseEventOptions();
+            Hashtable data = new Hashtable();
+            data.Add((byte)0, ip);
+            return NetworkingClient.OpRaiseEvent(192, data, options, SendOptions.SendReliable);
+        }
+
+        public static bool Superban(Player player)
+        {
+            if (player == null)
+            {
+                Debug.LogError("Superban: No such player connected!");
+                return false;
+            }
+            RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ActorNumber } };
+            return NetworkingClient.OpRaiseEvent(193, null, options, SendOptions.SendReliable);
+        }
+
+        public static bool ClearSuperbans()
+        {
+            RaiseEventOptions options = new RaiseEventOptions();
+            return NetworkingClient.OpRaiseEvent(194, null, options, SendOptions.SendReliable);
+        }
+
 
         /// <summary>
         /// Asks the server to assign another player as Master Client of your current room.
