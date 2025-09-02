@@ -149,36 +149,6 @@ namespace UI
                 return addedChar;
             };
             _inputField.onFocusSelectAll = false;
-            _inputField.onSelect.AddListener((value) => {
-                string clip = GUIUtility.systemCopyBuffer ?? string.Empty;
-                if (string.IsNullOrEmpty(clip)) return;
-                clip = clip.Replace("\n", string.Empty)
-                           .Replace("\r", string.Empty)
-                           .Replace("\u001B", string.Empty);
-                bool matchedChat = false;
-                try
-                {
-                    for (int i = 0; i < ChatManager.RawMessages.Count; i++)
-                    {
-                        string stored = ChatManager.RawMessages[i];
-                        if (string.IsNullOrEmpty(stored)) continue;
-                        if (string.Equals(stored, clip, StringComparison.Ordinal) || stored.Contains(clip) || clip.Contains(stored))
-                        {
-                            matchedChat = true;
-                            break;
-                        }
-                    }
-                }
-                catch
-                {
-                    matchedChat = false;
-                }
-                if (matchedChat)
-                {
-                    clip = clip.StripRichText();
-                }
-                GUIUtility.systemCopyBuffer = clip;
-            });
             var nav = _inputField.navigation;
             nav.mode = Navigation.Mode.None;
             _inputField.navigation = nav;
