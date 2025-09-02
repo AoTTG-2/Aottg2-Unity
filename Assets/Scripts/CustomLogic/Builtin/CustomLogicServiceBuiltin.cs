@@ -21,7 +21,7 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient == false) return false;
             if (SettingsManager.InGameCurrent.Misc.ServicesEnabled.Value == false) return false;
-            if (SettingsManager.AdvancedSettings.Services.Value.Where(e => e.Value == service).Any()) return false;
+            if (SettingsManager.AdvancedSettings.Services.Value.Where(e => e.Value == service).Any() == false) return false;
             return true;
         }
 
@@ -66,7 +66,6 @@ namespace CustomLogic
         {
             CheckMe(service);
             string endpoint = GetEndpoint(service, route);
-            UnityEngine.Debug.Log($"GET {endpoint}");
             CustomLogicManager._instance.StartCoroutine(GetRequest(endpoint, callback));
         }
 
@@ -96,7 +95,6 @@ namespace CustomLogic
 
         static IEnumerator GetRequest(string uri, UserMethod callback)
         {
-            UnityEngine.Debug.Log($"Actual GET {uri}");
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
             {
                 // Request and wait for the desired page.
@@ -113,9 +111,7 @@ namespace CustomLogic
                     result = GetWebRequestFailureJSON(webRequest);
                 }
 
-                UnityEngine.Debug.Log(result);
-
-                CustomLogicManager.Evaluator.EvaluateMethod(callback, new object[] { "test", result, webRequest.result.ToString() });
+                CustomLogicManager.Evaluator.EvaluateMethod(callback, new object[] { result, webRequest.result.ToString() });
             }
         }
 
