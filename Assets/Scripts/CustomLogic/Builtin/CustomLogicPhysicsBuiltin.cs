@@ -6,9 +6,9 @@ using Utility;
 namespace CustomLogic
 {
     /// <summary>
-    /// Physics class for custom logic.
+    /// Static Physics class. Contains some common physics functions
     /// </summary>
-    /// <example>
+    /// <code>
     /// start = Vector3(0);
     /// end = Vector3(10);
     /// # Options: All, MapObjects, Characters, Titans, Humans, Projectiles, Entities, Hitboxes, MapEditor
@@ -19,7 +19,7 @@ namespace CustomLogic
     /// Game.Print(result.Normal);
     /// Game.Print(result.Distance);
     /// Game.Print(result.Collider);
-    /// </example>
+    /// </code>
     [CLType(Name = "Physics", Static = true, Abstract = true)]
     partial class CustomLogicPhysicsBuiltin : BuiltinClassInstance
     {

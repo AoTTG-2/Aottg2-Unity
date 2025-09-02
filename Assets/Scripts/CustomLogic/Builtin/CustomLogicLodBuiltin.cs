@@ -1,20 +1,22 @@
 ﻿// implement
 using Settings;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace CustomLogic
 {
+    /// <summary>
+    /// WIP feature to support LOD (Level of Detail) for map objects, currently only supports a single LOD level with a distance threshold.
+    /// </summary>
     [CLType(Name = "LodBuiltin", Static = true, Abstract = true, Description = "")]
     partial class CustomLogicLodBuiltin : BuiltinComponentInstance
     {
         public LODGroup Value;
         public CustomLogicMapObjectBuiltin OwnerMapObject;
         public GameObject Owner;
-        
+
         [CLConstructor]
         public CustomLogicLodBuiltin() : base(null) { }
-        public CustomLogicLodBuiltin(CustomLogicMapObjectBuiltin owner) : base(owner.Value.GameObject.AddComponent<LODGroup>())
+        public CustomLogicLodBuiltin(CustomLogicMapObjectBuiltin owner) : base(GetOrAddComponent<LODGroup>(owner.Value.GameObject))
         {
             OwnerMapObject = owner;
             Owner = owner.Value.GameObject;

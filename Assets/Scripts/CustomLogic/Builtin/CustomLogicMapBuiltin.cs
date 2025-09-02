@@ -129,6 +129,33 @@ namespace CustomLogic
             return listBuiltin;
         }
 
+        // Scene,Category/Prefab,ID,Parent ID, 
+        // Scene,Geometry/Sphere,117,0,1,0,1,1,Ball,-1.524334,50,17.24871,0,0,0,1,1,1,Physical,All,Default,Basic|150/150/150/255|Misc/Diamond1|1/1|0/0,Ball|Mass:1|Gravity:-40|HitForceMax:5000|HitMultiplier:100|HitForceMin:1|DribbleForce:300|DribbleForceMax:1000|VelocityThreshold:10|ForceMultiplier:100,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false
+        // Scene,Buildings/Arch3,118,0,1,1,1,0,Arch3,-59.26698,17.15096,158.3891,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
+        [CLMethod(description: "Create a new map object")]
+        public CustomLogicMapObjectBuiltin CreateMapObject(CustomLogicPrefabBuiltin prefab, CustomLogicVector3Builtin position = null, CustomLogicVector3Builtin rotation = null, CustomLogicVector3Builtin scale = null)
+        {
+            var scriptSerial = prefab.Value.Serialize();
+            var script = new MapScriptSceneObject();
+            script.Deserialize(scriptSerial);
+            script.Id = MapLoader.GetNextObjectId();
+            script.Parent = 0;
+            script.Networked = false;
+
+            if (position != null)
+                script.SetPosition(position);
+            if (rotation != null)
+                script.SetRotation(rotation);
+            if (scale != null)
+                script.SetScale(scale);
+
+            var mapObject = MapLoader.LoadObject(script, false);
+            MapLoader.SetParent(mapObject);
+            CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
+            mapObject.RuntimeCreated = true;
+            return new CustomLogicMapObjectBuiltin(mapObject);
+        }
+
         [CLMethod(description: "Create a new map object")]
         public CustomLogicMapObjectBuiltin CreateMapObjectRaw(string prefab)
         {
@@ -145,14 +172,21 @@ namespace CustomLogic
             return new CustomLogicMapObjectBuiltin(mapObject);
         }
 
+        [CLMethod(description: "Create a new prefab object from the current object")]
+        public CustomLogicPrefabBuiltin PrefabFromMapObject(CustomLogicMapObjectBuiltin mapObject, bool clearComponents = false)
+        {
+            string serialized = mapObject.Value.ScriptObject.Serialize();
+            return new CustomLogicPrefabBuiltin(serialized, clearComponents);
+        }
+
         [CLMethod(description: "Destroy a map object")]
         public void DestroyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
         {
-            DestroyMapObject(mapObject, includeChildren);
+            DestroyMapObjectBuiltin(mapObject, includeChildren);
         }
 
         [CLMethod(description: "Copy a map object")]
-        public CustomLogicMapObjectBuiltin CopyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
+        public CustomLogicMapObjectBuiltin CopyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren = true)
         {
             var copy = CopyMapObject(mapObject.Value, mapObject.Value.Parent, includeChildren);
             copy.RuntimeCreated = true;
@@ -202,7 +236,7 @@ namespace CustomLogic
             return copy;
         }
 
-        protected void DestroyMapObject(object obj, bool recursive)
+        protected void DestroyMapObjectBuiltin(object obj, bool recursive)
         {
             if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
@@ -233,7 +267,7 @@ namespace CustomLogic
                 foreach (int child in children)
                 {
                     if (MapLoader.IdToMapObject.ContainsKey(child))
-                        DestroyMapObject(MapLoader.IdToMapObject[child], true);
+                        DestroyMapObjectBuiltin(MapLoader.IdToMapObject[child], true);
                 }
             }
         }

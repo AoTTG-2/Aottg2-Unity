@@ -76,6 +76,12 @@ namespace UI
             GUIUtility.systemCopyBuffer = this._mapObject.ScriptObject.Id.ToString();
         }
 
+        public void CopyAssetCSV()
+        {
+            string serialized = this._mapObject.ScriptObject.Serialize();
+            GUIUtility.systemCopyBuffer = serialized;
+        }
+
         public void Show(MapObject mapObject)
         {
             base.Show();
@@ -83,9 +89,14 @@ namespace UI
             SyncSettings();
             ElementStyle style = new ElementStyle(fontSize: 18, titleWidth: 80f, spacing: 10f, themePanel: ThemePanel);
             var topGroup = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft);
-            ElementFactory.CreateIconButton(topGroup.transform, style, "Icons/Navigation/CopyIcon", onClick: () => CopyID());
-            var label = ElementFactory.CreateDefaultLabel(topGroup.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString() + "\n" + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
-            label.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;    // Doesn't stop the object from consuming icon space.
+            ElementFactory.CreateIconButton(topGroup.transform, style, "Icons/Navigation/CopyIcon", onClick: () => CopyAssetCSV());
+
+            var topGroupVert = ElementFactory.CreateVerticalGroup(topGroup.transform, 10f, TextAnchor.UpperLeft);
+            var idLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString(), onClick: () => CopyID());
+            var assetLabel = ElementFactory.CreateTextButton(topGroupVert.transform, style, "Asset: " + _mapObject.ScriptObject.Asset, onClick: () => CopyAssetCSV());  // This will eventually allow swapping asset.
+
+            // var label = ElementFactory.CreateDefaultLabel(topGroup.transform, style, "Id: " + _mapObject.ScriptObject.Id.ToString() + "\n" + "Asset: " + _mapObject.ScriptObject.Asset, alignment: TextAnchor.MiddleLeft);
+            // label.GetComponent<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;    // Doesn't stop the object from consuming icon space.
             var group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
             style.TitleWidth = 45f;
             ElementFactory.CreateToggleSetting(group, style, _active, "Active", elementWidth: 25f, elementHeight: 25f, onValueChanged: () => OnChange());
@@ -160,7 +171,7 @@ namespace UI
                         onChangeColor: () => OnChange(), elementHeight: 25f);
                 }
                 group = ElementFactory.CreateHorizontalGroup(SinglePanel, 20f, TextAnchor.MiddleLeft).transform;
-                label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
+                var label = ElementFactory.CreateDefaultLabel(group, style, "Texture", alignment: TextAnchor.MiddleLeft);
                 label.GetComponent<LayoutElement>().preferredWidth = 160f;
                 ElementFactory.CreateDefaultButton(group, style, _texture.Value, onClick: () => OnButtonClick("Texture"));
                 ElementFactory.CreateInputSetting(SinglePanel, style, _tilingX, "Tiling X", elementWidth: inputWidth, elementHeight: 35f, onEndEdit: () => OnChange());

@@ -2421,6 +2421,7 @@ namespace Characters
             }
             _currentVelocity = v * newSpeed;
             Cache.Rigidbody.velocity = _currentVelocity;
+            //  Cache.Rigidbody.AddForce(-Cache.Rigidbody.GetAccumulatedForce()); - potential change for tg1 parity.
         }
 
         private bool IsStock(bool pivot)

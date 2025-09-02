@@ -1064,6 +1064,7 @@ MonoBehaviour:
   HoldHuman: {fileID: 0}
   HoldHumanLeft: 0
   Size: 1
+  ClimbCooldown: 0.5
   StunTime: 0.3
   ActionPause: 0.2
   AttackPause: 0.2
@@ -1086,6 +1087,7 @@ MonoBehaviour:
   RightArmDisabled: 0
   _jumpDirection: {x: 0, y: 0, z: 0}
   _stateTimeLeft: 0
+  EnableAI: 1
   TransformingToHuman: 0
   PreviousHumanGas: 0
   DeathAnimationLength: 2

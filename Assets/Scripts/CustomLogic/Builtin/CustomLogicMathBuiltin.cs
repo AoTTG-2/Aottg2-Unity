@@ -32,61 +32,84 @@ namespace CustomLogic
         [CLProperty(description: "The value of Epsilon")]
         public static float Epsilon => Mathf.Epsilon;
 
-
-        // Implement all static methods from CallMethod
-        [CLMethod(description: "Clamp a value between a minimum and maximum value")]
+        /// <summary>
+        /// Clamp a value between a minimum and maximum value
+        /// </summary>
+        /// <param name="value">The value to clamp. Can be int or float</param>
+        /// <param name="min">The minimum value. Can be int or float</param>
+        /// <param name="max">The maximum value. Can be int or float</param>
+        /// <returns>The clamped value. Will be the same type as the inputs</returns>
+        [CLMethod]
         public object Clamp(object value, object min, object max)
         {
-            if (value is int && min is int && max is int)
-                return Mathf.Clamp((int)value, (int)min, (int)max);
-            float fValue = value.UnboxToFloat();
-            float fMin = min.UnboxToFloat();
-            float fMax = max.UnboxToFloat();
+            if (value is int vInt && min is int minInt && max is int maxInt)
+                return Mathf.Clamp(vInt, minInt, maxInt);
+
+            float fValue = CustomLogicEvaluator.ConvertTo<float>(value);
+            float fMin = CustomLogicEvaluator.ConvertTo<float>(min);
+            float fMax = CustomLogicEvaluator.ConvertTo<float>(max);
             return Mathf.Clamp(fValue, fMin, fMax);
         }
 
-        [CLMethod(description: "Get the maximum of two values")]
+        /// <summary>
+        /// Get the maximum of two values
+        /// </summary>
+        /// <param name="a">The first value. Can be int or float</param>
+        /// <param name="b">The second value. Can be int or float</param>
+        /// <returns>The maximum of the two values. Will be the same type as the inputs</returns>
+        [CLMethod]
         public object Max(object a, object b)
         {
-            if (a is int && b is int)
-                return Mathf.Max((int)a, (int)b);
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
+            if (a is int aInt && b is int bInt)
+                return Mathf.Max(aInt, bInt);
+
+            float fA = CustomLogicEvaluator.ConvertTo<float>(a);
+            float fB = CustomLogicEvaluator.ConvertTo<float>(b);
             return Mathf.Max(fA, fB);
         }
 
-        [CLMethod(description: "Get the minimum of two values")]
+        /// <summary>
+        /// Get the minimum of two values
+        /// </summary>
+        /// <param name="a">The first value. Can be int or float</param>
+        /// <param name="b">The second value. Can be int or float</param>
+        /// <returns>The minimum of the two values. Will be the same type as the inputs</returns>
+        [CLMethod]
         public object Min(object a, object b)
         {
-            if (a is int && b is int)
-                return Mathf.Min((int)a, (int)b);
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
+            if (a is int aInt && b is int bInt)
+                return Mathf.Min(aInt, bInt);
+
+            float fA = CustomLogicEvaluator.ConvertTo<float>(a);
+            float fB = CustomLogicEvaluator.ConvertTo<float>(b);
             return Mathf.Min(fA, fB);
         }
 
         [CLMethod(description: "Raise a value to the power of another value")]
-        public object Pow(object a, object b)
+        public float Pow(float a, float b)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            return Mathf.Pow(fA, fB);
+            return Mathf.Pow(a, b);
         }
 
-        [CLMethod(description: "Get the absolute value of a number")]
+        /// <summary>
+        /// Get the absolute value of a number
+        /// </summary>
+        /// <param name="value">The number. Can be int or float</param>
+        /// <returns>The absolute value. Will be the same type as the input</returns>
+        [CLMethod]
         public object Abs(object value)
         {
-            if (value is int)
-                return Mathf.Abs((int)value);
-            float fValue = value.UnboxToFloat();
+            if (value is int vInt)
+                return Mathf.Abs(vInt);
+
+            float fValue = CustomLogicEvaluator.ConvertTo<float>(value);
             return Mathf.Abs(fValue);
         }
 
         [CLMethod(description: "Get the square root of a number")]
-        public object Sqrt(object value)
+        public float Sqrt(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Sqrt(fValue);
+            return Mathf.Sqrt(value);
         }
 
         // Repeat
@@ -99,271 +122,176 @@ namespace CustomLogic
         }
 
         [CLMethod(description: "Get the remainder of a division operation")]
-        public object Mod(object a, object b)
-        {
-            int iA = a.UnboxToInt();
-            int iB = b.UnboxToInt();
-            return iA % iB;
-        }
+        public int Mod(int a, int b) => a % b;
 
-        [CLMethod(description: "Get the sine of an angle in degrees")]
-        public object Sin(object angle)
+        /// <summary>
+        /// Get the sine of an angle
+        /// </summary>
+        /// <param name="angle">The angle in degrees</param>
+        /// <returns>Value between -1 and 1</returns>
+        [CLMethod]
+        public float Sin(float angle)
         {
-            float fAngle = angle.UnboxToFloat() * Mathf.Deg2Rad;
+            float fAngle = angle * Mathf.Deg2Rad;
             return Mathf.Sin(fAngle);
         }
 
-        [CLMethod(description: "Get the cosine of an angle in degrees")]
-        public object Cos(object angle)
+        /// <summary>
+        /// Get the cosine of an angle
+        /// </summary>
+        /// <param name="angle">The angle in degrees</param>
+        /// <returns>Value between -1 and 1</returns>
+        [CLMethod]
+        public float Cos(float angle)
         {
-            float fAngle = angle.UnboxToFloat() * Mathf.Deg2Rad;
+            float fAngle = angle * Mathf.Deg2Rad;
             return Mathf.Cos(fAngle);
         }
 
-        [CLMethod(description: "Get the tangent of an angle in degrees")]
-        public object Tan(object angle)
+        /// <summary>
+        /// Get the tangent of an angle in radians
+        /// </summary>
+        /// <param name="angle">The angle in degrees</param>
+        [CLMethod]
+        public float Tan(float angle)
         {
-            float fAngle = angle.UnboxToFloat() * Mathf.Deg2Rad;
+            float fAngle = angle * Mathf.Deg2Rad;
             return Mathf.Tan(fAngle);
         }
 
         [CLMethod(description: "Get the arcsine of a value in degrees")]
-        public object Asin(object value)
+        public float Asin(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Asin(fValue) * Mathf.Rad2Deg;
+            return Mathf.Asin(value) * Mathf.Rad2Deg;
         }
 
         [CLMethod(description: "Get the arccosine of a value in degrees")]
-        public object Acos(object value)
+        public float Acos(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Acos(fValue) * Mathf.Rad2Deg;
+            return Mathf.Acos(value) * Mathf.Rad2Deg;
         }
 
         [CLMethod(description: "Get the arctangent of a value in degrees")]
-        public object Atan(object value)
+        public float Atan(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Atan(fValue) * Mathf.Rad2Deg;
+            return Mathf.Atan(value) * Mathf.Rad2Deg;
         }
 
         [CLMethod(description: "Get the arctangent of a value in degrees")]
-        public object Atan2(object a, object b)
+        public float Atan2(float a, float b)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            return Mathf.Atan2(fA, fB) * Mathf.Rad2Deg;
+            return Mathf.Atan2(a, b) * Mathf.Rad2Deg;
         }
 
         [CLMethod(description: "Get the smallest integer greater than or equal to a value")]
-        public object Ceil(object value)
+        public int Ceil(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.CeilToInt(fValue);
+            return Mathf.CeilToInt(value);
         }
 
         [CLMethod(description: "Get the largest integer less than or equal to a value")]
-        public object Floor(object value)
+        public int Floor(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.FloorToInt(fValue);
+            return Mathf.FloorToInt(value);
         }
 
         [CLMethod(description: "Round a value to the nearest integer")]
-        public object Round(object value)
+        public int Round(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.RoundToInt(fValue);
+            return Mathf.RoundToInt(value);
         }
 
         [CLMethod(description: "Convert an angle from degrees to radians")]
-        public object Deg2Rad(object angle)
+        public float Deg2Rad(float angle)
         {
-            float fAngle = angle.UnboxToFloat();
-            return fAngle * Mathf.Deg2Rad;
+            return angle * Mathf.Deg2Rad;
         }
 
         [CLMethod(description: "Convert an angle from radians to degrees")]
-        public object Rad2Deg(object angle)
+        public float Rad2Deg(float angle)
         {
-            float fAngle = angle.UnboxToFloat();
-            return fAngle * Mathf.Rad2Deg;
+            return angle * Mathf.Rad2Deg;
         }
 
         [CLMethod(description: "Linearly interpolate between two values")]
-        public object Lerp(object a, object b, object t)
+        public float Lerp(float a, float b, float t)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            float fT = t.UnboxToFloat();
-            return Mathf.Lerp(fA, fB, fT);
+            return Mathf.Lerp(a, b, t);
         }
 
         [CLMethod(description: "Linearly interpolate between two values without clamping")]
-        public object LerpUnclamped(object a, object b, object t)
+        public float LerpUnclamped(float a, float b, float t)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            float fT = t.UnboxToFloat();
-            return Mathf.LerpUnclamped(fA, fB, fT);
+            return Mathf.LerpUnclamped(a, b, t);
         }
 
         [CLMethod(description: "Get the sign of a value")]
-        public object Sign(object value)
-        {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Sign(fValue);
-        }
+        public float Sign(float value) => Mathf.Sign(value);
 
         // Inverse lerp
         [CLMethod(description: "Get the inverse lerp of two values")]
-        public object InverseLerp(object a, object b, object value)
+        public float InverseLerp(float a, float b, float value)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            float fValue = value.UnboxToFloat();
-            return Mathf.InverseLerp(fA, fB, fValue);
+            return Mathf.InverseLerp(a, b, value);
         }
 
         // Lerp Angle
         [CLMethod(description: "Linearly interpolate between two angles")]
-        public object LerpAngle(object a, object b, object t)
+        public float LerpAngle(float a, float b, float t)
         {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            float fT = t.UnboxToFloat();
-            return Mathf.LerpAngle(fA, fB, fT);
+            return Mathf.LerpAngle(a, b, t);
         }
 
         // Log
         [CLMethod(description: "Get the natural logarithm of a value")]
-        public object Log(object value)
+        public float Log(float value)
         {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Log(fValue);
+            return Mathf.Log(value);
         }
 
         // Move Towards
         [CLMethod(description: "Move a value towards a target value")]
-        public object MoveTowards(object current, object target, object maxDelta)
+        public float MoveTowards(float current, float target, float maxDelta)
         {
-            float fCurrent = current.UnboxToFloat();
-            float fTarget = target.UnboxToFloat();
-            float fMaxDelta = maxDelta.UnboxToFloat();
-            return Mathf.MoveTowards(fCurrent, fTarget, fMaxDelta);
+            return Mathf.MoveTowards(current, target, maxDelta);
         }
 
         // Move Towards Angle
         [CLMethod(description: "Move an angle towards a target angle")]
-        public object MoveTowardsAngle(object current, object target, object maxDelta)
+        public float MoveTowardsAngle(float current, float target, float maxDelta)
         {
-            float fCurrent = current.UnboxToFloat();
-            float fTarget = target.UnboxToFloat();
-            float fMaxDelta = maxDelta.UnboxToFloat();
-            return Mathf.MoveTowardsAngle(fCurrent, fTarget, fMaxDelta);
+            return Mathf.MoveTowardsAngle(current, target, maxDelta);
         }
 
         // Ping Pong
         [CLMethod(description: "Get the ping pong value of a time value")]
-        public object PingPong(object t, object length)
-        {
-            float fT = t.UnboxToFloat();
-            float fLength = length.UnboxToFloat();
-            return Mathf.PingPong(fT, fLength);
-        }
-
-        // Smooth Damp
-        [CLMethod(description: "Smoothly damp a value towards a target value")]
-        public object SmoothDamp(object current, object target, object currentVelocity, object smoothTime, object maxSpeed, object deltaTime)
-        {
-            float fCurrent = current.UnboxToFloat();
-            float fTarget = target.UnboxToFloat();
-            float fCurrentVelocity = currentVelocity.UnboxToFloat();
-            float fSmoothTime = smoothTime.UnboxToFloat();
-            float fMaxSpeed = maxSpeed.UnboxToFloat();
-            float fDeltaTime = deltaTime.UnboxToFloat();
-            return Mathf.SmoothDamp(fCurrent, fTarget, ref fCurrentVelocity, fSmoothTime, fMaxSpeed, fDeltaTime);
-        }
+        public float PingPong(float t, float length) => Mathf.PingPong(t, length);
 
         // exp
         [CLMethod(description: "Get the exponential value of a number")]
-        public object Exp(object value)
-        {
-            float fValue = value.UnboxToFloat();
-            return Mathf.Exp(fValue);
-        }
-
-        // Smooth Damp Angle
-        [CLMethod(description: "Smoothly damp an angle towards a target angle")]
-        public object SmoothDampAngle(object current, object target, object currentVelocity, object smoothTime, object maxSpeed, object deltaTime)
-        {
-            float fCurrent = current.UnboxToFloat();
-            float fTarget = target.UnboxToFloat();
-            float fCurrentVelocity = currentVelocity.UnboxToFloat();
-            float fSmoothTime = smoothTime.UnboxToFloat();
-            float fMaxSpeed = maxSpeed.UnboxToFloat();
-            float fDeltaTime = deltaTime.UnboxToFloat();
-            return Mathf.SmoothDampAngle(fCurrent, fTarget, ref fCurrentVelocity, fSmoothTime, fMaxSpeed, fDeltaTime);
-        }
+        public float Exp(float value) => Mathf.Exp(value);
 
         // SmoothStep
         [CLMethod(description: "Smoothly step between two values")]
-        public object SmoothStep(object a, object b, object t)
-        {
-            float fA = a.UnboxToFloat();
-            float fB = b.UnboxToFloat();
-            float fT = t.UnboxToFloat();
-            return Mathf.SmoothStep(fA, fB, fT);
-        }
+        public float SmoothStep(float a, float b, float t) => Mathf.SmoothStep(a, b, t);
 
         // Eventually also add these as symbols to the language.
         [CLMethod(description: "Perform a bitwise AND operation")]
-        public object BitwiseAnd(object a, object b)
-        {
-            int iA = a.UnboxToInt();
-            int iB = b.UnboxToInt();
-            return iA & iB;
-        }
+        public int BitwiseAnd(int a, int b) => a & b;
 
         [CLMethod(description: "Perform a bitwise OR operation")]
-        public object BitwiseOr(object a, object b)
-        {
-            int iA = a.UnboxToInt();
-            int iB = b.UnboxToInt();
-            return iA | iB;
-        }
+        public int BitwiseOr(int a, int b) => a | b;
 
         [CLMethod(description: "Perform a bitwise XOR operation")]
-        public object BitwiseXor(object a, object b)
-        {
-            int iA = a.UnboxToInt();
-            int iB = b.UnboxToInt();
-            return iA ^ iB;
-        }
+        public int BitwiseXor(int a, int b) => a ^ b;
 
         [CLMethod(description: "Perform a bitwise NOT operation")]
-        public object BitwiseNot(object value)
-        {
-            int iValue = value.UnboxToInt();
-            return ~iValue;
-        }
+        public int BitwiseNot(int value) => ~value;
 
         [CLMethod(description: "Shift bits to the left")]
-        public object BitwiseLeftShift(object value, object shift)
-        {
-            int iValue = value.UnboxToInt();
-            int iShift = shift.UnboxToInt();
-            return iValue << iShift;
-        }
+        public int BitwiseLeftShift(int value, int shift) => value << shift;
 
         [CLMethod(description: "Shift bits to the right")]
-        public object BitwiseRightShift(object value, object shift)
-        {
-            int iValue = value.UnboxToInt();
-            int iShift = shift.UnboxToInt();
-            return iValue >> iShift;
-        }
-
+        public int BitwiseRightShift(int value, int shift) => value >> shift;
     }
 }

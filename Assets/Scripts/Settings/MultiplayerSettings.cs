@@ -25,6 +25,7 @@ namespace Settings
         public StringSetting LanIP = new StringSetting(string.Empty);
         public IntSetting LanPort = new IntSetting(5055);
         public StringSetting LanPassword = new StringSetting(string.Empty);
+        public StringSetting ModPassword = new StringSetting(string.Empty);
         public MultiplayerServerType CurrentMultiplayerServerType;
         public readonly Dictionary<MultiplayerRegion, string> CloudAddresses = new Dictionary<MultiplayerRegion, string>()
         {
@@ -134,9 +135,9 @@ namespace Settings
                 { RoomProperty.Map, mapName },
                 { RoomProperty.GameMode, gameMode },
                 { RoomProperty.Password, password },
-                { RoomProperty.PasswordHash, passwordHash },
-                { "HashKey", GetHashKey(roomId + roomName)}
+                { RoomProperty.PasswordHash, passwordHash }
             };
+            string hash = GetHashKey(roomId + roomName);
             string[] lobbyProperties = new string[] { RoomProperty.Name, RoomProperty.Map, RoomProperty.GameMode, RoomProperty.PasswordHash };
             var roomOptions = new RoomOptions();
             roomOptions.CustomRoomProperties = properties;
@@ -145,7 +146,7 @@ namespace Settings
             roomOptions.IsOpen = true;
             roomOptions.MaxPlayers = maxPlayers;
             roomOptions.BroadcastPropsChangeToAll = false;
-            PhotonNetwork.CreateRoom(roomId, roomOptions);
+            PhotonNetwork.CreateRoom(roomId, roomOptions, hash: hash, sessionID: ApplicationVersion.GetSessionID(), modID: ModPassword.Value);
             if (!PhotonNetwork.OfflineMode)
             {
                 var vcRoomOptions = new RoomOptions();
@@ -156,15 +157,16 @@ namespace Settings
                 vcRoomOptions.MaxPlayers = 255;
                 vcRoomOptions.BroadcastPropsChangeToAll = false;
                 vcRoomOptions.EmptyRoomTtl = 10;
-                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions);
+                VoiceChatManager.Client.CreateRoom(roomId + VoiceRoomSuffix, vcRoomOptions, hash: hash, sessionID: ApplicationVersion.GetSessionID());
             }
         }
 
         public void JoinRoom(string roomId, string roomName, string password)
         {
-            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName));
+            PhotonNetwork.JoinRoom(roomId, password: password, hash: GetHashCode(roomId + roomName), sessionID: ApplicationVersion.GetSessionID(),
+                modID: ModPassword.Value);
             if (!PhotonNetwork.OfflineMode)
-                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName));
+                VoiceChatManager.Client.JoinRoom(roomId + VoiceRoomSuffix, password: password, hash: GetHashCode(roomId + roomName), sessionID: ApplicationVersion.GetSessionID());
         }
 
         public string GetHashKey(string str)

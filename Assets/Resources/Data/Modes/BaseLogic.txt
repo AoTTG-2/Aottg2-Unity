@@ -9,10 +9,10 @@ component NavMeshObstacle
     function Init()
     {
         # Add the component like how we add Rigidbody
-        _nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle");
-        _nav.Carving = true;
-        _nav.CarveOnlyStationary = false;
-        _nav.AutoScale();
+        self._nav = self.MapObject.AddBuiltinComponent("NavMeshObstacle");
+        self._nav.Carving = true;
+        self._nav.CarveOnlyStationary = false;
+        self._nav.AutoScale();
     }
 }
 
@@ -2033,7 +2033,7 @@ component Rigidbody
     function AddForce(force)
     {
         # self.MapObject.UpdateBuiltinComponent("Rigidbody", "AddForce", force);
-        self.MapObject.Rigidbody.AddForce(force);
+        self.MapObject.Rigidbody.AddForceOptimized(force);
     }
 
     function AddForceWithMode(force, mode)

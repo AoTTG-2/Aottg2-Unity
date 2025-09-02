@@ -916,7 +916,7 @@ namespace Characters
         {
         }
 
-        protected void DeactivateAllHitboxes()
+        protected virtual void DeactivateAllHitboxes()
         {
             foreach (var hitbox in BaseTitanCache.Hitboxes)
             {
