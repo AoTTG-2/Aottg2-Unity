@@ -153,6 +153,7 @@ namespace UI
             catch (Exception ex)
             {
                 // Show error
+                Debug.LogError(ex);
             }
 
             SettingsManager.AdvancedSettings.Save();

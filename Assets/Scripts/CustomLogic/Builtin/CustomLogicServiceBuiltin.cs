@@ -19,6 +19,8 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicServiceBuiltin()
         {
+            if (PhotonNetwork.IsMasterClient == false) return;
+            if (SettingsManager.InGameCurrent.Misc.ServicesEnabled.Value == false) return;
             foreach (var setting in SettingsManager.AdvancedSettings.Services.Value)
             {
                 if (!_registeredServices.Contains(setting.Value))
@@ -54,38 +56,54 @@ namespace CustomLogic
             return IsAllowedToRun(service);
         }
 
-        //[CLMethod(description: "Sort the list using a custom method, expects a method with the signature int method(a,b)")]
-        //public void SortCustom(UserMethod method)
-        //{
-        //    List.Sort((a, b) => (int)CustomLogicManager.Evaluator.EvaluateMethod(method, new object[] { a, b }));
-        //}
+        static string GetEndpoint(string service, string route)
+        {
+            if (string.IsNullOrWhiteSpace(route)) return service;
+
+            // Basic route validation
+            if (route.Contains("..") || route.Contains("\\") || Uri.IsWellFormedUriString(route, UriKind.Absolute))
+                throw new ArgumentException("Invalid route");
+
+            var baseUri = new Uri(service.EndsWith("/") ? service : service + "/");
+            var fullUri = new Uri(baseUri, route);
+
+            // Ensure the final URI doesn't escape the base domain
+            if (!fullUri.Host.Equals(baseUri.Host, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Route escapes base service");
+
+            return fullUri.ToString();
+        }
 
         [CLMethod]
         public static void Get(string service, string route, UserMethod callback)
         {
             CheckMe(service);
-            CustomLogicManager._instance.StartCoroutine(GetRequest($"{service}/{route}", callback));
+            string endpoint = GetEndpoint(service, route);
+            CustomLogicManager._instance.StartCoroutine(GetRequest(endpoint, callback));
         }
 
         [CLMethod]
         public static void Post(string service, string route, string data, UserMethod callback = null, string format = "application/json")
         {
             CheckMe(service);
-            CustomLogicManager._instance.StartCoroutine(PostRequest($"{service}/{route}", data, callback, format));
+            string endpoint = GetEndpoint(service, route);
+            CustomLogicManager._instance.StartCoroutine(PostRequest(endpoint, data, callback, format));
         }
 
         [CLMethod]
         public static void Put(string service, string route, string data, UserMethod callback = null)
         {
             CheckMe(service);
-            CustomLogicManager._instance.StartCoroutine(PutRequest($"{service}/{route}", data, callback));
+            string endpoint = GetEndpoint(service, route);
+            CustomLogicManager._instance.StartCoroutine(PutRequest(endpoint, data, callback));
         }
 
         [CLMethod]
         public static void Delete(string service, string route, UserMethod callback = null)
         {
             CheckMe(service);
-            CustomLogicManager._instance.StartCoroutine(DeleteRequest($"{service}/{route}", callback));
+            string endpoint = GetEndpoint(service, route);
+            CustomLogicManager._instance.StartCoroutine(DeleteRequest(endpoint, callback));
         }
 
 
@@ -107,7 +125,9 @@ namespace CustomLogic
                     result = GetWebRequestFailureJSON(webRequest);
                 }
 
-                CustomLogicManager.Evaluator.EvaluateMethod(callback, new object[] { result, webRequest.result.ToString() });
+                UnityEngine.Debug.Log(result);
+
+                CustomLogicManager.Evaluator.EvaluateMethod(callback, new object[] { "test", result, webRequest.result.ToString() });
             }
         }
 
