@@ -2,7 +2,7 @@
 using Settings;
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.Networking;
 
 namespace CustomLogic
@@ -13,28 +13,15 @@ namespace CustomLogic
     [CLType(Name = "Service", Abstract = true, Static = true)]
     partial class CustomLogicServiceBuiltin : BuiltinClassInstance
     {
-        private static HashSet<string> _registeredServices;
-
 
         [CLConstructor]
-        public CustomLogicServiceBuiltin()
-        {
-            if (PhotonNetwork.IsMasterClient == false) return;
-            if (SettingsManager.InGameCurrent.Misc.ServicesEnabled.Value == false) return;
-            foreach (var setting in SettingsManager.AdvancedSettings.Services.Value)
-            {
-                if (!_registeredServices.Contains(setting.Value))
-                {
-                    _registeredServices.Add(setting.Value);
-                }
-            }
-        }
+        public CustomLogicServiceBuiltin() { }
 
         private static bool IsAllowedToRun(string service)
         {
             if (PhotonNetwork.IsMasterClient == false) return false;
             if (SettingsManager.InGameCurrent.Misc.ServicesEnabled.Value == false) return false;
-            if (_registeredServices.Contains(service) == false) return false;
+            if (SettingsManager.AdvancedSettings.Services.Value.Where(e => e.Value == service).Any()) return false;
             return true;
         }
 
@@ -79,6 +66,7 @@ namespace CustomLogic
         {
             CheckMe(service);
             string endpoint = GetEndpoint(service, route);
+            UnityEngine.Debug.Log($"GET {endpoint}");
             CustomLogicManager._instance.StartCoroutine(GetRequest(endpoint, callback));
         }
 
@@ -106,9 +94,9 @@ namespace CustomLogic
             CustomLogicManager._instance.StartCoroutine(DeleteRequest(endpoint, callback));
         }
 
-
         static IEnumerator GetRequest(string uri, UserMethod callback)
         {
+            UnityEngine.Debug.Log($"Actual GET {uri}");
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
             {
                 // Request and wait for the desired page.
