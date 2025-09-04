@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +10,7 @@ using UnityEngine.UIElements;
 
 namespace CustomLogic.Editor
 {
+#if UNITY_EDITOR
     public class DocsGeneratorWindow : EditorWindow
     {
         private bool _runBuildCommand = true;
@@ -244,4 +244,5 @@ namespace CustomLogic.Editor
         private static string FormatSuccess(string msg) => $"<color=#b5ff2b><b>OK</b></color>: {msg}";
         private static string FormatInfo(string msg) => $"<color=#f5f5f5><b>INFO</b></color>: {msg}";
     }
+#endif
 }
