@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using Weather;
-using UI;
-using Map;
-using Effects;
+﻿using ApplicationManagers;
 using CustomLogic;
-using ApplicationManagers;
-using Characters;
+using Effects;
+using Map;
 using Photon.Pun;
 using Spawnables;
-using System.Collections;
-using Utility;
+using System.Collections.Generic;
+using UI;
+using UnityEngine;
+using Weather;
 
 namespace GameManagers
 {
@@ -142,7 +139,7 @@ namespace GameManagers
         }
 
         [PunRPC]
-        public void StopVoiceRPC(PhotonMessageInfo Info) 
+        public void StopVoiceRPC(PhotonMessageInfo Info)
         {
             EmoteHandler.OnStopVoiceRPC(Info);
         }

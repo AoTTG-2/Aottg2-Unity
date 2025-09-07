@@ -153,6 +153,12 @@ namespace CustomLogic
             }
         }
 
+        /// <summary>
+        /// If true and this prefab is spawned at runtime with networking, the ownership will transfer to host if the player who spawned it leaves.
+        /// </summary>
+        [CLProperty]
+        public bool PersistsOwnership = false;
+
         [CLMethod]
         public void ClearComponents()
         {

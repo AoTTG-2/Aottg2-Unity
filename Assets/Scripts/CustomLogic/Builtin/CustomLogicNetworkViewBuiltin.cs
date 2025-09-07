@@ -1,5 +1,4 @@
-﻿using GameManagers;
-using Map;
+﻿using Map;
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
@@ -86,22 +85,32 @@ namespace CustomLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                if (OwnerId >= 0 && OwnerId != PhotonNetwork.LocalPlayer.ActorNumber)
-                {
-                    var player = Util.FindPlayerById(OwnerId);
-                    if (player == null)
-                    {
-                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
-                        var photonView = go.GetComponent<CustomLogicPhotonSync>();
-                        photonView.Init(MapObject.ScriptObject.Id);
-                    }
-                }
+                // Ownership transfer should be handled by the PhotonSync.
+                //if (OwnerId >= 0 && OwnerId != PhotonNetwork.LocalPlayer.ActorNumber)
+                //{
+                //    var player = Util.FindPlayerById(OwnerId);
+                //    if (player == null)
+                //    {
+                //        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
+                //        var photonView = go.GetComponent<CustomLogicPhotonSync>();
+                //        photonView.Init(MapObject.ScriptObject.Id);
+                //    }
+                //}
             }
         }
 
         public void RegisterComponentInstance(CustomLogicComponentInstance instance)
         {
             _classInstances.Add(instance);
+        }
+
+        public void OnNetworkTransfer(CustomLogicPlayerBuiltin oldOwner, CustomLogicPlayerBuiltin newOwner)
+        {
+            if (MapObject.GameObject != null)
+            {
+                foreach (var instance in _classInstances)
+                    CustomLogicManager.Evaluator.EvaluateMethod(instance, "OnNetworkTransfer", new object[] { oldOwner, newOwner });
+            }
         }
 
         public void SetSync(CustomLogicPhotonSync sync)
@@ -167,11 +176,7 @@ namespace CustomLogic
         {
             if (Sync.photonView.IsMine)
             {
-                if (player.Player != PhotonNetwork.LocalPlayer)
-                {
-                    RPCManager.PhotonView.RPC("TransferNetworkViewRPC", player.Player, new object[] { MapObject.ScriptObject.Id });
-                    PhotonNetwork.Destroy(Sync.gameObject);
-                }
+                Sync.Transfer(player);
             }
         }
 

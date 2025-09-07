@@ -1,4 +1,5 @@
 using Map;
+using Photon.Pun;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -129,18 +130,12 @@ namespace CustomLogic
             return listBuiltin;
         }
 
-        // Scene,Category/Prefab,ID,Parent ID, 
-        // Scene,Geometry/Sphere,117,0,1,0,1,1,Ball,-1.524334,50,17.24871,0,0,0,1,1,1,Physical,All,Default,Basic|150/150/150/255|Misc/Diamond1|1/1|0/0,Ball|Mass:1|Gravity:-40|HitForceMax:5000|HitMultiplier:100|HitForceMin:1|DribbleForce:300|DribbleForceMax:1000|VelocityThreshold:10|ForceMultiplier:100,Rigidbody|Mass:1|Gravity:0/-20/0|FreezeRotation:false|Interpolate:false
-        // Scene,Buildings/Arch3,118,0,1,1,1,0,Arch3,-59.26698,17.15096,158.3891,0,0,0,1,1,1,Physical,Entities,Default,Default|255/255/255/255,
         [CLMethod(description: "Create a new map object")]
         public CustomLogicMapObjectBuiltin CreateMapObject(CustomLogicPrefabBuiltin prefab, CustomLogicVector3Builtin position = null, CustomLogicVector3Builtin rotation = null, CustomLogicVector3Builtin scale = null)
         {
             var scriptSerial = prefab.Value.Serialize();
             var script = new MapScriptSceneObject();
             script.Deserialize(scriptSerial);
-            script.Id = MapLoader.GetNextObjectId();
-            script.Parent = 0;
-            script.Networked = false;
 
             if (position != null)
                 script.SetPosition(position);
@@ -149,11 +144,11 @@ namespace CustomLogic
             if (scale != null)
                 script.SetScale(scale);
 
-            var mapObject = MapLoader.LoadObject(script, false);
-            MapLoader.SetParent(mapObject);
-            CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
-            mapObject.RuntimeCreated = true;
-            return new CustomLogicMapObjectBuiltin(mapObject);
+            if (script.Networked)
+            {
+                return CreateRuntimeNetworkedMapObject(script, prefab.PersistsOwnership);
+            }
+            return CreateRuntimeMapObject(script);
         }
 
         [CLMethod(description: "Create a new map object")]
@@ -162,14 +157,12 @@ namespace CustomLogic
             prefab = string.Join("", prefab.Split('\n'));
             var script = new MapScriptSceneObject();
             script.Deserialize(prefab);
-            script.Id = MapLoader.GetNextObjectId();
-            script.Parent = 0;
-            script.Networked = false;
-            var mapObject = MapLoader.LoadObject(script, false);
-            MapLoader.SetParent(mapObject);
-            CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
-            mapObject.RuntimeCreated = true;
-            return new CustomLogicMapObjectBuiltin(mapObject);
+
+            if (script.Networked)
+            {
+                return CreateRuntimeNetworkedMapObject(script);
+            }
+            return CreateRuntimeMapObject(script);
         }
 
         [CLMethod(description: "Create a new prefab object from the current object")]
@@ -182,6 +175,16 @@ namespace CustomLogic
         [CLMethod(description: "Destroy a map object")]
         public void DestroyMapObject(CustomLogicMapObjectBuiltin mapObject, bool includeChildren)
         {
+            if (mapObject.Value.ScriptObject.Networked)
+            {
+                if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(mapObject.Value.ScriptObject.Id))
+                {
+                    var networkView = CustomLogicManager.Evaluator.IdToNetworkView[mapObject.Value.ScriptObject.Id];
+                    CustomLogicManager.Evaluator.IdToNetworkView.Remove(mapObject.Value.ScriptObject.Id);
+                    networkView.Sync.DestroyMe();
+                    return;
+                }
+            }
             DestroyMapObjectBuiltin(mapObject, includeChildren);
         }
 
@@ -212,13 +215,38 @@ namespace CustomLogic
             _ = MapLoader.UpdateNavMesh();
         }
 
+
+        protected CustomLogicMapObjectBuiltin CreateRuntimeNetworkedMapObject(MapScriptSceneObject script, bool persistsOwnership = false)
+        {
+            script.Id = -1; // -> will be set by the created photonview.
+            script.Parent = 0;
+            script.Networked = true;
+            object[] data = new object[] { (int)SpawnIntent.NetworkedRuntime, persistsOwnership, script.Serialize(), };
+            // We need to have all this handled by the photonsync instantiation.
+            var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncDynamicPrefab", Vector3.zero, Quaternion.identity, 0, data);
+            var photonSync = go.GetComponent<CustomLogicPhotonSync>();
+            return photonSync.CustomLogicMapObjectBuiltin;
+        }
+
+        protected CustomLogicMapObjectBuiltin CreateRuntimeMapObject(MapScriptSceneObject script)
+        {
+            script.Id = MapLoader.GetNextObjectId();
+            script.Parent = 0;
+            script.Networked = false;
+            var mapObject = MapLoader.LoadObject(script, false);
+            MapLoader.SetParent(mapObject);
+            CustomLogicManager.Evaluator.LoadMapObjectComponents(mapObject, true);
+            mapObject.RuntimeCreated = true;
+            return new CustomLogicMapObjectBuiltin(mapObject);
+        }
+
         protected MapObject CopyMapObject(MapObject obj, int parent, bool recursive)
         {
             var script = new MapScriptSceneObject();
             script.Deserialize(obj.ScriptObject.Serialize());
             script.Id = MapLoader.GetNextObjectId();
             script.Parent = parent;
-            script.Networked = false; // we dont support runtime network instantiation for now
+            script.Networked = false; // we dont support runtime network instantiation for now -> probably ever for copy since its just a different paradigm, just create prefab and spawn.
             var copy = MapLoader.LoadObject(script, false);
             MapLoader.SetParent(copy);
             CustomLogicManager.Evaluator.LoadMapObjectComponents(copy, true);
@@ -236,7 +264,7 @@ namespace CustomLogic
             return copy;
         }
 
-        protected void DestroyMapObjectBuiltin(object obj, bool recursive)
+        public static void DestroyMapObjectBuiltin(object obj, bool recursive)
         {
             if ((obj is not CustomLogicMapObjectBuiltin) && (obj is not MapObject))
             {
@@ -253,6 +281,13 @@ namespace CustomLogic
                 mapObject = obj as MapObject;
 
             var id = mapObject.ScriptObject.Id;
+
+            if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(id))
+            {
+                var networkView = CustomLogicManager.Evaluator.IdToNetworkView[id];
+                CustomLogicManager.Evaluator.IdToNetworkView.Remove(id);
+            }
+
             HashSet<int> children = new HashSet<int>();
             if (MapLoader.IdToChildren.ContainsKey(id))
             {
