@@ -85,44 +85,44 @@ namespace CustomLogic
             }
             else if (_spawnIntent == SpawnIntent.NetworkedRuntime)
             {
-                bool persistsOwnership = (bool)data[1];
-                string csvScript = (string)data[2];
-                if (string.IsNullOrEmpty(csvScript))
-                {
-                    // This is likely a placeholder object, so we don't need to do anything.
-                    return;
-                }
+                //bool persistsOwnership = (bool)data[1];
+                //string csvScript = (string)data[2];
+                //if (string.IsNullOrEmpty(csvScript))
+                //{
+                //    // This is likely a placeholder object, so we don't need to do anything.
+                //    return;
+                //}
 
-                ObjectId = MapLoader.ROOT_OBJECT_ID - MapLoader.NETWORK_OFFSET - photonView.ViewID;
+                //ObjectId = MapLoader.ROOT_OBJECT_ID - MapLoader.NETWORK_OFFSET - photonView.ViewID;
 
-                // Deserialize the CSV/script to create the MapObject.
-                var prefab = string.Join("", csvScript.Split('\n'));
-                var script = new MapScriptSceneObject();
-                script.Deserialize(prefab);
-                script.Id = ObjectId;
-                script.Parent = 0;
-                script.Networked = true;
-                var mapObject = MapLoader.LoadObject(script, false);
-                mapObject.RuntimeCreated = true;
-                MapLoader.SetParent(mapObject);
+                //// Deserialize the CSV/script to create the MapObject.
+                //var prefab = string.Join("", csvScript.Split('\n'));
+                //var script = new MapScriptSceneObject();
+                //script.Deserialize(prefab);
+                //script.Id = ObjectId;
+                //script.Parent = 0;
+                //script.Networked = true;
+                //var mapObject = MapLoader.LoadObject(script, false);
+                //mapObject.RuntimeCreated = true;
+                //MapLoader.SetParent(mapObject);
 
-                NetworkView = new CustomLogicNetworkViewBuiltin(mapObject);
-                CustomLogicMapObjectBuiltin = new CustomLogicMapObjectBuiltin(mapObject);
-                NetworkView.Sync = this;
+                //NetworkView = new CustomLogicNetworkViewBuiltin(mapObject);
+                //CustomLogicMapObjectBuiltin = new CustomLogicMapObjectBuiltin(mapObject);
+                //NetworkView.Sync = this;
 
-                if (CustomLogicManager.Evaluator.IdToMapObjectBuiltin.ContainsKey(ObjectId))
-                {
-                    Debug.LogWarning($"PhotonSync: MapObject for id {ObjectId} already exists, overwriting.");
-                }
-                CustomLogicManager.Evaluator.IdToMapObjectBuiltin[ObjectId] = CustomLogicMapObjectBuiltin;
+                //if (CustomLogicManager.Evaluator.IdToMapObjectBuiltin.ContainsKey(ObjectId))
+                //{
+                //    Debug.LogWarning($"PhotonSync: MapObject for id {ObjectId} already exists, overwriting.");
+                //}
+                //CustomLogicManager.Evaluator.IdToMapObjectBuiltin[ObjectId] = CustomLogicMapObjectBuiltin;
 
-                if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(ObjectId))
-                {
-                    Debug.LogWarning($"PhotonSync: NetworkView for id {ObjectId} already exists, overwriting.");
-                }
-                CustomLogicManager.Evaluator.IdToNetworkView[ObjectId] = NetworkView;
+                //if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(ObjectId))
+                //{
+                //    Debug.LogWarning($"PhotonSync: NetworkView for id {ObjectId} already exists, overwriting.");
+                //}
+                //CustomLogicManager.Evaluator.IdToNetworkView[ObjectId] = NetworkView;
 
-                CustomLogicManager.Evaluator.LoadRuntimeMapObjectComponents(mapObject, true);
+                //CustomLogicManager.Evaluator.LoadRuntimeMapObjectComponents(mapObject, true);
 
             }
         }
@@ -141,6 +141,12 @@ namespace CustomLogic
             PhotonView.RPC("InitRPC", RpcTarget.AllBuffered, new object[] { mapObjectId, rigidbody });
         }
 
+        public void InitDynamic(bool persistsOwnership, string csvScript)
+        {
+            PhotonView.RPC("InitDynamicRPC", RpcTarget.OthersBuffered, new object[] { persistsOwnership, csvScript });
+            CreateAndSetupObject(persistsOwnership, csvScript);
+        }
+
         [PunRPC]
         public void InitRPC(int mapObjectId, bool syncVelocity, PhotonMessageInfo info)
         {
@@ -148,6 +154,59 @@ namespace CustomLogic
                 return;
             _syncVelocity = syncVelocity;
             StartCoroutine(WaitAndFinishInit(mapObjectId));
+        }
+
+        [PunRPC]
+        public void InitDynamicRPC(bool persistsOwnership, string csvScript, PhotonMessageInfo info)
+        {
+            if (info.Sender != PhotonView.Owner)
+                return;
+            CreateAndSetupObject(persistsOwnership, csvScript);
+        }
+
+        public void CreateAndSetupObject(bool persistsOwnership, string csvScript)
+        {
+            if (string.IsNullOrEmpty(csvScript))
+            {
+                // This is likely a placeholder object, so we don't need to do anything.
+                return;
+            }
+            _persistsOwnership = persistsOwnership;
+            ObjectId = MapLoader.ROOT_OBJECT_ID - MapLoader.NETWORK_OFFSET - photonView.ViewID;
+
+
+
+            // Deserialize the CSV/script to create the MapObject.
+            var prefab = string.Join("", csvScript.Split('\n'));
+            var script = new MapScriptSceneObject();
+            script.Deserialize(prefab);
+            script.Id = ObjectId;
+            script.Parent = 0;
+            script.Networked = true;
+            var mapObject = MapLoader.LoadObject(script, false);
+            mapObject.RuntimeCreated = true;
+            MapLoader.SetParent(mapObject);
+
+            NetworkView = new CustomLogicNetworkViewBuiltin(mapObject);
+            CustomLogicMapObjectBuiltin = new CustomLogicMapObjectBuiltin(mapObject);
+            MapObject = mapObject;
+
+            if (CustomLogicManager.Evaluator.IdToMapObjectBuiltin.ContainsKey(ObjectId))
+            {
+                Debug.LogWarning($"PhotonSync: MapObject for id {ObjectId} already exists, overwriting.");
+            }
+            CustomLogicManager.Evaluator.IdToMapObjectBuiltin[ObjectId] = CustomLogicMapObjectBuiltin;
+
+            if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(ObjectId))
+            {
+                Debug.LogWarning($"PhotonSync: NetworkView for id {ObjectId} already exists, overwriting.");
+            }
+            CustomLogicManager.Evaluator.IdToNetworkView[ObjectId] = NetworkView;
+            NetworkView.SetSyncDynamic(this);
+            CustomLogicManager.Evaluator.LoadRuntimeMapObjectComponents(mapObject, true);
+            _correctPosition = MapObject.GameObject.transform.position;
+            _correctRotation = MapObject.GameObject.transform.rotation;
+            _inited = true;
         }
 
         public IEnumerator WaitAndFinishInit(int mapObjectId)
@@ -328,7 +387,7 @@ namespace CustomLogic
         {
             // Destroy the self, the object, the controller, and the network view.
             if (PhotonView.IsMine)
-                Destroy(this.gameObject);
+                PhotonNetwork.Destroy(this.gameObject);
         }
 
         public void OnDestroy()

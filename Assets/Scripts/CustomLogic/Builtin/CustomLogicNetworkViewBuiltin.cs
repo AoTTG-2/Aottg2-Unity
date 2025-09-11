@@ -113,6 +113,19 @@ namespace CustomLogic
             }
         }
 
+        public void SetSyncDynamic(CustomLogicPhotonSync sync)
+        {
+            Sync = sync;
+            OwnerId = sync.photonView.Owner.ActorNumber;
+            Sync.SyncTransforms = _isTransformSynced;
+
+            var linkedMapObjectClass = CustomLogicManager.Evaluator.IdToMapObjectBuiltin[this.MapObject.ScriptObject.Id];
+            if (linkedMapObjectClass != null)
+            {
+                linkedMapObjectClass.NetworkView = this;
+            }
+        }
+
         public void SetSync(CustomLogicPhotonSync sync)
         {
             int oldId = OwnerId;

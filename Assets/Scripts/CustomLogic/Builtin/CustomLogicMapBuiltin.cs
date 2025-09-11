@@ -221,10 +221,11 @@ namespace CustomLogic
             script.Id = -1; // -> will be set by the created photonview.
             script.Parent = 0;
             script.Networked = true;
-            object[] data = new object[] { (int)SpawnIntent.NetworkedRuntime, persistsOwnership, script.Serialize(), };
+            object[] data = new object[] { (int)SpawnIntent.NetworkedRuntime, };
             // We need to have all this handled by the photonsync instantiation.
             var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncDynamicPrefab", Vector3.zero, Quaternion.identity, 0, data);
             var photonSync = go.GetComponent<CustomLogicPhotonSync>();
+            photonSync.InitDynamic(persistsOwnership, script.Serialize());
             return photonSync.CustomLogicMapObjectBuiltin;
         }
 
