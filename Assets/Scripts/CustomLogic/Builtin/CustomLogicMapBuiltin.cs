@@ -130,6 +130,20 @@ namespace CustomLogic
             return listBuiltin;
         }
 
+        [CLMethod(description: "Find a map objects of Player")]
+        public CustomLogicListBuiltin FindMapObjectsByPlayer(CustomLogicPlayerBuiltin player)
+        {
+            CustomLogicListBuiltin listBuiltin = new CustomLogicListBuiltin();
+            foreach (CustomLogicNetworkViewBuiltin nv in CustomLogicManager.Evaluator.IdToNetworkView.Values)
+            {
+                if (nv.Owner == player)
+                {
+                    listBuiltin.Add(nv.Sync.CustomLogicMapObjectBuiltin);
+                }
+            }
+            return listBuiltin;
+        }
+
         [CLMethod(description: "Create a new map object")]
         public CustomLogicMapObjectBuiltin CreateMapObject(CustomLogicPrefabBuiltin prefab, CustomLogicVector3Builtin position = null, CustomLogicVector3Builtin rotation = null, CustomLogicVector3Builtin scale = null)
         {
