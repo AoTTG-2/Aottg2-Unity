@@ -161,7 +161,7 @@ namespace CustomLogic
         {
             if (info.Sender != PhotonView.Owner)
                 return;
-            CreateAndSetupObject(persistsOwnership, csvScript);
+            StartCoroutine(WaitAndFinishDynamicInit(persistsOwnership, csvScript));
         }
 
         public void CreateAndSetupObject(bool persistsOwnership, string csvScript)
@@ -207,6 +207,13 @@ namespace CustomLogic
             _correctPosition = MapObject.GameObject.transform.position;
             _correctRotation = MapObject.GameObject.transform.rotation;
             _inited = true;
+        }
+
+        public IEnumerator WaitAndFinishDynamicInit(bool persistsOwnership, string csvScript)
+        {
+            while (CustomLogicManager.Evaluator == null)
+                yield return null;
+            CreateAndSetupObject(persistsOwnership, csvScript);
         }
 
         public IEnumerator WaitAndFinishInit(int mapObjectId)
