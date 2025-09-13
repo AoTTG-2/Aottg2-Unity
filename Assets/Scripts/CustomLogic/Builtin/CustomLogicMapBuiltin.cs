@@ -20,7 +20,6 @@ namespace CustomLogic
         [CLConstructor]
         public CustomLogicMapBuiltin()
         {
-            Debug.LogError("Restarting");
             if (PhotonNetwork.IsMasterClient)
             {
                 _instantiateLimit = new RateLimit(40, 1.0f);
