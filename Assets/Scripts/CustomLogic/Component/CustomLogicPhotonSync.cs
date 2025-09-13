@@ -399,7 +399,11 @@ namespace CustomLogic
 
         public void OnDestroy()
         {
-            CustomLogicMapBuiltin.DestroyMapObjectBuiltin(CustomLogicMapObjectBuiltin, true);
+            if (CustomLogicManager.Evaluator != null)
+            {
+                CustomLogicMapBuiltin.DestroyMapObjectBuiltin(CustomLogicMapObjectBuiltin, true);
+            }
+
         }
     }
 }

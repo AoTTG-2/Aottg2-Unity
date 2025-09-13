@@ -3,6 +3,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Utility;
 
 namespace CustomLogic
 {
@@ -12,9 +13,24 @@ namespace CustomLogic
     [CLType(Name = "Map", Static = true, Abstract = true)]
     partial class CustomLogicMapBuiltin : BuiltinClassInstance
     {
+        private static RateLimit _instantiateLimit = null;
+        private static int _instantiateCount = 0;
+        private static int _allowedInstantiateCount = 100;
+
         [CLConstructor]
         public CustomLogicMapBuiltin()
         {
+            Debug.LogError("Restarting");
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _instantiateLimit = new RateLimit(40, 1.0f);
+                _allowedInstantiateCount = 1000;
+            }
+            else
+            {
+                _instantiateLimit = new RateLimit(20, 1.0f);
+                _allowedInstantiateCount = 300;
+            }
         }
 
         [CLMethod(description: "Find all map objects")]
@@ -229,9 +245,9 @@ namespace CustomLogic
             _ = MapLoader.UpdateNavMesh();
         }
 
-
         protected CustomLogicMapObjectBuiltin CreateRuntimeNetworkedMapObject(MapScriptSceneObject script, bool persistsOwnership = false)
         {
+            TrySpawningRuntimeNetworkedObject();
             script.Id = -1; // -> will be set by the created photonview.
             script.Parent = 0;
             script.Networked = true;
@@ -297,6 +313,11 @@ namespace CustomLogic
 
             var id = mapObject.ScriptObject.Id;
 
+            if (mapObject.RuntimeCreated && mapObject.ScriptObject.Networked)
+            {
+                _instantiateCount--;
+            }
+
             if (CustomLogicManager.Evaluator.IdToNetworkView.ContainsKey(id))
             {
                 var networkView = CustomLogicManager.Evaluator.IdToNetworkView[id];
@@ -320,6 +341,27 @@ namespace CustomLogic
                         DestroyMapObjectBuiltin(MapLoader.IdToMapObject[child], true);
                 }
             }
+        }
+
+
+        public bool HasInstantiateAvailable => _instantiateCount < _allowedInstantiateCount;
+
+        public bool CanSpawnRuntimeNetworkedMapObject()
+        {
+            return HasInstantiateAvailable && _instantiateLimit.Peek(1);
+        }
+
+        public void TrySpawningRuntimeNetworkedObject()
+        {
+            if (HasInstantiateAvailable == false)
+            {
+                throw new System.Exception("Out of instantiations, please clean up networked objects to spawn more.");
+            }
+            if (_instantiateLimit.Use(1) == false)
+            {
+                throw new System.Exception("Spawning networked runtime map objects too fast, please slow down.");
+            }
+            _instantiateCount++;
         }
     }
 }
