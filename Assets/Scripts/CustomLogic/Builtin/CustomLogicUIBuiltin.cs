@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UI;
 using Utility;
 using UnityEngine;
+// using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace CustomLogic
 {
@@ -194,6 +196,527 @@ namespace CustomLogic
                     result.List.Add(popup);
                 return result;
             }
+        }
+
+        [CLMethod]
+        public static void SetLabelActive(string label, bool active)
+        {
+            Menu.SetLabelActive(label, active);
+        }
+
+        [CLMethod]
+        public static void SetKDRPanelActive(bool active)
+        {
+            Menu.SetKDRPanelActive(active);
+        }
+
+        [CLMethod]
+        public static void SetMinimapActive(bool active)
+        {
+            Menu.SetMinimapActive(active);
+        }
+
+        [CLMethod]
+        public static void SetChatPanelActive(bool active)
+        {
+            Menu.SetChatPanelActive(active);
+        }
+
+        [CLMethod]
+        public static void SetFeedPanelActive(bool active)
+        {
+            Menu.SetFeedPanelActive(active);
+        }
+
+        [CLMethod]
+        public static void SetBottomHUDActive(bool active)
+        {
+            Menu.SetBottomHUDActive(active);
+        }
+
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin GetRootVisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(Menu.RootVisualElement);
+        }
+
+        [CLMethod]
+        public static CustomLogicVisualElementBuiltin VisualElement()
+        {
+            return new CustomLogicVisualElementBuiltin(new VisualElement());
+        }
+
+        [CLMethod]
+        public static CustomLogicButtonBuiltin Button(string text, UserMethod clickEvent = null)
+        {
+            return new CustomLogicButtonBuiltin(new Button { text = text }).SetClickEvent(clickEvent);
+        }
+
+        [CLMethod]
+        public static CustomLogicLabelBuiltin Label(string text)
+        {
+            return new CustomLogicLabelBuiltin(new Label { text = text });
+        }
+    }
+
+    [CLType(Name = "VisualElement", Abstract = true)]
+    partial class CustomLogicVisualElementBuiltin : BuiltinClassInstance
+    {
+        private readonly VisualElement _visualElement;
+
+        public CustomLogicVisualElementBuiltin(VisualElement visualElement)
+        {
+            _visualElement = visualElement;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Opacity(float value)
+        {
+            _visualElement.style.opacity = Mathf.Clamp01(value / 100f);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Active(bool value)
+        {
+            _visualElement.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Visible(bool value)
+        {
+            _visualElement.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Absolute(bool value)
+        {
+            _visualElement.style.position = value ? Position.Absolute : Position.Relative;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Left(float value, bool percentage = false)
+        {
+            _visualElement.style.left = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Top(float value, bool percentage = false)
+        {
+            _visualElement.style.top = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Right(float value, bool percentage = false)
+        {
+            _visualElement.style.right = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Bottom(float value, bool percentage = false)
+        {
+            _visualElement.style.bottom = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FlexShrink(float value)
+        {
+            _visualElement.style.flexShrink = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FlexGrow(float value)
+        {
+            _visualElement.style.flexGrow = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FlexDirection(string value)
+        {
+            _visualElement.style.flexDirection = value switch
+            {
+                "Row" => UnityEngine.UIElements.FlexDirection.Row,
+                "Column" => UnityEngine.UIElements.FlexDirection.Column,
+                "RowReverse" => UnityEngine.UIElements.FlexDirection.RowReverse,
+                "ColumnReverse" => UnityEngine.UIElements.FlexDirection.ColumnReverse,
+                _ => throw new System.Exception("Unkown flex direction value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin AlignItems(string value)
+        {
+            _visualElement.style.alignItems = value switch
+            {
+                "Auto" => Align.Auto,
+                "FlexStart" => Align.FlexStart,
+                "Center" => Align.Center,
+                "FlexEnd" => Align.FlexEnd,
+                "Stretch" => Align.Stretch,
+                _ => throw new System.Exception("Unknown align value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin JustifyContent(string value)
+        {
+            _visualElement.style.justifyContent = value switch
+            {
+                "FlexStart" => Justify.FlexStart,
+                "Center" => Justify.Center,
+                "FlexEnd" => Justify.FlexEnd,
+                "SpaceBetween" => Justify.SpaceBetween,
+                "SpaceAround" => Justify.SpaceAround,
+                "SpaceEvenly" => Justify.SpaceEvenly,
+                _ => throw new System.Exception("Unknown justify value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin AlignSelf(string value)
+        {
+            _visualElement.style.alignSelf = value switch
+            {
+                "Auto" => Align.Auto,
+                "FlexStart" => Align.FlexStart,
+                "Center" => Align.Center,
+                "FlexEnd" => Align.FlexEnd,
+                "Stretch" => Align.Stretch,
+                _ => throw new System.Exception("Unknown align value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Width(float value, bool percentage = false)
+        {
+            _visualElement.style.width = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Height(float value, bool percentage = false)
+        {
+            _visualElement.style.height = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Margin(float value, bool percentage = false)
+        {
+            return MarginLeft(value, percentage)
+                .MarginTop(value, percentage)
+                .MarginRight(value, percentage)
+                .MarginBottom(value, percentage);
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MarginLeft(float value, bool percentage = false)
+        {
+            _visualElement.style.marginLeft = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MarginTop(float value, bool percentage = false)
+        {
+            _visualElement.style.marginTop = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MarginRight(float value, bool percentage = false)
+        {
+            _visualElement.style.marginRight = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin MarginBottom(float value, bool percentage = false)
+        {
+            _visualElement.style.marginBottom = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Padding(float value, bool percentage = false)
+        {
+            return PaddingLeft(value, percentage)
+                .PaddingTop(value, percentage)
+                .PaddingRight(value, percentage)
+                .PaddingBottom(value, percentage);
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin PaddingLeft(float value, bool percentage = false)
+        {
+            _visualElement.style.paddingLeft = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin PaddingTop(float value, bool percentage = false)
+        {
+            _visualElement.style.paddingTop = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin PaddingRight(float value, bool percentage = false)
+        {
+            _visualElement.style.paddingRight = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin PaddingBottom(float value, bool percentage = false)
+        {
+            _visualElement.style.paddingBottom = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FontStyle(string value)
+        {
+            _visualElement.style.unityFontStyleAndWeight = value switch
+            {
+                "Normal" => UnityEngine.FontStyle.Normal,
+                "Bold" => UnityEngine.FontStyle.Bold,
+                "Italic" => UnityEngine.FontStyle.Italic,
+                "BoldAndItalic" => UnityEngine.FontStyle.BoldAndItalic,
+                _ => throw new System.Exception("Unknown font style value")
+            };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin FontSize(float value, bool percentage = false)
+        {
+            _visualElement.style.fontSize = GetLength(value, percentage);
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Color(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.color = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BackgroundColor(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.backgroundColor = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderColor(CustomLogicColorBuiltin color)
+        {
+            return BorderColorLeft(color)
+                .BorderColorTop(color)
+                .BorderColorRight(color)
+                .BorderColorBottom(color);
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderColorLeft(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.borderLeftColor = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderColorTop(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.borderTopColor = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderColorRight(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.borderRightColor = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderColorBottom(CustomLogicColorBuiltin color)
+        {
+            _visualElement.style.borderBottomColor = color.Value.ToColor();
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderWidth(float value)
+        {
+            return BorderWidthLeft(value)
+                .BorderWidthTop(value)
+                .BorderWidthRight(value)
+                .BorderWidthBottom(value);
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderWidthLeft(float value)
+        {
+            _visualElement.style.borderLeftWidth = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderWidthTop(float value)
+        {
+            _visualElement.style.borderTopWidth = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderWidthRight(float value)
+        {
+            _visualElement.style.borderRightWidth = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderWidthBottom(float value)
+        {
+            _visualElement.style.borderBottomWidth = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderRadius(float value)
+        {
+            return BorderRadiusTopLeft(value)
+                .BorderRadiusTopRight(value)
+                .BorderRadiusBottomLeft(value)
+                .BorderRadiusBottomRight(value);
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderRadiusTopLeft(float value)
+        {
+            _visualElement.style.borderTopLeftRadius = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderRadiusTopRight(float value)
+        {
+            _visualElement.style.borderTopRightRadius = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderRadiusBottomLeft(float value)
+        {
+            _visualElement.style.borderBottomLeftRadius = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin BorderRadiusBottomRight(float value)
+        {
+            _visualElement.style.borderBottomRightRadius = value;
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin TransitionDuration(float value, bool seconds = false)
+        {
+            _visualElement.style.transitionDuration = new List<TimeValue> { new(value, seconds ? TimeUnit.Second : TimeUnit.Millisecond) };
+            return this;
+        }
+
+        [CLMethod]
+        public CustomLogicVisualElementBuiltin Add(CustomLogicVisualElementBuiltin visualElement)
+        {
+            _visualElement.Add(visualElement._visualElement);
+            return this;
+        }
+
+        [CLMethod]
+        public void Remove(CustomLogicVisualElementBuiltin visualElement)
+        {
+            _visualElement.Remove(visualElement._visualElement);
+        }
+
+        [CLMethod]
+        public void RemoveFromHierarchy()
+        {
+            _visualElement.RemoveFromHierarchy();
+        }
+
+        private static Length GetLength(float value, bool percentage)
+        {
+            return new Length(value, percentage ? LengthUnit.Percent : LengthUnit.Pixel);
+        }
+    }
+
+    [CLType(Name = "Button", Abstract = true)]
+    partial class CustomLogicButtonBuiltin : CustomLogicVisualElementBuiltin
+    {
+        private readonly Button _button;
+
+        private UserMethod _clickEvent;
+
+        public CustomLogicButtonBuiltin(Button button) : base(button)
+        {
+            _button = button;
+            _button.clickable.clicked += OnClick;
+        }
+
+        private void OnClick()
+        {
+            if (_clickEvent == null)
+                return;
+
+            CustomLogicManager.Evaluator.EvaluateMethod(_clickEvent);
+        }
+
+        [CLProperty]
+        public string Text
+        {
+            get => _button.text;
+            set => _button.text = value;
+        }
+
+        [CLMethod]
+        public CustomLogicButtonBuiltin SetClickEvent(UserMethod clickEvent)
+        {
+            _clickEvent = clickEvent;
+            return this;
+        }
+    }
+
+    [CLType(Name = "Label", Abstract = true)]
+    partial class CustomLogicLabelBuiltin : CustomLogicVisualElementBuiltin
+    {
+        private readonly Label _label;
+
+        public CustomLogicLabelBuiltin(Label label) : base(label)
+        {
+            _label = label;
+            _label.enableRichText = true;
+        }
+
+        [CLProperty]
+        public string Text
+        {
+            get => _label.text;
+            set => _label.text = value;
         }
     }
 }
