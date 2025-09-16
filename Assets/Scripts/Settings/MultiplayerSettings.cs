@@ -1,14 +1,10 @@
 using Anticheat;
 using ApplicationManagers;
-using Discord;
 using GameManagers;
 using Photon.Pun;
 using Photon.Realtime;
-using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Security.Cryptography;
-using UnityEngine;
 using Utility;
 
 namespace Settings
