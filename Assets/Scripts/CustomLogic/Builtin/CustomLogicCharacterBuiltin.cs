@@ -1,5 +1,5 @@
-using System;
 using Characters;
+using System;
 using UnityEngine;
 
 namespace CustomLogic
@@ -227,6 +227,9 @@ namespace CustomLogic
 
         [CLProperty(Description = "Character's grounded status.")]
         public bool Grounded => Character.Grounded;
+
+        [CLProperty(Description = "Character's rigidbody component (if available).")]
+        public CustomLogicRigidbodyBuiltin Rigidbody => new CustomLogicRigidbodyBuiltin(this, Character.Cache.Rigidbody);
 
         /// <summary>
         /// Kills the character. Callable by non-owners.

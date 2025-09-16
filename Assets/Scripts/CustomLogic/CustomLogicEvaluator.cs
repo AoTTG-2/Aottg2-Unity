@@ -28,8 +28,6 @@ namespace CustomLogic
         public Dictionary<int, Dictionary<string, float>> PlayerIdToLastPropertyChanges = new Dictionary<int, Dictionary<string, float>>();
         public string ScoreboardHeader = "Kills / Deaths / Max / Total";
         public string ScoreboardProperty = "";
-        //public List<string> AllowedSpecials = new List<string>();
-        //public List<string> DisallowedSpecials = new List<string>();
         public static readonly object[] EmptyArgs = Array.Empty<object>();
         public bool DefaultShowKillScore = true;
         public bool DefaultShowKillFeed = true;
@@ -46,11 +44,9 @@ namespace CustomLogic
             _baseLogicOffset = baseLogicOffset;
         }
 
-        /// <summary>
-        /// More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
-        /// </summary>
         public string GetLineNumberString(int lineNumber)
         {
+            // More relevant line number for when using MapLogic -> need to expand to handle builtin errors as well since its so annoying.
             return CustomLogicManager.GetLineNumberString(lineNumber, _baseLogicOffset);
         }
 
@@ -137,6 +133,8 @@ namespace CustomLogic
             }
             return componentNames;
         }
+
+        #region Callbacks
 
         public void Start(Dictionary<string, BaseSetting> modeSettings)
         {
@@ -383,32 +381,41 @@ namespace CustomLogic
             }
         }
 
+        #endregion
+
+        #region Map Object Setup
         public void LoadMapObjectComponents(MapObject obj, bool init = false)
         {
             if (obj.ScriptObject is MapScriptSceneObject)
             {
                 var photonView = SetupNetworking(obj);
                 var mapObjectBuiltin = SetupMapObject(obj);
-                List<MapScriptComponent> components = ((MapScriptSceneObject)obj.ScriptObject).Components;
-                bool rigidbody = false;
-                foreach (var component in components)
-                {
-                    if (_start.Classes.ContainsKey(component.ComponentName))
-                    {
-                        CustomLogicComponentInstance instance = CreateComponentInstance(component.ComponentName, obj, component);
-                        obj.RegisterComponentInstance(instance);
-                        if (init)
-                        {
-                            EvaluateMethod(instance, "Init");
-                            instance.Inited = true;
-                        }
-                        if (component.ComponentName == "Rigidbody")
-                            rigidbody = true;
-                    }
-                }
+                bool rigidbody = LoadRuntimeMapObjectComponents(obj, init);
                 if (photonView != null)
                     photonView.Init(obj.ScriptObject.Id, rigidbody);
             }
+        }
+
+        public bool LoadRuntimeMapObjectComponents(MapObject obj, bool init = false)
+        {
+            List<MapScriptComponent> components = ((MapScriptSceneObject)obj.ScriptObject).Components;
+            bool rigidbody = false;
+            foreach (var component in components)
+            {
+                if (_start.Classes.ContainsKey(component.ComponentName))
+                {
+                    CustomLogicComponentInstance instance = CreateComponentInstance(component.ComponentName, obj, component);
+                    obj.RegisterComponentInstance(instance);
+                    if (init)
+                    {
+                        EvaluateMethod(instance, "Init");
+                        instance.Inited = true;
+                    }
+                    if (component.ComponentName == "Rigidbody")
+                        rigidbody = true;
+                }
+            }
+            return rigidbody;
         }
 
         public CustomLogicComponentInstance AddMapObjectComponent(MapObject obj, string componentName)
@@ -476,7 +483,6 @@ namespace CustomLogic
 
         public CustomLogicComponentInstance CreateComponentInstance(string className, MapObject obj, MapScriptComponent script)
         {
-
             CustomLogicNetworkViewBuiltin networkView = null;
             if (obj.ScriptObject.Networked)
                 networkView = IdToNetworkView[obj.ScriptObject.Id];
@@ -531,7 +537,8 @@ namespace CustomLogic
                     IdToNetworkView.Add(obj.ScriptObject.Id, new CustomLogicNetworkViewBuiltin(obj));
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncPrefab", Vector3.zero, Quaternion.identity, 0);
+                        object[] data = new object[] { (int)SpawnIntent.PreplacedBind, obj.ScriptObject.Id, false };
+                        var go = PhotonNetwork.Instantiate("Game/CustomLogicPhotonSyncDynamicPrefab", Vector3.zero, Quaternion.identity, 0, data);
                         var photonView = go.GetComponent<CustomLogicPhotonSync>();
                         return photonView;
                     }
@@ -540,6 +547,9 @@ namespace CustomLogic
             return null;
         }
 
+        #endregion
+
+        #region Evaluator
         public CustomLogicClassInstance CreateClassInstance(string className, object[] parameterValues, bool init = true)
         {
             if (CustomLogicBuiltinTypes.IsBuiltinType(className))
@@ -1295,4 +1305,6 @@ namespace CustomLogic
         PassedElseIf,
         FailedElseIf
     }
+
+    #endregion
 }

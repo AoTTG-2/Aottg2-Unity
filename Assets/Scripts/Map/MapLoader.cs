@@ -1,5 +1,4 @@
 ﻿using ApplicationManagers;
-using CustomLogic;
 using Events;
 using Photon.Pun;
 using Settings;
@@ -16,7 +15,7 @@ using NavMeshBuilder = UnityEngine.AI.NavMeshBuilder;
 
 namespace Map
 {
-    class MapLoader: MonoBehaviour
+    class MapLoader : MonoBehaviour
     {
         public static Dictionary<int, MapObject> IdToMapObject = new Dictionary<int, MapObject>();
         public static Dictionary<int, HashSet<int>> IdToChildren = new Dictionary<int, HashSet<int>>();
@@ -41,6 +40,8 @@ namespace Map
         private static List<NavMeshBuildSource> _navMeshSources = new List<NavMeshBuildSource>();
         private static Bounds _navMeshBounds = new Bounds(Vector3.zero, Vector3.zero);
         private static Dictionary<int, NavMeshData> _navMeshData = new Dictionary<int, NavMeshData>();
+        public static int ROOT_OBJECT_ID = -1;
+        public static int NETWORK_OFFSET = 1000;    // start at -1000 to avoid conflicts with map object ids.
 
         public static void Init()
         {
@@ -90,27 +91,6 @@ namespace Map
             */
             _instance.StartCoroutine(_instance.LoadObjectsCoroutine(customAssets, objects, editor));
         }
-
-        /*
-        public static void LoadBackground(string background, Vector3 position, Vector3 rotation)
-        {
-            if (_background != null)
-                Destroy(_background);
-            try
-            {
-                if (background == "None")
-                    return;
-                _background = ResourceManager.InstantiateAsset<GameObject>(ResourcePaths.Map, "Background/Prefabs/" + background);
-                var center = _background.transform.Find("Center").localPosition;
-                _background.transform.position = position - center;
-                _background.transform.rotation = Quaternion.Euler(rotation);
-            }
-            catch
-            {
-                Debug.Log("Error loading map background: " + background);
-            }
-        }
-        */
 
         public static void RegisterMapLight(Light light, bool isDaylight)
         {
@@ -182,7 +162,6 @@ namespace Map
             }
         }
 
-
         public static void DeleteObject(MapObject obj)
         {
             if (IdToMapObject.ContainsKey(obj.ScriptObject.Id) == false)
@@ -191,7 +170,7 @@ namespace Map
                 GameObject.Destroy(obj.GameObject);
                 return;
             }
-                
+
             int id = obj.ScriptObject.Id;
             DeleteObject(id);
         }
@@ -270,7 +249,7 @@ namespace Map
             if (!editor)
                 Batch();
 
-            
+
 
             if (MapManager.NeedsNavMeshUpdate || _hasNavMeshData == false)
             {
@@ -345,14 +324,14 @@ namespace Map
                             var t = src.sourceObject as TerrainData;
                             result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(0.5f * t.size, t.size)));
                             break;
-/*#if NMC_CAN_ACCESS_TERRAIN
-                            // Terrain pivot is lower/left corner - shift bounds accordingly
-                            var t = src.sourceObject as TerrainData;
-                            result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(0.5f * t.size, t.size)));
-#else
-                            Debug.LogWarning("The NavMesh cannot be properly baked for the terrain because the necessary functionality is missing. Add the com.unity.modules.terrain package through the Package Manager.");
-#endif
-                            break;*/
+                            /*#if NMC_CAN_ACCESS_TERRAIN
+                                                        // Terrain pivot is lower/left corner - shift bounds accordingly
+                                                        var t = src.sourceObject as TerrainData;
+                                                        result.Encapsulate(GetWorldBounds(worldToLocal * src.transform, new Bounds(0.5f * t.size, t.size)));
+                            #else
+                                                        Debug.LogWarning("The NavMesh cannot be properly baked for the terrain because the necessary functionality is missing. Add the com.unity.modules.terrain package through the Package Manager.");
+                            #endif
+                                                        break;*/
                         }
                     case NavMeshBuildSourceShape.Box:
                     case NavMeshBuildSourceShape.Sphere:
@@ -596,7 +575,7 @@ namespace Map
             GameObject go = obj.Asset == "None"
                 ? new GameObject()
                 : LoadPrefabCached(obj.Asset);
-            
+
             if (editor)
             {
                 int colliderCount = SetPhysics(go, MapObjectCollideMode.Physical, MapObjectCollideWith.MapEditor, obj.PhysicsMaterial);
