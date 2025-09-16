@@ -182,7 +182,7 @@ namespace Characters
                 _lastWorldHookPosition = position;
                 HookCharacter = transform.root.GetComponent<BaseCharacter>();
 
-                if (SettingsManager.InGameCurrent.Misc.RealismMode.Value)
+                if (SettingsManager.InGameCurrent.Misc.RealismHookDamage.Value && SettingsManager.InGameCurrent.Misc.RealismMode.Value)
                 {
                     if (HookCharacter != null && HookCharacter is Human && !TeamInfo.SameTeam(HookCharacter, _owner) && _owner.IsMine())
                     {
