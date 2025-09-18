@@ -22,7 +22,7 @@ namespace UI
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismImpactThreshold, UIManager.GetLocale(cat, sub, "RealismImpact"), UIManager.GetLocale(cat, sub, "RealismImpactTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismMaxReel, UIManager.GetLocale(cat, sub, "RealismHookLength"), UIManager.GetLocale(cat, sub, "RealismHookLengthTooltip"));
             ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.RealismMaxSpeed, UIManager.GetLocale(cat, sub, "RealismMaxSpeed"), UIManager.GetLocale(cat, sub, "RealismMaxSpeedTooltip"));
-            ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.RealismHookDamage, UIManager.GetLocale(cat, sub, "RealismHookDamage"), UIManager.GetLocale(cat, sub, "RealismHookDamageTooltip"));
+            ElementFactory.CreateInputSetting(DoublePanelLeft, style, settings.HookDamageMultiplier, UIManager.GetLocale(cat, sub, "HookDamageMultiplier"), UIManager.GetLocale(cat, sub, "HookDamageMultiplierTooltip"));
 
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.Horses, UIManager.GetLocale(cat, sub, "Horses"));
             ElementFactory.CreateToggleSetting(DoublePanelLeft, style, settings.HorsebackCombat, UIManager.GetLocale(cat, sub, "HorsebackCombat"));
